@@ -26,7 +26,21 @@
                 <div class="form-title full-width">
                     <h3><span translate> STATION_LANGUAGE_SUPPORT</span> </h3>
                 </div>
-                <ad-toggle-button is-checked="zestSettings.zest_lang.enabled" label="{{'STATION_LANGUAGE_SUPPORT_SWITCH'| translate}}" div-class="full-width"></ad-toggle-button>
+                
+                <ad-toggle-button is-checked="zestSettings.zest_lang.enabled" label="{{'STATION_LANGUAGE_SUPPORT_SWITCH'| translate}}" div-class=""></ad-toggle-button>
+                
+                
+                <ad-dropdown label="{{'STATION_LANGUAGE_DEFAULT' | translate}}" 
+                             label-in-drop-down="{{'STATION_LANGUAGE_DEFAULT_PLACEHOLDER' | translate}}" 
+                             list="enabledLangs" 
+                             savemodel="zestSettings.zest_lang.default_language" 
+                             valueproperty="name" property="value"
+                             selected-Id='zestSettings.zest_lang.default_language' 
+                             required='no' 
+                             selbox-class='placeholder' 
+                             div-class="{{defaultLangsDivClass}}"></ad-dropdown>
+
+                
                 <!-- english -->
                 <div class="entry full-width">
                     <ad-checkbox is-checked="zestSettings.zest_lang.English" label="{{ 'STATION_LANGUAGE_ENGLISH' | translate}}"></ad-checkbox>
