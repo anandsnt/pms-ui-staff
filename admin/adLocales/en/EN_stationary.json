@@ -96,7 +96,14 @@
 	"LOCATION_URL_PLACE_HOLDER": "Enter Location URL",
 	"LOCATION_URL_LABEL_PLACE_HOLDER": "Enter Location URL Label",
 
-	"GROUP": "Group"
+	"GROUP": "Group",
+	"AR_STATEMNT" : "AR Statement",
+	"AR_STATEMNT_EMAIL_SUBJECT" : "AR Statement Email Subject",
+	"AR_STATEMNT_EMAIL_BODY" : "AR Statement Email Body",
+	"CUSTOM_TEXT_HEADER" : "Custom Text Header",
+	"CUSTOM_TEXT_FOOTER" : "Custom Text Footer",
+	"CUSTOM_TEXT_HEADER_PLACE_HOLDER" : "Enter Custom Text Header",
+	"CUSTOM_TEXT_FOOTER_PLACE_HOLDER" : "Enter Custom Text Footer"
 
 
 
