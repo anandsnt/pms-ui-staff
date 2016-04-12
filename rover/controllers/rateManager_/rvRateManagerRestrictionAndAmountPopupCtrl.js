@@ -729,7 +729,7 @@ angular.module('sntRover')
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
                     restrictionData.rates,
-                    restrictionData.all_rate_restrictions);
+                    dialogData.commonRestrictions);
             
             if(_.findWhere($scope.restrictionList, {status: 'VARIED'})) {
                 $scope.headerNoticeOnRight = 'Restrictions vary across Rates!';
@@ -753,7 +753,7 @@ angular.module('sntRover')
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
                     restrictionData.room_types,
-                    restrictionData.all_room_type_restrictions);
+                    dialogData.commonRestrictions);
 
             $scope.roomTypeAndPrices = dialogData.roomTypesAndPrices;
 
@@ -776,7 +776,7 @@ angular.module('sntRover')
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
                     restrictionData.room_types,
-                    restrictionData.all_room_type_restrictions);
+                    dialogData.commonRestrictions);
             
             if(_.findWhere($scope.restrictionList, {status: 'VARIED'})) {
                 $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';
@@ -837,7 +837,7 @@ angular.module('sntRover')
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
                     roomTypePricesAndRestrictions.room_types,
-                    roomTypePricesAndRestrictions.rate_restrictions);
+                    dialogData.commonRestrictions);
             
             if(_.findWhere($scope.restrictionList, { status: 'VARIED' })) {
                 $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';
@@ -934,7 +934,7 @@ angular.module('sntRover')
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
                     roomTypePricesAndRestrictions.room_types,
-                    roomTypePricesAndRestrictions.rate_restrictions);
+                    dialogData.commonRestrictions);
             
             if(_.findWhere($scope.restrictionList, { status: 'VARIED' })) {
                 $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';

@@ -101,12 +101,12 @@ const RateManagerGridViewRootComponent = createClass ({
 	},
 
 	refreshScrollers() {
-		var rightScroller = this.rightScroller,
-			leftScroller = this.leftScroller;
-		if(rightScroller && leftScroller) {
+		var rightScrollerExist = this.rightScroller instanceof IScroll,
+			leftScrollerExist = this.leftScroller instanceof IScroll;
+		if(rightScrollerExist && leftScrollerExist) {
 			setTimeout(() => {
-				rightScroller.refresh();
-				leftScroller.refresh();
+				this.rightScroller.refresh();
+				this.leftScroller.refresh();
 			}, 0);
 		}
 
