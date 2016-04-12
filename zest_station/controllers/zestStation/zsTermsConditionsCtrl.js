@@ -121,7 +121,7 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
 
 		$scope.init = function() {
 			$scope.hotel_settings = $scope.zestStationData;
-			if($scope.zestStationData.kiosk_display_terms_and_conditions){
+			if($scope.zestStationData.kiosk_display_terms_and_condition){
 				$scope.at = 'terms-conditions';
 				
 				$scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
