@@ -110,7 +110,7 @@
                         </figure>
                         <div class="data" ng-if="transaction.associated_type == 'Reservation'">
                             <h2><span>{{transaction.guest_first_name}}</span> <span>{{transaction.guest_last_name}}</span></h2>
-                            <span class="external" ng-if="transaction.external_reference_number">
+                            <span class="confirmation" ng-if="transaction.external_reference_number">
                                 EXT. REF: 
                                 <span class="value">{{transaction.external_reference_number}}</span>
                             </span>
