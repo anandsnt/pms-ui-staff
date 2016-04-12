@@ -306,40 +306,12 @@
                     }
 
                     .data {
-                        .calc-width(70, 150);
+                        margin-right: 20px;
+                        .calc-width(70, 130);
 
                         h2 { 
                             margin-bottom: 6px; 
-
                             em { font-weight: 700; }
-                        }
-
-                        .name {
-                            margin-bottom: 6px;
-                            .flex(center);
-                            .float;
-
-                            h2 { 
-                                margin: 0;
-                                .pull-left; 
-                            }
-
-                            .external {
-                                font-size: 14px;
-                                line-height: 26px;
-                                text-transform: uppercase;
-                                color: @grey3;
-                                margin-left: 20px;
-                                .pull-left;
-                            }
-
-                            .value {
-                                display: inline-block;
-                                font-size: 18px;
-                                line-height: 26px;
-                                color: @textColor;
-                                margin-left: 5px;
-                            }
                         }
 
                         .confirmation,
@@ -349,6 +321,21 @@
                             line-height: 20px;
                             .show;
                             .pull-left;
+                        }
+
+                        .confirmation {
+                            font-size: 14px;
+                            font-weight: 400;
+                            text-transform: uppercase;
+                            color: @grey3;
+
+                            .value {
+                                display: inline-block;
+                                font-size: 16px;
+                                color: @textColor;
+                                font-weight: 600;
+                                margin-left: 5px;
+                            }
                         }
 
                         .arrival,
