@@ -155,7 +155,6 @@ $scope.fetchRates = function(){
 $scope.getAddonsWithNameValues = function(addons){
         angular.forEach(addons,function(item, index) {
        item.value = item.id;
-       item.isAvailable = true;
   });
         return addons;
 };
@@ -180,16 +179,6 @@ $scope.setUpUpsellWindowData = function () {
          upsellWindow.charge = item.charge;
          $scope.upsellWindows.push(upsellWindow);
   });
-};
-
-$scope.updateAddonAvailablity = function(addon, available){
-    if ($scope.addons){
-        for (var i in $scope.addons){
-            if ($scope.addons[i].id === addon){
-                $scope.addons[i].isAvailable = available;
-            }
-        }
-    }
 };
 
 $scope.takenAddons = {
