@@ -23,14 +23,15 @@ sntZestStation.controller('zsAdminCtrl', [
                 name = 'Select';
             }
            // $scope.zestStationData.printer = "printer";
-            $scope.zestStationData.printerLabel = name;
+            $scope.printerLabel = name;
         };
-
+        //set the selected workstation
         if(typeof $scope.zestStationData.set_workstation_id !== "undefined"){
              var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.zestStationData.set_workstation_id;
             });
             $scope.workstation = { 'selected' :  selectedWorkStation.id};
+            $scope.workstation.printer = selectedWorkStation.printer;
             setPrinterLabel(selectedWorkStation.printer);
         }else{
             //do nothing;
@@ -48,13 +49,12 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
         };
 
+        //if workstation changes -> change printer accordingly
         $scope.worksStationChanged = function(){
-
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.workstation.selected;
             });
             setPrinterLabel(selectedWorkStation.printer);
-
         };
 
         /*
@@ -115,8 +115,6 @@ sntZestStation.controller('zsAdminCtrl', [
         };
 
 
-        // initialize
-        $scope.zestStationData.isFirstLogin = false;
         var initialize = function() {
             $scope.adminLoginError = false;
             $scope.input = {
@@ -129,7 +127,7 @@ sntZestStation.controller('zsAdminCtrl', [
             getWorkStationList();
             $scope.setScroller('admin-screen');
 
-            // 
+            // to remove
             $scope.zestStationData.isFirstLogin = true;
             // 
 
@@ -288,6 +286,7 @@ sntZestStation.controller('zsAdminCtrl', [
 
         var setStationVariables = function() {
             //we just need to set the printer and encoder across the app;
+            //well again the state variable is used here. Need to change this :(
             sntZestStation.selectedPrinter = $scope.savedSettings.printer;
             if (typeof $scope.savedSettings.kiosk.workstation.key_encoder_id !== typeof undefined) {
                 $state.encoder = $scope.savedSettings.kiosk.workstation.key_encoder_id;

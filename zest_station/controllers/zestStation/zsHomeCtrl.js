@@ -223,36 +223,36 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.set_workstation_id = $scope.getStationIdFromName(to);
             $scope.initialWorkstation = true;
         }
-        $scope.setWorkstationPrinter($scope.set_workstation_id);
+       // $scope.setWorkstationPrinter($scope.set_workstation_id);
         
     });
-    $scope.saveWorkStation = function(id){
-        if ($scope.workstation !== ''){
-            for (var i in $scope.zestStationData.workstations){
-                if ($scope.zestStationData.workstations[i].station_identifier === id){
-                    $scope.zestStationData.selectedWorkStation = $scope.zestStationData.workstations[i].station_identifier;
-                }
-            }
-        } else {
-            $scope.zestStationData.selectedWorkStation = '';
-        }
+    // $scope.saveWorkStation = function(id){
+    //     if ($scope.workstation !== ''){
+    //         for (var i in $scope.zestStationData.workstations){
+    //             if ($scope.zestStationData.workstations[i].station_identifier === id){
+    //                 $scope.zestStationData.selectedWorkStation = $scope.zestStationData.workstations[i].station_identifier;
+    //             }
+    //         }
+    //     } else {
+    //         $scope.zestStationData.selectedWorkStation = '';
+    //     }
         
-    };
-    $scope.setWorkstationPrinter = function(id){
-        var printer = '', isStation = false;
+    // };
+    // $scope.setWorkstationPrinter = function(id){
+    //     var printer = '', isStation = false;
         
-        for (var i in $scope.zestStationData.workstations){
-            if ($scope.zestStationData.workstations[i].id === id){
-                isStation = true;
-                printer = $scope.zestStationData.workstations[i].printer;
-                sntZestStation.selectedPrinter = printer;
-                $scope.setPrinterLabel(printer); 
-            }
-        }
-        if (!isStation){
-            $scope.setPrinterLabel('Select'); 
-        }
-    };
+    //     for (var i in $scope.zestStationData.workstations){
+    //         if ($scope.zestStationData.workstations[i].id === id){
+    //             isStation = true;
+    //             printer = $scope.zestStationData.workstations[i].printer;
+    //             sntZestStation.selectedPrinter = printer;
+    //             $scope.setPrinterLabel(printer); 
+    //         }
+    //     }
+    //     if (!isStation){
+    //         $scope.setPrinterLabel('Select'); 
+    //     }
+    // };
     $scope.getSavedWorkStation = function(){
         /*
          * This method will get the device's last saved workstation, and from the last fetched list of workstations
@@ -287,21 +287,21 @@ sntZestStation.controller('zsHomeCtrl', [
                     }
                 }
                 
-                if (station){
-                    for (var i in stations){
-                        if (stations[i].id === station.id){
-                            $scope.zestStationData.set_workstation_id = $scope.set_workstation_id = station.id;
-                            $scope.zestStationData.workstations[i].selected = true;
-                            $scope.zestStationData.selectedWorkStation = station.station_identifier;
-                            $scope.selectedWorkstationName = stations[i].name;
-                            $scope.currentPrinter = stations[i].printer;
-                            $scope.setPrinterLabel(stations[i].printer);
+                // if (station){
+                //     for (var i in stations){
+                //         if (stations[i].id === station.id){
+                //             $scope.zestStationData.set_workstation_id = $scope.set_workstation_id = station.id;
+                //             $scope.zestStationData.workstations[i].selected = true;
+                //             $scope.zestStationData.selectedWorkStation = station.station_identifier;
+                //             $scope.selectedWorkstationName = stations[i].name;
+                //             $scope.currentPrinter = stations[i].printer;
+                //             $scope.setPrinterLabel(stations[i].printer);
                             
-                        } else {
-                            $scope.zestStationData.workstations[i].selected = false;
-                        }
-                    }
-                }
+                //         } else {
+                //             $scope.zestStationData.workstations[i].selected = false;
+                //         }
+                //     }
+                // }
                 
             } 
         } 
@@ -311,22 +311,22 @@ sntZestStation.controller('zsHomeCtrl', [
         name: ''
     };
     $scope.setPrinterLabel = function(name){
-        if (name && typeof name === typeof 'str'){
-             if (name.length > 1){
-                 //printer name convention has something like IPP://somename..
-                 //so lets pull out that IPP:// from the display to user, so they will see its
-                 //HP or other printer identifiers
-                 var str = name.split('ipp://');
-                 if (str[1]){
-                     name = str[1];
-                 }
-             } else {
-                name = 'Select';
-             }
-        } else {
-            name = 'Select';
-        }
-        $scope.zestStationData.printerLabel = name;
+        // if (name && typeof name === typeof 'str'){
+        //      if (name.length > 1){
+        //          //printer name convention has something like IPP://somename..
+        //          //so lets pull out that IPP:// from the display to user, so they will see its
+        //          //HP or other printer identifiers
+        //          var str = name.split('ipp://');
+        //          if (str[1]){
+        //              name = str[1];
+        //          }
+        //      } else {
+        //         name = 'Select';
+        //      }
+        // } else {
+        //     name = 'Select';
+        // }
+        // $scope.zestStationData.printerLabel = name;
     };
     $scope.setSavedWorkstation = function(){
         $scope.savedStationObj = $scope.getSavedWorkStation();
@@ -452,9 +452,9 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.initialWorkstation = true;
             if (station !== null){
                 $scope.zestStationData.set_workstation_id = $scope.set_workstation_id = $scope.getStationIdFromName(station.name);
-                $scope.setWorkstationPrinter(station.id);
+               // $scope.setWorkstationPrinter(station.id);
             }
-            
+
         };
         
       //   $scope.saveSettings = function(){
