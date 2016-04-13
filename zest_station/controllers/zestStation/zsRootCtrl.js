@@ -713,14 +713,31 @@ sntZestStation.controller('zsRootCtrl', [
             }
             return false;
         };
+        
+        var getDefaultLangFlag = function(lang){
+            for (var i in $scope.langInfo){
+                if ($scope.langInfo[i].info.name === lang){
+                    return $scope.langInfo[i].info.flag;
+                }
+            }
+            
+        };
+        
         var intLanguageSettings = function(){
-            $scope.selectedLanguage = 'English';
-            $scope.langflag = 'flag-gb';
+            
+            //$scope.selectedLanguage = 'English';
+            $scope.selectedLanguage = zestStationSettings.zest_lang.default_language;
+            //$scope.langflag = 'flag-gb';
+            
+            
             $scope.language = null;
             $scope.langInfo = zsUtilitySrv.returnLanguageList();
+            
+            $scope.langflag = getDefaultLangFlag($scope.selectedLanguage);
         };
 
         $scope.selectLanguage = function(language){
+            console.info('selectLanguage: ',language)
             $scope.selectedLanguage = language.language;//set language name
             $scope.langflag = language.info.flag;// set language icon
             $translate.use(language.info.code); //set translations
@@ -838,12 +855,18 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.idleTimer = timerInt;
             };
             $scope.handleIdleTimeout = function(){
-                if ($state.current.name !== 'zest_station.oos' && $state.current.name !== 'zest_station.admin-screen' && $state.current.name !== 'zest_station.admin'){
-                    $state.go('zest_station.home');
+                if ($state.current.name !== 'zest_station.oos' && 
+                        $state.current.name !== 'zest_station.admin-screen' && 
+                        $state.current.name !== 'zest_station.admin'){
+                        $state.go('zest_station.home');
                     
-                    $scope.selectedLanguage = 'English';
-                    $scope.langflag = 'flag-gb';
-                    $scope.selectLanguage($scope.selectedLanguage,$scope.langflag);//set back to default language; currently just english
+                    /*
+                     * Setting language back to default handled in separate timer function
+                     */
+                    //
+                    //$scope.selectedLanguage = 'English';
+                    //$scope.langflag = 'flag-gb';
+                    //$scope.selectLanguage($scope.selectedLanguage,$scope.langflag);//set back to default language; currently just english
                 } else {
                     console.info('at admin or oos, idle timer stopped');
                 }

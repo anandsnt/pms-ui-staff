@@ -81,7 +81,6 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             $scope.$emit('hideLoader');
         };
         setUpTranslationFilesStatus();
-        console.log('saving: ',$scope.zestSettings)
         
         var dataToSend = {
             'kiosk': $scope.zestSettings
