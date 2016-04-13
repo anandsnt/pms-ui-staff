@@ -13,21 +13,20 @@
 
     <!-- Action summary -->
     <div class="content-right" ng-show="showActionSummary()" ng-click="stopEditClick()">
-        <div ng-include=" '/assets/partials/common/actions_summary.html'"></div>
+        <div class="summary" ng-include="'/assets/partials/common/actions_summary.html'"></div>
     </div>
     <!-- Action Assignment -->
     <div class="content-right" ng-show="showAssignScreen()">
-        <div ng-include=" '/assets/partials/common/actions_assign.html'"></div>
+        <div class="summary" ng-include="'/assets/partials/common/actions_assign.html'"></div>
     </div>
 
-
     <div class="content-right" ng-show="showNewAction() && !refreshingToNonEmpty()" ng-class="{'full-width': actions.totalCount === 0}">
-        <div ng-include=" '/assets/partials/common/actions_new_action.html'"></div>
+        <div id="summary" class="summary" ng-include="'/assets/partials/common/actions_new_action.html'"></div>
     </div>
 
 </section>
 <section class="actions-content" role="main" ng-show='showNewActionOnly()'>
     <div class="content-right" ng-class="{'full-width': actions.totalCount === 0}">
-        <div ng-include=" '/assets/partials/common/actions_new_action.html'"></div>
+        <div id="summary" class="summary" ng-include=" '/assets/partials/common/actions_new_action.html'"></div>
     </div>
 </section>
