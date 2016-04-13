@@ -7,6 +7,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 	'rvGroupConfigurationSrv',
 	'$timeout',
 	'rvUtilSrv',
+	'$interval',
 	'$q',
 	'dateFilter',
 	function($scope,
@@ -17,6 +18,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		rvGroupConfigurationSrv,
 		$timeout,
 		util,
+	 	$interval,
 		$q,
 		dateFilter) {
 
@@ -1408,6 +1410,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			$scope.holdStatusList = refData.holdStatusList;
 		};
 
+		var RATE_GRID_SCROLL = 'room_rates_grid_scroller',
+			BLOCK_SCROLL   = 'room_block_scroller',
+			RATE_TIMELINE 	 = 'room_rates_timeline_scroller',
+			timer;
+
 		/**
 		 * utiltiy function for setting scroller and things
 		 * return - None
@@ -1419,7 +1426,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				preventDefault: false,
 				probeType: 3
 			};
-			$scope.setScroller('room_block_scroller', scrollerOptions);
+			$scope.setScroller(BLOCK_SCROLL, scrollerOptions);
 
 			var scrollerOptionsForRoomRatesTimeline = _.extend({
 				scrollX: true,
@@ -1427,45 +1434,64 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				scrollbars: false
 			}, util.deepCopy(scrollerOptions));
 
-			$scope.setScroller('room_rates_timeline_scroller', scrollerOptionsForRoomRatesTimeline);
+			$scope.setScroller(RATE_TIMELINE, scrollerOptionsForRoomRatesTimeline);
 
 			var scrollerOptionsForRoomRatesGrid = _.extend({
 				scrollY: true,
 				scrollX: true
 			}, util.deepCopy(scrollerOptions));
 
-			$scope.setScroller('room_rates_grid_scroller', scrollerOptionsForRoomRatesGrid);
+			$scope.setScroller(RATE_GRID_SCROLL, scrollerOptionsForRoomRatesGrid);
+		};
 
-			$timeout(function() {
-				$scope.$parent.myScroll['room_rates_timeline_scroller'].on('scroll', function() {
+		var clearTimer = function() {
+			if ( !! timer ) {
+				$interval.cancel(timer);
+				timer = undefined;
+			}
+		};
+
+		var setScrollListner = function() {
+			if ( $scope.$parent.myScroll.hasOwnProperty(RATE_TIMELINE) ) {
+				refreshScroller();
+				timer = $interval(refreshScroller, 1000);
+
+				$scope.$parent.myScroll[RATE_TIMELINE].on('scroll', function() {
 					var xPos = this.x;
-					var block = $scope.$parent.myScroll['room_rates_grid_scroller'];
+					var block = $scope.$parent.myScroll[RATE_GRID_SCROLL];
+
+					clearTimer();
+
 					block.scrollTo(xPos, block.y);
 				});
-				$scope.$parent.myScroll['room_block_scroller'].on('scroll', function() {
+				$scope.$parent.myScroll[BLOCK_SCROLL].on('scroll', function() {
 					var yPos = this.y;
-					var block = $scope.$parent.myScroll['room_rates_grid_scroller'];
+					var block = $scope.$parent.myScroll[RATE_GRID_SCROLL];
 					block.scrollTo(block.x, yPos);
 				});
-				$scope.$parent.myScroll['room_rates_grid_scroller'].on('scroll', function() {
+				$scope.$parent.myScroll[RATE_GRID_SCROLL].on('scroll', function() {
 					var xPos = this.x;
 					var yPos = this.y;
-					$scope.$parent.myScroll['room_rates_timeline_scroller'].scrollTo(xPos, 0);
-					$scope.$parent.myScroll['room_block_scroller'].scrollTo(0, yPos);
+					$scope.$parent.myScroll[RATE_TIMELINE].scrollTo(xPos, 0);
+					$scope.$parent.myScroll[BLOCK_SCROLL].scrollTo(0, yPos);
 				});
-			}, 1000);
+			} else {
+				$timeout(setScrollListner, 1000);
+			}
 		};
+
+		var allRendered = $scope.$on( 'ALL_RENDERED', setScrollListner );
+		$scope.$on( '$destroy', allRendered );
+		$scope.$on( '$destroy', clearTimer );
 
 		/**
 		 * utiltiy function to refresh scroller
 		 * return - None
 		 */
 		var refreshScroller = function() {
-			$timeout(function() {
-				$scope.refreshScroller('room_block_scroller');
-				$scope.refreshScroller('room_rates_timeline_scroller');
-				$scope.refreshScroller('room_rates_grid_scroller');
-			}, 350);
+			$scope.refreshScroller(BLOCK_SCROLL);
+			$scope.refreshScroller(RATE_TIMELINE);
+			$scope.refreshScroller(RATE_GRID_SCROLL);
 		};
 
 		/**

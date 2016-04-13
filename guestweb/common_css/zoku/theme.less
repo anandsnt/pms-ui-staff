@@ -1,0 +1,168 @@
+/*------------------------------- Themes ----------------------------------------------------*/
+
+@import "../style.less";
+html,body{
+  height:auto !important;
+  min-height:100% !important;
+}
+body{
+    background: url(/assets/guestweb/img/Zoku/zoku_background.png) no-repeat center center; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.container-fluid{
+  padding-left:0px;
+  padding-right:0px;
+}
+a,a:hover{
+    color:#fff !important;
+}
+.main-text{
+    color:@white;
+}
+.sub-main-text{
+    color: @white;
+}
+.template-text,.footer-text{
+     color: @white;
+}
+.sub-text{
+    color: @white;
+}
+.text-comment,.text-comment:hover{
+  color:#000 !important;
+}
+.light-text{
+    color:@white !important;
+}
+.navbar{
+    background-color:@white;
+}
+.btn,.btn:hover{
+    background:#2b929b;
+}
+.dark-button,.dark-button:hover{
+    background: #187880 !important;
+}
+.checkouttime1,.checkouttime1:hover{
+    background: #43afb8;
+}
+.checkouttime2,.checkouttime2:hover{
+    background: #2b929b;
+}
+.checkouttime3,.checkouttime3:hover{
+    background: #187880;
+}
+.no-thanks,.no-thanks:hover{
+    color:black !important;
+    text-decoration: underline;
+}
+.upgrade-details .upgrades-btn {
+    background: #2b929b;
+}
+
+.proceed-to-checkin {
+    background: #2b929b;
+    span{
+        color:#fff;
+        float:right;
+    }
+}
+.upgrades-label{
+    color:#2b929b;
+}
+
+.calendar-back {
+    background-image: url('/assets/guestweb/common_images/back_icon.png');
+}
+.calendar-done{
+    background-image: url('/assets/guestweb/common_images/done_white.png');
+}
+.res-date, .sub-main-text {
+    color: @white;
+}
+.sub-text {
+    font-weight: normal;
+}
+.footer-sub-text, .footer-sub-text:hover {
+    color: @white;
+}
+.horizontal-line-sep-mobile {
+    border-color: #EDEDED;
+}
+.phone-label {
+    color: #2b929b;
+    text-decoration: none;
+}
+.right-arrow-button {
+    background-position: 0 4px;
+}
+.balance-amount, .query-text, .no-thanks, .res-details-heading, .phone-label , .view-bill{
+    color:#fff !important;
+}
+.header-bar{
+    background-color:#2a2a2a;
+    margin-bottom:5% !important;
+}
+.logo-image{
+    margin:3% 0 3%;
+}
+.date-picker-header{
+    background-color:#2b929b !important;
+}
+.pickadate-cell .pickadate-active{
+    background-color:#2b929b !important;
+}
+.right-arrow-button{
+    background-image: url(/assets/guestweb/common_images/white/right_arrow.png);
+}
+.down-arrow-button{
+    background-image: url(/assets/guestweb/common_images/white/down_arrow.png);
+}
+.select-style{
+  width:100%;
+}
+.select-style:after{
+    left:87%;
+}
+.eta-container .select-style:after{
+     left:80%;
+}
+.request-text{
+    color:@white;
+}
+.subtext-small{
+    color:#fff;
+    font-size:15px;
+}
+.eta-container{
+  margin-left:0px;
+  width:32% !important;
+}
+.eta-date{
+  margin-left:2%;
+  margin-right:2%;
+}
+error-text{
+  color:#fff !important;
+}
+@media (max-width: 480px){
+   .header-bar{
+      margin-bottom:3% !important;
+   }
+   .subtext-small{
+      font-size:13px;
+   }
+   .select-style:after {
+    left: 86.5%;
+   }
+   .eta-container .select-style:after{
+     left:77.5%;
+   }
+   .res-date-container{
+      padding-left:0px;
+      padding-right:0px;
+   }
+}
