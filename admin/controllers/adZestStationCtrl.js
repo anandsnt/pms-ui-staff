@@ -6,15 +6,51 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     $scope.data = {};
     var zestLanguageDataCopy = {};
 
+    var getEnabledLanguages = function(langs){
+        if (!$scope.zestSettings.zest_lang){return null;};
+        var langs = Object.keys($scope.zestSettings.zest_lang);
+        var languages = [];
+        
+        if (!langs){
+            return null;
+        } else {
+        
+            for (var i in langs){
+                if (langs[i].charAt(0).toUpperCase() === langs[i].charAt(0)){//is a language if [is capitalized]
+                    languages.push({
+                        name:    langs[i],
+                        value: langs[i]
+                    });
+                }
+            }
 
+            return languages;
+        }
+    };
+    
+    var setupDefaultLanguageDropdown = function(){
+        $scope.enabledLangs = getEnabledLanguages();
+            if ($scope.enabledLangs === null){
+                $scope.defaultLangsDivClass = 'overlay';
+            } else {
+                $scope.defaultLangsDivClass = '';
+                if (!$scope.zestSettings.zest_lang.default_language || $scope.zestSettings.zest_lang.default_language === ''){
+                    $scope.zestSettings.zest_lang.default_language = '';
+                }
+            }
+    };
+    
     var fetchZestStationData =  function(){
         
          var fetchSuccess = function (data) {
             $scope.$emit('hideLoader');
             $scope.zestStationData = data;
+            setupDefaultLanguageDropdown();
+            
         };
         $scope.invokeApi(ADZestStationSrv.fetchZestStationData, {}, fetchSuccess);
     };
+    
     
     var fetchSettings = function () {
         var fetchSuccess = function (data) {
@@ -45,6 +81,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             $scope.$emit('hideLoader');
         };
         setUpTranslationFilesStatus();
+        
         var dataToSend = {
             'kiosk': $scope.zestSettings
         };
