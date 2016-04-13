@@ -743,7 +743,8 @@ angular.module('sntRover')
          */
         const initializeSingleRoomTypeRestrictionMode = () => {
             var dialogData = $scope.ngDialogData,
-                restrictionData = dialogData.restrictionData[0];
+                restrictionData = dialogData.restrictionData[0],
+                commonRestrictions = restrictionData.room_types[0].restrictions;
             $scope.header = dialogData.roomType.name;
             
             $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
@@ -753,7 +754,7 @@ angular.module('sntRover')
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
                     restrictionData.room_types,
-                    dialogData.commonRestrictions);
+                    commonRestrictions);
 
             $scope.roomTypeAndPrices = dialogData.roomTypesAndPrices;
 
@@ -826,7 +827,8 @@ angular.module('sntRover')
          */
         const initializeSingleRateSingleRoomTypeRestrictionAndAmountMode = () => {
             var dialogData = $scope.ngDialogData,
-                roomTypePricesAndRestrictions = dialogData.roomTypePricesAndRestrictions;
+                roomTypePricesAndRestrictions = dialogData.roomTypePricesAndRestrictions,
+                commonRestrictions = roomTypePricesAndRestrictions.room_types[0].restrictions;
 
             $scope.header = dialogData.roomType.name;
 
@@ -837,7 +839,7 @@ angular.module('sntRover')
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
                     roomTypePricesAndRestrictions.room_types,
-                    dialogData.commonRestrictions);
+                    commonRestrictions);
             
             if(_.findWhere($scope.restrictionList, { status: 'VARIED' })) {
                 $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';
