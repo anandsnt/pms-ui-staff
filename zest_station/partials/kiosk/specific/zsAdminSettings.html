@@ -57,7 +57,7 @@
                 <div class="entry with-label">
                     <label>{{'ADMIN_WORKSTATION' |translate}}</label>
                     <div class="entry select">
-                        <select ng-model="workstation.selected" ng-change="">
+                        <select ng-model="workstation.selected" ng-change="worksStationChanged()">
                             <option ng-selected="workstation.selected === ''" value="">
                                 Select
                             </option>
@@ -95,14 +95,14 @@
                 </div>
                 <div class="entry with-label">
                     <label>{{'ADMIN_TIME_POP' |translate}}</label>
-                    <input touch-press id="prompt_text" ng-focus="showOnScreenKeyboard('prompt_text')" ng-click="showOnScreenKeyboard('prompt_text')" type="number" min='1' max='9999' ng-model='zestStationData.idle_timer.prompt' class='admin-input admin-input' />
+                    <input touch-press id="prompt_text" ng-focus="showOnScreenKeyboard('prompt_text')" ng-click="showOnScreenKeyboard('prompt_text')" type="number" min='1' max='9999' ng-model='zestStationData.idle_timer.prompt'/>
                 </div>
                 <div class="entry with-label">
                     <label>{{'ADMIN_STATION_PRINTER' |translate}}</label>
+                    <!-- <input touch-press id="prompt_text" disabled="true" ng-model='zestStationData.printerLabel' ng-click='openPrinterMenu()'/> -->
                      <div class="entry select disabled" touch-press='openPrinterMenu()'>
-                           <select disabled="true" ng-model="zestStationData.printer">
-                               <option value=""></option>
-                               <option value="printer">{{zestStationData.printerLabel}}</option>
+                           <select disabled="true" ng-model="zestStationData.printer_selected">
+                               <option value="">{{zestStationData.printerLabel}}</option>
                            </select>
                         </div>
                 </div>

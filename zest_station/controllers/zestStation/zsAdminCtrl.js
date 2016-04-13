@@ -22,7 +22,7 @@ sntZestStation.controller('zsAdminCtrl', [
             } else {
                 name = 'Select';
             }
-            $scope.zestStationData.printer = "printer";
+           // $scope.zestStationData.printer = "printer";
             $scope.zestStationData.printerLabel = name;
         };
 
@@ -46,6 +46,15 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
             //show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+        };
+
+        $scope.worksStationChanged = function(){
+
+            var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
+                return workstation.id == $scope.workstation.selected;
+            });
+            setPrinterLabel(selectedWorkStation.printer);
+
         };
 
         /*
@@ -199,6 +208,7 @@ sntZestStation.controller('zsAdminCtrl', [
             //save workstation printer 
             //save workstation to browser
             var successCallBack = function(response) {
+                getTheSelectedWorkStation().printer = $scope.savedSettings.printer;
                 setStationVariables();
                 restartTimers();
             };
@@ -252,8 +262,6 @@ sntZestStation.controller('zsAdminCtrl', [
                 },
                 'printer': $scope.workstation.printer
             };
-            console.log(params)
-            console.log($scope.workstation.selected)
             return params;
         };
 
@@ -318,8 +326,9 @@ sntZestStation.controller('zsAdminCtrl', [
                 cordova.exec(
                     function(success) {
                         //sntZestStation.selectedPrinter = JSON.stringify(success);
+                        (typeof $scope.savedSettings === "undefined") ? $scope.savedSettings = {} : "";
                         $scope.savedSettings.printer = success; //save to the save params here
-
+                        $scope.workstation.printer = $scope.savedSettings.printer;
                         setPrinterLabel($scope.savedSettings.printer);
                         $scope.$digest();
                     },
