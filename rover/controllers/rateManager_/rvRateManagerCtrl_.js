@@ -67,12 +67,70 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     $scope.$on(rvRateManagerEventConstants.RELOAD_RESULTS, (event, data) => {
         lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
-        if(lastSelectedFilterValues[activeFilterIndex].showAllRates) {
-            cachedRateAndRestrictionResponseData = [];
+
+        var isFromEditingPopup = _.has(data, 'isFromPopup');
+
+        if(isFromEditingPopup) {
+            handleTheReloadRequestFromPopup(data);
         }
         $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     });
 
+    /**
+     * [description]
+     * @return {[type]} [description]
+     */
+    var handleTheReloadRequestFromPopup = (data) => {
+        var dialogData = data.dialogData;
+        switch(dialogData.mode) {
+            //the mode against the click of a restriciton cell on rate view mode
+            case rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE:
+                handleTheReloadRequestFromPopupForSingleRateRestrictionMode(dialogData);
+                break;
+
+            case rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE:
+                handleTheReloadRequestFromPopupForMultipleRateRestrictionMode(dialogData);
+                break;
+
+            dafault:
+                break;
+        }
+    };
+
+    /**
+     * [description]
+     * @param  {[type]} dialogData [description]
+     * @return {[type]}            [description]
+     */
+    var handleTheReloadRequestFromPopupForMultipleRateRestrictionMode = (dialogData) => {
+        //clearing the cached to perform fresh request
+        cachedRateAndRestrictionResponseData = [];
+    };
+
+    /**
+     * [description]
+     * @param  {[type]} dialogData [description]
+     * @return {[type]}            [description]
+     */
+    var handleTheReloadRequestFromPopupForSingleRateRestrictionMode = (dialogData) => {
+        var rateID = dialogData.rate.id;
+                
+        //looping through cached response to find the page
+        //checking for the rate Id existance
+        for(let i = 0; i < cachedRateAndRestrictionResponseData.length; i++ ) {
+            let currentRateRestrictionDataSet = cachedRateAndRestrictionResponseData[i].response.dailyRateAndRestrictions[0].rates;
+            let rateSetFoundInList = _.findWhere(currentRateRestrictionDataSet, { id: rateID});
+
+            //if we've rate set, we're good and found the corresponding page ;)
+            if(rateSetFoundInList) {
+                lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = cachedRateAndRestrictionResponseData[i].page;
+                break;
+            }
+        };
+
+        //clearing the cached to perform fresh request
+        cachedRateAndRestrictionResponseData = [];
+    };
 
     /**
      * to fetch the room type & it's restrcitions
@@ -535,7 +593,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             ...dataSetJustBeforeCurrentOne.response
         };
 
-        var indexForPickingUp = pagintionConst.maxNumberOfRateRowsDisplay - pagintionConst.ratePerPage,
+        var numberRatesToShowFromPrevious = pagintionConst.maxNumberOfRateRowsDisplay - pagintionConst.ratePerPage,
             newResponseRateLength = newResponse.dailyRateAndRestrictions[0].rates.length,
             slicedRates = [];
 
@@ -545,13 +603,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 
                 //if we have less data coming from the api side, usually end of the page.
                 if(newResponseRateLength < pagintionConst.ratePerPage) {
-                    indexForPickingUp = pagintionConst.ratePerPage - newResponseRateLength;
-                    slicedRates = dailyRateAndRestriction.rates.slice( 0, indexForPickingUp );
+                    slicedRates = dailyRateAndRestriction.rates.slice( newResponseRateLength );
                 }
                 else {
-                    slicedRates = dailyRateAndRestriction.rates.slice( indexForPickingUp );
+                    slicedRates = dailyRateAndRestriction.rates.slice( dailyRateAndRestriction.rates.length - numberRatesToShowFromPrevious );
                 }
-
                 dailyRateAndRestriction.rates = [
                     ...slicedRates,
                     ..._.findWhere(newResponse.dailyRateAndRestrictions, { date: dailyRateAndRestriction.date }).rates

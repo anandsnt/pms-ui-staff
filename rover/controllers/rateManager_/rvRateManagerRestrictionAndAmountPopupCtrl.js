@@ -138,8 +138,12 @@ angular.module('sntRover')
          * when the  restriciton update api call is success
          * @param  {Object} result
          */
-        const onUpdateRateRestrictionData = (result) => {  
-            $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
+        const onUpdateRateRestrictionData = (result) => {
+            var dataFromPopupToParent = {
+                dialogData: $scope.ngDialogData,
+                isFromPopup: true
+            }
+            $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS, dataFromPopupToParent);
             $scope.closeDialog();
         };
 
