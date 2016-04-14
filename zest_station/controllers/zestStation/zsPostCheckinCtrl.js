@@ -493,6 +493,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             } else {
                 $state.selectedReservation.printSuccess = false;
             }
+            $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_PRINT_FAIL');
+            $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
         };
         $scope.onPrintSuccess = function(success){
             if (!$scope.zestStationData.auto_print){//when auto-printing do nothing, email success will take guest to next screen

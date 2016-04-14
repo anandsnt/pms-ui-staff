@@ -7,7 +7,8 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	'zsUtilitySrv',
 	'$stateParams',
 	'$sce',
-	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce) {
+    '$filter',
+	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce, $filter) {
 
 	BaseCtrl.call(this, $scope);
         sntZestStation.filter('unsafe', function($sce) {
@@ -237,7 +238,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 };
         };
         $scope.emitKeyError = function(response){
-            $scope.$emit('MAKE_KEY_ERROR',response);
+            $scope.$emit('PICKUP_KEY_FAIL',response);
+            $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL');
+            $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
         };
 
 
