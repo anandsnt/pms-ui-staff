@@ -723,17 +723,36 @@ sntZestStation.controller('zsRootCtrl', [
             
         };
         
+        var getDefaultLangDisplayName = function(lang){
+                if (lang === 'Castellano'){
+                    return  'Castellano';
+                }
+                if (lang === 'English'){
+                    return  'English';
+                }
+                if (lang === 'French'){
+                    return  'Français';
+                }
+                if (lang === 'German'){
+                    return  'Deutsch';
+                }
+                if (lang === 'Italian'){
+                    return  'Italiano';
+                }
+                if (lang === 'Spanish'){
+                    return  'Español';
+                }
+        };
+        
         var intLanguageSettings = function(){
-            
             //$scope.selectedLanguage = 'English';
-            $scope.selectedLanguage = zestStationSettings.zest_lang.default_language;
+            $scope.selectedLanguage = getDefaultLangDisplayName(zestStationSettings.zest_lang.default_language);
             //$scope.langflag = 'flag-gb';
-            
             
             $scope.language = null;
             $scope.langInfo = zsUtilitySrv.returnLanguageList();
             
-            $scope.langflag = getDefaultLangFlag($scope.selectedLanguage);
+            $scope.langflag = getDefaultLangFlag(zestStationSettings.zest_lang.default_language);
         };
 
         $scope.selectLanguage = function(language){
