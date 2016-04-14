@@ -186,22 +186,6 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.loadTranslations(theme);
             $scope.$emit('hideLoader');
         };
-        $scope.getLangPrefix = function(lang){
-            for (var i in $scope.langInfo){
-                if ($scope.langInfo[i].language === lang){
-                    return $scope.langInfo[i].info.prefix;
-                }
-            }
-        };
-        $scope.getActiveLangPrefix = function(){
-            var lang = $scope.selectedLanguage,
-                    prefix = 'EN';
-            var requestedPrefix = $scope.getLangPrefix(lang);
-            if (requestedPrefix !== ''){
-                prefix = requestedPrefix;
-            } 
-            return prefix.toLowerCase()+'/'+prefix+'_';
-        };
         
         $scope.loadTranslations = function(){
             if($scope.zestStationData.zest_lang.english_translations_file_updated){
@@ -756,7 +740,6 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         $scope.selectLanguage = function(language){
-            console.info('selectLanguage: ',language)
             $scope.selectedLanguage = language.language;//set language name
             $scope.langflag = language.info.flag;// set language icon
             $translate.use(language.info.code); //set translations
@@ -769,7 +752,7 @@ sntZestStation.controller('zsRootCtrl', [
         {   $scope.startLanguageCounter();
             $scope.showLanguagePopup = false;
             $scope.timeOut = false;
-        }
+        };
         
             $scope.idleTimerSettings = {};
             $scope.$on('UPDATE_IDLE_TIMER',function(evt, params){
