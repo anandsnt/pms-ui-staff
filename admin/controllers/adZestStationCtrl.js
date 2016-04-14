@@ -5,12 +5,34 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
     $scope.data = {};
     var zestLanguageDataCopy = {};
-
+    
+    var setLanguageDisplayNames = function(langs){
+        for (var i in langs){
+            if (langs[i].value === 'Castellano'){
+                langs[i].name = 'Castellano';
+            }
+            if (langs[i].value === 'English'){
+                langs[i].name = 'English';
+            }
+            if (langs[i].value === 'French'){
+                langs[i].name = 'Français';
+            }
+            if (langs[i].value === 'German'){
+                langs[i].name = 'Deutsch';
+            }
+            if (langs[i].value === 'Italian'){
+                langs[i].name = 'Italiano';
+            }
+            if (langs[i].value === 'Spanish'){
+                langs[i].name = 'Español';
+            }
+        }
+        return langs;
+    };
     var getEnabledLanguages = function(langs){
         if (!$scope.zestSettings.zest_lang){return null;};
         var langs = Object.keys($scope.zestSettings.zest_lang);
         var languages = [];
-        
         if (!langs){
             return null;
         } else {
@@ -18,12 +40,12 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             for (var i in langs){
                 if (langs[i].charAt(0).toUpperCase() === langs[i].charAt(0)){//is a language if [is capitalized]
                     languages.push({
-                        name:    langs[i],
                         value: langs[i]
                     });
                 }
             }
-
+            languages = setLanguageDisplayNames(languages);
+            
             return languages;
         }
     };

@@ -34,7 +34,7 @@
                              label-in-drop-down="{{'STATION_LANGUAGE_DEFAULT_PLACEHOLDER' | translate}}" 
                              list="enabledLangs" 
                              savemodel="zestSettings.zest_lang.default_language" 
-                             valueproperty="name" property="value"
+                             valueproperty="value" property="name"
                              selected-Id='zestSettings.zest_lang.default_language' 
                              required='no' 
                              selbox-class='placeholder' 
@@ -113,7 +113,7 @@
                 </div>
                 <!-- castelleno -->
                 <div class="entry full-width">
-                    <ad-checkbox is-checked="zestSettings.zest_lang.Castellano" label="{{ 'STATION_LANGUAGE_CASTELLONA' | translate}}"></ad-checkbox>
+                    <ad-checkbox is-checked="zestSettings.zest_lang.Castellano" label="{{ 'STATION_LANGUAGE_CASTELLANO' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
                             <span class="input" ng-show="zestSettings.zest_lang.castellano_translations_file_updated">File Attached</span>
