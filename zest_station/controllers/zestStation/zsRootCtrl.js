@@ -27,9 +27,8 @@ sntZestStation.controller('zsRootCtrl', [
         
     $translate.use('EN_snt');  
 
-    var updateLocalStorage = function(oosReason){
+    var updateLocalStorage = function(oosReason,workstationStatus){
         //store oos status
-        var workstationStatus = $scope.zestStationData.workstationStatus === 'in-order' ? true : false;
         var oosStorageKey = 'snt_zs_workstation.in_oos',
                 oosReasonKey  = 'snt_zs_workstation.oos_reason',
                 storage = localStorage;
@@ -48,7 +47,8 @@ sntZestStation.controller('zsRootCtrl', [
     };
     $scope.$on (zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event,params) {
         var oosReason = params.reason;
-        updateLocalStorage(oosReason);
+        var workstationStatus = params.status;
+        updateLocalStorage(oosReason,workstationStatus);
     });
 
 

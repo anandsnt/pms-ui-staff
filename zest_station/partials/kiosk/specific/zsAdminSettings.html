@@ -70,15 +70,16 @@
                 <div class="entry with-label">
                     <label>Status</label>
                     <div class="entry select">
-                        <select id="order-status">
+                        <select id="order-status" ng-model="zestStationData.workstationStatus">
+                            <option value="">SELECT</option>
                             <option value="in-order">In Order</option>
                             <option selected="selected" value="out-of-order">Out of Order</option>
                         </select>
                     </div>
                 </div>
-                <div id="order-reason" class="entry with-label hide">
+                <div id="order-reason" class="entry with-label" ng-show="zestStationData.workstationStatus === 'out-of-order'">
                     <label>Out of Order Reason</label>
-                    <input readonly="" class="read-only" value="Stain on Carpet">
+                    <input readonly="" class="read-only" ng-model="zestStationData.workstationOooReason">
                 </div>
                 <div class="entry with-label">
                     <label class='admin-item-label'>{{'ADMIN_TIMER_ENABLED_BTN' |translate}}</label>

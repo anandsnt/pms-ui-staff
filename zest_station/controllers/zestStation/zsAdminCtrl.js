@@ -236,8 +236,9 @@ sntZestStation.controller('zsAdminCtrl', [
                 };
                 $scope.$emit('UPDATE_WORKSTATION', {
                     id: station.station_identifier
-                });    
-                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'reason':$scope.zestStationData.workstationOooReason});
+                });  
+                var workstationStatus = $scope.zestStationData.workstationStatus === 'in-order' ? true : false;  
+                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':workstationStatus,'reason':$scope.zestStationData.workstationOooReason});
             };
 
             if ($scope.savedSettings.printer) {
