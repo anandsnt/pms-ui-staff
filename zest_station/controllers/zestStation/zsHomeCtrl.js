@@ -111,29 +111,29 @@ sntZestStation.controller('zsHomeCtrl', [
     };
     
 
-    $scope.openPrinterMenu = function(){
-        var onSuccess = function(success){
-            alert(JSON.stringify(success));
-        };
-        var onFail = function(err){
-            alert(JSON.stringify(err));
-        };
+    // $scope.openPrinterMenu = function(){
+    //     var onSuccess = function(success){
+    //         alert(JSON.stringify(success));
+    //     };
+    //     var onFail = function(err){
+    //         alert(JSON.stringify(err));
+    //     };
         
-        if (typeof cordova !== typeof undefined){
-            //cordova.exec(onSuccess, onFail, 'RVCardPlugin', 'selectPrinter', [1024, 50])
-        cordova.exec(
-                function(success){
-                    //sntZestStation.selectedPrinter = JSON.stringify(success);
-                    $scope.savedSettings.printer = success;//save to the save params here
+    //     if (typeof cordova !== typeof undefined){
+    //         //cordova.exec(onSuccess, onFail, 'RVCardPlugin', 'selectPrinter', [1024, 50])
+    //     cordova.exec(
+    //             function(success){
+    //                 //sntZestStation.selectedPrinter = JSON.stringify(success);
+    //                 $scope.savedSettings.printer = success;//save to the save params here
                     
-                    $scope.setPrinterLabel($scope.savedSettings.printer);
-                    $scope.$digest();
-                }, function(error) {
-                    alert('printer selection failed');
-                }, 'RVCardPlugin', 'selectPrinter'
-            );
-        } 
-    };
+    //                 $scope.setPrinterLabel($scope.savedSettings.printer);
+    //                 $scope.$digest();
+    //             }, function(error) {
+    //                 alert('printer selection failed');
+    //             }, 'RVCardPlugin', 'selectPrinter'
+    //         );
+    //     } 
+    // };
     
     // $scope.selectedWorkstation;
     // $scope.getCurrentWorkstation = function(){
