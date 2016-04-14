@@ -467,6 +467,7 @@ sntZestStation.controller('zsHomeCtrl', [
                 $scope.zestStationData.set_workstation_id = $scope.set_workstation_id = $scope.getStationIdFromName(station.name);
                // $scope.setWorkstationPrinter(station.id);
             }
+            ($scope.zestStationData.isFirstLogin)?  $state.go('zest_station.admin') : "";
 
         };
         

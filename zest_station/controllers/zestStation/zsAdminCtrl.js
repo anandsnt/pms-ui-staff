@@ -135,10 +135,6 @@ sntZestStation.controller('zsAdminCtrl', [
             getWorkStationList();
             $scope.setScroller('admin-screen');
 
-            // to remove
-            $scope.zestStationData.isFirstLogin = true;
-            // 
-
             //mode
             if ($scope.zestStationData.isFirstLogin) {
                 $scope.mode = "admin-screen-active";

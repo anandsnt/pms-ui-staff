@@ -497,6 +497,7 @@ sntZestStation.controller('zsRootCtrl', [
         });
         $scope.refreshSettings = function(hard_reset){
           $scope.getWorkStationStatus(hard_reset);
+
         };
         $scope.$on('RESET_TIMEOUT',function(evt, params){
             $scope.resetCounter();
@@ -1100,6 +1101,7 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.zestStationData = zestStationSettings;
         $scope.zestStationData.workstationOooReason = "";
         $scope.zestStationData.workstationStatus = "";
+        $scope.zestStationData.isFirstLogin = true;
         
         (typeof chrome !== "undefined") ? maximizeScreen():"";
         //create a websocket obj
