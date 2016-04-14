@@ -6,8 +6,8 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
   'zsEventConstants',
   '$stateParams',
   'zsModeConstants',
-  '$window', '$timeout',
-  function($scope, $state, zsUtilitySrv, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout) {
+  '$window', '$timeout','$filter',
+  function($scope, $state, zsUtilitySrv, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout,$filter) {
 
     BaseCtrl.call(this, $scope);
 
