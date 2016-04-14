@@ -239,7 +239,12 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
         $scope.emitKeyError = function(response){
             $scope.$emit('PICKUP_KEY_FAIL',response);
-            $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL');
+            if($scope.isInCheckinMode){
+                 $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL');
+            }
+            else{
+                 $scope.zestStationData.workstationOooReason = $filter('translate')('PICKUP_KEY_FAIL');
+            }
             $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
         };
 
