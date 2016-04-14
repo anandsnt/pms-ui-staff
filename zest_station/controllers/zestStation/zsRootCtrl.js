@@ -184,6 +184,7 @@ sntZestStation.controller('zsRootCtrl', [
             }
             $scope.language = theme;
             $scope.loadTranslations(theme);
+            setDefaultLanguage();
             $scope.$emit('hideLoader');
         };
         
