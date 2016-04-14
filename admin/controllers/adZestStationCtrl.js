@@ -29,16 +29,56 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         }
         return langs;
     };
-    var getEnabledLanguages = function(langs){
+    
+    $scope.updateDefaultLanguageDropdown = function(){
+        console.info('update lang dropdown');
+        $scope.enabledLangs = getEnabledLanguages();
+        validateDefaultLang();
+    };
+    
+    var validateDefaultLang = function(){
+        var lang = $scope.zestSettings.zest_lang.default_language;
+        var enabledLanguages = getEnabledLanguages();
+        var isValid = false;
+        for (var i in enabledLanguages){
+            if (lang === enabledLanguages[i].value){
+                isValid = true;
+            }
+        }
+        if (!isValid){
+            $scope.zestSettings.zest_lang.default_language = '';
+        }
+    };
+    
+    $scope.hasFileUpdatedOrUploading = function(name){
+        if ($scope.zestSettings && $scope.zestSettings.zest_lang){
+            if ($scope.zestSettings.zest_lang[name+'_translations_file_updated'] ||
+                $scope.zestSettings.zest_lang[name+'_translations_file']){return true;}
+            return false;
+        } else return false;
+    };
+    
+    var getEnabledLanguages = function(){
         if (!$scope.zestSettings.zest_lang){return null;};
         var langs = Object.keys($scope.zestSettings.zest_lang);
         var languages = [];
         if (!langs){
             return null;
         } else {
-        
+            /*
+            * For a language to be set as Default,
+            * it should be Enabled and have an uploaded file,
+            * otherwise the user shouldnt be allowed to set it to default
+            */
+            var isCapitalizedProperty, isEnabled, hasFileUpdatedOrUploading, langName;
             for (var i in langs){
-                if (langs[i].charAt(0).toUpperCase() === langs[i].charAt(0)){//is a language if [is capitalized]
+                
+                isCapitalizedProperty = langs[i].charAt(0).toUpperCase() === langs[i].charAt(0);
+                isEnabled = $scope.zestSettings.zest_lang[langs[i]];
+                langName = langs[i].toLowerCase();
+                
+                hasFileUpdatedOrUploading = $scope.hasFileUpdatedOrUploading(langName);
+                if (isCapitalizedProperty && isEnabled && hasFileUpdatedOrUploading){//is a language if [is capitalized] and enabled
                     languages.push({
                         value: langs[i]
                     });
