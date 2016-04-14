@@ -11,6 +11,7 @@ sntZestStation.controller('zsHomeCtrl', [
              */
             $scope.storageKey = 'snt_zs_workstation';
             $scope.oosKey = 'snt_zs_workstation.in_oos';
+            $scope.oosReason = 'snt_zs_workstation.oos_reason';
 	/**
 	 * when we clicked on pickup key from home screen
 	 */
@@ -271,6 +272,18 @@ sntZestStation.controller('zsHomeCtrl', [
         var station = $scope.getSavedWorkStationObj(storedWorkStation);
         if (typeof station === typeof undefined){
             return null;
+        }
+        else{
+            var oosStorageKey = 'snt_zs_workstation.in_oos',
+                oosReasonKey  = 'snt_zs_workstation.oos_reason',
+                storage = localStorage;
+            try {
+               workstationStatus = storage.getItem(oosStorageKey);
+               $scope.zestStationData.workstationOooReason = storage.getItem(oosReasonKey);
+               $scope.zestStationData.workstationStatus = (workstationStatus === 'true')? "in-order" :"out-of-order";
+            } catch(err){
+                console.warn(err);
+            }
         }
         return station;
     };  

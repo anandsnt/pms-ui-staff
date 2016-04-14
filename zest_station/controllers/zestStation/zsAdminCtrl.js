@@ -22,6 +22,11 @@ sntZestStation.controller('zsAdminCtrl', [
             } else {
                 name = 'Select';
             }
+              var dots = "...";
+          if(name.length > 25)
+          {
+            name = name.substring(0,25) + dots;
+            }
            // $scope.zestStationData.printer = "printer";
             $scope.printerLabel = name;
         };
@@ -33,9 +38,12 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.workstation = { 'selected' :  selectedWorkStation.id};
             $scope.workstation.printer = selectedWorkStation.printer;
             setPrinterLabel(selectedWorkStation.printer);
+          
         }else{
             //do nothing;
         };
+
+
         var hideNavButtons = function() {
             //hide back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
@@ -214,7 +222,6 @@ sntZestStation.controller('zsAdminCtrl', [
                 console.warn('unable to save workstation settings');
             };
             var station = $scope.savedSettings.kiosk.workstation;
-            console.log($scope.savedSettings);
             var params = {};
             if (station) {
                 var params = {
@@ -229,7 +236,8 @@ sntZestStation.controller('zsAdminCtrl', [
                 };
                 $scope.$emit('UPDATE_WORKSTATION', {
                     id: station.station_identifier
-                });
+                });    
+                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'reason':$scope.zestStationData.workstationOooReason});
             };
 
             if ($scope.savedSettings.printer) {
