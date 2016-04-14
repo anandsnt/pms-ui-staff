@@ -190,7 +190,6 @@ sntZestStation.controller('zsRootCtrl', [
         
         $scope.loadTranslations = function(){
             if($scope.zestStationData.zest_lang.english_translations_file_updated){
-                console.info('using: uploaded english translations');
                 $translate.use('en');
             } else{
                 $translate.use('EN_snt');
@@ -466,7 +465,6 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.languageTimerReset = false;
         var setDefaultLanguage= function(){
             intLanguageSettings();
-            $translate.use($scope.langInfo.code);
         };
 
         var languageCounterCompleted = function(){
@@ -729,6 +727,13 @@ sntZestStation.controller('zsRootCtrl', [
                 }
         };
         
+        var getLangCode = function(name){
+            for (var i in $scope.langInfo){
+                if ($scope.langInfo[i].info.name === name){
+                    return $scope.langInfo[i].info.code;
+                }
+            }
+        };
         var intLanguageSettings = function(){
             //$scope.selectedLanguage = 'English';
             $scope.selectedLanguage = getDefaultLangDisplayName(zestStationSettings.zest_lang.default_language);
@@ -738,9 +743,12 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.langInfo = zsUtilitySrv.returnLanguageList();
             
             $scope.langflag = getDefaultLangFlag(zestStationSettings.zest_lang.default_language);
+            $scope.langCode = getLangCode(zestStationSettings.zest_lang.default_language);
+            
+            $translate.use($scope.langCode);
         };
 
-        $scope.selectLanguage = function(language){
+        $scope.selectLanguage = function(language){//method used from angular view
             $scope.selectedLanguage = language.language;//set language name
             $scope.langflag = language.info.flag;// set language icon
             $translate.use(language.info.code); //set translations
