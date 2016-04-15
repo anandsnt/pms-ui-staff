@@ -9,7 +9,8 @@ const rateManagerRootReducer = (state, action) => (
 		expandedRows: rateManagerExpandedRowsReducer(state.expandedRows, action),
 		restrictionTypes: rateManagerRestrictionTypesReducer(state.restrictionTypes, action),
 		loader: rateManagerLoaderReducer(state.loader, action),
-		callBacksFromAngular: rateManagerCallbacksFromAngularReducer(state.callBacksFromAngular, action)
+		callBacksFromAngular: rateManagerCallbacksFromAngularReducer(state.callBacksFromAngular, action),
+		scrollTo: rateManagerScrollToReducer(state.scrollTo, action)
 	}
 );
 

@@ -18,7 +18,8 @@ const mapStateToRateManagerGridViewRootComponentProps = (state) => {
 	    shouldShow 	 		: shouldShowGridViewRootContainer(state),
 	    mode 				: state.mode,
 	    zoomLevel 			: state.zoomLevel,
-	    refreshScrollers 	: (state.action === RM_RX_CONST.REFRESH_SCROLLERS)
+	    refreshScrollers 	: (state.action === RM_RX_CONST.REFRESH_SCROLLERS),
+        scrollTo            : state.scrollTo
 	};
 
 	if(state.mode === RM_RX_CONST.RATE_VIEW_MODE) {
@@ -34,11 +35,11 @@ const mapDispatchToRateManagerGridViewRootComponentProps = (stateProps, dispatch
         scrollReachedTop = () => {};
     switch(stateProps.mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
-            scrollReachedBottom = (e) => {
-                return stateProps.scrollReachedBottom();
+            scrollReachedBottom = (xScrollPosition, maxScrollX, yScrollPosition, maxScrollY) => {
+                return stateProps.scrollReachedBottom(xScrollPosition, maxScrollX, yScrollPosition, maxScrollY);
             };
-            scrollReachedTop = (e) => {
-                return stateProps.scrollReachedTop();
+            scrollReachedTop = (xScrollPosition, maxScrollX, yScrollPosition, maxScrollY) => {
+                return stateProps.scrollReachedTop(xScrollPosition, maxScrollX, yScrollPosition, maxScrollY);
             };
             break;
     }

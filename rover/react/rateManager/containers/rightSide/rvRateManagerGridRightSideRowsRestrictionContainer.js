@@ -49,7 +49,7 @@ let convertDataForRestrictionListing = (listingData, restrictionTypes) => {
 
     var restrictionForMoreThanMaxAllowed = RateManagerRestrictionTypes['MORE_RESTRICTIONS'];
     restrictionForMoreThanMaxAllowed.days = restrictionForMoreThanMaxAllowed.defaultText;
-    console.log('restriction rows start', new Date().getTime());
+
     listingData = listingData.map((data) => {
         data.restrictionList = data.restrictionList.map((dayRestrictionList, index) => {
             //If we cross max restriction allowed in a single column, we will replace with single restriction
@@ -63,7 +63,7 @@ let convertDataForRestrictionListing = (listingData, restrictionTypes) => {
         });
         return data;
     });
-    console.log('restriction rows end', new Date().getTime());
+
     return listingData;
 };
 

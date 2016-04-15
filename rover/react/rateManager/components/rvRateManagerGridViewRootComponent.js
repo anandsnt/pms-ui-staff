@@ -14,8 +14,8 @@ const RateManagerGridViewRootComponent = createClass ({
 		this.leftScrollableElement = this.rightScrollableElement = null;
 		this.leftScroller = this.rightScroller = null;
 		this.scrolling = false;
+		this.startingScroll_Y_Position = 0;
 		this.setScrollers();
-		console.log('ended: ', new Date().getTime());
 	},
 
 	setScrollers() {
@@ -51,50 +51,69 @@ const RateManagerGridViewRootComponent = createClass ({
 	},
 
 	leftScrollingEnded() {
+
 		if(this.scrolling && 
-			Math.abs(this.leftScroller.maxScrollY) * 0.90 < Math.abs(this.leftScroller.y)) {
+			this.startingScroll_Y_Position > this.leftScroller.y &&
+			Math.abs(this.leftScroller.maxScrollY) * 0.99 < Math.abs(this.leftScroller.y)) {
 
 			this.scrolling = false;
-			this.props.scrollReachedBottom();
+			this.props.scrollReachedBottom(this.rightScroller.x, this.rightScroller.maxScrollX, this.rightScroller.y, this.rightScroller.maxScrollY);
 		}
-		if(this.scrolling && 
-			Math.abs(this.leftScroller.maxScrollY) * 0.10 > Math.abs(this.leftScroller.y)) {
+		if(this.scrolling &&
+			this.startingScroll_Y_Position < this.leftScroller.y &&
+			Math.abs(this.leftScroller.maxScrollY) * 0.01 > Math.abs(this.leftScroller.y)) {
 
 			this.scrolling = false;
-			this.props.scrollReachedTop();
+			this.props.scrollReachedTop(this.rightScroller.x, this.rightScroller.maxScrollX, this.rightScroller.y, this.rightScroller.maxScrollY);
 		}
+		this.startingScroll_Y_Position = this.leftScroller.y;
 	},
 
 	leftScrollerStarted() {
+
 		this.scrolling = true;
+		this.startingScroll_Y_Position = this.leftScroller.y;
+
+		if(this.startingScroll_Y_Position === 0) {
+
+		}
 	},
 
 	rightScrollerStarted() {
+
 		this.scrolling = true;
+		this.startingScroll_Y_Position = this.rightScroller.y;
 	},
 
 	rightScrollingEnded() {
+
 		if(this.scrolling && 
-			Math.abs(this.rightScroller.maxScrollY) * 0.90 < Math.abs(this.rightScroller.y)) {
+			this.startingScroll_Y_Position > this.rightScroller.y &&
+			Math.abs(this.rightScroller.maxScrollY) * 0.99 < Math.abs(this.rightScroller.y)) {
 
 			this.scrolling = false;
-			this.props.scrollReachedBottom();
+		console.log(this.rightScroller.x, this.rightScroller.maxScrollX, this.rightScroller.y, this.rightScroller.maxScrollY);
+			this.props.scrollReachedBottom(this.rightScroller.x, this.rightScroller.maxScrollX, this.rightScroller.y, this.rightScroller.maxScrollY);
 		}
 		if(this.scrolling && 
-			Math.abs(this.rightScroller.maxScrollY) * 0.10 > Math.abs(this.rightScroller.y)) {
+			this.startingScroll_Y_Position < this.rightScroller.y &&
+			Math.abs(this.rightScroller.maxScrollY) * 0.01 > Math.abs(this.rightScroller.y)) {
 
 			this.scrolling = false;
-			this.props.scrollReachedTop();
-		}		
+			this.props.scrollReachedTop(this.rightScroller.x, this.rightScroller.maxScrollX, this.rightScroller.y, this.rightScroller.maxScrollY);
+		}	
+		this.startingScroll_Y_Position = this.rightScroller.y;	
 	},
 
 
 	setScrollerSync() {
 		if(this.rightScroller && this.leftScroller) {
 			this.leftScroller.on('scroll', () => {
+
 				this.rightScroller.scrollTo(this.rightScroller.x, this.leftScroller.y);
 			});
 			this.rightScroller.on('scroll', () => {
+
 				this.leftScroller.scrollTo(this.leftScroller.x, this.rightScroller.y);
 			});
 		}
@@ -107,6 +126,26 @@ const RateManagerGridViewRootComponent = createClass ({
 			setTimeout(() => {
 				this.rightScroller.refresh();
 				this.leftScroller.refresh();
+
+				if(!!this.props.scrollTo) {
+					let scrollTo = this.props.scrollTo;
+					let commonDomScrollDomNode = 'tbody tr:nth-child(' + scrollTo.row + ')';
+
+					//right scroller
+					let rightDomScrollDomNode = '#rateViewCalendar ' + commonDomScrollDomNode + 
+						' td:nth-child(' + scrollTo.col +')';
+
+					let offsetX = !!scrollTo.centerTheColumn ? scrollTo.centerTheColumn : false,
+						offsetY = !!scrollTo.centerTheRow ? scrollTo.centerTheRow : false;
+
+					this.rightScroller.scrollToElement(rightDomScrollDomNode, 0, offsetX, offsetY);
+
+					//left scroller
+					let leftDomScrollDomNode = '.scrollable.pinnedLeft .rate-calendar ' + commonDomScrollDomNode;
+					this.leftScroller.scrollToElement(leftDomScrollDomNode, 0, offsetX, offsetY);
+					this.leftScroller.refresh();
+
+				}
 			}, 0);
 		}
 
@@ -123,7 +162,6 @@ const RateManagerGridViewRootComponent = createClass ({
 		this.leftScroller = this.rightScroller = null;		
 		this.setScrollers();
 		this.refreshScrollers();
-		console.log('ended: ', new Date().getTime());
 	},
 
 	render() {
