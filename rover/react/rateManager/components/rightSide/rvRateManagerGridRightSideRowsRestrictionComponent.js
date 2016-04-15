@@ -9,7 +9,8 @@ const RateManagerGridRightSideRowsRestrictionComponent = ({ onTdClick, mode, res
 							<div className={'cell-container ' + (dateList[colIndex].isWeekEnd ? 'weekend_day': '')}>
 									{ rowIndex > 0 ? (
 										<div className={'cell-content ' + (dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
-											<RateManagerCellsRateComponent/>
+											<RateManagerCellsRateComponent
+												amount={rateData.amount}/>
 											<div className='restriction_holder'>
 												{eachDayRestrictions.map((restriction, restrictionIndex) => 
 													<RateManagerRestrictionIconComponent
@@ -37,11 +38,9 @@ const RateManagerGridRightSideRowsRestrictionComponent = ({ onTdClick, mode, res
 	</tbody>
 );
 
-const RateManagerCellsRateComponent = () => (
-	<span className={'rate-single ' + 'no-rate'}>
-	{/* Look at pms-html for implementation*/}
-	<span class="rate-single-text">From</span>
-	NO RATE
-	</span>
+const RateManagerCellsRateComponent = ({amount}) => (
+	<span className={'rate-single ' + (amount === null ? 'no-rate' : '')}>
+		{amount === null ? null : (<span className="rate-single-text">From</span>)}
+		{amount === null ? 'NO RATE' : amount}
+	</span>	
 );
-
