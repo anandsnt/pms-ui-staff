@@ -233,6 +233,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.$emit('UPDATE_WORKSTATION', {
                     id: station.station_identifier
                 });  
+                $scope.zestStationData.set_workstation_id = station.id;
                 $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':$scope.zestStationData.workstationStatus,'reason':$scope.zestStationData.workstationOooReason});
             };
 

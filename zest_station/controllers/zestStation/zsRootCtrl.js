@@ -49,6 +49,18 @@ sntZestStation.controller('zsRootCtrl', [
         var oosReason = params.reason;
         var workstationStatus = params.status;
         $scope.zestStationData.workstationStatus = workstationStatus;
+        
+        if($scope.zestStationData.workstationStatus ==='out-of-order')
+        {
+            var options = {
+                params:   { 
+                              'oo_status': false,
+                              'oo_reason': oosReason,
+                              'id':$scope.zestStationData.set_workstation_id
+                          }
+          };
+          $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+        }
         updateLocalStorage(oosReason,workstationStatus);
     });
 
