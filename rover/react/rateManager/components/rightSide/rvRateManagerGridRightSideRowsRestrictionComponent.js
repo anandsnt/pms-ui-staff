@@ -7,24 +7,41 @@ const RateManagerGridRightSideRowsRestrictionComponent = ({ onTdClick, mode, res
 					{rateData.restrictionList.map((eachDayRestrictions, colIndex) =>
 					 	<td onClick={(e) => onTdClick(e, rowIndex, colIndex)} key={'key-' + colIndex} className='cell'>
 							<div className={'cell-container ' + (dateList[colIndex].isWeekEnd ? 'weekend_day': '')}>
-								<div className={'cell-content ' + (dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
-									<div className={'rate-single'}>
-									{/* Look at pms-html for implementation*/}
-									</div>
-									<div className='restriction_holder'>
-									{eachDayRestrictions.map((restriction, restrictionIndex) => 
-										<RateManagerRestrictionIconComponent
-											key={'key-' + restrictionIndex}
-											className={'' + restriction.className}
-											text={restriction.days}/>
-									)}
-									</div>
+									{ rowIndex > 0 ? (
+										<div className={'cell-content ' + (dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
+											<RateManagerCellsRateComponent/>
+											<div className='restriction_holder'>
+												{eachDayRestrictions.map((restriction, restrictionIndex) => 
+													<RateManagerRestrictionIconComponent
+														key={'key-' + restrictionIndex}
+														className={'' + restriction.className}
+														text={restriction.days}/>
+												)}
+											</div>
+										</div>
+									 ) : (
+									 		<div className={'cell-content ' + (dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
+									 			{eachDayRestrictions.map((restriction, restrictionIndex) => 
+													<RateManagerRestrictionIconComponent
+														key={'key-' + restrictionIndex}
+														className={'' + restriction.className}
+														text={restriction.days}/>
+												)}
+									 		</div>
+									 ) }
 								</div>
-							</div>
 						</td>
 					)}
-
 			</tr>
 		)}
 	</tbody>
 );
+
+const RateManagerCellsRateComponent = () => (
+	<span className={'rate-single ' + 'no-rate'}>
+	{/* Look at pms-html for implementation*/}
+	<span class="rate-single-text">From</span>
+	NO RATE
+	</span>
+);
+
