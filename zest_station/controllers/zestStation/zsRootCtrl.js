@@ -1114,7 +1114,7 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.zestStationData = zestStationSettings;
         $scope.zestStationData.workstationOooReason = "";
         $scope.zestStationData.workstationStatus = "";
-        $scope.zestStationData.isFirstLogin = true;
+        $scope.zestStationData.isAdminFirstLogin = true;
         $scope.zestStationData.wsIsOos = false;
         
         (typeof chrome !== "undefined") ? maximizeScreen():"";

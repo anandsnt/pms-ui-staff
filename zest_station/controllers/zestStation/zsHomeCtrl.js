@@ -467,7 +467,16 @@ sntZestStation.controller('zsHomeCtrl', [
                 $scope.zestStationData.set_workstation_id = $scope.set_workstation_id = $scope.getStationIdFromName(station.name);
                // $scope.setWorkstationPrinter(station.id);
             }
-            ($scope.zestStationData.isFirstLogin)?  $state.go('zest_station.admin') : "";
+            //if application is launched either in chrome app or ipad go to login page
+            var isIpad = navigator.userAgent.match(/iPad/i) !== null && window.cordova;
+            if($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || isIpad)){
+                $state.go('zest_station.admin');
+            }
+            else{
+                //we want to treat other clients are normal, ie need to provide 
+                //user credentials before accesing admin
+                $scope.zestStationData.isAdminFirstLogin = false;
+            }
 
         };
         
