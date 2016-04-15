@@ -254,7 +254,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             } else return false;
         };
         $scope.simulateSixPay = function(){
-            var inProduction =false;
+            var inProduction = $scope.inProd();
             if (inProduction){
                 return;
             }

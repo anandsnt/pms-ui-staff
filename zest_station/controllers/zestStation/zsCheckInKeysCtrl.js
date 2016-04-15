@@ -502,7 +502,25 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.saveUIDToReservation(msg);//msg is the uid of the card, which needs to be saved to the reservation
             };
 
-            $scope.goToKeySuccess();
+            switch ($scope.makeKeyParam()){
+                case 'one':
+                $scope.input.madeKey = 1;
+                
+                $scope.goToKeySuccess();
+                break;
+
+                case 'first':
+                $scope.keyOneOfTwoSuccess();
+                break;
+
+                case 'second':
+                $scope.keyTwoOfTwoSuccess();
+                break;
+
+                case 'done':
+                break;
+            };
+
         };
 
 
