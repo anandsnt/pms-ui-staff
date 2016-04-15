@@ -22,7 +22,7 @@
                 </div>
                 <div ng-if="ifc_comtrol.enabled">
                     <fieldset class="holder left">
-                        <ad-toggle-button is-checked="ifc_comtrol.production_mode" label="{{ 'IFC_COMTROL_PRODUCTION_MODE' | translate}}"></ad-toggle-button>
+                        <ad-textbox inputtype="text" value="ifc_comtrol.url" name="url" id="url" label="{{'IFC_COMTROL_URL' | translate}}" styleclass="full-width" ng-if="ifc_comtrol.enabled"></ad-textbox>
                     </fieldset>
                     <fieldset class="holder right">
                         <ad-textbox inputtype="text" value="ifc_comtrol.authentication_token" name="authentication-token" id="authentication-token" label="{{'IFC_COMTROL_AUTHENTICATION_TOKEN' | translate}}" styleclass="full-width"></ad-textbox>
