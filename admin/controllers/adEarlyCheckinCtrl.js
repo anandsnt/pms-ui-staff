@@ -124,6 +124,9 @@ $scope.deleteBlockCode = function(id){
 $scope.fetchUpsellDetails = function(){
     var fetchUpsellDetailsSuccessCallback = function(data) {
        $scope.upsellData = data;
+       if (!$scope.upsellData.vipcodes){
+           $scope.upsellData.vipcodes = [];
+       }
        setUpList();
        $scope.upsellData.deleted_room_types = [];
        isRoomTypesSelected();
@@ -334,7 +337,27 @@ $scope.saveClick = function(){
    	$scope.invokeApi(adUpsellEarlyCheckinService.update,dataToSave,upsellEarlyCheckinSaveSuccessCallback, upsellEarlyCheckinSaveFailureCallback);
 
 };
-
+var isEmptyString = function(str){
+        return (_.isUndefined(str) || _.isNull(str) || str.length === 0);
+};
+$scope.clickVIPCode = function(code){
+    var codeExists = false;
+    for (var i in $scope.upsellData.vipcodes){
+        if ($scope.upsellData.vipcodes[i].code === code){
+            codeExists = true;
+        }
+    }
+    if (!codeExists && code && !isEmptyString(code)){
+        $scope.upsellData.vipcodes.push({
+            code:code
+        });
+    }
+    if (!$scope.vipcode){$scope.vipcode={};};
+    $scope.vipcode.addcode="";
+};
+$scope.deleteVipCode = function(index){
+    $scope.upsellData.vipcodes.splice(index, 1);
+};
 $scope.clickAddRoomType = function(){
 	//While addig a room type, making its max_late_checkouts defaults to 0.
   if($scope.getSelectedRateIndexForID($scope.upsell_rate.selected_rate_id) !== -1) {
