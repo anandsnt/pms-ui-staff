@@ -8,6 +8,8 @@ $scope.upsell_rate.selected_rate_id = "";
 $scope.excludedBlockCodes=[];
 $scope.block_codes = blockCodeData.block_codes;
 
+$scope.successMessage = "";
+
 
 $scope.showRoomType = function(max_early_checkins){
    return((typeof max_early_checkins !=="undefined") && max_early_checkins !== null) ? true:false;
@@ -179,14 +181,25 @@ $scope.setUpUpsellWindowData = function () {
   });
 };
 
+$scope.takenAddons = {
+    0: '',
+    1: '',
+    2: ''
+};
+
+$scope.updateAddon = function(x, y){
+    $scope.takenAddons[x] = y;
+};
+
+
 $scope.isAddonAvailable = function(index){
-       if($scope.addons[index].id === $scope.upsellWindows[0].addon_id){
+    if (parseInt($scope.takenAddons[0]) === $scope.addons[index].id){
              return false;
-       }else if($scope.addons[index].id === $scope.upsellWindows[1].addon_id){
+       } else if (parseInt($scope.takenAddons[1]) === $scope.addons[index].id){
              return false;
-       }else if($scope.addons[index].id === $scope.upsellWindows[2].addon_id){
+       } else if (parseInt($scope.takenAddons[2]) === $scope.addons[index].id){
              return false;
-       }else{
+       } else {
         return true;
        }
 };
@@ -301,7 +314,9 @@ $scope.saveClick = function(){
 
     var upsellEarlyCheckinSaveSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
-   	};
+      $scope.successMessage = 'Success';
+      
+        };
     // had to ovveride default error handler for custom actions.
    	var upsellEarlyCheckinSaveFailureCallback =  function(errorMessage) {
       $scope.$emit('hideLoader');
