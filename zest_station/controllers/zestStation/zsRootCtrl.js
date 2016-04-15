@@ -48,6 +48,7 @@ sntZestStation.controller('zsRootCtrl', [
     $scope.$on (zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event,params) {
         var oosReason = params.reason;
         var workstationStatus = params.status;
+        $scope.zestStationData.workstationStatus = workstationStatus;
         updateLocalStorage(oosReason,workstationStatus);
     });
 
@@ -1102,6 +1103,7 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.zestStationData.workstationOooReason = "";
         $scope.zestStationData.workstationStatus = "";
         $scope.zestStationData.isFirstLogin = true;
+        $scope.zestStationData.wsIsOos = false;
         
         (typeof chrome !== "undefined") ? maximizeScreen():"";
         //create a websocket obj

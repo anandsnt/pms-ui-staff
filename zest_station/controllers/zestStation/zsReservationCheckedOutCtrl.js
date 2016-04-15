@@ -353,7 +353,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     $('#popup-overlay').hide(); //hide timeout elements
     var printFailedActions = function(){
        $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKOUT_PRINT_FAILED');
-       $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
+       $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
        $state.go('zest_station.error');
     };
     try {

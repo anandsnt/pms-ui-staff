@@ -239,13 +239,14 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
         $scope.emitKeyError = function(response){
             $scope.$emit('PICKUP_KEY_FAIL',response);
+            $scope.zestStationData.wsIsOos = true;
             if($scope.isInCheckinMode){
-                 $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL');
+                 $scope.zestStationData.wsFailedReason = $filter('translate')('CHECKIN_KEY_FAIL');
             }
             else{
-                 $scope.zestStationData.workstationOooReason = $filter('translate')('PICKUP_KEY_FAIL');
+                 $scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL');
             }
-            $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
+            //$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
         };
 
 
@@ -501,24 +502,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.saveUIDToReservation(msg);//msg is the uid of the card, which needs to be saved to the reservation
             };
 
-            switch ($scope.makeKeyParam()){
-                case 'one':
-                    $scope.input.madeKey = 1;
-                    
-                    $scope.goToKeySuccess();
-                    break;
-
-                case 'first':
-                    $scope.keyOneOfTwoSuccess();
-                    break;
-
-                case 'second':
-                    $scope.keyTwoOfTwoSuccess();
-                    break;
-
-                case 'done':
-                    break;
-            };
+            $scope.goToKeySuccess();
         };
 
 
