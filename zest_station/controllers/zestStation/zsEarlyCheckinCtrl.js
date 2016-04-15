@@ -63,13 +63,13 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             
             if (current === 'zest_station.early_checkin_upsell'){
                 $scope.onStartCheckinUpsell();
+                
             } else if (current === 'zest_station.early_checkin_unavailable' || 
                 current === 'zest_station.early_checkin_nav' ||
                 current === 'zest_station.early_checkin_prepaid') {
                     $scope.standardCheckinTime = $scope.zestStationData.check_in_time.hour+':'+$scope.zestStationData.check_in_time.minute+' '+$scope.zestStationData.check_in_time.primetime+'.';
             }
             if (current === 'zest_station.early_checkin_prepaid'){
-                //$state.earlyCheckinPurchased = true;
                 $scope.is_early_prepaid = $state.is_early_prepaid;
                 $scope.reservation_in_early_checkin_window = $state.reservation_in_early_checkin_window;
             } 
@@ -132,15 +132,13 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             
         $scope.beginEarlyCheckin = function(response){
             $state.reservation_in_early_checkin_window = response.reservation_in_early_checkin_window;
-            var inUpsellWindow = response.reservation_in_early_checkin_window,
-                    is_room_ready = response.is_room_ready;
+            var inUpsellWindow = response.reservation_in_early_checkin_window;
 
             $state.earlyCheckinOfferId = response.early_checkin_offer_id;
 
             if (response.early_checkin_charge !== null){
                 $scope.selectedReservation.earlyCheckinCharge = response.early_checkin_charge;
             }
-
 
             if (!response.is_room_ready || !response.is_room_already_assigned){
                 $scope.initRoomError();
@@ -158,6 +156,7 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                     if (inUpsellWindow && response.early_checkin_charge !== null){
                         $state.earlyCheckinOfferId = response.early_checkin_offer_id;
                         $state.go('zest_station.early_checkin_nav');
+                        
                     } else if (inUpsellWindow && response.early_checkin_charge === null){
                         //update reservation to show arrival time is now, so guest may be elligible for early check-in on-site
                         
@@ -281,7 +280,7 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                 return false;
             }
             
-            if (data.guest_arriving_today && data.offer_eci_bypass){
+            if (data.guest_arriving_today && (data.offer_eci_bypass || data.offer_eci_free_vip)){
                 console.info('selected reservation includes free early check-in!');
                 return true;
             } else {

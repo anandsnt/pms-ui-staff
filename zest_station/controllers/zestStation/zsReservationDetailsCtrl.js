@@ -273,13 +273,15 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
         
         
         $scope.goToTerms = function(){
-            console.log('goToTerms');
             if (!$scope.roomIsAssigned()){
                 $scope.assignRoomToReseravtion();
+                
             } else if ($scope.roomIsAssigned() && $scope.roomIsReady()){
                   $scope.initTermsPage();
+                  
             } else if ($scope.roomIsAssigned() && !$scope.roomIsReady()){
                 $scope.initRoomError();
+                
             }
         };
             
