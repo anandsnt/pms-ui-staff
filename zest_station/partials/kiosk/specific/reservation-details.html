@@ -46,3 +46,21 @@
     </div>
 <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
 </section>
+
+
+<!-- neeed to change this to requires html -->
+<div ng-include="'/assets/partials/zsOwsMsgListing.html'" ng-controller="zsOwsMsgListingCtrl" ng-if="zestStationData.is_kiosk_ows_messages_active && !zestStationData.is_standalone"></div>
+
+<div class="page-print">
+        <section id="registration-card" class="page-print">
+            <div class="logo centered-logo">
+                <div ng-include="icons.url.logo"></div>
+            </div>
+            <div class="content ows-content">
+                <span class="reg_text">{{currentOwsMessage}}</span>
+                <br><br>
+                <!-- to add some space in bottom of the page. else the page will be cut once the message is over -->
+                <span class="ows-footer">&nbsp;.</span>
+            </div>
+        </section>
+    </div>

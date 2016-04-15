@@ -54,6 +54,7 @@
                 <ad-toggle-button is-checked="zestSettings.check_in_collect_nationality" label="{{'COLLECT_USER_NATIONALITY'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
             <fieldset class="holder left">
+                <div class="form-title">
                 <div class="form-title full-width">
                     <h3><span translate>SECOND_AUTHENTICATION</span> </h3>
                 </div>
@@ -62,11 +63,23 @@
                 <ad-checkbox is-checked="zestSettings.checkin_screen.authentication_settings.confirmation" label="{{ 'CONFIRMATION' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.checkin_screen.authentication_settings.number_of_nights" label="{{ 'AUTH_NO_OF_NIGHTS' | translate}}"></ad-checkbox>
             </fieldset>
-            <fieldset class="holder right">
+             <fieldset class="holder right">
+                <div class="form-title full-width">
+                    <h3><span translate>OWS_GUEST_MESSAGES </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.is_kiosk_ows_messages_active" label="{{'OWS_GUEST_MESSAGES'| translate}}" div-class="full-width"></ad-toggle-button>
+             </fieldset>  
+            <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>BYPASS_CC_FOR_PREPAID_RESERVATIOIN </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.bypass_cc_for_prepaid_reservation" label="{{'BYPASS_CC_FOR_PREPAID_RESERVATIOIN'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                    <h3><span translate>DISPLAY_TERMS_AND_CONDITIONS </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.kiosk_display_terms_and_condition" label="{{'DISPLAY_TERMS_AND_CONDITIONS'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
             <!-- Message Overrides for Zest Station Check-in, these override the active locale -->
             <fieldset class="holder left">

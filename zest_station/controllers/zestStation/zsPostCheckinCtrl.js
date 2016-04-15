@@ -262,7 +262,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         $scope.updateGuestEmail = function(){
             var updateComplete = function(response){
-                if (response.status === 'success'){
+                    $state.selectedReservation.guest_details.email = $state.input.email;
+                    $state.input.lastEmailValue = $state.input.email;
                     if ($scope.from === 'card-swipe' && $scope.at === 'input-email'){
                         $state.go('zest_station.check_in_keys');
                     } else {//at the end of check-in and now updating email address
@@ -273,18 +274,20 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                         $state.updatedEmail = true;
                         $state.go('zest_station.delivery_options');
                     }
-                    //$scope.selectEmailDelivery();
-                } else {
-                    $scope.initErrorScreen();
-                }
                 $scope.$emit('hideLoader');
+                    //$scope.selectEmailDelivery();
             };
+
+            var updateGuestEmailFailed = function(){
+                $scope.initErrorScreen();
+                $scope.$emit('hideLoader');
+            }
             
             var guestDetails = $state.selectedReservation.guest_details;
             var primaryGuest = $scope.getPrimaryGuest(guestDetails);
             if (primaryGuest !== null){
                 primaryGuest.email = $state.input.email;
-                $scope.invokeApi(zsTabletSrv.updateGuestEmail, primaryGuest, updateComplete, updateComplete);   
+                $scope.invokeApi(zsTabletSrv.updateGuestEmail, primaryGuest, updateComplete, updateGuestEmailFailed);
             }  
         };
         $scope.validEmailAddress = function(useEmail){
@@ -391,8 +394,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.headingText = 'SWIPE_ERR_HEADER';
                 
                 $scope.subHeadingText = '';
-                //$scope.subHeadingText = $state.swipe_error_msg;//dont show to guests, debugging only
-                
             } else if (current === 'zest_station.tab-kiosk-reservation-signature-time-out'){
                 $scope.at = 'cc-sign-time-out';
                 

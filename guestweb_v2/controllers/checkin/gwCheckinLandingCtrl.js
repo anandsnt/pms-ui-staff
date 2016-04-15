@@ -37,6 +37,7 @@ sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$
 		$scope.nextButtonClicked = function() {
 			var verificationSuccess = function(response){
 				GwCheckinSrv.setcheckinData(response);
+				GwWebSrv.zestwebData.roomUpgraded  = false;
 				$state.go('checkinReservationDetails');
 			};
 			var verificationFailed = function(response){

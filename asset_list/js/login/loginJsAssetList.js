@@ -3,11 +3,13 @@ module.exports = {
 		var sharedRoot 	= 'shared/',
 		jsLibRoot 		= sharedRoot + 'lib/js/',
 		loginRoot 		= 'login/',
+                //remove ref when virtual keyboard files have updated loading
 		zestRoot 		= 'zest_station/',
 		loginJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'angular.min.js',
 				jsLibRoot + 'angular-ui-router.min.js',
+                                //for virtual keyboard, these should be moved to load with station login page
 				jsLibRoot + 'jquery.min.js',
                                 jsLibRoot + 'stationKeyboard/*.js'
 			],

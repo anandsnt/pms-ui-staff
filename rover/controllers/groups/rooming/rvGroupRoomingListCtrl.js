@@ -335,6 +335,10 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
 
             }
+            else if (data.result.length === 0) {
+                // No room type configured
+                $scope.roomTypesAndData = [];
+            }
             //if we have any data in our hand, just updating the available room count
             else {
                 _.each($scope.roomTypesAndData, function(roomTypeData) {
@@ -782,6 +786,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             //forming [1,2,3,4]
             $scope.possibleNumberOfRooms = isValidSelectedRoomType ? _.range(1, util.convertToInteger(selectedRoomType.total_rooms) + 1) : [];
 
+            // setting single as default occupancy as part of CICO-27540
+            $scope.selectedOccupancy = '1';
             //we are unselecting the selected occupancy incase of invalid roomt type
             if (!isValidSelectedRoomType) {
                 $scope.selectedOccupancy = '-1';

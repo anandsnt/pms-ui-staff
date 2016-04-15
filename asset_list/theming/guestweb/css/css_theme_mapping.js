@@ -42,7 +42,6 @@ module.exports = {
 			'guestweb_porto_vista':[ themeCSSRoot + 'guestweb_porto_vista.css'],
 			'guestweb_chalet_view':[ themeCSSRoot + 'guestweb_chalet_view.css'],
 			'guestweb_crawford':[ themeCSSRoot + 'guestweb_crawford.css']
-
 		}
 	}
 }
