@@ -7,6 +7,11 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     var zestLanguageDataCopy = {};
     
     var setLanguageDisplayNames = function(langs){
+        /*
+         * Using this to display language as seen in zest station
+         * once we add an API (display name) variable
+         * we can remove this reference, -CICO-27814
+         */
         for (var i in langs){
             if (langs[i].value === 'Castellano'){
                 langs[i].name = 'Castellano';
