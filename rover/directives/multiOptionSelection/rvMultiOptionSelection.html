@@ -1,34 +1,28 @@
-<span>
-	<label>{{ label }}</label>
-	<div class="select">
-	    <div class="multi-select" ng-click="toggleView()">
-	        {{ value }}
-	    </div>
-	    <div class="multi-select-options" ng-class="{ 'hidden': closed }">
-	        <div class="entry select-all">
-	            <!-- Checked by default -->
-	            <label class="checkbox inline" ng-class="{ 'checked': selectAll }" ng-click="toggleSelectAll()">
-	                <span class="icon-form icon-checkbox" ng-class="{ 'checked': selectAll }"></span>
-	                Select All
-	            </label>
-	        </div>
-	      
-	        <div class="entry search">
-	            <button id="multi-select-clear-query" class="clear-query" ng-click="clearSearch()">
-	                <span class="icons icon-clear-search">Clear query</span>
-	            </button>
-	            <button type="submit" name="submit" class="icons icon-search">Search</button>
-	            <input class="query" placeholder="Search by Employee Name" autocomplete="off" type="search" ng-model="search" ng-change="onSearchChange()">
-	        </div>
+<div class="entry">
+    <label>{{ label }}</label>
+    <div class="multi-select select" ng-click="toggleView()">
+        {{ value }}
+    </div>
+    <div class="multi-select-options" ng-class="{ 'hidden': closed }">
+        <div class="select-all">
+            <!-- Checked by default -->
+            <label class="checkbox inline" ng-class="{ 'checked': selectAll }" ng-click="toggleSelectAll()">
+                <span class="icon-form icon-checkbox" ng-class="{ 'checked': selectAll }"></span>
+                Select All
+            </label>
+        </div>
+      
+        <div class="search">
+            <button id="multi-select-clear-query" class="clear-query" ng-click="clearSearch()">
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <button type="submit" name="submit" class="icons icon-search">Search</button>
+            <input class="query" placeholder="Search by Employee Name" autocomplete="off" type="search" ng-model="search" ng-change="onSearchChange()">
+        </div>
 
-	        <div class="entry scrollable" ng-iscroll="{{ scrollKey }}">
-	            <div class="wrapper">
-	                <label class="checkbox" ng-repeat="each in data" ng-class="{ 'hidden': each.filteredOut }" ng-click="toggleSelection(each)">
-	                    <span class="icon-form icon-checkbox" ng-class="{ 'checked': each.selected }"></span>
-	                    {{ each.full_name || each.email }}
-	                </label>
-	            </div>
-	        </div>
-	    </div>
-	</div>
-</span>
+        <label class="checkbox" ng-repeat="each in data" ng-class="{ 'hidden': each.filteredOut }" ng-click="toggleSelection(each)">
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked': each.selected }"></span>
+            {{ each.full_name || each.email }}
+        </label>
+    </div>
+</div>

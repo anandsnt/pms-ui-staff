@@ -18,7 +18,7 @@ sntRover
 
 				$scope.toggleView = function(bool) {
 					$scope.closed = typeof bool === 'boolean' ? bool : ! $scope.closed;
-					$scope.refreshScroller( $scope.scrollKey );
+					//$scope.refreshScroller( $scope.scrollKey );
 				};
 
 				$scope.toggleSelectAll = function() {
@@ -43,7 +43,7 @@ sntRover
 						}
 					});
 
-					$scope.refreshScroller( $scope.scrollKey );
+					//$scope.refreshScroller( $scope.scrollKey );
 				};
 
 				$scope.toggleSelection = function(item) {
@@ -98,11 +98,11 @@ sntRover
 
 					updateSelectedValue();
 
-					$scope.scrollKey = 'key-' + Date.now();
+					//$scope.scrollKey = 'key-' + Date.now();
 
-					$scope.setScroller($scope.scrollKey, {
+					/*$scope.setScroller($scope.scrollKey, {
 					    preventDefault: false
-					});
+					});*/
 				};
 
 				init();
