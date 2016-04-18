@@ -44,25 +44,17 @@
                         <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
                     </figure>
                     <div class="data">
-                        <!-- If there is a 'guest-name' :
-                                - {lastname}, {firstname}
-                             Where there is no guest-name: 'Pending'
-                        -->
-                        <!-- Where the guest-name is 'Pending', add class .pending -->
                         <!-- Add .cancelled if the guest has cancelled or no show -->
-                        <h2 ng-show="escapeNull(row.lastname) != '' || escapeNull(row.firstname) != ''">{{escapeNull(row.lastname)|highlight:textInQueryBox:false}} {{escapeNull(row.firstname)|highlight:textInQueryBox:false}}</h2>
+                        <h2 ng-show="escapeNull(row.lastname) != '' || escapeNull(row.firstname) != ''" ng-bind-html="getGuestName(row.firstname, row.lastname)| highlight:textInQueryBox:false" ng-class="{'cancelled' : row.reservation_status == 'CANCELED' || row.reservation_status == 'NO SHOW'}">
+                        </h2>
                         <h2 class="pending" ng-if="escapeNull(row.lastname) == '' && escapeNull(row.firstname) == '' ">Pending</h2>
                         <span class="confirmation">
-                            <!-- In design the 'confirmation-text' can be:
-                                 'CONF.' or 'EXT.'
-                            -->
                             <span class="confirmation-text" ng-if="escapeNullStr(row.confirmation) != ''">CONF.</span>
                             {{escapeNullStr(row.confirmation)}}
                             <span class="confirmation-text" ng-if="escapeNullStr(row.external_confirm_no) != ''">EXT.</span>
                             {{escapeNullStr(row.external_confirm_no)}}
                         </span>
-                        <span class="icons icon-location" ng-class="{'no-location': (escapeNullStr(row.location)=='')}">{{escapeNullStr(row.location)}}</span> <!-- If no data add .no-location -->
-
+                        <span class="icons icon-location" ng-class="{'no-location': (escapeNullStr(row.location)=='')}">{{escapeNullStr(row.location)}}</span>
 
                         <span class="guest-status check-in"></span>
                         <time class="guest-time">
@@ -77,9 +69,7 @@
                         </time>
                     </div>
 
-                    <!-- 1. if room is assigned, show this -->
                     <div class="reservation-info" ng-if="escapeNull(row.room) != ''">
-                        <!-- Display .guest-info all the time, even with no data -->
                         <div class="guest-info">
                             <span class="icons icon-guest-company" ng-if="escapeNull(row.company)!=''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span>
 	                        <span class="icons icon-guest-travelagent" ng-if="escapeNull(row.travel_agent)!=''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
@@ -87,21 +77,17 @@
 	                        <span class="icons icon-allotment" ng-if="escapeNull(row.allotment)!=''" ng-bind-html="escapeNull(row.allotment)|highlight:textInQueryBox:false"></span>
                         </div>
 
-                        <!-- this can be either arrival or departure date, depending on reservation status -->
                         <div class="reservation-status">
                             <span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin , row.arrival_date)}}">{{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin, row.arrival_date)}}</span>
                         </div>
 
                         <div class="room-info">
-                            <!-- Arrivals, check ins and pre check ins - room ready -->
-                            <strong class="room-number {{getRoomStatusMapped(row.roomstatus, row.fostatus, row.room) }}">{{getRoomNo()}}</strong>
+                            <strong class="room-number {{getRoomStatusMapped(row.roomstatus, row.fostatus, row.room) }}">{{getRoomNo(row.room)}}</strong>
                             <span class="room-type">{{row.room_type}}</span>
 
-                            <!-- If room is queued -->
                             <span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)">Queued</span>
 
                         </div>
-                        <!-- Arrivals, check ins and pre check ins - room not ready -->
                          <span class="room-status">{{row.roomstatus}}</span>
                     </div>
 

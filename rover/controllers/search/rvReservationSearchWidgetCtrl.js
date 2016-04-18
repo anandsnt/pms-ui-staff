@@ -882,8 +882,18 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
 		};
 
+		/**
+		 * Get the room no if assigne else N/A
+		 */
 		$scope.getRoomNo = function(roomNo) {
 			return roomNo != '' ? roomNo : 'N/A';
+		}
+
+		/**
+		 * Get the guest name
+		 */
+		$scope.getGuestName = function(firstName, lastName) {
+			return lastName + ", " + firstName;
 		}
 	}
 ]);
