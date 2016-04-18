@@ -29,7 +29,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.searchPerPage = RVSearchSrv.searchPerPage;
 		$scope.reservationSearch = ($state.current.name === "rover.search");
 		$scope.search_area_id = !$scope.reservationSearch ? "dashboard-search": "search";
-		
+
 		if($stateParams.type === "OPEN_BILL_CHECKOUT" ){
 			// CICO-24079 - OPEN_BILL_CHECKOUT - Date picker from date should default to Null.
 			$scope.fromDate = "";
@@ -331,7 +331,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					txtInQry(res.group) ||
 					txtInQry(res.travel_agent) ||
 					txtInQry(res.company) ||
-					txtInQry(res.allotment) || 
+					txtInQry(res.allotment) ||
 					txtInQry(escN(res.room).toString(), false) ||
 					txtInQry(escN(res.confirmation).toString(), false) ||
 					(escN(res.reservation_status).toUpperCase() === "CANCELED" && txtInQry(escN(res.cancellation_no).toString(), false))  ||
@@ -511,12 +511,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		};
 
 		//Map the room status to the view expected format
-		$scope.getRoomStatusMapped = function(roomstatus, fostatus) {
+		$scope.getRoomStatusMapped = function(roomstatus, fostatus, roomNo) {
 			var mappedStatus = "";
 			if (roomstatus === "READY" && fostatus === "VACANT") {
 				mappedStatus = 'ready';
-			} else {
+			} else if(roomstatus === 'NOT READY') {
 				mappedStatus = "not-ready";
+			} else if(roomNo == '' || roomNo == null) {
+				mappedStatus = 'no-number';
 			}
 			return mappedStatus;
 		};
@@ -879,5 +881,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			var timeDict = tConvert(time);
 			return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
 		};
+
+		$scope.getRoomNo = function(roomNo) {
+			return roomNo != '' ? roomNo : 'N/A';
+		}
 	}
 ]);
