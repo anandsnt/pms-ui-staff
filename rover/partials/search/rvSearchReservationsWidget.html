@@ -36,14 +36,14 @@
 	    <div class="wrapper">
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->
-				<li class="reservation" ng-repeat="row in results" ng-show="row.is_row_visible" ngrepeatend ngrepeatstarted>
+				<li class="find-reservation" ng-repeat="row in results" ng-show="row.is_row_visible" ngrepeatend ngrepeatstarted>
 					<a ng-class="getReservationClass(row.reservation_status)" ng-click="goToReservationDetails($event,row.id, row.confirmation)"> <!-- add class "accompany" if it's a accompanying guest -->
                     <figure class="guest-image" ng-class="{'accompany': row.images.length >1}" ng-show="row.images.length!=0 "><!-- add class "accompany" if it's a accompanying guest -->
                        <img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true)}">
                         <!-- if it's accompanying guest, show this as well:
                         <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
                     </figure>
-                    <div clas="data" ng-class="{'no-guest-info': escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)=='' && escapeNull(row.allotment)==''}"> <!-- Add class "no-guest-info" if there's no company, ta and group attached -->
+                    <div class="data">
                         <!-- If there is a 'guest-name' :
                                 - {lastname}, {firstname}
                              Where there is no guest-name: 'Pending'
@@ -61,7 +61,7 @@
                             <span class="confirmation-text" ng-if="escapeNullStr(row.external_confirm_no) != ''">EXT.</span>
                             {{escapeNullStr(row.external_confirm_no)}}
                         </span>
-                        <span class="icons icon-location" ng-hide="escapeNullStr(row.location)==''">{{escapeNullStr(row.location)}}</span> <!-- If no data don't output this line -->
+                        <span class="icons icon-location" ng-class="{'no-location': (escapeNullStr(row.location)=='')}">{{escapeNullStr(row.location)}}</span> <!-- If no data add .no-location -->
 
 
                         <span class="guest-status check-in"></span>
