@@ -1,9 +1,11 @@
 <section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
     <header class="content-title float">
-        <h2 ng-hide="showView">{{ 'ZEST_SETUP_HEADER' | translate}}</h2>
-        <a ng-click="goBackToPreviousState()" data-type="load-details" class="action back">{{ 'BACK_TO_ZEST_SETUP' | translate}}</a>
-        <a class="action add" ng-click="addCountryToSequence()" translate>ADD</a>
+        <h2 translate>COUNTRY_SORT</h2>
+        <a ng-click="goBackToPreviousState()" data-type="load-details" class="action back" ng-show="listingMode" translate>BACK_TO_ZEST_SETUP</a>
+        <a ng-click="backClicked()" data-type="load-details" class="action back" ng-hide="listingMode" translate>BACK</a>
+        <a class="action add" ng-click="addCountryToSequence()" ng-show="listingMode" translate>ADD</a>
     </header>
+    <!-- list mode -->
     <section class="content-scroll" ng-show="listingMode">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
@@ -18,6 +20,7 @@
             </li>
         </ol>
     </section>
+    <!-- country add mode -->
     <section class="content-scroll" ng-hide="listingMode">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>

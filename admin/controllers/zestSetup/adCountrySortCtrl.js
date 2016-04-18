@@ -55,7 +55,7 @@ admin.controller('ADCountrySortCtrl', ['$scope','ADCountrySortSrv',
 				position : position + 1,
 				previous_position : prevPosition + 1
 			};
-			$scope.invokeApi(ADCountrySortSrv.saveComponentOrder, data, successCallbackSavePosition);
+			$scope.invokeApi(ADCountrySortSrv.saveComponentOrder, data);
 
 		};
 
