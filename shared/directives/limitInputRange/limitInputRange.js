@@ -58,7 +58,7 @@ angular
                     apply = options.to;
                 };
 
-                if ( !! apply ) {
+                if ( !! apply || apply === 0) {
                     if ( options.hasOwnProperty('zeroPrefix') && options.zeroPrefix && apply < 10 ) {
                         apply = '0' + apply;
                     } else if ( options.hasOwnProperty('toFixed') ) {
