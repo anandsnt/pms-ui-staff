@@ -337,22 +337,12 @@ $scope.saveClick = function(){
    	$scope.invokeApi(adUpsellEarlyCheckinService.update,dataToSave,upsellEarlyCheckinSaveSuccessCallback, upsellEarlyCheckinSaveFailureCallback);
 
 };
-var isEmptyString = function(str){
-        return (_.isUndefined(str) || _.isNull(str) || str.length === 0);
-};
+
 $scope.clickVIPCode = function(code){
-    var codeExists = false;
-    for (var i in $scope.upsellData.vipcodes){
-        if ($scope.upsellData.vipcodes[i].code === code){
-            codeExists = true;
-        }
-    }
-    if (!codeExists && code && !isEmptyString(code)){
-        $scope.upsellData.vipcodes.push({
-            code:code
-        });
-    }
-    if (!$scope.vipcode){$scope.vipcode={};};
+    var codeExists = _.contains($scope.upsellData.vipcodes,code);
+    if (!codeExists && !_.isEmpty(code)){
+        $scope.upsellData.vipcodes.push(code);
+    };
     $scope.vipcode.addcode="";
 };
 $scope.deleteVipCode = function(index){
