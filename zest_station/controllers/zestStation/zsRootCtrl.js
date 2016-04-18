@@ -26,6 +26,45 @@ sntZestStation.controller('zsRootCtrl', [
     };    
         
     $translate.use('EN_snt');  
+
+    var updateLocalStorage = function(oosReason,workstationStatus){
+        //store oos status
+        var oosStorageKey = 'snt_zs_workstation.in_oos',
+                oosReasonKey  = 'snt_zs_workstation.oos_reason',
+                storage = localStorage;
+        try {
+           storage.setItem(oosStorageKey, workstationStatus);
+        } catch(err){
+            console.warn(err);
+        }
+        if(!!oosReason){
+            try {
+               storage.setItem(oosReasonKey, oosReason);
+            } catch(err){
+                console.warn(err);
+            }
+        }
+    };
+    $scope.$on (zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event,params) {
+        var oosReason = params.reason;
+        var workstationStatus = params.status;
+        $scope.zestStationData.workstationStatus = workstationStatus;
+        
+        if($scope.zestStationData.workstationStatus ==='out-of-order')
+        {
+            var options = {
+                params:   { 
+                              'oo_status': false,
+                              'oo_reason': oosReason,
+                              'id':$scope.zestStationData.set_workstation_id
+                          }
+          };
+          $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+        }
+        updateLocalStorage(oosReason,workstationStatus);
+    });
+
+
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
@@ -455,6 +494,7 @@ sntZestStation.controller('zsRootCtrl', [
         });
         $scope.refreshSettings = function(hard_reset){
           $scope.getWorkStationStatus(hard_reset);
+
         };
         $scope.$on('RESET_TIMEOUT',function(evt, params){
             $scope.resetCounter();
@@ -1106,6 +1146,10 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        $scope.zestStationData.workstationOooReason = "";
+        $scope.zestStationData.workstationStatus = "";
+        $scope.zestStationData.isAdminFirstLogin = true;
+        $scope.zestStationData.wsIsOos = false;
         
         (typeof chrome !== "undefined") ? maximizeScreen():"";
         //create a websocket obj
