@@ -136,10 +136,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 let date = dialogData.date;
                 lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo = {
                     row: rateSetFoundIndexInList + 2,   //why 2 -> adding 'All Rates' row case + index is starting from zero but in css selector index is not starting from zero
-                    centerTheRow: true,
+                    offsetX: true,
 
                     col: _.findIndex(currentDailyRateAndRestrictionList, { date: date }) + 1, //index is starting from zero
-                    centerTheColumn: true
+                    offsetY: true
                 }
 
                 break;
@@ -338,6 +338,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     $scope.clickedOnBackButton = () => {
         activeFilterIndex = activeFilterIndex - 1;
         lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
+        
+        //setting the current scroll position as STILL
+        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
+
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
         $scope.showBackButton = false;
     };
@@ -425,32 +429,33 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
     /**
      * to identify and set column position to focus when rerendered with new data
-     * @param  {integer} maxScrollX
+     * @param  {integer} scrollWidth
      * @param  {integer} xScrollPosition
      */
-    var setScrollColForAllRates = (maxScrollX, xScrollPosition) => {
+    var setScrollColForAllRates = (scrollWidth, xScrollPosition) => {
+
         //identifying the column to focus soon after rerenderng with new data
         var abs = Math.abs,
             numberOfDates = showingData.headerData.length,
-            eachColWidth = abs(maxScrollX) / numberOfDates,
+            eachColWidth = abs(scrollWidth) / numberOfDates,
             col = Math.ceil( abs(xScrollPosition) / eachColWidth );
-
         lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo = { 
-            col: col 
+            col: col,
+            offsetY: (abs(xScrollPosition) % eachColWidth)
         };
     };
 
     /**
      * react callback when scrolled to top
      */
-    const allRatesScrollReachedTop = (xScrollPosition, maxScrollX, yScrollPosition, maxScrollY) => {
+    const allRatesScrollReachedTop = (xScrollPosition, scrollWidth, yScrollPosition, scrollHeight) => {
         //we dont want the infinite scroller functionality in multiple rate selected view
         if(lastSelectedFilterValues[activeFilterIndex].selectedRates.length > 1) {
             return;
         }
 
         //setting the scroll col position to focus after rendering
-        setScrollColForAllRates(maxScrollX, xScrollPosition);
+        setScrollColForAllRates(scrollWidth, xScrollPosition);
 
         lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.UP;
 
@@ -467,14 +472,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     /**
      * react callback when scrolled to bottom
      */
-    const allRatesScrollReachedBottom = (xScrollPosition, maxScrollX, yScrollPosition, maxScrollY) => {
+    const allRatesScrollReachedBottom = (xScrollPosition, scrollWidth, yScrollPosition, scrollHeight) => {
         //we dont want the infinite scroller functionality in multiple rate selected view
         if(lastSelectedFilterValues[activeFilterIndex].selectedRates.length > 1) {
             return;
         }
 
         //setting the scroll col position to focus after rendering
-        setScrollColForAllRates(maxScrollX, xScrollPosition);
+        setScrollColForAllRates(scrollWidth, xScrollPosition);
 
         lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.DOWN;
         lastSelectedFilterValues[activeFilterIndex].allRate.currentPage++;
@@ -513,7 +518,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         updateAllRatesView(ratesWithRestrictions, dates);
 
         //we need to keep track what we're showing the react part for determining the scrolling position & other things later. so,
-        updateShowingData(ratesWithRestrictions, dates);
+        updateShowingData(dates, ratesWithRestrictions);
 
         //closing the left side filter section
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
@@ -580,7 +585,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 return _.findWhere(commonRestrictions, { date: date }).restrictions;
             })
         });
-
         return ratesWithRestrictions;
     };
 
@@ -709,7 +713,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     page        : (filterValues.allRate.currentPage + 1)
                 });
 
-        //we will modify this with new response's rates
+        //we will modify this with new response's 
         var dataSetToReturn = {
             ...dataSetJustAfterCurrentOne.response
         };
@@ -720,7 +724,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //column should be assigned from 'allRatesScrollReachedBottom'
         var numberOfRatesInNewResponse = newResponse.dailyRateAndRestrictions[0].rates.length;
         lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo.row = numberOfRatesInNewResponse - indexForPickingUp * 2;
-console.log(indexForPickingUp);
+
         dataSetToReturn.dailyRateAndRestrictions = dataSetToReturn.dailyRateAndRestrictions
             .map((dailyRateAndRestriction) => {
                 dailyRateAndRestriction = {...dailyRateAndRestriction}; //for fixing the issue of 
@@ -807,7 +811,6 @@ console.log(indexForPickingUp);
         var reduxActionForAllRoomTypesView = {
             type                : RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED,
             roomTypeRestrictionData : [...roomTypeWithRestrictions],
-            zoomLevel           : lastSelectedFilterValues[activeFilterIndex].zoomLevel,
             businessDate        : tzIndependentDate($rootScope.businessDate),
             callbacksFromAngular: getTheCallbacksFromAngularToReact(),
             dates,
@@ -1342,7 +1345,7 @@ console.log(indexForPickingUp);
         
         //closing the left side filter section
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
-    };
+      };
 
     /**
      * callback from react, when clicked on rate

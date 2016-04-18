@@ -9,7 +9,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
     '$rootScope',
     'rvRateManagerOrderByConstants',
     'rvTwoMonthCalendarEventConstants',
-    'rvRateManagerZoomLevelConstants',
     'rvRateManagerGroupByConstants',
     'rvRateManagerEventConstants',
     'RMFilterOptionsSrv',
@@ -22,7 +21,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
              $rootScope,
              rvRateManagerOrderByConstants,
              rvTwoMonthCalendarEventConstants,
-             rvRateManagerZoomLevelConstants,
              rvRateManagerGroupByConstants,
              rvRateManagerEventConstants,
              RMFilterOptionsSrv,
@@ -465,8 +463,6 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
           fromDate: $scope.fromDate,
           toDate: $scope.toDate,
 
-          zoomLevel: $scope.selectedZoomLevelValue,
-
           orderID: $scope.orderBySelectedValue,
 
           groupBy: $scope.groupBySelectedValue,
@@ -496,11 +492,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.fromDate = null;
         $scope.toDate = null;
         $scope.selectedDateRange = '';
-
-        //zoom level configs
-        $scope.selectedZoomLevelValue = '3'; //default value
-        $scope.zoomLevelValues = rvRateManagerZoomLevelConstants;
-
+ 
         //order by values
         $scope.orderBySelectedValue = null; //will be assigning to the preferred from the admin
         $scope.orderByValues = []; //will be filled from API
