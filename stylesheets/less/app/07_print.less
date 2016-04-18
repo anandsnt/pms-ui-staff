@@ -839,6 +839,151 @@ table {
 
         &.open,
         &.fullscreen { .show; }
+
+        /* AR Statement ***/
+    &.print-statement {
+        .cards-header,
+        .card-tabs-nav { .hide; }
+
+        .transactions {
+            .tab-header,
+            .search-results { .hide; }
+
+            .ar-statement {
+                img {
+                    -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+                    filter: grayscale(100%);
+                }
+                .invoice-body .invoice-details tr:last-child td {
+                    margin-bottom:12pt;
+                }
+
+                .invoice-footer {
+                    margin-bottom:12pt;
+                }
+
+                thead th {
+                    text-transform: uppercase;
+                    background-color: @grey2;
+                    padding:4pt 0;
+                    &:last-child {
+                        padding-right: 4pt;
+                    }
+                }
+                tbody {
+
+                    tr.person td:not(:first-child),
+                    tr:not(.person) td {
+                        border-bottom:1px solid @grey2;
+                    }
+
+                    tr.person td:first-child,
+                    tr.person-last-row td,
+                    tr.payment td {
+                        border-bottom:2px solid @grey2;
+                    }
+
+                    tr:not(.person) td {
+                        padding-top:4pt;
+                    }
+
+                    tr td:last-child {
+                        padding-right: 4pt;
+                    }
+
+                    tr td.description {
+                        width: 4cm;
+                    }
+                }
+
+                .statement-header {
+                    &:after {
+                        display: table;
+                        clear: both;
+                        content: '';
+                    }
+                }
+                .invoice-header {
+                    h1 {
+                        font-size:18pt;
+                        font-weight: 600;
+                    }
+
+                    .statement-company-address {
+                        font-size:10pt;
+                        font-style: italic;
+                    }
+                }
+                .guest-info {
+                    font-size: 9pt;
+                    width:70%;
+                    float:left;
+                }
+                .person td,
+                .payment td {
+                    padding:5pt 0;
+                    vertical-align: middle;
+                    &.person-info {
+                        vertical-align: top;
+                        width: 3.5cm;
+                    }
+                    .name {
+                        font-size:11pt;
+                    }
+
+                    .person-meta {
+                        margin-top:0.05cm;
+                        display: block;
+                        strong {
+                            display: block;
+                        }
+                    }
+                }
+
+                .tax-breakdown {
+                    td,th {
+                        padding: 4pt;
+                        text-align: right;
+
+                        &:first-child {
+                            text-align: left;
+                        }
+                    }
+                    
+                    tfoot td {
+                        background-color: @grey2;
+                        font-weight: bold;
+                    }
+
+                    .tax-description {
+                        width: 50%;
+                    }
+
+                }
+
+                .statement-info {
+                    width:30%;
+                    float:right;
+                    &:after {
+                        display: table;
+                        content: '';
+                        clear: both;
+                    }
+                    margin-bottom:0.5cm;
+                }
+                .statement-meta {
+                    width:50%;
+                    float:left;
+                    font-size:9pt;
+                    strong {
+                        display:block;
+                    }
+                    margin-bottom:0.1cm;
+                }
+            }
+
+        }
+    }
     }
 
 /* Reports                  ==============================*/
