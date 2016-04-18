@@ -5,7 +5,9 @@ sntZestStation.controller('zsAdminCtrl', [
 
         BaseCtrl.call(this, $scope);
 
-
+        var refreshScroller = function(){
+            $scope.refreshScroller('admin-screen');
+        };
         var setPrinterLabel = function(name) {
             if (name && typeof name === typeof 'str') {
                 if (name.length > 1) {
@@ -74,6 +76,7 @@ sntZestStation.controller('zsAdminCtrl', [
                     $scope.mode = "admin-screen-active";
                     $scope.adminLoginError = false;
                     $scope.subHeadingText = '';
+                    refreshScroller();
                 } else {
                     $scope.adminLoginError = true;
                     $scope.subHeadingText = 'ADMIN_LOGIN_ERROR';
@@ -120,7 +123,7 @@ sntZestStation.controller('zsAdminCtrl', [
             };
             $scope.callAPI(zsTabletSrv.fetchWorkStations, options);
         };
-
+        
 
         var initialize = function() {
             $scope.adminLoginError = false;
