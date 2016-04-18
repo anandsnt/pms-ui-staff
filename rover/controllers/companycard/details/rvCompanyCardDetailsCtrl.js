@@ -14,6 +14,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.isDiscard = false;
 		$scope.isPromptOpened = false;
 		$scope.isLogoPrint = true;
+		$scope.isPrintArStatement = false;
 		//setting the heading of the screen
 		if ($stateParams.type === "COMPANY") {
 			if ($scope.isAddNewCard) {
@@ -545,7 +546,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 		$scope.isEmptyObject = isEmptyObject;
-
-
+		
+		// CICO-27364 - add class 'print-statement' if printing AR Transactions Statement.
+		$scope.$on("PRINT_AR_STATEMENT", function(event, isPrintArStatement ) {
+			$scope.isPrintArStatement = isPrintArStatement;
+		});
 	}
 ]);

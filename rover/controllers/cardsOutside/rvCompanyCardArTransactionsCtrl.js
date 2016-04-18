@@ -518,5 +518,102 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			$scope.paymentModalOpened = false;
 		});
 
+		/*
+		 *	To Handle invoice button click.
+		 *	show popup with PRINT, EMAIL options.
+		 */
+		$scope.clickedArStatementButton = function(){
+
+			ngDialog.open({
+	      		template:'/assets/partials/companyCard/rvArStatementPopup.html',
+		        className: '',
+		        closeByDocument: false,
+		        scope: $scope
+	      	});
+		};
+
+	    // add the print orientation before printing
+		var addPrintOrientation = function() {
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+		};
+
+		// add the print orientation after printing
+		var removePrintOrientation = function() {
+			$( '#print-orientation' ).remove();
+		};
+
+		// print the page
+		var printArStatement = function(data) {
+			var printDataFetchSuccess = function(successData){
+				$scope.isPrintArStatement = true;
+				$scope.$emit('hideLoader');
+				$scope.printData = successData;
+				$scope.errorMessage = "";
+console.log(successData);
+				// hide hotel logo
+				$("header .logo").addClass('logo-hide');
+				$scope.$emit("PRINT_AR_STATEMENT",true);
+			    // add the orientation
+			    addPrintOrientation();
+
+			    /*
+			    *	======[ READY TO PRINT ]======
+			    */
+			    // this will show the popup with full bill
+			    $timeout(function() {
+			    	/*
+			    	*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+			    	*/
+
+			    	$window.print();
+			    	if ( sntapp.cordovaLoaded ) {
+			    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+			    	};
+			    }, 200);
+
+			    /*
+			    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+			    */
+
+			    $timeout(function() {
+					$("header .logo").removeClass('logo-hide');
+					$scope.$emit("PRINT_AR_STATEMENT",false);
+					// remove the orientation after similar delay
+			    	removePrintOrientation();
+			    }, 200);
+			};
+
+			var printDataFailureCallback = function(errorData){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorData;
+			};
+			$scope.invokeApi(RVCompanyCardSrv.fetchArStatementPrintData, data, printDataFetchSuccess, printDataFailureCallback);
+		};
+
+		$scope.clickedPrintArStatementButton = function(){
+			var params = getParamsToSend();
+			printArStatement( params );
+			console.log( params );
+		};
+
+		$scope.clickedEmailArStatementButton = function(){
+			var params = getParamsToSend();
+			console.log( params );
+
+			var emailSuccess = function(successData){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = "";
+			};
+			var emailFailureCallback = function(errorData){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorData;
+			};
+			$scope.errorMessage = ["Ooops Something went Wrong !!"];
+			//$scope.invokeApi(RVCompanyCardSrv.emailArStatement, data, emailSuccess, emailFailureCallback);
+		};
+
+		$scope.closeDialog = function() {
+            ngDialog.close();
+        };
 
 }]);
