@@ -1187,7 +1187,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			//we need the copy of selected_room_type, we ned to use these to show save/discard button
 			$scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
-
+			console.log("++++++++++++")
+console.log($scope.groupConfigData.summary.selected_room_types_and_occupanies)
+			$scope.getTotalBookedRooms();
 			//we changed data, so
 			refreshScroller();
 		};
@@ -1595,10 +1597,26 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			$scope.changeDatesActions.clickedOnMoveButton ();
 
 		};
+		var getTotalOfIndividualDate = function(passedDate){
+			var totalRoomsBlockedCountIndividualDate = 0;
+			angular.forEach($scope.groupConfigData.summary.selected_room_types_and_bookings, function(value, key) {
+				if(value.date === passedDate){
+					totalRoomsBlockedCountIndividualDate = cInt(value.single) + cInt(value.double) + cInt(value.triple) + cInt(value.quadruple);
+				}
+			});
+			return totalRoomsBlockedCountIndividualDate;
+		}
 
 		$scope.getTotalBookedRooms = function(){
-			console.log("---------")
-			console.log($scope.groupConfigData)
+
+			// $scope.groupConfigData.summary.selected_room_types_and_occupanies
+			// $scope.groupConfigData.summary.selected_room_types_and_bookings
+			console.log($scope.groupConfigData.summary.selected_room_types_and_occupanies)
+			angular.forEach($scope.groupConfigData.summary.selected_room_types_and_occupanies, function(value, key) {
+				value.totalRoomsBlockedCountPerDay = getTotalOfIndividualDate(value.date);
+			});
+			console.log("------------")
+			//console.log($scope.groupConfigData.summary.selected_room_types_and_occupanies)
 		};
 
 
@@ -1771,6 +1789,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			callInitialAPIs();
 			//on tab switching, we have change min date
 			setDatePickers();
+
 		};
 
 		/**
@@ -1809,7 +1828,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				initializeRoomBlockDetails();
 			}
 
-			$scope.getTotalBookedRooms();
+
 
 		}();
 
