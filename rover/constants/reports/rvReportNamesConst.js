@@ -35,5 +35,6 @@ angular.module('reportsModule')
 		'RATE_RESTRICTION_REPORT' 	   : 'Rate & Restrictions',
 		'EMAIL_CHECKIN_SUMMARY'		   : 'Email Check In Summary',
 		'COMPANY_TA_TOP_PRODUCERS'     : 'Company/TA Top Producers',
-		'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': 'Financial Transactions - Adjustment Report'
+		'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': 'Financial Transactions - Adjustment Report',
+		'CREDIT_CHECK_REPORT'          : 'Credit Check Report'
 	});
