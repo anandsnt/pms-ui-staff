@@ -51,14 +51,14 @@
                         <!-- Where the guest-name is 'Pending', add class .pending -->
                         <!-- Add .cancelled if the guest has cancelled or no show -->
                         <h2 ng-show="escapeNull(row.lastname) != '' || escapeNull(row.firstname) != ''">{{escapeNull(row.lastname)|highlight:textInQueryBox:false}} {{escapeNull(row.firstname)|highlight:textInQueryBox:false}}</h2>
-                        <h2 class="pending" ng-if="escapeNull(row.lastname) == '' && escapeNull(row.firstname) ==">Pending</h2>
+                        <h2 class="pending" ng-if="escapeNull(row.lastname) == '' && escapeNull(row.firstname) == '' ">Pending</h2>
                         <span class="confirmation">
                             <!-- In design the 'confirmation-text' can be:
                                  'CONF.' or 'EXT.'
                             -->
-                            <span class="confirmation-text">CONF.</span>
+                            <span class="confirmation-text" ng-if="escapeNullStr(row.confirmation) != ''">CONF.</span>
                             {{escapeNullStr(row.confirmation)}}
-                            <span class="confirmation-text">EXT.</span>
+                            <span class="confirmation-text" ng-if="escapeNullStr(row.external_confirm_no) != ''">EXT.</span>
                             {{escapeNullStr(row.external_confirm_no)}}
                         </span>
                         <span class="icons icon-location" ng-hide="escapeNullStr(row.location)==''">{{escapeNullStr(row.location)}}</span> <!-- If no data don't output this line -->
@@ -76,12 +76,6 @@
                             <span class="hours">{{getTimeConverted(row.departure_time)}}</span>
                         </time>
                     </div>
-                    <div class="guest-info" ng-hide="escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)=='' && escapeNull(row.allotment)==''">
-	                        <span class="icons icon-guest-company" ng-if="escapeNull(row.company)!=''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span>
-	                        <span class="icons icon-guest-travelagent" ng-if="escapeNull(row.travel_agent)!=''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
-	                        <span class="icons icon-group" ng-if="escapeNull(row.group)!=''" ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></span>
-	                        <span class="icons icon-allotment" ng-if="escapeNull(row.allotment)!=''" ng-bind-html="escapeNull(row.allotment)|highlight:textInQueryBox:false"></span>
-	                    </div>
 
                     <!-- 1. if room is assigned, show this -->
                     <div class="reservation-info" ng-if="escapeNull(row.room) != ''">
