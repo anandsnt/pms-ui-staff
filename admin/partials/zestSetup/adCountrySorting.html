@@ -1,0 +1,43 @@
+<section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2 ng-hide="showView">{{ 'ZEST_SETUP_HEADER' | translate}}</h2>
+        <a ng-click="goBackToPreviousState()" data-type="load-details" class="action back">{{ 'BACK_TO_ZEST_SETUP' | translate}}</a>
+        <a class="action add" ng-click="addCountryToSequence()" translate>ADD</a>
+    </header>
+    <section class="content-scroll" ng-show="listingMode">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <ol ui-sortable="sortableOptions" ng-model="contentList" class="cms-tree">
+            <li class="branch" ng-repeat="content in contentList">
+                <div class="sort">
+                    <a class="cms-name">{{content.name}}</a>
+                    <div class="cms-delete">
+                        <a class="icons icon-delete large-icon" ng-click="deleteItem(content.id)">Delete</a>
+                    </div>
+                </div>
+            </li>
+        </ol>
+    </section>
+    <section class="content-scroll" ng-hide="listingMode">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <!--- form starts here -->
+        <form style="overflow-y:auto;" class="form float inline-form">
+            <fieldset class="holder left">
+                <div class="entry">
+                <label for="hotel-country"> Country <strong>*</strong> </label>
+                <div class="select">
+                    <select ng-model="countrySelected" name="hotel-country" id="hotel-country" class="placeholder">
+                        <option value=""> Country </option>
+                        <option ng-repeat="country in countries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
+                    </select>
+                </div>
+            </div>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" ng-click="backClicked()" class="button blank add-data-inline actions_margin_top" translate="CANCEL"></button>
+                <button type="button" ng-click="saveCountry()" class="button green actions_margin_top" translate="SAVE_CHANGES"></button>
+            </div>
+        </form>
+    </section>
+</section>
