@@ -1187,8 +1187,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			//we need the copy of selected_room_type, we ned to use these to show save/discard button
 			$scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
-			console.log("++++++++++++")
-console.log($scope.groupConfigData.summary.selected_room_types_and_occupanies)
+
 			$scope.getTotalBookedRooms();
 			//we changed data, so
 			refreshScroller();
@@ -1599,24 +1598,24 @@ console.log($scope.groupConfigData.summary.selected_room_types_and_occupanies)
 		};
 		var getTotalOfIndividualDate = function(passedDate){
 			var totalRoomsBlockedCountIndividualDate = 0;
+			var cInt = util.convertToInteger;
 			angular.forEach($scope.groupConfigData.summary.selected_room_types_and_bookings, function(value, key) {
-				if(value.date === passedDate){
-					totalRoomsBlockedCountIndividualDate = cInt(value.single) + cInt(value.double) + cInt(value.triple) + cInt(value.quadruple);
-				}
+
+				angular.forEach(value.dates, function(eachDateValue, eachDateKey) {
+					if(eachDateValue.date === passedDate){
+						totalRoomsBlockedCountIndividualDate = totalRoomsBlockedCountIndividualDate + cInt(eachDateValue.single) + cInt(eachDateValue.double) + cInt(eachDateValue.triple) + cInt(eachDateValue.quadruple);
+					}
+				});
 			});
 			return totalRoomsBlockedCountIndividualDate;
 		}
 
 		$scope.getTotalBookedRooms = function(){
 
-			// $scope.groupConfigData.summary.selected_room_types_and_occupanies
-			// $scope.groupConfigData.summary.selected_room_types_and_bookings
-			console.log($scope.groupConfigData.summary.selected_room_types_and_occupanies)
 			angular.forEach($scope.groupConfigData.summary.selected_room_types_and_occupanies, function(value, key) {
 				value.totalRoomsBlockedCountPerDay = getTotalOfIndividualDate(value.date);
 			});
-			console.log("------------")
-			//console.log($scope.groupConfigData.summary.selected_room_types_and_occupanies)
+
 		};
 
 
