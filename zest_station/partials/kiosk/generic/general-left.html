@@ -1,6 +1,6 @@
         <!-- Content -->
 <section id="main" class="centered kiosk" role="main" click-touch='resetTime()'>
-    <div id="content">
+    <div id="content" ng-show="at === 'terms-conditions'">
         <h1>{{headingText |translate}}</h1>
         <div id="flex-holder" >
             <div id="textual" ng-iscroll="terms" ng-iscroll-delay="100" ng-init="setScroll()" class="pull-left station-terms scrollable fill-height"> <!-- Add ng-scroll here -->

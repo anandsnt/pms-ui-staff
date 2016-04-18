@@ -82,7 +82,7 @@ module.exports = {
 										  sharedHtml],
 			'guestweb_huntley' 		:[landingPartials + 'Huntley/*.html',
 										  checkoutNowPartials+'Huntley/*.html',checkoutNowPartials+'*.html',
-										  checkoutNowlaterPartials+'*.html',
+										  checkoutNowlaterPartials+'Huntley/*.html',
 										  checkinPartials+'Huntley/*.html',checkinPartials+"*.html",
 										  precheckinPartials+'Huntley/*.html', precheckinPartials+'*.html',
 										  sharedHtml],
