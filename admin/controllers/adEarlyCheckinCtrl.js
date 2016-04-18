@@ -341,7 +341,7 @@ $scope.saveClick = function(){
 $scope.clickVIPCode = function(code){
     var codeExists = _.contains($scope.upsellData.vipcodes,code);
     if (!codeExists && !_.isEmpty(code)){
-        $scope.upsellData.vipcodes.push(code);
+        $scope.upsellData.vipcodes.unshift(code);
     };
     $scope.vipcode.addcode="";
 };
