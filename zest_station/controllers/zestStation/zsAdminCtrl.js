@@ -43,7 +43,6 @@ sntZestStation.controller('zsAdminCtrl', [
             //do nothing;
         };
 
-
         var hideNavButtons = function() {
             //hide back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
@@ -134,7 +133,6 @@ sntZestStation.controller('zsAdminCtrl', [
             hideNavButtons();
             getWorkStationList();
             $scope.setScroller('admin-screen');
-
             //mode
             if ($scope.zestStationData.isAdminFirstLogin) {
                 $scope.mode = "admin-screen-active";
@@ -213,6 +211,12 @@ sntZestStation.controller('zsAdminCtrl', [
                 getTheSelectedWorkStation().printer = $scope.savedSettings.printer;
                 setStationVariables();
                 restartTimers();
+                 $scope.$emit('UPDATE_WORKSTATION', {
+                    id: station.station_identifier
+                });  
+                $scope.zestStationData.set_workstation_id = station.id;
+                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':$scope.zestStationData.workstationStatus,'reason':$scope.zestStationData.workstationOooReason});
+                $scope.cancelAdminSettings();
             };
             var failureCallBack = function(response) {
                 console.warn('unable to save workstation settings');
@@ -230,11 +234,6 @@ sntZestStation.controller('zsAdminCtrl', [
                     'emv_terminal_id': station.emv_terminal_id,
                     'id': station.id
                 };
-                $scope.$emit('UPDATE_WORKSTATION', {
-                    id: station.station_identifier
-                });  
-                $scope.zestStationData.set_workstation_id = station.id;
-                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':$scope.zestStationData.workstationStatus,'reason':$scope.zestStationData.workstationOooReason});
             };
 
             if ($scope.savedSettings.printer) {

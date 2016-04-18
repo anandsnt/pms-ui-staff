@@ -91,8 +91,15 @@
                     </div>
                 </div>
                 <div class="entry with-label">
-                    <label>Idle Time-out (Seconds)</label>
-                    <input type="number" value="300">
+                    <label translate>ADMIN_TIME_OUT</label>
+                    <input touch-press 
+                           id="timeout_text"
+                           ng-focus="showOnScreenKeyboard('timeout_text')" ng-click="showOnScreenKeyboard('timeout_text')"
+                           type="number"
+                           min='1' 
+                           max='9999' 
+                           ng-model='zestStationData.idle_timer.max' 
+                           class='admin-input admin-input' />
                 </div>
                 <div class="entry with-label">
                     <label>{{'ADMIN_TIME_POP' |translate}}</label>

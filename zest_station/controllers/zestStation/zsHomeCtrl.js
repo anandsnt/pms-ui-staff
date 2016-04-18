@@ -280,7 +280,7 @@ sntZestStation.controller('zsHomeCtrl', [
             try {
                workstationStatus = storage.getItem(oosStorageKey);
                $scope.zestStationData.workstationOooReason = storage.getItem(oosReasonKey);
-               $scope.zestStationData.workstationStatus = (workstationStatus === 'true')? "in-order" :"out-of-order";
+               $scope.zestStationData.workstationStatus = workstationStatus;
             } catch(err){
                 console.warn(err);
             }
@@ -456,17 +456,22 @@ sntZestStation.controller('zsHomeCtrl', [
      */
     
         $scope.setAdminSettings = function(){
-            $scope.setSavedWorkstation();
-            var station = $scope.getSavedWorkStation();
+            if ($scope.zestStationData.isAdminFirstLogin) {
+                $scope.setSavedWorkstation();
+                var station = $scope.getSavedWorkStation();
                 $scope.workstation = {
                     selected: station
                 };
 
-            $scope.initialWorkstation = true;
-            if (station !== null){
-                $scope.zestStationData.set_workstation_id = $scope.set_workstation_id = $scope.getStationIdFromName(station.name);
-               // $scope.setWorkstationPrinter(station.id);
-            }
+                $scope.initialWorkstation = true;
+                if (station !== null) {
+                    $scope.zestStationData.set_workstation_id = $scope.set_workstation_id = $scope.getStationIdFromName(station.name);
+                    // $scope.setWorkstationPrinter(station.id);
+                }
+            } else {
+                //do nothing
+            };
+          
             //if application is launched either in chrome app or ipad go to login page
             var isIpad = navigator.userAgent.match(/iPad/i) !== null && window.cordova;
             if($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || isIpad)){

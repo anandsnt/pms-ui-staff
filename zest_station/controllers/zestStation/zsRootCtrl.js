@@ -26,42 +26,47 @@ sntZestStation.controller('zsRootCtrl', [
     };    
         
     $translate.use('EN_snt');  
+    //store oos status
+    var oosStorageKey = 'snt_zs_workstation.in_oos',
+        oosReasonKey = 'snt_zs_workstation.oos_reason',
+        storage = localStorage;
+    var updateLocalStorage = function(oosReason, workstationStatus) {
 
-    var updateLocalStorage = function(oosReason,workstationStatus){
-        //store oos status
-        var oosStorageKey = 'snt_zs_workstation.in_oos',
-                oosReasonKey  = 'snt_zs_workstation.oos_reason',
-                storage = localStorage;
         try {
-           storage.setItem(oosStorageKey, workstationStatus);
-        } catch(err){
+            storage.setItem(oosStorageKey, workstationStatus);
+        } catch (err) {
             console.warn(err);
         }
-        if(!!oosReason){
+        if (!!oosReason) {
             try {
-               storage.setItem(oosReasonKey, oosReason);
-            } catch(err){
+                storage.setItem(oosReasonKey, oosReason);
+            } catch (err) {
                 console.warn(err);
             }
         }
     };
-    $scope.$on (zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event,params) {
+    $scope.$on(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event, params) {
         var oosReason = params.reason;
         var workstationStatus = params.status;
         $scope.zestStationData.workstationStatus = workstationStatus;
-        
-        if($scope.zestStationData.workstationStatus ==='out-of-order')
-        {
+
+        if ($scope.zestStationData.workstationStatus === 'out-of-order') {
             var options = {
-                params:   { 
-                              'oo_status': false,
-                              'oo_reason': oosReason,
-                              'id':$scope.zestStationData.set_workstation_id
-                          }
-          };
-          $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+                params: {
+                    'oo_status': false,
+                    'oo_reason': oosReason,
+                    'id': $scope.zestStationData.set_workstation_id
+                }
+            };
+            $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+        } else {
+            try {
+                storage.setItem(oosStorageKey, "in-order");
+            } catch (err) {
+                console.warn(err);
+            }
         }
-        updateLocalStorage(oosReason,workstationStatus);
+        updateLocalStorage(oosReason, workstationStatus);
     });
 
 
