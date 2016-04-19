@@ -862,6 +862,8 @@ table {
                     margin-bottom:12pt;
                 }
 
+            
+
                 thead th {
                     text-transform: uppercase;
                     background-color: @grey2;
@@ -870,18 +872,20 @@ table {
                         padding-right: 4pt;
                     }
                 }
+                .invoice-details {
+                    > tbody > tr > td {
+                         
+                        border-bottom:2px solid @grey2;
+                        
+                    }
+                }
                 tbody {
 
-                    tr.person td:not(:first-child),
-                    tr:not(.person) td {
+                    tr td {
                         border-bottom:1px solid @grey2;
                     }
 
-                    tr.person td:first-child,
-                    tr.person-last-row td,
-                    tr.payment td {
-                        border-bottom:2px solid @grey2;
-                    }
+                   
 
                     tr:not(.person) td {
                         padding-top:4pt;
@@ -891,8 +895,20 @@ table {
                         padding-right: 4pt;
                     }
 
-                    tr td.description {
-                        width: 4cm;
+                    tr td.charge-description,
+                    tr th.charge-description {
+                        width: 4.5cm !important;
+                    }
+
+                    tr td.charge-date,
+                    tr th.charge-date,
+                    tr td.charge-code,
+                    tr th.charge-code  {
+                        width: 3cm !important;
+                    }
+
+                    .charges-table tr:last-child td {
+                        border-bottom: none;
                     }
                 }
 
@@ -922,9 +938,8 @@ table {
                 .person td,
                 .payment td {
                     padding:5pt 0;
-                    vertical-align: middle;
+                    vertical-align: top;
                     &.person-info {
-                        vertical-align: top;
                         width: 3.5cm;
                     }
                     .name {
@@ -2777,7 +2792,8 @@ table {
 
                         &.align-right { text-align: right; }
 
-                        &.description {
+                        &.description,
+                        &.charge-description {
                             span {
                                 .show;
 
