@@ -306,11 +306,11 @@
                     }
 
                     .data {
-                        .calc-width(70, 150);
+                        margin-right: 20px;
+                        .calc-width(70, 130);
 
                         h2 { 
                             margin-bottom: 6px; 
-
                             em { font-weight: 700; }
                         }
 
@@ -321,6 +321,21 @@
                             line-height: 20px;
                             .show;
                             .pull-left;
+                        }
+
+                        .confirmation {
+                            font-size: 14px;
+                            font-weight: 400;
+                            text-transform: uppercase;
+                            color: @grey3;
+
+                            .value {
+                                display: inline-block;
+                                font-size: 16px;
+                                color: @textColor;
+                                font-weight: 600;
+                                margin-left: 5px;
+                            }
                         }
 
                         .arrival,

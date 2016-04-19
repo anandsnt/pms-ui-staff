@@ -10,9 +10,9 @@
         <form method="post" action="" id="actions-search"
               ng-class="{'action_filters_visible open':filterOptions.showFilters}" class="search-form actions-form"
               role="search"> <!-- Add class "open" when filters are opened -->
-            <button ng-click="toggleExtraFilters()" type="button" class="button with-icon only-icon"
+            <button ng-click="toggleExtraFilters()" type="button" class="button white with-icon only-icon"
                     ng-class="{'active open':filterOptions.showFilters}">
-                <span class="icons icon-filter"></span>
+                <span class="icons icon-filter" ng-class="{'active':filterOptions.showFilters}"></span>
             </button>
 
             <div class="entry dates">
@@ -116,7 +116,7 @@
             </figure>
             <div class="data">
                 <h1>{{selectedAction.guest_name}}</h1>
-                <strong class="h2" ng-if="selectedAction.room_no">Room {{selectedAction.room_no}}</strong>
+                <strong ng-if="selectedAction.room_no">Room {{selectedAction.room_no}}</strong>
             </div>
             <div class="dates">
                 <div class="date">

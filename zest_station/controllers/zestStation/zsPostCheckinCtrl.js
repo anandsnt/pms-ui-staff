@@ -9,7 +9,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 	'$stateParams',
 	'$sce',
 	'$window',
-	function($scope, $rootScope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce, $window) {
+    '$filter',
+	function($scope, $rootScope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce, $window,$filter) {
 
 	BaseCtrl.call(this, $scope);
         sntZestStation.filter('unsafe', function($sce) {
@@ -469,6 +470,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 {
                     $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_success_print_fail_message;
                 }else{
+                    // $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_AND_PRINT_FAIL');
+                     $scope.zestStationData.wsIsOos = true;
+                     $scope.zestStationData.wsFailedReason =  $filter('translate')('CHECKIN_KEY_AND_PRINT_FAIL');
+                    // $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
                     $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_fail_print_fail_message;
                 }
             };
@@ -493,6 +498,9 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             } else {
                 $state.selectedReservation.printSuccess = false;
             }
+            $scope.zestStationData.wsIsOos = true;
+            $scope.zestStationData.wsFailedReason = $filter('translate')('CHECKIN_PRINT_FAIL');
+            //$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
         };
         $scope.onPrintSuccess = function(success){
             if (!$scope.zestStationData.auto_print){//when auto-printing do nothing, email success will take guest to next screen

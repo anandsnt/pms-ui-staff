@@ -285,6 +285,48 @@
             }
         }
 
+        &.find-guest {
+            width: 380px;
+
+            li {
+                a {
+                    font-size: 14px;
+                    line-height: 30px;
+                    font-weight: 400;
+                    padding: 10px;
+                    .float;
+
+                    .guest-image {
+                        margin-right: 20px;
+                        .square(30px);
+
+                        &.accompany {
+                            img { 
+                                width: 20px; 
+
+                                &:nth-child(2) {
+                                    top: 10px;
+                                    left: 10px;
+                                }
+                            }
+                        }
+                    }
+
+                    .name { 
+                        font-size: 18px;
+                        font-weight: 600;
+                        .pull-left; 
+                    }
+
+                    .room { 
+                        text-transform: uppercase;
+                        color: @grey3;
+                        .pull-right; 
+                    }
+                }
+            }
+        }
+
         &.find-rates {
             width: 380px;
 
@@ -319,87 +361,6 @@
         }
 
         &.find-user { width: auto; }
-
-        &.find-cards {
-            width: auto;
-
-            li {
-                a {
-                    position: relative;
-                    padding: 10px 20px 10px 50px;
-                    .show;
-
-                    .icons,
-                    .group-info,
-                    img {
-                        position: absolute;
-                        top: 10px;
-                        left: 10px;
-                        .square(30px);
-                        #border-radius > .rounded();
-                    }
-
-                    .icons {
-                        .hide-text;
-
-                        &.icon-company { 
-                            background-position: 7px -3514px;
-                            background-color: @ccard; 
-                        }
-
-                        &.icon-travel-agent { 
-                            background-position: 6px -3634px;
-                            background-color: @tacard; 
-                        }
-
-                        &.icon-group,
-                        &.icon-group-large { 
-                            background-position: 5px -7774px;
-                            background-color: @groupcard; 
-                        }
-
-                        &.icon-allotment { 
-                            background-position: 5px -8433px;
-                            background-color: @allotmentcard; 
-                        }
-                    }
-
-                    .group-info {
-                        font-size: 18px;
-                        line-height: 30px;
-                        text-transform: uppercase;
-                        font-weight: 600;
-                        text-align: center;
-                        color: @grey3;
-                        width: 30px;
-                        background-color: @grey1;
-                    }
-                }
-            }
-        }
-
-        &.find-user { width: auto; }
-
-        &.find-guest{
-            li{
-              height: 50px;
-            }
-            img {
-                 position: absolute;
-                 .square(30px);
-                 #border-radius > .rounded();
-            }
-            .name{
-              font-size: 18px;
-            }
-            .room{
-                 font-size: 14px;
-                 float: right;
-                 margin-right: 10px;
-                 text-transform: uppercase;
-                 color:@grey3
-            }
-         }
     }
 
     .ui-helper-hidden-accessible { .hide; }
@@ -4541,8 +4502,8 @@
             /* StayCard Notes / Actions ***/
             &.staycard-notes,
             &.staycard-actions {
+                font-size: 16px;
                 padding: 0;
-                max-height: 540px;
 
                 .modal-header {
                     padding: 20px;
@@ -4559,9 +4520,15 @@
                     }
 
                     strong { 
+                        font-size: 18px;
                         font-weight: 600;
                         line-height: 20px;
-                        .h4; 
+                        margin-right: 20px; 
+                    }
+
+                    span { 
+                        font-size: 16px;
+                        line-height: 20px;
                     }
 
                     .button {
@@ -4578,10 +4545,6 @@
                     padding: 20px;
                     background-color: rgba(0,0,0,.05);
                     .box-shadow(-2px 0 2px rgba(0,0,0,.3));
-                }
-
-                @media only screen and (min-height: 768px) { 
-                    max-height: 620px;
                 }
             }
 
@@ -4624,19 +4587,19 @@
 
                 .modal-header {
 
-                    h1,
-                    strong {
+                    h1 {
                         .calc-width(100, 420);
                         .nowrap();
                     }
-                    
+
                     .dates {
                         position: absolute;
                         top: 23px;
                         right: 200px;
-                        width: 200px;
+                        width: 240px;
 
                         .date { 
+                            font-size: 16px;
                             line-height: 20px; 
 
                             &:first-child { margin-bottom: 5px; }
@@ -4651,7 +4614,7 @@
 
                 .actions-content {
                     position: relative;
-                    .size(460px, 920px);
+                    .size(480px, 920px);
 
                     .content-left {
                         .scrollable { 
@@ -4696,8 +4659,12 @@
 
                         .add-content {
 
-                            label,
-                            .entry { margin-bottom: 0; }
+                            label {
+                                margin-bottom: 0;
+
+                                [color="green"] { color: @green; }
+                                [color="red"] { color: @red; }
+                            }
 
                             .entry:not(.full-width) {
                                 .calc-width(50, 10);
@@ -4777,7 +4744,7 @@
 
                 @media only screen and (min-height: 768px) { 
                     .actions-content { 
-                        height: 540px; 
+                        height: 550px; 
 
                         .content-right {
                             .add-content {
@@ -4800,11 +4767,13 @@
                 width: 420px;
 
                 label {
-                  margin-bottom: 0;
-                  .char-count{
-                    color: @green;
-                    &.full{ color: @red; }
-                  }
+                    margin-bottom: 0;
+                    
+                    .char-count{
+                        color: @green;
+                        
+                        &.full{ color: @red; }
+                    }
                 }
 
                 .entry:not(.full-width) {
@@ -4813,7 +4782,8 @@
                     &.margin { margin-right: 20px; }
                 }
 
-                .date {
+                .date,
+                .search {
                     position: relative;
 
                     .clear-query {
@@ -4824,46 +4794,6 @@
                         visibility: hidden;
                         background-color: @white;
                         .size(38px, 40px);
-
-                        .icons {
-                            position: absolute;
-                            top: 12.5px;
-                            right: 12.5px;
-                            background-color: @grey2;
-                            .hide-text;
-                            .square(15px);
-                            .opacity(0);
-                            .show;
-                            #fade > .out();
-                            #border-radius > .rounded(15px);
-                        }
-
-                        &.visible { 
-                            visibility: visible;
-
-                            .icons {    
-                                .opacity(100); 
-                                #fade > .in(); 
-                            }
-                        }
-
-                        &:hover,
-                        &.active { 
-                            .icons { background-color: @logoPrimary; }
-                        }
-                    }
-                }
-
-                .search {
-                    position: relative;
-
-                    .clear-query {
-                        position: absolute;
-                        top: 30px;
-                        right: 0;
-                        z-index: 99;
-                        visibility: hidden;
-                        .square(40px);
 
                         .icons {
                             position: absolute;
