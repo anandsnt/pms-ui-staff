@@ -15,7 +15,7 @@
     			<!-- 'room' is 'Room X' where X is the number of the room-->
     			<li class="room">Room {{ item.room_number }}</li>
     			<li class="guest">
-    				<span class="guest-status" ng-class="{'inhouse': item.reservation_status == 'CHECKEDIN', 'check-out': item.reservation_status == 'CHECKOUT'}"></span>{{ item.guest_name }}
+    				<span class="guest-status" ng-class="{'inhouse': item.reservation_status == 'CHECKEDIN', 'check-out': item.reservation_status == 'CHECKING_OUT'}"></span>{{ item.guest_name }}
     			</li>
     			<li class="reservation">Resv. {{ item.confirm_no }}</li>
     		</ul>
@@ -39,7 +39,7 @@
 							<span>Balance on Bill</span>
 						</th>
 						<th>
-							<span>Projected Charges</span>l
+							<span>Projected Charges</span>
 						</th>
 						<th>
 							<span>Total Amount</span>
