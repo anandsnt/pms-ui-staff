@@ -32,8 +32,8 @@
                 <div class="select">
                     <select ng-model="countrySelected" name="hotel-country" id="hotel-country" class="placeholder">
                         <option value=""> Country </option>
-                        <option ng-repeat="country in sortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
-                        <option value="" ng-show="sortedCountries.length > 0"> ---------- </option>
+                        <option ng-repeat="country in sortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected" disabled> {{country.name}} </option>
+                        <option value="" ng-show="sortedCountries.length > 0" disabled> ---------- </option>
                         <option ng-repeat="country in unSortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
                     </select>
                 </div>

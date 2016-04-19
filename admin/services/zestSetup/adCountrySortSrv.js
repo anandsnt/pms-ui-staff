@@ -22,7 +22,6 @@ admin.service('ADCountrySortSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2
 
 		var deferred = $q.defer();
 		var url =  'api/countries/assign_sequence.json';
-
 		ADBaseWebSrv.postJSON(url,params).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
@@ -37,9 +36,9 @@ admin.service('ADCountrySortSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2
 	this.deleteItem = function(params){
 
 		var deferred = $q.defer();
-		var url = ' /api/billing_groups/charge_codes.json';
+		var url = 'api/countries/'+params.id+'/destroy_sorting.json';
 
-		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		ADBaseWebSrv.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
