@@ -85,9 +85,9 @@
                     <td class="person-info">
                         <strong class="name">{{statement.payment_details.name}}</strong>
                     </td>
-                    <td>{{statement.payment_details.date_of_charge}}</td>
-                    <td>{{statement.payment_details.charge_code}}</td>
-                    <td class="description">{{statement.payment_details.charge_description}}</td>
+                    <td class="charge-date">{{statement.payment_details.date_of_charge | date:dateFormat }}</td>
+                    <td class="charge-code">{{statement.payment_details.charge_code}}</td>
+                    <td class="charge-description">{{statement.payment_details.charge_description}}</td>
                     <td></td>
                     <td></td>
                     <td class="align-right">{{currencySymbol}}{{statement.payment_details.credits | number: precisonTwo}}</td>
