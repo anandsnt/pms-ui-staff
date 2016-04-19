@@ -9,8 +9,8 @@
     <section class="content-scroll" ng-show="listingMode">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-        <ol ui-sortable="sortableOptions" ng-model="contentList" class="cms-tree">
-            <li class="branch" ng-repeat="content in contentList">
+        <ol ui-sortable="sortableOptions" ng-model="sortedCountries" class="cms-tree">
+            <li class="branch" ng-repeat="content in sortedCountries">
                 <div class="sort">
                     <a class="cms-name">{{content.name}}</a>
                     <div class="cms-delete">
@@ -32,7 +32,9 @@
                 <div class="select">
                     <select ng-model="countrySelected" name="hotel-country" id="hotel-country" class="placeholder">
                         <option value=""> Country </option>
-                        <option ng-repeat="country in countries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
+                        <option ng-repeat="country in sortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
+                        <option value="" ng-show="sortedCountries.length > 0"> ---------- </option>
+                        <option ng-repeat="country in unSortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
                     </select>
                 </div>
             </div>

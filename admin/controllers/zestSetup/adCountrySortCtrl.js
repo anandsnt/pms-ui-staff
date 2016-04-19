@@ -1,48 +1,63 @@
-admin.controller('ADCountrySortCtrl', ['$scope','ADCountrySortSrv',
-	function($scope,ADCountrySortSrv) {
+admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
+	function($scope, ADCountrySortSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.successMessage = '';
 		$scope.listingMode = true;
 		$scope.countrySelected = "";
 
-
-		$scope.countries=[{id:2,name:"USA"},{id:22,name:"res"},{id:23,name:"US4A"},{id:24,name:"re45s"}];
-		$scope.contentList=[{id:2,name:"USA"},{id:22,name:"res"}];
-
-
-		$scope.addCountryToSequence = function(){
+        var fetchCountryList = function(){
+        		var onfetchCountriesSuccess = function(response) {
+				$scope.sortedCountries = response.sorted;
+				$scope.unSortedCountries = response.unsorted;
+			};
+			var options = {
+				params: {},
+				successCallBack: onfetchCountriesSuccess
+			};
+			$scope.callAPI(ADCountrySortSrv.fetchCountries, options);
+        };
+		var init = function() {
+			fetchCountryList();
+		}();
+		$scope.addCountryToSequence = function() {
 			$scope.listingMode = false;
 		};
 
-		$scope.backClicked = function(){
+		$scope.backClicked = function() {
 			$scope.listingMode = true;
 		};
 
-		$scope.saveCountry = function(){
-			var successCallBack = function(){
-				var countrySelected  = _.find($scope.countries, function(country){
-			    	return parseInt(country.id) === parseInt($scope.countrySelected);
-				});
-				$scope.contentList.push(countrySelected);
+		$scope.saveCountry = function() {
+			var successCallBack = function() {
+				fetchCountryList();
 			};
-			
-			var selectedCountryIndex = _.findIndex($scope.contentList,function(country){return country.id == $scope.countrySelected});
+			var selectedCountryIndex = _.findIndex($scope.sortedCountries, function(country) {
+				return country.id == $scope.countrySelected
+			});
 			//push only if country wasnt added before
-			if(selectedCountryIndex === -1){
+			if (selectedCountryIndex === -1) {
 				successCallBack();
-			}
-			else{
+				var options = {
+					params: {
+						'country_id' : $scope.countrySelected,
+						'position' : 1
+					}
+				}
+				$scope.callAPI(ADCountrySortSrv.saveComponentOrder, options);
+			} else {
 				//do nothing
 			}
 			$scope.countrySelected = "";
 			$scope.listingMode = true;
-			
+
 		};
 
-		$scope.deleteItem = function(id,$index){
-			var successCallBack = function(){
-				$scope.contentList = _.without($scope.contentList, _.findWhere($scope.contentList, {id: id}));
+		$scope.deleteItem = function(id, $index) {
+			var successCallBack = function() {
+				$scope.sortedCountries = _.without($scope.sortedCountries, _.findWhere($scope.sortedCountries, {
+					id: id
+				}));
 			};
 			successCallBack();
 		};
@@ -50,13 +65,14 @@ admin.controller('ADCountrySortCtrl', ['$scope','ADCountrySortSrv',
 		/* save new order*/
 
 		var saveNewPosition = function(id, position, prevPosition) {
-			var data = {
-				id : id,
-				position : position + 1,
-				previous_position : prevPosition + 1
-			};
-			$scope.invokeApi(ADCountrySortSrv.saveComponentOrder, data);
 
+			var options = {
+				params: {
+					'country_id' : id,
+					'position' : position
+				}
+			};
+			$scope.callAPI(ADCountrySortSrv.saveComponentOrder, options);
 		};
 
 		$scope.sortableOptions = {
