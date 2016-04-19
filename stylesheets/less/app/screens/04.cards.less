@@ -1438,7 +1438,20 @@
                             background: @grey1;
                             .float;
                             .box-shadow(1px 3px 3px rgba(0,0,0,.15));
-                            .size(100px, 180px);
+                            .size(180px, 180px);
+
+                            .line {
+                                padding-right: 25px;
+                                font-size: 14px;
+                                text-transform: uppercase;
+                                font-style: normal;
+                                color: @textColor;
+                                justify-content: flex-start;
+                                position: absolute;
+                                bottom: 28px;
+                                width:100%;
+                                text-align: right;
+                            }
 
                             .button {
                                 font-size: 14px;
@@ -1497,9 +1510,9 @@
                             top: 0;
                             left: 180px;
                             z-index: 9910;
-                            height: 100px;
+                            height: 180px;
                             .float;
-                            .calc-width(100, 180);
+                            .calc-width(180, 180);
 
                             > .wrapper { padding: 0; }
 
@@ -1508,7 +1521,7 @@
                                 text-transform: uppercase;
                                 margin: 0 10px 0 0;
                                 padding: 20px 10px 10px 0;
-                                .size(100px, 180px);
+                                .size(180px, 180px);
                                 .box-shadow(2px 0 0 rgba(0,0,0,.3));
                                 .pull-left;
 
@@ -1631,8 +1644,8 @@
                         .room-block-sidebar,
                         .room-block-grid {
                             position: absolute;
-                            top: 100px;
-                            .calc-height(100, 100);
+                            top: 180px;
+                            .calc-height(100, 180);
                             .show; 
 
                             > .wrapper { padding: 0; }
