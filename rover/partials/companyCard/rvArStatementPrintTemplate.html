@@ -48,7 +48,7 @@
             <tbody>
                     
                 <tr class="person" ng-repeat="statement in printData.statement_details" ng-if="!statement.is_payment_method">
-                    <td class="person-info" rowspan="{{statement.reservation_details.charge_details.length + 1}}">
+                    <td class="person-info">
                         <strong class="name">{{statement.reservation_details.guest_name}}</strong><br>
                         <span class="person-meta">
                             <strong>Resv.:</strong> 
