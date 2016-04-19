@@ -11,6 +11,7 @@
                     <label for="showing-structure" translate>SHOWING_LABEL</label>
                     <div class="select">
                         <select id="showing-structure" ng-change="viewSelected()" ng-model="selectedView">
+                            <option value="homescreen" selected translate>DASHBOARDS_OPTION</option>
                             <option value="section" selected translate>SECTIONS_OPTION</option>
                             <option value="category" translate>CATEGORIES_OPTION</option>
                             <option value="item" translate>ITEMS_OPTION</option>
@@ -60,6 +61,46 @@
                     </div>
                 </div>    
             </div>
+
+            <!-- Grid content -->
+            <table class="grid datatable ng-table" ng-show="selectedView == 'homescreen'" ng-table="sectionParams">
+                
+                <!-- Section table HTML -->
+                <thead>                 
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': sectionParams.isSortBy('name', 'asc'),
+                        'sort-desc': sectionParams.isSortBy('name', 'desc')
+                      }"
+                        ng-click="sectionParams.sorting({'name' : sectionParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NAME_LABEL</span></div>
+                    </th>
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': sectionParams.isSortBy('last_updated', 'asc'),
+                        'sort-desc': sectionParams.isSortBy('last_updated', 'desc')
+                      }"
+                        ng-click="sectionParams.sorting({'last_updated' : sectionParams.isSortBy('last_updated', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>LAST_UPDATE_LABEL</span></div>
+                    </th> 
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': sectionParams.isSortBy('no_of_items', 'asc'),
+                        'sort-desc': sectionParams.isSortBy('no_of_items', 'desc')
+                      }"
+                        ng-click="sectionParams.sorting({'no_of_items' : sectionParams.isSortBy('no_of_items', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NO_OF_SECTIONS_LABEL</span></div>
+                    </th>        
+                </thead>
+                <tbody>
+                    <tr ng-repeat="gridItem in $data | filter:searchText">
+                        <td><a >{{gridItem.name}}</a></td>
+                        <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>
+                        <td>{{gridItem.no_of_section_items}}</td>
+                        
+                    </tr>
+                </tbody>
+             </table> 
 
             <!-- Grid content -->
             <table class="grid datatable ng-table" ng-show="selectedView == 'section'" ng-table="sectionParams">
