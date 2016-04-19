@@ -914,6 +914,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomTypes, {}, onRoomTypesFetchSuccess, onRoomTypesFetchFailure);
 		};
 
-		$scope.fetchRoomTypes();
+		if(!$scope.roomTypes) {
+			$scope.fetchRoomTypes();
+		}
 	}
 ]);
