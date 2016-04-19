@@ -1,0 +1,92 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron">
+    <div class="container backgroundbg width-100" >
+        <div class="grey-bg">
+            <div class="row headerrow">
+                <logo-image></logo-image>
+            </div>
+        </div>
+        <div ng-show="isLoading && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+            <p class="msg-head template-header-text">Your request is being processed.</p>
+            <p class="msg-body template-header-text">This may take a few seconds..... please wait!</p>
+        </div>
+
+        <div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+            <p class="msg-head template-header-text">Our apologies, something went wrong, please complete your pre check-in at our front desk.</p></p>
+            <p class="msg-body template-header-text">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="template-header-text">{{hotelPhone}}.</a></p>
+        </div>
+        <!-- contentarea starts here-->
+        <div class="container container-top-padding" ng-hide="isLoading || netWorkError">
+            <!-- top section starts here-->
+            <div class="row checkin-wrapper-top arrival-details verification-container date-container">
+                <div class="pad-rt-60 pre-checkin-container-padding">
+                    <div class="chekin-heading centeralign template-header-text grey-text">
+                        Ready to Check-out?
+                    </div>
+                    <div class="date-container ">
+                        <div class="row cabin_number_field external-verification-field">
+                            <p class="lightcontent template-text input-label base-text">Your Room Number</p>
+                            <input type="numbers" ng-model="stayDetails.room_number" class = "col-xs-12 textBox shadow template-text"/> 
+                        </div>  
+                        <div class="row cabin_number_field external-verification-field">
+                            <p class="lightcontent template-text input-label base-text">Last Name</p>
+                            <input type="numbers" ng-model="stayDetails.last_name" class = "col-xs-12 textBox shadow template-text" /> 
+                        </div>
+                        <div class="row cabin_number_field external-verification-field">
+                            <p class="lightcontent template-text input-label base-text">Arrival date</p>
+                            <span class="date-picker" ng-click="showCalender()" >
+                                <input type="text " class = "col-xs-12 textBox shadow" ng-model="stayDetails.arrival_date" readonly/> 
+                                <img src="/assets/guestweb/img/calender_icon.png"  alt="" width="40" height="35" class="calendar-button"/></span>
+                            </div>
+                            <div class="row">
+                                <p class="lightcontent  template-text centeralign base-text">
+                                    To receive a copy of your bill,<br/>
+                                    please enter your e-mail address
+                                </p>
+                            </div>
+                            <div class="row centeralign">
+                                <p class="lightcontent template-text input-label base-text">Your e-mail address (optional):</p>
+                             </div>
+                            <div class="row cabin_number_field external-verification-field">
+                                <input type="numbers" ng-model="stayDetails.email" class = "col-xs-12 textBox shadow template-text" /> 
+                            </div>
+
+                            <div class="row cabin_number_field external-verification-field">            
+                                <button class="col-xs-12 link-btn with-bg nextbtn pink-bg btn_height"
+                                ng-click="submit()">
+                                <span class="template-button">Continue</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>                      
+            </div>
+            <!-- pre-checkinbtn section ends here-->
+        </div>
+        <div class="date-picker-bg" ng-show="calendarView">
+            <div class="date-picker-wrap">
+               <div class="col-xs-12 date-picker-header">
+                  <div class="col-xs-2 date-picker-back" ng-click = "closeCalender()">
+                     <img src="/assets/guestweb/common_images/back_icon.png" width="25" height="20" alt=""/>
+                     <div>BACK</div>
+                  </div>
+
+                  <div class="col-xs-8 centeralign departure-date">
+                     <p>DEPARTURE DATE</p>
+
+                     <p class="date-text">{{date | date:'MMM dd'}}</p>
+
+                  </div>
+
+                  <div class="col-xs-2 date-picker-ok" ng-click = "dateChoosen()">
+                    <img src="/assets/guestweb/common_images/done_white.png" width="25" height="20" alt=""/>
+                    <div>DONE</div>
+                  </div>
+               </div>
+
+               <div class="col-xs-12">
+                  <div pickadate="" ng-model="date" min-date="minDate" max-date="maxDate"></div>
+               </div>
+            </div>
+        </div>
+
