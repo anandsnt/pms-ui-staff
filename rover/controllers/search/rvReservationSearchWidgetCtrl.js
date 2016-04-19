@@ -402,7 +402,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.fetchSearchResults = function() {
 			var query = $scope.textInQueryBox.trim();
-			if ($scope.escapeNull(query) === "" && $scope.escapeNull($stateParams.type) === "") {
+			if ($scope.room_type_id === '' && $scope.escapeNull(query) === "" && $scope.escapeNull($stateParams.type) === "") {
 				return false;
 			}
 			var dataDict = {};
@@ -424,7 +424,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			//If it is a numeric query with less than 3 digits, then lets assume it is room serach.
 			// CICO-26059 - Overriding the single digit search in admin settings and search for room no,
 			// if the query length < 5
-			if (!isNaN(query) && query.length < 5) {
+			if (!isNaN(query) && query.length != 0 && query.length < 5 ) {
 				dataDict.room_search = true;
 			}
 			dataDict.from_date = $scope.fromDate;
@@ -917,5 +917,17 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		if(!$scope.roomTypes) {
 			$scope.fetchRoomTypes();
 		}
+
+		/**
+		 * Invokes while changing the room type
+		*/
+		$scope.onRoomTypeChange = function() {
+			$scope.$emit("showSearchResultsArea", true);
+			initPaginationParams();
+			$scope.fetchSearchResults();
+            $timeout(function() {
+                $scope.focusSearchField = true;
+            }, 2000);
+		};
 	}
 ]);
