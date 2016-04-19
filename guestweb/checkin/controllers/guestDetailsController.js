@@ -68,14 +68,29 @@
 
 		//fetch country list
 		$scope.isLoading = true;
-		guestDetailsService.fetchCountryList().then(function(response) {
-			$scope.countries = response;
-			$scope.isLoading = false;
-			fetchGuestDetails();
-		},function(){
-			$rootScope.netWorkError = true;
-			$scope.isLoading = false;
-		});
+		if($rootScope.enforceCountrySort){
+			var data = {'reservation_id': $rootScope.reservationID}
+			guestDetailsService.fetchSortedCountryList(data).then(function(response) {
+				$scope.sortedCountries = response.sorted;
+				$scope.unSortedCountries = response.unsorted;
+				$scope.isLoading = false;
+				fetchGuestDetails();
+			},function(){
+				$rootScope.netWorkError = true;
+				$scope.isLoading = false;
+			});
+		}
+		else{
+			guestDetailsService.fetchCountryList().then(function(response) {
+				$scope.countries = response;
+				$scope.isLoading = false;
+				fetchGuestDetails();
+			},function(){
+				$rootScope.netWorkError = true;
+				$scope.isLoading = false;
+			});
+		}
+	
 
 
 		$scope.yearOrMonthChanged = function(){
