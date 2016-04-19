@@ -28,8 +28,7 @@
         </div>
     </div>
 
-    <!-- Hide if there is no header text (add class 'hide') -->
-    <div class="statement-header-text">
+    <div class="statement-header-text" ng-if="printData.custom_text_header">
         <p>{{printData.custom_text_header}}</p>
     </div>
 
@@ -38,55 +37,49 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th translate>DATE_OF_CHARGE</th>
-                    <th >Charge Code</th>
-                    <th>Charge description</th>
+                    <th class="charge-date" translate>DATE_OF_CHARGE</th>
+                    <th class="charge-code">Charge Code</th>
+                    <th class="charge-description">Charge description</th>
                     <th class="align-right" translate>CHARGE_AMOUNT</th>
                     <th class="align-right">Amount Due</th>
                     <th class="align-right">Credits</th>
                 </tr>
             </thead>
             <tbody>
-                <td ng-repeat="statement in printData.statement_details" ng-if="!statement.is_payment_method">
                     
-                    <tr class="person">
-                        <td class="person-info" rowspan="{{statement.reservation_details.charge_details.length + 1}}">
-                            <strong class="name">{{statement.reservation_details.guest_name}}</strong><br>
-                            <span class="person-meta">
-                                <strong>Resv.:</strong> 
-                                {{statement.reservation_details.reservation_no}}
-                            </span>
-                            <span class="person-meta">
-                                <strong>Arrival Date:</strong> 
-                                {{statement.reservation_details.arrival_date | date:dateFormat }}
-                            </span>
-                            <span class="person-meta">
-                                <strong>Departure Date:</strong> 
-                                {{statement.reservation_details.departure_date | date:dateFormat }}
-                            </span>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="align-right">{{currencySymbol}}{{statement.reservation_details.amount_due | number: precisonTwo }}</td>
-                        <td></td>
-                    </tr>                
-
-                    <!-- if is the last row for that person, add class 'person-last-row' -->
-                    <tr ng-repeat="item in statement.reservation_details.charge_details" ng-class="{'person-last-row':$last}">
-                        <td>{{item.date | date :dateFormat }}</td>
-                        <td>{{item.charge_code}}</td>
-                        <td class="description">
-                            <span>{{item.description}}</span>
-                            <span class="reference">{{item.reference_text}}</span>
-                            <span class="reference">EXTERNAL REF. {{item.external_ref_no}}</span>
-                        </td>
-                        <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </td>
+                <tr class="person" ng-repeat="statement in printData.statement_details" ng-if="!statement.is_payment_method">
+                    <td class="person-info" rowspan="{{statement.reservation_details.charge_details.length + 1}}">
+                        <strong class="name">{{statement.reservation_details.guest_name}}</strong><br>
+                        <span class="person-meta">
+                            <strong>Resv.:</strong> 
+                            {{statement.reservation_details.reservation_no}}
+                        </span>
+                        <span class="person-meta">
+                            <strong>Arrival Date:</strong> 
+                            {{statement.reservation_details.arrival_date | date:dateFormat }}
+                        </span>
+                        <span class="person-meta">
+                            <strong>Departure Date:</strong> 
+                            {{statement.reservation_details.departure_date | date:dateFormat }}
+                        </span>
+                    </td>
+                    <td colspan="4">
+                        <table class="charges-table">
+                            <tr ng-repeat="item in statement.reservation_details.charge_details">
+                                <td class="charge-date">{{item.date | date :dateFormat }}</td>
+                                <td class="charge-code">{{item.charge_code}}</td>
+                                <td class="charge-description">
+                                    <span>{{item.description}}</span>
+                                    <span class="reference">{{item.reference_text}}</span>
+                                    <span class="reference">EXTERNAL REF. {{item.external_ref_no}}</span>
+                                </td>
+                                <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td class="align-right">{{currencySymbol}}{{statement.reservation_details.amount_due | number: precisonTwo}}</td>
+                    <td></td>
+                </tr>                         
  
                 <tr class="payment" ng-repeat="statement in printData.statement_details" ng-if="statement.is_payment_method">
                     <td class="person-info">
