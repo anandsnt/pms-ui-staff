@@ -492,6 +492,10 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
         };
 
+        var formatDateForAPI = function(date) {
+            return $filter('date')(date, $rootScope.dateFormatForAPI)
+        };
+
         /**
          * [fetchRoomingDetails description]
          * @return {[type]} [description]
@@ -506,7 +510,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             }
 
             var params = {
-                id: $scope.groupConfigData.summary.group_id
+                id: $scope.groupConfigData.summary.group_id,
+                from_date: formatDateForAPI($scope.fromDate),
+                to_date: formatDateForAPI($scope.toDate)
             };
 
             var options = {
@@ -887,6 +893,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             if ($scope.fromDate > $scope.toDate) {
                 $scope.toDate = '';
             }
+            else {
+                $scope.fetchRoomingDetails();
+            }
 
             runDigestCycle();
         };
@@ -902,6 +911,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             // we will clear end date if chosen start date is greater than end date
             if ($scope.fromDate > $scope.toDate) {
                 $scope.fromDate = '';
+            }
+            else {
+                $scope.fetchRoomingDetails();
             }
 
             runDigestCycle();
@@ -1459,8 +1471,11 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
             //rooming details fetch
             var paramsForRoomingDetails = {
-                id: $scope.groupConfigData.summary.group_id
+                id: $scope.groupConfigData.summary.group_id,
+                from_date: formatDateForAPI($scope.fromDate),
+                to_date: formatDateForAPI($scope.toDate)
             };
+
             promises.push(rvGroupRoomingListSrv
                 .getRoomTypesConfiguredAgainstGroup(paramsForRoomingDetails)
                 .then(successCallBackOfFetchRoomingDetails)
