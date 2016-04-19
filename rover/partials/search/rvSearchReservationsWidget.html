@@ -77,7 +77,7 @@
                         </time>
                     </div>
 
-                    <div class="reservation-info" ng-if="escapeNull(row.room) != ''">
+                    <div class="reservation-info">
                         <div class="guest-info">
                             <span class="icons icon-guest-company" ng-if="escapeNull(row.company)!=''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span>
 	                        <span class="icons icon-guest-travelagent" ng-if="escapeNull(row.travel_agent)!=''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
