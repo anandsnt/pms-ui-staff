@@ -453,11 +453,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		$scope.bookingDataChanging = function() {
 			//we are changing the model to
 			$scope.hasBookingDataChanged = true;
-
-
-
-
 			runDigestCycle();
+			$scope.getTotalBookedRooms();
 		};
 
 		/**
@@ -1598,22 +1595,28 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		};
 		var getTotalOfIndividualDate = function(passedDate){
 			var totalRoomsBlockedCountIndividualDate = 0;
+			var totalRoomsPickedIndividulaDate 		 = 0;
 			var cInt = util.convertToInteger;
 			angular.forEach($scope.groupConfigData.summary.selected_room_types_and_bookings, function(value, key) {
 
 				angular.forEach(value.dates, function(eachDateValue, eachDateKey) {
 					if(eachDateValue.date === passedDate){
 						totalRoomsBlockedCountIndividualDate = totalRoomsBlockedCountIndividualDate + cInt(eachDateValue.single) + cInt(eachDateValue.double) + cInt(eachDateValue.triple) + cInt(eachDateValue.quadruple);
+						totalRoomsPickedIndividulaDate = totalRoomsPickedIndividulaDate + cInt(eachDateValue.single_pickup) + cInt(eachDateValue.double_pickup) + cInt(eachDateValue.triple_pickup) + cInt(eachDateValue.quadruple_pickup);
 					}
 				});
 			});
-			return totalRoomsBlockedCountIndividualDate;
+			var totalOfIndividualDateData = [];
+			totalOfIndividualDateData["totalBlocked"] = totalRoomsBlockedCountIndividualDate;
+			totalOfIndividualDateData["totalPicked"]  = totalRoomsPickedIndividulaDate;
+			return totalOfIndividualDateData;
 		}
 
 		$scope.getTotalBookedRooms = function(){
 
 			angular.forEach($scope.groupConfigData.summary.selected_room_types_and_occupanies, function(value, key) {
-				value.totalRoomsBlockedCountPerDay = getTotalOfIndividualDate(value.date);
+				value.totalRoomsBlockedCountPerDay = getTotalOfIndividualDate(value.date)["totalBlocked"];
+				value.totalRoomsPickedCountPerDay = getTotalOfIndividualDate(value.date)["totalPicked"];
 			});
 
 		};
