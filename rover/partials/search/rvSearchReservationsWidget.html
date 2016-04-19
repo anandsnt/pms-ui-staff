@@ -11,7 +11,7 @@
 	        <div class="select with-label">
 	            <label for="room-type">Room Type</label>
 	            <select id="room-type" ng-model="room_type_id" ng-change="onRoomTypeChange()">
-	                <option value="" selected="">Show All</option>
+	                <option value="" selected="" translate>SHOW_ALL</option>
 	                <option value="{{roomType.id}}" ng-repeat="roomType in roomTypes">{{roomType.name}}</option>
 	            </select>
 	        </div>
@@ -55,11 +55,11 @@
                         <!-- Add .cancelled if the guest has cancelled or no show -->
                         <h2 ng-show="escapeNull(row.lastname) != '' || escapeNull(row.firstname) != ''" ng-bind-html="getGuestName(row.firstname, row.lastname)| highlight:textInQueryBox:false" ng-class="{'cancelled' : row.reservation_status == 'CANCELED' || row.reservation_status == 'NO SHOW'}">
                         </h2>
-                        <h2 class="pending" ng-if="escapeNull(row.lastname) == '' && escapeNull(row.firstname) == '' ">Pending</h2>
+                        <h2 class="pending" ng-if="escapeNull(row.lastname) == '' && escapeNull(row.firstname) == '' " translate>PENDING</h2>
                         <span class="confirmation">
-                            <span class="confirmation-text" ng-if="escapeNullStr(row.confirmation) != ''">CONF.</span>
+                            <span class="confirmation-text" ng-if="escapeNullStr(row.confirmation) != ''" translate>CONFIRM_NO_PREFIX</span>
                             {{escapeNullStr(row.confirmation)}}
-                            <span class="confirmation-text" ng-if="escapeNullStr(row.external_confirm_no) != ''">EXT.</span>
+                            <span class="confirmation-text" ng-if="escapeNullStr(row.external_confirm_no) != ''" translate>EXTERNAL_REF_NO_PREFIX</span>
                             {{escapeNullStr(row.external_confirm_no)}}
                         </span>
                         <span class="icons icon-location" ng-class="{'no-location': (escapeNullStr(row.location)=='')}">{{escapeNullStr(row.location)}}</span>

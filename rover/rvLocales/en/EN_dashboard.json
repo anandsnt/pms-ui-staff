@@ -1,5 +1,5 @@
-    
-    
+
+
     "GREETING_MORNING": "Good Morning",
     "GREETING_AFTERNOON": "Good Afternoon",
     "GREETING_EVENING": "Good Evening",
@@ -17,4 +17,8 @@
     "DASHBOARD_HOUSEKEEPING_HEADING": "Housekeeping Dashboard",
     "DASHBOARD_FRONTDESK_HEADING": "Front Desk Dashboard",
     "SHOWING_DASHBOARD_TITLE": "Showing Dashboard",
-    "QUEUED_ROOMS_TITLE": "Queued Reservations"
+    "QUEUED_ROOMS_TITLE": "Queued Reservations",
+    "SHOW_ALL" : "Show All",
+    "CONFIRM_NO_PREFIX" : "CONF.",
+    "EXTERNAL_REF_NO_PREFIX" : "EXT.",
+    "PENDING" : "Pending"
