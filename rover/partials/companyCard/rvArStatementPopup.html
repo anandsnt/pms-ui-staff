@@ -8,7 +8,7 @@
 
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
      
-        <div class="entry full-width">
+        <div class="entry full-width hidden">
             <label for="company-email">Email</label>
             <input type="email" name="email" placeholder="Enter an Email" value="{company/travel-agent contact email}"/>
         </div>
@@ -18,7 +18,7 @@
                     - remove class .blue,
                     - add class .grey,
                     - add attribute disabled="disabled" -->
-            <button type="button" class="button with-icon blue open-modal" ng-click="clickedEmailArStatementButton()">
+            <button type="button" class="button with-icon blue open-modal grey overlay" ng-click="clickedEmailArStatementButton()">
                 <span class="icons icon-email"></span>
                  Email
             </button>
