@@ -21,6 +21,8 @@
 	if($scope.pageValid){
 		
 		$scope.countries 	= [];
+		$scope.sortedCountries = [];
+		$scope.unSortedCountries = [];
 		$scope.years     	= [];
 		$scope.months   	= [];
 		$scope.days      	= [];
