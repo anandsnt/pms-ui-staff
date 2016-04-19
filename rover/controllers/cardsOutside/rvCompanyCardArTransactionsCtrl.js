@@ -592,12 +592,14 @@ console.log(successData);
 
 		$scope.clickedPrintArStatementButton = function(){
 			var params = getParamsToSend();
+			params.account_id =  $scope.filterData.id;
 			printArStatement( params );
 			console.log( params );
 		};
 
 		$scope.clickedEmailArStatementButton = function(){
 			var params = getParamsToSend();
+			params.account_id =  $scope.filterData.id;
 			console.log( params );
 
 			var emailSuccess = function(successData){
