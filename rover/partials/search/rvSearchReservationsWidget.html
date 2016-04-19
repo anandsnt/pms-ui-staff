@@ -79,10 +79,10 @@
 
                     <div class="reservation-info">
                         <div class="guest-info">
-                            <span class="icons icon-guest-company" ng-if="escapeNull(row.company)!=''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span>
-	                        <span class="icons icon-guest-travelagent" ng-if="escapeNull(row.travel_agent)!=''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
-	                        <span class="icons icon-group" ng-if="escapeNull(row.group)!=''" ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></span>
-	                        <span class="icons icon-allotment" ng-if="escapeNull(row.allotment)!=''" ng-bind-html="escapeNull(row.allotment)|highlight:textInQueryBox:false"></span>
+                            <span class="guest-company" ng-if="escapeNull(row.company)!=''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span>
+	                        <span class="guest-travelagent" ng-if="escapeNull(row.travel_agent)!=''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
+	                        <span class="group" ng-if="escapeNull(row.group)!=''" ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></span>
+	                        <span class="allotment" ng-if="escapeNull(row.allotment)!=''" ng-bind-html="escapeNull(row.allotment)|highlight:textInQueryBox:false"></span>
                         </div>
 
                         <div class="reservation-status">
