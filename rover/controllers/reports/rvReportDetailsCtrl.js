@@ -947,6 +947,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 			return string.indexOf( subString ) > -1;
 		};
 
+		$scope.hasSort = function(index) {
+			return !! $scope.chosenReport.sortByOptions[index]
+		}
+
 		$scope.isAsc = function(index) {
 			return !! $scope.chosenReport.sortByOptions[index] && $scope.chosenReport.sortByOptions[index]['sortDir'] === true;
 		};

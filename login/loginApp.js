@@ -218,4 +218,73 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 
 }]);
 
+login.controller('stationLoginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv){
+        $scope.data = {};
+
+        if(localStorage.email){
+               $scope.data.email = localStorage.email;
+               document.getElementById("password").focus();
+
+        } else if (!localStorage.email){
+               document.getElementById("email").focus();
+        }
+        $scope.errorMessage = "";
+        $scope.successMessage = "";
+        $scope.errorMessage = resetSrv.getErrorMessage();
+
+        $scope.successLoginCallback = function(data){
+	 	//Clear all session storage contents. We are starting a new session.
+	 	var i = sessionStorage.length;
+	 	while(i--) {
+	 	  	var key = sessionStorage.key(i);
+	 	  	sessionStorage.removeItem(key);
+	 	}
+
+	 	localStorage.email = $scope.data.email;
+	 	if(data.token!==''){
+	 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
+	 	} else {
+                        $scope.$emit("signingIn");
+
+                        $scope.hasLoader = true;
+                        //we need to show the animation before redirecting to the url, so introducing a timeout there
+                        setTimeout(function(){
+                            console.log('data.redirect_url: ',data.redirect_url);
+                                $window.location.href = data.redirect_url;
+                        }, 300);
+	 	}
+	 };
+	 /*
+	  * Failure call back of login
+	  */
+	 $scope.failureCallBack = function(errorMessage){
+	 	$scope.hasLoader = false;
+	 	$scope.errorMessage = errorMessage;
+	 };
+	 /*
+	  * Submit action of login
+	  */
+	 $scope.submit = function() {
+	 	$scope.hasLoader = true;
+	 	$scope.successMessage = "";
+ 		loginSrv.login($scope.data, $scope.successLoginCallback, $scope.failureCallBack);
+	};
+
+         
+        $scope.showOnScreenKeyboard = function(id) {
+           //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
+            var isTouchDevice = 'ontouchstart' in document.documentElement,
+                agentString = window.navigator.userAgent;
+            var shouldShowKeyboard = (typeof chrome) && (agentString.toLowerCase().indexOf('window')!==-1) && isTouchDevice;
+            if (shouldShowKeyboard && id){
+                    new initScreenKeyboardListener('login', id, true);
+             }
+        };
+        $scope.showOnScreenKeyboard();
+
+
+         
+         
+         
+}]);
 

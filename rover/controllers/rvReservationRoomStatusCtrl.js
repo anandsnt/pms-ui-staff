@@ -233,14 +233,14 @@ angular.module('sntRover').controller('reservationRoomStatus',
 			gotToDiaryInEditMode ();
 		} else if($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)){
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton","upgrade_available" : isUpgradeAvaiable});
-		}else if($scope.reservationData.reservation_card.reservation_status==="CHECKEDIN"){
+		}else if($scope.reservationData.reservation_card.reservation_status==="CHECKEDIN" && $rootScope.isStandAlone){ // As part of CICO-27631 added Check for overlay hotels 
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton","upgrade_available" : isUpgradeAvaiable});
 		}
 
 	};
-    if($stateParams.isOnlineRoomMove == "false" && $scope.showKeysButton($scope.reservationData.reservation_card.reservation_status) && $scope.reservationData.reservation_card.reservation_status === "CHECKEDIN"){
+    var keySettings = $scope.reservationData.reservation_card.key_settings;
+    $scope.showPopupsOnlineOfflineRoomMove = function(){
         setTimeout(function(){
-            var keySettings = $scope.reservationData.reservation_card.key_settings;
             if(keySettings === "email"){
                     ngDialog.open({
                         template: '/assets/partials/keys/rvKeyEmailPopup.html',
@@ -253,8 +253,19 @@ angular.module('sntRover').controller('reservationRoomStatus',
             }
 
         }, 700)
+    };
+
+    if($rootScope.isStandAlone && !$rootScope.isHourlyRateOn){
+        if((($stateParams.isOnlineRoomMove == null && $stateParams.isKeySystemAvailable) || $stateParams.isOnlineRoomMove == "false"
+            || ($stateParams.isOnlineRoomMove == "true" && (keySettings === "email" || keySettings === "qr_code_tablet")))
+            && ($scope.showKeysButton($scope.reservationData.reservation_card.reservation_status)
+            && $scope.reservationData.reservation_card.reservation_status === "CHECKEDIN")){
+
+                $scope.showPopupsOnlineOfflineRoomMove();
+        }
 
     }
+
 
     $scope.$watch('reservationData.reservation_card.room_number',function(){
        if ($rootScope.viaSharerPopup){

@@ -168,6 +168,21 @@
 	                background: @brandColor;
 	            }
 	        }
+            #message-action {
+                .button {
+                    color: @brandColor;
+                    background: transparent;
+                    .box-shadow(inset 0 0 0 6px @grey1);
+
+                    &.next {
+                        padding-right: 50px;
+
+                        &:after {
+                            right: 20px;
+                        }
+                    }
+                }
+            }
 	    }
         }
         /* commenting out admin settings
@@ -206,10 +221,16 @@
         */
         
 	   .yotel-logo{
-            position: fixed;
+           position: fixed;
     
             //width="239.3px" height="64.8px" 
             //viewBox: "0 0 239.3 64.8";
+        }
+
+        .centered-logo{
+            .yotel-logo{
+               position: relative;
+            }
         }
         
         /////////////////////

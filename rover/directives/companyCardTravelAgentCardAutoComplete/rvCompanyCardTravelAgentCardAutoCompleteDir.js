@@ -8,8 +8,16 @@
   var linkFn = ($scope, autocompleteEl) => {
     BaseCtrl.call(this, $scope);
 
+    var ulElement = null;
+
     var renderItem = (ul, item) => {
       var htmlForItem = '';
+      
+      //CICO-26513
+      ulElement = ul;
+      ulElement.off('touchmove').on('touchmove', function(e) {
+        e.stopPropagation();
+      });
 
       ul.addClass('find-cards');
       var $content = highlightFilter_(item.account_name, $scope.ngModel),
@@ -104,15 +112,28 @@
     };
 
     /**
+     * we've to unbind something while removing the node from dom
+     */
+    $scope.$on('$destroy', function(){
+        $(autocompleteEl).autocomplete( "destroy" );
+        
+        //unbinding the touch move
+        if(ulElement instanceof HTMLElement) {
+          ulElement.off('touchmove')
+        }
+    });
+
+    /**
      * Initialization stuffs
      * @return {undefiend}
      */
     (() => {
     	var defaultPosition = {
-    		of : $(autocompleteEl),
-        my : "left top",
-        at : "right top",
-        collision : 'flip'
+    		of : (autocompleteEl),
+        my : 'left top',
+        at : 'right top',
+        collision : 'fit',
+        within : 'body'
       };
 
       $scope.autocompleteOptions = {
@@ -126,7 +147,7 @@
 
       $(autocompleteEl).autocomplete($scope.autocompleteOptions).data('ui-autocomplete')._renderItem = renderItem;
 
-    })();    
+    })();  
   };
 
   angular.module('sntRover').directive('rvCcTaAutoComplete', ['RMFilterOptionsSrv', 'highlightFilter', 

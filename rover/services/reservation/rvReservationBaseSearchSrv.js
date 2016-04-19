@@ -12,12 +12,13 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
         this.cache = {
             config: {
-                lifeSpan: 300 //in seconds
+                lifeSpan: 3600 //in seconds
             },
             responses: {
                 restrictionTypes: null,
                 rateDetails: null,
-                sortOrder: null
+                sortOrder: null,
+                taxMeta: null
             }
         }
 
@@ -26,9 +27,9 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
 
         //This method returns the default view chosen in the Admin/Reservation/Reservation Settings
-        this.getRoomRatesDefaultView = function(){
+        this.getRoomRatesDefaultView = function() {
             var view = "ROOM_TYPE";
-            if (that.reservation.settings && that.reservation.settings.default_rate_display_name){
+            if (that.reservation.settings && that.reservation.settings.default_rate_display_name) {
                 if (that.reservation.settings.default_rate_display_name === 'Recommended') {
                     view = "RECOMMENDED";
                 } else if (that.reservation.settings.default_rate_display_name === 'By Rate') {
@@ -40,8 +41,8 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
         this.getRoomTypeLevel = function(roomTypeId) {
             var level = -1;
-            if(!!that.reservation.roomTypes){
-                var roomTypeDetails = _.find(that.reservation.roomTypes,{
+            if (!!that.reservation.roomTypes) {
+                var roomTypeDetails = _.find(that.reservation.roomTypes, {
                     id: roomTypeId
                 });
                 level = roomTypeDetails.level;
@@ -415,11 +416,20 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
         this.fetchTaxInformation = function() {
             var deferred = $q.defer(),
                 url = 'api/rates/tax_information';
-            RVBaseWebSrvV2.getJSON(url).then(function(response) {
-                deferred.resolve(response.tax_codes);
-            }, function(data) {
-                deferred.reject(data);
-            });
+            if (that.cache.responses['taxMeta'] === null || Date.now() > that.cache.responses['taxMeta']['expiryDate']) {
+                RVBaseWebSrvV2.getJSON(url).then(function(response) {
+                    var taxMeta = response.tax_codes;
+                    that.cache.responses['taxMeta'] = {
+                        data: taxMeta,
+                        expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000)
+                    };
+                    deferred.resolve(taxMeta);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            } else {
+                deferred.resolve(that.cache.responses['taxMeta']['data']);
+            }
             return deferred.promise;
         };
 
@@ -446,10 +456,10 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             that['meta'] = {};
 
             promises.push(that.fetchTaxInformation().then(function(response) {
-                that['meta']['tax-info'] = response;
+                that['meta']['taxInfo'] = response;
             }));
             promises.push(that.fetchAddonsForRates(params).then(function(response) {
-                that['meta']['rate-addons'] = response;
+                that['meta']['rateAddons'] = response;
             }));
 
             $q.all(promises).then(function() {

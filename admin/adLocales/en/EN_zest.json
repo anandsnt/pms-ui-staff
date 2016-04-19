@@ -90,7 +90,8 @@
 "CALENDAR_BG":"Calendar main Background",
 "CALENDAR_HEADER_BG":"Calendar header Background",
 "CALENDAR_CELL_BG":"Calendar cell Background",
-"ALLOW_CHECKIN_NOW":"Allow guest to check in immediately"
+"ALLOW_CHECKIN_NOW":"Allow guest to check in immediately",
+"GUESWEB_DEMO_MODE_ON" :"Zest web demo mode"
 
 
 

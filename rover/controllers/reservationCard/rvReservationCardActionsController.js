@@ -1230,6 +1230,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         };
 
         $scope.reassignAction = function(){
+            var assignedTo = $scope.selectedAction.assigned_to.id + '',
+                department = _.findWhere($scope.departments, { value: assignedTo });
+            $scope.departmentSelect.selected = department;
             $scope.actionSelected = 'assign';
         };
 
