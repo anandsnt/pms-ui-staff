@@ -66,7 +66,7 @@ module.exports = {
 				serviceRoot + 'util/rvUtilSrv.js',
 				serviceRoot + 'availability/rvAvailabilitySrv.js',
 				serviceRoot + 'workstation/workstationSrv.js',
-
+				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
 				directiveRoot + 'Outside Click handler/outsideClickDirective.js'
 			]
 		};

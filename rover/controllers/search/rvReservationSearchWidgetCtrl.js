@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', '$vault', 'ngDialog', '$timeout',
-	function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams, $vault, ngDialog, $timeout) {
+sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', '$vault', 'ngDialog', '$timeout', 'RVHkRoomStatusSrv',
+	function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams, $vault, ngDialog, $timeout, RVHkRoomStatusSrv) {
 
 		/*
 		 * Base reservation search, will extend in some place
@@ -8,10 +8,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 */
 		var that = this;
 		BaseCtrl.call(this, $scope);
+
 		var searchFilteringCall = null;
 		//model against query textbox, we will be using this across
 		$scope.textInQueryBox = "";
 		$scope.fetchTerm = "";
+		$scope.room_type_id = "";
 
 		// variable used track the & type if pre-loaded search results (nhouse, checkingin..)
 		$scope.searchType = "default";
@@ -420,11 +422,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			//CICO-10323. for hotels with single digit search,
 			//If it is a numeric query with less than 3 digits, then lets assume it is room serach.
-			if ($rootScope.isSingleDigitSearch && !isNaN(query) && query.length < 3) {
+			// CICO-26059 - Overriding the single digit search in admin settings and search for room no,
+			// if the query length < 5
+			if (!isNaN(query) && query.length < 5) {
 				dataDict.room_search = true;
 			}
 			dataDict.from_date = $scope.fromDate;
 			dataDict.to_date = $scope.toDate;
+			dataDict.room_type_id = $scope.room_type_id;
 
 			$scope.firstSearch = false;
 			$scope.fetchTerm = $scope.textInQueryBox;
@@ -891,9 +896,24 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		/**
 		 * Get the guest name
-		 */
+		*/
 		$scope.getGuestName = function(firstName, lastName) {
 			return lastName + ", " + firstName;
 		}
+
+		/**
+		 * Fetches the room types for filter
+		*/
+		$scope.fetchRoomTypes = function() {
+			var onRoomTypesFetchSuccess = function(data) {
+					$scope.roomTypes = data;
+			    },
+			    onRoomTypesFetchFailure = function(error) {
+			    	$scope.roomTypes = [];
+			    };
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomTypes, {}, onRoomTypesFetchSuccess, onRoomTypesFetchFailure);
+		};
+
+		$scope.fetchRoomTypes();
 	}
 ]);
