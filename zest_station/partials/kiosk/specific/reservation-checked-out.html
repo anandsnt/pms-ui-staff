@@ -71,7 +71,7 @@
     </div>
 </section>
 <!-- print starts here -->
-<div ng-include="'/assets/partials/kiosk/specific/zsGenericBillPrint.html'" ng-hide="zestStationData.theme === 'yotel'">
+<div ng-include="'/assets/partials/kiosk/specific/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
 </div>
-<div ng-include="'/assets/partials/kiosk/specific/zsYotelBillPrint.html'" ng-show="zestStationData.theme === 'yotel'">
+<div ng-include="'/assets/partials/kiosk/specific/zsYotelBillPrint.html'" ng-if="zestStationData.theme === 'yotel'">
 </div>
