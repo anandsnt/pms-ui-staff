@@ -31,11 +31,13 @@
                             <em class="labelText">COUNTRY</em>
                             <div class="expiry-year-container full-width-select" style="margin-left:0px;">
                                 <div class="select-style select-style-fullwidth">
+                                 <!-- unsorted -->
                                     <select ng-model="guestDetails.country" ng-options="country.id as country.value  for country in countries" ng-hide="enforceCountrySort">
                                         <option value="">SELECT</option>
                                     </select>
+                                 <!-- sorted -->
                                     <select ng-model="guestDetails.country" ng-show="enforceCountrySort">
-                                        <option value="">SELECT</option>
+                                        <option value="">-- Select country --</option>
                                         <option ng-repeat="country in sortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
                                         <option value="" ng-show="sortedCountries.length > 0" disabled> ------------------ </option>
                                         <option ng-repeat="country in unSortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
