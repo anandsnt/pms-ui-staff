@@ -20,7 +20,7 @@
             <div class="entry margin">
                 <label>Type <strong>*</strong> </label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types" ng-change="onChangeRateType()"> 
+                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types"> 
                         <option value="" ng-selected="rateData.rate_type.id==''">Select Rate Type</option>
                     </select>
                 </div>
