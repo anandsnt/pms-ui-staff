@@ -4,11 +4,12 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 
-   $scope.selectedView = "section";
+   $scope.selectedView = "homescreen";
    $scope.fromSection = "all";
    $scope.fromCategory = "all";
    $scope.showUnMappedList = false;
    $scope.sections = [];
+   $scope.home_screens = [];
    $scope.category_options = [];
    $scope.categories = [];
    $scope.items = [];
@@ -20,6 +21,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.setUpLists();
+			$scope.setHomeScreens();
 			$scope.setSections();
 			$scope.setCategories();
 			$scope.setItems();
@@ -33,6 +35,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    			$scope.data[i].last_updated = new Date($scope.data[i].last_updated);
    			if($scope.data[i].component_type === 'SECTION'){
    				$scope.sections.push($scope.data[i]);
+   			}else if($scope.data[i].component_type === 'HOME SCREEN'){
+   				$scope.home_screens.push($scope.data[i]);
    			}else if($scope.data[i].component_type === 'CATEGORY'){
    				$scope.categories.push($scope.data[i]);
    				$scope.category_options.push($scope.data[i]);
@@ -40,6 +44,30 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    				$scope.items.push($scope.data[i]);
    			}
    		}
+   };
+
+    /* Function to set the table params for sections
+    */
+   $scope.setHomeScreens =function(){
+   		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
+		    $scope.homeScreenParams = new ngTableParams({
+		       page: 1,            // show first page
+		       	count: $scope.home_screens.length,    // count per page - Need to change when on pagination implemntation
+		        sorting: { name: 'asc'     // initial sorting
+		        }
+		    }, {
+
+		        getData: function($defer, params) {
+		            // use build-in angular filter
+		            var orderedData = params.sorting() ?
+		                                $filter('orderBy')($scope.home_screens, params.orderBy()) :
+		                                $scope.home_screens;
+
+		            $scope.orderedHomeScreens =  orderedData;
+
+		            $defer.resolve(orderedData);
+		        }
+		    });
    };
 
 
