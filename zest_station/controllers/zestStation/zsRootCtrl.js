@@ -11,7 +11,9 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.chromeAppKey = 'snt.in_chromeapp';
         $scope.syncOOSInterval = 119;//in seconds (0-based) // currently will re-sync every 2 minutes, next release will be an admin setting per hotel
     
-
+    // This is workaround till we find how to detect if app
+    // is invoked from chrome app, we will be hidding this tag from chrome app and
+    // checking that to distinguish if app was launched using chrome app or not 
     var CheckIfItsChromeApp = function(){
          $scope.inChromeApp = $("#hideFromChromeApp").css("visibility") === 'hidden' ;
          console.info(":: is in chrome app ->"+$scope.inChromeApp);
