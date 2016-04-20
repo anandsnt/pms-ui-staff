@@ -726,23 +726,22 @@ sntZestStation.controller('zsRootCtrl', [
             }
 
         };
+        
         $scope.openExternalWebPage = function(){
             $scope.showExternalWebPage =true;
-            console.log('listenForInputBoxClick')
-            $scope.listenForInputBoxClick();
+            setTimeout(listenForInputBoxClick, 100);
         };
+        
         $scope.listenForInputBoxClick = function(){
-            $('body').bind("click touchstart keyup keydown keypress", function(e) {
-                console.log(e)
-                window.parent.funcKey(e);
-              });
-            
-            
-            
+            var iframe = $("#booking_iframe")[0];
+            iframe.contentWindow.on('click touchstart',function(){
+                console.log("inside iframe clicking",arguments);
+            });
         };
+        
         $scope.closeExternalWebPage = function(){
             $scope.showExternalWebPage =false;
-        }
+        };
         
         $scope.languageSelect = function(){
             $scope.stopLanguageCounter();
