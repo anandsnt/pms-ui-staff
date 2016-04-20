@@ -991,5 +991,21 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 			return confirmationText;
 		};
+
+		/**
+		 * Watches the query text box to get the list of text for highlight
+		*/
+		$scope.$watch('textInQueryBox', function(newVal) {
+			$scope.searchWords = [];
+			if(newVal.length > 2) {
+				if (newVal.indexOf(' ') != -1) {
+					$scope.searchWords = newVal.split(' ');
+				} else if (newVal.indexOf(',') != -1) {
+					$scope.searchWords = newVal.split(',');
+				} else {
+					$scope.searchWords.push(newVal);
+				}
+			}
+		});
 	}
 ]);
