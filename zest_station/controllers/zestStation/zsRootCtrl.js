@@ -69,6 +69,16 @@ sntZestStation.controller('zsRootCtrl', [
         updateLocalStorage(oosReason, workstationStatus);
     });
 
+    $scope.returnDateObj = function(dateString){
+        //date has to be formatted
+        var dayIndex = dateString.indexOf("-");
+        var day = dateString.substring(0, dayIndex);
+        var dateStringWithoutDay = dateString.substring(dayIndex+1, dateString.length);
+        var monthIndex = dateStringWithoutDay.indexOf("-");
+        var month = dateStringWithoutDay.substring(0, monthIndex);
+        var year = dateStringWithoutDay.substring(monthIndex+1, dateStringWithoutDay.length);
+        return new Date(month+'-'+day+'-'+year);
+    };
 
 	/**
 	 * [navToPrev description]
