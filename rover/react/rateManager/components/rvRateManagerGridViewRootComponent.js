@@ -3,15 +3,13 @@ const { createClass } = React
 const RateManagerGridViewRootComponent = createClass ({
 	componentDidMount() {
 		this.commonIScrollOptions = {
-			probeType: 3,
+			probeType:3,
 			scrollbars: false,
 			scrollX: false,
 			scrollY: true,
-			tap: true,
+			click: true,
 			mouseWheel: true,
-			useTransition: true,
-			deceleration: 0.0001,
-            shrinkScrollbars: 'clip'
+			deceleration: 0.0009
 		};
 
 		this.leftScrollableElement = this.rightScrollableElement = null;
