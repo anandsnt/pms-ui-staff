@@ -42,6 +42,25 @@
 		return deferred.promise;
 	};
 
+
+	var fetchSortedCountryList = function(data){
+		var deferred = $q.defer();
+		var url = '/api/countries/sorted_list.json';
+		$http.get(url,{params: data}).success(function(response) {
+			if(response.status === "success"){
+				deferred.resolve(response.data);
+			}
+			else{
+				deferred.reject();
+			};
+			
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
+	};
+
 	var postGuestBirthDate = function(data) {
 		var deferred = $q.defer();
 		var url = ' /api/guest_details/'+$rootScope.primaryGuestId+'.json';
@@ -118,7 +137,8 @@
 	fetchCountryCode	: fetchCountryCode,
 	fetchHotelTime 		: fetchHotelTime,
 	fetchDepositDetails	: fetchDepositDetails,
-	submitPayment 		: submitPayment
+	submitPayment 		: submitPayment,
+	fetchSortedCountryList : fetchSortedCountryList
 	}
 };
 

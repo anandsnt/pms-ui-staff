@@ -7,7 +7,8 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	'zsUtilitySrv',
 	'$stateParams',
 	'$sce',
-	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce) {
+    '$filter',
+	function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv, zsUtilitySrv, $stateParams, $sce, $filter) {
 
 	BaseCtrl.call(this, $scope);
         sntZestStation.filter('unsafe', function($sce) {
@@ -237,7 +238,15 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 };
         };
         $scope.emitKeyError = function(response){
-            $scope.$emit('MAKE_KEY_ERROR',response);
+            $scope.$emit('PICKUP_KEY_FAIL',response);
+            $scope.zestStationData.wsIsOos = true;
+            if($scope.isInCheckinMode){
+                 $scope.zestStationData.wsFailedReason = $filter('translate')('CHECKIN_KEY_FAIL');
+            }
+            else{
+                 $scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL');
+            }
+            //$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
         };
 
 
@@ -495,22 +504,23 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
             switch ($scope.makeKeyParam()){
                 case 'one':
-                    $scope.input.madeKey = 1;
-                    
-                    $scope.goToKeySuccess();
-                    break;
+                $scope.input.madeKey = 1;
+                
+                $scope.goToKeySuccess();
+                break;
 
                 case 'first':
-                    $scope.keyOneOfTwoSuccess();
-                    break;
+                $scope.keyOneOfTwoSuccess();
+                break;
 
                 case 'second':
-                    $scope.keyTwoOfTwoSuccess();
-                    break;
+                $scope.keyTwoOfTwoSuccess();
+                break;
 
                 case 'done':
-                    break;
+                break;
             };
+
         };
 
 
