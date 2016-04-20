@@ -71,30 +71,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             return ispromo;
         };
 
-
-
-        $scope.hideBasedOn = function() {
-            var hideBasedOn = false, classification = '';
-            if ($scope.rateTypesDetails) {
-                angular.forEach($scope.rateTypesDetails.rate_types, function(rate_type) {
-                    if ($scope.rateData.rate_type.id === rate_type.id) {
-                        if ($scope.rateData.classification){
-                            classification = $scope.rateData.classification.toLowerCase();
-                        } else {
-                            classification = '';
-                        }
-                        
-                        if (classification === "corporate") {
-                            hideBasedOn = true;
-                        } else {
-                            hideBasedOn = false;
-                        }
-                    }
-                });
-            }
-            return hideBasedOn;
-        };
-
         /*
          * Validate Rate Details Form
          */

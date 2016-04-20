@@ -26,6 +26,50 @@ sntZestStation.controller('zsRootCtrl', [
     };    
         
     $translate.use('EN_snt');  
+    //store oos status
+    var oosStorageKey = 'snt_zs_workstation.in_oos',
+        oosReasonKey = 'snt_zs_workstation.oos_reason',
+        storage = localStorage;
+    var updateLocalStorage = function(oosReason, workstationStatus) {
+
+        try {
+            storage.setItem(oosStorageKey, workstationStatus);
+        } catch (err) {
+            console.warn(err);
+        }
+        if (!!oosReason) {
+            try {
+                storage.setItem(oosReasonKey, oosReason);
+            } catch (err) {
+                console.warn(err);
+            }
+        }
+    };
+    $scope.$on(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event, params) {
+        var oosReason = params.reason;
+        var workstationStatus = params.status;
+        $scope.zestStationData.workstationStatus = workstationStatus;
+
+        if ($scope.zestStationData.workstationStatus === 'out-of-order') {
+            var options = {
+                params: {
+                    'oo_status': false,
+                    'oo_reason': oosReason,
+                    'id': $scope.zestStationData.set_workstation_id
+                }
+            };
+            $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+        } else {
+            try {
+                storage.setItem(oosStorageKey, "in-order");
+            } catch (err) {
+                console.warn(err);
+            }
+        }
+        updateLocalStorage(oosReason, workstationStatus);
+    });
+
+
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
@@ -184,28 +228,12 @@ sntZestStation.controller('zsRootCtrl', [
             }
             $scope.language = theme;
             $scope.loadTranslations(theme);
+            setDefaultLanguage();
             $scope.$emit('hideLoader');
-        };
-        $scope.getLangPrefix = function(lang){
-            for (var i in $scope.langInfo){
-                if ($scope.langInfo[i].language === lang){
-                    return $scope.langInfo[i].info.prefix;
-                }
-            }
-        };
-        $scope.getActiveLangPrefix = function(){
-            var lang = $scope.selectedLanguage,
-                    prefix = 'EN';
-            var requestedPrefix = $scope.getLangPrefix(lang);
-            if (requestedPrefix !== ''){
-                prefix = requestedPrefix;
-            } 
-            return prefix.toLowerCase()+'/'+prefix+'_';
         };
         
         $scope.loadTranslations = function(){
             if($scope.zestStationData.zest_lang.english_translations_file_updated){
-                console.info('using: uploaded english translations');
                 $translate.use('en');
             } else{
                 $translate.use('EN_snt');
@@ -471,6 +499,7 @@ sntZestStation.controller('zsRootCtrl', [
         });
         $scope.refreshSettings = function(hard_reset){
           $scope.getWorkStationStatus(hard_reset);
+
         };
         $scope.$on('RESET_TIMEOUT',function(evt, params){
             $scope.resetCounter();
@@ -481,7 +510,6 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.languageTimerReset = false;
         var setDefaultLanguage= function(){
             intLanguageSettings();
-            $translate.use($scope.langInfo.code);
         };
 
         var languageCounterCompleted = function(){
@@ -723,21 +751,49 @@ sntZestStation.controller('zsRootCtrl', [
             
         };
         
+        var getDefaultLangDisplayName = function(lang){
+                if (lang === 'Castellano'){
+                    return  'Castellano';
+                }
+                if (lang === 'English'){
+                    return  'English';
+                }
+                if (lang === 'French'){
+                    return  'Français';
+                }
+                if (lang === 'German'){
+                    return  'Deutsch';
+                }
+                if (lang === 'Italian'){
+                    return  'Italiano';
+                }
+                if (lang === 'Spanish'){
+                    return  'Español';
+                }
+        };
+        
+        var getLangCode = function(name){
+            for (var i in $scope.langInfo){
+                if ($scope.langInfo[i].info.name === name){
+                    return $scope.langInfo[i].info.code;
+                }
+            }
+        };
         var intLanguageSettings = function(){
-            
             //$scope.selectedLanguage = 'English';
-            $scope.selectedLanguage = zestStationSettings.zest_lang.default_language;
+            $scope.selectedLanguage = getDefaultLangDisplayName(zestStationSettings.zest_lang.default_language);
             //$scope.langflag = 'flag-gb';
-            
             
             $scope.language = null;
             $scope.langInfo = zsUtilitySrv.returnLanguageList();
             
-            $scope.langflag = getDefaultLangFlag($scope.selectedLanguage);
+            $scope.langflag = getDefaultLangFlag(zestStationSettings.zest_lang.default_language);
+            $scope.langCode = getLangCode(zestStationSettings.zest_lang.default_language);
+            
+            $translate.use($scope.langCode);
         };
 
-        $scope.selectLanguage = function(language){
-            console.info('selectLanguage: ',language)
+        $scope.selectLanguage = function(language){//method used from angular view
             $scope.selectedLanguage = language.language;//set language name
             $scope.langflag = language.info.flag;// set language icon
             $translate.use(language.info.code); //set translations
@@ -750,7 +806,7 @@ sntZestStation.controller('zsRootCtrl', [
         {   $scope.startLanguageCounter();
             $scope.showLanguagePopup = false;
             $scope.timeOut = false;
-        }
+        };
         
             $scope.idleTimerSettings = {};
             $scope.$on('UPDATE_IDLE_TIMER',function(evt, params){
@@ -1095,6 +1151,10 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        $scope.zestStationData.workstationOooReason = "";
+        $scope.zestStationData.workstationStatus = "";
+        $scope.zestStationData.isAdminFirstLogin = true;
+        $scope.zestStationData.wsIsOos = false;
         
         (typeof chrome !== "undefined") ? maximizeScreen():"";
         //create a websocket obj

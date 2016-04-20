@@ -312,6 +312,25 @@
                 </div>
             </fieldset>
 
+            <!-- Group Confirmation Section -->
+            <fieldset class="holder right">
+                <div class="form-title">
+                    <h3>
+                        <span>{{'CUSTOMIZE' | translate}}</span>
+                        {{'AR_STATEMNT' | translate}}
+                    </h3>
+                </div>
+
+                <ad-textbox styleclass="full-width" value="data.ar_statement_email_subject" label="{{'AR_STATEMNT_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
+
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.ar_statement_email_body" label="{{'AR_STATEMNT_EMAIL_BODY'| translate}} " placeholder="{{'EMAIL_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+
+                <div class="entry full-width">
+                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.ar_statement_custom_text_header" label="{{'CUSTOM_TEXT_HEADER'| translate}} " placeholder="{{'CUSTOM_TEXT_HEADER_PLACE_HOLDER' | translate }}"></ad-textarea>
+                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.ar_statement_custom_text_footer" label="{{'CUSTOM_TEXT_FOOTER'| translate}} " placeholder="{{'CUSTOM_TEXT_FOOTER_PLACE_HOLDER' | translate }}"></ad-textarea>
+                </div>
+            </fieldset>
+
             <div class="actions float">
                 <button type="button" ng-click="goBackToPreviousState()" class="button blank" translate>CANCEL
                 </button>
