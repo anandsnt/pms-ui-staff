@@ -75,14 +75,12 @@ sntZestStation.controller('zsRootCtrl', [
     });
 
     $scope.returnDateObj = function(dateString){
-        //date has to be formatted
-        var dayIndex = dateString.indexOf("-");
-        var day = dateString.substring(0, dayIndex);
-        var dateStringWithoutDay = dateString.substring(dayIndex+1, dateString.length);
-        var monthIndex = dateStringWithoutDay.indexOf("-");
-        var month = dateStringWithoutDay.substring(0, monthIndex);
-        var year = dateStringWithoutDay.substring(monthIndex+1, dateStringWithoutDay.length);
-        return new Date(month+'-'+day+'-'+year);
+        //utils
+        if(typeof dateString !== 'undefined'){
+            return returnUnformatedDateObj(dateString,$scope.zestStationData.hotelDateFormat);
+        }else{
+            return dateString;
+        };
     };
 
 	/**
@@ -693,6 +691,8 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.currencySymbol = data.currency.symbol;
                     $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
                     $scope.zestStationData.payment_gateway = $scope.zestStationData.hotel_settings.payment_gateway;
+                    $scope.zestStationData.hotelDateFormat = !!data.date_format ? data.date_format.value : "DD-MM-YYYY" ;
+                    console.info("::Hotel date format ->"+$scope.zestStationData.hotelDateFormat);
                     $scope.$emit('hideLoader');
             };
             
