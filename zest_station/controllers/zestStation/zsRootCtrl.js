@@ -12,6 +12,11 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.syncOOSInterval = 119;//in seconds (0-based) // currently will re-sync every 2 minutes, next release will be an admin setting per hotel
     
 
+    var CheckIfItsChromeApp = function(){
+         $scope.inChromeApp = $("#hideFromChromeApp").css("visibility") === 'hidden' ;
+         console.info(":: is in chrome app ->"+$scope.inChromeApp);
+    }();
+
     /**
      * to run angular digest loop,
      * will check if it is not running
@@ -879,7 +884,7 @@ sntZestStation.controller('zsRootCtrl', [
                 console.log('msg from ChromeApp: ',response);
                 if (response){
                     if (response.isChromeApp){
-                        $scope.inChromeApp = true;
+                        //do nothing
                     } else if (response.qr_code){
                         $scope.initQRCodeFindReservation(response.reservation_id);
                     }
