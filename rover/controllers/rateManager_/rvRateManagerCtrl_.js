@@ -109,6 +109,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @return {[type]}            [description]
      */
     var handleTheReloadRequestFromPopupForMultipleRateRestrictionMode = (dialogData) => {
+        console.log(dialogData);
         //clearing the cached to perform fresh request
         cachedRateAndRestrictionResponseData = [];
     };
@@ -120,47 +121,48 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var handleTheReloadRequestFromPopupForSingleRateRestrictionMode = (dialogData) => {
         var rateID = dialogData.rate.id,
-            findCachedRateAndRestrictionIndex = -1;
+            foundCachedRateAndRestrictionIndexes = [];
                 
         //looping through cached response to find the page
         //checking for the rate Id existance
         for(let i = 0; i < cachedRateAndRestrictionResponseData.length; i++ ) {
             let currentDailyRateAndRestrictionList = cachedRateAndRestrictionResponseData[i].response.dailyRateAndRestrictions;
             let listOfRatesFoundInRateRestriction = currentDailyRateAndRestrictionList[0].rates;
+            
             let rateSetFoundIndexInList = _.findIndex(listOfRatesFoundInRateRestriction, { id: rateID });
 
             //if we've rate set, we're good and found the corresponding page ;)
             if(rateSetFoundIndexInList !== -1) {
                 lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = cachedRateAndRestrictionResponseData[i].page;
 
-                findCachedRateAndRestrictionIndex = i;
+                foundCachedRateAndRestrictionIndexes.push(i);
 
                 //finding the scroll position
-                let date = dialogData.date;
-                lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo = {
-                    row: rateSetFoundIndexInList + 1, //css selector index is not starting from zero
-                    offsetX: true,
+                let date = tzIndependentDate(dialogData.date),
+                    fromDateOfCurrentOne = tzIndependentDate(cachedRateAndRestrictionResponseData[i].fromDate),
+                    toDateOfCurrentOne = tzIndependentDate(cachedRateAndRestrictionResponseData[i].toDate);
 
-                    col: _.findIndex(currentDailyRateAndRestrictionList, { date: date }) + 1, //index is starting from zero
-                    offsetY: true
+                if(fromDateOfCurrentOne <= date && date <= toDateOfCurrentOne) {
+                    lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo = {
+                        row: rateSetFoundIndexInList + 1, //css selector index is not starting from zero
+                        offsetX: true,
+
+                        col: _.findIndex(currentDailyRateAndRestrictionList, { date: dialogData.date }) + 1, //index is starting from zero
+                        offsetY: true
+                    }
                 }
-
-                break;
             }
         };
 
-        if(findCachedRateAndRestrictionIndex !== -1) {
-            console.log(cachedRateAndRestrictionResponseData.length);
+        if(foundCachedRateAndRestrictionIndexes.length) {
             //clearing the cached to perform fresh request
-            cachedRateAndRestrictionResponseData.splice(findCachedRateAndRestrictionIndex, 1);
-            console.log(cachedRateAndRestrictionResponseData.length);
+            foundCachedRateAndRestrictionIndexes.map(indexToDelete => 
+                cachedRateAndRestrictionResponseData.splice(indexToDelete, 1));
+            
             //clearing the common restriction array to get the latest after updating the 
             cachedRateAndRestrictionResponseData.map(cachedRateAndRestrictionResponse => {
                 cachedRateAndRestrictionResponse.response.commonRestrictions = [];
-            });
-            console.log(cachedRateAndRestrictionResponseData.length);
-            console.log(cachedRateAndRestrictionResponseData);
-            
+            });    
         }
     };
 
