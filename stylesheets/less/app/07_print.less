@@ -849,7 +849,7 @@ table {
             .tab-header,
             .search-results { .hide; }
 
-            .ar-statement {
+             .ar-statement {
                 img {
                     -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
                     filter: grayscale(100%);
@@ -870,7 +870,13 @@ table {
                     padding:4pt 0;
                     font-size: 6.5pt;
                     &:last-child {
-                        
+                        padding-right: 4pt;
+                    }
+                    
+                    /*Add space to Charge Amount and Amount Due*/
+                    &:nth-child(5),
+                    &:nth-child(6) {
+                        padding-left: 4pt;
                     }
 
                     
