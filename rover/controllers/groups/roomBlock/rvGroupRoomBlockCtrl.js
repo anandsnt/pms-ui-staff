@@ -248,8 +248,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowTripleEntryRow = function(roomType) {
-			var customRateSelected = (parseInt($scope.groupConfigData.summary.rate) === -1);
-			if (customRateSelected) {
+			var customRateSelected = (parseInt($scope.groupConfigData.summary.rate) === -1),
+				isBorrowedRoomType = roomType.can_edit === false;
+
+			if (customRateSelected || isBorrowedRoomType) {
 				var list_of_triples = _.pluck(roomType.dates, 'triple');
 
 				//throwing undefined items
@@ -271,8 +273,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldShowQuadrupleEntryRow = function(roomType) {
-			var customRateSelected = (parseInt($scope.groupConfigData.summary.rate) === -1);
-			if (customRateSelected) {
+			var customRateSelected = (parseInt($scope.groupConfigData.summary.rate) === -1),
+				isBorrowedRoomType = roomType.can_edit === false;
+
+			if (customRateSelected || isBorrowedRoomType) {
 				var list_of_quadruples = _.pluck(roomType.dates, 'quadruple');
 
 				//throwing undefined items
