@@ -657,6 +657,21 @@
         }
 
         tr:first-child {
+            .cell-content {
+                > .restriction-icon {
+                        margin-top: 5px;
+                        position: static;
+                        float: left;
+                        margin-right: 0.5em;
+
+                        &:last-child {
+                            margin-right: 0;
+                        }
+                    }
+            }
+        }
+
+        tr:first-child {
             .cell-container { 
                 padding-top: 0;
                 height: 55px;
@@ -877,6 +892,10 @@
             width: 10.8%;
             vertical-align: middle;
             text-align: left;
+            margin: 0;
+            &:last-child {
+                margin: 0;
+            }
         }
 
         .restriction-icon {
