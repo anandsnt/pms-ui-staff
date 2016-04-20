@@ -891,7 +891,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * Get the room no if assigne else N/A
 		 */
 		$scope.getRoomNo = function(roomNo) {
-			return roomNo != '' ? roomNo : 'N/A';
+			return roomNo != '' && roomNo != null ? roomNo : 'N/A';
 		}
 
 		/**
@@ -928,6 +928,38 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
             $timeout(function() {
                 $scope.focusSearchField = true;
             }, 2000);
+		};
+
+		/**
+		 * Get the confirmation no
+		 * If external confirmation no is there, show that else show the confirmation no
+		*/
+		$scope.getConfirmationNo = function(reservation) {
+			var confirmationNo = "";
+
+			if(reservation.external_confirm_no) {
+				confirmationNo = reservation.external_confirm_no;
+			} else if (reservation.confirmation) {
+				confirmationNo = reservation.confirmation;
+			}
+
+			return confirmationNo;
+
+		};
+
+		/**
+		 * Get the confirmation text
+		*/
+		$scope.getConfirmationNoText = function(reservation) {
+			var confirmationText = "";
+
+			if(reservation.external_confirm_no) {
+				confirmationText = $filter('translate')('EXTERNAL_REF_NO_PREFIX');
+			} else if (reservation.confirmation) {
+				confirmationText = $filter('translate')('CONFIRM_NO_PREFIX');
+			}
+
+			return confirmationText;
 		};
 	}
 ]);

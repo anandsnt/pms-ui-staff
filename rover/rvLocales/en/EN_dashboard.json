@@ -21,4 +21,5 @@
     "SHOW_ALL" : "Show All",
     "CONFIRM_NO_PREFIX" : "CONF.",
     "EXTERNAL_REF_NO_PREFIX" : "EXT.",
-    "PENDING" : "Pending"
+    "PENDING" : "Pending",
+    "QUEUED" : "Queued"

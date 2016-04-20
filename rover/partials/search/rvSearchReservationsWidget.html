@@ -57,10 +57,9 @@
                         </h2>
                         <h2 class="pending" ng-if="escapeNull(row.lastname) == '' && escapeNull(row.firstname) == '' " translate>PENDING</h2>
                         <span class="confirmation">
-                            <span class="confirmation-text" ng-if="escapeNullStr(row.confirmation) != ''" translate>CONFIRM_NO_PREFIX</span>
-                            {{escapeNullStr(row.confirmation)}}
-                            <span class="confirmation-text" ng-if="escapeNullStr(row.external_confirm_no) != ''" translate>EXTERNAL_REF_NO_PREFIX</span>
-                            {{escapeNullStr(row.external_confirm_no)}}
+                            <span class="confirmation-text">{{getConfirmationNoText(row)}}</span>
+                            <span ng-bind-html="getConfirmationNo(row) | highlight:textInQueryBox:false" ng-if="textInQueryBox.length >= 5"></span>
+                            <span ng-bind-html="getConfirmationNo(row)" ng-if="textInQueryBox.length < 5"></span>
                         </span>
                         <span class="icons icon-location" ng-class="{'no-location': (escapeNullStr(row.location)=='')}">{{escapeNullStr(row.location)}}</span>
 
@@ -90,10 +89,10 @@
                         </div>
 
                         <div class="room-info">
-                            <strong class="room-number {{getRoomStatusMapped(row.roomstatus, row.fostatus, row.room) }}">{{getRoomNo(row.room)}}</strong>
+                            <strong class="room-number {{getRoomStatusMapped(row.roomstatus, row.fostatus, row.room) }}" ng-bind-html="getRoomNo(row.room) | highlight:textInQueryBox:false"></strong>
                             <span class="room-type">{{row.room_type}}</span>
 
-                            <span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)">Queued</span>
+                            <span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)" translate>QUEUED</span>
 
                         </div>
                          <span class="room-status">{{row.roomstatus}}</span>
