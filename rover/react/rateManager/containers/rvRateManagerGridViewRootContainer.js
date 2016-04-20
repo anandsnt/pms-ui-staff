@@ -15,7 +15,6 @@ const shouldShowGridViewRootContainer = (state) => {
 
 const mapStateToRateManagerGridViewRootComponentProps = (state) => ({
     shouldShow 			: shouldShowGridViewRootContainer(state),
-    zoomLevel 			: state.zoomLevel,
     refreshScrollers 	: (state.action === RM_RX_CONST.REFRESH_SCROLLERS)
 });
 
