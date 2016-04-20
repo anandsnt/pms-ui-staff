@@ -457,11 +457,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		$scope.bookingDataChanging = function() {
 			//we are changing the model to
 			$scope.hasBookingDataChanged = true;
-
-
-
-
 			runDigestCycle();
+			$scope.getTotalBookedRooms();
 		};
 
 		/**
@@ -521,7 +518,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
 				$timeout(function() {
 					$scope.updateGroupSummary();
-				}, 100);				
+				}, 100);
 			}
 
 			// we will clear end date if chosen start date is greater than end date
@@ -572,7 +569,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 					$scope.updateGroupSummary();
 					//for updating the room block after udating the summary
 					$scope.hasBlockDataUpdated = true; //as per variable name, it should be false, but in this contrler it should be given as true other wise its not working
-				}, 100);				
+				}, 100);
 			}
 
 			//setting the max date for start Date
@@ -594,11 +591,11 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				cancelledGroup 			= sData.is_cancelled,
 				is_A_PastGroup 			= sData.is_a_past_group,
 				inEditMode 				= !$scope.isInAddMode();
-				
-			return ( inEditMode &&  
+
+			return ( inEditMode &&
 				   	(
-				   	  noOfInhouseIsNotZero 	|| 
-					  cancelledGroup 		|| 
+				   	  noOfInhouseIsNotZero 	||
+					  cancelledGroup 		||
 					  is_A_PastGroup
 					)
 				   );
@@ -615,10 +612,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				toRightMoveNotAllowed 	= !sData.is_to_date_right_move_allowed,
 				inEditMode 				= !$scope.isInAddMode();
 
-			return ( inEditMode &&  
-				   	( 
-				   	 endDateHasPassed 	|| 
-					 cancelledGroup 	||  
+			return ( inEditMode &&
+				   	(
+				   	 endDateHasPassed 	||
+					 cancelledGroup 	||
 					 toRightMoveNotAllowed
 					)
 				   );
@@ -914,8 +911,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				roomType.triple = cInt(roomType.triple);
 				triple = roomType.triple;
 			}
+			var totalIndividual = (cInt(roomType.single) + cInt(roomType.double) + (triple) + (quadruple));
 
-			return (cInt(roomType.single) + cInt(roomType.double) + (triple) + (quadruple));
+			return totalIndividual;
 		};
 
 		/**
@@ -1080,7 +1078,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		};
 
 		/*
-		 * Open popup to inform if inhouse reservations exists. 
+		 * Open popup to inform if inhouse reservations exists.
 		 */
 		var openInhouseReservationsExistsPopup = function () {
 			ngDialog.open({
@@ -1191,6 +1189,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			//we need the copy of selected_room_type, we ned to use these to show save/discard button
 			$scope.copy_selected_room_types_and_bookings = util.deepCopy(data.results);
 
+			$scope.getTotalBookedRooms();
 			//we changed data, so
 			refreshScroller();
 		};
@@ -1598,6 +1597,34 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			$scope.changeDatesActions.clickedOnMoveButton ();
 
 		};
+		var getTotalOfIndividualDate = function(passedDate){
+			var totalRoomsBlockedCountIndividualDate = 0;
+			var totalRoomsPickedIndividulaDate 		 = 0;
+			var cInt = util.convertToInteger;
+			angular.forEach($scope.groupConfigData.summary.selected_room_types_and_bookings, function(value, key) {
+
+				angular.forEach(value.dates, function(eachDateValue, eachDateKey) {
+					if(eachDateValue.date === passedDate){
+						totalRoomsBlockedCountIndividualDate = totalRoomsBlockedCountIndividualDate + cInt(eachDateValue.single) + cInt(eachDateValue.double) + cInt(eachDateValue.triple) + cInt(eachDateValue.quadruple);
+						totalRoomsPickedIndividulaDate = totalRoomsPickedIndividulaDate + cInt(eachDateValue.single_pickup) + cInt(eachDateValue.double_pickup) + cInt(eachDateValue.triple_pickup) + cInt(eachDateValue.quadruple_pickup);
+					}
+				});
+			});
+			var totalOfIndividualDateData = [];
+			totalOfIndividualDateData["totalBlocked"] = totalRoomsBlockedCountIndividualDate;
+			totalOfIndividualDateData["totalPicked"]  = totalRoomsPickedIndividulaDate;
+			return totalOfIndividualDateData;
+		}
+
+		$scope.getTotalBookedRooms = function(){
+
+			angular.forEach($scope.groupConfigData.summary.selected_room_types_and_occupanies, function(value, key) {
+				value.totalRoomsBlockedCountPerDay = getTotalOfIndividualDate(value.date)["totalBlocked"];
+				value.totalRoomsPickedCountPerDay = getTotalOfIndividualDate(value.date)["totalPicked"];
+			});
+
+		};
+
 
 		/**
 		 * when clicked on cancel move button. this will triggr
@@ -1768,6 +1795,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			callInitialAPIs();
 			//on tab switching, we have change min date
 			setDatePickers();
+
 		};
 
 		/**
@@ -1805,6 +1833,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			if ($scope.groupConfigData.activeTab === "ROOM_BLOCK") {
 				initializeRoomBlockDetails();
 			}
+
+
 
 		}();
 
