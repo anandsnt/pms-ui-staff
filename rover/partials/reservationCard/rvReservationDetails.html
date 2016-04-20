@@ -184,7 +184,7 @@
                     <!-- <input name="adults-count" id="adults-count" type="text" ng-model="guestData.adult_count" value="{{guestData.adult_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
                     <div class="select">
                         <select ng-readonly="!isStandAlone" name="adults-count" id="adults-count" ng-model="guestData.adult_count" ng-change="onStayCardOccupancyChange()" >
-                            <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==guestData.adult_count">{{i}}</option>
+                            <option ng-repeat="i in [1, maxAdultsForReservation] | makeRange" value="{{i}}" ng-selected="i==guestData.adult_count">{{i}}</option>
                         </select>
                     </div>
                 </li>
