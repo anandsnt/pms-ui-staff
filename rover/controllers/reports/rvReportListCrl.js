@@ -14,28 +14,59 @@ sntRover.controller('RVReportListCrl', [
 
         BaseCtrl.call(this, $scope);
 
-        var LIST_ISCROLL_ATTR = 'report-list-scroll';
-
-        var LIST_ISCROLL_ATTR = 'report-list-scroll';
+        // var LIST_ISCROLL_ATTR = 'report-list-scroll';
 
         var REPORT_DASHBOARD_SCROLL = 'report-dashboard-scroll',
             REPORT_LIST_SCROLL = 'report-list-scroll',
             REPORT_FILTERS_SCROLL = 'report-filters-scroll';
 
+        var refreshFilterScroll = function() {
+            $scope.refreshScroller(REPORT_FILTERS_SCROLL);
+        }
 
-        $scope.setScroller(LIST_ISCROLL_ATTR, {
-            preventDefault: false
-        });
-        $scope.setScroller('reportUserFilterScroll');
+        var refreshScroll = function(scrollUp) {
+            $scope.refreshScroller(REPORT_DASHBOARD_SCROLL);
+            $scope.refreshScroller(REPORT_LIST_SCROLL);
+            $scope.refreshScroller(REPORT_FILTERS_SCROLL);
+        };
+
+        var setScroller = function() {
+            $scope.setScroller(REPORT_DASHBOARD_SCROLL, {
+                tap: true,
+                preventDefault: false,
+                scrollX: true,
+                scrollY: false
+            });
+
+            $scope.setScroller(REPORT_LIST_SCROLL, {
+                tap: true,
+                preventDefault: false,
+                scrollX: false,
+                scrollY: true
+            });
+
+            $scope.setScroller(REPORT_FILTERS_SCROLL, {
+                tap: true,
+                preventDefault: false,
+                scrollX: false,
+                scrollY: true
+            });
+        };
+
+
+        // $scope.setScroller(LIST_ISCROLL_ATTR, {
+        //     preventDefault: false
+        // });
+        // $scope.setScroller('reportUserFilterScroll');
 
         /**
          * inorder to refresh after list rendering
          */
-        var listRendered = $scope.$on("REPORT_LIST_RENDERED", function() {
-            $scope.refreshScroller( LIST_ISCROLL_ATTR );
-        });
+        // var listRendered = $scope.$on("REPORT_LIST_RENDERED", function() {
+        //     $scope.refreshScroller( LIST_ISCROLL_ATTR );
+        // });
         
-        $scope.$on( '$destroy', listRendered );
+        // $scope.$on( '$destroy', listRendered );
 
 
 
@@ -104,48 +135,40 @@ sntRover.controller('RVReportListCrl', [
 
             // SUPER forcing scroll refresh!
             // 2000 is the delay for slide anim, so firing again after 2010
-            $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 100 );
-            $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 2010 );
+            // $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 100 );
+            // $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 2010 );
         };
 
         postProcess( $scope.$parent.reportList );
 
 
         // show hide filter toggle
-        $scope.toggleFilter = function(e, reportItem) {
+        $scope.toggleFilter = function(e, report) {
             if ( e ) {
                 e.preventDefault();
                 e.stopPropagation();
             };
 
-            var toggle = function() {
-                reportItem.show_filter = reportItem.show_filter ? false : true;
-                $scope.refreshScroller( LIST_ISCROLL_ATTR );
-
-                // close any open 'FAUX_SELECT'
-                _.each($scope.$parent.reportList, function(thatReport, index) {
-                    if ( thatReport.id != reportItem.id ) {
-                        _.each(thatReport, function(value, key) {
-                            if ( !!value && value.type === 'FAUX_SELECT' ) {
-                                value.show = false;
-                            };
-                        });
-                    };
-                });
-
-                $scope.refreshScroller('reportUserFilterScroll');
-            };
 
             var callback = function() {
+                if ( $scope.uiChosenReport ) {
+                    $scope.uiChosenReport.uiChosen = false;
+                }
+
+                report.uiChosen = true;
+                $scope.uiChosenReport = report;
+
+                //refreshFilterScroll();
+                $timeout(refreshFilterScroll, 300)
+
                 $scope.$emit( 'hideLoader' );
-                toggle();
             };
 
-            if ( !! reportItem.allFiltersProcessed ) {
-                toggle();
+            if ( !! report.allFiltersProcessed ) {
+                callback();
             } else {
                 $scope.$emit( 'showLoader' );
-                reportUtils.findFillFilters( reportItem, $scope.$parent.reportList )
+                reportUtils.findFillFilters( report, $scope.$parent.reportList )
                     .then( callback );
             };
         };
@@ -166,12 +189,12 @@ sntRover.controller('RVReportListCrl', [
         };
 
 
-        var serveRefresh = $scope.$on(reportMsgs['REPORT_LIST_SCROLL_REFRESH'], function() {
-            $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 100 );
-        });
+        // var serveRefresh = $scope.$on(reportMsgs['REPORT_LIST_SCROLL_REFRESH'], function() {
+        //     $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 100 );
+        // });
 
         // removing event listners when scope is destroyed
-        $scope.$on( '$destroy', serveRefresh );
+        // $scope.$on( '$destroy', serveRefresh );
 
         
     }

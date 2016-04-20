@@ -1,9 +1,8 @@
 <span class="nested-view view-current" ng-class="{ 'return-back': !showReportDetails }">
     <div ng-include="'/assets/partials/common/header.html'"></div>
     
-    <span ng-controller="RVReportListCrl">
+    <span ng-controller="RVReportListCrl" class="content reports-wrapper" ng-hide="showReportDetails">
         
-    </span>
         <!-- Search -->
         <form method="get" action="{action}" class="search-form" role="search">
             <div class="entry search">
@@ -15,7 +14,7 @@
             </div>
         </form>
 
-        <section id="reports" class="content" role="main">
+        <section id="reports" role="main" style="position: relative; height: 100%;">
             
             <!-- Menu -->
             <div id="reports-menu">
@@ -55,7 +54,8 @@
                 ng-if="reportList.length"
                 ng-controller="RVReportListCrl"
                 ng-iscroll="report-dashboard-scroll"
-                ng-iscroll-delay="100">
+                ng-iscroll-delay="100"
+                ng-class="{'cols-2': !! uiChosenReport }">
                 <div class="wrapper">
                     <div class="cols-wrapper">
                         <div class="report-col main-col scrollable"
@@ -64,7 +64,7 @@
                             <ul class="wrapper">
                                 <li class="report-item"
                                     ng-repeat="item in reportList"
-                                    ng-class="{'active': item.show_filter}"
+                                    ng-class="{'active': item.uiChosen}"
                                     ng-click="toggleFilter($event, item)"
                                     emit-when="{event: 'REPORT_LIST_RENDERED', condition: $last}">
                                     <span ng-class="item.reportIconCls"></span>
@@ -82,13 +82,17 @@
                                 ng-iscroll="report-filters-scroll"
                                 ng-iscroll-delay="100"> <!-- Add vertical scroller here -->
                                 <div class="wrapper">
-                                    <h3>{Report Name}<span>Configure report</span></h3>
-                                    {available filter options are located in filters-reports-list.html}            
+                                    <h3>{{ uiChosenReport.title }}<span>Configure report</span></h3>
+                                    <div class="configure-report" ng-include="'/assets/partials/reports/filters/rvReportListFilters.html'"></div>
                                 </div>
-                                <div class="column-actions"> <!-- Add class "two-buttons" if showing both Export and Show buttons -->
+                                <div class="column-actions" ng-class="{'two-buttons': uiChosenReport.display_export_button && !hideExportOption}"> <!-- Add class "two-buttons" if showing both Export and Show buttons -->
                                     <!-- Usually we only show one of these -->
-                                    <button type="button" class="button purple">Export</button>
-                                    <button type="button" class="button green">Show</button>
+                                    <button type="button" class="button purple"
+                                        ng-click="exportCSV(uiChosenReport)"
+                                        ng-if="uiChosenReport.display_export_button && !hideExportOption">Export</button>
+                                    <button type="button" class="button green"
+                                        ng-click="setnGenReport(uiChosenReport)"
+                                        ng-show="uiChosenReport.display_show_button">Show</button>
                                 </div>
                             </div>
                         </div>
@@ -106,30 +110,9 @@
             
         </section>
     </span>
-
-<!--     <section id="reports" class="content scrollable reports-wrapper" role="main" ng-hide="showReportDetails" ng-controller="RVReportListCrl" ng-iscroll="report-list-scroll">
-        <div class="wrapper">
-            <ul class="reports-list">
-                <li ng-repeat="item in reportList" emit-when="{event: 'REPORT_LIST_RENDERED', condition: $last}">
-                    <a href="#" class="toggle-filter has-arrow" ng-class="{'active': item.show_filter}" ng-click="toggleFilter($event, item)">
-                        <span ng-class="item.reportIconCls"></span>
-                        <div class="data">
-                            <h2 ng-class="{'single-title': !item.description}">
-                                {{ item.title }}
-                                <span ng-if="item.sub_title">{{ item.sub_title }}</span>
-                            </h2>
-                            <em>{{ item.description }}</em>
-                        </div>
-                    </a>
-                    <div class="configure-report" ng-class="{'two-buttons': item.display_export_button && !hideExportOption}" ng-show="item.show_filter" ng-include="'/assets/partials/reports/filters/rvReportListFilters.html'"></div>
-                </li>
-            </ul>
-        </div>
-    </section>
-
-
-    <section id="report-details" class="content reports-wrapper" role="main" ng-show="showReportDetails" ng-click="toggleSidebar()">
-        <span ng-controller="RVReportDetailsCtrl">
+    
+    <span ng-controller="RVReportDetailsCtrl" class="content reports-wrapper" ng-show="showReportDetails">
+        <section id="report-details" role="main" ng-click="toggleSidebar()"  style="position: relative; height: 100%;">
             <div id="report-update" class="sidebar-left ui-resizable" ng-class="{'open': showSidebar}" ng-click="toggleSidebar($event)" ng-include="'/assets/partials/reports/filters/rvReportDetailsFilters.html'"></div>
 
             <div class="report-header" ng-show="showReportHeader">
@@ -158,6 +141,6 @@
             <div class="report-header" ng-show="errorMessage.length" ng-include="'/assets/partials/common/notification_message.html'"></div>
 
             <span ng-hide="errorMessage.length" ng-include="detailsTemplateUrl"></span>
-        </span>
-    </section> -->
+        </section>
+    </span>
 </span>
