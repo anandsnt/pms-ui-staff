@@ -329,6 +329,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 //adding available room count over the data we got
                 $scope.roomTypesAndData = _.map(data.result, function(data) {
                     data.availableRoomCount = toI(data.total_rooms) - toI(data.total_pickedup_rooms);
+                    data.availableRoomCount = (data.availableRoomCount < 0) ? 0 : data.availableRoomCount;
                     return data;
                 });
                 //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
@@ -350,6 +351,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                     _.extend(roomTypeData, correspondingActualData);
 
                     roomTypeData.availableRoomCount = toI(correspondingActualData.total_rooms) - toI(correspondingActualData.total_pickedup_rooms);
+                    roomTypeData.availableRoomCount = (roomTypeData.availableRoomCount < 0) ? 0 : roomTypeData.availableRoomCount;
                 });
 
                 //if we've added a new room type from room block & we are switching the tab
@@ -367,6 +369,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
                         if (room_type_to_add) {
                             room_type_to_add.availableRoomCount = toI(room_type_to_add.total_rooms) - toI(room_type_to_add.total_pickedup_rooms);
+                            room_type_to_add.availableRoomCount = (room_type_to_add.availableRoomCount < 0) ? 0 : room_type_to_add.availableRoomCount;
                         }
                         $scope.roomTypesAndData.push(room_type_to_add);
                     }
