@@ -1438,7 +1438,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         activeFilterIndex = activeFilterIndex + 1;
 
-        $scope.selectedRateNames = lastSelectedFilterValues[activeFilterIndex].selectedRates;
+        $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
 
         $scope.showBackButton = true;
 
