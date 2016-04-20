@@ -533,7 +533,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 	    // add the print orientation before printing
 		var addPrintOrientation = function() {
-			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
 		};
 
 		// add the print orientation after printing
