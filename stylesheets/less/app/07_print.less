@@ -868,9 +868,12 @@ table {
                     text-transform: uppercase;
                     background-color: @grey2;
                     padding:4pt 0;
+                    font-size: 6.5pt;
                     &:last-child {
-                        padding-right: 4pt;
+                        
                     }
+
+                    
                 }
                 .invoice-details {
                     > tbody > tr > td {
@@ -881,39 +884,55 @@ table {
                 }
                 tbody {
 
-                    tr td {
-                        border-bottom:1px solid @grey2;
-                    }
-
-                   
-
                     tr:not(.person) td {
                         padding-top:4pt;
                     }
 
-                    tr td:last-child {
-                        padding-right: 4pt;
+                    tr {
+                         td {
+                            border-bottom:1px solid @grey2;
+                            padding: 4pt 4pt 4pt 0;
+                            
+                                &:last-child {
+                                    padding-right: 4pt;
+                                }
+                            
+
+                            &.charge-description {
+                                width: 90pt !important;
+                            }
+
+                            &.charge-date,
+                            &.charge-code,
+                           {
+                                width: 60pt !important;
+                            }
+                        }
                     }
 
-                    tr td.charge-description,
-                    tr th.charge-description {
-                        width: 4.5cm !important;
-                    }
 
-                    tr td.charge-date,
-                    tr th.charge-date,
-                    tr td.charge-code,
-                    tr th.charge-code  {
-                        width: 3cm !important;
-                    }
 
-                    .charges-table tr:last-child td {
+                 .charges-table {
+                    tr td {
+                        &.charge-description {
+                                width: 90pt !important;
+                            }
+
+                        &.charge-date,
+                        &.charge-code,
+                       {
+                            width: 60pt !important;
+                        }
+                    }
+                    tr:last-child td {
                         border-bottom: none;
                     }
-
-                    .charges-table tr:first-child td {
-                       padding-top:0;
+                    tr:first-child td {
+                        padding-top: 0;
                     }
+                 }
+
+                
                 }
 
                 .statement-header {
@@ -998,6 +1017,15 @@ table {
                         display:block;
                     }
                     margin-bottom:0.1cm;
+
+                    &:nth-child(3) {
+                        clear: both;
+                    }
+
+                    &:nth-child(3),
+                    &:first-child{
+                        padding-right: 1em;
+                    }
                 }
             }
 
