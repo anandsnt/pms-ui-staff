@@ -16,6 +16,13 @@ sntRover.controller('RVReportListCrl', [
 
         var LIST_ISCROLL_ATTR = 'report-list-scroll';
 
+        var LIST_ISCROLL_ATTR = 'report-list-scroll';
+
+        var REPORT_DASHBOARD_SCROLL = 'report-dashboard-scroll',
+            REPORT_LIST_SCROLL = 'report-list-scroll',
+            REPORT_FILTERS_SCROLL = 'report-filters-scroll';
+
+
         $scope.setScroller(LIST_ISCROLL_ATTR, {
             preventDefault: false
         });
