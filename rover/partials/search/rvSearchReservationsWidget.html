@@ -1,14 +1,22 @@
 <div ng-controller = "rvReservationSearchWidgetController" >
-	<form method="get" action="" name="dashboard-search-form" id="dashboard-search-form" class="search-form has-dates" role="search" ng-class="{'enable-adding' :showAddNewGuestButton && showSearchResultsArea && textInQueryBox.length !== 0}" outside-click-handler><!--TODO: verify enable-adding -->	
+	<form method="get" action="" name="reservations-search-form" id="reservations-search-form" class="search-form has-dates has-room-types" role="search" ng-class="{'enable-adding' :showAddNewGuestButton && showSearchResultsArea && textInQueryBox.length !== 0}" outside-click-handler><!--TODO: verify enable-adding -->
 	    <div class="entry search">
 	    	<button id="dashboard-clear-query" class="clear-query" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">
 	    	    <span class="icons icon-clear-search">Clear query</span>
 	    	</button>
 	    	<button type="submit" name="submit" class="icons icon-search">Search</button>
-	    	<input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()" ng-model="textInQueryBox" focus-me="focusSearchField"/>
+	    	<input name="reservations-query" id="reservations-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()" ng-model="textInQueryBox" focus-me="focusSearchField"/>
 	    </div>
+	    <div class="entry room-types">
+	        <div class="select with-label">
+	            <label for="room-type">Room Type</label>
+	            <select id="room-type" ng-model="room_type_id" ng-change="onRoomTypeChange()">
+	                <option value="" selected="" translate>SHOW_ALL</option>
+	                <option value="{{roomType.id}}" ng-repeat="roomType in roomTypes">{{roomType.name}}</option>
+	            </select>
+	        </div>
+    	</div>
 	    <div class="entry dates">
-
             <div class="entry-data has-datepicker">
                 <label for="dashboard-date-from">From</label>
                 <input name="dashboard-date-from" id="dashboard-date-from" class="hasDatepicker" readonly="" type="text" placeholder="{{fromDate | date : dateFormat }}" value="{{fromDate| date : dateFormat}}"/>
@@ -33,106 +41,73 @@
 	    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalSearchResults}}</strong> items</p>
 	</div>
 	<section ng-attr-id="{{search_area_id}}" class="content scrollable" ng-class="{'no-pagination': ((totalSearchResults < searchPerPage && results.length > 0) || isSwiped), 'no-results' : results.length == 0, 'hidden': !showSearchResultsArea, 'showing-search': searchAreaIsOpening, 'closing-search': searchAreaIsHiding}" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
-	    <div class="wrapper"> 
+	    <div class="wrapper">
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->
-				<li class="reservation" ng-repeat="row in results" ng-show="row.is_row_visible" ngrepeatend ngrepeatstarted>
-					<a ng-class="getReservationClass(row.reservation_status)" ng-click="goToReservationDetails($event,row.id, row.confirmation)"> 
-					<!--TODO: Verify add class "accompany" if it's a accompanying guest -->
-						<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
-							<img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true)}">
-							<!-- commented out for CICO-9877 -->
-							<!-- <img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true), 'second-image':(row.images.length >1 && image.is_primary==false)}"> -->
-							<span class="vip" ng-show="row.vip==true">VIP</span>
-						</figure>
-						<div class="data" ng-class="{'no-guest-info': escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)=='' && escapeNull(row.allotment)==''}">  <!-- TODO:   verify Add class "no-guest-info" if there's no company, ta and group attached -->
-							<h2 ng-class="{'grey' : row.is_accompanying_guest=='1'}">
-                                <span class="no-margin-right" ng-bind-html="escapeNull(row.lastname)|highlight:textInQueryBox:false"></span>,
-								<span ng-bind-html="escapeNull(row.firstname)|highlight:textInQueryBox:false"></span>
-							</h2>
-							<span class="confirmation" ng-if="shouldShowConfirmationNumber(row)"  ng-bind-html="'{{row.confirmation}}'|highlight:textInQueryBox:false">{{row.confirmation}}</span>
-							<span class="confirmation" ng-if="!shouldShowConfirmationNumber(row)" ng-bind-html="'{{row.cancellation_no}}'|highlight:textInQueryBox:false">{{row.cancellation_no}}</span>
-							<span class="icons icon-location" ng-hide="escapeNullStr(row.location)==''" >{{escapeNullStr(row.location)}}
-							</span>
-						</div>	
+				<li class="find-reservation" ng-repeat="row in results" ng-show="row.is_row_visible" ngrepeatend ngrepeatstarted>
+					<a ng-class="getReservationClass(row.reservation_status)" ng-click="goToReservationDetails($event,row.id, row.confirmation)"> <!-- add class "accompany" if it's a accompanying guest -->
+                    <figure class="guest-image" ng-class="{'accompany': row.images.length >1}" ng-show="row.images.length!=0 "><!-- add class "accompany" if it's a accompanying guest -->
+                       <img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true)}">
+                        <!-- if it's accompanying guest, show this as well:
+                        <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
+                    </figure>
+                    <div class="data">
+                        <!-- Add .cancelled if the guest has cancelled or no show -->
+                        <h2 ng-show="escapeNull(row.lastname) != '' || escapeNull(row.firstname) != ''" ng-bind-html="getGuestName(row.firstname, row.lastname)| highlight:textInQueryBox:false" ng-class="{'cancelled' : row.reservation_status == 'CANCELED' || row.reservation_status == 'NO SHOW'}">
+                        </h2>
+                        <h2 class="pending" ng-if="escapeNull(row.lastname) == '' && escapeNull(row.firstname) == '' " translate>PENDING</h2>
+                        <span class="confirmation">
+                            <span class="confirmation-text">{{getConfirmationNoText(row)}}</span>
+                            <span ng-bind-html="getConfirmationNo(row) | highlight:textInQueryBox:false" ng-if="textInQueryBox.length >= 5"></span>
+                            <span ng-bind-html="getConfirmationNo(row)" ng-if="textInQueryBox.length < 5"></span>
+                        </span>
+                        <span class="icons icon-location" ng-class="{'no-location': (escapeNullStr(row.location)=='')}">{{escapeNullStr(row.location)}}</span>
 
-						<!-- if none of these exsist for the guest don't output the entire div (and add class "no-guest-info" to div.data) -->
-	                    <div class="guest-info" ng-hide="escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)=='' && escapeNull(row.allotment)==''">
-	                        <span class="icons icon-guest-company" ng-if="escapeNull(row.company)!=''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span> 
-	                        <span class="icons icon-guest-travelagent" ng-if="escapeNull(row.travel_agent)!=''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
-	                        <span class="icons icon-group" ng-if="escapeNull(row.group)!=''" ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></span> 
-	                        <span class="icons icon-allotment" ng-if="escapeNull(row.allotment)!=''" ng-bind-html="escapeNull(row.allotment)|highlight:textInQueryBox:false"></span> 
-	                    </div>
+                        <span class="guest-status check-in"></span>
+                        <time class="guest-time">
+                            <span>{{row.arrival_date| date : dateFormat}}</span>
+                            <span class="hours">{{getTimeConverted(row.arrival_time)}}</span>
+                        </time>
 
-						<!-- Display the arrival date and Room number-->
-	                    <div class="reservation-info" ng-if="row.reservation_status == 'CHECKING_IN' || row.reservation_status == 'CHECKEDIN'|| row.reservation_status == 'CHECKING_OUT'|| (row.reservation_status == 'RESERVED' && escapeNull(row.room) !== '' ) || (row.reservation_status == 'RESERVED' && row.is_pre_checkin )">
-	                        <!-- this can be either arrival or departure date, depending on reservation status -->
-	                        <div class="arrival-departure">
-	                            <span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin , row.arrival_date)}}">{{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin, row.arrival_date)}}</span>
-	                            <span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)"></span>
-	                            
-	                            <time datetime="{arrival or departure timestamp}">
-	                            	<span ng-if ="(row.reservation_status == 'RESERVED'||row.reservation_status == 'CHECKING_IN')">
+                        <span class="guest-status check-out"></span>
+                        <time class="guest-time">
+                            <span>{{row.departure_date| date : dateFormat}}</span>
+                            <span class="hours">{{getTimeConverted(row.departure_time)}}</span>
+                        </time>
+                    </div>
 
-		                                <span>{{row.arrival_date| date : dateFormat}}</span>
-		                                <!-- TODO: Date formating for arrival/departure time -->
-		                                <span>{{getTimeConverted(row.arrival_time)}}</span>
-		                            </span>
-		                            	
-		                            <span ng-if ="(row.reservation_status == 'CHECKEDIN'||row.reservation_status == 'CHECKING_OUT')">
-		                            	
-		                                <span>{{row.departure_date| date : dateFormat}}</span>
-		                                <span ng-hide="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true)">{{getTimeConverted(row.departure_time)}}</span>
-		                                <span ng-show="(row.reservation_status =='CHECKING_OUT' && row.is_opted_late_checkout == true)">{{row.late_checkout_time}}</span>
-		                            </span>
+                    <div class="reservation-info">
+                        <div class="guest-info">
+                            <span class="guest-company" ng-if="escapeNull(row.company)!=''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span>
+	                        <span class="guest-travelagent" ng-if="escapeNull(row.travel_agent)!=''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
+	                        <span class="group" ng-if="escapeNull(row.group)!=''" ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></span>
+	                        <span class="allotment" ng-if="escapeNull(row.allotment)!=''" ng-bind-html="escapeNull(row.allotment)|highlight:textInQueryBox:false"></span>
+                        </div>
 
-	                            </time> 
-	                        </div>
+                        <div class="reservation-status">
+                            <span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin , row.arrival_date)}}">{{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin, row.arrival_date)}}</span>
+                        </div>
 
-	                        <div class="room-info">
-								<!-- Confirm the logic of READY and NOT-READY -->
-	                        	<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only, row.room_service_status)" >
-	                        		<span ng-class="{'room-highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!=''}">
-	                        			{{escapeNull(row.room)}}
-	                        		</span>			
-	                        	</span>
+                        <div class="room-info">
+                            <strong class="room-number {{getRoomStatusMapped(row.roomstatus, row.fostatus, row.room) }}" ng-bind-html="getRoomNo(row.room) | highlight:textInQueryBox:false"></strong>
+                            <span class="room-type">{{row.room_type}}</span>
 
-	                        	<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
+                            <span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)" translate>QUEUED</span>
 
-	                        	<span class="room-type">{{row.room_type}}</span>
-	                        </div>
+                        </div>
+                         <span class="room-status">{{row.roomstatus}}</span>
+                    </div>
 
-                    	</div>
-
-                    	<!-- Display arrival and departure dates . Do not display the room number -->
-	                    <div class="reservation-info" ng-if="row.reservation_status == 'CHECKEDOUT' || row.reservation_status == 'NOSHOW'|| row.reservation_status == 'NOSHOW_CURRENT' || row.reservation_status == 'CANCELED' || (row.reservation_status == 'RESERVED' && escapeNull(row.room) == '' && !row.is_pre_checkin)">
-	                        <!-- this is arrival date -->
-	                        <div class="arrival-departure">
-	                            <span class="guest-status {{getGuestStatusIconForArrival(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}">{{getGuestStatusIconForArrival(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}</span>
-	                            <time datetime="{arrival timestamp}">
-	                                <span>{{row.arrival_date| date : dateFormat}}</span>
-	                                <span>{{getTimeConverted(row.arrival_time)}}</span>
-	                            </time>
-	                        </div>
-
-	                        <div class="departing">
-	                            <span class="guest-status {{getGuestStatusIconForDeparture(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}">{{getGuestStatusIconForDeparture(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}</span>
-	                            <time datetime="{departure timestamp}">
-	                                <span>{{row.departure_date| date : dateFormat}}</span>
-	                                <span>{{getTimeConverted(row.departure_time)}}</span>
-	                            </time>
-	                        </div>
-	                    </div>
-					</a>
+                </a>
 				</li>
 				<li class="no-content" ng-show="showNoMatches(results, textInQueryBox.trim().length, isTyping, isSwiped)" >
 					<div class="info">
 						<span class="icon-no-content icon-search"></span>
 						<strong class="h1">No matches </strong>
-						<span class="h2">Check that you didn't mispell the <strong>Name</strong> or 
-							<strong>Group</strong>, or typed in the wrong <strong>Room </strong> or 
+						<span class="h2">Check that you didn't mispell the <strong>Name</strong> or
+							<strong>Group</strong>, or typed in the wrong <strong>Room </strong> or
 							<strong>Confirmation</strong> number
-							<span ng-show="results.length==0 && showAddNewGuestButton">, or    
+							<span ng-show="results.length==0 && showAddNewGuestButton">, or
 							<a ui-sref="rover.reservation.search">Add a New Guest <a/></span>
 						</span>
 						.
@@ -162,10 +137,10 @@
 					<div class="info">
 						<span class="icon-no-content icon-search" ></span>
 						<strong class="h1">No matches </strong>
-						<span class="h2">Enter different search criteria to find reservation / guest. 
-							
+						<span class="h2">Enter different search criteria to find reservation / guest.
+
 						</span>
-						
+
 					</div>
 				</li>
 	        </ul>
