@@ -117,7 +117,7 @@
                                 EXT. REF: 
                                 <span class="value">{{transaction.external_reference_number}}</span>
                             </span>
-                            <span class="confirmation" ng-if="transaction.reservation_confirm_no">
+                            <span class="confirmation" ng-if="transaction.reservation_confirm_no && !transaction.external_reference_number">
                                 CONF. NO:
                                 <span class="value">{{transaction.reservation_confirm_no}}</span>
                             </span>  

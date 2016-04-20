@@ -362,7 +362,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          $stateProvider.state('zest_station.admin', {
              url: '/find_reservation', 
              controller: 'zsAdminCtrl',
-             templateUrl: '/assets/partials/kiosk/admin.html',
+             templateUrl: '/assets/partials/kiosk/specific/zsAdminSettings.html',
          });
 
          

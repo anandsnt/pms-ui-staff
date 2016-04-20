@@ -175,7 +175,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$event.stopPropagation();
 				$event.stopImmediatePropagation();
 			}
-
+			// CICO-28058 - checking whether AR Number is present or not.
+			var isArNumberAvailable = !!$scope.contactInformation.account_details.accounts_receivable_number;
 			if ($scope.currentSelectedTab === 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
 
 				if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
@@ -204,14 +205,19 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (tabToSwitch === 'cc-contracts') {
 				$scope.$broadcast("refreshContractsScroll");
 			}
-			if (tabToSwitch === 'cc-ar-transactions') {
+			if (tabToSwitch === 'cc-ar-transactions' && isArNumberAvailable) {
 				$rootScope.$broadcast("arTransactionTabActive");
 				$scope.isWithFilters = false;
 			}
 			if (tabToSwitch === 'cc-notes') {
 				$scope.$broadcast("fetchNotes");
 			}
-			$scope.currentSelectedTab = tabToSwitch;
+			if(tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable){
+			  	console.warn("Save AR Account and Navigate to AR Transactions");
+			}
+			else{
+				$scope.currentSelectedTab = tabToSwitch;
+			}
 		};
 
 
