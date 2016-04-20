@@ -105,6 +105,13 @@ textarea.sub-text, textarea.sub-text:hover{
 .late-checkout-icon{
   background-image:url(/assets/guestweb/common_images/late-checkout-black.png); 
 }
+.circle-bg {
+    background: url(/assets/guestweb/common_images/black/circle-bg.png) center top no-repeat;
+  }
+  .accept-charge-icon {
+    background-image: url(/assets/guestweb/common_images/black/creditcard_icon.png);
+}
+
 .accept-charge-icon, .checkout-icon, .late-checkout-icon, .upgrade-icon{
   width:50px;
 }
@@ -199,6 +206,12 @@ textarea.sub-text, textarea.sub-text:hover{
     .back-to-checkout{
         display:none;
     }
+}
+@media (min-width:768px){
+  .checkout-alone-button {
+    float: left;
+    margin-left: 10px;
+  }
 }
 @media (max-width: 480px){
   .main-text{
