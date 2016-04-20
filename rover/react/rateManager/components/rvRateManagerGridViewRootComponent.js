@@ -9,9 +9,7 @@ const RateManagerGridViewRootComponent = createClass ({
 			scrollY: true,
 			click: true,
 			mouseWheel: true,
-			useTransition: true,
-			deceleration: 0.0001,
-            shrinkScrollbars: 'clip'
+			deceleration: 0.00001
 		};
 
 		this.leftScrollableElement = this.rightScrollableElement = this.rightHeadScrollableElement = null;

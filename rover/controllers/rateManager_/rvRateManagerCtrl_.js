@@ -31,7 +31,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
     var cachedRateList = [], cachedRoomTypeList = [],
         cachedRateAndRestrictionResponseData = [],
-        totalRatesCountForPagination = 0; //for pagination purpose
+        totalRatesCountForPagination = 0,
+        paginationRatePerPage = 0,
+        paginationRateMaxRowsDisplay = 0; //for pagination purpose
 
     //data passed to react, will be used in scrolling related area to find positions
     var showingData = {
@@ -72,8 +74,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * to reload the present mode
      */
     $scope.$on(rvRateManagerEventConstants.RELOAD_RESULTS, (event, data) => {
-        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
-
         var isFromEditingPopup = _.has(data, 'isFromPopup');
 
         if(isFromEditingPopup) {
@@ -119,7 +119,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @return {[type]}            [description]
      */
     var handleTheReloadRequestFromPopupForSingleRateRestrictionMode = (dialogData) => {
-        var rateID = dialogData.rate.id;
+        var rateID = dialogData.rate.id,
+            findCachedRateAndRestrictionIndex = -1;
                 
         //looping through cached response to find the page
         //checking for the rate Id existance
@@ -132,10 +133,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             if(rateSetFoundIndexInList !== -1) {
                 lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = cachedRateAndRestrictionResponseData[i].page;
 
+                findCachedRateAndRestrictionIndex = i;
+
                 //finding the scroll position
                 let date = dialogData.date;
                 lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo = {
-                    row: rateSetFoundIndexInList + 2,   //why 2 -> adding 'All Rates' row case + index is starting from zero but in css selector index is not starting from zero
+                    row: rateSetFoundIndexInList + 1, //css selector index is not starting from zero
                     offsetX: true,
 
                     col: _.findIndex(currentDailyRateAndRestrictionList, { date: date }) + 1, //index is starting from zero
@@ -146,8 +149,19 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             }
         };
 
-        //clearing the cached to perform fresh request
-        cachedRateAndRestrictionResponseData = [];
+        if(findCachedRateAndRestrictionIndex !== -1) {
+            console.log(cachedRateAndRestrictionResponseData.length);
+            //clearing the cached to perform fresh request
+            cachedRateAndRestrictionResponseData.splice(findCachedRateAndRestrictionIndex, 1);
+            console.log(cachedRateAndRestrictionResponseData.length);
+            //clearing the common restriction array to get the latest after updating the 
+            cachedRateAndRestrictionResponseData.map(cachedRateAndRestrictionResponse => {
+                cachedRateAndRestrictionResponse.response.commonRestrictions = [];
+            });
+            console.log(cachedRateAndRestrictionResponseData.length);
+            console.log(cachedRateAndRestrictionResponseData);
+            
+        }
     };
 
     /**
@@ -342,6 +356,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //setting the current scroll position as STILL
         lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
 
+        //clearing the cached to perform fresh request
+        cachedRateAndRestrictionResponseData = [];
+
         $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
         $scope.showBackButton = false;
     };
@@ -439,6 +456,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             numberOfDates = showingData.headerData.length,
             eachColWidth = abs(scrollWidth) / numberOfDates,
             col = Math.ceil( abs(xScrollPosition) / eachColWidth );
+        
+        col = col !== 0 ? col : 1; //css selector index starting from one
+
         lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo = { 
             col: col,
             offsetY: (abs(xScrollPosition) % eachColWidth)
@@ -484,8 +504,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.DOWN;
         lastSelectedFilterValues[activeFilterIndex].allRate.currentPage++;
         
-        var paginationPerPage = rvRateManagerPaginationConstants.allRate.ratePerPage,
-            lastPage = Math.ceil(totalRatesCountForPagination / paginationPerPage);
+        var lastPage = Math.ceil(totalRatesCountForPagination / paginationRatePerPage);
 
         //reached last page
         if( lastSelectedFilterValues[activeFilterIndex].allRate.currentPage > lastPage ) {
@@ -629,10 +648,31 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             showNoResultsPage();
         }
         else{
-            let dates = _.pluck(response.dailyRateAndRestrictions, 'date');
+            let dates = _.pluck(response.dailyRateAndRestrictions, 'date'),
+                dateParams = {
+                    fromDate: dates[0],
+                    toDate: dates[dates.length - 1] 
+                };
+
+            //if we haven't fetched common restriction, we've to use the cached response's common restriction
+            if(!_.has(response, 'commonRestrictions')) {
+                let cachedData = _.findWhere(cachedRateAndRestrictionResponseData, dateParams);
+                if(cachedData && _.has(cachedData, 'response')) {
+                    response.commonRestrictions = cachedData.response.commonRestrictions;
+                }
+                else {
+                    console.error('response key or caching is missing from cachedRateAndRestrictionResponseData');
+                }
+            }
+            //if common restrictions in new response,
+            else {
+                let cachedDataSpansInDate = _.where(cachedRateAndRestrictionResponseData, dateParams);
+                cachedDataSpansInDate.map(cachedData => {
+                    cachedData.response.commonRestrictions = response.commonRestrictions;
+                });
+            }
             cachedRateAndRestrictionResponseData.push({
-                fromDate: dates[0],
-                toDate: dates[dates.length - 1],
+                ...dateParams,
                 page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage,
                 response: response
             });
@@ -652,7 +692,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var fillAllRatesBottomWithNewResponseAndAdjustScrollerPosition = (newResponse) => {
         var filterValues        = lastSelectedFilterValues[activeFilterIndex],
-            pagintionConst      = rvRateManagerPaginationConstants.allRate,
             dataSetJustBeforeCurrentOne = _.findWhere(cachedRateAndRestrictionResponseData,
                 {
                     fromDate    : formatDateForAPI(filterValues.fromDate),
@@ -665,17 +704,18 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             ...dataSetJustBeforeCurrentOne.response
         };
 
-        var numberOfRatesToShowFromPrevious = pagintionConst.maxNumberOfRateRowsDisplay - pagintionConst.ratePerPage,
+        var numberOfRatesToShowFromPrevious = rvRateManagerPaginationConstants.allRate.additionalRowsToPickFromPrevious,
             newResponseRateLength = newResponse.dailyRateAndRestrictions[0].rates.length,
             oldResponseRatelength = dataSetToReturn.dailyRateAndRestrictions[0].rates.length,
             ratesIndexForSlicing = oldResponseRatelength - numberOfRatesToShowFromPrevious;
+
 
         //setting the row to focus soon after rendering
         //column should be assigned from 'allRatesScrollReachedBottom'
         lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo.row = numberOfRatesToShowFromPrevious;
 
         //if we have less data coming from the api side, usually end of the page.
-        if(newResponseRateLength < pagintionConst.ratePerPage) {
+        if(newResponseRateLength < paginationRatePerPage) {
             ratesIndexForSlicing = newResponseRateLength;
             lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo.row = oldResponseRatelength - newResponseRateLength;
         }
@@ -705,7 +745,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var fillAllRatesTopWithNewResponseAndAdjustScrollerPosition = (newResponse) => {
         var filterValues        = lastSelectedFilterValues[activeFilterIndex],
-            pagintionConst      = rvRateManagerPaginationConstants.allRate,
             dataSetJustAfterCurrentOne = _.findWhere(cachedRateAndRestrictionResponseData,
                 {
                     fromDate    : formatDateForAPI(filterValues.fromDate),
@@ -718,7 +757,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             ...dataSetJustAfterCurrentOne.response
         };
 
-        var indexForPickingUp = pagintionConst.maxNumberOfRateRowsDisplay - pagintionConst.ratePerPage;
+        var indexForPickingUp = paginationRateMaxRowsDisplay - paginationRatePerPage;
 
         //setting the row to focus soon after rendering
         //column should be assigned from 'allRatesScrollReachedBottom'
@@ -871,11 +910,25 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 toDate: formatDateForAPI(filterValues.toDate),
                 page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
             });
-        
         //if data already in cache
         if(dataFoundInCachedResponse) {
             return handleAddingAllRateNewResponse(dataFoundInCachedResponse.response)
         }
+
+        let fetchCommonRestrictions = true;
+
+        var cachedRateAndRestrictionOfFromDateAndToDate = _.where(cachedRateAndRestrictionResponseData,
+            {
+                fromDate: formatDateForAPI(filterValues.fromDate),
+                toDate: formatDateForAPI(filterValues.toDate)   
+            });
+
+        cachedRateAndRestrictionOfFromDateAndToDate.map(cachedRateAndRestriction => {
+            if(cachedRateAndRestriction.response.commonRestrictions.length) {
+                fetchCommonRestrictions = false;
+            }
+        });
+
 
         var params = {
             from_date: formatDateForAPI(filterValues.fromDate),
@@ -884,7 +937,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
             group_by: filterValues.groupBySelectedValue,
             fetchRates: !cachedRateList.length,
-            fetchCommonRestrictions: true
+            fetchCommonRestrictions
         };
 
         if (filterValues.selectedRateTypes.length) {
@@ -896,7 +949,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         }
 
         params['page'] = filterValues.allRate.currentPage;
-        params['per_page'] = rvRateManagerPaginationConstants.allRate.ratePerPage;
+        params['per_page'] = paginationRatePerPage;
 
         var options = {
             params: params,
@@ -1345,7 +1398,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         
         //closing the left side filter section
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
-      };
+    };
 
     /**
      * callback from react, when clicked on rate
@@ -1411,6 +1464,20 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         });
     };
     
+    /**
+     * [description]
+     * @return {[type]} [description]
+     */
+    const initializePaginationValues = () => {
+        var totalHeightOfContainer = angular.element('.rate-manager-content')[0].offsetHeight;
+        var ratePagination = rvRateManagerPaginationConstants.allRate;
+
+        paginationRatePerPage = 
+            Math.ceil(totalHeightOfContainer/ratePagination.rowHeight) + 3;
+
+        paginationRateMaxRowsDisplay = paginationRatePerPage + ratePagination.additionalRowsToPickFromPrevious;
+    };
+
     /**
      * to update results
      * @param  {Object} event
@@ -1531,6 +1598,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         setHeadingAndTitle('RATE_MANAGER_TITLE');
         initializeDataModel();
         renderGridView();
+
+        //initialize pagination values
+        initializePaginationValues();
     })();
 
 }]);
