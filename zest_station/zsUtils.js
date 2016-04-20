@@ -46,3 +46,26 @@ var setBeforePrintSetup = function(){
 	$('.invis').hide(); //hide timeout elements
 	$('#popup-overlay').hide(); //hide timeout elements
 };
+
+
+var formatDateIntoStandard = function(dateString,separator){
+	//date has to be formatted
+    var dayIndex = dateString.indexOf(separator);
+    var day = dateString.substring(0, dayIndex);
+    var dateStringWithoutDay = dateString.substring(dayIndex+1, dateString.length);
+    var monthIndex = dateStringWithoutDay.indexOf(separator);
+    var month = dateStringWithoutDay.substring(0, monthIndex);
+    var year = dateStringWithoutDay.substring(monthIndex+1, dateStringWithoutDay.length);
+    return new Date(month+separator+day+separator+year);
+};
+
+var returnUnformatedDateObj = function(dateString,dateformat){
+	if(dateformat === 'MM-DD-YYYY' || dateformat === 'MM/DD/YYYY'){
+		return new Date(dateString);
+	}
+	else if(dateformat === 'DD-MM-YYYY'){
+		return formatDateIntoStandard(dateString,'-');
+	}else if(dateformat === 'DD/MM/YYYY'){
+		return formatDateIntoStandard(dateString,'/');
+	}	
+};
