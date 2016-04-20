@@ -109,8 +109,28 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @return {[type]}            [description]
      */
     var handleTheReloadRequestFromPopupForMultipleRateRestrictionMode = (dialogData) => {
-        console.log(dialogData);
-        //clearing the cached to perform fresh request
+        //looping through cached response to find the page
+        //checking for the date corresponds one
+        for(let i = 0; i < cachedRateAndRestrictionResponseData.length; i++ ) {
+
+            let currentDailyRateAndRestrictionList = cachedRateAndRestrictionResponseData[i].response.dailyRateAndRestrictions;
+            
+            //finding the scroll position
+            let date = tzIndependentDate(dialogData.date),
+                fromDateOfCurrentOne = tzIndependentDate(cachedRateAndRestrictionResponseData[i].fromDate),
+                toDateOfCurrentOne = tzIndependentDate(cachedRateAndRestrictionResponseData[i].toDate);
+
+            if(fromDateOfCurrentOne <= date && date <= toDateOfCurrentOne) {
+                lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo = {
+                    row: 1, //css selector index is not starting from zero
+                    offsetX: true,
+
+                    col: _.findIndex(currentDailyRateAndRestrictionList, { date: dialogData.date }) + 1, //index is starting from zero
+                    offsetY: true
+                }
+            } 
+        }
+        //clearing all, because the update from popup may impact other days as well
         cachedRateAndRestrictionResponseData = [];
     };
 
