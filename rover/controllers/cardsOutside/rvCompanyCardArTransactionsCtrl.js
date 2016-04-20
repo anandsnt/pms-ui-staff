@@ -567,7 +567,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			    	if ( sntapp.cordovaLoaded ) {
 			    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 			    	};
-			    }, 200);
+			    }, 1000);
 
 			    /*
 			    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
@@ -579,7 +579,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 					$scope.$emit("PRINT_AR_STATEMENT",false);
 					// remove the orientation after similar delay
 			    	removePrintOrientation();
-			    }, 200);
+			    }, 1000);
 			};
 
 			var printDataFailureCallback = function(errorData){
