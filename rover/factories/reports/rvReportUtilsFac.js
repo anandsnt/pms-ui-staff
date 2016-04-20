@@ -187,7 +187,10 @@ angular.module('reportsModule')
 
         var __showFilterNames = {
             'SHOW_COMPANY': true,
-            'SHOW_TRAVEL_AGENT': true
+            'SHOW_TRAVEL_AGENT': true,
+            // for CREDIT_CHECK_REPORT
+            'INCLUDE_DUE_OUT': true,
+            'INCLUDE_INHOUSE': true
         };
 
         var __chargeTypeFilterNames = {

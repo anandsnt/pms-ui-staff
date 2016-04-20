@@ -259,6 +259,17 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv','zsBaseWebS
             return deferred.promise;
         };
 
+        this.updateWorkStationOos = function(params){
+            var deferred = $q.defer(),
+                url = 'api/workstations/'+ params.id+'/set_out_or_order.json';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
         this.checkInGuest = function(params) {
             var deferred = $q.defer(),

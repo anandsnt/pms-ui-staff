@@ -6,7 +6,7 @@
         </span>
     </div>
     <div class="invoice-logo">
-        <h1>Statement</h1>
+        <h1 translate>STATEMENT</h1>
         <img ng-src="{{printData.hotel_logo}}" alt="">
     </div>
 
@@ -20,11 +20,11 @@
             {{printData.card_details.country}}
         </div>
         <div class="statement-info">
-            <p class="statement-meta"><strong>Statement date</strong>{{printData.statement_date}}</p>
-            <p class="statement-meta" ng-if="printData.corporate_id"><strong>Corporate ID</strong>{{printData.corporate_id}}</p>
-            <p class="statement-meta" ng-if="printData.iata_no"><strong>IATA No.</strong>{{printData.iata_no}}</p>
-            <p class="statement-meta"><strong>Invoice Number</strong>{{printData.invoice_no}}</p>
-            <p class="statement-meta"><strong>Payment Due Days</strong>{{printData.payment_due_days}}</p>
+            <p class="statement-meta"><strong translate>STATEMENT_DATE</strong>{{printData.statement_date}}</p>
+            <p class="statement-meta" ng-if="printData.corporate_id"><strong translate>CORPORATE_ID</strong>{{printData.corporate_id}}</p>
+            <p class="statement-meta" ng-if="printData.iata_no"><strong translate>IATA_NO</strong>{{printData.iata_no}}</p>
+            <p class="statement-meta"><strong translate>INVOICE_NO</strong>{{printData.invoice_no}}</p>
+            <p class="statement-meta"><strong translate>PAYMENT_DUE_DAYS</strong>{{printData.payment_due_days}}</p>
         </div>
     </div>
 
@@ -38,11 +38,11 @@
                 <tr>
                     <th></th>
                     <th class="charge-date" translate>DATE_OF_CHARGE</th>
-                    <th class="charge-code">Charge Code</th>
-                    <th class="charge-description">Charge description</th>
+                    <th class="charge-code" translate>CHARGE_CODE</th>
+                    <th class="charge-description" translate>CHARGE_DESCRIPTION</th>
                     <th class="align-right" translate>CHARGE_AMOUNT</th>
-                    <th class="align-right">Amount Due</th>
-                    <th class="align-right">Credits</th>
+                    <th class="align-right" translate>AMOUNT_DUE</th>
+                    <th class="align-right" translate>CREDITS</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,15 +51,15 @@
                     <td class="person-info">
                         <strong class="name">{{statement.reservation_details.guest_name}}</strong><br>
                         <span class="person-meta">
-                            <strong>Resv.:</strong> 
+                            <strong translate>RESERV</strong> 
                             {{statement.reservation_details.reservation_no}}
                         </span>
                         <span class="person-meta">
-                            <strong>Arrival Date:</strong> 
+                            <strong translate>ARRIVAL_DATE</strong> 
                             {{statement.reservation_details.arrival_date | date:dateFormat }}
                         </span>
                         <span class="person-meta">
-                            <strong>Departure Date:</strong> 
+                            <strong translate>DEPARTURE_DATE</strong> 
                             {{statement.reservation_details.departure_date | date:dateFormat }}
                         </span>
                     </td>
@@ -71,7 +71,7 @@
                                 <td class="charge-description">
                                     <span>{{item.description}}</span>
                                     <span class="reference">{{item.reference_text}}</span>
-                                    <span class="reference">EXTERNAL REF. {{item.external_ref_no}}</span>
+                                    <span class="reference">{{ 'EXT_REF_NO'| translate }} {{item.external_ref_no}}</span>
                                 </td>
                                 <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}</td>
                             </tr>
@@ -85,9 +85,9 @@
                     <td class="person-info">
                         <strong class="name">{{statement.payment_details.name}}</strong>
                     </td>
-                    <td>{{statement.payment_details.date_of_charge}}</td>
-                    <td>{{statement.payment_details.charge_code}}</td>
-                    <td class="description">{{statement.payment_details.charge_description}}</td>
+                    <td class="charge-date">{{statement.payment_details.date_of_charge | date:dateFormat }}</td>
+                    <td class="charge-code">{{statement.payment_details.charge_code}}</td>
+                    <td class="charge-description">{{statement.payment_details.charge_description}}</td>
                     <td></td>
                     <td></td>
                     <td class="align-right">{{currencySymbol}}{{statement.payment_details.credits | number: precisonTwo}}</td>
@@ -96,7 +96,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="6"><strong>Total Amount</strong></td>
+                    <td colspan="6"><strong translate>TOTAL_AMOUNT</strong></td>
                     <td><strong>{{currencySymbol}}{{printData.total_amount | number: precisonTwo}}</strong></td>
                 </tr>
 
