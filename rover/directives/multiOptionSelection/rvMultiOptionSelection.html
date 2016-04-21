@@ -14,7 +14,7 @@
                 <span class="icons icon-clear-search">Clear query</span>
             </button>
             <button type="submit" name="submit" class="icons icon-search">Search</button>
-            <input class="query" placeholder="Search by Employee Name" autocomplete="off" type="search" ng-model="search" ng-change="onSearchChange()">
+            <input class="query" placeholder="Search by {{ label }}" autocomplete="off" type="search" ng-model="search" ng-change="onSearchChange()">
         </div>
 
         <label class="checkbox" ng-repeat="each in data" ng-class="{ 'hidden': each.filteredOut }" ng-click="toggleSelection(each)">

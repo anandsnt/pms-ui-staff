@@ -20,11 +20,14 @@ sntRover.controller('RVReportListCrl', [
             REPORT_LIST_SCROLL = 'report-list-scroll',
             REPORT_FILTERS_SCROLL = 'report-filters-scroll';
 
-        $scope.refreshFilterScroll = function() {
+        $scope.refreshFilterScroll = function(scrollUp) {
             $scope.refreshScroller(REPORT_FILTERS_SCROLL);
+            if ( !!scrollUp && $scope.$parent.myScroll.hasOwnProperty(REPORT_FILTERS_SCROLL) ) {
+                $scope.$parent.myScroll[REPORT_FILTERS_SCROLL].scrollTo(0, 0, 100);
+            };
         }
 
-        var refreshScroll = function(scrollUp) {
+        var refreshAllScroll = function() {
             $scope.refreshScroller(REPORT_DASHBOARD_SCROLL);
             $scope.refreshScroller(REPORT_LIST_SCROLL);
             $scope.refreshScroller(REPORT_FILTERS_SCROLL);
@@ -32,43 +35,23 @@ sntRover.controller('RVReportListCrl', [
 
         var setScroller = function() {
             $scope.setScroller(REPORT_DASHBOARD_SCROLL, {
-                tap: true,
                 preventDefault: false,
                 scrollX: true,
                 scrollY: false
             });
 
             $scope.setScroller(REPORT_LIST_SCROLL, {
-                tap: true,
                 preventDefault: false,
                 scrollX: false,
                 scrollY: true
             });
 
             $scope.setScroller(REPORT_FILTERS_SCROLL, {
-                tap: true,
                 preventDefault: false,
                 scrollX: false,
                 scrollY: true
             });
         };
-
-
-        // $scope.setScroller(LIST_ISCROLL_ATTR, {
-        //     preventDefault: false
-        // });
-        // $scope.setScroller('reportUserFilterScroll');
-
-        /**
-         * inorder to refresh after list rendering
-         */
-        // var listRendered = $scope.$on("REPORT_LIST_RENDERED", function() {
-        //     $scope.refreshScroller( LIST_ISCROLL_ATTR );
-        // });
-        
-        // $scope.$on( '$destroy', listRendered );
-
-
 
         /**
          *   Post processing fetched data to modify and add additional data
@@ -135,8 +118,7 @@ sntRover.controller('RVReportListCrl', [
 
             // SUPER forcing scroll refresh!
             // 2000 is the delay for slide anim, so firing again after 2010
-            // $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 100 );
-            // $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 2010 );
+            $timeout( refreshAllScroll, 2010 );
         };
 
         postProcess( $scope.$parent.reportList );
@@ -158,16 +140,16 @@ sntRover.controller('RVReportListCrl', [
                 report.uiChosen = true;
                 $scope.uiChosenReport = report;
 
-                //refreshFilterScroll();
-                $timeout($scope.refreshFilterScroll, 300)
-
-                $scope.$emit( 'hideLoader' );
+                $timeout(function() {
+                    $scope.refreshFilterScroll('scrollUp');
+                    $scope.$emit( 'hideLoader' );
+                }, 1000);
             };
 
+            $scope.$emit( 'showLoader' );
             if ( !! report.allFiltersProcessed ) {
                 callback();
             } else {
-                $scope.$emit( 'showLoader' );
                 reportUtils.findFillFilters( report, $scope.$parent.reportList )
                     .then( callback );
             };

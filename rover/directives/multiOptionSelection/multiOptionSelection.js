@@ -8,8 +8,7 @@ sntRover
 				label: '@',
 				data: '=',
 				options: '@',
-				onOpen: '=',
-				onClose: '='
+				onUpdate: '='
 			},
 			controller: function($scope, $element, $attrs) {
 				BaseCtrl.call(this, $scope);
@@ -20,9 +19,7 @@ sntRover
 
 				$scope.toggleView = function(bool) {
 					$scope.closed = typeof bool === 'boolean' ? bool : ! $scope.closed;
-					//$scope.refreshScroller( $scope.scrollKey );
-
-					$scope.onOpen();
+					$timeout($scope.onToggle, 1500);
 				};
 
 				$scope.toggleSelectAll = function() {
@@ -46,8 +43,6 @@ sntRover
 							item[key] = true;
 						}
 					});
-
-					//$scope.refreshScroller( $scope.scrollKey );
 				};
 
 				$scope.toggleSelection = function(item) {
@@ -106,12 +101,6 @@ sntRover
 					};
 
 					updateSelectedValue();
-
-					//$scope.scrollKey = 'key-' + Date.now();
-
-					/*$scope.setScroller($scope.scrollKey, {
-					    preventDefault: false
-					});*/
 				};
 
 				init();

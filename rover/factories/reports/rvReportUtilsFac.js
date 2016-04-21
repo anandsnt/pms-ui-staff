@@ -660,15 +660,6 @@ angular.module('reportsModule')
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        // __setData(report, 'hasGuaranteeType', {
-                        //     type         : 'FAUX_SELECT',
-                        //     filter       : foundFilter,
-                        //     show         : false,
-                        //     selectAll    : false,
-                        //     defaultTitle : 'Select Guarantees',
-                        //     title        : 'Select Guarantees',
-                        //     data         : angular.copy( data )
-                        // });
 
                         report.hasGuaranteeType = {
                             selectAll: false,
@@ -933,25 +924,37 @@ angular.module('reportsModule')
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
 
-                        __setData(report, 'hasRateTypeFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Rate Type',
-                            title        : 'All Selected',
-                            data         : angular.copy( extractRateTypesFromRateTypesAndRateList( data ) )
-                        });
+                        report.hasRateTypeFilter = {
+                            selectAll: false,
+                            hasSearch: true,
+                            data: angular.copy( extractRateTypesFromRateTypesAndRateList(data) )
+                        }
 
-                        __setData(report, 'hasRateFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Rate',
-                            title        : 'All Selected',
-                            data         : angular.copy( extractRatesFromRateTypesAndRateList( data ) )
-                        });
+                        report.hasRateFilter = {
+                            selectAll: false,
+                            hasSearch: true,
+                            data: angular.copy( extractRatesFromRateTypesAndRateList(data) )
+                        }
+
+                        // __setData(report, 'hasRateTypeFilter', {
+                        //     type         : 'FAUX_SELECT',
+                        //     filter       : foundFilter,
+                        //     show         : false,
+                        //     selectAll    : true,
+                        //     defaultTitle : 'Select Rate Type',
+                        //     title        : 'All Selected',
+                        //     data         : angular.copy( extractRateTypesFromRateTypesAndRateList( data ) )
+                        // });
+
+                        // __setData(report, 'hasRateFilter', {
+                        //     type         : 'FAUX_SELECT',
+                        //     filter       : foundFilter,
+                        //     show         : false,
+                        //     selectAll    : true,
+                        //     defaultTitle : 'Select Rate',
+                        //     title        : 'All Selected',
+                        //     data         : angular.copy( extractRatesFromRateTypesAndRateList( data ) )
+                        // });
                     };
                 });
 

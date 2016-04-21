@@ -49,18 +49,16 @@
             </div>
 
             <!-- Content -->
+            <!-- ng-iscroll="report-dashboard-scroll" -->
             <div id="reports-dashboard"
                 class="scrollable"
                 ng-if="reportList.length"
                 ng-controller="RVReportListCrl"
-                ng-iscroll="report-dashboard-scroll"
-                ng-iscroll-delay="100"
                 ng-class="{'cols-2': !! uiChosenReport }">
                 <div class="wrapper">
                     <div class="cols-wrapper">
                         <div class="report-col main-col scrollable"
-                            ng-iscroll="report-list-scroll"
-                            ng-iscroll-delay="100">
+                            ng-iscroll="report-list-scroll">
                             <ul class="wrapper">
                                 <li class="report-item"
                                     ng-repeat="item in reportList"
@@ -79,8 +77,7 @@
                         <!-- Second column - filters -->
                         <div class="report-col">
                             <div class="scrollable"
-                                ng-iscroll="report-filters-scroll"
-                                ng-iscroll-delay="100"> <!-- Add vertical scroller here -->
+                                ng-iscroll="report-filters-scroll"> <!-- Add vertical scroller here -->
                                 <div class="wrapper">
                                     <h3>{{ uiChosenReport.title }}<span>Configure report</span></h3>
                                     <div class="configure-report" ng-include="'/assets/partials/reports/filters/rvReportListFilters.html'"></div>
