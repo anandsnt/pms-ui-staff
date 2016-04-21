@@ -77,7 +77,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var isFromEditingPopup = _.has(data, 'isFromPopup');
 
         if(isFromEditingPopup) {
-            handleTheReloadRequestFromPopup(data);
+            return handleTheReloadRequestFromPopup(data);
         }
         $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     });
@@ -174,7 +174,16 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             }
         };
 
+        //if something found in list
         if(foundCachedRateAndRestrictionIndexes.length) {
+            let fromDates = _.pluck(cachedRateAndRestrictionResponseData, 'fromDate').map(fromDate => tzIndependentDate(fromDate)),
+                toDates = _.pluck(cachedRateAndRestrictionResponseData, 'toDate').map(toDate => tzIndependentDate(toDate)),
+                minFromDate = formatDateForAPI(_.min(fromDates)), //date in cache data store is in api format
+                minToDate = formatDateForAPI(_.min(toDates));  //date in cache data store is in api format
+            
+            //we may changed a rate detail against particular column or rate columns across a particular row
+            getSingleRateRowDetailsAndUpdateCachedDataModel(rateID, minFromDate, minToDate);
+
             //clearing the cached to perform fresh request
             foundCachedRateAndRestrictionIndexes.map(indexToDelete => 
                 cachedRateAndRestrictionResponseData.splice(indexToDelete, 1));
@@ -184,6 +193,66 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 cachedRateAndRestrictionResponse.response.commonRestrictions = [];
             });    
         }
+    };
+
+
+    var onFetchGetSingleRateRowDetailsAndUpdateCachedDataModel = (response, successCallBackParameters) => {
+        var dailyRateAndRestrictions = response.dailyRateAndRestrictions,
+            commonRestrictions = response.commonRestrictions,
+            fromDate = tzIndependentDate(successCallBackParameters.fromDate),
+            toDate = tzIndependentDate(successCallBackParameters.toDate),
+            rateID = successCallBackParameters.rateID;
+
+        var dateBasedRateDetailsReponse = _.indexBy(dailyRateAndRestrictions, 'date'),
+            dateBasedCommonRestrictions = _.indexBy(commonRestrictions, 'date');
+
+        //looping through cached response to find the page
+        //checking for the rate Id existance
+        cachedRateAndRestrictionResponseData.map(cachedRateAndRestriction => {
+            //date wise rate restrictions & amount
+            cachedRateAndRestriction.response.dailyRateAndRestrictions.map(dailyRateAndRestriction => {
+                let rateFoundIndex = _.findIndex(dailyRateAndRestriction.rates, { id: rateID});
+                
+                let date = tzIndependentDate(dailyRateAndRestriction.date);
+                let isDateBetweenMinAndMax = (fromDate >= date && date <= toDate);
+                
+                if(rateFoundIndex !== -1 && isDateBetweenMinAndMax) {
+                    dailyRateAndRestriction.rates[rateFoundIndex] = dateBasedRateDetailsReponse[dailyRateAndRestriction.date].rates;
+                }
+            });
+
+            //common restricitons
+            cachedRateAndRestriction.response.commonRestrictions.map(commonRestriction => {
+                let date = tzIndependentDate(commonRestriction.date);
+                let isDateBetweenMinAndMax = (fromDate >= date && date <= toDate);
+                if(isDateBetweenMinAndMax) {
+                   commonRestriction.restrictions = dateBasedCommonRestrictions[commonRestriction.date].restrictions
+                }
+            });
+
+        });
+
+        //everything set, update the view
+        $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
+    };
+
+    var getSingleRateRowDetailsAndUpdateCachedDataModel = (rateID, fromDate, toDate) => {
+        var params = {
+            from_date: fromDate,
+            to_date: toDate,
+            fetchRates: !cachedRateList.length,
+            fetchCommonRestrictions: true,
+            'rate_ids[]': [rateID]
+        };
+
+        var options = {
+            params: params,
+            onSuccess: onFetchGetSingleRateRowDetailsAndUpdateCachedDataModel,
+            successCallBackParameters: {
+                rateID, fromDate, toDate
+            }
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);       
     };
 
     /**
@@ -544,7 +613,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response
      */
     var processForAllRates = (response) => {
-        var rateRestrictions = response.dailyRateAndRestrictions,
+        var rateRestrictions = [...response.dailyRateAndRestrictions],
             commonRestrictions = response.commonRestrictions;
 
         //rateList now cached, we will not fetch that again
@@ -610,8 +679,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         //rate & restrictions -> 2nd row onwards
         var ratesWithRestrictions = rateRestrictions[0].rates.map((rate) => {
-            rate.restrictionList = [];
             rate = {...rate, ...rateObjectBasedOnID[rate.id]};
+            rate.restrictionList = [];
             dates.map((date) => {
                     dateRateSet = _.findWhere(rateRestrictionWithDateAsKey[date].rates, { id: rate.id });
                     rate.restrictionList.push(dateRateSet.restrictions);
@@ -698,7 +767,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage,
                 response: response
             });
-
+console.log(cachedRateAndRestrictionResponseData);
             //using this variable we will be limiting the api call
             totalRatesCountForPagination = response.totalCount;
 
@@ -1437,7 +1506,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         });
 
         activeFilterIndex = activeFilterIndex + 1;
-
         $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
 
         $scope.showBackButton = true;
