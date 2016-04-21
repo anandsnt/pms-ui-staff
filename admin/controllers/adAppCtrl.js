@@ -532,6 +532,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 			$rootScope.isRoomStatusImportPerRoomTypeOn = data.is_room_status_import_per_room_type_on ? data.is_room_status_import_per_room_type_on : false;
 
+			// CICO-27286
+			$rootScope.rateDateRangeLimit = data.rate_date_range_limit;
+
 			setupLeftMenu();
 
 		};
