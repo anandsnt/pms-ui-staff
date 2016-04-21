@@ -11,6 +11,13 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.chromeAppKey = 'snt.in_chromeapp';
         $scope.syncOOSInterval = 119;//in seconds (0-based) // currently will re-sync every 2 minutes, next release will be an admin setting per hotel
     
+    // This is workaround till we find how to detect if app
+    // is invoked from chrome app, we will be hidding this tag from chrome app and
+    // checking that to distinguish if app was launched using chrome app or not 
+    var CheckIfItsChromeApp = function(){
+         $scope.inChromeApp = $("#hideFromChromeApp").css("visibility") === 'hidden' ;
+         console.info(":: is in chrome app ->"+$scope.inChromeApp);
+    }();
 
     /**
      * to run angular digest loop,
@@ -69,6 +76,14 @@ sntZestStation.controller('zsRootCtrl', [
         updateLocalStorage(oosReason, workstationStatus);
     });
 
+    $scope.returnDateObj = function(dateString){
+        //utils
+        if(typeof dateString !== 'undefined'){
+            return returnUnformatedDateObj(dateString,$scope.zestStationData.hotelDateFormat);
+        }else{
+            return dateString;
+        };
+    };
 
 	/**
 	 * [navToPrev description]
@@ -678,6 +693,8 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.currencySymbol = data.currency.symbol;
                     $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
                     $scope.zestStationData.payment_gateway = $scope.zestStationData.hotel_settings.payment_gateway;
+                    $scope.zestStationData.hotelDateFormat = !!data.date_format ? data.date_format.value : "DD-MM-YYYY" ;
+                    console.info("::Hotel date format ->"+$scope.zestStationData.hotelDateFormat);
                     $scope.$emit('hideLoader');
             };
             
@@ -709,23 +726,22 @@ sntZestStation.controller('zsRootCtrl', [
             }
 
         };
+        
         $scope.openExternalWebPage = function(){
             $scope.showExternalWebPage =true;
-            console.log('listenForInputBoxClick')
-            $scope.listenForInputBoxClick();
+            setTimeout(listenForInputBoxClick, 100);
         };
+        
         $scope.listenForInputBoxClick = function(){
-            $('body').bind("click touchstart keyup keydown keypress", function(e) {
-                console.log(e)
-                window.parent.funcKey(e);
-              });
-            
-            
-            
+            var iframe = $("#booking_iframe")[0];
+            iframe.contentWindow.on('click touchstart',function(){
+                console.log("inside iframe clicking",arguments);
+            });
         };
+        
         $scope.closeExternalWebPage = function(){
             $scope.showExternalWebPage =false;
-        }
+        };
         
         $scope.languageSelect = function(){
             $scope.stopLanguageCounter();
@@ -869,7 +885,7 @@ sntZestStation.controller('zsRootCtrl', [
                 console.log('msg from ChromeApp: ',response);
                 if (response){
                     if (response.isChromeApp){
-                        $scope.inChromeApp = true;
+                        //do nothing
                     } else if (response.qr_code){
                         $scope.initQRCodeFindReservation(response.reservation_id);
                     }
