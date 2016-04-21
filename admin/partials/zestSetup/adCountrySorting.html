@@ -1,0 +1,48 @@
+<section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2 translate>COUNTRY_SORT</h2>
+        <a ng-click="goBackToPreviousState()" data-type="load-details" class="action back" ng-show="listingMode" translate>BACK_TO_ZEST_SETUP</a>
+        <a ng-click="backClicked()" data-type="load-details" class="action back" ng-hide="listingMode" translate>BACK</a>
+        <a class="action add" ng-click="addCountryToSequence()" ng-show="listingMode" translate>ADD</a>
+    </header>
+    <!-- list mode -->
+    <section class="content-scroll" ng-show="listingMode">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <ol ui-sortable="sortableOptions" ng-model="sortedCountries" class="cms-tree">
+            <li class="branch" ng-repeat="content in sortedCountries">
+                <div class="sort">
+                    <a class="cms-name">{{content.name}}</a>
+                    <div class="cms-delete">
+                        <a class="icons icon-delete large-icon" ng-click="deleteItem(content.id)">Delete</a>
+                    </div>
+                </div>
+            </li>
+        </ol>
+    </section>
+    <!-- country add mode -->
+    <section class="content-scroll" ng-hide="listingMode">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <!--- form starts here -->
+        <form style="overflow-y:auto;" class="form float inline-form">
+            <fieldset class="holder left">
+                <div class="entry">
+                <label for="hotel-country"> Country <strong>*</strong> </label>
+                <div class="select">
+                    <select ng-model="countrySelected" name="hotel-country" id="hotel-country" class="placeholder">
+                        <option value=""> Country </option>
+                        <option ng-repeat="country in sortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected" disabled> {{country.name}} </option>
+                        <option value="" ng-show="sortedCountries.length > 0" disabled> ---------- </option>
+                        <option ng-repeat="country in unSortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
+                    </select>
+                </div>
+            </div>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" ng-click="backClicked()" class="button blank add-data-inline actions_margin_top" translate="CANCEL"></button>
+                <button type="button" ng-click="saveCountry()" class="button green actions_margin_top" translate="SAVE_CHANGES"></button>
+            </div>
+        </form>
+    </section>
+</section>

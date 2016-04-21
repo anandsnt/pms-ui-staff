@@ -43,6 +43,7 @@ module.exports = {
 				roverRoot + 'rvDesktopCardOperations.js', roverRoot + 'rvSntApp.js',
 
 				roverRoot + 'filters/roundFilter.js',
+				roverRoot + 'filters/highlightWordsFilter.js',
 
 				controllerRoot + 'rvTopCtrl.js',
 				controllerRoot + 'rvRoverController.js',
@@ -66,7 +67,7 @@ module.exports = {
 				serviceRoot + 'util/rvUtilSrv.js',
 				serviceRoot + 'availability/rvAvailabilitySrv.js',
 				serviceRoot + 'workstation/workstationSrv.js',
-
+				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
 				directiveRoot + 'Outside Click handler/outsideClickDirective.js'
 			]
 		};

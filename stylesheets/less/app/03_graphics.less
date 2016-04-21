@@ -894,19 +894,23 @@
 		&.bg-drk { background-color: @black; }
 
 		/* With image ***/
-		&.closed,
-		&.arrival {
-			background-image: @icons;
-			background-repeat: no-repeat;
+        &.closed,
+        &.arrival,
+        &.icon-cross,
+        &.icon-block {
+            background-image: @icons;
+            background-repeat: no-repeat;
 
-			@media @highdpi {
-				background-image: @icons2x;
-				background-size: 120px;
-			}
-		}
+            @media @highdpi {
+                background-image: @icons2x;
+                background-size: 120px;
+            }
+        }
 
-		&.closed { background-position: 5px -7835px; }
-		&.arrival {	background-position: 5px -7895px; }
+        &.closed,
+        &.icon-cross { background-position: 5px -7835px; }
+        &.arrival,
+        &.icon-block { background-position: 5px -7895px; }
 	}
 
 /* 4. LAYOUT
