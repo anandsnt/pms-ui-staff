@@ -7,7 +7,9 @@ sntRover
 			scope: {
 				label: '@',
 				data: '=',
-				options: '@'
+				options: '@',
+				onOpen: '=',
+				onClose: '='
 			},
 			controller: function($scope, $element, $attrs) {
 				BaseCtrl.call(this, $scope);
@@ -19,6 +21,8 @@ sntRover
 				$scope.toggleView = function(bool) {
 					$scope.closed = typeof bool === 'boolean' ? bool : ! $scope.closed;
 					//$scope.refreshScroller( $scope.scrollKey );
+
+					$scope.onOpen();
 				};
 
 				$scope.toggleSelectAll = function() {
@@ -34,9 +38,9 @@ sntRover
 				$scope.onSearchChange = function() {
 					updateData( 'filteredOut', function(item, key) {
 						var search    = $scope.search.toLowerCase(),
-							nameEmail = (item[options.key] || item[options.altKey]).toLowerCase();
+							keyValue = (item[options.key] || item[options.altKey]).toLowerCase();
 
-						if ( search === '' || nameEmail.indexOf(search) >= 0 ) {
+						if ( search === '' || keyValue.indexOf(search) >= 0 ) {
 							item[key] = false;
 						} else {
 							item[key] = true;
@@ -84,6 +88,11 @@ sntRover
 
 					$scope.selectAll = typeof options.selectAll === 'boolean' ? options.selectAll : false;
 					$scope.hasSearch = typeof options.hasSearch === 'boolean' ? options.hasSearch : false;
+
+					$scope.key = options.key;
+					$scope.altKey = options.altKey;
+
+					console.log( $scope );
 
 					if ( $scope.selectAll ) {
 						updateData( 'selected', true );

@@ -1,61 +1,61 @@
-<div class="entry date-range" ng-if="uiChosenReport.hasCancelDateFilter">
+<div class="entry date-range" ng-show="uiChosenReport.hasCancelDateFilter">
     <label>{{ uiChosenReport.hasCancelDateFilter.description }} <span>(From)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-class="{'visible': uiChosenReport.hasCancelDateFilter.showRemove}" class="clear-query" ng-click="clearDateFromFilter(uiChosenReport, 'hasCancelDateFilter')">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-class="{'visible': uiChosenReport.hasCancelDateFilter.showRemove}" class="clear-query" ng-click="clearDateFromFilter(uiChosenReport, 'hasCancelDateFilter')">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromCancelDate" ng-change="dateChanged(uiChosenReport, 'hasCancelDateFilter')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromCancelDate" ng-change="dateChanged(uiChosenReport, 'hasCancelDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromCancelDate" ng-change="dateChanged(uiChosenReport, 'hasCancelDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromCancelDate" ng-change="dateChanged(uiChosenReport, 'hasCancelDateFilter')" readonly>
     </div>
     <label>{{ uiChosenReport.hasCancelDateFilter.description }} <span>(To)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-class="{'visible': uiChosenReport.hasCancelDateFilter.showRemove}" class="clear-query" ng-click="clearDateFromFilter(uiChosenReport, 'hasCancelDateFilter')">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-class="{'visible': uiChosenReport.hasCancelDateFilter.showRemove}" class="clear-query" ng-click="clearDateFromFilter(uiChosenReport, 'hasCancelDateFilter')">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilCancelDate" ng-change="dateChanged(uiChosenReport, 'hasCancelDateFilter')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilCancelDate" ng-change="dateChanged(uiChosenReport, 'hasCancelDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilCancelDate" ng-change="dateChanged(uiChosenReport, 'hasCancelDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilCancelDate" ng-change="dateChanged(uiChosenReport, 'hasCancelDateFilter')" readonly>
     </div>
 </div>
 
-<div class="entry date-range" ng-if="uiChosenReport.hasDepositDateFilter">
+<div class="entry date-range" ng-show="uiChosenReport.hasDepositDateFilter">
     <label>{{ uiChosenReport.hasDepositDateFilter.description }} <span>(From)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-class="{'visible': uiChosenReport.hasDepositDateFilter.showRemove}" class="clear-query" ng-click="clearDateFromFilter(uiChosenReport, 'hasDepositDateFilter')">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-class="{'visible': uiChosenReport.hasDepositDateFilter.showRemove}" class="clear-query" ng-click="clearDateFromFilter(uiChosenReport, 'hasDepositDateFilter')">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromDepositDate" ng-change="dateChanged(uiChosenReport, 'hasDepositDateFilter')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromDepositDate" ng-change="dateChanged(uiChosenReport, 'hasDepositDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromDepositDate" ng-change="dateChanged(uiChosenReport, 'hasDepositDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromDepositDate" ng-change="dateChanged(uiChosenReport, 'hasDepositDateFilter')" readonly>
     </div>
     <label>{{ uiChosenReport.hasDepositDateFilter.description }} <span>(To)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-class="{'visible': uiChosenReport.hasDepositDateFilter.showRemove}" class="clear-query" ng-click="clearDateFromFilter(uiChosenReport, 'hasDepositDateFilter')">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-class="{'visible': uiChosenReport.hasDepositDateFilter.showRemove}" class="clear-query" ng-click="clearDateFromFilter(uiChosenReport, 'hasDepositDateFilter')">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilDepositDate" ng-change="dateChanged(uiChosenReport, 'hasDepositDateFilter')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilDepositDate" ng-change="dateChanged(uiChosenReport, 'hasDepositDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilDepositDate" ng-change="dateChanged(uiChosenReport, 'hasDepositDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilDepositDate" ng-change="dateChanged(uiChosenReport, 'hasDepositDateFilter')" readonly>
     </div>
 </div>
 
-<div class="entry date-range" ng-if="uiChosenReport.hasPaidDateRange">
+<div class="entry date-range" ng-show="uiChosenReport.hasPaidDateRange">
     <label>{{ uiChosenReport.hasPaidDateRange.description }} <span>(From)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-class="{'visible': uiChosenReport.hasPaidDateRange.showRemove}" class="clear-query" ng-click="clearDateFromFilter(uiChosenReport, 'hasPaidDateRange')">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-class="{'visible': uiChosenReport.hasPaidDateRange.showRemove}" class="clear-query" ng-click="clearDateFromFilter(uiChosenReport, 'hasPaidDateRange')">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromPaidDate" ng-change="dateChanged(uiChosenReport, 'hasPaidDateRange')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromPaidDate" ng-change="dateChanged(uiChosenReport, 'hasPaidDateRange')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromPaidDate" ng-change="dateChanged(uiChosenReport, 'hasPaidDateRange')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromPaidDate" ng-change="dateChanged(uiChosenReport, 'hasPaidDateRange')" readonly>
     </div>
     <label>{{ uiChosenReport.hasPaidDateRange.description }} <span>(To)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-class="{'visible': uiChosenReport.hasPaidDateRange.showRemove}" class="clear-query" ng-click="clearDateFromFilter(uiChosenReport, 'hasPaidDateRange')">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-class="{'visible': uiChosenReport.hasPaidDateRange.showRemove}" class="clear-query" ng-click="clearDateFromFilter(uiChosenReport, 'hasPaidDateRange')">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilPaidDate" ng-change="dateChanged(uiChosenReport, 'hasPaidDateRange')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilPaidDate" ng-change="dateChanged(uiChosenReport, 'hasPaidDateRange')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilPaidDate" ng-change="dateChanged(uiChosenReport, 'hasPaidDateRange')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilPaidDate" ng-change="dateChanged(uiChosenReport, 'hasPaidDateRange')" readonly>
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasRoomTypeFilter" ng-click="catchFauxSelectClick($event, 'hasRoomTypeFilter')">
+<div class="entry" ng-show="uiChosenReport.hasRoomTypeFilter" ng-click="catchFauxSelectClick($event, 'hasRoomTypeFilter')">
     <label>Room Types</label>
     <div class="faux-select" ng-class="{'placeholder' : uiChosenReport.hasRoomTypeFilter.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasRoomTypeFilter)">{{ uiChosenReport.hasRoomTypeFilter.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasRoomTypeFilter.show }">
@@ -70,7 +70,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasRateCodeFilter" ng-click="catchFauxSelectClick($event, 'hasRateCodeFilter')">
+<div class="entry" ng-show="uiChosenReport.hasRateCodeFilter" ng-click="catchFauxSelectClick($event, 'hasRateCodeFilter')">
     <label>Rate</label>
     <div class="faux-select" ng-click="toggleFauxSelect($event, uiChosenReport.hasRateCodeFilter)">{{ uiChosenReport.hasRateCodeFilter.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasRateCodeFilter.show }">
@@ -81,7 +81,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasRestrictionListFilter" ng-click="catchFauxSelectClick($event, 'hasRestrictionListFilter')">
+<div class="entry" ng-show="uiChosenReport.hasRestrictionListFilter" ng-click="catchFauxSelectClick($event, 'hasRestrictionListFilter')">
     <label>Restriction</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasRestrictionListFilter.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasRestrictionListFilter)">{{ uiChosenReport.hasRestrictionListFilter.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasRestrictionListFilter.show }">
@@ -96,122 +96,122 @@
     </div>
 </div>
 
-<div class="entry date-range" ng-if="uiChosenReport.hasDateFilter">
+<div class="entry date-range" ng-show="uiChosenReport.hasDateFilter">
     <label>{{ uiChosenReport.hasDateFilter.description }} <span>(From)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasDateFilter')" ng-class="{'visible': uiChosenReport.hasDateFilter.showRemove}" class="clear-query">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasDateFilter')" ng-class="{'visible': uiChosenReport.hasDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit  && !uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsTillYesterday" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
-        <input ng-if="!uiChosenReport.hasPrevDateLimit && uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
-        <input ng-if="uiChosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsSysLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
-        <input ng-if="!uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit && !uiChosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
-        <input ng-if="uiChosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsOneMonthLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
-        <input ng-if="uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsOneYearLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit  && !uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsTillYesterday" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasPrevDateLimit && uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsSysLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit && !uiChosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsOneMonthLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsOneYearLimit" ng-model="uiChosenReport.fromDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
     </div>
     <label>{{ uiChosenReport.hasDateFilter.description }} <span>(To)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasDateFilter')" ng-class="{'visible': uiChosenReport.hasDateFilter.showRemove}" class="clear-query">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasDateFilter')" ng-class="{'visible': uiChosenReport.hasDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
-        <input ng-if="!uiChosenReport.hasPrevDateLimit && uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
-        <input ng-if="uiChosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsSysLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
-        <input ng-if="!uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit && !uiChosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
-        <input ng-if="uiChosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="toDateOptionsOneMonthLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
-        <input ng-if="uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="toDateOptionsOneYearLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasPrevDateLimit && uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasSysDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsSysLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasPrevDateLimit && !uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit && !uiChosenReport.hasOneYearLimit && !uiChosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasOneMonthLimit" type="text" class="range-datepicker" ui-date="toDateOptionsOneMonthLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasOneYearLimit" type="text" class="range-datepicker" ui-date="toDateOptionsOneYearLimit" ng-model="uiChosenReport.untilDate" ng-change="dateChanged(uiChosenReport, 'hasDateFilter')" readonly>
     </div>
-    <button type="button" class="set-to-tomorrow button blue" ng-if="uiChosenReport.hasAddonGroups" ng-click="setTomorrowDate(uiChosenReport)">Set To Tomorrow</button>
+    <button type="button" class="set-to-tomorrow button blue" ng-show="uiChosenReport.hasAddonGroups" ng-click="setTomorrowDate(uiChosenReport)">Set To Tomorrow</button>
 </div>
 
-<div class="entry date-range" ng-if="uiChosenReport.hasCreateDateFilter">
+<div class="entry date-range" ng-show="uiChosenReport.hasCreateDateFilter">
     <label>{{ uiChosenReport.hasCreateDateFilter.description }} <span>(From)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasCreateDateFilter')" ng-class="{'visible': uiChosenReport.hasCreateDateFilter.showRemove}" class="clear-query">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasCreateDateFilter')" ng-class="{'visible': uiChosenReport.hasCreateDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromCreateDate" ng-change="dateChanged(uiChosenReport, 'hasCreateDateFilter')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromCreateDate" ng-change="dateChanged(uiChosenReport, 'hasCreateDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromCreateDate" ng-change="dateChanged(uiChosenReport, 'hasCreateDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromCreateDate" ng-change="dateChanged(uiChosenReport, 'hasCreateDateFilter')" readonly>
     </div>
     <label>{{ uiChosenReport.hasCreateDateFilter.description }} <span>(To)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasCreateDateFilter')" ng-class="{'visible': uiChosenReport.hasCreateDateFilter.showRemove}" class="clear-query">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasCreateDateFilter')" ng-class="{'visible': uiChosenReport.hasCreateDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilCreateDate" ng-change="dateChanged(uiChosenReport, 'hasCreateDateFilter')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilCreateDate" ng-change="dateChanged(uiChosenReport, 'hasCreateDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilCreateDate" ng-change="dateChanged(uiChosenReport, 'hasCreateDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilCreateDate" ng-change="dateChanged(uiChosenReport, 'hasCreateDateFilter')" readonly>
     </div>
 </div>
 
-<div class="entry date-range" ng-if="uiChosenReport.hasAdjustmentDateRange">
+<div class="entry date-range" ng-show="uiChosenReport.hasAdjustmentDateRange">
     <label>{{ uiChosenReport.hasAdjustmentDateRange.description }} <span>(From)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasAdjustmentDateRange')" ng-class="{'visible': uiChosenReport.hasAdjustmentDateRange.showRemove}" class="clear-query">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasAdjustmentDateRange')" ng-class="{'visible': uiChosenReport.hasAdjustmentDateRange.showRemove}" class="clear-query">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromAdjustmentDate" ng-change="dateChanged(uiChosenReport, 'hasAdjustmentDateRange')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromAdjustmentDate" ng-change="dateChanged(uiChosenReport, 'hasAdjustmentDateRange')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromAdjustmentDate" ng-change="dateChanged(uiChosenReport, 'hasAdjustmentDateRange')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromAdjustmentDate" ng-change="dateChanged(uiChosenReport, 'hasAdjustmentDateRange')" readonly>
     </div>
     <label>{{ uiChosenReport.hasAdjustmentDateRange.description }} <span>(To)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasAdjustmentDateRange')" ng-class="{'visible': uiChosenReport.hasAdjustmentDateRange.showRemove}" class="clear-query">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasAdjustmentDateRange')" ng-class="{'visible': uiChosenReport.hasAdjustmentDateRange.showRemove}" class="clear-query">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilAdjustmentDate" ng-change="dateChanged(uiChosenReport, 'hasAdjustmentDateRange')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilAdjustmentDate" ng-change="dateChanged(uiChosenReport, 'hasAdjustmentDateRange')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilAdjustmentDate" ng-change="dateChanged(uiChosenReport, 'hasAdjustmentDateRange')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilAdjustmentDate" ng-change="dateChanged(uiChosenReport, 'hasAdjustmentDateRange')" readonly>
     </div>
 </div>
 
-<div class="entry date-range" ng-if="uiChosenReport.hasArrivalDateFilter">
+<div class="entry date-range" ng-show="uiChosenReport.hasArrivalDateFilter">
     <label>{{ uiChosenReport.hasArrivalDateFilter.description }} <span>(From)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasArrivalDateFilter')" ng-class="{'visible': uiChosenReport.hasArrivalDateFilter.showRemove}" class="clear-query">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasArrivalDateFilter')" ng-class="{'visible': uiChosenReport.hasArrivalDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromArrivalDate" ng-change="dateChanged(uiChosenReport, 'hasArrivalDateFilter')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromArrivalDate" ng-change="dateChanged(uiChosenReport, 'hasArrivalDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.fromArrivalDate" ng-change="dateChanged(uiChosenReport, 'hasArrivalDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.fromArrivalDate" ng-change="dateChanged(uiChosenReport, 'hasArrivalDateFilter')" readonly>
     </div>
     <label>{{ uiChosenReport.hasArrivalDateFilter.description }} <span>(To)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasArrivalDateFilter')" ng-class="{'visible': uiChosenReport.hasArrivalDateFilter.showRemove}" class="clear-query">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasArrivalDateFilter')" ng-class="{'visible': uiChosenReport.hasArrivalDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilArrivalDate" ng-change="dateChanged(uiChosenReport, 'hasArrivalDateFilter')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilArrivalDate" ng-change="dateChanged(uiChosenReport, 'hasArrivalDateFilter')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.untilArrivalDate" ng-change="dateChanged(uiChosenReport, 'hasArrivalDateFilter')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.untilArrivalDate" ng-change="dateChanged(uiChosenReport, 'hasArrivalDateFilter')" readonly>
     </div>
 </div>
 
-<div class="entry date-range" ng-if="uiChosenReport.hasGroupStartDateRange">
+<div class="entry date-range" ng-show="uiChosenReport.hasGroupStartDateRange">
     <label>{{ uiChosenReport.hasGroupStartDateRange.description }} <span>(From)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasGroupStartDateRange')" ng-class="{'visible': uiChosenReport.hasGroupStartDateRange.showRemove}" class="clear-query">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasGroupStartDateRange')" ng-class="{'visible': uiChosenReport.hasGroupStartDateRange.showRemove}" class="clear-query">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.groupStartDate" ng-change="dateChanged(uiChosenReport, 'hasGroupStartDateRange')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.groupStartDate" ng-change="dateChanged(uiChosenReport, 'hasGroupStartDateRange')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptions" ng-model="uiChosenReport.groupStartDate" ng-change="dateChanged(uiChosenReport, 'hasGroupStartDateRange')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="fromDateOptionsNoLimit" ng-model="uiChosenReport.groupStartDate" ng-change="dateChanged(uiChosenReport, 'hasGroupStartDateRange')" readonly>
     </div>
     <label>{{ uiChosenReport.hasGroupStartDateRange.description }} <span>(To)</span></label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasGroupStartDateRange')" ng-class="{'visible': uiChosenReport.hasGroupStartDateRange.showRemove}" class="clear-query">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasGroupStartDateRange')" ng-class="{'visible': uiChosenReport.hasGroupStartDateRange.showRemove}" class="clear-query">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.groupEndDate" ng-change="dateChanged(uiChosenReport, 'hasGroupStartDateRange')" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.groupEndDate" ng-change="dateChanged(uiChosenReport, 'hasGroupStartDateRange')" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.groupEndDate" ng-change="dateChanged(uiChosenReport, 'hasGroupStartDateRange')" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="range-datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.groupEndDate" ng-change="dateChanged(uiChosenReport, 'hasGroupStartDateRange')" readonly>
     </div>
 </div>
 
-<div class="entry date-range" ng-if="uiChosenReport.hasSingleDateFilter">
+<div class="entry date-range" ng-show="uiChosenReport.hasSingleDateFilter">
     <label>Date</label>
     <div class="has-datepicker">
-        <button ng-if="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasSingleDateFilter')" ng-class="{'visible': uiChosenReport.hasSingleDateFilter.showRemove}" class="clear-query">
+        <button ng-show="uiChosenReport.canRemoveDate" ng-click="clearDateFromFilter(uiChosenReport, 'hasSingleDateFilter')" ng-class="{'visible': uiChosenReport.hasSingleDateFilter.showRemove}" class="clear-query">
             <span class="icons icon-clear-search">Clear query</span>
         </button>
-        <input ng-if="uiChosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
-        <input ng-if="!uiChosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
+        <input ng-show="uiChosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
+        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
     </div>
 </div>
 
-<div class="entry date-range" ng-if="uiChosenReport.hasTimeFilter">
+<div class="entry date-range" ng-show="uiChosenReport.hasTimeFilter">
     <label>{{ uiChosenReport.hasTimeFilter.description }} <span>(From)</span></label>
     <div class="select">
         <select name="time-from" ng-model="uiChosenReport.fromTime" ng-options="time.value as time.name for time in uiChosenReport.timeFilterOptions" iscroll-stop-propagation>
@@ -226,7 +226,7 @@
     </div>
 </div>
 
-<div class="filter" ng-if="uiChosenReport.hasCicoFilter">
+<div class="filter" ng-show="uiChosenReport.hasCicoFilter">
     <label>{{ uiChosenReport.hasCicoFilter.description }}</label>
     <div class="select">
         <select ng-model="uiChosenReport.chosenCico" ng-options="cico.value as cico.label for cico in uiChosenReport.cicoOptions" iscroll-stop-propagation>
@@ -235,9 +235,9 @@
     </div>
 </div>
 
-<multi-option-selection label="Employees" data="uiChosenReport.empList.data" options="{hasSearch: true, selectAll: true, key: 'full_name', altKey: 'email'}" ng-if="uiChosenReport.hasUserFilter && uiChosenReport.empList.data.length"></multi-option-selection>
+<multi-option-selection label="Employees" data="uiChosenReport.empList.data" options="{hasSearch: true, selectAll: true, key: 'full_name', altKey: 'email'}" ng-show="uiChosenReport.hasUserFilter && uiChosenReport.empList.data.length"></multi-option-selection>
 
-<div class="entry" ng-if="uiChosenReport.hasGeneralOptions.data.length" ng-click="catchFauxSelectClick($event, 'hasGeneralOptions')">
+<div class="entry" ng-show="uiChosenReport.hasGeneralOptions.data.length" ng-click="catchFauxSelectClick($event, 'hasGeneralOptions')">
     <label>Option(s)</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasGeneralOptions.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasGeneralOptions)">{{ uiChosenReport.hasGeneralOptions.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasGeneralOptions.show }">
@@ -252,34 +252,27 @@
     </div>
 </div>
 
-<div class="entry search" ng-if="uiChosenReport.hasIncludeCompanyTa">
+<div class="entry search" ng-show="uiChosenReport.hasIncludeCompanyTa">
     <label>Company/TA</label>
     <input class="icons icon-search" auto-complete auto-options="compTaAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA" value="" autocomplete="off" ng-model="uiChosenReport.uiChosenIncludeCompanyTa" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(uiChosenReport)" ng-change="removeCompTaGrpId(uiChosenReport, 'uiChosenIncludeCompanyTa', 'chosenIncludeCompanyTa')">
     <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeCompanyTa">
 </div>
 
-<div class="entry search" ng-if="uiChosenReport.hasIncludeCompanyTaGroup">
+<div class="entry search" ng-show="uiChosenReport.hasIncludeCompanyTaGroup">
     <label>Company/TA/Group</label>
     <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="uiChosenReport.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(uiChosenReport)" ng-change="removeCompTaGrpId(uiChosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
     <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeCompanyTaGroup">
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasGuaranteeType" ng-click="catchFauxSelectClick($event, 'hasGuaranteeType')">
-    <label for="report-options">Guarantee Type(s)</label>
-    <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasGuaranteeType.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasGuaranteeType)">{{ uiChosenReport.hasGuaranteeType.title }}</div>
-    <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasGuaranteeType.show }">
-        <label class="checkbox inline" ng-show="uiChosenReport.hasGuaranteeType.data.length > 1">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : uiChosenReport.hasGuaranteeType.selectAll }"></span>
-            <input type="checkbox" ng-model="uiChosenReport.hasGuaranteeType.selectAll" ng-change="fauxSelectChange(uiChosenReport, uiChosenReport.hasGuaranteeType, true)" name="room-filters"> Select All
-        </label>
-        <label class="checkbox inline" ng-repeat="type in uiChosenReport.hasGuaranteeType.data">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : type.selected}"></span>
-            <input type="checkbox" ng-model="type.selected" ng-change="fauxSelectChange(uiChosenReport, uiChosenReport.hasGuaranteeType)" name="room-filters"> {{ type.name }}
-        </label>
-    </div>
-</div>
+<multi-option-selection ng-show="uiChosenReport.hasGuaranteeType && uiChosenReport.hasGuaranteeType.data.length"
+    label="Guarantee Type(s)"
+    on-open="refreshFilterScroll"
+    on-close="refreshFilterScroll"
+    data="uiChosenReport.hasGuaranteeType.data"
+    options="{hasSearch: true, selectAll: false, key: 'name'}"></multi-option-selection>
 
-<div class="entry" ng-if="uiChosenReport.hasByChargeGroup" ng-click="catchFauxSelectClick($event, 'hasByChargeGroup')">
+
+<div class="entry" ng-show="uiChosenReport.hasByChargeGroup" ng-click="catchFauxSelectClick($event, 'hasByChargeGroup')">
     <label for="report-options">Charge Group(s)</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasByChargeGroup.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasByChargeGroup)">{{ uiChosenReport.hasByChargeGroup.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasByChargeGroup.show }">
@@ -294,7 +287,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasByChargeCode" ng-click="catchFauxSelectClick($event, 'hasByChargeCode')">
+<div class="entry" ng-show="uiChosenReport.hasByChargeCode" ng-click="catchFauxSelectClick($event, 'hasByChargeCode')">
     <label for="report-options">Charge Code(s)</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasByChargeCode.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasByChargeCode)">{{ uiChosenReport.hasByChargeCode.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasByChargeCode.show }">
@@ -309,7 +302,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasRateTypeFilter" ng-click="catchFauxSelectClick($event, 'hasRateTypeFilter')">
+<div class="entry" ng-show="uiChosenReport.hasRateTypeFilter" ng-click="catchFauxSelectClick($event, 'hasRateTypeFilter')">
     <label for="report-options">Rate Type</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasRateTypeFilter.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasRateTypeFilter)">{{ uiChosenReport.hasRateTypeFilter.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasRateTypeFilter.show }">
@@ -324,7 +317,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasRateFilter" ng-click="catchFauxSelectClick($event, 'hasRateFilter')">
+<div class="entry" ng-show="uiChosenReport.hasRateFilter" ng-click="catchFauxSelectClick($event, 'hasRateFilter')">
     <label for="report-options">Rate(s)</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasRateFilter.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasRateFilter)">{{ uiChosenReport.hasRateFilter.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasRateFilter.show }">
@@ -332,14 +325,14 @@
             <span class="icon-form icon-checkbox" ng-class="{ 'checked' : uiChosenReport.hasRateFilter.selectAll }"></span>
             <input type="checkbox" ng-model="uiChosenReport.hasRateFilter.selectAll" ng-change="toggleRateSelectAll(uiChosenReport)" name="room-filters"> Select All
         </label>
-        <label class="checkbox inline" ng-repeat="rate in uiChosenReport.hasRateFilter.data" ng-if="shouldShowThisRate(rate, uiChosenReport)">
+        <label class="checkbox inline" ng-repeat="rate in uiChosenReport.hasRateFilter.data" ng-show="shouldShowThisRate(rate, uiChosenReport)">
             <span class="icon-form icon-checkbox" ng-class="{'checked' : rate.selected}"></span>
             <input type="checkbox" ng-model="rate.selected" ng-change="rateChanged(uiChosenReport)" name="room-filters"> {{ rate.name }}
         </label>
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasDisplay.data.length" ng-click="catchFauxSelectClick($event, 'hasDisplay')">
+<div class="entry" ng-show="uiChosenReport.hasDisplay.data.length" ng-click="catchFauxSelectClick($event, 'hasDisplay')">
     <label for="report-options">Display(s)</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasDisplay.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasDisplay)">{{ uiChosenReport.hasDisplay.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasDisplay.show }">
@@ -354,7 +347,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasExclusions.data.length" ng-click="catchFauxSelectClick($event, 'hasExclusions')">
+<div class="entry" ng-show="uiChosenReport.hasExclusions.data.length" ng-click="catchFauxSelectClick($event, 'hasExclusions')">
     <label for="report-options">Exclude</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasExclusions.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasExclusions)">{{ uiChosenReport.hasExclusions.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasExclusions.show }">
@@ -369,7 +362,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasHoldStatus.data.length" ng-click="catchFauxSelectClick($event, 'hasHoldStatus')">
+<div class="entry" ng-show="uiChosenReport.hasHoldStatus.data.length" ng-click="catchFauxSelectClick($event, 'hasHoldStatus')">
     <label for="report-options">Hold Status(es)</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasHoldStatus.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasHoldStatus)">{{ uiChosenReport.hasHoldStatus.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasHoldStatus.show }">
@@ -384,7 +377,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasAddonGroups.data.length" ng-click="catchFauxSelectClick($event, 'hasAddonGroups')">
+<div class="entry" ng-show="uiChosenReport.hasAddonGroups.data.length" ng-click="catchFauxSelectClick($event, 'hasAddonGroups')">
     <label for="addon-groups">Add-On Group(s)</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasAddonGroups.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasAddonGroups)">{{ uiChosenReport.hasAddonGroups.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasAddonGroups.show }">
@@ -399,7 +392,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasAddonGroups.data.length" ng-click="catchFauxSelectClick($event, 'hasAddonGroups')">
+<div class="entry" ng-show="uiChosenReport.hasAddonGroups.data.length" ng-click="catchFauxSelectClick($event, 'hasAddonGroups')">
     <label>Add-On(s)</label>
     <div class="faux-select placeholder" ng-click="toggleAddons()">{{ uiChosenReport.hasAddons.title }}</div>
     <div class="faux-select-options" ng-show="isVisible">
@@ -422,7 +415,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasReservationStatus.data.length" ng-click="catchFauxSelectClick($event, 'hasReservationStatus')">
+<div class="entry" ng-show="uiChosenReport.hasReservationStatus.data.length" ng-click="catchFauxSelectClick($event, 'hasReservationStatus')">
     <label for="addon-status">Reservation Status</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasReservationStatus.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasReservationStatus)">{{ uiChosenReport.hasReservationStatus.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasReservationStatus.show }">
@@ -437,7 +430,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasGuestOrAccountFilter.data.length" ng-click="catchFauxSelectClick($event, 'hasGuestOrAccountFilter')">
+<div class="entry" ng-show="uiChosenReport.hasGuestOrAccountFilter.data.length" ng-click="catchFauxSelectClick($event, 'hasGuestOrAccountFilter')">
     <label for="group-deposit-status">Guest/Account</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasGuestOrAccountFilter.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasGuestOrAccountFilter)">{{ uiChosenReport.hasGuestOrAccountFilter.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasGuestOrAccountFilter.show }">
@@ -452,7 +445,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.sortByOptions">
+<div class="entry" ng-show="uiChosenReport.sortByOptions">
     <label>Sort By</label>
     <div class="select">
         <select ng-model="uiChosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in uiChosenReport.sortByOptions | filter:showValidSortBy" ng-change="sortByChanged(uiChosenReport)" iscroll-stop-propagation>
@@ -461,7 +454,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.groupByOptions">
+<div class="entry" ng-show="uiChosenReport.groupByOptions">
     <label>Group By</label>
     <div class="select">
         <select ng-model="uiChosenReport.chosenGroupBy" ng-options="groupBy.value as groupBy.description for groupBy in uiChosenReport.groupByOptions" ng-change="groupByChanged(uiChosenReport)" iscroll-stop-propagation>
@@ -470,7 +463,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasMarketsList" ng-click="catchFauxSelectClick($event, 'hasMarketsList')">
+<div class="entry" ng-show="uiChosenReport.hasMarketsList" ng-click="catchFauxSelectClick($event, 'hasMarketsList')">
     <label for="report-options">Market(s)</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasMarketsList.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasMarketsList)">{{ uiChosenReport.hasMarketsList.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasMarketsList.show }">
@@ -485,7 +478,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasSourcesList" ng-click="catchFauxSelectClick($event, 'hasSourcesList')">
+<div class="entry" ng-show="uiChosenReport.hasSourcesList" ng-click="catchFauxSelectClick($event, 'hasSourcesList')">
     <label for="report-options">Source(s)</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasSourcesList.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasSourcesList)">{{ uiChosenReport.hasSourcesList.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasSourcesList.show }">
@@ -500,7 +493,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasOriginsList" ng-click="catchFauxSelectClick($event, 'hasOriginsList')">
+<div class="entry" ng-show="uiChosenReport.hasOriginsList" ng-click="catchFauxSelectClick($event, 'hasOriginsList')">
     <label for="report-options">Origin(s)</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasOriginsList.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasOriginsList)">{{ uiChosenReport.hasOriginsList.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasOriginsList.show }">
@@ -515,17 +508,17 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasMinRevenue">
+<div class="entry" ng-show="uiChosenReport.hasMinRevenue">
     <label>Minimum Revenue</label>
     <input ng-model="uiChosenReport.hasMinRevenue.data" value="" placeholder="Enter Value" type="number" limit-input-range="{'from': 0}" />
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasMinRoomNights">
+<div class="entry" ng-show="uiChosenReport.hasMinRoomNights">
     <label>Minimum Nights</label>
     <input ng-model="uiChosenReport.hasMinRoomNights.data" value="" placeholder="Enter No." type="number" limit-input-range="{'from': 0}" />
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasShow.data.length" ng-click="catchFauxSelectClick($event, 'hasShow')">
+<div class="entry" ng-show="uiChosenReport.hasShow.data.length" ng-click="catchFauxSelectClick($event, 'hasShow')">
     <label for="report-options">Show</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasShow.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasShow)">{{ uiChosenReport.hasShow.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasShow.show }">
@@ -540,7 +533,7 @@
     </div>
 </div>
 
-<div class="entry" ng-if="uiChosenReport.hasChargeTypes.data.length" ng-click="catchFauxSelectClick($event, 'hasChargeTypes')">
+<div class="entry" ng-show="uiChosenReport.hasChargeTypes.data.length" ng-click="catchFauxSelectClick($event, 'hasChargeTypes')">
     <label for="report-options">Charge Type</label>
     <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasChargeTypes.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasChargeTypes)">{{ uiChosenReport.hasChargeTypes.title }}</div>
     <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasChargeTypes.show }">

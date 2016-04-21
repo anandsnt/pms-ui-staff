@@ -1,11 +1,8 @@
 <div class="entry">
     <label>{{ label }}</label>
-    <div class="multi-select select" ng-click="toggleView()">
-        {{ value }}
-    </div>
+    <div class="multi-select select" ng-click="toggleView()">{{ value }}</div>
     <div class="multi-select-options" ng-class="{ 'hidden': closed }">
         <div class="select-all">
-            <!-- Checked by default -->
             <label class="checkbox inline" ng-class="{ 'checked': selectAll }" ng-click="toggleSelectAll()">
                 <span class="icon-form icon-checkbox" ng-class="{ 'checked': selectAll }"></span>
                 Select All
@@ -22,7 +19,7 @@
 
         <label class="checkbox" ng-repeat="each in data" ng-class="{ 'hidden': each.filteredOut }" ng-click="toggleSelection(each)">
             <span class="icon-form icon-checkbox" ng-class="{ 'checked': each.selected }"></span>
-            {{ each.full_name || each.email }}
+            {{ each[key] || each[altKey] }}
         </label>
     </div>
 </div>

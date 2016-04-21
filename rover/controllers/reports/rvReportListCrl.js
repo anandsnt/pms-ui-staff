@@ -20,7 +20,7 @@ sntRover.controller('RVReportListCrl', [
             REPORT_LIST_SCROLL = 'report-list-scroll',
             REPORT_FILTERS_SCROLL = 'report-filters-scroll';
 
-        var refreshFilterScroll = function() {
+        $scope.refreshFilterScroll = function() {
             $scope.refreshScroller(REPORT_FILTERS_SCROLL);
         }
 
@@ -159,7 +159,7 @@ sntRover.controller('RVReportListCrl', [
                 $scope.uiChosenReport = report;
 
                 //refreshFilterScroll();
-                $timeout(refreshFilterScroll, 300)
+                $timeout($scope.refreshFilterScroll, 300)
 
                 $scope.$emit( 'hideLoader' );
             };

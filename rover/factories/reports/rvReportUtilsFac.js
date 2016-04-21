@@ -660,15 +660,21 @@ angular.module('reportsModule')
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        __setData(report, 'hasGuaranteeType', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Guarantees',
-                            title        : 'Select Guarantees',
-                            data         : angular.copy( data )
-                        });
+                        // __setData(report, 'hasGuaranteeType', {
+                        //     type         : 'FAUX_SELECT',
+                        //     filter       : foundFilter,
+                        //     show         : false,
+                        //     selectAll    : false,
+                        //     defaultTitle : 'Select Guarantees',
+                        //     title        : 'Select Guarantees',
+                        //     data         : angular.copy( data )
+                        // });
+
+                        report.hasGuaranteeType = {
+                            selectAll: false,
+                            hasSearch: true,
+                            data: angular.copy( data )
+                        }
                     };
                 });
 
