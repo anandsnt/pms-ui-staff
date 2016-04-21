@@ -49,6 +49,9 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             resolve: {
                 dashBoarddata: function(RVDashboardSrv, mappingList) {
                     return RVDashboardSrv.fetchDashboardDetails();
+                },
+                roomTypes : function(RVHkRoomStatusSrv) {
+                    return RVHkRoomStatusSrv.fetchRoomTypes();
                 }
             }
         });

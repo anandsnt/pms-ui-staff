@@ -123,7 +123,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             type: RM_RX_CONST.RATE_VIEW_CHANGED,
             rateRestrictionData: [...ratesWithRestrictions],
             dates,
-            zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
             businessDate: tzIndependentDate($rootScope.businessDate),
             restrictionTypes,
             callbacksFromAngular: getTheCallbacksFromAngularToReact(),
@@ -253,7 +252,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var reduxActionForAllRoomTypesView = {
             type                : RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED,
             roomTypeRestrictionData : [...roomTypeWithRestrictions],
-            zoomLevel           : lastSelectedFilterValues[activeFilterIndex].zoomLevel,
             businessDate        : tzIndependentDate($rootScope.businessDate),
             callbacksFromAngular: getTheCallbacksFromAngularToReact(),
             dates,
@@ -924,7 +922,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             type: RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_CHANGED,
             singleRateRestrictionData: [...roomTypeWithRestrictions],
             dates,
-            zoomLevel: lastSelectedFilterValues[activeFilterIndex].zoomLevel,
             businessDate: tzIndependentDate($rootScope.businessDate),
             restrictionTypes,
             callbacksFromAngular: getTheCallbacksFromAngularToReact(),

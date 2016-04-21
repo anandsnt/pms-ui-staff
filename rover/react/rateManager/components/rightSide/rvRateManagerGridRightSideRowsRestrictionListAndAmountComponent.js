@@ -9,14 +9,12 @@ const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ onTdCli
 						 			{rowIndex === 0 ? 
 						 				(
 						 					<div className={'cell-content ' + (dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
-							 					<div className="restriction_holder">
-												   {eachDayRestrictionData.map((restriction, restrictionIndex) => 
-														<RateManagerRestrictionIconComponent
-															key={'key-' + restrictionIndex}
-															className={'right ' + restriction.className}
-															text={restriction.days}/>
-													)}
-												</div>
+											   {eachDayRestrictionData.map((restriction, restrictionIndex) => 
+													<RateManagerRestrictionIconComponent
+														key={'key-' + restrictionIndex}
+														className={'right ' + restriction.className}
+														text={restriction.days}/>
+												)}
 							 				</div>
 							 			)
 							 			:
