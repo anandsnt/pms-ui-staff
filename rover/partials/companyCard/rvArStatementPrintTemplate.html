@@ -70,8 +70,8 @@
                                 <td class="charge-code">{{item.charge_code}}</td>
                                 <td class="charge-description">
                                     <span>{{item.description}}</span>
+                                    <span class="reference">{{item.reference_number}}</span>
                                     <span class="reference">{{item.reference_text}}</span>
-                                    <span class="reference">{{ 'EXT_REF_NO'| translate }} {{item.external_ref_no}}</span>
                                 </td>
                                 <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}</td>
                             </tr>
@@ -102,7 +102,7 @@
 
                 <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.tax_details">
                     <td colspan="6"><strong>{{tax.description}}</strong></td>
-                    <td><strong>{{currencySymbol}}{{tax.amount | number: precisonTwo}}</strong></td>
+                    <td><strong>{{currencySymbol}}{{tax.tax_amount | number: precisonTwo}}</strong></td>
                 </tr>
 
             </tfoot>
