@@ -14,6 +14,8 @@
 "ITEMS_OPTION": "Items",
 "FROM_SECTION_LABEL": "From Section",
 "ALL_SECTIONS_LABEL": "All Sections",
+"ALL_HOME_SCREEN_LABEL": "All Home Screens",
+"FROM_HOME_SCREEN_LABEL": "From Home Screen",
 "FROM_CATEGORIES_LABEL": "From Category",
 "ALL_CATEGORIES_LABEL": "All Categories",
 "SHOW_UNASSIGNED_LABEL": "Show only unassigned",

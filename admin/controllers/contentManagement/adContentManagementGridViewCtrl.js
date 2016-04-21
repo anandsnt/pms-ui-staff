@@ -4,13 +4,15 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 
-   $scope.selectedView = "homescreen";
+   $scope.selectedView = "home screen";
    $scope.fromSection = "all";
    $scope.fromCategory = "all";
+   $scope.fromHomeScreen = "all";
    $scope.showUnMappedList = false;
    $scope.sections = [];
    $scope.home_screens = [];
    $scope.category_options = [];
+   $scope.section_options = [];
    $scope.categories = [];
    $scope.items = [];
    $scope.searchText = "";
@@ -35,6 +37,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    			$scope.data[i].last_updated = new Date($scope.data[i].last_updated);
    			if($scope.data[i].component_type === 'SECTION'){
    				$scope.sections.push($scope.data[i]);
+   				$scope.section_options.push($scope.data[i]);
    			}else if($scope.data[i].component_type === 'HOME SCREEN'){
    				$scope.home_screens.push($scope.data[i]);
    			}else if($scope.data[i].component_type === 'CATEGORY'){
@@ -148,13 +151,14 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    		if($scope.showUnMappedList){
    				$scope.fromSection = 'all';
    				$scope.fromCategory = 'all';
+   				$scope.fromHomeScreen = 'all';
    				for(var i=0; i < $scope.data.length; i++){
 			   			if($scope.data[i].parent_section.length === 0 && $scope.data[i].parent_category.length === 0){
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
    		}else{
-	   			if($scope.fromSection === 'all' && $scope.fromCategory === 'all'){
+	   			if($scope.fromSection === 'all' && $scope.fromCategory === 'all' && $scope.fromHomeScreen === 'all'){
 	   				$scope.filteredData = $scope.data;
 	   			}else if($scope.fromSection !== 'all' && $scope.fromCategory !== 'all'){
 		   			for(var i=0; i < $scope.data.length; i++){
@@ -165,6 +169,12 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 	   			}else if($scope.fromSection !== 'all'){
 	   				for(var i=0; i < $scope.data.length; i++){
 			   			if($scope.data[i].parent_section.indexOf(parseInt($scope.fromSection)) !== -1){
+			   				$scope.filteredData.push($scope.data[i]);
+			   			}
+		   			}
+	   			}else if($scope.fromHomeScreen !== 'all'){
+	   				for(var i=0; i < $scope.data.length; i++){
+			   			if($scope.data[i].parent_home_screen.indexOf(parseInt($scope.fromHomeScreen)) !== -1){
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
@@ -186,15 +196,18 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    $scope.applyFiltersToSectionsAndItems = function(){
    		$scope.categories = [];
    		$scope.items = [];
+   		$scope.sections = [];
    		for(var i= 0; i < $scope.filteredData.length; i++){
    			if($scope.filteredData[i].component_type === 'CATEGORY'){
    				$scope.categories.push($scope.filteredData[i]);
    			}else if($scope.filteredData[i].component_type === 'PAGE'){
    				$scope.items.push($scope.filteredData[i]);
+   			}else if($scope.filteredData[i].component_type === 'SECTION'){
+   				$scope.sections.push($scope.filteredData[i]);
    			}
    		}
 
-
+   		$scope.sectionParams.reload();
    		$scope.itemParams.reload();
    		$scope.categoryParams.reload();
    };
@@ -203,6 +216,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    $scope.viewSelected = function(){
    		$scope.fromSection = 'all';
    		$scope.fromCategory = 'all';
+   		$scope.fromHomeScreen = 'all';
    		$scope.showUnMappedList = false;
    		$scope.filterBySectionAndCategory();
    };
@@ -248,6 +262,12 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		angular.forEach($scope.category_options, function(component, index) {
 			if (component.id === data.id) {
 				$scope.category_options.splice(index,1);
+			}
+		});
+
+		angular.forEach($scope.section_options, function(component, index) {
+			if (component.id === data.id) {
+				$scope.section_options.splice(index,1);
 			}
 		});
 	});

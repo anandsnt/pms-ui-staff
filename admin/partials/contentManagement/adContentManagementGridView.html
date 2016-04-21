@@ -11,10 +11,22 @@
                     <label for="showing-structure" translate>SHOWING_LABEL</label>
                     <div class="select">
                         <select id="showing-structure" class="grid-select" ng-change="viewSelected()" ng-model="selectedView">
-                            <option value="homescreen" selected translate>DASHBOARDS_OPTION</option>
+                            <option value="home screen" selected translate>DASHBOARDS_OPTION</option>
                             <option value="section" selected translate>SECTIONS_OPTION</option>
                             <option value="category" translate>CATEGORIES_OPTION</option>
                             <option value="item" translate>ITEMS_OPTION</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!--Filter by home screen, hidden by default - show only when listing sections -->
+                <div class="entry filter" ng-show="selectedView == 'section'">
+                    <label for="showing-items" translate>FROM_HOME_SCREEN_LABEL</label>
+                    <div class="select" >
+                        <select id="showing-items" ng-model = "fromHomeScreen" ng-change="filterBySectionAndCategory()" class="placeholder" ng-disabled = "showUnMappedList">
+                            <option value="all" translate>ALL_HOME_SCREEN_LABEL</option>
+                             <option value="{{home_screen.id}}" ng-repeat="home_screen in home_screens">{{home_screen.name}}</option>
+                            
                         </select>
                     </div>
                 </div>
@@ -25,7 +37,7 @@
                     <div class="select">
                         <select id="showing-categories" ng-model="fromSection" ng-change="filterBySectionAndCategory()" class="placeholder" ng-disabled = "showUnMappedList">
                             <option value="all" translate>ALL_SECTIONS_LABEL</option>
-                            <option value="{{section.id}}" ng-repeat="section in sections">{{section.name}}</option>
+                            <option value="{{section.id}}" ng-repeat="section in section_options">{{section.name}}</option>
                             
                         </select>
                     </div>
@@ -44,7 +56,7 @@
                 </div>
 
                 <!-- Show only unassigned categories or items, hidden by default - show only when listing items or categories -->
-                <div class="entry radio-check " ng-show="selectedView != 'section' && selectedView != 'homescreen' ">
+                <div class="entry radio-check " ng-show="selectedView != 'section' && selectedView != 'home screen' ">
                     <label for="unassigned" class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{'checked': showUnMappedList}"></span>
                         <span translate>SHOW_UNASSIGNED_LABEL</span>
@@ -57,13 +69,13 @@
                     <label for="structure-search" translate>SEARCH_LABEL</label>
                     <div class="holder">
                         <button type="submit" name="submit" class="icons icon-search" translate>SEARCH_LABEL</button>
-                        <input type="search" class="query grid-search" placeholder="Search sections, categories or items" ng-model="searchText"  id="structure-search" autocomplete="off" />
+                        <input type="search" class="query grid-search" placeholder="{{ selectedView + 's'}}" ng-model="searchText"  id="structure-search" autocomplete="off" />
                     </div>
                 </div>    
             </div>
 
             <!-- Grid content -->
-            <table class="grid datatable ng-table" ng-show="selectedView == 'homescreen'" ng-table="homeScreenParams">
+            <table class="grid datatable ng-table" ng-show="selectedView == 'home screen'" ng-table="homeScreenParams">
                 
                 <!-- Section table HTML -->
                 <thead>                 
