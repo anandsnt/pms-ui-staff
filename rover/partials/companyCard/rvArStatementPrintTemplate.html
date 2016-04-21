@@ -124,13 +124,13 @@
                         {{item.description}}
                     </td>
                     <td>
-                        {{currencySymbol}}{{item.tax_amount | number: precisonTwo}}
+                        {{currencySymbol}}{{item.gross_amount | number: precisonTwo}}
                     </td>
                     <td>
                         {{currencySymbol}}{{item.net_amount | number: precisonTwo}}
                     </td>
                     <td>
-                        {{currencySymbol}}{{item.gross_amount | number: precisonTwo}}
+                        {{currencySymbol}}{{item.tax_amount | number: precisonTwo}}
                     </td>
                 </tr>
             </tbody>
