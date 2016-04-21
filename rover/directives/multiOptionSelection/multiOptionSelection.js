@@ -19,7 +19,7 @@ sntRover
 
 				$scope.toggleView = function(bool) {
 					$scope.closed = typeof bool === 'boolean' ? bool : ! $scope.closed;
-					$timeout($scope.onToggle, 1500);
+					$timeout($scope.onUpdate, 300);
 				};
 
 				$scope.toggleSelectAll = function() {
