@@ -141,4 +141,10 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/adTools'
 		});
 
+		$stateProvider.state('admin.zestSortedCountryList', {
+			templateUrl: '/assets/partials/zestSetup/adCountrySorting.html',
+			controller: 'ADCountrySortCtrl',
+			url : '/countrySort'
+		});
+
 });

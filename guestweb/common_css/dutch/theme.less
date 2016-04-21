@@ -99,7 +99,22 @@ a,a:hover,.main-text,
 textarea.sub-text, textarea.sub-text:hover{
   color:#000 !important;
 }
+.checkout-icon{
+  background-image:url(/assets/guestweb/common_images/checkout-now-black.png);
+}
+.late-checkout-icon{
+  background-image:url(/assets/guestweb/common_images/late-checkout-black.png); 
+}
+.circle-bg {
+    background: url(/assets/guestweb/common_images/black/circle-bg.png) center top no-repeat;
+}
+.accept-charge-icon {
+    background-image: url(/assets/guestweb/common_images/black/creditcard_icon.png);
+}
 
+.accept-charge-icon, .checkout-icon, .late-checkout-icon, .upgrade-icon{
+  width:50px;
+}
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
@@ -191,6 +206,12 @@ textarea.sub-text, textarea.sub-text:hover{
     .back-to-checkout{
         display:none;
     }
+    .hide-in-desktop{
+      display:block;
+    }
+    .btn-template, .dual-button{
+       font-size:25px;
+    }
 }
 @media (max-width: 480px){
   .main-text{
@@ -210,6 +231,9 @@ textarea.sub-text, textarea.sub-text:hover{
   }
   .dual-button{
     font-size:32px;
+  }
+  .btn-template{
+    font-size:35px;
   }
 
 }

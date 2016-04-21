@@ -409,6 +409,12 @@
                     </div>
                     <ad-toggle-button is-checked="checkinData.zestweb_enforce_deposit" label="{{'ENFORCE_DEPOSIT'| translate}}" div-class="full-width"></ad-toggle-button>
                 </fieldset>
+                <fieldset class="holder left">
+                    <div class="form-title half-width-title">
+                        <h3><span translate>ADDRESS_COUNTRY_LIST </span> </h3>
+                    </div>
+                    <ad-toggle-button is-checked="checkinData.enforce_country_sort" label="{{'ENFORCE_COUNTRY_SORT'| translate}}" div-class="full-width"></ad-toggle-button>
+                </fieldset>
                 <div class="actions float">
                     <button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline">{{ 'CANCEL' | translate}}</button>
                     <button type="button" ng-click="saveCheckin()" class="button green">{{ 'SAVE_CHANGES' | translate}}</button>

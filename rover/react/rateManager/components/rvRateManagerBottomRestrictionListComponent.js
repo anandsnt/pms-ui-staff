@@ -3,7 +3,6 @@ const RateManagerBottomRestrictionListComponent = ({
 	ulClassNames,
 	restrictionTypes
 }) => (
-	<div className={divClassNames}>
 	    <ul className={ulClassNames}>
 	    {	restrictionTypes.map((restrictionType, index) => {
 				return (
@@ -17,5 +16,4 @@ const RateManagerBottomRestrictionListComponent = ({
 	    	})
 	    }
 	    </ul>
-	</div>
 );
