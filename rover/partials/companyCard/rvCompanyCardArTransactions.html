@@ -91,6 +91,9 @@
                 <button ng-show="arTransactionDetails.ar_transactions.length > 0" ng-click="clickedPrintButton()" type="button" class="button blue with-icon only-icon">
                     <span class="icons icon-print"></span>
                 </button>
+                <button ng-show="arTransactionDetails.ar_transactions.length > 0" type="button" class="button orange with-icon only-icon" ng-click="clickedArStatementButton()">
+                    <span class="icons icon-invoice"></span>
+                </button>
             </li>
         </ul>
     </div>
@@ -199,6 +202,7 @@
                 </li>
             </ul>
          </div>
+         <div ng-include="'/assets/partials/companyCard/rvArStatementPrintTemplate.html'"></div>
     </div>
 
     <!-- When no open bills / all bills paid -->
