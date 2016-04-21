@@ -1135,10 +1135,13 @@ sntZestStation.controller('zsRootCtrl', [
                 //capture failed
                 $state.go('zest_station.error_page');
             };
-        };
+        } else if( response.Command === 'cmd_dispense_key_card'){
+                $scope.$broadcast('DISPENSE_SUCCESS',{"cmd":response.Command,"msg":response.Message});
+        }
     };
     var socketOpenedFailed = function() {
         console.info("Websocket:-> socket connection failed");
+        $scope.$broadcast('SOCKET_FAILED');
     };
     var socketOpenedSuccess = function() {
         console.info("Websocket:-> socket connected");
