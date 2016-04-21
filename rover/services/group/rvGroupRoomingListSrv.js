@@ -182,7 +182,7 @@ angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrv
 				url = 'api/group_rooms/' + group_id;
 
 
-			rvBaseWebSrvV2.getJSON(url).then(
+			rvBaseWebSrvV2.getJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
 				},

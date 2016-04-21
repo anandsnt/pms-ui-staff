@@ -113,6 +113,8 @@
    "TERMS_CONDITIONS_HEADER":"Terms & Conditions",
    "TERMS_CONDITIONS_ACCEPT":"I Agree",
    "TERMS_CONDITIONS_CANCEL":"Cancel",
+   "TERMS_CONDITIONS_SUB" : "",
+   "TERMS_CONDITIONS_SUB_ADDITIONAL" : "",
 
 
    "TYPE_EMAIL_IN": "Enter your email",

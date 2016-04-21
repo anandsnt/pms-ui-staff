@@ -47,7 +47,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="bill in item.bills">
+					<tr ng-repeat="bill in item.bills" ng-class="{'row-break': $last && $parent.$last}">
 						<td>{{ bill.bill_number }}</td>
 						<td class="entity-name">{{ bill.entity_name }}</td>
 						<td>{{ bill.payment_method }}</td>
@@ -57,8 +57,15 @@
 						<td class="amount" ng-class="{'red': bill.total_amount > bill.authorization_amount, 'green': bill.total_amount <= bill.authorization_amount }">{{ bill.total_amount | currency:currencySymbol:2 }}</td>
 					</tr>
 				</tbody>
+				<tfoot ng-if="$last" ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot>
+			</table>
     	</span>
-            <!-- Reports table footer -->
-            <!-- <tfoot ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot> -->
     </div>
+</div>
+
+<div class="search-pagination hk-pagination" ng-show="!disablePrevBtn || !disableNextBtn">
+    <!-- removed buttons since they include +300ms delay on touch pads -->
+    <label class="button dark-grey next" ng-click="fetchNextPage()" ng-class="{'disabled': disableNextBtn}">Next</label>
+    <label class="button dark-grey prev" ng-click="fetchPrevPage()" ng-class="{'disabled': disablePrevBtn}">Previous</label>
+    <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
 </div>

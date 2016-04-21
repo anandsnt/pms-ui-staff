@@ -214,7 +214,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'zest_checkin_later_text':$scope.checkinData.zest_checkin_later_text,
       'zest_checkin_now_text':$scope.checkinData.zest_checkin_now_text,
       'eta_enforcement':$scope.checkinData.eta_enforcement,
-      'zestweb_enforce_deposit':$scope.checkinData.zestweb_enforce_deposit
+      'zestweb_enforce_deposit':$scope.checkinData.zestweb_enforce_deposit,
+      'enforce_country_sort' : $scope.checkinData.enforce_country_sort
     };
 
     var saveCheckinDetailsFailureCallback = function (data) {
