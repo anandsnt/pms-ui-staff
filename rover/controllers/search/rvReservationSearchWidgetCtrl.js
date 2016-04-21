@@ -321,7 +321,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		};
 
 		/**
-		 * whether a string contains our search query
+		 * checks whether the query parts is contained in text1 and text2
 		 * @param  {String} text to search
 		 * @param  {Boolean} check_against_cap_query - default true [wanted to check with capitalized query]
 		 * @return {Booean}
@@ -335,6 +335,10 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				query = query.split(' ');
 			} else if(query.indexOf(',') != -1) {
 				query = query.split(',');
+			}
+			//query contains multiple words
+			if (!angular.isArray(query)) {
+				return false;
 			}
 			var isContains = false;
 			for(var i = 0; i < query.length; i++) {
@@ -399,7 +403,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		var displayFilteredResults = function() {
 
 			//show everything, means no filtering
-			if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
+			if ($scope.textInQueryBox.length < 2 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 				//based on 'is_row_visible' parameter we are showing the data in the template
 				for (var i = 0; i < $scope.results.length; i++) {
 					$scope.results[i].is_row_visible = true;
@@ -997,7 +1001,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		*/
 		$scope.$watch('textInQueryBox', function(newVal) {
 			$scope.searchWords = [];
-			if(newVal.length > 2) {
+			if(newVal.length >= 2) {
 				if (newVal.indexOf(' ') != -1) {
 					$scope.searchWords = newVal.split(' ');
 				} else if (newVal.indexOf(',') != -1) {
