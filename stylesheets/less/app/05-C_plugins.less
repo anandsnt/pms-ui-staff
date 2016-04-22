@@ -1421,7 +1421,7 @@
                 }
             }
 
-            /* Card Authorization */
+             /*Manual Authorize*/
             &.card-authorize {
                 .size(580px, 920px);
                 padding:0;
@@ -1518,16 +1518,34 @@
                     line-height: 50px;
                     padding:0 10px;
                     margin-bottom: 10px;
+                    position: relative;
                     .calc-width( 100, 20 );
                     .clickable();
 
                     &.item-active {
                         width:100%;
                         .background(@white);
+
+                        .release-auth {
+                            right: 30px;
+                        }
+                    }
+
+                    &.item-payment {
+                        span {
+                            margin-right: 10px;
+                        }
                     }
 
                     .card-logo {
                         margin-right:10px;
+                        width: 40px;
+                        height: 20px;
+                        margin-top: 15px;
+
+                        img {
+                            display: block;
+                        }
                     }
 
                     .number {
@@ -1537,13 +1555,84 @@
                         width:120px;
                     }
 
-
+                    .release-auth {
+                        position: absolute;
+                        width: 70px;
+                        height: 30px;
+                        right: 10px;
+                        font-size: 12px;
+                        line-height: 20px;
+                        padding: 0;
+                        text-align: center;
+                        top: 10px;
+                    }
                 }
                 .actions {
                     margin-top: 20px;
                     padding-top: 19px;
                     border-top: 1px solid rgba(0,0,0,.1);
                 }
+                
+            }
+
+            /*Release Confirmation for Authorization*/
+            &.card-authorize-confirm {
+                .size(290px, 460px);
+                .block-item {
+                    height:50px;
+                    line-height: 50px;
+                    padding:0 10px;
+                    margin-bottom: 10px;
+                    position: relative;
+                    width: 100%;
+                    .faux-clickable();
+
+                    &.item-payment {
+                        span {
+                            width: auto;
+                            margin-right: 10px;
+                            &:last-child {
+                                margin-right: 0;
+                            }
+                        }
+                    }
+
+                    .card-logo {
+                        margin-right:10px;
+                        width: 40px;
+                        height: 20px;
+                        margin-top: 15px;
+
+                        img {
+                            display: block;
+                        }
+                    }
+
+                    .number {
+                        width:85px;
+                    }
+                    .code {
+                        width:120px;
+                    }
+
+                    .release-auth {
+                        position: absolute;
+                        width: 70px;
+                        height: 30px;
+                        right: 10px;
+                        font-size: 12px;
+                        line-height: 20px;
+                        padding: 0;
+                        text-align: center;
+                        top: 10px;
+                    }
+                }
+                .actions {
+                    margin-top: 20px;
+                    padding-top: 19px;
+                    border-top: 1px solid rgba(0,0,0,.1);
+                }
+                 
             }
 
             /* Advanced bill ***/
