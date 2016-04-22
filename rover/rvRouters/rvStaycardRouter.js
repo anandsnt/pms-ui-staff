@@ -289,7 +289,13 @@ angular.module('stayCardModule', [])
             resolve: {
                 roomAssignmentJsAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
+                },
+                roomsList: function(RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
+                    var params = {};
+                    params.reservation_id = $stateParams.reservation_id;
+                    return RVRoomAssignmentSrv.getRooms(params);
                 }
+
             }
         });
 

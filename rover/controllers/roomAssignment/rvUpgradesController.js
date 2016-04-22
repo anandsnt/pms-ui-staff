@@ -22,28 +22,17 @@ angular.module('sntRover').controller('RVUpgradesCtrl',['$scope','$state', '$sta
 	* Listener to set the room upgrades when loaded
 	*/
 	$scope.$on('roomUpgradesLoaded', function(event, data){
-
-		console.log($scope.allRooms)
-		console.log("----####-------");
-			$scope.upgradesList = data;
-
+			$scope.upgradesList = data.upsell_mapping;
 			_.each($scope.upgradesList, function(upgradesList){
-				upgradesList.room = _.findWhere($scope.allRooms, _.each($scope.upgradesList, function(upgradesListInside){
-					var ret = {};
-					ret.room_type_id = upgradesListInside.upgrade_room_type_id;
-					return ret;
-					//return upgradesListInside;
-				}))
+				upgradesList.upgrade_room_number = (_.findWhere($scope.allRooms, {"room_type_id": upgradesList.upgrade_room_type_id_int})).room_number;
 			});
-			console.log($scope.upgradesList)
-			$scope.headerData = data.header_details;
-			$scope.reservation_occupancy = $scope.headerData.reservation_occupancy;
+			// $scope.headerData = data.header_details;
+			$scope.reservation_occupancy = $scope.reservation_occupancy;
 			$scope.setUpgradesDescriptionInitialStatuses();
 			setTimeout(function(){
 				$scope.refreshScroller('upgradesView');
 				},
 			1000);
-
 	});
 	$scope.imageLoaded = function(){
 		$scope.refreshScroller('upgradesView');
