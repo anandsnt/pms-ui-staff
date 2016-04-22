@@ -628,6 +628,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 					$scope.errorMessage = '';
 					transaction.active = ! transaction.active;
 					transaction.details = data;
+					refreshArTabScroller();
 				},
 				transactionFetchFailure = function(errorMessage){
 					$scope.$emit('hideLoader');
@@ -640,9 +641,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			}
 			else{
 				transaction.active = ! transaction.active;
+				refreshArTabScroller();
 			}
-			refreshArTabScroller();
 		};
-
 
 }]);
