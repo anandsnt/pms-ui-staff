@@ -839,74 +839,93 @@ table {
 
         &.open,
         &.fullscreen { .show; }
-
+        .ar-statement {
+            display:none;
+        }
         /* AR Statement ***/
-    &.print-statement {
-        .cards-header,
-        .card-tabs-nav { .hide; }
+        &.print-statement {
+            .cards-header,
+            .card-tabs-nav { .hide; }
 
-        .transactions {
-            .tab-header,
-            .search-results { .hide; }
+            .transactions {
+                .tab-header,
+                .search-results { .hide; }
 
-             .ar-statement {
-                img {
-                    -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
-                    filter: grayscale(100%);
-                }
-                .invoice-body .invoice-details tr:last-child td {
-                    margin-bottom:12pt;
-                }
-
-                .invoice-footer {
-                    margin-bottom:12pt;
-                }
-
-            
-
-                thead th {
-                    text-transform: uppercase;
-                    background-color: @grey2;
-                    padding:4pt 0;
-                    font-size: 6.5pt;
-                    &:last-child {
-                        padding-right: 4pt;
+                 .ar-statement {
+                    display:block;
+                    img {
+                        -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+                        filter: grayscale(100%);
                     }
-                    
-                    /*Add space to Charge Amount and Amount Due*/
-                    &:nth-child(5),
-                    &:nth-child(6) {
-                        padding-left: 4pt;
+                    .invoice-body .invoice-details tr:last-child td {
+                        margin-bottom:12pt;
                     }
 
-                    
-                }
-                .invoice-details {
-                    > tbody > tr > td {
-                         
-                        border-bottom:2px solid @grey2;
+                    .invoice-footer {
+                        margin-bottom:12pt;
+                    }
+
+                
+
+                    thead th {
+                        text-transform: uppercase;
+                        background-color: @grey2;
+                        padding:4pt 0;
+                        font-size: 6.5pt;
+                        &:last-child {
+                            padding-right: 4pt;
+                        }
+                        
+                        /*Add space to Charge Amount and Amount Due*/
+                        &:nth-child(5),
+                        &:nth-child(6) {
+                            padding-left: 4pt;
+                        }
+
                         
                     }
-                }
-                tbody {
-
-                    tr:not(.person) td {
-                        padding-top:4pt;
+                    .invoice-details {
+                        > tbody > tr > td {
+                             
+                            border-bottom:2px solid @grey2;
+                            
+                        }
                     }
+                    tbody {
 
-                    tr {
-                         td {
-                            border-bottom:1px solid @grey2;
-                            padding: 4pt 4pt 4pt 0;
-                            
-                                &:last-child {
-                                    padding-right: 4pt;
+                        tr:not(.person) td {
+                            padding-top:4pt;
+                        }
+
+                        tr {
+                             td {
+                                border-bottom:1px solid @grey2;
+                                padding: 4pt 4pt 4pt 0;
+                                
+                                    &:last-child {
+                                        padding-right: 4pt;
+                                    }
+                                
+
+                                &.charge-description {
+                                    width: 90pt !important;
                                 }
-                            
 
-                            &.charge-description {
-                                width: 90pt !important;
+                                &.charge-date,
+                                &.charge-code,
+                               {
+                                    width: 60pt !important;
+                                }
                             }
+                        }
+
+
+
+                     .charges-table {
+                        tr td {
+                            &.charge-description {
+                                    width: 90pt !important;
+                                }
 
                             &.charge-date,
                             &.charge-code,
@@ -914,129 +933,113 @@ table {
                                 width: 60pt !important;
                             }
                         }
-                    }
-
-
-
-                 .charges-table {
-                    tr td {
-                        &.charge-description {
-                                width: 90pt !important;
-                            }
-
-                        &.charge-date,
-                        &.charge-code,
-                       {
-                            width: 60pt !important;
+                        tr:last-child td {
+                            border-bottom: none;
                         }
-                    }
-                    tr:last-child td {
-                        border-bottom: none;
-                    }
-                    tr:first-child td {
-                        padding-top: 0;
-                    }
-                 }
-
-                
-                }
-
-                .statement-header {
-                    &:after {
-                        display: table;
-                        clear: both;
-                        content: '';
-                    }
-                }
-                .invoice-header {
-                    h1 {
-                        font-size:18pt;
-                        font-weight: 600;
-                    }
-
-                    .statement-company-address {
-                        font-size:10pt;
-                        font-style: italic;
-                    }
-                }
-                .guest-info {
-                    font-size: 9pt;
-                    width:60%;
-                    float:left;
-                }
-                .person td,
-                .payment td {
-                    padding:5pt 0;
-                    vertical-align: top;
-                    &.person-info {
-                        width: 3.5cm;
-                    }
-                    .name {
-                        font-size:11pt;
-                    }
-
-                    .person-meta {
-                        margin-top:0.05cm;
-                        display: block;
-                        strong {
-                            display: block;
+                        tr:first-child td {
+                            padding-top: 0;
                         }
-                    }
-                }
+                     }
 
-                .tax-breakdown {
-                    td,th {
-                        padding: 4pt;
-                        text-align: right;
-
-                        &:first-child {
-                            text-align: left;
-                        }
-                    }
                     
-                    tfoot td {
-                        background-color: @grey2;
-                        font-weight: bold;
                     }
 
-                    .tax-description {
-                        width: 50%;
+                    .statement-header {
+                        &:after {
+                            display: table;
+                            clear: both;
+                            content: '';
+                        }
+                    }
+                    .invoice-header {
+                        h1 {
+                            font-size:18pt;
+                            font-weight: 600;
+                        }
+
+                        .statement-company-address {
+                            font-size:10pt;
+                            font-style: italic;
+                        }
+                    }
+                    .guest-info {
+                        font-size: 9pt;
+                        width:60%;
+                        float:left;
+                    }
+                    .person td,
+                    .payment td {
+                        padding:5pt 0;
+                        vertical-align: top;
+                        &.person-info {
+                            width: 3.5cm;
+                        }
+                        .name {
+                            font-size:11pt;
+                        }
+
+                        .person-meta {
+                            margin-top:0.05cm;
+                            display: block;
+                            strong {
+                                display: block;
+                            }
+                        }
                     }
 
+                    .tax-breakdown {
+                        td,th {
+                            padding: 4pt;
+                            text-align: right;
+
+                            &:first-child {
+                                text-align: left;
+                            }
+                        }
+                        
+                        tfoot td {
+                            background-color: @grey2;
+                            font-weight: bold;
+                        }
+
+                        .tax-description {
+                            width: 50%;
+                        }
+
+                    }
+
+                    .statement-info {
+                        width:40%;
+                        float:right;
+                        &:after {
+                            display: table;
+                            content: '';
+                            clear: both;
+                        }
+                        margin-bottom:0.5cm;
+                    }
+                    .statement-meta {
+                        width:50%;
+                        float:left;
+                        font-size:9pt;
+                        strong {
+                            display:block;
+                        }
+                        margin-bottom:0.1cm;
+
+                        &:nth-child(3) {
+                            clear: both;
+                        }
+
+                        &:nth-child(3),
+                        &:first-child{
+                            padding-right: 1em;
+                        }
+                    }
                 }
 
-                .statement-info {
-                    width:40%;
-                    float:right;
-                    &:after {
-                        display: table;
-                        content: '';
-                        clear: both;
-                    }
-                    margin-bottom:0.5cm;
-                }
-                .statement-meta {
-                    width:50%;
-                    float:left;
-                    font-size:9pt;
-                    strong {
-                        display:block;
-                    }
-                    margin-bottom:0.1cm;
-
-                    &:nth-child(3) {
-                        clear: both;
-                    }
-
-                    &:nth-child(3),
-                    &:first-child{
-                        padding-right: 1em;
-                    }
-                }
             }
-
         }
-    }
     }
 
 /* Reports                  ==============================*/
