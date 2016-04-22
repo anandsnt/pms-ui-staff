@@ -102,7 +102,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.selectedCardNames = [];
         $scope.selectedRateNames = [];
     };
-    
+
     /**
      * to catch the error messages emitting from child controllerss
      * @param  {Object} event
@@ -148,8 +148,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     });
 
     /**
-     * [description]
-     * @return {[type]} [description]
+     * to process the reload request from popup
+     * @param {Object} popup data
      */
     var handleTheReloadRequestFromPopup = (data) => {
         var dialogData = data.dialogData;
@@ -195,6 +195,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 }
             } 
         }
+
+        //we're here at the top and we are going to clean the cache, so setting the scroll position as STILL
+        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
+
+        //this is most likely fresh start, so clearing the rate list as well
+        cachedRateList = [];
+
         //clearing all, because the update from popup may impact other days as well
         cachedRateAndRestrictionResponseData = [];
 
