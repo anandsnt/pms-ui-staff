@@ -429,7 +429,16 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
-
-
+		// To fetch AR Statement Print data.
+		this.fetchArStatementPrintData = function(params){
+			var deferred = $q.defer();
+			var url = '/api/ar_transactions/print';
+			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+		   	 	deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});
+			return deferred.promise;
+		};
 	}
 ]);
