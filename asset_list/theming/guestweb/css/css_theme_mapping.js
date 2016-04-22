@@ -43,7 +43,9 @@ module.exports = {
 			'guestweb_chalet_view':[ themeCSSRoot + 'guestweb_chalet_view.css'],
 			'guestweb_crawford':[ themeCSSRoot + 'guestweb_crawford.css'],
 			'guestweb_dutch':[ themeCSSRoot + 'guestweb_dutch.css'],
-			'guestweb_beau_mont':[ themeCSSRoot + 'guestweb_beau_mont.css']
+			'guestweb_beau_mont':[ themeCSSRoot + 'guestweb_beau_mont.css'],
+			'guestweb_hotel_ivrine':[ themeCSSRoot + 'guestweb_hotel_ivrine.css'],
+			'guestweb_boston_park':[ themeCSSRoot + 'guestweb_boston_park.css']
 		}
 	}
 }

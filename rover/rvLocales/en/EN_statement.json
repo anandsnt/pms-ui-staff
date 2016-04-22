@@ -1,0 +1,13 @@
+"STATEMENT" : "Statement",
+"AMOUNT_DUE" : "Amount Due",
+"STATEMENT_DATE" : "Statement date",
+"CORPORATE_ID" : "Corporate ID",
+"IATA_NO" : "IATA No.",
+"INVOICE_NO" : "Invoice Number",
+"PAYMENT_DUE_DAYS" : "Payment Due Days",
+"RESERV" : "Resv.:",
+"ARRIVAL_DATE" : "Arrival Date:",
+"DEPARTURE_DATE" : "Departure Date:",
+"EXT_REF_NO" : "EXTERNAL REF.",
+"TOTAL_AMOUNT" : "Total Amount"
+
