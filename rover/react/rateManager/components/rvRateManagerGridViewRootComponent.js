@@ -164,7 +164,7 @@ const RateManagerGridViewRootComponent = createClass ({
 					let rightHeadScrollDomNode = '.rate-calendar thead tr th:nth-child(' + scrollTo.col +')';
 					let rightBottomScrollDomNode = '#rateViewCalendar tbody ' + commonDomScrollDomNode + ' td:nth-child(' + scrollTo.col +')';
 
-					let offsetX = !!scrollTo.offsetY ? scrollTo.offsetY : undefined,
+					let offsetX = !!scrollTo.offsetX ? scrollTo.offsetX : undefined,
 						offsetY = !!scrollTo.offsetY ? scrollTo.offsetY : undefined;
 
 					this.rightHeadScroller.scrollToElement(rightHeadScrollDomNode, 0, offsetX, offsetY);

@@ -571,7 +571,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo = { 
             col: col,
-            offsetY: (abs(xScrollPosition) % eachColWidth)
+            offsetX: (abs(xScrollPosition) % eachColWidth)
         };
     };
 
