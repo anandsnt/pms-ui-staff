@@ -34,23 +34,14 @@ sntRover.controller('RVReportListCrl', [
         };
 
         var setScroller = function() {
-            $scope.setScroller(REPORT_DASHBOARD_SCROLL, {
-                preventDefault: false,
-                scrollX: true,
-                scrollY: false
-            });
+            var scrollerOptions = {
+                tap: true,
+                preventDefault: false
+            };
 
-            $scope.setScroller(REPORT_LIST_SCROLL, {
-                preventDefault: false,
-                scrollX: false,
-                scrollY: true
-            });
-
-            $scope.setScroller(REPORT_FILTERS_SCROLL, {
-                preventDefault: false,
-                scrollX: false,
-                scrollY: true
-            });
+            $scope.setScroller(REPORT_DASHBOARD_SCROLL, scrollerOptions);
+            $scope.setScroller(REPORT_LIST_SCROLL, scrollerOptions);
+            $scope.setScroller(REPORT_FILTERS_SCROLL, scrollerOptions);
         };
 
         /**
@@ -187,9 +178,13 @@ sntRover.controller('RVReportListCrl', [
 
             var i, j;
 
-            if ( $scope.uiChosenReport ) {
-                $scope.uiChosenReport = undefined;
-            }
+            // $scope.uiChosenReport = undefined;
+            // $scope.uiChosenReport.uiChosen = false;
+            // $scope.uiChosenReport = undefined;
+            // if ( $scope.uiChosenReport ) {
+            //     $scope.uiChosenReport.uiChosen = false;
+            // }
+            console.log( $scope.uiChosenReport );
 
             if ( ! query.length ) {
                 for (i = 0, j = $scope.reportList.length; i < j; i++) {

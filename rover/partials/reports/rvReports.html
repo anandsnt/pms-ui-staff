@@ -51,14 +51,15 @@
             <!-- Content -->
             <!-- ng-iscroll="report-dashboard-scroll" -->
             <div id="reports-dashboard"
-                class="scrollable"
+                class="scrollable cols-2"
                 ng-if="reportList.length"
                 ng-controller="RVReportListCrl"
                 ng-class="{'cols-2': !! uiChosenReport }">
                 <div class="wrapper">
                     <div class="cols-wrapper">
                         <div class="report-col main-col scrollable"
-                            ng-iscroll="report-list-scroll">
+                            ng-iscroll="report-list-scroll"
+                            ng-iscroll-delay="200">
                             <ul class="wrapper">
                                 <li class="report-item"
                                     ng-repeat="item in reportList"
@@ -78,13 +79,13 @@
                         <!-- Second column - filters -->
                         <div class="report-col">
                             <div class="scrollable"
-                                ng-iscroll="report-filters-scroll"> <!-- Add vertical scroller here -->
+                                ng-iscroll="report-filters-scroll"
+                                ng-iscroll-delay="200">
                                 <div class="wrapper">
                                     <h3>{{ uiChosenReport.title }}<span>Configure report</span></h3>
                                     <div class="configure-report" ng-include="'/assets/partials/reports/filters/rvReportListFilters.html'"></div>
                                 </div>
-                                <div class="column-actions" ng-class="{'two-buttons': uiChosenReport.display_export_button && !hideExportOption}"> <!-- Add class "two-buttons" if showing both Export and Show buttons -->
-                                    <!-- Usually we only show one of these -->
+                                <div class="column-actions" ng-class="{'two-buttons': uiChosenReport.display_export_button && !hideExportOption}">
                                     <button type="button" class="button purple"
                                         ng-click="exportCSV(uiChosenReport)"
                                         ng-if="uiChosenReport.display_export_button && !hideExportOption">Export</button>
