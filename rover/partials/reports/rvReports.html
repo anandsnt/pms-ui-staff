@@ -4,13 +4,13 @@
     <span ng-controller="RVReportListCrl" class="content reports-wrapper" ng-hide="showReportDetails">
         
         <!-- Search -->
-        <form method="get" action="{action}" class="search-form" role="search">
+        <form class="search-form">
             <div class="entry search">
-                <button class="clear-query"> <!-- Add class "visible" to show -->
+                <button type="button" class="clear-query" ng-class="{'visible': query.length}" ng-click="clearQuery()"> <!-- Add class "visible" to show -->
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
-                <button type="submit" name="submit" class="icons icon-search">Search</button>
-                <input id="reports-query" class="query" placeholder="Search by Report Name" type="search" autocomplete="off">
+                <button type="button" name="submit" class="icons icon-search">Search</button>
+                <input id="reports-query" class="query" placeholder="Search by Report Name" type="search" autocomplete="off" ng-model="query" ng-keyup="filterByQuery()">
             </div>
         </form>
 
@@ -63,11 +63,12 @@
                                 <li class="report-item"
                                     ng-repeat="item in reportList"
                                     ng-class="{'active': item.uiChosen}"
+                                    ng-hide="item.filteredOut"
                                     ng-click="toggleFilter($event, item)"
                                     emit-when="{event: 'REPORT_LIST_RENDERED', condition: $last}">
                                     <span ng-class="item.reportIconCls"></span>
                                     <div class="data">
-                                        <h2>{{ item.title }}</h2>
+                                        <h2 ng-bind-html="escapeNull(item.title)|highlight:query:false"></h2>
                                         <em>{{ item.description }}</em>
                                     </div>
                                 </li>

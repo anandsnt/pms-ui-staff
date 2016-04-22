@@ -87,8 +87,6 @@ sntRover
 					$scope.key = options.key;
 					$scope.altKey = options.altKey;
 
-					console.log( $scope );
-
 					if ( $scope.selectAll ) {
 						updateData( 'selected', true );
 					} else {

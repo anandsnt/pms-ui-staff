@@ -60,6 +60,8 @@ sntRover.controller('RVReportListCrl', [
         var postProcess = function(report) {
             for (var i = 0, j = report.length; i < j; i++) {
 
+                report[i].filteredOut = false;
+
                 // apply icon class based on the report name
                 applyIconClass.init( report[i] );
 
@@ -169,6 +171,45 @@ sntRover.controller('RVReportListCrl', [
             reportsSrv.setChoosenReport( report );
             mainCtrlScope.genReport();
         };
+
+        $scope.clearQuery = function() {
+            var i, j;
+
+            $scope.query = '';
+            for (i = 0, j = $scope.reportList.length; i < j; i++) {
+                $scope.reportList[i].filteredOut = false;
+            };
+        }
+
+        var filterByQuery = function() {
+            var query = $scope.query.toLowerCase().trim(),
+                title;
+
+            var i, j;
+
+            if ( $scope.uiChosenReport ) {
+                $scope.uiChosenReport = undefined;
+            }
+
+            if ( ! query.length ) {
+                for (i = 0, j = $scope.reportList.length; i < j; i++) {
+                    $scope.reportList[i].filteredOut = false;
+                };
+                return;
+            };
+
+            for (i = 0, j = $scope.reportList.length; i < j; i++) {
+                title = $scope.reportList[i].title.toLowerCase();
+
+                if ( title.indexOf(query) == -1 ) {
+                    $scope.reportList[i].filteredOut = true;
+                } else {
+                    $scope.reportList[i].filteredOut = false;
+                }
+            };
+        };
+
+        $scope.filterByQuery = _.throttle(filterByQuery, 100, { leading: false });
 
 
         // var serveRefresh = $scope.$on(reportMsgs['REPORT_LIST_SCROLL_REFRESH'], function() {

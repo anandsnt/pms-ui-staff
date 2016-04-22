@@ -342,27 +342,37 @@ angular.module('reportsModule')
             };
 
             // create DS for options combo box
-            __setData(report, 'hasGeneralOptions', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : false,
-                defaultTitle : 'Select Options',
-                title        : 'Select Options',
-                data         : []
-            });
+            // __setData(report, 'hasGeneralOptions', {
+            //     type         : 'FAUX_SELECT',
+            //     show         : false,
+            //     selectAll    : false,
+            //     defaultTitle : 'Select Options',
+            //     title        : 'Select Options',
+            //     data         : []
+            // });
+            report.hasGeneralOptions = {
+                selectAll: false,
+                hasSearch: false,
+                data: []
+            }
 
             // create a name space for chosen options
             report.chosenOptions = {};
 
             // create DS for display combo box
-            __setData(report, 'hasDisplay', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : false,
-                defaultTitle : 'Select displays',
-                title        : 'Select displays',
-                data         : []
-            });
+            // __setData(report, 'hasDisplay', {
+            //     type         : 'FAUX_SELECT',
+            //     show         : false,
+            //     selectAll    : false,
+            //     defaultTitle : 'Select displays',
+            //     title        : 'Select displays',
+            //     data         : []
+            // });
+            report.hasDisplay = {
+                selectAll: false,
+                hasSearch: false,
+                data: []
+            }
 
 
             // create DS for Exclude combo box
@@ -935,26 +945,6 @@ angular.module('reportsModule')
                             hasSearch: true,
                             data: angular.copy( extractRatesFromRateTypesAndRateList(data) )
                         }
-
-                        // __setData(report, 'hasRateTypeFilter', {
-                        //     type         : 'FAUX_SELECT',
-                        //     filter       : foundFilter,
-                        //     show         : false,
-                        //     selectAll    : true,
-                        //     defaultTitle : 'Select Rate Type',
-                        //     title        : 'All Selected',
-                        //     data         : angular.copy( extractRateTypesFromRateTypesAndRateList( data ) )
-                        // });
-
-                        // __setData(report, 'hasRateFilter', {
-                        //     type         : 'FAUX_SELECT',
-                        //     filter       : foundFilter,
-                        //     show         : false,
-                        //     selectAll    : true,
-                        //     defaultTitle : 'Select Rate',
-                        //     title        : 'All Selected',
-                        //     data         : angular.copy( extractRatesFromRateTypesAndRateList( data ) )
-                        // });
                     };
                 });
 
