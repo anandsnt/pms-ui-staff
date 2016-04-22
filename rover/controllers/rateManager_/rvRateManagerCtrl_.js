@@ -29,13 +29,22 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var lastSelectedFilterValues = [],
         activeFilterIndex = 0;
 
-    var cachedRateList = [], cachedRoomTypeList = [],
+    /**
+     * for pagination purpose
+     * @type {Array}
+     */
+    var cachedRateList = [], 
+        cachedRoomTypeList = [],
         cachedRateAndRestrictionResponseData = [],
         totalRatesCountForPagination = 0,
         paginationRatePerPage = 0,
         paginationRateMaxRowsDisplay = 0; //for pagination purpose
 
-    //data passed to react, will be used in scrolling related area to find positions
+    
+    /**
+     * data passed to react, will be used in scrolling related area to find positions
+     * @type {Object}
+     */
     var showingData = {
         headerData: [],
         bottomData: []
@@ -59,6 +68,62 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         //updating the left side menu
         $scope.$emit("updateRoverLeftMenu", "rateManager");
+    };
+
+    /**
+     * to show the restriction popup
+     * @param  {Oject} data
+     */
+    var showRateRestrictionPopup = (data) => {
+        ngDialog.open({
+            template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
+            scope: $scope,
+            className: 'ngdialog-theme-default',
+            data: data,
+            controller: 'rvRateManagerRestrictionAndAmountPopupCtrl'
+        });
+    };
+
+    /**
+     * to run angular digest loop,
+     * will check if it is not running
+     */
+    var runDigestCycle = () => {
+        if (!$scope.$$phase) {
+            $scope.$digest();
+        }
+    };
+
+    /**
+     * to hide & clear the data required for topbar
+     */
+    const hideAndClearDataForTopBar = () => {
+        $scope.showTopBar = false;
+        $scope.selectedCardNames = [];
+        $scope.selectedRateNames = [];
+    };
+    
+    /**
+     * to catch the error messages emitting from child controllerss
+     * @param  {Object} event
+     * @param  {array} errorMessage
+     */
+    $scope.$on('showErrorMessage', (event, errorMessage) => {
+        $scope.errorMessage = errorMessage;
+        runDigestCycle();
+    });
+
+    /**
+     * we're storing the data model passed to react just for some purpose like
+     * identifying scroller position and etc..
+     * @param  {array} headerData
+     * @param  {array} bottomData
+     */
+    var updateShowingData = (headerData, bottomData) => {
+        showingData = {
+            headerData: headerData,
+            bottomData: bottomData
+        }
     };
 
     /**
@@ -132,6 +197,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         }
         //clearing all, because the update from popup may impact other days as well
         cachedRateAndRestrictionResponseData = [];
+
+        //everything set, update the view
+        $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     };
 
     /**
@@ -183,15 +251,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             
             //we may changed a rate detail against particular column or rate columns across a particular row
             getSingleRateRowDetailsAndUpdateCachedDataModel(rateID, minFromDate, minToDate);
-
-            //clearing the cached to perform fresh request
-            foundCachedRateAndRestrictionIndexes.map(indexToDelete => 
-                cachedRateAndRestrictionResponseData.splice(indexToDelete, 1));
-            
-            //clearing the common restriction array to get the latest after updating the 
-            cachedRateAndRestrictionResponseData.map(cachedRateAndRestrictionResponse => {
-                cachedRateAndRestrictionResponse.response.commonRestrictions = [];
-            });    
         }
     };
 
@@ -211,20 +270,20 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         cachedRateAndRestrictionResponseData.map(cachedRateAndRestriction => {
             //date wise rate restrictions & amount
             cachedRateAndRestriction.response.dailyRateAndRestrictions.map(dailyRateAndRestriction => {
-                let rateFoundIndex = _.findIndex(dailyRateAndRestriction.rates, { id: rateID});
+                let rateFoundIndex = _.findIndex(dailyRateAndRestriction.rates, { id: rateID });
                 
                 let date = tzIndependentDate(dailyRateAndRestriction.date);
-                let isDateBetweenMinAndMax = (fromDate >= date && date <= toDate);
-                
+                let isDateBetweenMinAndMax = (fromDate <= date && date <= toDate);
+
                 if(rateFoundIndex !== -1 && isDateBetweenMinAndMax) {
-                    dailyRateAndRestriction.rates[rateFoundIndex] = dateBasedRateDetailsReponse[dailyRateAndRestriction.date].rates;
+                    dailyRateAndRestriction.rates[rateFoundIndex] = dateBasedRateDetailsReponse[dailyRateAndRestriction.date].rates[0];
                 }
             });
 
             //common restricitons
             cachedRateAndRestriction.response.commonRestrictions.map(commonRestriction => {
                 let date = tzIndependentDate(commonRestriction.date);
-                let isDateBetweenMinAndMax = (fromDate >= date && date <= toDate);
+                let isDateBetweenMinAndMax = (fromDate <= date && date <= toDate);
                 if(isDateBetweenMinAndMax) {
                    commonRestriction.restrictions = dateBasedCommonRestrictions[commonRestriction.date].restrictions
                 }
@@ -489,53 +548,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     /**
-     * to show the restriction popup
-     * @param  {Oject} data
-     */
-    var showRateRestrictionPopup = (data) => {
-        ngDialog.open({
-            template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
-            scope: $scope,
-            className: 'ngdialog-theme-default',
-            data: data,
-            controller: 'rvRateManagerRestrictionAndAmountPopupCtrl'
-        });
-    };
-
-    /**
-     * to run angular digest loop,
-     * will check if it is not running
-     */
-    var runDigestCycle = () => {
-        if (!$scope.$$phase) {
-            $scope.$digest();
-        }
-    };
-
-    /**
-     * to catch the error messages emitting from child controllerss
-     * @param  {Object} event
-     * @param  {array} errorMessage
-     */
-    $scope.$on('showErrorMessage', (event, errorMessage) => {
-        $scope.errorMessage = errorMessage;
-        runDigestCycle();
-    });
-
-    /**
-     * [description]
-     * @param  {[type]} headerData [description]
-     * @param  {[type]} bottomData [description]
-     * @return {[type]}            [description]
-     */
-    var updateShowingData = (headerData, bottomData) => {
-        showingData = {
-            headerData: headerData,
-            bottomData: bottomData
-        }
-    };
-
-    /**
      * to identify and set column position to focus when rerendered with new data
      * @param  {integer} scrollWidth
      * @param  {integer} xScrollPosition
@@ -767,7 +779,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage,
                 response: response
             });
-console.log(cachedRateAndRestrictionResponseData);
+
             //using this variable we will be limiting the api call
             totalRatesCountForPagination = response.totalCount;
 
@@ -1533,16 +1545,6 @@ console.log(cachedRateAndRestrictionResponseData);
             onSuccess: onFetchSingleRateDetailsAndRestrictions
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);
-    };
-
-
-    /**
-     * to hide & clear the data required for topbar
-     */
-    const hideAndClearDataForTopBar = () => {
-        $scope.showTopBar = false;
-        $scope.selectedCardNames = [];
-        $scope.selectedRateNames = [];
     };
 
     /**
