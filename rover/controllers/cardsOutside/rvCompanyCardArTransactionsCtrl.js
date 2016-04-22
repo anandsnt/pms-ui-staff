@@ -13,11 +13,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			fetchData();
 		};
 
-		// Refresh the scroller when the tab is active.
-		$rootScope.$on("arTransactionTabActive", function(event) {
+		var refreshArTabScroller = function(){
 			$timeout(function() {
 				$scope.refreshScroller('ar-transaction-list');
 			}, 100);
+		};
+		// Refresh the scroller when the tab is active.
+		$rootScope.$on("arTransactionTabActive", function(event) {
+			refreshArTabScroller();
 		});
 
 		// Initializing filter data
@@ -103,10 +106,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			    $scope.arTransactionDetails.available_credit = credits;
 			    $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
-
-				$timeout(function() {
-					$scope.refreshScroller('ar-transaction-list');
-				}, 100);
+			    
+			    refreshArTabScroller();
 
 				// Compute the start, end and total count parameters
 				if($scope.nextAction){
@@ -621,10 +622,6 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			var transaction = $scope.arTransactionDetails.ar_transactions[index];
 			transaction.details = [];
 
-			console.log(transaction);
-			console.log("BILL ID"+ transaction.bill_id);
-			console.log(transaction.active);
-
 			if(!transaction.active){
 				var transactionFetchSuccess = function(data){
 					$scope.$emit('hideLoader');
@@ -642,9 +639,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				$scope.invokeApi(RVCompanyCardSrv.fetchTransactionDetails, param, transactionFetchSuccess, transactionFetchFailure);
 			}
 			else{
-				console.log("collapse");
 				transaction.active = ! transaction.active;
 			}
+			refreshArTabScroller();
 		};
 
 

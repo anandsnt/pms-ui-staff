@@ -213,8 +213,10 @@
                                 <tr ng-repeat="item in transaction.details">
                                     <td>{{item.charge_code}}</td>
                                     <td class="description">{{item.description}}</td>
-                                    <td>{{currencySymbol}}{{item.fees | number:2 }}</td>
-                                    <td>{{currencySymbol}}{{item.credits | number:2 }}</td>
+                                    <td ng-if="item.fees">{{currencySymbol}}{{item.fees | number:2 }}</td>
+                                    <td ng-if="!item.fees"></td>
+                                    <td ng-if="item.credits">{{currencySymbol}}{{item.credits | number:2 }}</td>
+                                    <td ng-if="!item.credits"></td>
                                 </tr>
                             </tbody>
                         </table>
