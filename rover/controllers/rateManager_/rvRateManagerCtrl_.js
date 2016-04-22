@@ -798,6 +798,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //if we have less data coming from the api side, usually end of the page.
         if(newResponseRateLength < paginationRatePerPage) {
             ratesIndexForSlicing = newResponseRateLength;
+            if(_.isUndefined(lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo)) {
+                lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo = {};
+            }
             lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo.row = oldResponseRatelength - newResponseRateLength;
         }
 

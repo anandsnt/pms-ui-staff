@@ -158,23 +158,33 @@ const RateManagerGridViewRootComponent = createClass ({
 				if(!!this.props.scrollTo) {
 					let scrollTo = this.props.scrollTo;
 
-					let commonDomScrollDomNode = 'tr:nth-child(' + scrollTo.row + ')';
-
-					//right scroller
-					let rightHeadScrollDomNode = '.rate-calendar thead tr th:nth-child(' + scrollTo.col +')';
-					let rightBottomScrollDomNode = '#rateViewCalendar tbody ' + commonDomScrollDomNode + ' td:nth-child(' + scrollTo.col +')';
-
 					let offsetX = !!scrollTo.offsetX ? scrollTo.offsetX : undefined,
 						offsetY = !!scrollTo.offsetY ? scrollTo.offsetY : undefined;
 
-					this.rightHeadScroller.scrollToElement(rightHeadScrollDomNode, 0, offsetX, offsetY);
-					this.rightScroller.scrollToElement(rightBottomScrollDomNode, 0, offsetX, offsetY);
+					
 
-					//left scroller
-					let leftDomScrollDomNode = '.pinnedLeft-list .rate-calendar tbody ' + commonDomScrollDomNode;
-					this.leftScroller.scrollToElement(leftDomScrollDomNode, 0, offsetX, offsetY);
-					this.leftScroller.refresh();
+					//right scroller
+					if(!_.isUndefined(scrollTo.col)) {
+						let rightHeadScrollDomNode = '.rate-calendar thead tr th:nth-child(' + scrollTo.col +')';
+						this.rightHeadScroller.scrollToElement(rightHeadScrollDomNode, 0, offsetX, offsetY);
+						this.rightHeadScroller.refresh();
+					}
 
+					if(!_.isUndefined(scrollTo.row)) {
+						let commonDomScrollDomNode = 'tr:nth-child(' + scrollTo.row + ')';
+
+						//left scroller
+						let leftDomScrollDomNode = '.pinnedLeft-list .rate-calendar tbody ' + commonDomScrollDomNode;
+						this.leftScroller.scrollToElement(leftDomScrollDomNode, 0, offsetX, offsetY);
+						this.leftScroller.refresh();
+
+						if(!_.isUndefined(scrollTo.col)) {
+							let rightBottomScrollDomNode = '#rateViewCalendar tbody ' + 
+								commonDomScrollDomNode + ' td:nth-child(' + scrollTo.col +')';
+							this.rightScroller.scrollToElement(rightBottomScrollDomNode, 0, offsetX, offsetY);
+							this.rightScroller.refresh();
+						}
+					}
 				}
 			}, 0);
 		}
