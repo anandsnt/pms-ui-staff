@@ -35,8 +35,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var cachedRateList = [], 
         cachedRoomTypeList = [],
-        cachedRateAndRestrictionResponseData = [],
-        totalRatesCountForPagination = 0,
+        cachedRateAndRestrictionResponseData = [];
+
+    /**
+     * for pagination purpose
+     * @type {Integer}
+     */
+    var totalRatesCountForPagination = 0,
         paginationRatePerPage = 0,
         paginationRateMaxRowsDisplay = 0; //for pagination purpose
 
@@ -216,49 +221,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var handleTheReloadRequestFromPopupForSingleRateRestrictionMode = (dialogData) => {
         var rateID = dialogData.rate.id,
-            foundCachedRateAndRestrictionIndexes = [];
-                
-        //looping through cached response to find the page
-        //checking for the rate Id existance
-        for(let i = 0; i < cachedRateAndRestrictionResponseData.length; i++ ) {
-            let currentDailyRateAndRestrictionList = cachedRateAndRestrictionResponseData[i].response.dailyRateAndRestrictions;
-            let listOfRatesFoundInRateRestriction = currentDailyRateAndRestrictionList[0].rates;
-            
-            let rateSetFoundIndexInList = _.findIndex(listOfRatesFoundInRateRestriction, { id: rateID });
+            fromDates = _.pluck(cachedRateAndRestrictionResponseData, 'fromDate').map(fromDate => tzIndependentDate(fromDate)),
+            toDates = _.pluck(cachedRateAndRestrictionResponseData, 'toDate').map(toDate => tzIndependentDate(toDate)),
+            minFromDate = formatDateForAPI(_.min(fromDates)), //date in cache data store is in api format
+            minToDate = formatDateForAPI(_.min(toDates));  //date in cache data store is in api format
 
-            //if we've rate set, we're good and found the corresponding page ;)
-            if(rateSetFoundIndexInList !== -1) {
-                lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = cachedRateAndRestrictionResponseData[i].page;
-
-                foundCachedRateAndRestrictionIndexes.push(i);
-
-                //finding the scroll position
-                let date = tzIndependentDate(dialogData.date),
-                    fromDateOfCurrentOne = tzIndependentDate(cachedRateAndRestrictionResponseData[i].fromDate),
-                    toDateOfCurrentOne = tzIndependentDate(cachedRateAndRestrictionResponseData[i].toDate);
-
-                if(fromDateOfCurrentOne <= date && date <= toDateOfCurrentOne) {
-                    lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo = {
-                        row: rateSetFoundIndexInList + 1, //css selector index is not starting from zero
-                        offsetX: true,
-
-                        col: _.findIndex(currentDailyRateAndRestrictionList, { date: dialogData.date }) + 1, //index is starting from zero
-                        offsetY: true
-                    }
-                }
-            }
-        };
-
-        //if something found in list
-        if(foundCachedRateAndRestrictionIndexes.length) {
-            let fromDates = _.pluck(cachedRateAndRestrictionResponseData, 'fromDate').map(fromDate => tzIndependentDate(fromDate)),
-                toDates = _.pluck(cachedRateAndRestrictionResponseData, 'toDate').map(toDate => tzIndependentDate(toDate)),
-                minFromDate = formatDateForAPI(_.min(fromDates)), //date in cache data store is in api format
-                minToDate = formatDateForAPI(_.min(toDates));  //date in cache data store is in api format
-            
-            //we may changed a rate detail against particular column or rate columns across a particular row
-            getSingleRateRowDetailsAndUpdateCachedDataModel(rateID, minFromDate, minToDate);
-        }
+        //we may changed a rate detail against particular column or rate columns across a particular row
+        getSingleRateRowDetailsAndUpdateCachedDataModel(rateID, minFromDate, minToDate);
+        
     };
 
 
@@ -611,6 +581,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //setting the scroll col position to focus after rendering
         setScrollColForAllRates(scrollWidth, xScrollPosition);
 
+        //setting the scroll row position to focus after rendering
+        var numberOfRatesToShowFromPrevious = rvRateManagerPaginationConstants.allRate.additionalRowsToPickFromPrevious
+        lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo.row = numberOfRatesToShowFromPrevious;
+
         lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.DOWN;
         lastSelectedFilterValues[activeFilterIndex].allRate.currentPage++;
         
@@ -801,7 +775,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @return {Array}             [description]
      */
     var fillAllRatesBottomWithNewResponseAndAdjustScrollerPosition = (newResponse) => {
-        var filterValues        = lastSelectedFilterValues[activeFilterIndex],
+        var filterValues  = lastSelectedFilterValues[activeFilterIndex],
+            pageBefore = (filterValues.allRate.currentPage - 1),
+            pageBefore = pageBefore === 0 ? 1 : pageBefore,
             dataSetJustBeforeCurrentOne = _.findWhere(cachedRateAndRestrictionResponseData,
                 {
                     fromDate    : formatDateForAPI(filterValues.fromDate),
@@ -819,17 +795,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             oldResponseRatelength = dataSetToReturn.dailyRateAndRestrictions[0].rates.length,
             ratesIndexForSlicing = oldResponseRatelength - numberOfRatesToShowFromPrevious;
 
-
-        //setting the row to focus soon after rendering
-        //column should be assigned from 'allRatesScrollReachedBottom'
-        lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo.row = numberOfRatesToShowFromPrevious;
-
         //if we have less data coming from the api side, usually end of the page.
         if(newResponseRateLength < paginationRatePerPage) {
             ratesIndexForSlicing = newResponseRateLength;
             lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo.row = oldResponseRatelength - newResponseRateLength;
         }
-        
+
         var slicedRates = [];
 
         dataSetToReturn.dailyRateAndRestrictions = dataSetToReturn.dailyRateAndRestrictions
