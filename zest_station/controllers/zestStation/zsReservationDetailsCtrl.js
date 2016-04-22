@@ -112,6 +112,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
         };
         $scope.init = function(r){
             var current=$state.current.name;
+            $scope.isPageLoading = true;
             $scope.selectedReservation = $state.selectedReservation;
             
             if (current === 'zest_station.add_remove_guests'){
@@ -205,36 +206,11 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                     $scope.$digest();
                 }
             };
-        
-        
-            $scope.getRateTypeText = function(){
-                if($scope.zestStationData.isHourlyRateOn){
-                    return 'HOURLY_RATE';
-                }else{
-                    return 'AVG_DAILY';
-                }
-            };
-            $scope.getModeText = function(){
-                if($scope.zestStationData.isHourlyRateOn){
-                    return 'HOURS';
-                }else{
-                    return 'DAY_NIGHTS';
-                }
-            };
-            $scope.getTotalNightsOrHours = function(){
-                if($scope.zestStationData.isHourlyRateOn){
-                    return $scope.selectedReservation.total_hours;
-                }else{
-                    return $scope.selectedReservation.total_nights;
-                }
-            };
+
             
             $scope.initRoomError = function(){
                 $state.go('zest_station.room_error');  
             };
-            
-            
-            
             
             
             $scope.assignRoomToReseravtion = function(){
@@ -354,6 +330,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                              $scope.selectedReservation.addons[i].isLastAddon = false;
                          }
                      }
+                     $scope.isPageLoading = false;
                      refreshScroller();
                      
                  };

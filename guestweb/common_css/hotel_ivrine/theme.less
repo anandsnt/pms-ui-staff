@@ -6,21 +6,21 @@ html,body{
   min-height:100% !important;
 }
 body{
-     background-color: #222222;
+     background-color: #FDFDFD;
 }
 .back-text{
-    color:#fff !important;
+    color:#5d4f45 !important;
 }
 a,a:hover,.main-text,
 .res-date,
 .footer-sub-text,.footer-sub-text:hover,.phone-label{
-    color:#fff;
+    color:#5d4f45;
 }
 .sub-main-text{
-    color:#fff;
+    color:#5d4f45;
 }
 .header-bar{
-   
+   background-color:#d54828;
 }
 .logo-image {
     max-width :100%;
@@ -31,20 +31,20 @@ a,a:hover,.main-text,
 .balance-amount,.phone-text,
 .phone-text:hover,.request-text,
 .error-text {
-    color: #fff !important;
+    color: #5d4f45 !important;
 }
 .view-bill{
-    color:#fff;
+    color:#5d4f45;
 }
 .sub-text,.sub-text:hover,.query-text,.query-text:hover,.light-text{
-    color: #fff !important;
+    color: #5d4f45 !important;
 }
 .btn,.btn:hover{
-    background:#C2BFC1;
-    color:@black;
+    background:#a49c97;
+    color:@white;
 }
 .dual-button{
-  font-size:35px;
+  font-size:25px;
   font-weight:300;
 }
 .btn-template{
@@ -53,19 +53,19 @@ a,a:hover,.main-text,
   padding:4%;
 }
 .dark-button,.dark-button:hover{
-    background: #ACABAC !important;
+    background: #88817d !important;
 }
 .light-button,.light-button:hover{
-    background: #C2BFC1 !important;
+    background: #a49c97 !important;
 }
 .checkouttime1,.checkouttime1:hover{
-    background: #DADADA;
+    background: #88817d;
 }
 .checkouttime2,.checkouttime2:hover{
-    background: #C2BFC1;
+    background: #a49c97;
 }
 .checkouttime3,.checkouttime3:hover{
-    background: #ACABAC;
+    background: #bfb7b2;
 }
 .no-thanks,.no-thanks:hover{
     color:fff !important;
@@ -80,14 +80,14 @@ a,a:hover,.main-text,
   line-height:1.2;
 }
 .down-arrow-button{
-    background-image:url('/assets/guestweb/common_images/white/down_arrow.png'); 
+    background-image:url('/assets/guestweb/common_images/black/down_arrow.png'); 
 }
 .right-arrow-button{
-    background-image:url('/assets/guestweb/common_images/white_arrow.png'); 
+    background-image:url('/assets/guestweb/common_images/black/right_arrow.png'); 
 }
 
 .upgrade-details .upgrades-btn {
-    background: #C2BFC1;
+    background: #a49c97;
 }
 
 .proceed-to-checkin {
@@ -97,24 +97,9 @@ a,a:hover,.main-text,
     color:#BA7A55;
 }
 textarea.sub-text, textarea.sub-text:hover{
-  color:#000 !important;
-}
-.checkout-icon{
-  background-image:url(/assets/guestweb/common_images/checkout-now-black.png);
-}
-.late-checkout-icon{
-  background-image:url(/assets/guestweb/common_images/late-checkout-black.png); 
-}
-.circle-bg {
-    background: url(/assets/guestweb/common_images/black/circle-bg.png) center top no-repeat;
-  }
-  .accept-charge-icon {
-    background-image: url(/assets/guestweb/common_images/black/creditcard_icon.png);
+  color:#5d4f45 !important;
 }
 
-.accept-charge-icon, .checkout-icon, .late-checkout-icon, .upgrade-icon{
-  width:50px;
-}
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
@@ -127,7 +112,7 @@ textarea.sub-text, textarea.sub-text:hover{
 }
 
 .pickadate-cell .pickadate-active {
-  background-color: #ACABAC !important;
+  background-color: #a49c97 !important;
   color:#fff !important;
 }
 .pickadate-head{
@@ -148,7 +133,7 @@ textarea.sub-text, textarea.sub-text:hover{
 .pickadate-cell .pickadate-disabled,
 .pickadate-cell .pickadate-enabled,
 .pickadate-cell .pickadate-outofrange-disabled {
-  background-color: #DADADA;
+  background-color: #E5E5E5;
 }
 
 .pickadate-cell .pickadate-disabled,
@@ -158,13 +143,13 @@ textarea.sub-text, textarea.sub-text:hover{
 
 
 .pickadate-cell li {
-  border: 1px solid #E6E6E6;
+  border: 1px solid #fff;
 }
 .pickadate a:visited, .pickadate a {
   color: #666666;
 }
 .date-picker-header{
-  background-color: #222222;
+  background-color: #d54828;
 }
 .calendar-back {
   background-image: url('/assets/guestweb/common_images/back_icon.png');
@@ -176,11 +161,11 @@ textarea.sub-text, textarea.sub-text:hover{
 }
 
 .pickadate-prev,.pickadate-next,.pickadate-prev:hover,.pickadate-next:hover{
-  color:#ACABAC !important;
+  color:#a49c97 !important;
 }
 
 .date-picker-wrap {
-  background-color: #fff !important;
+  background-color: #EEECE2 !important;
 }
 .date-picker-bg {
   background: unset;
@@ -206,18 +191,14 @@ textarea.sub-text, textarea.sub-text:hover{
     .back-to-checkout{
         display:none;
     }
-     .hide-in-desktop{
-      display:block;
-    }
-    .btn-template, .dual-button{
-       font-size:25px;
+    .hide-in-desktop {
+       display: block;
     }
 }
-@media (min-width:768px){
-  .checkout-alone-button {
-    float: left;
-    margin-left: 10px;
-  }
+@media (min-width: 990px){
+   .dual-button{
+     font-size:35px;
+    }
 }
 @media (max-width: 480px){
   .main-text{
@@ -237,9 +218,6 @@ textarea.sub-text, textarea.sub-text:hover{
   }
   .dual-button{
     font-size:32px;
-  }
-  .btn-template{
-    font-size:35px;
   }
 
 }

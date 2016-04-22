@@ -1346,6 +1346,15 @@ angular.module('reportsModule')
                         report['chosenSortBy'] = revenue['value'];
                     };
                 };
+
+                // making sort by Room Number [asc] default
+                if ( report['title'] === reportNames['CREDIT_CHECK_REPORT'] ) {
+                    var roomNo = _.find(report['sort_fields'], { 'value': 'ROOM_NO' });
+                    if ( !! roomNo ) {
+                        roomNo['sortDir'] = true;
+                        report['chosenSortBy'] = roomNo['value'];
+                    };
+                };
             };
         };
 

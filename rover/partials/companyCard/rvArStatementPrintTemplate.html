@@ -1,0 +1,157 @@
+<div class="invoice ar-statement">
+    <div class="invoice-header">
+        <h1>{{printData.hotel_name}}</h1>
+        <span class="statement-company-address">
+            {{printData.hotel_address}}
+        </span>
+    </div>
+    <div class="invoice-logo">
+        <h1 translate>STATEMENT</h1>
+        <img ng-src="{{printData.hotel_logo}}" alt="">
+    </div>
+
+    <div class="statement-header">
+        <div class="guest-info">
+            <strong>{{printData.card_details.name}}</strong><br>
+            {{printData.card_details.fax}}<br ng-if="printData.card_details.fax"/>
+            {{printData.card_details.address_line}}<br ng-if="printData.card_details.address_line"/>
+            {{printData.card_details.street}}<br ng-if="printData.card_details.street"/>
+            {{printData.card_details.city_adress}}<br ng-if="printData.card_details.city_adress"/>
+            {{printData.card_details.country}}
+        </div>
+        <div class="statement-info">
+            <p class="statement-meta"><strong translate>STATEMENT_DATE</strong>{{printData.statement_date}}</p>
+            <p class="statement-meta" ng-if="printData.corporate_id"><strong translate>CORPORATE_ID</strong>{{printData.corporate_id}}</p>
+            <p class="statement-meta" ng-if="printData.iata_no"><strong translate>IATA_NO</strong>{{printData.iata_no}}</p>
+            <p class="statement-meta"><strong translate>INVOICE_NO</strong>{{printData.invoice_no}}</p>
+            <p class="statement-meta"><strong translate>PAYMENT_DUE_DAYS</strong>{{printData.payment_due_days}}</p>
+        </div>
+    </div>
+
+    <div class="statement-header-text" ng-if="printData.custom_text_header">
+        <p>{{printData.custom_text_header}}</p>
+    </div>
+
+    <div class="invoice-body">
+        <table class="invoice-details">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="charge-date" translate>DATE_OF_CHARGE</th>
+                    <th class="charge-code" translate>CHARGE_CODE</th>
+                    <th class="charge-description" translate>CHARGE_DESCRIPTION</th>
+                    <th class="align-right" translate>CHARGE_AMOUNT</th>
+                    <th class="align-right" translate>AMOUNT_DUE</th>
+                    <th class="align-right" translate>CREDITS</th>
+                </tr>
+            </thead>
+            <tbody>
+                    
+                <tr class="person" ng-repeat="statement in printData.statement_details" ng-if="!statement.is_payment_method">
+                    <td class="person-info">
+                        <strong class="name">{{statement.reservation_details.guest_name}}</strong><br>
+                        <span class="person-meta">
+                            <strong translate>RESERV</strong> 
+                            {{statement.reservation_details.reservation_no}}
+                        </span>
+                        <span class="person-meta">
+                            <strong translate>ARRIVAL_DATE</strong> 
+                            {{statement.reservation_details.arrival_date | date:dateFormat }}
+                        </span>
+                        <span class="person-meta">
+                            <strong translate>DEPARTURE_DATE</strong> 
+                            {{statement.reservation_details.departure_date | date:dateFormat }}
+                        </span>
+                    </td>
+                    <td colspan="4">
+                        <table class="charges-table">
+                            <tr ng-repeat="item in statement.reservation_details.charge_details">
+                                <td class="charge-date">{{item.date | date :dateFormat }}</td>
+                                <td class="charge-code">{{item.charge_code}}</td>
+                                <td class="charge-description">
+                                    <span>{{item.description}}</span>
+                                    <span class="reference">{{item.reference_number}}</span>
+                                    <span class="reference">{{item.reference_text}}</span>
+                                </td>
+                                <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td class="align-right">{{currencySymbol}}{{statement.reservation_details.amount_due | number: precisonTwo}}</td>
+                    <td></td>
+                </tr>                         
+ 
+                <tr class="payment" ng-repeat="statement in printData.statement_details" ng-if="statement.is_payment_method">
+                    <td class="person-info">
+                        <strong class="name">{{statement.payment_details.name}}</strong>
+                    </td>
+                    <td class="charge-date">{{statement.payment_details.date_of_charge | date:dateFormat }}</td>
+                    <td class="charge-code">{{statement.payment_details.charge_code}}</td>
+                    <td class="charge-description">{{statement.payment_details.charge_description}}</td>
+                    <td></td>
+                    <td></td>
+                    <td class="align-right">{{currencySymbol}}{{statement.payment_details.credits | number: precisonTwo}}</td>
+                </tr>
+               
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6"><strong translate>TOTAL_AMOUNT</strong></td>
+                    <td><strong>{{currencySymbol}}{{printData.total_amount | number: precisonTwo}}</strong></td>
+                </tr>
+
+                <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.tax_details">
+                    <td colspan="6"><strong>{{tax.description}}</strong></td>
+                    <td><strong>{{currencySymbol}}{{tax.tax_amount | number: precisonTwo}}</strong></td>
+                </tr>
+
+            </tfoot>
+        </table>
+
+        <!-- Don't display if there is no large tax-breakdown (add class 'hide') --> 
+        <table class="invoice-details tax-breakdown" ng-if="printData.has_enabled_extended_tax_breakdown">
+            <thead>
+                <tr>
+                    <th class="tax-description" translate>TAX_DESCRIPTION</th>
+                    <th translate>GROSS</th>
+                    <th translate>NET</th>
+                    <th translate>TAX</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in printData.extended_tax_breakdown.details">
+                    <td>
+                        {{item.description}}
+                    </td>
+                    <td>
+                        {{currencySymbol}}{{item.gross_amount | number: precisonTwo}}
+                    </td>
+                    <td>
+                        {{currencySymbol}}{{item.net_amount | number: precisonTwo}}
+                    </td>
+                    <td>
+                        {{currencySymbol}}{{item.tax_amount | number: precisonTwo}}
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td>
+                        {{currencySymbol}}{{printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo}}
+                    </td>
+                    <td>
+                        {{currencySymbol}}{{printData.extended_tax_breakdown.total_net_amount | number: precisonTwo}}
+                    </td>
+                    <td>
+                        {{currencySymbol}}{{printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo}}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="invoice-footer" ng-if="printData.custom_text_footer">
+        <p>{{printData.custom_text_footer}}</p>
+    </div>
+</div>
