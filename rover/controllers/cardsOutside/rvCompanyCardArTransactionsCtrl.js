@@ -104,8 +104,6 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			    $scope.arTransactionDetails.available_credit = credits;
 			    $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
 
-
-
 				$timeout(function() {
 					$scope.refreshScroller('ar-transaction-list');
 				}, 100);
@@ -517,6 +515,41 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
 			$scope.paymentModalOpened = false;
 		});
+
+
+		// CICO-28089 - Handle click on each transaction.
+		// will expand with detailed view.
+		// Fetching data for detailed view here..
+		$scope.clickedOnTransaction = function( index ){
+			
+			var transaction = $scope.arTransactionDetails.ar_transactions[index];
+			transaction.details = [];
+
+			console.log(transaction);
+			console.log("BILL ID"+ transaction.bill_id);
+			console.log(transaction.active);
+
+			if(!transaction.active){
+				var transactionFetchSuccess = function(data){
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = '';
+					transaction.active = ! transaction.active;
+					transaction.details = data;
+				},
+				transactionFetchFailure = function(errorMessage){
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = errorMessage;
+				};
+				var param = {
+					'bill_id':transaction.bill_id
+				};
+				$scope.invokeApi(RVCompanyCardSrv.fetchTransactionDetails, param, transactionFetchSuccess, transactionFetchFailure);
+			}
+			else{
+				console.log("collapse");
+				transaction.active = ! transaction.active;
+			}
+		};
 
 
 }]);

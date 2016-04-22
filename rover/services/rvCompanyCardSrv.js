@@ -300,6 +300,16 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
 			var url = "/api/accounts/"+params.id+"/ar_transactions?paid="+params.paid+"&from_date="+params.from_date+"&to_date="+params.to_date+"&query="+params.query+"&page="+params.page_no+"&per_page="+params.per_page+"&transaction_type="+params.transaction_type;
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+
+				// CICO-28089 - View detailed transactions - setting active flag
+				if(!!data.ar_transactions && data.ar_transactions.length > 0 ){
+					angular.forEach(data.ar_transactions,function(item, index) {
+			       		if(item.transaction_type === 'DEBIT') {
+			       			item.active = false;
+			       		}
+			       	});
+				}
+
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
@@ -397,6 +407,21 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			params.reservations = reqData.commissionDetails;
 			var url = 'api/accounts/' + reqData.accountId +'/save_commission_details';
 			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
+		/**
+		 * Service for getting the transacton details
+		 */
+        this.fetchTransactionDetails = function(param) {
+			var deferred = $q.defer(),
+				url = ' /api/bills/'+param.bill_id+'/transactions';
+
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
