@@ -3,7 +3,7 @@
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
 <div id="company-card-nested-first" class="nested-view view-current" role="main" ng-click="companyCardClicked($event)" outside-click-handler>
-    <div class="cards fullscreen" ng-class="{'company-card': account_type == 'COMPANY', 'travel-agent-card': account_type == 'TRAVELAGENT', 'new-card':isAddNewCard}">
+    <div class="cards fullscreen" ng-class="{'company-card': account_type == 'COMPANY', 'travel-agent-card': account_type == 'TRAVELAGENT', 'new-card':isAddNewCard, 'print-statement' : isPrintArStatement }">
         <div class="cards-wrapper">
             <!-- Cards Header -->
             <header class="cards-header">

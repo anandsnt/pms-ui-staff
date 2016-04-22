@@ -53,7 +53,7 @@
                     </figure>
                     <div class="data">
                         <!-- Add .cancelled if the guest has cancelled or no show -->
-                        <h2 ng-show="escapeNull(row.lastname) != '' || escapeNull(row.firstname) != ''" ng-bind-html="getGuestName(row.firstname, row.lastname)| highlight:textInQueryBox:false" ng-class="{'cancelled' : row.reservation_status == 'CANCELED' || row.reservation_status == 'NO SHOW'}">
+                        <h2 ng-show="escapeNull(row.lastname) != '' || escapeNull(row.firstname) != ''" ng-bind-html="getGuestName(row.firstname, row.lastname)| highlightWords:searchWords" ng-class="{'cancelled' : row.reservation_status == 'CANCELED' || row.reservation_status == 'NO SHOW'}">
                         </h2>
                         <h2 class="pending" ng-if="escapeNull(row.lastname) == '' && escapeNull(row.firstname) == '' " translate>PENDING</h2>
                         <span class="confirmation">
