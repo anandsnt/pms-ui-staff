@@ -95,7 +95,7 @@
                             <span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)" translate>QUEUED</span>
 
                         </div>
-                         <span class="room-status" ng-if="row.reservation_status === 'CHECKING_IN'">{{row.roomstatus}}</span>
+                         <span class="room-status" ng-if="row.reservation_status === 'CHECKING_IN' && !!row.fostatus">{{row.fostatus}}</span>
                     </div>
 
                 </a>
