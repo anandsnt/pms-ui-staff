@@ -132,8 +132,7 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             
         $scope.beginEarlyCheckin = function(response){
             $state.reservation_in_early_checkin_window = response.reservation_in_early_checkin_window;
-            var inUpsellWindow = response.reservation_in_early_checkin_window,
-                    is_room_ready = response.is_room_ready;
+            var inUpsellWindow = response.reservation_in_early_checkin_window;
 
             $state.earlyCheckinOfferId = response.early_checkin_offer_id;
 
@@ -157,7 +156,12 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                     
                     if (inUpsellWindow && response.early_checkin_charge !== null){
                         $state.earlyCheckinOfferId = response.early_checkin_offer_id;
-                        $state.go('zest_station.early_checkin_nav');
+                        if (response.is_early_checkin_bundled_by_addon){
+                            $state.go('zest_station.early_checkin_prepaid');
+                        } else {
+                            $state.go('zest_station.early_checkin_nav');
+                        }
+                        
                     } else if (inUpsellWindow && response.early_checkin_charge === null){
                         //update reservation to show arrival time is now, so guest may be elligible for early check-in on-site
                         
@@ -166,7 +170,12 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                           console.log('updated reservation time response: ',response);
                             $scope.selectedReservation.earlyCheckinCharge = response.early_checkin_charge;
                             $state.earlyCheckinOfferId = response.early_checkin_offer_id;
-                            $state.go('zest_station.early_checkin_nav');
+                            if (response.is_early_checkin_bundled_by_addon){
+                                $state.go('zest_station.early_checkin_prepaid');
+                            } else {
+                                $state.go('zest_station.early_checkin_nav');
+                            }
+                            
                         };
                         $scope.updateReservationTime(onSuccess);
                         

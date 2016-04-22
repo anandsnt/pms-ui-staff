@@ -340,16 +340,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             
         $scope.afterGuestCheckinCallback = function(response){
             console.info('response from guest check-in',response)
-                $scope.$emit('hideLoader');
-                if($scope.zestStationData.wsIsOos){
-                   //update work station status
-                   $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
-                   $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
-                }
-                else{
-                    //do nothing
-                };
-               
+                $scope.$emit('hideLoader');       
                 var haveValidGuestEmail = $scope.guestEmailOnFile();//also sets the email to use for delivery
                 var successfulCheckIn = (response.status === "success")? true : false;
                 console.info('successfulCheckIn: ',successfulCheckIn);
