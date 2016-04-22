@@ -174,46 +174,21 @@
 
 						</div>
 
-						<ad-textbox value="upsellData.number_of_early_checkins_per_day"   label = "{{'NUMBER_OF_EARLY_CHECKINS_PER_DAY' | translate}}" placeholder = "{{'TYPE_NUMBER' | translate}}" ></ad-textbox>
+
                                                 
-                                                <fieldset class='holder column full-width'>
+						<fieldset class='holder column full-width'>
+						<!-- Switch -->
+							<div class="entry">
+								<label for="early-checkin-upsell" translate>EARLY_CHECKIN_BY_VIP_CODE</label>
+								<div id="div-early-checkin-upsell" class="switch-button single" ng-class="{ on : upsellData.free_eci_for_vips}"  ng-click="clickVIPCode()">
+									<input type="checkbox" value="10" name="free-eci-for-vips" id="free-eci-for-vips">
+									<span class="switch-icon"></span>
+								</div>
+							</div>
+							<ad-textbox value="upsellData.number_of_early_checkins_per_day"   label = "{{'NUMBER_OF_EARLY_CHECKINS_PER_DAY' | translate}}" placeholder = "{{'TYPE_NUMBER' | translate}}" >
 
-                                                    <span class="entry full-width" >
-                                                            <ad-textbox 
-                                                                label="{{'EARLY_CHECKIN_BY_VIP_CODE' | translate}}"
-                                                                    value="vipcode.addcode"
-                                                                    inputtype="text">
-                                                            </ad-textbox>
-
-                                                            <div class='early_checkin_add_vipcode'>
-                                                                    <button class='button green' 
-                                                                            ng-click="clickVIPCode(vipcode.addcode)" translate>
-                                                                            ADD_VIPCODE
-                                                                    </button>
-                                                            </div>
-                                                    </span>
-
-                                                    <div class='entry full-width' id='room-type-header'>
-                                                            <div class='entry' ng-show='upsellData.vipcodes.length > 0'>
-                                                                    <label> <h4 translate>CODES</h4> </label>
-                                                            </div>
-                                                            <div ng-repeat="vipcode in upsellData.vipcodes">
-                                                                    <div class="entry full-width room-type-details" ng-show='vipcode'>
-                                                                            <div class="entry">
-                                                                                    <span class="align-text-center"> {{vipcode}} </span>
-                                                                            </div>
-                                                                            <div class="entry">
-                                                                                    <span class="entry">
-                                                                                            <a class="icons icon-delete large-icon align-text-center" 
-                                                                                               ng-click="deleteVipCode($index)">
-                                                                                            </a>
-                                                                                    </span>
-                                                                            </div>
-                                                                    </div>
-
-                                                            </div>
-                                                    </div>
-                                            </fieldset>
+							</ad-textbox>
+						</fieldset>
 					</fieldset>
                     <div class="form-title full-width">
 						<h3><span translate>EARLY_CHECKIN_BY_RATE</span> </h3>
