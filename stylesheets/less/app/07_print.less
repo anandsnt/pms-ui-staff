@@ -285,8 +285,9 @@ table {
 
 /* Search                   ==============================*/
     .search-results {
+        padding: 0;
 
-        li {
+        li:not(.no-content) {
             font-size: 8pt;
             line-height: 10px;
             margin: 0;
@@ -298,9 +299,12 @@ table {
             a,
             .faux-anchor {
                 color: @textColor;
+                padding: 0;
                 .show;
                 .float;
             }
+
+            .has-arrow { background: transparent; }
 
             h2 {
                 font-size: 10pt;
@@ -318,20 +322,56 @@ table {
             /* AR Transactions ***/
             &.transaction {
 
+                img {
+                    -webkit-filter: grayscale(100%);
+                    filter: grayscale(100%);
+                    .size(20px, auto);
+                }
+
                 .data {
                     position: relative;
-                    padding-right: 240px;
-                    .calc-width(100, 200);
+                    width: -webkit-calc(~"100% - 7cm");
+                    width: -moz-calc(~"100% - 7cm");
+                    width: calc(~"100% - 7cm");
                     .pull-left;
 
-                    h2 { .pull-left; }
+                    h2 {
+                        .calc-width(100, 540);
+                    }
+
+                    .confirmation,
+                    .icon-time {
+                        line-height: 10px;
+                        .nowrap();
+                        .show;
+                        .pull-left;
+                    }
 
                     .confirmation {
-                        line-height: 10px;
+                        
                         color: @grey3;
-                        clear: both;
-                        .pull-left;
-                        .show;
+                        margin-right: 8pt;
+
+                        .value { color: @textColor; }
+                    }
+
+                    .icon-time {
+                        background: transparent;
+
+                        &:last-child:not(:nth-child(2)) {
+                            position: relative;
+                            padding-left: 8pt;
+
+                            &:after {
+                                content: '•';
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                color: @grey3;
+                                .show();
+                                .size(10px, 2px);
+                            }
+                        }
                     }
 
                     .arrival,
@@ -344,25 +384,16 @@ table {
 
                         .guest-status { margin-right: 4pt; }
 
-                        .time {
+                        .time { 
                             color: @grey3;
                             .show;
                         }
                     }
 
                     .arrival { right: 280px; }
-                    .departure { right: 40px; }
+                    .departure { right: 80px; }
 
-                    &.no-image {
-                        h2 { float: none; }
-
-                        .confirmation,
-                        .icon-time {
-                            .show;
-                            .pull-left;
-
-                            &:not(:last-child) { margin-right: 8pt; }
-                        }
+                    .card-data {
 
                     }
                 }
@@ -371,16 +402,16 @@ table {
                     font-size: 12pt;
                     font-weight: 300;
                     line-height: 20px;
-                    width: 140px;
+                    width: 3cm;
                     .pull-left;
 
                     &.paid { color: @grey3; }
                 }
 
-                .switch-button {
+                .switch-button { 
                     line-height: 20px;
                     text-align: right;
-                    .size(20px, 60px);
+                    .size(20px, 4cm);
                     .pull-left;
 
                     input { .hide; }
@@ -390,16 +421,16 @@ table {
                         .switch-icon { .hide; }
                     }
 
-                    .data-on {
-                        .hide;
+                    .data-on { 
+                        .hide; 
 
                         .value { color: @grey3; }
                     }
 
-                    .data-off {
-                        .show;
+                    .data-off { 
+                        .show; 
 
-                        .value {
+                        .value { 
                             color: @textColor;
                             font-weight: 600;
                         }
@@ -411,12 +442,57 @@ table {
                     }
                 }
 
+                .employee {
+                    line-height: 20px;
+                    text-align: right;
+                    width: 4cm;
+                    .nowrap();
+                    .pull-left;
+                }
+
+                .card-data {
+
+                    .card-logo {
+                        clear: both;
+                        .show();
+                    }
+
+                    .number,
+                    .date {
+                        position: relative;
+                        display: inline-block;
+                        padding-right: 8pt;
+                        line-height: 10px;
+                        color: @grey3;
+                        .pull-left;
+
+                        .value {
+                            color: @textColor;
+                        }
+
+                        &:after {
+                            content: '•';
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            color: @grey3;
+                            .show();
+                            .size(10px, 2px);
+                        }
+                    }
+
+                    .date {
+                        margin: 0 8pt;
+                    }
+                }
+
                 &:last-child { border-bottom: 0; }
+
+                .grid-items { .hide(); }
             }
 
             /* Rooming List ***/
             &.rooming-list {
-                line-height: 10px;
 
                 .check { .hide; }
 
