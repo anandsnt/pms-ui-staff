@@ -8,7 +8,13 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', '$rootScope', 'n
 	/* Function to load the detail page for sections/categories/items
 	 * Can be used from either grid view or tree view
     */
-	 $scope.componentSelected = function(component_type, id){
+	 $scope.componentSelected = function(component){
+
+	 	if(component.is_system_defined)
+	 		return;
+	 	var component_type = component.component_type,
+	 	id = component.id;
+
    		if(component_type === 'section' || component_type === 'SECTION'){
    			$state.go("admin.contentManagementSectionDetails", {
 				id: id

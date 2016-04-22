@@ -16,16 +16,17 @@
                 <li class="section branch" ng-class="{'collapsed': !section.isExpanded, 'expanded': section.isExpanded}"  ng-repeat="section in contentList">
                     <div class="sort">
                         <span class="reorder" ng-click= "toggleExpansion($index)"></span>
-                        <a ng-click = "componentSelected(section.component_type, section.id)" class="cms-name">{{section.name}}</a>
+                        <a ng-click = "componentSelected(section)" class="cms-name">{{section.name}}</a>
+                        <em ng-if="section.is_system_defined" translate="" class="ng-scope">(system defined)</em>
                         <span class="cms-type cms-content-type">{{section.component_type == 'PAGE'? 'ITEM_LABEL' : section.component_type | translate}}</span>
                         <em class="cms-date">{{getFormattedTime(section.updated_at)}}</em>
-                        <div class="cms-activate" ng-show = "section.component_type != 'HOME SCREEN'">
+                        <div class="cms-activate" ng-show = "(section.component_type != 'HOME SCREEN' && !section.is_system_defined)">
                             <div class="switch-button" ng-class="{'on':section.status}">
                                 <input name="section" id="section" ng-change="saveAvailabilityStatus(section.id, section.status)" value="section" type="checkbox" ng-model="section.status" />
                                 <span class="switch-icon"></span>
                             </div>
                         </div>
-                        <div class="cms-delete" ng-show = "section.component_type != 'HOME SCREEN'">
+                        <div class="cms-delete" ng-show = "(section.component_type != 'HOME SCREEN' && !section.is_system_defined)" >
                              <a  class="icons icon-delete large-icon" ng-click="deleteItem(section.id)">Delete</a>
                         </div>
                     </div>

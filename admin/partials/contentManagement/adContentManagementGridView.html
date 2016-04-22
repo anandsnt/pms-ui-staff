@@ -106,7 +106,8 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">
-                        <td><a >{{gridItem.name}}</a></td>
+                        <td><a >{{gridItem.name}}</a>
+                        <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>
                         <td>{{gridItem.no_of_section_items}}</td>
                         
@@ -160,7 +161,8 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">
-                        <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
+                        <td><a ng-click="componentSelected(gridItem)">{{gridItem.name}}</a>
+                        <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>
                         <td>{{gridItem.no_of_categories}}</td>
                         <td>{{gridItem.no_of_section_items}}</td>
@@ -217,7 +219,8 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">
-                        <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
+                        <td><a ng-click="componentSelected(gridItem)">{{gridItem.name}}</a>
+                        <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>                        
                         <td>{{gridItem.no_of_items}}</td>
                         <td >
@@ -280,7 +283,8 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">
-                        <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
+                        <td><a ng-click="componentSelected(gridItem)">{{gridItem.name}}</a>
+                        <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
                         <td>{{gridItem.page_template}}</td>
                         <td>{{gridItem.screen_id}}</td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>                        
