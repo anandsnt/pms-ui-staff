@@ -5,7 +5,7 @@
 	    	    <span class="icons icon-clear-search">Clear query</span>
 	    	</button>
 	    	<button type="submit" name="submit" class="icons icon-search">Search</button>
-	    	<input name="reservations-query" id="reservations-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()" ng-model="textInQueryBox" focus-me="focusSearchField"/>
+	    	<input name="reservations-query" id="reservations-query" class="query" placeholder="Search by Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()" ng-model="textInQueryBox" focus-me="focusSearchField"/>
 	    </div>
 	    <div class="entry room-types">
 	        <div class="select with-label">
@@ -88,14 +88,14 @@
                             <span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin , row.arrival_date)}}">{{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin, row.arrival_date)}}</span>
                         </div>
 
-                        <div class="room-info">
-                            <strong class="room-number {{getRoomStatusMapped(row.roomstatus, row.fostatus, row.room) }}" ng-bind-html="getRoomNo(row.room) | highlight:textInQueryBox:false"></strong>
+                        <div class="room-info">                        	
+                            <strong class="room-number {{getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only, row.room_service_status, row.room)}}" ng-bind-html="getRoomNo(row.room) | highlight:textInQueryBox:false"></strong>
                             <span class="room-type">{{row.room_type}}</span>
 
                             <span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)" translate>QUEUED</span>
 
                         </div>
-                         <span class="room-status">{{row.roomstatus}}</span>
+                         <span class="room-status" ng-if="row.reservation_status === 'CHECKING_IN'">{{row.roomstatus}}</span>
                     </div>
 
                 </a>
