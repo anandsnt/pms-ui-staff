@@ -161,8 +161,6 @@ const RateManagerGridViewRootComponent = createClass ({
 					let offsetX = !!scrollTo.offsetX ? scrollTo.offsetX : undefined,
 						offsetY = !!scrollTo.offsetY ? scrollTo.offsetY : undefined;
 
-					
-
 					//right scroller
 					if(!_.isUndefined(scrollTo.col)) {
 						let rightHeadScrollDomNode = '.rate-calendar thead tr th:nth-child(' + scrollTo.col +')';
@@ -210,8 +208,3 @@ const RateManagerGridViewRootComponent = createClass ({
 		);		
 	}
 });
-
-
-const { PropTypes } = React;
-
-RateManagerGridViewRootComponent.propTypes = {};

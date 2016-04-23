@@ -6,7 +6,9 @@ sntRover.constant('rvRateManagerPaginationConstants', {
         maxNumberOfDateColumnsDisplay: 90,
         
         rowHeight: 55,
-        additionalRowsToPickFromPrevious: 5
+        additionalRowsToPickFromPrevious: 5,
+
+        scrollDistanceToMoveAfterUpdatingAllRatesRow: 10
     },
 
     scroll: {
