@@ -13,20 +13,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		$scope.setScroller( 'report-details-scroll', {click: true, preventDefault: false} );
-		$scope.setScroller( 'report-filter-sidebar-scroll' );
+		$timeout(function() {
+			$scope.setScroller( 'report-details-scroll', {tap: true, preventDefault: false} );
+			$scope.setScroller( 'report-filter-sidebar-scroll', {tap: true, preventDefault: false} );
+		}, 1000);
 
 		var refreshScroll = function() {
-			if ( !!$scope.$parent.myScroll['report-details-scroll'] ) {
-				$scope.refreshScroller( 'report-details-scroll' );
-				$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
-			};
+			$scope.refreshScroller( 'report-details-scroll' );
+			$scope.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
 		};
 
 		var refreshSidebarScroll = function() {
-			if ( !!$scope.$parent.myScroll['report-filter-sidebar-scroll'] ) {
-				$scope.refreshScroller( 'report-filter-sidebar-scroll' );
-			};
+			$scope.refreshScroller( 'report-filter-sidebar-scroll' );
 		};
 
 

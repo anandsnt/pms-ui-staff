@@ -45,50 +45,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		$scope.showReportDetails = false;
 
-
-
-		var REPORT_DASHBOARD_SCROLL = 'report-dashboard-scroll',
-		    REPORT_LIST_SCROLL = 'report-list-scroll',
-		    REPORT_FILTERS_SCROLL = 'report-filters-scroll';
-
-		$scope.refreshFilterScroll = function(scrollUp) {
-		    $scope.refreshScroller(REPORT_FILTERS_SCROLL);
-		    // if ( !!scrollUp && $scope.$parent.myScroll.hasOwnProperty(REPORT_FILTERS_SCROLL) ) {
-		    //     $scope.$parent.myScroll[REPORT_FILTERS_SCROLL].scrollTo(0, 0, 100);
-		    // };
-		}
-
-		$scope.refreshAllScroll = function() {
-		    $scope.refreshScroller(REPORT_DASHBOARD_SCROLL);
-		    $scope.refreshScroller(REPORT_LIST_SCROLL);
-		    $scope.refreshScroller(REPORT_FILTERS_SCROLL);
-		};
-
-		var setScroller = function() {
-		    var scrollerOptions = {
-		        tap: true,
-		        preventDefault: false
-		    };
-
-		    $scope.setScroller(REPORT_DASHBOARD_SCROLL, scrollerOptions);
-		    $scope.setScroller(REPORT_LIST_SCROLL, scrollerOptions);
-		    $scope.setScroller(REPORT_FILTERS_SCROLL, scrollerOptions);
-		};
-
-		setScroller();
-
 		$scope.viewCol = 0;
 		$scope.setViewCol = function(value) {
 			$scope.viewCol = value || 0;
-		}
-
-		$scope.clearQuery = function() {
-		    var i, j;
-
-		    $scope.query = '';
-		    for (i = 0, j = $scope.reportList.length; i < j; i++) {
-		        $scope.reportList[i].filteredOut = false;
-		    };
 		}
 
 		var filterByQuery = function() {
@@ -116,7 +75,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		        }
 		    };
 		};
+		/**/
+		$scope.clearQuery = function() {
+		    var i, j;
 
+		    $scope.query = '';
+		    for (i = 0, j = $scope.reportList.length; i < j; i++) {
+		        $scope.reportList[i].filteredOut = false;
+		    };
+		}
+		/**/
 		$scope.filterByQuery = _.throttle(filterByQuery, 100, { leading: false });
 
 
@@ -771,8 +739,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		$scope.toggleFauxSelect = function(e, fauxDS) {
 			$timeout(function(){
-				$scope.refreshScroller('report-list-scroll');
-				$scope.myScroll['report-list-scroll'].refresh();
+				$scope.refreshScroller('report-filters-scroll');
+				$scope.myScroll['report-filters-scroll'].refresh();
 			}, 100);
 
 			if ( !e || !fauxDS ) {

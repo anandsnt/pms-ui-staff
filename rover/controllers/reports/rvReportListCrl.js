@@ -14,6 +14,33 @@ sntRover.controller('RVReportListCrl', [
 
         BaseCtrl.call(this, $scope);
 
+        var REPORT_LIST_SCROLL = 'report-list-scroll',
+            REPORT_FILTERS_SCROLL = 'report-filters-scroll';
+
+        $scope.refreshFilterScroll = function(scrollUp) {
+            $scope.refreshScroller(REPORT_FILTERS_SCROLL);
+            if ( !!scrollUp && $scope.$parent.myScroll.hasOwnProperty(REPORT_FILTERS_SCROLL) ) {
+                $scope.$parent.myScroll[REPORT_FILTERS_SCROLL].scrollTo(0, 0, 100);
+            };
+        }
+
+        $scope.refreshAllScroll = function() {
+            $scope.refreshScroller(REPORT_LIST_SCROLL);
+            $scope.refreshScroller(REPORT_FILTERS_SCROLL);
+        };
+
+        var setScroller = function() {
+            var scrollerOptions = {
+                tap: true,
+                preventDefault: false
+            };
+
+            $scope.setScroller(REPORT_LIST_SCROLL, scrollerOptions);
+            $scope.setScroller(REPORT_FILTERS_SCROLL, scrollerOptions);
+        };
+
+        setScroller();
+
         /**
          *   Post processing fetched data to modify and add additional data
          *   @param {Array} - report: which points to $scope.$parent.report, see end of this function

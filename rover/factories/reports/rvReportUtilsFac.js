@@ -359,41 +359,21 @@ angular.module('reportsModule')
             // create a name space for chosen options
             report.chosenOptions = {};
 
-            // create DS for display combo box
-            // __setData(report, 'hasDisplay', {
-            //     type         : 'FAUX_SELECT',
-            //     show         : false,
-            //     selectAll    : false,
-            //     defaultTitle : 'Select displays',
-            //     title        : 'Select displays',
-            //     data         : []
-            // });
             report.hasDisplay = {
                 selectAll: false,
                 hasSearch: false,
                 data: []
             }
 
-
             // create DS for Exclude combo box
-            __setData(report, 'hasExclusions', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : false,
-                defaultTitle : 'Exclude',
-                title        : 'Exclude',
-                data         : []
-            });
+            report.hasExclusions = {
+                data: []
+            }
 
             // create DS for guest or account
-            __setData(report, 'hasGuestOrAccountFilter', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : true,
-                defaultTitle : 'Select',
-                title        : 'All Selected',
-                data         : []
-            });
+            report.hasGuestOrAccountFilter = {
+                data: []
+            }
 
             // create DS for options combo box
             __setData(report, 'hasShow', {
@@ -492,15 +472,13 @@ angular.module('reportsModule')
 
                  // fill up DS for options combo box
                 if ( __excludeFilterNames[filter.value] ) {
-
                     var selected = false;
 
                     if (report['title'] == reportNames['DAILY_PRODUCTION_DEMO'] || reportNames['DAILY_PRODUCTION_RATE']) {
                         selected = true;
-                        report['hasExclusions']['title'] = filter.description;
                     };
 
-                    report['hasExclusions']['data'].push({
+                    report['hasExclusions'].data.push({
                         paramKey    : filter.value.toLowerCase(),
                         description : filter.description,
                         selected    : selected
@@ -764,15 +742,9 @@ angular.module('reportsModule')
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        __setData(report, 'hasHoldStatus', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Hold Status',
-                            title        : 'Select Hold Status',
-                            data         : angular.copy( data )
-                        });
+                        report.hasHoldStatus = {
+                            data: angular.copy( data )
+                        }
                     };
                 });
 
@@ -803,20 +775,9 @@ angular.module('reportsModule')
                             ];
                         };
 
-                        __setData(report, 'hasReservationStatus', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Status',
-                            title        : 'Select Status',
-                            data         : angular.copy( customData )
-                        });
-
-                        if ( report['title'] === reportNames['DEPOSIT_REPORT'] ) {
-                            report['hasReservationStatus'].selectAll = true;
-                            report['hasReservationStatus'].title = 'All Selected';
-                        };
+                        report.hasReservationStatus = {
+                            data: customData
+                        }
                     };
                 });
 
