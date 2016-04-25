@@ -140,6 +140,153 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     });
 
     /**
+     * when open all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onOpenAllRestrictionsForSingleRateViewSuccess = response => {
+        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
+    };
+
+    /**
+     * react callback to open all restriction
+     * @param  {Object} params
+     */
+    var openAllRestrictionsForSingleRateView = (params) => {
+        params.rate_id = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
+        var options = {
+            params: params,
+            onSuccess: onOpenAllRestrictionsForSingleRateViewSuccess
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
+    };
+
+    /**
+     * when close all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onCloseAllRestrictionsForSingleRateViewSuccess = response => {
+        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
+    };
+
+    /**
+     * react callback to close all restriction
+     * @param  {Object} params
+     */
+    var closeAllRestrictionsForSingleRateView = (params) => {
+        params.rate_id = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
+        var options = {
+            params: params,
+            onSuccess: onCloseAllRestrictionsForSingleRateViewSuccess
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
+    };
+
+    /**
+     * when close all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onCloseAllRestrictionsForRateViewSuccess = response => {
+        //we're here at the top and we are going to clean the cache, so setting the scroll position as STILL
+        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
+
+        //section of last page & handling the case of not enough data for scroller
+        handleTheLastPageAllRatesCase();
+                       
+        //clearing all, this update will invalidate every cached data
+        cachedRateAndRestrictionResponseData = [];
+
+        //this is most likely fresh start, so clearing the rate list as well
+        cachedRateList = [];
+
+        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
+    };
+
+    /**
+     * react callback to close all restriction
+     * @param  {Object} params
+     */
+    var closeAllRestrictionsForRateView = (params) => {
+        var options = {
+            params: params,
+            onSuccess: onCloseAllRestrictionsForRateViewSuccess
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
+    };
+
+    /**
+     * when open all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onOpenAllRestrictionsForRateViewSuccess = response => {
+
+        //we're here at the top and we are going to clean the cache, so setting the scroll position as STILL
+        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
+        
+        //section of last page & handling the case of not enough data for scroller
+        handleTheLastPageAllRatesCase();
+
+        //clearing all, this update will invalidate every cached data
+        cachedRateAndRestrictionResponseData = [];
+
+        //this is most likely fresh start, so clearing the rate list as well
+        cachedRateList = []; 
+
+        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
+    };
+
+    /**
+     * react callback to open all restriction
+     * @param  {Object} params
+     */
+    var openAllRestrictionsForRateView = (params) => {
+        var options = {
+            params: params,
+            onSuccess: onCloseAllRestrictionsForRateViewSuccess
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
+    };
+
+    /**
+     * when close all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onCloseAllRestrictionsForRoomTypeViewSuccess = response => {
+        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+    };
+
+    /**
+     * react callback to close all restriction
+     * @param  {Object} params
+     */
+    var closeAllRestrictionsForRoomTypeView = (params) => {
+        var options = {
+            params: params,
+            onSuccess: onCloseAllRestrictionsForRoomTypeViewSuccess
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
+    };
+
+    /**
+     * when open all restrcition we need to refresh the view
+     * @param  {Object} response [api response]
+     */
+    var onOpenAllRestrictionsForRoomTypeViewSuccess = response => {
+        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+    };
+
+    /**
+     * react callback to open all restriction
+     * @param  {Object} params
+     */
+    var openAllRestrictionsForRoomTypeView = (params) => {
+        var options = {
+            params: params,
+            onSuccess: onOpenAllRestrictionsForRoomTypeViewSuccess
+        };
+        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
+    };
+
+    /**
      * to reload the present mode
      */
     $scope.$on(rvRateManagerEventConstants.RELOAD_RESULTS, (event, data) => {
@@ -197,27 +344,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
 
         //section of last page & handling the case of not enough data for scroller
-        var lastPage = Math.ceil(totalRatesCountForPagination / paginationRatePerPage),
-            currentPage = lastSelectedFilterValues[activeFilterIndex].allRate.currentPage;
-
-        var currentPageCachedResponse = _.findWhere(cachedRateAndRestrictionResponseData, {
-            page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
-        });
-
-        var currentPageCachedResponseRateLength = currentPageCachedResponse.response.dailyRateAndRestrictions[0].rates.length;
-        
-        var isLastPage = ( currentPage === lastPage ),
-            notEnoughDataToShowScroller = ( currentPageCachedResponseRateLength < paginationRatePerPage );
-        
-        if( isLastPage && notEnoughDataToShowScroller)  {
-            
-            lastSelectedFilterValues[activeFilterIndex].allRate.currentPage--;
-
-            if(lastSelectedFilterValues[activeFilterIndex].allRate.currentPage === 0) {
-                lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = 1;
-            }
-
-        }
+        handleTheLastPageAllRatesCase();
 
         //clearing all, because the update from popup may impact other days as well
         cachedRateAndRestrictionResponseData = [];
@@ -240,6 +367,33 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         getSingleRateRowDetailsAndUpdateCachedDataModel(rateID);
     };
 
+    /**
+     * All rates - handle the last page case
+     * mainly used to ensure that we should be able to see the vertical scrollbar
+     */
+    var handleTheLastPageAllRatesCase = () => {
+        var lastPage = Math.ceil(totalRatesCountForPagination / paginationRatePerPage),
+            currentPage = lastSelectedFilterValues[activeFilterIndex].allRate.currentPage;
+
+        var currentPageCachedResponse = _.findWhere(cachedRateAndRestrictionResponseData, {
+            page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
+        });
+
+        var currentPageCachedResponseRateLength = currentPageCachedResponse.response.dailyRateAndRestrictions[0].rates.length;
+        
+        var isLastPage = ( currentPage === lastPage ),
+            notEnoughDataToShowScroller = ( currentPageCachedResponseRateLength < paginationRatePerPage );
+        
+        //section of last page & handling the case of not enough data for scroller
+        if( isLastPage && notEnoughDataToShowScroller)  {
+            
+            lastSelectedFilterValues[activeFilterIndex].allRate.currentPage--;
+
+            if(lastSelectedFilterValues[activeFilterIndex].allRate.currentPage === 0) {
+                lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = 1;
+            }
+        }
+    };
 
     var onFetchGetSingleRateRowDetailsAndUpdateCachedDataModel = (response, successCallBackParameters) => {
         var dailyRateAndRestrictions = response.dailyRateAndRestrictions,
@@ -323,146 +477,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             onSuccess: onFetchRoomTypeAndRestrictionsSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndRoomTypes, options);
-    };
-
-    /**
-     * when open all restrcition we need to refresh the view
-     * @param  {Object} response [api response]
-     */
-    var onOpenAllRestrictionsForSingleRateViewSuccess = response => {
-        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-    };
-
-    /**
-     * react callback to open all restriction
-     * @param  {Object} params
-     */
-    var openAllRestrictionsForSingleRateView = (params) => {
-        params.rate_id = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
-        var options = {
-            params: params,
-            onSuccess: onOpenAllRestrictionsForSingleRateViewSuccess
-        };
-        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-    };
-
-    /**
-     * when close all restrcition we need to refresh the view
-     * @param  {Object} response [api response]
-     */
-    var onCloseAllRestrictionsForSingleRateViewSuccess = response => {
-        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-    };
-
-    /**
-     * react callback to close all restriction
-     * @param  {Object} params
-     */
-    var closeAllRestrictionsForSingleRateView = (params) => {
-        params.rate_id = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
-        var options = {
-            params: params,
-            onSuccess: onCloseAllRestrictionsForSingleRateViewSuccess
-        };
-        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-    };
-
-    /**
-     * when close all restrcition we need to refresh the view
-     * @param  {Object} response [api response]
-     */
-    var onCloseAllRestrictionsForRateViewSuccess = response => {
-        //we're here at the top and we are going to clean the cache, so setting the scroll position as STILL
-        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
-               
-        //clearing all, this update will invalidate every cached data
-        cachedRateAndRestrictionResponseData = [];
-
-        //this is most likely fresh start, so clearing the rate list as well
-        cachedRateList = [];
-
-        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-    };
-
-    /**
-     * react callback to close all restriction
-     * @param  {Object} params
-     */
-    var closeAllRestrictionsForRateView = (params) => {
-        var options = {
-            params: params,
-            onSuccess: onCloseAllRestrictionsForRateViewSuccess
-        };
-        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-    };
-
-    /**
-     * when open all restrcition we need to refresh the view
-     * @param  {Object} response [api response]
-     */
-    var onOpenAllRestrictionsForRateViewSuccess = response => {
-        //we're here at the top and we are going to clean the cache, so setting the scroll position as STILL
-        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
-               
-        //clearing all, this update will invalidate every cached data
-        cachedRateAndRestrictionResponseData = [];
-
-        //this is most likely fresh start, so clearing the rate list as well
-        cachedRateList = []; 
-
-        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-    };
-
-    /**
-     * react callback to open all restriction
-     * @param  {Object} params
-     */
-    var openAllRestrictionsForRateView = (params) => {
-        var options = {
-            params: params,
-            onSuccess: onCloseAllRestrictionsForRateViewSuccess
-        };
-        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-    };
-
-    /**
-     * when close all restrcition we need to refresh the view
-     * @param  {Object} response [api response]
-     */
-    var onCloseAllRestrictionsForRoomTypeViewSuccess = response => {
-        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
-    };
-
-    /**
-     * react callback to close all restriction
-     * @param  {Object} params
-     */
-    var closeAllRestrictionsForRoomTypeView = (params) => {
-        var options = {
-            params: params,
-            onSuccess: onCloseAllRestrictionsForRoomTypeViewSuccess
-        };
-        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-    };
-
-    /**
-     * when open all restrcition we need to refresh the view
-     * @param  {Object} response [api response]
-     */
-    var onOpenAllRestrictionsForRoomTypeViewSuccess = response => {
-        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
-    };
-
-    /**
-     * react callback to open all restriction
-     * @param  {Object} params
-     */
-    var openAllRestrictionsForRoomTypeView = (params) => {
-        var options = {
-            params: params,
-            onSuccess: onOpenAllRestrictionsForRoomTypeViewSuccess
-        };
-        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
     };
 
     /**
