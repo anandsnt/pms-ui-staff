@@ -1059,6 +1059,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         if (filterValues.selectedRates.length) {
             params['rate_ids[]'] = _.pluck(filterValues.selectedRates, 'id');
+            if(fetchCommonRestrictions) {
+                params['considerRateIDsInCommonRestriction'] = true;
+            }
         }
 
         params['page'] = filterValues.allRate.currentPage;
@@ -1111,7 +1114,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             'rate_ids[]': rateIDs,
             from_date: date,
             to_date: date,
-            fetchCommonRestrictions: true
+            fetchCommonRestrictions: true,
+            considerRateIDsInCommonRestriction: rateIDs.length > 0
         };
         var options = {
             params,
@@ -1185,10 +1189,20 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     /**
      * callback from react when clicked on a cell in rate view
      */
-    var clickedOnRateViewCell = ({rateIDs, date}) => {
-        return rateIDs.length > 1 ?
-            fetchMultipleRateRestrictionsDetailsForPopup(rateIDs, date) :
+    var clickedOnRateViewCell = ({ rateIDs, date }) => {
+        if(rateIDs.length > 1) {
+
+            //in pagination context we've to fetch all the visible/invisible rate's details
+            let leftSideFilterSelectedRates = lastSelectedFilterValues[activeFilterIndex].selectedRates;
+            if(!leftSideFilterSelectedRates.length) {
+                rateIDs = [];
+            }
+            
+            fetchMultipleRateRestrictionsDetailsForPopup(rateIDs, date);  
+        }
+        else {
             fetchSingleRateRestrictionModeDetailsForPopup(rateIDs[0], date);
+        }  
     };
 
     /**

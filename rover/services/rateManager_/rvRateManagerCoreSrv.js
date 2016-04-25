@@ -240,13 +240,22 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 totalCount = 0,
                 response = {};
 
-            promises.push(service.fetchMultipleRateInfo(_.omit(params, 'fetchRates', 'fetchCommonRestrictions')).then((data) => {
+            promises.push(service.fetchMultipleRateInfo(_.omit(params, 'fetchRates', 'fetchCommonRestrictions', 'considerRateIDsInCommonRestriction')).then((data) => {
                 response.dailyRateAndRestrictions = data.results;
                 response.totalCount = data.total_count;
             }));
 
             if(params.fetchCommonRestrictions){
-                promises.push(service.fetchCommonRestrictions(_.pick(params, 'from_date', 'to_date', 'name_card_ids[]'))
+
+                let paramsForCommonRestrictions = {
+                    ..._.pick(params, 'from_date', 'to_date', 'name_card_ids[]')
+                };
+
+                if(params['considerRateIDsInCommonRestriction']){
+                   paramsForCommonRestrictions['rate_ids[]'] = params['rate_ids[]']; 
+                }
+
+                promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
                     .then((data) => {
                         response.commonRestrictions = data.results;
                     })
