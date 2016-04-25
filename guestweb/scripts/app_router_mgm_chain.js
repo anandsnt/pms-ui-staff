@@ -157,4 +157,27 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	title: 'Check-in'
 	 });
 
+
+	$stateProvider.state('checkinCcVerification', {
+		url: '/checkinCcVerification',
+		templateUrl: '/assets/common_templates/partials/MGM/checkinCCAddition.html',
+		controller: 'checkinCcVerificationController',
+		title: 'CC verification'
+	}).state('emailAddition', {
+		url: '/emailAddition/:isFrom',
+		templateUrl: '/assets/common_templates/partials/MGM/gwEmailEntry.html',
+		controller: 'emailEntryController',
+		title: 'E-mail entry'
+	}).state('mobileNumberAddition', {
+		url: '/mobileNumberAddition',
+		templateUrl: '/assets/common_templates/partials/MGM/mobileNumberEntry.html',
+		controller: 'mobileEntryController',
+		title: 'Phone number entry'
+	}).state('mobileNumberOptions', {
+		url: '/mobileNumberOptions',
+		templateUrl: '/assets/common_templates/partials/MGM/mobileNumberOptions.html',
+		controller: 'mobileOptionsController',
+		title: 'Phone number entry'
+	});
+
 }]);
