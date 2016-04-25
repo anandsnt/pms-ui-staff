@@ -24,7 +24,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
     /**
      * to keep track of last filter choosed
-     * will be using in setting zoom level or coming back from graph view to this
+     * coming back from graph view to this
      */
     var lastSelectedFilterValues = [],
         activeFilterIndex = 0;
@@ -48,12 +48,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     
     /**
      * data passed to react, will be used in scrolling related area to find positions
-     * @type {Object}
+     * @type {Array}
      */
-    var showingData = {
-        headerData: [],
-        bottomData: []
-    };
+    var showingData = [];
 
     /**
      * utility method for converting date object into api formated 'string' format
@@ -123,12 +120,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * identifying scroller position and etc..
      * @param  {array} headerData
      * @param  {array} bottomData
+     * @param  {String} actionType
      */
-    var updateShowingData = (headerData, bottomData) => {
-        showingData = {
-            headerData: headerData,
-            bottomData: bottomData
-        }
+    var addToShowingDataArray = (headerData, bottomData, actionType) => {
+        showingData.push({
+            headerData,
+            bottomData,
+            actionType
+        });
     };
 
     /**
@@ -190,14 +189,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     /**
-     * [description]
-     * @param  {[type]} dialogData [description]
-     * @return {[type]}            [description]
+     * to handle the reload request from popup against mode 'rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE'
+     * @param  {Object} dialogData [popup data]
      */
     var handleTheReloadRequestFromPopupForMultipleRateRestrictionMode = (dialogData) => {
         //we're here at the top and we are going to clean the cache, so setting the scroll position as STILL
         lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
 
+        //section of last page & handling the case of not enough data for scroller
         var lastPage = Math.ceil(totalRatesCountForPagination / paginationRatePerPage),
             currentPage = lastSelectedFilterValues[activeFilterIndex].allRate.currentPage;
 
@@ -218,33 +217,27 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = 1;
             }
 
-        }      
-
-        //this is most likely fresh start, so clearing the rate list as well
-        cachedRateList = [];
+        }
 
         //clearing all, because the update from popup may impact other days as well
         cachedRateAndRestrictionResponseData = [];
+
+        //this is most likely fresh start, so clearing the rate list as well
+        cachedRateList = [];
 
         //everything set, update the view
         $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     };
 
     /**
-     * [description]
-     * @param  {[type]} dialogData [description]
-     * @return {[type]}            [description]
+     * to handle the reload request from popup against mode 'rvRateManagerPopUpConstants.RM_SINGLE_RATE_RESTRICTION_MODE'
+     * @param  {Object} dialogData [popup data]
      */
     var handleTheReloadRequestFromPopupForSingleRateRestrictionMode = (dialogData) => {
-        var rateID = dialogData.rate.id,
-            fromDates = _.pluck(cachedRateAndRestrictionResponseData, 'fromDate').map(fromDate => tzIndependentDate(fromDate)),
-            toDates = _.pluck(cachedRateAndRestrictionResponseData, 'toDate').map(toDate => tzIndependentDate(toDate)),
-            minFromDate = formatDateForAPI(_.min(fromDates)), //date in cache data store is in api format
-            minToDate = formatDateForAPI(_.min(toDates));  //date in cache data store is in api format
+        var rateID = dialogData.rate.id;
 
         //we may changed a rate detail against particular column or rate columns across a particular row
-        getSingleRateRowDetailsAndUpdateCachedDataModel(rateID, minFromDate, minToDate);
-        
+        getSingleRateRowDetailsAndUpdateCachedDataModel(rateID);
     };
 
 
@@ -288,7 +281,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     };
 
-    var getSingleRateRowDetailsAndUpdateCachedDataModel = (rateID, fromDate, toDate) => {
+    var getSingleRateRowDetailsAndUpdateCachedDataModel = (rateID) => {
+        var fromDates = _.pluck(cachedRateAndRestrictionResponseData, 'fromDate').map(fromDate => tzIndependentDate(fromDate)),
+            toDates = _.pluck(cachedRateAndRestrictionResponseData, 'toDate').map(toDate => tzIndependentDate(toDate)),
+            fromDate = formatDateForAPI(_.min(fromDates)), //date in cache data store is in api format
+            toDate = formatDateForAPI(_.max(toDates));  //date in cache data store is in api format
+
         var params = {
             from_date: fromDate,
             to_date: toDate,
@@ -331,7 +329,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * when open all restrcition we need to refresh the view
      * @param  {Object} response [api response]
      */
-    var onOpenAllRestrictionsSuccess = response => {
+    var onOpenAllRestrictionsForSingleRateViewSuccess = response => {
         $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
     };
 
@@ -343,7 +341,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         params.rate_id = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
         var options = {
             params: params,
-            onSuccess: onOpenAllRestrictionsSuccess
+            onSuccess: onOpenAllRestrictionsForSingleRateViewSuccess
         };
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
     };
@@ -374,6 +372,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response [api response]
      */
     var onCloseAllRestrictionsForRateViewSuccess = response => {
+        //we're here at the top and we are going to clean the cache, so setting the scroll position as STILL
+        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
+               
+        //clearing all, this update will invalidate every cached data
+        cachedRateAndRestrictionResponseData = [];
+
+        //this is most likely fresh start, so clearing the rate list as well
+        cachedRateList = [];
+
         $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
     };
 
@@ -394,46 +401,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} response [api response]
      */
     var onOpenAllRestrictionsForRateViewSuccess = response => {
-        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-    };
+        //we're here at the top and we are going to clean the cache, so setting the scroll position as STILL
+        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
+               
+        //clearing all, this update will invalidate every cached data
+        cachedRateAndRestrictionResponseData = [];
 
-    /**
-     * react callback to open all restriction
-     * @param  {Object} params
-     */
-    var openAllRestrictionsForRateView = (params) => {
-        var options = {
-            params: params,
-            onSuccess: onCloseAllRestrictionsForRateViewSuccess
-        };
-        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-    };
+        //this is most likely fresh start, so clearing the rate list as well
+        cachedRateList = []; 
 
-    /**
-     * when close all restrcition we need to refresh the view
-     * @param  {Object} response [api response]
-     */
-    var onCloseAllRestrictionsForRateViewSuccess = response => {
-        $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-    };
-
-    /**
-     * react callback to close all restriction
-     * @param  {Object} params
-     */
-    var closeAllRestrictionsForRateView = (params) => {
-        var options = {
-            params: params,
-            onSuccess: onCloseAllRestrictionsForRateViewSuccess
-        };
-        $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
-    };
-
-    /**
-     * when open all restrcition we need to refresh the view
-     * @param  {Object} response [api response]
-     */
-    var onOpenAllRestrictionsForRateViewSuccess = response => {
         $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
     };
 
@@ -493,17 +469,33 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * on taping the back button from the top bar (NOT from the HEADER)
      */
     $scope.clickedOnBackButton = () => {
+        //right nw the navigation is only from All Rates' single rate to it's details
+        var rateID = lastSelectedFilterValues[activeFilterIndex].selectedRates[0].id;
+
+        lastSelectedFilterValues.splice(activeFilterIndex, 1);
         activeFilterIndex = activeFilterIndex - 1;
         lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
+
+        showingData.splice(showingData.length - 1, 1);
+
+        getSingleRateRowDetailsAndUpdateCachedDataModel(rateID);
         
-        //setting the current scroll position as STILL
-        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
-
-        //clearing the cached to perform fresh request
-        cachedRateAndRestrictionResponseData = [];
-
-        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
         $scope.showBackButton = false;
+        
+        //scroll focus
+        var allRatesShowingData = _.where(showingData, { actionType: RM_RX_CONST.RATE_VIEW_CHANGED});
+        for(let i = 0; i < allRatesShowingData.length; i++) {
+            let rateFoundIndex = _.findIndex(allRatesShowingData[i].bottomData, { id: rateID });
+            if(rateFoundIndex !== -1) {
+                if(_.isUndefined(lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo)) {
+                    lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo = {};
+                }
+                lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo.row = rateFoundIndex;
+                lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo.col = 1;
+                break;
+            }
+        }
+        
     };
 
     /**
@@ -549,7 +541,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         //identifying the column to focus soon after rerenderng with new data
         var abs = Math.abs,
-            numberOfDates = showingData.headerData.length,
+            numberOfDates = _.last(showingData).headerData.length,
             eachColWidth = abs(scrollWidth) / numberOfDates,
             col = Math.ceil( abs(xScrollPosition) / eachColWidth );
         
@@ -637,7 +629,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         updateAllRatesView(ratesWithRestrictions, dates);
 
         //we need to keep track what we're showing the react part for determining the scrolling position & other things later. so,
-        updateShowingData(dates, ratesWithRestrictions);
+        addToShowingDataArray(dates, ratesWithRestrictions, RM_RX_CONST.RATE_VIEW_CHANGED);
 
         //closing the left side filter section
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
@@ -652,7 +644,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var reduxActionForAllRateView = {
             type                : RM_RX_CONST.RATE_VIEW_CHANGED,
             rateRestrictionData : [...ratesWithRestrictions],
-            zoomLevel           : lastSelectedFilterValues[activeFilterIndex].zoomLevel,
             businessDate        : tzIndependentDate($rootScope.businessDate),
             callbacksFromAngular: getTheCallbacksFromAngularToReact(),
             dates,
@@ -1461,7 +1452,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         store.dispatch({
             type                        : RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_CHANGED,
             singleRateRestrictionData   : [...roomTypeWithAmountAndRestrictions],
-            zoomLevel                   : lastSelectedFilterValues[activeFilterIndex].zoomLevel,
             businessDate                : tzIndependentDate($rootScope.businessDate),
             callbacksFromAngular        : getTheCallbacksFromAngularToReact(),
             restrictionTypes,
@@ -1499,6 +1489,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //let's view results ;)
         updateSingleRatesView(roomTypeWithAmountAndRestrictions, dates);
         
+        //we need to keep track what we're showing the react part for determining the scrolling position & other things later. so,
+        addToShowingDataArray(dates, roomTypeWithAmountAndRestrictions, 
+            RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_CHANGED);
+
         //closing the left side filter section
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);
     };
@@ -1586,6 +1580,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             activeFilterIndex = 0;
             $scope.showBackButton = false;
             totalRatesCountForPagination = 0;
+
+            showingData = [];
         }
 
         if (newFilterValues.showAllRates) {
