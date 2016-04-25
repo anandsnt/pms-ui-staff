@@ -302,6 +302,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 5;
 					break;
 
+				case reportNames['CREDIT_CHECK_REPORT']:
+					$scope.leftColSpan = 5;
+					$scope.rightColSpan = 2;
+					break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
@@ -553,6 +558,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/financialTransactionsAdjustmentReport/reportMain.html';
+					break;
+
+				case reportNames['CREDIT_CHECK_REPORT']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/creditCheckReport/rvCreditCheckReport.html';
 					break;
 
 				default:
@@ -866,6 +877,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
 				case reportNames['GUEST_BALANCE_REPORT']:
 				case reportNames['ADDON_FORECAST']:
+				case reportNames['CREDIT_CHECK_REPORT']:
 					orientation = 'landscape';
 					break;
 

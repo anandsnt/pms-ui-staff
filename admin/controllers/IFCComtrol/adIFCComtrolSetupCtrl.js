@@ -25,7 +25,7 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 	});
 
 	var clearConfigValues = function() {
-    $scope.ifc_comtrol.production_mode = false;
+    $scope.ifc_comtrol.url = '';
     $scope.ifc_comtrol.authentication_token = '';
     $scope.ifc_comtrol.cas_enabled = false;
     $scope.ifc_comtrol.energy_management_enabled = false;

@@ -9,7 +9,7 @@ admin
             value: {
                 changeYear: true,
                 changeMonth: true,
-                yearRange: '0:+10'
+                yearRange: '0:+5'
             }
         }
     }))
@@ -25,9 +25,13 @@ admin
             $scope.setUpData = function() {
                 var dLastSelectedDate = '',
                     lastSelectedDate = '',
-                    businessDate = tzIndependentDate($rootScope.businessDate);
+                    businessDate = tzIndependentDate($rootScope.businessDate),
+                    toDate = tzIndependentDate($rootScope.businessDate);
+                toDate = new Date(toDate.setFullYear(toDate.getFullYear() + $rootScope.rateDateRangeLimit));
+                
                 $scope.fromDateOptions = _.extend({
                     minDate: businessDate,
+                    maxDate : toDate,
                     onSelect: function() {
                         if (tzIndependentDate($scope.begin_date) > tzIndependentDate($scope.end_date)) {
                             $scope.end_date = $scope.begin_date;
@@ -37,6 +41,7 @@ admin
 
                 $scope.toDateOptions = _.extend({
                     minDate: businessDate,
+                    maxDate : toDate,
                     onSelect: function() {
                         if (tzIndependentDate($scope.begin_date) > tzIndependentDate($scope.end_date)) {
                             $scope.begin_date = $scope.end_date;

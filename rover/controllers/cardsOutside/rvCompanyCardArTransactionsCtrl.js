@@ -13,11 +13,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			fetchData();
 		};
 
-		// Refresh the scroller when the tab is active.
-		$rootScope.$on("arTransactionTabActive", function(event) {
+		var refreshArTabScroller = function(){
 			$timeout(function() {
 				$scope.refreshScroller('ar-transaction-list');
 			}, 100);
+		};
+		// Refresh the scroller when the tab is active.
+		$rootScope.$on("arTransactionTabActive", function(event) {
+			refreshArTabScroller();
 		});
 
 		// Initializing filter data
@@ -103,12 +106,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			    $scope.arTransactionDetails.available_credit = credits;
 			    $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
-
-
-
-				$timeout(function() {
-					$scope.refreshScroller('ar-transaction-list');
-				}, 100);
+			    
+			    refreshArTabScroller();
 
 				// Compute the start, end and total count parameters
 				if($scope.nextAction){
@@ -337,14 +336,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		/*
 		 * function to execute on clicking on each result
 		 */
-		$scope.goToReservationDetails = function(index, $event) {
+		$scope.goToReservationDetails = function(index) {
 
-			var element = $event.target;
-
-			if(element.className ==='switch-button' || element.className ==='switch-button on' || element.parentNode.className ==='switch-button' || element.parentNode.className ==='switch-button on'){
-				$scope.toggleTransaction(index);
-			}
-			else if($scope.filterData.viewFromOutside){
+			if($scope.filterData.viewFromOutside){
 				$vault.set('cardId', $stateParams.id);
 				$vault.set('type', $stateParams.type);
 				$vault.set('query', $stateParams.query);
@@ -518,5 +512,139 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			$scope.paymentModalOpened = false;
 		});
 
+		/*
+		 *	CICO-27364 : To Handle invoice button click.
+		 *	show popup with PRINT, EMAIL options.
+		 */
+		$scope.clickedArStatementButton = function(){
+			ngDialog.open({
+	      		template:'/assets/partials/companyCard/rvArStatementPopup.html',
+		        className: '',
+		        closeByDocument: false,
+		        scope: $scope
+	      	});
+		};
+
+	    // add the print orientation before printing
+		var addPrintOrientation = function() {
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+		};
+
+		// add the print orientation after printing
+		var removePrintOrientation = function() {
+			$( '#print-orientation' ).remove();
+		};
+
+		// print AR Statement
+		var printArStatement = function(params) {
+			var printDataFetchSuccess = function(successData){
+				$scope.$emit('hideLoader');
+				$scope.printData = successData;
+				$scope.errorMessage = "";
+				// hide hotel logo
+				$("header .logo").addClass('logo-hide');
+				// inoder to set class 'print-statement' on rvCompanyCardDetails.html
+				$scope.$emit("PRINT_AR_STATEMENT",true);
+			    // add the orientation
+			    addPrintOrientation();
+
+			    /*
+			    *	======[ READY TO PRINT ]======
+			    */
+			    // this will show the popup with full bill
+			    $timeout(function() {
+			    	/*
+			    	*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+			    	*/
+
+			    	$window.print();
+			    	if ( sntapp.cordovaLoaded ) {
+			    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+			    	};
+			    }, 1000);
+
+			    /*
+			    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+			    */
+
+			    $timeout(function() {
+					$("header .logo").removeClass('logo-hide');
+					// inoder to re-set/remove class 'print-statement' on rvCompanyCardDetails.html
+					$scope.$emit("PRINT_AR_STATEMENT",false);
+					// remove the orientation after similar delay
+			    	removePrintOrientation();
+			    }, 1000);
+			};
+
+			var printDataFailureCallback = function(errorData){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorData;
+			};
+			$scope.invokeApi(RVCompanyCardSrv.fetchArStatementPrintData, params, printDataFetchSuccess, printDataFailureCallback);
+		};
+
+		// Handle AR Statement-PRINT button click
+		$scope.clickedPrintArStatementButton = function(){
+			var params = getParamsToSend();
+			printArStatement( params );
+		};
+
+		// Handle AR Statement-EMAIL button click
+		$scope.clickedEmailArStatementButton = function(){
+			var params = getParamsToSend();
+
+			var emailSuccess = function(successData){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = "";
+			};
+			var emailFailureCallback = function(errorData){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorData;
+			};
+			$scope.invokeApi(RVCompanyCardSrv.emailArStatement, params, emailSuccess, emailFailureCallback);
+		};
+
+		// To close popup.
+		$scope.closeDialog = function() {
+            ngDialog.close();
+        };
+
+		// CICO-28089 - Handle click on each transaction.
+		// will expand with detailed view.
+		// Fetching data for detailed view here..
+		$scope.clickedOnTransaction = function( index, event ){
+			
+			var element = event.target;
+
+			if(element.className ==='switch-button' || element.className ==='switch-button on' || element.parentNode.className ==='switch-button' || element.parentNode.className ==='switch-button on'){
+				$scope.toggleTransaction(index);
+			}
+			else{
+				var transaction = $scope.arTransactionDetails.ar_transactions[index];
+				transaction.details = [];
+
+				if(!transaction.active){
+					var transactionFetchSuccess = function(data){
+						$scope.$emit('hideLoader');
+						$scope.errorMessage = '';
+						transaction.active = ! transaction.active;
+						transaction.details = data;
+						refreshArTabScroller();
+					},
+					transactionFetchFailure = function(errorMessage){
+						$scope.$emit('hideLoader');
+						$scope.errorMessage = errorMessage;
+					};
+					var param = {
+						'bill_id':transaction.bill_id
+					};
+					$scope.invokeApi(RVCompanyCardSrv.fetchTransactionDetails, param, transactionFetchSuccess, transactionFetchFailure);
+				}
+				else{
+					transaction.active = ! transaction.active;
+					refreshArTabScroller();
+				}
+			}
+		};
 
 }]);

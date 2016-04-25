@@ -1,13 +1,13 @@
 
-sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state', 'RVWorkstationSrv',
-                  function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state, RVWorkstationSrv){
+sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes',
+                  function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state, RVWorkstationSrv, roomTypes){
 
     //setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
 
     //We are not showing the backbutton now, so setting as blank
     $scope.backButtonCaption = ''; //if it is not blank, backbutton will show, otherwise dont
-
+    $scope.roomTypes = roomTypes;
 
     var that = this;
     $scope.shouldShowLateCheckout = true;

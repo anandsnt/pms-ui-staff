@@ -187,7 +187,10 @@ angular.module('reportsModule')
 
         var __showFilterNames = {
             'SHOW_COMPANY': true,
-            'SHOW_TRAVEL_AGENT': true
+            'SHOW_TRAVEL_AGENT': true,
+            // for CREDIT_CHECK_REPORT
+            'INCLUDE_DUE_OUT': true,
+            'INCLUDE_INHOUSE': true
         };
 
         var __chargeTypeFilterNames = {
@@ -1301,6 +1304,15 @@ angular.module('reportsModule')
                     if ( !! revenue ) {
                         revenue['sortDir'] = false;
                         report['chosenSortBy'] = revenue['value'];
+                    };
+                };
+
+                // making sort by Room Number [asc] default
+                if ( report['title'] === reportNames['CREDIT_CHECK_REPORT'] ) {
+                    var roomNo = _.find(report['sort_fields'], { 'value': 'ROOM_NO' });
+                    if ( !! roomNo ) {
+                        roomNo['sortDir'] = true;
+                        report['chosenSortBy'] = roomNo['value'];
                     };
                 };
             };

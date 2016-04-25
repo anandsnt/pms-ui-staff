@@ -383,8 +383,15 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var times = {};
 			_.each($scope.roomTypesList, function(room, index) {
 				if ( !!$scope.eachTaskList.room_type_ids[index] ) {
-					if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins && !!$scope.eachTaskList.rooms_task_completion[room.id].hours) {
-						times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
+					if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins || !!$scope.eachTaskList.rooms_task_completion[room.id].hours) {
+						//CICO-27994
+						console.log("reached here")
+						if(!!$scope.eachTaskList.rooms_task_completion[room.id].mins && !!$scope.eachTaskList.rooms_task_completion[room.id].hours)
+							times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
+						else if(!!$scope.eachTaskList.rooms_task_completion[room.id].hours)
+							times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':00:00';
+						else if(!!$scope.eachTaskList.rooms_task_completion[room.id].mins)
+							times[room.id] = $rootScope.businessDate + ' ' + '00:'+ $scope.eachTaskList.rooms_task_completion[room.id].mins +':00';
 					} else {
 						times[room.id] = '';
 					}
@@ -744,7 +751,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		$scope.checkCopyBtnShow = function(id) {
 			var room = $scope.eachTaskList.rooms_task_completion[id];
-			return !!room.hours && !!room.mins ? true : false;
+			return !!room.hours || !!room.mins ? true : false;
 		};
 
 		$scope.changedSelectedRooms = function (item, index) {

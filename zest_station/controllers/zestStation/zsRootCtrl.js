@@ -11,6 +11,13 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.chromeAppKey = 'snt.in_chromeapp';
         $scope.syncOOSInterval = 119;//in seconds (0-based) // currently will re-sync every 2 minutes, next release will be an admin setting per hotel
     
+    // This is workaround till we find how to detect if app
+    // is invoked from chrome app, we will be hidding this tag from chrome app and
+    // checking that to distinguish if app was launched using chrome app or not 
+    var CheckIfItsChromeApp = function(){
+         $scope.inChromeApp = $("#hideFromChromeApp").css("visibility") === 'hidden' ;
+         console.info(":: is in chrome app ->"+$scope.inChromeApp);
+    }();
 
     /**
      * to run angular digest loop,
@@ -26,6 +33,58 @@ sntZestStation.controller('zsRootCtrl', [
     };    
         
     $translate.use('EN_snt');  
+    //store oos status
+    var oosStorageKey = 'snt_zs_workstation.in_oos',
+        oosReasonKey = 'snt_zs_workstation.oos_reason',
+        storage = localStorage;
+    var updateLocalStorage = function(oosReason, workstationStatus) {
+
+        try {
+            storage.setItem(oosStorageKey, workstationStatus);
+        } catch (err) {
+            console.warn(err);
+        }
+        if (!!oosReason) {
+            try {
+                storage.setItem(oosReasonKey, oosReason);
+            } catch (err) {
+                console.warn(err);
+            }
+        }
+    };
+    $scope.$on(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event, params) {
+        var oosReason = params.reason;
+        var workstationStatus = params.status;
+        $scope.zestStationData.workstationStatus = workstationStatus;
+
+        if ($scope.zestStationData.workstationStatus === 'out-of-order') {
+            var options = {
+                params: {
+                    'oo_status': false,
+                    'oo_reason': oosReason,
+                    'id': $scope.zestStationData.set_workstation_id
+                }
+            };
+            $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+        } else {
+            try {
+                storage.setItem(oosStorageKey, "in-order");
+            } catch (err) {
+                console.warn(err);
+            }
+        }
+        updateLocalStorage(oosReason, workstationStatus);
+    });
+
+    $scope.returnDateObj = function(dateString){
+        //utils
+        if(typeof dateString !== 'undefined'){
+            return returnUnformatedDateObj(dateString,$scope.zestStationData.hotelDateFormat);
+        }else{
+            return dateString;
+        };
+    };
+
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
@@ -455,6 +514,7 @@ sntZestStation.controller('zsRootCtrl', [
         });
         $scope.refreshSettings = function(hard_reset){
           $scope.getWorkStationStatus(hard_reset);
+
         };
         $scope.$on('RESET_TIMEOUT',function(evt, params){
             $scope.resetCounter();
@@ -633,6 +693,8 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.currencySymbol = data.currency.symbol;
                     $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
                     $scope.zestStationData.payment_gateway = $scope.zestStationData.hotel_settings.payment_gateway;
+                    $scope.zestStationData.hotelDateFormat = !!data.date_format ? data.date_format.value : "DD-MM-YYYY" ;
+                    console.info("::Hotel date format ->"+$scope.zestStationData.hotelDateFormat);
                     $scope.$emit('hideLoader');
             };
             
@@ -664,23 +726,22 @@ sntZestStation.controller('zsRootCtrl', [
             }
 
         };
+        
         $scope.openExternalWebPage = function(){
             $scope.showExternalWebPage =true;
-            console.log('listenForInputBoxClick')
-            $scope.listenForInputBoxClick();
+            setTimeout(listenForInputBoxClick, 100);
         };
+        
         $scope.listenForInputBoxClick = function(){
-            $('body').bind("click touchstart keyup keydown keypress", function(e) {
-                console.log(e)
-                window.parent.funcKey(e);
-              });
-            
-            
-            
+            var iframe = $("#booking_iframe")[0];
+            iframe.contentWindow.on('click touchstart',function(){
+                console.log("inside iframe clicking",arguments);
+            });
         };
+        
         $scope.closeExternalWebPage = function(){
             $scope.showExternalWebPage =false;
-        }
+        };
         
         $scope.languageSelect = function(){
             $scope.stopLanguageCounter();
@@ -824,7 +885,7 @@ sntZestStation.controller('zsRootCtrl', [
                 console.log('msg from ChromeApp: ',response);
                 if (response){
                     if (response.isChromeApp){
-                        $scope.inChromeApp = true;
+                        //do nothing
                     } else if (response.qr_code){
                         $scope.initQRCodeFindReservation(response.reservation_id);
                     }
@@ -1075,10 +1136,13 @@ sntZestStation.controller('zsRootCtrl', [
                 //capture failed
                 $state.go('zest_station.error_page');
             };
-        };
+        } else if( response.Command === 'cmd_dispense_key_card'){
+                $scope.$broadcast('DISPENSE_SUCCESS',{"cmd":response.Command,"msg":response.Message});
+        }
     };
     var socketOpenedFailed = function() {
         console.info("Websocket:-> socket connection failed");
+        $scope.$broadcast('SOCKET_FAILED');
     };
     var socketOpenedSuccess = function() {
         console.info("Websocket:-> socket connected");
@@ -1106,6 +1170,10 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        $scope.zestStationData.workstationOooReason = "";
+        $scope.zestStationData.workstationStatus = "";
+        $scope.zestStationData.isAdminFirstLogin = true;
+        $scope.zestStationData.wsIsOos = false;
         
         (typeof chrome !== "undefined") ? maximizeScreen():"";
         //create a websocket obj

@@ -340,8 +340,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             
         $scope.afterGuestCheckinCallback = function(response){
             console.info('response from guest check-in',response)
-                $scope.$emit('hideLoader');
-                
+                $scope.$emit('hideLoader');       
                 var haveValidGuestEmail = $scope.guestEmailOnFile();//also sets the email to use for delivery
                 var successfulCheckIn = (response.status === "success")? true : false;
                 console.info('successfulCheckIn: ',successfulCheckIn);
