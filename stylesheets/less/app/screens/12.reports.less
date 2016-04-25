@@ -980,42 +980,6 @@
             &:first-child { margin-top: 0; }
         }
 
-        &.card-authorization-check {
-                .grid-footer li {
-                    float: right !important;
-                }
-                .guest-status {
-                    width:20px;
-                    height:20px;
-                    margin-right: .5em;
-                    background-size: 80px;
-
-                    &.check-out {
-                        background-position: 6px -75px;
-                    }
-
-                    &.inhouse {
-                        background-position: 5px -128px;
-                    }
-                }
-                .card-meta {
-                    padding:0;
-                    margin:0 0 0.5em 0;
-                    font-size:16px;
-                    font-weight: 600;
-
-                    li {
-                        display: inline-block;
-                        margin-bottom: 0;
-                        min-width: 200px;
-                        padding-right:10px;
-                        &.guest {
-                            min-width: 300px;
-                        }
-                    }
-                }
-        }
-
         table {
             width: 100%;
             font-size: 14px;
@@ -1142,14 +1106,12 @@
             &.deposit-reports,
             &.balance-reports,
             &.card-authorization-check-reports {
-
-                tr {
-                    th {
-                        line-height: 35px;
-                        height: 45px;
-                        padding: 0;
-                        vertical-align: top;
-                        background-color: @grey1;
+                th {
+                    line-height: 35px;
+                    height: 45px;
+                    padding: 0;
+                    vertical-align: top;
+                    background-color: @grey1;
 
                     span {
                         color: @white;
@@ -2608,13 +2570,6 @@
 
         table {
             td.code { padding-left: 0pt; }
-        
-            &.card-authorization-check-reports {
-                margin-bottom: .5cm;
-            }
-            td.code {
-                padding-left: 0pt;
-            }
             .red,
             .penalty { color: @grey3; text-decoration: line-through; }
             .purple { color: @black; }
@@ -2641,29 +2596,6 @@
                     min-width: 3cm;
                     padding-right: .1cm;
                     
-                    &.guest {
-                        min-width: 4cm;
-                    }
-                }
-            }
-        }
-
-        &.card-authorization-check {
-            .grid-footer li {
-                float: right !important;
-            }
-            .card-meta {
-                padding:0;
-                padding-right: 0.1cm;
-                margin:0 0 .2cm 0;
-                font-size:10pt;
-                font-weight: 600;
-
-                li {
-                    display: inline-block;
-                    margin-bottom: 0;
-                    min-width: 3cm;
-                    padding-right:.1cm;
                     &.guest {
                         min-width: 4cm;
                     }
