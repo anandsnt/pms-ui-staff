@@ -9,7 +9,7 @@
 @import "date-picker.less";
 @import "bill-popup.less";
 @import "modal-styles.less";
-
+@import (inline) 'guestweb/css/flags.css';
 
 
 body {
@@ -360,6 +360,18 @@ body {
     .hide-in-desktop{
         display:block;
     }
+     .flag-container{ 
+        width: 125%;
+    }
+    .mobile-field{
+        width:51%;
+    }
+    .dial-div{
+        margin-left:8%;
+    }
+    .flag {
+        margin-top: 4px;
+    }
 }
 
 @media (min-width: 480px) {
@@ -370,4 +382,48 @@ body {
   .hide-in-desktop{
         display:none;
   }
+}
+/* mobile number section */
+
+.country-container{
+    width:18% !important;
+    cursor: pointer;
+}
+.flag-container{
+    overflow: visible; 
+    height: 40px; 
+    width: 114%;
+
+}
+
+.flag-container::after{
+    left:80% !important;
+}
+.country-dropdown{
+    width: 200px;
+    position: absolute; 
+    opacity: 0; 
+    height: 40px;
+}
+.dial-div{
+    background: #D3D3D3 none repeat scroll 0px 0px;
+    float: left;
+    height: 40px;
+    padding: 2%;
+    width: 18%;
+    margin-left:4%;
+    text-align:right;
+    font-size: 1.5em;
+}
+.mobile-field{
+    float:right;
+    width:54%;
+    margin-left:3%;
+    height: 40px;
+}
+.country-dropdown{
+    width: 200px;
+    position: absolute; 
+    opacity: 0; 
+    height: 40px;
 }
