@@ -13,11 +13,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			fetchData();
 		};
 
-		// Refresh the scroller when the tab is active.
-		$rootScope.$on("arTransactionTabActive", function(event) {
+		var refreshArTabScroller = function(){
 			$timeout(function() {
 				$scope.refreshScroller('ar-transaction-list');
 			}, 100);
+		};
+		// Refresh the scroller when the tab is active.
+		$rootScope.$on("arTransactionTabActive", function(event) {
+			refreshArTabScroller();
 		});
 
 		// Initializing filter data
@@ -103,12 +106,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			    $scope.arTransactionDetails.available_credit = credits;
 			    $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
-
-
-
-				$timeout(function() {
-					$scope.refreshScroller('ar-transaction-list');
-				}, 100);
+			    
+			    refreshArTabScroller();
 
 				// Compute the start, end and total count parameters
 				if($scope.nextAction){
@@ -614,5 +613,36 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		$scope.closeDialog = function() {
             ngDialog.close();
         };
+
+		// CICO-28089 - Handle click on each transaction.
+		// will expand with detailed view.
+		// Fetching data for detailed view here..
+		$scope.clickedOnTransaction = function( index ){
+			
+			var transaction = $scope.arTransactionDetails.ar_transactions[index];
+			transaction.details = [];
+
+			if(!transaction.active){
+				var transactionFetchSuccess = function(data){
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = '';
+					transaction.active = ! transaction.active;
+					transaction.details = data;
+					refreshArTabScroller();
+				},
+				transactionFetchFailure = function(errorMessage){
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = errorMessage;
+				};
+				var param = {
+					'bill_id':transaction.bill_id
+				};
+				$scope.invokeApi(RVCompanyCardSrv.fetchTransactionDetails, param, transactionFetchSuccess, transactionFetchFailure);
+			}
+			else{
+				transaction.active = ! transaction.active;
+				refreshArTabScroller();
+			}
+		};
 
 }]);

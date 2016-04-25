@@ -1,5 +1,16 @@
-angular.module('sntRover').controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '$stateParams', 'RVUpgradesSrv', 'RVReservationCardSrv', '$sce', '$filter', 'ngDialog', '$timeout',
-	function($scope, $rootScope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog, $timeout) {
+angular.module('sntRover').controller('RVUpgradesController',
+	['$scope',
+	 '$rootScope',
+	  '$state',
+	  '$stateParams',
+	  'RVUpgradesSrv',
+	  'RVReservationCardSrv',
+	  '$sce',
+	  '$filter',
+	  'ngDialog',
+	  '$timeout',
+	  'roomsList',
+	function($scope, $rootScope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog, $timeout, roomsList) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -56,9 +67,13 @@ angular.module('sntRover').controller('RVUpgradesController', ['$scope', '$rootS
 		 */
 		$scope.getAllUpgrades = function() {
 			var successCallbackgetAllUpgrades = function(data) {
-				$scope.upgradesList = data.upsell_data;
-				$scope.headerData = data.header_details;
-				$scope.reservation_occupancy = $scope.headerData.reservation_occupancy;
+				$scope.upgradesList = data.upsell_mapping;
+
+				_.each($scope.upgradesList, function(upgradesList){
+					upgradesList.upgrade_room_number = (_.findWhere(roomsList.rooms, {"room_type_id": upgradesList.upgrade_room_type_id_int})).room_number;
+				});
+				// $scope.headerData = data.header_details;
+				$scope.reservation_occupancy = $scope.reservation_occupancy;
 				$scope.setUpgradesDescriptionInitialStatuses();
 				$scope.$emit('hideLoader');
 				setTimeout(function() {

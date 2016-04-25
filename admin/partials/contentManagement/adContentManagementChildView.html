@@ -2,16 +2,17 @@
     <li class="branch" ng-class= "{'collapsed': !content.isExpanded, 'expanded': content.isExpanded, 'category': content.component_type == 'CATEGORY', 'item': content.component_type == 'PAGE' }" ng-repeat = "content in contentList">
                             <div class="sort">
                                 <span class="reorder" ng-show="content.children.length > 0" ng-click= "toggleExpansion($index)"></span>
-                                <a  ng-click = "componentSelected(content.component_type, content.id)" class="cms-name">{{content.name}}</a>
+                                <a  ng-click = "componentSelected(content)" class="cms-name">{{content.name}}</a>
+                                <em ng-if="content.is_system_defined" translate="" class="ng-scope">(system defined)</em>
                                 <span class="cms-type cms-content-type">{{content.component_type == 'PAGE'? 'ITEM_LABEL' : content.component_type | translate}}</span>
                                 <em class="cms-date">{{getFormattedTime(content.updated_at)}}</em>
-                                <div class="cms-activate">
+                                <div class="cms-activate" ng-show = "(content.component_type != 'HOME SCREEN' && !content.is_system_defined)">
                                     <div class="switch-button" ng-class="{'on':content.status}">
                                         <input name="category" ng-change="saveAvailabilityStatus(content.id, content.status)" id="category" value="category" type="checkbox" ng-model="content.status" />
                                         <span class="switch-icon"></span>
                                     </div>
                                 </div>
-                                <div class="cms-delete">
+                                <div class="cms-delete" ng-show = "(content.component_type != 'HOME SCREEN' && !content.is_system_defined)">
                                      <a  class="icons icon-delete large-icon" ng-click="deleteItem(content.id)">Delete</a>
                                 </div>
                             </div>

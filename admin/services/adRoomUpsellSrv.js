@@ -10,14 +10,14 @@ admin.service('adRoomUpsellService',['$q', 'ADBaseWebSrv', function( $q, ADBaseW
 		var url = '/admin/room_upsells/room_upsell_options.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
-      data.room_types_list = [];
-      var list = dclone(data.room_types, []);
-      angular.forEach(data.room_types, function (item, index) {
-        var obj = {};
-        obj.value = item.id;
-        obj.name = item.name;
-        data.room_types_list.push(obj);
-      });
+          data.room_types_list = [];
+          var list = dclone(data.room_types, []);
+          angular.forEach(data.room_types, function (item, index) {
+            var obj = {};
+            obj.value = item.id;
+            obj.name = item.name;
+            data.room_types_list.push(obj);
+          });
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
