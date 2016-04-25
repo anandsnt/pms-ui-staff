@@ -96,12 +96,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //may be this will result in running 365000 times
         ratesWithRestrictions = ratesWithRestrictions.map((rate) => {
             rate.restrictionList = [];
-
+            rate.amountList = [];
             rate = {...rate, ...rateObjectBasedOnID[rate.id]};
 
             dates.map((date) => {
-            dateRateSet = _.findWhere(rateRestrictions[date].rates, {id: rate.id});
+                dateRateSet = _.findWhere(rateRestrictions[date].rates, {id: rate.id});
                 rate.restrictionList.push(dateRateSet.restrictions);
+                rate.amountList.push(dateRateSet.amount);
             });
 
             return _.omit(rate, 'restrictions');
@@ -221,12 +222,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         //rate & restrictions -> 2nd row onwards
         var roomTypeWithRestrictions = roomTypeRestrictions[0].room_types.map((roomType) => {
             roomType.restrictionList = [];
+            roomType.amountList=[];
 
             roomType = {...roomType, ...roomTypeObjectBasedOnID[roomType.id]};
 
             dates.map((date) => {
                 dateRoomTypeSet = _.findWhere(roomTypeRestrictionWithDateAsKey[date].room_types, {id: roomType.id});
                 roomType.restrictionList.push(dateRoomTypeSet.restrictions);
+                roomType.amountList.push(dateRoomTypeSet.amount);
             });
 
             return _.omit(roomType, 'restrictions');
