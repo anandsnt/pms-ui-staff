@@ -14,4 +14,12 @@ angular.module('reportsModule', [])
             }
         }
     });
+
+    $stateProvider.state('rover.scheduleReports', {
+        url: '/scheduleReports'
+    });
+
+    $stateProvider.state('rover.reportCategory', {
+        url: '/reportCategory'
+    });
 });
