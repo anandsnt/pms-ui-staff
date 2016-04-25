@@ -558,7 +558,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				mappedStatus = 'ready';
 			} else if(roomstatus === 'NOT READY') {
 				mappedStatus = "not-ready";
-			} 
+			}
 			return mappedStatus;
 		};
 
@@ -1015,5 +1015,18 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				}
 			}
 		});
+
+		/**
+		 * Get the room status to show the reservation search screen
+		*/
+		$scope.getRoomStatus = function(reservation) {
+			var status = "";
+			if(!!reservation.is_room_due_out) {
+				status = "DUE OUT";
+			} else {
+				status = reservation.fostatus;
+			}
+			return status;
+		};
 	}
 ]);

@@ -5,7 +5,8 @@ sntZestStation.controller('zsFindReservationCtrl', [
 	'zsUtilitySrv',
 	'zsModeConstants',
 	'zsEventConstants',
-	function($scope, $state, zsTabletSrv, zsUtilitySrv, zsModeConstants, zsEventConstants) {
+	'$stateParams',
+	function($scope, $state, zsTabletSrv, zsUtilitySrv, zsModeConstants, zsEventConstants, $stateParams) {
 
             BaseCtrl.call(this, $scope);
             /**
@@ -36,13 +37,12 @@ sntZestStation.controller('zsFindReservationCtrl', [
                 $state.mode = zsModeConstants.PICKUP_KEY_MODE;
                 $state.lastAt = 'home';
                 $state.isPickupKeys = true;
-                $state.mode = zsModeConstants.PICKUP_KEY_MODE;
                 $state.go('zest_station.reservation_search', {
                     mode: zsModeConstants.PICKUP_KEY_MODE
                 });
             };
             $scope.isInPickupKeyMode = function() {
-                    return ($state.mode === zsModeConstants.PICKUP_KEY_MODE);
+                    return ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE);
                 };
             $scope.datePickerMin;
             $scope.business_date;
