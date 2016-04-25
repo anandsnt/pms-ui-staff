@@ -68,7 +68,7 @@
 
 						<ad-textbox value="upsellWindows[0].charge"   label = "{{'EARLY_CHECKIN_CHARGE' | translate}} [{{upsellData.hotel_currency}}]" placeholder = "Enter charge" styleclass="early_checkin_upsell"></ad-textbox>
 
-						<ad-dropdown on-change="updateAddon(0, upsellWindows[0].addon_id)" label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='upsellWindows[0].addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" options = "{'showOptionsIf': isAddonAvailable}"></ad-dropdown>
+						<ad-dropdown on-change="updateAddon(0, upsellWindows[0].addon_id)" label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON_SELECT' | translate}}" list="addons" selected-Id='upsellWindows[0].addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" options = "{'showOptionsIf': isAddonAvailable}"></ad-dropdown>
 
 						<div class="entry early_checkin_upsell">
 							<label translate> EARLY_CHECKIN_START_TIME </label>
@@ -99,7 +99,7 @@
 						</div>
 						<ad-textbox value="upsellWindows[1].charge"   label = "{{'EARLY_CHECKIN_CHARGE' | translate}} [{{upsellData.hotel_currency}}]" placeholder = "Enter charge" disabled="disableSecondOption" styleclass="early_checkin_upsell"></ad-textbox>
 
-						<ad-dropdown on-change="updateAddon(1, upsellWindows[1].addon_id)"  label="{{'EARLY_CHECKIN_ADDON' | translate}}"  label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='upsellWindows[1].addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" options = "{'showOptionsIf': isAddonAvailable}"></ad-dropdown>
+						<ad-dropdown on-change="updateAddon(1, upsellWindows[1].addon_id)"  label="{{'EARLY_CHECKIN_ADDON' | translate}}"  label-in-drop-down="{{'EARLY_CHECKIN_ADDON_SELECT' | translate}}" list="addons" selected-Id='upsellWindows[1].addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" options = "{'showOptionsIf': isAddonAvailable}"></ad-dropdown>
 
 						<div class="entry early_checkin_upsell">
 							<label translate> EARLY_CHECKIN_START_TIME </label>
@@ -128,8 +128,26 @@
 
 						<ad-textbox value="upsellWindows[2].charge"   label = "{{'EARLY_CHECKIN_CHARGE' | translate}} [{{upsellData.hotel_currency}}]" placeholder = "Enter charge" disabled="disableThirdOption" styleclass="early_checkin_upsell" ></ad-textbox>
 
-						<ad-dropdown on-change="updateAddon(2, upsellWindows[2].addon_id)" label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON' | translate}}" list="addons" selected-Id='upsellWindows[2].addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" options = "{'showOptionsIf': isAddonAvailable}"></ad-dropdown>
-
+						<ad-dropdown on-change="updateAddon(2, upsellWindows[2].addon_id)" label="{{'EARLY_CHECKIN_ADDON' | translate}}" label-in-drop-down="{{'EARLY_CHECKIN_ADDON_SELECT' | translate}}" list="addons" selected-Id='upsellWindows[2].addon_id' required='no' selbox-class='placeholder' div-class="early_checkin_upsell" options = "{'showOptionsIf': isAddonAvailable}"></ad-dropdown>
+                                                
+                                                
+						<div class="entry early_checkin_upsell">
+							<label translate>  </label>
+						</div>
+                                                
+						<div class="entry early_checkin_upsell">
+							<label translate>  </label>
+						</div>
+                                                    <ad-dropdown id='zest_station_early_checkin_addon_id'
+                                                                 ng-model='zest_station_early_checkin_addon_id'
+                                                                 label="{{'EARLY_CHECKIN_ADDON_FREE_STATION' | translate}}" 
+                                                                 label-in-drop-down="{{'EARLY_CHECKIN_ADDON_SELECT' | translate}}" 
+                                                                 list="addons" 
+                                                                 selected-Id='upsellData.zest_station_early_checkin_addon_id'
+                                                                 required='no' 
+                                                                 selbox-class='placeholder' 
+                                                                 div-class="early_checkin_upsell" >
+                                                    </ad-dropdown>
                                                 
 						<div class="entry full-width">
 							<label translate> EARLY_CHECKIN_END_TIME </label>
@@ -156,8 +174,21 @@
 
 						</div>
 
-						<ad-textbox value="upsellData.number_of_early_checkins_per_day"   label = "{{'NUMBER_OF_EARLY_CHECKINS_PER_DAY' | translate}}" placeholder = "{{'TYPE_NUMBER' | translate}}" ></ad-textbox>
 
+                                                
+						<fieldset class='holder column full-width'>
+						<!-- Switch -->
+							<div class="entry">
+								<label for="early-checkin-upsell" translate>EARLY_CHECKIN_BY_VIP_CODE</label>
+								<div id="div-early-checkin-upsell" class="switch-button single" ng-class="{ on : upsellData.free_eci_for_vips}"  ng-click="clickVIPCode()">
+									<input type="checkbox" value="10" name="free-eci-for-vips" id="free-eci-for-vips">
+									<span class="switch-icon"></span>
+								</div>
+							</div>
+							<ad-textbox value="upsellData.number_of_early_checkins_per_day"   label = "{{'NUMBER_OF_EARLY_CHECKINS_PER_DAY' | translate}}" placeholder = "{{'TYPE_NUMBER' | translate}}" >
+
+							</ad-textbox>
+						</fieldset>
 					</fieldset>
                     <div class="form-title full-width">
 						<h3><span translate>EARLY_CHECKIN_BY_RATE</span> </h3>

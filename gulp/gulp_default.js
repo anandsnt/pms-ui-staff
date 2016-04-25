@@ -1,27 +1,71 @@
 module.exports = function(gulp, $, options) {
 	
-	var del = require('del'),
-		DEST_ROOT_PATH = '../../public/assets/',
-		runSequence = require('run-sequence'); //will be running from app/assets, so..
+            var del = require('del'),
+                    DEST_ROOT_PATH = '../../public/assets/',
+                    runSequence = require('run-sequence'); //will be running from app/assets, so..
 	
-	gulp.task('clean', function () {
-	    return del([DEST_ROOT_PATH], {force: true });
-	});
+            gulp.task('clean', function () {
+                return del([DEST_ROOT_PATH], {force: true });
+            });
 
-	gulp.task('copy-all-dev', ['copy-rover-files', 'copy-login-files', 'copy-zest-files', 'copy-zeststation-files']);
+            gulp.task('copy-all-dev', [
+                'copy-rover-files', 
+                'copy-login-files', 
+                'copy-station-login-files',
+                'copy-zest-files', 
+                'copy-zeststation-files'
+            ]);
 
-	var compilationTasks = ['rover-asset-prod-precompile',  'admin-asset-prod-precompile',
-		 'zest-asset-prod-precompile', 'login-asset-prod-precompile', 'guestweb-asset-prod-precompile','guestweb-v2-asset-prod-precompile'],
+            var compilationTasks = [
+                    'rover-asset-prod-precompile',  
+                    'admin-asset-prod-precompile',
+                    'zest-asset-prod-precompile',
+                    'login-asset-prod-precompile',
+                    'station-login-asset-prod-precompile',
+                    'guestweb-asset-prod-precompile',
+                    'guestweb-v2-asset-prod-precompile'
+                ],
 
-		tasksAfterCompilation = ['rover-inject-assets-to-templates', 'admin-inject-assets-to-templates', 
-		 'guestweb-inject-assets-to-templates','guestweb-v2-inject-assets-to-templates', 'login-inject-assets-to-templates', 'zest-inject-assets-to-templates'],
+		tasksAfterCompilation = [
+                    'rover-inject-assets-to-templates', 
+                    'admin-inject-assets-to-templates', 
+                    'guestweb-inject-assets-to-templates',
+                    'guestweb-v2-inject-assets-to-templates', 
+                    'login-inject-assets-to-templates', 
+                    'station-login-inject-assets-to-templates', 
+                    'zest-inject-assets-to-templates'
+                ],
 
-		copyBaseHtmlToPublicAssets = ['copy-login-base-html', 'copy-admin-base-html', 'copy-zest-base-html',
-			'copy-rover-base-html', 'copy-guestweb-base-html', 'compress-images-loselessly','copy-guestweb-v2-base-html'],
+		copyBaseHtmlToPublicAssets = [
+                    'copy-login-base-html', 
+                    'copy-station-login-base-html', 
+                    'copy-admin-base-html', 
+                    'copy-zest-base-html',
+                    'copy-rover-base-html', 
+                    'copy-guestweb-base-html', 
+                    'compress-images-loselessly',
+                    'copy-guestweb-v2-base-html'
+                ],
 
-		developmentTasks = ['build-rover-dev', 'build-login-dev', 'build-admin-dev', 'build-zest-dev', 'build-guestweb-dev','build-guestweb-v2-dev'],
+		developmentTasks = [
+                    'build-rover-dev', 
+                    'build-login-dev', 
+                    'build-station-login-dev', 
+                    'build-admin-dev', 
+                    'build-zest-dev', 
+                    'build-guestweb-dev',
+                    'build-guestweb-v2-dev'
+                ],
 
-		watchTasks = ['watch-rover-files', 'watch-login-files', 'watch-admin-files', 'watch-zest-files', 'watch-guestweb-files','watch-guestweb-v2-files'];
+		watchTasks = [
+                    'watch-rover-files', 
+                    'watch-login-files',
+                    'watch-station-login-files', 
+                    'watch-admin-files', 
+                    'watch-zest-files', 
+                    'watch-guestweb-files',
+                    'watch-guestweb-v2-files'
+                ];
 
 	var processArgs = function() {
 		var argv  = require('yargs').argv,

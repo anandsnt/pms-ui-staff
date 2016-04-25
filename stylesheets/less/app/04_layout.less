@@ -218,7 +218,8 @@ body { overflow: hidden; }
 
 			/* With search bar ***/
 			&#dashboard,
-			&#find-cards {
+            &#find-cards,
+            &#reports {
 				top: 120px;
 				.calc-height(100, 120);
 			}
@@ -1087,6 +1088,65 @@ body { overflow: hidden; }
 					}
 				}
 			}
+
+			/* Room Types - Find Reservation form ***/
+			&.has-room-types {
+		        .entry {
+		            &.search { .calc-width(100, 520); }
+
+		            &.room-types {
+		                width: 200px;
+
+		                select {
+		                    text-transform: uppercase;
+		                }
+		            }
+
+		            &.dates {
+		                width: 290px;
+		                .entry-data { 
+		                    width: 135px;
+		                }
+		            }
+
+		            .select,
+		            .input {
+		                &.with-label {
+
+		                    select {
+		                        padding: 10px 30px 0 10px;
+		                    }
+
+		                    input {
+		                        padding: 10px 10px 0 10px;
+		                    }
+
+		                    label {
+		                        position: absolute;
+		                        top: 0;
+		                        left: 10px;
+		                        font-size: 12px;
+		                        text-transform: uppercase;
+		                        color: @grey3;
+		                    }
+		                }
+		            }
+		        }
+
+		        &.enable-adding {
+		            .entry {
+		                &.search { .calc-width(100, 620); }
+		                
+		                &.dates {
+		                    
+		                    padding-right: 10px;
+		                    .box-shadow(~'inset 1px 0 0 rgba(0,0,0,.1), 1px 0 0 rgba(0,0,0,.1)');
+
+		                    .entry-data { width: 130px; }
+		                }
+		            }
+		        }
+		    }
 
 			/* Room search ***/
 			&.room-search {

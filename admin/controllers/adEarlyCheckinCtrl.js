@@ -191,7 +191,6 @@ $scope.updateAddon = function(x, y){
     $scope.takenAddons[x] = y;
 };
 
-
 $scope.isAddonAvailable = function(index){
     if (parseInt($scope.takenAddons[0]) === $scope.addons[index].id){
              return false;
@@ -311,7 +310,11 @@ $scope.saveClick = function(){
     $scope.setUpUpsellWindowDataToSave();
     $scope.upsellData.early_checkin_time = ($scope.upsell_rate.hours !== null && $scope.upsell_rate.hours !== "")?$scope.upsell_rate.hours + ":" + $scope.upsell_rate.minutes + " " + $scope.upsell_rate.meridiem : "";
    	$scope.upsellData.early_checkin_ends_at = ($scope.upsell_end_time.hours !== null && $scope.upsell_end_time.hours !== "")?$scope.upsell_end_time.hours + ":" + $scope.upsell_end_time.minutes + " " + $scope.upsell_end_time.meridiem : "";
-
+    
+    if ($scope.upsellData.zest_station_early_checkin_addon_id){
+        $scope.upsellData.zest_station_early_checkin_addon_id = parseInt($scope.upsellData.zest_station_early_checkin_addon_id);
+    }
+    
     var upsellEarlyCheckinSaveSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
       $scope.successMessage = 'Success';
@@ -332,6 +335,9 @@ $scope.saveClick = function(){
 
 };
 
+$scope.clickVIPCode = function(){
+    $scope.upsellData.free_eci_for_vips =  !$scope.upsellData.free_eci_for_vips;
+};
 $scope.clickAddRoomType = function(){
 	//While addig a room type, making its max_late_checkouts defaults to 0.
   if($scope.getSelectedRateIndexForID($scope.upsell_rate.selected_rate_id) !== -1) {

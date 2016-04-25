@@ -3,34 +3,19 @@
      ng-class="{'slide_right': isFilterVisible, 'slide_left': !isFilterVisible}" >
 
     <a class="leftMenuHandle" ng-click="toggleFilterVisibility()"></a>
-    <div class="filter-padding">
+    <div class="filter-container">
         <div class="fixed-container">
             <h3>FILTER OPTIONS</h3>
 
 
-            <div class="scrolling-container" ng-iscroll="filter_details" ng-iscroll-delay="50">
+            <div class="scrolling-container scrollable" ng-iscroll="filter_details" ng-iscroll-delay="50">
 
-                <div class="holder left">
+                <div class="wrapper">
 
                     <div class="entry has-datepicker">
                         <label for="rmDateRange">DATE RANGE</label>
                         <input id="rmDateRange" placeholder="Select Date Range" readonly="" maxlength="8" value="{{selectedDateRange}}" class="hasDatepicker">
                         <button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
-                    </div>
-
-
-                    <div class="entry">
-                        <label for="rmZoom">ZOOM LEVEL</label>
-                        <div class="select">
-                            <select iscroll-stop-propagation="" id="rmZoom" name="zoom-level"
-                                    ng-model="selectedZoomLevelValue">
-                                <option ng-repeat="zoomLevel in zoomLevelValues"
-                                        ng-selected="zoomLevel.value === selectedZoomLevelValue"
-                                        value="{{zoomLevel.value}}">
-                                    {{zoomLevel.text}}
-                                </option>
-                            </select>
-                        </div>
                     </div>
 
                     <div class="entry">

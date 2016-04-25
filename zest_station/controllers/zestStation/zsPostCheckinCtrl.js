@@ -233,7 +233,18 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         
         $scope.navToHome = function(){
-		$state.go ('zest_station.home');
+           //update workstation station. I cant find anyother suitable place
+            //the above codes needs to refactored
+            if($scope.zestStationData.wsIsOos){
+                   //update work station status
+                   $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
+                   $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
+                   $state.go('zest_station.oos');
+            }
+                else{
+                     $state.go ('zest_station.home');
+            };
+		  
         };
         $scope.navToPrev = function(){
                 $state.go('zest_station.check_in_keys');
@@ -455,7 +466,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             } else if (current === 'zest_station.edit_registration_email'){
                 $scope.setupEmailEdit();
             }
-            
         };
         $scope.updateSubHeadingTextForLastConfirmPage = function(){
             if($state.selectedReservation.printSuccess == true){
