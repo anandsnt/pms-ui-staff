@@ -56,6 +56,10 @@ sntZestStation.controller('zsRootCtrl', [
     $scope.$on(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event, params) {
         var oosReason = params.reason;
         var workstationStatus = params.status;
+        
+        console.info('update to:  ',workstationStatus);
+        
+        
         $scope.zestStationData.workstationStatus = workstationStatus;
 
         updateLocalStorage(oosReason, workstationStatus);
@@ -115,12 +119,13 @@ sntZestStation.controller('zsRootCtrl', [
             };
         
             if($scope.zestStationData.wsIsOos){
-                   //update work station status
-                   $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
-                   $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{
-                       'status' :    'out-of-order',
-                       'reason' :    $scope.zestStationData.workstationOooReason
-                   });
+                    //update work station status
+                    $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
+                    $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{
+                        'status' :    'out-of-order',
+                        'reason' :    $scope.zestStationData.workstationOooReason
+                    });
+                    $state.go ('zest_station.home');
                    
             } else{
                      $state.go ('zest_station.home');

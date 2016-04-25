@@ -373,6 +373,7 @@
      "CHECKIN_PRINT_FAIL" : "Check-In Print Fail",
      "CHECKIN_KEY_AND_PRINT_FAIL" : "Check-In Print & Key Fail",
      "PICKUP_KEY_FAIL" : "Pickup Key Fail",
+     "SERVICE_FAILURE" : " : Service Failure, Restart Service",
      "PICKUP_KEY_FAIL_EMPTY" : "Pickup Key Fail, Empty Key Dispenser",
      "CHECKOUT_PRINT_FAILED" : "Check-Out Print Fail"
 

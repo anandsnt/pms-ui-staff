@@ -237,15 +237,51 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     }
                 };
         };
+        
+        $scope.hopperIsEmpty = function(msg){
+            if (typeof msg === typeof 'str'){
+                if (msg.toLowerCase().indexOf('card from hopper') !== -1){
+                     $scope.zestStationData.wsIsOos = true;
+                     $scope.zestStationData.wsFailedReason =  $filter('translate')('PICKUP_KEY_FAIL_EMPTY');
+                     console.info('$scope.zestStationData.wsFailedReason: ',$scope.zestStationData.wsFailedReason)
+                     console.warn('Setting out of order due to empty key dispenser');
+                     $scope.emitKeyError(msg);
+                     return;
+                }    
+            }    
+        };
+        
+        
         $scope.emitKeyError = function(response){
+            var emptyHopperText = 'card from hopper',
+                    failedSocketConnectionText = 'SOCKET_FAILED';
+            
+            if($scope.isInCheckinMode()){
+                 $scope.zestStationData.wsFailedReason = $filter('translate')('CHECKIN_KEY_FAIL');
+                 
+                 if (response.indexOf(emptyHopperText) != -1){
+                    $scope.zestStationData.wsFailedReason = $filter('translate')('CHECKIN_KEY_FAIL_EMPTY');
+                }
+                
+            } else{
+                 $scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL');
+                 
+                 if (response.indexOf(emptyHopperText) != -1){
+                    $scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL_EMPTY');
+                }
+            }
+            
+            if (typeof response === typeof 'str'){
+                if (response.indexOf(failedSocketConnectionText) != -1){
+                    $scope.zestStationData.wsFailedReason = $scope.zestStationData.wsFailedReason + $filter('translate')('SERVICE_FAILURE');
+                } 
+            }
+            
+            
+            
+            
             $scope.$emit('MAKE_KEY_ERROR',response);
             $scope.zestStationData.wsIsOos = true;
-            if($scope.isInCheckinMode){
-                 $scope.zestStationData.wsFailedReason = $filter('translate')('CHECKIN_KEY_FAIL');
-            }
-            else{
-                 $scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL');
-            }
             //$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
         };
 
@@ -324,7 +360,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             $scope.socketOperator.DispenseKey($scope.dispenseKeyData);
         };
         $scope.$on('SOCKET_FAILED',function(){ 
-             $scope.emitKeyError(' Dispense Key failed');
+             $scope.emitKeyError('Dispense Key failed, SOCKET_FAILED');
         });
         $scope.$on('SOCKET_CONNECTED',function(){ 
             dispenseKey();
@@ -478,9 +514,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.initKeySuccess();
 
             } else if (view === 'zest_station.pickup_keys'){
-                
-                
-                
                 $stateParams.mode = zsModeConstants.PICKUP_KEY_MODE;
                 $scope.at = 'select-keys-after-checkin';
                 $scope.isPickupKeys = true;
