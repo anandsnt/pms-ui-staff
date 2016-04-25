@@ -1474,12 +1474,17 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				});
 				$scope.$parent.myScroll[RATE_GRID_SCROLL].on('scroll', function() {
 					var xPos = this.x;
-					var yPos = this.y;
-					$scope.$parent.myScroll[RATE_TIMELINE].scrollTo(xPos, 0);
-					$scope.$parent.myScroll[BLOCK_SCROLL].scrollTo(0, yPos);
+						var yPos = this.y;
+
+
+
+						$scope.$parent.myScroll[RATE_TIMELINE].scrollTo(xPos, 0);
+						$scope.$parent.myScroll[BLOCK_SCROLL].scrollTo(0, yPos);
+
+
 				});
 			} else {
-				$timeout(setScrollListner, 1000);
+				//$timeout(setScrollListner, 1000);
 			}
 		};
 
@@ -1493,7 +1498,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
 		var refreshScroller = function() {
 			$scope.refreshScroller(BLOCK_SCROLL);
-			$scope.refreshScroller(RATE_TIMELINE);
+			//CICO-27063 - scroll issue
+			// $scope.refreshScroller(RATE_TIMELINE);
 			$scope.refreshScroller(RATE_GRID_SCROLL);
 		};
 
