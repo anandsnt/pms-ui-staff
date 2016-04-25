@@ -369,9 +369,11 @@
 
 
      "CHECKIN_KEY_FAIL" : "Check-In Key Fail",
+     "CHECKIN_KEY_FAIL_EMPTY" : "Check-In Key Fail, Empty Key Dispenser",
      "CHECKIN_PRINT_FAIL" : "Check-In Print Fail",
      "CHECKIN_KEY_AND_PRINT_FAIL" : "Check-In Print & Key Fail",
      "PICKUP_KEY_FAIL" : "Pickup Key Fail",
+     "PICKUP_KEY_FAIL_EMPTY" : "Pickup Key Fail, Empty Key Dispenser",
      "CHECKOUT_PRINT_FAILED" : "Check-Out Print Fail"
 
 

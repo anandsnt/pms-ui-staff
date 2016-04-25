@@ -288,8 +288,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         onResponseSuccess = $scope.successMakeKey;
                     }
                     
-
-
                         var printAPI = {
                             "is_additional":false,
                             "is_kiosk":true,
@@ -309,126 +307,24 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                             'successCallBack':onResponseSuccess,
                             'failureCallBack':$scope.emitKeyError
                         });
-
-                        
-                        
                         
                       
                 },2000);
 
 
         };
-
-        // $state.wsConfig = {
-        //     "swipeService":"wss://localhost:4649/CCSwipeService"   ,
-        //     "connected_alert":"[ WebSocket Connected ]. Warning : Clicking on Connect multipple times will create multipple connections to the server",
-        //     "close_alert":"Socket Server is no longer connected.",
-        //     "swipe_alert":"Please swipe.",
-        //     "connect_delay":1000//ms after opening the app, which will then attempt to connect to the service, should only be a second or two
-        // };
-        // console.log('$state.ws: ',$state.ws);
-       
-        // if ($scope.socketOperator){
-        //     if ($scope.socketOperator.closeWebSocket){
-        //         $scope.socketOperator.closeWebSocket();
-        //     }
-        // }
-        // if (!$state.ws){
-        //     $state.ws = new WebSocket($state.wsConfig['swipeService']);
-            
-        // } else if ($state.ws.readyState !== 1){
-        //     console.log('re-opening websocket to make keys');
-        //     if ($state.ws.open){
-        //         $state.ws.open();
-        //     }
-        // }
-
-        // $scope.setupWebSocketForSankyo = function(){
-        //         $scope.simulateSwipe = function() {
-        //             $state.ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
-        //         };
-        //         $scope.observe = function() {
-        //             $state.ws.send("{\"Command\" : \"cmd_observe_for_swipe\"}");
-        //         };
-        //         $scope.UUIDforDevice = function() {
-        //             $state.ws.send("{\"Command\" : \"cmd_device_uid\"}");
-        //         };
-        //         $scope.DispenseKey = function() {//write to key after successful encodeKey call
-        //             $state.keyDispenseUID = $scope.dispenseKeyData;
-        //             if ($state.ws.readyState === 3){
-        //                 $state.wsOpen = false;
-        //             }
-        //             if (!$state.wsOpen){
-        //                 $state.ws.open();
-        //                 setTimeout(function(){
-        //                     console.info('$state.ws.readyState: ',$state.ws.readyState);
-        //                     if ($state.ws.readyState === 1){
-        //                         $state.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \""+$scope.dispenseKeyData+"\"}")  ;
-        //                     } else {
-        //                         $scope.emitKeyError('Websocket is in State (Closed), attempting re-connect with dispense');
-        //                     }
-        //                 },2000);
-                        
-        //             } else {
-        //                 $state.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \""+$scope.dispenseKeyData+"\"}");
-        //             }
-                    
-        //         };
-        //          $scope.EjectKeyCard = function() {//reject key on failure
-        //             $state.ws.send("{\"Command\" : \"cmd_eject_key_card\"}");
-        //         };
-        //         $scope.CaptureKeyCard = function() {//dumps key into internal bucket after insert key
-        //             $state.ws.send("{\"Command\" : \"cmd_capture_key_card\"}");
-        //         };
-        //          $scope.InsertKeyCard = function() {//use key for checkout takes key in
-        //             $state.ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
-        //         };
-        //         $scope.connect = function() {
-        //             //Triggers when websocket connection is established.
-        //             $state.ws.onopen = function () {
-        //                 $state.wsOpen = true;
-        //             };
-
-        //             // Triggers when there is a message from websocket server.
-        //             $state.ws.onmessage = function (evt) {
-        //                         var received_msg = evt.data;
-        //                         if (received_msg){
-        //                             received_msg = JSON.parse(received_msg);
-        //                             var cmd = received_msg.Command, msg = received_msg.Message;
-        //                             $scope.initSankyoCmd(cmd, msg);
-        //                         }
-        //             };
-
-        //             // Triggers when the server is down.
-        //             $state.ws.onclose = function () {
-        //                 // websocket is closed.
-        //                 $state.wsOpen = false;
-        //             };
-        //             return $state.ws;
-        //         };
-
-
-
-        // };
-
-
-        // $scope.connectWebSocket = function(){
-        //     $scope.setupWebSocketForSankyo();
-        //     setTimeout(function(){
-        //         $scope.connect();
-        //     },$state.wsConfig['connect_delay']);
-        // };
-        
-    
        
         $scope.$on('DISPENSE_SUCCESS',function(event, data) {
+             $scope.initSankyoCmd(data.cmd, data.msg);
+        });
+        $scope.$on('DISPENSE_FAILED',function(event, data) {
              $scope.initSankyoCmd(data.cmd, data.msg);
         });
         var dispenseKey = function(){
             $scope.socketOperator.DispenseKey($scope.dispenseKeyData);
         };
         $scope.$on('SOCKET_FAILED',function(){ 
-             $scope.emitKeyError(' Dispense Key failed')
+             $scope.emitKeyError(' Dispense Key failed');
         });
         $scope.$on('SOCKET_CONNECTED',function(){ 
             dispenseKey();
@@ -514,7 +410,14 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 if (msg.toLowerCase().indexOf('invalid') !== -1){
                     $scope.emitKeyError(msg);
                     return;
-                }
+                } else if (msg.toLowerCase().indexOf('card from hopper') !== -1){
+                    $scope.zestStationData.wsIsOos = true;
+                    $scope.zestStationData.wsFailedReason =  $filter('translate')('PICKUP_KEY_FAIL_EMPTY');
+                    console.info('$scope.zestStationData.wsFailedReason: ',$scope.zestStationData.wsFailedReason)
+                    console.warn('Setting out of order due to empty key dispenser');
+                    $scope.emitKeyError(msg);
+                    return;
+                }  
             }
 
 

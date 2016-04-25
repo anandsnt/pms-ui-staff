@@ -40,6 +40,7 @@ sntZestStation.controller('zsRootCtrl', [
     var updateLocalStorage = function(oosReason, workstationStatus) {
 
         try {
+            console.info('set oos status', workstationStatus)
             storage.setItem(oosStorageKey, workstationStatus);
         } catch (err) {
             console.warn(err);
@@ -57,23 +58,34 @@ sntZestStation.controller('zsRootCtrl', [
         var workstationStatus = params.status;
         $scope.zestStationData.workstationStatus = workstationStatus;
 
+        updateLocalStorage(oosReason, workstationStatus);
         if ($scope.zestStationData.workstationStatus === 'out-of-order') {
+            console.info('placing station out of order')
             var options = {
                 params: {
-                    'oo_status': false,
+                    'oo_status': true,
                     'oo_reason': oosReason,
                     'id': $scope.zestStationData.set_workstation_id
                 }
             };
             $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
         } else {
+            console.info('putting station back in order')
+            var options = {
+                params: {
+                    'oo_status': false,
+                    //'oo_reason': oosReason,
+                    'id': $scope.zestStationData.set_workstation_id
+                }
+            };
+            $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+            
             try {
                 storage.setItem(oosStorageKey, "in-order");
             } catch (err) {
                 console.warn(err);
             }
         }
-        updateLocalStorage(oosReason, workstationStatus);
     });
 
     $scope.returnDateObj = function(dateString){
@@ -98,10 +110,22 @@ sntZestStation.controller('zsRootCtrl', [
 	 */
 	$scope.clickedOnCloseButton = function() {
         //if key card was inserted we need to eject that
-        if($scope.zestStationData.keyCardInserted && !$scope.zestStationData.keyCaptureDone){
-            $scope.socketOperator.EjectKeyCard();
-        };
-		$state.go ('zest_station.home');
+            if($scope.zestStationData.keyCardInserted && !$scope.zestStationData.keyCaptureDone){
+                $scope.socketOperator.EjectKeyCard();
+            };
+        
+            if($scope.zestStationData.wsIsOos){
+                   //update work station status
+                   $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
+                   $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{
+                       'status' :    'out-of-order',
+                       'reason' :    $scope.zestStationData.workstationOooReason
+                   });
+                   
+            } else{
+                     $state.go ('zest_station.home');
+            };
+	
 	};
 
 	/**
@@ -192,11 +216,18 @@ sntZestStation.controller('zsRootCtrl', [
              var storageKey = $scope.oosKey,
                     storage = localStorage;
             try {
+                if (t === 'in-order' || t === true){
+                    t = 'in-order';
+                } else if (t === 'out-of-order' || t === false){
+                    t = 'out-of-order';
+                }
+                
+                
                storage.setItem(storageKey, t);
             } catch(err){
                 console.warn(err);
             }
-            if (storage.getItem(storageKey)){
+            if (storage.getItem(storageKey) !== 'in-order'){
                 $state.is_oos = true;
             } else {
                 $state.is_oos = false;
