@@ -176,7 +176,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$event.stopImmediatePropagation();
 			}
 			// CICO-28058 - checking whether AR Number is present or not.
-			var isArNumberAvailable = !!$scope.contactInformation.account_details.accounts_receivable_number;
+			var isArNumberAvailable = !!$scope.contactInformation && !!$scope.contactInformation.account_details && !!$scope.contactInformation.account_details.accounts_receivable_number;
 			if ($scope.currentSelectedTab === 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
 
 				if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {

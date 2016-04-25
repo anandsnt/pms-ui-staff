@@ -290,27 +290,22 @@
 
                 /* AR Transactions ***/
                 &.transaction {
-                    a,
-                    .faux-anchor { position: relative; }
 
-                    .group-info {
-                        font-size: 24px;
-                        line-height: 50px;
-                        text-align: center;
-                        font-weight: 600;
-                        color: @grey3;
-                        margin-right: 20px;
-                        background-color: @grey1;
-                        .square(50px);
-                        .pull-left;
+                    .has-arrow {
+                        cursor: pointer;
+                        background-position: -webkit-calc(~'100% - 15px') 50%;
+                        background-position: -moz-calc(~'100% - 15px') 50%;
+                        background-position: calc(~'100% - 15px') 50%;
+
+                        &.active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)"); }
                     }
 
                     .data {
                         margin-right: 20px;
-                        .calc-width(70, 130);
+                        .calc-width(100, 430);
 
-                        h2 { 
-                            margin-bottom: 6px; 
+                        h2 {
+                            margin-bottom: 6px;
                             em { font-weight: 700; }
                         }
 
@@ -318,20 +313,24 @@
                         .arrival,
                         .departure,
                         .icon-time {
+                            font-size: 14px;
                             line-height: 20px;
                             .show;
                             .pull-left;
+
+                            &:not(:last-child) {
+                                margin-right: 10px;
+                            }
                         }
 
                         .confirmation {
-                            font-size: 14px;
                             font-weight: 400;
                             text-transform: uppercase;
                             color: @grey3;
+                            .nowrap();
 
                             .value {
                                 display: inline-block;
-                                font-size: 16px;
                                 color: @textColor;
                                 font-weight: 600;
                                 margin-left: 5px;
@@ -340,7 +339,6 @@
 
                         .arrival,
                         .departure {
-                            margin-left: 20px;
                             .float;
 
                             .guest-status { 
@@ -354,14 +352,7 @@
                             .time { color: @grey3; }
                         }
 
-                        .icon-time {
-                            color: @textColor;
-                            padding-left: 24px;
-
-                            span { margin-left: 10px; }
-                        }
-
-                        &.no-image { .calc-width(70, 80); }
+                        &.no-image { .calc-width(100, 360); }
                     }
 
                     .card-data {
@@ -370,7 +361,7 @@
 
                         .card-logo {
                             margin-right: 20px;
-                            .size(30px,60px);
+                            .size(30px, 60px);
                             .pull-left;             
 
                             img { .size(auto, 100%); }
@@ -397,12 +388,12 @@
 
                     .amount {
                         font-size: 30px;
-                        line-height: 40px;
+                        line-height: 35px;
                         font-weight: 300;
                         color: @textColor;
                         margin: 5px 40px 0 0;
+                        width: 140px;
                         .pull-left;
-                        .calc-width(30, 150);
 
                         &.paid { color: @grey3; }
                         &.credit { color: @green; }
@@ -410,16 +401,16 @@
                     }
 
                     .switch-button {
-                        margin-top: 5px;
+                        margin: 5px 40px 0 0;
                         .pull-left;
-                        .size(40px, 150px);
+                        .size(35px, 120px);
 
                         .data-off,
                         .data-on {
-                            font-size: 14px;
+                            font-size: 12px;
                             text-transform: uppercase;
-                            line-height: 30px;
-                            height: 30px;
+                            line-height: 25px;
+                            height: 25px;
                             left: auto;
 
                             &.data-off { 
@@ -449,14 +440,80 @@
 
                     .employee {
                         font-size: 14px;
-                        line-height: 40px;
+                        line-height: 35px;
                         text-align: center;
                         text-transform: uppercase;
                         margin-top: 5px;
                         .nowrap();
                         .pull-left;
-                        .size(40px, 150px);
+                        .size(35px, 120px);
                     }
+
+                    /* Detailed View ***/
+                    .grid-items {
+                        padding: 15px;
+                        background-color: @white;
+                        .box-shadow(~"inset 1px -1px 1px rgba(0,0,0,.15), 0 -2px 0 rgba(0,0,0,.1)");
+                        .float;
+                        #border-radius > .rounded();
+
+                        .actions {
+                            padding-left: 40px;
+                            width: 160px;
+                            .pull-left;
+
+                            .button {
+                                width: 100%;
+                                .show();
+
+                                &:not(:last-child) {
+                                    margin-bottom: 10px;
+                                }
+                            }
+                        }
+                        
+                        table {
+                            table-layout: auto;
+                            margin: 0;
+                            .pull-left;
+                            .calc-width(100, 160);
+                        }
+
+                        th,
+                        td {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            line-height: 1em;
+                            padding: 9px 12px 7px 9px; 
+                            white-space: normal;
+                            overflow: visible;
+                        }
+
+                        th { 
+                            color: @grey3;
+                            font-weight: 600;
+                            padding-top: 0;
+                        }
+
+                        td {
+                            vertical-align: top;
+                            word-wrap: break-word;
+                            width: 110px;
+
+                            &.description {
+                                color: @grey3;
+                                .calc-width(100, 330);
+                            }
+
+                            &:last-child {
+                                font-weight: 600;
+                            }
+                        }
+
+                        tr:nth-child(odd) { 
+                            td { background: @grey1; }
+                        }
+                    } 
                 }
 
                 /* Group Rooming List ***/

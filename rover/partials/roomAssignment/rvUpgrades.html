@@ -10,7 +10,7 @@
                <a class="toggle has-arrow" ng-click = "toggleUpgradeDescriptionStatus($event,$index)" translate>DETAILS_LABEL</a>
             </div>
             <div id="room1034-details" ng-class="{'hidden':!isDescriptionVisible($index)}" class="room-details" ng-show="isDescriptionVisible($index)" ng-bind-html="upgrade.upgrade_room_description">
-               
+
             </div>
             <a id="upgrade-room-select" class="button green submit-value"   data-transition="nested-view" ng-click="showMaximumOccupancyDialog($index)">
             <span translate>UPGRADE_FOR_ONLY_LABEL</span>
