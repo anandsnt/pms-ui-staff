@@ -253,6 +253,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         
         
         $scope.emitKeyError = function(response){
+            response = !!response ? "" :response;
             var emptyHopperText = 'card from hopper',
                     failedSocketConnectionText = 'SOCKET_FAILED';
             
