@@ -37,10 +37,13 @@ sntZestStation.controller('zsHomeCtrl', [
             });
 	};
         
-        if($scope.zestStationData.wsIsOos){
+        var appWentToOOS = false;//no other way to handle this
+        //oos is been called from here and there, i can't track like this
+        if($scope.zestStationData.wsIsOos &&  appWentToOOS){
                 //update work station status
                 $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
                 $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
+                appWentToOOS = true;
                 $state.go('zest_station.oos');
         }
 	/**
@@ -253,13 +256,19 @@ sntZestStation.controller('zsHomeCtrl', [
             return null;
         }
         else{
+        
+           $scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order':'in-order';
+           //$scope.zestStationData.workstationOooReason = station.out_of_order_msg;
+
+
+
             var oosStorageKey = 'snt_zs_workstation.in_oos',
                 oosReasonKey  = 'snt_zs_workstation.oos_reason',
                 storage = localStorage;
             try {
-               workstationStatus = storage.getItem(oosStorageKey);
+             //  workstationStatus = storage.getItem(oosStorageKey);
                $scope.zestStationData.workstationOooReason = storage.getItem(oosReasonKey);
-               $scope.zestStationData.workstationStatus = workstationStatus;
+              // $scope.zestStationData.workstationStatus = workstationStatus;
             } catch(err){
                 console.warn(err);
             }
