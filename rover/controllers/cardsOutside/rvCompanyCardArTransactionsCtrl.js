@@ -336,14 +336,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		/*
 		 * function to execute on clicking on each result
 		 */
-		$scope.goToReservationDetails = function(index, $event) {
+		$scope.goToReservationDetails = function(index) {
 
-			var element = $event.target;
-
-			if(element.className ==='switch-button' || element.className ==='switch-button on' || element.parentNode.className ==='switch-button' || element.parentNode.className ==='switch-button on'){
-				$scope.toggleTransaction(index);
-			}
-			else if($scope.filterData.viewFromOutside){
+			if($scope.filterData.viewFromOutside){
 				$vault.set('cardId', $stateParams.id);
 				$vault.set('type', $stateParams.type);
 				$vault.set('query', $stateParams.query);
@@ -617,31 +612,38 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		// CICO-28089 - Handle click on each transaction.
 		// will expand with detailed view.
 		// Fetching data for detailed view here..
-		$scope.clickedOnTransaction = function( index ){
+		$scope.clickedOnTransaction = function( index, event ){
 			
-			var transaction = $scope.arTransactionDetails.ar_transactions[index];
-			transaction.details = [];
+			var element = event.target;
 
-			if(!transaction.active){
-				var transactionFetchSuccess = function(data){
-					$scope.$emit('hideLoader');
-					$scope.errorMessage = '';
-					transaction.active = ! transaction.active;
-					transaction.details = data;
-					refreshArTabScroller();
-				},
-				transactionFetchFailure = function(errorMessage){
-					$scope.$emit('hideLoader');
-					$scope.errorMessage = errorMessage;
-				};
-				var param = {
-					'bill_id':transaction.bill_id
-				};
-				$scope.invokeApi(RVCompanyCardSrv.fetchTransactionDetails, param, transactionFetchSuccess, transactionFetchFailure);
+			if(element.className ==='switch-button' || element.className ==='switch-button on' || element.parentNode.className ==='switch-button' || element.parentNode.className ==='switch-button on'){
+				$scope.toggleTransaction(index);
 			}
 			else{
-				transaction.active = ! transaction.active;
-				refreshArTabScroller();
+				var transaction = $scope.arTransactionDetails.ar_transactions[index];
+				transaction.details = [];
+
+				if(!transaction.active){
+					var transactionFetchSuccess = function(data){
+						$scope.$emit('hideLoader');
+						$scope.errorMessage = '';
+						transaction.active = ! transaction.active;
+						transaction.details = data;
+						refreshArTabScroller();
+					},
+					transactionFetchFailure = function(errorMessage){
+						$scope.$emit('hideLoader');
+						$scope.errorMessage = errorMessage;
+					};
+					var param = {
+						'bill_id':transaction.bill_id
+					};
+					$scope.invokeApi(RVCompanyCardSrv.fetchTransactionDetails, param, transactionFetchSuccess, transactionFetchFailure);
+				}
+				else{
+					transaction.active = ! transaction.active;
+					refreshArTabScroller();
+				}
 			}
 		};
 
