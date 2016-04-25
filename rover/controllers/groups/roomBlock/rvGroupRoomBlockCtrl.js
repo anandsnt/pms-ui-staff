@@ -251,7 +251,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var customRateSelected = (parseInt($scope.groupConfigData.summary.rate) === -1),
 				isBorrowedRoomType = roomType.can_edit === false;
 
-			if (isBorrowedRoomType && $scope.shouldShowQuadrupleEntryRow(roomType)) {
+			if ($scope.shouldShowQuadrupleEntryRow(roomType)) {
 				return true;
 			}
 			else if (customRateSelected || isBorrowedRoomType) {
@@ -287,11 +287,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 					return (typeof element !== "undefined");
 				});
 
-				if (isBorrowedRoomType) {
-					return (list_of_quadruples.length > 0);
-				} else {
-					return (list_of_quadruples.length > 0 && $scope.shouldShowTripleEntryRow(roomType));
-				}
+				return (list_of_quadruples.length > 0);
 			} else {
 				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
 			}
