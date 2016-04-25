@@ -42,7 +42,7 @@ sntZestStation.controller('zsFindByNoOfNightsCtrl', [
         };
 
         $scope.searchWithNoOfNights = function() {
-            $state.search = true;
+            //$state.search = true;//using state mode instead
             $scope.inputType = 'text';
             $state.lastAt = 'find-by-no-of-nights';
             if (!$state.input) {
@@ -52,7 +52,9 @@ sntZestStation.controller('zsFindByNoOfNightsCtrl', [
             if ($state.input.NoOfNights === '') {
                 return;
             }
-            $state.go('zest_station.reservation_search');
+            $state.go('zest_station.reservation_search',{
+                mode: zsModeConstants.CHECKIN_MODE
+            });
         };
 
         /**

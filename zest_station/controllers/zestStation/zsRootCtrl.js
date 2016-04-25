@@ -898,6 +898,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.resetCounter = function(){
                clearInterval($scope.idleTimer);
             };
+            
             $scope.resetTime = function(){
                 ++$scope.adminTimeout;
                 $scope.closePopup();
