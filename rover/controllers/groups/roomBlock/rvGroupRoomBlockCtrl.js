@@ -1484,7 +1484,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 				});
 			} else {
-				//$timeout(setScrollListner, 1000);
+				$timeout(setScrollListner, 1000);
 			}
 		};
 
