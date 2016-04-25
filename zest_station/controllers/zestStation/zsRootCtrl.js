@@ -2,8 +2,8 @@ sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
-	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings','$timeout',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, zsHotelDetailsSrv, cssMappings, zestStationSettings,$timeout) {
+	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings','$timeout', 'zsModeConstants',
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, zsHotelDetailsSrv, cssMappings, zestStationSettings,$timeout, zsModeConstants) {
 
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
@@ -915,7 +915,9 @@ sntZestStation.controller('zsRootCtrl', [
             };
             $scope.initQRCodeFindReservation = function(reservation_id){
                 $state.qr_code = reservation_id;
-                $state.go('zest_station.reservation_search_qrcode');
+                $state.go('zest_station.reservation_search_qrcode', {
+                    mode: zsModeConstants.PICKUP_KEY_MODE
+                });
             };
             $scope.onChromeAppResponse = function(response){
                 console.log('msg from ChromeApp: ',response);
@@ -1009,9 +1011,7 @@ sntZestStation.controller('zsRootCtrl', [
                      if (id){
                          new initScreenKeyboardListener('station', id, true);
                       }
-                 } else {
-                     console.info('probably not in a chromeapp');
-                 }
+                 } 
             };
             
             $scope.$watchCollection(function(){
