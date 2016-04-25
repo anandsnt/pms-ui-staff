@@ -116,7 +116,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * @return {Boolean} [description]
      */
     $scope.isInPickupKeyMode = function() {
-        return ($state.mode === zsModeConstants.PICKUP_KEY_MODE);
+        return ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE);
     };
 
     var isItFontainebleauHotel = function(){
