@@ -289,7 +289,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     }
                     
 
-                    var onSuccessGetToken = function(response){
+
                         var printAPI = {
                             "is_additional":false,
                             "is_kiosk":true,
@@ -298,7 +298,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         };
 
                         if (!$scope.remoteEncoding){
-                            printAPI.uid = '';
+                            printAPI.uid = null;
                         } else {
                             printAPI.key_encoder_id = $state.encoder;
                         }
@@ -310,13 +310,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                             'failureCallBack':$scope.emitKeyError
                         });
 
-                    };
-
-                    $scope.callAPI(zsTabletSrv.getAccessToken, {
-                        params: options,
-                        'successCallBack':onSuccessGetToken,
-                        'failureCallBack':$scope.emitKeyError
-                    });
                         
                         
                         

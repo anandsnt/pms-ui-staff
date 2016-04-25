@@ -49,7 +49,6 @@ module.exports = {
 				sharedRoot + 'directives/touchPress/touchPress.js',
 				sharedRoot + 'directives/enterPress/enterPress.js',
 				sharedRoot + 'directives/clickTouch/clickTouch.js',
-				sharedRoot + 'baseCtrl.js',
 				jsLibRoot + 'date.js',
 				'rover/rvSntApp.js',
 				zestRoot + 'zsApp.js',

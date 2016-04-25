@@ -558,7 +558,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				mappedStatus = 'ready';
 			} else if(roomstatus === 'NOT READY') {
 				mappedStatus = "not-ready";
-			} 
+			}
 			return mappedStatus;
 		};
 
@@ -1006,14 +1006,27 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.$watch('textInQueryBox', function(newVal) {
 			$scope.searchWords = [];
 			if(newVal.length >= 2) {
-				if (newVal.indexOf(' ') != -1) {
-					$scope.searchWords = newVal.split(' ');
-				} else if (newVal.indexOf(',') != -1) {
+				if (newVal.indexOf(',') != -1) {
 					$scope.searchWords = newVal.split(',');
+				} else if (newVal.indexOf(' ') != -1) {
+					$scope.searchWords = newVal.split(' ');
 				} else {
 					$scope.searchWords.push(newVal);
 				}
 			}
 		});
+
+		/**
+		 * Get the room status to show the reservation search screen
+		*/
+		$scope.getRoomStatus = function(reservation) {
+			var status = "";
+			if(!!reservation.is_room_due_out) {
+				status = "DUE OUT";
+			} else {
+				status = reservation.fostatus;
+			}
+			return status;
+		};
 	}
 ]);
