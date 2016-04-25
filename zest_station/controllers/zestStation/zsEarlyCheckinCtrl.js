@@ -145,7 +145,6 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
 
             } else {
                 if ($scope.reservationIncludesEarlyCheckin(response)){
-                    
                             $scope.selectedReservation.earlyCheckinCharge = response.early_checkin_charge;
                             $state.earlyCheckinOfferId = response.early_checkin_offer_id;
                             $state.early_checkin_offer_id = response.early_checkin_offer_id;
@@ -273,14 +272,14 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                 }
         };
         $scope.reservationIncludesEarlyCheckin = function(data){
-            if (!$scope.zestStationData.offer_early_checkin || 
-                    !data.early_checkin_on || 
-                    !data.early_checkin_available || 
+            if (!$scope.zestStationData.offer_early_checkin ||
+                    !data.early_checkin_on ||
+                    !data.early_checkin_available ||
                     !data.reservation_in_early_checkin_window){
                 return false;
             }
-            
-            if (data.guest_arriving_today && (data.offer_eci_bypass || data.offer_eci_free_vip)){
+
+            if (data.guest_arriving_today && (data.offer_eci_bypass || data.offer_eci_free_vip ||data.free_eci_for_vips)){
                 console.info('selected reservation includes free early check-in!');
                 return true;
             } else {
