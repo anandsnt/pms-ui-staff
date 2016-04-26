@@ -41,7 +41,8 @@ module.exports = {
 			'guestweb_time_hotel':[ themeCSSRoot + 'guestweb_time_hotel.css'],
 			'guestweb_porto_vista':[ themeCSSRoot + 'guestweb_porto_vista.css'],
 			'guestweb_chalet_view':[ themeCSSRoot + 'guestweb_chalet_view.css'],
-			'guestweb_crawford':[ themeCSSRoot + 'guestweb_crawford.css']
+			'guestweb_crawford':[ themeCSSRoot + 'guestweb_crawford.css'],
+			'guestweb_kingsley':[ themeCSSRoot + 'guestweb_crawford.css']
 		}
 	}
 }
