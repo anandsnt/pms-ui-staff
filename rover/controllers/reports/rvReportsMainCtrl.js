@@ -739,8 +739,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		$scope.toggleFauxSelect = function(e, fauxDS) {
 			$timeout(function(){
-				$scope.refreshScroller('report-filters-scroll');
-				$scope.myScroll['report-filters-scroll'].refresh();
+				// this is a temp fix
+				// will replace faux select with <multi-option-selection>
+				$scope.$$childTail.myScroll['report-filters-scroll'].refresh();
 			}, 100);
 
 			if ( !e || !fauxDS ) {
@@ -1812,7 +1813,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		var touchedReport;
 
-		$scope.returnItem = function(item) {
+		$scope.returnuiChosenReport = function(item) {
 			touchedReport = item;
 		};
 
