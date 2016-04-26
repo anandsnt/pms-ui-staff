@@ -88,7 +88,7 @@ function transformTextToHighlight(text, replaceableStrings) {
 			var padding = 0;
 			padding = (spanAddedIndex[index].length) * (formatedString.length - strSize);
 
-			spanAddedIndex[index].push([idx + 1 + padding, idx + lastIdx + formatedString.length + padding]);
+			spanAddedIndex[index].push([idx + 1 + padding, idx + formatedString.length + padding]);
 			lastIdx = idx + strSize + 1;
 		});
 		splitedString.push(replacableString.substring(lastIdx, replacableString.length));
