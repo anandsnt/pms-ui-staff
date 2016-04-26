@@ -18,6 +18,7 @@ sntRover.controller('RVReportListCrl', [
             REPORT_FILTERS_SCROLL = 'report-filters-scroll';
 
         $scope.refreshFilterScroll = function(scrollUp) {
+            console.log( REPORT_FILTERS_SCROLL );
             $scope.refreshScroller(REPORT_FILTERS_SCROLL);
             if ( !!scrollUp && $scope.$parent.myScroll.hasOwnProperty(REPORT_FILTERS_SCROLL) ) {
                 $scope.$parent.myScroll[REPORT_FILTERS_SCROLL].scrollTo(0, 0, 100);
