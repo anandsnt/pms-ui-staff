@@ -45,6 +45,49 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		$scope.showReportDetails = false;
 
+		$scope.viewCol = 0;
+		$scope.setViewCol = function(value) {
+			$scope.viewCol = value || 0;
+		}
+
+		var filterByQuery = function() {
+		    var query = $scope.query.toLowerCase().trim(),
+		        title;
+
+		    var i, j;
+
+		    $scope.setViewCol(0);
+
+		    if ( ! query.length ) {
+		        for (i = 0, j = $scope.reportList.length; i < j; i++) {
+		            $scope.reportList[i].filteredOut = false;
+		        };
+		        return;
+		    };
+
+		    for (i = 0, j = $scope.reportList.length; i < j; i++) {
+		        title = $scope.reportList[i].title.toLowerCase();
+
+		        if ( title.indexOf(query) == -1 ) {
+		            $scope.reportList[i].filteredOut = true;
+		        } else {
+		            $scope.reportList[i].filteredOut = false;
+		        }
+		    };
+		};
+		/**/
+		$scope.clearQuery = function() {
+		    var i, j;
+
+		    $scope.query = '';
+		    for (i = 0, j = $scope.reportList.length; i < j; i++) {
+		        $scope.reportList[i].filteredOut = false;
+		    };
+		}
+		/**/
+		$scope.filterByQuery = _.throttle(filterByQuery, 100, { leading: false });
+
+
 		// CICO-21232
 		// HIDE export option in ipad and other devices
 		// RESTRICT to ONLY desktop
@@ -696,8 +739,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		$scope.toggleFauxSelect = function(e, fauxDS) {
 			$timeout(function(){
-				$scope.refreshScroller('report-list-scroll');
-				$scope.myScroll['report-list-scroll'].refresh();
+				// this is a temp fix
+				// will replace faux select with <multi-option-selection>
+				$scope.$$childTail.myScroll['report-filters-scroll'].refresh();
 			}, 100);
 
 			if ( !e || !fauxDS ) {
@@ -1769,7 +1813,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		var touchedReport;
 
-		$scope.returnItem = function(item) {
+		$scope.returnuiChosenReport = function(item) {
 			touchedReport = item;
 		};
 

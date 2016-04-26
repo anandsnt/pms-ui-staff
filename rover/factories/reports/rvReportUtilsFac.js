@@ -224,13 +224,11 @@ angular.module('reportsModule')
             // if filter is this, make it selected by default
             if ( report['title'] == reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
                 selected = true;
-                report['hasGeneralOptions']['title'] = filter.description;
             };
 
             // if filter value is either of these, make it selected by default
             if ( dueInDueOut[filter.value] ) {
                 selected = true;
-                report['hasGeneralOptions']['title'] = filter.description;
             };
 
             // if filter value is either of these, must include when report submit
@@ -241,18 +239,15 @@ angular.module('reportsModule')
             // if filter value is either of these, must include when report submit
             if ( report['title'] == reportNames['FORECAST_GUEST_GROUPS'] ) {
                 selected = true;
-                report['hasGeneralOptions']['title'] = filter.description;
             };
 
             if (report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'EXCLUDE_TAX'){
                 selected = true;
-                report['hasGeneralOptions']['title'] = filter.description;
             }
 
             // if filter is this, make it selected by default
             if ( report['title'] == reportNames['DAILY_PRODUCTION_ROOM_TYPE'] && filter.value == 'INCLUDE_ADDONS' ) {
                 selected = true;
-                report['hasGeneralOptions']['title'] = filter.description;
             };
 
             report['hasGeneralOptions']['data'].push({
@@ -273,7 +268,6 @@ angular.module('reportsModule')
 
             if ( report['title'] == reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'INCLUDE_MARKET' ) {
                 selected = true;
-                report['hasDisplay']['title'] = filter.description;
             };
 
             report['hasDisplay']['data'].push({
@@ -338,77 +332,77 @@ angular.module('reportsModule')
 
             if ( report.hasUserFilter ) {
                 report.empList = {
-                    selectAll: true,
-                    hasSearch: true,
-                    data: angular.copy( data.activeUserList )
+                    data: angular.copy( data.activeUserList ),
+                    options: {
+                        selectAll: true,
+                        hasSearch: true,
+                        key: 'full_name',
+                        altKey: 'email'
+                    }
                 }
             };
 
             // create DS for options combo box
-            __setData(report, 'hasGeneralOptions', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : false,
-                defaultTitle : 'Select Options',
-                title        : 'Select Options',
-                data         : []
-            });
+            report.hasGeneralOptions = {
+                data: [],
+                options: {
+                    selectAll: false,
+                    hasSearch: false,
+                    key: 'description'
+                }
+            }
 
             // create a name space for chosen options
             report.chosenOptions = {};
 
-            // create DS for display combo box
-            __setData(report, 'hasDisplay', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : false,
-                defaultTitle : 'Select displays',
-                title        : 'Select displays',
-                data         : []
-            });
-
+            report.hasDisplay = {
+                data: [],
+                options: {
+                    selectAll: false,
+                    hasSearch: false,
+                    key: 'description'
+                }
+            }
 
             // create DS for Exclude combo box
-            __setData(report, 'hasExclusions', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : false,
-                defaultTitle : 'Exclude',
-                title        : 'Exclude',
-                data         : []
-            });
+            report.hasExclusions = {
+                data: [],
+                options: {
+                    selectAll: false,
+                    hasSearch: false,
+                    key: 'description'
+                }
+            }
 
             // create DS for guest or account
-            __setData(report, 'hasGuestOrAccountFilter', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : true,
-                defaultTitle : 'Select',
-                title        : 'All Selected',
-                data         : []
-            });
+            report.hasGuestOrAccountFilter = {
+                data: [],
+                options: {
+                    selectAll: true,
+                    hasSearch: false,
+                    key: 'description'
+                }
+            }
 
             // create DS for options combo box
-            __setData(report, 'hasShow', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : true,
-                defaultTitle : 'Select Options',
-                allTitle     : 'Both',
-                title        : 'Both',
-                data         : []
-            });
+            report.hasShow = {
+                data: [],
+                options: {
+                    selectAll: false,
+                    hasSearch: false,
+                    key: 'description'
+                }
+            }
 
             // create DS for options combo box
-            __setData(report, 'hasChargeTypes', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : true,
-                defaultTitle : 'Select Options',
-                allTitle     : 'Both',
-                title        : 'Both',
-                data         : []
-            });
+            report.hasChargeTypes = {
+                data: [],
+                options: {
+                    selectAll: true,
+                    hasSearch: false,
+                    key: 'description'
+                }
+            }
 
             // going around and taking a note on filters
             _.each(report['filters'], function(filter) {
@@ -485,15 +479,13 @@ angular.module('reportsModule')
 
                  // fill up DS for options combo box
                 if ( __excludeFilterNames[filter.value] ) {
-
                     var selected = false;
 
                     if (report['title'] == reportNames['DAILY_PRODUCTION_DEMO'] || reportNames['DAILY_PRODUCTION_RATE']) {
-                        selected = true;
-                        report['hasExclusions']['title'] = filter.description;
+                        report['hasExclusions'].options.selectAll = true;
                     };
 
-                    report['hasExclusions']['data'].push({
+                    report['hasExclusions'].data.push({
                         paramKey    : filter.value.toLowerCase(),
                         description : filter.description,
                         selected    : selected
@@ -663,15 +655,15 @@ angular.module('reportsModule')
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        __setData(report, 'hasGuaranteeType', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Guarantees',
-                            title        : 'Select Guarantees',
-                            data         : angular.copy( data )
-                        });
+
+                        report.hasGuaranteeType = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: true,
+                                key: 'name'
+                            }
+                        }
                     };
                 });
 
@@ -687,15 +679,14 @@ angular.module('reportsModule')
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        __setData(report, 'hasMarketsList', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Markets',
-                            title        : 'Select Markets',
-                            data         : angular.copy( data )
-                        });
+                        report.hasMarketsList = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: false,
+                                key: 'name'
+                            }
+                        }
                     };
                 });
 
@@ -711,15 +702,14 @@ angular.module('reportsModule')
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        __setData(report, 'hasSourcesList', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Sources',
-                            title        : 'Select Sources',
-                            data         : angular.copy( data )
-                        });
+                        report.hasSourcesList = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: false,
+                                key: 'name'
+                            }
+                        }
                         report['filters']['filled'] = true;
                     };
                 });
@@ -736,15 +726,14 @@ angular.module('reportsModule')
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        __setData(report, 'hasOriginsList', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Origins',
-                            title        : 'Select Origins',
-                            data         : angular.copy( data )
-                        });
+                        report.hasOriginsList = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: false,
+                                key: 'name'
+                            }
+                        }
                     };
                 });
 
@@ -760,15 +749,14 @@ angular.module('reportsModule')
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        __setData(report, 'hasHoldStatus', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Hold Status',
-                            title        : 'Select Hold Status',
-                            data         : angular.copy( data )
-                        });
+                        report.hasHoldStatus = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: false,
+                                key: 'name'
+                            }
+                        }
                     };
                 });
 
@@ -799,20 +787,14 @@ angular.module('reportsModule')
                             ];
                         };
 
-                        __setData(report, 'hasReservationStatus', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Status',
-                            title        : 'Select Status',
-                            data         : angular.copy( customData )
-                        });
-
-                        if ( report['title'] === reportNames['DEPOSIT_REPORT'] ) {
-                            report['hasReservationStatus'].selectAll = true;
-                            report['hasReservationStatus'].title = 'All Selected';
-                        };
+                        report.hasReservationStatus = {
+                            data: customData,
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'status'
+                            }
+                        }
                     };
                 });
 
@@ -930,25 +912,23 @@ angular.module('reportsModule')
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
 
-                        __setData(report, 'hasRateTypeFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Rate Type',
-                            title        : 'All Selected',
-                            data         : angular.copy( extractRateTypesFromRateTypesAndRateList( data ) )
-                        });
+                        report.hasRateTypeFilter = {
+                            data: angular.copy( extractRateTypesFromRateTypesAndRateList(data) ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: true,
+                                key: 'name'
+                            }
+                        }
 
-                        __setData(report, 'hasRateFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Rate',
-                            title        : 'All Selected',
-                            data         : angular.copy( extractRatesFromRateTypesAndRateList( data ) )
-                        });
+                        report.hasRateFilter = {
+                            data: angular.copy( extractRatesFromRateTypesAndRateList(data) ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: true,
+                                key: 'name'
+                            }
+                        }
                     };
                 });
 
