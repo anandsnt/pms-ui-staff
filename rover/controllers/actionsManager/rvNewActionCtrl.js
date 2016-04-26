@@ -70,8 +70,13 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
             init();
         });
 
+        var listenerReservationSelect = $scope.$on("RESERVATION_SELECTED",function(e, selectedReservation){
+            $scope.newAction.dueDate = selectedReservation.arrival_date;
+        });
+
         init();
 
         $scope.$on('$destroy', listenerInit);
+        $scope.$on('$destroy', listenerReservationSelect);
     }]
 );

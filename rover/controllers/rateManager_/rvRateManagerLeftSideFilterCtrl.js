@@ -458,6 +458,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        * This method handles on-click of the SHOW RATES BUTTON
        */
       $scope.clickedOnShowRates = () => {
+        //PAGINATION stuff will be handled from RateManagerCtrl
         var valuesChoosed = {
           fromDate: $scope.fromDate,
           toDate: $scope.toDate,
