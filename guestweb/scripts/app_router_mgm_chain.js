@@ -155,7 +155,21 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	url: '/guestCheckinTurnedOff',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwExternalCheckInTurnedOff.html',
 	 	title: 'Check-in'
-	 });
+	 }).state('birthDateDetails', {
+		url: '/birthDateDetails',
+		templateUrl: '/assets/common_templates/partials/MGM/gwBirthDataDetails.html',
+		controller: 'birthDateDetailsController',
+		title: 'Birthdate'
+	}).state('promptGuestDetails', {
+		url: '/promptGuestDetails',
+		templateUrl: '/assets/common_templates/partials/MGM/gwPromptGuestDetails.html',
+		controller: 'guestDetailsController',
+		title: 'Guest Details'
+	}).state('guestNotEligible', {
+		url: '/guestNotEligible',
+		templateUrl: '/assets/common_templates/partials/MGM/gwGuestNotEligible.html',
+		title: 'Guest Details'
+	});
 
 
 	$stateProvider.state('checkinCcVerification', {
