@@ -173,7 +173,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			var successCallback = function(data) {
 				saveReservation();
 				$scope.errorMessage = '';
-				//$scope.$emit('hideLoader');
+				$scope.$emit('hideLoader');
 			};
 
 			var errorCallback = function(errorMessage) {

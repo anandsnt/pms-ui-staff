@@ -100,7 +100,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * @return {Boolean} [description]
      */
     $scope.isInCheckinMode = function() {
-        return ($stateParams.mode === zsModeConstants.CHECKIN_MODE);
+        return ($state.mode === zsModeConstants.CHECKIN_MODE);
     };
 
     /**
@@ -116,7 +116,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * @return {Boolean} [description]
      */
     $scope.isInPickupKeyMode = function() {
-        return ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE);
+        return ($state.mode === zsModeConstants.PICKUP_KEY_MODE);
     };
 
     var isItFontainebleauHotel = function(){
@@ -593,9 +593,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
     
     $scope.retryQRScan = function(){
-        $state.go('zest_station.reservation_search',{
-              mode: zsModeConstants.PICKUP_KEY_MODE
-        });
+        $state.go('zest_station.reservation_search');
     };
     $scope.initPuk = function(){
         console.log(':::: ',$state.current.name,' ::::');
@@ -635,8 +633,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     $scope.init = function(){
         $scope.inputType = 'text';
 
-        if ($scope.isInCheckinMode()){
+        if ($state.search){
             $scope.searchReservations();
+            $state.search = false;
         }
 
         if ($scope.isInCheckoutMode()){

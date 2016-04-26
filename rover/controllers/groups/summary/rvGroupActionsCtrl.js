@@ -407,13 +407,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         $scope.setFreshDate = function(){
 
             $scope.newAction.hasDate = true;
-             // CICO-27905
-            // In the stay card, the date due for a new action should default to the greater of the block's from date / business date
-            var businessDate = new tzIndependentDate($rootScope.businessDate),
-                blockFromDate = new tzIndependentDate($scope.groupConfigData.summary.block_from);
-
-            $scope.newAction.dueDateObj = businessDate > blockFromDate ? businessDate : blockFromDate;
-            
+            $scope.newAction.dueDateObj = new tzIndependentDate($rootScope.businessDate);
             $scope.newAction.date_due = $filter('date')( $scope.newAction.dueDateObj, $rootScope.dateFormat);
             if (!$scope.newAction.time_due){
                 $scope.newAction.time_due = $filter('date')($scope.hotel_time, "HH:mm");

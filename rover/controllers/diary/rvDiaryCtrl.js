@@ -1,4 +1,4 @@
-angular.module('sntRover')
+sntRover
 .controller('rvDiaryCtrl',
 	[ 	'$scope',
 		'$rootScope',

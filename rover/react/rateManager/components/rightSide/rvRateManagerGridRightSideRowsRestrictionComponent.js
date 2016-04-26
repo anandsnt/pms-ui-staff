@@ -9,8 +9,8 @@ const RateManagerGridRightSideRowsRestrictionComponent = ({ onTdClick, mode, res
 							<div className={'cell-container ' + (dateList[colIndex].isWeekEnd ? 'weekend_day': '')}>
 									{ rowIndex > 0 ? (
 										<div className={'cell-content ' + (dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
-											{!rateData.amountList || rateData.amountList[colIndex] === null ? (<RateManagerCellsNoRateComponent/>) : (<RateManagerCellsRateComponent
-												amount={rateData.amountList[colIndex]}/>)}
+											{rateData.amount === null ? (<RateManagerCellsNoRateComponent/>) : (<RateManagerCellsRateComponent
+												amount={rateData.amount}/>)}
 											<div className='restriction_holder'>
 												{eachDayRestrictions.map((restriction, restrictionIndex) => 
 													<RateManagerRestrictionIconComponent

@@ -144,7 +144,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.mode = 'login-mode';
             };
 
-        };
+        }();
 
         //* when the back button clicked
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
@@ -224,12 +224,9 @@ sntZestStation.controller('zsAdminCtrl', [
             var failureCallBack = function(response) {
                 console.warn('unable to save workstation settings');
             };
-            var params = {};
             var station = $scope.savedSettings.kiosk.workstation;
-            
+            var params = {};
             if (station) {
-                station.is_out_of_order = ($scope.zestStationData.workstationStatus !== 'in-order' ? false : true);
-                
                 var params = {
                     'default_key_encoder_id': station.key_encoder_id,
                     'identifier': station.station_identifier,
@@ -347,6 +344,5 @@ sntZestStation.controller('zsAdminCtrl', [
                 );
             }
         };
-        initialize();
     }
 ]);

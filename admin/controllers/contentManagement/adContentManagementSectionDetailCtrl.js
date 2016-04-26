@@ -18,7 +18,6 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 	            "description_alignment": "",
 	            "description": "",
 	            "is_search_enabled": false,
-	            "add_to_chain": false,
 	            "application_id": ""
             };
 

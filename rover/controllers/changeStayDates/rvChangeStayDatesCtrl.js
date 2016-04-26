@@ -216,9 +216,6 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 		};
 
-		var hasPermissionToOverBookRoomType = function() {
-			return (rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'));
-		};
 
 		/**
 		 *based on the availability of room, web service will give 5 status
@@ -237,12 +234,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			} else if ($scope.availabilityDetails.availability_status === "room_type_available") {
 				that.showRoomTypeAvailable($scope.availabilityDetails);
 			} else if ($scope.availabilityDetails.availability_status === "not_available") {
-				if (hasPermissionToOverBookRoomType()) {
-					$scope.showRoomAvailable();
-				}
-				else {
-					that.showRoomNotAvailable();
-				}
+				that.showRoomNotAvailable();
 			} else if ($scope.availabilityDetails.availability_status === "to_be_unassigned") {
 				$scope.rightSideReservationUpdates = 'PREASSIGNED';
 				$scope.stayDetails.preassignedGuest = $scope.availabilityDetails.preassigned_guest;
@@ -325,6 +317,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.rightSideReservationUpdates = 'ROOM_AVAILABLE';
 			$scope.refreshMyScroller();
 		};
+
 
 		//click function to execute when user selected a room from list (on ROOM_TYPE_AVAILABLE status)
 		$scope.roomSelectedFromList = function(roomNumber) {

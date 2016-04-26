@@ -162,7 +162,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         
         $scope.skipEmailEntryAfterSwipe = function(){
             $state.skipCheckinEmail = true;
-            $state.go('zest_station.check_in_keys',{'mode':zsModeConstants.CHECKIN_MODE});
+            $state.go('zest_station.check_in_keys');
         };
         
         $scope.send = function(){
@@ -247,14 +247,14 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 		  
         };
         $scope.navToPrev = function(){
-                $state.go('zest_station.check_in_keys',{'mode':zsModeConstants.CHECKIN_MODE});
+                $state.go('zest_station.check_in_keys');
         };
         
         $scope.reEncodeKey = function(){
             if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
                 $state.go('zest_station.pickup_keys');
             } else {
-		$state.go ('zest_station.check_in_keys',{'mode':zsModeConstants.CHECKIN_MODE});
+		$state.go ('zest_station.check_in_keys');
             }
         };
         
@@ -277,7 +277,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                     $state.selectedReservation.guest_details.email = $state.input.email;
                     $state.input.lastEmailValue = $state.input.email;
                     if ($scope.from === 'card-swipe' && $scope.at === 'input-email'){
-                        $state.go('zest_station.check_in_keys',{'mode':zsModeConstants.CHECKIN_MODE});
+                        $state.go('zest_station.check_in_keys');
                     } else {//at the end of check-in and now updating email address
                         showNavButtons();
                         $state.from = 'deliver-registration';

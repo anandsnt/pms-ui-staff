@@ -5,8 +5,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
 	'zsUtilitySrv',
 	'zsModeConstants',
 	'zsEventConstants',
-	'$stateParams',
-	function($scope, $state, zsTabletSrv, zsUtilitySrv, zsModeConstants, zsEventConstants, $stateParams) {
+	function($scope, $state, zsTabletSrv, zsUtilitySrv, zsModeConstants, zsEventConstants) {
 
             BaseCtrl.call(this, $scope);
             /**
@@ -37,12 +36,13 @@ sntZestStation.controller('zsFindReservationCtrl', [
                 $state.mode = zsModeConstants.PICKUP_KEY_MODE;
                 $state.lastAt = 'home';
                 $state.isPickupKeys = true;
+                $state.mode = zsModeConstants.PICKUP_KEY_MODE;
                 $state.go('zest_station.reservation_search', {
                     mode: zsModeConstants.PICKUP_KEY_MODE
                 });
             };
             $scope.isInPickupKeyMode = function() {
-                    return ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE);
+                    return ($state.mode === zsModeConstants.PICKUP_KEY_MODE);
                 };
             $scope.datePickerMin;
             $scope.business_date;
@@ -211,6 +211,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
         };
         
         $scope.searchWithEmail = function(){
+            $state.search = true; 
             $scope.inputType = 'text';
             $state.lastAt = 'find-by-email';
             if (!$state.input){
@@ -220,24 +221,21 @@ sntZestStation.controller('zsFindReservationCtrl', [
             if ($state.input.email === ''){
                 return;
             }
-            $state.go('zest_station.reservation_search',{
-                mode: zsModeConstants.CHECKIN_MODE
-            });
+            $state.go('zest_station.reservation_search');
         };
         $scope.searchWithDate = function(){
+            $state.search = true; 
             $state.lastAt = 'find-by-date';
             if (!$state.input){
                 $state.input = {};
             }
             $state.input.date = $scope.input.lastDateValue;
             
-            $state.go('zest_station.reservation_search',{
-                mode: zsModeConstants.CHECKIN_MODE
-            });
+            $state.go('zest_station.reservation_search');
         };
         $scope.searchWithConfirmation = function(){
             $scope.inputType = 'text';
-            //$state.search = true; 
+            $state.search = true; 
             $state.lastAt = 'find-by-confirmation';
             if (!$state.input){
                 $state.input = {};
@@ -246,9 +244,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
             if ($state.input.confirmation === ''){
                 return;
             }
-            $state.go('zest_station.reservation_search',{
-                mode: zsModeConstants.CHECKIN_MODE
-            });
+            $state.go('zest_station.reservation_search');
         };
         $scope.goToFindReservation = function(){
             if (!$state.input){
@@ -262,7 +258,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
             //this method is to re-run search using the 'updated' text from the user
             //determine which search was run from $state.lastSearchWith
             $state.lastAt = $state.lastSearchWith;
-            //$state.search = true;
+            $state.search = true;
             var updated = $state.reEntered;
             switch(updated){
                 case "email":
@@ -278,9 +274,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
                     $state.input.date = $scope.getZSDateFormat($scope.input.date);
                     break;
             }
-            $state.go('zest_station.reservation_search',{
-                mode: zsModeConstants.CHECKIN_MODE
-            });
+            $state.go('zest_station.reservation_search');
         };
         
         $scope.talkToStaff = function(){
@@ -417,6 +411,7 @@ sntZestStation.controller('zsFindReservationCtrl', [
                 $scope.input = {};
             }
             var current = $state.current.name;
+            console.info('current: ',current);
             switch(current){
                 case "zest_station.find_by_date":
                     $scope.setFindByDate();

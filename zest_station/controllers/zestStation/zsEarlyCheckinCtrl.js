@@ -63,13 +63,13 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             
             if (current === 'zest_station.early_checkin_upsell'){
                 $scope.onStartCheckinUpsell();
-                
             } else if (current === 'zest_station.early_checkin_unavailable' || 
                 current === 'zest_station.early_checkin_nav' ||
                 current === 'zest_station.early_checkin_prepaid') {
                     $scope.standardCheckinTime = $scope.zestStationData.check_in_time.hour+':'+$scope.zestStationData.check_in_time.minute+' '+$scope.zestStationData.check_in_time.primetime+'.';
             }
             if (current === 'zest_station.early_checkin_prepaid'){
+                //$state.earlyCheckinPurchased = true;
                 $scope.is_early_prepaid = $state.is_early_prepaid;
                 $scope.reservation_in_early_checkin_window = $state.reservation_in_early_checkin_window;
             } 
@@ -140,11 +140,13 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                 $scope.selectedReservation.earlyCheckinCharge = response.early_checkin_charge;
             }
 
+
             if (!response.is_room_ready || !response.is_room_already_assigned){
                 $scope.initRoomError();
 
             } else {
                 if ($scope.reservationIncludesEarlyCheckin(response)){
+                    
                             $scope.selectedReservation.earlyCheckinCharge = response.early_checkin_charge;
                             $state.earlyCheckinOfferId = response.early_checkin_offer_id;
                             $state.early_checkin_offer_id = response.early_checkin_offer_id;
@@ -281,23 +283,15 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
                 }
         };
         $scope.reservationIncludesEarlyCheckin = function(data){
-            if (!$scope.zestStationData.offer_early_checkin ||
-                    !data.early_checkin_on ||
-                    !data.early_checkin_available ||
+            if (!$scope.zestStationData.offer_early_checkin || 
+                    !data.early_checkin_on || 
+                    !data.early_checkin_available || 
                     !data.reservation_in_early_checkin_window){
                 return false;
             }
-
-            console.log('data.offer_eci_free_vip: ',data.offer_eci_free_vip)
-            console.log('data.offer_eci_bypass: ',data.offer_eci_bypass)
-            console.log('data.free_eci_for_vips: ',data.free_eci_for_vips);
             
-            //data.offer_eci_free_vip - later story s54+ ~ offer free ECI when reservation has vip code & matches a free ECI vip code (admin section to be added)
-            //for now, using toggle switch - if free_eci_for_vips is enabled, and guest is VIP, then they get free ECI :)
-            if (data.guest_arriving_today && (data.offer_eci_bypass || (data.free_eci_for_vips && data.is_vip) )){
-                var freeForVip='';
-                if (data.free_eci_for_vips && data.is_vip){freeForVip=' [ for vip guest ]';};
-                console.info('selected reservation includes free early check-in! '+freeForVip);
+            if (data.guest_arriving_today && data.offer_eci_bypass){
+                console.info('selected reservation includes free early check-in!');
                 return true;
             } else {
                 console.info('selected reservation does Not include free early check-in.');

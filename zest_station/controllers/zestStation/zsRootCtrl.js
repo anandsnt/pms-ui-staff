@@ -2,8 +2,8 @@ sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
-	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings','$timeout', 'zsModeConstants',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, zsHotelDetailsSrv, cssMappings, zestStationSettings,$timeout, zsModeConstants) {
+	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings','$timeout',
+	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, zsHotelDetailsSrv, cssMappings, zestStationSettings,$timeout) {
 
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
@@ -31,20 +31,6 @@ sntZestStation.controller('zsRootCtrl', [
             return;
         }
     };    
-
-    $scope.navToHome = function(){
-       //update workstation station. I cant find anyother suitable place
-        //the above codes needs to refactored
-        if($scope.zestStationData.wsIsOos){
-               //update work station status
-               $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
-               $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
-               $state.go('zest_station.oos');
-        }
-            else{
-                 $state.go ('zest_station.home');
-        };
-    };
         
     $translate.use('EN_snt');  
     //store oos status
@@ -54,7 +40,6 @@ sntZestStation.controller('zsRootCtrl', [
     var updateLocalStorage = function(oosReason, workstationStatus) {
 
         try {
-            console.info('set oos status', workstationStatus)
             storage.setItem(oosStorageKey, workstationStatus);
         } catch (err) {
             console.warn(err);
@@ -70,40 +55,25 @@ sntZestStation.controller('zsRootCtrl', [
     $scope.$on(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event, params) {
         var oosReason = params.reason;
         var workstationStatus = params.status;
-        
-        console.info('update to:  ',workstationStatus);
-        
-        
         $scope.zestStationData.workstationStatus = workstationStatus;
 
-        updateLocalStorage(oosReason, workstationStatus);
         if ($scope.zestStationData.workstationStatus === 'out-of-order') {
-            console.info('placing station out of order')
             var options = {
                 params: {
-                    'oo_status': true,
+                    'oo_status': false,
                     'oo_reason': oosReason,
                     'id': $scope.zestStationData.set_workstation_id
                 }
             };
             $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
         } else {
-            console.info('putting station back in order')
-            var options = {
-                params: {
-                    'oo_status': false,
-                    //'oo_reason': oosReason,
-                    'id': $scope.zestStationData.set_workstation_id
-                }
-            };
-            $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
-            
             try {
                 storage.setItem(oosStorageKey, "in-order");
             } catch (err) {
                 console.warn(err);
             }
         }
+        updateLocalStorage(oosReason, workstationStatus);
     });
 
     $scope.returnDateObj = function(dateString){
@@ -128,23 +98,10 @@ sntZestStation.controller('zsRootCtrl', [
 	 */
 	$scope.clickedOnCloseButton = function() {
         //if key card was inserted we need to eject that
-            if($scope.zestStationData.keyCardInserted && !$scope.zestStationData.keyCaptureDone){
-                $scope.socketOperator.EjectKeyCard();
-            };
-        
-            if($scope.zestStationData.wsIsOos){
-                    //update work station status
-                    $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
-                    $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{
-                        'status' :    'out-of-order',
-                        'reason' :    $scope.zestStationData.workstationOooReason
-                    });
-                    $state.go ('zest_station.home');
-                   
-            } else{
-                     $state.go ('zest_station.home');
-            };
-	
+        if($scope.zestStationData.keyCardInserted && !$scope.zestStationData.keyCaptureDone){
+            $scope.socketOperator.EjectKeyCard();
+        };
+		$state.go ('zest_station.home');
 	};
 
 	/**
@@ -235,18 +192,11 @@ sntZestStation.controller('zsRootCtrl', [
              var storageKey = $scope.oosKey,
                     storage = localStorage;
             try {
-                if (t === 'in-order' || t === true){
-                    t = 'in-order';
-                } else if (t === 'out-of-order' || t === false){
-                    t = 'out-of-order';
-                }
-                
-                
                storage.setItem(storageKey, t);
             } catch(err){
                 console.warn(err);
             }
-            if (storage.getItem(storageKey) !== 'in-order'){
+            if (storage.getItem(storageKey)){
                 $state.is_oos = true;
             } else {
                 $state.is_oos = false;
@@ -292,12 +242,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.setThemeByName(theme);
             }
             $scope.language = theme;
-            $scope.loadTranslations();
-            
-            if (!zestStationSettings.zest_lang.default_language){
-                zestStationSettings.zest_lang.default_language = 'English';
-            }
-            
+            $scope.loadTranslations(theme);
             setDefaultLanguage();
             $scope.$emit('hideLoader');
         };
@@ -852,7 +797,6 @@ sntZestStation.controller('zsRootCtrl', [
         };
         var intLanguageSettings = function(){
             //$scope.selectedLanguage = 'English';
-            console.log('using default language: [ '+ zestStationSettings.zest_lang.default_language +' ]')
             $scope.selectedLanguage = getDefaultLangDisplayName(zestStationSettings.zest_lang.default_language);
             //$scope.langflag = 'flag-gb';
             
@@ -918,7 +862,6 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.resetCounter = function(){
                clearInterval($scope.idleTimer);
             };
-            
             $scope.resetTime = function(){
                 ++$scope.adminTimeout;
                 $scope.closePopup();
@@ -936,9 +879,7 @@ sntZestStation.controller('zsRootCtrl', [
             };
             $scope.initQRCodeFindReservation = function(reservation_id){
                 $state.qr_code = reservation_id;
-                $state.go('zest_station.reservation_search_qrcode', {
-                    mode: zsModeConstants.PICKUP_KEY_MODE
-                });
+                $state.go('zest_station.reservation_search_qrcode');
             };
             $scope.onChromeAppResponse = function(response){
                 console.log('msg from ChromeApp: ',response);
@@ -1032,7 +973,9 @@ sntZestStation.controller('zsRootCtrl', [
                      if (id){
                          new initScreenKeyboardListener('station', id, true);
                       }
-                 } 
+                 } else {
+                     console.info('probably not in a chromeapp');
+                 }
             };
             
             $scope.$watchCollection(function(){

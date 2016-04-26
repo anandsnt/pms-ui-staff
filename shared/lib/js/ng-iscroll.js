@@ -64,13 +64,13 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
 	    */
             if (scope.$parent.myScrollOptions) {
                 for (var i in scope.$parent.myScrollOptions) {
-                    if(typeof(scope.$parent.myScrollOptions[i])!=="object"){
-                        ngiScroll_opts[i] = scope.$parent.myScrollOptions[i];
-                    } else if (i === scroll_key) {
+		    if(typeof(scope.$parent.myScrollOptions[i])!=="object"){
+			ngiScroll_opts[i] = scope.$parent.myScrollOptions[i];
+		   } else if (i === scroll_key) {
                         for (var k in scope.$parent.myScrollOptions[i]) {
                             ngiScroll_opts[k] = scope.$parent.myScrollOptions[i][k];
                         }
-                    }
+                  }
                 }
             }
 
