@@ -552,13 +552,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		//Map the room status to the view expected format
 		$scope.getRoomStatusMapped = function(roomstatus, fostatus, roomNo) {
 			var mappedStatus = "";
-			if (roomstatus === "READY" && fostatus === "VACANT") {
+			if(roomNo == '' || roomNo == null) {
+				mappedStatus = 'no-number';
+			} else if (roomstatus === "READY" && fostatus === "VACANT") {
 				mappedStatus = 'ready';
 			} else if(roomstatus === 'NOT READY') {
 				mappedStatus = "not-ready";
-			} else if(roomNo == '' || roomNo == null) {
-				mappedStatus = 'no-number';
-			}
+			} 
 			return mappedStatus;
 		};
 
@@ -779,13 +779,17 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		};
 
 
-		$scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly, serviceStatus) {
+		$scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly, serviceStatus, room) {
 			var mappedStatus = "room-number";
 
 			if (serviceStatus) {
 				if (serviceStatus === 'OUT_OF_SERVICE' || serviceStatus === 'OUT_OF_ORDER') {
 					return "room-grey";
 				}
+			}
+
+			if(!room) {
+				return "no-number";
 			}
 
 			if (reservation_status === 'CHECKING_IN') {
@@ -1002,10 +1006,10 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.$watch('textInQueryBox', function(newVal) {
 			$scope.searchWords = [];
 			if(newVal.length >= 2) {
-				if (newVal.indexOf(' ') != -1) {
-					$scope.searchWords = newVal.split(' ');
-				} else if (newVal.indexOf(',') != -1) {
+				if (newVal.indexOf(',') != -1) {
 					$scope.searchWords = newVal.split(',');
+				} else if (newVal.indexOf(' ') != -1) {
+					$scope.searchWords = newVal.split(' ');
 				} else {
 					$scope.searchWords.push(newVal);
 				}

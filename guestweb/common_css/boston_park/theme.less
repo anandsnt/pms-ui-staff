@@ -6,7 +6,7 @@ html,body{
   min-height:100% !important;
 }
 body{
-     background-color: #222222;
+    background-color:#F0EEE3;
 }
 .back-text{
     color:#fff !important;
@@ -14,13 +14,13 @@ body{
 a,a:hover,.main-text,
 .res-date,
 .footer-sub-text,.footer-sub-text:hover,.phone-label{
-    color:#fff;
+    color:#363d40;
 }
 .sub-main-text{
-    color:#fff;
+    color:#363d40;
 }
 .header-bar{
-   
+    background:#013758;
 }
 .logo-image {
     max-width :100%;
@@ -31,17 +31,17 @@ a,a:hover,.main-text,
 .balance-amount,.phone-text,
 .phone-text:hover,.request-text,
 .error-text {
-    color: #fff !important;
+    color: #363d40 !important;
 }
 .view-bill{
-    color:#fff;
+    color:#363d40;
 }
 .sub-text,.sub-text:hover,.query-text,.query-text:hover,.light-text{
-    color: #fff !important;
+    color: #363d40 !important;
 }
 .btn,.btn:hover{
-    background:#C2BFC1;
-    color:@black;
+    background:#A5884A;
+    color:@white;
 }
 .dual-button{
   font-size:35px;
@@ -53,19 +53,19 @@ a,a:hover,.main-text,
   padding:4%;
 }
 .dark-button,.dark-button:hover{
-    background: #ACABAC !important;
+    background: #8F7235 !important;
 }
 .light-button,.light-button:hover{
-    background: #C2BFC1 !important;
+    background: #A5884A !important;
 }
 .checkouttime1,.checkouttime1:hover{
-    background: #DADADA;
+    background: #B3975B;
 }
 .checkouttime2,.checkouttime2:hover{
-    background: #C2BFC1;
+    background: #A5884A;
 }
 .checkouttime3,.checkouttime3:hover{
-    background: #ACABAC;
+    background: #8F7235;
 }
 .no-thanks,.no-thanks:hover{
     color:fff !important;
@@ -80,14 +80,14 @@ a,a:hover,.main-text,
   line-height:1.2;
 }
 .down-arrow-button{
-    background-image:url('/assets/guestweb/common_images/white/down_arrow.png'); 
+    background-image:url('/assets/guestweb/common_images/black/down_arrow.png'); 
 }
 .right-arrow-button{
-    background-image:url('/assets/guestweb/common_images/white_arrow.png'); 
+    background-image:url('/assets/guestweb/common_images/black/right_arrow.png'); 
 }
 
 .upgrade-details .upgrades-btn {
-    background: #C2BFC1;
+    background: #A5884A;
 }
 
 .proceed-to-checkin {
@@ -96,25 +96,7 @@ a,a:hover,.main-text,
 .upgrades-label{
     color:#BA7A55;
 }
-textarea.sub-text, textarea.sub-text:hover{
-  color:#000 !important;
-}
-.checkout-icon{
-  background-image:url(/assets/guestweb/common_images/checkout-now-black.png);
-}
-.late-checkout-icon{
-  background-image:url(/assets/guestweb/common_images/late-checkout-black.png); 
-}
-.circle-bg {
-    background: url(/assets/guestweb/common_images/black/circle-bg.png) center top no-repeat;
-  }
-  .accept-charge-icon {
-    background-image: url(/assets/guestweb/common_images/black/creditcard_icon.png);
-}
 
-.accept-charge-icon, .checkout-icon, .late-checkout-icon, .upgrade-icon{
-  width:50px;
-}
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
@@ -127,7 +109,7 @@ textarea.sub-text, textarea.sub-text:hover{
 }
 
 .pickadate-cell .pickadate-active {
-  background-color: #ACABAC !important;
+  background-color: #A5884A !important;
   color:#fff !important;
 }
 .pickadate-head{
@@ -148,7 +130,7 @@ textarea.sub-text, textarea.sub-text:hover{
 .pickadate-cell .pickadate-disabled,
 .pickadate-cell .pickadate-enabled,
 .pickadate-cell .pickadate-outofrange-disabled {
-  background-color: #DADADA;
+  background-color: #EEEBE8;
 }
 
 .pickadate-cell .pickadate-disabled,
@@ -158,13 +140,13 @@ textarea.sub-text, textarea.sub-text:hover{
 
 
 .pickadate-cell li {
-  border: 1px solid #E6E6E6;
+  border: 1px solid #FFF;
 }
 .pickadate a:visited, .pickadate a {
   color: #666666;
 }
 .date-picker-header{
-  background-color: #222222;
+  background-color: #A5884A;
 }
 .calendar-back {
   background-image: url('/assets/guestweb/common_images/back_icon.png');
@@ -176,7 +158,7 @@ textarea.sub-text, textarea.sub-text:hover{
 }
 
 .pickadate-prev,.pickadate-next,.pickadate-prev:hover,.pickadate-next:hover{
-  color:#ACABAC !important;
+  color:#611b12 !important;
 }
 
 .date-picker-wrap {
@@ -195,29 +177,20 @@ textarea.sub-text, textarea.sub-text:hover{
   color:#fff;
 }
 .logo-image {
-        margin: 3% 0px !important;
-        max-width: 110px;
-    }
+        margin:1% auto!important;
+        max-width: unset;
+}
+.res-details-heading, .res-details-heading:hover{
+  color:#917437;
+}
 @media (max-width: 990px) {
     .logo-image {
         margin: 9% auto 7%;
-        max-width: 110px;
+        max-width: unset;
     }
     .back-to-checkout{
         display:none;
     }
-     .hide-in-desktop{
-      display:block;
-    }
-    .btn-template, .dual-button{
-       font-size:25px;
-    }
-}
-@media (min-width:768px){
-  .checkout-alone-button {
-    float: left;
-    margin-left: 10px;
-  }
 }
 @media (max-width: 480px){
   .main-text{
@@ -233,13 +206,14 @@ textarea.sub-text, textarea.sub-text:hover{
      font-size:5.3vw;
   }
   .logo-image {
-     max-width:110px;
+     max-width:200px;
+     margin:3% auto!important;
   }
   .dual-button{
     font-size:32px;
   }
-  .btn-template{
-    font-size:35px;
+  .section-container{
+     padding-bottom:0px;
   }
 
 }
