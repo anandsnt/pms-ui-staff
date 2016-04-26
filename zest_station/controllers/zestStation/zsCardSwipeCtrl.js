@@ -97,9 +97,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                      "is_kiosk":true,
                      'signature':signature
                  };
-                setTimeout(function(){
-                    $scope.invokeApi(zsTabletSrv.checkInGuest, checkinParams, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback); 
-                },500);
+                  $scope.afterGuestCheckinCallback({'status':'success'});
+                // setTimeout(function(){
+                //     $scope.invokeApi(zsTabletSrv.checkInGuest, checkinParams, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback); 
+                // },500);
                 
         };
         $scope.clearSignature = function(){
@@ -346,7 +347,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 console.info('successfulCheckIn: ',successfulCheckIn);
                 //detect if coming from email input
                 if (haveValidGuestEmail && successfulCheckIn){
-                        $state.go('zest_station.check_in_keys');
+                        $state.go('zest_station.check_in_keys',{'mode':zsModeConstants.CHECKIN_MODE});
                     return;
                 } else if (!successfulCheckIn) {
                     console.warn(response);

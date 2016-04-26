@@ -251,7 +251,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var customRateSelected = (parseInt($scope.groupConfigData.summary.rate) === -1),
 				isBorrowedRoomType = roomType.can_edit === false;
 
-			if (customRateSelected || isBorrowedRoomType) {
+			if ($scope.shouldShowQuadrupleEntryRow(roomType)) {
+				return true;
+			}
+			else if (customRateSelected || isBorrowedRoomType) {
 				var list_of_triples = _.pluck(roomType.dates, 'triple');
 
 				//throwing undefined items
@@ -284,7 +287,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 					return (typeof element !== "undefined");
 				});
 
-				return (list_of_quadruples.length > 0 && $scope.shouldShowTripleEntryRow(roomType));
+				return (list_of_quadruples.length > 0);
 			} else {
 				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
 			}
@@ -1474,9 +1477,14 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				});
 				$scope.$parent.myScroll[RATE_GRID_SCROLL].on('scroll', function() {
 					var xPos = this.x;
-					var yPos = this.y;
-					$scope.$parent.myScroll[RATE_TIMELINE].scrollTo(xPos, 0);
-					$scope.$parent.myScroll[BLOCK_SCROLL].scrollTo(0, yPos);
+						var yPos = this.y;
+
+
+
+						$scope.$parent.myScroll[RATE_TIMELINE].scrollTo(xPos, 0);
+						$scope.$parent.myScroll[BLOCK_SCROLL].scrollTo(0, yPos);
+
+
 				});
 			} else {
 				$timeout(setScrollListner, 1000);
@@ -1493,7 +1501,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
 		var refreshScroller = function() {
 			$scope.refreshScroller(BLOCK_SCROLL);
-			$scope.refreshScroller(RATE_TIMELINE);
+			//CICO-27063 - scroll issue
+			// $scope.refreshScroller(RATE_TIMELINE);
 			$scope.refreshScroller(RATE_GRID_SCROLL);
 		};
 

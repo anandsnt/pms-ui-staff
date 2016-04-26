@@ -13,16 +13,16 @@
     <div class="statement-header">
         <div class="guest-info">
             <strong>{{printData.card_details.name}}</strong><br>
-            {{printData.card_details.fax}}<br ng-if="printData.card_details.fax"/>
             {{printData.card_details.address_line}}<br ng-if="printData.card_details.address_line"/>
             {{printData.card_details.street}}<br ng-if="printData.card_details.street"/>
             {{printData.card_details.city_adress}}<br ng-if="printData.card_details.city_adress"/>
-            {{printData.card_details.country}}
+            {{printData.card_details.country}}<br ng-if="printData.card_details.country"/>
+            {{printData.card_details.fax}}
         </div>
         <div class="statement-info">
             <p class="statement-meta"><strong translate>STATEMENT_DATE</strong>{{printData.statement_date}}</p>
-            <p class="statement-meta" ng-if="printData.corporate_id"><strong translate>CORPORATE_ID</strong>{{printData.corporate_id}}</p>
-            <p class="statement-meta" ng-if="printData.iata_no"><strong translate>IATA_NO</strong>{{printData.iata_no}}</p>
+            <p class="statement-meta" ng-if="printData.account_type === 'COMPANY'"><strong translate>CORPORATE_ID</strong>{{printData.corporate_id}}</p>
+            <p class="statement-meta" ng-if="printData.account_type === 'TRAVELAGENT'"><strong translate>IATA_NO</strong>{{printData.iata_no}}</p>
             <p class="statement-meta"><strong translate>INVOICE_NO</strong>{{printData.invoice_no}}</p>
             <p class="statement-meta"><strong translate>PAYMENT_DUE_DAYS</strong>{{printData.payment_due_days}}</p>
         </div>
@@ -138,13 +138,13 @@
                 <tr>
                     <td>Total</td>
                     <td>
-                        {{currencySymbol}}{{printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo}}
+                        {{currencySymbol}}{{printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo}}
                     </td>
                     <td>
                         {{currencySymbol}}{{printData.extended_tax_breakdown.total_net_amount | number: precisonTwo}}
                     </td>
                     <td>
-                        {{currencySymbol}}{{printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo}}
+                        {{currencySymbol}}{{printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo}}
                     </td>
                 </tr>
             </tfoot>

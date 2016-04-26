@@ -6,19 +6,20 @@ sntRover
 			replace: true,
 			scope: {
 				label: '@',
+				onUpdate: '=',
 				data: '=',
 				options: '@'
 			},
 			controller: function($scope, $element, $attrs) {
 				BaseCtrl.call(this, $scope);
 
-				var options = $scope.$eval($attrs.options);
+				var options = $scope.$eval($attrs.options) || {};
 
 				/**/
 
 				$scope.toggleView = function(bool) {
-					$scope.closed = typeof bool === 'boolean' ? bool : ! $scope.closed;
-					$scope.refreshScroller( $scope.scrollKey );
+					$scope.closed = typeof bool === typeof true ? bool : ! $scope.closed;
+					$timeout($scope.onUpdate, 100);
 				};
 
 				$scope.toggleSelectAll = function() {
@@ -34,16 +35,14 @@ sntRover
 				$scope.onSearchChange = function() {
 					updateData( 'filteredOut', function(item, key) {
 						var search    = $scope.search.toLowerCase(),
-							nameEmail = (item[options.key] || item[options.altKey]).toLowerCase();
+							keyValue = (item[options.key] || item[options.altKey]).toLowerCase();
 
-						if ( search === '' || nameEmail.indexOf(search) >= 0 ) {
+						if ( search === '' || keyValue.indexOf(search) >= 0 ) {
 							item[key] = false;
 						} else {
 							item[key] = true;
 						}
 					});
-
-					$scope.refreshScroller( $scope.scrollKey );
 				};
 
 				$scope.toggleSelection = function(item) {
@@ -67,7 +66,7 @@ sntRover
 					var items = _.where($scope.data, { 'selected': true });
 
 					if ( items.length === 0 ) {
-						$scope.value = 'Choose ' + $scope.label;
+						$scope.value = options.defaultValue || 'Choose ' + $scope.label;
 					} else if ( items.length === 1 ) {
 						$scope.value = items[0][options.key] || items[0][options.altKey];
 					} else if ( items.length < $scope.data.length ) {
@@ -85,10 +84,11 @@ sntRover
 					$scope.selectAll = typeof options.selectAll === 'boolean' ? options.selectAll : false;
 					$scope.hasSearch = typeof options.hasSearch === 'boolean' ? options.hasSearch : false;
 
+					$scope.key = options.key;
+					$scope.altKey = options.altKey;
+
 					if ( $scope.selectAll ) {
 						updateData( 'selected', true );
-					} else {
-						updateData( 'selected', false );
 					};
 
 					if ( $scope.hasSearch ) {
@@ -97,15 +97,23 @@ sntRover
 					};
 
 					updateSelectedValue();
-
-					$scope.scrollKey = 'key-' + Date.now();
-
-					$scope.setScroller($scope.scrollKey, {
-					    preventDefault: false
-					});
 				};
 
 				init();
+
+				var unWatchData = $scope.$watch('data', function () {
+					updateSelectedValue();
+					$scope.toggleView(true);
+				});
+
+				var unWatchOptions = $scope.$watch('options', function () {
+					updateSelectedValue();
+					$scope.toggleView(true);
+				});
+
+				// destroy the $watch when the $scope is destroyed
+				$scope.$on('$destroy', unWatchData);
+				$scope.$on('$destroy', unWatchOptions);
 			}
 		}
 	}])

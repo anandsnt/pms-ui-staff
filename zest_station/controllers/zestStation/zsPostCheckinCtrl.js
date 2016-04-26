@@ -162,7 +162,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         
         $scope.skipEmailEntryAfterSwipe = function(){
             $state.skipCheckinEmail = true;
-            $state.go('zest_station.check_in_keys');
+            $state.go('zest_station.check_in_keys',{'mode':zsModeConstants.CHECKIN_MODE});
         };
         
         $scope.send = function(){
@@ -233,17 +233,28 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         
         $scope.navToHome = function(){
-		$state.go ('zest_station.home');
+           //update workstation station. I cant find anyother suitable place
+            //the above codes needs to refactored
+            if($scope.zestStationData.wsIsOos){
+                   //update work station status
+                   $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
+                   $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
+                   $state.go('zest_station.oos');
+            }
+                else{
+                     $state.go ('zest_station.home');
+            };
+		  
         };
         $scope.navToPrev = function(){
-                $state.go('zest_station.check_in_keys');
+                $state.go('zest_station.check_in_keys',{'mode':zsModeConstants.CHECKIN_MODE});
         };
         
         $scope.reEncodeKey = function(){
             if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
                 $state.go('zest_station.pickup_keys');
             } else {
-		$state.go ('zest_station.check_in_keys');
+		$state.go ('zest_station.check_in_keys',{'mode':zsModeConstants.CHECKIN_MODE});
             }
         };
         
@@ -266,7 +277,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                     $state.selectedReservation.guest_details.email = $state.input.email;
                     $state.input.lastEmailValue = $state.input.email;
                     if ($scope.from === 'card-swipe' && $scope.at === 'input-email'){
-                        $state.go('zest_station.check_in_keys');
+                        $state.go('zest_station.check_in_keys',{'mode':zsModeConstants.CHECKIN_MODE});
                     } else {//at the end of check-in and now updating email address
                         showNavButtons();
                         $state.from = 'deliver-registration';
@@ -455,18 +466,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             } else if (current === 'zest_station.edit_registration_email'){
                 $scope.setupEmailEdit();
             }
-
-            //update workstation station. I cant find anyother suitable place
-            //the above codes needs to refactored
-            if($scope.zestStationData.wsIsOos){
-                   //update work station status
-                   $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
-                   $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
-            }
-                else{
-                    //do nothing
-            };
-            
         };
         $scope.updateSubHeadingTextForLastConfirmPage = function(){
             if($state.selectedReservation.printSuccess == true){
