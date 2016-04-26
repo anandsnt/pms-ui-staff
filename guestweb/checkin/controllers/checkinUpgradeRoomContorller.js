@@ -26,14 +26,20 @@
 
     $scope.isFetching     = false;
     if(response.status === 'failure') {
-      $rootScope.netWorkError = true;
+      //$rootScope.netWorkError = true;
+      //we needn't stop checkin process even if error occurs in fetching upgrades
+      //in this case we go to next screen
+       $scope.noThanksClicked();
     }
     else {
       $scope.slides = response.data;
     }
   },function(){
-    $rootScope.netWorkError = true;
+    //$rootScope.netWorkError = true;
     $scope.isFetching = false;
+    //we needn't stop checkin process even if error occurs in fetching upgrades
+    //in this case we go to next screen
+    $scope.noThanksClicked();
   });
 
   // upgrade button clicked
