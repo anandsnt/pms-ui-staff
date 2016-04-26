@@ -37,15 +37,7 @@ sntZestStation.controller('zsHomeCtrl', [
             });
 	};
         
-        var appWentToOOS = false;//no other way to handle this
-        //oos is been called from here and there, i can't track like this
-        if($scope.zestStationData.wsIsOos &&  appWentToOOS){
-                //update work station status
-                $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
-                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
-                appWentToOOS = true;
-                $state.go('zest_station.oos');
-        }
+        
 	/**
 	 * when we clicked on checkout from home screen
 	 */
@@ -530,18 +522,30 @@ sntZestStation.controller('zsHomeCtrl', [
         };
     
     
+    var checkForOOS = function(){
+        if($scope.zestStationData.wsIsOos){
+                //update work station status
+                $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
+                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{
+                    'status':'out-of-order',
+                    'reason':$scope.zestStationData.workstationOooReason
+                });
+                $state.go('zest_station.oos');
+        }
+    };
+    
     $scope.init = function(){
         //reset early check-in flags
-        $state.reservation_in_early_checkin_window = false;
+        $scope.zestStationData.reservation_in_early_checkin_window = false;
         $state.earlyCheckinPurchased = false;
-        $state.is_early_prepaid = false;
-        $state.earlyCheckinOfferId = null;
+        $scope.zestStationData.is_early_prepaid = false;
         
         $state.qr_code = null;
         $state.search = false;
         //for change into default language after 120sec
         $scope.startLanguageCounter();
         $scope.resetFlags();
+        checkForOOS();
         var current = $state.current.name;
         if (current === 'zest_station.admin-screen'){
            //do nothing
