@@ -1813,7 +1813,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		var touchedReport;
 
-		$scope.returnItem = function(item) {
+		$scope.returnuiChosenReport = function(item) {
 			touchedReport = item;
 		};
 
