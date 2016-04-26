@@ -153,4 +153,52 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	title: 'Feature not available'
 	});
 
+	$stateProvider.state('externalCheckinVerification', {
+		url: '/externalCheckinVerification',
+		templateUrl: '/assets/common_templates/partials/MGM/gwExternalCheckin.html',
+		controller: 'externalCheckinVerificationViewController',
+		title: 'External Check in verification'
+	}).state('guestCheckinTurnedOff',{
+	 	url: '/guestCheckinTurnedOff',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwExternalCheckInTurnedOff.html',
+	 	title: 'Check-in'
+	 }).state('birthDateDetails', {
+		url: '/birthDateDetails',
+		templateUrl: '/assets/common_templates/partials/MGM/gwBirthDataDetails.html',
+		controller: 'birthDateDetailsController',
+		title: 'Birthdate'
+	}).state('promptGuestDetails', {
+		url: '/promptGuestDetails',
+		templateUrl: '/assets/common_templates/partials/MGM/gwPromptGuestDetails.html',
+		controller: 'guestDetailsController',
+		title: 'Guest Details'
+	}).state('guestNotEligible', {
+		url: '/guestNotEligible',
+		templateUrl: '/assets/common_templates/partials/MGM/gwGuestNotEligible.html',
+		title: 'Guest Details'
+	});
+
+
+	$stateProvider.state('checkinCcVerification', {
+		url: '/checkinCcVerification',
+		templateUrl: '/assets/common_templates/partials/MGM/checkinCCAddition.html',
+		controller: 'checkinCcVerificationController',
+		title: 'CC verification'
+	}).state('emailAddition', {
+		url: '/emailAddition/:isFrom',
+		templateUrl: '/assets/common_templates/partials/MGM/gwEmailEntry.html',
+		controller: 'emailEntryController',
+		title: 'E-mail entry'
+	}).state('mobileNumberAddition', {
+		url: '/mobileNumberAddition',
+		templateUrl: '/assets/common_templates/partials/MGM/gwPhoneNumberUpdate.html',
+		controller: 'mobileEntryController',
+		title: 'Phone number entry'
+	}).state('mobileNumberOptions', {
+		url: '/mobileNumberOptions',
+		templateUrl: '/assets/common_templates/partials/MGM/gwMobielNUmberOptions.html',
+		controller: 'mobileOptionsController',
+		title: 'Phone number entry'
+	});
+
 }]);
