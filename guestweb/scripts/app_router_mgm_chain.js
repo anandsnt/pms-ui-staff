@@ -175,7 +175,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		title: 'Phone number entry'
 	}).state('mobileNumberOptions', {
 		url: '/mobileNumberOptions',
-		templateUrl: '/assets/common_templates/partials/MGM/mobileNumberOptions.html',
+		templateUrl: '/assets/common_templates/partials/MGM/gwMobielNUmberOptions.html',
 		controller: 'mobileOptionsController',
 		title: 'Phone number entry'
 	});
