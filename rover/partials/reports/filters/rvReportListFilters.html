@@ -239,13 +239,13 @@
     label="Employees"
     on-update="refreshFilterScroll"
     data="uiChosenReport.empList.data"
-    options="{hasSearch: true, selectAll: true, key: 'full_name', altKey: 'email'}"></multi-option-selection>
+    options="uiChosenReport.empList.options"></multi-option-selection>
 
 <multi-option-selection ng-show="uiChosenReport.hasGeneralOptions && uiChosenReport.hasGeneralOptions.data.length"
     label="Option(s)"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasGeneralOptions.data"
-    options="{hasSearch: false, selectAll: false, key: 'description'}"></multi-option-selection>
+    options="uiChosenReport.hasGeneralOptions.options"></multi-option-selection>
 
 <div class="entry search" ng-show="uiChosenReport.hasIncludeCompanyTa">
     <label>Company/TA</label>
@@ -263,7 +263,7 @@
     label="Guarantee Type(s)"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasGuaranteeType.data"
-    options="{hasSearch: true, selectAll: false, key: 'name'}"></multi-option-selection>
+    options="uiChosenReport.hasGuaranteeType.options"></multi-option-selection>
 
 
 <div class="entry" ng-show="uiChosenReport.hasByChargeGroup" ng-click="catchFauxSelectClick($event, 'hasByChargeGroup')">
@@ -300,14 +300,14 @@
     label="Rate Type"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasRateTypeFilter.data"
-    options="{hasSearch: true, selectAll: false, key: 'name'}"></multi-option-selection>
+    options="uiChosenReport.hasRateTypeFilter.options"></multi-option-selection>
 
 
 <multi-option-selection ng-show="uiChosenReport.hasRateFilter && uiChosenReport.hasRateFilter.data.length"
     label="Display(s)"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasRateFilter.data"
-    options="{hasSearch: true, selectAll: false, key: 'name'}"></multi-option-selection>
+    options="uiChosenReport.hasRateFilter.options"></multi-option-selection>
 
 
 
@@ -315,19 +315,19 @@
     label="Rate Type"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasDisplay.data"
-    options="{hasSearch: false, selectAll: false, key: 'description'}"></multi-option-selection>
+    options="uiChosenReport.hasDisplay.options"></multi-option-selection>
 
 <multi-option-selection ng-show="uiChosenReport.hasExclusions && uiChosenReport.hasExclusions.data.length"
     label="Exclude"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasExclusions.data"
-    options="{hasSearch: false, selectAll: false, key: 'description'}"></multi-option-selection>
+    options="uiChosenReport.hasExclusions.options"></multi-option-selection>
 
 <multi-option-selection ng-show="uiChosenReport.hasHoldStatus && uiChosenReport.hasHoldStatus.data.length"
     label="Hold Status(es)"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasHoldStatus.data"
-    options="{hasSearch: false, selectAll: false, key: 'name'}"></multi-option-selection>
+    options="uiChosenReport.hasHoldStatus.options"></multi-option-selection>
 
 <div class="entry" ng-show="uiChosenReport.hasAddonGroups.data.length" ng-click="catchFauxSelectClick($event, 'hasAddonGroups')">
     <label for="addon-groups">Add-On Group(s)</label>
@@ -371,13 +371,13 @@
     label="Reservation Status"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasReservationStatus.data"
-    options="{hasSearch: false, selectAll: true, key: 'status'}"></multi-option-selection>
+    options="uiChosenReport.hasReservationStatus.options"></multi-option-selection>
 
 <multi-option-selection ng-show="uiChosenReport.hasGuestOrAccountFilter && uiChosenReport.hasGuestOrAccountFilter.data.length"
     label="Guest/Account"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasGuestOrAccountFilter.data"
-    options="{hasSearch: false, selectAll: true, key: 'description'}"></multi-option-selection>
+    options="uiChosenReport.hasGuestOrAccountFilter.options"></multi-option-selection>
 
 <div class="entry" ng-show="uiChosenReport.sortByOptions">
     <label>Sort By</label>
@@ -397,55 +397,23 @@
     </div>
 </div>
 
-<div class="entry" ng-show="uiChosenReport.hasMarketsList" ng-click="catchFauxSelectClick($event, 'hasMarketsList')">
-    <label for="report-options">Market(s)</label>
-    <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasMarketsList.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasMarketsList)">{{ uiChosenReport.hasMarketsList.title }}</div>
-    <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasMarketsList.show }">
-        <label class="checkbox inline" ng-show="uiChosenReport.hasMarketsList.data.length > 1">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : uiChosenReport.hasMarketsList.selectAll }"></span>
-            <input type="checkbox" ng-model="uiChosenReport.hasMarketsList.selectAll" ng-change="fauxSelectChange(uiChosenReport, uiChosenReport.hasMarketsList, true)" name="room-filters"> Select All
-        </label>
-        <label class="checkbox inline" ng-repeat="market in uiChosenReport.hasMarketsList.data">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : market.selected}"></span>
-            <input type="checkbox" ng-model="market.selected" ng-change="fauxSelectChange(uiChosenReport, uiChosenReport.hasMarketsList)" name="room-filters"> {{ market.name }}
-        </label>
-    </div>
-</div>
-<!-- <multi-option-selection ng-show="uiChosenReport.hasGuestOrAccountFilter && uiChosenReport.hasGuestOrAccountFilter.data.length"
-    label="Guest/Account"
+<multi-option-selection ng-show="uiChosenReport.hasMarketsList && uiChosenReport.hasMarketsList.data.length"
+    label="Market(s)"
     on-update="refreshFilterScroll"
-    data="uiChosenReport.hasGuestOrAccountFilter.data"
-    options="{hasSearch: false, selectAll: true, key: 'description'}"></multi-option-selection> -->
+    data="uiChosenReport.hasMarketsList.data"
+    options="uiChosenReport.hasMarketsList.options"></multi-option-selection>
 
-<div class="entry" ng-show="uiChosenReport.hasSourcesList" ng-click="catchFauxSelectClick($event, 'hasSourcesList')">
-    <label for="report-options">Source(s)</label>
-    <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasSourcesList.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasSourcesList)">{{ uiChosenReport.hasSourcesList.title }}</div>
-    <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasSourcesList.show }">
-        <label class="checkbox inline" ng-show="uiChosenReport.hasSourcesList.data.length > 1">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : uiChosenReport.hasSourcesList.selectAll }"></span>
-            <input type="checkbox" ng-model="uiChosenReport.hasSourcesList.selectAll" ng-change="fauxSelectChange(uiChosenReport, uiChosenReport.hasSourcesList, true)" name="room-filters"> Select All
-        </label>
-        <label class="checkbox inline" ng-repeat="source in uiChosenReport.hasSourcesList.data">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : source.selected}"></span>
-            <input type="checkbox" ng-model="source.selected" ng-change="fauxSelectChange(uiChosenReport, uiChosenReport.hasSourcesList)" name="room-filters"> {{ source.name }}
-        </label>
-    </div>
-</div>
+<multi-option-selection ng-show="uiChosenReport.hasSourcesList && uiChosenReport.hasSourcesList.data.length"
+    label="Source(s)"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasSourcesList.data"
+    options="uiChosenReport.hasSourcesList.options"></multi-option-selection>
 
-<div class="entry" ng-show="uiChosenReport.hasOriginsList" ng-click="catchFauxSelectClick($event, 'hasOriginsList')">
-    <label for="report-options">Origin(s)</label>
-    <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasOriginsList.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasOriginsList)">{{ uiChosenReport.hasOriginsList.title }}</div>
-    <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasOriginsList.show }">
-        <label class="checkbox inline" ng-show="uiChosenReport.hasOriginsList.data.length > 1">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : uiChosenReport.hasOriginsList.selectAll }"></span>
-            <input type="checkbox" ng-model="uiChosenReport.hasOriginsList.selectAll" ng-change="fauxSelectChange(uiChosenReport, uiChosenReport.hasOriginsList, true)" name="room-filters"> Select All
-        </label>
-        <label class="checkbox inline" ng-repeat="origin in uiChosenReport.hasOriginsList.data">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : origin.selected}"></span>
-            <input type="checkbox" ng-model="origin.selected" ng-change="fauxSelectChange(uiChosenReport, uiChosenReport.hasOriginsList)" name="room-filters"> {{ origin.name }}
-        </label>
-    </div>
-</div>
+<multi-option-selection ng-show="uiChosenReport.hasOriginsList && uiChosenReport.hasOriginsList.data.length"
+    label="Origin(s)"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasOriginsList.data"
+    options="uiChosenReport.hasOriginsList.options"></multi-option-selection>
 
 <div class="entry" ng-show="uiChosenReport.hasMinRevenue">
     <label>Minimum Revenue</label>
@@ -457,33 +425,15 @@
     <input ng-model="uiChosenReport.hasMinRoomNights.data" value="" placeholder="Enter No." type="number" limit-input-range="{'from': 0}" />
 </div>
 
-<div class="entry" ng-show="uiChosenReport.hasShow.data.length" ng-click="catchFauxSelectClick($event, 'hasShow')">
-    <label for="report-options">Show</label>
-    <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasShow.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasShow)">{{ uiChosenReport.hasShow.title }}</div>
-    <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasShow.show }">
-        <label class="checkbox inline" ng-show="uiChosenReport.hasShow.data.length > 1">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : uiChosenReport.hasShow.selectAll }"></span>
-            <input type="checkbox" ng-model="uiChosenReport.hasShow.selectAll" ng-change="fauxSelectChange(uiChosenReport, uiChosenReport.hasShow, true)" name="room-filters"> Both
-        </label>
-        <label class="checkbox inline" ng-repeat="show in uiChosenReport.hasShow.data">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : show.selected }"></span>
-            <input type="checkbox" ng-model="show.selected" ng-change="fauxSelectChange(uiChosenReport, uiChosenReport.hasShow)" name="room-filters"> {{ show.description }}
-        </label>
-    </div>
-</div>
+<multi-option-selection ng-show="uiChosenReport.hasShow && uiChosenReport.hasShow.data.length"
+    label="Show"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasShow.data"
+    options="uiChosenReport.hasShow.options"></multi-option-selection>
 
-<div class="entry" ng-show="uiChosenReport.hasChargeTypes.data.length" ng-click="catchFauxSelectClick($event, 'hasChargeTypes')">
-    <label for="report-options">Charge Type</label>
-    <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasChargeTypes.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasChargeTypes)">{{ uiChosenReport.hasChargeTypes.title }}</div>
-    <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasChargeTypes.show }">
-        <label class="checkbox inline" ng-show="uiChosenReport.hasChargeTypes.data.length > 1">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : uiChosenReport.hasChargeTypes.selectAll }"></span>
-            <input type="checkbox" ng-model="uiChosenReport.hasChargeTypes.selectAll" ng-change="fauxSelectChange(uiChosenReport, uiChosenReport.hasChargeTypes, true)" name="room-filters"> Both
-        </label>
-        <label class="checkbox inline" ng-repeat="show in uiChosenReport.hasChargeTypes.data">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : show.selected }"></span>
-            <input type="checkbox" ng-model="show.selected" ng-change="fauxSelectChange(uiChosenReport, uiChosenReport.hasChargeTypes)" name="room-filters"> {{ show.description }}
-        </label>
-    </div>
-</div>
+<multi-option-selection ng-show="uiChosenReport.hasChargeTypes && uiChosenReport.hasChargeTypes.data.length"
+    label="Show"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasChargeTypes.data"
+    options="uiChosenReport.hasChargeTypes.options"></multi-option-selection>
 
