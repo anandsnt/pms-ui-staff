@@ -13,11 +13,11 @@
     <div class="statement-header">
         <div class="guest-info">
             <strong>{{printData.card_details.name}}</strong><br>
-            {{printData.card_details.fax}}<br ng-if="printData.card_details.fax"/>
             {{printData.card_details.address_line}}<br ng-if="printData.card_details.address_line"/>
             {{printData.card_details.street}}<br ng-if="printData.card_details.street"/>
             {{printData.card_details.city_adress}}<br ng-if="printData.card_details.city_adress"/>
-            {{printData.card_details.country}}
+            {{printData.card_details.country}}<br ng-if="printData.card_details.country"/>
+            {{printData.card_details.fax}}
         </div>
         <div class="statement-info">
             <p class="statement-meta"><strong translate>STATEMENT_DATE</strong>{{printData.statement_date}}</p>
