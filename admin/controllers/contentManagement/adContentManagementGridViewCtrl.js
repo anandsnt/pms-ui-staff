@@ -4,7 +4,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 
-   $scope.selectedView = "home screen";
+   $scope.selectedView = "home screens";
    $scope.fromSection = "all";
    $scope.fromCategory = "all";
    $scope.fromHomeScreen = "all";
