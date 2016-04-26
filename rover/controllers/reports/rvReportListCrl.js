@@ -14,23 +14,32 @@ sntRover.controller('RVReportListCrl', [
 
         BaseCtrl.call(this, $scope);
 
-        var LIST_ISCROLL_ATTR = 'report-list-scroll';
+        var REPORT_LIST_SCROLL = 'report-list-scroll',
+            REPORT_FILTERS_SCROLL = 'report-filters-scroll';
 
-        $scope.setScroller(LIST_ISCROLL_ATTR, {
-            preventDefault: false
-        });
-        $scope.setScroller('reportUserFilterScroll');
+        $scope.refreshFilterScroll = function(scrollUp) {
+            $scope.refreshScroller(REPORT_FILTERS_SCROLL);
+            if ( !!scrollUp && $scope.$parent.myScroll.hasOwnProperty(REPORT_FILTERS_SCROLL) ) {
+                $scope.$parent.myScroll[REPORT_FILTERS_SCROLL].scrollTo(0, 0, 100);
+            };
+        }
 
-        /**
-         * inorder to refresh after list rendering
-         */
-        var listRendered = $scope.$on("REPORT_LIST_RENDERED", function() {
-            $scope.refreshScroller( LIST_ISCROLL_ATTR );
-        });
-        
-        $scope.$on( '$destroy', listRendered );
+        $scope.refreshAllScroll = function() {
+            $scope.refreshScroller(REPORT_LIST_SCROLL);
+            $scope.refreshScroller(REPORT_FILTERS_SCROLL);
+        };
 
+        var setScroller = function() {
+            var scrollerOptions = {
+                tap: true,
+                preventDefault: false
+            };
 
+            $scope.setScroller(REPORT_LIST_SCROLL, scrollerOptions);
+            $scope.setScroller(REPORT_FILTERS_SCROLL, scrollerOptions);
+        };
+
+        setScroller();
 
         /**
          *   Post processing fetched data to modify and add additional data
@@ -38,6 +47,8 @@ sntRover.controller('RVReportListCrl', [
          */
         var postProcess = function(report) {
             for (var i = 0, j = report.length; i < j; i++) {
+
+                report[i].filteredOut = false;
 
                 // apply icon class based on the report name
                 applyIconClass.init( report[i] );
@@ -97,48 +108,41 @@ sntRover.controller('RVReportListCrl', [
 
             // SUPER forcing scroll refresh!
             // 2000 is the delay for slide anim, so firing again after 2010
-            $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 100 );
-            $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 2010 );
+            $timeout( $scope.refreshAllScroll, 2010 );
         };
 
         postProcess( $scope.$parent.reportList );
 
 
         // show hide filter toggle
-        $scope.toggleFilter = function(e, reportItem) {
+        $scope.toggleFilter = function(e, report) {
             if ( e ) {
                 e.preventDefault();
                 e.stopPropagation();
             };
 
-            var toggle = function() {
-                reportItem.show_filter = reportItem.show_filter ? false : true;
-                $scope.refreshScroller( LIST_ISCROLL_ATTR );
-
-                // close any open 'FAUX_SELECT'
-                _.each($scope.$parent.reportList, function(thatReport, index) {
-                    if ( thatReport.id != reportItem.id ) {
-                        _.each(thatReport, function(value, key) {
-                            if ( !!value && value.type === 'FAUX_SELECT' ) {
-                                value.show = false;
-                            };
-                        });
-                    };
-                });
-
-                $scope.refreshScroller('reportUserFilterScroll');
-            };
 
             var callback = function() {
-                $scope.$emit( 'hideLoader' );
-                toggle();
+                if ( $scope.uiChosenReport ) {
+                    $scope.uiChosenReport.uiChosen = false;
+                }
+
+                report.uiChosen = true;
+                $scope.uiChosenReport = report;
+
+                $scope.setViewCol(2);
+
+                $timeout(function() {
+                    $scope.refreshFilterScroll('scrollUp');
+                    $scope.$emit( 'hideLoader' );
+                }, 1000);
             };
 
-            if ( !! reportItem.allFiltersProcessed ) {
-                toggle();
+            $scope.$emit( 'showLoader' );
+            if ( !! report.allFiltersProcessed ) {
+                callback();
             } else {
-                $scope.$emit( 'showLoader' );
-                reportUtils.findFillFilters( reportItem, $scope.$parent.reportList )
+                reportUtils.findFillFilters( report, $scope.$parent.reportList )
                     .then( callback );
             };
         };
@@ -158,13 +162,12 @@ sntRover.controller('RVReportListCrl', [
             mainCtrlScope.genReport();
         };
 
-
-        var serveRefresh = $scope.$on(reportMsgs['REPORT_LIST_SCROLL_REFRESH'], function() {
-            $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 100 );
-        });
+        // var serveRefresh = $scope.$on(reportMsgs['REPORT_LIST_SCROLL_REFRESH'], function() {
+        //     $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 100 );
+        // });
 
         // removing event listners when scope is destroyed
-        $scope.$on( '$destroy', serveRefresh );
+        // $scope.$on( '$destroy', serveRefresh );
 
         
     }
