@@ -23,6 +23,15 @@
         'reservation_id': $rootScope.reservationID
       };
       $scope.isFetching = true;
+
+      var updateGoogleAnalyticsRoomUpgradeFetchFailed = function() {
+        $window.ga('send', {
+          hitType: 'event',
+          eventCategory: 'Zestweb Room Upgrade',
+          eventAction: 'fetch failed',
+          eventLabel: 'Room Upgrade Fetch Failed'
+        });
+      };
       checkinRoomUpgradeOptionsService.fetch(data).then(function(response) {
 
         $scope.isFetching = false;
@@ -30,12 +39,7 @@
           //$rootScope.netWorkError = true;
           //we needn't stop checkin process even if error occurs in fetching upgrades
           //in this case we go to next screen
-          $window.ga('send', {
-            hitType: 'event',
-            eventCategory: 'Zestweb Room Upgrade',
-            eventAction: 'fetch failed',
-            eventLabel: 'Room Upgrade Fetch Failed'
-          });
+          updateGoogleAnalyticsRoomUpgradeFetchFailed();
           $scope.noThanksClicked();
         } else {
           $window.ga('send', {
@@ -51,12 +55,7 @@
         $scope.isFetching = false;
         //we needn't stop checkin process even if error occurs in fetching upgrades
         //in this case we go to next screen
-        $window.ga('send', {
-          hitType: 'event',
-          eventCategory: 'Zestweb Room Upgrade',
-          eventAction: 'fetch failed',
-          eventLabel: 'Room Upgrade Fetch Failed'
-        });
+        updateGoogleAnalyticsRoomUpgradeFetchFailed();
         $scope.noThanksClicked();
       });
 
@@ -75,12 +74,27 @@
           'room_no': roomNumber,
           'upgrade_room_type_id': upgradeRoomTypeId
         };
+        var updateGoogleAnalyticsRoomUpgradeFailed = function() {
+          $window.ga('send', {
+            hitType: 'event',
+            eventCategory: 'Zestweb Room Upgrade',
+            eventAction: 'Room upgrade Failed',
+            eventLabel: 'Room Upgrade failed'
+          });
+        };
         checkinRoomUpgradeService.post(data).then(function(response) {
 
           $scope.isFetching = false;
           if (response.status === "failure") {
             $rootScope.netWorkError = true;
+            updateGoogleAnalyticsRoomUpgradeFailed();
           } else {
+            $window.ga('send', {
+              hitType: 'event',
+              eventCategory: 'Zestweb Room Upgrade',
+              eventAction: 'Room upgrade success',
+              eventLabel: 'Room Upgrade succes'
+            });
             $rootScope.upgradesAvailable = false;
             $rootScope.ShowupgradedLabel = true;
             $rootScope.roomUpgradeheading = "Your new trip details";
@@ -91,6 +105,7 @@
         }, function() {
           $rootScope.netWorkError = true;
           $scope.isFetching = false;
+          updateGoogleAnalyticsRoomUpgradeFailed();
         });
 
 
