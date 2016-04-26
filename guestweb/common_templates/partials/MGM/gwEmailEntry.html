@@ -28,14 +28,16 @@
     <div class="row" ng-hide="isLoading || netWorkError || emailUpdated">
         <div class="col-md-4"></div>
         <div class="col-md-4 top-spacing sm-no-top-spacing section-container">
-            <div class="col-md-12 top-spacing section-container">
-                <p class="main-text">Enter Your E-mail Address</p>
-                <p class="sub-main-text">We use your e-mail address to send you your room number:</p>
-            </div>
-            <p class="sub-text pull-left margin-top-10">E-MAIL ADDRESS</p>
-            <input class="input-field padding-3" ng-model="guestDetails.email"></input>
-            <!--  submit button-->
-            <a class="btn btn-template margin-top-10" ng-click="emailSubmitted()">Continue</a>
+            <form>
+                <div class="col-md-12 top-spacing section-container">
+                    <p class="main-text">Enter Your E-mail Address</p>
+                    <p class="sub-main-text">We use your e-mail address to send you your room number:</p>
+                </div>
+                <p class="sub-text pull-left margin-top-10">E-MAIL ADDRESS</p>
+                <input class="input-field padding-3" ng-model="guestDetails.email"></input>
+                <!--  submit button-->
+                <input type="submit" class="btn btn-template margin-top-10" ng-click="emailSubmitted()" value="Continue" />
+            </form>
         </div>
         <div class="col-md-4">
         </div>

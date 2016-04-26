@@ -28,27 +28,29 @@
     <div class="row" ng-hide="isLoading || netWorkError || mobileUpdated">
         <div class="col-md-3"></div>
         <div class="col-md-6 top-spacing sm-no-top-spacing">
-            <div class="top-spacing section-container">
-                <p class="main-text">Enter Your Mobile Phone Number</p>
-                <div class="row">
-                    <p class="sub-text left-align">MOBILE PHONE NUMBER</p>
-                    <div class="eta-container country-container">
-                        <div class="select-style flag-container">
-                            <div class="flag {{ country_code}}"></div>
-                            <select ng-model="country_code" ng-change="countryChanged()" class="country-dropdown">
-                                <option ng-repeat="option in countryDetails" value="{{option.countrycode}}">{{option.name}}</option>
-                            </select>
+            <form>
+                <div class="top-spacing section-container">
+                    <p class="main-text">Enter Your Mobile Phone Number</p>
+                    <div class="row">
+                        <p class="sub-text left-align">MOBILE PHONE NUMBER</p>
+                        <div class="eta-container country-container">
+                            <div class="select-style flag-container">
+                                <div class="flag {{ country_code}}"></div>
+                                <select ng-model="country_code" ng-change="countryChanged()" class="country-dropdown">
+                                    <option ng-repeat="option in countryDetails" value="{{option.countrycode}}">{{option.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="dial-div">{{dial}}</div>
+                        <div class="mobile-container">
+                            <input type="tel" ng-model="guestDetails.mobile" class="col-xs-12 textBox bottom-margin-10 mobile-field" />
                         </div>
                     </div>
-                    <div class="dial-div">{{dial}}</div>
-                    <div class="mobile-container">
-                        <input type="tel" ng-model="guestDetails.mobile" class="col-xs-12 textBox bottom-margin-10 mobile-field" />
-                    </div>
                 </div>
-            </div>
-            <!--  submit button-->
-            <a class="btn btn-template" ng-click="mobileSubmitted()">Continue</a>
-            <a class="btn btn-template  margin-top-10 grey-btn" ng-click="continueClicked()"> Skip</a>
+                <!--  submit button-->
+                <input type="submit" class="btn btn-template" ng-click="mobileSubmitted()" value="Continue" />
+                <a class="btn btn-template  margin-top-10 grey-btn" ng-click="continueClicked()"> Skip</a>
+            </form>
         </div>
         <div class="col-md-3">
         </div>
