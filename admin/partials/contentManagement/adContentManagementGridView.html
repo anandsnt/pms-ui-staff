@@ -167,13 +167,13 @@
                         <td>{{gridItem.no_of_categories}}</td>
                         <td>{{gridItem.no_of_section_items}}</td>
                         <td >
-                            <div class="switch-button " ng-class="{'on':gridItem.status}">
+                            <div class="switch-button " ng-show="!gridItem.is_system_defined" ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
                         <td class="delete">
-                            <a  class="icons icon-delete large-icon" ng-click="deleteItem(gridItem.id)">Delete</a>
+                            <a  class="icons icon-delete large-icon" ng-show="!gridItem.is_system_defined" ng-click="deleteItem(gridItem.id)">Delete</a>
                         </td>
                     </tr>
                 </tbody>
@@ -224,13 +224,13 @@
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>                        
                         <td>{{gridItem.no_of_items}}</td>
                         <td >
-                            <div class="switch-button " ng-class="{'on':gridItem.status}">
+                            <div class="switch-button " ng-show="!gridItem.is_system_defined" ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
                         <td class="delete">
-                            <a  class="icons icon-delete large-icon" ng-click="deleteItem(gridItem.id)">Delete</a>
+                            <a  class="icons icon-delete large-icon" ng-show="!gridItem.is_system_defined" ng-click="deleteItem(gridItem.id)">Delete</a>
                         </td>
                     </tr>
                 </tbody>
@@ -289,13 +289,13 @@
                         <td>{{gridItem.screen_id}}</td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>                        
                         <td >
-                            <div class="switch-button " ng-class="{'on':gridItem.status}">
+                            <div class="switch-button " ng-show="!gridItem.is_system_defined" ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
                         <td class="delete">
-                            <a  class="icons icon-delete large-icon"ng-click="deleteItem(gridItem.id)">Delete</a>
+                            <a  class="icons icon-delete large-icon" ng-show="!gridItem.is_system_defined" ng-click="deleteItem(gridItem.id)">Delete</a>
                         </td>
                     </tr>
                 </tbody>

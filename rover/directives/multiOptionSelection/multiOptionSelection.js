@@ -8,12 +8,10 @@ sntRover
 				label: '@',
 				onUpdate: '=',
 				data: '=',
-				options: '@'
+				options: '='
 			},
 			controller: function($scope, $element, $attrs) {
 				BaseCtrl.call(this, $scope);
-
-				var options = $scope.$eval($attrs.options) || {};
 
 				/**/
 
@@ -23,8 +21,8 @@ sntRover
 				};
 
 				$scope.toggleSelectAll = function() {
-					$scope.selectAll = ! $scope.selectAll;
-					updateData( 'selected', $scope.selectAll );
+					$scope.options.selectAll = ! $scope.options.selectAll;
+					updateData( 'selected', $scope.options.selectAll );
 					updateSelectedValue();
 				};
 
@@ -34,7 +32,8 @@ sntRover
 
 				$scope.onSearchChange = function() {
 					updateData( 'filteredOut', function(item, key) {
-						var search    = $scope.search.toLowerCase(),
+						var options  = (typeof $scope.options == typeof {}) ? $scope.options : {},
+							search   = $scope.search.toLowerCase(),
 							keyValue = (item[options.key] || item[options.altKey]).toLowerCase();
 
 						if ( search === '' || keyValue.indexOf(search) >= 0 ) {
@@ -63,7 +62,8 @@ sntRover
 				};
 
 				function updateSelectedValue() {
-					var items = _.where($scope.data, { 'selected': true });
+					var options = (typeof $scope.options == typeof {}) ? $scope.options : {},
+						items   = _.where($scope.data, { 'selected': true });
 
 					if ( items.length === 0 ) {
 						$scope.value = options.defaultValue || 'Choose ' + $scope.label;
@@ -80,18 +80,17 @@ sntRover
 
 				var init = function() {
 					$scope.closed = true;
+					$scope.value  = '';
 
-					$scope.selectAll = typeof options.selectAll === 'boolean' ? options.selectAll : false;
-					$scope.hasSearch = typeof options.hasSearch === 'boolean' ? options.hasSearch : false;
+					var options   = (typeof $scope.options == typeof {}) ? $scope.options : {},
+						selectAll = (typeof options.selectAll == typeof true) ? options.selectAll : false,
+						hasSearch = (typeof options.hasSearch == typeof true) ? options.selectAll : false;
 
-					$scope.key = options.key;
-					$scope.altKey = options.altKey;
-
-					if ( $scope.selectAll ) {
+					if ( options.selectAll ) {
 						updateData( 'selected', true );
 					};
 
-					if ( $scope.hasSearch ) {
+					if ( options.hasSearch ) {
 						$scope.search = '';
 						updateData( 'filteredOut', false );
 					};
@@ -101,15 +100,8 @@ sntRover
 
 				init();
 
-				var unWatchData = $scope.$watch('data', function () {
-					updateSelectedValue();
-					$scope.toggleView(true);
-				});
-
-				var unWatchOptions = $scope.$watch('options', function () {
-					updateSelectedValue();
-					$scope.toggleView(true);
-				});
+				var unWatchData = $scope.$watch('data', init);
+				var unWatchOptions = $scope.$watch('options', init);
 
 				// destroy the $watch when the $scope is destroyed
 				$scope.$on('$destroy', unWatchData);
