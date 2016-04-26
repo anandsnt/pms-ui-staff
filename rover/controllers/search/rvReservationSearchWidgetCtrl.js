@@ -422,13 +422,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				//see if the new query is the substring of fetch term & the fetched results count < per_page param(which is set to be 100 now)
 				//If so we will do local filtering
 				//Also added the check whether there are multiple words in search text
-				if ($scope.textInQueryBox.indexOf(" ") == -1 && $scope.textInQueryBox.indexOf(",") == -1 && $scope.searchType === "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) === 0 && !$scope.firstSearch && $scope.results.length > 0 && RVSearchSrv.totalSearchResults <= $scope.searchPerPage) {
+				/*if ($scope.textInQueryBox.indexOf(" ") == -1 && $scope.textInQueryBox.indexOf(",") == -1 && $scope.searchType === "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) === 0 && !$scope.firstSearch && $scope.results.length > 0 && RVSearchSrv.totalSearchResults <= $scope.searchPerPage) {
 					applyFilters();
 
-				} else {
+				} else {*/
 					initPaginationParams();
 					$scope.fetchSearchResults();
-				}
+				//}
 				// we have changed data, so we are refreshing the scrollerbar
 				refreshScroller();
 			}

@@ -7,7 +7,12 @@ angular.module('sntRover').filter('highlightWords', function() {
 /**
 	* Function to highlight the search words in the given text
 */
-function transformTextToHighlight(replacableString, replaceableStrings) {
+function transformTextToHighlight(text, replaceableStrings) {
+	var regExpSpan = new RegExp("<span class='ui-match'>", "g")
+	var text = text.replace(regExpSpan, "")
+	regExpSpan = new RegExp("</span>", "g")
+	text = text.replace(regExpSpan, "")
+	var replacableString = text;
 	var spanAddedIndex = [];
 	replaceableStrings.forEach(function(element, index, array) {
 		var subString = "";
