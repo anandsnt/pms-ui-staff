@@ -833,23 +833,19 @@ angular.module('reportsModule')
             };
 
             function fillRoomTypeList (data) {
-                _.each(data, function(roomType){
-                    roomType.selected = true;
-                });
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
 
-                        __setData(report, 'hasRoomTypeFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Selecte Room Type(s)',
-                            title        : 'All Selected',
-                            data         : angular.copy( data )
-                        });
+                        report.hasRoomTypeFilter = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'name'
+                            }
+                        }
                     };
                 });
 
@@ -858,24 +854,20 @@ angular.module('reportsModule')
             };
 
             function fillRestrictionList (data) {
-                _.each(data, function(restriction){
-                    restriction.selected = true;
-                });
-
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RESTRICTION' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
 
-                        __setData(report, 'hasRestrictionListFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Restriction(s)',
-                            title        : 'All Selected',
-                            data         : angular.copy( data )
-                        });
+                        report.hasRestrictionListFilter = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'description',
+                                defaultValue: 'Select Restriction(s)'
+                            }
+                        }
                     };
                 });
 
@@ -980,31 +972,58 @@ angular.module('reportsModule')
 
                     if ( !! foundCG ) {
                         foundCG['filled'] = true;
-                        __setData(report, 'hasByChargeGroup', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundCG,
-                            show         : false,
-                            selectAll    : selected,
-                            defaultTitle : 'Select Groups',
-                            title        : selected ? 'All Selected' : 'Select Groups',
-                            data         : angular.copy( processedCGCC.chargeGroups )
-                        });
+                        report.hasByChargeGroup = {
+                            data: angular.copy( processedCGCC.chargeGroups ),
+                            options: {
+                                selectAll: selected,
+                                hasSearch: false,
+                                key: 'name'
+                            },
+                            affectsFilter: {
+                                name: 'hasByChargeCode',
+                                process: function(filter, selectedItems) {
+                                    _.each(filter.originalData, function (item) {
+                                        item.disabled = true;
+                                    });
+                                    /**/
+                                    _.each(filter.originalData, function (od) {
+                                        _.each(od.associcated_charge_groups, function (cg) {
+                                            _.each(selectedItems, function (si) {
+                                                if (cg.id === si.id) {
+                                                    od.disabled = false;
+                                                }
+                                            });
+                                        });
+                                    });
+                                    /**/
+                                    filter.updateData();
+                                }
+                            }
+                        }
                     };
 
                     foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' }) || _.find(report['filters'], { value: 'SHOW_CHARGE_CODES' });
 
                     if ( !!foundCC ) {
                         foundCC['filled'] = true;
-                        __setData(report, 'hasByChargeCode', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundCC,
-                            show         : false,
-                            selectAll    : selected,
-                            defaultTitle : 'Select Codes',
-                            title        : selected ? 'All Selected' : 'Select Codes',
-                            data         : angular.copy( processedCGCC.chargeCodes ),
-                            originalData : angular.copy( processedCGCC.chargeCodes )
-                        });
+                        report.hasByChargeCode = {
+                            data: angular.copy( processedCGCC.chargeCodes ),
+                            originalData: angular.copy( processedCGCC.chargeCodes ),
+                            options: {
+                                selectAll: selected,
+                                hasSearch: false,
+                                key: 'name',
+                            },
+                            updateData: function() {
+                                var enabled = [];
+                                _.each (this.originalData, function (od) {
+                                    if ( ! od.disabled ) {
+                                        enabled.push(od);
+                                    }
+                                });
+                                this.data = enabled;
+                            }
+                        }
                     };
                 });
 
