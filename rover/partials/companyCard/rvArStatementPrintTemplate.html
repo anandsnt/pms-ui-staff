@@ -63,7 +63,7 @@
                             {{statement.reservation_details.departure_date | date:dateFormat }}
                         </span>
                     </td>
-                    <td colspan="4">
+                    <td class="charges-table-container" colspan="4">
                         <table class="charges-table">
                             <tr ng-repeat="item in statement.reservation_details.charge_details">
                                 <td class="charge-date">{{item.date | date :dateFormat }}</td>
