@@ -292,7 +292,12 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.setThemeByName(theme);
             }
             $scope.language = theme;
-            $scope.loadTranslations(theme);
+            $scope.loadTranslations();
+            
+            if (!zestStationSettings.zest_lang.default_language){
+                zestStationSettings.zest_lang.default_language = 'English';
+            }
+            
             setDefaultLanguage();
             $scope.$emit('hideLoader');
         };
@@ -847,6 +852,7 @@ sntZestStation.controller('zsRootCtrl', [
         };
         var intLanguageSettings = function(){
             //$scope.selectedLanguage = 'English';
+            console.log('using default language: [ '+ zestStationSettings.zest_lang.default_language +' ]')
             $scope.selectedLanguage = getDefaultLangDisplayName(zestStationSettings.zest_lang.default_language);
             //$scope.langflag = 'flag-gb';
             

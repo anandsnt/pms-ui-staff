@@ -5,15 +5,17 @@ angular.module('sntRover').filter('highlightWords', function() {
 });
 
 /**
-	* Function to highlight the search words in the given text
-*/
+ * Function to highlight the search words in the given text
+ */
 function transformTextToHighlight(text, replaceableStrings) {
-	var regExpSpan = new RegExp("<span class='ui-match'>", "g")
-	var text = text.replace(regExpSpan, "")
-	regExpSpan = new RegExp("</span>", "g")
-	text = text.replace(regExpSpan, "")
+	var regExpSpan = new RegExp("<span class='ui-match'>", "gi");
+	var text = text.replace(regExpSpan, "");
+	regExpSpan = new RegExp("</span>", "gi");
+	text = text.replace(regExpSpan, "");
 	var replacableString = text;
 	var spanAddedIndex = [];
+	var singleMatchFound = false;
+	var singleMatchFoundIndex = 0;
 	replaceableStrings.forEach(function(element, index, array) {
 		var subString = "";
 		var subStringArray = [];
@@ -21,7 +23,10 @@ function transformTextToHighlight(text, replaceableStrings) {
 		var strSize = element.length;
 		var charToMatch = element.charAt(0);
 		var substringPos = [];
-		replacableString.split("").forEach(function(char, idx) {
+		var replacableStringArray = replacableString.split("");
+		for (var idx = 0; idx < replacableStringArray.length; idx++) {
+			char = replacableStringArray[idx];
+			//replacableString.split("").forEach(function(char, idx) {
 			var isAlreadyAdded = false;
 			if (spanAddedIndex.length > 0) {
 				spanAddedIndex.forEach(function(idxsAdded) {
@@ -36,12 +41,18 @@ function transformTextToHighlight(text, replaceableStrings) {
 				});
 			}
 			if (isAlreadyAdded)
-				return;
+				continue;
+
 			if (charToMatch.toLowerCase() == char.toLowerCase()) {
+				if (!singleMatchFound)
+					singleMatchFoundIndex = idx;
+				singleMatchFound = true;
 				subString += char;
 				charToMatch = element.charAt(indexToMatch + 1);
 				indexToMatch += 1;
+
 				if (indexToMatch > 0 && (strSize == indexToMatch)) {
+					singleMatchFound = false;
 					substringPos.push(idx - strSize);
 					subStringArray.push(subString);
 				}
@@ -49,8 +60,14 @@ function transformTextToHighlight(text, replaceableStrings) {
 				subString = "";
 				charToMatch = element.charAt(0);
 				indexToMatch = 0;
+				if (singleMatchFound) {
+					singleMatchFound = false;
+					idx = singleMatchFoundIndex;
+					singleMatchFoundIndex = 0;
+					continue;
+				}
 			}
-		});
+		};
 		var splitedString = [];
 		lastIdx = 0;
 		spanAddedIndex[index] = [];
@@ -68,13 +85,14 @@ function transformTextToHighlight(text, replaceableStrings) {
 					});
 				});
 			}
-			spanAddedIndex[index].push([idx + 1, idx + lastIdx + formatedString.length]);
+			var padding = 0;
+			padding = (spanAddedIndex[index].length) * (formatedString.length - strSize);
+
+			spanAddedIndex[index].push([idx + 1 + padding, idx + formatedString.length + padding]);
 			lastIdx = idx + strSize + 1;
 		});
 		splitedString.push(replacableString.substring(lastIdx, replacableString.length));
 		replacableString = splitedString.join("");
 	});
-
 	return replacableString;
-
-}
+};

@@ -436,7 +436,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.fetchSearchResults = function() {
 			var query = $scope.textInQueryBox.trim();
-			if ($scope.room_type_id === '' && $scope.escapeNull(query) === "" && $scope.escapeNull($stateParams.type) === "") {
+			var hasRoomTypeFilter = $scope.room_type_id === '' || !!$scope.room_type_id;
+			if (!hasRoomTypeFilter && $scope.room_type_id === '' && $scope.escapeNull(query) === "" && $scope.escapeNull($stateParams.type) === "") {
 				return false;
 			}
 			var dataDict = {};

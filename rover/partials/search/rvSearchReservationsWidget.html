@@ -35,7 +35,7 @@
         <!-- Add reservation -->
     	<a class="add-new-button" ui-sref="rover.reservation.search" ng-show="showAddNewGuestButton && showSearchResultsArea && textInQueryBox.length !== 0">+ New</a>
 	</form>
-	<div class="search-pagination" ng-show="totalSearchResults >= searchPerPage && results.length > 0">
+	<div class="search-pagination" ng-show="totalSearchResults >= searchPerPage && results.length > 0 && showSearchResultsArea">
 	    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
 	    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
 	    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalSearchResults}}</strong> items</p>
