@@ -63,7 +63,7 @@
         <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}">
             <!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
             <label for="group-total-rooms" translate>TOTAL_ROOMS</label>
-            <input tabindex="-1" id="group-total-rooms" value="{{getMaxOfBookedRooms()}}"
+            <input tabindex="-1" id="group-total-rooms" ng-model="totalBlocked"
                     ng-readonly="shouldChangeTotalRoomsToReadOnly()" />
         </div>
         <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}">
