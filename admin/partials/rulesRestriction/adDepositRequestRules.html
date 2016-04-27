@@ -6,7 +6,7 @@
         <td width="10" class="delete">
             <a class="icons icon-delete large-icon" ng-click="deleteDepositeRule(rule)" translate>DELETE_RULE</a>
         </td>
-    </tr>  
+    </tr>
 
     <tr id="add-new" class="edit-data" ng-show="showDepositForm">
         <td class="offset"> &nbsp; </td>
@@ -25,7 +25,7 @@
 						</em>
                     </div>
                     <div id="deposit-details" class="float">
-	                    <fieldset class="holder left"> 
+	                    <fieldset class="holder left">
 	                    	<ad-textbox styleclass="full-width" value="singleRule.name" name="name" id="name" label="Policy name" placeholder="{{'ENTER_THE_POLICY_NAME'|translate}}" required="yes"></ad-textbox>
 	                    	<div class="entry radio-check">
 	                            <label class="checkbox">
@@ -41,8 +41,16 @@
 	                                <input type="checkbox" ng-model="singleRule.apply_to_all_bookings">
 	                            </label>
 	                        </div>
+                            <div class="entry radio-check clear-both">
+                                <label class="checkbox">
+                                    <span class="icon-form icon-checkbox" ng-class="{ checked : singleRule.no_deposit_req_on_reservations_with_routed_charges }"></span>
+                                    <label translate>NO_DEPOSIT_REQUEST_ON_RESERVATIONS_WITH_ROUTED_CHARGES</label>
+                                    <input type="checkbox" ng-model="singleRule.no_deposit_req_on_reservations_with_routed_charges">
+                                </label>
+                            </div>
+
 	                    </fieldset>
-	                    <fieldset class="holder right"> 
+	                    <fieldset class="holder right">
 	                    	<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="singleRule.description" name="desc" id="desc" label="Description" placeholder="{{'ENTER_THE_POLICY_DESC'|translate}}" required="yes"></ad-textarea>
 	                    </fieldset>
 	                </div>
@@ -53,7 +61,7 @@
                                     SCHEDULE #{{$index+1}}
                                     <button type="button" class="icons icon-delete" ng-click="deleteSchedule($index)" translate="">Delete this rule</button>
                                 </li>
-                            </ul>	 
+                            </ul>
                             <button type="button" class="add-new-button" ng-click="addNewSchedule()" translate>+ Add Schedule</button>
 	                	</fieldset>
 	                	<fieldset class="holder right">

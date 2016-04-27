@@ -1,5 +1,5 @@
-    
-    
+
+
     "NAME":"Name",
     "DESCRIPTION":"Description",
     "ACTIVE":"Active",
@@ -63,4 +63,5 @@
     "CUSTOM_GROUP_RATE_CHARGE_CODE":"Custom Group Rate Charge Code",
     "DEFAULT_EXTERNAL_RATE_CODE":"Default Rate",
     "MAX_ROOM_QUANTITY" :"Max Rooms",
-    "EXCLUDE_FROM_RATE" : "Exclude from rate"
+    "EXCLUDE_FROM_RATE" : "Exclude from rate",
+    "NO_DEPOSIT_REQUEST_ON_RESERVATIONS_WITH_ROUTED_CHARGES" : "No deposit request on reservations with routed charges"
