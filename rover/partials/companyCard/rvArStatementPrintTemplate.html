@@ -4,20 +4,20 @@
         <span class="statement-company-address">
             {{printData.hotel_address}}
         </span>
+        <img ng-src="{{printData.hotel_logo}}" alt="">
     </div>
     <div class="invoice-logo">
         <h1 translate>STATEMENT</h1>
-        <img ng-src="{{printData.hotel_logo}}" alt="">
     </div>
 
     <div class="statement-header">
         <div class="guest-info">
             <strong>{{printData.card_details.name}}</strong><br>
-            {{printData.card_details.fax}}<br ng-if="printData.card_details.fax"/>
             {{printData.card_details.address_line}}<br ng-if="printData.card_details.address_line"/>
             {{printData.card_details.street}}<br ng-if="printData.card_details.street"/>
             {{printData.card_details.city_adress}}<br ng-if="printData.card_details.city_adress"/>
-            {{printData.card_details.country}}
+            {{printData.card_details.country}}<br ng-if="printData.card_details.country"/>
+            {{printData.card_details.fax}}
         </div>
         <div class="statement-info">
             <p class="statement-meta"><strong translate>STATEMENT_DATE</strong>{{printData.statement_date}}</p>
@@ -63,7 +63,7 @@
                             {{statement.reservation_details.departure_date | date:dateFormat }}
                         </span>
                     </td>
-                    <td colspan="4">
+                    <td class="charges-table-container" colspan="4">
                         <table class="charges-table">
                             <tr ng-repeat="item in statement.reservation_details.charge_details">
                                 <td class="charge-date">{{item.date | date :dateFormat }}</td>

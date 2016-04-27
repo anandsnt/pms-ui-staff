@@ -16,8 +16,7 @@ admin.controller('ADDateRangeModalCtrl', ['$scope',
           yearRange : "0:+5"
         };
 
-    console.log({ 'datePickerDefaults': datePickerDefaults, 'rateDateRangeLimit' : $rootScope.rateDateRangeLimit}); 
-       
+    datePickerDefaults.maxDate.setDate(datePickerDefaults.maxDate.getDate() -1);
 
     $scope.setUpData = function() {
 

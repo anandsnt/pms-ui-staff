@@ -11,16 +11,16 @@
                     <label for="showing-structure" translate>SHOWING_LABEL</label>
                     <div class="select">
                         <select id="showing-structure" class="grid-select" ng-change="viewSelected()" ng-model="selectedView">
-                            <option value="home screen" selected translate>DASHBOARDS_OPTION</option>
-                            <option value="section" selected translate>SECTIONS_OPTION</option>
-                            <option value="category" translate>CATEGORIES_OPTION</option>
-                            <option value="item" translate>ITEMS_OPTION</option>
+                            <option value="home screens" selected translate>DASHBOARDS_OPTION</option>
+                            <option value="sections" selected translate>SECTIONS_OPTION</option>
+                            <option value="categories" translate>CATEGORIES_OPTION</option>
+                            <option value="items" translate>ITEMS_OPTION</option>
                         </select>
                     </div>
                 </div>
 
                 <!--Filter by home screen, hidden by default - show only when listing sections -->
-                <div class="entry filter" ng-show="selectedView == 'section'">
+                <div class="entry filter" ng-show="selectedView == 'sections'">
                     <label for="showing-items" translate>FROM_HOME_SCREEN_LABEL</label>
                     <div class="select" >
                         <select id="showing-items" ng-model = "fromHomeScreen" ng-change="filterBySectionAndCategory()" class="placeholder" ng-disabled = "showUnMappedList">
@@ -32,7 +32,7 @@
                 </div>
 
                 <!-- Filter by section, hidden by default - show only when listing categories or items --> 
-                <div class="entry filter" ng-show="selectedView == 'category'">
+                <div class="entry filter" ng-show="selectedView == 'categories'">
                     <label for="showing-categories" translate>FROM_SECTION_LABEL</label>
                     <div class="select">
                         <select id="showing-categories" ng-model="fromSection" ng-change="filterBySectionAndCategory()" class="placeholder" ng-disabled = "showUnMappedList">
@@ -44,7 +44,7 @@
                 </div>
 
                 <!--Filter by category, hidden by default - show only when listing items -->
-                <div class="entry filter" ng-show="selectedView == 'item'">
+                <div class="entry filter" ng-show="selectedView == 'items'">
                     <label for="showing-items" translate>FROM_CATEGORIES_LABEL</label>
                     <div class="select" >
                         <select id="showing-items" ng-model = "fromCategory" ng-change="filterBySectionAndCategory()" class="placeholder" ng-disabled = "showUnMappedList">
@@ -56,7 +56,7 @@
                 </div>
 
                 <!-- Show only unassigned categories or items, hidden by default - show only when listing items or categories -->
-                <div class="entry radio-check " ng-show="selectedView != 'section' && selectedView != 'home screen' ">
+                <div class="entry radio-check " ng-show="selectedView != 'sections' && selectedView != 'home screens' ">
                     <label for="unassigned" class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{'checked': showUnMappedList}"></span>
                         <span translate>SHOW_UNASSIGNED_LABEL</span>
@@ -69,13 +69,13 @@
                     <label for="structure-search" translate>SEARCH_LABEL</label>
                     <div class="holder">
                         <button type="submit" name="submit" class="icons icon-search" translate>SEARCH_LABEL</button>
-                        <input type="search" class="query grid-search" placeholder="{{ selectedView + 's'}}" ng-model="searchText"  id="structure-search" autocomplete="off" />
+                        <input type="search" class="query grid-search" placeholder="{{ selectedView }}" ng-model="searchText"  id="structure-search" autocomplete="off" />
                     </div>
                 </div>    
             </div>
 
             <!-- Grid content -->
-            <table class="grid datatable ng-table" ng-show="selectedView == 'home screen'" ng-table="homeScreenParams">
+            <table class="grid datatable ng-table" ng-show="selectedView == 'home screens'" ng-table="homeScreenParams">
                 
                 <!-- Section table HTML -->
                 <thead>                 
@@ -116,7 +116,7 @@
              </table> 
 
             <!-- Grid content -->
-            <table class="grid datatable ng-table" ng-show="selectedView == 'section'" ng-table="sectionParams">
+            <table class="grid datatable ng-table" ng-show="selectedView == 'sections'" ng-table="sectionParams">
                 
                 <!-- Section table HTML -->
                 <thead>                 
@@ -167,20 +167,20 @@
                         <td>{{gridItem.no_of_categories}}</td>
                         <td>{{gridItem.no_of_section_items}}</td>
                         <td >
-                            <div class="switch-button " ng-class="{'on':gridItem.status}">
+                            <div class="switch-button " ng-show="!gridItem.is_system_defined" ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
                         <td class="delete">
-                            <a  class="icons icon-delete large-icon" ng-click="deleteItem(gridItem.id)">Delete</a>
+                            <a  class="icons icon-delete large-icon" ng-show="!gridItem.is_system_defined" ng-click="deleteItem(gridItem.id)">Delete</a>
                         </td>
                     </tr>
                 </tbody>
              </table> 
 
              <!-- Categories table HTML -->
-             <table class="grid datatable ng-table" ng-show="selectedView == 'category'" ng-table="categoryParams">
+             <table class="grid datatable ng-table" ng-show="selectedView == 'categories'" ng-table="categoryParams">
                 
                 
                 <thead>                 
@@ -224,20 +224,20 @@
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>                        
                         <td>{{gridItem.no_of_items}}</td>
                         <td >
-                            <div class="switch-button " ng-class="{'on':gridItem.status}">
+                            <div class="switch-button " ng-show="!gridItem.is_system_defined" ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
                         <td class="delete">
-                            <a  class="icons icon-delete large-icon" ng-click="deleteItem(gridItem.id)">Delete</a>
+                            <a  class="icons icon-delete large-icon" ng-show="!gridItem.is_system_defined" ng-click="deleteItem(gridItem.id)">Delete</a>
                         </td>
                     </tr>
                 </tbody>
              </table>
 
              <!-- Items table HTML -->
-             <table class="grid datatable ng-table" ng-show="selectedView == 'item'" ng-table="itemParams">               
+             <table class="grid datatable ng-table" ng-show="selectedView == 'items'" ng-table="itemParams">               
                 
                 <thead>                 
 
@@ -289,13 +289,13 @@
                         <td>{{gridItem.screen_id}}</td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>                        
                         <td >
-                            <div class="switch-button " ng-class="{'on':gridItem.status}">
+                            <div class="switch-button " ng-show="!gridItem.is_system_defined" ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
                         <td class="delete">
-                            <a  class="icons icon-delete large-icon"ng-click="deleteItem(gridItem.id)">Delete</a>
+                            <a  class="icons icon-delete large-icon" ng-show="!gridItem.is_system_defined" ng-click="deleteItem(gridItem.id)">Delete</a>
                         </td>
                     </tr>
                 </tbody>
