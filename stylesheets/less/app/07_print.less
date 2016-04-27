@@ -927,46 +927,51 @@ table {
                 .tab-header,
                 .search-results { .hide; }
 
-                 .ar-statement {
-                    display:block;
+                .ar-statement {
+                    display: block;
                     img {
                         -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
                         filter: grayscale(100%);
                     }
+
                     .invoice-body .invoice-details tr:last-child td {
-                        margin-bottom:12pt;
+                        margin-bottom: 12pt;
                     }
 
                     .invoice-footer {
-                        margin-bottom:12pt;
+                        margin-bottom: 12pt;
                     }
-
-                
 
                     thead th {
                         text-transform: uppercase;
                         background-color: @grey2;
                         padding:4pt 0;
-                        font-size: 6.5pt;
+                        font-size: 5pt;
+                        
                         &:last-child {
                             padding-right: 4pt;
                         }
                         
-                        /*Add space to Charge Amount and Amount Due*/
-                        &:nth-child(5),
-                        &:nth-child(6) {
-                            padding-left: 4pt;
+                        
+                        &.charge-date,
+                        &.charge-code,
+                        &.charge-amount {
+                            width: 45pt !important;
                         }
 
-                        
-                    }
-                    .invoice-details {
-                        > tbody > tr > td {
-                             
-                            border-bottom:2px solid @grey2;
-                            
+                        /*Add space to Charge Amount and Amount Due*/
+                        &:nth-child(5),
+                        &:nth-child(6){
+                            padding-right: 4pt;
                         }
                     }
+
+                    .invoice-details {
+                        > tbody > tr > td {
+                            border-bottom:2px solid @grey2;
+                        }
+                    }
+
                     tbody {
 
                         tr:not(.person) td {
@@ -974,50 +979,34 @@ table {
                         }
 
                         tr {
-                             td {
+                            td {
                                 border-bottom:1px solid @grey2;
                                 padding: 4pt 4pt 4pt 0;
-                                
-                                    &:last-child {
-                                        padding-right: 4pt;
-                                    }
-                                
 
-                                &.charge-description {
-                                    width: 90pt !important;
+                                &:last-child {
+                                    padding-right: 4pt;
                                 }
+                            }
+                        }
 
+                        .charges-table-container {
+                            padding-right: 0;
+                        }
+                        .charges-table {
+                            tr td {
                                 &.charge-date,
                                 &.charge-code,
-                               {
-                                    width: 60pt !important;
+                                &.charge-amount {
+                                    width: 45pt !important;
                                 }
                             }
-                        }
-
-
-
-                     .charges-table {
-                        tr td {
-                            &.charge-description {
-                                    width: 90pt !important;
-                                }
-
-                            &.charge-date,
-                            &.charge-code,
-                           {
-                                width: 60pt !important;
+                            tr:last-child td {
+                                border-bottom: none;
+                            }
+                            tr:first-child td {
+                                padding-top: 0;
                             }
                         }
-                        tr:last-child td {
-                            border-bottom: none;
-                        }
-                        tr:first-child td {
-                            padding-top: 0;
-                        }
-                     }
-
-                    
                     }
 
                     .statement-header {
@@ -1027,7 +1016,17 @@ table {
                             content: '';
                         }
                     }
+
                     .invoice-header {
+                        margin-top: 1.5cm;
+                        position: relative;
+
+                        img {
+                            position: absolute;
+                            height: 30px;
+                            top: -30px;
+                            right: 0;
+                        }
                         h1 {
                             font-size:18pt;
                             font-weight: 600;
@@ -1038,18 +1037,19 @@ table {
                             font-style: italic;
                         }
                     }
+
                     .guest-info {
                         font-size: 9pt;
-                        width:65%;
+                        width:50%;
                         float:left;
 
                         img {
                             .size(40px, auto);
                         }
                     }
+
                     .person td,
                     .payment td {
-                        padding:5pt 0;
                         vertical-align: top;
                         &.person-info {
                             width: 3.5cm;
@@ -1084,28 +1084,30 @@ table {
 
                         .tax-description {
                             width: 50%;
-                        }
 
+                        }
                     }
 
                     .statement-info {
-                        width:35%;
+                        width:50%;
                         float:right;
+                        margin-bottom:0.5cm;
+
                         &:after {
                             display: table;
                             content: '';
                             clear: both;
                         }
-                        margin-bottom:0.5cm;
                     }
+
                     .statement-meta {
                         width:50%;
                         float:left;
                         font-size:9pt;
-                        strong {
-                            display:block;
-                        }
                         margin-bottom:0.1cm;
+
+                        strong { display:block; }
+                        
 
                         &:nth-child(3) {
                             clear: both;
@@ -1117,7 +1119,6 @@ table {
                         }
                     }
                 }
-
             }
         }
     }
