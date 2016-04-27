@@ -474,7 +474,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
             }
 
 			_.each(response.dates, function(day) {
-				BARs.push((0 == day.amount) ? 'C' : day.amount);
+				BARs.push((null == day.amount) ? 'C' : day.amount);
 			})
 
 			_.extend(that.data.gridData.additionalData, {
