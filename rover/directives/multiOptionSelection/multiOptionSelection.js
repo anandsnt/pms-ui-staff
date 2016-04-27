@@ -104,7 +104,6 @@ sntRover
 					$scope.closed = true;
 					$scope.value  = '';
 
-					console.log($scope);
 					var options = $scope.options || {};
 					if ( options.selectAll ) {
 						updateData( 'selected', true );
