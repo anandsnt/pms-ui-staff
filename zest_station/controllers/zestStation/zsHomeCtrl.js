@@ -23,7 +23,7 @@ sntZestStation.controller('zsHomeCtrl', [
                 mode: zsModeConstants.PICKUP_KEY_MODE
             });
 	};
-
+        
 	/**
 	 * when we clicked on checkin from home screen
 	 */
@@ -252,8 +252,6 @@ sntZestStation.controller('zsHomeCtrl', [
            $scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order':'in-order';
            //$scope.zestStationData.workstationOooReason = station.out_of_order_msg;
 
-
-
             var oosStorageKey = 'snt_zs_workstation.in_oos',
                 oosReasonKey  = 'snt_zs_workstation.oos_reason',
                 storage = localStorage;
@@ -418,8 +416,8 @@ sntZestStation.controller('zsHomeCtrl', [
             };
           
             //if application is launched either in chrome app or ipad go to login page
-            var isIpad = navigator.userAgent.match(/iPad/i) !== null && window.cordova;
-            if($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || isIpad)){
+            $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
+            if($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)){
                 $state.go('zest_station.admin');
             }
             else{

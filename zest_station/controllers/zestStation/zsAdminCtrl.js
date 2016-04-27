@@ -321,14 +321,8 @@ sntZestStation.controller('zsAdminCtrl', [
                 console.warn(err);
             }
         };
-
+        $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
         $scope.openPrinterMenu = function() {
-            var onSuccess = function(success) {
-                alert(JSON.stringify(success));
-            };
-            var onFail = function(err) {
-                alert(JSON.stringify(err));
-            };
 
             if (typeof cordova !== typeof undefined) {
                 //cordova.exec(onSuccess, onFail, 'RVCardPlugin', 'selectPrinter', [1024, 50])
