@@ -3,7 +3,20 @@ sntZestStation.controller('zsRootCtrl', [
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
 	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings','$timeout', 'zsModeConstants',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, zsHotelDetailsSrv, cssMappings, zestStationSettings,$timeout, zsModeConstants) {
+	function($scope, 
+        zsEventConstants, 
+        $state,
+        zsTabletSrv, 
+        $rootScope,
+        ngDialog, 
+        $sce, 
+        zsUtilitySrv, 
+        $translate, 
+        zsHotelDetailsSrv, 
+        cssMappings, 
+        zestStationSettings,
+        $timeout, 
+        zsModeConstants) {
 
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
