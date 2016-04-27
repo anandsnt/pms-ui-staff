@@ -294,8 +294,10 @@ sntZestStation.controller('zsEarlyCheckinCtrl', [
             
             //data.offer_eci_free_vip - later story s54+ ~ offer free ECI when reservation has vip code & matches a free ECI vip code (admin section to be added)
             //for now, using toggle switch - if free_eci_for_vips is enabled, and guest is VIP, then they get free ECI :)
-            if (data.guest_arriving_today && (data.offer_eci_bypass || data.free_eci_for_vips)){
-                console.info('selected reservation includes free early check-in!');
+            if (data.guest_arriving_today && (data.offer_eci_bypass || (data.free_eci_for_vips && data.is_vip) )){
+                var freeForVip='';
+                if (data.free_eci_for_vips && data.is_vip){freeForVip=' [ for vip guest ]';};
+                console.info('selected reservation includes free early check-in! '+freeForVip);
                 return true;
             } else {
                 console.info('selected reservation does Not include free early check-in.');
