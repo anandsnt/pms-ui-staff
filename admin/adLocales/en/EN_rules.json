@@ -64,4 +64,4 @@
     "DEFAULT_EXTERNAL_RATE_CODE":"Default Rate",
     "MAX_ROOM_QUANTITY" :"Max Rooms",
     "EXCLUDE_FROM_RATE" : "Exclude from rate",
-    "NO_DEPOSIT_REQUEST_ON_RESERVATIONS_WITH_ROUTED_CHARGES" : "No deposit request on reservations with routed charges"
+    "NO_DEPOSIT_REQUEST_ON_RESERVATIONS_WITH_ROUTED_CHARGE" : "No deposit request on reservations with routed charge"
