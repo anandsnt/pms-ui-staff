@@ -45,7 +45,20 @@ sntRover
 				};
 
 				$scope.toggleSelection = function(item) {
+					var options = (typeof $scope.options == typeof {}) ? $scope.options : {};
+
 					item.selected = ! item.selected;
+
+					// if item got selected and only single select is set
+					// unselect others
+					if ( item.selected && options.singleSelect ) {
+						_.each($scope.data, function(each) {
+							if(each.id !== item.id) {
+								each.selected = false;
+							}
+						});
+					}
+
 					updateSelectedValue();
 				};
 
@@ -66,13 +79,13 @@ sntRover
 						items   = _.where($scope.data, { 'selected': true });
 
 					if ( items.length === 0 ) {
-						$scope.value = options.defaultValue || 'Choose ' + $scope.label;
+						$scope.value = options.defaultValue || 'Select ' + $scope.label;
 					} else if ( items.length === 1 ) {
 						$scope.value = items[0][options.key] || items[0][options.altKey];
 					} else if ( items.length < $scope.data.length ) {
 						$scope.value = items.length + ' selected';
 					} else if ( items.length === $scope.data.length ) {
-						$scope.value = 'All Selected';
+						$scope.value = options.allValue || 'All Selected';
 					}
 				};
 

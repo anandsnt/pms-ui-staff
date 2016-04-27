@@ -360,7 +360,8 @@ angular.module('reportsModule')
                 options: {
                     selectAll: false,
                     hasSearch: false,
-                    key: 'description'
+                    key: 'description',
+                    defaultValue: 'Select displays'
                 }
             }
 
@@ -370,7 +371,8 @@ angular.module('reportsModule')
                 options: {
                     selectAll: false,
                     hasSearch: false,
-                    key: 'description'
+                    key: 'description',
+                    defaultValue: 'Exclude'
                 }
             }
 
@@ -388,9 +390,11 @@ angular.module('reportsModule')
             report.hasShow = {
                 data: [],
                 options: {
-                    selectAll: false,
+                    selectAll: true,
                     hasSearch: false,
-                    key: 'description'
+                    key: 'description',
+                    allValue: 'Both',
+                    defaultValue: 'Select options'
                 }
             }
 
@@ -661,7 +665,8 @@ angular.module('reportsModule')
                             options: {
                                 selectAll: false,
                                 hasSearch: true,
-                                key: 'name'
+                                key: 'name',
+                                defaultValue: 'Select guarantees'
                             }
                         }
                     };
@@ -792,7 +797,8 @@ angular.module('reportsModule')
                             options: {
                                 hasSearch: false,
                                 selectAll: true,
-                                key: 'status'
+                                key: 'status',
+                                defaultValue: 'Select Status'
                             }
                         }
                     };
@@ -809,15 +815,16 @@ angular.module('reportsModule')
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
 
-                        __setData(report, 'hasRateCodeFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select one Rate Code',
-                            title        : data[0].description,
-                            data         : angular.copy( data )
-                        });
+                        report.hasRateCodeFilter = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: true,
+                                selectAll: false,
+                                singleSelect: true,
+                                key: 'description',
+                                defaultValue: 'Select Rate'
+                            }
+                        }
                     };
                 });
 
@@ -915,7 +922,7 @@ angular.module('reportsModule')
                         report.hasRateTypeFilter = {
                             data: angular.copy( extractRateTypesFromRateTypesAndRateList(data) ),
                             options: {
-                                selectAll: false,
+                                selectAll: true,
                                 hasSearch: true,
                                 key: 'name'
                             }
@@ -924,7 +931,7 @@ angular.module('reportsModule')
                         report.hasRateFilter = {
                             data: angular.copy( extractRatesFromRateTypesAndRateList(data) ),
                             options: {
-                                selectAll: false,
+                                selectAll: true,
                                 hasSearch: true,
                                 key: 'name'
                             }

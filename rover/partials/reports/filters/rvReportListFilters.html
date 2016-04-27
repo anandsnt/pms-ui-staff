@@ -70,16 +70,11 @@
     </div>
 </div>
 
-<div class="entry" ng-show="uiChosenReport.hasRateCodeFilter" ng-click="catchFauxSelectClick($event, 'hasRateCodeFilter')">
-    <label>Rate</label>
-    <div class="faux-select" ng-click="toggleFauxSelect($event, uiChosenReport.hasRateCodeFilter)">{{ uiChosenReport.hasRateCodeFilter.title }}</div>
-    <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasRateCodeFilter.show }">
-        <label class="checkbox inline" ng-repeat="rateCode in uiChosenReport.hasRateCodeFilter.data">
-            <span class="icon-form icon-checkbox" ng-class="{'checked' : rateCode.selected}"></span>
-            <input type="checkbox" ng-model="rateCode.selected" ng-change="rateCodeChanged(uiChosenReport, rateCode)" name="room-filters"> {{ rateCode.description }}
-        </label>
-    </div>
-</div>
+<multi-option-selection ng-show="uiChosenReport.hasRateCodeFilter && uiChosenReport.hasRateCodeFilter.data.length"
+    label="Rate"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasRateCodeFilter.data"
+    options="uiChosenReport.hasRateCodeFilter.options"></multi-option-selection>
 
 <div class="entry" ng-show="uiChosenReport.hasRestrictionListFilter" ng-click="catchFauxSelectClick($event, 'hasRestrictionListFilter')">
     <label>Restriction</label>
@@ -226,7 +221,7 @@
     </div>
 </div>
 
-<div class="filter" ng-show="uiChosenReport.hasCicoFilter">
+<div class="entry date-range" ng-show="uiChosenReport.hasCicoFilter">
     <label>{{ uiChosenReport.hasCicoFilter.description }}</label>
     <div class="select">
         <select ng-model="uiChosenReport.chosenCico" ng-options="cico.value as cico.label for cico in uiChosenReport.cicoOptions" iscroll-stop-propagation>
@@ -312,7 +307,7 @@
 
 
 <multi-option-selection ng-show="uiChosenReport.hasDisplay && uiChosenReport.hasDisplay.data.length"
-    label="Rate Type"
+    label="Display(s)"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasDisplay.data"
     options="uiChosenReport.hasDisplay.options"></multi-option-selection>
