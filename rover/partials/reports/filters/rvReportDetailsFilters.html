@@ -342,11 +342,11 @@
 
 
         <!-- item_11: Guarantee Type -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasGuaranteeType" ng-class="{ 'active': filterItemsToggle.item_11 }" ng-click="toggleFilterItems('item_11')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasGuaranteeType.data.length" ng-class="{ 'active': filterItemsToggle.item_11 }" ng-click="toggleFilterItems('item_11')">
             <span class="title">Guarantee Type(s)</span>
         </a>
-        <div class="report-col settings-content" ng-if="chosenReport.hasGuaranteeType.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_09 }">
-            <multi-option-selection nlabel="Guarantee Type(s)"
+        <div class="report-col settings-content" ng-if="chosenReport.hasGuaranteeType.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_11 }">
+            <multi-option-selection label="Guarantee Type(s)"
                 on-update="refreshSidebarScroll"
                 data="chosenReport.hasGuaranteeType.data"
                 options="chosenReport.hasGuaranteeType.options"></multi-option-selection>

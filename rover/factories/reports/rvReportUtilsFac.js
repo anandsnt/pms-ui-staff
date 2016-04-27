@@ -358,7 +358,7 @@ angular.module('reportsModule')
             report.hasDisplay = {
                 data: [],
                 options: {
-                    selectAll: false,
+                    selectAll: true,
                     hasSearch: false,
                     key: 'description',
                     defaultValue: 'Select displays'
