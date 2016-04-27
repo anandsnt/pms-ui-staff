@@ -257,8 +257,7 @@
     label="Charge Code(s)"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasByChargeCode.data"
-    options="uiChosenReport.hasByChargeCode.options"
-    update-data="uiChosenReport.hasByChargeCode.updateData"></multi-option-selection>
+    options="uiChosenReport.hasByChargeCode.options"></multi-option-selection>
 
 
 
@@ -295,43 +294,23 @@
     data="uiChosenReport.hasHoldStatus.data"
     options="uiChosenReport.hasHoldStatus.options"></multi-option-selection>
 
-<div class="entry" ng-show="uiChosenReport.hasAddonGroups.data.length" ng-click="catchFauxSelectClick($event, 'hasAddonGroups')">
-    <label for="addon-groups">Add-On Group(s)</label>
-    <div class="faux-select" ng-class="{ 'placeholder' : uiChosenReport.hasAddonGroups.selectAll }" ng-click="toggleFauxSelect($event, uiChosenReport.hasAddonGroups)">{{ uiChosenReport.hasAddonGroups.title }}</div>
-    <div class="faux-select-options" ng-class="{ 'hidden': !uiChosenReport.hasAddonGroups.show }">
-        <label class="checkbox inline" ng-show="uiChosenReport.hasAddonGroups.data.length > 1">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : uiChosenReport.hasAddonGroups.selectAll }"></span>
-            <input type="checkbox" ng-model="uiChosenReport.hasAddonGroups.selectAll" ng-change="getAddons(uiChosenReport, uiChosenReport.hasAddonGroups, true)" name="room-filters"> Select All
-        </label>
-        <label class="checkbox inline" ng-repeat="group in uiChosenReport.hasAddonGroups.data">
-            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : group.selected }"></span>
-            <input type="checkbox" ng-model="group.selected" ng-change="getAddons(uiChosenReport, uiChosenReport.hasAddonGroups)" name="room-filters"> {{ group.name }}
-        </label>
-    </div>
-</div>
 
-<div class="entry" ng-show="uiChosenReport.hasAddonGroups.data.length" ng-click="catchFauxSelectClick($event, 'hasAddonGroups')">
-    <label>Add-On(s)</label>
-    <div class="faux-select placeholder" ng-click="toggleAddons()">{{ uiChosenReport.hasAddons.title }}</div>
-    <div class="faux-select-options" ng-show="isVisible">
-        <span ng-repeat="group in uiChosenReport.hasAddons.data" ng-show="$index%2 == 0">
-            <strong>{{ getGroupName(group.group_id) }}</strong>
-            <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
-                <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
-                <input type="checkbox" ng-model="addon.selected" ng-change="getNoOfSelectedAddons(uiChosenReport, uiChosenReport.hasAddons)" name="room-filters">
-                {{ addon.addon_name }}
-            </label>
-        </span>
-        <span ng-repeat="group in uiChosenReport.hasAddons.data" ng-show="$index%2 == 1">
-            <strong>{{ getGroupName(group.group_id) }}</strong>
-            <label class="checkbox inline" ng-repeat="addon in group.list_of_addons">
-                <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
-                <input type="checkbox" ng-model="addon.selected" ng-change="getNoOfSelectedAddons(uiChosenReport, uiChosenReport.hasAddons)" name="room-filters">
-                {{ addon.addon_name }}
-            </label>
-        </span>
-    </div>
-</div>
+<multi-option-selection ng-show="uiChosenReport.hasAddonGroups && uiChosenReport.hasAddonGroups.data.length"
+    label="Add-On Group(s)"
+    on-update="refreshFilterScroll"
+    report="uiChosenReport"
+    data="uiChosenReport.hasAddonGroups.data"
+    options="uiChosenReport.hasAddonGroups.options"
+    affects-filter="uiChosenReport.hasAddonGroups.affectsFilter"></multi-option-selection>
+<!-- related options -->
+<multi-option-selection ng-show="uiChosenReport.hasAddons && uiChosenReport.hasAddons.data.length"
+    label="Add-On(s)"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasAddons.data"
+    options="uiChosenReport.hasAddons.options"></multi-option-selection>
+
+
+
 
 <multi-option-selection ng-show="uiChosenReport.hasReservationStatus && uiChosenReport.hasReservationStatus.data.length"
     label="Reservation Status"

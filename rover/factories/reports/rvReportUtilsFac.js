@@ -982,8 +982,8 @@ angular.module('reportsModule')
                             affectsFilter: {
                                 name: 'hasByChargeCode',
                                 process: function(filter, selectedItems) {
-                                    _.each(filter.originalData, function (item) {
-                                        item.disabled = true;
+                                    _.each(filter.originalData, function (od) {
+                                        od.disabled = true;
                                     });
                                     /**/
                                     _.each(filter.originalData, function (od) {
@@ -1036,35 +1036,67 @@ angular.module('reportsModule')
                 var foundAG,
                     foundAs;
 
+                var flattenAddons = function(addons) {
+                    var data = [];
+                    _.each (addons, function (addon) {
+                        if ( ! addon.disabled ) {
+                            _.each(addon.list_of_addons, function(la) {
+                                data.push(la);
+                            });
+                        }
+                    });
+                    return data;
+                }
+
                 _.each(reportList, function(report) {
                     foundAG = _.find(report['filters'], { value: 'ADDON_GROUPS' });
 
                     if ( !! foundAG ) {
                         foundAG['filled'] = true;
-                        __setData(report, 'hasAddonGroups', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundAG,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Addon Group',
-                            title        : 'All Selected',
-                            data         : selectAllAddonGroups( angular.copy(chargeNAddonGroups) ),
-                        });
+                        report.hasAddonGroups = {
+                            data: angular.copy(chargeNAddonGroups),
+                            options: {
+                                selectAll: true,
+                                hasSearch: true,
+                                key: 'name'
+                            },
+                            affectsFilter: {
+                                name: 'hasAddons',
+                                process: function(filter, selectedItems) {
+                                    _.each(filter.originalData, function (od) {
+                                        od.disabled = true;
+                                    });
+                                    /**/
+                                    _.each(filter.originalData, function (od) {
+                                        _.each(selectedItems, function (si) {
+                                            if (od.group_id === si.id) {
+                                                od.disabled = false;
+                                            }
+                                        });
+                                    });
+                                    /**/
+                                    filter.updateData();
+                                }
+                            }
+                        }
                     };
 
                     foundAs = _.find(report['filters'], { value: 'ADDONS' });
 
                     if ( !!foundAs ) {
                         foundAs['filled'] = true;
-                        __setData(report, 'hasAddons', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundAs,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Addon',
-                            title        : 'All Selected',
-                            data         : selectAllAddons( angular.copy(addons) )
-                        });
+                        report.hasAddons = {
+                            data: flattenAddons(addons),
+                            originalData: angular.copy( addons ),
+                            options: {
+                                selectAll: true,
+                                hasSearch: true,
+                                key: 'addon_name',
+                            },
+                            updateData: function() {
+                                this.data = flattenAddons(this.originalData);
+                            }
+                        }
                     };
                 });
 

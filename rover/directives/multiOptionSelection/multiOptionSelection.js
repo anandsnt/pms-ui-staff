@@ -10,8 +10,7 @@ sntRover
 				report: '=',
 				data: '=',
 				options: '=',
-				affectsFilter: '=',
-				updateData: '='
+				affectsFilter: '='
 			},
 			controller: function($scope, $element, $attrs) {
 				BaseCtrl.call(this, $scope);
@@ -24,10 +23,10 @@ sntRover
 				};
 
 				$scope.toggleSelectAll = function() {
-					var ownOptions = $scope.ownOptions = createOptions();
+					var options = $scope.options || {};
+					options.selectAll = ! options.selectAll;
 
-					ownOptions.selectAll = ! ownOptions.selectAll;
-					updateData( 'selected', ownOptions.selectAll );
+					updateData( 'selected', options.selectAll );
 					updateSelectedValue();
 				};
 
@@ -37,10 +36,9 @@ sntRover
 
 				$scope.onSearchChange = function() {
 					updateData( 'filteredOut', function(item, key) {
-						var ownOptions = $scope.ownOptions = createOptions();
-
-						var search     = $scope.search.toLowerCase(),
-							keyValue   = (item[ownOptions.key] || item[ownOptions.altKey]).toLowerCase();
+						var options  = $scope.options || {},
+							search   = $scope.search.toLowerCase(),
+							keyValue = (item[options.key] || item[options.altKey]).toLowerCase();
 
 						if ( search === '' || keyValue.indexOf(search) >= 0 ) {
 							item[key] = false;
@@ -55,8 +53,8 @@ sntRover
 
 					// if item got selected and only single select is set
 					// unselect others
-					var ownOptions = $scope.ownOptions = createOptions($scope.options);
-					if ( item.selected && ownOptions.singleSelect ) {
+					var options = $scope.options || {};
+					if ( item.selected && options.singleSelect ) {
 						_.each($scope.data, function(each) {
 							if(each.id !== item.id) {
 								each.selected = false;
@@ -69,25 +67,6 @@ sntRover
 
 				/**/
 
-				function createOptions() {
-					if ( ! $scope.ownOptions ) {
-						return $.extend(
-							{
-								selectAll: false,
-								hasSearch: false
-							},
-							$scope.options
-						);
-					} else {
-						return $.extend(
-							$scope.options,
-							{
-								selectAll: $scope.ownOptions.selectAll
-							}
-						);
-					}
-				};
-
 				function updateData(key, value) {
 					_.each($scope.data, function(each) {
 						if ( typeof value === 'function' ) {
@@ -99,19 +78,19 @@ sntRover
 				};
 
 				function updateSelectedValue() {
-					var ownOptions = $scope.ownOptions = createOptions();
+					var options = $scope.options || {};
 					var selectedItems = _.where($scope.data, { 'selected': true });
 
-					ownOptions.selectAll = false;
+					options.selectAll = false;
 					if ( selectedItems.length === 0 ) {
-						$scope.value = ownOptions.defaultValue || 'Select ' + $scope.label;
+						$scope.value = options.defaultValue || 'Select ' + $scope.label;
 					} else if ( selectedItems.length === 1 ) {
-						$scope.value = selectedItems[0][ownOptions.key] || selectedItems[0][ownOptions.altKey];
+						$scope.value = selectedItems[0][options.key] || selectedItems[0][options.altKey];
 					} else if ( selectedItems.length < $scope.data.length ) {
 						$scope.value = selectedItems.length + ' selected';
 					} else if ( selectedItems.length === $scope.data.length ) {
-						ownOptions.selectAll = true;
-						$scope.value = ownOptions.allValue || 'All Selected';
+						options.selectAll = true;
+						$scope.value = options.allValue || 'All Selected';
 					};
 
 					if ( typeof $scope.affectsFilter == typeof {} ) {
@@ -125,13 +104,13 @@ sntRover
 					$scope.closed = true;
 					$scope.value  = '';
 
-					$scope.ownOptions = createOptions();
-
-					if ( $scope.ownOptions.selectAll ) {
+					console.log($scope);
+					var options = $scope.options || {};
+					if ( options.selectAll ) {
 						updateData( 'selected', true );
 					};
 
-					if ( $scope.ownOptions.hasSearch ) {
+					if ( options.hasSearch ) {
 						$scope.search = '';
 						updateData( 'filteredOut', false );
 					};
