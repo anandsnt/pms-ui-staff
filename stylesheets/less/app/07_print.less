@@ -2836,6 +2836,10 @@ table {
             height: 2cm;
             position: relative;
 
+            &.envelope {
+                height: 3cm;
+            }
+
             h1 {
                 position: absolute;
                 top: 0;
@@ -2850,6 +2854,29 @@ table {
                 top: 0;
                 right: 0;
                 .size(40px, auto);
+            }
+        }
+
+        .info-container {
+            .info-left,
+            .info-right {
+                .pull-left;
+                width: 50%;
+            }
+
+            .info-left {
+                margin-bottom: 0.5cm;
+            }
+
+            .info-bottom {
+                clear: both;
+                width: 100%;
+                display: block;
+            }
+            
+            .info-right {
+                text-align: right;
+                
             }
         }
 
@@ -2874,6 +2901,20 @@ table {
             line-height: 1;
             text-align: center;
             margin-top: 1cm;
+
+            &.top-header {
+                margin-top: 0;
+                height: 1.5cm;
+                h1 {
+                            font-size:18pt;
+                            font-weight: 600;
+                        }
+
+                .invoice-header-address {
+                    font-size:10pt;
+                    font-style: italic;
+                }
+            }
         }
 
         .invoice-body {
@@ -2958,6 +2999,10 @@ table {
         .invoice-footer {
             font-size: 8pt;
             padding-top: 16pt;
+
+            &.text-center {
+                text-align: center;
+            }
         }
     }
 
