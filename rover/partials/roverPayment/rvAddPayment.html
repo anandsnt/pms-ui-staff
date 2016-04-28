@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-show="showManualEntryDisabledPopup" ng-cloak>
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-show="showManualEntryDisabledPopup && !showWarningMessage" ng-cloak>
 	<div class="modal-content">
 		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
 			<span class="icons icon-close invert"></span>
@@ -9,7 +9,7 @@
 
 
 
-<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-show="shouldShowWaiting" ng-cloak>
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-show="shouldShowWaiting && !showWarningMessage" ng-cloak>
 	<div class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;" >
 		<div class="centeralign alert-box">
 			WAITING FOR PAYMENT COMPLETION 
@@ -20,7 +20,7 @@
 
 
 
-<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-show="!showManualEntryDisabledPopup" ng-click="clearErrorMessage()" ng-cloak>
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-show="!showManualEntryDisabledPopup && !showWarningMessage" ng-click="clearErrorMessage()" ng-cloak>
 
     
     
@@ -154,4 +154,13 @@
 		</div>
     </div>
 </form>
+</div>
+
+<div role="dialog" id="modal" class="modal-show" ng-show="showWarningMessage" ng-class="{'modal-show': !modalClosing}" ng-cloak>
+	<div class="modal-content new-content form warning warning-modal">
+	  <div class="ows_error">{{warningMessage}}</div>
+	  <div class="actions float">
+	    <button class="button modal-close white red-text" ng-click="closeDialog()" translate>CLOSE</button>
+	  </div>
+	</div>
 </div>
