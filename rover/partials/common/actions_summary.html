@@ -46,8 +46,29 @@
 </div> 
 
 <div class="detail-actions col-2" ng-hide="(!isStandAlone && isRequest(selectedAction.action_task_type)) || selectedAction.date_completed" ng-class="{'margin-bottom:-30px':isActionManager}">
-    <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || selectedAction.assigned" type="button" class="button white brand-text" ng-click="assignAction()">Assign</button> <!-- Change text to "Reassign" for assigned action -->
-    <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !selectedAction.assigned" type="button" class="button white brand-text" ng-click="reassignAction()">Re-assign</button> <!-- Change text to "Reassign" for assigned action -->
-    <button ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)" type="button" class="button white green-text" ng-click="completeAction()">Complete</button> <!-- THESE HIDDEN FOR SPECIALS -->
-    <button ng-show="!isStandAlone && isAlert(selectedAction.action_task_type)" type="button" class="button white green-text centered-action-btn" ng-click="completeAction('delete', selectedAction)">Delete</button>
+    <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || selectedAction.assigned" 
+        ng-class="{'centered-action-btn' : !isStandAlone}" 
+        type="button" 
+        class="button white brand-text" 
+        ng-click="assignAction()">
+        Assign
+    </button> 
+    <!-- Change text to "Reassign" for assigned action -->
+    
+    <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !selectedAction.assigned"  
+        ng-class="{'centered-action-btn' : !isStandAlone}" 
+        type="button" 
+        class="button white brand-text" 
+        ng-click="reassignAction()">
+        Re-assign
+    </button>
+    
+    <button ng-hide="!isStandAlone" type="button" class="button white green-text" ng-click="completeAction()">Complete</button> <!-- THESE HIDDEN FOR SPECIALS -->
+    
+    <button ng-show="!isStandAlone && isAlert(selectedAction.action_task_type)" 
+        type="button" 
+        class="button white green-text centered-action-btn" 
+        ng-click="completeAction('delete', selectedAction)">
+        Delete
+    </button>
 </div>

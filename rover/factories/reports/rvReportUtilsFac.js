@@ -358,9 +358,10 @@ angular.module('reportsModule')
             report.hasDisplay = {
                 data: [],
                 options: {
-                    selectAll: false,
+                    selectAll: true,
                     hasSearch: false,
-                    key: 'description'
+                    key: 'description',
+                    defaultValue: 'Select displays'
                 }
             }
 
@@ -370,7 +371,8 @@ angular.module('reportsModule')
                 options: {
                     selectAll: false,
                     hasSearch: false,
-                    key: 'description'
+                    key: 'description',
+                    defaultValue: 'Exclude'
                 }
             }
 
@@ -388,9 +390,11 @@ angular.module('reportsModule')
             report.hasShow = {
                 data: [],
                 options: {
-                    selectAll: false,
+                    selectAll: true,
                     hasSearch: false,
-                    key: 'description'
+                    key: 'description',
+                    allValue: 'Both',
+                    defaultValue: 'Select options'
                 }
             }
 
@@ -661,7 +665,8 @@ angular.module('reportsModule')
                             options: {
                                 selectAll: false,
                                 hasSearch: true,
-                                key: 'name'
+                                key: 'name',
+                                defaultValue: 'Select guarantees'
                             }
                         }
                     };
@@ -792,7 +797,8 @@ angular.module('reportsModule')
                             options: {
                                 hasSearch: false,
                                 selectAll: true,
-                                key: 'status'
+                                key: 'status',
+                                defaultValue: 'Select Status'
                             }
                         }
                     };
@@ -809,15 +815,16 @@ angular.module('reportsModule')
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
 
-                        __setData(report, 'hasRateCodeFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select one Rate Code',
-                            title        : data[0].description,
-                            data         : angular.copy( data )
-                        });
+                        report.hasRateCodeFilter = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: true,
+                                selectAll: false,
+                                singleSelect: true,
+                                key: 'description',
+                                defaultValue: 'Select Rate'
+                            }
+                        }
                     };
                 });
 
@@ -826,23 +833,19 @@ angular.module('reportsModule')
             };
 
             function fillRoomTypeList (data) {
-                _.each(data, function(roomType){
-                    roomType.selected = true;
-                });
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
 
-                        __setData(report, 'hasRoomTypeFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Selecte Room Type(s)',
-                            title        : 'All Selected',
-                            data         : angular.copy( data )
-                        });
+                        report.hasRoomTypeFilter = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'name'
+                            }
+                        }
                     };
                 });
 
@@ -851,24 +854,20 @@ angular.module('reportsModule')
             };
 
             function fillRestrictionList (data) {
-                _.each(data, function(restriction){
-                    restriction.selected = true;
-                });
-
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RESTRICTION' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
 
-                        __setData(report, 'hasRestrictionListFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Restriction(s)',
-                            title        : 'All Selected',
-                            data         : angular.copy( data )
-                        });
+                        report.hasRestrictionListFilter = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'description',
+                                defaultValue: 'Select Restriction(s)'
+                            }
+                        }
                     };
                 });
 
@@ -915,7 +914,7 @@ angular.module('reportsModule')
                         report.hasRateTypeFilter = {
                             data: angular.copy( extractRateTypesFromRateTypesAndRateList(data) ),
                             options: {
-                                selectAll: false,
+                                selectAll: true,
                                 hasSearch: true,
                                 key: 'name'
                             }
@@ -924,7 +923,7 @@ angular.module('reportsModule')
                         report.hasRateFilter = {
                             data: angular.copy( extractRatesFromRateTypesAndRateList(data) ),
                             options: {
-                                selectAll: false,
+                                selectAll: true,
                                 hasSearch: true,
                                 key: 'name'
                             }
@@ -973,31 +972,58 @@ angular.module('reportsModule')
 
                     if ( !! foundCG ) {
                         foundCG['filled'] = true;
-                        __setData(report, 'hasByChargeGroup', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundCG,
-                            show         : false,
-                            selectAll    : selected,
-                            defaultTitle : 'Select Groups',
-                            title        : selected ? 'All Selected' : 'Select Groups',
-                            data         : angular.copy( processedCGCC.chargeGroups )
-                        });
+                        report.hasByChargeGroup = {
+                            data: angular.copy( processedCGCC.chargeGroups ),
+                            options: {
+                                selectAll: selected,
+                                hasSearch: false,
+                                key: 'name'
+                            },
+                            affectsFilter: {
+                                name: 'hasByChargeCode',
+                                process: function(filter, selectedItems) {
+                                    _.each(filter.originalData, function (od) {
+                                        od.disabled = true;
+                                    });
+                                    /**/
+                                    _.each(filter.originalData, function (od) {
+                                        _.each(od.associcated_charge_groups, function (cg) {
+                                            _.each(selectedItems, function (si) {
+                                                if (cg.id === si.id) {
+                                                    od.disabled = false;
+                                                }
+                                            });
+                                        });
+                                    });
+                                    /**/
+                                    filter.updateData();
+                                }
+                            }
+                        }
                     };
 
                     foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' }) || _.find(report['filters'], { value: 'SHOW_CHARGE_CODES' });
 
                     if ( !!foundCC ) {
                         foundCC['filled'] = true;
-                        __setData(report, 'hasByChargeCode', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundCC,
-                            show         : false,
-                            selectAll    : selected,
-                            defaultTitle : 'Select Codes',
-                            title        : selected ? 'All Selected' : 'Select Codes',
-                            data         : angular.copy( processedCGCC.chargeCodes ),
-                            originalData : angular.copy( processedCGCC.chargeCodes )
-                        });
+                        report.hasByChargeCode = {
+                            data: angular.copy( processedCGCC.chargeCodes ),
+                            originalData: angular.copy( processedCGCC.chargeCodes ),
+                            options: {
+                                selectAll: selected,
+                                hasSearch: false,
+                                key: 'name',
+                            },
+                            updateData: function() {
+                                var enabled = [];
+                                _.each (this.originalData, function (od) {
+                                    if ( ! od.disabled ) {
+                                        enabled.push(od);
+                                    }
+                                });
+                                this.data = enabled;
+                            }
+                        }
                     };
                 });
 
@@ -1010,35 +1036,67 @@ angular.module('reportsModule')
                 var foundAG,
                     foundAs;
 
+                var flattenAddons = function(addons) {
+                    var data = [];
+                    _.each (addons, function (addon) {
+                        if ( ! addon.disabled ) {
+                            _.each(addon.list_of_addons, function(la) {
+                                data.push(la);
+                            });
+                        }
+                    });
+                    return data;
+                }
+
                 _.each(reportList, function(report) {
                     foundAG = _.find(report['filters'], { value: 'ADDON_GROUPS' });
 
                     if ( !! foundAG ) {
                         foundAG['filled'] = true;
-                        __setData(report, 'hasAddonGroups', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundAG,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Addon Group',
-                            title        : 'All Selected',
-                            data         : selectAllAddonGroups( angular.copy(chargeNAddonGroups) ),
-                        });
+                        report.hasAddonGroups = {
+                            data: angular.copy(chargeNAddonGroups),
+                            options: {
+                                selectAll: true,
+                                hasSearch: true,
+                                key: 'name'
+                            },
+                            affectsFilter: {
+                                name: 'hasAddons',
+                                process: function(filter, selectedItems) {
+                                    _.each(filter.originalData, function (od) {
+                                        od.disabled = true;
+                                    });
+                                    /**/
+                                    _.each(filter.originalData, function (od) {
+                                        _.each(selectedItems, function (si) {
+                                            if (od.group_id === si.id) {
+                                                od.disabled = false;
+                                            }
+                                        });
+                                    });
+                                    /**/
+                                    filter.updateData();
+                                }
+                            }
+                        }
                     };
 
                     foundAs = _.find(report['filters'], { value: 'ADDONS' });
 
                     if ( !!foundAs ) {
                         foundAs['filled'] = true;
-                        __setData(report, 'hasAddons', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundAs,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Addon',
-                            title        : 'All Selected',
-                            data         : selectAllAddons( angular.copy(addons) )
-                        });
+                        report.hasAddons = {
+                            data: flattenAddons(addons),
+                            originalData: angular.copy( addons ),
+                            options: {
+                                selectAll: true,
+                                hasSearch: true,
+                                key: 'addon_name',
+                            },
+                            updateData: function() {
+                                this.data = flattenAddons(this.originalData);
+                            }
+                        }
                     };
                 });
 

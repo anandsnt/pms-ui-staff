@@ -1559,15 +1559,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			// include addons
 			if ( report.hasOwnProperty('hasAddons') ) {
-				var addonsLength = 0;
-
-				selected = [];
-				_.each(report['hasAddons']['data'], function(each) {
-					var chosen = _.where(each['list_of_addons'], { selected: true });
-					selected   = selected.concat(chosen);
-
-					addonsLength += each['list_of_addons'].length;
-				});
+				selected = _.where(report['hasAddons']['data'], { selected: true });
 
 				if ( selected.length > 0 ) {
 					key         = reportParams['ADDONS_IDS'];
@@ -1582,7 +1574,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					});
 
 					// in case if all addon groups are selected
-					if ( changeAppliedFilter && addonsLength === selected.length ) {
+					if ( changeAppliedFilter && report['hasAddons']['data'].length === selected.length ) {
 						$scope.appliedFilter.addons = ['All Addons'];
 					};
 				};

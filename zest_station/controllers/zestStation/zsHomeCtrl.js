@@ -23,7 +23,7 @@ sntZestStation.controller('zsHomeCtrl', [
                 mode: zsModeConstants.PICKUP_KEY_MODE
             });
 	};
-
+        
 	/**
 	 * when we clicked on checkin from home screen
 	 */
@@ -37,15 +37,7 @@ sntZestStation.controller('zsHomeCtrl', [
             });
 	};
         
-        var appWentToOOS = false;//no other way to handle this
-        //oos is been called from here and there, i can't track like this
-        if($scope.zestStationData.wsIsOos &&  appWentToOOS){
-                //update work station status
-                $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
-                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
-                appWentToOOS = true;
-                $state.go('zest_station.oos');
-        }
+        
 	/**
 	 * when we clicked on checkout from home screen
 	 */
@@ -260,8 +252,6 @@ sntZestStation.controller('zsHomeCtrl', [
            $scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order':'in-order';
            //$scope.zestStationData.workstationOooReason = station.out_of_order_msg;
 
-
-
             var oosStorageKey = 'snt_zs_workstation.in_oos',
                 oosReasonKey  = 'snt_zs_workstation.oos_reason',
                 storage = localStorage;
@@ -426,8 +416,8 @@ sntZestStation.controller('zsHomeCtrl', [
             };
           
             //if application is launched either in chrome app or ipad go to login page
-            var isIpad = navigator.userAgent.match(/iPad/i) !== null && window.cordova;
-            if($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || isIpad)){
+            $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
+            if($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)){
                 $state.go('zest_station.admin');
             }
             else{
@@ -530,18 +520,30 @@ sntZestStation.controller('zsHomeCtrl', [
         };
     
     
+    var checkForOOS = function(){
+        if($scope.zestStationData.wsIsOos){
+                //update work station status
+                $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
+                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{
+                    'status':'out-of-order',
+                    'reason':$scope.zestStationData.workstationOooReason
+                });
+                $state.go('zest_station.oos');
+        }
+    };
+    
     $scope.init = function(){
         //reset early check-in flags
-        $state.reservation_in_early_checkin_window = false;
+        $scope.zestStationData.reservation_in_early_checkin_window = false;
         $state.earlyCheckinPurchased = false;
-        $state.is_early_prepaid = false;
-        $state.earlyCheckinOfferId = null;
+        $scope.zestStationData.is_early_prepaid = false;
         
         $state.qr_code = null;
         $state.search = false;
         //for change into default language after 120sec
         $scope.startLanguageCounter();
         $scope.resetFlags();
+        checkForOOS();
         var current = $state.current.name;
         if (current === 'zest_station.admin-screen'){
            //do nothing

@@ -20,11 +20,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		var refreshScroll = function() {
 			$scope.refreshScroller( 'report-details-scroll' );
-			$scope.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			if ( $scope.myScroll && $scope.myScroll.hasOwnProperty('report-details-scroll') ) {
+				$scope.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			}
 		};
 
-		var refreshSidebarScroll = function() {
+		$scope.refreshSidebarScroll = function() {
 			$scope.refreshScroller( 'report-filter-sidebar-scroll' );
+			if ( $scope.myScroll && $scope.myScroll.hasOwnProperty('report-filter-sidebar-scroll') ) {
+				$scope.myScroll['report-filter-sidebar-scroll'].scrollTo(0, 0, 100);
+			}
 		};
 
 
@@ -48,7 +53,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// 	if ( item ) {
 		// 		$scope.$parent.toggleFilterItems(item);
 		// 	};
-		// 	refreshSidebarScroll();
+		// 	$scope.refreshSidebarScroll();
 		// };
 
 
@@ -437,7 +442,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// scroller refresh and reset position
 			$timeout(function () {
 				refreshScroll();
-				refreshSidebarScroll();
+				$scope.refreshSidebarScroll();
 			}, 200);
 
 
@@ -1063,7 +1068,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		});
 
 		var reportDetailsFilterScrollRefresh = $scope.$on(reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'], function() {
-			refreshSidebarScroll();
+			$scope.refreshSidebarScroll();
 		});
 
 		// removing event listners when scope is destroyed
@@ -1072,7 +1077,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.$on( '$destroy', reportPageChanged );
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportAPIfailed );
-		$scope.$on( '$destroy', refreshSidebarScroll );
+		$scope.$on( '$destroy', $scope.refreshSidebarScroll );
     }
 
 ]);

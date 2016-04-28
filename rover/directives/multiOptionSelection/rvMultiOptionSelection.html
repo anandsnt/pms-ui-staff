@@ -2,7 +2,7 @@
     <label>{{ label }}</label>
     <div class="multi-select select" ng-click="toggleView()">{{ value }}</div>
     <div class="multi-select-options" ng-class="{ 'hidden': closed }">
-        <div class="select-all" ng-hide="data.length === 1">
+        <div class="select-all" ng-hide="data.length === 1 || options.singleSelect">
             <label class="checkbox inline" ng-class="{ 'checked': options.selectAll }" ng-click="toggleSelectAll()">
                 <span class="icon-form icon-checkbox" ng-class="{ 'checked': options.selectAll }"></span>
                 Select All
