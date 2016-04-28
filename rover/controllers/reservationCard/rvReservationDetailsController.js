@@ -592,10 +592,10 @@ sntRover.controller('reservationDetailsController',
 		 * @return {Boolean} flag to disable button
 		 */
 		$scope.shouldDisableExtendNightsButton = function() {
-			var isAllotmentPresent	= $scope.reservationData.allotment_id || $scope.reservationData.reservation_card.allotment_id,
-				isGroupPresent 		= $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id;
+			var isAllotmentPresent	= $scope.reservationData.allotment_id || $scope.reservationData.reservation_card.allotment_id;
 
-			return (isAllotmentPresent || isGroupPresent);
+
+			return (isAllotmentPresent);
 		};
 
 		$scope.extendNights = function() {
