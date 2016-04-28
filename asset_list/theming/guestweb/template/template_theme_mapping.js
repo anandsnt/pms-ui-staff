@@ -248,12 +248,19 @@ module.exports = {
 										checkinPartials+"*.html",
 										precheckinPartials+'*.html'],
 
+			'guestweb_hotel_ivrine'		 : [ 'guestweb/**/common_templates/partials/checkin/**.html',
+										'guestweb/**/common_templates/partials/checkout/**.html',
+										'guestweb/**/common_templates/partials/gwNoOption.html',
+										checkoutNowPartials+'*.html',
+										checkinPartials+"*.html",
+										precheckinPartials+'*.html'],
+
 			'guestweb_boston_park'		 : [ 'guestweb/**/common_templates/partials/checkin/**.html',
 										'guestweb/**/common_templates/partials/checkout/**.html',
 										'guestweb/**/common_templates/partials/gwNoOption.html',
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
-										precheckinPartials+'*.html']	
+										precheckinPartials+'*.html']
 		}
 	}
 }
