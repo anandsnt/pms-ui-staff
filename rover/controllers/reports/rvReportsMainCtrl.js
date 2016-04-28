@@ -50,11 +50,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			$scope.viewCol = value || 0;
 		}
 
-		var filterByQuery = function() {
+		$scope.uiChosenReport = undefined;
+		$scope.filterByQuery = function() {
 		    var query = $scope.query.toLowerCase().trim(),
-		        title;
-
-		    var i, j;
+		        title, i, j;
 
 		    $scope.setViewCol(0);
 
@@ -66,6 +65,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		    };
 
 		    for (i = 0, j = $scope.reportList.length; i < j; i++) {
+				if ( !! $scope.uiChosenReport ) {
+				    $scope.uiChosenReport.uiChosen = false;
+				}
+
 		        title = $scope.reportList[i].title.toLowerCase();
 
 		        if ( title.indexOf(query) == -1 ) {
@@ -84,8 +87,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		        $scope.reportList[i].filteredOut = false;
 		    };
 		}
-		/**/
-		$scope.filterByQuery = _.throttle(filterByQuery, 100, { leading: false });
 
 
 		// CICO-21232
