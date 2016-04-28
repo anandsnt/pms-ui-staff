@@ -143,8 +143,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
                 $scope.headingText = 'MADE_FIRST_KEY_MSG';
                 $scope.subHeadingText = 'MADE_FIRST_KEY_MSG_SUB';
-                
-                //$scope.$digest();
 
                 $scope.initMakeKey(2);
 
