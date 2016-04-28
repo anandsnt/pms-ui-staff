@@ -194,4 +194,38 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		title: 'Phone number entry'
 	});
 
+
+	//checkin now states
+	$stateProvider.state('guestCheckinOptions', {
+		url: '/guestCheckinOptions',
+		templateUrl: '/assets/common_templates/partials/MGM/gwCheckinOptions.html',
+		controller: 'checkinOptionsController',
+		title: 'Checkin options'
+	}).state('earlyCheckinReady', {
+		url: '/earlyCheckinReady',
+		controller:'earlyCheckinReadyController',
+		templateUrl: '/assets/common_templates/partials/MGM/gwEarlyCheckinReady.html',
+		title: 'Early Check in ready'
+	}).state('roomNotReady', {
+		url: '/roomNotReady',
+		templateUrl: '/assets/common_templates/partials/MGM/gwCheckinNowCommon.html',
+		controller: 'roomNotReadyController',
+		title: 'Room unavailable'
+	}).state('roomAssignFailed', {
+		url: '/roomAssignFailed',
+		templateUrl: '/assets/common_templates/partials/MGM/gwCheckinNowCommon.html',
+		controller: 'roomAssignFailedController',
+		title: 'Room Assign Failed'
+	}).state('eciOffroomAssignFailed', {
+		url: '/eciOffroomAssignFailed',
+		templateUrl: '/assets/common_templates/partials/MGM/gwCheckinNowCommon.html',
+		controller: 'eciOffRoomAssignmentFailedController',
+		title: 'Room Assign Failed'
+	}).state('eciOffRoomNotReady', {
+		url: '/eciOffRoomNotReady',
+		templateUrl: '/assets/common_templates/partials/MGM/gwCheckinNowCommon.html',
+		controller: 'eciOffRoomNotReadyController',
+		title: 'Room unavailable'
+	});
+
 }]);
