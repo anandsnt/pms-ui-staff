@@ -42,7 +42,7 @@ module.exports = {
 			'guestweb_porto_vista':[ themeCSSRoot + 'guestweb_porto_vista.css'],
 			'guestweb_chalet_view':[ themeCSSRoot + 'guestweb_chalet_view.css'],
 			'guestweb_crawford':[ themeCSSRoot + 'guestweb_crawford.css'],
-			'guestweb_kingsley':[ themeCSSRoot + 'guestweb_crawford.css']
+			'guestweb_kingsley':[ themeCSSRoot + 'guestweb_kingsley.css']
 		}
 	}
 }
