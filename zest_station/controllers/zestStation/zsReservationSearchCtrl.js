@@ -450,8 +450,17 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
     
     $scope.scanQRCode = function(){
-        $scope.qrCodeScanFailed = false;
-        $scope.initChromeAppQRCodeScanner();
+        //depending on which scanner is enabled, from hotel settings > station > pickup keys
+        //samsotech scans via websocket to .net app, the datalogic will use the chromeapp to scan directly
+        
+        if($scope.zestStationData.qr_scanner_samsotech){
+            $scope.socketOperator.CaptureQRViaPassportScanner();
+        } else if (qr_scanner_datalogic.qr_scanner_datalogic){
+            $scope.qrCodeScanFailed = false;
+            $scope.initChromeAppQRCodeScanner();
+        }
+
+
     };
     
     $scope.initChromeAppQRCodeScanner = function(){
