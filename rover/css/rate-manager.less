@@ -494,10 +494,16 @@
         background-color: @grey1;
         .calc-height(100, 50);
         .box-shadow(2px 2px 3px rgba(0,0,0,.2));
+
+        > .rate-calendar {
+             /* First row needs to be slightly smaller ***/
+            //.cell:first-child { height: 55px; }
+        }
+
         .pinnedLeft-actions {
-            padding: 10px;
+            padding: 10px 10px 0 10px;
             overflow: hidden;
-            .size(60px, 100%);
+            .size(50px, 100%);
             .float;
 
             .button {
@@ -518,16 +524,14 @@
         }
 
         .pinnedLeft-list { 
+            margin-top: 5px;
             overflow: hidden;
             width: 100%;
-            .calc-height(100, 60);
+            .calc-height(100, 65);
         }
 
         .rate-calendar { 
             width: 100%; 
-
-            /* First row needs to be slightly smaller ***/
-            .cell:first-child { height: 55px; }
 
             td { 
                 position: relative;
@@ -656,31 +660,7 @@
             .cell-container { padding-left: 5px; }
         }
 
-        tr:first-child {
-            .cell-content {
-                > .restriction-icon {
-                        margin-top: 5px;
-                        position: static;
-                        float: left;
-                        margin-right: 0.5em;
-
-                        &:last-child {
-                            margin-right: 0;
-                        }
-                    }
-            }
-        }
-
-        tr:first-child {
-            .cell-container { 
-                padding-top: 0;
-                height: 55px;
-
-                .cell-content {
-                    background: @grey1;
-                }
-            }
-        }
+        
 
         tr:last-child {
             .cell-container { 
@@ -860,13 +840,44 @@
         /* First Row - Days ***/
         &.calendar-rate-table-days { 
             top: 0;
-            height: 60px; 
+            height: 115px; 
+            tr:first-child {
+                .cell-content {
+                    > .restriction-icon {
+                            margin-top: 5px;
+                            position: static;
+                            float: left;
+                            margin-right: 0.5em;
+
+                            &:last-child {
+                                margin-right: 0;
+                            }
+                        }
+                }
+            }
+
+            tr:first-child {
+                .cell-container { 
+                    padding-top: 0;
+                    height: 55px;
+
+                    .cell-content {
+                        background: @grey1;
+                    }
+                }
+        }
         } 
 
         /* Other Rows - Data ***/
         &.calendar-rate-table-grid { 
-            top: 60px;
-            .calc-height(100, 110); 
+            top: 115px;
+            .calc-height(100, 165); 
+
+            tr:first-child {
+                .cell-container { 
+                    padding-top: 0;
+                }
+            }
         }
     }
 
