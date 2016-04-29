@@ -49,7 +49,9 @@ module.exports = {
 			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_boston_park':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_beacon_hill':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_paradise_point':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_paradise_point':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_knickerbocker_yacht_club':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_kingsley':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }

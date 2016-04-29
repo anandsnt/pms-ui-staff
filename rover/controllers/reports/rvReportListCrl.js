@@ -19,14 +19,17 @@ sntRover.controller('RVReportListCrl', [
 
         $scope.refreshFilterScroll = function(scrollUp) {
             $scope.refreshScroller(REPORT_FILTERS_SCROLL);
-            if ( !!scrollUp && $scope.$parent.myScroll.hasOwnProperty(REPORT_FILTERS_SCROLL) ) {
-                $scope.$parent.myScroll[REPORT_FILTERS_SCROLL].scrollTo(0, 0, 100);
+            if ( !!scrollUp && $scope.myScroll.hasOwnProperty(REPORT_FILTERS_SCROLL) ) {
+                $scope.myScroll[REPORT_FILTERS_SCROLL].scrollTo(0, 0, 100);
             };
         }
 
         $scope.refreshAllScroll = function() {
             $scope.refreshScroller(REPORT_LIST_SCROLL);
-            $scope.refreshScroller(REPORT_FILTERS_SCROLL);
+            if ( $scope.myScroll.hasOwnProperty(REPORT_LIST_SCROLL) ) {
+                $scope.myScroll[REPORT_LIST_SCROLL].scrollTo(0, 0, 100);
+            };
+            $scope.refreshFilterScroll();
         };
 
         var setScroller = function() {
@@ -114,6 +117,7 @@ sntRover.controller('RVReportListCrl', [
         postProcess( $scope.$parent.reportList );
 
 
+
         // show hide filter toggle
         $scope.toggleFilter = function(e, report) {
             if ( e ) {
@@ -121,14 +125,13 @@ sntRover.controller('RVReportListCrl', [
                 e.stopPropagation();
             };
 
-
             var callback = function() {
-                if ( $scope.uiChosenReport ) {
-                    $scope.uiChosenReport.uiChosen = false;
+                if ( !! $scope.$parent.uiChosenReport ) {
+                    $scope.$parent.uiChosenReport.uiChosen = false;
                 }
 
                 report.uiChosen = true;
-                $scope.uiChosenReport = report;
+                $scope.$parent.uiChosenReport = report;
 
                 $scope.setViewCol(2);
 
