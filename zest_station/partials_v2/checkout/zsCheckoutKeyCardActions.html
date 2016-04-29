@@ -1,0 +1,57 @@
+<section id="main" role="main">
+    <!---- wait ---->
+    <div id="content" ng-show="socketBeingConnected">
+        <h1 translate>PLEASE_WAIT_FOR_KEY_CARD_FOR_CHECKOUT</h1>
+        <h2 class="nocaps" translate>PLEASE_WAIT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT</h2>
+    </div>
+    <!-- card insert mode -->
+    <div id="content" ng-hide="reservationSearchFailed || socketBeingConnected">
+        <h1 translate>INSERT_KEY_CARD_FOR_CHECKOUT</h1>
+        <h2 class="nocaps" translate>INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    {{'INSERT_KEY_CARD' | translate}}
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!-- reservation search failed -->
+    <div id="content" ng-show="reservationSearchFailed && !socketBeingConnected">
+        <h1 translate>KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING</h1>
+        <h2 class="nocaps" translate>KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='retrySearch()'>
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    {{'RETRY' |translate}}
+                </li>
+                <li class="break">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='searchByName()'>
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    {{'SEARCH' |translate}}
+                    <span>{{'BY_NAME' |translate}}</span>
+                </li>
+                <li class="break">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    {{'RES_SRCH_TALK' |translate}}
+                    <span>{{'RES_SRCH_TALK_SUB' |translate}}</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>

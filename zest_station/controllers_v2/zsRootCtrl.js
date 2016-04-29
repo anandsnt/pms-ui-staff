@@ -285,6 +285,71 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.callAPI(zsTabletSrv.fetchHotelTheme, options);
 		};
 
+		/********************************************************************************
+		 *   Websocket actions related to keycard lookup
+		 *  starts here
+		 ********************************************************************************/
+
+		var socketActions = function(response) {
+			var cmd = response.Command,
+				msg = response.Message;
+			// to delete after QA pass
+			console.info("Websocket:-> uid=" + response.UID);
+			console.info("Websocket: Command ->" + cmd);
+			console.info("Websocket: msg ->" + msg);
+			console.info("Websocket:-> response code:" + response.ResponseCode);
+
+			if (response.Command === 'cmd_insert_key_card') {
+				//check if the UID is valid
+				//if so find reservation using that
+				if (typeof response.UID !== "undefined" && response.UID !== null) {
+					$scope.$broadcast('UID_FETCH_SUCCESS', {
+						"uid": response.UID
+					});
+				} else {
+					$scope.$broadcast('UID_FETCH_FAILED');
+				};
+			} else if (response.Command === 'cmd_eject_key_card') {
+				//ejectkey card callback
+				if (response.ResponseCode === 19) {
+					// key ejection failed
+					if (!$scope.zestStationData.keyCaptureDone) {
+						$state.go('zest_station.error_page');
+					};
+				} else {
+					$scope.zestStationData.keyCardInserted = false;
+				}
+			} else if (response.Command === 'cmd_capture_key_card') {
+				if (response.ResponseCode === 0) {
+					$scope.zestStationData.keyCaptureDone = true;
+				} else {
+					//capture failed
+					$state.go('zest_station.error_page');
+				};
+			} else if (response.Command === 'cmd_dispense_key_card') {
+				$scope.$broadcast('DISPENSE_SUCCESS', {
+					"cmd": response.Command,
+					"msg": response.Message
+				});
+			}
+		};
+		var socketOpenedFailed = function() {
+			console.info("Websocket:-> socket connection failed");
+			$scope.$broadcast('SOCKET_FAILED');
+		};
+		var socketOpenedSuccess = function() {
+			console.info("Websocket:-> socket connected");
+			$scope.$broadcast('SOCKET_CONNECTED');
+		};
+		$scope.$on('CONNECT_WEBSOCKET',function(){
+        	$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+   		});
+		/********************************************************************************
+		 *  Websocket actions related to keycard lookup
+		 *  ends here
+		 ********************************************************************************/
+		
+
 		/***
 		 * [initializeMe description]
 		 * @return {[type]} [description]
@@ -299,7 +364,7 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.zestStationData.wsIsOos = false;
 			$scope.inChromeApp ? maximizeScreen() : "";
 			//create a websocket obj
-			//$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+			$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
 			fetchHotelSettings();
 			getWorkStation();
 			getHotelStationTheme();
