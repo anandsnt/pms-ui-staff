@@ -1,7 +1,15 @@
 admin.controller('adWindsurferCRSSetupCtrl', ['$scope', 'windsurferCRSSetupValues', 'adWindsurferCRSSetupSrv', '$timeout',
     function($scope, windsurferCRSSetupValues, adWindsurferCRSSetupSrv, $timeout) {
 
-        BaseCtrl.call (this, $scope);
+        BaseCtrl.call(this, $scope);
+
+        var datepickerDefaults = {
+            minDate: tzIndependentDate($rootScope.businessDate),
+            maxDate: tzIndependentDate($rootScope.businessDate),
+            changeYear: true,
+            changeMonth: true,
+            yearRange: "0:+5"
+        }
 
         /**
          * when clicked on check box to enable/diable pabx
@@ -24,7 +32,7 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', 'windsurferCRSSetupValue
          * @return {undefiend}
          */
         $scope.saveWindsurferCRSSetup = function() {
-            var params 	= {};
+            var params = {};
 
             if (!$scope.windsurferSetup.active) {
                 params = _.pick($scope.windsurferSetup, 'active');
@@ -33,8 +41,8 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', 'windsurferCRSSetupValue
             }
 
             var options = {
-                params 			: params,
-                successCallBack : successCallBackOfWindsurferCRSSetup
+                params: params,
+                successCallBack: successCallBackOfWindsurferCRSSetup
             };
             $scope.callAPI(adWindsurferCRSSetupSrv.saveWindsurferCRSConfiguration, options);
         };
@@ -45,5 +53,22 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', 'windsurferCRSSetupValue
          */
         var initializeMe = function() {
             $scope.windsurferSetup = windsurferCRSSetupValues;
+
+            $scope.fromDateOptions = _.extend(datePickerDefaults, {
+                onSelect: function() {
+                    if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
+                        $scope.toDate = $scope.fromDate;
+                    }
+                }
+            });
+
+            $scope.toDateOptions = _.extend(datePickerDefaults, {
+                onSelect: function() {
+                    if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
+                        $scope.fromDate = $scope.toDate;
+                    }
+                }
+            });
         }();
-    }]);
+    }
+]);

@@ -11,6 +11,18 @@
                 <ad-textbox inputtype="text" value="windsurferSetup.username" label="{{'WINDSURFER_CRS_USERNAME'| translate}}" ng-if="windsurferSetup.active" styleclass="full-width"></ad-textbox>
                 <ad-textbox inputtype="password" value="windsurferSetup.password" label="{{'WINDSURFER_CRS_PASSWORD'| translate}}" styleclass="full-width" ng-if="windsurferSetup.active"></ad-textbox>
             </fieldset>
+            <fieldset class="holder right" ng-if="windsurferSetup.active">
+                <div class="entry has-datepicker margin">
+                    <label>{{'FROM_DATE' | translate}}
+                    </label>
+                    <input type="text" class="date-picker-input-small" ui-date="fromDateOptions" ng-model="fromDate" readonly>
+                </div>
+                <div class="entry has-datepicker margin">
+                    <label>{{'TO_DATE' | translate}}
+                    </label>
+                    <input type="text" class="date-picker-input-small" ui-date="toDateOptions" ng-model=toDate" readonly>
+                </div>
+            </fieldset>
             <ad-save-cancel-area save-action="saveWindsurferCRSSetup" cancel-action="goBackToPreviousState"></ad-save-cancel-area>
         </div>
     </section>
