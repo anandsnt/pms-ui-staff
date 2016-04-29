@@ -50,11 +50,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			$scope.viewCol = value || 0;
 		}
 
-		var filterByQuery = function() {
+		$scope.uiChosenReport = undefined;
+		$scope.filterByQuery = function() {
 		    var query = $scope.query.toLowerCase().trim(),
-		        title;
-
-		    var i, j;
+		        title, i, j;
 
 		    $scope.setViewCol(0);
 
@@ -66,6 +65,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		    };
 
 		    for (i = 0, j = $scope.reportList.length; i < j; i++) {
+				if ( !! $scope.uiChosenReport ) {
+				    $scope.uiChosenReport.uiChosen = false;
+				}
+
 		        title = $scope.reportList[i].title.toLowerCase();
 
 		        if ( title.indexOf(query) == -1 ) {
@@ -84,8 +87,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		        $scope.reportList[i].filteredOut = false;
 		    };
 		}
-		/**/
-		$scope.filterByQuery = _.throttle(filterByQuery, 100, { leading: false });
 
 
 		// CICO-21232
@@ -1559,15 +1560,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			// include addons
 			if ( report.hasOwnProperty('hasAddons') ) {
-				var addonsLength = 0;
-
-				selected = [];
-				_.each(report['hasAddons']['data'], function(each) {
-					var chosen = _.where(each['list_of_addons'], { selected: true });
-					selected   = selected.concat(chosen);
-
-					addonsLength += each['list_of_addons'].length;
-				});
+				selected = _.where(report['hasAddons']['data'], { selected: true });
 
 				if ( selected.length > 0 ) {
 					key         = reportParams['ADDONS_IDS'];
@@ -1582,7 +1575,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					});
 
 					// in case if all addon groups are selected
-					if ( changeAppliedFilter && addonsLength === selected.length ) {
+					if ( changeAppliedFilter && report['hasAddons']['data'].length === selected.length ) {
 						$scope.appliedFilter.addons = ['All Addons'];
 					};
 				};
