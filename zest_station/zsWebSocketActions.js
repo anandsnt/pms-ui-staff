@@ -29,7 +29,7 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
         that.ws.send("{\"Command\" : \"cmd_capture_key_card\"}");
     };
     this.CaptureQRViaPassportScanner = function() { //captures QR code data from the ARH/Samsotech Passport scanner
-        ws.send("{\"Command\" : \"cmd_scan_qr_passport_scanner\"}");
+        that.ws.send("{\"Command\" : \"cmd_scan_qr_passport_scanner\"}");
     };
     this.InsertKeyCard = function() { //use key for checkout takes key in
         that.ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
