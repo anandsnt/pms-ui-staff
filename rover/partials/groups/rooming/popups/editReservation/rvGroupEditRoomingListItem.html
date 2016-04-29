@@ -16,24 +16,17 @@
             </div>
             <div class="entry full-width">
                 <label for="first-guest-first-name">Accompanying Guest(s)</label>
-                <div class="entry margin">
-                    <input id="first-guest-first-name" placeholder="First Name" value="" type="text" />
+                <div ng-repeat="accompanying_guest in ngDialogData.accompanying_guests_details">
+                    <div class="entry margin" >
+                        <input id="first-guest-first-name" placeholder="First Name" value="{{accompanying_guest.first_name}}" type="text" ng-model="accompanying_guest.first_name" />
+                    </div>
+                    <div class="entry">
+                        <input id="first-guest-last-name" placeholder="Last Name"
+                        value="{{accompanying_guest.last_name}}" type="text"
+                        ng-model="accompanying_guest.last_name" />
+                    </div>
                 </div>
-                <div class="entry">
-                    <input id="first-guest-last-name" placeholder="Last Name" value="" type="text" />
-                </div>
-                <div class="entry margin">
-                    <input id="second-guest-first-name" placeholder="First Name" value="" type="text" />
-                </div>
-                <div class="entry">
-                    <input id="second-guest-last-name" placeholder="Last Name" value="" type="text" />
-                </div>
-                <div class="entry margin">
-                    <input id="third-guest-first-name" placeholder="First Name" value="" type="text" />
-                </div>
-                <div class="entry">
-                    <input id="third-guest-last-name" placeholder="Last Name" value="" type="text" />
-                </div>
+
             </div>
             <div class="entry margin type">
                 <label for="rooming-room-type">{{'GROUP_ROOM_TYPE'|translate}}</label>
