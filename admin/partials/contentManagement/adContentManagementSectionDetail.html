@@ -77,6 +77,43 @@
                     
                 </div> 
 
+                <div class="entry ">
+                    <label for="section-search-availability"><span translate>CAROUSAL_SWITCH_LABEL</span> </label>
+                    <div class="switch-button" ng-class="{'on': data.is_caraousal_enabled}">
+                        <input name="section-search-availability" id="section-search-availability" value="1" type="checkbox" ng-model="data.is_caraousal_enabled" />
+                        <span class="switch-icon"></span>
+                    </div>
+
+                    
+                </div> 
+
+                <div ng-show="data.is_caraousal_enabled">
+
+                    <div class="entry ">
+                        <label for="section-search-availability"><span translate>AUTO_ADVANCE_SWITCH_LABEL</span> </label>
+                        <div class="switch-button" ng-class="{'on': data.is_caraousal_auto_advance_enabled}">
+                            <input name="section-search-availability" id="section-search-availability" value="1" type="checkbox" ng-model="data.is_caraousal_auto_advance_enabled" />
+                            <span class="switch-icon"></span>
+                        </div>
+
+                    
+                    </div> 
+
+                    <ad-dropdown label="{{'CAROUSAL_ADVANCE_DELAY_LABEL' | translate}}" list="delay_timings" selected-Id='data.carousal_delay' required='no' selbox-class='placeholder' ></ad-dropdown>
+
+                    <div class="entry ">
+                        <label for="section-search-availability"><span translate>CAROUSAL_LOOP_SWITCH_LABEL</span> </label>
+                        <div class="switch-button" ng-class="{'on': data.is_carousal_loop_enabled}">
+                            <input name="section-search-availability" id="section-search-availability" value="1" type="checkbox" ng-model="data.is_carousal_loop_enabled" />
+                            <span class="switch-icon"></span>
+                        </div>
+
+                        
+                    </div> 
+                </div>
+
+                
+
                 <ad-dropdown label="{{'SECTION_DESCRIPTION_ALIGNMENT_LABEL' | translate}}" list="alignments" selected-Id='data.description_alignment' required='no' selbox-class='placeholder' ></ad-dropdown>
 
                 <div class="entry full-width">
