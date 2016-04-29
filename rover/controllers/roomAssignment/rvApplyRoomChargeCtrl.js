@@ -8,6 +8,7 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 	'ngDialog',
 	'RVReservationCardSrv',
 	'$timeout',
+	'rvPermissionSrv',
 	function($scope,
 		$rootScope,
 		$state,
@@ -16,7 +17,8 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 		RVUpgradesSrv,
 		ngDialog,
 		RVReservationCardSrv,
-		$timeout) {
+		$timeout,
+		rvPermissionSrv) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.noChargeDisabled = false;
@@ -144,6 +146,10 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 		$scope.closeDialog();
 		$scope.goToNextView();
 
+	};
+
+	$scope.canMoveRoomWithoutCharge = function() {
+		return rvPermissionSrv.getPermissionValue('MOVE_ROOM_WITHOUT_CHARGE');
 	};
 
 	$scope.clickedNoChargeButton = function(){
