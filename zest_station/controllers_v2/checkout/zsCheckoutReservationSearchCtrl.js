@@ -31,8 +31,8 @@ sntZestStation.controller('zsCheckoutReservationSearchCtrl', [
 		var searchReservation = function() {
 			var checkoutVerificationSuccess = function(data) {
 				console.log(data);
-				//$scope.zestStationData.reservationData = data;
-				//$state.go('zest_station.review_bill');
+				$scope.zestStationData.reservationData = data;
+				$state.go('zest_station.checkoutReservationBill',{'from':'searchByName'});
 			};
 			var checkoutVerificationCallBack = function() {
 				$scope.mode = 'no_match';

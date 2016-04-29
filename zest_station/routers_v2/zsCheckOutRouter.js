@@ -12,6 +12,10 @@ sntZestStation.config(['$stateProvider',
              url: '/checkoutKeyCardLookUp', 
              controller: 'zsCheckoutKeyCardActionsCtrl',
              templateUrl: '/assets/partials_v2/checkout/zsCheckoutKeyCardActions.html'
+         }).state('zest_station.checkoutReservationBill', {
+             url: '/checkoutReservationBill/:from', 
+             controller: 'zsReservationBillDetailsCtrl',
+             templateUrl: '/assets/partials_v2/checkout/zsReservationBill.html'
          });
 	}
 ]);

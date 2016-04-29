@@ -50,7 +50,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			} else {
 				$scope.zestStationData.keyCardInserted = true;
 				$scope.zestStationData.reservationData = data;
-				$state.go('zest_station.review_bill');
+				$state.go('zest_station.checkoutReservationBill');
 			}
 		};
 
