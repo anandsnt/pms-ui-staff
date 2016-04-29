@@ -1,6 +1,6 @@
 
 
-	"STATIONARY":"Stationary",
+	"STATIONERY":"Stationery",
 	"CUSTOMIZE":"Customize",
 	"CONFIRMATION": "Confirmation",
 	"GUEST": "Guest" ,
@@ -81,6 +81,8 @@
 	"DEFAULT_GUEST_BILL" : "Default Guest Bill",
 	"DEFAULT_ACCOUNT_BILL" : "Default Account Bill",
 	"SELECT_ACCOUNT_BILL" : "Select Account Bill",
+	"SHOW_REGISTRATION_CARD_PRINT" : "Show Registration Card Print",
+	"EXT_TAX_BREAKDOWN" : "Extended Tax breakdown",
 
 	"SELECT LANGUAGE": "Select Language",
 	"GROUP_CONFIRMATION": "Group Confirmation",
@@ -95,8 +97,13 @@
 	"LOCATION_URL_LABEL_PLACE_HOLDER": "Enter Location URL Label",
 
 	"GROUP": "Group",
-
-	"SHOW_REGISTRATION_CARD_PRINT" : "Show Registration Card Print"
+	"AR_STATEMNT" : "AR Statement",
+	"AR_STATEMNT_EMAIL_SUBJECT" : "AR Statement Email Subject",
+	"AR_STATEMNT_EMAIL_BODY" : "AR Statement Email Body",
+	"CUSTOM_TEXT_HEADER" : "Custom Text Header",
+	"CUSTOM_TEXT_FOOTER" : "Custom Text Footer",
+	"CUSTOM_TEXT_HEADER_PLACE_HOLDER" : "Enter Custom Text Header",
+	"CUSTOM_TEXT_FOOTER_PLACE_HOLDER" : "Enter Custom Text Footer"
 
 
 

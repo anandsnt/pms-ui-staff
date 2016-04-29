@@ -1205,6 +1205,12 @@ sntRover.controller('RVbillCardController',
 		//Display the key encoder popup
 		//https://stayntouch.atlassian.net/browse/CICO-21898?focusedCommentId=58632&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-58632
 		else if(keySettings === "encode"  || keySettings === "mobile_key_encode"){
+			// when checking in we are creating a new key, popup controller expects this flag.
+			if ($scope.reservationData && $scope.reservationData.status && $scope.reservationData.status === 'CHECKING_IN') {
+				$scope.keyType = 'New';
+    			$rootScope.$broadcast('MAKE_KEY_TYPE',{type:'New'});
+			}
+
 			if($scope.reservationBillData.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0){
 				fetchEncoderTypes();
 			} else {
@@ -2129,6 +2135,7 @@ sntRover.controller('RVbillCardController',
 	// print the page
 	var printBill = function(data) {
 		var printDataFetchSuccess = function(successData){
+			$scope.isPrintRegistrationCard = false;
 			$scope.$emit('hideLoader');
 			$scope.printData = successData;
 			$scope.errorMessage = "";
@@ -2153,7 +2160,7 @@ sntRover.controller('RVbillCardController',
 		    	if ( sntapp.cordovaLoaded ) {
 		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 		    	};
-		    }, 100);
+		    }, 200);
 
 		    /*
 		    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
@@ -2166,7 +2173,7 @@ sntRover.controller('RVbillCardController',
 
 				// remove the orientation after similar delay
 		    	removePrintOrientation();
-		    }, 100);
+		    }, 200);
 
 		};
 
@@ -2219,13 +2226,13 @@ sntRover.controller('RVbillCardController',
 		    	if ( sntapp.cordovaLoaded ) {
 		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 		    	};
-		    }, 100);
+		    }, 200);
 
 		    /*
 		    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
 		    */
 		    $timeout(function() {
-		    	$scope.isPrintRegistrationCard = false;
+
 
 				// CICO-9569 to solve the hotel logo issue
 				$("header .logo").removeClass('logo-hide');
@@ -2233,7 +2240,7 @@ sntRover.controller('RVbillCardController',
 
 				// remove the orientation after similar delay
 		    	removePrintOrientation();
-		    }, 100);
+		    }, 200);
 
 		};
 

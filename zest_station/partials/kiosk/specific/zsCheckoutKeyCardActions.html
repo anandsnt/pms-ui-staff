@@ -1,6 +1,11 @@
 <section id="main" role="main">
+    <!---- wait ---->
+    <div id="content" ng-show="socketBeingConnected">
+        <h1 translate>PLEASE_WAIT_FOR_KEY_CARD_FOR_CHECKOUT</h1>
+        <h2 class="nocaps" translate>PLEASE_WAIT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT</h2>
+    </div>
     <!-- card insert mode -->
-    <div id="content" ng-hide="reservationSearchFailed">
+    <div id="content" ng-hide="reservationSearchFailed || socketBeingConnected">
         <h1 translate>INSERT_KEY_CARD_FOR_CHECKOUT</h1>
         <h2 class="nocaps" translate>INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT</h2>
         <nav id="options" role="nav">
@@ -15,7 +20,7 @@
         </nav>
     </div>
     <!-- reservation search failed -->
-    <div id="content" ng-show="reservationSearchFailed">
+    <div id="content" ng-show="reservationSearchFailed && !socketBeingConnected">
         <h1 translate>KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING</h1>
         <h2 class="nocaps" translate>KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT</h2>
         <nav id="options" role="nav">

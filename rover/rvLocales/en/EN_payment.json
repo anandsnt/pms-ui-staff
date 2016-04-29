@@ -1,5 +1,5 @@
-    
-    
+
+
     "NEW_PAYMENT_METHOD": "New Payment Method",
     "PAYMENT_TYPE": "Payment type",
     "SELECT_CREDIT_CARD_LABEL": "Select credit card",
@@ -33,7 +33,7 @@
     "AR_ACCOUNT_NOT_CREATED": "AR account not yet created for this card",
     "CREATE_AR_ACCOUNT": "Create Account",
     "SELECT_WINDOW": "Select Bill",
-    
+
     "PAY_BILL":"Pay Bill #",
     "TAP_TO_CHANGE":"Tap to change",
     "AMOUNT_TO_PAY":"Amount to pay",
@@ -50,4 +50,5 @@
     "PAYMENT_NOT_ADDED" : "Payment Method Not Defined",
     "DO_NOT_AUTHORIZE": "Do Not Authorize Card",
     "SELECT_CREDIT_CARD":"Select Credit Card",
-    "CREDIT_CARD_LIST_EMPTY_ERROR":"Deposit refund can not be processed to this payment type. Manual processing required"
+    "CREDIT_CARD_LIST_EMPTY_ERROR":"Deposit refund can not be processed to this payment type. Manual processing required",
+    "ENDING_WITH" : "Ending with "

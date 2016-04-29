@@ -16,7 +16,7 @@ module.exports = {
                     'rover/directives/clearTextbox/**/*.js',
 
                     'rover/directives/fileRead/**/*.js',
-                    'rover/directives/Outside Click handler/**/*.js',
+                    'rover/directives/includeTemplate/*.js',
                     'rover/directives/autocomplete/**/*.js',
                     'rover/directives/rateAutoComplete/*.js',
                     'rover/directives/selectBox/*.js',
@@ -24,6 +24,7 @@ module.exports = {
                     'rover/directives/textArea/*.js',
                     'rover/directives/textBox/*.js',
                     'rover/directives/toggle/*.js',
+                    'rover/directives/companyCardTravelAgentCardAutoComplete/*.js',
                     'rover/directives/overbookingAlert/rvOverbookingCalendar.js',
                     'rover/directives/onetimemousemove/*.js',
                     'rover/directives/fullCalendar/twoMonthCalendar.js', // FOR ROOM & RATES CALENDAR

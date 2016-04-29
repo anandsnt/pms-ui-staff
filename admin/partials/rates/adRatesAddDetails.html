@@ -15,12 +15,12 @@
             <div></div>
             <div class="entry full-width">
                 <ad-textbox inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate Name" required="yes"></ad-textbox>
-                <ad-textbox inputtype="text" value="rateData.code" label="RATE CODE"  placeholder="Enter Rate code" maxlength="20" required="yes" ></ad-textbox>
+                <ad-textbox inputtype="text" value="rateData.code" label="RATE CODE"  placeholder="Enter Rate code" maxlength="20"></ad-textbox>
             </div>
             <div class="entry margin">
                 <label>Type <strong>*</strong> </label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types" ng-change="onChangeRateType()"> 
+                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types"> 
                         <option value="" ng-selected="rateData.rate_type.id==''">Select Rate Type</option>
                     </select>
                 </div>
@@ -54,9 +54,9 @@
             <!-- CICO-9289 Hourly Rates Hiding the Based On thing until implementation is completed -->
             <!-- TODO : Once thebased on rates is handled for hourly, do away with the ng-show conditon -->
             <div class="entry margin" ng-show="!rateData.is_hourly_rate">
-                <label ng-hide="isPromotional() || hideBasedOn()">Based On</label>
+                <label ng-hide="isPromotional()">Based On</label>
                 <label ng-show="isPromotional()">Copy From</label>
-                <div class="select" ng-hide="!isPromotional() && hideBasedOn()">
+                <div class="select">
                     <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
                         <option value="">Select Rate</option>
                     </select>
@@ -64,7 +64,7 @@
             </div>
             <!-- CICO-9289 Hourly Rates Hiding the Based On thing until implementation is completed -->
             <!-- TODO : Once thebased on rates is handled for hourly, do away with the rateData.is_hourly_rate in ng-hide conditon -->
-            <div class="entry" ng-hide="hideBasedOn() || rateData.is_hourly_rate">
+            <div class="entry" ng-hide="rateData.is_hourly_rate">
                 <div class="select select-col col1-3 actions_margin_top">
                     <select class="styled" ng-model="rateData.based_on.value_sign">
                         <option value="+">+</option>

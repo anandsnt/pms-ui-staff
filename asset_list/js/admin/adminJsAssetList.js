@@ -8,6 +8,7 @@ module.exports = {
 				jsLibRoot + 'jquery.min.js',
 				jsLibRoot + 'jquery-ui.min.js',
 				jsLibRoot + 'jquery.ui.touch-punch.min.js',
+				jsLibRoot + 'jquery.qtip.min.js',
 				jsLibRoot + 'angular.min.js',
 				jsLibRoot + 'angular-route.min.js', 
 				jsLibRoot + 'angular-ui-router.min.js', 

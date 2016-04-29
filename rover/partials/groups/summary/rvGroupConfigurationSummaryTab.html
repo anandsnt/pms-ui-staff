@@ -30,11 +30,16 @@
                 <label for="group-email" translate>CONTACT_EMAIL</label>
                 <input id="group-email" ng-model="groupConfigData.summary.contact_email" type="text" ng-disabled="isInStaycardScreen()"/>
             </div>
-            <div class="entry break full-width" ng-hide="isInStaycardScreen()">
+            <div class="entry break full-width card-buttons" ng-hide="isInStaycardScreen()">
                 <a ng-click="openDemographicsPopup();" class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
+                
                 <a ng-click="openBillingInformation();" class="button blue" ng-if="groupConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
+
                 <a ng-click="openBillingInformation();" class="button"  ng-class="{'grey': isInAddMode(), 'blue': !isInAddMode()}"  ng-if="!groupConfigData.summary.posting_account_billing_info" translate>ADD_BILLING_INFO</a>
+
+                <a ng-click="openSendConfirmationPopup()" class="button white blue-text"  ng-class="" translate>SEND CONFIRMATION</a>
             </div>
+
             <div class="entry break full-width" ng-show="shouldShowGroupActionsButton()">
                 <!-- Show only for existing groups:
                     'icon-no-actions' is grey, when there are no actions

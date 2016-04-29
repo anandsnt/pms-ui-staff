@@ -6,8 +6,8 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
   'zsEventConstants',
   '$stateParams',
   'zsModeConstants',
-  '$window', '$timeout',
-  function($scope, $state, zsUtilitySrv, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout) {
+  '$window', '$timeout','$filter',
+  function($scope, $state, zsUtilitySrv, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout,$filter) {
 
     BaseCtrl.call(this, $scope);
 
@@ -88,10 +88,12 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
       $scope.callAPI(zsCheckoutSrv.sendBill, options);
     };
 
-
+    $scope.zestStationData.keyCaptureDone = false;
+    
     var checkOutSuccess = function() {
       //if key card was inserted we need to capture that
       if($scope.zestStationData.keyCardInserted){
+        $scope.zestStationData.keyCaptureDone = true;
         $scope.socketOperator.CaptureKeyCard();
       };
       sendBill();
@@ -349,6 +351,11 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     $('.popup').hide(); //hide timeout elements
     $('.invis').hide(); //hide timeout elements
     $('#popup-overlay').hide(); //hide timeout elements
+    var printFailedActions = function(){
+       $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKOUT_PRINT_FAILED');
+       $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
+       $state.go('zest_station.error');
+    };
     try {
       // this will show the popup with full bill
       $timeout(function() {
@@ -362,7 +369,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
             $scope.clickedNoThanks(true); //now checking for email update / send
             //checkOutGuest();
           }, function(error) {
-            $state.go('zest_station.error');
+            printFailedActions();
           }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
         };
         $scope.printOpted = true;

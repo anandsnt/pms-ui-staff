@@ -84,6 +84,9 @@
                     <span class="switch-icon"></span>
                 </div>
             </div>
+                    
+                    
+                    
 			<fieldset class="holder left float">  
 				<ad-textbox value="editData.smtp_address"   label = "Address" placeholder = "Enter Email Server Address"  styleclass="full-width"></ad-textbox>
 				<ad-textbox value="editData.smtp_port"      label = "Port" placeholder = "Enter Port"  styleclass="full-width"></ad-textbox>
@@ -171,13 +174,13 @@
 
 						    <ad-toggle-button is-checked="editData.ios_force_upgrade_enabled" label="ENABLE FORCE UPGRADE" ></ad-toggle-button>
 
-						    <ad-textbox value="editData.ios_force_upgrade_version"   label = "UPGRADE VERSION" placeholder = "Enter version"  styleclass="full-width"></ad-textbox>
+						    <ad-textbox value="editData.ios_force_upgrade_version"   label = "UPGRADE VERSION" placeholder = "Enter version" required = "yes"  styleclass="full-width" disabled = "!editData.ios_force_upgrade_enabled"></ad-textbox>
 
-						    <ad-textbox value="editData.ios_force_upgrade_url"   label = "UPGRADE URL" placeholder = "Enter url"  styleclass="full-width"></ad-textbox>
+						    <ad-textbox value="editData.ios_force_upgrade_url"   label = "UPGRADE URL" placeholder = "Enter url" disabled = "!editData.ios_force_upgrade_enabled" required = "yes" styleclass="full-width"></ad-textbox>
 
-						    <ad-textbox value="editData.ios_force_upgrade_message"   label = "UPGRADE MESSAGE" placeholder = "Enter message"  styleclass="full-width"></ad-textbox>
+						    <ad-textbox value="editData.ios_force_upgrade_message"   label = "UPGRADE MESSAGE" disabled = "!editData.ios_force_upgrade_enabled" placeholder = "Enter message" required = "yes"  styleclass="full-width"></ad-textbox>
 
-						    <ad-textbox value="editData.ios_force_upgrade_button_label"   label = "ACTION LABEL" placeholder = "Enter action label"  styleclass="full-width"></ad-textbox>
+						    <ad-textbox value="editData.ios_force_upgrade_button_label"   label = "ACTION LABEL" disabled = "!editData.ios_force_upgrade_enabled" required = "yes" placeholder = "Enter action label"  styleclass="full-width"></ad-textbox>
 
 						    
 						</div>
@@ -186,15 +189,15 @@
 							<h3><span translate>ANDROID</span></h3>
 							
 						    </div>
-						    <ad-toggle-button is-checked="editData.android_force_upgrade_enabled" label="ENABLE FORCE UPGRADE" ></ad-toggle-button>
+						    <ad-toggle-button is-checked="editData.android_force_upgrade_enabled" label="ENABLE FORCE UPGRADE" required = "yes"></ad-toggle-button>
 
-						    <ad-textbox value="editData.android_force_upgrade_version"   label = "UPGRADE VERSION" placeholder = "Enter version"  styleclass="full-width"></ad-textbox>
+						    <ad-textbox value="editData.android_force_upgrade_version"   label = "UPGRADE VERSION" required = "yes" placeholder = "Enter version"  styleclass="full-width" disabled = "!editData.android_force_upgrade_enabled"></ad-textbox>
 
-						    <ad-textbox value="editData.android_force_upgrade_url"   label = "UPGRADE URL" placeholder = "Enter url"  styleclass="full-width"></ad-textbox>
+						    <ad-textbox value="editData.android_force_upgrade_url"   label = "UPGRADE URL" required = "yes" placeholder = "Enter url"  styleclass="full-width" disabled = "!editData.android_force_upgrade_enabled"></ad-textbox>
 						    
-						    <ad-textbox value="editData.android_force_upgrade_message"   label = "UPGRADE MESSAGE" placeholder = "Enter message"  styleclass="full-width"></ad-textbox>
+						    <ad-textbox value="editData.android_force_upgrade_message"   label = "UPGRADE MESSAGE" required = "yes" placeholder = "Enter message"  styleclass="full-width" disabled = "!editData.android_force_upgrade_enabled"></ad-textbox>
 
-						    <ad-textbox value="editData.android_force_upgrade_button_label"   label = "ACTION LABEL" placeholder = "Enter action label"  styleclass="full-width"></ad-textbox>
+						    <ad-textbox value="editData.android_force_upgrade_button_label"   label = "ACTION LABEL" required = "yes" placeholder = "Enter action label"  styleclass="full-width" disabled = "!editData.android_force_upgrade_enabled"></ad-textbox>
 
 						</div>
 					</fieldset>

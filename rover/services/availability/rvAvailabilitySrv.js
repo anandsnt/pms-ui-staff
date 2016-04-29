@@ -459,7 +459,36 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		return deferred.promise;
 	};
 
+	this.fetchBARs = function(params) {
+		var payLoad = {
+				'from_date': params.from_date,
+				'to_date': params.to_date
+			},
+			deferred = $q.defer(),
+			url = 'api/availability/best_rates';
+		rvBaseWebSrvV2.getJSON(url, payLoad).then(function(response) {
+			var BARs = [];
+			
+			if(!that.data.gridData.additionalData) {
+                that.data.gridData.additionalData = {};
+            }
 
+			_.each(response.dates, function(day) {
+				BARs.push((null == day.amount) ? 'C' : day.amount);
+			})
+
+			_.extend(that.data.gridData.additionalData, {
+				'bestAvailabilityRate': BARs
+			});
+
+			deferred.resolve(BARs);
+
+		}, function(errorMessage) {
+			deferred.reject(errorMessage)
+		});
+		return deferred.promise;
+	};
+	
 	/**
 	* function to fetch availability between from date & to date
 	*/

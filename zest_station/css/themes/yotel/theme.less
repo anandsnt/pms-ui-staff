@@ -168,8 +168,62 @@
 	                background: @brandColor;
 	            }
 	        }
+            #message-action {
+                .button {
+                    color: @brandColor;
+                    background: transparent;
+                    .box-shadow(inset 0 0 0 6px @grey1);
+
+                    &.next {
+                        padding-right: 50px;
+
+                        &:after {
+                            right: 20px;
+                        }
+                    }
+                }
+            }
 	    }
         }
+
+        #guest-bill{
+            font-size: 9pt;
+            .invoice-logo{
+                margin-bottom:1.5em !important;
+            }
+            .invoice-body{
+                .invoice-details {
+                    .row{
+                        .cell{
+                            padding-bottom:0.08pt !important;
+                        }
+                    }
+                }
+            }
+            .bill-caption,.bill-room-details{
+                p,div{
+                    margin-bottom:0.09em !important;
+                    font-size: 9pt;
+                }
+            }
+            .bill-room-details{
+                width:60%;
+                margin-bottom:40px;
+                div{  
+                    .room-data{
+                        width:40%;
+                        float:right;
+                        text-align:left;
+                    }
+                    .room-data-label{
+                        width:60%;
+                        float:left;
+                    }
+                }
+            }
+        }
+        
+
         /* commenting out admin settings
 
         
@@ -206,10 +260,16 @@
         */
         
 	   .yotel-logo{
-            position: fixed;
+           position: fixed;
     
             //width="239.3px" height="64.8px" 
             //viewBox: "0 0 239.3 64.8";
+        }
+
+        .centered-logo{
+            .yotel-logo{
+               position: relative;
+            }
         }
         
         /////////////////////
@@ -217,7 +277,7 @@
         /////////////////////
         
         //dark theme (modified for yotel)
-        @charset "UTF-8";
+        @charset: "UTF-8";
         .ui-keyboard{
             font-size:14px;
             text-align:center;

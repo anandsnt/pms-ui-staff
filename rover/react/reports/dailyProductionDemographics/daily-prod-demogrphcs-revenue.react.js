@@ -6,14 +6,14 @@ var DailyProductionRevenueToggle = React.createClass({
     }, 0);
   },
   componentDidMount: function() {
-    this.getDOMNode().addEventListener('click', this.toggleTheRevenue);
-    this.getDOMNode().checked = this.props.header.showRevenue;
+    ReactDOM.findDOMNode(this).addEventListener('click', this.toggleTheRevenue);
+    ReactDOM.findDOMNode(this).checked = this.props.header.showRevenue;
   },
   componentWillUnmount: function() {
-    this.getDOMNode().removeEventListener('click', this.toggleTheRevenue);
+    ReactDOM.findDOMNode(this).removeEventListener('click', this.toggleTheRevenue);
   },
   componentDidUpdate: function() {
-    this.getDOMNode().checked = this.props.header.showRevenue;
+    ReactDOM.findDOMNode(this).checked = this.props.header.showRevenue;
   },
   render: function() {
 

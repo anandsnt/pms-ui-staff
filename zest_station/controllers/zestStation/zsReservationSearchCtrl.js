@@ -15,7 +15,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         "room_no":""
     };
     $scope.input = {};
-
+    $scope.zestStationData.keyCardInserted =  false;
+    $scope.zestStationData.isKeyCardLookUp = false;
     /**
      * when the back button clicked
      * @param  {[type]} event
@@ -99,7 +100,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * @return {Boolean} [description]
      */
     $scope.isInCheckinMode = function() {
-        return ($state.mode === zsModeConstants.CHECKIN_MODE);
+        return ($stateParams.mode === zsModeConstants.CHECKIN_MODE);
     };
 
     /**
@@ -115,7 +116,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * @return {Boolean} [description]
      */
     $scope.isInPickupKeyMode = function() {
-        return ($state.mode === zsModeConstants.PICKUP_KEY_MODE);
+        return ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE);
     };
 
     var isItFontainebleauHotel = function(){
@@ -235,6 +236,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     *   2.enter room number
     */
     $scope.goToNextForCheckout = function(){
+        $scope.hideKeyboardIfUp();
         /*
          * 1) Enter Last name (saves to state.input.last)
          * 2) Enter Room number (saves to state.input.room)
@@ -335,6 +337,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.fetchReservations(options);
     };
     $scope.goToNext =  function(){
+        $scope.hideKeyboardIfUp();
         if($scope.isInCheckoutMode()){//checkout
                 $scope.goToNextForCheckout();
 
@@ -435,18 +438,20 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
         
     $scope.setDueInOut = function(params){
-        if ($scope.isInCheckinMode()) {
-                params.due_in = true;
-        }
+        if (params){
+            if ($scope.isInCheckinMode()) {
+                    params.due_in = true;
+            }
 
-        else if ($scope.isInCheckoutMode()) {
-                params.due_in = true; // need to change to due_out
-        }
+            else if ($scope.isInCheckoutMode()) {
+                    params.due_in = true; // need to change to due_out
+            }
 
-        else if ($scope.isInPickupKeyMode()) {
-                params.due_in = true;
-        }
-        return params;
+            else if ($scope.isInPickupKeyMode()) {
+                    params.due_in = true;
+            }
+            return params;
+        };
     };
     
     $scope.scanQRCode = function(){
@@ -597,7 +602,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
     
     $scope.retryQRScan = function(){
-        $state.go('zest_station.reservation_search');
+        $state.go('zest_station.reservation_search',{
+              mode: zsModeConstants.PICKUP_KEY_MODE
+        });
     };
     $scope.initPuk = function(){
         console.log(':::: ',$state.current.name,' ::::');
@@ -637,9 +644,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     $scope.init = function(){
         $scope.inputType = 'text';
 
-        if ($state.search){
+        if ($scope.isInCheckinMode()){
             $scope.searchReservations();
-            $state.search = false;
         }
 
         if ($scope.isInCheckoutMode()){

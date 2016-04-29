@@ -7,10 +7,7 @@ sntGuestWeb.controller('gwAutoCheckinController', ['$scope','$controller', 'GwWe
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		//to delete
-		$rootScope.accessToken = "e78a8786c11ce4ecd9ae2a7c452e2911";
-		GwWebSrv.zestwebData.reservationID = "1339909"
-		//to delete
+		
 		var init = function() {
 			var screenIdentifier = "AUTO_CHECKIN_FINAL";
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);

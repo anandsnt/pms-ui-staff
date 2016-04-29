@@ -10,6 +10,8 @@ sntZestStation.controller('zsCheckOutOptionsCtrl', [
 		BaseCtrl.call(this, $scope);
 		$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 		$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+		$scope.zestStationData.keyCardInserted =  false;
+		$scope.zestStationData.isKeyCardLookUp = false;
 		sntZestStation.filter('unsafe', function($sce) {
 			return function(val) {
 				return $sce.trustAsHtml(val);

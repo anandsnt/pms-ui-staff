@@ -16,7 +16,7 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 			pageTitle: 'Room verification'
 		}
 	 }).state('ccAddition', {
-	 	url: '/ccAddition/:fee/:message/:isFromCheckoutNow',
+	 	url: '/ccAddition/:fee/:message/:isFromCheckoutNow/:time/:ap/:amount',
 	 	templateUrl: '/assets/partials/checkout/gwCcEntry.html',
 	 	controller : 'GwCCAdditionController',
 	 	data: {
@@ -64,5 +64,12 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 		data: {
 			pageTitle: 'Status - Check-out Later'
 		}
-	});
+	}).state('alreadyCheckedOut',{
+		url: '/alreadyCheckedOut',
+		templateUrl: '/assets/partials/checkout/gwAlreadyCheckedOut.html',
+		controller: 'gwAlreadyCheckedOutController',
+		data: {
+			pageTitle: 'Status - Check-out'
+		}
+	})
 }]);

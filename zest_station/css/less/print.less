@@ -199,3 +199,26 @@ strong { font-weight: bold; }
             color: rgba(0,0,0,.5);
         }
     }
+
+    /* Message Popup ***/
+    #popup {
+        .square(100%);
+
+        .popup-content {
+            .square(100%);
+        }
+
+        h2,
+        .button,
+        #message-action { display: none !important; }
+
+        #message-content {
+            overflow: hidden;
+            padding-top: 2cm;
+            .size(50%, 100%);
+            #flexbox > .flex();
+            #flexbox > .parent(column wrap, space-around, center, '');
+
+      
+        }
+    }

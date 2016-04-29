@@ -17,6 +17,8 @@ var sntRover = angular.module('sntRover',[
 		'groupModule',
 		'allotmentModule',
 		'accountsModule',
+		'todoModule',
+		'rateManagerModule',
 		'FinancialsModule',
 		'cacheVaultModule',
 		'documentTouchMovePrevent',
@@ -32,16 +34,31 @@ var sntRover = angular.module('sntRover',[
 		'limitInputRange',
 		'emitWhen']);
 
-//adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
-sntRover.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('sharedHttpInterceptor');
-});
+sntRover.config([
+	'$httpProvider',
+	'ngDialogProvider',
+	'$provide',
+	function($httpProvider, ngDialogProvider, $provide) {
 
-sntRover.config(['ngDialogProvider', function (ngDialogProvider) {
-    ngDialogProvider.setDefaults({
-        appendTo: '.root-view'
-    });
-}]);
+		//adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
+		$httpProvider.interceptors.push('sharedHttpInterceptor');
+
+	    ngDialogProvider.setDefaults({
+	        appendTo: '.root-view'
+	    });
+
+	    // making sure that angular currency filter will not 
+	    // transform -13 -> ($13), and keep it like -> -$13
+	    // SF: http://stackoverflow.com/questions/17441254/why-angularjs-currency-filter-formats-negative-numbers-with-parenthesis/30122327#30122327
+	    $provide.decorator('$locale', ['$delegate', function($delegate) {
+			if($delegate.id == 'en-us') {
+				$delegate.NUMBER_FORMATS.PATTERNS[1].negPre = '-\u00A4';
+				$delegate.NUMBER_FORMATS.PATTERNS[1].negSuf = '';
+			}
+			return $delegate;
+		}]);
+	}
+]);
 
 sntRover.run([
 	'$rootScope',

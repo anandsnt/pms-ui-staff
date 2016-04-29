@@ -32,7 +32,7 @@
     </form>
 
     <!-- Search pagination -->
-    <div class="search-pagination" ng-show="arOverviewData.total_result >= filterData.perPage && arOverviewData.accounts.length > 0">
+    <div class="search-pagination" ng-show="isShowPagination()">
         <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
         <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
         <p>{{'SHOWING' | translate}} <strong>{{start}}-{{end}}</strong> {{'OF' | translate}} <strong id="total-count">{{arOverviewData.total_result}}</strong> {{'ITEMS' | translate}}</p>
@@ -40,7 +40,7 @@
 
     <!-- Search panel - WITH RESULTS -->
     <section class="content accounts-ar-content" role="main">
-        <div class="accounts-ar-header">
+        <div ng-hide="filterData.hideArHeader" class="accounts-ar-header">
             <ul class="accounts-ar-totals">
                 <li class="guest-bills">
                     <span translate>OPEN_GUEST_BILLS</span>
@@ -48,27 +48,29 @@
                 </li>
                 <li class="unpaid-balance">
                     <span translate>UNPAID_BALANCE</span>
-                    <span class="amount red">{{currencySymbol}}{{arOverviewData.unpaid_balance}}</span>
+                    <span class="amount red">{{currencySymbol}}{{arOverviewData.unpaid_balance | number: precisonTwo }}</span>
                 </li>
             </ul>
         </div>
         <!-- Add Scroll -->
-        <div class="accounts-ar-list scrollable" ng-class="{'no-pagination': !(arOverviewData.total_result >= filterData.perPage && arOverviewData.accounts.length > 0)}" ng-iscroll='arOverViewScroll'>
+        <div class="accounts-ar-list scrollable" ng-class="{'no-pagination': !isShowPagination(),'no-accounts-ar-header':filterData.hideArHeader}" ng-iscroll='arOverViewScroll'>
             <div class="wrapper" >
                 <ul class="search-results">
-                    <li class="account-ar" ng-repeat="account in arOverviewData.accounts">
-                        <a ui-sref="rover.companycarddetails({id:account.id, type: account.type,origin:'AR_OVERVIEW'})">
+                    <li class="account-ar" ng-repeat="account in arOverviewData.accounts" ui-sref="rover.companycarddetails({id:account.id, type: account.type,origin:'AR_OVERVIEW'})">
+                        <a >
                             <div class="account-image icons" ng-class="{'icon-travel-agent': account.type === 'TRAVELAGENT','icon-company': account.type === 'COMPANY'}"></div>
                             <div class="data">
                                 <h2>{{account.account_name}}</h2>
-                                <strong class="confirmation">{{account.account_number}}</strong>
-                                <span ng-if="account.type === 'TRAVELAGENT'" class="icons icon-guest-travelagent">{{account.ar_number}}</span>
-                                <span ng-if="account.type === 'COMPANY'" class="icons icon-guest-company">{{account.ar_number}}</span>
-                                <span class="icons icon-time confirmation">{{account.aging_date}}</span>
+                                <strong class="confirmation">{{account.ar_number}}</strong>
+                                <span class="icons icon-location" ng-hide="escapeNullStr(account.location)==''" >{{escapeNullStr(account.location)}}
+                            </span>
+                                <span ng-if="(account.type === 'COMPANY')" ng-hide="escapeNullStr(account.account_number)==''"  class="icons icon-guest-company">{{account.account_number}}</span>
+                                <span ng-if="(account.type === 'TRAVELAGENT')" ng-hide="escapeNullStr(account.account_number)==''"  class="icons icon-guest-travelagent">{{account.account_number}}</span>
+                                <span ng-hide="escapeNullStr(account.ageing_date)==' '" class="icons icon-time confirmation">{{account.ageing_date}}</span>
                             </div>
                             <div class="info-holder">
                                 <div class="info ageing-days">
-                                    <strong>{{account.aging_days}}</strong>
+                                    <strong>{{account.ageing_days}}</strong>
                                     <span translate>AGEING_DAYS</span>
                                 </div>
                                 <div class="info open-bills">
@@ -77,7 +79,7 @@
                                 </div>
                                 <div class="info balance">
                                     <strong ng-class="{'red':account.current_balance >= 0, 'green':account.current_balance < 0 }">
-                                        {{currencySymbol}}{{account.current_balance}}
+                                        {{currencySymbol}}{{account.current_balance | number: precisonTwo }}
                                     </strong>
                                     <span translate>BALANCE</span>
                                 </div>

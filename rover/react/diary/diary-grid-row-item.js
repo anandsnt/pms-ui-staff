@@ -201,7 +201,7 @@ var GridRowItem = React.createClass({
 			styleForDepositIcon.width = '0px';
 		}
 
-		return GridRowItemDrag({
+		return React.createElement( GridRowItemDrag, {
 			key: 				data.key,
 			className: 		    row_item_class,
 			row_data: 			row_data,

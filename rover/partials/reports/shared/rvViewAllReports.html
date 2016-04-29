@@ -1,0 +1,44 @@
+<div class="wrapper reports-wrapper"
+    ng-hide="showReportDetails">
+    <div class="cols-wrapper">
+        <!-- First column - Reports list -->
+        <div class="report-col main-col scrollable"
+            ng-iscroll="report-list-scroll"
+            ng-iscroll-delay="200"> <!-- Add vertical scroller here -->
+            <ul class="wrapper">
+                <li class="report-item"
+                    ng-repeat="item in reportList"
+                    ng-class="{'active': (item.uiChosen)}"
+                    ng-hide="item.filteredOut"
+                    ng-click="toggleFilter($event, item)"
+                    emit-when="{event: 'REPORT_LIST_RENDERED', condition: $last}">
+                    <span ng-class="item.reportIconCls"></span>
+                    <div class="data">
+                        <h2 ng-bind-html="escapeNull(item.title)|highlight:query:false"></h2>
+                        <em>{{ item.description }} {{ item.sub_title }}</em>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Second column - filters -->
+        <div class="report-col" ng-show="uiChosenReport">
+            <div class="scrollable"
+                ng-iscroll="report-filters-scroll"
+                ng-iscroll-delay="200"> <!-- Add vertical scroller here -->
+                <div class="wrapper">
+                    <h3>{{ uiChosenReport.title }}<span>Configure report</span></h3>
+                    <div class="configure-report" ng-include="'/assets/partials/reports/filters/rvReportListFilters.html'"></div>
+                </div>
+                <div class="column-actions" ng-class="{'two-buttons': uiChosenReport.display_export_button && !hideExportOption}">
+                    <button type="button" class="button purple"
+                        ng-click="exportCSV(uiChosenReport)"
+                        ng-show="uiChosenReport.display_export_button && !hideExportOption">Export</button>
+                    <button type="button" class="button green"
+                        ng-click="setnGenReport(uiChosenReport)"
+                        ng-show="uiChosenReport.display_show_button">Show</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

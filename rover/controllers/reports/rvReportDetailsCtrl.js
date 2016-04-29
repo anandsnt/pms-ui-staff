@@ -13,20 +13,23 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		$scope.setScroller( 'report-details-scroll', {click: true, preventDefault: false} );
-		$scope.setScroller( 'report-filter-sidebar-scroll' );
+		$timeout(function() {
+			$scope.setScroller( 'report-details-scroll', {tap: true, preventDefault: false} );
+			$scope.setScroller( 'report-filter-sidebar-scroll', {tap: true, preventDefault: false} );
+		}, 1000);
 
 		var refreshScroll = function() {
-			if ( !!$scope.$parent.myScroll['report-details-scroll'] ) {
-				$scope.refreshScroller( 'report-details-scroll' );
-				$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
-			};
+			$scope.refreshScroller( 'report-details-scroll' );
+			if ( $scope.myScroll && $scope.myScroll.hasOwnProperty('report-details-scroll') ) {
+				$scope.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			}
 		};
 
-		var refreshSidebarScroll = function() {
-			if ( !!$scope.$parent.myScroll['report-filter-sidebar-scroll'] ) {
-				$scope.refreshScroller( 'report-filter-sidebar-scroll' );
-			};
+		$scope.refreshSidebarScroll = function() {
+			$scope.refreshScroller( 'report-filter-sidebar-scroll' );
+			if ( $scope.myScroll && $scope.myScroll.hasOwnProperty('report-filter-sidebar-scroll') ) {
+				$scope.myScroll['report-filter-sidebar-scroll'].scrollTo(0, 0, 100);
+			}
 		};
 
 
@@ -50,7 +53,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// 	if ( item ) {
 		// 		$scope.$parent.toggleFilterItems(item);
 		// 	};
-		// 	refreshSidebarScroll();
+		// 	$scope.refreshSidebarScroll();
 		// };
 
 
@@ -304,6 +307,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 5;
 					break;
 
+				case reportNames['CREDIT_CHECK_REPORT']:
+					$scope.leftColSpan = 5;
+					$scope.rightColSpan = 2;
+					break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
@@ -434,7 +442,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// scroller refresh and reset position
 			$timeout(function () {
 				refreshScroll();
-				refreshSidebarScroll();
+				$scope.refreshSidebarScroll();
 			}, 200);
 
 
@@ -555,6 +563,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/financialTransactionsAdjustmentReport/reportMain.html';
+					break;
+
+				case reportNames['CREDIT_CHECK_REPORT']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/creditCheckReport/rvCreditCheckReport.html';
 					break;
 
 				default:
@@ -868,6 +882,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
 				case reportNames['GUEST_BALANCE_REPORT']:
 				case reportNames['ADDON_FORECAST']:
+				case reportNames['CREDIT_CHECK_REPORT']:
 					orientation = 'landscape';
 					break;
 
@@ -946,6 +961,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			return string.indexOf( subString ) > -1;
 		};
+
+		$scope.hasSort = function(index) {
+			return !! $scope.chosenReport.sortByOptions[index]
+		}
 
 		$scope.isAsc = function(index) {
 			return !! $scope.chosenReport.sortByOptions[index] && $scope.chosenReport.sortByOptions[index]['sortDir'] === true;
@@ -1049,7 +1068,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		});
 
 		var reportDetailsFilterScrollRefresh = $scope.$on(reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'], function() {
-			refreshSidebarScroll();
+			$scope.refreshSidebarScroll();
 		});
 
 		// removing event listners when scope is destroyed
@@ -1058,7 +1077,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.$on( '$destroy', reportPageChanged );
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportAPIfailed );
-		$scope.$on( '$destroy', refreshSidebarScroll );
+		$scope.$on( '$destroy', $scope.refreshSidebarScroll );
     }
 
 ]);

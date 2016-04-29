@@ -7,7 +7,7 @@ var Rooms = React.createClass({
 			className: 'wrapper'
 		},
 		_.map(props.data, function(room) {
-			return Room({
+			return React.createElement( Room, {
 				meta: props.meta,
 				data: room
 			});

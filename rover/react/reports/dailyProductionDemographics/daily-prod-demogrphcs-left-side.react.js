@@ -30,7 +30,7 @@ var DailyProductionLeftSide = React.createClass({
   	  className	: 'scrollable',
   	  id 		: 'stats-report-heading-scroll'
   	},
-  	DailyProductionListDemographics({
+  	React.createElement(DailyProductionListDemographics, {
   	  data 				: this.props.data.listing,
   	  header 			: this.props.header,
   	  toggleRevenue 	: this.props.toggleRevenue,

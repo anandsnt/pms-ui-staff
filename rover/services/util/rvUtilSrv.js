@@ -163,6 +163,18 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
     				+ date_picker.selectedDay);
     	};
 
+
+		/**
+		 * @param date {date object}
+		 * @return {dateObject}
+		 */
+		this.getFirstDayOfNextMonth = function(date) {
+			var date = new tzIndependentDate(date),
+				y = date.getFullYear(),
+				m = date.getMonth();
+			return (tzIndependentDate(new Date(y, m + 1, 1)));
+		};
+
 		/**
 		 * to get the list for time selector like 1:00 AM, 1:15 AM, 1:30 AM..
 		 * @param  {Integer} - interval in minutes - default 15 min

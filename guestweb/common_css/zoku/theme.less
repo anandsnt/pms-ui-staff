@@ -12,6 +12,10 @@ body{
     -o-background-size: cover;
     background-size: cover;
 }
+.container-fluid{
+  padding-left:0px;
+  padding-right:0px;
+}
 a,a:hover{
     color:#fff !important;
 }
@@ -26,6 +30,9 @@ a,a:hover{
 }
 .sub-text{
     color: @white;
+}
+.text-comment,.text-comment:hover{
+  color:#000 !important;
 }
 .light-text{
     color:@white !important;
@@ -57,9 +64,9 @@ a,a:hover{
 }
 
 .proceed-to-checkin {
-    background: #E7E7E7;
+    background: #2b929b;
     span{
-        color:#2b929b;
+        color:#fff;
         float:right;
     }
 }
@@ -114,6 +121,9 @@ a,a:hover{
 .down-arrow-button{
     background-image: url(/assets/guestweb/common_images/white/down_arrow.png);
 }
+.select-style{
+  width:100%;
+}
 .select-style:after{
     left:87%;
 }
@@ -127,6 +137,17 @@ a,a:hover{
     color:#fff;
     font-size:15px;
 }
+.eta-container{
+  margin-left:0px;
+  width:32% !important;
+}
+.eta-date{
+  margin-left:2%;
+  margin-right:2%;
+}
+error-text{
+  color:#fff !important;
+}
 @media (max-width: 480px){
    .header-bar{
       margin-bottom:3% !important;
@@ -135,9 +156,13 @@ a,a:hover{
       font-size:13px;
    }
    .select-style:after {
-    left: 86%;
+    left: 86.5%;
    }
    .eta-container .select-style:after{
-     left:77%;
+     left:77.5%;
+   }
+   .res-date-container{
+      padding-left:0px;
+      padding-right:0px;
    }
 }

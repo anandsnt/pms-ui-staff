@@ -2,8 +2,8 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
-    function($http, $q, zsBaseWebSrv) {
+sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv','zsBaseWebSrv2',
+    function($http, $q, zsBaseWebSrv,zsBaseWebSrv2) {
         // fetch idle time settings
         this.fetchSettings = function() {
             var deferred = $q.defer(),
@@ -40,6 +40,17 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
                 url = 'guest_web/reservations/'+reservation.id+'.json';
 
             zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        this.updateReservationArrivalTime = function(params) {
+            var deferred = $q.defer(),
+                url = 'api/reservations/' + params.reservation_id + '/update_stay_details';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -248,6 +259,17 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
             return deferred.promise;
         };
 
+        this.updateWorkStationOos = function(params){
+            var deferred = $q.defer(),
+                url = 'api/workstations/'+ params.id+'/set_out_or_order.json';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
         this.checkInGuest = function(params) {
             var deferred = $q.defer(),
@@ -361,6 +383,49 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv',
             });
             return deferred.promise;
         };
+
+        this.fetchReservationBalanceDetails = function(params){
+
+            var deferred = $q.defer();
+            url = 'zest_station/reservations/' + params.reservation_id;
+            var param = {
+                "nationality_id": params.nationality_id
+            }
+            zsBaseWebSrv2.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
+        this.fetchOwsMessage = function(params){
+
+            var deferred = $q.defer();
+            var url = '/api/reservation_guest_messages/' + params.reservation_id+'.json';
+            //var url = '/sample_json/zest_station/ows_msgs.json';
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
+        this.sendOWSMsgAsMail = function(params) {
+            var deferred = $q.defer();
+            url = 'api/reservation_guest_messages/email_message.json';
+        
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        
 
     }
 ]);

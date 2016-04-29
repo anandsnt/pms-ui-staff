@@ -1,0 +1,50 @@
+<div id="restrictionPriceContainer" class="price-div">
+	<div class="restriction_text" >
+		<h3>Adjust Price </h3>
+		<em>Price adjustments for all Occupancies</em>
+	</div>
+	<section class="price-field-container scrollable no-price-entry" ng-iscroll="room-type-price-editing">
+		<div class="wrapper">
+			<div class="price-fields">
+				<!-- Add class .has-override if has override -->
+				<label ng-class="{'has-override': priceDetails.single_overridden}">
+					ALL OCCUPANCIES
+					<!-- Display if has override-->
+					<span class="icon-report icon-upsell" ng-show="priceDetails.single_overridden"></span>
+				</label>
+				
+				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
+				<span class="price entry" ng-class="{'has-override': !!priceDetails.single_changing_value , 'is-overriden': priceDetails.single_overridden && !priceDetails.single_changing_value}">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<input type="text" ng-model="priceDetails.single" ng-disabled="!!priceDetails.single_changing_value" ng-disabled="isPastDate">
+				</span>
+				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
+				<span class="or-class"> OR</span>
+				
+				
+				
+				<span class="entry select">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<select ng-model="priceDetails.single_amount_operator" ng-disabled="isPastDate">
+						<option value="+">+</option>
+						<option value="-">-</option>
+					</select>
+				</span>
+				<span class="extra_amount entry">
+					<!-- if is disable ng-change="refreshScrollers()"d add attribute 'disabled="disabled"'-->
+					<input type="text" ng-change="priceStartedToCustomize('single')" ng-model="priceDetails.single_changing_value" ng-disabled="isPastDate">
+				</span>
+				
+				<!-- add class .disabled if is disabled -->
+				<span class="select_amount_diff entry select">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<select ng-model="priceDetails.single_amount_perc_cur_symbol" ng-disabled="isPastDate">
+						<option value="{{currencySymbol}}">{{currencySymbol}}</option>
+						<option value="%">%</option>
+					</select>
+				</span>
+				<br clear="all">
+			</div>
+		</div>
+	</section>
+</div>

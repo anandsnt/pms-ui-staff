@@ -52,7 +52,6 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
                 chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
             }
             
-            
             //this.onChromeAppMsgResponse();
         };
         
@@ -61,20 +60,7 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
             var msg = 'initQRCodeScan';
             chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
             console.log('SENDING message: ',msg);
-            /*
-            var port = chrome.runtime.connect(chromeAppId,{name: "qrcode"});
-            port.onMessage.addListener(function(msg) {
-                console.log('chrome app sent a message back for Knock knock! :p ');
-                if (msg.answer){
-                    port.postMessage({joke: "the_end"});
-                    onMessageCallback(onMessageCallback(msg.answer));
-                }
-            });
-            port.postMessage({joke: "whats up?"});
-            */
         };
-        
-        
         
         if (fetchQRCode){
             that.fetchQRCode();

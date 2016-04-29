@@ -182,12 +182,12 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		};
 
 		var fetchContractsListSuccessCallback = function(data) {
-			$scope.contractList = data;			
+			$scope.contractList = data;
 			$scope.contractList.contractSelected = data.contract_selected;
 			$scope.$emit('hideLoader');
 			checkContractListEmpty();
 			$scope.errorMessage = "";
-			
+
 		};
 		var fetchContractsDetailsFailureCallback = function(data) {
 			$scope.$emit('hideLoader');
@@ -251,9 +251,9 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.addData.rates = ratesList;
 			$scope.errorMessage = "";
 		};
-		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);		
+		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
 
-			
+
 		$scope.fetchContractsList = function () {
 
 			if ($stateParams.id !== "add") {
@@ -291,7 +291,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		});
 
 		// Delete Contarct button action
-		// Shows conformation popup 
+		// Shows conformation popup
 		$scope.deleteContract = function() {
 			ngDialog.open({
 				template: '/assets/partials/companyCard/rvCompanyCardContractDeleteConfirmationPopup.html',
@@ -300,7 +300,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			});
 		};
 
-		// To close popup 
+		// To close popup
 		$scope.closePopup = function () {
 			ngDialog.close();
 		};
@@ -330,7 +330,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					"contract_id": $scope.contractList.contractSelected
 				}, deleteContractSuccessCallback, deleteContractFailureCallback);
 		};
- 
+
 		// To popup contract start date
 		$scope.contractStart = function() {
 			ngDialog.open({
@@ -420,6 +420,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.hasOverlay = false;
 			$scope.contractList.isAddMode = true;
 
+			$scope.addData={};
 			$scope.addData.occupancy = [];
 			$scope.addData.begin_date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
 			$scope.addData.contracted_rate_selected = "";
@@ -547,7 +548,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 */
 		$scope.$watch('contractData.selected_type', function() {
 			if ($scope.contractData.selected_type === "percent") {
-				$scope.contractData.rate_value = parseInt($scope.contractData.rate_value);
+				$scope.contractData.rate_value = parseFloat($scope.contractData.rate_value).toFixed(2);
 			} else {
 				$scope.contractData.rate_value = parseFloat($scope.contractData.rate_value).toFixed(2);
 			}

@@ -36,6 +36,14 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
             $scope.end = $scope.start + $scope.arOverviewData.accounts.length - 1;
 
             refreshArOverviewScroll();
+
+            // Condition to show/hide header bar - with OPEN GUEST BILL & UNPAID BALANCE.
+            if($scope.filterData.searchQuery !== "" || $scope.filterData.minAmount !== "" || $scope.filterData.ageingDays !== ""){
+            	$scope.filterData.hideArHeader = true;
+            }
+            else{
+            	$scope.filterData.hideArHeader = false;
+            }
         };
 
         var params = {
@@ -58,6 +66,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
         'minAmount'     : '',
         'sortBy'        : 'NAME_ASC',
         'ageingDays'    : '',
+        'hideArHeader'	: false,
         
         'ageingDaysList':
         [
@@ -148,5 +157,31 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
     // Pagination block ends here ..
     
     fetchArOverviewData();
+
+    /*
+     *	Utility function that converts a null value to a desired string.
+     *	@param 	{ String } [value to be checked for null string]
+     *	@param 	{ String } [value to be replaced for null string]
+     *	@return { String } 
+     */
+    $scope.escapeNullStr = function(value, replaceWith) {
+		var newValue = "";
+		if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
+			newValue = replaceWith;
+		}
+		var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
+        if (valueToReturn.indexOf('null') !== -1){
+            valueToReturn = '';//removes unwanted ", null" type of values
+        }
+		return valueToReturn;
+	};
+
+	/* 	Is show pagination tab
+	 *	@return { boolean } 
+	 */
+	$scope.isShowPagination = function(){
+		var arOverviewData = $scope.arOverviewData;
+		return (!!arOverviewData && arOverviewData.total_result >= $scope.filterData.perPage && arOverviewData.accounts.length > 0);
+	};
 
 }]);

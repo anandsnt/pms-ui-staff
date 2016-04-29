@@ -730,6 +730,12 @@
                             }
                         }
 
+                        &.card-buttons {
+                            .button {
+                                margin-bottom:10px;
+                            }
+                        }
+
                         &.has-datepicker {
                             .ui-datepicker-trigger { top: 24px; }
                         }
@@ -1432,7 +1438,20 @@
                             background: @grey1;
                             .float;
                             .box-shadow(1px 3px 3px rgba(0,0,0,.15));
-                            .size(100px, 180px);
+                            .size(180px, 180px);
+
+                            .line {
+                                padding-right: 25px;
+                                font-size: 14px;
+                                text-transform: uppercase;
+                                font-style: normal;
+                                color: @textColor;
+                                justify-content: flex-start;
+                                position: absolute;
+                                bottom: 28px;
+                                width:100%;
+                                text-align: right;
+                            }
 
                             .button {
                                 font-size: 14px;
@@ -1491,9 +1510,9 @@
                             top: 0;
                             left: 180px;
                             z-index: 9910;
-                            height: 100px;
+                            height: 180px;
                             .float;
-                            .calc-width(100, 180);
+                            .calc-width(180, 180);
 
                             > .wrapper { padding: 0; }
 
@@ -1502,7 +1521,7 @@
                                 text-transform: uppercase;
                                 margin: 0 10px 0 0;
                                 padding: 20px 10px 10px 0;
-                                .size(100px, 180px);
+                                .size(180px, 180px);
                                 .box-shadow(2px 0 0 rgba(0,0,0,.3));
                                 .pull-left;
 
@@ -1625,8 +1644,8 @@
                         .room-block-sidebar,
                         .room-block-grid {
                             position: absolute;
-                            top: 100px;
-                            .calc-height(100, 100);
+                            top: 180px;
+                            .calc-height(100, 180);
                             .show; 
 
                             > .wrapper { padding: 0; }
@@ -2025,14 +2044,18 @@
 
                         .totals {
                             li {
-                                padding-bottom: 10px;
+                                padding: 0 5px 10px 5px;
 
                                 .data {
                                     .label { line-height: 20px; }
-                                    .value { line-height: 30px; }
+
+                                    .value { 
+                                        font-size: 26px;
+                                        line-height: 30px;
+                                    }
                                 }
 
-                                .button { .pull-right; }
+                                > .button {  .pull-right; }
 
                                 .with-button {
                                     position: relative;
@@ -2049,10 +2072,17 @@
 
                                 &:last-child {
                                     top: 0;
-                                    padding: 20px 0 20px 10px;
+                                    right: 0;
+                                    padding: 20px;
                                     border-left: 1px solid rgba(0,0,0,.1);
+
+                                    .button { 
+                                        .pull-left; 
+
+                                        &:first-child { margin-right: 20px; }
+                                    }
                                 }
-                            }                                    
+                            }                                     
                         }
                     }
 
@@ -2066,8 +2096,89 @@
                 /* Rooming List ***/
                 &.rooming-list {
                     .tab-header {
+                        height: 140px;
+
                         .search-form {
                             padding: 0 20px;
+
+                            &.search-bar {
+                                width: 100%;
+                                height: 60px;
+                                padding: 0;
+
+                                .entry {
+                                    visibility: visible;
+                                    padding: 0px 20px;
+                                    margin: 10px 0;
+                                    height: 40px;
+                                    &.search { 
+                                        .query {
+                                            padding-right: 35px;
+                                        }
+                                        .icon-search { top: 10px; left: 35px; }
+
+                                        .clear-query {
+                                            top: 0px;
+                                            right: 20px;
+                                        }                                    
+                                    }
+
+                                    &.date-range {
+                                        width: 330px;
+                                        label {
+                                            position: absolute;
+                                            font-size: 12px;
+                                            color: @grey2;
+                                            top: 7px;
+                                            left: 10px;
+                                        }
+
+                                        input {
+                                            font-size: 16px;
+                                            height: 40px;
+                                            padding-top: 15px;
+                                            color: @black;
+                                            font-weight: 600;
+                                        }
+                                        
+                                        .has-datepicker {
+                                            .clear-query {
+                                                top: 2px;
+                                            }
+                                        }
+                                    }
+
+                                    &.has-checkboxes {
+                                        padding-right: 0;
+                                        width: 240px;
+                                        padding-top: 5px;
+                                        .checkbox {
+                                            padding: 0 5px 0 0;
+                                            text-transform: uppercase;
+                                            font-size: 14px;
+                                            width: 50%;
+                                            .pull-left;
+                                            span {
+                                                position: static;
+                                                vertical-align: middle;
+                                                display: inline-block;
+                                                overflow: visible;
+                                                white-space: normal;
+
+                                                &:not(.icon-form){
+                                                    .calc-width(100, 20);
+                                                    padding-left: 5px;
+                                                    color: @black;
+                                                }
+                                            }
+
+                                            &:first-child {
+                                                max-width: 95px;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 
                             .entry {
                                 padding: 20px 0;
@@ -2154,6 +2265,8 @@
                         }
 
                         .totals {
+                            height: 80px;
+
                             li {
                                 .data {
                                     .value { text-align: center; }
@@ -2172,16 +2285,24 @@
                                     margin-right: 10px;
                                     .pull-left;
 
-                                    &.batch {
+                                    &.batch,
+                                    &.email-print {
                                         padding: 0 0 0 40px;
                                         text-align: left;
-                                        width: 120px;
 
                                         .icons {
                                             top: 10px;
                                             left: 10px;
                                             margin: 0;
                                         }
+                                    }
+
+                                    &.batch {
+                                        width: 120px;
+                                    }
+
+                                    &.email-print {
+                                        width: 130px;
                                     }
 
                                     &:last-child { margin-right: 0; }
@@ -2191,6 +2312,7 @@
                     }
 
                     .tab-details {
+                        .calc-height(100, 140);
                         
                         .rooming-list-header {
                             margin: 10px 20px;

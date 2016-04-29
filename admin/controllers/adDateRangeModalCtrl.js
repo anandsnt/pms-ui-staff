@@ -6,6 +6,18 @@ admin.controller('ADDateRangeModalCtrl', ['$scope',
   function($scope, $filter, ADRatesConfigureSrv, ngDialog, $rootScope) {
     BaseCtrl.call(this, $scope);
 
+    // CICO-27286
+    var maxDate = tzIndependentDate($rootScope.businessDate),
+        datePickerDefaults = {
+          minDate : tzIndependentDate($rootScope.businessDate),
+          maxDate :  new Date(maxDate.setFullYear(maxDate.getFullYear() + $rootScope.rateDateRangeLimit)),
+          changeYear : true,
+          changeMonth : true,
+          yearRange : "0:+5"
+        };
+
+    datePickerDefaults.maxDate.setDate(datePickerDefaults.maxDate.getDate() -1);
+
     $scope.setUpData = function() {
 
       $scope.errorMessage = '';
@@ -22,33 +34,21 @@ admin.controller('ADDateRangeModalCtrl', ['$scope',
         $scope.toDate = $scope.data.end_date;
       };
 
-
-      $scope.fromDateOptions = {
-        changeYear: true,
-        changeMonth: true,
-        minDate: tzIndependentDate($rootScope.businessDate),
-        yearRange: "0:+10",
+      $scope.fromDateOptions = _.extend(datePickerDefaults,{
         onSelect: function() {
-
           if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
             $scope.toDate = $scope.fromDate;
           }
         }
-      };
+      });
 
-      $scope.toDateOptions = {
-        changeYear: true,
-        changeMonth: true,
-        minDate: tzIndependentDate($rootScope.businessDate),
-        yearRange: "0:+10",
+      $scope.toDateOptions = _.extend(datePickerDefaults,{
         onSelect: function() {
-
           if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
             $scope.fromDate = $scope.toDate;
           }
         }
-      };
-
+      });
     };
 
     $scope.setUpData();

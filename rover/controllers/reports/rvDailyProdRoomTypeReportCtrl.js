@@ -277,8 +277,8 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 					'isLastRowSum'   : true
  				});
 
-			React.renderComponent(
-				DPContent(props),
+			ReactDOM.render(
+				React.createElement(DPContent, props),
 				document.getElementById('daily-production-render')
 			);
 		};

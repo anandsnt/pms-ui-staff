@@ -163,11 +163,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					title: "MENU_REV_MAN",
 					action: "",
 					iconClass: "icon-revenue",
-					submenu: [{
-						title: "MENU_RATE_MANAGER",
-						action: "staff#/staff/rateManager",
-						menuIndex: "rateManager"
-					}, {
+					submenu: [
+					{
+ 		            title: "MENU_RATE_MANAGER",
+		            action: "staff#/staff/ratemanager/",
+		            menuIndex: "rateManager"
+		        	}, 
+		        	{
 						title: "MENU_TA_CARDS",
 						action: "staff#/staff/cardsearch/",
 						menuIndex: "cards"
@@ -529,6 +531,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.isEnabledRoomTypeByRoomClass = data.is_enabled_room_type_by_class;
 
 			$rootScope.isRoomStatusImportPerRoomTypeOn = data.is_room_status_import_per_room_type_on ? data.is_room_status_import_per_room_type_on : false;
+
+			// CICO-27286
+			$rootScope.rateDateRangeLimit = data.rate_date_range_limit;
 
 			setupLeftMenu();
 

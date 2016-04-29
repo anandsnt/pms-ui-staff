@@ -1,4 +1,4 @@
-sntRover
+angular.module('sntRover')
 .controller('rvDiaryCtrl',
 	[ 	'$scope',
 		'$rootScope',
@@ -15,12 +15,10 @@ sntRover
 		'payload',
 		'propertyTime',
 		'$vault',
-		'$stateParams',
 		'RVReservationBaseSearchSrv',
 		'$timeout',
 		'RVReservationSummarySrv',
 		'baseSearchData',
-		'$filter',
 	function($scope,
 			 $rootScope,
 			 $state,
@@ -36,10 +34,9 @@ sntRover
 			 payload,
 			 propertyTime,
 			 $vault,
-			 $stateParams,
 			 RVReservationBaseSearchSrv,
 			 $timeout,
-			 RVReservationSummarySrv, baseSearchData, $filter) {
+			 RVReservationSummarySrv, baseSearchData) {
 
 		$scope.$emit('showLoader');
 
@@ -980,8 +977,8 @@ sntRover
 
 		$scope.renderGrid = function(params) {
 			var args = params || {};
-	 		React.renderComponent(
-				DiaryContent(_.extend(args, $scope.gridProps)),
+	 		ReactDOM.render(
+				React.createElement(DiaryContent, _.extend(args, $scope.gridProps)),
 				document.getElementById('component-wrapper')
 			);
 		};

@@ -1,0 +1,135 @@
+<li ng-repeat="rate in display.rateFirstGrid track by $index">
+    <a class="has-arrow toggle" ng-class="{active: !rate.isCollapsed}" ng-click="showRoomsList(rate)">
+        <div class="data">
+            <h2>{{rate.name}}</h2>
+             <span class="corporate" ng-if="rate.isCorporate" translate>CORPORATE_LABEL</span>
+             <span class="corporate" ng-if="rate.isPromotion">PROMOTION</span>
+             <span class="corporate" ng-if="rate.isMember">MEMBER</span>
+             <span class="corporate" ng-if="rate.isGroupRate">GROUP</span>
+             <span class="corporate" ng-if="rate.isAllotmentRate">ALLOTMENT</span>
+        </div>
+        <div class="book-rate" ng-if="rate.isCollapsed">
+            <div class="price" ng-if="!rate.isSuppressed">
+                {{currencySymbol}}{{rate.defaultADR | number: 2}}
+                <span translate>RESV_AVG_NIGHT</span>
+            </div>
+            <div class="price" ng-if="rate.isSuppressed">
+                SR<span translate>RESV_AVG_NIGHT</span>
+            </div>
+            <button class="button white blue-text" ng-show="stateCheck.selectedStayDate.rate.id == rate.id && 
+                (stateCheck.selectedStayDate.roomType.id == rate.defaultRoomTypeId || 
+                    reservationData.rooms[activeRoom].roomTypeId == rate.defaultRoomTypeId)" 
+                ng-click="handleNoEdit($event,rate.defaultRoomTypeId,rate.id)">
+                CURRENT RATE
+            </button>
+            <button class="button {{rate.buttonClass}}" 
+                ng-hide="(stateCheck.selectedStayDate.rate.id == rate.id && 
+                    (stateCheck.selectedStayDate.roomType.id == rate.defaultRoomTypeId || 
+                        reservationData.rooms[activeRoom].roomTypeId == rate.defaultRoomTypeId )) || 
+                            restrictIfOverbook(rate.defaultRoomTypeId,rate.id)" 
+                ng-click="handleBooking(rate.defaultRoomTypeId,rate.id,$event)" translate>
+                RESV_BOOK
+            </button>
+        </div>
+    </a>
+    <!-- Rates list -->
+    <ul class="rates" ng-class="{active: !rate.isCollapsed}" ng-if="!rate.isCollapsed">
+        <li ng-repeat="room in rate.rooms" ng-class="{'closed': room.numRestrictions > 0}">
+            <a class="has-arrow toggle" ng-class="{active: rate.showDays}" ng-click="viewRateBreakUp(room)">
+                <h3>
+                    {{room.name}}
+                    <span class="count" ng-class="room.availability > 4 ? 'green' : 'red'">
+                        {{room.availability}} room(s) left
+                        <label ng-if="rate.isGroupRate"> in Group Block</label>
+                        <label ng-if="rate.isAllotmentRate"> in Allotment</label>
+                    </span>
+                    <span class="restricted" ng-if="room.numRestrictions > 1">
+                        MULTIPLE RESTRICTIONS APPLY
+                    </span>
+                    <!-- TODO Put upsell text somewhere here -->
+                    <span class="restricted {{restrictionColorClass[restrictionsMapping[room.restriction.restriction_type_id].key]}}" ng-if="room.numRestrictions == 1">
+                        {{restrictionsMapping[room.restriction.restriction_type_id].value}}{{room.restriction.days || room.restriction.days == 0? room.restriction.days +' DAYS' : ''}}
+                    </span>
+                </h3>
+                <div class="price" ng-if="!rate.isSuppressed">
+                    {{currencySymbol}}{{room.adr | number: 2}}
+                    <span translate>RESV_AVG_NIGHT</span>
+                </div>
+                <div class="price" ng-if="rate.isSuppressed">
+                    SR
+                    <span translate>RESV_AVG_NIGHT</span>
+                </div>
+                <button ng-show="stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)" class="button white blue-text" ng-click="handleNoEdit($event,room.id,rate.id)">
+                    CURRENT RATE
+                </button>
+                <button class="button {{room.buttonClass}}" ng-hide="(stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)) || restrictIfOverbook(room.id,rate.id)" ng-click="handleBooking(room.id,rate.id, $event)" translate>RESV_BOOK
+                </button>
+            </a>
+            <div class="rate-details" ng-if="room.showDays">
+                <ul class="info">
+                    <li ng-bind-html="reservationData.roomsMeta[room.id].description"></li>
+                    <li>{{reservationData.ratesMeta[rate.id].description}}</li>
+                    <li>{{reservationData.ratesMeta[rate.id].deposit_policy.description}}</li>
+                    <li>{{reservationData.ratesMeta[rate.id].cancellation_policy.description}}</li>
+                </ul>
+                <table class="room-cost">
+                    <thead>
+                        <tr>
+                            <th translate>DATE</th>
+                            <th translate>RESV_RATE</th>
+                            <th translate>ADD_ONS</th>
+                            <th>{{'TAXES_INCL'|translate}}</th>
+                            <th>{{'TAXES_EXCL'|translate}}</th>
+                            <th translate>RESV_TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="total-label" translate>RESV_TOTAL_ROOM</td>
+                            <td class="total-value" ng-if="!rate.isSuppressed">{{currencySymbol}}{{room.total | number:2}}</td>
+                            <td ng-if="rate.isSuppressed">SR</td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr ng-repeat="day in room.dates">
+                            <td>
+                                {{day.obj | date: fulldayInWeek }}, {{day.obj | date: dateFormat }}
+                            </td>
+                            <!-- Room charge -->
+                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}{{day.amount | number: 2}}</td>
+                            <td ng-if="rate.isSuppressed">SR</td>
+                            <!-- Add on -->
+                            <td ng-if="!rate.isSuppressed && !day.inclusiveAddonsExist">{{currencySymbol}}{{day.addon | number: 2}}</td>
+                            <td ng-if="!rate.isSuppressed && !!day.inclusiveAddonsExist">INCL</td>
+                            <td ng-if="rate.isSuppressed">SR</td>
+                            <!-- taxes -->
+                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}{{day.tax.incl | number: 2}}</td>
+                            <td ng-if="rate.isSuppressed">SR</td>
+                            <!-- excl taxes -->
+                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}{{day.tax.excl | number: 2}}</td>
+                            <td ng-if="rate.isSuppressed">SR</td>
+                            <!-- incl taxes -->
+                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}{{day.total | number: 2}}</td>
+                            <td ng-if="rate.isSuppressed">SR</td>
+                            <td class="edit"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- If multiple restrictions apply: -->
+                <ul ng-if="!stateCheck.stayDatesMode && room.restrictions.length > 1" class="restrictions">
+                    <li ng-repeat="restriction in room.restrictions" ng-class="restrictionColorClass[restrictionsMapping[restriction.restriction_type_id].key]">
+                        {{restrictionsMapping[restriction.restriction_type_id].value}}{{restriction.days || restriction.days == 0? restriction.days +' DAYS' : ''}}
+                    </li>
+                </ul>
+                <ul ng-if="stateCheck.stayDatesMode && room.dates[stateCheck.dateModeActiveDate].restrictions.length > 1" class="restrictions">
+                    <li ng-repeat="restriction in rate.dates[stateCheck.dateModeActiveDate].restrictions" ng-class="restrictionColorClass[restrictionsMapping[restriction.restriction_type_id].key]">
+                        {{restrictionsMapping[restriction.restriction_type_id].value}}{{restriction.days || restriction.days == 0? restriction.days +' DAYS' : ''}}
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="break" ng-show="rate.rooms.length < rate.totalRoomsCount" ng-click="showRoomsList(rate, true)">
+            <span class="thin" translate>RESV_SEE_MORE_ROOMS</span>
+        </li>
+    </ul>
+</li>

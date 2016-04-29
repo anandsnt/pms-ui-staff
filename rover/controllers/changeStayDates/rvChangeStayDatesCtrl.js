@@ -216,6 +216,9 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 		};
 
+		var hasPermissionToOverBookRoomType = function() {
+			return (rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE'));
+		};
 
 		/**
 		 *based on the availability of room, web service will give 5 status
@@ -234,7 +237,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			} else if ($scope.availabilityDetails.availability_status === "room_type_available") {
 				that.showRoomTypeAvailable($scope.availabilityDetails);
 			} else if ($scope.availabilityDetails.availability_status === "not_available") {
-				that.showRoomNotAvailable();
+				if (hasPermissionToOverBookRoomType()) {
+					$scope.showRoomAvailable();
+				}
+				else {
+					that.showRoomNotAvailable();
+				}
 			} else if ($scope.availabilityDetails.availability_status === "to_be_unassigned") {
 				$scope.rightSideReservationUpdates = 'PREASSIGNED';
 				$scope.stayDetails.preassignedGuest = $scope.availabilityDetails.preassigned_guest;
@@ -317,7 +325,6 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.rightSideReservationUpdates = 'ROOM_AVAILABLE';
 			$scope.refreshMyScroller();
 		};
-
 
 		//click function to execute when user selected a room from list (on ROOM_TYPE_AVAILABLE status)
 		$scope.roomSelectedFromList = function(roomNumber) {
@@ -729,7 +736,11 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				to_date: $scope.confirmedCheckoutDate,
 				fromState: 'STAY_CARD',
 				company_id: $scope.reservationData.company.id,
-				travel_agent_id: $scope.reservationData.travelAgent.id
+				travel_agent_id: $scope.reservationData.travelAgent.id,
+				group_id: $scope.reservationData.group.id,
+                room_type_id: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
+                adults: $scope.reservationData.tabs[$scope.viewState.currentTab].numAdults,
+                children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren
 			});
 		}
 

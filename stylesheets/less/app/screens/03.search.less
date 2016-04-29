@@ -38,7 +38,23 @@
                 }
             }
 
-            .guest-image { margin-right: 20px; }
+            .guest-image,
+            .account-image { margin-right: 20px; }
+
+            .account-image {
+                display:block;
+                .pull-left;
+                width:50px;
+                height:50px;
+
+                &.icon-company {
+                    background-color: @ccard;
+                }
+
+                &.icon-travel-agent {
+                    background-color: @tacard;
+                }
+            }
 
             .data {
                 .nowrap();
@@ -274,27 +290,22 @@
 
                 /* AR Transactions ***/
                 &.transaction {
-                    a,
-                    .faux-anchor { position: relative; }
 
-                    .group-info {
-                        font-size: 24px;
-                        line-height: 50px;
-                        text-align: center;
-                        font-weight: 600;
-                        color: @grey3;
-                        margin-right: 20px;
-                        background-color: @grey1;
-                        .square(50px);
-                        .pull-left;
+                    .has-arrow {
+                        cursor: pointer;
+                        background-position: -webkit-calc(~'100% - 15px') 50%;
+                        background-position: -moz-calc(~'100% - 15px') 50%;
+                        background-position: calc(~'100% - 15px') 50%;
+
+                        &.active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)"); }
                     }
 
                     .data {
-                        .calc-width(70, 150);
+                        margin-right: 20px;
+                        .calc-width(100, 430);
 
-                        h2 { 
-                            margin-bottom: 6px; 
-
+                        h2 {
+                            margin-bottom: 6px;
                             em { font-weight: 700; }
                         }
 
@@ -302,14 +313,32 @@
                         .arrival,
                         .departure,
                         .icon-time {
+                            font-size: 14px;
                             line-height: 20px;
                             .show;
                             .pull-left;
+
+                            &:not(:last-child) {
+                                margin-right: 10px;
+                            }
+                        }
+
+                        .confirmation {
+                            font-weight: 400;
+                            text-transform: uppercase;
+                            color: @grey3;
+                            .nowrap();
+
+                            .value {
+                                display: inline-block;
+                                color: @textColor;
+                                font-weight: 600;
+                                margin-left: 5px;
+                            }
                         }
 
                         .arrival,
                         .departure {
-                            margin-left: 20px;
                             .float;
 
                             .guest-status { 
@@ -323,14 +352,7 @@
                             .time { color: @grey3; }
                         }
 
-                        .icon-time {
-                            color: @textColor;
-                            padding-left: 24px;
-
-                            span { margin-left: 10px; }
-                        }
-
-                        &.no-image { .calc-width(70, 80); }
+                        &.no-image { .calc-width(100, 360); }
                     }
 
                     .card-data {
@@ -339,7 +361,7 @@
 
                         .card-logo {
                             margin-right: 20px;
-                            .size(30px,60px);
+                            .size(30px, 60px);
                             .pull-left;             
 
                             img { .size(auto, 100%); }
@@ -366,12 +388,12 @@
 
                     .amount {
                         font-size: 30px;
-                        line-height: 40px;
+                        line-height: 35px;
                         font-weight: 300;
                         color: @textColor;
                         margin: 5px 40px 0 0;
+                        width: 140px;
                         .pull-left;
-                        .calc-width(30, 150);
 
                         &.paid { color: @grey3; }
                         &.credit { color: @green; }
@@ -379,16 +401,16 @@
                     }
 
                     .switch-button {
-                        margin-top: 5px;
+                        margin: 5px 40px 0 0;
                         .pull-left;
-                        .size(40px, 150px);
+                        .size(35px, 120px);
 
                         .data-off,
                         .data-on {
-                            font-size: 14px;
+                            font-size: 12px;
                             text-transform: uppercase;
-                            line-height: 30px;
-                            height: 30px;
+                            line-height: 25px;
+                            height: 25px;
                             left: auto;
 
                             &.data-off { 
@@ -418,14 +440,80 @@
 
                     .employee {
                         font-size: 14px;
-                        line-height: 40px;
+                        line-height: 35px;
                         text-align: center;
                         text-transform: uppercase;
                         margin-top: 5px;
                         .nowrap();
                         .pull-left;
-                        .size(40px, 150px);
+                        .size(35px, 120px);
                     }
+
+                    /* Detailed View ***/
+                    .grid-items {
+                        padding: 15px;
+                        background-color: @white;
+                        .box-shadow(~"inset 1px -1px 1px rgba(0,0,0,.15), 0 -2px 0 rgba(0,0,0,.1)");
+                        .float;
+                        #border-radius > .rounded();
+
+                        .actions {
+                            padding-left: 40px;
+                            width: 160px;
+                            .pull-left;
+
+                            .button {
+                                width: 100%;
+                                .show();
+
+                                &:not(:last-child) {
+                                    margin-bottom: 10px;
+                                }
+                            }
+                        }
+                        
+                        table {
+                            table-layout: auto;
+                            margin: 0;
+                            .pull-left;
+                            .calc-width(100, 160);
+                        }
+
+                        th,
+                        td {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            line-height: 1em;
+                            padding: 9px 12px 7px 9px; 
+                            white-space: normal;
+                            overflow: visible;
+                        }
+
+                        th { 
+                            color: @grey3;
+                            font-weight: 600;
+                            padding-top: 0;
+                        }
+
+                        td {
+                            vertical-align: top;
+                            word-wrap: break-word;
+                            width: 110px;
+
+                            &.description {
+                                color: @grey3;
+                                .calc-width(100, 330);
+                            }
+
+                            &:last-child {
+                                font-weight: 600;
+                            }
+                        }
+
+                        tr:nth-child(odd) { 
+                            td { background: @grey1; }
+                        }
+                    } 
                 }
 
                 /* Group Rooming List ***/
@@ -664,6 +752,232 @@
                             visibility: hidden;
                             #fade > .out();
                         }
+                    }
+                }
+            }
+
+            /* Find Reservations ***/
+            &.find-reservation {
+
+                .guest-image {
+                    margin-right: 10px;
+                }
+                .data {
+                    margin-right: 10px;
+                   #pixel-to-percent > .width(570, 954);
+
+                    h2 {
+                        line-height: 24px;
+                        margin-top: 5px;
+
+                        &.pending {
+                            color: @grey2;
+                        }
+                        
+                        &.cancelled {
+                            color: @grey3;
+                        }
+                    }
+
+                    .confirmation,
+                    .icons,
+                    .guest-time {
+                        line-height: 20px;
+                        height: 20px;
+                        font-size: 14px;
+                        overflow: hidden;
+                        margin-right: 10px;
+                        display: block;
+                        .pull-left;
+                        &:last-child {
+                            margin-right: 0;
+                        }
+                    }
+
+                    .icons {
+                        color: @grey3;
+                    }
+                    .icon-location {
+                       width: 105px;
+                       padding-left: 15px;
+                       white-space: nowrap;
+                       text-overflow: ellipsis;
+                       overflow: hidden;
+                       background-position: -5px -36px;
+
+                       &.no-location {
+                        background:none;
+                       }
+                    }
+                    .confirmation { 
+                        color: @textColor;
+                        font-weight: 600; 
+                        width: 155px;
+                        .nowrap();
+                        .confirmation-text {
+                            font-weight: normal;
+                            color: @grey3;
+                            text-transform: uppercase;
+                        }
+                    }
+
+          
+
+                    .guest-status {
+                        width: 20px;
+                        height: 20px;
+                        margin-right: 5px;
+                        background-size: 80px;
+
+                        &.check-in,
+                        &.pre-check-in {
+                            background-position: 6px -75px;
+                        }
+
+                        &.late-check-out {
+                            background-position: 6px -1901px;
+                        }
+
+                        &.check-out {
+                            background-position: 6px -102px;
+                        }
+
+                        &.inhouse {
+                            background-position: 5px -128px;
+                        }
+                    }
+
+                    .guest-time {
+                        font-size: 12px;
+                        width: 105px;
+                        .hours {
+                            color:  @grey3;
+                        }
+                    }
+                }
+
+                
+
+                .guest-info {
+                    margin-right: 20px;
+                    color: @grey3;
+                    .calc-width(100, 200); 
+                    .pull-left;
+                    height: 50px;
+                    .flex(center);
+                    flex-direction: column;
+                    justify-content: center;
+
+                    span { 
+                        font-size: 12px;
+                        line-height: 16px;
+
+                        display: block;
+                        text-align: right;
+                        width: 100%;
+                         > span {
+                            display: inline;
+                        }
+                        .nowrap();
+
+                        &.group {
+                            color:  @groupcard;
+                        }
+ 
+                        &.guest-company {
+                            color:  @ccard;
+                        }
+
+                        &.guest-travelagent {
+                            color:  @tacard;
+                        }
+
+                        &.allotment {
+                            color:  @allotmentcard;
+                        }
+
+                        &.highlight,
+                        &.ui-match { padding-left: 0; }
+                    }
+                }
+                
+                 /*Holding Reservation info:  guest info, reservation status, room number*/
+                .reservation-info {
+                    position: relative;
+                    #pixel-to-percent > .width(314, 954);
+                    .pull-right;
+
+                    .guest-status { 
+                        margin-right: 10px;
+                        .square(30px); 
+                    }
+
+                    time {      
+                        span { .show; }
+                    }
+                    
+
+                    .reservation-status {
+                        position: relative;
+                        padding-top: 10px;
+                        width: 40px;
+                        .pull-left;
+                    }
+
+                    .icon-queued {
+                        position: absolute;
+                        top: 10px;
+                        right: 0;
+                        background-position: 0 -3480px; 
+                        background-size: 100px;
+                        .size(20px, 30px);
+                    }
+
+                  
+                    .room-info {
+                        padding-top: 12px;
+                        .size(50px, 120px);
+                        .pull-left;
+                    }     
+
+                    .room-status {
+                        font-size: 10px;
+                        color: white;
+                        top: -10px;
+                        position: absolute;
+                        padding: 2px 10px;
+                        right: -20px;
+                        background-color: @red;
+                        border-radius: 2px;
+                        }
+                }
+
+                .room-info {
+                    .room-number {
+                        font-size: 24px;
+                        line-height: 16px;
+                        .show;
+
+                        &.ready,
+                        &.room-green { color: @green; }
+                        
+                        &.not-ready,
+                        &.room-red { 
+                            color: @red; 
+                        }
+
+                        &.room-orange { color: @orange; }
+
+                        &.no-number {
+                            color: @grey2;
+                        }
+                    }
+
+                    .room-type {
+                        font-size: 14px;
+                        text-transform: uppercase;
+                        .nowrap();
+                        .show;
                     }
                 }
             }

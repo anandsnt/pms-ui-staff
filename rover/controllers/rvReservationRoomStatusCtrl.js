@@ -1,7 +1,16 @@
-angular.module('sntRover').controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  'RVReservationCardSrv','rvPermissionSrv',
-	function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv, RVReservationCardSrv,rvPermissionSrv){
+angular.module('sntRover').controller('reservationRoomStatus',
+    [ '$state',
+    '$rootScope',
+    '$scope',
+    'ngDialog',
+    '$stateParams',
+    'RVKeyPopupSrv',
+    'RVReservationCardSrv',
+    'rvPermissionSrv',
+	function($state, $rootScope, $scope, ngDialog, $stateParams, RVKeyPopupSrv, RVReservationCardSrv,rvPermissionSrv){
 	BaseCtrl.call(this, $scope);
 	$scope.encoderTypes = [];
+
 	$scope.getRoomClass = function(reservationStatus){
 		var reservationRoomClass = '';
 		if(reservationStatus === 'CANCELED'){
@@ -93,7 +102,7 @@ angular.module('sntRover').controller('reservationRoomStatus',[ '$state','$rootS
 		}
 		return hasButton;
 	};
-        
+
         $scope.$on('clickedIconKeyFromQueue',function(){
             $scope.clickedIconKey();//one less thing for user to do
         });
@@ -224,23 +233,51 @@ angular.module('sntRover').controller('reservationRoomStatus',[ '$state','$rootS
 			gotToDiaryInEditMode ();
 		} else if($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)){
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton","upgrade_available" : isUpgradeAvaiable});
-		}else if($scope.reservationData.reservation_card.reservation_status==="CHECKEDIN"){
+		}else if($scope.reservationData.reservation_card.reservation_status==="CHECKEDIN" && $rootScope.isStandAlone){ // As part of CICO-27631 added Check for overlay hotels 
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton","upgrade_available" : isUpgradeAvaiable});
 		}
 
 	};
+    var keySettings = $scope.reservationData.reservation_card.key_settings;
+    $scope.showPopupsOnlineOfflineRoomMove = function(){
+        setTimeout(function(){
+            if(keySettings === "email"){
+                    ngDialog.open({
+                        template: '/assets/partials/keys/rvKeyEmailPopup.html',
+                        controller: 'RVKeyEmailPopupController',
+                        className: '',
+                        scope: $scope
+                    });
+            } else {
+                $scope.keyInitPopup();
+            }
 
-        $scope.$watch('reservationData.reservation_card.room_number',function(){
-           if ($rootScope.viaSharerPopup){
-                $rootScope.$broadcast('SETPREV_RESERVATION',$rootScope.viaSharerName);
-                $rootScope.viaSharerPopup = false;
-           }
-        });
+        }, 700)
+    };
 
-        $rootScope.$on('VIA_SHARER_ON',function(fullname){
-            $scope.reservationData.viaSharerName = fullname;
-            $rootScope.viaSharerPopup = true;
-        });
+    if($rootScope.isStandAlone && !$rootScope.isHourlyRateOn){
+        if((($stateParams.isOnlineRoomMove == null && $stateParams.isKeySystemAvailable) || $stateParams.isOnlineRoomMove == "false"
+            || ($stateParams.isOnlineRoomMove == "true" && (keySettings === "email" || keySettings === "qr_code_tablet")))
+            && ($scope.showKeysButton($scope.reservationData.reservation_card.reservation_status)
+            && $scope.reservationData.reservation_card.reservation_status === "CHECKEDIN")){
+
+                $scope.showPopupsOnlineOfflineRoomMove();
+        }
+
+    }
+
+
+    $scope.$watch('reservationData.reservation_card.room_number',function(){
+       if ($rootScope.viaSharerPopup){
+            $rootScope.$broadcast('SETPREV_RESERVATION',$rootScope.viaSharerName);
+            $rootScope.viaSharerPopup = false;
+       }
+    });
+
+    $rootScope.$on('VIA_SHARER_ON',function(fullname){
+        $scope.reservationData.viaSharerName = fullname;
+        $rootScope.viaSharerPopup = true;
+    });
 
 
 }]);

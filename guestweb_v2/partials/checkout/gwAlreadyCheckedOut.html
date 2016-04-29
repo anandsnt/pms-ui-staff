@@ -1,12 +1,17 @@
 <!-- main section starts here -->
 <div class="container">
     <!-- if guest has already checkout -->
-    <div class="row" ng-show="isCheckedout && !success">
+    <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10 top-spacing">
-            <p class="main-text">It appears you have already completed your check-out.</p>
-            <p class="sub-main-text">For further enquiries please contact the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
-            <p class="sub-main-text">Thank You!</p>
+             <!-- default main text -->
+            <p class="main-text" ng-if="!screenCMSDetails.title">It appears you have already completed your check-out.</p>
+            <!-- CMS main text -->
+            <p class="main-text" ng-if="screenCMSDetails.title" ng-bind-html="screenCMSDetails.title"></p>
+            <!-- default sub  text -->
+            <p class="sub-main-text" ng-if="!screenCMSDetails.description">For further enquiries please contact the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+            <!-- CMS sub  text -->
+            <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
         </div>
         <div class="col-md-1">
         </div>

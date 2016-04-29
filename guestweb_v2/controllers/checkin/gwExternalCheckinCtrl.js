@@ -64,6 +64,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				zestwebData.isCCOnFile = (reservation_data.is_cc_attached === "true") ? true : false;
 				zestwebData.userEmail = reservation_data.guest_email;
 				zestwebData.userMobile = reservation_data.guest_mobile;
+				GwWebSrv.zestwebData.roomUpgraded  = false;
 
 				//navigate to next page
 				//to be done
@@ -73,7 +74,13 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				params: params,
 				successCallBack: onSuccess,
 			};
-			$scope.callAPI(GwCheckinSrv.generateAuthToken, options);
+			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+				onSuccess({"guest_web_token":"4120081e61c6e6abe51258a738ea94d1"});//dummy token
+			}
+			else{
+				$scope.callAPI(GwCheckinSrv.generateAuthToken, options);
+			};
+			
 		};
 
 
@@ -107,7 +114,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 					}
 					//if reservation is aleady checkin
 					else if (reservation_data.is_checked_in === "true") {
-						$state.go('checkinSuccess'); // to be done
+						$state.go('alreadyCheckedIn');
 					}
 					//if reservation is early checkin
 					else if (reservation_data.is_too_early) {
@@ -148,14 +155,20 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				$scope.callAPI(GwCheckinSrv.findUser, options);
 			}
 			else{
-				// show popup
-				var popupOptions = angular.copy($scope.errorOpts);
-				popupOptions.resolve = {
-					message: function() {
-						return "Please provide all the required information"
-					}
-				};
-				$modal.open(popupOptions);
+				if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+					$scope.callAPI(GwCheckinSrv.findUser, options);
+				}
+				else{
+					// show popup
+					var popupOptions = angular.copy($scope.errorOpts);
+					popupOptions.resolve = {
+						message: function() {
+							return "Please provide all the required information"
+						}
+					};
+					$modal.open(popupOptions);
+				}
+				
 			};
 		};
 

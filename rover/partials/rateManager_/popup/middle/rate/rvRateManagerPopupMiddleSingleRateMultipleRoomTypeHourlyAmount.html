@@ -1,0 +1,39 @@
+<div id="restrictionPriceContainer" class="price-div">
+	<div class="restriction_text" >
+		<h3>Adjust Price </h3>
+		<em>Adjust price for all room type</em>
+	</div>
+	<section class="price-field-container scrollable no-price-entry" ng-iscroll="room-type-price-editing">
+		<div class="wrapper">
+			<div class="price-fields">
+				
+				<label>
+					ALL OCCUPANCIES
+				</label>
+				
+				<span class="entry select">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<select ng-model="priceDetails.single_amount_operator" ng-disabled="isPastDate">
+						<option value="+">+</option>
+						<option value="-">-</option>
+					</select>
+				</span>
+				<span class="extra_amount entry">
+					<!-- if is disable ng-change="refreshScrollers()"d add attribute 'disabled="disabled"'-->
+					<input type="text" ng-change="priceStartedToCustomize('single')" ng-model="priceDetails.single_changing_value" ng-disabled="isPastDate">
+				</span>
+				
+				<!-- add class .disabled if is disabled -->
+				<span class="select_amount_diff entry select">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<select ng-model="priceDetails.single_amount_perc_cur_symbol" ng-disabled="isPastDate">
+						<option value="{{currencySymbol}}">{{currencySymbol}}</option>
+						<option value="%">%</option>
+					</select>
+				</span>
+				<br clear="all">
+				
+			</div>
+		</div>
+	</section>
+</div>

@@ -959,6 +959,9 @@
             /* Rooms & Rates ***/
             &.rooms-and-rates-content {
                 .calc-height(100, 150);
+                &.edit-guests{
+                    .calc-height(100, 220);
+                }
 
                 /* List ***/
                 .rooms-and-rates {
@@ -1216,6 +1219,11 @@
 
                                 &:hover,
                                 &:active { color: @logoPrimary; }
+
+                                &.thin{
+                                    height: 30px;
+                                    line-height: 30px;
+                                }
                             }
 
                             &:after,

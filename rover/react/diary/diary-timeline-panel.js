@@ -66,7 +66,7 @@ var TimelinePanel = React.createClass({
 				width: props.display.width + 'px'
 			}
 		},
-		Timeline({
+		React.createElement( Timeline, {
 			display:                props.display,
 			iscroll:                props.iscroll,
 			filter:                 props.filter,
@@ -78,7 +78,7 @@ var TimelinePanel = React.createClass({
 			currentResizeItem:    	props.currentResizeItem,
 			currentResizeItemRow: 	props.currentResizeItemRow
 		}),
-		TimelineOccupancy({
+		React.createElement( TimelineOccupancy, {
 			display:     props.display,
 			data:        props.stats
 		})));

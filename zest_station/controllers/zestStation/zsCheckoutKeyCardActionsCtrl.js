@@ -5,25 +5,28 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 	'zsModeConstants',
 	'$stateParams',
 	'$sce', 'zsTabletSrv',
-	'zsCheckoutSrv',
-	function($scope, $state, zsEventConstants, zsModeConstants, $stateParams, $sce, zsTabletSrv, zsCheckoutSrv) {
+	'zsCheckoutSrv','$timeout',
+	function($scope, $state, zsEventConstants, zsModeConstants, $stateParams, $sce, zsTabletSrv, zsCheckoutSrv,$timeout) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 		$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 		$scope.reservationSearchFailed = false;
+		$scope.zestStationData.isKeyCardLookUp = true;
+		$scope.socketBeingConnected = true;
 		sntZestStation.filter('unsafe', function($sce) {
 			return function(val) {
 				return $sce.trustAsHtml(val);
 			};
 		});
+
 		/**
 		 * when the back button clicked
 		 * @param  {[type]} event
 		 * @return {[type]} 
 		 */
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			$state.go('zest_station.home'); //go back to reservation search results
+			$state.go('zest_station.checkout_options'); //go back to checkout options
 		});
 
 		$scope.navToPrev = function() {
@@ -54,7 +57,6 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		};
 
 		var ejectCard = function() {
-			console.info("card ejection failed")
 			$scope.socketOperator.EjectKeyCard();
 		};
 
@@ -79,36 +81,36 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			$scope.callAPI(zsCheckoutSrv.fetchReservationFromUId, options);
 		};
 
-		var actionSuccesCallback = function(response) {
-			var cmd = response.Command,
-				msg = response.Message;
 
-			// to delete after QA pass
-			console.info("uid=" + response.UID);
-			console.info(cmd);
-			console.info(msg);
+		$scope.$on('UID_FETCH_SUCCESS', function(event, data) {
+			findReservation(data.uid)
+		});
 
-			if (response.Command === 'cmd_insert_key_card') {
-				//check if the UID is valid
-				//if so find reservation using that
-				(typeof response.UID !== "undefined" && response.UID !== null) ? findReservation(response.UID): findReservationFailed();
-			} else if (response.Command === 'cmd_eject_key_card') {
-				//ejectkey card callback
-				if (response.ResponseCode === 19) {
-					// key ejection failed
-					$state.go('zest_station.error_page');
-				}
-			};
-		};
-		var socketOpenedFailureCallback = function() {
-			goToRetryPage();
-		};
-		var socketOpenedSuccessCallback = function() {
+		$scope.$on('UID_FETCH_FAILED',function(){
+			findReservationFailed();
+		});
+
+		$scope.$on('SOCKET_CONNECTED',function(){	
+			//will change this call back to init method
+			//once key dispenser is corrected
 			$scope.socketOperator.InsertKeyCard();
-		};
+		});
 
+		var setTimeOutFunctionToEnsureSocketIsOpened = function(){
+			$timeout(function() {
+				// so inorder to avoid a possible error because of
+				// wrong timing adding a buffer of 1.5 seconds
+                $scope.socketBeingConnected = false;//connection success
+  			}, 1000);
+  			
+		};
 		var init = function(){
-			$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
+			setTimeOutFunctionToEnsureSocketIsOpened();
+			console.info("websocket: readyState -> "+$scope.socketOperator.returnWebSocketObject().readyState);
+			//close the opened socket
+			($scope.socketOperator.returnWebSocketObject().readyState === 1) ? $scope.socketOperator.closeWebSocket():"";
+			//even if status says it open, it throwing error once key is written
+			$scope.$emit('CONNECT_WEBSOCKET');
 		}();
 
 		/** 
@@ -116,7 +118,8 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		 * */
 		$scope.retrySearch = function() {
 			$scope.reservationSearchFailed = false;
-			$scope.socketOperator.connectWebSocket(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback);
+			$scope.socketBeingConnected = true;
+			setTimeOutFunctionToEnsureSocketIsOpened();
 			runDigestCycle();
 		};
 
