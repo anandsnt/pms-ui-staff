@@ -26,6 +26,19 @@ sntZestStation.controller('zsRootCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
+		$translate.use('EN_snt'); // for now. need to do translations later
+
+
+		//in order to prevent url change or fresh url entering with states
+		var routeChange = function(event, newURL) {
+			event.preventDefault();
+			return;
+		};
+
+		$rootScope.$on('$locationChangeStart', routeChange);
+		//we are forcefully setting top url, please refer routerFile
+		window.history.pushState("initial", "Showing Landing Page", "#/home");
+
 		/**
 		 * events for showing/hiding the back button and close button
 		 * @param  {[type]} event
@@ -42,6 +55,13 @@ sntZestStation.controller('zsRootCtrl', [
 		});
 		$scope.$on(zsEventConstants.HIDE_CLOSE_BUTTON, function(event) {
 			$scope.hideCloseButton = true;
+		});
+
+		/**
+		 * Other events
+		 */
+		$scope.$on(zsEventConstants.PUT_OOS, function(event) {
+			$state.go('zest_station.outOfService');
 		});
 
 		/**
@@ -68,8 +88,7 @@ sntZestStation.controller('zsRootCtrl', [
 			};
 			var options = {
 				params: {},
-				successCallBack: onSuccess,
-				failureCallBack: $scope.failureCallBack
+				successCallBack: onSuccess
 			};
 			$scope.callAPI(zsTabletSrv.fetchHotelSettings, options);
 		};
@@ -164,7 +183,7 @@ sntZestStation.controller('zsRootCtrl', [
 			updateIconPath(theme);
 			link = getThemeLink(theme);
 			logo = getLogoSvg(theme);
-			$('#logo').append(logo);//load logo
+			$('#logo').append(logo); //load logo
 			zsHotelDetailsSrv.data.theme = theme.toLowerCase();
 			setTimeout(function() {
 				$('body').css('display', 'block');

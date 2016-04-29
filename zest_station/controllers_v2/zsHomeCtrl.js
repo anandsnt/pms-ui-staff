@@ -2,9 +2,8 @@ sntZestStation.controller('zsHomeCtrl', [
 	'$scope',
 	'$rootScope',
 	'$state',
-	'zsModeConstants',
-	'zsEventConstants', '$stateParams', 'ngDialog', 'zsTabletSrv', '$window',
-	function($scope, $rootScope, $state, zsModeConstants, zsEventConstants, $stateParams, ngDialog, zsTabletSrv, $window) {
+	'zsEventConstants',
+	function($scope, $rootScope, $state, zsEventConstants) {
 
 		/**
 		 * when we clicked on pickup key from home screen
@@ -36,10 +35,10 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * [initializeMe description]
 		 */
 		var initializeMe = function() {
-			//show back button
+			//hide back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 
-			//show close button
+			//hide close button
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
 		}();
 
