@@ -1,1 +1,63 @@
-{}
+sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvider',
+	function($stateProvider, $urlRouterProvider, $translateProvider) {
+
+
+		$urlRouterProvider.otherwise('/zest_station/home');
+
+		$stateProvider.state('zest_station', {
+			abstract: true,
+			url: '/zest_station',
+			templateUrl: '/assets/partials/kiosk/zestRoot.html',
+			controller: 'zsRootCtrl',
+			resolve: {
+				cssMappings: function(zsCSSMappings) {
+					return zsCSSMappings.fetchCSSMappingList();
+				},
+				zestStationSettings: function(zsTabletSrv) {
+					return zsTabletSrv.fetchSettings();
+				},
+				//fetch language files in the starting itself
+				//so as to speeden the process laterwards
+				fetchTranslations: function(zsHotelDetailsSrv) {
+
+					zsHotelDetailsSrv.fetchTranslationData('en').then(function(translations) {
+						$translateProvider.translations('en', translations);
+					});
+					zsHotelDetailsSrv.fetchTranslationData('fr').then(function(translations) {
+						$translateProvider.translations('fr', translations);
+					});
+					zsHotelDetailsSrv.fetchTranslationData('es').then(function(translations) {
+						$translateProvider.translations('es', translations);
+					});
+					zsHotelDetailsSrv.fetchTranslationData('de').then(function(translations) {
+						$translateProvider.translations('de', translations);
+					});
+					zsHotelDetailsSrv.fetchTranslationData('cl').then(function(translations) {
+						$translateProvider.translations('cl', translations);
+					});
+					zsHotelDetailsSrv.fetchTranslationData('it').then(function(translations) {
+						$translateProvider.translations('it', translations);
+					});
+					zsHotelDetailsSrv.fetchTranslationData('nl').then(function(translations) {
+						$translateProvider.translations('nl', translations);
+					});
+				}
+			}
+		});
+
+		$stateProvider.state('zest_station.home', {
+			url: '/home',
+			templateUrl: '/assets/partials_v2/zsHomePage.html',
+			controller: 'zsHomeCtrl',
+			resolve: {
+				waitforParentDependencies: function(cssMappings, zestStationSettings, $q) {
+					var deferred = $q.defer();
+					setTimeout(function() {
+						deferred.resolve();
+					}, 10);
+					return deferred.promise;
+				}
+			}
+		});
+	}
+]);

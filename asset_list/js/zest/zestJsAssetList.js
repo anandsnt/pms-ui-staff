@@ -57,11 +57,13 @@ module.exports = {
 				zestRoot + 'zsWebSocketActions.js',
 				zestRoot + 'zsChromeAppActions.js',
 				zestRoot + 'zsVirtualKeyboard.js',
-				zestRoot + 'controllers/**/*.js',
+				//zestRoot + 'controllers/**/*.js',
+				zestRoot + 'controllers_v2/**/*.js',
 				zestRoot + 'directives/**/*.js',
 				zestRoot + 'services/**/*.js',
 				zestRoot + 'filters/*.js',
-				zestRoot + 'routers/**/*.js',
+				//zestRoot + 'routers/**/*.js',
+				zestRoot + 'routers_v2/**/*.js',
 				zestRoot + 'constants/**/*.js',
                                 //jquery virtual keyboard files
 			]
