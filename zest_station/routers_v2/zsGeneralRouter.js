@@ -7,7 +7,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 		$stateProvider.state('zest_station', {
 			abstract: true,
 			url: '/zest_station',
-			templateUrl: '/assets/partials/kiosk/zestRoot.html',
+			templateUrl: '/assets/partials_v2/zsRoot.html',
 			controller: 'zsRootCtrl',
 			resolve: {
 				cssMappings: function(zsCSSMappings) {

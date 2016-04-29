@@ -58,6 +58,21 @@ sntZestStation.controller('zsRootCtrl', [
 		});
 
 		/**
+		 * [navToPrev description]
+		 * @return {[type]} [description]
+		 */
+		$scope.clickedOnBackButton = function() {
+			$scope.$broadcast(zsEventConstants.CLICKED_ON_BACK_BUTTON);
+		};
+		/**
+		 * [clickedOnCloseButton description]
+		 * @return {[type]} [description]
+		 */
+		$scope.clickedOnCloseButton = function() {
+			$state.go('zest_station.home');
+		};
+
+		/**
 		 * Other events
 		 */
 		$scope.$on(zsEventConstants.PUT_OOS, function(event) {

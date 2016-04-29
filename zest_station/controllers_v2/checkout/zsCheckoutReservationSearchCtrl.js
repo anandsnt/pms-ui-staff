@@ -8,11 +8,17 @@ sntZestStation.controller('zsCheckoutReservationSearchCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
+		
+
 		var init = function() {
 			//show back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			//show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+			//back button action
+			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
+				$state.go('zest_station.home');
+			});
 			//starting mode
 			$scope.mode = "last_name_entry";
 			$scope.reservationParams = {
