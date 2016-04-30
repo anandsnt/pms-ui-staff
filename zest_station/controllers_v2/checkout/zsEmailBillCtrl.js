@@ -7,6 +7,14 @@ sntZestStation.controller('zsEmailBillCtrl', [
 	'zsCheckoutSrv',
 	function($scope, $stateParams, $state, zsEventConstants, zsUtilitySrv, zsCheckoutSrv) {
 
+
+		/** MODES in the screen
+		*   1.EMAIL_BILL_GUEST_OPTIONS --> two options - send email and edit email
+		*   2.EMAIL_BILL_EDIT_MODE --> email entry mode
+		*   3.GUEST_BILL_EMAIL_SENT --> mail has been sent/mail sending failed
+		*   4.emailError --> invalid email
+		**/
+
 		/**
 		 * [initializeMe description]
 		 */
@@ -17,7 +25,9 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.email = $stateParams.email;
 			$scope.printOpted = $stateParams.printopted;
-			$scope.mode = !!$scope.email ? "email-guest-options" : "email-edit-mode";
+			//if user already has email provide two options
+			//else prompt for email entry
+			$scope.mode = !!$scope.email ? "EMAIL_BILL_GUEST_OPTIONS" : "EMAIL_BILL_EDIT_MODE";
 
 		}();
 		/**
@@ -30,7 +40,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		});
 
 		$scope.editEmailAddress = function() {
-			$scope.mode = "email-edit-mode";
+			$scope.mode = "EMAIL_BILL_EDIT_MODE";
 		};
 
 		$scope.navToHome = function() {
@@ -56,7 +66,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 				"is_kiosk": true
 			};
 			var checkOutSuccess = function() {
-				$scope.mode = 'email-sent-to-guest';
+				$scope.mode = 'GUEST_BILL_EMAIL_SENT';
 			};
 			var options = {
 				params: params,
@@ -72,7 +82,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		};
 
 		$scope.sendEmail = function() {
-
+			
 			var sendBillSuccess = function(response) {
 				$scope.emailSent = true;
 				checkOutGuest();
@@ -100,7 +110,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 				"email": $scope.email
 			};
 			var emailSaveSuccess = function() {
-				$scope.mode = "email-guest-options";
+				$scope.mode = "EMAIL_BILL_GUEST_OPTIONS";
 			};
 			var options = {
 				params: params,
@@ -124,7 +134,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		};
 
 		$scope.reTypeEmail = function() {
-			$scope.mode = "email-edit-mode";
+			$scope.mode = "EMAIL_BILL_EDIT_MODE";
 			$scope.emailError = false;
 		};
 

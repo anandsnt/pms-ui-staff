@@ -6,9 +6,13 @@ sntZestStation.controller('zsCheckoutReservationSearchCtrl', [
 	'zsCheckoutSrv',
 	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv) {
 
+		/** MODES in the screen
+		*   1.LAST_NAME_ENTRY --> enter last name
+		*   2.ROOM_NUMBER_ENTRY --> enter room number
+		*   3.NO_MATCH --> no reservation found
+		**/
+
 		BaseCtrl.call(this, $scope);
-
-
 
 		var init = function() {
 			//show back button
@@ -20,7 +24,7 @@ sntZestStation.controller('zsCheckoutReservationSearchCtrl', [
 				$state.go('zest_station.home');
 			});
 			//starting mode
-			$scope.mode = "last_name_entry";
+			$scope.mode = "LAST_NAME_ENTRY";
 			$scope.reservationParams = {
 				"last_name": "",
 				"room_no": ""
@@ -45,7 +49,7 @@ sntZestStation.controller('zsCheckoutReservationSearchCtrl', [
 				$state.go('zest_station.checkoutReservationBill', stateParams);
 			};
 			var checkoutVerificationCallBack = function() {
-				$scope.mode = 'no_match';
+				$scope.mode = 'NO_MATCH';
 			};
 			var params = {
 				"last_name": $scope.reservationParams.last_name,
@@ -64,7 +68,7 @@ sntZestStation.controller('zsCheckoutReservationSearchCtrl', [
 			if ($scope.reservationParams.room_no.length > 0) {
 				searchReservation();
 			} else {
-				$scope.mode = "room_number_entry";
+				$scope.mode = "ROOM_NUMBER_ENTRY";
 			};
 		};
 
@@ -73,7 +77,7 @@ sntZestStation.controller('zsCheckoutReservationSearchCtrl', [
 		};
 
 		$scope.reEnterText = function(type) {
-			$scope.mode = (type === "room") ? "room_number_entry" : "last_name_entry";
+			$scope.mode = (type === "room") ? "ROOM_NUMBER_ENTRY" : "LAST_NAME_ENTRY";
 		};
 
 		$scope.talkToStaff = function() {
