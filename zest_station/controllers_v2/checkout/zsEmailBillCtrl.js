@@ -5,7 +5,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 	'zsEventConstants',
 	'zsUtilitySrv',
 	'zsCheckoutSrv',
-	function($scope, $stateParams, $state, zsEventConstants,zsUtilitySrv,zsCheckoutSrv) {
+	function($scope, $stateParams, $state, zsEventConstants, zsUtilitySrv, zsCheckoutSrv) {
 
 		/**
 		 * [initializeMe description]
@@ -17,7 +17,8 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.email = $stateParams.email;
 			$scope.printOpted = $stateParams.printopted;
-			$scope.mode = !!$scope.email ? "email-guest-options" : "email-edit-mode";;
+			$scope.mode = !!$scope.email ? "email-guest-options" : "email-edit-mode";
+
 		}();
 		/**
 		 * when the back button clicked
@@ -32,53 +33,73 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			$scope.mode = "email-edit-mode";
 		};
 
+		$scope.navToHome = function() {
+			$state.go('zest_station.home');
+		};
 
 		/**
-         *  Checkout the Guest
-         */
-        var checkOutGuest = function() {
-            var params = {
-                "reservation_id": $scope.reservation_id,
-                "is_kiosk": true
-            };
-            var checkOutSuccess = function() {
-                $state.go('zest_station.reservationCheckedOut',{'printopted':$stateParams.printopted});
-            };
-            var options = {
-                params: params,
-                successCallBack: checkOutSuccess,
-                failureCallBack: failureCallBack
-            };
-            $scope.callAPI(zsCheckoutSrv.checkoutGuest, options);
-        };
-		
+		 *  general failure actions
+		 **/
+		var failureCallBack = function() {
+			//if key card was inserted we need to eject that
+			if ($scope.zestStationData.keyCardInserted) {
+				$scope.socketOperator.EjectKeyCard();
+			};
+			$state.go('zest_station.speakToStaff');
+		};
+		/**
+		 *  Checkout the Guest
+		 */
+		var checkOutGuest = function() {
+			var params = {
+				"reservation_id": $scope.reservation_id,
+				"is_kiosk": true
+			};
+			var checkOutSuccess = function() {
+				$scope.mode = 'email-sent-to-guest';
+			};
+			var options = {
+				params: params,
+				successCallBack: checkOutSuccess,
+				failureCallBack: failureCallBack
+			};
+			$scope.callAPI(zsCheckoutSrv.checkoutGuest, options);
+		};
+
 
 		$scope.goToNextScreen = function() {
 			checkOutGuest();
 		};
 
-		$scope.sendEmail = function(){
-			//TO DO
-			checkOutGuest()//neeed to check which API
-		};
+		$scope.sendEmail = function() {
 
-		/**
-         *  general failure actions
-         **/
-        var failureCallBack = function() {
-            //if key card was inserted we need to eject that
-            if ($scope.zestStationData.keyCardInserted) {
-                $scope.socketOperator.EjectKeyCard();
-            };
-            $state.go('zest_station.speakToStaff');
-        };
+			var sendBillSuccess = function(response) {
+				$scope.emailSent = true;
+				checkOutGuest();
+			};
+			var sendBillFailure = function(response) {
+				$scope.emailSendingFailed = true;
+				checkOutGuest();
+			};
+
+			var params = {
+				reservation_id: $stateParams.reservation_id,
+				bill_number: "1"
+			};
+			var options = {
+				params: params,
+				successCallBack: sendBillSuccess,
+				failureCallBack: sendBillFailure
+			};
+			$scope.callAPI(zsCheckoutSrv.sendBill, options);
+		};
 
 		var callSaveEmail = function() {
 			var params = {
 				"guest_detail_id": $stateParams.guest_detail_id,
 				"email": $scope.email
 			};
-			var emailSaveSuccess = function(){
+			var emailSaveSuccess = function() {
 				$scope.mode = "email-guest-options";
 			};
 			var options = {

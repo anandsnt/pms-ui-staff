@@ -152,7 +152,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     checkOutGuest(printopted);
                 } else if (guest_bill.email && !guest_bill.print) { 
                     //email_only
-                    $state.go('zest_station.emailBill',{'email':$stateParams.email,'guest_detail_id':$stateParams.guest_detail_id,'printopted':'false'});
+                    $state.go('zest_station.emailBill',{'email':$stateParams.email,'guest_detail_id':$stateParams.guest_detail_id,'printopted':'false','reservation_id':$scope.reservation_id});
                 } else if (guest_bill.print) { //go to print nav
                     $scope.printOpted = true;
                 }
@@ -204,7 +204,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
         var nextPageActions = function(printopted) {
             if ($scope.zestStationData.guest_bill.email) {
-                $state.go('zest_station.emailBill',{'email':$stateParams.email,'guest_detail_id':$stateParams.guest_detail_id,'printopted':printopted});
+                $state.go('zest_station.emailBill',{'email':$stateParams.email,'guest_detail_id':$stateParams.guest_detail_id,'printopted':printopted,'reservation_id':$scope.reservation_id});
             } else {
                 checkOutGuest(printopted);
             }

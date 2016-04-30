@@ -26,7 +26,7 @@ sntZestStation.config(['$stateProvider',
 		});
 		//send emaill bill
 		$stateProvider.state('zest_station.emailBill', {
-			url: '/emailBill/:printopted/:email/:guest_detail_id',
+			url: '/emailBill/:printopted/:email/:guest_detail_id/:reservation_id',
 			templateUrl: '/assets/partials_v2/checkout/zsEmailBill.html',
 			controller: 'zsEmailBillCtrl'
 		});
