@@ -59,8 +59,18 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         var refreshScroller = function() {
             $scope.refreshScroller('bill-list');
         };
+        /**
+        *  general failure actions inside bill screen
+        **/
+        var failureCallBack = function() {
+            //if key card was inserted we need to eject that
+            if ($scope.zestStationData.keyCardInserted) {
+                $scope.socketOperator.EjectKeyCard();
+            };
+            $state.go('zest_station.speakToStaff');
+        };
 
-        $scope.fetchBillSuccess = function(response) {
+        var fetchBillSuccess = function(response) {
 
             //process bill data
             var billsData = response.bill_details.fee_details;
@@ -86,18 +96,35 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             refreshScroller();
         };
 
-
         $scope.setupBillData = function() {
             var options = {
                 params: {
                     "reservation_id": $scope.reservation_id
                 },
-                successCallBack: $scope.fetchBillSuccess,
-                failureCallBack: $scope.failureCallBack
+                successCallBack: fetchBillSuccess,
+                failureCallBack: failureCallBack
             };
             $scope.callAPI(zsCheckoutSrv.fetchBillDetails, options);
         };
 
+        /**
+         *  Checkout the Guest
+         */
+        var checkOutGuest = function() {
+            var params = {
+                "reservation_id": $scope.reservation_id,
+                "is_kiosk": true
+            };
+            var checkOutSuccess = function() {
+                $state.go('zest_station.reservationCheckedOut');
+            };
+            var options = {
+                params: params,
+                successCallBack: checkOutSuccess,
+                failureCallBack: failureCallBack
+            };
+            $scope.callAPI(zsCheckoutSrv.checkoutGuest, options);
+        };
         /**
          *  We check if the balance is greater than 0 and has no CC.
          *  If so we redirect to the staff
@@ -116,8 +143,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             } else {
                 var guest_bill = $scope.zestStationData.guest_bill;
 
-                if (!guest_bill.email && !guest_bill.print) { //just_checkout
-                    $state.go('zest_station.reservation_checked_out');
+                if (!guest_bill.email && !guest_bill.print) { //immediate checkout
+                    checkOutGuest();
 
                 } else if (guest_bill.email && !guest_bill.print) { //email_only
                     $state.go('zest_station.bill_delivery_options');
@@ -125,7 +152,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 } else if (guest_bill.print) { //go to print nav
                     // $state.at = 'print-nav';
                     // $state.from = 'print-nav';
-                    $state.go('zest_station.reservation_checked_out');
+                    $state.go('zest_station.billPrint');
                 }
             };
         };

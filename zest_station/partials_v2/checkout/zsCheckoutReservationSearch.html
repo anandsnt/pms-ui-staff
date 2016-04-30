@@ -35,7 +35,7 @@
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
                     {{'RES_SRCH_RE_ENTER_LAST' |translate}}
-                    <span>"{{reservationParams.lastName}}"</span>
+                    <span ng-bind="reservationParams.last_name"></span>
                 </li>
                 <li class="break">
                     <span>Or</span>
@@ -46,7 +46,7 @@
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
                     {{'RES_SRCH_RE_ENTER_ROOM' |translate}}
-                    <span>"{{reservationParams.roomNumber}}"</span>
+                    <span ng-bind="reservationParams.room_no"></span>
                 </li>
                 <li class="break">
                     <span>Or</span>

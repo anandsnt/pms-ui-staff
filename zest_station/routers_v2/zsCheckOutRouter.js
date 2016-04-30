@@ -16,6 +16,10 @@ sntZestStation.config(['$stateProvider',
              url: '/checkoutReservationBill/:from/:reservation_id/:email/:guest_detail_id/:has_cc/:first_name/:last_name/:days_of_stay/:is_checked_out/:hours_of_stay', 
              controller: 'zsReservationBillDetailsCtrl',
              templateUrl: '/assets/partials_v2/checkout/zsReservationBill.html'
+         }).state('zest_station.reservationCheckedOut', {
+            url        : '/reservation_checked_out',
+            templateUrl: '/assets/partials_v2/checkout/zsCheckoutFinal.html',
+            controller: 'zsCheckoutFinalCtrl'
          });
 	}
 ]);
