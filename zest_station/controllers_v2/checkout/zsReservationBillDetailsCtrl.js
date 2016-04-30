@@ -136,11 +136,9 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          */
 
         var cashReservationBalanceDue = function() {
-            return (!$scope.has_cc && $scope.zestStationData.reservationData.balance > 0);
+            return (!$scope.has_cc && $scope.balance > 0);
         };
         $scope.nextClicked = function() {
-
-            //$scope.zestStationData.reservationData.edit_email = false;
 
             if (cashReservationBalanceDue()) {
                 console.warn("reservation has balance due");
@@ -148,12 +146,13 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             } else {
                 var guest_bill = $scope.zestStationData.guest_bill;
 
-                if (!guest_bill.email && !guest_bill.print) { //immediate checkout
-                    checkOutGuest();
-
-                } else if (guest_bill.email && !guest_bill.print) { //email_only
-                    $state.go('zest_station.bill_delivery_options');
-
+                if (!guest_bill.email && !guest_bill.print) { 
+                    //immediate checkout
+                    var printopted = 'false';
+                    checkOutGuest(printopted);
+                } else if (guest_bill.email && !guest_bill.print) { 
+                    //email_only
+                    $state.go('zest_station.emailBill',{'email':$stateParams.email,'guest_detail_id':$stateParams.guest_detail_id,'printopted':'false'});
                 } else if (guest_bill.print) { //go to print nav
                     $scope.printOpted = true;
                 }
@@ -168,8 +167,6 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         $scope.init = function() {
             $scope.from = $stateParams.from;
             $scope.reservation_id = $stateParams.reservation_id;
-            // $scope.email = $stateParams.email;
-            // $scope.guest_detail_id = $stateParams.guest_detail_id;
             $scope.has_cc = $stateParams.has_cc;
             $scope.first_name = $stateParams.first_name;
             $scope.last_name = $stateParams.last_name;
@@ -205,12 +202,11 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          *  starts here
          ********************************************************************************/
 
-        var nextPageActions = function() {
-            var emailCollectionTurnedOn = false;
-            if (emailCollectionTurnedOn) {
-                alert("email collection")
+        var nextPageActions = function(printopted) {
+            if ($scope.zestStationData.guest_bill.email) {
+                $state.go('zest_station.emailBill',{'email':$stateParams.email,'guest_detail_id':$stateParams.guest_detail_id,'printopted':printopted});
             } else {
-                checkOutGuest();
+                checkOutGuest(printopted);
             }
         };
         var handleBillPrint = function() {
@@ -234,7 +230,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     if (sntapp.cordovaLoaded) {
                         var printer = (sntZestStation.selectedPrinter);
                         cordova.exec(function(success) {
-                            nextPageActions();
+                             var printopted = 'true';
+                             nextPageActions(printopted);
                         }, function(error) {
                             printFailedActions();
                         }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
@@ -253,7 +250,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
                 // remove the orientation after similar delay
                 removePrintOrientation();
-                nextPageActions();
+                var printopted = 'true';
+                nextPageActions(printopted);
             }, 100);
         };
 
@@ -284,7 +282,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         };
 
         $scope.clickedNoThanks = function() {
-            nextPageActions();
+            var printopted = 'false';
+            nextPageActions(printopted);
         };
         /********************************************************************************
          *  Printer Actions
