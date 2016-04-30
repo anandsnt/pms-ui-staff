@@ -241,6 +241,17 @@ sntZestStation.controller('zsRootCtrl', [
 		};
 		setSvgsToBeLoaded();
 
+		var setPrinterOptions = function(theme) {
+			//zsUtils function
+			if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
+				(theme === 'yotel') ? applyStylesForYotelStarTac(): applyStarTacStyles();
+			} else if ($scope.zestStationData.zest_printer_option === "RECEIPT") {
+				(theme === 'yotel') ? applyStylesForYotelReceipt() : "";
+			} else {
+				applyPrintMargin(); //zsUtils function
+			};
+		};
+
 		var setHotelBasedTheme = function(response) {
 			var theme = null;
 			/*
@@ -256,6 +267,7 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 			theme = getThemeName(theme); //from here we can change the default theme(to stayntouch, or other hotel)
 			$scope.zestStationData.theme = theme;
+			setPrinterOptions(theme);
 			if (theme !== null) {
 				var url = cssMappings[theme.toLowerCase()];
 				var fileref = document.createElement("link");
@@ -341,9 +353,9 @@ sntZestStation.controller('zsRootCtrl', [
 			console.info("Websocket:-> socket connected");
 			$scope.$broadcast('SOCKET_CONNECTED');
 		};
-		$scope.$on('CONNECT_WEBSOCKET',function(){
-        	$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
-   		});
+		$scope.$on('CONNECT_WEBSOCKET', function() {
+			$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+		});
 		/********************************************************************************
 		 *  Websocket actions related to keycard lookup
 		 *  ends here

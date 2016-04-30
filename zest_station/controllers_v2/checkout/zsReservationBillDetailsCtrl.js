@@ -1,9 +1,14 @@
 sntZestStation.controller('zsReservationBillDetailsCtrl', [
     '$scope',
     '$state',
-    'zsCheckoutSrv', 'zsEventConstants', '$stateParams', 'zsModeConstants',
-    function($scope, $state, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants) {
+    'zsCheckoutSrv', 'zsEventConstants', '$stateParams', 'zsModeConstants', '$window', '$timeout',
+    function($scope, $state, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout) {
 
+        /**
+         * This controller is used to print Bill and View bill
+         * They share data, so using same controller.
+         * Print actions are separated and grouped below
+         * */
         BaseCtrl.call(this, $scope);
 
         /**
@@ -60,8 +65,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             $scope.refreshScroller('bill-list');
         };
         /**
-        *  general failure actions inside bill screen
-        **/
+         *  general failure actions inside bill screen
+         **/
         var failureCallBack = function() {
             //if key card was inserted we need to eject that
             if ($scope.zestStationData.keyCardInserted) {
@@ -150,9 +155,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     $state.go('zest_station.bill_delivery_options');
 
                 } else if (guest_bill.print) { //go to print nav
-                    // $state.at = 'print-nav';
-                    // $state.from = 'print-nav';
-                    $state.go('zest_station.billPrint');
+                    $scope.printOpted = true;
                 }
             };
         };
@@ -196,6 +199,97 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
             $scope.init();
         }();
+
+        /********************************************************************************
+         *  Printer Actions
+         *  starts here
+         ********************************************************************************/
+
+        var nextPageActions = function() {
+            var emailCollectionTurnedOn = false;
+            if (emailCollectionTurnedOn) {
+                alert("email collection")
+            } else {
+                checkOutGuest();
+            }
+        };
+        var handleBillPrint = function() {
+            $scope.$emit('hideLoader');
+            setBeforePrintSetup();
+            var printFailedActions = function() {
+                $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKOUT_PRINT_FAILED');
+                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, {
+                    'status': 'out-of-order',
+                    'reason': $scope.zestStationData.workstationOooReason
+                });
+                $state.go('zest_station.speakToStaff');
+            };
+            try {
+                // this will show the popup with full bill
+                $timeout(function() {
+                    /*
+                     * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                     */
+                    $window.print();
+                    if (sntapp.cordovaLoaded) {
+                        var printer = (sntZestStation.selectedPrinter);
+                        cordova.exec(function(success) {
+                            nextPageActions();
+                        }, function(error) {
+                            printFailedActions();
+                        }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+                    };
+                    // provide a delay for preview to appear 
+
+                }, 100);
+            } catch (e) {
+                console.info("something went wrong while attempting to print--->" + e);
+                printFailedActions();
+            };
+            setTimeout(function() {
+                // CICO-9569 to solve the hotel logo issue
+                $("header .logo").removeClass('logo-hide');
+                $("header .h2").addClass('text-hide');
+
+                // remove the orientation after similar delay
+                removePrintOrientation();
+                nextPageActions();
+            }, 100);
+        };
+
+
+        var fetchBillData = function() {
+            var data = {
+                "reservation_id": $scope.reservation_id,
+                "bill_number": 1
+            };
+
+            var fetchBillSuccess = function(response) {
+                $scope.printData = response;
+                // add the orientation
+                addPrintOrientation();
+                // print section - if its from device call cordova.
+                handleBillPrint();
+            };
+            var options = {
+                params: data,
+                successCallBack: fetchBillSuccess,
+                failureCallBack: failureCallBack
+            };
+            $scope.callAPI(zsCheckoutSrv.fetchBillPrintData, options);
+        };
+
+        $scope.printBill = function() {
+            fetchBillData();
+        };
+
+        $scope.clickedNoThanks = function() {
+            nextPageActions();
+        };
+        /********************************************************************************
+         *  Printer Actions
+         *  ends here
+         ********************************************************************************/
 
     }
 ]);
