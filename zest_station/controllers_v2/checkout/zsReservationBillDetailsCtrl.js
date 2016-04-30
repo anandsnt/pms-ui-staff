@@ -18,7 +18,10 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          */
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 
-            if ($stateParams.from !== 'searchByName') {
+            if($scope.printOpted){
+                $scope.printOpted = false;
+            }
+            else if ($stateParams.from !== 'searchByName') {
                 //if key card was inserted we need to eject that
                 if ($scope.zestStationData.keyCardInserted) {
                     $scope.socketOperator.EjectKeyCard();
