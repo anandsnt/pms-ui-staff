@@ -58,6 +58,18 @@ sntZestStation.controller('zsRootCtrl', [
 		});
 
 		/**
+		 * event for child controllers to show/hide loader
+		 * @return {undefined}
+		 */
+		$scope.$on(zsEventConstants.SHOW_LOADER, function() {
+			$scope.hasLoader = true;
+		});
+		$scope.$on(zsEventConstants.HIDE_LOADER, function() {
+			$scope.hasLoader = false;
+		});
+
+
+		/**
 		 * [navToPrev description]
 		 * @return {[type]} [description]
 		 */
@@ -246,7 +258,7 @@ sntZestStation.controller('zsRootCtrl', [
 			if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
 				(theme === 'yotel') ? applyStylesForYotelStarTac(): applyStarTacStyles();
 			} else if ($scope.zestStationData.zest_printer_option === "RECEIPT") {
-				(theme === 'yotel') ? applyStylesForYotelReceipt() : "";
+				(theme === 'yotel') ? applyStylesForYotelReceipt(): "";
 			} else {
 				applyPrintMargin(); //zsUtils function
 			};
@@ -360,7 +372,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  Websocket actions related to keycard lookup
 		 *  ends here
 		 ********************************************************************************/
-		
+
 
 		/***
 		 * [initializeMe description]
