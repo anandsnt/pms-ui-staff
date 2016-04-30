@@ -64,11 +64,11 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
             //process bill data
             var billsData = response.bill_details.fee_details;
-            $scope.zestStationData.billData = [];
+            $scope.billData = [];
             $scope.zestStationData.currency = response.bill_details.currency;
-            $scope.zestStationData.net_amount = response.bill_details.total_fees;
-            $scope.zestStationData.deposit = response.bill_details.credits;
-            $scope.zestStationData.balance = response.bill_details.balance;
+            $scope.net_amount = response.bill_details.total_fees;
+            $scope.deposit = response.bill_details.credits;
+            $scope.balance = response.bill_details.balance;
 
             angular.forEach(billsData, function(billData, key) {
                 angular.forEach(billData.charge_details, function(chargeDetail, key) {
@@ -77,7 +77,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                         "description": chargeDetail.description,
                         "amount": chargeDetail.amount
                     };
-                    $scope.zestStationData.billData.push(bill_details);
+                    $scope.billData.push(bill_details);
                 });
             });
 
@@ -90,7 +90,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         $scope.setupBillData = function() {
             var options = {
                 params: {
-                    "reservation_id": $scope.zestStationData.reservationData.reservation_id
+                    "reservation_id": $scope.reservation_id
                 },
                 successCallBack: $scope.fetchBillSuccess,
                 failureCallBack: $scope.failureCallBack
@@ -104,11 +104,11 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          */
 
         var cashReservationBalanceDue = function() {
-            return (!$scope.zestStationData.reservationData.has_cc && $scope.zestStationData.reservationData.balance > 0);
+            return (!$scope.has_cc && $scope.zestStationData.reservationData.balance > 0);
         };
         $scope.nextClicked = function() {
 
-            $scope.zestStationData.reservationData.edit_email = false;
+            //$scope.zestStationData.reservationData.edit_email = false;
 
             if (cashReservationBalanceDue()) {
                 console.warn("reservation has balance due");
@@ -136,7 +136,19 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         };
 
         $scope.init = function() {
-            if ($scope.zestStationData.reservationData.is_checked_out) {
+            $scope.from = $stateParams.from;
+            $scope.reservation_id = $stateParams.reservation_id;
+            // $scope.email = $stateParams.email;
+            // $scope.guest_detail_id = $stateParams.guest_detail_id;
+            $scope.has_cc = $stateParams.has_cc;
+            $scope.first_name = $stateParams.first_name;
+            $scope.last_name = $stateParams.last_name;
+            $scope.days_of_stay = $stateParams.days_of_stay;
+            $scope.hours_of_stay = $stateParams.hours_of_stay;
+
+            var is_checked_out = $stateParams.is_checked_out === "true";
+
+            if (is_checked_out) {
                 $scope.alreadyCheckedOut = true;
             } else {
                 $scope.alreadyCheckedOut = false;

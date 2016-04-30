@@ -49,8 +49,19 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 				$scope.socketOperator.EjectKeyCard();
 			} else {
 				$scope.zestStationData.keyCardInserted = true;
-				$scope.zestStationData.reservationData = data;
-				$state.go('zest_station.checkoutReservationBill');
+				var stateParams = {
+					"from": "keycard",
+					"reservation_id": data.reservation_id,
+					"email": data.email,
+					"guest_detail_id": data.guest_detail_id,
+					"has_cc": data.has_cc,
+					"first_name": data.first_name,
+					"last_name": data.last_name,
+					"days_of_stay": data.days_of_stay,
+					"hours_of_stay": data.hours_of_stay,
+					"is_checked_out": data.is_checked_out
+				}
+				$state.go('zest_station.checkoutReservationBill', stateParams);
 			}
 		};
 

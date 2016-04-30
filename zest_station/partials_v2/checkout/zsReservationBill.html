@@ -7,9 +7,9 @@
                 <div class="wrapper">
                     <div id="bill">
                         <p>
-                            <strong>{{zestStationData.reservationData.first_name}}&nbsp;{{zestStationData.reservationData.last_name}}</strong>                          
-                            <span ng-show="!zestStationData.hotel_settings.is_hourly_rate_on">{{zestStationData.reservationData.days_of_stay}} nights</span>
-                            <span ng-show="zestStationData.hotel_settings.is_hourly_rate_on">{{zestStationData.reservationData.hours_of_stay}} hours</span>
+                            <strong>{{first_name}}&nbsp;{{last_name}}</strong>                          
+                            <span ng-show="!zestStationData.hotel_settings.is_hourly_rate_on">{{days_of_stay}} nights</span>
+                            <span ng-show="zestStationData.hotel_settings.is_hourly_rate_on">{{hours_of_stay}} hours</span>
                         </p>
                         <div id="bill-grid">
                             <div id="grid-head">
@@ -20,7 +20,7 @@
                                 </div>
                             </div>
                             <div id="grid-body">
-                                <div class="row" ng-repeat="bill in zestStationData.billData">
+                                <div class="row" ng-repeat="bill in billData">
                                     <span class="cell date">{{ bill.date}}</span>
                                     <span class="cell desc">{{bill.description}}</span>
                                     <span class="cell amount">{{currency}}{{bill.amount}}</span>
@@ -29,9 +29,9 @@
                         </div>
                     </div>
                     <ul id="rate">
-                        <li class="sub">{{'BILL_SUB' |translate}}<span>{{zestStationData.currency}}{{zestStationData.net_amount}}</span></li>
-                        <li class="sub">{{'BILL_DEP' |translate}}<span>{{zestStationData.currency}}{{zestStationData.deposit}}</span></li>
-                        <li class="total">{{'BILL_BAL' |translate}}<span>{{zestStationData.currency}}{{zestStationData.balance}}</span></li>
+                        <li class="sub">{{'BILL_SUB' |translate}}<span>{{zestStationData.currency}}{{net_amount}}</span></li>
+                        <li class="sub">{{'BILL_DEP' |translate}}<span>{{zestStationData.currency}}{{deposit}}</span></li>
+                        <li class="total">{{'BILL_BAL' |translate}}<span>{{zestStationData.currency}}{{balance}}</span></li>
                     </ul>
                 </div>
             </div>

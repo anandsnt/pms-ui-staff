@@ -13,7 +13,7 @@ sntZestStation.config(['$stateProvider',
              controller: 'zsCheckoutKeyCardActionsCtrl',
              templateUrl: '/assets/partials_v2/checkout/zsCheckoutKeyCardActions.html'
          }).state('zest_station.checkoutReservationBill', {
-             url: '/checkoutReservationBill/:from', 
+             url: '/checkoutReservationBill/:from/:reservation_id/:email/:guest_detail_id/:has_cc/:first_name/:last_name/:days_of_stay/:is_checked_out/:hours_of_stay', 
              controller: 'zsReservationBillDetailsCtrl',
              templateUrl: '/assets/partials_v2/checkout/zsReservationBill.html'
          });
