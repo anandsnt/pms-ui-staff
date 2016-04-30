@@ -118,7 +118,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         /**
          *  Checkout the Guest
          */
-        var checkOutGuest = function() {
+        $scope.checkOutGuest = function() {
             var params = {
                 "reservation_id": $scope.reservation_id,
                 "is_kiosk": true
@@ -152,7 +152,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 if (!guest_bill.email && !guest_bill.print) {
                     //immediate checkout
                     var printopted = 'false';
-                    checkOutGuest(printopted);
+                    $scope.checkOutGuest(printopted);
                 } else if (guest_bill.email && !guest_bill.print) {
                     $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
                 } else if (guest_bill.print) { //go to print nav

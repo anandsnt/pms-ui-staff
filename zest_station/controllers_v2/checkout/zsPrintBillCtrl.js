@@ -20,7 +20,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             if ($scope.zestStationData.guest_bill.email) {
                 $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
             } else {
-                checkOutGuest(printopted);
+                $scope.checkOutGuest(printopted);
             }
         };
         var handleBillPrint = function() {
