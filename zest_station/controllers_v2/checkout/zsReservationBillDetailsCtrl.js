@@ -5,10 +5,10 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
     function($scope, $state, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout) {
 
         /**
-         * This controller is used to print Bill and View bill
-         * They share data, so using same controller.
-         * Print actions are separated and grouped below
+         * This controller is used to View bill
+         * Print actions are separated and grouped in zsPrintBillCtrl - included in zsReservationBill.html
          * */
+
         BaseCtrl.call(this, $scope);
 
         /**
@@ -146,13 +146,12 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             } else {
                 var guest_bill = $scope.zestStationData.guest_bill;
 
-                if (!guest_bill.email && !guest_bill.print) { 
+                if (!guest_bill.email && !guest_bill.print) {
                     //immediate checkout
                     var printopted = 'false';
                     checkOutGuest(printopted);
-                } else if (guest_bill.email && !guest_bill.print) { 
-                    //email_only
-                    $state.go('zest_station.emailBill',{'email':$stateParams.email,'guest_detail_id':$stateParams.guest_detail_id,'printopted':'false','reservation_id':$scope.reservation_id});
+                } else if (guest_bill.email && !guest_bill.print) {
+                    $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
                 } else if (guest_bill.print) { //go to print nav
                     $scope.printOpted = true;
                 }
@@ -181,6 +180,18 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $scope.alreadyCheckedOut = false;
                 $scope.setupBillData();
             }
+            $scope.stateParamsForNextState = {
+                "from": $stateParams.from,
+                "reservation_id": $stateParams.reservation_id,
+                "email": $stateParams.email,
+                "guest_detail_id": $stateParams.guest_detail_id,
+                "has_cc": $stateParams.has_cc,
+                "first_name": $stateParams.first_name,
+                "last_name": $stateParams.last_name,
+                "days_of_stay": $stateParams.days_of_stay,
+                "hours_of_stay": $stateParams.hours_of_stay,
+                "is_checked_out": $stateParams.is_checked_out
+            };
         };
 
         /**
@@ -196,99 +207,5 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
             $scope.init();
         }();
-
-        /********************************************************************************
-         *  Printer Actions
-         *  starts here
-         ********************************************************************************/
-
-        var nextPageActions = function(printopted) {
-            if ($scope.zestStationData.guest_bill.email) {
-                $state.go('zest_station.emailBill',{'email':$stateParams.email,'guest_detail_id':$stateParams.guest_detail_id,'printopted':printopted,'reservation_id':$scope.reservation_id});
-            } else {
-                checkOutGuest(printopted);
-            }
-        };
-        var handleBillPrint = function() {
-            $scope.$emit('hideLoader');
-            setBeforePrintSetup();
-            var printFailedActions = function() {
-                $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKOUT_PRINT_FAILED');
-                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, {
-                    'status': 'out-of-order',
-                    'reason': $scope.zestStationData.workstationOooReason
-                });
-                $state.go('zest_station.speakToStaff');
-            };
-            try {
-                // this will show the popup with full bill
-                $timeout(function() {
-                    /*
-                     * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                     */
-                    $window.print();
-                    if (sntapp.cordovaLoaded) {
-                        var printer = (sntZestStation.selectedPrinter);
-                        cordova.exec(function(success) {
-                             var printopted = 'true';
-                             nextPageActions(printopted);
-                        }, function(error) {
-                            printFailedActions();
-                        }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
-                    };
-                    // provide a delay for preview to appear 
-
-                }, 100);
-            } catch (e) {
-                console.info("something went wrong while attempting to print--->" + e);
-                printFailedActions();
-            };
-            setTimeout(function() {
-                // CICO-9569 to solve the hotel logo issue
-                $("header .logo").removeClass('logo-hide');
-                $("header .h2").addClass('text-hide');
-
-                // remove the orientation after similar delay
-                removePrintOrientation();
-                var printopted = 'true';
-                nextPageActions(printopted);
-            }, 100);
-        };
-
-
-        var fetchBillData = function() {
-            var data = {
-                "reservation_id": $scope.reservation_id,
-                "bill_number": 1
-            };
-
-            var fetchBillSuccess = function(response) {
-                $scope.printData = response;
-                // add the orientation
-                addPrintOrientation();
-                // print section - if its from device call cordova.
-                handleBillPrint();
-            };
-            var options = {
-                params: data,
-                successCallBack: fetchBillSuccess,
-                failureCallBack: failureCallBack
-            };
-            $scope.callAPI(zsCheckoutSrv.fetchBillPrintData, options);
-        };
-
-        $scope.printBill = function() {
-            fetchBillData();
-        };
-
-        $scope.clickedNoThanks = function() {
-            var printopted = 'false';
-            nextPageActions(printopted);
-        };
-        /********************************************************************************
-         *  Printer Actions
-         *  ends here
-         ********************************************************************************/
-
     }
 ]);

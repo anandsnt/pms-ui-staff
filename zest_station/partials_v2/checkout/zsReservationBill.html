@@ -52,36 +52,38 @@
     <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
 </section>
 <!-- print option -->
-<section id="main" role="main" class="centered" ng-show="printOpted">
-    <div id="content">
-        <h1>{{'END_THANKS' |translate}}</h1>
-        <!--h3 ng-show="email.length>0">{{'EMAILED_BILL' |translate}}
+<div ng-controller="zsPrintBillCtrl">
+    <section id="main" role="main" class="centered" ng-show="printOpted">
+        <div id="content">
+            <h1>{{'END_THANKS' |translate}}</h1>
+            <!--h3 ng-show="email.length>0">{{'EMAILED_BILL' |translate}}
         </h3-->
-        <nav id="options" role="nav">
-            <ul role="menu">
-                <li>
-                    <button type="button" class="button option" touch-press='printBill()'>
-                        <!--div ng-include="'/assets/zest_station/css/icons/print.svg'"></div-->
-                        <div ng-include="icons.url.print"></div>
-                    </button>
-                    {{'PRINT_BILL' |translate}}
-                </li>
-                <li class="break">
-                    <span translate>OR_TEXT</span>
-                </li>
-                <li>
-                    <button type="button" class="button option" touch-press='clickedNoThanks()'>
-                        <!--div ng-include="'/assets/zest_station/css/icons/no-print.svg'"></div-->
-                        <div ng-include="icons.url.noprint"></div>
-                    </button>
-                    {{'NO_THX' |translate}}
-                </li>
-            </ul>
-        </nav>
+            <nav id="options" role="nav">
+                <ul role="menu">
+                    <li>
+                        <button type="button" class="button option" touch-press='printBill()'>
+                            <!--div ng-include="'/assets/zest_station/css/icons/print.svg'"></div-->
+                            <div ng-include="icons.url.print"></div>
+                        </button>
+                        {{'PRINT_BILL' |translate}}
+                    </li>
+                    <li class="break">
+                        <span translate>OR_TEXT</span>
+                    </li>
+                    <li>
+                        <button type="button" class="button option" touch-press='clickedNoThanks()'>
+                            <!--div ng-include="'/assets/zest_station/css/icons/no-print.svg'"></div-->
+                            <div ng-include="icons.url.noprint"></div>
+                        </button>
+                        {{'NO_THX' |translate}}
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+    <!-- print starts here -->
+    <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
     </div>
-</section>
-<!-- print starts here -->
-<div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
-</div>
-<div ng-include="'/assets/partials_v2/checkout/zsYotelBillPrint.html'" ng-if="zestStationData.theme === 'yotel'">
+    <div ng-include="'/assets/partials_v2/checkout/zsYotelBillPrint.html'" ng-if="zestStationData.theme === 'yotel'">
+    </div>
 </div>

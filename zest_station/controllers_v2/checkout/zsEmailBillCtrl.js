@@ -11,7 +11,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		/** MODES in the screen
 		*   1.EMAIL_BILL_GUEST_OPTIONS --> two options - send email and edit email
 		*   2.EMAIL_BILL_EDIT_MODE --> email entry mode
-		*   3.GUEST_BILL_EMAIL_SENT --> mail has been sent/mail sending failed
+		*   3.GUEST_BILL_EMAIL_SENT --> checked out and mail has been sent/mail sending failed
 		*   4.emailError --> invalid email
 		**/
 
@@ -24,6 +24,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			//hide close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.email = $stateParams.email;
+			//check if print was done
 			$scope.printOpted = $stateParams.printopted;
 			//if user already has email provide two options
 			//else prompt for email entry
@@ -36,7 +37,19 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		 * @return {[type]} 
 		 */
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			$state.go('zest_station.checkoutReservationBill');
+			var stateParams = {
+					"from": $stateParams.from,
+					"reservation_id": $stateParams.reservation_id,
+					"email": $stateParams.email,
+					"guest_detail_id": $stateParams.guest_detail_id,
+					"has_cc": $stateParams.has_cc,
+					"first_name": $stateParams.first_name,
+					"last_name": $stateParams.last_name,
+					"days_of_stay": $stateParams.days_of_stay,
+					"hours_of_stay": $stateParams.hours_of_stay,
+					"is_checked_out": $stateParams.is_checked_out
+			};
+			$state.go('zest_station.checkoutReservationBill',stateParams);
 		});
 
 		$scope.editEmailAddress = function() {
@@ -52,9 +65,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		 **/
 		var failureCallBack = function() {
 			//if key card was inserted we need to eject that
-			if ($scope.zestStationData.keyCardInserted) {
-				$scope.socketOperator.EjectKeyCard();
-			};
+			$scope.zestStationData.keyCardInserted ?$scope.socketOperator.EjectKeyCard() : "";
 			$state.go('zest_station.speakToStaff');
 		};
 		/**
@@ -91,7 +102,6 @@ sntZestStation.controller('zsEmailBillCtrl', [
 				$scope.emailSendingFailed = true;
 				checkOutGuest();
 			};
-
 			var params = {
 				reservation_id: $stateParams.reservation_id,
 				bill_number: "1"
