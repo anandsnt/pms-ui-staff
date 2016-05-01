@@ -167,6 +167,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         };
 
         $scope.init = function() {
+            //retrieve state variable to be displayed
             $scope.from = $stateParams.from;
             $scope.reservation_id = $stateParams.reservation_id;
             $scope.has_cc = $stateParams.has_cc;
@@ -183,6 +184,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $scope.alreadyCheckedOut = false;
                 $scope.setupBillData();
             }
+            //storing state varibales to be used in print view also
             $scope.stateParamsForNextState = {
                 "from": $stateParams.from,
                 "reservation_id": $stateParams.reservation_id,
