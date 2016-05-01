@@ -7,17 +7,27 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 	function($scope, $stateParams, $state, zsEventConstants, $timeout) {
 
 
+
+		var qrScanFailed = function(){
+			$scope.$emit('hideLoader');
+			if($scope.zestStationData.pickup_qr_scan_fail_over){
+				//provide small time out, so as to let user know what is happening
+				$scope.qrCodeScanFailed = true;
+			}
+			else{
+				$scope.talkToStaff();
+			}
+		};
+
 		var initChromeAppQRCodeScanner = function() {
 			if ($scope.inChromeApp) {
 				//minimize the chrome app on loging out
-				new chromeApp($scope.onChromeAppResponse, zestStationSettings.chrome_app_id, true);
+				new chromeApp($scope.onChromeAppResponse, $scope.zestStationData.chrome_app_id, true);
 				console.info("::Starting QR Code Scanner::");
 			} else {
 				$scope.$emit('showLoader');
 				$timeout(function() {
-					//provide small time out, so as to let user know what is happening
-					$scope.qrCodeScanFailed = true;
-					$scope.$emit('hideLoader');
+					qrScanFailed();	
 				}, 1000);
 			}
 		};
