@@ -78,12 +78,12 @@ sntZestStation.controller('zsCheckoutReservationSearchCtrl', [
 			if ($scope.reservationParams.room_no.length > 0) {
 				searchReservation();
 			} else {
-				$scope.mode = "ROOM_NUMBER_ENTRY";
+				$scope.mode = $scope.reservationParams.last_name.length >0 ? $scope.mode = "ROOM_NUMBER_ENTRY" :$scope.mode;
 			};
 		};
 
 		$scope.roomNumberEntered = function() {
-			searchReservation();
+			($scope.reservationParams.room_no.length > 0) ? searchReservation():"";
 		};
 
 		$scope.reEnterText = function(type) {
