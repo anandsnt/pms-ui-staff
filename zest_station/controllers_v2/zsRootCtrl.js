@@ -208,6 +208,25 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  ends here
 		 ********************************************************************************/
 
+		 /********************************************************************************
+		 *  QR scan code 
+		 *  ends here
+		 ********************************************************************************/
+		 var onChromeAppResponse = function(response){
+	        console.log('msg from ChromeApp: ',response);
+	        if (response.qr_code){
+	        	$scope.$broadcast('QR_SCAN_SUCCESS', {"reservation_id": response.reservation_id});
+	        }
+	        else
+	        {
+	        	//do nothing now
+	        }
+	    };
+	     /********************************************************************************
+		 *  QR scan code 
+		 *  ends here
+		 ********************************************************************************/
+	    $scope.chromeApp = new chromeApp(onChromeAppResponse, zestStationSettings.chrome_app_id);
 
 		/***
 		 * [initializeMe description]
