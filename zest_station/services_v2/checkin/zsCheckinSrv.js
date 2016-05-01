@@ -5,7 +5,7 @@
 sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2',
     function($http, $q, zsBaseWebSrv, zsBaseWebSrv2) {
 
-    	this.fetchReservations = function(params) {
+        this.fetchReservations = function(params) {
             var deferred = $q.defer(),
                 url = '/api/reservations';
 
@@ -18,4 +18,4 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
     }
-]);{}
+]);

@@ -1,5 +1,6 @@
 <section id="main" role="main" class="">
 
+
     <!-- last name -->
     <div id="content" ng-show="mode === 'LAST_NAME_ENTRY'">
         <h1 translate>TYPE_LAST</h1>
@@ -13,57 +14,56 @@
         </form>
     </div>
 
+
     <!-- choose options -->
-    <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'CHOOSE_OPTIONS'">
-        <div id="content">
-            <h1>{{'CHECK_IN_SELECT_HEADER' |translate}}</h1>
-            <nav id="options" role="nav">
-                <ul role="menu">
-                    <li ng-show="zestStationData.checkin_screen.authentication_settings.departure_date && !zestStationData.isHourlyRateOn">
-                        <button type="button" class="button option" touch-press='findByDate(); resetTime();'>
-                            <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
-                            <div ng-include="icons.url.moon"></div>
-                        </button>
-                        {{'CHECK_IN_SELECT_DATE' |translate}}
-                    </li>
-                    <li class="break" ng-show="showSeparator('departure_date')">
-                        <span translate>OR_TEXT</span>
-                    </li>
-                    <li ng-show="zestStationData.checkin_screen.authentication_settings.number_of_nights && !zestStationData.isHourlyRateOn">
-                        <button type="button" class="button option" touch-press='findByNoOfNights()'>
-                            <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
-                            <div ng-include="icons.url.moon"></div>
-                        </button>
-                        {{'CHECK_IN_NO_OF_NIGHTS' |translate}}
-                        <span translate>CHECK_IN_NO_OF_NIGHTS_SUB</span>
-                    </li>
-                    <li class="break" ng-show="showSeparator('number_of_nights')">
-                        <span translate>OR_TEXT</span>
-                    </li>
-                    <li ng-show="zestStationData.checkin_screen.authentication_settings.email">
-                        <button type="button" class="button option" touch-press='findByEmail(); resetTime(); clearInputText();'>
-                            <!--div ng-include="'/assets/zest_station/css/icons/email.svg'"></div-->
-                            <div ng-include="icons.url.email"></div>
-                        </button>
-                        {{'CHECK_IN_SELECT_EMAIL' |translate}}
-                        <span translate>CHECK_IN_SELECT_EMAIL_SUB</span>
-                    </li>
-                    <li class="break" ng-show="showSeparator('email')">
-                        <span translate>OR_TEXT</span>
-                    </li>
-                    <li ng-show="zestStationData.checkin_screen.authentication_settings.confirmation">
-                        <button type="button" class="button option" touch-press='findByConfirmation(); resetTime()'>
-                            <!--div ng-include="'/assets/zest_station/css/icons/confirmation.svg'"></div-->
-                            <div ng-include="icons.url.confirmation"></div>
-                        </button>
-                        {{'CHECK_IN_SELECT_CONF' |translate}}
-                        <span translate>CHECK_IN_SELECT_CONF_SUB</span>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
-    </section>
+    <div id="content" ng-show="mode === 'CHOOSE_OPTIONS'">
+        <h1>{{'CHECK_IN_SELECT_HEADER' |translate}}</h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li ng-show="zestStationData.checkin_screen.authentication_settings.departure_date && !zestStationData.isHourlyRateOn">
+                    <button type="button" class="button option" touch-press='findByDate(); resetTime();'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
+                        <div ng-include="icons.url.moon"></div>
+                    </button>
+                    {{'CHECK_IN_SELECT_DATE' |translate}}
+                </li>
+                <li class="break" ng-show="showSeparator('departure_date')">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li ng-show="zestStationData.checkin_screen.authentication_settings.number_of_nights && !zestStationData.isHourlyRateOn">
+                    <button type="button" class="button option" touch-press='findByNoOfNights()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
+                        <div ng-include="icons.url.moon"></div>
+                    </button>
+                    {{'CHECK_IN_NO_OF_NIGHTS' |translate}}
+                    <span translate>CHECK_IN_NO_OF_NIGHTS_SUB</span>
+                </li>
+                <li class="break" ng-show="showSeparator('number_of_nights')">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li ng-show="zestStationData.checkin_screen.authentication_settings.email">
+                    <button type="button" class="button option" touch-press='findByEmail(); resetTime(); clearInputText();'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/email.svg'"></div-->
+                        <div ng-include="icons.url.email"></div>
+                    </button>
+                    {{'CHECK_IN_SELECT_EMAIL' |translate}}
+                    <span translate>CHECK_IN_SELECT_EMAIL_SUB</span>
+                </li>
+                <li class="break" ng-show="showSeparator('email')">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li ng-show="zestStationData.checkin_screen.authentication_settings.confirmation">
+                    <button type="button" class="button option" touch-press='findByConfirmation(); resetTime()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/confirmation.svg'"></div-->
+                        <div ng-include="icons.url.confirmation"></div>
+                    </button>
+                    {{'CHECK_IN_SELECT_CONF' |translate}}
+                    <span translate>CHECK_IN_SELECT_CONF_SUB</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
 
     <!-- date -->
     <div id="content" ng-show="mode === 'FIND_BY_DATE'">
@@ -78,6 +78,7 @@
         </form>
     </div>
 
+
     <!-- conf number -->
     <div id="content" ng-show="mode === 'CONFIRM_NO_MODE'">
         <h1 translate>TYPE_CONF</h1>
@@ -90,6 +91,7 @@
             </div>
         </form>
     </div>
+
 
     <!-- no of nights -->
     <div id="content" ng-show="mode === 'NO_OF_NIGHTS_MODE'">
@@ -104,6 +106,7 @@
         </form>
     </div>
 
+
     <!-- email -->
     <div id="content" ng-show="mode === 'EMAIL_ENTRY_MODE'">
         <h1 translate>TYPE_EMAIL</h1>
@@ -116,6 +119,7 @@
             </div>
         </form>
     </div>
+
     
     <!-- no match -->
     <div id="content" ng-show="mode === 'NO_MATCH'">
