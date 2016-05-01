@@ -10,6 +10,8 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 * [initializeMe description]
 		 */
 		var initializeMe = function() {
+			// All the common actions for dispensing keys are to be included in
+			// zsKeyDispenseCtrl
 			$controller('zsKeyDispenseCtrl', {$scope: $scope});
 		}();
 
