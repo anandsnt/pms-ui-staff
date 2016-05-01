@@ -209,7 +209,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 ********************************************************************************/
 
 		 /********************************************************************************
-		 *  QR scan code 
+		 *  Chrome App Communication code 
 		 *  ends here
 		 ********************************************************************************/
 		 var onChromeAppResponse = function(response){
@@ -223,7 +223,7 @@ sntZestStation.controller('zsRootCtrl', [
 	        }
 	    };
 	     /********************************************************************************
-		 *  QR scan code 
+		 *  Chrome App Communication code  
 		 *  ends here
 		 ********************************************************************************/
 	    $scope.chromeApp = new chromeApp(onChromeAppResponse, zestStationSettings.chrome_app_id);

@@ -1,0 +1,18 @@
+<section id="main" class="centered" role="main" click-touch='resetTime()'>
+    <div id="content">
+        <h1 class="no-margin">{{selectedReservation.first_name}}.</h2>
+            <h1>{{'PUK_CHKED_IN_MSG' |translate}}</h1>
+        <div id="room" ng-show="zestStationData.show_room_number">
+            <span class="number">{{selectedReservation.room}}</span>
+        </div>
+        <div id="keys">
+            <h2>{{'HOW_MANY_KEYS' |translate}}</h2>
+            <div id="key-options">
+                <button type="button" class="button" touch-press="makeKeys(1)">{{'UNO_KEY' |translate}}</button>
+                <button type="button" class="button" touch-press="makeKeys(2)">{{'DOS_KEY' |translate}}</button>
+            </div>
+        </div>ton type="button" class="button transparent">Add / Remove Guests</button-->
+    </div>
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
+</section>
