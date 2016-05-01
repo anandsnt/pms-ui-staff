@@ -136,10 +136,6 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			runDigestCycle();
 		};
 
-		$scope.talkToStaff = function() {
-			$state.go('zest_station.talk_to_staff');
-		};
-
 		$scope.searchByName = function() {
 			$state.go('checkOutReservationSearch');
 		};

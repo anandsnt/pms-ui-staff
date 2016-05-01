@@ -9,7 +9,12 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on pickup key from home screen
 		 */
 		$scope.clickedOnPickUpKey = function() {
-			$state.go('zest_station.checkOutReservationSearch',{'mode':'PICKUP_KEY'});
+			if($scope.zestStationData.pickup_qr_scan){
+				$state.go('zest_station.qrPickupKey');
+			}
+			else{
+				$state.go('zest_station.checkOutReservationSearch',{'mode':'PICKUP_KEY'});
+			}
 		};
 
 		/**

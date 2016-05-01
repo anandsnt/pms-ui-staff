@@ -80,6 +80,9 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.clickedOnCloseButton = function() {
 			$state.go('zest_station.home');
 		};
+		$scope.talkToStaff = function(){
+			$state.go('zest_station.speakToStaff');
+		};
 
 		/**
 		 * Other events
