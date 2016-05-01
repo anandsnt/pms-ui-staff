@@ -1,4 +1,4 @@
-sntZestStation.controller('zsCheckoutReservationSearchCtrl', [
+sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 	'$scope',
 	'$rootScope',
 	'$state',
