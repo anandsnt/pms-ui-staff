@@ -11,7 +11,7 @@ sntZestStation.config(['$stateProvider',
 		$stateProvider.state('zest_station.pickUpKeyDispense', {
 			url: '/pickUpKeyDispense',
 			templateUrl: '/assets/partials_v2/checkin/zsPickupKeyDispense.html',
-			controller: 'zsKeyDispenseCtrl'
+			controller: 'zsPickupKeyDispenseCtrl'
 		});
 	}
 ]);

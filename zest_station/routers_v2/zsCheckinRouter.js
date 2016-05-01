@@ -11,7 +11,7 @@ sntZestStation.config(['$stateProvider',
 		$stateProvider.state('zest_station.checkInKeyDispense', {
 			url: '/checkInKeyDispense',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinKey.html',
-			controller: 'zsKeyDispenseCtrl'
+			controller: 'zsCheckinKeyDispensCtrl'
 		});
 	}
 ]);

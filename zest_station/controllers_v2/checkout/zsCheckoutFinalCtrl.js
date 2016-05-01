@@ -13,7 +13,6 @@ sntZestStation.controller('zsCheckoutFinalCtrl', [
 			$scope.printOpted = $stateParams.printOpted === "true";
 			//hide back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-
 			//hide close button
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
 		}();
