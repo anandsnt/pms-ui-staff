@@ -91,7 +91,7 @@ sntZestStation.controller('zsCheckoutReservationSearchCtrl', [
 		};
 
 		$scope.talkToStaff = function() {
-			//to do
+			$state.go('zest_station.speakToStaff');
 		};
 	}
 ]);
