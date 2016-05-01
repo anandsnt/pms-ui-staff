@@ -4,7 +4,12 @@ sntZestStation.controller('zsCheckoutReservationSearchCtrl', [
 	'$state',
 	'zsEventConstants',
 	'zsCheckoutSrv',
-	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv) {
+	'$stateParams',
+	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv,$stateParams) {
+
+
+		//This controller is used for searching reservation using last name
+		//and room number
 
 		/** MODES in the screen
 		*   1.LAST_NAME_ENTRY --> enter last name
@@ -46,7 +51,12 @@ sntZestStation.controller('zsCheckoutReservationSearchCtrl', [
 					"hours_of_stay": data.hours_of_stay,
 					"is_checked_out": data.is_checked_out
 				};
-				$state.go('zest_station.checkoutReservationBill', stateParams);
+				if(!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY'){
+					alert("PICKUP_KEY")
+				}
+				else{
+					$state.go('zest_station.checkoutReservationBill', stateParams);
+				}
 			};
 			var checkoutVerificationCallBack = function() {
 				$scope.mode = 'NO_MATCH';

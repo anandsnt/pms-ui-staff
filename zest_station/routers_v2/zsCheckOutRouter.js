@@ -2,8 +2,8 @@ sntZestStation.config(['$stateProvider',
 	function($stateProvider) {
 		//checkout reservation search
 		$stateProvider.state('zest_station.checkOutReservationSearch', {
-			url: '/checkoutReservationSearch',
-			templateUrl: '/assets/partials_v2/checkout/zsCheckoutReservationSearch.html',
+			url: '/checkoutReservationSearch/:mode',
+			templateUrl: '/assets/partials_v2/zsCheckoutReservationSearch.html',
 			controller: 'zsCheckoutReservationSearchCtrl'
 		});
 		//checkout options
