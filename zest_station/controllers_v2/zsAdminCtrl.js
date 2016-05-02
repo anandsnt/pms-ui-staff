@@ -58,7 +58,7 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.workstation.printer = selectedWorkStation.printer;
             setPrinterLabel(selectedWorkStation.printer);
         } else {
-            //do nothing;
+            //do nothing as no workstation was set
         };
 
         //if workstation changes -> change printer accordingly

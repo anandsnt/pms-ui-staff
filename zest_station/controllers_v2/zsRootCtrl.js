@@ -240,7 +240,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  starts here
 		 ********************************************************************************/
 
-
+		 
 		var getSavedWorkStationObj = function(stored_station_id) {
 			var station;
 			if ($scope.zestStationData.workstations && $scope.zestStationData.workstations.length > 0) {
@@ -261,17 +261,23 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.printer = {
 			'name': ''
 		};
-		var setWorkStationForAdmin = function() {
-			//work station , oos status, reason  etc are saved in local storage
-			var storageKey = 'snt_zs_workstation',
+
+		var workStationstorageKey = 'snt_zs_workstation',
 				oosStorageKey = 'snt_zs_workstation.in_oos',
 				oosReasonKey = 'snt_zs_workstation.oos_reason',
 				storage = localStorage,
 				storedWorkStation = '',
 				station;
+		/**
+		 * [setWorkStationForAdmin description]
+		 *  The workstation, status and oos reason are stored in
+		 *  localstorage
+		 */
+		var setWorkStationForAdmin = function() {
+			//work station , oos status, reason  etc are saved in local storage
 
 			try {
-				storedWorkStation = storage.getItem(storageKey);
+				storedWorkStation = storage.getItem(workStationstorageKey);
 			} catch (err) {
 				console.warn(err);
 			}
@@ -294,7 +300,10 @@ sntZestStation.controller('zsRootCtrl', [
 				}
 			}
 		};
-
+		/**
+		 * [getAdminWorkStations description]
+		 * @return {[type]} [description]
+		 */
 		var getAdminWorkStations = function() {
 			var onSuccess = function(response) {
 				$scope.zestStationData.workstations = response.work_stations;
@@ -324,25 +333,30 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//store workstation status in localstorage
 		var updateLocalStorage = function(oosReason, workstationStatus) {
+			var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
+                return workstation.id == $scope.zestStationData.set_workstation_id;
+            });
 
 			try {
-				console.info('set oos status', workstationStatus)
+				//set workstation in localstorage
+				console.log('set work station :--->'+selectedWorkStation.station_identifier);
+				storage.setItem(workStationstorageKey,selectedWorkStation.station_identifier);
+				//set workstation status in localstorage
+				console.info('set oos status :--->'+ workstationStatus);
 				storage.setItem(oosStorageKey, workstationStatus);
+				//set workstation oos reason in localstorage
+				console.log('set works station :--->'+oosReason);
+				(!!oosReason) ? storage.setItem(oosReasonKey, oosReason) : '';
 			} catch (err) {
 				console.warn(err);
 			}
-			if (!!oosReason) {
-				try {
-					storage.setItem(oosReasonKey, oosReason);
-				} catch (err) {
-					console.warn(err);
-				}
-			} else {
-				//do  nothing
-			}
 		};
 
-		//work station status change event
+		/** 
+		 * work station status change event 
+		 * This will be invoke everytime some actions
+		 * like key card lookup, print etc fails
+		**/
 		$scope.$on(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event, params) {
 
 			var oosReason = params.reason;
@@ -353,9 +367,10 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.zestStationData.workstationStatus = workstationStatus;
 			//update local storage
 			updateLocalStorage(oosReason, workstationStatus);
+
 			//update workstation status with oos reason
 			if ($scope.zestStationData.workstationStatus === 'out-of-order') {
-				console.info('placing station out of order')
+				console.info('placing station out of order');
 				var options = {
 					params: {
 						'oo_status': true,
@@ -365,7 +380,8 @@ sntZestStation.controller('zsRootCtrl', [
 				};
 				$scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
 			} else {
-				console.info('putting station back in order')
+				//Make work stataion back to in order
+				console.info('putting station back in order');
 				var options = {
 					params: {
 						'oo_status': false,
@@ -375,7 +391,12 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
 				//update local storage
 				try {
-					storage.setItem(oosStorageKey, "in-order");
+					//set workstation status in localstorage
+					console.info('set oos status :--->'+ 'in-order');
+					storage.setItem(oosStorageKey, 'in-order');
+					//set workstation oos reason in localstorage
+					console.log('set works station :--->'+'');
+					storage.setItem(oosReasonKey, '');
 				} catch (err) {
 					console.warn(err);
 				}
