@@ -582,7 +582,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             $scope.isAddingMode = true;
 
             //default sorting fields & directions
-            $scope.sorting_field = 'room_no';
+            $scope.sorting_field = 'confirm_no';
             $scope.sort_dir = 'ASC';
 
             //selected reservation list
@@ -702,7 +702,10 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 var index = _.indexOf(_.pluck($scope.selected_reservations, "id"), reservation.id);
                 $scope.selected_reservations.splice(index, 1);
             } else {
+
                 $scope.selected_reservations.push(reservation);
+                $scope.selected_reservations = _.sortBy($scope.selected_reservations, $scope.sorting_field);
+
             }
         };
 
@@ -1891,6 +1894,21 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 params: params
             });
         };
+        $scope.updateGroupReservationsGuestData = function(){
+            $scope.isUpdateReservation = true;
+            $scope.totalCountForUpdate = $scope.selected_reservations.length;
+
+
+            ngDialog.open({
+                        template: '/assets/partials/groups/rooming/popups/editReservation/rvAddEditReservationGuestData.html',
+                        className: '',
+                        scope: $scope,
+                        closeByDocument: false,
+                        closeByEscape: false,
+                        controller: 'rvReservationGuestDataPopupCtrl'
+                    });
+
+        };
 
         /**
          * to set the active left side menu
@@ -1931,7 +1949,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             if (isInRoomingList && (amDirectlyComingToRoomingList)) {
                 $timeout(function(){
                     callInitialAPIs();
-                }, 10);                
+                }, 10);
             }
         }();
 
