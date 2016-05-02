@@ -24,7 +24,7 @@
             <ul class="wrapper">
                 <li class="room-item" ng-repeat="selectedReservations in selected_reservations">
                     <!-- Add class .active if we are showing the acc guests (on click) -->
-                    <div class="faux-anchor has-arrow" ng-class="{'active': selectedReservations.isOpenAccompanyingGuest}" ng-click="toggleAccompanyingGuest($index)">
+                    <div class="faux-anchor has-arrow toggle" ng-class="{'active': selectedReservations.isOpenAccompanyingGuest}" >
                         <div class="guest-name">
                             <div class="entry margin">
                                 <input type="text" placeholder="First Name" value="{{selectedReservations.firstname}}" ng-model="selectedReservations.firstname">
@@ -49,9 +49,10 @@
                             <strong>{{selectedReservations.room_type_name}}</strong>
                             <em>{{selectedReservations.occupancyName}}</em>
                         </div>
-                        <div class="acc-guests">
+                        <div class="acc-guests" ng-click="toggleAccompanyingGuest($index)">
                             {{selectedReservations.accompanyingLength}}
                         </div>
+
                     </div>
                      <!-- Remove class .hidden if we are showing the acc guests (on click) -->
                     <div class="acc-guests-form " ng-class="{'hidden': !selectedReservations.isOpenAccompanyingGuest}">
