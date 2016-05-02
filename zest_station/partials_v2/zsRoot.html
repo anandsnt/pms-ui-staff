@@ -10,7 +10,7 @@
     </div>
 </div>
 <!-- Popup -->
-<div class="popup" ng-class="{'open':timeOut && !showLanguagePopup}">
+<div class="popup" ng-class="{'open':zestStationData.timeOut && !showLanguagePopup}">
     <!-- Remove class "open" to hide popup content -->
     <div class="popup-content">
         <h2 class="nocaps">{{'IDLE_TIMEOUT_MSG'|translate}}</h2>
@@ -32,9 +32,9 @@
         </div>
     </div>
 </div>
-<div id="popup-overlay" ng-class="{'open':timeOut, 'ng-hide':!timeOut}"></div>
+<div id="popup-overlay" ng-class="{'open':zestStationData.timeOut}"></div>
 <!-- Remove class "open" to hide popup overlay -->
-<div ng-controller="zsThemeActionsCtrl">
+<div ng-controller="zsThemeActionsCtrl" click-touch='resetTime()'>
     <ui-view></ui-view>
 </div>
 <div ng-include="'/assets/partials_v2/zsTabletFooter.html'"></div>

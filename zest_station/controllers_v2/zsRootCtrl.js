@@ -71,6 +71,20 @@ sntZestStation.controller('zsRootCtrl', [
 
 
 		/**
+		 * to run angular digest loop,
+		 * will check if it is not running
+		 * return - None
+		 */
+		$scope.runDigestCycle = function() {
+			if (!$scope.$$phase) {
+				$scope.$digest();
+			} else {
+				return;
+			}
+		};
+
+
+		/**
 		 * [navToPrev and close button description]
 		 * @return {[type]} [description]
 		 */
@@ -150,6 +164,42 @@ sntZestStation.controller('zsRootCtrl', [
 			};
 			$scope.callAPI(zsTabletSrv.fetchWorkStations, options);
 		};
+		/********************************************************************************
+		 *  User activity timer
+		 *  starts here
+		 ********************************************************************************/
+		var setAUpIdleTimer = function() {
+			var userInActivityTimeInTenSeconds = 0;
+			$scope.zestStationData.timeOut = false;
+
+			$scope.resetTime = function() {
+				userInActivityTimeInTenSeconds = 0;
+				$scope.zestStationData.timeOut = false;
+			};
+
+			function increment() {
+				userInActivityTimeInTenSeconds = userInActivityTimeInTenSeconds + 10;
+				//when user activity is not recorded for more than a minute
+				if (userInActivityTimeInTenSeconds > 60) {
+					$scope.zestStationData.timeOut = true;
+					$scope.runDigestCycle();
+				} else {
+					//do nothing
+				}
+			}
+			setInterval(increment, 10000);
+		};
+		/********************************************************************************
+		 *  User activity timer
+		 *  ends here
+		 ********************************************************************************/
+
+
+		$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+			$scope.resetTime();
+		});
+
+
 
 		/********************************************************************************
 		 *   Websocket actions related to keycard lookup
@@ -445,10 +495,12 @@ sntZestStation.controller('zsRootCtrl', [
 			$('body').css('display', 'none'); //this will hide contents until svg logos are loaded
 			//call Zest station settings API
 			$scope.zestStationData = zestStationSettings;
+			setAUpIdleTimer();
 			$scope.zestStationData.workstationOooReason = "";
 			$scope.zestStationData.workstationStatus = "";
 			$scope.zestStationData.isAdminFirstLogin = true;
 			$scope.zestStationData.wsIsOos = false;
+			$scope.showLanguagePopup = false;
 			$scope.inChromeApp ? maximizeScreen() : "";
 			//create a websocket obj
 			$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
