@@ -1,4 +1,6 @@
-admin.service('adExternalInterfaceCommonSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
+admin.service('adExternalInterfaceCommonSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'ADChannelMgrSrv', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2, ADChannelMgrSrv){
+
+	var service = this;
 
 	this.fetchSetup = function(params){
 		var deferred = $q.defer();
@@ -90,6 +92,40 @@ admin.service('adExternalInterfaceCommonSrv',['$http', '$q', 'ADBaseWebSrv', 'AD
 		},function(data){
 		    deferred.reject(data);
 		});
+		return deferred.promise;
+	};
+
+	/**
+	 * Fetches Rates List; Booking origin lists & Payment methods list
+	 * @return {[type]} [description]
+	 */
+	this.fetchMetaData = function(params) {
+		var deferred = $q.defer(),
+			promises = [],
+			meta = {
+				rates: null,
+				paymentMethods: null,
+				bookingOrigins: null
+			};
+
+		promises.push(service.fetchPaymethods().then(function(response) {
+			meta.paymentMethods = response.payments;
+		}));
+		promises.push(service.fetchOrigins().then(function(response) {
+			meta.bookingOrigins = response.booking_origins;
+		}));
+		promises.push(ADChannelMgrSrv.fetchManagerDetails({
+			id: params.interface_id
+		}).then(function(response) {
+			meta.rates = response.data.channel_manager_rates;
+		}));
+
+		$q.all(promises).then(function() {
+			deferred.resolve(meta);
+		}, function(errorMessage) {
+			deferred.reject(errorMessage);
+		});
+
 		return deferred.promise;
 	};
 
