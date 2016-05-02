@@ -41,7 +41,10 @@ module.exports = {
 			'guestweb_time_hotel':[ themeCSSRoot + 'guestweb_time_hotel.css'],
 			'guestweb_porto_vista':[ themeCSSRoot + 'guestweb_porto_vista.css'],
 			'guestweb_chalet_view':[ themeCSSRoot + 'guestweb_chalet_view.css'],
-			'guestweb_crawford':[ themeCSSRoot + 'guestweb_crawford.css']
+			'guestweb_crawford':[ themeCSSRoot + 'guestweb_crawford.css'],
+			'guestweb_beacon_hill':[ themeCSSRoot + 'guestweb_beacon_hill.css'],
+			'guestweb_boston_park':[ themeCSSRoot + 'guestweb_boston_park.css'],
+			'guestweb_hotel_ivrine':[ themeCSSRoot + 'guestweb_hotel_ivrine.css']
 		}
 	}
 }

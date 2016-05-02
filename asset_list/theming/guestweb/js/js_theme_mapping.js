@@ -43,7 +43,10 @@ module.exports = {
 			'guestweb_time_hotel':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_porto_vista':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_chalet_view':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_crawford':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_crawford':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_beacon_hill':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_boston_park':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }
