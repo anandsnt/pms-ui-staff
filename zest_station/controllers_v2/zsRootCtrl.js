@@ -228,7 +228,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 ********************************************************************************/
 		var onChromeAppResponse = function(response) {
 			console.log('msg from ChromeApp: ', response);
-			if (response.qr_code) {
+			if (!!response && response.qr_code) {
 				$scope.$broadcast('QR_SCAN_SUCCESS', {
 					"reservation_id": response.reservation_id
 				});
