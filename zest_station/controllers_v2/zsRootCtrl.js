@@ -169,25 +169,30 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  starts here
 		 ********************************************************************************/
 		var setAUpIdleTimer = function() {
-			var userInActivityTimeInTenSeconds = 0;
+			var userInActivityTimeInSeconds = 0;
 			$scope.zestStationData.timeOut = false;
 
 			$scope.resetTime = function() {
-				userInActivityTimeInTenSeconds = 0;
+				userInActivityTimeInSeconds = 0;
 				$scope.zestStationData.timeOut = false;
 			};
 
 			function increment() {
-				userInActivityTimeInTenSeconds = userInActivityTimeInTenSeconds + 10;
-				//when user activity is not recorded for more than a minute
-				if (userInActivityTimeInTenSeconds > 60) {
-					$scope.zestStationData.timeOut = true;
-					$scope.runDigestCycle();
+				if ($scope.zestStationData.idle_timer.enabled ==='true') {
+					userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
+					//when user activity is not recorded for more than a minute
+					if (userInActivityTimeInSeconds > $scope.zestStationData.idle_timer.max) {
+						$scope.zestStationData.timeOut = true;
+						$scope.runDigestCycle();
+					} else {
+						return;
+					}
 				} else {
-					//do nothing
+					return;
 				}
+
 			}
-			setInterval(increment, 10000);
+			setInterval(increment, 1000);
 		};
 		/********************************************************************************
 		 *  User activity timer
