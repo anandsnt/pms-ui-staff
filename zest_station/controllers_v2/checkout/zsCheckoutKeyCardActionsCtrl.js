@@ -66,7 +66,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		};
 
 		var ejectCard = function() {
-			$scope.socketOperator.EjectKeyCard();
+			$scope.$emit('EJECT_KEYCARD');
 		};
 
 		var goToRetryPage = function() {
@@ -122,9 +122,10 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		var init = function() {
 			setTimeOutFunctionToEnsureSocketIsOpened();
 			console.info("websocket: readyState -> " + $scope.socketOperator.returnWebSocketObject().readyState);
-			//close the opened socket
+			//open socket if not in open state
 			($scope.socketOperator.returnWebSocketObject().readyState !== 1) ? $scope.$emit('CONNECT_WEBSOCKET'): $scope.socketOperator.InsertKeyCard();
-		}();
+		};
+		init();
 
 		/** 
 		 * reservation search failed actions starts here
@@ -132,7 +133,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		$scope.retrySearch = function() {
 			$scope.reservationSearchFailed = false;
 			$scope.socketBeingConnected = true;
-			setTimeOutFunctionToEnsureSocketIsOpened();
+			init();
 			runDigestCycle();
 		};
 

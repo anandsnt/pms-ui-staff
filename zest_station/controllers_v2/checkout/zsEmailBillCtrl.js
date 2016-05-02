@@ -66,7 +66,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		 **/
 		var failureCallBack = function() {
 			//if key card was inserted we need to eject that
-			$scope.zestStationData.keyCardInserted ?$scope.socketOperator.EjectKeyCard() : "";
+			$scope.$emit('EJECT_KEYCARD');
 			$state.go('zest_station.speakToStaff');
 		};
 		/**

@@ -178,17 +178,18 @@ sntZestStation.controller('zsRootCtrl', [
 				if (response.ResponseCode === 19) {
 					// key ejection failed
 					if (!$scope.zestStationData.keyCaptureDone) {
-						$state.go('zest_station.error_page');
-					};
+						$state.go('zest_station.speakToStaff');
+					}
 				} else {
 					$scope.zestStationData.keyCardInserted = false;
 				}
 			} else if (response.Command === 'cmd_capture_key_card') {
 				if (response.ResponseCode === 0) {
 					$scope.zestStationData.keyCaptureDone = true;
+					$scope.zestStationData.keyCardInserted = false;
 				} else {
 					//capture failed
-					$state.go('zest_station.error_page');
+					$state.go('zest_station.speakToStaff');
 				};
 			} else if (response.Command === 'cmd_dispense_key_card') {
 				$scope.$broadcast('DISPENSE_SUCCESS', {
@@ -207,6 +208,14 @@ sntZestStation.controller('zsRootCtrl', [
 		};
 		$scope.$on('CONNECT_WEBSOCKET', function() {
 			$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+		});
+
+		$scope.$on('EJECT_KEYCARD', function() {
+			if ($scope.zestStationData.keyCardInserted) {
+				$scope.socketOperator.EjectKeyCard();
+			} else {
+				//do nothing
+			};
 		});
 		/********************************************************************************
 		 *  Websocket actions related to keycard lookup
@@ -240,7 +249,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  starts here
 		 ********************************************************************************/
 
-		 
+
 		var getSavedWorkStationObj = function(stored_station_id) {
 			var station;
 			if ($scope.zestStationData.workstations && $scope.zestStationData.workstations.length > 0) {
@@ -263,11 +272,11 @@ sntZestStation.controller('zsRootCtrl', [
 		};
 
 		var workStationstorageKey = 'snt_zs_workstation',
-				oosStorageKey = 'snt_zs_workstation.in_oos',
-				oosReasonKey = 'snt_zs_workstation.oos_reason',
-				storage = localStorage,
-				storedWorkStation = '',
-				station;
+			oosStorageKey = 'snt_zs_workstation.in_oos',
+			oosReasonKey = 'snt_zs_workstation.oos_reason',
+			storage = localStorage,
+			storedWorkStation = '',
+			station;
 		/**
 		 * [setWorkStationForAdmin description]
 		 *  The workstation, status and oos reason are stored in
@@ -292,9 +301,9 @@ sntZestStation.controller('zsRootCtrl', [
 				// set work station id and status
 				$scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
 				$scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
-				if($scope.zestStationData.workstationStatus === 'out-of-order'){
+				if ($scope.zestStationData.workstationStatus === 'out-of-order') {
 					$state.go('zest_station.outOfService');
-				}else{
+				} else {
 					$state.go('zest_station.home');
 				}
 				// set oos reason from local storage
@@ -339,7 +348,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 *   When workstation is in OOS fetch status continously 
 		 *   to check if status has changed
 		 */
-		$scope.$on('FETCH_LATEST_WORK_STATIONS',function(){
+		$scope.$on('FETCH_LATEST_WORK_STATIONS', function() {
 			getAdminWorkStations();
 		});
 
@@ -347,19 +356,19 @@ sntZestStation.controller('zsRootCtrl', [
 		//store workstation status in localstorage
 		var updateLocalStorage = function(oosReason, workstationStatus) {
 			var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
-                return workstation.id == $scope.zestStationData.set_workstation_id;
-            });
+				return workstation.id == $scope.zestStationData.set_workstation_id;
+			});
 
 			try {
 				//set workstation in localstorage
-				console.log('set work station :--->'+selectedWorkStation.station_identifier);
-				storage.setItem(workStationstorageKey,selectedWorkStation.station_identifier);
+				console.log('set work station :--->' + selectedWorkStation.station_identifier);
+				storage.setItem(workStationstorageKey, selectedWorkStation.station_identifier);
 				//set workstation status in localstorage
-				console.info('set oos status :--->'+ workstationStatus);
+				console.info('set oos status :--->' + workstationStatus);
 				storage.setItem(oosStorageKey, workstationStatus);
 				//set workstation oos reason in localstorage
-				console.log('set works station :--->'+oosReason);
-				(!!oosReason) ? storage.setItem(oosReasonKey, oosReason) : '';
+				console.log('set works station :--->' + oosReason);
+				(!!oosReason) ? storage.setItem(oosReasonKey, oosReason): '';
 			} catch (err) {
 				console.warn(err);
 			}
@@ -369,7 +378,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 * work station status change event 
 		 * This will be invoke everytime some actions
 		 * like key card lookup, print etc fails
-		**/
+		 **/
 		$scope.$on(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event, params) {
 
 			var oosReason = params.reason;
@@ -406,10 +415,10 @@ sntZestStation.controller('zsRootCtrl', [
 				//update local storage
 				try {
 					//set workstation status in localstorage
-					console.info('set oos status :--->'+ 'in-order');
+					console.info('set oos status :--->' + 'in-order');
 					storage.setItem(oosStorageKey, 'in-order');
 					//set workstation oos reason in localstorage
-					console.log('set works station :--->'+'');
+					console.log('set works station :--->' + '');
 					storage.setItem(oosReasonKey, '');
 				} catch (err) {
 					console.warn(err);
@@ -422,7 +431,12 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  Work station code  
 		 *  ends here
 		 ********************************************************************************/
-
+		var maximizeScreen = function() {
+			var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
+			console.info("chrome app id [ " + chromeAppId + ' ]');
+			//minimize the chrome app on loging out
+			(chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, "zest-station-login"): "";
+		};
 		/***
 		 * [initializeMe description]
 		 * @return {[type]} [description]
