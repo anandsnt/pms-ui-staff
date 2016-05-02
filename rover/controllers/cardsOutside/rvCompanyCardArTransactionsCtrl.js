@@ -11,6 +11,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			$scope.arTransactionDetails.ar_transactions = [];
 			$scope.paymentModalOpened = false;
 			fetchData();
+			//var statementEmail = (!!$scope.contactInformation.address_details && !!$scope.contactInformation.address_details.email_address) ? $scope.contactInformation.address_details.email_address : '';
+			$scope.statementEmailAddress = '';
+			//console.log($scope.contactInformation.address_details.email_address);
 		};
 
 		var refreshArTabScroller = function(){
@@ -592,7 +595,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		// Handle AR Statement-EMAIL button click
 		$scope.clickedEmailArStatementButton = function(){
 			var params = getParamsToSend();
-
+			params.is_email = true;
+			params.to_address = 'krishobh@stayntouch.com';
+			console.log($scope.statementEmailAddress);
 			var emailSuccess = function(successData){
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = "";
