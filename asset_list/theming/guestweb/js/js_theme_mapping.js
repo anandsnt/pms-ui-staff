@@ -51,7 +51,8 @@ module.exports = {
 			'guestweb_beacon_hill':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_paradise_point':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_knickerbocker_yacht_club':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_kingsley':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_kingsley':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_avery':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }
