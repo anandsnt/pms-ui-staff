@@ -162,7 +162,16 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	url: '/guestCheckinTurnedOff',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwExternalCheckInTurnedOff.html',
 	 	title: 'Check-in'
-	 }).state('birthDateDetails', {
+	 }).state('guestCheckinEarly', {
+		url: '/guestCheckinEarly/:date',
+		templateUrl: '/assets/common_templates/partials/MGM/gwEarlyToCheckin.html',
+		controller: 'earlyToCheckinCtrl',
+		title: 'Check-in'
+	}).state('guestCheckinLate', {
+		url: '/guestCheckinLate',
+		templateUrl: '/assets/common_templates/partials/MGM/gwLateToCheckin.html',
+		title: 'Check-in'
+	}).state('birthDateDetails', {
 		url: '/birthDateDetails',
 		templateUrl: '/assets/common_templates/partials/MGM/gwBirthDataDetails.html',
 		controller: 'birthDateDetailsController',
