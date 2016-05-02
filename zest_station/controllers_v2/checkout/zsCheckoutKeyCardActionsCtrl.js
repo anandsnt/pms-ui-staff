@@ -138,7 +138,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		};
 
 		$scope.searchByName = function() {
-			$state.go('checkOutReservationSearch');
+			$state.go('zest_station.checkOutReservationSearch');
 		};
 	}
 ]);
