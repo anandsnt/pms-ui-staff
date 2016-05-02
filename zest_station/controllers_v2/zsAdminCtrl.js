@@ -196,7 +196,7 @@ sntZestStation.controller('zsAdminCtrl', [
                     'status': $scope.zestStationData.workstationStatus,
                     'reason': $scope.zestStationData.workstationOooReason
                 });
-                $scope.cancelAdminSettings(); //navigate to home screen
+                $scope.zestStationData.workstationStatus === 'out-of-order' ? $state.go('zest_station.outOfService') : $scope.cancelAdminSettings(); //navigate to home screen
             };
             var failureCallBack = function(response) {
                 console.warn('unable to save workstation settings');

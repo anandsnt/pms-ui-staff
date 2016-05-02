@@ -292,6 +292,7 @@ sntZestStation.controller('zsRootCtrl', [
 				// set work station id and status
 				$scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
 				$scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
+				$scope.zestStationData.workstationStatus === 'out-of-order' ? $state.go('zest_station.outOfService'):"";
 				// set oos reason from local storage
 				try {
 					$scope.zestStationData.workstationOooReason = storage.getItem(oosReasonKey);
@@ -378,6 +379,7 @@ sntZestStation.controller('zsRootCtrl', [
 						'id': $scope.zestStationData.set_workstation_id
 					}
 				};
+				$state.go('zest_station.outOfService');
 				$scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
 			} else {
 				//Make work stataion back to in order
@@ -401,6 +403,7 @@ sntZestStation.controller('zsRootCtrl', [
 					console.warn(err);
 				}
 			}
+
 		});
 
 		/********************************************************************************
