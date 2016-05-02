@@ -45,6 +45,16 @@ sntZestStation.controller('zsHomeCtrl', [
 
 			//hide close button
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
+
+			//if application is launched either in chrome app or ipad go to login page
+            if($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)){
+                $state.go('zest_station.admin');
+            }
+            else{
+                //we want to treat other clients are normal, ie need to provide 
+                //user credentials before accesing admin
+                $scope.zestStationData.isAdminFirstLogin = false;
+            }
 		}();
 
 

@@ -63,5 +63,11 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             templateUrl : '/assets/partials_v2/zsSpeakToStaff.html',
             controller: 'zsSpeakToStaffCtrl'
         });
+
+        $stateProvider.state('zest_station.admin', {
+             url: '/find_reservation', 
+             controller: 'zsAdminCtrl',
+             templateUrl: '/assets/partials/kiosk/specific/zsAdminSettings.html',
+        });
 	}
 ]);

@@ -28,7 +28,7 @@ sntZestStation.controller('zsRootCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		$translate.use('EN_snt'); // for now. need to do translations later
-        $scope.cssMappings = cssMappings;
+		$scope.cssMappings = cssMappings;
 
 		//in order to prevent url change or fresh url entering with states
 		var routeChange = function(event, newURL) {
@@ -80,7 +80,7 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.clickedOnCloseButton = function() {
 			$state.go('zest_station.home');
 		};
-		$scope.talkToStaff = function(){
+		$scope.talkToStaff = function() {
 			$state.go('zest_station.speakToStaff');
 		};
 
@@ -90,7 +90,12 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.$on(zsEventConstants.PUT_OOS, function(event) {
 			$state.go('zest_station.outOfService');
 		});
+		$scope.goToAdmin = function() {
+			$state.go('zest_station.admin');
+		};
 
+		// check if navigator is iPad
+		$scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
 		/**
 		 * This is workaround till we find how to detect if app
 		 *  is invoked from chrome app, we will be hidding this tag from chrome app and
@@ -155,8 +160,8 @@ sntZestStation.controller('zsRootCtrl', [
 			var cmd = response.Command,
 				msg = response.Message;
 			// to delete after QA pass
-			console.info("Websocket:-> uid=" + response.UID +"--"+"Websocket:-> response code:" + response.ResponseCode);
-			console.info("Websocket: msg ->" + msg +"--"+"Websocket: Command ->" + cmd);
+			console.info("Websocket:-> uid=" + response.UID + "--" + "Websocket:-> response code:" + response.ResponseCode);
+			console.info("Websocket: msg ->" + msg + "--" + "Websocket: Command ->" + cmd);
 
 			if (response.Command === 'cmd_insert_key_card') {
 				//check if the UID is valid
@@ -208,25 +213,179 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  ends here
 		 ********************************************************************************/
 
-		 /********************************************************************************
+		/********************************************************************************
 		 *  Chrome App Communication code 
 		 *  ends here
 		 ********************************************************************************/
-		 var onChromeAppResponse = function(response){
-	        console.log('msg from ChromeApp: ',response);
-	        if (response.qr_code){
-	        	$scope.$broadcast('QR_SCAN_SUCCESS', {"reservation_id": response.reservation_id});
-	        }
-	        else
-	        {
-	        	//do nothing now
-	        }
-	    };
-	     /********************************************************************************
+		var onChromeAppResponse = function(response) {
+			console.log('msg from ChromeApp: ', response);
+			if (response.qr_code) {
+				$scope.$broadcast('QR_SCAN_SUCCESS', {
+					"reservation_id": response.reservation_id
+				});
+			} else {
+				//do nothing now
+			}
+		};
+		$scope.chromeApp = new chromeApp(onChromeAppResponse, zestStationSettings.chrome_app_id);
+		/********************************************************************************
 		 *  Chrome App Communication code  
 		 *  ends here
 		 ********************************************************************************/
-	    $scope.chromeApp = new chromeApp(onChromeAppResponse, zestStationSettings.chrome_app_id);
+
+
+
+		/********************************************************************************
+		 *  Work station code  
+		 *  starts here
+		 ********************************************************************************/
+
+
+		var getSavedWorkStationObj = function(stored_station_id) {
+			var station;
+			if ($scope.zestStationData.workstations && $scope.zestStationData.workstations.length > 0) {
+				station = _.find($scope.zestStationData.workstations, function(station) {
+					return station.station_identifier === stored_station_id;
+				});
+				return station;
+			} else {
+				return null;
+			}
+		};
+
+		$scope.getStationIdFromName = function(name) {
+			return name === '' ? null : _.find($scope.zestStationData.workstations, function(station) {
+				return station.name === name;
+			});
+		};
+		$scope.printer = {
+			'name': ''
+		};
+		var setWorkStationForAdmin = function() {
+			//work station , oos status, reason  etc are saved in local storage
+			var storageKey = 'snt_zs_workstation',
+				oosStorageKey = 'snt_zs_workstation.in_oos',
+				oosReasonKey = 'snt_zs_workstation.oos_reason',
+				storage = localStorage,
+				storedWorkStation = '',
+				station;
+
+			try {
+				storedWorkStation = storage.getItem(storageKey);
+			} catch (err) {
+				console.warn(err);
+			}
+			//find workstation with the local storage data
+			var station = getSavedWorkStationObj(storedWorkStation);
+			if (typeof station === typeof undefined) {
+				return null;
+			} else {
+				$scope.workstation = {
+					'selected': station
+				};
+				// set work station id and status
+				$scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
+				$scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
+				// set oos reason from local storage
+				try {
+					$scope.zestStationData.workstationOooReason = storage.getItem(oosReasonKey);
+				} catch (err) {
+					console.warn(err);
+				}
+			}
+		};
+
+		var getAdminWorkStations = function() {
+			var onSuccess = function(response) {
+				$scope.zestStationData.workstations = response.work_stations;
+				setWorkStationForAdmin();
+			};
+			var onFail = function(response) {
+				if ($scope.timeStopped) {
+					return;
+				}
+				console.warn('fetching workstation list failed:', response);
+				$scope.$emit(zsEventConstants.PUT_OOS);
+			};
+			var options = {
+
+				params: {
+					page: 1,
+					per_page: 100,
+					query: '',
+					sort_dir: true,
+					sort_field: 'name'
+				},
+				successCallBack: onSuccess,
+				failureCallBack: onFail
+			};
+			$scope.callAPI(zsTabletSrv.fetchWorkStations, options);
+		};
+
+		//store workstation status in localstorage
+		var updateLocalStorage = function(oosReason, workstationStatus) {
+
+			try {
+				console.info('set oos status', workstationStatus)
+				storage.setItem(oosStorageKey, workstationStatus);
+			} catch (err) {
+				console.warn(err);
+			}
+			if (!!oosReason) {
+				try {
+					storage.setItem(oosReasonKey, oosReason);
+				} catch (err) {
+					console.warn(err);
+				}
+			} else {
+				//do  nothing
+			}
+		};
+
+		//work station status change event
+		$scope.$on(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event, params) {
+
+			var oosReason = params.reason;
+			var workstationStatus = params.status;
+
+			console.info('update to:  ', workstationStatus);
+
+			$scope.zestStationData.workstationStatus = workstationStatus;
+			//update local storage
+			updateLocalStorage(oosReason, workstationStatus);
+			//update workstation status with oos reason
+			if ($scope.zestStationData.workstationStatus === 'out-of-order') {
+				console.info('placing station out of order')
+				var options = {
+					params: {
+						'oo_status': true,
+						'oo_reason': oosReason,
+						'id': $scope.zestStationData.set_workstation_id
+					}
+				};
+				$scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+			} else {
+				console.info('putting station back in order')
+				var options = {
+					params: {
+						'oo_status': false,
+						'id': $scope.zestStationData.set_workstation_id
+					}
+				};
+				$scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+				//update local storage
+				try {
+					storage.setItem(oosStorageKey, "in-order");
+				} catch (err) {
+					console.warn(err);
+				}
+			}
+		});
+
+		/********************************************************************************
+		 *  Work station code  
+		 *  ends here
+		 ********************************************************************************/
 
 		/***
 		 * [initializeMe description]
@@ -244,7 +403,7 @@ sntZestStation.controller('zsRootCtrl', [
 			//create a websocket obj
 			$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
 			fetchHotelSettings();
-			getWorkStation();
+			getAdminWorkStations();
 		}();
 	}
 ]);
