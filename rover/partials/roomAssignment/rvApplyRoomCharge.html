@@ -18,7 +18,10 @@
 			<button type="button" id="cancel-room-type-charge-modal" class="button blank modal-close" ng-click="clickedCancelButton()">
 				CANCEL
 			</button>
-			<button type="button" id="nocharge" class="button green" ng-disabled="enableDisableButtons()" ng-click="clickedNoChargeButton()">
+			<button type="button" id="nocharge" class="button green"
+				ng-show="canMoveRoomWithoutCharge()"
+				ng-disabled="enableDisableButtons()"
+				ng-click="clickedNoChargeButton()">
 				NO CHARGE
 			</button>
 			<button type="button" id="ok" class="button green" ng-disabled="!enableDisableButtons()" ng-click="clickChargeButton()">

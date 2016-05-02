@@ -2096,8 +2096,89 @@
                 /* Rooming List ***/
                 &.rooming-list {
                     .tab-header {
+                        height: 140px;
+
                         .search-form {
                             padding: 0 20px;
+
+                            &.search-bar {
+                                width: 100%;
+                                height: 60px;
+                                padding: 0;
+
+                                .entry {
+                                    visibility: visible;
+                                    padding: 0px 20px;
+                                    margin: 10px 0;
+                                    height: 40px;
+                                    &.search { 
+                                        .query {
+                                            padding-right: 35px;
+                                        }
+                                        .icon-search { top: 10px; left: 35px; }
+
+                                        .clear-query {
+                                            top: 0px;
+                                            right: 20px;
+                                        }                                    
+                                    }
+
+                                    &.date-range {
+                                        width: 330px;
+                                        label {
+                                            position: absolute;
+                                            font-size: 12px;
+                                            color: @grey2;
+                                            top: 7px;
+                                            left: 10px;
+                                        }
+
+                                        input {
+                                            font-size: 16px;
+                                            height: 40px;
+                                            padding-top: 15px;
+                                            color: @black;
+                                            font-weight: 600;
+                                        }
+                                        
+                                        .has-datepicker {
+                                            .clear-query {
+                                                top: 2px;
+                                            }
+                                        }
+                                    }
+
+                                    &.has-checkboxes {
+                                        padding-right: 0;
+                                        width: 240px;
+                                        padding-top: 5px;
+                                        .checkbox {
+                                            padding: 0 5px 0 0;
+                                            text-transform: uppercase;
+                                            font-size: 14px;
+                                            width: 50%;
+                                            .pull-left;
+                                            span {
+                                                position: static;
+                                                vertical-align: middle;
+                                                display: inline-block;
+                                                overflow: visible;
+                                                white-space: normal;
+
+                                                &:not(.icon-form){
+                                                    .calc-width(100, 20);
+                                                    padding-left: 5px;
+                                                    color: @black;
+                                                }
+                                            }
+
+                                            &:first-child {
+                                                max-width: 95px;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 
                             .entry {
                                 padding: 20px 0;
@@ -2184,6 +2265,8 @@
                         }
 
                         .totals {
+                            height: 80px;
+
                             li {
                                 .data {
                                     .value { text-align: center; }
@@ -2202,16 +2285,24 @@
                                     margin-right: 10px;
                                     .pull-left;
 
-                                    &.batch {
+                                    &.batch,
+                                    &.email-print {
                                         padding: 0 0 0 40px;
                                         text-align: left;
-                                        width: 120px;
 
                                         .icons {
                                             top: 10px;
                                             left: 10px;
                                             margin: 0;
                                         }
+                                    }
+
+                                    &.batch {
+                                        width: 120px;
+                                    }
+
+                                    &.email-print {
+                                        width: 130px;
                                     }
 
                                     &:last-child { margin-right: 0; }
@@ -2221,6 +2312,7 @@
                     }
 
                     .tab-details {
+                        .calc-height(100, 140);
                         
                         .rooming-list-header {
                             margin: 10px 20px;

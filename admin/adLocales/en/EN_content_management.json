@@ -101,6 +101,10 @@
 "SECTION_DESCRIPTION_LABEL": "SECTION DESCRIPTION",
 "ITEM_SEARCH_SWITCH_LABEL": "Enable Item search from zest",
 "PRODUCT_LABEL": "ASSIGN PRODUCT",
-"SELECT_PRODUCT_PLACEHOLDER": "Select product"
+"SELECT_PRODUCT_PLACEHOLDER": "Select product",
+"CAROUSAL_SWITCH_LABEL": "Enable carousal",
+"AUTO_ADVANCE_SWITCH_LABEL": "Enable carousal auto advance",
+"CAROUSAL_ADVANCE_DELAY_LABEL": "Carousal delay  (in seconds)",
+"CAROUSAL_LOOP_SWITCH_LABEL": "Enable carousal Loop"
 
 
