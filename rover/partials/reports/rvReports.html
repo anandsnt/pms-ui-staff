@@ -11,7 +11,7 @@
         </div>
     </form>
 
-    <section id="reports" class="content" role="main">
+    <section id="reports" class="content" ng-class="{'no-search-form': showReportDetails}" role="main">
         <div id="reports-menu" ng-hide="showReportDetails">
             <span ng-include="'/assets/partials/reports/shared/rvReportMainMenu.html'"></span>
         </div>
@@ -19,7 +19,7 @@
         <!-- Content -->
         <div id="reports-dashboard" class="scrollable {'cols-2', 'cols-3' or 'cols-4'}"
             ng-class="{'cols-2': viewCol === 2, 'cols-3': viewCol === 3, 'cols-4': viewCol === 4 }">
-            <span ng-include="'/assets/partials/reports/shared/rvViewAllReports.html'"></span>
+            <span ng-controller="RVReportListCrl" ng-include="'/assets/partials/reports/shared/rvViewAllReports.html'"></span>
         </div>
 
         <span ng-controller="RVReportDetailsCtrl" class="content reports-wrapper" ng-show="showReportDetails" style="top: 0; height: 100%">

@@ -222,6 +222,11 @@ body { overflow: hidden; }
             &#reports {
 				top: 120px;
 				.calc-height(100, 120);
+
+				&.no-search-form {
+					top: 60px;
+					.calc-height(100, 60);
+				}
 			}
 
 			/* With pagination **/
@@ -995,7 +1000,7 @@ body { overflow: hidden; }
 	/* 768px+		 		==============================*/
 	@media only screen and (min-width: 768px) {
 		.search-form {
-			display: block !important;
+			display: block;
 
 			/* Enable adding ***/
 			&.enable-adding {
@@ -2036,6 +2041,7 @@ body { overflow: hidden; }
 				.settings-content {
 					width: 235px;
 					padding: 20px;
+					height: auto;
 
 					label:not(.radio) {
 						font-size: 14px;
@@ -2802,7 +2808,7 @@ body { overflow: hidden; }
 		    				.show;
 		    			}
 
-		    			&:last-child {
+		    			&.centered-action-btn, &:last-child {
 		    				&:after { .hide; }
 		    			}
 		    		}

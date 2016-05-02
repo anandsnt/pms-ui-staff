@@ -65,7 +65,7 @@
 				<tr ng-class="{'hidden': !toggleStatusOf.occupancy }" ng-if="!isHourlyRateOn && !hideRateOfDay">
 					<th scope="row">Best Available Rate</th>
 					<td ng-repeat="bar in data.additionalData.bestAvailabilityRate track by $index">
-						<div class="inner" ng-if="bar == 'C'" ng-bind="bar"></div>
+						<div class="inner" ng-if="bar == 'C'">C</div>
 						<div class="inner" ng-bind="(bar | currency:currencySymbol:2)" ng-class="{ 'unavailable': 0 > bar, 'warning': 3 >= bar}"></div>
 					</td>
 				</tr>

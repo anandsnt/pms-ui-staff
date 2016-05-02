@@ -3,7 +3,20 @@ sntZestStation.controller('zsRootCtrl', [
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
 	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings','$timeout', 'zsModeConstants',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, zsHotelDetailsSrv, cssMappings, zestStationSettings,$timeout, zsModeConstants) {
+	function($scope, 
+        zsEventConstants, 
+        $state,
+        zsTabletSrv, 
+        $rootScope,
+        ngDialog, 
+        $sce, 
+        zsUtilitySrv, 
+        $translate, 
+        zsHotelDetailsSrv, 
+        cssMappings, 
+        zestStationSettings,
+        $timeout, 
+        zsModeConstants) {
 
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
@@ -36,13 +49,12 @@ sntZestStation.controller('zsRootCtrl', [
        //update workstation station. I cant find anyother suitable place
         //the above codes needs to refactored
         if($scope.zestStationData.wsIsOos){
-               //update work station status
-               $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
-               $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
-               $state.go('zest_station.oos');
-        }
-            else{
-                 $state.go ('zest_station.home');
+                //update work station status
+                $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
+                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
+                $state.go('zest_station.oos');
+        } else{
+                $state.go ('zest_station.home');
         };
     };
         
@@ -1195,6 +1207,9 @@ sntZestStation.controller('zsRootCtrl', [
             };
         } else if( response.Command === 'cmd_dispense_key_card'){
                 $scope.$broadcast('DISPENSE_SUCCESS',{"cmd":response.Command,"msg":response.Message});
+                
+        } else if( response.Command === 'cmd_scan_qr_passport_scanner'){
+                $scope.$broadcast('QR_PASSPORT_SCAN_MSG',{"cmd":response.Command,"msg":response.Message});
         }
     };
     var socketOpenedFailed = function() {
