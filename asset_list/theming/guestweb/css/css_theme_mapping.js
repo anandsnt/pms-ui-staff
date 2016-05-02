@@ -50,7 +50,11 @@ module.exports = {
 			'guestweb_paradise_point':[ themeCSSRoot + 'guestweb_paradise_point.css'],
 			'guestweb_knickerbocker_yacht_club':[ themeCSSRoot + 'guestweb_knickerbocker_yacht_club.css'],
 			'guestweb_kingsley':[ themeCSSRoot + 'guestweb_kingsley.css'],
+			'guestweb_beacon_hill':[ themeCSSRoot + 'guestweb_beacon_hill.css'],
+			'guestweb_boston_park':[ themeCSSRoot + 'guestweb_boston_park.css'],
+			'guestweb_hotel_ivrine':[ themeCSSRoot + 'guestweb_hotel_ivrine.css'],
 			'guestweb_avery':[ themeCSSRoot + 'guestweb_avery.css']
+			
 		}
 	}
 }
