@@ -55,6 +55,12 @@ sntZestStation.controller('zsHomeCtrl', [
                 //user credentials before accesing admin
                 $scope.zestStationData.isAdminFirstLogin = false;
             }
+            if($scope.zestStationData.workstationStatus === 'out-of-order'){
+				$state.go('zest_station.outOfService');
+			}
+			else{
+				//do nothing
+			}
 		}();
 
 
