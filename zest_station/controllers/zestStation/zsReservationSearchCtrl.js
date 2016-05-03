@@ -470,7 +470,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
          console.log(arguments);
          if (typeof info.msg === typeof 'str'){
              
-             if (info.msg.indexOf('Invalid') !== -1){
+             if (info.msg.indexOf('Invalid') !== -1 || info.msg.indexOf('program error') !== -1){
                  $scope.at = 'input-qr-code';
                  $scope.qrCodeScanFailed = true;
                  console.warn('scan failed..');
