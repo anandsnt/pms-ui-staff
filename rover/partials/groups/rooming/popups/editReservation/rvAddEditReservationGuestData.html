@@ -20,14 +20,14 @@
         </ul>
 
         <!-- Vertical Scroll on .holder -->
-        <div class="holder">
+        <div class="holder scrollable" ng-iscroll="guest-data-scroll">
             <ul class="wrapper">
-                <li class="room-item" ng-repeat="selectedReservations in selected_reservations">
+                <li class="room-item" ng-repeat="selectedReservations in selected_reservations" >
                     <!-- Add class .active if we are showing the acc guests (on click) -->
-                    <div class="faux-anchor has-arrow toggle" ng-class="{'active': selectedReservations.isOpenAccompanyingGuest}" >
+                    <div class="faux-anchor has-arrow toggle" ng-class="{'active': selectedReservations.isOpenAccompanyingGuest}" ng-click="toggleAccompanyingGuest($index)">
                         <div class="guest-name">
                             <div class="entry margin">
-                                <input type="text" placeholder="First Name" value="{{selectedReservations.firstname}}" ng-model="selectedReservations.firstname">
+                                <input type="text" placeholder="First Name" value="{{selectedReservations.firstname}}" ng-model="selectedReservations.firstname" ng-click="childClick()">
                             </div>
                             <div class="entry">
                                 <input type="text" placeholder="Last Name" value="{{selectedReservations.lastname}}" ng-model="selectedReservations.lastname">
@@ -49,7 +49,7 @@
                             <strong>{{selectedReservations.room_type_name}}</strong>
                             <em>{{selectedReservations.occupancyName}}</em>
                         </div>
-                        <div class="acc-guests" ng-click="toggleAccompanyingGuest($index)">
+                        <div class="acc-guests" >
                             {{selectedReservations.accompanyingLength}}
                         </div>
 

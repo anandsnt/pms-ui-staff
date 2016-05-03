@@ -11,6 +11,7 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
             $state) {
         //To set the title
     $scope.title = ($scope.isUpdateReservation) ? "Edit" : "Add";
+
     //Updating and adding some params to show in screen
     //accompanyingLength, occupancyName etc are not there in API
     _.each($scope.selected_reservations, function(eachData){
@@ -34,18 +35,30 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
         }
         eachData.occupancyName = occupancyName;
     });
+    $scope.setScroller('guest-data-scroll');
+
+    var refreshScroll = function() {
+        $timeout(function() {
+            $scope.refreshScroller('guest-data-scroll');
+        }, 1500);
+    };
+    refreshScroll();
     /*
      * Toggle action of accompanying guest
      */
     $scope.toggleAccompanyingGuest = function(index){
+        var target = event.target;
+        if(target.type === "text")
+            return false;
         _.each($scope.selected_reservations, function(eachData, resIndex){
             if(resIndex !== index)
                 eachData.isOpenAccompanyingGuest = false;
         });
         $scope.selected_reservations[index].isOpenAccompanyingGuest = !$scope.selected_reservations[index].isOpenAccompanyingGuest;
+        refreshScroll();
     };
     var successCallBackOfUpdateGuestData = function(){
-
+        $scope.fetchRoomingDetails();
     };
     /*
      * To update all selected reservations guest data
@@ -71,7 +84,8 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
         };
         $scope.callAPI(rvGroupRoomingListSrv.updateGuestData, options);
 
-    }
+    };
+
 
 
 

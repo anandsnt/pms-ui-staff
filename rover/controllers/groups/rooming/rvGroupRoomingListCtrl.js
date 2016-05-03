@@ -437,25 +437,25 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successCallBackOfAddReservations = function(data) {
-            $scope.newReservations = [];
-            _.each(data.results, function(reservation) {
-                $scope.newReservations.push(reservation);
-                $scope.reservations.unshift(reservation);
-            });
+            // $scope.newReservations = [];
+            // _.each(data.results, function(reservation) {
+            //     $scope.newReservations.push(reservation);
+            //     $scope.reservations.unshift(reservation);
+            // });
 
-            //total result count
-            $scope.totalResultCount += (data.results.length);
+            // //total result count
+            // $scope.totalResultCount += (data.results.length);
 
-            //pickup
-            $scope.totalPickUpCount = data.total_pickup_count;
+            // //pickup
+            // $scope.totalPickUpCount = data.total_pickup_count;
 
-            //we changed data, so
-            refreshScrollers();
+            // //we changed data, so
+            // refreshScrollers();
 
-            //rooming data will change after adding some reservation
-            $scope.fetchRoomingDetails();
-            //check for default charge routings
-            checkDefaultChargeRoutings();
+            // //rooming data will change after adding some reservation
+            // $scope.fetchRoomingDetails();
+            // //check for default charge routings
+            // checkDefaultChargeRoutings();
         };
 
         /**
@@ -582,7 +582,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             $scope.isAddingMode = true;
 
             //default sorting fields & directions
-            $scope.sorting_field = 'confirm_no';
+            $scope.sorting_field = 'room_no';
             $scope.sort_dir = 'ASC';
 
             //selected reservation list
@@ -704,7 +704,11 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             } else {
 
                 $scope.selected_reservations.push(reservation);
+                $scope.selected_reservations = _.sortBy($scope.selected_reservations, "confirm_no")
                 $scope.selected_reservations = _.sortBy($scope.selected_reservations, $scope.sorting_field);
+                if($scope.sort_dir === 'DESC'){
+                    $scope.selected_reservations = $scope.selected_reservations.reverse();
+                }
 
             }
         };
