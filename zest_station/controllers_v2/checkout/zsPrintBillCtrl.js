@@ -11,9 +11,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
          **/
         var failureCallBack = function() {
             //if key card was inserted we need to eject that
-            if ($scope.zestStationData.keyCardInserted) {
-                $scope.socketOperator.EjectKeyCard();
-            };
+            $scope.$emit('EJECT_KEYCARD');
             $state.go('zest_station.speakToStaff');
         };
         var nextPageActions = function(printopted) {

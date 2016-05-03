@@ -45,6 +45,10 @@ sntZestStation.controller('zsHomeCtrl', [
 
 			//hide close button
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
+			//eject if any key card is inserted
+			$scope.$emit('EJECT_KEYCARD');
+			//set this to false always on entering home screen
+			$scope.zestStationData.keyCardInserted = false;
 
 			//if application is launched either in chrome app or ipad go to login page
             if($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)){
@@ -55,6 +59,12 @@ sntZestStation.controller('zsHomeCtrl', [
                 //user credentials before accesing admin
                 $scope.zestStationData.isAdminFirstLogin = false;
             }
+            if($scope.zestStationData.workstationStatus === 'out-of-order'){
+				$state.go('zest_station.outOfService');
+			}
+			else{
+				//do nothing
+			}
 		}();
 
 

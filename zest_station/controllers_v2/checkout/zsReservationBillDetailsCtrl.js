@@ -23,9 +23,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             }
             else if ($stateParams.from !== 'searchByName') {
                 //if key card was inserted we need to eject that
-                if ($scope.zestStationData.keyCardInserted) {
-                    $scope.socketOperator.EjectKeyCard();
-                };
+                $scope.$emit('EJECT_KEYCARD');
                 $state.go('zest_station.checkoutSearchOptions');
             } else {
                 $state.go('zest_station.checkOutReservationSearch');
@@ -39,9 +37,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          */
         $scope.clickedOnCloseButton = function() {
             //if key card was inserted we need to eject that
-            if ($scope.zestStationData.keyCardInserted) {
-                $scope.socketOperator.EjectKeyCard();
-            };
+            $scope.$emit('EJECT_KEYCARD');
             $state.go('zest_station.home');
         };
 
@@ -72,9 +68,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          **/
         var failureCallBack = function() {
             //if key card was inserted we need to eject that
-            if ($scope.zestStationData.keyCardInserted) {
-                $scope.socketOperator.EjectKeyCard();
-            };
+            $scope.$emit('EJECT_KEYCARD');
             $state.go('zest_station.speakToStaff');
         };
 
