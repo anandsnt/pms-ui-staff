@@ -11,9 +11,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			$scope.arTransactionDetails.ar_transactions = [];
 			$scope.paymentModalOpened = false;
 			fetchData();
-			//var statementEmail = (!!$scope.contactInformation.address_details && !!$scope.contactInformation.address_details.email_address) ? $scope.contactInformation.address_details.email_address : '';
 			$scope.statementEmailAddress = '';
-			//console.log($scope.contactInformation.address_details.email_address);
 		};
 
 		var refreshArTabScroller = function(){
@@ -520,12 +518,24 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		 *	show popup with PRINT, EMAIL options.
 		 */
 		$scope.clickedArStatementButton = function(){
-			ngDialog.open({
-	      		template:'/assets/partials/companyCard/rvArStatementPopup.html',
-		        className: '',
-		        closeByDocument: false,
-		        scope: $scope
-	      	});
+
+			var dataFetchSuccess = function(data){
+				$scope.$emit('hideLoader');
+				$scope.statementEmailAddress = data.to_address;
+
+				ngDialog.open({
+		      		template:'/assets/partials/companyCard/rvArStatementPopup.html',
+			        className: '',
+			        closeByDocument: false,
+			        scope: $scope
+		      	});
+			},
+	      	dataFailureCallback = function(errorData){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorData;
+			};
+			var params = { 'id': $scope.filterData.id };
+			$scope.invokeApi(RVCompanyCardSrv.fetchArStatementData, params, dataFetchSuccess, dataFailureCallback);
 		};
 
 	    // add the print orientation before printing
@@ -595,9 +605,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		// Handle AR Statement-EMAIL button click
 		$scope.clickedEmailArStatementButton = function(){
 			var params = getParamsToSend();
-			// params.is_email = true;
-			params.to_address = 'anandp@stayntouch.com';
-			console.log($scope.statementEmailAddress);
+
+			params.to_address = $scope.statementEmailAddress;
+
 			var emailSuccess = function(successData){
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = "";
