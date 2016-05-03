@@ -82,7 +82,7 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.mainCard.room-rates', {
-            url: '/room-rates/:from_date/:to_date/:fromState/:view/:company_id/:travel_agent_id/:group_id/:allotment_id/:promotion_code/:disable_back_staycard/:adults/:children/:promotion_id/:room_type_id/:is_member',
+            url: '/room-rates/:from_date/:to_date/:fromState/:view/:company_id/:travel_agent_id/:group_id/:borrow_for_groups/:allotment_id/:promotion_code/:disable_back_staycard/:adults/:children/:promotion_id/:room_type_id/:is_member',
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',
             onEnter: function($stateParams) {
@@ -97,6 +97,9 @@ angular.module('stayCardModule', [])
                 }
                 if (!$stateParams.group_id) {
                     $stateParams.group_id = null;
+                }
+                if ( ! $stateParams.borrow_for_groups ) {
+                    $stateParams.borrow_for_groups = false;
                 }
                 if (!$stateParams.allotment_id) {
                     $stateParams.allotment_id = null;

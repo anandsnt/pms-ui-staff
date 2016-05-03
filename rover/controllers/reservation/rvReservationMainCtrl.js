@@ -845,7 +845,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     data.room_id.push(room.room_id);
                 }
             });
+
             data.outside_group_stay_dates = RVReservationStateService.getReservationFlag('outsideStaydatesForGroup');
+            data.borrow_for_groups = RVReservationStateService.getReservationFlag('borrowForGroups');
 
             //to delete ends here
             return data;
@@ -1279,6 +1281,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservationData.is_routing_available = data.is_routing_available;
 
                     $scope.reservationData.status = data.reservation_status;
+
+                    // resetting borrowForGroups anyway
+                    RVReservationStateService.setReservationFlag('borrowForGroups', false);
 
                     if (nextState) {
                         if (!nextStateParameters) {
