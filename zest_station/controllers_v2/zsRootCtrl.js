@@ -185,7 +185,7 @@ sntZestStation.controller('zsRootCtrl', [
 				if ($scope.zestStationData.idle_timer.enabled ==='true' 
 				    && !($state.current.name === 'zest_station.admin' 
 				    || $state.current.name === 'zest_station.home'
-				    || $state.current.name !== 'zest_station.oos')) 
+				    || $state.current.name === 'zest_station.oos')) 
 				{
 					userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
 					//when user activity is not recorded for more than idle_timer.prompt
