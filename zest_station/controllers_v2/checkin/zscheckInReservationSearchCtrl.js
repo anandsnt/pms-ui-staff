@@ -4,8 +4,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 	'$state',
 	'zsEventConstants',
 	'zsCheckinSrv',
-	'$stateParams',
-	function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv,$stateParams) {
+	function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv) {
 
 
 		//This controller is used for searching reservation using last name
@@ -46,9 +45,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				{
 					$scope.mode = 'NO_MATCH';
 				}else{
-					var stateParams = {
-					};
-					//$state.go('zest_station.checkoutReservationBill', stateParams);
+					zsCheckinSrv.setCheckInReservations(data.results);
+					$state.go('zest_station.checkInReservationDetails');
 				}
 			};
 			var checkinVerificationCallBack = function() {
@@ -139,6 +137,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			$scope.dateOptions = {
 				dateFormat: $scope.zestStationData.hotelDateFormat,
 				yearRange: "0:+10",
+				//TODO - Change to Bussiness date
+				minDate: new Date('01-01-2016'),
 				onSelect: function(value) {
 					$scope.showDatePicker();
 				}
