@@ -69,11 +69,11 @@
     <div id="content" ng-show="mode === 'FIND_BY_DATE'">
         <h1 translate>FIND_BY_DATE</h1>
         <form method="post" class="form">
-            <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" ng-click="showOnScreenKeyboard('input_text')" ng-model="reservationParams.alt_confirmation_number" enter-press="confNumberEntered()" />
+            <div class="entry input" click-touch="showDatePicker()">
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" ng-click="showOnScreenKeyboard('input_text')" ng-model="reservationParams.date" enter-press="dateEntered()" />
             </div>
             <div class="entry action">
-                <button type="button" class="button" ng-click="confNumberEntered()">Next</button>
+                <button type="button" class="button" ng-click="dateEntered()">Next</button>
             </div>
         </form>
     </div>
@@ -144,7 +144,7 @@
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
                     {{'RES_SRCH_RE_ENTER_ROOM' |translate}}
-                    <span ng-bind="reservationParams.room_no"></span>
+                    <span>{{reservationParams.email||reservationParams.no_of_nights||reservationParams.date||reservationParams.alt_confirmation_number}}</span>
                 </li>
                 <li class="break">
                     <span>Or</span>
@@ -162,3 +162,4 @@
     </div>
     <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
 </section>
+<div ng-show="showDatePick" ui-date="dateOptions" ng-model="reservationParams.date" ui-date-format="MM-dd-yy" id='picker' >

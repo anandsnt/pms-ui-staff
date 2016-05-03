@@ -23,31 +23,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		var init = function() {
-			//show back button
-			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-			//show close button
-			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			//back button action
-			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-				$state.go('zest_station.home');
-			});
-			//starting mode
-			$scope.mode = "LAST_NAME_ENTRY";
-			$scope.reservationParams = {
-				'due_in':true,
-				'last_name':'',
-				'no_of_nights':'',
-				'alt_confirmation_number':'',
-				'email':''
-			};
-		};
-		init();
-
-
 		$scope.findByDate = function(){
-			//to do
-			// $scope.mode = 'FIND_BY_DATE';
+			$scope.mode = 'FIND_BY_DATE';
 		};
 		$scope.findByNoOfNights = function(){
 			$scope.mode = 'NO_OF_NIGHTS_MODE';
@@ -59,12 +36,20 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			$scope.mode = 'CONFIRM_NO_MODE';
 		};
 
+		$scope.showDatePicker = function(){
+			$scope.showDatePick = !$scope.showDatePick;
+		}
+
 		var searchReservation = function(params) {
 			var checkinVerificationSuccess = function(data) {
-				console.log(data);
-				var stateParams = {
-				};
-				//$state.go('zest_station.checkoutReservationBill', stateParams);
+				if(data.results.length==0)
+				{
+					$scope.mode = 'NO_MATCH';
+				}else{
+					var stateParams = {
+					};
+					//$state.go('zest_station.checkoutReservationBill', stateParams);
+				}
 			};
 			var checkinVerificationCallBack = function() {
 				$scope.mode = 'NO_MATCH';
@@ -81,7 +66,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			//if room is already entered, no need to enter again
 			if ($scope.reservationParams.no_of_nights.length > 0 ||
 			    $scope.reservationParams.alt_confirmation_number.length >0  ||
-			    $scope.reservationParams.email.length >0) {
+			    $scope.reservationParams.email.length >0||
+				$scope.reservationParams.date.length >0
+			) {
 				searchReservation();
 			} else {
 				$scope.mode = $scope.reservationParams.last_name.length >0 ? "CHOOSE_OPTIONS" :$scope.mode;
@@ -92,6 +79,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			var params = angular.copy($scope.reservationParams);
 			delete params.alt_confirmation_number;
 			delete params.email;
+			delete params.date;
 			searchReservation(params);
 		};
 
@@ -99,20 +87,28 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			var params = angular.copy($scope.reservationParams);
 			delete params.no_of_nights;
 			delete params.email;
+			delete params.date;
 			searchReservation(params);
 		};
-
 		$scope.emailEntered = function() {
 			var params = angular.copy($scope.reservationParams);
 			delete params.no_of_nights;
 			delete params.alt_confirmation_number;
+			delete params.date;
 			searchReservation(params);
 		};
 
 		$scope.dateEntered = function() {
-			//to do
+			var params = angular.copy($scope.reservationParams);
+			delete params.no_of_nights;
+			delete params.alt_confirmation_number;
+			delete params.email;
+			searchReservation(params);
 		};
 
+		$scope.showDatePicker = function(){
+			$scope.showDatePick = !$scope.showDatePick;
+		};
 
 		$scope.reEnterText = function(type) {
 			if(type === 'name'){
@@ -127,6 +123,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			else if($scope.reservationParams.email.length >0){
 				$scope.mode = "EMAIL_ENTRY_MODE";
 			}
+			else if($scope.reservationParams.date.length >0){
+				$scope.mode = "FIND_BY_DATE";
+			}
 			else{
 				return;
 			};
@@ -135,5 +134,42 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		$scope.talkToStaff = function() {
 			$state.go('zest_station.speakToStaff');
 		};
+
+		var setDateOptions= function(){
+			$scope.dateOptions = {
+				dateFormat: $scope.zestStationData.hotelDateFormat,
+				yearRange: "0:+10",
+				onSelect: function(value) {
+					$scope.showDatePicker();
+				}
+			};
+		};
+		var setReservationParams = function(){
+			$scope.reservationParams = {
+				'due_in':true,
+				'last_name':'',
+				'no_of_nights':'',
+				'alt_confirmation_number':'',
+				'email':'',
+				'date':''
+			};
+		};
+
+		var init = function() {
+			//show back button
+			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+			//show close button
+			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+			//back button action
+			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
+				$state.go('zest_station.home');
+			});
+			//starting mode
+			$scope.showDatePick = false;
+			setDateOptions();
+			setReservationParams();
+			$scope.mode = "LAST_NAME_ENTRY";
+		};
+		init();
 	}
 ]);
