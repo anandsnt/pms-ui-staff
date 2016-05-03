@@ -180,6 +180,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isBalanceReport = true;
 					break;
 
+				case reportNames['DEPOSIT_BALANCE_SUMMARY_REPORT']:
+					$scope.hasNoTotals = false;
+					$scope.showSortBy = true;
+					$scope.isBalanceReport = true;
+					break;
+
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
 					$scope.hasPagination = false;
 					break;
