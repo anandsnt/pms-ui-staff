@@ -2,6 +2,20 @@ admin.service('adExternalInterfaceCommonSrv',['$http', '$q', 'ADBaseWebSrv', 'AD
 
 	var service = this;
 
+	//-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
+
+        service.cache = {
+            config: {
+                lifeSpan: 300 //in seconds
+            },
+            responses: {
+                paymentMethods: null,
+                origins: null
+            }
+        }
+
+       //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
+
 	this.fetchSetup = function(params){
 		var deferred = $q.defer();
 		var url = 'admin/get_ota_connection_config.json?interface='+params.interface_id;
@@ -16,11 +30,19 @@ admin.service('adExternalInterfaceCommonSrv',['$http', '$q', 'ADBaseWebSrv', 'AD
 	this.fetchOrigins = function(){
 		var deferred = $q.defer();
 		var url = '/api/booking_origins.json';
-		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-		    deferred.resolve(data);
-		},function(data){
-		    deferred.reject(data);
-		});
+		if (service.cache.responses['origins'] === null || Date.now() > service.cache.responses['origins']['expiryDate']) {
+			ADBaseWebSrvV2.getJSON(url).then(function(data) {
+				service.cache.responses['origins'] = {
+					data: data,
+					expiryDate: Date.now() + (service.cache['config'].lifeSpan * 1000)
+				};
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		} else {
+			deferred.resolve(service.cache.responses['origins']['data']);
+		}
 		return deferred.promise;
 	};
 	this.fetchFailedMessages = function(){
@@ -64,12 +86,19 @@ admin.service('adExternalInterfaceCommonSrv',['$http', '$q', 'ADBaseWebSrv', 'AD
 	this.fetchPaymethods = function() {
 		var deferred = $q.defer();
 		var url = '/admin/hotel_payment_types.json';
-
-		ADBaseWebSrv.getJSON(url).then(function(data) {
-			deferred.resolve(data);
-		}, function(errorMessage) {
-			deferred.reject(errorMessage);
-		});
+		if (service.cache.responses['paymentMethods'] === null || Date.now() > service.cache.responses['paymentMethods']['expiryDate']) {
+			ADBaseWebSrv.getJSON(url).then(function(data) {
+				service.cache.responses['paymentMethods'] = {
+					data: data,
+					expiryDate: Date.now() + (service.cache['config'].lifeSpan * 1000)
+				};
+				deferred.resolve(data);
+			}, function(errorMessage) {
+				deferred.reject(errorMessage);
+			});
+		} else {
+			deferred.resolve(service.cache.responses['paymentMethods']['data']);
+		}
 		return deferred.promise;
 	};
 
