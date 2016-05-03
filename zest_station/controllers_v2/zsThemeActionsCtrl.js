@@ -92,6 +92,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 				url: {
 					active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
 					key: iconsPath + '/key.svg',
+					date: iconsPath+ '/date.svg',
 					checkin: iconsPath + '/checkin.svg',
 					checkout: iconsPath + '/checkout.svg',
 					oos: iconsPath + '/oos.svg',

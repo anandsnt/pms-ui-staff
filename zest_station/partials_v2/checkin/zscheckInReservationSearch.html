@@ -68,9 +68,11 @@
     <!---------------------------------- date -------------------------------->
     <div id="content" ng-show="mode === 'FIND_BY_DATE'">
         <h1 translate>FIND_BY_DATE</h1>
-        <form method="post" class="form">
+        <form method="post" class="form short">
             <div class="entry input" click-touch="showDatePicker()">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" ng-click="showOnScreenKeyboard('input_text')" ng-model="reservationParams.date" enter-press="dateEntered()" />
+                <!--div ng-include="'/assets/css/icons/date.svg'"></div-->
+                <div ng-include="icons.url.date"></div>
+                <input id="datepicker"  placeholder="" class="hasDatepicker start-focused"  ng-model="reservationParams.date" readonly >
             </div>
             <div class="entry action">
                 <button type="button" class="button" ng-click="dateEntered()">Next</button>
