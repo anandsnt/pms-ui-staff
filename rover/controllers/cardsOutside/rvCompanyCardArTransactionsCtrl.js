@@ -595,8 +595,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		// Handle AR Statement-EMAIL button click
 		$scope.clickedEmailArStatementButton = function(){
 			var params = getParamsToSend();
-			params.is_email = true;
-			params.to_address = 'krishobh@stayntouch.com';
+			// params.is_email = true;
+			params.to_address = 'anandp@stayntouch.com';
 			console.log($scope.statementEmailAddress);
 			var emailSuccess = function(successData){
 				$scope.$emit('hideLoader');
