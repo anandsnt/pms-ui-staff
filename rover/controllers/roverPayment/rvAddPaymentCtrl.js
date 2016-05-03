@@ -31,6 +31,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.cardsList       = [];
 	$scope.setScroller('cardsList',{'click':true, 'tap':true});
 	$scope.showCCPage = false;
+	$scope.showWarningMessage = false;
         $scope.swippedCard = false;
         $scope.initCardSwipeRenderData = function(){
             $scope.isNewCardAdded = false;
@@ -416,7 +417,15 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			(typeof $scope.passData.fromBill === "undefined")?existingCardSuccess(data):billScreenExistingCCSucess(data);
 		};
 
-		$scope.closeDialog();
+		// CICO-27644 : Handle warning message
+		// CC AUTH - do not prevent user from changing card on MLI release auth error
+		if(!!data.warnings && data.warnings.length > 0 ){
+			$scope.showWarningMessage = true;
+			$scope.warningMessage = data.warnings[0];
+		}
+		else{
+			$scope.closeDialog();
+		}
 	};
 	var ccSaveFailure = function(errorMessage){
 		$scope.$emit("hideLoader");
