@@ -437,6 +437,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successCallBackOfAddReservations = function(data) {
+            $scope.selected_reservations = data.results;
+            $scope.updateGroupReservationsGuestData();
             // $scope.newReservations = [];
             // _.each(data.results, function(reservation) {
             //     $scope.newReservations.push(reservation);
