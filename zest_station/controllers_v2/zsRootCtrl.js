@@ -178,19 +178,25 @@ sntZestStation.controller('zsRootCtrl', [
 			};
 
 			function increment() {
-				if ($scope.zestStationData.idle_timer.enabled ==='true') {
+				if ($scope.zestStationData.idle_timer.enabled ==='true' && !($state.current.name === 'zest_station.admin' || $state.current.name === 'zest_station.home')) {
 					userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
+					console.log(userInActivityTimeInSeconds);
 					//when user activity is not recorded for more than a minute
-					if (userInActivityTimeInSeconds > $scope.zestStationData.idle_timer.max) {
+					if (userInActivityTimeInSeconds >= $scope.zestStationData.idle_timer.prompt) {
 						$scope.zestStationData.timeOut = true;
 						$scope.runDigestCycle();
 					} else {
-						return;
+						//do nothing;
+					}
+					if (userInActivityTimeInSeconds >= $scope.zestStationData.idle_timer.max) {
+						$state.go('zest_station.home');
+						$scope.runDigestCycle();
+					} else {
+						//do nothing;
 					}
 				} else {
 					return;
 				}
-
 			}
 			setInterval(increment, 1000);
 		};
@@ -500,6 +506,7 @@ sntZestStation.controller('zsRootCtrl', [
 			$('body').css('display', 'none'); //this will hide contents until svg logos are loaded
 			//call Zest station settings API
 			$scope.zestStationData = zestStationSettings;
+			$scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;
 			setAUpIdleTimer();
 			$scope.zestStationData.workstationOooReason = "";
 			$scope.zestStationData.workstationStatus = "";
