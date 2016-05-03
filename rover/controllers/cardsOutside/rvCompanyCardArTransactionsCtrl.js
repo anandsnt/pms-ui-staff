@@ -521,7 +521,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			var dataFetchSuccess = function(data){
 				$scope.$emit('hideLoader');
-				$scope.statementEmailAddress = data.to_address;
+				$scope.statementEmailAddress = data.data.to_address;
 
 				ngDialog.open({
 		      		template:'/assets/partials/companyCard/rvArStatementPopup.html',
@@ -605,12 +605,12 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		// Handle AR Statement-EMAIL button click
 		$scope.clickedEmailArStatementButton = function(){
 			var params = getParamsToSend();
-
 			params.to_address = $scope.statementEmailAddress;
 
 			var emailSuccess = function(successData){
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = "";
+				$scope.closeDialog();
 			};
 			var emailFailureCallback = function(errorData){
 				$scope.$emit('hideLoader');
