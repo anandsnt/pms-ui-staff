@@ -44,6 +44,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				if(data.results.length==0)
 				{
 					$scope.mode = 'NO_MATCH';
+				}else if(data.results.length==1){
+					zsCheckinSrv.setSelectedCheckInReservations(data.results);
+					$state.go('zest_station.checkInReservationDetails');
 				}else{
 					zsCheckinSrv.setCheckInReservations(data.results);
 					$state.go('zest_station.checkInReservationDetails');
@@ -67,7 +70,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			    $scope.reservationParams.email.length >0||
 				$scope.reservationParams.date.length >0
 			) {
-				searchReservation();
+				searchReservation($scope.reservationParams);
 			} else {
 				$scope.mode = $scope.reservationParams.last_name.length >0 ? "CHOOSE_OPTIONS" :$scope.mode;
 			};
@@ -111,6 +114,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		$scope.reEnterText = function(type) {
 			if(type === 'name'){
 				$scope.mode = "LAST_NAME_ENTRY";
+				console.log("Name");
 			}
 			else if ($scope.reservationParams.no_of_nights.length > 0){
 				$scope.mode = 'NO_OF_NIGHTS_MODE';

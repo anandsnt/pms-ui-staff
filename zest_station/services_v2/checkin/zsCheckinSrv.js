@@ -7,13 +7,22 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         var that = this;
         this.checkInReservations =[];
-        this.setCheckInReservations= function(data){
+        this.setCheckInReservations = function(data){
             that.checkInReservations = [];
             that.checkInReservations = data;
         };
 
-        this.getCheckInReservations =function(){
+        this.getCheckInReservations = function(){
             return that.checkInReservations;
+        };
+        this.selectedCheckInReservation =[];
+        this.setSelectedCheckInReservations = function(data){
+            that.selectedCheckInReservation = [];
+            that.selectedCheckInReservation = data[0];
+        };
+
+        this.getSelectedCheckInReservations = function(){
+            return that.selectedCheckInReservation;
         };
 
         this.fetchReservations = function(params) {

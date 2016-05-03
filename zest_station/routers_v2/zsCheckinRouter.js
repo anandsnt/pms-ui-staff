@@ -10,7 +10,7 @@ sntZestStation.config(['$stateProvider',
         //checkin reservation details 
         $stateProvider.state('zest_station.checkInReservationDetails', {
 			url: '/checkInReservationDetails',
-			templateUrl: '/assets/partials_v2/checkin/zsCheckInReservationDetails.html',
+			templateUrl: '/assets/partials_v2/checkin/zsCheckinReservationDetails.html',
 			controller: 'zsCheckInReservationDetailsCtrl'
 		});
 
