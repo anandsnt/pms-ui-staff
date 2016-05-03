@@ -1,7 +1,7 @@
-<section id="main" role="main" class="centered" click-touch='resetTime()'>
+<section id="main" role="main" ng-class="{'centered': mode === 'CHOOSE_OPTIONS' || mode === 'NO_MATCH'" click-touch='resetTime()'>
 
 
-    <!-- last name -->
+    <!---------------------------------- last name -------------------------------->
     <div id="content" ng-show="mode === 'LAST_NAME_ENTRY'">
         <h1 translate>TYPE_LAST</h1>
         <form method="post" class="form">
@@ -15,7 +15,7 @@
     </div>
 
 
-    <!-- choose options -->
+    <!---------------------------------- choose options -------------------------------->
     <div id="content" ng-show="mode === 'CHOOSE_OPTIONS'">
         <h1>{{'CHECK_IN_SELECT_HEADER' |translate}}</h1>
         <nav id="options" role="nav">
@@ -65,7 +65,7 @@
     </div>
 
 
-    <!-- date -->
+    <!---------------------------------- date -------------------------------->
     <div id="content" ng-show="mode === 'FIND_BY_DATE'">
         <h1 translate>FIND_BY_DATE</h1>
         <form method="post" class="form">
@@ -79,7 +79,7 @@
     </div>
 
 
-    <!-- conf number -->
+    <!---------------------------------- conf number -------------------------------->
     <div id="content" ng-show="mode === 'CONFIRM_NO_MODE'">
         <h1 translate>TYPE_CONF</h1>
         <form method="post" class="form">
@@ -93,7 +93,7 @@
     </div>
 
 
-    <!-- no of nights -->
+    <!---------------------------------- no of nights -------------------------------->
     <div id="content" ng-show="mode === 'NO_OF_NIGHTS_MODE'">
         <h1 translate>FIND_BY_DATE_SUB</h1>
         <form method="post" class="form">
@@ -107,7 +107,7 @@
     </div>
 
 
-    <!-- email -->
+    <!---------------------------------- email -------------------------------->
     <div id="content" ng-show="mode === 'EMAIL_ENTRY_MODE'">
         <h1 translate>TYPE_EMAIL</h1>
         <form method="post" class="form">
@@ -121,7 +121,7 @@
     </div>
 
     
-    <!-- no match -->
+    <!---------------------------------- no match -------------------------------->
     <div id="content" ng-show="mode === 'NO_MATCH'">
         <h1 translate>RES_SRCH_SRY</h1>
         <h2 translate>RES_SRCH_SRY_SUB</h2>
