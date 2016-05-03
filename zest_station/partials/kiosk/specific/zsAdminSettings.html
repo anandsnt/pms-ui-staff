@@ -108,7 +108,7 @@
                 <div class="entry with-label">
                     <label>{{'ADMIN_STATION_PRINTER' |translate}}</label>
                     <!-- <input touch-press id="prompt_text" disabled="true" ng-model='zestStationData.printerLabel' ng-click='openPrinterMenu()'/> -->
-                     <div class="entry select disabled" touch-press='openPrinterMenu()'>
+                     <div class="entry select " ng-class="{'disabled':!isIpad}" touch-press='openPrinterMenu()'>
                            <select disabled="true" ng-model="zestStationData.printer_selected">
                                <option value="">{{printerLabel}}</option>
                            </select>

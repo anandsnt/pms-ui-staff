@@ -25,19 +25,21 @@
             <p class="sub-main-text" ng-if="!screenCMSDetails.description">Enter your last name and either your confirmation number OR departure date:</p>
             <!-- fields -->
             <div class="section-container">
-                <!-- Lat name -->
-                <p class="pull-left sub-text margin-top-10">LAST NAME ON RESERVATION</p>
-                <input type="text" class="input-field padding-2" ng-model="lastname"></input>
-                <!-- Confirmation number -->
-                <p class="pull-left sub-text margin-top-10">CONFIRMATION NUMBER</p>
-                <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
-                <br/>
-                <p class="sub-text margin-top-10">OR</p>
-                <!-- Departure date -->
-                <p class="pull-left sub-text margin-top-10">DEPARTURE DATE</p>
-                <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly></input>
-                <!-- Submit button -->
-                <a class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()"> Continue</a>
+                <form>
+                    <!-- Lat name -->
+                    <p class="pull-left sub-text margin-top-10">LAST NAME ON RESERVATION</p>
+                    <input type="text" class="input-field padding-2" ng-model="lastname"></input>
+                    <!-- Confirmation number -->
+                    <p class="pull-left sub-text margin-top-10">CONFIRMATION NUMBER</p>
+                    <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
+                    <br/>
+                    <p class="sub-text margin-top-10">OR</p>
+                    <!-- Departure date -->
+                    <p class="pull-left sub-text margin-top-10">DEPARTURE DATE</p>
+                    <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly></input>
+                    <!-- Submit button -->
+                    <input type="submit" class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()" value="Continue" />
+                </form>
             </div>
         </div>
         <div class="col-md-3">
@@ -55,9 +57,9 @@
             <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
             <!--  -->
             <div class="section-container">
-                <p class="pull-left sub-text margin-top-10 full-width" ng-show="lastname.length >0" ng-bind="lastname"></p>
-                <p class="pull-left sub-text margin-top-10 full-width" ng-show="confirmationNumber.length>0" ng-bind="confirmationNumber"></p>
-                <p class="pull-left sub-text margin-top-10 full-width" ng-show="departureDate.length >0" ng-bind="departureDate"></p>
+                <p class="sub-text margin-top-10 full-width" ng-show="lastname.length >0" ng-bind="lastname"></p>
+                <p class="sub-text margin-top-10 full-width" ng-show="confirmationNumber.length>0" ng-bind="confirmationNumber"></p>
+                <p class="sub-text margin-top-10 full-width" ng-show="departureDate.length >0" ng-bind="departureDate"></p>
                 <a class="btn btn-template margin-top-20 padding-3" ng-click="tryAgain()"> Try Again</a>
             </div>
         </div>
@@ -76,14 +78,16 @@
             <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
             <!--  -->
             <div class="section-container">
-                <p class="pull-left sub-text margin-top-10 full-width" ng-show="lastname.length >0" ng-bind="lastname"></p>
-                <p class="pull-left sub-text margin-top-10 full-width" ng-show="confirmationNumber.length>0" ng-bind="confirmationNumber"></p>
-                <p class="pull-left sub-text margin-top-10 full-width" ng-show="departureDate.length >0" ng-bind="departureDate"></p>
-                <br>
-                <p class="pull-left sub-text margin-top-10">CONFIRMATION NUMBER</p>
-                <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
-                <br/>
-                <a class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()">Continue</a>
+                <form>
+                    <p class="sub-text margin-top-10 full-width" ng-show="lastname.length >0" ng-bind="lastname"></p>
+                    <p class="sub-text margin-top-10 full-width" ng-show="confirmationNumber.length>0" ng-bind="confirmationNumber"></p>
+                    <p class="sub-text margin-top-10 full-width" ng-show="departureDate.length >0" ng-bind="departureDate"></p>
+                    <br>
+                    <p class="sub-text margin-top-10">CONFIRMATION NUMBER</p>
+                    <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
+                    <br/>
+                    <input type="submit" class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()" value="Continue" />
+                </form>
             </div>
         </div>
         <div class="col-md-3">
