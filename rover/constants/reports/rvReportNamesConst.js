@@ -36,5 +36,6 @@ angular.module('reportsModule')
 		'EMAIL_CHECKIN_SUMMARY'		   : 'Email Check In Summary',
 		'COMPANY_TA_TOP_PRODUCERS'     : 'Company/TA Top Producers',
 		'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': 'Financial Transactions - Adjustment Report',
-		'CREDIT_CHECK_REPORT'          : 'Credit Check Report'
+		'CREDIT_CHECK_REPORT'          : 'Credit Check Report',
+		'DEPOSIT_BALANCE_SUMMARY_REPORT' : 'Deposit Balance Summary Report'
 	});
