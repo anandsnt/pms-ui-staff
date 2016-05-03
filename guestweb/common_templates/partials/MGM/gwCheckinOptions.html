@@ -1,0 +1,40 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <!-- request text -->
+    <div class="row" ng-show="isPosting && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check in at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- main content -->
+    <div class="row" ng-hide="isPosting || netWorkError">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing section-container">
+            <p class="main-text margin-top-20 ">Arrival Details</p>
+            <p class="sub-main-text"> When do you plan to arrive at {{hotelName}}?
+            </p>
+             <a class="btn btn-template early-checkin-button margin-top-20" ng-click="checkinNow()">{{checkin_now_text}}</a>
+            <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-click="checkinLater()">{{checkin_later_text}}</a>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>

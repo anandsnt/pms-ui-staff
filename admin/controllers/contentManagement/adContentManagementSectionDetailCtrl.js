@@ -6,6 +6,7 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 	$scope.fileName = "Choose file...";
 	$scope.initialIcon = '';
 
+	$scope.delay_timings = [{"name":"1", "value": "1"}, {"name":"2", "value": "2"}, {"name":"3", "value": "3"}, {"name":"4", "value": "4"}, {"name":"5", "value": "5"}, {"name":"6", "value": "6"}, {"name":"7", "value": "7"}, {"name":"8", "value": "8"}, {"name":"9", "value": "9"}, {"name":"10", "value": "10"}];
 	$scope.alignments = [{"name":"Left", "value": "Left"}, {"name":"Center", "value": "Center"}, {"name":"Right", "value": "Right"}];
 	/*Initializing data, for adding a new section.
     */
@@ -15,11 +16,15 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 	            "name": "",
 	            "icon": '',
 	            "is_description_visible":false,
-	            "description_alignment": "",
+	            "description_alignment": "Center",
 	            "description": "",
 	            "is_search_enabled": false,
 	            "add_to_chain": false,
-	            "application_id": ""
+	            "application_id": "",
+	            "is_caraousal_enabled": false,
+	            "is_caraousal_auto_advance_enabled": false,
+	            "carousal_delay": "3",
+	            "is_carousal_loop_enabled": false,
             };
 
 
