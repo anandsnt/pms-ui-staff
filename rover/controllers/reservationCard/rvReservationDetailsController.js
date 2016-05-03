@@ -223,6 +223,13 @@ sntRover.controller('reservationDetailsController',
 			}
 		}, datePickerCommon);
 
+		// for groups this date picker must not allow user to pick
+		// a date that is after the group end date.
+		if ( !! $scope.reservationData.reservation_card.group_id ) {
+			$scope.departureDateOptions.maxDate = $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat);
+			console.log( $scope.departureDateOptions.maxDate );
+		}
+
 		$scope.reservationData.paymentTypes = paymentTypes;
 		$scope.reservationData.reseravationDepositData = reseravationDepositData;
 
@@ -868,7 +875,7 @@ sntRover.controller('reservationDetailsController',
 					if (response.errors.length === 0) {
 						$scope.responseValidation = response.data;
 						$scope.stayDatesExtendedForOutsideGroup = (response.data.is_group_reservation && response.data.outside_group_stay_dates) ? true : false;
-						$scope.borrowForGroups = (response.data.is_group_reservation && response.data.outside_group_stay_dates) ? true : false;
+						$scope.borrowForGroups = (response.data.is_group_reservation && ! response.data.is_room_type_available) ? true : false;
 
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',

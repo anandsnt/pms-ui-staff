@@ -846,7 +846,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 }
             });
 
-            data.outside_group_stay_dates = RVReservationStateService.getReservationFlag('outsideStaydatesForGroup');
+            // This senario is currently discharged for now, may be in future
+            // 'is_outside_group_stay_dates' will always be sent as 'false' from server
+            // data.outside_group_stay_dates = RVReservationStateService.getReservationFlag('outsideStaydatesForGroup');
+            
             data.borrow_for_groups = RVReservationStateService.getReservationFlag('borrowForGroups');
 
             //to delete ends here
