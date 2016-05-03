@@ -84,7 +84,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                 $scope.at = 'no-match';
                 
                 if ($scope.isInCheckinMode()){
-                    $state.go('zest_station.find_reservation_no_match');
+                    $state.go('zest_station.find_reservation_no_match',{
+                        mode: zsModeConstants.CHECKIN_MODE
+                    });
                 }
             } else if ($scope.reservations.length === 1 && !$scope.fetchingList){
                 $scope.mode = "single-reservation";
@@ -393,7 +395,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.at = 'no-match';
         $scope.lastAt = 'pick-up-room';
         $state.lastAt = 'pick-up-room';
-        $state.go('zest_station.find_reservation_no_match');
+        $state.go('zest_station.find_reservation_no_match', {
+            mode: zsModeConstants.PICKUP_KEY_MODE
+        });
     };
     $scope.pickupValues = {
       'last':'',
@@ -470,7 +474,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
          console.log(arguments);
          if (typeof info.msg === typeof 'str'){
              
-             if (info.msg.indexOf('Invalid') !== -1 || info.msg.indexOf('program error') !== -1){
+             if (info.msg.indexOf('Invalid') !== -1 || info.msg.indexOf('program error') !== -1 || info.msg.indexOf('no device found') !== -1){
                  $scope.at = 'input-qr-code';
                  $scope.qrCodeScanFailed = true;
                  console.warn('scan failed..');
@@ -488,7 +492,6 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     $scope.scanQRCode = function(){
         //depending on which scanner is enabled, from hotel settings > station > pickup keys
         //samsotech scans via websocket to .net app, the datalogic will use the chromeapp to scan directly
-        console.log('info:  scan with samsotech: ',$scope.zestStationData.qr_scanner_samsotech)
         if($scope.zestStationData.qr_scanner_samsotech){
             console.log($scope.socketOperator.returnWebSocketObject());
             
