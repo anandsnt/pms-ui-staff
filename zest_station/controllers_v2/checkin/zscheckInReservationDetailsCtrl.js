@@ -1,4 +1,4 @@
-sntZestStation.controller('zscheckInReservationDetailsCtrl', [
+sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 	'$scope',
 	'$rootScope',
 	'$state',
@@ -18,7 +18,11 @@ sntZestStation.controller('zscheckInReservationDetailsCtrl', [
 		**/
 
 		BaseCtrl.call(this, $scope);
-
+		var getSelectedReservations = function(){
+			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservations();
+			//Deleting reservation details from zsCheckinSrv
+			zsCheckinSrv.setSelectedCheckInReservations([]);
+		};
 		var init = function() {
 			//show back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
@@ -32,7 +36,7 @@ sntZestStation.controller('zscheckInReservationDetailsCtrl', [
 			});
 			//starting mode
 			$scope.mode = "RESERVATION_DETAILS";
-			$scope.reservationParams = {};
+			getSelectedReservations();
 		};
 		init();
 
