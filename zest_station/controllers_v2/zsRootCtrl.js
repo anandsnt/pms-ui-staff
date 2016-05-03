@@ -185,7 +185,7 @@ sntZestStation.controller('zsRootCtrl', [
 				if ($scope.zestStationData.idle_timer.enabled ==='true' 
 				    && !($state.current.name === 'zest_station.admin' 
 				    || $state.current.name === 'zest_station.home'
-				    || $state.current.name === 'zest_station.oos')) 
+				    || $state.current.name === 'zest_station.outOfService')) 
 				{
 					userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
 					//when user activity is not recorded for more than idle_timer.prompt
@@ -263,10 +263,18 @@ sntZestStation.controller('zsRootCtrl', [
 					$state.go('zest_station.speakToStaff');
 				};
 			} else if (response.Command === 'cmd_dispense_key_card') {
-				$scope.$broadcast('DISPENSE_SUCCESS', {
-					"cmd": response.Command,
-					"msg": response.Message
-				});
+				if (response.ResponseCode === 0) {	
+					$scope.$broadcast('DISPENSE_SUCCESS', {
+						"cmd": response.Command,
+						"msg": response.Message
+					});
+				}
+				else if (response.ResponseCode === 14) {	
+					$scope.$broadcast('DISPENSE_CARD_EMPTY');
+				}
+				else{
+					$scope.$broadcast('DISPENSE_FAILED');
+				};
 			}
 		};
 		var socketOpenedFailed = function() {

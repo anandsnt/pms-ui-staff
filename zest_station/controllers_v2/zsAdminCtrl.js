@@ -20,6 +20,10 @@ sntZestStation.controller('zsAdminCtrl', [
             $state.go('zest_station.home');
         });
 
+        $scope.navToPrev = function(){
+            $state.go('zest_station.home');
+        };
+
         var refreshScroller = function() {
             $scope.refreshScroller('admin-screen');
         };
@@ -166,11 +170,11 @@ sntZestStation.controller('zsAdminCtrl', [
             //well again the state variable is used here. Need to change this :(
             sntZestStation.selectedPrinter = $scope.savedSettings.printer;
             if (typeof $scope.savedSettings.kiosk.workstation.key_encoder_id !== typeof undefined) {
-                $state.encoder = $scope.savedSettings.kiosk.workstation.key_encoder_id;
+                $scope.zestStationData.encoder = $scope.savedSettings.kiosk.workstation.key_encoder_id;
             } else {
-                $state.encoder = '';
+                $scope.zestStationData.encoder = '';
             }
-            $state.emv_terminal_id = $scope.savedSettings.kiosk.workstation.emv_terminal_id;
+            $scope.zestStationData.emv_terminal_id = $scope.savedSettings.kiosk.workstation.emv_terminal_id;
         };
         var getTheSelectedWorkStation = function() {
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
