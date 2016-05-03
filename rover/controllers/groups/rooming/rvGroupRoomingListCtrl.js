@@ -324,57 +324,14 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          */
         var successCallBackOfFetchRoomingDetails = function(data) {
             var toI = util.convertToInteger;
-            //if we dont have any data in our hand
-            if ($scope.roomTypesAndData.length === 0) {
-                //adding available room count over the data we got
-                $scope.roomTypesAndData = _.map(data.result, function(data) {
-                    data.availableRoomCount = toI(data.total_rooms) - toI(data.total_pickedup_rooms);
-                    data.availableRoomCount = (data.availableRoomCount < 0) ? 0 : data.availableRoomCount;
-                    return data;
-                });
-                //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
-                $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
-
-            }
-            else if (data.result.length === 0) {
-                // No room type configured
-                $scope.roomTypesAndData = [];
-            }
-            //if we have any data in our hand, just updating the available room count
-            else {
-                _.each($scope.roomTypesAndData, function(roomTypeData) {
-                    var correspondingActualData = _.findWhere(data.result, {
-                        room_type_id: roomTypeData.room_type_id
-                    });
-
-                    //CICO-20169 Handles cases where total rooms are updated in room block
-                    _.extend(roomTypeData, correspondingActualData);
-
-                    roomTypeData.availableRoomCount = toI(correspondingActualData.total_rooms) - toI(correspondingActualData.total_pickedup_rooms);
-                    roomTypeData.availableRoomCount = (roomTypeData.availableRoomCount < 0) ? 0 : roomTypeData.availableRoomCount;
-                });
-
-                //if we've added a new room type from room block & we are switching the tab
-                if (data.result.length !== $scope.roomTypesAndData.length) {
-                    //we've to find the newly added id of room types
-                    var new_room_type_ids = _.pluck(data.result, "room_type_id"),
-                        existing_room_type_ids = _.pluck($scope.roomTypesAndData, "room_type_id"),
-                        room_type_ids_to_add = _.difference(new_room_type_ids, existing_room_type_ids);
-
-                    //adding the newly added room type to the existing array
-                    for (var i = 0; i < room_type_ids_to_add.length; i++) {
-                        var room_type_to_add = _.findWhere(data.result, {
-                            room_type_id: room_type_ids_to_add[i]
-                        });
-
-                        if (room_type_to_add) {
-                            room_type_to_add.availableRoomCount = toI(room_type_to_add.total_rooms) - toI(room_type_to_add.total_pickedup_rooms);
-                            room_type_to_add.availableRoomCount = (room_type_to_add.availableRoomCount < 0) ? 0 : room_type_to_add.availableRoomCount;
-                        }
-                        $scope.roomTypesAndData.push(room_type_to_add);
-                    }
-                }
-            }
+            
+            //adding available room count over the data we got
+            $scope.roomTypesAndData = _.map(data.result, function(data) {
+                data.availableRoomCount = toI(data.total_rooms) - toI(data.total_pickedup_rooms);
+                return data;
+            });
+            //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
+            $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
 
             //we have to populate possible number of rooms & occupancy against a
             $scope.changedSelectedRoomType();
