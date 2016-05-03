@@ -1135,7 +1135,48 @@
 
             /* 24-hours grid ***/
             &.hours-24 {
+                .sidebar-right {
+                    &#room-diary-rooms { 
+                        .occupancy-block { 
+                            height: 24px;
+                            margin-bottom: 0;
 
+                            .occupancy-status{
+                               line-height: 24px;
+                               padding: 0 60px 0 10px;
+                               .float;
+                                font-size: 12px;
+
+                                .guest-name {
+                                    .pull-left();
+                                    .calc-width(100, 95 );
+                                }
+                               .room-type {
+                                .pull-right();
+                                font-size: 11px;
+                                text-align: right;
+                                width: 90px;
+                               }
+                               &:before {
+                                    background-size: 20px 20px !important;
+                                }
+                            }
+
+                            .occupancy-time { 
+                                line-height: 24px;
+                                padding: 0px 5px;
+                                font-size: 12px;
+                                font-weight: normal;
+                                text-align: left;
+                                .eta {
+                                    font-size: 12px;
+                                    .pull-right();
+                                }
+                            }
+                        
+                        }
+                    }
+                 }
                 .diary-rooms {
                     .room-title {
                         height: 24px;
