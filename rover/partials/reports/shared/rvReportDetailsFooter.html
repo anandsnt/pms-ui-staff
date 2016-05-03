@@ -15,9 +15,9 @@
 			<label>Cancellation Dates - </label>
 			From: <span>{{ appliedFilter.cancelFromDate | date:dateFormat }}</span> To: <span>{{ appliedFilter.cancelToDate | date:dateFormat }}</span>
 		</div>
-		
-		
-		
+
+
+
 		<!-- rate adjustment date range -->
 		<div ng-if="appliedFilter.adjustmentFromDate || appliedFilter.adjustmentToDate">
 			<label>Rate Adjustment Dates - </label>
@@ -208,6 +208,11 @@
 		<div ng-if="appliedFilter.hasMinRoomNights">
 			Minimum Room Nights: <span>{{ appliedFilter.hasMinRoomNights }}</span>
 		</div>
+
+		<!-- <div ng-if="appliedFilter.guestOrAccount.length && isDepositBalanceReport">
+			From <span>11-12-2015</span> to <span>11-12-2015</span><br/>
+			Guest/Account: <span>{{ appliedFilter.guestOrAccount.join(', ') }}</span>
+		</div> -->
 
 
 		<!-- Never REMOVE this span -->

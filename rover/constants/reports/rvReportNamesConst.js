@@ -37,5 +37,5 @@ angular.module('reportsModule')
 		'COMPANY_TA_TOP_PRODUCERS'     : 'Company/TA Top Producers',
 		'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': 'Financial Transactions - Adjustment Report',
 		'CREDIT_CHECK_REPORT'          : 'Credit Check Report',
-		'DEPOSIT_BALANCE_SUMMARY_REPORT' : 'Deposit Balance Summary Report'
+		'DEPOSIT_SUMMARY' : 'Deposit Summary'
 	});

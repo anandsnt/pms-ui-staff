@@ -82,6 +82,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isDepositReport = false;
 			$scope.isCondensedPrint = false;
 			$scope.isBalanceReport = false;
+			$scope.isDepositBalanceReport = false;
 
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
@@ -180,10 +181,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.isBalanceReport = true;
 					break;
 
-				case reportNames['DEPOSIT_BALANCE_SUMMARY_REPORT']:
+				case reportNames['DEPOSIT_SUMMARY']:
 					$scope.hasNoTotals = false;
 					$scope.showSortBy = true;
-					$scope.isBalanceReport = true;
+					//$scope.isDepositBalanceReport = true;
+					//$scope.isBalanceReport = true;
 					break;
 
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
@@ -316,6 +318,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['CREDIT_CHECK_REPORT']:
 					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 2;
+					break;
+
+				case reportNames['DEPOSIT_SUMMARY']:
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 3;
 					break;
 
 				default:
@@ -506,7 +513,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 						$scope.detailsTemplateUrl = '/assets/partials/reports/shared/rvCommonReportDetails.html';
 					};
 					break;
-				case reportNames['DEPOSIT_BALANCE_SUMMARY_REPORT']:
+				case reportNames['DEPOSIT_SUMMARY']:
 						$scope.hasReportTotals    = true;
 						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
 						$scope.detailsTemplateUrl = '/assets/partials/reports/depositBalanceSummary/rvGuestAndGroupDepositBalanceDetails.html';
