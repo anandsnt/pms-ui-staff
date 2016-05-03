@@ -126,6 +126,7 @@ angular.module('stayCardModule', [])
                         company_id: $stateParams.company_id,
                         travel_agent_id: $stateParams.travel_agent_id,
                         group_id: $stateParams.group_id || $stateParams.allotment_id,
+                        override_restrictions: $stateParams.override_restrictions,
                         promotion_code: $stateParams.promotion_code,
                         adults: $stateParams.adults,
                         children: $stateParams.children,
