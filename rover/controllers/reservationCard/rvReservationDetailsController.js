@@ -227,7 +227,6 @@ sntRover.controller('reservationDetailsController',
 		// a date that is after the group end date.
 		if ( !! $scope.reservationData.reservation_card.group_id ) {
 			$scope.departureDateOptions.maxDate = $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat);
-			console.log( $scope.departureDateOptions.maxDate );
 		}
 
 		$scope.reservationData.paymentTypes = paymentTypes;
@@ -656,8 +655,7 @@ sntRover.controller('reservationDetailsController',
 				fromState: $state.current.name,
 				company_id: $scope.$parent.reservationData.company.id,
 				travel_agent_id: $scope.$parent.reservationData.travelAgent.id,
-				group_id: $scope.$parent.reservationData.group.id,
-				// group_id: $scope.borrowForGroups ? '' : $scope.$parent.reservationData.group.id,
+				group_id: $scope.borrowForGroups ? '' : $scope.$parent.reservationData.group.id,
 				borrow_for_groups: $scope.borrowForGroups,
 				room_type_id: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
                 adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
