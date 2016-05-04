@@ -31,7 +31,7 @@
         <h2>{{'RES_SRCH_SRY_SUB' |translate}}</h2>
         <nav id="options" role="nav">
             <ul role="menu">
-                <li>
+                <li ng-if="!qrCodeScanFailed">
                     <button type="button" class="button option" touch-press='reEnterLastName(reservationParams.last_name)'>
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
@@ -39,10 +39,18 @@
                     {{'RES_SRCH_RE_ENTER_LAST' |translate}}
                     <span>"{{reservationParams.last_name}}"</span>
                 </li>
+                <li ng-if="qrCodeScanFailed">
+                    <button type="button" 
+                            class="button option" 
+                            touch-press='retryQRScan()'>
+                        <div ng-include="icons.url.qr_noarrow"></div>
+                    </button>
+                    {{'QR_SCAN_RETRY' |translate}}
+                </li>
                 <li class="break">
                     <span>Or</span>
                 </li>
-                <li ng-show="showRoomEnter">
+                <li ng-show="showRoomEnter && !qrCodeScanFailed">
                     <button type="button" class="button option" touch-press='reEnterRoomNumber(reservationParams.room_no)'>
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
@@ -81,7 +89,8 @@
             <h1>{{'QR_LOOKUP_BUTTON_TEXT' |translate}}</h1>
         </nav>
     </div>
-    <div ng-include="'/assets/partials/kiosk/specific/zsQRScanFailure.html'">
-    </div>
+    
+    <div ng-include="'/assets/partials/kiosk/specific/zsQRScanFailure.html'"></div>
+    
     <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
 </section>

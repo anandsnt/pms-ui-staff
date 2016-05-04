@@ -18,10 +18,10 @@
             <!-- API response would have  statisticsData.rate_of_day.tomorrow as NULL if not configured -->
         	{{tomorrow|date:monthAndDate}}
         	<span class="rate">{{(statisticsData.rate_of_day.tomorrow && statisticsData.rate_of_day.tomorrow.name) || '&#160;'}}</span>
-            <span class="value" ng-show="statisticsData.rate_of_day.tomorrow.amount !== null">
+            <span class="value" ng-show="statisticsData.rate_of_day.tomorrow !== null">
                 {{currencySymbol}}{{statisticsData.rate_of_day.tomorrow.amount | number : 2}}
             </span>
-            <span class="value" ng-hide="statisticsData.rate_of_day.tomorrow.amount !== null">
+            <span class="value" ng-hide="statisticsData.rate_of_day.tomorrow !== null">
                 CLOSED
             </span>
         </li>
@@ -31,10 +31,10 @@
             <span class="rate" >
                 {{(statisticsData.rate_of_day.day_after_tomorrow && statisticsData.rate_of_day.day_after_tomorrow.name) || '&#160;'}}
             </span>
-            <span class="value" ng-show="escapeNull(statisticsData.rate_of_day.day_after_tomorrow.amount) !== null">
+            <span class="value" ng-show="escapeNull(statisticsData.rate_of_day.day_after_tomorrow) !== null">
                 {{currencySymbol}}{{statisticsData.rate_of_day.day_after_tomorrow.amount | number : 2}}
             </span>
-            <span class="value" ng-hide="statisticsData.rate_of_day.day_after_tomorrow.amount !== null">
+            <span class="value" ng-hide="statisticsData.rate_of_day.day_after_tomorrow !== null">
                 CLOSED
             </span>
         </li>
