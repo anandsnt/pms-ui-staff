@@ -379,6 +379,7 @@ sntZestStation.controller('zsRootCtrl', [
 				};
 				// set work station id and status
 				$scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
+				$scope.zestStationData.key_encoder_id =  $scope.getStationIdFromName(station.name).key_encoder_id;
 				$scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
 				if ($scope.zestStationData.workstationStatus === 'out-of-order') {
 					$state.go('zest_station.outOfService');

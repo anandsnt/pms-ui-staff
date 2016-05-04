@@ -84,7 +84,8 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 		*  Call back action broadcasted from root ctrl
 		**/
 		$scope.$on('QR_SCAN_SUCCESS', function(event, data) {
-			fetchReservationDetails(data.reservation_id)
+			console.info("QR scanned reservation_id:------>"+data.reservation_id);
+			fetchReservationDetails(data.reservation_id);
 		});
 
 		var initChromeAppQRCodeScanner = function() {
