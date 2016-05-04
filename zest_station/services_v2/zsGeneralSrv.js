@@ -41,5 +41,20 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+
+
+        this.fetchReservationDetails = function(param) {
+            var  url = '/staff/staycards/reservation_details.json?reservation_id=' + param.reservation_id;
+            var deferred = $q.defer();
+            
+            zsBaseWebSrv2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
 	}
 ]);
