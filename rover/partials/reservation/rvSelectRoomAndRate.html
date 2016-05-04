@@ -28,7 +28,7 @@
         <label class="checkbox inline dates-toggle" ng-click="toggleStayDaysMode()" ng-hide="borrowForGroups || stateCheck.activeMode=='CALENDAR'">
             <span class="icon-form icon-checkbox" ng-class="{'checked': stateCheck.stayDatesMode}"></span> {{'SHOW_STAY_DATES'|translate}}
         </label>
-        <label class="checkbox inline" ng-click="toggleClosedRates();" ng-hide="borrowForGroups || stateCheck.activeMode=='CALENDAR'">
+        <label class="checkbox inline" ng-click="toggleClosedRates();" ng-hide="stateCheck.activeMode=='CALENDAR'">
             <span class="icon-form icon-checkbox" ng-class="{'checked': stateCheck.showClosedRates}"></span> {{'SHOW_CLOSED_RATES'|translate}}
         </label>
     </div>
