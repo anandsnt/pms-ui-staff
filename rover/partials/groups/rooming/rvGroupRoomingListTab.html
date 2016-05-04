@@ -99,7 +99,7 @@
         <!-- Don't show this <li> if there are no rooms selected -->
          <li>
              <!-- This button opens modal ../modals/rooming-list/add-or-edit.html -->
-            <button type="button" class="button purple" ng-click="updateGroupReservationsGuestData()">Edit Names</button>
+            <button type="button" ng-class="{'grey': shouldDisableAutoRoomAssignButton(), 'brand-colors': !shouldDisableAutoRoomAssignButton()}" ng-disabled="shouldDisableAutoRoomAssignButton()" class="button purple" ng-click="updateGroupReservationsGuestData()">Edit Names</button>
         </li>
         <li>
             <!-- Don't show if there are no rooms in the rooming list -->
