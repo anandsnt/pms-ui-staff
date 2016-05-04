@@ -89,9 +89,8 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				} else if ($scope.noOfKeysSelected > noOfKeysCreated) {
 					//if more key is needed
 					$scope.mode = "KEY_ONE_CREATION_SUCCESS_MODE";
-					console.log($scope.noOfKeysSelected + "...." + noOfKeysCreated);
-					console.log("\n\n");
-					$timeout(dispenseKey, 4000);
+					//provide some timeout for user to grab keys
+					$timeout(dispenseKey, 6000);
 				}
 			};
 			$scope.callAPI(zsGeneralSrv.saveUIDtoRes, {
@@ -161,6 +160,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				if ($scope.noOfKeysSelected === 1) {
 					$scope.mode = 'SOLO_KEY_CREATION_IN_PROGRESS_MODE';
 				} else if (noOfKeysCreated === 0) {
+					//one key has been made out of total 2
 					$scope.mode = 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
 				} else {
 					//do nothing
@@ -183,8 +183,10 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				//all keys are made
 				$scope.mode = "KEY_CREATION_SUCCESS_MODE";
 			} else if ($scope.noOfKeysSelected > noOfKeysCreated) {
+				//one key has been made out of total 2
 				$scope.mode = "KEY_ONE_CREATION_SUCCESS_MODE";
-				$timeout(initMakeKey, 4000);
+				//provide some timeout for user to grab keys
+				$timeout(initMakeKey, 6000);
 			}
 		};
 
