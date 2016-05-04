@@ -10,6 +10,9 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 			templateUrl: '/assets/partials_v2/zsRoot.html',
 			controller: 'zsRootCtrl',
 			resolve: {
+				hotelTimeData: function(zsGeneralSrv){
+					return zsGeneralSrv.fetchHotelTime();
+				},
 				cssMappings: function(zsCSSMappings) {
 					return zsCSSMappings.fetchCSSMappingList();
 				},

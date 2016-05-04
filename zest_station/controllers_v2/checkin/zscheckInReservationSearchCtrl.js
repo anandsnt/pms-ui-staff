@@ -148,8 +148,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			$scope.dateOptions = {
 				dateFormat: $scope.zestStationData.hotelDateFormat,
 				yearRange: "0:+10",
-				//TODO - Change to Bussiness date
-				minDate: new Date('01-01-2016'),
+				minDate: new Date($scope.zestStationData.bussinessDate),
 				onSelect: function(value) {
 					$scope.showDatePicker();
 				}

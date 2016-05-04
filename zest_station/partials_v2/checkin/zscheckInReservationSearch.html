@@ -27,7 +27,7 @@
                     </button>
                     {{'CHECK_IN_SELECT_DATE' |translate}}
                 </li>
-                <li class="break" ng-show="showSeparator('departure_date')">
+                <li class="break" ng-show="zestStationData.checkin_screen.authentication_settings.departure_date && !zestStationData.isHourlyRateOn">
                     <span translate>OR_TEXT</span>
                 </li>
                 <li ng-show="zestStationData.checkin_screen.authentication_settings.number_of_nights && !zestStationData.isHourlyRateOn">
@@ -38,7 +38,7 @@
                     {{'CHECK_IN_NO_OF_NIGHTS' |translate}}
                     <span translate>CHECK_IN_NO_OF_NIGHTS_SUB</span>
                 </li>
-                <li class="break" ng-show="showSeparator('number_of_nights')">
+                <li class="break" ng-show="zestStationData.checkin_screen.authentication_settings.number_of_nights && !zestStationData.isHourlyRateOn">
                     <span translate>OR_TEXT</span>
                 </li>
                 <li ng-show="zestStationData.checkin_screen.authentication_settings.email">
@@ -49,7 +49,7 @@
                     {{'CHECK_IN_SELECT_EMAIL' |translate}}
                     <span translate>CHECK_IN_SELECT_EMAIL_SUB</span>
                 </li>
-                <li class="break" ng-show="showSeparator('email')">
+                <li class="break" ng-show="zestStationData.checkin_screen.authentication_settings.email">
                     <span translate>OR_TEXT</span>
                 </li>
                 <li ng-show="zestStationData.checkin_screen.authentication_settings.confirmation">
