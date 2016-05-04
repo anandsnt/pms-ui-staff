@@ -8,14 +8,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
     function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams) {
 
 
-        //This controller is used for viewing reservation details
-        //add / removing additional guests and transitioning to
-        //early checkin upsell or terms and conditions
-
-        /** MODES in the screen
-         *   1.RESERVATION_DETAILS --> view details
-         *   2. --> Add / Remove Guests// placeholder
-         **/
+        //This controller is to select checkin reservation from list of reservations.
 
         BaseCtrl.call(this, $scope);
 
