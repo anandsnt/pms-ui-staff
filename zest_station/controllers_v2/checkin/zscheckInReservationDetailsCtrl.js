@@ -28,7 +28,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 			var onSuccessFetchReservationDetails = function(data){
 				$scope.selectedReservation.reservation_details =data.data.reservation_card;
 				if(isRateSuppressed()){
-					$scope.selectedReservation.reservation_details.balance =0;
+					$scope.selectedReservation.reservation_details.balance = 0;
 				}
 				fetchAddons();
 			};
@@ -73,6 +73,15 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
 		$scope.addRemove = function() {
 			$state.go('zest_station.add_remove_guests');
+		};
+                
+                //will need to check for ECI & Terms bypass, happy path for now
+		$scope.goToTerms = function() {
+			$state.go('zest_station.checkInTerms',{
+                            'id': $scope.selectedReservation.reservation_details.reservation_id,
+                            'deposit_amount':$scope.selectedReservation.reservation_details.deposit_amount,
+                            'payment_type_id':$scope.selectedReservation.reservation_details.payment_type,
+                        });
 		};
 	}
 ]);

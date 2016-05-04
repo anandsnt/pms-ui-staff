@@ -23,10 +23,21 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
             };
             var goToCardSign = function(){
-                $state.go('zest_station.card_sign');
+                $scope.showSignature = true;
             };
 
 
+            $scope.clearSignature = function(){
+                $scope.signatureData = '';
+                $("#signature").jSignature("clear");
+            };
+            
+            $scope.proceedToDeposit = function(){
+                $state.go('zest_station.checkInCardSwipe',{
+                    'mode': 'DEPOSIT'
+                }); 
+            };
+            
             $scope.swipeData = {};
             $scope.$on('SWIPE_ACTION',function(evt, swipedCardData){
                 console.info(swipedCardData)
@@ -64,7 +75,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         var getMLISession = function(){
                 this.MLIOperator = new MLIOperation();
                 saveSwipedCardMLI();
-        }
+        };
         
         var saveSwipedCardMLI = function(data){
             if (!data){
@@ -141,7 +152,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $state.go('zest_station.error');
         };
 
-            
+                
+                var isDepositMode = function(){
+                    if ($stateParams.mode === 'DEPOSIT') {
+                        return true;
+                    } else return false;
+                };
+                
 		var setTimeOutFunctionToEnsureSocketIsOpened = function() {
 			$timeout(function() {
 				// so inorder to avoid a possible error because of
@@ -150,7 +167,17 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 			}, 1000);
 
 		};
+                var setDepositSettings = function(){
+                        $scope.currencySymbol = $scope.zestStationData.currencySymbol;
+                        $scope.depositAmount = $stateParams.deposit_amount;
+                };
+                
 		var init = function() {
+                    console.log($stateParams)
+                    //if at the deposit screen, set the currency symbol and amount due, which should be passed from reservation details
+                    if (isDepositMode()){
+                        setDepositSettings();
+                    }
                     //$scope.$emit('SWIPE_ACTION',{});
 			setTimeOutFunctionToEnsureSocketIsOpened();
 			console.info("websocket: readyState -> " + $scope.socketOperator.returnWebSocketObject().readyState);
@@ -171,17 +198,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 			$controller('zsKeyDispenseCtrl', {$scope: $scope});
 		}();
 
-        /*
-         * Sets variables for deposit navigation
-         */    
-        var initDepositScreen = function(){
-            $scope.showDeposit = true;
-            $scope.currencySymbol = '$';//get from settings
-            $scope.depositAmount = '122.99';//from reservation details
-            
-            
-            
-        };
         /*
          * Sets variables for Credit Card Screen
          */
