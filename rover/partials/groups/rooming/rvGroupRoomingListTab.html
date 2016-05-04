@@ -103,7 +103,11 @@
         </li>
         <li>
             <!-- Don't show if there are no rooms in the rooming list -->
-            <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked': groupConfigData.summary.hide_rates }">
+            <button type="button" ng-click="sendRoomingList()" class="button with-icon blue email-print">
+                <span class="icons icon-invoice"></span>
+                Email/Print
+            </button>
+           <!--  <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked': groupConfigData.summary.hide_rates }">
                 <span class="icon-form icon-checkbox" ng-class="{ 'checked':groupConfigData.summary.hide_rates }"></span>
                 <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
                 {{ 'DONT_PRINT_RATE' | translate }}
@@ -116,7 +120,7 @@
             <button type="button" class="button blue with-icon only-icon" ng-hide="reservations.length ==0" ng-click="fetchReservationsForPrintingRoomingList()">
                 <span class="icons icon-print"></span>
                 {{'GROUP_PRINT'|translate}}
-            </button>
+            </button> -->
             <button type="button" class="batch button with-icon" ng-click="printRegistrationCards();"
                     ng-class="{'grey' : totalPickUpCount < 1,'brand-colors' : totalPickUpCount > 0}"
                     ng-disabled="totalPickUpCount < 1">

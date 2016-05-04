@@ -1652,6 +1652,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
     		//calling initially required APIs
             callInitialAPIs();
     	});
+        $scope.$on("REFRESH_GROUP_ROOMING_LIST_WITH_UPDATES", function (event) {
+            initializeMe();
+        });
 
         $scope.checkoutReservation = function(reservation) {
             //  It navigates to the Guest Bill for the selected record.
@@ -1763,9 +1766,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return - None
          */
         $scope.sendRoomingList = function() {
-                if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
-                    $scope.sendEmail($scope.groupConfigData.summary.contact_email);
-                } else {
+                // if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
+                //     $scope.sendEmail($scope.groupConfigData.summary.contact_email);
+                // } else {
                     ngDialog.open({
                         template: '/assets/partials/groups/rooming/popups/general/rvRoomingListEmailPrompt.html',
                         className: '',
@@ -1773,7 +1776,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                         closeByDocument: false,
                         closeByEscape: false
                     });
-                }
+                // }
             };
             /**
              * Function to send e-mail of Rooming list.API call goes here.

@@ -59,7 +59,7 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
     };
     var successCallBackOfUpdateGuestData = function(){
         $scope.closeDialog();
-        $scope.$emit("REFRESH_GROUP_ROOMING_LIST_DATA");
+        $scope.$emit("REFRESH_GROUP_ROOMING_LIST_WITH_UPDATES");
     };
     /*
      * To update all selected reservations guest data
