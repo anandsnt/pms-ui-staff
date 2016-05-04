@@ -66,9 +66,5 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             listReservations();
         };
         init();
-
-        $scope.addRemove = function() {
-            $state.go('zest_station.add_remove_guests');
-        };
     }
 ]);
