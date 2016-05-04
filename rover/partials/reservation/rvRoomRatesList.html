@@ -80,8 +80,8 @@
                             <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
                             <span class="count red" ng-show="stateCheck.stayDatesMode && room.defaultRate.dates[stateCheck.dateModeActiveDate].availability < 5">
                                 {{room.defaultRate.dates[stateCheck.dateModeActiveDate].availability}} room(s) left
-                                <label ng-if="room.defaultRate.isGroupRate"> in Group Block</label>
-                                <label ng-if="room.defaultRate.isAllotmentRate"> in Allotment</label>
+                                <label ng-if="!borrowForGroups && room.defaultRate.isGroupRate"> in Group Block</label>
+                                <label ng-if="!borrowForGroups && room.defaultRate.isAllotmentRate"> in Allotment</label>
                             </span>
                             <span class="count red" ng-show="!stateCheck.stayDatesMode && room.availability < 5">
                                 {{room.availability}} room(s) left
@@ -102,11 +102,11 @@
                         <div class="book-rate" ng-if="room.isCollapsed">
                             <h4 ng-hide="borrowForGroups || room.defaultRate.isCorporate" translate>RESV_BEST_RATE</h4>
                             <h4 ng-show="!borrowForGroups && room.defaultRate.isCorporate" translate>RESV_COR_RATE</h4>
-                            <div class="price" ng-if="!room.defaultRate.isSuppressed">
+                            <div class="price" ng-if="!borrowForGroups && !room.defaultRate.isSuppressed">
                                 {{currencySymbol}}{{room.defaultRate.adr | number: 2}}
                                 <span translate>RESV_AVG_NIGHT</span>
                             </div>
-                            <div class="price" ng-if="room.defaultRate.isSuppressed">
+                            <div class="price" ng-if="!borrowForGroups && room.defaultRate.isSuppressed">
                                 SR<span translate>RESV_AVG_NIGHT</span>
                             </div>
                             <button class="button white blue-text" ng-show="stateCheck.selectedStayDate.rate.id == room.defaultRate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)" ng-click="handleNoEdit($event,room.id,room.defaultRate.id)">
