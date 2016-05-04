@@ -97,10 +97,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                      "is_kiosk":true,
                      'signature':signature
                  };
-                  $scope.afterGuestCheckinCallback({'status':'success'});
-                // setTimeout(function(){
-                //     $scope.invokeApi(zsTabletSrv.checkInGuest, checkinParams, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback); 
-                // },500);
+                setTimeout(function(){
+                    $scope.invokeApi(zsTabletSrv.checkInGuest, checkinParams, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback); 
+                },500);
                 
         };
         $scope.clearSignature = function(){

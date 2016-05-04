@@ -49,6 +49,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
 		$rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";//Wednesday, 06-04-2014
 		$rootScope.longDateFormat = "MMM dd, yyyy";//Wednesday, 06-04-2014
+		$rootScope.dateFormatForAPI = "yyyy-MM-dd";
 		$rootScope.currencySymbol = "";
 		// Initialise $rootScope.isHourlyRatesEnabled to false; the value is set on call to api/hotel_settings
 		$rootScope.isHourlyRatesEnabled = false;
