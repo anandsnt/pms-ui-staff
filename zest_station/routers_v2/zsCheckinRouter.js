@@ -19,6 +19,17 @@ sntZestStation.config(['$stateProvider',
 			templateUrl: '/assets/partials_v2/checkin/zsSelectReservationForCheckIn.html',
 			controller: 'zsSelectReservationForCheckInCtrl'
 		});
+		//select nationality
+		$stateProvider.state('zest_station.collectNationality', {
+            url         : '/collect_nationality/:guestId',
+            templateUrl : '/assets/partials_v2/checkin/zsCollectNationality.html',
+            controller  : 'zsCollectNationalityCtrl',
+            resolve: {
+                countryList: function(zsGeneralSrv){
+                    return zsGeneralSrv.fetchCountryList();
+                }
+            }
+        });
 
 		//checkin key dispense
 		$stateProvider.state('zest_station.checkInKeyDispense', {
