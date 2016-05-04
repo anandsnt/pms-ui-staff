@@ -144,7 +144,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * Should we show buttons in roomblock
 		 */
 		$scope.shouldShowRoomBlockActions = function() {
-			return $scope.shouldHideAddRoomsButton();
+			return !$scope.allotmentConfigData.summary.is_cancelled && $scope.shouldHideAddRoomsButton();
 		};
 
 		$scope.shouldShowApplyToHeldCountsButton = function() {
