@@ -1,10 +1,10 @@
-<section ng-show='!showSignature' id="main" class="centered" role="main" click-touch='resetTime()'>
+<section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content">
         
-        <h1>{{'TO_COMPLETE' |translate}}</h1>
-        <h2>{{'SWIPE_CARD_PLEASE' |translate}}</h2>
+        <h1 translate>TO_COMPLETE</h1>
+        <h2 translate>SWIPE_CARD_PLEASE</h2>
         
-        <h1 ng-if='swipeError'>{{'SWIPE_ERR_HEADER' |translate}}</h1>
+        <h1 ng-if='swipeError' translate>SWIPE_ERR_HEADER</h1>
         
         <nav id="options" role="nav">
             <ul role="menu">
@@ -22,58 +22,29 @@
                     <button type="button" class="button option" touch-press='reTryCardSwipe()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
-                    <h1>{{'TRY_AGAIN' |translate}}</h1>
+                    <h1 translate>TRY_AGAIN</h1>
                 </li>
-                
                 
                 <li class="break" ng-show='at === "swipe-pay-error"'>
                     <span translate>OR_TEXT</span>
                 </li>
                 
-                
-                
                 <li ng-show='at === "key-error" && !pickupkeys'> 
                     <button type="button" class="button option" touch-press='skipKeys()'>
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    <h1>{{'CONTINUE_TEXT' |translate}}</h1>
+                    <h1 translate>CONTINUE_TEXT</h1>
                 </li>
 
                 <li ng-show='at === "key-error" || at === "swipe-pay-error"'> 
                     <button type="button" class="button option" touch-press='initStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
-                    <h1>{{'SPEAK' |translate}}</h1>
-                    <h4>{{'SPEAK_SUB' |translate}}</h4>
+                    <h1 translate>SPEAK</h1>
+                    <h4 translate>SPEAK_SUB</h4>
                 </li>
 
             </ul>
         </nav>
     </div>
 </section>
-
-<!-- Content -->
-<section id="main" class="centered" role="main" ng-show='showSignature' click-touch='resetTime()'>
-    <div id="content">
-        <h1>{{'SIGN_SCREEN' |translate}}</h1>
-                <form type="post" action="" id="signature">
-        <form id="signature-pad" class="complete-registration form" style=' height: 295px; border-radius: 8px;'>
-            <div>
-                    <div class="sig">
-                        <div width='100%' class='station-sign' id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
-
-                        </div>
-                    </div>
-            </div>
-        </form>
-        </form>
-                   
-    </div>
-    <div>
-        <div id="actions" class="add-guests-footer sign" >
-            <button type="button" class="button transparent prev" touch-press='clearSignature()'>{{'CLEAR_BTN' |translate}}</button>
-            <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()">{{'NEXT_BTN' |translate}}</button>
-        </div>
-    </div>
-</section>
-

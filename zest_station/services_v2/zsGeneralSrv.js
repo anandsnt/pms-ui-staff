@@ -4,7 +4,7 @@
 
 sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2',
 	function($http, $q, zsBaseWebSrv, zsBaseWebSrv2) {
-
+            var that = this;
 		this.getDoorLockSettings = function() {
 			var deferred = $q.defer(),
 				url = 'api/door_lock_interfaces.json';
@@ -54,7 +54,34 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+        
+        this.ValidateEmail = function(email) {
+            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+                return false;
+            } else return true;
+        };
+        
+        this.isValidEmail = function(email) {
+            if (email === ''){return false;};
+            email = email.replace(/\s+/g, '');
+            if (that.ValidateEmail(email)) {
+                return false;
+            } else return true;
 
+        };
+        
+        
+        this.tokenize = function(data) {
+                var deferred = $q.defer();
+                var url = '/staff/payments/tokenize';
+
+                zsBaseWebSrv.postJSON(url, data).then(function(data) {
+                        deferred.resolve(data);
+                }, function(data) {
+                        deferred.reject(data);
+                });
+                return deferred.promise;
+        };
 
 	}
 ]);
