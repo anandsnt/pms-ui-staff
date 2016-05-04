@@ -3,7 +3,6 @@ module.exports = {
 		var sharedRoot 	= 'shared/',
 		jsLibRoot 		= sharedRoot + 'lib/js/',
 		zestRoot 		= 'zest_station/',
-		roverRoot 		= 'rover/',
                 
 		adminJsAssets 	= {
 			minifiedFiles: [
@@ -39,7 +38,6 @@ module.exports = {
                                 
 			],
 			nonMinifiedFiles: [
-                                roverRoot + 'rvSwipeOperations.js',
 				jsLibRoot + 'bindonce.js',
 				jsLibRoot + 'iscroll.js', 
 				jsLibRoot + 'ng-iscroll.js', 
@@ -70,6 +68,10 @@ module.exports = {
 				zestRoot + 'routers_v2/**/*.js',
 				zestRoot + 'constants/**/*.js',
                                 //jquery virtual keyboard files
+                                
+                                zestRoot + 'zsCardOperations.js',
+                                zestRoot + 'zsSwipeOperations.js',
+                                zestRoot + 'zsMLIOperations.js',
 			]
 		};		
 		
