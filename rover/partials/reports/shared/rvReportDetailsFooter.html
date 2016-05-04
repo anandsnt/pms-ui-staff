@@ -211,7 +211,7 @@
 
 
 		<div ng-if="appliedFilter.guestOrAccount.length && isDepositBalanceReport">
-			From <span>11-12-2015</span> to <span>11-12-2015</span><br/>
+			From <span>{{summaryCounts.deposit_from_date | date:dateFormat }}</span> to <span>{{summaryCounts.deposit_to_date | date:dateFormat }}</span><br/>
 			Guest/Account: <span>{{ appliedFilter.guestOrAccount.join(', ') }}</span>
 		</div>
 
