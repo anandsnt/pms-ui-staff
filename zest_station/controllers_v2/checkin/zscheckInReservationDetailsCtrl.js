@@ -77,10 +77,15 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 
                 //will need to check for ECI & Terms bypass, happy path for now
 		$scope.goToTerms = function() {
+                    console.log('$scope.selectedReservation: ',$scope.selectedReservation)
 			$state.go('zest_station.checkInTerms',{
                             'id': $scope.selectedReservation.reservation_details.reservation_id,
                             'deposit_amount':$scope.selectedReservation.reservation_details.deposit_amount,
+                            'room_no':$scope.selectedReservation.reservation_details.room_no,
+                            'room_status':$scope.selectedReservation.reservation_details.room_status,
                             'payment_type_id':$scope.selectedReservation.reservation_details.payment_type,
+                            'guest_email':$scope.selectedReservation.guest_details[0].email,
+                            'guest_email_blacklisted':$scope.selectedReservation.guest_details[0].is_email_blacklisted,
                         });
 		};
 	}
