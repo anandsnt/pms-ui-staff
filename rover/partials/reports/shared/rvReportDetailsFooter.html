@@ -187,7 +187,7 @@
 		</div>
 
 		<!-- chosen charge codes -->
-		<div ng-if="appliedFilter.guestOrAccount.length">
+		<div ng-if="appliedFilter.guestOrAccount.length && !isDepositBalanceReport">
 			Guest/Account: <span>{{ appliedFilter.guestOrAccount.join(', ') }}</span>
 		</div>
 
@@ -209,10 +209,11 @@
 			Minimum Room Nights: <span>{{ appliedFilter.hasMinRoomNights }}</span>
 		</div>
 
-		<!-- <div ng-if="appliedFilter.guestOrAccount.length && isDepositBalanceReport">
+
+		<div ng-if="appliedFilter.guestOrAccount.length && isDepositBalanceReport">
 			From <span>11-12-2015</span> to <span>11-12-2015</span><br/>
 			Guest/Account: <span>{{ appliedFilter.guestOrAccount.join(', ') }}</span>
-		</div> -->
+		</div>
 
 
 		<!-- Never REMOVE this span -->

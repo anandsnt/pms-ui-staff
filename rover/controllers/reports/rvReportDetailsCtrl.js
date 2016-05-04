@@ -184,7 +184,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['DEPOSIT_SUMMARY']:
 					$scope.hasNoTotals = false;
 					$scope.showSortBy = true;
-					//$scope.isDepositBalanceReport = true;
+					$scope.isDepositBalanceReport = true;
 					$scope.isBalanceReport = true;
 					break;
 
