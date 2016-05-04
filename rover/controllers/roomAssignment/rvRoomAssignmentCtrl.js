@@ -230,7 +230,7 @@ sntRover.controller('RVroomAssignmentController',[
 	 */
 	var openWantedToBorrowPopup = function(dataToBorrowRoom) {
 		$scope.passingParams = {
-			"errorMessage": dataToBorrowRoom.errorMessage,
+			"errorMessage": (typeof dataToBorrowRoom.errorMessage === "object")? dataToBorrowRoom.errorMessage[0] : dataToBorrowRoom.errorMessage,
 			"upsell_amount" : dataToBorrowRoom.upsell_amount
 		};
 		ngDialog.open(
