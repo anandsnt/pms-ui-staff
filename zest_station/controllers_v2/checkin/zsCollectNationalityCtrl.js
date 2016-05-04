@@ -3,8 +3,8 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 	'$state',
 	'zsEventConstants',
 	'$stateParams',
-	'$sce', 'countryList', 'zsTabletSrv',
-	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, zsTabletSrv) {
+	'$sce', 'countryList', 'zsCheckinSrv',
+	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, zsCheckinSrv) {
 
 		BaseCtrl.call(this, $scope);
 		sntZestStation.filter('unsafe', function($sce) {
@@ -18,7 +18,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 		 * @return {[type]} 
 		 */
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			$state.go('zest_station.home'); //go back to reservation search results
+			$state.go('zest_station.checkInReservationSearch');
 		});
 
 		$scope.navToPrev = function() {
@@ -37,7 +37,6 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 		var initializeMe = function() {
 			//show back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-
 			//show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
@@ -46,7 +45,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 
 		$scope.saveNationality = function() {
 			var successCallBack = function() {
-				$state.go('zest_station.reservation_details');
+				$state.go('zest_station.checkInReservationDetails');
 			};
 			var options = {
 				params: {
@@ -55,8 +54,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 				},
 				successCallBack: successCallBack
 			}
-
-			$scope.callAPI(zsTabletSrv.saveNationality, options);
+			$scope.callAPI(zsCheckinSrv.saveNationality, options);
 		};
 	}
 ]);

@@ -60,7 +60,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			//back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-				$state.go('zest_station.zscheckInReservationSearchCtrl');
+				$state.go('zest_station.checkInReservationSearch');
 				//what needs to be passed back to re-init search results
                 //  if more than 1 reservation was found? else go back to input 2nd screen (confirmation, no of nites, etc..)
 			});
