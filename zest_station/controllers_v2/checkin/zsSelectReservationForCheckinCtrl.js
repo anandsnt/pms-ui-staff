@@ -16,7 +16,14 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             var selectedReservation = [];
             selectedReservation.push(reservation);
             zsCheckinSrv.setSelectedCheckInReservations(selectedReservation);
-            $state.go('zest_station.checkInReservationDetails');
+            var primaryGuest = _.find(selectedReservation[0].guest_details, function(guest_detail) {
+                return guest_detail.is_primary === true;
+            });
+            if($scope.zestStationData.check_in_collect_nationality){
+                $state.go('zest_station.collectNationality',{'guestId':primaryGuest.id});
+            }else{
+                $state.go('zest_station.checkInReservationDetails');
+            }
 
         };
         var initPagination = function(){
@@ -55,7 +62,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             //back button action
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-                $state.go('zest_station.zscheckInReservationSearchCtrl');
+                $state.go('zest_station.checkInReservationSearch');
                 //what needs to be passed back to re-init search results
                 //  if more than 1 reservation was found? else go back to input 2nd screen (confirmation, no of nites, etc..)
             });

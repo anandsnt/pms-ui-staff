@@ -1,0 +1,17 @@
+<section id="main" role="main">
+    <div id="content">
+        <h1 translate>NATIONALITY</h1>
+        <!-- <h3>Subheading text here</h3> -->
+        <form method="post" class="form">
+            <div class="entry select select-with-button">
+                <select ng-options="country.id as country.value for country in countryList" ng-model="nationalityId">
+                    <option style="display:none" value="" class=""></option>
+                </select>
+            </div>
+            <div class="entry action">
+                    <button type="button" class="button" ng-click="saveNationality()">Next</button>
+            </div>
+        </form>
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
+</section>

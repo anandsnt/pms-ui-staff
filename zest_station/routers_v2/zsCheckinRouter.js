@@ -19,6 +19,17 @@ sntZestStation.config(['$stateProvider',
 			templateUrl: '/assets/partials_v2/checkin/zsSelectReservationForCheckIn.html',
 			controller: 'zsSelectReservationForCheckInCtrl'
 		});
+		//select nationality
+		$stateProvider.state('zest_station.collectNationality', {
+            url         : '/collect_nationality/:guestId/',
+            templateUrl : '/assets/partials_v2/checkin/zsCollectNationality.html',
+            controller  : 'zsCollectNationalityCtrl',
+            resolve: {
+                countryList: function(zsGeneralSrv){
+                    return zsGeneralSrv.fetchCountryList();
+                }
+            }
+        });
 
 		//checkin key dispense
 		$stateProvider.state('zest_station.checkInKeyDispense', {
@@ -45,11 +56,19 @@ sntZestStation.config(['$stateProvider',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinDeposit.html',
 			controller: 'zsCheckinCCSwipeCtrl'
 		});
+		//pickup key dispense
+		$stateProvider.state('zest_station.checkinKeyDispense', {
+			url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name',
+			templateUrl: '/assets/partials_v2/pickupKey/zscheckinKeyDispense.html',
+			controller: 'zsPickupKeyDispenseCtrl'
+		});
 		// signature screen
       	$stateProvider.state('zest_station.checkInSignature', {
 			url: '/checkInReservationDeposit/:id/:mode/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinSignature.html',
 			controller: 'zsCheckinSignatureCtrl'
 		});
+
+      	
 	}
 ]);

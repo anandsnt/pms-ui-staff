@@ -46,7 +46,14 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 					$scope.mode = 'NO_MATCH';
 				}else if(data.results.length==1){
 					zsCheckinSrv.setSelectedCheckInReservations(data.results);
-					$state.go('zest_station.checkInReservationDetails');
+					var primaryGuest = _.find(data.results[0].guest_details, function(guest_detail) {
+       		             return guest_detail.is_primary === true;
+                    });
+					if($scope.zestStationData.check_in_collect_nationality){
+						$state.go('zest_station.collectNationality',{'guestId':primaryGuest.id});
+					}else{
+						$state.go('zest_station.checkInReservationDetails');
+					}
 				}else{
 					zsCheckinSrv.setCheckInReservations(data.results);
 					$state.go('zest_station.selectReservationForCheckIn');
@@ -141,8 +148,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			$scope.dateOptions = {
 				dateFormat: $scope.zestStationData.hotelDateFormat,
 				yearRange: "0:+10",
-				//TODO - Change to Bussiness date
-				minDate: new Date('01-01-2016'),
+				minDate: new Date($scope.zestStationData.bussinessDate),
 				onSelect: function(value) {
 					$scope.showDatePicker();
 				}

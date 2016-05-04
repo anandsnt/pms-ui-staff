@@ -9,7 +9,7 @@ sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
 	'$state', 'zsTabletSrv', '$rootScope', 'ngDialog', '$sce',
-	'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings', '$timeout', 'zsModeConstants',
+	'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings', '$timeout', 'zsModeConstants','hotelTimeData',
 	function($scope,
 		zsEventConstants,
 		$state,
@@ -23,7 +23,8 @@ sntZestStation.controller('zsRootCtrl', [
 		cssMappings,
 		zestStationSettings,
 		$timeout,
-		zsModeConstants) {
+		zsModeConstants,
+		hotelTimeData) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -545,6 +546,7 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
 			fetchHotelSettings();
 			getAdminWorkStations();
+			$scope.zestStationData.bussinessDate = hotelTimeData.hotel_time.date;
 		}();
 	}
 ]);
