@@ -1,6 +1,6 @@
 
-sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state', '$vault', '$window', 'RVReservationCardSrv',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window, RVReservationCardSrv) {
+sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state', '$vault', '$window', 'RVReservationCardSrv', '$filter',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window, RVReservationCardSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
@@ -610,20 +610,33 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			var params = getParamsToSend();
 			printArStatement( params );
 		};
-
+		// To show email sent callbacks
+		$scope.showEmailSentStatusPopup = function(status) {
+	    	ngDialog.open({
+	    		template: '/assets/partials/popups/rvEmailSentStatusPopup.html',
+	    		className: '',
+	    		scope: $scope
+	    	});
+	    };
 		// Handle AR Statement-EMAIL button click
 		$scope.clickedEmailArStatementButton = function(){
 			var params = getParamsToSend();
 			params.to_address = $scope.statementEmailAddress;
+			$scope.closeDialog();
 
 			var emailSuccess = function(successData){
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = "";
-				$scope.closeDialog();
-			};
-			var emailFailureCallback = function(errorData){
+				$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+				$scope.status = "success";
+				$scope.showEmailSentStatusPopup();
+			},
+			emailFailureCallback = function(errorData){
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorData;
+				$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+				$scope.status = "alert";
+				$scope.showEmailSentStatusPopup();
 			};
 			$scope.invokeApi(RVCompanyCardSrv.emailArStatement, params, emailSuccess, emailFailureCallback);
 		};
