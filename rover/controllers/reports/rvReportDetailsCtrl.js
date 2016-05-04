@@ -185,7 +185,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasNoTotals = false;
 					$scope.showSortBy = true;
 					//$scope.isDepositBalanceReport = true;
-					//$scope.isBalanceReport = true;
+					$scope.isBalanceReport = true;
 					break;
 
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:

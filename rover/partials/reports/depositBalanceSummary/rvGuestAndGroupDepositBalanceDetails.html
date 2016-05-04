@@ -19,21 +19,28 @@
                 <li class="balance green">{{resultItem.total_debit | currency:currencySymbol:2 }}</li>
                 <li class="balance red">{{resultItem.total_credit | currency:currencySymbol:2 }}</li>
             </ul>
-            <table ng-class="{ 'balance-reports': isDepositBalanceReport}">
+            <table class="balance-reports">
 
                 <!-- GUEST REPORTS: Reports sort by header -->
                 <thead>
                     <!-- When sorting, add class to appropriate span.sort (and remove all classes except "sort" on other span.sort elements):
                         "sorting-asc" when ASC sorting
                         "sorting-desc" when DESC sorting -->
-                    <tr>
+                    <!-- <tr>
                         <th ng-repeat="item in subHeaders track by $index">
                                 <span ng-class="{'sort' : !!chosenReport.sortByOptions[$index],
                                                     'sorting-asc'  : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === true,
                                                     'sorting-desc' : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === false
                                                 }" ng-click="sortResultBy(chosenReport.sortByOptions[$index])">{{ item }}</span>
                         </th>
-                    </tr>
+                    </tr> -->
+                    <tr>
+                    <th ng-repeat="item in subHeaders track by $index">
+                        <span ng-class="{'sort': hasSort($index), 'sorting-asc': isAsc($index), 'sorting-desc': isDesc($index)}" ng-click="sortResultBy(chosenReport.sortByOptions[$index], chosenReport)">
+                            {{ item }}
+                        </span>
+                    </th>
+                </tr>
                 </thead>
 
                 <!-- Reports table footer -->
