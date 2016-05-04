@@ -23,6 +23,36 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 			//Deleting reservation details from zsCheckinSrv
 			zsCheckinSrv.setSelectedCheckInReservations([]);
 		};
+
+		var fetchReservationDetails = function(){
+			var onSuccessFetchReservationDetails = function(data){
+				$scope.selectedReservation.reservation_details =data.data.reservation_card;
+				if(isRateSuppressed()){
+					$scope.selectedReservation.reservation_details.balance =0;
+				}
+				fetchAddons();
+			};
+			$scope.invokeApi(zsCheckinSrv.fetchReservationDetails, {
+				'id': $scope.selectedReservation.confirmation_number
+			}, onSuccessFetchReservationDetails);
+		};
+
+		var fetchAddons = function(){
+			var fetchCompleted = function(data){
+				$scope.selectedReservation.addons = data.existing_packages;
+				//refreshScroller();
+				$scope.$emit('hideLoader');
+			};
+			$scope.invokeApi(zsCheckinSrv.fetchAddonDetails, {
+				'id':$scope.selectedReservation.reservation_details.reservation_id
+			}, fetchCompleted);
+		};
+
+		var isRateSuppressed = function(){
+			if ($scope.selectedReservation.reservation_details.is_rates_suppressed === 'true'){
+			return true;
+			}
+		};
 		var init = function() {
 			//show back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
@@ -31,12 +61,13 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 			//back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 				$state.go('zest_station.zscheckInReservationSearchCtrl');
-                                //what needs to be passed back to re-init search results 
-                                //  if more than 1 reservation was found? else go back to input 2nd screen (confirmation, no of nites, etc..)
+				//what needs to be passed back to re-init search results
+                //  if more than 1 reservation was found? else go back to input 2nd screen (confirmation, no of nites, etc..)
 			});
 			//starting mode
 			$scope.mode = "RESERVATION_DETAILS";
 			getSelectedReservations();
+			fetchReservationDetails();
 		};
 		init();
 

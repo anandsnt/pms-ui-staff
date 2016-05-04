@@ -23,25 +23,26 @@
                     <ul id="rate" class="reservation-details">
                         <li >
                             <!-- handling some logics in HTML. Forced to use coz of bad handling in ctrlr -->
-                            {{zestStationData.isHourlyRateOn ? 'HOURS' :'DAY_NIGHTS'|translate}}<span>{{zestStationData.isHourlyRateOn ? selectedReservation.total_hours :
-                            selectedReservation.total_nights}}</span>
+                            {{zestStationData.isHourlyRateOn ? 'HOURS' :'DAY_NIGHTS'|translate}}<span>{{zestStationData.isHourlyRateOn ? selectedReservation.reservation_details.total_hours :
+                            selectedReservation.reservation_details.total_nights}}</span>
                         </li>
-                        <li ng-hide="is_rates_suppressed">
+                        <li ng-hide="isRateSuppressed()">
                             <!-- handling some logics in HTML. Forced to use coz of bad handling in ctrlr -->
-                            {{zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.daily_rate}}</span>
+                            {{zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.avg_daily_rate}}</span>
                         </li>
-                        <li ng-hide="is_rates_suppressed" ng-repeat="addon in selectedReservation.addons">
+                        <li ng-hide="isRateSuppressed()" ng-repeat="addon in selectedReservation.addons">
                             {{addon.name}} ({{addon.addon_count}})
-                            <span ng-show='{{!addon.is_inclusive}}'>{{zestStationData.currencySymbol}}{{formatCurrency(addon.amount)}}</span>
+                            <span ng-show='{{!addon.is_inclusive}}'>{{zestStationData.currencySymbol}}{{addon.amount}}</span>
                             <span ng-show='{{addon.is_inclusive}}'>{{'INCLUDED' |translate}}</span>
                         </li>
                         
                         <li class="break"></li>
                         
-                        <li ng-hide="is_rates_suppressed" class="sub">{{'RES_TAX_FEES' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.taxes}}</span></li>
-                        <li ng-hide="is_rates_suppressed" class="sub">{{'RES_SUB' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.sub_total}}</span></li>
-                        <li ng-hide="is_rates_suppressed" class="sub">{{'RES_DEPOSITS' |translate}}<span>- {{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposits}}</span></li>
-                        <li class="total">{{'RES_BAL_DUE' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.balance}}</span></li>
+                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_TAX_FEES' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.fees}}</span></li>
+                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_SUB' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.sub_total}}</span></li>
+                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_DEPOSITS' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.deposit_paid}}</span></li>
+                        <li ng-if="isRateSuppressed()"class="total">{{'RES_BAL_DUE' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.balance}}</span></li>
+                        <li ng-if="!isRateSuppressed()"class="total">{{'RES_BAL_DUE' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.outstanding_stay_total}}</span></li>
                     </ul>
                 </div>
             </div>

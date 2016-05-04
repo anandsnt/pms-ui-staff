@@ -3,6 +3,7 @@ module.exports = {
 		var sharedRoot 	= 'shared/',
 		jsLibRoot 		= sharedRoot + 'lib/js/',
 		zestRoot 		= 'zest_station/',
+                
 		adminJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'jquery.min.js',
@@ -67,6 +68,10 @@ module.exports = {
 				zestRoot + 'routers_v2/**/*.js',
 				zestRoot + 'constants/**/*.js',
                                 //jquery virtual keyboard files
+                                
+                                zestRoot + 'zsCardOperations.js',
+                                zestRoot + 'zsSwipeOperations.js',
+                                zestRoot + 'zsMLIOperations.js',
 			]
 		};		
 		

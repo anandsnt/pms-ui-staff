@@ -36,6 +36,30 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+        this.fetchReservationDetails = function(param) {
+            var url;
+            url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
+            var deferred = $q.defer();
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchAddonDetails = function(param) {
+            var deferred = $q.defer(),
+                url = '/staff/staycards/reservation_addons?reservation_id=' + param.id;
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
     }
 ]);
