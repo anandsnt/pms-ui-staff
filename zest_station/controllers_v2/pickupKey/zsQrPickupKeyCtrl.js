@@ -45,13 +45,15 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				room_no = response.data.reservation_card.room_number;
 
 				var onFetchGuestDataSuccess = function(response) {
-
-					last_name = response.primary_guest_details.last_name;
-					$scope.pickupValues.last = last_name;
-					$scope.pickupValues.room = room_no;
 					// what is the purpose ????
-					var options = $scope.getPickupKeyOptions();
-					$scope.fetchReservations(options);
+					// var options = $scope.getPickupKeyOptions();
+					// $scope.fetchReservations(options);
+					var stateParams = {
+						'reservation_id': reservation_id,
+						'room_no': response.data.reservation_card.room_number,
+						"first_name": response.primary_guest_details.first_name
+					};
+					$state.go('zest_station.pickUpKeyDispense', stateParams);
 				};
 
 
@@ -68,14 +70,13 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
 			var options = {
 				params: {
-					'id': reservation_id,
-					'by_reservation_id': true
+					'reservation_id': reservation_id
 				},
 				successCallBack: onSuccessFetchReservation,
 				failureCallBack: onFailureFetchReservation
 			};
 			console.info('Fetching Reservation by Scanned QR Code: ', reservation_id);
-			$scope.callAPI(zsTabletSrv.fetchReservationDetails, options);
+			$scope.callAPI(zsGeneralSrv.fetchReservationDetails, options);
 
 		};
 
