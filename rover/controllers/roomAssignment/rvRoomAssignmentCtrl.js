@@ -425,7 +425,7 @@ sntRover.controller('RVroomAssignmentController',[
 			switch (error.httpStatus) {
 				case 470:
 						wanted_to_forcefully_assign = true;
-						openWantedToBorrowPopup (error);
+						$timeout(openWantedToBorrowPopup.bind(null, error), 500);
 				 	break;
 				default:
 					break;
