@@ -182,7 +182,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['DEPOSIT_SUMMARY']:
-					$scope.hasNoTotals = false;
+					$scope.hasNoTotals = true;
 					$scope.showSortBy = true;
 					$scope.isDepositBalanceReport = true;
 					$scope.isBalanceReport = true;
@@ -712,9 +712,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// clear old results and update total counts
 			$scope.netTotalCount = $scope.$parent.totalCount;
 
-			if ( typeof $scope.$parent.results === 'array' ) {
+			if ( angular.isArray($scope.$parent.results)) {
 				$scope.uiTotalCount = $scope.$parent.results.length;
-			} else if ( typeof $scope.$parent.results === 'object' ) {
+			} else if ( angular.isObject($scope.$parent.results)) {
 				$scope.uiTotalCount = 0;
 				_.each($scope.$parent.results, function(item) {
 					if ( typeof item === 'array' ) {
