@@ -56,5 +56,12 @@ sntZestStation.config(['$stateProvider',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinDeposit.html',
 			controller: 'zsCheckinCCSwipeCtrl'
 		});
+
+      	//pickup key dispense
+		$stateProvider.state('zest_station.checkinKeyDispense', {
+			url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name',
+			templateUrl: '/assets/partials_v2/pickupKey/zscheckinKeyDispense.html',
+			controller: 'zsPickupKeyDispenseCtrl'
+		});
 	}
 ]);
