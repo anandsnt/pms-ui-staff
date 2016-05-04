@@ -13,6 +13,12 @@ sntZestStation.config(['$stateProvider',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinReservationDetails.html',
 			controller: 'zsCheckInReservationDetailsCtrl'
 		});
+		//select checkin reservation from array of reservations.
+		$stateProvider.state('zest_station.selectReservationForCheckIn', {
+			url: '/selectReservationForCheckIn',
+			templateUrl: '/assets/partials_v2/checkin/zsSelectReservationForCheckIn.html',
+			controller: 'zsSelectReservationForCheckInCtrl'
+		});
 
 		//checkin key dispense
 		$stateProvider.state('zest_station.checkInKeyDispense', {

@@ -49,7 +49,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 					$state.go('zest_station.checkInReservationDetails');
 				}else{
 					zsCheckinSrv.setCheckInReservations(data.results);
-					$state.go('zest_station.checkInReservationDetails');
+					$state.go('zest_station.selectReservationForCheckIn');
 				}
 			};
 			var checkinVerificationCallBack = function() {
