@@ -41,6 +41,10 @@ sntZestStation.controller('zsRootCtrl', [
 		//we are forcefully setting top url, please refer routerFile
 		window.history.pushState("initial", "Showing Landing Page", "#/home");
 
+		$scope.$on('GENERAL_ERROR',function(){
+			$state.go('speakToStaff');
+		});
+
 		/**
 		 * events for showing/hiding the back button and close button
 		 * @param  {[type]} event

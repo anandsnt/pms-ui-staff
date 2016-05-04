@@ -10,14 +10,14 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 
 
 		//This controller is used for viewing reservation details 
-                //add / removing additional guests and transitioning to 
-                //early checkin upsell or terms and conditions
+		//add / removing additional guests and transitioning to 
+		//early checkin upsell or terms and conditions
 
 		/** MODES in the screen
-		*   1.coming from RESERVATION_DETAILS --> now at terms and conditions 
-                *   2. --> check reservation for deposit needed & if switch is active
-                *   
-		**/
+		 *   1.coming from RESERVATION_DETAILS --> now at terms and conditions 
+		 *   2. --> check reservation for deposit needed & if switch is active
+		 *   
+		 **/
 
 		BaseCtrl.call(this, $scope);
 		var init = function() {
@@ -31,26 +31,42 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			});
 			//starting mode
 			$scope.mode = "TERMS_CONDITIONS";
-			
+
 		};
 		init();
 
-		$scope.agreeTerms = function() {
-                    goToDepositScreen();
+		var goToDepositScreen = function() {
+			$state.go('zest_station.checkInDeposit', {
+				'guest_email': $stateParams.guest_email,
+				'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
+				'payment_type_id': $stateParams.payment_type_id,
+				'deposit_amount': $stateParams.deposit_amount,
+				'room_no': $stateParams.room_no,
+				'room_status': $stateParams.room_status,
+				'id': $stateParams.reservation_id,
+				'mode': 'DEPOSIT'
+			});
 		};
-                
-                var goToDepositScreen = function(){
-                    $state.go('zest_station.checkInDeposit',{
-                        'guest_email': $stateParams.guest_email,
-                        'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
-                        'payment_type_id': $stateParams.payment_type_id,
-                        'deposit_amount': $stateParams.deposit_amount,
-                        'room_no': $stateParams.room_no,
-                        'room_status': $stateParams.room_status,
-                        'id': $stateParams.id,
-                        'mode': 'DEPOSIT'
-                    });
-                };
-                
+		var goToSignaturePage = function() {
+			var stateParams = {
+				'email': $stateParams.guest_email,
+				'reservation_id': $stateParams.reservation_id,
+				'room_no': $stateParams.room_no,
+				'first_name': $stateParams.first_name
+			}
+			$state.go('zest_station.checkInSignature', stateParams);
+		};
+
+		$scope.agreeTerms = function() {
+			var deposit = false; //to be done
+			var needToAddCC = false; //to be done
+			if (deposit) {
+				goToDepositScreen();
+			} else if (needToAddCC) {
+
+			} else {
+				goToSignaturePage();
+			}
+		};
 	}
 ]);

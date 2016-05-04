@@ -46,7 +46,7 @@ sntZestStation.config(['$stateProvider',
 		});
 		//terms and conditions                
       	$stateProvider.state('zest_station.checkInTerms', {
-			url: '/checkInTermsAndConditions/:id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status',
+			url: '/checkInTermsAndConditions/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinTermsConditions.html',
 			controller: 'zsCheckInTermsConditionsCtrl'
 		});
@@ -64,7 +64,7 @@ sntZestStation.config(['$stateProvider',
 		});
 		// signature screen
       	$stateProvider.state('zest_station.checkInSignature', {
-			url: '/checkInReservationDeposit/:id/:mode/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status',
+			url: '/checkInReservationDeposit/:reservation_id/:email/:first_name/:room_no',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinSignature.html',
 			controller: 'zsCheckinSignatureCtrl'
 		});
