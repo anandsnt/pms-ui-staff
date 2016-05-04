@@ -1,0 +1,182 @@
+<section id="main" class="centered" role="main" click-touch='resetTime()'>
+    <div id="content">
+        <h1 ng-if='showDeposit'>{{'DEPOSIT_REMAIN' |translate}}</h1>
+        <h2 ng-if='showDeposit'>{{'DEPOSIT_REMAIN_SUB' |translate}} {{currencySymbol}}{{depositAmount}}</h2>
+        <h2 ng-if='showDeposit'>{{'DEPOSIT_REMAIN_SUB_SUB' |translate}}</h2>
+        
+        <h1 ng-if='!showDeposit'>{{'TO_COMPLETE' |translate}}</h1>
+        <h2 ng-if='!showDeposit'>{{'SWIPE_CARD_PLEASE' |translate}}</h2>
+        
+        <h1 ng-if='swipeError'>{{'SWIPE_ERR_HEADER' |translate}}</h1>
+        
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <!-- card swipe -->
+                <li touch-press='continue()'>
+                    <button type="button" class="button option">
+                        <div ng-include="icons.url.creditcard"></div>
+                        
+                    </button>
+                    <span translate>SWIPE_CARD_PLEASE</span>
+                    <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
+                </li>
+                
+                <!-- deliver-registration -->
+                <li ng-show='at === "deliver-registration" && printEnabled && !zestStationData.auto_print'> 
+                    <button type="button" class="button option" touch-press='clickedPrint()'>
+                        <div ng-include="icons.url.print"></div>
+                    </button>
+                    <span translate>PRINT_TEXT</span>
+                </li>
+                <li class="break" ng-show='at === "deliver-registration" && printEnabled && emailEnabled && !zestStationData.auto_print'>
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li ng-show='at === "deliver-registration" && emailEnabled'> 
+                    <button type="button" class="button option" touch-press='selectEmailDelivery()'>
+                        <div ng-include="icons.url.email"></div>
+                    </button>
+                    <span translate>EMAIL_TEXT</span>
+                </li>
+                <!-- invalid-email -->
+                <li ng-show='at === "invalid-email"'> 
+                    <button type="button" class="button option" touch-press='navToPrev()'>
+                        <div ng-include="icons.url.keyboard"></div>
+                        
+                    </button>
+                    <h1>{{'RE_TYPE' |translate}}</h1>
+                    <h3>"{{input.lastEmailValue}}"</h3>
+                </li>
+                
+                
+                <li ng-show='at === "swipe-pay-error"'>
+                    <button type="button" class="button option" touch-press='reTryCardSwipe()'>
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    <h1>{{'TRY_AGAIN' |translate}}</h1>
+                </li>
+                
+                
+                <li class="break" ng-show='at === "swipe-pay-error"'>
+                    <span translate>OR_TEXT</span>
+                </li>
+                
+                
+                <!-- retry-key -->
+                <li ng-show='at === "key-error"'> 
+                    <button type="button" class="button option" touch-press='reEncodeKey()'>
+                        <div ng-include="icons.url.key"></div>
+                    </button>
+                    <h1>{{'TRY_AGAIN' |translate}}</h1>
+                </li>
+                
+                
+                
+                
+                <li class="break" ng-show='at === "key-error" && !pickupkeys'>
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li ng-show='at === "key-error" && !pickupkeys'> 
+                    <button type="button" class="button option" touch-press='skipKeys()'>
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    <h1>{{'CONTINUE_TEXT' |translate}}</h1>
+                </li>
+
+                <li ng-show='at === "deposit-agree"'> 
+                    <button type="button" class="button option" touch-press='depositProceed()'>
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    <h1>{{'DEPOSIT_NEXT_BUTTON' |translate}}</h1>
+                </li>
+                <!--email-delivery -->
+                <li ng-show='at === "email-delivery"'> 
+                    <button type="button" class="button option" touch-press='editEmailAddress()'>
+                        <div ng-include="icons.url.pen"></div>
+                    </button>
+                    <span translate>EDIT_EMAIL</span>
+                </li>
+                <li class="break" ng-show='at === "email-delivery" || at === "key-error" || at === "deposit-agree"'>
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li ng-show='at === "email-delivery"'> 
+                    <button type="button" class="button option" touch-press='send()'>
+                        <div ng-include="icons.url.email"></div>
+                    </button>
+                    <span translate>SEND_EMAIL</span>
+                </li>
+                <li ng-show='at === "key-error" || at === "swipe-pay-error"  || at === "deposit-agree"'> 
+                    <button type="button" class="button option" touch-press='initStaff()'>
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    <h1>{{'SPEAK' |translate}}</h1>
+                    <h4>{{'SPEAK_SUB' |translate}}</h4>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<!-- hidden view for print action -->
+<section id="registration-card" class="page-print"  ng-hide="theme === 'yotel'">
+     <!-- Hotel logo  !this needs to be swappable between hotels-->
+     <div id="logo">
+       <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="logo" id="zoku-print-logo" x="0px" y="0px" width="937.2px" height="146.3px" viewBox="0 0 937.2 146.3" enable-background="new 0 0 937.2 146.3" xml:space="preserve">
+            <path fill="#42929b" d="M336.3 145.8c-39.5 0-71.7-32.2-71.7-71.7 0-39.5 32.2-71.7 71.7-71.7 39.5 0 71.7 32.2 71.7 71.7C407.9 113.6 375.8 145.8 336.3 145.8M336.3 13.4c-33.4 0-60.7 27.2-60.7 60.7 0 33.4 27.2 60.7 60.7 60.7 33.4 0 60.7-27.2 60.7-60.7C396.9 40.6 369.7 13.4 336.3 13.4"></path>
+            <path fill="#42929b" d="M534.5 146.3c-3 0-5.5-2.5-5.5-5.5V8c0-3 2.5-5.5 5.5-5.5S540 5 540 8v132.8C540 143.9 537.5 146.3 534.5 146.3"></path>
+            <path fill="#42929b" d="M666.1 145.1c-1.4 0-2.8-0.5-3.9-1.6l-65.9-65.4c-1-1-1.6-2.4-1.6-3.9 0-1.5 0.6-2.9 1.6-3.9l66.6-66.2c2.2-2.1 5.7-2.1 7.8 0 2.1 2.2 2.1 5.7 0 7.8l-62.7 62.3 62 61.5c2.2 2.1 2.2 5.6 0 7.8C668.9 144.5 667.5 145.1 666.1 145.1"></path>
+            <path fill="#42929b" d="M865.5 146.1c-27.6 0-44.4-13.1-53.7-24.1 -11.1-13.2-17.5-30.5-17.5-47.5v-66c0-3 2.5-5.5 5.5-5.5 3 0 5.5 2.5 5.5 5.5v66c0 14.3 5.6 29.4 14.9 40.4 7.8 9.2 21.9 20.2 45.2 20.2 23.1 0 37.4-11 45.3-20.3 9.6-11.2 15.4-26.3 15.4-40.4V8.3c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5v66.1c0 16.7-6.7 34.5-18 47.6C909.7 133 892.7 146.1 865.5 146.1"></path>
+            <path fill="#42929b" d="M108 13.5H5.5C2.5 13.5 0 11 0 8c0-3 2.5-5.5 5.5-5.5H108c3 0 5.5 2.5 5.5 5.5C113.5 11 111.1 13.5 108 13.5"></path>
+            <path fill="#42929b" d="M137.5 145.6H5.5c-2.2 0-4.3-1.4-5.1-3.4 -0.8-2.1-0.4-4.5 1.2-6L112 27.6c2.2-2.1 5.7-2.1 7.8 0.1 2.1 2.2 2.1 5.7-0.1 7.8L19 134.5h118.5c3 0 5.5 2.5 5.5 5.5C143 143.1 140.5 145.6 137.5 145.6"></path>
+            <path fill="#42929b" d="M144.3 7.9c0 3.6-2.9 6.5-6.5 6.5 -3.6 0-6.5-2.9-6.5-6.5 0-3.6 2.9-6.5 6.5-6.5C141.3 1.4 144.3 4.3 144.3 7.9"></path>
+            <path fill="#42929b" d="M137.8 15.8c-4.3 0-7.9-3.5-7.9-7.9 0-4.3 3.5-7.9 7.9-7.9s7.9 3.5 7.9 7.9C145.6 12.2 142.1 15.8 137.8 15.8M137.8 2.8c-2.8 0-5.1 2.3-5.1 5.1 0 2.8 2.3 5.1 5.1 5.1s5.1-2.3 5.1-5.1C142.9 5.1 140.6 2.8 137.8 2.8"></path>
+        </svg>
+    </div>
+
+    <div class="room" ng-hide="theme === 'yotel'">
+        <span translate>IN_ROOM</span>
+        <strong>{{printRegCardData.room_number}}</strong>
+    </div>
+    
+
+    <!-- If text outputs multiple <p> tags then wrap it with <div class="terms"> instead of <p id="terms"> -->
+    <p class="terms">{{printRegCardData.reg_card_text}}</p>
+
+</section>
+
+
+<div class="room page-print" ng-show="theme === 'yotel'">
+        <section id="registration-card" class="page-print">
+        
+            <div class="logo">
+                <div ng-include="icons.url.logo"></div>
+            </div>
+            
+            <div class="content">
+                <!-- business date/time -->
+                <span>{{'REGISTRATION_READY_PRINT_BUSINESS_DATE_LABEL' | translate}} {{currentDateTime | date:'dd-MMM yyyy HH:mm'}}</span>
+                <br><br><br>
+                
+                <span>{{'REGISTRATION_READY_PRINT_ROOM_NO' | translate}}</span>
+                <br><br><br>
+                    <strong class="large_txt">{{printRegCardData.room_number}}</strong>
+                <br><br><br>
+
+                <span>
+                    {{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}}
+                <br>    
+                    {{'REGISTRATION_READY_PRINT_STD_CHECKOUT' | translate}} {{zestStationData.check_out_time.hour}}:{{zestStationData.check_out_time.minute}} {{zestStationData.check_out_time.primetime|lowercase}}
+                </span>
+                <br><br><br>
+
+                <span class="reg_text">{{printRegCardData.reg_card_text}}</span>
+                <br><br><br>
+
+                <strong class='footer large_txt'>{{'REGISTRATION_READY_PRINT_FOOTER' | translate}}</strong>
+                <br><br>
+            </div>
+        </section>
+    </div>
+     
+
+

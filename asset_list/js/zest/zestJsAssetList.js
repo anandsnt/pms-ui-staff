@@ -3,6 +3,8 @@ module.exports = {
 		var sharedRoot 	= 'shared/',
 		jsLibRoot 		= sharedRoot + 'lib/js/',
 		zestRoot 		= 'zest_station/',
+		roverRoot 		= 'rover/',
+                
 		adminJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'jquery.min.js',
@@ -37,6 +39,7 @@ module.exports = {
                                 
 			],
 			nonMinifiedFiles: [
+                                roverRoot + 'rvSwipeOperations.js',
 				jsLibRoot + 'bindonce.js',
 				jsLibRoot + 'iscroll.js', 
 				jsLibRoot + 'ng-iscroll.js', 

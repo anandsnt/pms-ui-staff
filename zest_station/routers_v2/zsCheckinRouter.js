@@ -26,5 +26,12 @@ sntZestStation.config(['$stateProvider',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinKey.html',
 			controller: 'zsCheckinKeyDispensCtrl'
 		});
+                
+		//checking credit card swipe and deposit                
+      	$stateProvider.state('zest_station.checkInCardDeposit', {
+			url: '/checkInReservationDetails',
+			templateUrl: '/assets/partials_v2/checkin/zsCheckinCCSwipe.html',
+			controller: 'zsCheckinCCSwipeCtrl'
+		});
 	}
 ]);

@@ -233,8 +233,16 @@ sntZestStation.controller('zsRootCtrl', [
 			// to delete after QA pass
 			console.info("Websocket:-> uid=" + response.UID + "--" + "Websocket:-> response code:" + response.ResponseCode);
 			console.info("Websocket: msg ->" + msg + "--" + "Websocket: Command ->" + cmd);
-
-			if (response.Command === 'cmd_insert_key_card') {
+                        
+            if (!response.Command && response.RVCardReadPAN){
+                response.Command = 'cmd_observe_for_swipe';
+            }
+            
+            if (response.Command === 'cmd_observe_for_swipe'){
+                $scope.$broadcast('SWIPE_ACTION', response);
+            
+            } else if (response.Command === 'cmd_insert_key_card') {
+                            
 				//check if the UID is valid
 				//if so find reservation using that
 				if (typeof response.UID !== "undefined" && response.UID !== null) {
