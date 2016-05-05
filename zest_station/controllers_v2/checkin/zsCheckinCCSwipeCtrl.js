@@ -9,21 +9,19 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 	'zsModeConstants',
 	'zsGeneralSrv',
 	function($scope, $stateParams, $state, zsEventConstants,$controller,$timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv) {
-                
+            BaseCtrl.call(this, $scope);
 
             /*
              *  Card Signature View - Used for Credit Card or Deposit via Credit Card
+             *  
+             *  take MLI actions out and place in zsUtils.js, inherit common (swipe/functionality for depoist + cc )
+             *  -> switch from invoke to callAPI
+             *  
              */
-
-
-
 
             $scope.continue = function(){
                 var inProduction = $scope.inProd();
-                console.log('inProduction: ',inProduction)
-                if (inProduction){
-                    return;
-                }
+                if (inProduction){return;}
                 
                 $scope.$emit('hideLoader');
                 if ($scope.showDeposit){
@@ -35,10 +33,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             };
 
             $scope.swipeData = {};
-
-
-
-
 
 
             $scope.proceedToDeposit = function(){
@@ -223,9 +217,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 		 */
                 
 		var initializeMe = function() {
-			// All the common actions for dispensing keys are to be included in
-			// zsKeyDispenseCtrl
 			$controller('zsKeyDispenseCtrl', {$scope: $scope});
+                    
 		}();
 
         /*
