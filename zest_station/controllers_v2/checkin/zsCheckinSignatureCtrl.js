@@ -117,9 +117,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
         var setTimedOut = function() {
             $scope.mode = 'TIMED_OUT';
         };
-        /**
-         * TODO ---- ???
-         */
+        
         $scope.$on('USER_ACTIVITY_TIMEOUT',function(){
              setTimedOut();
         });

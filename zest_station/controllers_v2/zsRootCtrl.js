@@ -183,21 +183,27 @@ sntZestStation.controller('zsRootCtrl', [
 			};
 
 			function increment() {
+				var currentState = $state.current.name;
 				//the user inactivity actions need not be done when user in 
 				//home screen or in admin screen or in OOS screen
 				//include the states, which don't need the timeout to be handled 
 				//in the below condition
 				if ($scope.zestStationData.idle_timer.enabled ==='true' 
-				    && !($state.current.name === 'zest_station.admin' 
-				    || $state.current.name === 'zest_station.home'
-				    || $state.current.name === 'zest_station.outOfService')) 
+				    && !(currentState === 'zest_station.admin' 
+				    || currentState === 'zest_station.home'
+				    || currentState === 'zest_station.outOfService')) 
 				{
 					userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
 					//when user activity is not recorded for more than idle_timer.prompt
 					//time set in admin, display inactivity popup
 					if (userInActivityTimeInSeconds >= $scope.zestStationData.idle_timer.prompt) {
-						$scope.zestStationData.timeOut = true;
-						$scope.runDigestCycle();
+						if(currentState ==='zest_station.checkInSignature'){
+						    $scope.$broadcast('USER_ACTIVITY_TIMEOUT');
+						}
+						else{
+							$scope.zestStationData.timeOut = true;
+						}
+						$scope.runDigestCycle();	
 					} else {
 						//do nothing;
 					}
