@@ -81,6 +81,12 @@ sntZestStation.config(['$stateProvider',
 			controller: 'zsCheckinEmailCollectionCtrl'
 		});
 
+      	// email entry screen
+      	$stateProvider.state('zest_station.zsCheckinBillDeliveryOptions', {
+			url: '/checkinBillDeliveryOptions/:reservation_id/:email/:first_name/:room_no/:from/:guest_id',
+			templateUrl: '/assets/partials_v2/checkin/zsCheckinBillDeliveryOptions.html',
+			controller: 'zsCheckinBIllDeliveryOptionsCtrl'
+		});
       	
 	}
 ]);

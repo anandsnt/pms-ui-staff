@@ -1,4 +1,4 @@
-sntZestStation.controller('zsCheckinBIllDeliveryCtrl', [
+sntZestStation.controller('zsCheckinBIllDeliveryOptionsCtrl', [
 	'$scope',
 	'$state',
 	'zsEventConstants',

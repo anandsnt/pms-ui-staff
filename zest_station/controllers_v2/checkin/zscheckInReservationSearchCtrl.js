@@ -45,7 +45,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				{
 					$scope.mode = 'NO_MATCH';
 				}else if(data.results.length==1){
-					zsCheckinSrv.setSelectedCheckInReservations(data.results);
+					zsCheckinSrv.setSelectedCheckInReservation(data.results);
 					var primaryGuest = _.find(data.results[0].guest_details, function(guest_detail) {
        		             return guest_detail.is_primary === true;
                     });
