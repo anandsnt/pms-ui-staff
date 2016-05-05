@@ -32,9 +32,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
          * @return {[type]}          [description]
          */
         var afterGuestCheckinCallback = function(response) {
-            console.info('response from guest check-in', response)
-            var haveValidGuestEmail = $stateParams.email.legth > 0 ? true : false;
-            console.info('successfulCheckIn: ', successfulCheckIn);
+            var haveValidGuestEmail = $stateParams.email.length > 0 ? true : false;
             //detect if coming from email input
             if (haveValidGuestEmail) {
                 $state.go('zest_station.checkinKeyDispense', {
@@ -43,12 +41,17 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                     "first_name": $stateParams.first_name
                 });
                 return;
-            } else { //successful check-in but missing email on reservation
-                $state.go('zest_station.inputReservationEmailAfterCheckin', {
-                    "reservationId": $stateParams.id,
-                    "room": $stateParams.room_no,
-                    "first_name": $stateParams.first_name
-                });
+            } else { 
+
+                var stateParams = {
+                'from':'signature',
+                'guest_id':$stateParams.guest_id,
+                'email': $stateParams.email,
+                'reservation_id': $stateParams.reservation_id,
+                'room_no': $stateParams.room_no,
+                'first_name': $stateParams.first_name
+                }
+                $state.go('zest_station.checkInEmailCollection', stateParams);
             }
 
         };
@@ -69,6 +72,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 params: checkinParams,
                 successCallBack: afterGuestCheckinCallback
             };
+            afterGuestCheckinCallback();
             // commment out after finishing
             //$scope.callAPI(zsCheckinSrv.checkInGuest, options);
         };
