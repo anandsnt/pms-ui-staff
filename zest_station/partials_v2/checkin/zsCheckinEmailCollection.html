@@ -1,0 +1,24 @@
+<!-- Content -->
+<section id="main" class="centered test" role="main">
+    <div id="content">
+        <h1>{{headingText |translate}}
+        <h3>{{subHeadingText |translate}}</h3>
+        <form method="post" class="form" click-touch='resetTime()'>
+            <div class="entry input">
+                <input type="{{inputType}}" 
+                    id="input_text"
+                    ng-focus="showOnScreenKeyboard('input_text')" 
+                    ng-click="showOnScreenKeyboard('input_text')"
+                    class="start-focused" 
+                    ng-keydown="resetTime()" 
+                    ng-model='input.inputTextValue' 
+                    enter-press="goToNext()" 
+                    value="" touch-press />
+            <div class="entry action">
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">{{'NEXT_BTN' |translate}}</button>
+            </div>
+        </form>
+        <button id="skipEmailInputBtn" type='button' class='button' touch-press='skipEmailEntryAfterSwipe(); resetTime()'>{{'SKIP_BTN' |translate}}</button>
+    </div>
+<span ng-include="'/assets/partials/rvTabletFooter.html'" click-touch='resetTime()' ></span>
+</section>

@@ -69,6 +69,13 @@ sntZestStation.config(['$stateProvider',
 			controller: 'zsCheckinSignatureCtrl'
 		});
 
+		// email entry screen
+      	$stateProvider.state('zest_station.checkInEmailCollection', {
+			url: '/checkInEmailCollection/:reservation_id/:email/:first_name/:room_no/:from',
+			templateUrl: '/assets/partials_v2/checkin/zsCheckinEmailCollection.html',
+			controller: 'zsCheckinEmailCollectionCtrl'
+		});
+
       	
 	}
 ]);

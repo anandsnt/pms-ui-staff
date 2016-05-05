@@ -10,6 +10,11 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
     'zsGeneralSrv',
     function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv) {
 
+        /**
+         * TWO MODES
+         * 1.SIGNATURE_MODE and
+         * 2.TIMED_OUT
+         */
 
         /**
          * [clearSignature description]
