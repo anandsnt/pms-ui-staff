@@ -11,6 +11,13 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
     'zsUtilitySrv',
     function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv) {
 
+
+        /**
+         * MODES IN THE SCREEN
+         * 1.EMAIL_ENTRY_MODE
+         * 2.EMAIL_INVLAID_MODE
+         */
+
         /**
          * [initializeMe description]
          */
@@ -27,7 +34,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          * [reEnterText description]
          * @return {[type]} [description]
          */
-        $scope.reEnterText = function(){
+        $scope.reEnterText = function() {
             $scope.mode = "EMAIL_ENTRY_MODE";
         };
         /**
