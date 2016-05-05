@@ -67,12 +67,11 @@
             </div>
         </div>
     <ul class="totals">
-            <li>
-                <div class="data">
-                    <span class="label">{{'GROUP_PICKED_UP'|translate}}</span>
-                    <span class="value">{{totalPickUpCount}}</span>
-                </div>
-            </li>
+        <li>
+            <div class="data">
+                <span class="label">{{'GROUP_PICKED_UP'|translate}}</span>
+                <span class="value">{{totalPickUpCount}}</span>
+            </div>
         </li>
         <li ng-show="shouldShowCheckInCheckoutButton()">
 
@@ -123,6 +122,58 @@
             </button>
         </li>
     </ul>
+    <div class="search-form search-bar">
+        <div class="entry search">
+            <!-- add class .visible when search text has been entered -->
+            <button class="clear-query">
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <button type="submit" name="submit" class="icons icon-search">
+                Search
+            </button>
+            <input class="query" placeholder="Search by Name, Group, Room No. or Confirmation No." type="search" autocomplete="off"/>
+        </div>
+        <div class="entry date-range">
+            <div class="has-datepicker">
+                <label for="{arrival-form-id}">
+                    <span class="green">Arrival</span> On
+                </label>
+                <!-- add class .visible when there is a date -->
+                <button class="clear-query">
+                    <span class="icons icon-clear-search">Clear query</span>
+                </button>
+                <input id="{arrival-form-id}" type="text" class="range-datepicker" readonly value="{arrival-value}"/>
+            </div>
+            <div class="has-datepicker">
+                <label for="{departure-form-id}">
+                    <span class="red">Departure</span> On
+                </label>
+                <!-- add class .visible when there is a date -->
+                <button class="clear-query">
+                    <span class="icons icon-clear-search">Clear query</span>
+                </button>
+                <input id="{departure-form-id}" type="text" class="range-datepicker"  readonly value="{departure-value}" />
+            </div>
+        </div>
+        <div class="entry has-checkboxes">
+            <!-- add .checked when checked -->
+            <label class="checkbox inline">
+                <!-- add .checked when checked -->
+                <span class="icon-form icon-checkbox"></span>
+                <!-- add attribute checked="checked" when checked -->
+                <input type="checkbox" value="pending-only" />
+                <span>Pending Only</span>
+            </label>
+            <!-- add .checked when checked -->
+            <label class="checkbox inline">
+                <!-- add .checked when checked -->
+                <span class="icon-form icon-checkbox"></span>
+                <!-- add attribute checked="checked" when checked -->
+                <input type="checkbox" value="exclude-cancelled" />
+                <span>Exclude Cancelled</span>
+            </label>
+        </div>
+    </div>
 </div>
 
 <div id="group-room-list-content" class="tab-details" ng-class="{'no-print' : isPrintRegistrationCard}">
