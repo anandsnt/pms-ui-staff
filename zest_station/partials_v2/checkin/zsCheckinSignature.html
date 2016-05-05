@@ -1,17 +1,11 @@
-<section id="main" class="centered" role="main" click-touch='resetTime()'>
+<section id="main" class="centered" role="main" ng-hide="mode === 'TIMED_OUT'" click-touch='resetTime()'>
     <div id="content">
         <h1 translate>SIGN_SCREEN</h1>
         <form type="post" action="" id="signature">
             <form id="signature-pad" class="complete-registration form" style=' height: 295px; border-radius: 8px;'>
                 <div>
                     <div class="sig">
-                        <div width='100%' 
-                             class='station-sign' 
-                             id="signature" 
-                             ui-jq="jSignature"
-                             ui-options="signaturePluginOptions" 
-                             ng-mouseover="disableScroll()" 
-                             ng-mouseleave="enableScroll()">
+                        <div width='100%' class='station-sign' id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
                         </div>
                     </div>
                 </div>
@@ -19,16 +13,36 @@
         </form>
     </div>
     <div>
-        <div id="actions" class="add-guests-footer sign" >
+        <div id="actions" class="add-guests-footer sign">
             <button type="button" class="button transparent prev" touch-press='clearSignature()' translate>CLEAR_BTN</button>
             <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()" translate>NEXT_BTN</button>
         </div>
     </div>
 </section>
-<!-- i am not sure about the below -->
-<section  ng-show='showCheckInMessage' id="main" class="centered test" role="main">
+<!-- timedout -->
+<section id="main" class="centered" role="main" ng-show="mode === 'TIMED_OUT'" click-touch='resetTime()'>
     <div id="content">
-        <h1 ng-hide="messageOverride">{{headingText |translate}}</h1>
-        <h1 ng-show="messageOverride">{{headingText}}</h1>
+        <h1 translate>CC_SIGN_TIMEOUT</h1>
+        <h2 translate>CC_SIGN_TIMEOUT_SUB</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='reSignCC()'>
+                        <div ng-include="icons.url.pen"></div>
+                    </button>
+                    {{'CC_SIGN_TIMEOUT_SIGN' |translate}}
+                </li>
+                <li class="break">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    {{'SPEAK' |translate}}
+                    <span translate>SPEAK_SUB</span>
+                </li>
+            </ul>
+        </nav>
     </div>
 </section>

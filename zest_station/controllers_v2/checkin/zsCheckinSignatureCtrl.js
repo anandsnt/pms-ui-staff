@@ -62,9 +62,10 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             };
             var options = {
                 params: checkinParams,
-                successCallBack : afterGuestCheckinCallback
+                successCallBack: afterGuestCheckinCallback
             };
-            $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+            // commment out after finishing
+            //$scope.callAPI(zsCheckinSrv.checkInGuest, options);
         };
         /**
          * [submitSignature description]
@@ -77,10 +78,15 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             $scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
             if ($scope.signatureData !== [] && $scope.signatureData !== null && $scope.signatureData !== '' && $scope.signatureData !== '[]') {
                 checkInGuest();
-            }else{
+            } else {
                 return;
             }
         };
+
+        $scope.reSignCC = function() {
+            $scope.mode = "SIGNATURE_MODE";
+        };
+
 
         /**
          * [initializeMe description]
@@ -91,7 +97,23 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             //show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+            $scope.mode = "SIGNATURE_MODE";
+            $scope.signaturePluginOptions = {
+                height: 230,
+                width: $(window).width() - 120,
+                lineWidth: 1
+            };
         }();
 
+        var setTimedOut = function() {
+            $scope.mode = 'TIMED_OUT';
+        };
+        /**
+         * TODO ---- ???
+         */
+        $scope.$on('USER_ACTIVITY_TIMEOUT',function(){
+             setTimedOut();
+        });
+           
     }
 ]);
