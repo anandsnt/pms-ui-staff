@@ -221,6 +221,16 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 			setInterval(increment, 1000);
 		};
+
+		/**
+		 * [CheckForWorkStationStatusContinously description]
+		 *  Check if admin has set back the status of the
+		 *  selected workstation to in order
+		 */
+		var  CheckForWorkStationStatusContinously = function(){
+			 $scope.$emit('FETCH_LATEST_WORK_STATIONS');
+			 $timeout(CheckForWorkStationStatusContinously, 120000); 
+		};
 		/********************************************************************************
 		 *  User activity timer
 		 *  ends here
@@ -544,6 +554,7 @@ sntZestStation.controller('zsRootCtrl', [
 			$('body').css('display', 'none'); //this will hide contents until svg logos are loaded
 			//call Zest station settings API
 			$scope.zestStationData = zestStationSettings;
+			CheckForWorkStationStatusContinously();
 			$scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;
 			setAUpIdleTimer();
 			$scope.zestStationData.workstationOooReason = "";
