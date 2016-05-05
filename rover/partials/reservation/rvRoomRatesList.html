@@ -1,7 +1,7 @@
 <div class="reservations-content-wrapper">
     <div class="reservation-filters" ng-class="{'with-guests': stateCheck.stayDatesMode}" ng-click="errorMessage = '';">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <div class="edit-guests" ng-show="stateCheck.stayDatesMode">
+        <div class="edit-guests" ng-show="!borrowForGroups && stateCheck.stayDatesMode">
             <a ng-click="toggleEditGuestOptions()" class="button has-arrow toggle">
                 <span class="label">
                 Guests 
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <ul>
+        <ul ng-hide="borrowForGroups">
             <li ng-class="{active: stateCheck.activeView == 'RECOMMENDED'}" ng-click="setActiveView('RECOMMENDED')"
                 ng-show="otherData.recommendedRateDisplay">
                 {{'RESV_RECOMMENDED'|translate}}
@@ -42,12 +42,12 @@
                 {{'RESV_RATE'|translate}}
             </li>
         </ul>
-        <div class="find-rates" ng-show="stateCheck.activeView == 'RATE'">
+        <div class="find-rates" ng-show="!borrowForGroups && stateCheck.activeView == 'RATE'">
             <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button> <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
              <input auto-complete id="find-rates" auto-options="rateAutoCompleteOptions" name="find-rates" type="text" placeholder="Find Rates" value="" autocomplete="off" ng-model="stateCheck.rateFilterText" ul-class="find-cards" />
         </div>
         <!-- ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)" -->
-        <div class="select" ng-show="stateCheck.activeView == 'ROOM_TYPE'">
+        <div class="select" ng-show="!borrowForGroups && stateCheck.activeView == 'ROOM_TYPE'">
             <select ng-model="stateCheck.preferredType" ng-change="onRoomTypeChange($event)" ng-disabled="stateCheck.activeView == 'RATE' || stateCheck.activeView == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay && stateCheck.dateModeActiveDate != reservationData.arrivalDate) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'">
                 <option value="" translate ng-if="reservationData.tabs.length < 2">RESV_ALL_ROOMS</option>
                 <option value="" ng-if="viewState.currentTab >0 && !stateCheck.preferredType" class="placeholder">Select Room Type</option>
@@ -71,24 +71,24 @@
             <ul ng-if="stateCheck.activeView == 'RECOMMENDED'" class="rooms-and-rates wrapper"></ul>
             <ul class="rooms-and-rates wrapper" ng-if="stateCheck.activeView == 'ROOM_TYPE'">
                 <li ng-repeat="room in display.roomFirstGrid track by $index">
-                    <a class="has-arrow toggle" ng-class="{active: !room.isCollapsed}" ng-click="showRatesList(room)">
+                    <a class="has-arrow toggle" ng-class="{active: !room.isCollapsed, disabled: borrowForGroups}" ng-click="showRatesList(room)">
                         <div class="data">
                             <h2>{{room.name}}</h2>
-                            <span class="recommended" ng-show="display.roomFirstGrid.length > 0 && $index > 0 && (room.defaultRate.adr - display.roomFirstGrid[0].defaultRate.adr) > 0">
+                            <span class="recommended" ng-show="!borrowForGroups && display.roomFirstGrid.length > 0 && $index > 0 && (room.defaultRate.adr - display.roomFirstGrid[0].defaultRate.adr) > 0">
                                 {{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{(room.defaultRate.adr - display.roomFirstGrid[0].defaultRate.adr) | number}}&nbsp;{{'RESV_MORE'|translate}}
                             </span>
                             <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
                             <span class="count red" ng-show="stateCheck.stayDatesMode && room.defaultRate.dates[stateCheck.dateModeActiveDate].availability < 5">
                                 {{room.defaultRate.dates[stateCheck.dateModeActiveDate].availability}} room(s) left
-                                <label ng-if="room.defaultRate.isGroupRate"> in Group Block</label>
-                                <label ng-if="room.defaultRate.isAllotmentRate"> in Allotment</label>
+                                <label ng-if="!borrowForGroups && room.defaultRate.isGroupRate"> in Group Block</label>
+                                <label ng-if="!borrowForGroups && room.defaultRate.isAllotmentRate"> in Allotment</label>
                             </span>
                             <span class="count red" ng-show="!stateCheck.stayDatesMode && room.availability < 5">
                                 {{room.availability}} room(s) left
                                 <label ng-if="room.defaultRate.isGroupRate"> in Group Block</label>
                                 <label ng-if="room.defaultRate.isAllotmentRate"> in Allotment</label>
                             </span>
-                            <span class="count green" ng-show="stateCheck.stayDatesMode &&  room.defaultRate.dates[stateCheck.dateModeActiveDate].availability > 4">
+                            <span class="count green" ng-show="stateCheck.stayDatesMode && room.defaultRate.dates[stateCheck.dateModeActiveDate].availability > 4">
                                 {{room.defaultRate.dates[stateCheck.dateModeActiveDate].availability}} room(s) left
                                 <label ng-if="room.defaultRate.isGroupRate"> in Group Block</label>
                                 <label ng-if="room.defaultRate.isAllotmentRate"> in Allotment</label>
@@ -100,13 +100,13 @@
                             </span>
                         </div>
                         <div class="book-rate" ng-if="room.isCollapsed">
-                            <h4 ng-hide="room.defaultRate.isCorporate" translate>RESV_BEST_RATE</h4>
-                            <h4 ng-show="room.defaultRate.isCorporate" translate>RESV_COR_RATE</h4>
-                            <div class="price" ng-if="!room.defaultRate.isSuppressed">
+                            <h4 ng-hide="borrowForGroups || room.defaultRate.isCorporate" translate>RESV_BEST_RATE</h4>
+                            <h4 ng-show="!borrowForGroups && room.defaultRate.isCorporate" translate>RESV_COR_RATE</h4>
+                            <div class="price" ng-if="!borrowForGroups && !room.defaultRate.isSuppressed">
                                 {{currencySymbol}}{{room.defaultRate.adr | number: 2}}
                                 <span translate>RESV_AVG_NIGHT</span>
                             </div>
-                            <div class="price" ng-if="room.defaultRate.isSuppressed">
+                            <div class="price" ng-if="!borrowForGroups && room.defaultRate.isSuppressed">
                                 SR<span translate>RESV_AVG_NIGHT</span>
                             </div>
                             <button class="button white blue-text" ng-show="stateCheck.selectedStayDate.rate.id == room.defaultRate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)" ng-click="handleNoEdit($event,room.id,room.defaultRate.id)">

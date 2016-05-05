@@ -1,7 +1,7 @@
 <span class="nested-view view-current" ng-class="{ 'return-back': !showReportDetails }">
     <div ng-include="'/assets/partials/common/header.html'"></div>
 
-    <form class="search-form" ng-hide="showReportDetails">
+    <form class="search-form" ng-hide="showReportDetails" style="z-index: 70;">
         <div class="entry search">
             <button type="button" class="clear-query" ng-class="{'visible': query.length}" ng-click="clearQuery()"> <!-- Add class "visible" to show -->
                 <span class="icons icon-clear-search">Clear query</span>
@@ -11,49 +11,16 @@
         </div>
     </form>
 
-    <section id="reports" class="content" role="main">
-        <div id="reports-menu" ng-hide="showReportDetails">
+    <section id="reports" class="content reports-wrapper" ng-class="{'no-search-form': showReportDetails}" ng-hide="showReportDetails" role="main">
+        <div id="reports-menu">
             <span ng-include="'/assets/partials/reports/shared/rvReportMainMenu.html'"></span>
         </div>
 
         <!-- Content -->
         <div id="reports-dashboard" class="scrollable {'cols-2', 'cols-3' or 'cols-4'}"
             ng-class="{'cols-2': viewCol === 2, 'cols-3': viewCol === 3, 'cols-4': viewCol === 4 }">
-            <span ng-include="'/assets/partials/reports/shared/rvViewAllReports.html'"></span>
+            <span ng-controller="RVReportListCrl" ng-include="'/assets/partials/reports/shared/rvViewAllReports.html'"></span>
         </div>
-
-        <span ng-controller="RVReportDetailsCtrl" class="content reports-wrapper" ng-show="showReportDetails" style="top: 0; height: 100%">
-            <section id="report-details" role="main" ng-click="toggleSidebar()" class="content reports-wrapper" style="top: 0; height: 100%">
-                <div id="report-update" class="sidebar-left ui-resizable" ng-class="{'open': showSidebar}" ng-click="toggleSidebar($event)" ng-include="'/assets/partials/reports/filters/rvReportDetailsFilters.html'"></div>
-
-                <div class="report-header" ng-show="showReportHeader">
-                    <div ng-show="hasReportTotals && !hasNoResults" ng-include="'/assets/partials/reports/shared/summaryCounts.html'"></div>
-
-                    <div class="actions">
-                        <div class="select" ng-if="HIDE_THIS_FEATURE">
-                            <select name="" id="">
-                                <option value="pdf">Save/E-mail as PDF</option>
-                                <option value="word">Save/E-mail as Word</option>
-                                <option value="excel">Save/E-mail as Excel</option>
-                            </select>
-                        </div>
-                        <button class="button with-icon only-icon blue" button="button" ng-click="emailReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-email"></span>
-                        </button>
-                        <button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span>
-                        </button>
-                        <button ng-click="exportCSV()" class="button with-icon only-icon purple" button="button" ng-show="shouldShowExportButton(chosenReport) && !hideExportOption"><span class="icons icon-save"></span>
-                        </button>
-                        
-                        <button class="button with-icon only-icon purple" button="button" ng-click="saveFullReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-save"></span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="report-header" ng-show="errorMessage.length" ng-include="'/assets/partials/common/notification_message.html'"></div>
-
-                <span ng-hide="errorMessage.length" ng-include="detailsTemplateUrl"></span>
-            </section>
-        </span>
 
         <!-- If there are no reports, replace L31-L70 with this: -->
         <div class="no-content" ng-show="error_is">
@@ -64,4 +31,37 @@
             </div>
         </div>
     </section>
+
+    <span ng-controller="RVReportDetailsCtrl" class="content reports-wrapper" ng-show="showReportDetails" style="top: 60; height: 100%">
+        <section id="report-details" role="main" ng-click="toggleSidebar()" class="content reports-wrapper" style="top: 0; height: 100%">
+            <div id="report-update" class="sidebar-left ui-resizable" ng-class="{'open': showSidebar}" ng-click="toggleSidebar($event)" ng-include="'/assets/partials/reports/filters/rvReportDetailsFilters.html'"></div>
+
+            <div class="report-header" ng-show="showReportHeader">
+                <div ng-show="hasReportTotals && !hasNoResults" ng-include="'/assets/partials/reports/shared/summaryCounts.html'"></div>
+
+                <div class="actions">
+                    <div class="select" ng-if="HIDE_THIS_FEATURE">
+                        <select name="" id="">
+                            <option value="pdf">Save/E-mail as PDF</option>
+                            <option value="word">Save/E-mail as Word</option>
+                            <option value="excel">Save/E-mail as Excel</option>
+                        </select>
+                    </div>
+                    <button class="button with-icon only-icon blue" button="button" ng-click="emailReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-email"></span>
+                    </button>
+                    <button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span>
+                    </button>
+                    <button ng-click="exportCSV()" class="button with-icon only-icon purple" button="button" ng-show="shouldShowExportButton(chosenReport) && !hideExportOption"><span class="icons icon-save"></span>
+                    </button>
+                    
+                    <button class="button with-icon only-icon purple" button="button" ng-click="saveFullReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-save"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="report-header" ng-show="errorMessage.length" ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+            <span ng-hide="errorMessage.length" ng-include="detailsTemplateUrl"></span>
+        </section>
+    </span>
 </span>
