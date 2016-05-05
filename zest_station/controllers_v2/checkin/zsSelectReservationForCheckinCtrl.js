@@ -15,7 +15,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
         $scope.selectReservation = function(reservation){
             var selectedReservation = [];
             selectedReservation.push(reservation);
-            zsCheckinSrv.setSelectedCheckInReservations(selectedReservation);
+            zsCheckinSrv.setSelectedCheckInReservation(selectedReservation);
             var primaryGuest = _.find(selectedReservation[0].guest_details, function(guest_detail) {
                 return guest_detail.is_primary === true;
             });

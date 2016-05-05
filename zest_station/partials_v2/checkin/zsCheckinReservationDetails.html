@@ -17,8 +17,8 @@
                             <span>{{selectedReservation.guest_details.length}} {{'RESIDENTS' |translate}} </span>
                             {{selectedReservation.stay_dates[0].room_type}}
                         </p>
-                        <p ng-show="{{selectedReservation.guest_details.length > 1}}" ng-hide="{{selectedReservation.guest_details.length == 1}}">{{'ADDTL_RESIDENTS' |translate}} ({{selectedReservation.guest_details.length-1}})</p>
-                        <button type="button" class="button" touch-press="addRemoveGuests()" ng-hide="isInCheckoutMode()">{{'ADD_REMOVE_GUESTS' |translate}} </button>
+                        <p ng-hide="{{selectedReservation.guest_details.length == 1}}">{{'ADDTL_RESIDENTS' |translate}} ({{selectedReservation.guest_details.length-1}})</p>
+                        <button type="button" class="button" touch-press="addRemove()" >{{'ADD_REMOVE_GUESTS' |translate}} </button>
                     </div>
                     <ul id="rate" class="reservation-details">
                         <li >
