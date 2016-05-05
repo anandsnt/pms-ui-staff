@@ -47,7 +47,7 @@
             <div class="entry date-range">
                 <div class="has-datepicker">
                     <label for="rooming-date-from" translate>FROM</label>
-                    <button class="clear-query" ng-class="{'visible': !isEmpty(fromDate.toString())}" ng-click="clearFromDate()">
+                    <button class="clear-query" ng-class="{'visible': !isEmpty(fromDate.toString())}" ng-click="clearDate('fromDate')">
                         <!-- Add class "visible" when date is selected -->
                         <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
                     </button>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="has-datepicker">
                     <label for="rooming-date-to" translate>TO</label>
-                    <button class="clear-query" ng-class="{'visible': !isEmpty(toDate.toString())}" ng-click="clearToDate()">
+                    <button class="clear-query" ng-class="{'visible': !isEmpty(toDate.toString())}" ng-click="clearDate('toDate')">
                         <!-- Add class "visible" when date is selected -->
                         <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
                     </button>
@@ -125,52 +125,52 @@
     <div class="search-form search-bar">
         <div class="entry search">
             <!-- add class .visible when search text has been entered -->
-            <button class="clear-query">
+            <button class="clear-query" ng-class="{'visible': query.length}" ng-click="clearQuery()">
                 <span class="icons icon-clear-search">Clear query</span>
             </button>
             <button type="submit" name="submit" class="icons icon-search">
                 Search
             </button>
-            <input class="query" placeholder="Search by Name, Group, Room No. or Confirmation No." type="search" autocomplete="off"/>
+            <input class="query" placeholder="Search by Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-model="query" ng-keyup="debounceFetchReservations()" />
         </div>
         <div class="entry date-range">
             <div class="has-datepicker">
-                <label for="{arrival-form-id}">
-                    <span class="green">Arrival</span> On
+                <label for="group-filter-arrival-form-id">
+                    <span class="green" translate>ARRIVAL</span> {{'ON'|translate}}
                 </label>
                 <!-- add class .visible when there is a date -->
-                <button class="clear-query">
+                <button class="clear-query" ng-class="{'visible': !isEmpty(arrival_date.toString())}" ng-click="clearDate('arrival_date')">
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
-                <input id="{arrival-form-id}" type="text" class="range-datepicker" readonly value="{arrival-value}"/>
+                <input id="group-filter-arrival-form-id" type="text" class="range-datepicker" readonly rv-clear-text-box listen-this="arrival_date" ui-date="fromDateOptions" ng-model="arrival_date" value="{{arrival_date|date:dateFormat}}" ng-change="fetchReservations()" />
             </div>
             <div class="has-datepicker">
-                <label for="{departure-form-id}">
-                    <span class="red">Departure</span> On
+                <label for="group-filter-departure-form-id">
+                    <span class="red" translate>DEPARTURE</span> {{'ON'|translate}}
                 </label>
                 <!-- add class .visible when there is a date -->
-                <button class="clear-query">
+                <button class="clear-query" ng-class="{'visible': !isEmpty(dep_date.toString())}" ng-click="clearDate('dep_date')">
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
-                <input id="{departure-form-id}" type="text" class="range-datepicker"  readonly value="{departure-value}" />
+                <input id="group-filter-departure-form-id" type="text" class="range-datepicker" readonly rv-clear-text-box listen-this="dep_date" ui-date="toDateOptions" ng-model="dep_date" value="{{dep_date|date:dateFormat}}" ng-change="fetchReservations()" />
             </div>
         </div>
         <div class="entry has-checkboxes">
             <!-- add .checked when checked -->
-            <label class="checkbox inline">
+            <label class="checkbox inline" ng-class="{'checked': show_pending_only}">
                 <!-- add .checked when checked -->
-                <span class="icon-form icon-checkbox"></span>
+                <span class="icon-form icon-checkbox" ng-class="{'checked': show_pending_only}"></span>
                 <!-- add attribute checked="checked" when checked -->
-                <input type="checkbox" value="pending-only" />
-                <span>Pending Only</span>
+                <input type="checkbox" value="pending-only" ng-model="show_pending_only" ng-change="fetchReservations()" />
+                <span translate>PENDING_ONLY</span>
             </label>
             <!-- add .checked when checked -->
-            <label class="checkbox inline">
+            <label class="checkbox inline" ng-class="{'checked': exclude_cancel}">
                 <!-- add .checked when checked -->
-                <span class="icon-form icon-checkbox"></span>
+                <span class="icon-form icon-checkbox" ng-class="{'checked': exclude_cancel}"></span>
                 <!-- add attribute checked="checked" when checked -->
-                <input type="checkbox" value="exclude-cancelled" />
-                <span>Exclude Cancelled</span>
+                <input type="checkbox" value="exclude-cancelled" ng-model="exclude_cancel" ng-change="fetchReservations()" />
+                <span translate>EXCLUDE_CANCELLED</span>
             </label>
         </div>
     </div>
@@ -234,24 +234,22 @@
                 <a ng-click="clickedOnReservation(reservation)">
                     <div class="data">
                         <h2 ng-show="!isGuestBlank(reservation)">
-                            {{reservation.lastname}}, {{reservation.firstname}}
+                            <span ng-bind-html="escapeNull(reservation.lastname)|highlight:query:false"></span>, <span ng-bind-html="escapeNull(reservation.firstname)|highlight:query:false"></span>
                         </h2>
-                            <h2 ng-show="isGuestBlank(reservation)">
+                        <h2 ng-show="isGuestBlank(reservation)">
                             <!-- If new room, show this instead: -->
                             <span class="highlight">{{'GROUP_PENDING'|translate}}</span>
                         </h2>
                         <span class="room" ng-show="!isRoomUnAssigned(reservation)">
                             <!-- Add class "unassigned" if new room -->
                             {{'GROUP_ROOM'|translate}} 
-                            <span ng-class="getRoomStatusClass(reservation)">
-                                {{reservation.room_no}}
-                            </span>
+                            <span ng-class="getRoomStatusClass(reservation)" ng-bind-html="escapeNull(reservation.room_no)|highlight:query:false"></span>
                             <!-- If new room, show this instead: Unassigned -->
                         </span>
                             <span class="room unassigned" ng-show="isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
                            {{'GROUP_UNASSIGNED'|translate}} 
                         </span> |
-                            <span class="confirmation">{{reservation.confirm_no}}</span>
+                            <span class="confirmation" ng-bind-html="escapeNull(reservation.confirm_no)|highlight:query:false"></span>
                         </div>
                         <div class="reservation-info">
                             <div class="arrival-departure">

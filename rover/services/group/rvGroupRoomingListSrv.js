@@ -49,12 +49,7 @@ angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrv
 				url = '/api/group_reservations/' + group_id + "/list";
 
 
-			var data = {
-				'sort_field': params.sorting_field,
-				'sort_dir': params.sort_dir,
-				'per_page': params.per_page,
-				'page': params.page
-			};
+			var data = _.omit(params, 'group_id');
 
 			rvBaseWebSrvV2.getJSON(url, data).then(
 				function(data) {
