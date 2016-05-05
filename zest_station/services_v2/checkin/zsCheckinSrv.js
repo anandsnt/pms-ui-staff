@@ -6,22 +6,22 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
     function($http, $q, zsBaseWebSrv, zsBaseWebSrv2) {
 
         var that = this;
-        this.checkInReservations =[];
-        this.setCheckInReservations = function(data){
+        this.checkInReservations = [];
+        this.setCheckInReservations = function(data) {
             that.checkInReservations = [];
             that.checkInReservations = data;
         };
 
-        this.getCheckInReservations = function(){
+        this.getCheckInReservations = function() {
             return that.checkInReservations;
         };
-        this.selectedCheckInReservation =[];
-        this.setSelectedCheckInReservation = function(data){
+        this.selectedCheckInReservation = [];
+        this.setSelectedCheckInReservation = function(data) {
             that.selectedCheckInReservation = [];
             that.selectedCheckInReservation = data[0];
         };
 
-        this.getSelectedCheckInReservation = function(){
+        this.getSelectedCheckInReservation = function() {
             return that.selectedCheckInReservation;
         };
 
@@ -60,7 +60,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-        
+
 
         this.checkInGuest = function(params) {
             var deferred = $q.defer(),
@@ -89,10 +89,10 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
 
-         this.fetchOwsMessage = function(params){
+        this.fetchOwsMessage = function(params) {
 
             var deferred = $q.defer();
-            var url = '/api/reservation_guest_messages/' + params.reservation_id+'.json';
+            var url = '/api/reservation_guest_messages/' + params.reservation_id + '.json';
             //var url = '/sample_json/zest_station/ows_msgs.json';
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -102,10 +102,10 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-       this.sendOWSMsgAsMail = function(params) {
+        this.sendOWSMsgAsMail = function(params) {
             var deferred = $q.defer();
             url = 'api/reservation_guest_messages/email_message.json';
-        
+
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -123,6 +123,33 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             }, function(data) {
                 deferred.reject(data);
             });
+            return deferred.promise;
+        };
+
+        this.sendRegistrationByEmail = function(data) { //to get terms & conditions
+            var deferred = $q.defer();
+            var id = data.id;
+            var url = '/api/reservations/' + id + '/email_registration_card';
+            var params = {
+                "application": data.application
+            };
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchRegistrationCardPrintData = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/' + params.id + '/print_registration_card';
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
             return deferred.promise;
         };
 
