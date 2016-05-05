@@ -82,12 +82,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isDepositReport = false;
 			$scope.isCondensedPrint = false;
 			$scope.isBalanceReport = false;
+			$scope.isDepositBalanceReport = false;
 
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
 			$scope.showSortBy    = true;
 			$scope.hasPagination = true;
-			
+
 
 			switch ( $scope.chosenReport.title ) {
 				case reportNames['IN_HOUSE_GUEST']:
@@ -167,7 +168,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['GROUP_DEPOSIT_REPORT']:
 					$scope.isDepositReport = true;
 					break;
-					
+
 				case reportNames['AR_SUMMARY_REPORT']:
 					$scope.hasNoTotals = false;
 					$scope.showSortBy = true;
@@ -177,6 +178,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['GUEST_BALANCE_REPORT']:
 					$scope.hasNoTotals = false;
 					$scope.showSortBy = true;
+					$scope.isBalanceReport = true;
+					break;
+
+				case reportNames['DEPOSIT_SUMMARY']:
+					$scope.hasNoTotals = true;
+					$scope.showSortBy = true;
+					$scope.isDepositBalanceReport = true;
 					$scope.isBalanceReport = true;
 					break;
 
@@ -291,7 +299,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 3;
 					break;
-					
+
 				case reportNames['GUEST_BALANCE_REPORT']:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 3;
@@ -310,6 +318,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['CREDIT_CHECK_REPORT']:
 					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 2;
+					break;
+
+				case reportNames['DEPOSIT_SUMMARY']:
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 3;
 					break;
 
 				default:
@@ -500,6 +513,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 						$scope.detailsTemplateUrl = '/assets/partials/reports/shared/rvCommonReportDetails.html';
 					};
 					break;
+				case reportNames['DEPOSIT_SUMMARY']:
+						$scope.hasReportTotals    = true;
+						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
+						$scope.detailsTemplateUrl = '/assets/partials/reports/depositBalanceSummary/rvGuestAndGroupDepositBalanceDetails.html';
+
+					break;
 
 				case reportNames['FORECAST_BY_DATE']:
 					$scope.hasReportTotals    = false;
@@ -540,7 +559,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionRoomTypeReport.html';
 					break;
-					
+
 				case reportNames['DAILY_PRODUCTION_DEMO']:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
@@ -693,9 +712,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// clear old results and update total counts
 			$scope.netTotalCount = $scope.$parent.totalCount;
 
-			if ( typeof $scope.$parent.results === 'array' ) {
+			if ( angular.isArray($scope.$parent.results)) {
 				$scope.uiTotalCount = $scope.$parent.results.length;
-			} else if ( typeof $scope.$parent.results === 'object' ) {
+			} else if ( angular.isObject($scope.$parent.results)) {
 				$scope.uiTotalCount = 0;
 				_.each($scope.$parent.results, function(item) {
 					if ( typeof item === 'array' ) {

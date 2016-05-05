@@ -1,10 +1,42 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
-    <div class="modal-content alert" ng-init="mailInvoiceTo = ''">
+    <!-- <div class="modal-content alert" ng-init="mailInvoiceTo = ''">
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
             <div class="entry full-width">
                 <label for="invoice-email" translate>EMAIL</label>
                 <input id="invoice-email" ng-model="mailInvoiceTo" type="text" />
             </div>
         <button type="button" class="button blue modal-close" ng-click="sendEmail(mailInvoiceTo)" translate>SEND</a>
+    </div> -->
+    <div class="modal-content form format-bill rooming-list" ng-init="mailInvoiceTo = ''">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
+
+        <strong class="h2 message">Rooming List</strong>
+
+        <div class="entry full-width">
+            <label >Email Address</label>
+            <input type="email" name="email" ng-model="mailInvoiceTo"  placeholder="Enter an Email" value=""/>
+        </div>
+
+        <div class="entry full-width" ng-class="{ 'checked': groupConfigData.summary.hide_rates }">
+            <label class="checkbox inline" ng-class="{ 'checked': groupConfigData.summary.hide_rates }"><!-- Add class "checked" if checked -->
+                <span class="icon-form icon-checkbox"  ng-class="{ 'checked': groupConfigData.summary.hide_rates }"></span>
+                <input type="checkbox" name="dont-print-rate" value="1" ng-click="clickedShowRate()"/>
+                Don't Show Rate
+            </label>
+        </div>
+
+        <div class="actions">
+            <!-- Remove .blue and add .grey if there is no email -->
+            <button type="button" class="button with-icon blue" ng-click="sendEmail(mailInvoiceTo)" >
+                <span class="icons icon-email" ></span>
+                 Email
+            </button>
+            <button type="button" class="button with-icon blue" ng-click="fetchReservationsForPrintingRoomingList()">
+                <span class="icons icon-print"></span>
+                Print
+            </button>
+            <button type="button" class="button blank inline" ng-click="closeDialog()">Cancel</button>
+        </div>
     </div>
 </div>
+
