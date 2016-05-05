@@ -16,12 +16,12 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return that.checkInReservations;
         };
         this.selectedCheckInReservation =[];
-        this.setSelectedCheckInReservations = function(data){
+        this.setSelectedCheckInReservation = function(data){
             that.selectedCheckInReservation = [];
             that.selectedCheckInReservation = data[0];
         };
 
-        this.getSelectedCheckInReservations = function(){
+        this.getSelectedCheckInReservation = function(){
             return that.selectedCheckInReservation;
         };
 

@@ -31,6 +31,11 @@ sntZestStation.config(['$stateProvider',
             }
         });
 
+		$stateProvider.state('zest_station.add_remove_guests', {
+			url: '/checkInAddRemoveGuest',
+			templateUrl: '/assets/partials_v2/checkin/zsCheckInAddRemoveGuest.html',
+			controller: 'zsCheckInAddRemoveGuestCtrl'
+		});
 		//checkin key dispense
 		$stateProvider.state('zest_station.checkInKeyDispense', {
 			url: '/checkInKeyDispense',
