@@ -14,39 +14,30 @@ const shouldShowGridViewRootContainer = (state) => {
 };
 
 const mapStateToRateManagerGridViewRootComponentProps = (state) => {
-	var propsToReturn = {
-	    shouldShow 	 		: shouldShowGridViewRootContainer(state),
-	    mode 				: state.mode,
-	    refreshScrollers 	: (state.action === RM_RX_CONST.REFRESH_SCROLLERS),
-        scrollTo            : state.scrollTo
-	};
-
-	if(state.mode === RM_RX_CONST.RATE_VIEW_MODE) {
-		propsToReturn.scrollReachedBottom = state.callBacksFromAngular.allRatesScrollReachedBottom;
-        propsToReturn.scrollReachedTop = state.callBacksFromAngular.allRatesScrollReachedTop;
-	}
-
-	return propsToReturn;
+	return {
+        shouldShow          : shouldShowGridViewRootContainer(state),
+        mode                : state.mode,
+        refreshScrollers    : (state.action === RM_RX_CONST.REFRESH_SCROLLERS),
+        scrollTo            : state.scrollTo,
+        paginationStateData : state.paginationState
+    };
 };
 
 const mapDispatchToRateManagerGridViewRootComponentProps = (stateProps, dispatchProps, ownProps) => {
-    var scrollReachedBottom = () => {},
-        scrollReachedTop = () => {};
-    switch(stateProps.mode) {
-        case RM_RX_CONST.RATE_VIEW_MODE:
-            scrollReachedBottom = (xScrollPosition, maxScrollX, yScrollPosition, maxScrollY) => {
-                return stateProps.scrollReachedBottom(xScrollPosition, maxScrollX, yScrollPosition, maxScrollY);
-            };
-            scrollReachedTop = (xScrollPosition, maxScrollX, yScrollPosition, maxScrollY) => {
-                return stateProps.scrollReachedTop(xScrollPosition, maxScrollX, yScrollPosition, maxScrollY);
-            };
-            break;
+    var wrapperClass = 'calendar-wraper',
+        isLastPage = Math.ceil(stateProps.paginationStateData.totalRows / stateProps.paginationStateData.perPage) ===  stateProps.paginationStateData.page;
+
+    if(stateProps.mode === RM_RX_CONST.RATE_VIEW_MODE && stateProps.paginationStateData.page > 1){
+        wrapperClass += ' load-top';
+    }
+
+    if(stateProps.mode === RM_RX_CONST.RATE_VIEW_MODE && !isLastPage){
+        wrapperClass += ' load-bottom';
     }
 
     return {
     	...stateProps,
-        scrollReachedBottom,
-        scrollReachedTop
+        wrapperClass 
     };    
 };
 

@@ -1,15 +1,17 @@
-const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItemClickActionType, goToPrevPage, goToNextPage }) => (
+const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItemClickActionType, goToPrevPage, goToNextPage, isFirstPage, isLastPage, topPageButtonText, bottomPageButtonText }) => (
 	
 	<tbody>
-		<tr className="cell rate loader">
-	        <td>        
-	           <button type="button" 
-	           		className="button blue"
-	           		onClick={(e) => { goToPrevPage(e); }}>
-	               prev
-	           </button>
-	        </td>
-	    </tr>
+		{isFirstPage ? null :
+			(<tr className="cell rate loader">
+		        <td>        
+		           <button type="button" 
+		           		className="button blue"
+		           		onClick={(e) => { goToPrevPage(e); }}>
+		               	{topPageButtonText}
+		           </button>
+		        </td>
+			</tr>)
+		}
 		{
 			leftListingData.map((item, index) => 
 				<RateManagerGridLeftRowComponent
@@ -27,15 +29,16 @@ const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItem
 					rightSpanClassName = {item.rightSpanClassName}/>
 			)			
 		}	
-
-		<tr className="cell rate loader">
-	        <td>
-	           <button type="button" 
-	           		className="button blue"
-	           		onClick={(e) => { goToNextPage(e); }}>
-	               next
-	           </button>
-	        </td>
-	    </tr>	
+		{isLastPage ? null :
+			(<tr className="cell rate loader">
+		        <td>
+		           <button type="button" 
+		           		className="button blue"
+		           		onClick={(e) => { goToNextPage(e); }}>
+		               	{bottomPageButtonText}
+		           </button>
+		        </td>
+		    </tr>)	
+		}
 	</tbody>
 )

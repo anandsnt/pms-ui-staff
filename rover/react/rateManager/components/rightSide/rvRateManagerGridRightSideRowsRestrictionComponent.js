@@ -1,10 +1,5 @@
 const RateManagerGridRightSideRowsRestrictionComponent = ({ onTdClick, mode, restrictionRows, dateList }) => (
 	<tbody>
-		<tr className="cell rate loader">
-	        <td>        
-	          ...
-	        </td>
-	    </tr>
 		{restrictionRows.map((rateData, rowIndex) => 
 			<tr key={'key-' + rowIndex}
 				className={((rowIndex + 1) === (restrictionRows.length) ? 'last' : '')}>
@@ -28,10 +23,5 @@ const RateManagerGridRightSideRowsRestrictionComponent = ({ onTdClick, mode, res
 					)}
 			</tr>
 		)}
-		<tr className="cell rate loader">
-	        <td>        
-	          ...
-	        </td>
-	    </tr>
 	</tbody>
 );
