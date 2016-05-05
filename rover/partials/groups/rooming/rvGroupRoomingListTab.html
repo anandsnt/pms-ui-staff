@@ -19,9 +19,9 @@
             <div class="entry type">
                 <label for="rooming-room-type">{{'GROUP_ROOM_TYPE'|translate}}</label>
                 <div class="select">
-                    <select id="rooming-room-type" ng-model="selectedRoomType" ng-change="changedSelectedRoomType()">
-                        <option value="{{roomTypeData.room_type_id}}" ng-selected="selectedRoomType==roomTypeData.room_type_id" ng-repeat="roomTypeData in roomTypesAndData">
-                            {{roomTypeData.room_type_name}} ({{roomTypeData.availableRoomCount}})</option>
+                    <select id="rooming-room-type" ng-model="selectedRoomType" ng-change="changedSelectedRoomType()" ng-options="item.room_type_id as item.room_type_name+'('+item.availableRoomCount+')' for item in roomTypesAndData">
+                        <!-- <option value="{{roomTypeData.room_type_id}}" ng-selected="selectedRoomType==roomTypeData.room_type_id" ng-repeat="roomTypeData in roomTypesAndData">
+                            {{roomTypeData.room_type_name}} ({{roomTypeData.availableRoomCount}})</option> -->
                     </select>
                 </div>
             </div>

@@ -250,34 +250,36 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
         
         
-        $scope.emitKeyError = function(response){
-            response = !!response ? "" :response;
-            var emptyHopperText = 'card from hopper',
+        var setFailureReason = function(response){
+            var emptyHopper = 'card from hopper',
                     failedSocketConnectionText = 'SOCKET_FAILED';
             
             if($scope.isInCheckinMode()){
-                 $scope.zestStationData.wsFailedReason = $filter('translate')('CHECKIN_KEY_FAIL');
-                 
-                 if (response.indexOf(emptyHopperText) != -1){
-                    $scope.zestStationData.wsFailedReason = $filter('translate')('CHECKIN_KEY_FAIL_EMPTY');
+                
+                if (response.indexOf(emptyHopper) !== -1){
+                      $scope.zestStationData.wsFailedReason = $filter('translate')('CHECKIN_KEY_FAIL_EMPTY');
+                } else {
+                    $scope.zestStationData.wsFailedReason = $filter('translate')('CHECKIN_KEY_FAIL');
                 }
                 
-            } else{
-                 $scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL');
+            } else if ($scope.isInPickupKeyMode()){
                  
-                 if (response.indexOf(emptyHopperText) != -1){
+                if (response.indexOf(emptyHopper) !== -1){
                     $scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL_EMPTY');
+                } else {
+                    $scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL');
                 }
             }
             
-            if (typeof response === typeof 'str'){
-                if (response.indexOf(failedSocketConnectionText) != -1){
-                    $scope.zestStationData.wsFailedReason = $scope.zestStationData.wsFailedReason + $filter('translate')('SERVICE_FAILURE');
-                } 
-            }
-            
-            
-            
+            //if related to websocket failure, append info
+            if (response.indexOf(failedSocketConnectionText) !== -1){
+                $scope.zestStationData.wsFailedReason = $scope.zestStationData.wsFailedReason + $filter('translate')('SERVICE_FAILURE');
+            } 
+        };
+        
+        $scope.emitKeyError = function(response){
+            response = !!response ? "" :response;
+            setFailureReason(response);
             
             $scope.$emit('MAKE_KEY_ERROR',response);
             $scope.zestStationData.wsIsOos = true;
@@ -442,17 +444,28 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
          
         $scope.initSankyoCmd = function(cmd, msg){//should only init this if a dispense was called...
             if (typeof msg === typeof "str"){
-                if (msg.toLowerCase().indexOf('invalid') !== -1){
+                if (msg.toLowerCase().indexOf('invalid') !== -1){//bad setting, etc..
                     $scope.emitKeyError(msg);
                     return;
+                    
+                } else if (msg.toLowerCase().indexOf('unable') !== -1){//unable to connect / initialize for some reason..
+                    $scope.emitKeyError(msg);
+                    return;
+                    
+                } else if (msg.toLowerCase().indexOf('failed') !== -1){//failed to connec to sankyo [ com port?]
+                    $scope.emitKeyError(msg);
+                    return;
+                    
                 } else if (msg.toLowerCase().indexOf('card from hopper') !== -1){
                     $scope.zestStationData.wsIsOos = true;
+                    
                     $scope.zestStationData.wsFailedReason =  $filter('translate')('PICKUP_KEY_FAIL_EMPTY');
+                    
                     console.info('$scope.zestStationData.wsFailedReason: ',$scope.zestStationData.wsFailedReason)
                     console.warn('Setting out of order due to empty key dispenser');
                     $scope.emitKeyError(msg);
                     return;
-                }  
+                } 
             }
 
 
