@@ -38,6 +38,7 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
                     }, reservationsACSelectHandler = function (event, selection) {
                         scope.guestName = rvUtilSrv.escapeNull(selection.item.lastname) + ', ' + rvUtilSrv.escapeNull(selection.item.firstname);
                         ngModel.$setViewValue(angular.copy(selection.item));
+                        scope.$emit("RESERVATION_SELECTED", selection.item);
                         refreshTemplate();
                         return false;
                     };

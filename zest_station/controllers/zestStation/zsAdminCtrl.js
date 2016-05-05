@@ -144,7 +144,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.mode = 'login-mode';
             };
 
-        }();
+        };
 
         //* when the back button clicked
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
@@ -224,9 +224,12 @@ sntZestStation.controller('zsAdminCtrl', [
             var failureCallBack = function(response) {
                 console.warn('unable to save workstation settings');
             };
-            var station = $scope.savedSettings.kiosk.workstation;
             var params = {};
+            var station = $scope.savedSettings.kiosk.workstation;
+            
             if (station) {
+                station.is_out_of_order = ($scope.zestStationData.workstationStatus !== 'in-order' ? false : true);
+                
                 var params = {
                     'default_key_encoder_id': station.key_encoder_id,
                     'identifier': station.station_identifier,
@@ -318,14 +321,8 @@ sntZestStation.controller('zsAdminCtrl', [
                 console.warn(err);
             }
         };
-
+        $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
         $scope.openPrinterMenu = function() {
-            var onSuccess = function(success) {
-                alert(JSON.stringify(success));
-            };
-            var onFail = function(err) {
-                alert(JSON.stringify(err));
-            };
 
             if (typeof cordova !== typeof undefined) {
                 //cordova.exec(onSuccess, onFail, 'RVCardPlugin', 'selectPrinter', [1024, 50])
@@ -344,5 +341,6 @@ sntZestStation.controller('zsAdminCtrl', [
                 );
             }
         };
+        initialize();
     }
 ]);

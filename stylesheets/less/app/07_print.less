@@ -15,7 +15,7 @@ html {
     background: transparent;
 }
 
-body { overflow: visible; }
+body { overflow: visible; height:auto; }
 
 #main-menu,
 #availability,
@@ -285,8 +285,9 @@ table {
 
 /* Search                   ==============================*/
     .search-results {
+        padding: 0;
 
-        li {
+        li:not(.no-content) {
             font-size: 8pt;
             line-height: 10px;
             margin: 0;
@@ -298,9 +299,12 @@ table {
             a,
             .faux-anchor {
                 color: @textColor;
+                padding: 0;
                 .show;
                 .float;
             }
+
+            .has-arrow { background: transparent; }
 
             h2 {
                 font-size: 10pt;
@@ -318,20 +322,56 @@ table {
             /* AR Transactions ***/
             &.transaction {
 
+                img {
+                    -webkit-filter: grayscale(100%);
+                    filter: grayscale(100%);
+                    .size(20px, auto);
+                }
+
                 .data {
                     position: relative;
-                    padding-right: 240px;
-                    .calc-width(100, 200);
+                    width: -webkit-calc(~"100% - 7cm");
+                    width: -moz-calc(~"100% - 7cm");
+                    width: calc(~"100% - 7cm");
                     .pull-left;
 
-                    h2 { .pull-left; }
+                    h2 {
+                        .calc-width(100, 540);
+                    }
+
+                    .confirmation,
+                    .icon-time {
+                        line-height: 10px;
+                        .nowrap();
+                        .show;
+                        .pull-left;
+                    }
 
                     .confirmation {
-                        line-height: 10px;
+                        
                         color: @grey3;
-                        clear: both;
-                        .pull-left;
-                        .show;
+                        margin-right: 8pt;
+
+                        .value { color: @textColor; }
+                    }
+
+                    .icon-time {
+                        background: transparent;
+
+                        &:last-child:not(:nth-child(2)) {
+                            position: relative;
+                            padding-left: 8pt;
+
+                            &:after {
+                                content: '•';
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                color: @grey3;
+                                .show();
+                                .size(10px, 2px);
+                            }
+                        }
                     }
 
                     .arrival,
@@ -344,25 +384,16 @@ table {
 
                         .guest-status { margin-right: 4pt; }
 
-                        .time {
+                        .time { 
                             color: @grey3;
                             .show;
                         }
                     }
 
                     .arrival { right: 280px; }
-                    .departure { right: 40px; }
+                    .departure { right: 80px; }
 
-                    &.no-image {
-                        h2 { float: none; }
-
-                        .confirmation,
-                        .icon-time {
-                            .show;
-                            .pull-left;
-
-                            &:not(:last-child) { margin-right: 8pt; }
-                        }
+                    .card-data {
 
                     }
                 }
@@ -371,16 +402,16 @@ table {
                     font-size: 12pt;
                     font-weight: 300;
                     line-height: 20px;
-                    width: 140px;
+                    width: 3cm;
                     .pull-left;
 
                     &.paid { color: @grey3; }
                 }
 
-                .switch-button {
+                .switch-button { 
                     line-height: 20px;
                     text-align: right;
-                    .size(20px, 60px);
+                    .size(20px, 4cm);
                     .pull-left;
 
                     input { .hide; }
@@ -390,16 +421,16 @@ table {
                         .switch-icon { .hide; }
                     }
 
-                    .data-on {
-                        .hide;
+                    .data-on { 
+                        .hide; 
 
                         .value { color: @grey3; }
                     }
 
-                    .data-off {
-                        .show;
+                    .data-off { 
+                        .show; 
 
-                        .value {
+                        .value { 
                             color: @textColor;
                             font-weight: 600;
                         }
@@ -411,12 +442,57 @@ table {
                     }
                 }
 
+                .employee {
+                    line-height: 20px;
+                    text-align: right;
+                    width: 4cm;
+                    .nowrap();
+                    .pull-left;
+                }
+
+                .card-data {
+
+                    .card-logo {
+                        clear: both;
+                        .show();
+                    }
+
+                    .number,
+                    .date {
+                        position: relative;
+                        display: inline-block;
+                        padding-right: 8pt;
+                        line-height: 10px;
+                        color: @grey3;
+                        .pull-left;
+
+                        .value {
+                            color: @textColor;
+                        }
+
+                        &:after {
+                            content: '•';
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            color: @grey3;
+                            .show();
+                            .size(10px, 2px);
+                        }
+                    }
+
+                    .date {
+                        margin: 0 8pt;
+                    }
+                }
+
                 &:last-child { border-bottom: 0; }
+
+                .grid-items { .hide(); }
             }
 
             /* Rooming List ***/
             &.rooming-list {
-                line-height: 10px;
 
                 .check { .hide; }
 
@@ -839,204 +915,212 @@ table {
 
         &.open,
         &.fullscreen { .show; }
-
+        .ar-statement {
+            display:none;
+        }
         /* AR Statement ***/
-    &.print-statement {
-        .cards-header,
-        .card-tabs-nav { .hide; }
+        &.print-statement {
+            .cards-header,
+            .card-tabs-nav { .hide; }
 
-        .transactions {
-            .tab-header,
-            .search-results { .hide; }
+            .transactions {
+                .tab-header,
+                .search-results { .hide; }
 
-             .ar-statement {
-                img {
-                    -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
-                    filter: grayscale(100%);
-                }
-                .invoice-body .invoice-details tr:last-child td {
-                    margin-bottom:12pt;
-                }
-
-                .invoice-footer {
-                    margin-bottom:12pt;
-                }
-
-            
-
-                thead th {
-                    text-transform: uppercase;
-                    background-color: @grey2;
-                    padding:4pt 0;
-                    font-size: 6.5pt;
-                    &:last-child {
-                        padding-right: 4pt;
-                    }
-                    
-                    /*Add space to Charge Amount and Amount Due*/
-                    &:nth-child(5),
-                    &:nth-child(6) {
-                        padding-left: 4pt;
+                .ar-statement {
+                    display: block;
+                    img {
+                        -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+                        filter: grayscale(100%);
                     }
 
-                    
-                }
-                .invoice-details {
-                    > tbody > tr > td {
-                         
-                        border-bottom:2px solid @grey2;
+                    .invoice-body .invoice-details tr:last-child td {
+                        margin-bottom: 12pt;
+                    }
+
+                    .invoice-footer {
+                        margin-bottom: 12pt;
+                    }
+
+                    thead th {
+                        text-transform: uppercase;
+                        background-color: @grey2;
+                        padding:4pt 0;
+                        font-size: 5pt;
                         
-                    }
-                }
-                tbody {
+                        &:last-child {
+                            padding-right: 4pt;
+                        }
+                        
+                        
+                        &.charge-date,
+                        &.charge-code,
+                        &.charge-amount {
+                            width: 45pt !important;
+                        }
 
-                    tr:not(.person) td {
-                        padding-top:4pt;
+                        /*Add space to Charge Amount and Amount Due*/
+                        &:nth-child(5),
+                        &:nth-child(6){
+                            padding-right: 4pt;
+                        }
                     }
 
-                    tr {
-                         td {
-                            border-bottom:1px solid @grey2;
-                            padding: 4pt 4pt 4pt 0;
-                            
+                    .invoice-details {
+                        > tbody > tr > td {
+                            border-bottom:2px solid @grey2;
+                        }
+                    }
+
+                    tbody {
+
+                        tr:not(.person) td {
+                            padding-top:4pt;
+                        }
+
+                        tr {
+                            td {
+                                border-bottom:1px solid @grey2;
+                                padding: 4pt 4pt 4pt 0;
+
                                 &:last-child {
                                     padding-right: 4pt;
                                 }
-                            
-
-                            &.charge-description {
-                                width: 90pt !important;
                             }
+                        }
 
-                            &.charge-date,
-                            &.charge-code,
-                           {
-                                width: 60pt !important;
+                        .charges-table-container {
+                            padding-right: 0;
+                        }
+                        .charges-table {
+                            tr td {
+                                &.charge-date,
+                                &.charge-code,
+                                &.charge-amount {
+                                    width: 45pt !important;
+                                }
+                            }
+                            tr:last-child td {
+                                border-bottom: none;
+                            }
+                            tr:first-child td {
+                                padding-top: 0;
                             }
                         }
                     }
 
-
-
-                 .charges-table {
-                    tr td {
-                        &.charge-description {
-                                width: 90pt !important;
-                            }
-
-                        &.charge-date,
-                        &.charge-code,
-                       {
-                            width: 60pt !important;
+                    .statement-header {
+                        &:after {
+                            display: table;
+                            clear: both;
+                            content: '';
                         }
                     }
-                    tr:last-child td {
-                        border-bottom: none;
-                    }
-                    tr:first-child td {
-                        padding-top: 0;
-                    }
-                 }
 
-                
-                }
+                    .invoice-header {
+                        margin-top: 1.5cm;
+                        position: relative;
 
-                .statement-header {
-                    &:after {
-                        display: table;
-                        clear: both;
-                        content: '';
-                    }
-                }
-                .invoice-header {
-                    h1 {
-                        font-size:18pt;
-                        font-weight: 600;
+                        img {
+                            position: absolute;
+                            height: 30px;
+                            top: -30px;
+                            right: 0;
+                        }
+                        h1 {
+                            font-size:18pt;
+                            font-weight: 600;
+                        }
+
+                        .statement-company-address {
+                            font-size:10pt;
+                            font-style: italic;
+                        }
                     }
 
-                    .statement-company-address {
-                        font-size:10pt;
-                        font-style: italic;
-                    }
-                }
-                .guest-info {
-                    font-size: 9pt;
-                    width:60%;
-                    float:left;
-                }
-                .person td,
-                .payment td {
-                    padding:5pt 0;
-                    vertical-align: top;
-                    &.person-info {
-                        width: 3.5cm;
-                    }
-                    .name {
-                        font-size:11pt;
+                    .guest-info {
+                        font-size: 9pt;
+                        width:50%;
+                        float:left;
+
+                        img {
+                            .size(40px, auto);
+                        }
                     }
 
-                    .person-meta {
-                        margin-top:0.05cm;
-                        display: block;
-                        strong {
+                    .person td,
+                    .payment td {
+                        vertical-align: top;
+                        &.person-info {
+                            width: 3.5cm;
+                        }
+                        .name {
+                            font-size:11pt;
+                        }
+
+                        .person-meta {
+                            margin-top:0.05cm;
                             display: block;
+                            strong {
+                                display: block;
+                            }
                         }
                     }
-                }
 
-                .tax-breakdown {
-                    td,th {
-                        padding: 4pt;
-                        text-align: right;
+                    .tax-breakdown {
+                        td,th {
+                            padding: 4pt;
+                            text-align: right;
 
-                        &:first-child {
-                            text-align: left;
+                            &:first-child {
+                                text-align: left;
+                            }
+                        }
+                        
+                        tfoot td {
+                            background-color: @grey2;
+                            font-weight: bold;
+                        }
+
+                        .tax-description {
+                            width: 50%;
+
                         }
                     }
-                    
-                    tfoot td {
-                        background-color: @grey2;
-                        font-weight: bold;
+
+                    .statement-info {
+                        width:50%;
+                        float:right;
+                        margin-bottom:0.5cm;
+
+                        &:after {
+                            display: table;
+                            content: '';
+                            clear: both;
+                        }
                     }
 
-                    .tax-description {
-                        width: 50%;
-                    }
+                    .statement-meta {
+                        width:50%;
+                        float:left;
+                        font-size:9pt;
+                        margin-bottom:0.1cm;
 
-                }
+                        strong { display:block; }
+                        
 
-                .statement-info {
-                    width:40%;
-                    float:right;
-                    &:after {
-                        display: table;
-                        content: '';
-                        clear: both;
-                    }
-                    margin-bottom:0.5cm;
-                }
-                .statement-meta {
-                    width:50%;
-                    float:left;
-                    font-size:9pt;
-                    strong {
-                        display:block;
-                    }
-                    margin-bottom:0.1cm;
+                        &:nth-child(3) {
+                            clear: both;
+                        }
 
-                    &:nth-child(3) {
-                        clear: both;
-                    }
-
-                    &:nth-child(3),
-                    &:first-child{
-                        padding-right: 1em;
+                        &:nth-child(3),
+                        &:first-child{
+                            padding-right: 1em;
+                        }
                     }
                 }
             }
-
         }
-    }
     }
 
 /* Reports                  ==============================*/
@@ -1103,6 +1187,33 @@ table {
             font-weight: 600;
             text-transform: uppercase;
             margin: 18pt 0 4pt;
+
+            &:first-child { margin-top: 0; }
+        }
+
+        .card-meta {
+            margin: 18pt 0 4pt;
+            .float;
+
+            li {
+                font-size: 10pt;
+                font-weight: 600;
+                text-transform: uppercase;
+                margin: 0 8pt 0 0;
+                .nowrap();
+                .pull-left;
+                .show();
+
+                &.guest {
+                    min-width: 4cm;
+                }
+
+                &.balance {
+                    width: 3cm;
+                    margin-right: 0;
+                    .pull-right;
+                }
+            }
 
             &:first-child { margin-top: 0; }
         }
@@ -1570,7 +1681,7 @@ table {
             &.balance-reports {
                 thead {
                     th {
-                        padding: 4pt 12pt 4pt;
+                        padding: 4pt 8pt 4pt 4pt; 
 
                         &:last-child { padding-right: 0; }
                     }
@@ -1578,8 +1689,7 @@ table {
 
                 tbody {
                     td {
-                        padding: 4pt 12pt 4pt;
-                        line-height: 20px;
+                        padding: 4pt 8pt 4pt 4pt;
                         .float;
 
                         strong { font-weight: 600; }
@@ -1597,7 +1707,7 @@ table {
                         }
 
                         .icons.time {
-                            margin: 3pt 4pt 0 0;
+                            margin-right: 4pt;
                             background-size: 16px;
                             .opacity(50);
                             .size(8pt, 12px);
@@ -1618,7 +1728,7 @@ table {
                         &.status { width: 2cm; }
 
                         &.balance {
-                            width: 3cm;
+                            min-width: 3cm;
                             padding-right: 0;
                             .nowrap();
                         }
@@ -2108,6 +2218,14 @@ table {
         }
 
         &.occupancy-footer { display: table; }
+
+        &.card-authorization-check { 
+            .grid-footer {
+                li {
+                    .pull-right;
+                }
+            }
+        }
     }
 
 /* Housekeeping             ==============================*/
@@ -2752,6 +2870,10 @@ table {
             height: 2cm;
             position: relative;
 
+            &.envelope {
+                height: 3cm;
+            }
+
             h1 {
                 position: absolute;
                 top: 0;
@@ -2766,6 +2888,30 @@ table {
                 top: 0;
                 right: 0;
                 .size(40px, auto);
+            }
+        }
+
+        .info-container {
+            .info-left,
+            .info-right {
+                .pull-left;
+                width: 50%;
+            }
+
+            .info-left {
+                margin-bottom: 1cm;
+            }
+
+            .info-bottom {
+                clear: both;
+                width: 100%;
+                display: block;
+                margin-top: 0.25cm;
+            }
+            
+            .info-right {
+                text-align: right;
+                
             }
         }
 
@@ -2790,6 +2936,21 @@ table {
             line-height: 1;
             text-align: center;
             margin-top: 1cm;
+            clear: both;
+            
+            &.top-header {
+                margin-top: 0;
+                height: 1.5cm;
+                h1 {
+                    font-size:18pt;
+                    font-weight: 600;
+                }
+
+                .invoice-header-address {
+                    font-size:10pt;
+                    font-style: italic;
+                }
+            }
         }
 
         .invoice-body {
@@ -2874,6 +3035,10 @@ table {
         .invoice-footer {
             font-size: 8pt;
             padding-top: 16pt;
+
+            &.text-center {
+                text-align: center;
+            }
         }
     }
 

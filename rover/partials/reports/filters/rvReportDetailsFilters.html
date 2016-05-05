@@ -1,4 +1,6 @@
-<div class="scrollable" ng-iscroll="report-filter-sidebar-scroll">
+<div class="scrollable"
+    ng-iscroll="report-filter-sidebar-scroll"
+    ng-iscroll-delay="200">
     <div class="wrapper" id="report-filter">
 
         <!-- item_01: cancellation date range -->
@@ -300,12 +302,11 @@
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasUserFilter && chosenReport.empList.data.length" ng-class="{'active': filterItemsToggle.item_08}" ng-click="toggleFilterItems('item_08')">
             <span class="title">Employees</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasUserFilter && chosenReport.empList.data.length" ng-class="{'hidden': !filterItemsToggle.item_08}">
-            <label class="checkbox" ng-repeat="emp in chosenReport.empList.data" ng-class="{checked: emp.selected}">
-                <span class="icon-form icon-checkbox" ng-class="{checked: emp.selected}"></span>
-                <input type="checkbox" ng-model="emp.selected">
-                {{ emp.full_name || emp.email }}
-            </label>
+        <div class="report-col settings-content" ng-if="chosenReport.hasUserFilter && chosenReport.empList.data.length" ng-class="{'hidden': !filterItemsToggle.item_08}">
+            <multi-option-selection label="Employees"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.empList.data"
+                options="chosenReport.empList.options"></multi-option-selection>
         </div>
 
 
@@ -316,19 +317,11 @@
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasGeneralOptions.data.length" ng-class="{ 'active': filterItemsToggle.item_09 }" ng-click="toggleFilterItems('item_09')">
             <span class="title">Option(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasGeneralOptions.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_09 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasGeneralOptions.data.length > 1">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasGeneralOptions.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasGeneralOptions.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasGeneralOptions, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasGeneralOptions.data.length > 1 && chosenReport.hasGeneralOptions.selectAll) }">
-                    <label class="checkbox" ng-repeat="option in chosenReport.hasGeneralOptions.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : option.selected }"></span>
-                        <input type="checkbox" ng-model="option.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasGeneralOptions)" name="room-filters"> {{ option.description }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasGeneralOptions.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_09 }">
+            <multi-option-selection label="Option(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasGeneralOptions.data"
+                options="chosenReport.hasGeneralOptions.options"></multi-option-selection>
         </div>
 
 
@@ -349,22 +342,14 @@
 
 
         <!-- item_11: Guarantee Type -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasGuaranteeType" ng-class="{ 'active': filterItemsToggle.item_11 }" ng-click="toggleFilterItems('item_11')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasGuaranteeType.data.length" ng-class="{ 'active': filterItemsToggle.item_11 }" ng-click="toggleFilterItems('item_11')">
             <span class="title">Guarantee Type(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasGuaranteeType" ng-class="{ 'hidden': !filterItemsToggle.item_11 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasGuaranteeType.data.length > 1">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasGuaranteeType.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasGuaranteeType.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasGuaranteeType, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasGuaranteeType.data.length > 1 && chosenReport.hasGuaranteeType.selectAll) }">
-                    <label class="checkbox" ng-repeat="type in chosenReport.hasGuaranteeType.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : type.selected }"></span>
-                        <input type="checkbox" ng-model="type.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasGuaranteeType)" name="room-filters"> {{ type.name }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasGuaranteeType.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_11 }">
+            <multi-option-selection label="Guarantee Type(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasGuaranteeType.data"
+                options="chosenReport.hasGuaranteeType.options"></multi-option-selection>
         </div>
 
 
@@ -372,19 +357,11 @@
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasDisplay.data.length" ng-class="{ 'active': filterItemsToggle.item_12 }" ng-click="toggleFilterItems('item_12')">
             <span class="title">Display(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasDisplay.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_12 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasDisplay.data.length > 1">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasDisplay.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasDisplay.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasDisplay, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasDisplay.data.length > 1 && chosenReport.hasDisplay.selectAll) }">
-                    <label class="checkbox" ng-repeat="display in chosenReport.hasDisplay.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : display.selected }"></span>
-                        <input type="checkbox" ng-model="display.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasDisplay)" name="room-filters"> {{ display.description }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasDisplay.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_12 }">
+            <multi-option-selection label="Display(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasDisplay.data"
+                options="chosenReport.hasDisplay.options"></multi-option-selection>
         </div>
 
 
@@ -392,118 +369,71 @@
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasExclusions.data.length" ng-class="{ 'active': filterItemsToggle.item_29 }" ng-click="toggleFilterItems('item_29')">
             <span class="title">Exclude </span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasExclusions.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_29 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasExclusions.data.length > 1">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasExclusions.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasExclusions.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasExclusions, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasExclusions.data.length > 1 && chosenReport.hasExclusions.selectAll) }">
-                    <label class="checkbox" ng-repeat="exclusion in chosenReport.hasExclusions.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : exclusion.selected }"></span>
-                        <input type="checkbox" ng-model="exclusion.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasExclusions)" name="room-filters"> {{ exclusion.description }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasExclusions.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_29 }">
+            <multi-option-selection label="Exclude"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasExclusions.data"
+                options="chosenReport.hasExclusions.options"></multi-option-selection>
         </div>
 
         <!-- item_23: Hold status -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasHoldStatus" ng-class="{ 'active': filterItemsToggle.item_23 }" ng-click="toggleFilterItems('item_23')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasHoldStatus.data.length" ng-class="{ 'active': filterItemsToggle.item_23 }" ng-click="toggleFilterItems('item_23')">
             <span class="title">Hold Status(es)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasHoldStatus" ng-class="{ 'hidden': !filterItemsToggle.item_23 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasHoldStatus.data.length > 1">
-                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasHoldStatus.selectAll }"></span>
-                    <input type="checkbox" ng-model="chosenReport.hasHoldStatus.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasHoldStatus, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasHoldStatus.data.length > 1 && chosenReport.hasHoldStatus.selectAll) }">
-                    <label class="checkbox" ng-repeat="status in chosenReport.hasHoldStatus.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
-                        <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasHoldStatus)" name="room-filters"> {{ status.name }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasHoldStatus.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_23 }">
+            <multi-option-selection label="Hold Status(es)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasHoldStatus.data"
+                options="chosenReport.hasHoldStatus.options"></multi-option-selection>
         </div>
 
 
 
         <!-- item_24: Addon Groups -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasAddonGroups" ng-class="{ 'active': filterItemsToggle.item_24 }" ng-click="toggleFilterItems('item_24')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasAddonGroups.data.length" ng-class="{ 'active': filterItemsToggle.item_24 }" ng-click="toggleFilterItems('item_24')">
             <span class="title">Add-On Group(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasAddonGroups" ng-class="{ 'hidden': !filterItemsToggle.item_24 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasAddonGroups.data.length > 1">
-                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasAddonGroups.selectAll }"></span>
-                    <input type="checkbox" ng-model="chosenReport.hasAddonGroups.selectAll" ng-change="getAddons(chosenReport, chosenReport.hasAddonGroups, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasAddonGroups.data.length > 1 && chosenReport.hasAddonGroups.selectAll) }">
-                    <label class="checkbox" ng-repeat="group in chosenReport.hasAddonGroups.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : group.selected }"></span>
-                        <input type="checkbox" ng-model="group.selected" ng-change="getAddons(chosenReport, chosenReport.hasAddonGroups)" name="room-filters"> {{ group.name }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasAddonGroups.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_24 }">
+            <multi-option-selection label="Add-On Group(s)"
+                on-update="refreshSidebarScroll"
+                report="chosenReport"
+                data="chosenReport.hasAddonGroups.data"
+                options="chosenReport.hasAddonGroups.options"
+                affects-filter="chosenReport.hasAddonGroups.affectsFilter"></multi-option-selection>
         </div>
-
-
+        <!-- related options -->
         <!-- item_25: Addons -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasAddonGroups" ng-class="{ 'active': filterItemsToggle.item_25 }" ng-click="toggleFilterItems('item_25')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasAddonGroups.data.length && chosenReport.hasAddons.data.length" ng-class="{ 'active': filterItemsToggle.item_25 }" ng-click="toggleFilterItems('item_25')">
             <span class="title">Add-On(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasAddons" ng-class="{ 'hidden': !filterItemsToggle.item_25 }">
-            <div class="faux-select-options">
-                <span ng-repeat="group in chosenReport.hasAddons.data">
-                    <strong>{{ getGroupName(group.group_id) }}</strong>
-                    <div class="nested-options">
-                        <label class="checkbox" ng-repeat="addon in group.list_of_addons">
-                            <span class="icon-form icon-checkbox" ng-class="{ 'checked' : addon.selected }"></span>
-                            <input type="checkbox" ng-model="addon.selected" name="room-filters">
-                            {{ addon.addon_name }}
-                        </label>
-                    </div>
-                </span>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasAddonGroups.data.length && chosenReport.hasAddons.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_25 }">
+            <multi-option-selection label="Add-On(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasAddons.data"
+                options="chosenReport.hasAddons.options"></multi-option-selection>
         </div>
 
 
         <!-- item_26: Reservation Status -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasReservationStatus" ng-class="{ 'active': filterItemsToggle.item_26 }" ng-click="toggleFilterItems('item_26')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasReservationStatus.data.length" ng-class="{ 'active': filterItemsToggle.item_26 }" ng-click="toggleFilterItems('item_26')">
             <span class="title">Reservation Status</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasReservationStatus" ng-class="{ 'hidden': !filterItemsToggle.item_26 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasReservationStatus.data.length > 1">
-                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasReservationStatus.selectAll }"></span>
-                    <input type="checkbox" ng-model="chosenReport.hasReservationStatus.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasReservationStatus, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasReservationStatus.data.length > 1 && chosenReport.hasReservationStatus.selectAll) }">
-                    <label class="checkbox" ng-repeat="status in chosenReport.hasReservationStatus.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
-                        <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(chosenReport.id, chosenReport.hasReservationStatus)" id="addon-reserved" name="addon-status"> {{ status.status }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasReservationStatus.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_26 }">
+            <multi-option-selection label="Reservation Status"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasReservationStatus.data"
+                options="chosenReport.hasReservationStatus.options"></multi-option-selection>
         </div>
 
         <!-- item_28: Guest or Account -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasGuestOrAccountFilter.data.length" ng-class="{ 'active': filterItemsToggle.item_28 }" ng-click="toggleFilterItems('item_28')">
             <span class="title">Guest/Account</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasGuestOrAccountFilter" ng-class="{ 'hidden': !filterItemsToggle.item_28 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasGuestOrAccountFilter.data.length > 1">
-                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasGuestOrAccountFilter.selectAll }"></span>
-                    <input type="checkbox" ng-model="chosenReport.hasGuestOrAccountFilter.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasGuestOrAccountFilter, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasGuestOrAccountFilter.data.length > 1 && chosenReport.hasGuestOrAccountFilter.selectAll) }">
-                    <label class="checkbox" ng-repeat="status in chosenReport.hasGuestOrAccountFilter.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : status.selected }"></span>
-                        <input type="checkbox" ng-model="status.selected" ng-change="fauxSelectChange(chosenReport.id, chosenReport.hasGuestOrAccountFilter)" id="addon-reserved" name="addon-status"> {{ status.description }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasGuestOrAccountFilter.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_28 }">
+            <multi-option-selection label="Guest/Account"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasGuestOrAccountFilter.data"
+                options="chosenReport.hasGuestOrAccountFilter.options"></multi-option-selection>
         </div>
 
 
@@ -542,22 +472,14 @@
 
 
         <!-- item_15: Market(s) -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasMarketsList" ng-class="{ 'active': filterItemsToggle.item_15 }" ng-click="toggleFilterItems('item_15')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasMarketsList.data.length" ng-class="{ 'active': filterItemsToggle.item_15 }" ng-click="toggleFilterItems('item_15')">
             <span class="title">Market(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasMarketsList" ng-class="{ 'hidden': !filterItemsToggle.item_15 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasMarketsList.data.length > 1">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasMarketsList.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasMarketsList.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasMarketsList, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasMarketsList.data.length > 1 && chosenReport.hasMarketsList.selectAll) }">
-                    <label class="checkbox" ng-repeat="market in chosenReport.hasMarketsList.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : market.selected }"></span>
-                        <input type="checkbox" ng-model="market.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasMarketsList)" name="room-filters"> {{ market.name }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasMarketsList.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_15 }">
+            <multi-option-selection label="Market(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasMarketsList.data"
+                options="chosenReport.hasMarketsList.options"></multi-option-selection>
         </div>
 
 
@@ -566,22 +488,14 @@
 
 
         <!-- item_19: Sources(s) -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasSourcesList" ng-class="{ 'active': filterItemsToggle.item_19 }" ng-click="toggleFilterItems('item_19')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasSourcesList.data.length" ng-class="{ 'active': filterItemsToggle.item_19 }" ng-click="toggleFilterItems('item_19')">
             <span class="title">Sources(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasSourcesList" ng-class="{ 'hidden': !filterItemsToggle.item_19 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasSourcesList.data.length > 1">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasSourcesList.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasSourcesList.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasSourcesList, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasSourcesList.data.length > 1 && chosenReport.hasSourcesList.selectAll) }">
-                    <label class="checkbox" ng-repeat="source in chosenReport.hasSourcesList.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : source.selected }"></span>
-                        <input type="checkbox" ng-model="source.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasSourcesList)" name="room-filters"> {{ source.name }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasSourcesList.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_19 }">
+            <multi-option-selection label="Source(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasSourcesList.data"
+                options="chosenReport.hasSourcesList.options"></multi-option-selection>
         </div>
 
 
@@ -590,23 +504,15 @@
 
 
 
-        <!-- item_20: Sources(s) -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasOriginsList" ng-class="{'active': filterItemsToggle.item_20}" ng-click="toggleFilterItems('item_20')">
+        <!-- item_20: Origins(s) -->
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasOriginsList.data.length" ng-class="{'active': filterItemsToggle.item_20}" ng-click="toggleFilterItems('item_20')">
             <span class="title">Origin(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasOriginsList" ng-class="{'hidden': !filterItemsToggle.item_20}">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasOriginsList.data.length > 1">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasOriginsList.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasOriginsList.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasOriginsList, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasOriginsList.data.length > 1 && chosenReport.hasOriginsList.selectAll) }">
-                    <label class="checkbox" ng-repeat="origin in chosenReport.hasOriginsList.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : origin.selected }"></span>
-                        <input type="checkbox" ng-model="origin.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasOriginsList)" name="room-filters"> {{ origin.name }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasOriginsList.data.length" ng-class="{'hidden': !filterItemsToggle.item_20}">
+            <multi-option-selection label="Origin(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasOriginsList.data"
+                options="chosenReport.hasOriginsList.options"></multi-option-selection>
         </div>
 
 
@@ -614,86 +520,53 @@
 
 
         <!-- item_32: Rate Type -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasRateTypeFilter" ng-class="{'active': filterItemsToggle.item_32}" ng-click="toggleFilterItems('item_32')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasRateTypeFilter.data.length" ng-class="{'active': filterItemsToggle.item_32}" ng-click="toggleFilterItems('item_32')">
             <span class="title">Rate Type</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasRateTypeFilter" ng-class="{ 'hidden': !filterItemsToggle.item_32 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasRateTypeFilter.data.length > 1">
-                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasRateTypeFilter.selectAll }"></span>
-                    <input type="checkbox" ng-model="chosenReport.hasRateTypeFilter.selectAll" ng-change="toggleRateTypeSelectAll(chosenReport)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasRateTypeFilter.data.length > 1 && chosenReport.hasRateTypeFilter.selectAll) }">
-                    <label class="checkbox" ng-repeat="rateType in chosenReport.hasRateTypeFilter.data">
-                        <span class="icon-form icon-checkbox" ng-class="{'checked' : rateType.selected}"></span>
-                        <input type="checkbox" ng-model="rateType.selected" ng-change="rateTypeChanged(chosenReport, chosenReport.hasRateTypeFilter)" name="room-filters"> {{ rateType.name }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasRateTypeFilter.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_32 }">
+            <multi-option-selection label="Rate Type"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasRateTypeFilter.data"
+                options="chosenReport.hasRateTypeFilter.options"></multi-option-selection>
         </div>
 
 
 
         <!-- item_33: Rates -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasRateFilter" ng-class="{'active': filterItemsToggle.item_33}" ng-click="toggleFilterItems('item_33')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasRateFilter.data.length" ng-class="{'active': filterItemsToggle.item_33}" ng-click="toggleFilterItems('item_33')">
             <span class="title">Rates</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasRateFilter" ng-class="{ 'hidden': !filterItemsToggle.item_33 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasRateFilter.data.length > 1">
-                    <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasRateFilter.selectAll }"></span>
-                    <input type="checkbox" ng-model="chosenReport.hasRateFilter.selectAll" ng-change="toggleRateSelectAll(chosenReport)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasRateFilter.data.length > 1 && chosenReport.hasRateFilter.selectAll) }">
-                    <label class="checkbox" ng-repeat="rate in getRates(chosenReport)">
-                        <span class="icon-form icon-checkbox" ng-class="{'checked' : rate.selected}"></span>
-                        <input type="checkbox" ng-model="rate.selected" ng-change="rateChanged(chosenReport)" name="room-filters"> {{ rate.rate_name }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasRateFilter.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_33 }">
+            <multi-option-selection label="Display(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasRateFilter.data"
+                options="chosenReport.hasRateFilter.options"></multi-option-selection>
         </div>
 
 
 
         <!-- item_16: charge groups -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasByChargeGroup" ng-class="{ 'active': filterItemsToggle.item_16 }" ng-click="toggleFilterItems('item_16')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasByChargeGroup.data.length" ng-class="{ 'active': filterItemsToggle.item_16 }" ng-click="toggleFilterItems('item_16')">
             <span class="title">Charge Group(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasByChargeGroup" ng-class="{ 'hidden': !filterItemsToggle.item_16 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasByChargeGroup.data.length > 1">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasByChargeGroup.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasByChargeGroup.selectAll" ng-change="chargeGroupfauxSelectChange(chosenReport, chosenReport.hasByChargeGroup, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasByChargeGroup.data.length > 1 && chosenReport.hasByChargeGroup.selectAll) }">
-                    <label class="checkbox" ng-repeat="group in chosenReport.hasByChargeGroup.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : group.selected }"></span>
-                        <input type="checkbox" ng-model="group.selected" ng-change="chargeGroupfauxSelectChange(chosenReport, chosenReport.hasByChargeGroup)" name="room-filters"> {{ group.name }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasByChargeGroup.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_16 }">
+            <multi-option-selection label="Charge Group(s)"
+                on-update="refreshSidebarScroll"
+                report="chosenReport"
+                data="chosenReport.hasByChargeGroup.data"
+                options="chosenReport.hasByChargeGroup.options"
+                affects-filter="chosenReport.hasByChargeGroup.affectsFilter"></multi-option-selection>
         </div>
-
-
-
-
+        <!-- related options -->
         <!-- item_17: charge codes -->
-        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasByChargeCode" ng-class="{ 'active': filterItemsToggle.item_17 }" ng-click="toggleFilterItems('item_17')">
+        <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasByChargeCode.data.length" ng-class="{ 'active': filterItemsToggle.item_17 }" ng-click="toggleFilterItems('item_17')">
             <span class="title">Charge Code(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasByChargeCode" ng-class="{ 'hidden': !filterItemsToggle.item_17 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasByChargeCode.originalData.length > 1">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasByChargeCode.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasByChargeCode.selectAll" ng-change="chargeCodeFauxSelectChange(chosenReport, chosenReport.hasByChargeCode, true)" name="room-filters"> Select All
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasByChargeCode.originalData.length > 1 && chosenReport.hasByChargeCode.selectAll) }">
-                    <label class="checkbox" ng-repeat="code in chosenReport.hasByChargeCode.originalData" ng-hide="code.disabled">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : code.selected }"></span>
-                        <input type="checkbox" ng-model="code.selected" ng-change="chargeCodeFauxSelectChange(chosenReport, chosenReport.hasByChargeCode)" name="room-filters"> {{ code.name }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasByChargeCode.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_17 }">
+            <multi-option-selection label="Charge Code(s)"
+                on-update="refreshSidebarScroll"
+                data="uiChosenReport.hasByChargeCode.data"
+                options="uiChosenReport.hasByChargeCode.options"></multi-option-selection>
         </div>
 
 
@@ -737,38 +610,23 @@
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasShow.data.length" ng-class="{ 'active': filterItemsToggle.item_37 }" ng-click="toggleFilterItems('item_37')">
             <span class="title">Show</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasShow.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_37 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasShow.data.length > 1">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasShow.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasShow.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasShow, true)" name="room-filters"> Both
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasShow.data.length > 1 && chosenReport.hasShow.selectAll) }">
-                    <label class="checkbox" ng-repeat="show in chosenReport.hasShow.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : show.selected }"></span>
-                        <input type="checkbox" ng-model="show.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasShow)" name="room-filters"> {{ show.description }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasShow.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_37 }">
+            <multi-option-selection label="Show"
+                on-update="refreshSidebarScroll"
+                data="uiChosenReport.hasShow.data"
+                options="uiChosenReport.hasShow.options"></multi-option-selection>
         </div>
 
-        <!-- item_38: Show options -->
+        <!-- item_38: Charge Type(s) options -->
         <a href="" class="settings-title toggle has-arrow" ng-if="chosenReport.hasChargeTypes.data.length" ng-class="{ 'active': filterItemsToggle.item_38 }" ng-click="toggleFilterItems('item_38')">
-            <span class="title">Show</span>
+            <span class="title">Charge Type(s)</span>
         </a>
-        <div class="settings-content" ng-if="chosenReport.hasChargeTypes.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_38 }">
-            <div class="faux-select-options">
-                <label class="checkbox" ng-show="chosenReport.hasChargeTypes.data.length > 1">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : chosenReport.hasChargeTypes.selectAll }"></span>
-                        <input type="checkbox" ng-model="chosenReport.hasChargeTypes.selectAll" ng-change="fauxSelectChange(chosenReport, chosenReport.hasChargeTypes, true)" name="room-filters"> Both
-                </label>
-                <div class="nested-options" ng-class="{ 'hidden': (chosenReport.hasChargeTypes.data.length > 1 && chosenReport.hasChargeTypes.selectAll) }">
-                    <label class="checkbox" ng-repeat="ct in chosenReport.hasChargeTypes.data">
-                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : ct.selected }"></span>
-                        <input type="checkbox" ng-model="ct.selected" ng-change="fauxSelectChange(chosenReport, chosenReport.hasChargeTypes)" name="room-filters"> {{ ct.description }}
-                    </label>
-                </div>
-            </div>
+        <div class="report-col settings-content" ng-if="chosenReport.hasChargeTypes.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_38 }">
+            <multi-option-selection ng-show="uiChosenReport.hasChargeTypes && uiChosenReport.hasChargeTypes.data.length"
+                label="Show"
+                on-update="refreshSidebarScroll"
+                data="uiChosenReport.hasChargeTypes.data"
+                options="uiChosenReport.hasChargeTypes.options"></multi-option-selection>
         </div>
 
     </div>

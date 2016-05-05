@@ -144,33 +144,56 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             return deferred.promise;
         };
 
+
+        service.fetchCommonRestrictions = (params) => {
+            var url = '/api/daily_rates/all_restrictions';
+            var deferred = $q.defer();
+            BaseWebSrvV2.getJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;           
+        };
+
         service.fetchSingleRateDetailsAndRoomTypes = (params) => {
             var promises = [],
                 roomTypes = [],
                 rates = [],
                 roomTypeAndRestrictions = [],
-                deferred = $q.defer();
+                commonRestrictions = [],
+                deferred = $q.defer(),
+                response = {};
 
-            promises.push(service.fetchSingleRateInfo(_.omit(params,'fetchRoomTypes')).then((data) => {
-                roomTypeAndRestrictions = data.results;
+            promises.push(service.fetchSingleRateInfo(_.omit(params, 'fetchRoomTypes', 'fetchCommonRestrictions', 'fetchRates')).then((data) => {
+                response.roomTypeAndRestrictions = data.results;
             }));
+
+            if(params.fetchCommonRestrictions){
+                let commonRestrictionsParams = {
+                    ..._.pick(params, 'from_date', 'to_date'),
+                    'rate_ids[]': [params.rate_id]
+                }
+                promises.push(service.fetchCommonRestrictions(commonRestrictionsParams)
+                    .then((data) => {
+                        response.commonRestrictions = data.results;
+                    })
+                );
+            }
+
             if (params.fetchRoomTypes) {
                 promises.push(service.fetchRoomTypes().then((data) => {
-                    roomTypes = data;
+                    response.roomTypes = data;
                 }));
             }
             if (params.fetchRates) {
                 promises.push(service.fetchRates().then((data) => {
-                    rates = data.results;
+                    response.rates = data.results;
                 }));
             }
 
             $q.all(promises).then((data) => {
-                deferred.resolve({
-                    roomTypes,
-                    roomTypeAndRestrictions,
-                    rates
-                });
+                deferred.resolve(response);
             });
 
             return deferred.promise;
@@ -180,21 +203,29 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             var promises = [],
                 roomTypes = [],
                 roomTypeAndRestrictions = [],
-                deferred = $q.defer();
+                commonRestrictions = [],
+                deferred = $q.defer(),
+                response = {};
 
-            promises.push(service.fetchAllRoomTypesInfo(_.omit(params,'fetchRoomTypes')).then((data) => {
-                roomTypeAndRestrictions = data.results;
+            promises.push(service.fetchAllRoomTypesInfo(_.omit(params, 'fetchRoomTypes', 'fetchCommonRestrictions')).then((data) => {
+                response.roomTypeAndRestrictions = data.results;
             }));
+
+            if(params.fetchCommonRestrictions){
+                promises.push(service.fetchCommonRestrictions(_.pick(params, 'from_date', 'to_date'))
+                    .then((data) => {
+                        response.commonRestrictions = data.results;
+                    })
+                );
+            }
+
             if (params.fetchRoomTypes) {
                 promises.push(service.fetchRoomTypes().then((data) => {
-                    roomTypes = data;
+                    response.roomTypes = data;
                 }));
             }
             $q.all(promises).then((data) => {
-                deferred.resolve({
-                    roomTypes,
-                    roomTypeAndRestrictions
-                });
+                deferred.resolve(response);
             });
 
             return deferred.promise;
@@ -204,23 +235,41 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             var promises = [],
                 rates = [],
                 dailyRateAndRestrictions = [],
-                deferred = $q.defer();
+                deferred = $q.defer(),
+                commonRestrictions = [],
+                totalCount = 0,
+                response = {};
 
-            promises.push(service.fetchMultipleRateInfo(_.omit(params, 'fetchRates')).then((data) => {
-                dailyRateAndRestrictions = data.results;
+            promises.push(service.fetchMultipleRateInfo(_.omit(params, 'fetchRates', 'fetchCommonRestrictions', 'considerRateIDsInCommonRestriction')).then((data) => {
+                response.dailyRateAndRestrictions = data.results;
+                response.totalCount = data.total_count;
             }));
+
+            if(params.fetchCommonRestrictions){
+
+                let paramsForCommonRestrictions = {
+                    ..._.pick(params, 'from_date', 'to_date', 'name_card_ids[]')
+                };
+
+                if(params['considerRateIDsInCommonRestriction']){
+                   paramsForCommonRestrictions['rate_ids[]'] = params['rate_ids[]']; 
+                }
+
+                promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
+                    .then((data) => {
+                        response.commonRestrictions = data.results;
+                    })
+                );
+            }          
 
             if (params.fetchRates) {
                 promises.push(service.fetchRates().then((data) => {
-                    rates = data.results;
+                    response.rates = data.results;
                 }));
             }
 
             $q.all(promises).then((data) => {
-                deferred.resolve({
-                    rates,
-                    dailyRateAndRestrictions
-                });
+                deferred.resolve(response);
             });
 
             return deferred.promise;

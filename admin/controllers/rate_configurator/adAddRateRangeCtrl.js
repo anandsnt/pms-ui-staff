@@ -28,7 +28,9 @@ admin
                     businessDate = tzIndependentDate($rootScope.businessDate),
                     toDate = tzIndependentDate($rootScope.businessDate);
                 toDate = new Date(toDate.setFullYear(toDate.getFullYear() + $rootScope.rateDateRangeLimit));
-                
+
+                toDate.setDate(toDate.getDate() - 1);
+        
                 $scope.fromDateOptions = _.extend({
                     minDate: businessDate,
                     maxDate : toDate,

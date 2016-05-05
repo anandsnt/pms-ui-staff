@@ -5,7 +5,7 @@
 	    	    <span class="icons icon-clear-search">Clear query</span>
 	    	</button>
 	    	<button type="submit" name="submit" class="icons icon-search">Search</button>
-	    	<input name="reservations-query" id="reservations-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()" ng-model="textInQueryBox" focus-me="focusSearchField"/>
+	    	<input name="reservations-query" id="reservations-query" class="query" placeholder="Search by Name, Group, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="queryEntered()" ng-click="focusOnSearchText()" ng-model="textInQueryBox" focus-me="focusSearchField"/>
 	    </div>
 	    <div class="entry room-types">
 	        <div class="select with-label">
@@ -35,7 +35,7 @@
         <!-- Add reservation -->
     	<a class="add-new-button" ui-sref="rover.reservation.search" ng-show="showAddNewGuestButton && showSearchResultsArea && textInQueryBox.length !== 0">+ New</a>
 	</form>
-	<div class="search-pagination" ng-show="totalSearchResults >= searchPerPage && results.length > 0">
+	<div class="search-pagination" ng-show="totalSearchResults >= searchPerPage && results.length > 0 && showSearchResultsArea">
 	    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
 	    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
 	    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalSearchResults}}</strong> items</p>
@@ -89,13 +89,13 @@
                         </div>
 
                         <div class="room-info">
-                            <strong class="room-number {{getRoomStatusMapped(row.roomstatus, row.fostatus, row.room) }}" ng-bind-html="getRoomNo(row.room) | highlight:textInQueryBox:false"></strong>
+                            <strong class="room-number {{getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only, row.room_service_status, row.room)}}" ng-bind-html="getRoomNo(row.room) | highlight:textInQueryBox:false"></strong>
                             <span class="room-type">{{row.room_type}}</span>
 
                             <span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)" translate>QUEUED</span>
 
                         </div>
-                         <span class="room-status">{{row.roomstatus}}</span>
+                         <span class="room-status" ng-if="row.reservation_status === 'CHECKING_IN' && (!!row.is_room_due_out || !!row.fostatus)">{{getRoomStatus(row)}}</span>
                     </div>
 
                 </a>

@@ -10,7 +10,6 @@ sntZestStation.controller('zsHomeCtrl', [
              * This is the main controller for the Home Screen + Admin Popup
              */
             $scope.storageKey = 'snt_zs_workstation';
-            $scope.oosKey = 'snt_zs_workstation.in_oos';
             $scope.oosReason = 'snt_zs_workstation.oos_reason';
 	/**
 	 * when we clicked on pickup key from home screen
@@ -24,7 +23,7 @@ sntZestStation.controller('zsHomeCtrl', [
                 mode: zsModeConstants.PICKUP_KEY_MODE
             });
 	};
-
+        
 	/**
 	 * when we clicked on checkin from home screen
 	 */
@@ -37,7 +36,8 @@ sntZestStation.controller('zsHomeCtrl', [
                 mode: zsModeConstants.CHECKIN_MODE
             });
 	};
-
+        
+        
 	/**
 	 * when we clicked on checkout from home screen
 	 */
@@ -227,33 +227,7 @@ sntZestStation.controller('zsHomeCtrl', [
        // $scope.setWorkstationPrinter($scope.set_workstation_id);
         
     });
-    // $scope.saveWorkStation = function(id){
-    //     if ($scope.workstation !== ''){
-    //         for (var i in $scope.zestStationData.workstations){
-    //             if ($scope.zestStationData.workstations[i].station_identifier === id){
-    //                 $scope.zestStationData.selectedWorkStation = $scope.zestStationData.workstations[i].station_identifier;
-    //             }
-    //         }
-    //     } else {
-    //         $scope.zestStationData.selectedWorkStation = '';
-    //     }
-        
-    // };
-    // $scope.setWorkstationPrinter = function(id){
-    //     var printer = '', isStation = false;
-        
-    //     for (var i in $scope.zestStationData.workstations){
-    //         if ($scope.zestStationData.workstations[i].id === id){
-    //             isStation = true;
-    //             printer = $scope.zestStationData.workstations[i].printer;
-    //             sntZestStation.selectedPrinter = printer;
-    //             $scope.setPrinterLabel(printer); 
-    //         }
-    //     }
-    //     if (!isStation){
-    //         $scope.setPrinterLabel('Select'); 
-    //     }
-    // };
+    
     $scope.getSavedWorkStation = function(){
         /*
          * This method will get the device's last saved workstation, and from the last fetched list of workstations
@@ -274,13 +248,17 @@ sntZestStation.controller('zsHomeCtrl', [
             return null;
         }
         else{
+        
+           $scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order':'in-order';
+           //$scope.zestStationData.workstationOooReason = station.out_of_order_msg;
+
             var oosStorageKey = 'snt_zs_workstation.in_oos',
                 oosReasonKey  = 'snt_zs_workstation.oos_reason',
                 storage = localStorage;
             try {
-               workstationStatus = storage.getItem(oosStorageKey);
+             //  workstationStatus = storage.getItem(oosStorageKey);
                $scope.zestStationData.workstationOooReason = storage.getItem(oosReasonKey);
-               $scope.zestStationData.workstationStatus = workstationStatus;
+              // $scope.zestStationData.workstationStatus = workstationStatus;
             } catch(err){
                 console.warn(err);
             }
@@ -292,29 +270,12 @@ sntZestStation.controller('zsHomeCtrl', [
         if ($scope.zestStationData){
             var stations = $scope.zestStationData.workstations;
             if (stations && stations.length > 0){
-                
-                
                 for (var i in stations){
                     if (stations[i].station_identifier === stored_station_id){
                         station = stations[i];
                     }
                 }
                 
-                // if (station){
-                //     for (var i in stations){
-                //         if (stations[i].id === station.id){
-                //             $scope.zestStationData.set_workstation_id = $scope.set_workstation_id = station.id;
-                //             $scope.zestStationData.workstations[i].selected = true;
-                //             $scope.zestStationData.selectedWorkStation = station.station_identifier;
-                //             $scope.selectedWorkstationName = stations[i].name;
-                //             $scope.currentPrinter = stations[i].printer;
-                //             $scope.setPrinterLabel(stations[i].printer);
-                            
-                //         } else {
-                //             $scope.zestStationData.workstations[i].selected = false;
-                //         }
-                //     }
-                // }
                 
             } 
         } 
@@ -322,24 +283,6 @@ sntZestStation.controller('zsHomeCtrl', [
     };
     $scope.printer = {
         name: ''
-    };
-    $scope.setPrinterLabel = function(name){
-        // if (name && typeof name === typeof 'str'){
-        //      if (name.length > 1){
-        //          //printer name convention has something like IPP://somename..
-        //          //so lets pull out that IPP:// from the display to user, so they will see its
-        //          //HP or other printer identifiers
-        //          var str = name.split('ipp://');
-        //          if (str[1]){
-        //              name = str[1];
-        //          }
-        //      } else {
-        //         name = 'Select';
-        //      }
-        // } else {
-        //     name = 'Select';
-        // }
-        // $scope.zestStationData.printerLabel = name;
     };
     $scope.setSavedWorkstation = function(){
         $scope.savedStationObj = $scope.getSavedWorkStation();
@@ -473,8 +416,8 @@ sntZestStation.controller('zsHomeCtrl', [
             };
           
             //if application is launched either in chrome app or ipad go to login page
-            var isIpad = navigator.userAgent.match(/iPad/i) !== null && window.cordova;
-            if($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || isIpad)){
+            $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
+            if($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)){
                 $state.go('zest_station.admin');
             }
             else{
@@ -577,18 +520,30 @@ sntZestStation.controller('zsHomeCtrl', [
         };
     
     
+    var checkForOOS = function(){
+        if($scope.zestStationData.wsIsOos){
+                //update work station status
+                $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
+                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{
+                    'status':'out-of-order',
+                    'reason':$scope.zestStationData.workstationOooReason
+                });
+                $state.go('zest_station.oos');
+        }
+    };
+    
     $scope.init = function(){
         //reset early check-in flags
-        $state.reservation_in_early_checkin_window = false;
+        $scope.zestStationData.reservation_in_early_checkin_window = false;
         $state.earlyCheckinPurchased = false;
-        $state.is_early_prepaid = false;
-        $state.earlyCheckinOfferId = null;
+        $scope.zestStationData.is_early_prepaid = false;
         
         $state.qr_code = null;
         $state.search = false;
         //for change into default language after 120sec
         $scope.startLanguageCounter();
         $scope.resetFlags();
+        checkForOOS();
         var current = $state.current.name;
         if (current === 'zest_station.admin-screen'){
            //do nothing

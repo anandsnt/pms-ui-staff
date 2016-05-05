@@ -1,0 +1,8 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+    <div class="modal-content alert">
+        <button id="modal-close" type="button" ng-click="closeDialog()" class="modal-close"><span class="icons icon-close invert"></span></button>
+        <span class="icons icon-popup-alert"></span>
+        <span class="message h2">No rate information for some of the room types with this rate.</span>
+        <button type="button" class="button green modal-close" ng-click="saveRoomBlock(); closeDialog();">Ok</button>
+    </div>
+</div>

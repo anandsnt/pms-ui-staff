@@ -1679,13 +1679,24 @@
             &.format-bill {
                 width: 360px;
 
-                label { margin-bottom: 0; }
+                label { 
+                    margin-bottom: 0;
+                    &.checkbox {
+                        text-transform: uppercase;
+                    } 
+                }
 
                 .actions {
                     margin-top: 20px;
                     padding-top: 19px;
                     border-top: 1px solid rgba(0,0,0,.1);
                     .float;
+                }
+
+                &.rooming-list {
+                    .actions {
+                        margin-top: 10px;
+                    }
                 }
 
                 .button { 
@@ -4411,6 +4422,7 @@
                         &.occupancy { .calc-width(35, 10); }
                         &.date { .calc-width(40, 20); }
                         &.room { width: 20%; }
+                        &.full-width { width: 100%; }
                     }
                 }
 
@@ -4431,6 +4443,179 @@
                             clear: both;
                             .show;
                         }
+                    }
+                }
+            }
+
+            /* Group Rooming List Add Rooms or Edit Rooms from Selected Guest ***/
+            &.group-guest-rooms {
+                padding: 30px 0 0 0;
+                .size( 650px, 950px );
+
+                .h2 { margin: 0; }
+                
+                .rooms-header {
+                    margin: 0;
+                    margin-top: 20px;
+                    padding: 0 20px;
+
+                    li {
+                        float: left;
+                        display: block;
+                        padding: 10px;
+                        font-weight: 600;
+                        font-size: 14px;
+                        text-transform: uppercase;
+                        margin: 0;
+
+                        &.guest-name {
+                            width: 370px;
+                        }
+
+                        &.arrival-departure {
+                            width: 240px;
+                        }
+
+                        &.room-type {
+                            width: 200px;
+                        }
+
+                        &.acc-guests {
+                            width: 100px;
+                        }
+                    }
+                }
+
+                .holder {
+                    padding: 0 20px;
+                    .calc-height(100, 175);
+                    overflow: hidden;
+                    position: relative;
+                     .float;
+
+
+                    .wrapper {
+                        padding-bottom: 10px;
+                    }
+                   
+                    .room-item {
+                        position: relative;
+                        .clickable();
+                        margin-bottom: 10px;
+                        line-height: 40px;
+                        
+                        .faux-anchor {
+                            .float;
+                            background-position: 98.5% 50%;
+                        }
+                        
+                        .guest-time {
+                            float: left;
+                            &.guest-time-arrival {
+                                width: 90px;
+                            }
+                        }
+
+                        .guest-status {
+                            margin-top: 10px;
+                            margin-right: 5px;
+                            .size(20px, 20px);
+                            background-size: 80px;
+                            &.check-in {
+                                background-position: 6px -75px;
+                            }
+                            &.check-out {
+                                background-position: 6px -102px;
+                            }
+                        }
+
+                        input {
+                            background-color: @grey1;
+                        }
+                        .room-item-click {
+                           .pull-left();
+                        }
+                        .guest-name,
+                        .arrival-departure,
+                        .room-type,
+                        .acc-guests,
+                        .acc-guests-form  {
+                            padding:10px;
+                            .pull-left();
+                        }
+                        .guest-name {
+                            width: 370px;
+                            .entry {
+                                margin-bottom: 0;
+                            }
+                        }
+
+                        .arrival-departure {
+                            width: 240px;
+                            font-size: 14px;
+                        }
+
+                        .room-type {
+                            width: 200px;
+                            text-transform: uppercase;
+                            line-height: 1;
+                            font-size: 14px;
+                            
+                            strong {
+                                display: block;
+                                padding-top: 7px;
+                                font-weight: 600;
+                                .nowrap();
+                            }
+                            em {
+                                display: block;
+                                .nowrap();
+                            }
+                        }
+
+                        .acc-guests {
+                            width: 100px;
+                            font-weight: 600;
+                            font-size: 18px;
+                        }
+
+                        .acc-guests-form {
+                            width: 100%;
+                            label {
+                                line-height: 1;
+                                margin-bottom: 10px;
+                            }
+
+                            .last {
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+                    .entry {
+                        .calc-width(50, 10);
+                        label { margin: 0; }
+
+                        &.margin {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+
+                .actions {
+                    text-align: center;
+                    padding: 20px;
+                    background-color: rgba(0,0,0,.05);
+                    .box-shadow(0 -2px 2px rgba(0,0,0,.15));
+                    width: 100%;
+                    position: absolute;
+                    bottom: 0;
+                    z-index: 99;
+
+
+                    .button {
+                        display: inline-block;
+                        width: auto;
+                        margin-right: 10px;
                     }
                 }
             }

@@ -223,6 +223,12 @@ sntRover.controller('reservationDetailsController',
 			}
 		}, datePickerCommon);
 
+		// for groups this date picker must not allow user to pick
+		// a date that is after the group end date.
+		if ( !! $scope.reservationData.reservation_card.group_id ) {
+			$scope.departureDateOptions.maxDate = $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat);
+		}
+
 		$scope.reservationData.paymentTypes = paymentTypes;
 		$scope.reservationData.reseravationDepositData = reseravationDepositData;
 
@@ -649,7 +655,8 @@ sntRover.controller('reservationDetailsController',
 				fromState: $state.current.name,
 				company_id: $scope.$parent.reservationData.company.id,
 				travel_agent_id: $scope.$parent.reservationData.travelAgent.id,
-				group_id: $scope.$parent.reservationData.group.id,
+				group_id: $scope.borrowForGroups ? '' : $scope.$parent.reservationData.group.id,
+				borrow_for_groups: $scope.borrowForGroups,
 				room_type_id: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
                 adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
                 children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren
@@ -866,6 +873,7 @@ sntRover.controller('reservationDetailsController',
 					if (response.errors.length === 0) {
 						$scope.responseValidation = response.data;
 						$scope.stayDatesExtendedForOutsideGroup = (response.data.is_group_reservation && response.data.outside_group_stay_dates) ? true : false;
+						$scope.borrowForGroups = (response.data.is_group_reservation && ! response.data.is_room_type_available) ? true : false;
 
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
@@ -934,7 +942,8 @@ sntRover.controller('reservationDetailsController',
 			$scope.reservationParentData.departureDate = $filter('date')(departureDate, 'yyyy-MM-dd');
 			$scope.reservationParentData.numNights = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 			initStayDates(0);
-			navigateToRoomAndRates($filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+			navigateToRoomAndRates(
+				$filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
 				$filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd')
 			);
 			$scope.closeDialog();

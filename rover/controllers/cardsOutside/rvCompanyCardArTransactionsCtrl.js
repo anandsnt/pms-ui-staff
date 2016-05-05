@@ -1,6 +1,6 @@
 
-sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state', '$vault', '$window', 'RVReservationCardSrv',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window, RVReservationCardSrv) {
+sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state', '$vault', '$window', 'RVReservationCardSrv', '$filter',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window, RVReservationCardSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
@@ -11,13 +11,17 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			$scope.arTransactionDetails.ar_transactions = [];
 			$scope.paymentModalOpened = false;
 			fetchData();
+			$scope.statementEmailAddress = '';
 		};
 
-		// Refresh the scroller when the tab is active.
-		$rootScope.$on("arTransactionTabActive", function(event) {
+		var refreshArTabScroller = function(){
 			$timeout(function() {
 				$scope.refreshScroller('ar-transaction-list');
 			}, 100);
+		};
+		// Refresh the scroller when the tab is active.
+		$rootScope.$on("arTransactionTabActive", function(event) {
+			refreshArTabScroller();
 		});
 
 		// Initializing filter data
@@ -103,12 +107,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			    $scope.arTransactionDetails.available_credit = credits;
 			    $scope.arTransactionDetails.amount_owing = parseFloat(data.amount_owing).toFixed(2);
-
-
-
-				$timeout(function() {
-					$scope.refreshScroller('ar-transaction-list');
-				}, 100);
+			    
+			    refreshArTabScroller();
 
 				// Compute the start, end and total count parameters
 				if($scope.nextAction){
@@ -337,14 +337,9 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		/*
 		 * function to execute on clicking on each result
 		 */
-		$scope.goToReservationDetails = function(index, $event) {
+		$scope.goToReservationDetails = function(index) {
 
-			var element = $event.target;
-
-			if(element.className ==='switch-button' || element.className ==='switch-button on' || element.parentNode.className ==='switch-button' || element.parentNode.className ==='switch-button on'){
-				$scope.toggleTransaction(index);
-			}
-			else if($scope.filterData.viewFromOutside){
+			if($scope.filterData.viewFromOutside){
 				$vault.set('cardId', $stateParams.id);
 				$vault.set('type', $stateParams.type);
 				$vault.set('query', $stateParams.query);
@@ -435,6 +430,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			// CICO-11667 to enable landscpe printing on transactions page.
 			// Sorry , we have to access the DOM , so using jQuery..
 			$("body").prepend("<style id='paper-orientation'>@page { size: landscape; }</style>");
+			$("#regDiv.registration-card").addClass('no-print');
 
 			/*
 			 *	======[ READY TO PRINT ]======
@@ -459,6 +455,10 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		    /*
 		     *	======[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]======
 		     */
+		    
+		    $timeout(function() {
+				$("#regDiv.registration-card").removeClass('no-print');
+		    }, 1000);
 
 	    };
 
@@ -523,12 +523,24 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		 *	show popup with PRINT, EMAIL options.
 		 */
 		$scope.clickedArStatementButton = function(){
-			ngDialog.open({
-	      		template:'/assets/partials/companyCard/rvArStatementPopup.html',
-		        className: '',
-		        closeByDocument: false,
-		        scope: $scope
-	      	});
+
+			var dataFetchSuccess = function(data){
+				$scope.$emit('hideLoader');
+				$scope.statementEmailAddress = data.data.to_address;
+
+				ngDialog.open({
+		      		template:'/assets/partials/companyCard/rvArStatementPopup.html',
+			        className: '',
+			        closeByDocument: false,
+			        scope: $scope
+		      	});
+			},
+	      	dataFailureCallback = function(errorData){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorData;
+			};
+			var params = { 'id': $scope.filterData.id };
+			$scope.invokeApi(RVCompanyCardSrv.fetchArStatementData, params, dataFetchSuccess, dataFailureCallback);
 		};
 
 	    // add the print orientation before printing
@@ -549,6 +561,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				$scope.errorMessage = "";
 				// hide hotel logo
 				$("header .logo").addClass('logo-hide');
+				$("#invoiceDiv.invoice").addClass('no-print');
+				$("#regDiv.registration-card").addClass('no-print');
 				// inoder to set class 'print-statement' on rvCompanyCardDetails.html
 				$scope.$emit("PRINT_AR_STATEMENT",true);
 			    // add the orientation
@@ -575,6 +589,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			    $timeout(function() {
 					$("header .logo").removeClass('logo-hide');
+					$("#invoiceDiv.invoice").removeClass('no-print');
+					$("#regDiv.registration-card").removeClass('no-print');
 					// inoder to re-set/remove class 'print-statement' on rvCompanyCardDetails.html
 					$scope.$emit("PRINT_AR_STATEMENT",false);
 					// remove the orientation after similar delay
@@ -594,18 +610,33 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			var params = getParamsToSend();
 			printArStatement( params );
 		};
-
+		// To show email sent callbacks
+		$scope.showEmailSentStatusPopup = function(status) {
+	    	ngDialog.open({
+	    		template: '/assets/partials/popups/rvEmailSentStatusPopup.html',
+	    		className: '',
+	    		scope: $scope
+	    	});
+	    };
 		// Handle AR Statement-EMAIL button click
 		$scope.clickedEmailArStatementButton = function(){
 			var params = getParamsToSend();
+			params.to_address = $scope.statementEmailAddress;
+			$scope.closeDialog();
 
 			var emailSuccess = function(successData){
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = "";
-			};
-			var emailFailureCallback = function(errorData){
+				$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+				$scope.status = "success";
+				$scope.showEmailSentStatusPopup();
+			},
+			emailFailureCallback = function(errorData){
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorData;
+				$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+				$scope.status = "alert";
+				$scope.showEmailSentStatusPopup();
 			};
 			$scope.invokeApi(RVCompanyCardSrv.emailArStatement, params, emailSuccess, emailFailureCallback);
 		};
@@ -614,5 +645,43 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		$scope.closeDialog = function() {
             ngDialog.close();
         };
+
+		// CICO-28089 - Handle click on each transaction.
+		// will expand with detailed view.
+		// Fetching data for detailed view here..
+		$scope.clickedOnTransaction = function( index, event ){
+			
+			var element = event.target;
+
+			if(element.className ==='switch-button' || element.className ==='switch-button on' || element.parentNode.className ==='switch-button' || element.parentNode.className ==='switch-button on'){
+				$scope.toggleTransaction(index);
+			}
+			else{
+				var transaction = $scope.arTransactionDetails.ar_transactions[index];
+				transaction.details = [];
+
+				if(!transaction.active){
+					var transactionFetchSuccess = function(data){
+						$scope.$emit('hideLoader');
+						$scope.errorMessage = '';
+						transaction.active = ! transaction.active;
+						transaction.details = data;
+						refreshArTabScroller();
+					},
+					transactionFetchFailure = function(errorMessage){
+						$scope.$emit('hideLoader');
+						$scope.errorMessage = errorMessage;
+					};
+					var param = {
+						'bill_id':transaction.bill_id
+					};
+					$scope.invokeApi(RVCompanyCardSrv.fetchTransactionDetails, param, transactionFetchSuccess, transactionFetchFailure);
+				}
+				else{
+					transaction.active = ! transaction.active;
+					refreshArTabScroller();
+				}
+			}
+		};
 
 }]);

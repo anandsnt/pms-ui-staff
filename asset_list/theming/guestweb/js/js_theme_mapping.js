@@ -33,7 +33,7 @@ module.exports = {
 			'guestweb_claridge' :[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_demo' 		: [ themeJsRoot + 'app_router_common.js'],
 			'guestweb_balboa':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_excalibur':[ themeJsRoot + 'app_router_excalibur.js'],
+			'guestweb_excalibur':[themeJsRoot + 'app_router_excalibur.js'],
 			'guestweb_luxor':[themeJsRoot + 'app_router_luxor.js'],
 			'guestweb_mgm_grand':[ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_mgm_grand.js'],
 			'guestweb_signature_at_mgm':[ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_signature_at_mgm.js'],
@@ -46,7 +46,17 @@ module.exports = {
 			'guestweb_crawford':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_dutch':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_beau_mont':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_boston_park':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_beacon_hill':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_paradise_point':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_knickerbocker_yacht_club':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_kingsley':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_beacon_hill':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_boston_park':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_avery':[ themeJsRoot + 'app_router_common.js']
+
 		}
 	}
 }

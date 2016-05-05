@@ -335,6 +335,9 @@ $scope.saveClick = function(){
 
 };
 
+$scope.clickVIPCode = function(){
+    $scope.upsellData.free_eci_for_vips =  !$scope.upsellData.free_eci_for_vips;
+};
 $scope.clickAddRoomType = function(){
 	//While addig a room type, making its max_late_checkouts defaults to 0.
   if($scope.getSelectedRateIndexForID($scope.upsell_rate.selected_rate_id) !== -1) {

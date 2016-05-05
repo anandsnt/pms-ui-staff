@@ -218,9 +218,15 @@ body { overflow: hidden; }
 
 			/* With search bar ***/
 			&#dashboard,
-			&#find-cards {
+            &#find-cards,
+            &#reports {
 				top: 120px;
 				.calc-height(100, 120);
+
+				&.no-search-form {
+					top: 60px;
+					.calc-height(100, 60);
+				}
 			}
 
 			/* With pagination **/
@@ -994,7 +1000,7 @@ body { overflow: hidden; }
 	/* 768px+		 		==============================*/
 	@media only screen and (min-width: 768px) {
 		.search-form {
-			display: block !important;
+			display: block;
 
 			/* Enable adding ***/
 			&.enable-adding {
@@ -1098,6 +1104,8 @@ body { overflow: hidden; }
 
 		                select {
 		                    text-transform: uppercase;
+		                    height: 40px;
+		                    text-indent: -1px;
 		                }
 		            }
 
@@ -1105,6 +1113,9 @@ body { overflow: hidden; }
 		                width: 290px;
 		                .entry-data { 
 		                    width: 135px;
+		                    input {
+		                    	font-size:14px;
+		                    }
 		                }
 		            }
 
@@ -1113,7 +1124,8 @@ body { overflow: hidden; }
 		                &.with-label {
 
 		                    select {
-		                        padding: 10px 30px 0 10px;
+		                        padding: 15px 30px 0 10px;
+		                        font-size:14px;
 		                    }
 
 		                    input {
@@ -2029,6 +2041,7 @@ body { overflow: hidden; }
 				.settings-content {
 					width: 235px;
 					padding: 20px;
+					height: auto;
 
 					label:not(.radio) {
 						font-size: 14px;
@@ -2045,7 +2058,7 @@ body { overflow: hidden; }
 
 			&#report-update {
 				top: 50px;
-				.calc-height(100, 50);
+				.calc-height(100, 110);
 				.transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
 
 				&.open {
@@ -2795,7 +2808,7 @@ body { overflow: hidden; }
 		    				.show;
 		    			}
 
-		    			&:last-child {
+		    			&.centered-action-btn, &:last-child {
 		    				&:after { .hide; }
 		    			}
 		    		}

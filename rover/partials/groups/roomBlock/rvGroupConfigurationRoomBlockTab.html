@@ -63,7 +63,7 @@
         <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}">
             <!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
             <label for="group-total-rooms" translate>TOTAL_ROOMS</label>
-            <input tabindex="-1" id="group-total-rooms" value="{{getMaxOfBookedRooms()}}"
+            <input tabindex="-1" id="group-total-rooms" ng-model="totalBlockedCount"
                     ng-readonly="shouldChangeTotalRoomsToReadOnly()" />
         </div>
         <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}">
@@ -90,7 +90,7 @@
     <div id="group-room-block-content" class="tab-details">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- If new group and/or room block have not been set: -->
-        <div class="no-content" ng-hide="shouldHideAddRoomsButton()">
+        <div class="no-content" ng-hide="groupConfigData.summary.is_cancelled || shouldHideAddRoomsButton()">
             <div class="info">
                 <a ng-click="clickedOnAddRoomsAndRatesButton()" class="button"
                     ng-disabled="shouldDisableAddRoomsAndRate()"
