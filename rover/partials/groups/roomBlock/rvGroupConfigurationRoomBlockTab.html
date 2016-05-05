@@ -103,7 +103,7 @@
             </div>
         </div>
         <!-- Room block actions -->
-        <div class="room-block-actions" ng-show="!groupConfigData.summary.is_cancelled &&shouldHideAddRoomsButton()">
+        <div class="room-block-actions" ng-show="shouldHideAddRoomsButton()">
             <button type="button" class="button green"
                 tabindex="-1"
                 ng-click = "clickedOnSaveButton()"

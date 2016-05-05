@@ -20,7 +20,7 @@
 </div>
 
 <!-- Room block actions -->
-<div class="room-block-actions release-range" ng-show="!allotmentConfigData.summary.is_cancelled && shouldHideAddRoomsButton()">
+<div class="room-block-actions release-range" ng-show="shouldHideAddRoomsButton()">
     <div class="entry">
         <label for="allotment-release-range">Release Range (In Days)</label>
         <input id="allotment-release-range" type="text" class="highlight" ng-model="allotmentConfigData.roomblock.common_ui_release_days" />
