@@ -30,12 +30,17 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 */
 		var initializeMe = function() {
 			//show back button
-			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);//hide back buttons in 2 options page
 			//show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.email = $stateParams.email.length > 0 ? $stateParams.email : "";
 			$scope.from = $stateParams.from;
-			$scope.mode = "DELIVERY_OPTIONS_MODE";
+			if($scope.zestStationData.registration_card.auto_print){
+				$scope.clickedPrint();
+			}
+			else{
+				$scope.mode = "DELIVERY_OPTIONS_MODE";
+			}
 		}();
 		/**
 		 * when the back button clicked
@@ -43,7 +48,9 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 * @return {[type]} 
 		 */
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			$scope.mode = "DELIVERY_OPTIONS_MODE";
+			//back button action from email send mode page will
+			//take to 2 options page
+			$scope.mode = "DELIVERY_OPTIONS_MODE";//hide back buttons in 2 options page
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 		});
 
@@ -149,6 +156,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 */
 		$scope.selectEmailDelivery = function() {
 			$scope.mode = "EMAIL_SEND_MODE";
+			//show back buttons in email send mode page
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 		};
 		/**
@@ -220,7 +228,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		};
 		/**
 		 * [goToNext description]
-		 * @return {[type]} [description]
+		 *  save email
 		 */
 		$scope.goToNext = function() {
 			var isValidEmail = $scope.email.length > 0 ? zsUtilitySrv.isValidEmail($scope.email) : false;
