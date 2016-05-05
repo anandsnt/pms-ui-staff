@@ -1191,6 +1191,33 @@ table {
             &:first-child { margin-top: 0; }
         }
 
+        .card-meta {
+            margin: 18pt 0 4pt;
+            .float;
+
+            li {
+                font-size: 10pt;
+                font-weight: 600;
+                text-transform: uppercase;
+                margin: 0 8pt 0 0;
+                .nowrap();
+                .pull-left;
+                .show();
+
+                &.guest {
+                    min-width: 4cm;
+                }
+
+                &.balance {
+                    width: 3cm;
+                    margin-right: 0;
+                    .pull-right;
+                }
+            }
+
+            &:first-child { margin-top: 0; }
+        }
+
         table {
             .unassigned { color: @grey3; }
 
@@ -1654,7 +1681,7 @@ table {
             &.balance-reports {
                 thead {
                     th {
-                        padding: 4pt 12pt 4pt;
+                        padding: 4pt 8pt 4pt 4pt; 
 
                         &:last-child { padding-right: 0; }
                     }
@@ -1662,8 +1689,7 @@ table {
 
                 tbody {
                     td {
-                        padding: 4pt 12pt 4pt;
-                        line-height: 20px;
+                        padding: 4pt 8pt 4pt 4pt;
                         .float;
 
                         strong { font-weight: 600; }
@@ -1681,7 +1707,7 @@ table {
                         }
 
                         .icons.time {
-                            margin: 3pt 4pt 0 0;
+                            margin-right: 4pt;
                             background-size: 16px;
                             .opacity(50);
                             .size(8pt, 12px);
@@ -1702,7 +1728,7 @@ table {
                         &.status { width: 2cm; }
 
                         &.balance {
-                            width: 3cm;
+                            min-width: 3cm;
                             padding-right: 0;
                             .nowrap();
                         }
@@ -2192,6 +2218,14 @@ table {
         }
 
         &.occupancy-footer { display: table; }
+
+        &.card-authorization-check { 
+            .grid-footer {
+                li {
+                    .pull-right;
+                }
+            }
+        }
     }
 
 /* Housekeeping             ==============================*/
