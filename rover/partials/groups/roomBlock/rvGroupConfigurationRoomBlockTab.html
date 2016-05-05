@@ -90,7 +90,7 @@
     <div id="group-room-block-content" class="tab-details">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- If new group and/or room block have not been set: -->
-        <div class="no-content" ng-hide="shouldHideAddRoomsButton()">
+        <div class="no-content" ng-hide="groupConfigData.summary.is_cancelled || shouldHideAddRoomsButton()">
             <div class="info">
                 <a ng-click="clickedOnAddRoomsAndRatesButton()" class="button"
                     ng-disabled="shouldDisableAddRoomsAndRate()"

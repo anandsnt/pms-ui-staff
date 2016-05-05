@@ -97,7 +97,7 @@
             <div class="entry full-width with-button">
                 <label for="allotment-rate" translate>RATE</label>
                 <div class="select">
-                    <select id="allotment-rate" ng-model="allotmentConfigData.summary.rate" iscroll-stop-propagation ng-change="onRateChange()">
+                    <select id="allotment-rate" ng-model="allotmentConfigData.summary.rate" iscroll-stop-propagation ng-change="onRateChange()" ng-disabled="allotmentConfigData.summary.is_cancelled">
                         <optgroup>Group Rates</optgroup>
                         <option value="" ng-if="!allotmentConfigData.summary.rate" selected>Select Rate</option>
                         <option value="-1" ng-selected="allotmentConfigData.summary.rate == -1">Custom Rate</option>
