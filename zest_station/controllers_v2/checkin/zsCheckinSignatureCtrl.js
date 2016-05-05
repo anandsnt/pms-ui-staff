@@ -10,6 +10,11 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
     'zsGeneralSrv',
     function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv) {
 
+        /**
+         * TWO MODES
+         * 1.SIGNATURE_MODE and
+         * 2.TIMED_OUT
+         */
 
         /**
          * [clearSignature description]
@@ -27,9 +32,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
          * @return {[type]}          [description]
          */
         var afterGuestCheckinCallback = function(response) {
-            console.info('response from guest check-in', response)
-            var haveValidGuestEmail = $stateParams.email.legth > 0 ? true : false;
-            console.info('successfulCheckIn: ', successfulCheckIn);
+            var haveValidGuestEmail = $stateParams.email.length > 0 ? true : false;
             //detect if coming from email input
             if (haveValidGuestEmail) {
                 $state.go('zest_station.checkinKeyDispense', {
@@ -38,12 +41,17 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                     "first_name": $stateParams.first_name
                 });
                 return;
-            } else { //successful check-in but missing email on reservation
-                $state.go('zest_station.inputReservationEmailAfterCheckin', {
-                    "reservationId": $stateParams.id,
-                    "room": $stateParams.room_no,
-                    "first_name": $stateParams.first_name
-                });
+            } else { 
+
+                var stateParams = {
+                'from':'signature',
+                'guest_id':$stateParams.guest_id,
+                'email': $stateParams.email,
+                'reservation_id': $stateParams.reservation_id,
+                'room_no': $stateParams.room_no,
+                'first_name': $stateParams.first_name
+                }
+                $state.go('zest_station.checkInEmailCollection', stateParams);
             }
 
         };
@@ -62,9 +70,11 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             };
             var options = {
                 params: checkinParams,
-                successCallBack : afterGuestCheckinCallback
+                successCallBack: afterGuestCheckinCallback
             };
-            $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+            afterGuestCheckinCallback();
+            // commment out after finishing
+            //$scope.callAPI(zsCheckinSrv.checkInGuest, options);
         };
         /**
          * [submitSignature description]
@@ -77,10 +87,15 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             $scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
             if ($scope.signatureData !== [] && $scope.signatureData !== null && $scope.signatureData !== '' && $scope.signatureData !== '[]') {
                 checkInGuest();
-            }else{
+            } else {
                 return;
             }
         };
+
+        $scope.reSignCC = function() {
+            $scope.mode = "SIGNATURE_MODE";
+        };
+
 
         /**
          * [initializeMe description]
@@ -91,7 +106,23 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             //show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+            $scope.mode = "SIGNATURE_MODE";
+            $scope.signaturePluginOptions = {
+                height: 230,
+                width: $(window).width() - 120,
+                lineWidth: 1
+            };
         }();
 
+        var setTimedOut = function() {
+            $scope.mode = 'TIMED_OUT';
+        };
+        /**
+         * TODO ---- ???
+         */
+        $scope.$on('USER_ACTIVITY_TIMEOUT',function(){
+             setTimedOut();
+        });
+           
     }
 ]);

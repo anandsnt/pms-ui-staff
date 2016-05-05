@@ -84,6 +84,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 			console.log('$scope.selectedReservation: ', $scope.selectedReservation)
 			console.log($scope.selectedReservation.reservation_details.reservation_id)
 			$state.go('zest_station.checkInTerms', {
+				'guest_id': $scope.selectedReservation.guest_details[0].id,
 				'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
 				'deposit_amount': $scope.selectedReservation.reservation_details.deposit_amount,
 				'room_no': $scope.selectedReservation.reservation_details.room_no,
