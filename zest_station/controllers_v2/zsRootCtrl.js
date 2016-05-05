@@ -238,6 +238,10 @@ sntZestStation.controller('zsRootCtrl', [
 
 
 		$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+			console.info("\ngoing to----->"+from.name);
+			console.info("to stateparams"+toParams);
+			console.info(toParams);
+			console.info("going to----->"+to.name);
 			$scope.resetTime();
 		});
 
@@ -409,11 +413,18 @@ sntZestStation.controller('zsRootCtrl', [
 				// set work station id and status
 				$scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
 				$scope.zestStationData.key_encoder_id =  $scope.getStationIdFromName(station.name).key_encoder_id;
+				var previousWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
 				$scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
+				var newWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
 				if ($scope.zestStationData.workstationStatus === 'out-of-order') {
 					$state.go('zest_station.outOfService');
 				} else {
-					$state.go('zest_station.home');
+					if(previousWorkStationStatus === 'out-of-order' && newWorkStationStatus ==='in-order'){
+						$state.go('zest_station.home');
+					}
+					else{
+						//do nothing
+					}
 				}
 				// set oos reason from local storage
 				try {

@@ -33,24 +33,26 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
          */
         var afterGuestCheckinCallback = function(response) {
             var haveValidGuestEmail = $stateParams.email.length > 0 ? true : false;
+             var stateParams = {
+                    'from': 'signature',
+                    'guest_id': $stateParams.guest_id,
+                    'email': $stateParams.email,
+                    'reservation_id': $stateParams.reservation_id,
+                    'room_no': $stateParams.room_no,
+                    'first_name': $stateParams.first_name
+                }
+
+            //TODO
+            skipDispenseKeys = true;
+
             //detect if coming from email input
             if (haveValidGuestEmail) {
-                $state.go('zest_station.checkinKeyDispense', {
-                    "reservationId": $stateParams.id,
-                    "room": $stateParams.room_no,
-                    "first_name": $stateParams.first_name
-                });
-                return;
-            } else { 
-
-                var stateParams = {
-                'from':'signature',
-                'guest_id':$stateParams.guest_id,
-                'email': $stateParams.email,
-                'reservation_id': $stateParams.reservation_id,
-                'room_no': $stateParams.room_no,
-                'first_name': $stateParams.first_name
+                if (!skipDispenseKeys) {
+                    $state.go('zest_station.checkinKeyDispense', stateParams);
+                } else {
+                    $state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);
                 }
+            } else {
                 $state.go('zest_station.checkInEmailCollection', stateParams);
             }
 
@@ -117,10 +119,10 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
         var setTimedOut = function() {
             $scope.mode = 'TIMED_OUT';
         };
-        
-        $scope.$on('USER_ACTIVITY_TIMEOUT',function(){
-             setTimedOut();
+
+        $scope.$on('USER_ACTIVITY_TIMEOUT', function() {
+            setTimedOut();
         });
-           
+
     }
 ]);
