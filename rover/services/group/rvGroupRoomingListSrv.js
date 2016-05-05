@@ -259,6 +259,19 @@ angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrv
 			return deferred.promise;
 		};
 
+		this.updateGuestData = function(data) {
+			var deferred = $q.defer(),
+				url = '/api/group_reservations/update_guest_details';
+			rvBaseWebSrvV2.postJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		};
+
+
 
 	}
 ]);

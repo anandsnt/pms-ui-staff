@@ -2,6 +2,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 	'$rootScope', '$scope', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', '$filter', 'RVRoomRatesSrv', 'rvGroupConfigurationSrv',
 	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, $filter, RVRoomRatesSrv, rvGroupConfigurationSrv) {
 
+		$scope.borrowForGroups = $stateParams.borrow_for_groups === 'true' ? true : false;
+
 		$scope.stateCheck = {
 			pagination: {
 				roomType: {
@@ -214,7 +216,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					to_date: DEPARTURE_DATE,
 					company_id: $scope.reservationData.company.id,
 					travel_agent_id: $scope.reservationData.travelAgent.id,
-					group_id: $scope.reservationData.group.id || $scope.reservationData.allotment.id,
+					group_id: !$scope.borrowForGroups ? ($scope.reservationData.group.id || $scope.reservationData.allotment.id) : '',
 					promotion_code: $scope.reservationData.searchPromoCode,
 					promotion_id: $scope.reservationData.promotionId,
 					override_restrictions: $scope.stateCheck.showClosedRates,
@@ -845,6 +847,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						isrefresh: true
 					}
 				};
+				if ( $scope.borrowForGroups ) {
+					RVReservationStateService.setReservationFlag('borrowForGroups', true);
+				}
 				$scope.saveReservation(staycardDetails.name, staycardDetails.param);
 			},
 			getBookButtonStyle = function(numRestrictions, rateId, roomsCount) {
@@ -1653,6 +1658,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		};
 
 		$scope.showRatesList = function(room, showMoreRates) {
+			if ( $scope.borrowForGroups ) {
+				return;
+			}
+
 			var toggle = function() {
 				room.isCollapsed = !room.isCollapsed;
 				$scope.refreshScroll();

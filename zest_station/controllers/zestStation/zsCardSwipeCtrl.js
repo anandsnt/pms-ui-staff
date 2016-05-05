@@ -97,7 +97,11 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                      "is_kiosk":true,
                      'signature':signature
                  };
-                  $scope.afterGuestCheckinCallback({'status':'success'});
+                /**
+                 * for testing purpsosed commenting out
+                 *  need to revert back
+                 */
+                 $scope.afterGuestCheckinCallback({'status':'success'});
                 // setTimeout(function(){
                 //     $scope.invokeApi(zsTabletSrv.checkInGuest, checkinParams, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback); 
                 // },500);
