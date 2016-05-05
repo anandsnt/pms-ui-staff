@@ -449,7 +449,8 @@ sntZestStation.controller('zsRootCtrl', [
 					sort_field: 'name'
 				},
 				successCallBack: onSuccess,
-				failureCallBack: onFail
+				failureCallBack: onFail,
+				'loader': 'none'
 			};
 			$scope.callAPI(zsTabletSrv.fetchWorkStations, options);
 		};
