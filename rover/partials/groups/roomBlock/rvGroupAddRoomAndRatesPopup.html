@@ -33,17 +33,17 @@
                         </div>
                         <div class="entry">
                             <label for="room-type-1-single" translate ng-hide="$index>0">SINGLE_OCCUPANCY</label>
-                            <input id="room-type-1-single" ng-model="row.single_rate" ng-if="groupConfigData.summary.rate == -1" type="text" />
+                            <input id="room-type-1-single" ng-model="row.single_rate" ng-if="groupConfigData.summary.rate == -1" type="text" ng-disabled="groupConfigData.summary.is_cancelled" />
                             <input id="room-type-1-single" value="{{parseCurrency(row.single_rate)}}" ng-if="groupConfigData.summary.rate != -1" type="text" readonly />
                         </div>
                         <div class="entry">
                             <label for="room-type-1-double" translate ng-hide="$index>0">DOUBLE_OCCUPANCY</label>
-                            <input id="room-type-1-double" ng-model="row.double_rate" ng-if="groupConfigData.summary.rate == -1" type="text" />
+                            <input id="room-type-1-double" ng-model="row.double_rate" ng-if="groupConfigData.summary.rate == -1" type="text" ng-disabled="groupConfigData.summary.is_cancelled" />
                             <input id="room-type-1-double" value="{{parseCurrency(row.double_rate)}}" ng-if="groupConfigData.summary.rate != -1" type="text" readonly/>
                         </div>
                         <div class="entry">
                             <label for="room-type-1-plus" translate ng-hide="$index>0">ONE_MORE_ADULT</label>
-                            <input id="room-type-1-plus" ng-model="row.extra_adult_rate" ng-if="groupConfigData.summary.rate == -1" type="text" />
+                            <input id="room-type-1-plus" ng-model="row.extra_adult_rate" ng-if="groupConfigData.summary.rate == -1" type="text" ng-disabled="groupConfigData.summary.is_cancelled" />
                             <input id="room-type-1-plus" value="{{parseCurrency(row.extra_adult_rate)}}" ng-if="groupConfigData.summary.rate != -1" type="text" readonly/>
                         </div>
                     </div>
