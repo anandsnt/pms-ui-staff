@@ -266,7 +266,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 		 */
                 
 		var initializeMe = function() {
-			$controller('zsKeyDispenseCtrl', {$scope: $scope});
+			 BaseCtrl.call(this, $scope);
+             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
                     
 		}();
 
@@ -277,22 +278,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.showDeposit = false;
             
         };
-
-
-		/**
-		 * [Screen navigations]
-		 */
-		
-		var navigateToNextScreen = function(){
-		   
-		};
-
-		/**
-		 * when the back button clicked
-		 */
-		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			
-		});
 
 	}
 ]);

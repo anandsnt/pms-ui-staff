@@ -12,26 +12,15 @@ sntZestStation.controller('zsRoomErrorCtrl', [
                  * 
                  * placeholder {first_name} in stateParams
 		 */
-		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			$state.go('zest_station.checkInReservationSearch');
-		});
 
-		$scope.navToPrev = function() {
-			$scope.$emit(zsEventConstants.CLICKED_ON_BACK_BUTTON);
-		};
-
-		$scope.init = function() {
-                    
-		};
-                
 
 		/**
 		 * [initializeMe description]
 		 * @return {[type]} [description]
 		 */
 		var initializeMe = function() {
-			//show back button
-			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+			//hide back button
+			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			//show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 

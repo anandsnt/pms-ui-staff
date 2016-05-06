@@ -49,10 +49,20 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			$scope.mode = "DISPENSE_KEY_MODE";
 		};
 
-		var onGeneralFailureCase = function() {
+		var changePageModeToFailure = function(){
 			$scope.mode = "DISPENSE_KEY_FAILRURE_MODE";
 			$scope.runDigestCycle();
 		};
+		/**
+		 * [setFailureReason description]
+		 * we need to set the oos reason message in admin
+		 */
+		var onGeneralFailureCase = function(response) {
+			$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL');
+			$scope.zestStationData.workstationStatus = 'out-of-order';
+			changePageModeToFailure();
+		};
+
 		/**
 		 * [dispenseKey description]
 		 *  if webscoket ready state is not ready
@@ -66,15 +76,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			}
 		};
 
-		/**
-		 * [setFailureReason description]
-		 * we need to set the oos reason message in admin
-		 */
-		var setFailureReason = function(response) {
-			$scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL');
-			$scope.zestStationData.workstationStatus = 'out-of-order';
-			onGeneralFailureCase();
-		};
+		
 
 		var noOfKeysCreated = 0;
 		/**
@@ -108,20 +110,21 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 		$scope.$on('DISPENSE_SUCCESS', function(event, data) {
 			$scope.zestStationData.workstationStatus = 'in-order';
+			$scope.zestStationData.workstationOooReason = "";
 			saveUIDToReservation(data.msg);
 		});
 		$scope.$on('DISPENSE_FAILED', function(event, data) {
 			onGeneralFailureCase();
 		});
 		$scope.$on('SOCKET_FAILED', function() {
-			$scope.zestStationData.wsFailedReason = $filter('translate')('SOCKET_FAILED');
+			$scope.zestStationData.workstationOooReason = $filter('translate')('SOCKET_FAILED');
 			$scope.zestStationData.workstationStatus = 'out-of-order';
-			onGeneralFailureCase();
+			changePageModeToFailure();
 		});
 		$scope.$on('DISPENSE_CARD_EMPTY', function() {
-			$scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL_EMPTY');
+			$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL_EMPTY');
 			$scope.zestStationData.workstationStatus = 'out-of-order';
-			onGeneralFailureCase();
+			changePageModeToFailure();
 		});
 		$scope.$on('SOCKET_CONNECTED', function() {
 			dispenseKey();
