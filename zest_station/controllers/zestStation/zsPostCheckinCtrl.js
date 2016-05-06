@@ -80,8 +80,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.from = 'deliver-registration';
                 
             } else if (current === 'zest_station.edit_registration_email'){
-                    $scope.selectEmailDelivery();
-                    //$state.go('zest_station.delivery_options');
+                   // $scope.selectEmailDelivery();
+                    $state.go('zest_station.delivery_options');
                     
             }
             
@@ -147,7 +147,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             } else {
                 $scope.at = 'email-delivery';
                 $scope.headingText = "SEND_REGISTRATION_TO";
-                if ($scope.zestStationData.printEnabled){
+                if ($scope.zestStationData.printEnabled || $scope.zestStationData.emailEnabled){
                     showNavButtons();
                 } else {
                     hideNavButtons();
@@ -279,6 +279,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             return primaryGuest;
         };
         $scope.updateGuestEmail = function(){
+            
             var updateComplete = function(response){
                     $state.selectedReservation.guest_details.email = $state.input.email;
                     $state.input.lastEmailValue = $state.input.email;
@@ -385,7 +386,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $scope.theme = $state.theme;
             $scope.emailEnabled = $scope.zestStationData.emailEnabled;
             $scope.printEnabled = $scope.zestStationData.printEnabled;
-            if ($scope.zestStationData.auto_print){
+            if ($scope.zestStationData.auto_print && !$state.hasAutoPrinted){
                 $scope.printEnabled = false;
             }
             
@@ -396,9 +397,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             
             if (current === 'zest_station.delivery_options'){
                 console.log('$scope.zestStationData.auto_print: ',$scope.zestStationData.auto_print);
-                if ($scope.zestStationData.auto_print){
+                if ($scope.zestStationData.auto_print && !$state.hasAutoPrinted){
                     $scope.zestStationData.printEnabled = false;
                     setTimeout(function(){
+                        $state.hasAutoPrinted = true;
                         $scope.clickedPrint();
                     },3000);
                 };
