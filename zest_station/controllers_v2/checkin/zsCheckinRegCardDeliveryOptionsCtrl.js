@@ -85,6 +85,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 
 			var printFailedActions = function() {
 				$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_PRINT_FAIL');
+				$scope.zestStationData.workstationStatus = 'out-of-order';
 				var printopted = true;
 				var emailopted = false;
 				var actionStatus = 'failed';
