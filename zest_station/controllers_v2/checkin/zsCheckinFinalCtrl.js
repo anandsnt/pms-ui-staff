@@ -5,6 +5,13 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
 	'zsEventConstants',
 	function($scope, $stateParams, $state, zsEventConstants) {
 
+
+		/**********************************************************************************************
+		**		Expected state params -----> print_opted, email_opted,  print_status, email_status and key_success			  
+		**		Exit function -> $scope.navToHome								
+		**																		 
+		***********************************************************************************************/
+
 		/**
 		 * [initializeMe description]
 		 */
@@ -15,7 +22,7 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
 			//show subtexts based upon actions selected
 			var printOpted = $stateParams.print_opted === 'true';
-			var emailOpted = $stateParams.print_opted === 'true';
+			var emailOpted = $stateParams.email_opted === 'true';
 			var printSuccess = $stateParams.print_status === "success";
 			var emailSuccess = $stateParams.email_status === "success";
 			var keySucess = $stateParams.key_success === "true";

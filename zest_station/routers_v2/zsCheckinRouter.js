@@ -76,14 +76,14 @@ sntZestStation.config(['$stateProvider',
 
 		// email entry screen
       	$stateProvider.state('zest_station.checkInEmailCollection', {
-			url: '/checkInEmailCollection/:reservation_id/:email/:first_name/:room_no/:from/:guest_id',
+			url: '/checkInEmailCollection/:reservation_id/:email/:first_name/:room_no/:guest_id',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinEmailCollection.html',
 			controller: 'zsCheckinEmailCollectionCtrl'
 		});
 
       	// email /print entry screen
       	$stateProvider.state('zest_station.zsCheckinBillDeliveryOptions', {
-			url: '/checkinBillDeliveryOptions/:reservation_id/:email/:first_name/:room_no/:from/:guest_id/:key_success',
+			url: '/checkinBillDeliveryOptions/:reservation_id/:email/:first_name/:room_no/:guest_id/:key_success',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinRegCardDeliveryOptions.html',
 			controller: 'zsCheckinRegCardDeliveryOptionsCtrl'
 		});

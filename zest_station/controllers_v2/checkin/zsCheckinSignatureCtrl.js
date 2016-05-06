@@ -10,6 +10,12 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
     'zsGeneralSrv',
     function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv) {
 
+        /**********************************************************************************************
+        **      Expected state params -----> reservation_id, room_no,  first_name, guest_id and email           
+        **      Exit function -> afterGuestCheckinCallback                             
+        **                                                                       
+        ***********************************************************************************************/
+
         /**
          * TWO MODES
          * 1.SIGNATURE_MODE and
@@ -34,7 +40,6 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
         var afterGuestCheckinCallback = function(response) {
             var haveValidGuestEmail = $stateParams.email.length > 0 ? true : false;
              var stateParams = {
-                    'from': 'signature',
                     'guest_id': $stateParams.guest_id,
                     'email': $stateParams.email,
                     'reservation_id': $stateParams.reservation_id,

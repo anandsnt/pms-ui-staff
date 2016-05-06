@@ -11,6 +11,12 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
     'zsUtilitySrv',
     function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv) {
 
+       
+        /**********************************************************************************************
+        **      Expected state params -----> reservation_id, room_no,  first_name, guest_id and email           
+        **      Exit function -> updateComplete                             
+        **                                                                       
+        ***********************************************************************************************/
 
         /**
          * MODES IN THE SCREEN
@@ -27,7 +33,6 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             //show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.email = $stateParams.email.length > 0 ? $stateParams.email : "";
-            $scope.from = $stateParams.from;
             $scope.mode = "EMAIL_ENTRY_MODE";
         }();
         /**

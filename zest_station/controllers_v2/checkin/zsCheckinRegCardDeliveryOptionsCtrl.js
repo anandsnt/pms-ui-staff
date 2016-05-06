@@ -11,11 +11,14 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 	'$window',
 	function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsUtilitySrv, zsGeneralSrv, $filter, $timeout, $window) {
 
+		/**********************************************************************************************
+		**		Expected state params -----> reservation_id, room_no,  first_name, guest_id, key_success
+		*       and email			  
+		**		Exit function ->nextPageActions								
+		**																		 
+		***********************************************************************************************/
+
 		BaseCtrl.call(this, $scope);
-
-
-		$scope.zestStationData.registration_card.auto_print = false;
-
 
 		/**
 		 * MODES IN THE SCREEN
@@ -24,23 +27,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 * 3.DELIVERY_OPTIONS_MODE
 		 * 4.EMAIL_SEND_MODE
 		 */
-
-		/**
-		 * [initializeMe description]
-		 */
-		var initializeMe = function() {
-			//show back button
-			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON); //hide back buttons in 2 options page
-			//show close button
-			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			$scope.email = $stateParams.email.length > 0 ? $stateParams.email : "";
-			$scope.from = $stateParams.from;
-			if ($scope.zestStationData.registration_card.auto_print) {
-				$scope.clickedPrint();
-			} else {
-				$scope.mode = "DELIVERY_OPTIONS_MODE";
-			}
-		}();
+		
 		/**
 		 * when the back button clicked
 		 * @param  {[type]} event
@@ -254,6 +241,23 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				$scope.mode = "EMAIL_INVLAID_MODE";
 			};
 		};
+
+		/**
+		 * [initializeMe description]
+		 */
+		var initializeMe = function() {
+			//show back button
+			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON); //hide back buttons in 2 options page
+			//show close button
+			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+			$scope.email = $stateParams.email.length > 0 ? $stateParams.email : "";
+			$scope.from = $stateParams.from;
+			if ($scope.zestStationData.registration_card.auto_print) {
+				$scope.clickedPrint();
+			} else {
+				$scope.mode = "DELIVERY_OPTIONS_MODE";
+			}
+		}();
 
 	}
 ]);

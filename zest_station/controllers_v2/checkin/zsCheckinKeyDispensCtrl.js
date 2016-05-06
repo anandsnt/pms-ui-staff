@@ -9,6 +9,12 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 	'$filter',
 	function($scope, $stateParams, $state, zsEventConstants, $controller, zsGeneralSrv, $timeout, $filter) {
 
+		/**********************************************************************************************
+		**		Expected state params -----> reservation_id, room_no,  first_name, guest_id and email			  
+		**		Exit function -> $scope.goToNextScreen								
+		**																		 
+		***********************************************************************************************/
+		
 		/**
 		 *    MODES inside the page
 		 *    
