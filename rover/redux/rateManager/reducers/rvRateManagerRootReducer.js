@@ -3,7 +3,7 @@ const rateManagerRootReducer = (state, action) => (
 		list: rateManagerListReducer(state.list, action),
 		mode: rateManagerModeReducer(state.mode, action),
 		dates: rateManagerDatesReducer(state.dates, action),
-		summary: rateManagerSummaryReducer(state.summary, action),
+		summary: rateManagerRestrictionSummaryReducer(state.summary, action),
 		action: rateManagerActionReducer(state.action, action),
 		businessDate: rateManagerBusinessDateReducer(state.businessDate, action),
 		expandedRows: rateManagerExpandedRowsReducer(state.expandedRows, action),
