@@ -136,6 +136,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.clickedOnCloseButton = function() {
+            $scope.hideKeyboardIfUp();
         //if key card was inserted we need to eject that
             if($scope.zestStationData.keyCardInserted && !$scope.zestStationData.keyCaptureDone){
                 $scope.socketOperator.EjectKeyCard();
