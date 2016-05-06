@@ -44,12 +44,26 @@ angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrv
 		 */
 		this.fetchReservations = function(params) {
 			var deferred = $q.defer(),
+				url = '/api/group_reservations/' + params.group_id + 'list';
 
-				group_id = params.group_id,
-				url = '/api/group_reservations/' + group_id + "/list";
+			var data = $.extend(
+				{},
+				{
+					per_page: params.per_page,
+					page: params.page
+				}
+			);
 
+			var keys = ['sorting_field', 'sort_dir' 'arrival_date', 'dep_date', 'query', 'exclude_cancel', 'show_pending_only'];
 
-			var data = _.omit(params, 'group_id');
+			_.each(keys, function(key) {
+				if ( typeof params[key] !== typeof true && !! params[key] ) {
+					data[key] = params[key];
+				}
+				if ( typeof params[key] === typeof true ) {
+					data[key] = params[key];
+				}
+			})
 
 			rvBaseWebSrvV2.getJSON(url, data).then(
 				function(data) {
