@@ -23,6 +23,13 @@ sntZestStation.controller('zsHomeCtrl', [
 		$scope.clickedOnCheckinButton = function() {
 			$state.go('zest_station.checkInReservationSearch');
 		};
+		$scope.openExternalWebPage = function(){
+			$scope.showExternalWebPage =true;
+		};
+
+		$scope.closeExternalWebPage = function(){
+			$scope.showExternalWebPage =false;
+		};
 
 
 		/**
