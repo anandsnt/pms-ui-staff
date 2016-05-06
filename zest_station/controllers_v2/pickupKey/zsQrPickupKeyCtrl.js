@@ -85,7 +85,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
 		var initChromeAppQRCodeScanner = function() {
 			if ($scope.inChromeApp) {
-				// new chromeApp($scope.onChromeAppResponse, $scope.zestStationData.chrome_app_id, true);
+				$scope.chromeApp.fetchQRCode();
 				console.info("::Starting QR Code Scanner::");
 			} else {
 				$scope.$emit('showLoader');
