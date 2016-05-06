@@ -36,6 +36,14 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			$scope.mode = "DISPENSE_KEY_MODE";
 		}();
 
+		var stateParams = {
+			'guest_id': $stateParams.guest_id,
+			'email': $stateParams.email,
+			'reservation_id': $stateParams.reservation_id,
+			'room_no': $stateParams.room_no,
+			'first_name': $stateParams.first_name
+		}
+
 
 		$scope.reEncodeKey = function() {
 			$scope.mode = "DISPENSE_KEY_MODE";
@@ -194,6 +202,11 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		$scope.makeKeys = function(no_of_keys) {
 			$scope.noOfKeysSelected = no_of_keys;
 			initMakeKey();
+		};
+
+
+		$scope.skipKeyEncoding = function() {
+			$state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);
 		};
 
 	}

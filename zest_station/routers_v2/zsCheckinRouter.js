@@ -63,9 +63,9 @@ sntZestStation.config(['$stateProvider',
 		});
 		//pickup key dispense
 		$stateProvider.state('zest_station.checkinKeyDispense', {
-			url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name/:guest_id',
-			templateUrl: '/assets/partials_v2/pickupKey/zscheckinKeyDispense.html',
-			controller: 'zsPickupKeyDispenseCtrl'
+			url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email',
+			templateUrl: '/assets/partials_v2/checkin/zscheckinKeyDispense.html',
+			controller: 'zsCheckinKeyDispenseCtrl'
 		});
 		// signature screen
       	$stateProvider.state('zest_station.checkInSignature', {

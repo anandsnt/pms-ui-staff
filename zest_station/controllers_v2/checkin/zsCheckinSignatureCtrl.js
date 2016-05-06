@@ -42,16 +42,9 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                     'first_name': $stateParams.first_name
                 }
 
-            //TODO
-            skipDispenseKeys = true;
 
-            //detect if coming from email input
             if (haveValidGuestEmail) {
-                if (!skipDispenseKeys) {
-                    $state.go('zest_station.checkinKeyDispense', stateParams);
-                } else {
-                    $state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);
-                }
+                $state.go('zest_station.checkinKeyDispense', stateParams);
             } else {
                 $state.go('zest_station.checkInEmailCollection', stateParams);
             }
