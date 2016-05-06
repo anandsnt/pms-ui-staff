@@ -57,13 +57,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		    $scope.setViewCol(0);
 
-		    if ( ! query.length ) {
+		    if ( query.length < 3 ) {
 		        for (i = 0, j = $scope.reportList.length; i < j; i++) {
 		            $scope.reportList[i].filteredOut = false;
 		        };
 		        return;
 		    };
-
+		    
 		    for (i = 0, j = $scope.reportList.length; i < j; i++) {
 				if ( !! $scope.uiChosenReport ) {
 				    $scope.uiChosenReport.uiChosen = false;
