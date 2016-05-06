@@ -78,9 +78,10 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			$scope.callAPI(zsCheckoutSrv.findReservation, options);
 		};
 
+		var roomNumberEntered = false;
 		$scope.lastNameEntered = function() {
 			//if room is already entered, no need to enter again
-			if ($scope.reservationParams.room_no.length > 0) {
+			if ($scope.reservationParams.room_no.length > 0 && roomNumberEntered) {
 				searchReservation();
 			} else {
 				$scope.mode = $scope.reservationParams.last_name.length > 0 ? $scope.mode = "ROOM_NUMBER_ENTRY" : $scope.mode;
@@ -88,6 +89,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		};
 
 		$scope.roomNumberEntered = function() {
+			roomNumberEntered = true;
 			($scope.reservationParams.room_no.length > 0) ? searchReservation(): "";
 		};
 
@@ -98,5 +100,27 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		$scope.talkToStaff = function() {
 			$state.go('zest_station.speakToStaff');
 		};
+		/************* Fontainbleu specific ******************/
+
+		$scope.tower = {'selected' : ''};
+		$scope.changedTheSelectedTower = function() {
+			$scope.reservationParams.room_no = $scope.tower.selected;
+		};
+		var setTowers = function() {
+			$scope.towerList = [];
+			_.each($scope.zestStationData.towers, function(value, key) {
+				$scope.towerList.push({
+					name: key,
+					value: value
+				});
+			});
+			$scope.reservationParams.room_no = $scope.towerList[3].value;
+			$scope.tower.selected = $scope.towerList[3].value;
+		};
+
+		// $scope.zestStationData.towers will be valid only for hotels that has
+		// and will be supplied in api only then
+		$scope.showTowers = (typeof $scope.zestStationData.towers !== 'undefined');
+		$scope.showTowers ? setTowers() : "";
 	}
 ]);

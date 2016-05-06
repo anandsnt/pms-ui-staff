@@ -16,8 +16,8 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 				cssMappings: function(zsCSSMappings) {
 					return zsCSSMappings.fetchCSSMappingList();
 				},
-				zestStationSettings: function(zsTabletSrv) {
-					return zsTabletSrv.fetchSettings();
+				zestStationSettings: function(zsGeneralSrv) {
+					return zsGeneralSrv.fetchSettings();
 				},
 				//fetch language files in the starting itself
 				//so as to speeden the process laterwards

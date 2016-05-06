@@ -14,6 +14,13 @@
     <!-- room number -->
     <div id="content" ng-show="mode === 'ROOM_NUMBER_ENTRY'">
         <h1 translate>NEXT_ROOM_NUMBER</h1>
+         <form class="form" ng-if='showTowers'>
+            <div class="entry">
+                <select ng-model="tower.selected" class="checkout-screen-select-box" ng-change="changedTheSelectedTower()">
+                    <option ng-repeat="tower in towerList" ng-selected="tower.value === tower.selected" value="{{tower.value}}">{{tower.name}}</option>
+                </select>
+            </div>
+        </form>
         <form method="post" class="form">
             <div class="entry input">
                 <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" ng-click="showOnScreenKeyboard('input_text')" ng-model="reservationParams.room_no" enter-press="roomNumberEntered()"/>
