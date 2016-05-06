@@ -87,6 +87,13 @@ sntZestStation.config(['$stateProvider',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinRegCardDeliveryOptions.html',
 			controller: 'zsCheckinRegCardDeliveryOptionsCtrl'
 		});
+
+		// checkin final screen
+      	$stateProvider.state('zest_station.zsCheckinFinal', {
+			url: '/zsCheckinFinal/:email/:first_name/:printopted/:emailopted/:keysucess',
+			templateUrl: '/assets/partials_v2/checkin/zsCheckinFinal.html',
+			controller: 'zsCheckinFinalCtrl'
+		});
       	
 	}
 ]);

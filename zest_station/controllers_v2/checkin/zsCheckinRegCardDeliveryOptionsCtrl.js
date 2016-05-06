@@ -58,8 +58,12 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			$scope.$emit('GENERAL_ERROR');
 		};
 		var nextPageActions = function(printopted, emailopted) {
-			console.log(printopted);
-			console.log(emailopted);
+			var stateParams ={
+				printopted:printopted,
+				emailopted:emailopted,
+				keysucess:$stateParams.keysucess
+			}
+			$state.go('zest_station.zsCheckinFinal',stateParams);
 		};
 
 		/**

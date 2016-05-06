@@ -44,6 +44,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'room_no': $stateParams.room_no,
 				'room_status': $stateParams.room_status,
 				'id': $stateParams.reservation_id,
+				'guest_id': $stateParams.guest_id,
 				'mode': 'DEPOSIT'
 			});
 		};
@@ -52,6 +53,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'email': $stateParams.guest_email,
 				'reservation_id': $stateParams.reservation_id,
 				'room_no': $stateParams.room_no,
+				'guest_id': $stateParams.guest_id,
 				'first_name': $stateParams.first_name
 			}
 			$state.go('zest_station.checkInSignature', stateParams);
