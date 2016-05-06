@@ -43,18 +43,13 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          */
         var updateGuestEmail = function() {
             var updateComplete = function(response) {
-                if ($scope.from === 'signature') {
                     var stateParams = {
-                        "reservationId": $stateParams.reservation_id,
+                        "reservation_id": $stateParams.reservation_id,
+                        "guest_id" : $stateParams.reservation_id,
                         "room": $stateParams.room_no,
                         "first_name": $stateParams.first_name
                     }
                     $state.go('zest_station.checkinKeyDispense', stateParams);
-                } else { //at the end of check-in and now updating email address
-                    $state.skipCheckinEmail = false;
-                    $state.updatedEmail = true;
-                    $state.go('zest_station.delivery_options');
-                }
             };
             /**
              * [updateGuestEmailFailed description]

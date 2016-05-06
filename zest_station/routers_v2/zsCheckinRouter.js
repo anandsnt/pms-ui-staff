@@ -81,6 +81,26 @@ sntZestStation.config(['$stateProvider',
 			controller: 'zsCheckinEmailCollectionCtrl'
 		});
 
+      	// email /print entry screen
+      	$stateProvider.state('zest_station.zsCheckinBillDeliveryOptions', {
+			url: '/checkinBillDeliveryOptions/:reservation_id/:email/:first_name/:room_no/:from/:guest_id',
+			templateUrl: '/assets/partials_v2/checkin/zsCheckinRegCardDeliveryOptions.html',
+			controller: 'zsCheckinRegCardDeliveryOptionsCtrl'
+		});
+
+		// checkin final screen
+      	$stateProvider.state('zest_station.zsCheckinFinal', {
+			url: '/zsCheckinFinal/:email/:first_name/:printopted/:emailopted/:keysucess',
+			templateUrl: '/assets/partials_v2/checkin/zsCheckinFinal.html',
+			controller: 'zsCheckinFinalCtrl'
+		});
+      	
+      	// check-in room error
+      	$stateProvider.state('zest_station.checkinRoomError', {
+			url: '/checkinRoomError/:first_name',
+			templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomError.html',
+			controller: 'zsRoomErrorCtrl'
+		});
       	
 	}
 ]);

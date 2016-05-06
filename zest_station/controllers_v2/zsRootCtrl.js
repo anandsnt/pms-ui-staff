@@ -183,21 +183,27 @@ sntZestStation.controller('zsRootCtrl', [
 			};
 
 			function increment() {
+				var currentState = $state.current.name;
 				//the user inactivity actions need not be done when user in 
 				//home screen or in admin screen or in OOS screen
 				//include the states, which don't need the timeout to be handled 
 				//in the below condition
 				if ($scope.zestStationData.idle_timer.enabled ==='true' 
-				    && !($state.current.name === 'zest_station.admin' 
-				    || $state.current.name === 'zest_station.home'
-				    || $state.current.name === 'zest_station.outOfService')) 
+				    && !(currentState === 'zest_station.admin' 
+				    || currentState === 'zest_station.home'
+				    || currentState === 'zest_station.outOfService')) 
 				{
 					userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
 					//when user activity is not recorded for more than idle_timer.prompt
 					//time set in admin, display inactivity popup
 					if (userInActivityTimeInSeconds >= $scope.zestStationData.idle_timer.prompt) {
-						$scope.zestStationData.timeOut = true;
-						$scope.runDigestCycle();
+						if(currentState ==='zest_station.checkInSignature' || currentState ==='zest_station.checkInCardSwipe'){
+						    $scope.$broadcast('USER_ACTIVITY_TIMEOUT');
+                        }
+						else{
+							$scope.zestStationData.timeOut = true;
+						}
+						$scope.runDigestCycle();	
 					} else {
 						//do nothing;
 					}
@@ -215,6 +221,16 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 			setInterval(increment, 1000);
 		};
+
+		/**
+		 * [CheckForWorkStationStatusContinously description]
+		 *  Check if admin has set back the status of the
+		 *  selected workstation to in order
+		 */
+		var  CheckForWorkStationStatusContinously = function(){
+			 $scope.$emit('FETCH_LATEST_WORK_STATIONS');
+			 $timeout(CheckForWorkStationStatusContinously, 120000); 
+		};
 		/********************************************************************************
 		 *  User activity timer
 		 *  ends here
@@ -222,6 +238,10 @@ sntZestStation.controller('zsRootCtrl', [
 
 
 		$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+			console.info("\ngoing to----->"+from.name);
+			console.info("to stateparams"+toParams);
+			console.info(toParams);
+			console.info("going to----->"+to.name);
 			$scope.resetTime();
 		});
 
@@ -393,11 +413,18 @@ sntZestStation.controller('zsRootCtrl', [
 				// set work station id and status
 				$scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
 				$scope.zestStationData.key_encoder_id =  $scope.getStationIdFromName(station.name).key_encoder_id;
+				var previousWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
 				$scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
+				var newWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
 				if ($scope.zestStationData.workstationStatus === 'out-of-order') {
 					$state.go('zest_station.outOfService');
 				} else {
-					$state.go('zest_station.home');
+					if(previousWorkStationStatus === 'out-of-order' && newWorkStationStatus ==='in-order'){
+						$state.go('zest_station.home');
+					}
+					else{
+						//do nothing
+					}
 				}
 				// set oos reason from local storage
 				try {
@@ -433,7 +460,8 @@ sntZestStation.controller('zsRootCtrl', [
 					sort_field: 'name'
 				},
 				successCallBack: onSuccess,
-				failureCallBack: onFail
+				failureCallBack: onFail,
+				'loader': 'none'
 			};
 			$scope.callAPI(zsTabletSrv.fetchWorkStations, options);
 		};
@@ -538,6 +566,7 @@ sntZestStation.controller('zsRootCtrl', [
 			$('body').css('display', 'none'); //this will hide contents until svg logos are loaded
 			//call Zest station settings API
 			$scope.zestStationData = zestStationSettings;
+			CheckForWorkStationStatusContinously();
 			$scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;
 			setAUpIdleTimer();
 			$scope.zestStationData.workstationOooReason = "";

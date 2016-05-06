@@ -47,6 +47,22 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 }); 
             };
             
+
+            $scope.$on('USER_ACTIVITY_TIMEOUT',function(){
+                if (isCCAuthMode()){
+                    swipeTimeoutCC();
+                } else if (isDepositMode()){
+                    swipeTimeoutDeposit();
+                } else {
+                    
+                }
+            });
+            
+            $scope.reTryCardSwipe = function(){
+                $scope.resetTime();
+                init();
+            };
+
             $scope.$on('SWIPE_ACTION',function(evt, swipedCardData){
                 console.info(swipedCardData)
                     var swipeOperationObj = new SwipeOperation();
@@ -179,6 +195,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 return true;
             } else return false;
         };
+        var isCCAuthMode = function(){
+            if ($stateParams.mode === 'CREDIT_CARD_AUTH') {
+                return true;
+            } else return false;
+        };
         
 		var setTimeOutFunctionToEnsureSocketIsOpened = function() {
 			$timeout(function() {
@@ -194,18 +215,46 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 $scope.depositAmount = $stateParams.deposit_amount;
                     $scope.showSwipeNav = true;
         };
+        var setCCAuthSettings = function(){
+            $scope.waitingForSwipe = true;
+            $scope.swipeError = false;
+            $scope.swipeTimeout = false;
+        };
+        
+        var swipeTimeoutCC = function(){
+            $scope.waitingForSwipe = false;
+            $scope.swipeError = false;
+            $scope.swipeTimeout = true;
+        }
+        var swipeTimeoutDeposit = function(){
+            $scope.waitingForSwipe = false;
+            $scope.swipeError = false;
+            $scope.swipeTimeout = true;
+        }
                 
+        var listenForSwipe = function(){
+            $timeout(function(){
+                console.log('waiting for swipe..')
+                $scope.waitingForSwipe = true;
+                $scope.swipeError = false;
+                $scope.swipeTimeout = false;
+            },1000);
+            $scope.socketOperator.observe();
+        };
 		var init = function() {
             console.log($stateParams)
             //if at the deposit screen, set the currency symbol and amount due, which should be passed from reservation details
             if (isDepositMode()){
                 setDepositSettings();
             }
+            if (isCCAuthMode()){
+                setCCAuthSettings();
+            }
 			setTimeOutFunctionToEnsureSocketIsOpened();
 			console.info("websocket: readyState -> " + $scope.socketOperator.returnWebSocketObject().readyState);
 			//open socket if not in open state
             
-            var socketReady = $scope.socketOperator.returnWebSocketObject().readyState === 1, listenForSwipe = $scope.socketOperator.observe;
+            var socketReady = $scope.socketOperator.returnWebSocketObject().readyState === 1;
                 !socketReady ? $scope.$emit('CONNECT_WEBSOCKET') : listenForSwipe();
 		};
 

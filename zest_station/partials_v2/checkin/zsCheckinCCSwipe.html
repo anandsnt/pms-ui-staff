@@ -1,15 +1,17 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content">
         
-        <h1 translate>TO_COMPLETE</h1>
-        <h2 translate>SWIPE_CARD_PLEASE</h2>
+        <h1 ng-show='waitingForSwipe' translate>TO_COMPLETE</h1>
+        <h2 ng-show='waitingForSwipe' translate>SWIPE_CARD_PLEASE</h2>
         
-        <h1 ng-if='swipeError' translate>SWIPE_ERR_HEADER</h1>
+        <h1 ng-show='swipeError' translate>SWIPE_ERR_HEADER</h1>
+        <h1 ng-show='swipeTimeout' translate>CC_SIGN_TIMEOUT</h1>
+        <h2 ng-show='swipeTimeout' translate>CC_SIGN_TIMEOUT_SUB</h2>
         
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- card swipe -->
-                <li touch-press='continue()'>
+                <li ng-show='waitingForSwipe' touch-press='continue()'>
                     <button type="button" class="button option">
                         <div ng-include="icons.url.creditcard"></div>
                         
@@ -18,25 +20,19 @@
                     <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
                 </li>
                 
-                <li ng-show='at === "swipe-pay-error"'>
+                <li ng-show='swipeTimeout'>
                     <button type="button" class="button option" touch-press='reTryCardSwipe()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <h1 translate>TRY_AGAIN</h1>
                 </li>
                 
-                <li class="break" ng-show='at === "swipe-pay-error"'>
+                <li class="break" ng-show='swipeTimeout'>
                     <span translate>OR_TEXT</span>
                 </li>
                 
-                <li ng-show='at === "key-error" && !pickupkeys'> 
-                    <button type="button" class="button option" touch-press='skipKeys()'>
-                        <div ng-include="icons.url.keyboard"></div>
-                    </button>
-                    <h1 translate>CONTINUE_TEXT</h1>
-                </li>
 
-                <li ng-show='at === "key-error" || at === "swipe-pay-error"'> 
+                <li ng-show='swipeTimeout'> 
                     <button type="button" class="button option" touch-press='initStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>

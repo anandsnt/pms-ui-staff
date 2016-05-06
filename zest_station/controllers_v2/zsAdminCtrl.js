@@ -57,7 +57,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 return workstation.id == $scope.zestStationData.set_workstation_id;
             });
             $scope.workstation = {
-                'selected': selectedWorkStation.id
+                'selected': parseInt(selectedWorkStation.id)
             };
             $scope.workstation.printer = selectedWorkStation.printer;
             setPrinterLabel(selectedWorkStation.printer);

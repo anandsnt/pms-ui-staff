@@ -44,6 +44,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'room_no': $stateParams.room_no,
 				'room_status': $stateParams.room_status,
 				'id': $stateParams.reservation_id,
+				'guest_id': $stateParams.guest_id,
 				'mode': 'DEPOSIT'
 			});
 		};
@@ -52,18 +53,38 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'email': $stateParams.guest_email,
 				'reservation_id': $stateParams.reservation_id,
 				'room_no': $stateParams.room_no,
+				'guest_id': $stateParams.guest_id,
 				'first_name': $stateParams.first_name
-			}
+			};
 			$state.go('zest_station.checkInSignature', stateParams);
 		};
-
+        var depositAmount = function(){
+           if ($stateParams.deposit_amount){
+               return Math.ceil(parseFloat($stateParams.deposit_amount));
+           } else {
+               return 0;
+           }
+        };
+        var depositRequired = function(){
+            console.log('$scope.zestStationData.enforce_deposit: ',$scope.zestStationData.enforce_deposit)
+            console.log('depositAmount: ',depositAmount())
+            if ($scope.zestStationData.enforce_deposit && depositAmount() > 0){
+                return true;
+            } else return false;
+        };
+        var goToCreditCardAuthScreen = function(){
+            $state.go('zest_station.checkInCardSwipe',{
+                'mode': 'CREDIT_CARD_AUTH'
+            });
+        };
+                
 		$scope.agreeTerms = function() {
-			var deposit = false; //to be done
-			var needToAddCC = false; //to be done
+			var deposit = depositRequired(); 
+			var needToAddCC = true; //to be done
 			if (deposit) {
 				goToDepositScreen();
 			} else if (needToAddCC) {
-
+				goToCreditCardAuthScreen();
 			} else {
 				goToSignaturePage();
 			}
