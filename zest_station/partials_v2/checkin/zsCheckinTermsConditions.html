@@ -5,7 +5,7 @@
             <div id="textual" ng-iscroll="terms" ng-iscroll-delay="100" ng-init="setScroll()" class="pull-left station-terms scrollable fill-height"> <!-- Add ng-scroll here -->
                 <div class="wrapper">
                     <h4><label>{{'TERMS_CONDITIONS_HEADER' |translate}}</label></h4>
-                    <div id="terms" data-ng-bind-html="trustAsHtml(hotel_terms_and_conditions)"></div>
+                    <div id="terms" data-ng-bind-html="zestStationData.hotelTermsAndConditions"></div>
                 </div>
             </div>
             <div id="actions" class="pull-right">
