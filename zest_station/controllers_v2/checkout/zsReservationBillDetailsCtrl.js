@@ -143,11 +143,6 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             };
         };
 
-        $scope.alreadyCheckedOutActions = function() {
-            $state.go('zest_station.home');
-            $scope.socketOperator.EjectKeyCard();
-        };
-
         $scope.init = function() {
             //retrieve state variable to be displayed
             $scope.from = $stateParams.from;
@@ -157,15 +152,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             $scope.last_name = $stateParams.last_name;
             $scope.days_of_stay = $stateParams.days_of_stay;
             $scope.hours_of_stay = $stateParams.hours_of_stay;
-
-            var is_checked_out = $stateParams.is_checked_out === "true";
-
-            if (is_checked_out) {
-                $scope.alreadyCheckedOut = true;
-            } else {
-                $scope.alreadyCheckedOut = false;
-                $scope.setupBillData();
-            }
+            $scope.setupBillData();
             //storing state varibales to be used in print view also
             $scope.stateParamsForNextState = {
                 "from": $stateParams.from,

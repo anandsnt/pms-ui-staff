@@ -1,4 +1,4 @@
-<section id="main" role="main" ng-class="{'centered': mode === 'NO_MATCH'}" click-touch='resetTime()'>
+<section id="main" role="main" ng-class="{'centered': mode === 'NO_MATCH'}" click-touch='resetTime()' ng-hide="alreadyCheckedOut">
     <!-- last name -->
     <div id="content" ng-show="mode === 'LAST_NAME_ENTRY'">
         <h1 translate>TYPE_LAST</h1>
@@ -69,4 +69,14 @@
             </ul>
         </nav>
     </div>
+</section>
+
+<!-- user has already checkout -->
+<section id="main" class="centered" role="main" ng-show="alreadyCheckedOut">
+    <div id="content">
+        <h1>{{'USER_CHECKED_OUT_ALRDY_HEADER' |translate}}</h1>
+        <h2 class="nocaps">{{'USER_CHECKED_OUT_ALRDY_SUB' |translate}}</h2>
+        <button type="button" class="button" ng-click="alreadyCheckedOutActions()">{{'USER_CHECKED_OUT_ALRDY_RTN' |translate}}</button>
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
 </section>

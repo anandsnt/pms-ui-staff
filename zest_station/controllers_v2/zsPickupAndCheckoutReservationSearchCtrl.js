@@ -37,10 +37,17 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		};
 		init();
 
+		$scope.alreadyCheckedOutActions = function(){
+			$scope.$emit('EJECT_KEYCARD');
+			$state.go('zest_station.home');
+		};
+
 		var searchReservation = function() {
 			var checkoutVerificationSuccess = function(data) {
-
-				if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY') {
+				if(data.is_checked_out){
+					$scope.alreadyCheckedOut = true;
+				}
+				else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY') {
 					var stateParams = {
 						'reservation_id': data.reservation_id,
 						'room_no': $scope.reservationParams.room_no,
@@ -57,8 +64,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 						"first_name": data.first_name,
 						"last_name": data.last_name,
 						"days_of_stay": data.days_of_stay,
-						"hours_of_stay": data.hours_of_stay,
-						"is_checked_out": data.is_checked_out
+						"hours_of_stay": data.hours_of_stay
 					};
 					$state.go('zest_station.checkoutReservationBill', stateParams);
 				}
