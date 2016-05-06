@@ -114,8 +114,8 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 					value: value
 				});
 			});
-			$scope.reservationParams.room_no = $scope.towerList[3].value;
-			$scope.tower.selected = $scope.towerList[3].value;
+			$scope.reservationParams.room_no = $scope.towerList[0].value;
+			$scope.tower.selected = $scope.towerList[0].value;
 		};
 
 		// $scope.zestStationData.towers will be valid only for hotels that has
