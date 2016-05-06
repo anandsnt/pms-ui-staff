@@ -5,6 +5,12 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
     'zsCheckinSrv',
     function($scope, $state, zsEventConstants, zsCheckinSrv) {
 
+        /**********************************************************************************************
+        **      Expected state params -----> none           
+        **      Exit function -> $scope.goToNext                              
+        **                                                                       
+        ***********************************************************************************************/
+
         BaseCtrl.call(this, $scope);
         /**
          * when the back button clicked

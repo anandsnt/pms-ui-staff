@@ -6,7 +6,12 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
     'zsCheckinSrv',
     '$stateParams',
     function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams) {
-
+        
+        /**********************************************************************************************
+        **      Expected state params -----> guest_id    
+        **      Exit function -> selectReservation                              
+        **                                                                       
+        ***********************************************************************************************/
 
         //This controller is to select checkin reservation from list of reservations.
 

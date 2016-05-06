@@ -6,6 +6,12 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 	'$sce', 'countryList', 'zsCheckinSrv',
 	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, zsCheckinSrv) {
 
+		/**********************************************************************************************
+        **      Expected state params -----> guest_id    
+        **      Exit function -> successCallBack                              
+        **                                                                       
+        ***********************************************************************************************/
+
 		BaseCtrl.call(this, $scope);
 		sntZestStation.filter('unsafe', function($sce) {
 			return function(val) {

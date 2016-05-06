@@ -11,6 +11,13 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 		//This controller is used for viewing reservation details 
 		//add / removing additional guests and transitioning to 
 		//early checkin upsell or terms and conditions
+		
+
+		/**********************************************************************************************
+        **      Expected state params -----> none    
+        **      Exit function -> goToSignaturePage                              
+        **                                                                       
+        ***********************************************************************************************/
 
 		/** MODES in the screen
 		 *   1.RESERVATION_DETAILS --> view details 

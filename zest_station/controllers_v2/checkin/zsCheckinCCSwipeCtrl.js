@@ -11,6 +11,14 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 	function($scope, $stateParams, $state, zsEventConstants,$controller,$timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv) {
             BaseCtrl.call(this, $scope);
 
+            /**********************************************************************************************
+            **      Expected state params -----> mode, id, guest_id, swipe, guest_email, guest_email_blacklisted, 
+            *       room_no and room_status           
+            **      Exit function -> goToCardSign                              
+            **                                                                       
+            ***********************************************************************************************/
+
+
             /*
              *  Card Signature View - Used for Credit Card or Deposit via Credit Card
              *  
