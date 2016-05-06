@@ -1336,13 +1336,15 @@ sntRover.controller('reservationDetailsController',
      	var onReleaseAuthorizationSuccess = function(response) {
 				$scope.$emit('hideLoader');
 				$scope.hasShownReleaseConfirm = false;
+				$scope.showAuthAmountPopUp();
 			};
 
 			var onReleaseAuthorizationFaliure = function(errorMessage) {
 				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorMessage;
 				$scope.hasShownReleaseConfirm = false;
 			};
-
+			$scope.errorMessage = "";
 			var postData = {
 				"payment_method_id"	: paymentMethodId
 			};

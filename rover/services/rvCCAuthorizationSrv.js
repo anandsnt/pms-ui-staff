@@ -41,7 +41,7 @@ angular.module('sntRover').service('RVCCAuthorizationSrv', ['$http', '$q', 'RVBa
 		*/
 		this.releaseAuthorization = function(param) {
 			var deferred = $q.defer();
-			var url = '/api/cc/release_authorization';
+			var url = '/api/cc/reverse';
 			rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
