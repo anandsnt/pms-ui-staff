@@ -5,7 +5,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     'zsEventConstants',
     'zsTabletSrv','zsCheckoutSrv',
     '$stateParams', 'zsHotelDetailsSrv','$timeout', 'zestStationSettings',
-    function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv,zsCheckoutSrv, $stateParams, hotelDetailsSrv,$timeout, zestStationSettings) {
+    '$filter',
+    function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv,zsCheckoutSrv, $stateParams, hotelDetailsSrv,$timeout, zestStationSettings, $filter) {
 
     BaseCtrl.call(this, $scope);
 
@@ -466,6 +467,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         }); 
         $scope.$on('SOCKET_FAILED',function(){
             console.info('socket failed...');
+                    $scope.prepForOOS($filter('translate')('SOCKET_FAILED'));
             $scope.initErrorScreen();
        });
     };
