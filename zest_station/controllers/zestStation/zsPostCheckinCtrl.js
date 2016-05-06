@@ -214,6 +214,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             
         };
         $scope.initKeyErrorScreen = function(){
+                hideNavButtons();
                 if ($state.mode === zsModeConstants.PICKUP_KEY_MODE){
                     $scope.pickupkeys = true;
                 }
