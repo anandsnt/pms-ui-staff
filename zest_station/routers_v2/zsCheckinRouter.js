@@ -88,5 +88,12 @@ sntZestStation.config(['$stateProvider',
 			controller: 'zsCheckinRegCardDeliveryOptionsCtrl'
 		});
       	
+      	// check-in room error
+      	$stateProvider.state('zest_station.checkinRoomError', {
+			url: '/checkinRoomError/:first_name',
+			templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomError.html',
+			controller: 'zsRoomErrorCtrl'
+		});
+      	
 	}
 ]);
