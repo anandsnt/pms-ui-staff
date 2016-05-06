@@ -4,6 +4,13 @@ sntZestStation.controller('zsPrintBillCtrl', [
     'zsCheckoutSrv', '$stateParams', '$window', '$timeout',
     function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout) {
 
+        /********************************************************************************
+        **      This is not a sperate state. It's an ng-included ctrl inside 
+        **      zsReservationBill.html
+        **      Expected state params -----> nothing              
+        **      Exit function -> nextPageActions                             
+        **                                                                       
+        *********************************************************************************/
 
         BaseCtrl.call(this, $scope);
         /**

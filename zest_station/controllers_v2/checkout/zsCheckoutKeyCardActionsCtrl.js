@@ -8,6 +8,12 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 	'zsCheckoutSrv', '$timeout',
 	function($scope, $state, zsEventConstants, zsModeConstants, $stateParams, $sce, zsTabletSrv, zsCheckoutSrv, $timeout) {
 
+		/********************************************************************************
+		**		Expected state params -----> nothing			  
+		**		Exit function -> findReservationSuccess								
+		**																		 
+		*********************************************************************************/
+
 
 		var init = function() {
 			BaseCtrl.call(this, $scope);

@@ -4,6 +4,14 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
     'zsCheckoutSrv', 'zsEventConstants', '$stateParams', 'zsModeConstants', '$window', '$timeout',
     function($scope, $state, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout) {
 
+
+        /***********************************************************************************************
+        **      Expected state params -----> from, reservation_id,email, guest_detail_id, 
+        *       has_cc, first_name, last_name, days_of_stay, is_checked_out and hours_of_stay          
+        **      Exit functions -> checkOutSuccess                           
+        **                                                                       
+        ************************************************************************************************/
+
         /**
          * This controller is used to View bill
          * Print actions are separated and grouped in zsPrintBillCtrl - included in zsReservationBill.html

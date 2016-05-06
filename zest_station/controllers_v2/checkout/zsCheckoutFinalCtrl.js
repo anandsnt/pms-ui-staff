@@ -5,6 +5,12 @@ sntZestStation.controller('zsCheckoutFinalCtrl', [
 	'zsEventConstants',
 	function($scope, $stateParams, $state, zsEventConstants) {
 
+		/**********************************************************************************************
+		**		Expected state params -----> printopted			  
+		**		Exit function -> $scope.navToHome								
+		**																		 
+		***********************************************************************************************/
+
 		/**
 		 * [initializeMe description]
 		 */

@@ -7,6 +7,12 @@ sntZestStation.controller('zsEmailBillCtrl', [
 	'zsCheckoutSrv',
 	function($scope, $stateParams, $state, zsEventConstants, zsUtilitySrv, zsCheckoutSrv) {
 
+		/***********************************************************************************************
+		**		Expected state params -----> printopted, reservation_id, email and guest_detail_id			  
+		**		Exit functions -> checkOutSuccess							
+		**																		 
+		************************************************************************************************/
+
 
 		/** MODES in the screen
 		*   1.EMAIL_BILL_GUEST_OPTIONS --> two options - send email and edit email
