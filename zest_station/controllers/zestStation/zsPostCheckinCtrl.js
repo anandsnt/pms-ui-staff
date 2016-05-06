@@ -232,17 +232,21 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             }
         };
         
-        $scope.navToHome = function(){
-           //update workstation station. I cant find anyother suitable place
-            //the above codes needs to refactored
-            if($scope.zestStationData.wsIsOos){
-                //update work station status
-                $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
+        var goToOOSWithReason = function(){
+             $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
                 $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{
                     'status':'out-of-order',
                     'reason':$scope.zestStationData.workstationOooReason
                 });
                 $state.go('zest_station.oos');
+        };
+        
+        $scope.navToHome = function(){
+           //update workstation station. I cant find anyother suitable place
+            //the above codes needs to refactored
+            if($scope.zestStationData.wsIsOos){
+                //update work station status
+               goToOOSWithReason();
             } else{
                 $state.go ('zest_station.home');
             };

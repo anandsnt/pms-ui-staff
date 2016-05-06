@@ -394,25 +394,27 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successCallBackOfAddReservations = function(data) {
-            $scope.newReservations = [];
-            _.each(data.results, function(reservation) {
-                $scope.newReservations.push(reservation);
-                $scope.reservations.unshift(reservation);
-            });
+            $scope.selected_reservations = data.results;
+            $scope.updateGroupReservationsGuestData();
+            // $scope.newReservations = [];
+            // _.each(data.results, function(reservation) {
+            //     $scope.newReservations.push(reservation);
+            //     $scope.reservations.unshift(reservation);
+            // });
 
-            //total result count
-            $scope.totalResultCount += (data.results.length);
+            // //total result count
+            // $scope.totalResultCount += (data.results.length);
 
-            //pickup
-            $scope.totalPickUpCount = data.total_pickup_count;
+            // //pickup
+            // $scope.totalPickUpCount = data.total_pickup_count;
 
-            //we changed data, so
-            refreshScrollers();
+            // //we changed data, so
+            // refreshScrollers();
 
-            //rooming data will change after adding some reservation
-            $scope.fetchRoomingDetails();
-            //check for default charge routings
-            checkDefaultChargeRoutings();
+            // //rooming data will change after adding some reservation
+            // $scope.fetchRoomingDetails();
+            // //check for default charge routings
+            // checkDefaultChargeRoutings();
         };
 
         /**
@@ -659,7 +661,14 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 var index = _.indexOf(_.pluck($scope.selected_reservations, "id"), reservation.id);
                 $scope.selected_reservations.splice(index, 1);
             } else {
+
                 $scope.selected_reservations.push(reservation);
+                $scope.selected_reservations = _.sortBy($scope.selected_reservations, "confirm_no")
+                $scope.selected_reservations = _.sortBy($scope.selected_reservations, $scope.sorting_field);
+                if($scope.sort_dir === 'DESC'){
+                    $scope.selected_reservations = $scope.selected_reservations.reverse();
+                }
+
             }
         };
 
@@ -1612,6 +1621,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
     		//calling initially required APIs
             callInitialAPIs();
     	});
+        $scope.$on("REFRESH_GROUP_ROOMING_LIST_WITH_UPDATES", function (event) {
+            initializeMe();
+        });
 
         $scope.checkoutReservation = function(reservation) {
             //  It navigates to the Guest Bill for the selected record.
@@ -1723,9 +1735,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return - None
          */
         $scope.sendRoomingList = function() {
-                if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
-                    $scope.sendEmail($scope.groupConfigData.summary.contact_email);
-                } else {
+                // if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
+                //     $scope.sendEmail($scope.groupConfigData.summary.contact_email);
+                // } else {
                     ngDialog.open({
                         template: '/assets/partials/groups/rooming/popups/general/rvRoomingListEmailPrompt.html',
                         className: '',
@@ -1733,7 +1745,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                         closeByDocument: false,
                         closeByEscape: false
                     });
-                }
+                // }
             };
             /**
              * Function to send e-mail of Rooming list.API call goes here.
@@ -1860,6 +1872,21 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 params: params
             });
         };
+        $scope.updateGroupReservationsGuestData = function(){
+            $scope.isUpdateReservation = true;
+            $scope.totalCountForUpdate = $scope.selected_reservations.length;
+
+
+            ngDialog.open({
+                        template: '/assets/partials/groups/rooming/popups/editReservation/rvAddEditReservationGuestData.html',
+                        className: '',
+                        scope: $scope,
+                        closeByDocument: false,
+                        closeByEscape: false,
+                        controller: 'rvReservationGuestDataPopupCtrl'
+                    });
+
+        };
 
         /**
          * to set the active left side menu
@@ -1900,7 +1927,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             if (isInRoomingList && (amDirectlyComingToRoomingList)) {
                 $timeout(function(){
                     callInitialAPIs();
-                }, 10);                
+                }, 10);
             }
         }();
 

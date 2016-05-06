@@ -25,7 +25,7 @@
 				<tbody>
 					<tr ng-repeat="workStations in data">
 						<td data-title="'Workstation Name'" header-class="width-50" ng-click="editDeviceMapping($index, workStations.id)" ng-hide="currentClickedElement == $index">
-							<a class="edit-data-inline">{{workStations.name}} </a>
+							<a class="edit-data-inline">{{workStations.name}} {{workStations.name.length > 30 ? '...' : ''}}</a>
 						</td>
 						<td data-title="'Workstation ID'" header-class="width-40" ng-hide="currentClickedElement == $index">
 							{{workStations.station_identifier}}
@@ -36,6 +36,10 @@
 						<td data-title="'EMV Terminal'" header-class="width-40" ng-hide="currentClickedElement == $index">
 							{{workStations.emv_name}}
 						</td>
+
+						<td data-title="'OOS Reason'" header-class="width-40" ng-hide="currentClickedElement == $index">
+							{{workStations.oo_reason}}
+						</td>
                                                 
 						<td data-title="'Out of Service'" header-class="width-40" ng-hide="currentClickedElement == $index">
                                                          <div class="switch-button single" ng-click="workStations.is_out_of_order = !workStations.is_out_of_order; saveWorkstation(workStations)" ng-class="{'on': workStations.is_out_of_order}">
@@ -44,7 +48,7 @@
                                                         </div>
 						</td>
 						<td data-title="'OOS Message'" header-class="width-40" ng-hide="currentClickedElement == $index">
-							{{workStations.out_of_order_msg}}
+							{{workStations.out_of_order_msg | limitTo : 30}}{{workStations.out_of_order_msg.length > 30 ? '...' : ''}}
 						</td>
                                                 
 						<td data-title="'Selected Printer'" header-class="width-40" ng-hide="currentClickedElement == $index">

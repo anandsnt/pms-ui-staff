@@ -1118,7 +1118,7 @@ angular.module('reportsModule')
                 report['groupByOptions'] = _.reject(report['group_fields'], { value: 'BLANK' });
             };
 
-            // patch 
+            // patch
             if ( report['title'] === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
                 report['groupByOptions'] = undefined;
             };
@@ -1344,6 +1344,21 @@ angular.module('reportsModule')
                 report['sort_fields'][7] = null;
                 report['sort_fields'][8] = null;
                 report['sort_fields'][9] = null;
+            };
+
+            // need to reorder the sort_by options
+            // for guest balance report in the following order
+            if ( report['title'] === reportNames['DEPOSIT_SUMMARY'] ) {
+                var credit = angular.copy( _.find(report['sort_fields'], { 'value': 'CREDIT' }) ),
+                    debit    = angular.copy( _.find(report['sort_fields'], { 'value': 'DEBIT' }) ),
+                    name    = angular.copy( _.find(report['sort_fields'], { 'value': 'NAME' }) );
+
+                report['sort_fields'][0] = name;
+                report['sort_fields'][1] = null;
+                report['sort_fields'][2] = null;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = debit;
+                report['sort_fields'][5] = credit;
             };
         };
 
