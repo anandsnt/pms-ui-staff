@@ -54,7 +54,7 @@ let applyRestrictionLogicForSingleRateView = (listingData, restrictionTypes, exp
     listingData.map((data, index) => {
         listingDataToReturn.push({
             ...data,
-            expanded: (expandedRows.indexOf(index - 1) > -1),
+            expanded: (expandedRows.indexOf(index) > -1),
             restrictionList: data.restrictionList.map((dayRestrictionList) => {
                 //If we cross max restriction allowed in a single column, we will replace with single restriction
                 if(dayRestrictionList.length >= RM_RX_CONST.MAX_RESTRICTION_IN_COLUMN) {
@@ -90,11 +90,8 @@ const mapDispatchToRateManagerGridRightSideRowsRestrictionListAndAmountContainer
         case RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE:
             onTdClick = (e, rowIndex, colIndex) => {
                 var date = stateProps.dates[colIndex],
-                    roomTypeIDs = [];
-
-                if(rowIndex > 0) {
                     roomTypeIDs = [stateProps.roomTypeRowsData[rowIndex].id];
-                }
+                    
                 return stateProps.clickedOnRoomTypeAndAmountCell({
                     roomTypeIDs,
                     date
