@@ -42,7 +42,7 @@ sntZestStation.controller('zsRootCtrl', [
 		window.history.pushState("initial", "Showing Landing Page", "#/home");
 
 		$scope.$on('GENERAL_ERROR',function(){
-			$state.go('speakToStaff');
+			$state.go('zest_station.speakToStaff');
 		});
 
 		/**

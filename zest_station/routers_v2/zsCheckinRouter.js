@@ -90,7 +90,7 @@ sntZestStation.config(['$stateProvider',
 
 		// checkin final screen
       	$stateProvider.state('zest_station.zsCheckinFinal', {
-			url: '/zsCheckinFinal/:email/:first_name/:printopted/:emailopted/:keysucess',
+			url: '/zsCheckinFinal/:print_opted/:email_opted/:print_status/:email_status/:key_sucess',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinFinal.html',
 			controller: 'zsCheckinFinalCtrl'
 		});

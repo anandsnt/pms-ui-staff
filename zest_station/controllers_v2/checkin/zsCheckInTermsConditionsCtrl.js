@@ -68,14 +68,21 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
         var depositRequired = function(){
             console.log('$scope.zestStationData.enforce_deposit: ',$scope.zestStationData.enforce_deposit)
             console.log('depositAmount: ',depositAmount())
-            if ($scope.zestStationData.enforce_deposit && depositAmount() > 0){
-                return true;
-            } else return false;
+            return ($scope.zestStationData.enforce_deposit && depositAmount() > 0);
         };
         var goToCreditCardAuthScreen = function(){
-            $state.go('zest_station.checkInCardSwipe',{
+        	var stateParams = {
+            	'guest_email': $stateParams.guest_email,
+				'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
+				'payment_type_id': $stateParams.payment_type_id,
+				'deposit_amount': $stateParams.deposit_amount,
+				'room_no': $stateParams.room_no,
+				'room_status': $stateParams.room_status,
+				'id': $stateParams.reservation_id,
+				'guest_id': $stateParams.guest_id,
                 'mode': 'CREDIT_CARD_AUTH'
-            });
+            };
+            $state.go('zest_station.checkInCardSwipe',stateParams);
         };
                 
 		$scope.agreeTerms = function() {

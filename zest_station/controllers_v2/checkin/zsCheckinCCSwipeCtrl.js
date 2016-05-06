@@ -99,13 +99,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             var goToCardSign = function(){
                 console.log('show signature');
                 $state.go('zest_station.checkInSignature',{
-                    'id':$stateParams.id,
+                    'reservation_id':$stateParams.id,
                     'mode':'SIGNATURE',
                     'payment_type_id':$stateParams.payment_type_id,
                     'room_no':$stateParams.room_no,
                     'room_status':$stateParams.room_status,
                     'deposit_amount':$stateParams.deposit_amount,
-                    'guest_email':$stateParams.guest_email,
+                    'email':$stateParams.guest_email,
                     'guest_email_blacklisted':$stateParams.guest_email_blacklisted
                     
                 });
