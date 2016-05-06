@@ -44,7 +44,7 @@ angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrv
 		 */
 		this.fetchReservations = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/group_reservations/' + params.group_id + 'list';
+				url = '/api/group_reservations/' + params.group_id + '/list';
 
 			var data = $.extend(
 				{},
