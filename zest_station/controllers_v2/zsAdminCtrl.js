@@ -201,6 +201,7 @@ sntZestStation.controller('zsAdminCtrl', [
                     'status': $scope.zestStationData.workstationStatus,
                     'reason': $scope.zestStationData.workstationOooReason
                 });
+                localStorage.setItem(workStationstorageKey, $scope.savedSettings.kiosk.workstation.station_identifier);
                 $scope.zestStationData.workstationStatus === 'out-of-order' ? $state.go('zest_station.outOfService') : $scope.cancelAdminSettings(); //navigate to home screen
             };
             var failureCallBack = function(response) {
