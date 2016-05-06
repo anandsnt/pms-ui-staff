@@ -12,26 +12,6 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         BaseCtrl.call(this, $scope);
 
         /**
-         * when the back button clicked
-         * @param  {[type]} event
-         * @return {[type]} 
-         */
-        $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-
-            if($scope.printOpted){
-                $scope.printOpted = false;
-            }
-            else if ($stateParams.from !== 'searchByName') {
-                //if key card was inserted we need to eject that
-                $scope.$emit('EJECT_KEYCARD');
-                $state.go('zest_station.checkoutSearchOptions');
-            } else {
-                $state.go('zest_station.checkOutReservationSearch');
-            };
-
-        });
-
-        /**
          * [clickedOnCloseButton description]
          * @return {[type]} [description]
          */
@@ -199,7 +179,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          */
         var initializeMe = function() {
             //show back button
-            $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 
             //show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
