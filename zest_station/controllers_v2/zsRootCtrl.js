@@ -197,9 +197,9 @@ sntZestStation.controller('zsRootCtrl', [
 					//when user activity is not recorded for more than idle_timer.prompt
 					//time set in admin, display inactivity popup
 					if (userInActivityTimeInSeconds >= $scope.zestStationData.idle_timer.prompt) {
-						if(currentState ==='zest_station.checkInSignature'){
+						if(currentState ==='zest_station.checkInSignature' || currentState ==='zest_station.checkInCardSwipe'){
 						    $scope.$broadcast('USER_ACTIVITY_TIMEOUT');
-						}
+                        }
 						else{
 							$scope.zestStationData.timeOut = true;
 						}

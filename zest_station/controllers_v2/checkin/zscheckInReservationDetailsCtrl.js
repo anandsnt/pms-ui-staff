@@ -96,7 +96,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 var initTermsPage = function(){
                     console.log($scope.zestStationData);
                     var bypassTerms = !$scope.zestStationData.kiosk_display_terms_and_condition;
-                    
                     if (bypassTerms){//add early check-in check here
                         /*
                          * to be done:
