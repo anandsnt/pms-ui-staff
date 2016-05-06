@@ -41,6 +41,18 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchGuestDetails = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/' + params.id + '/reservations_guest_details';
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
 
 
         this.fetchReservationDetails = function(param) {
