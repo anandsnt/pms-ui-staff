@@ -58,7 +58,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		};
 		var nextPageActions = function(printopted, emailopted, actionStatus) {
 			var stateParams = {
-				keysucess: $stateParams.keysucess
+				key_success: $stateParams.key_success
 			};
 			if (printopted) {
 				stateParams.print_opted = 'true';

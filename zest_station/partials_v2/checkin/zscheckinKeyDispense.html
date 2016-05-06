@@ -55,7 +55,7 @@
     <div id="content">
         <h1 translate>SUCCESS_HDR</h1>
         <h2 translate>GRAB_KEYS</h2>
-        <button type="button" class="button" ng-click="clickedOnCloseButton()" translate>DONE</button>
+        <button type="button" class="button" ng-click="goToNextScreen('success')" translate>DONE</button>
     </div>
 </section>   
 
@@ -77,7 +77,7 @@
                     <span translate>OR_TEXT</span>
                 </li>
                 <li> 
-                    <button type="button" class="button option" touch-press='skipKeyEncoding()'>
+                    <button type="button" class="button option" ng-click="goToNextScreen('failed')">
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
                     <h1 translate>CONTINUE</h1>

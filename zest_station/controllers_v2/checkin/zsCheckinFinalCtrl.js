@@ -18,7 +18,7 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
 			var emailOpted = $stateParams.print_opted === 'true';
 			var printSuccess = $stateParams.print_status === "success";
 			var emailSuccess = $stateParams.email_status === "success";
-			var keySucess = $stateParams.key_sucess === "true";
+			var keySucess = $stateParams.key_success === "true";
 			
 			if (printOpted) {
 				if (printSuccess && keySucess) {

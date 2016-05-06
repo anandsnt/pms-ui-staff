@@ -205,7 +205,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		};
 
 
-		$scope.skipKeyEncoding = function() {
+		$scope.goToNextScreen = function(status) {
+			stateParams.key_success = status ==='success'; 
 			$state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);
 		};
 
