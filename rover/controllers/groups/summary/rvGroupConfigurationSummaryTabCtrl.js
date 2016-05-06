@@ -317,6 +317,14 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		};
 
 		/**
+		 * Decide whether we need to disable rate change or not
+		 * @return {Boolean} disalbe or not
+		 */
+		$scope.shouldDisableRateChange = function() {
+			return ($scope.groupConfigData.summary.is_cancelled || $scope.isInStaycardScreen());
+		};
+
+		/**
 		 * Logic to show/hide group actions button
 		 * @return {Boolean} hide or not
 		 */
