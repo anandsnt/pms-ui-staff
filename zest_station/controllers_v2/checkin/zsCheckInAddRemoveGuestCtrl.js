@@ -12,7 +12,8 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
          * @return {[type]}
          */
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-            $state.go('zest_station.checkInReservationSearch');
+            zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
+            $state.go('zest_station.checkInReservationDetails');
         });
 
         $scope.navToPrev = function() {
