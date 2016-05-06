@@ -9,6 +9,12 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 	'$filter',
 	function($scope, $stateParams, $state, zsEventConstants, $controller, zsGeneralSrv, $timeout, $filter) {
 
+		/**********************************************************************************************
+		**		Expected state params -----> reservation_id, room_no and first_name'			  
+		**		Exit function -> clickedOnCloseButton- root ctrl function						
+		**																		 
+		***********************************************************************************************/
+
 		/**
 		 *    MODES inside the page
 		 *    

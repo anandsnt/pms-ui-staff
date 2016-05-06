@@ -7,7 +7,11 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 	'zsGeneralSrv',
 	function($scope, $stateParams, $state, zsEventConstants, $timeout, zsGeneralSrv) {
 
-
+		/**********************************************************************************************
+		**		Expected state params -----> none			  
+		**		Exit function -> onSuccessFetchReservation								
+		**																		 
+		***********************************************************************************************/
 
 		var qrScanFailed = function() {
 			$scope.$emit('hideLoader');
