@@ -53,7 +53,10 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		var findReservationSuccess = function(data) {
 			if (data.reservation_id === null) {
 				$scope.socketOperator.EjectKeyCard();
-			} else {
+			} 
+			else if(data.is_checked_out){
+				$scope.alreadyCheckedOut = true;
+			}else {
 				$scope.zestStationData.keyCardInserted = true;
 				var stateParams = {
 					"from": "keycard",
@@ -64,8 +67,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 					"first_name": data.first_name,
 					"last_name": data.last_name,
 					"days_of_stay": data.days_of_stay,
-					"hours_of_stay": data.hours_of_stay,
-					"is_checked_out": data.is_checked_out
+					"hours_of_stay": data.hours_of_stay
 				}
 				$state.go('zest_station.checkoutReservationBill', stateParams);
 			}
