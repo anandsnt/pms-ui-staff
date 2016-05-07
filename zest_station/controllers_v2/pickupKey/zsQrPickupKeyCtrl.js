@@ -29,12 +29,6 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 			/*
 			 * The Scanned QR-code returns the Reservation_id
 			 *  to lookup the reservation, we need to get the Room No. + Last name
-			 *  then just do the reservation search like normal.
-			 *  
-			 *  Well i am not convinced by above comment, why do we need to find reservation 
-			 *  by room no and last name when we already have reservation id ? 
-			 *  Using that itslef now, as i don't have time --  resheil
-			 *  
 			 */
 			var room_no, last_name;
 
