@@ -11,7 +11,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 		/**********************************************************************************************
 		**		Please note that, not all the stateparams passed to this state will not be used in this state, 
-        **       however we will have to pass this so as to pass again in future states which will use these.
+        **       however we will have to pass this so as to pass again to future states which will use these.
         **       
 		**		Expected state params -----> reservation_id, room_no,  first_name, guest_id and email			  
 		**		Exit function -> $scope.goToNextScreen								

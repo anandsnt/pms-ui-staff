@@ -12,7 +12,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 
 		/**********************************************************************************************
 		**		Please note that, not all the stateparams passed to this state will not be used in this state, 
-        **      however we will have to pass this so as to pass again in future states which will use these.
+        **      however we will have to pass this so as to pass again to future states which will use these.
 		**
         **      Expected state params -----> reservation_id,  first_name, guest_id ,payment_type_id
         **       ,deposit_amount , guest_email_blacklisted, room_no, room_status and email           

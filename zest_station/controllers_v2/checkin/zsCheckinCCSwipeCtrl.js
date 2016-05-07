@@ -13,7 +13,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
             /**********************************************************************************************
             **      Please note that, not all the stateparams passed to this state will not be used in this state, 
-            **      however we will have to pass this so as to pass again in future states which will use these.
+            **      however we will have to pass this so as to pass again to future states which will use these.
             **       
             **      Expected state params -----> mode, id, guest_id, swipe, guest_email, guest_email_blacklisted, 
             **      room_no and room_status           
