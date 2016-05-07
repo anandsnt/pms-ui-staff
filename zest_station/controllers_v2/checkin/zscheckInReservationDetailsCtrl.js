@@ -14,8 +14,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
 
 		/**********************************************************************************************
-		 **      Expected state params -----> none    
-		 **      Exit function -> goToSignaturePage                              
+		 **			Please note that, not all the stateparams passed to this state will not be used in this state, 
+         **      	however we will have to pass this so as to pass again in future states which will use these.
+		 **      	
+		 **			Expected state params -----> none    
+		 **      	Exit function -> goToSignaturePage                              
 		 **                                                                       
 		 ***********************************************************************************************/
 
@@ -112,7 +115,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 				goToSignaturePage();
 
 			} else {
-				$state.go('zest_station.checkInTerms', {
+				var stateParams = {
 					'guest_id': $scope.selectedReservation.guest_details[0].id,
 					'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
 					'deposit_amount': $scope.selectedReservation.reservation_details.deposit_amount,
@@ -122,7 +125,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 					'guest_email': $scope.selectedReservation.guest_details[0].email,
 					'guest_email_blacklisted': $scope.selectedReservation.guest_details[0].is_email_blacklisted,
 					'first_name': $scope.selectedReservation.guest_details[0].first_name
-				});
+				}
+				$state.go('zest_station.checkInTerms', stateParams);
 			}
 		};
 

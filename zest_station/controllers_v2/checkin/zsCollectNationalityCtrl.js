@@ -7,6 +7,9 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, zsCheckinSrv) {
 
 		/**********************************************************************************************
+		**		Please note that, not all the stateparams passed to this state will not be used in this state, 
+        **      however we will have to pass this so as to pass again in future states which will use these.
+		**
         **      Expected state params -----> guest_id    
         **      Exit function -> successCallBack                              
         **                                                                       

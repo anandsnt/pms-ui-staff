@@ -10,16 +10,15 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 	'$sce',
 	function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $stateParams, $timeout, $sce) {
 
-
-		//This controller is used for viewing reservation details 
-		//add / removing additional guests and transitioning to 
-		//early checkin upsell or terms and conditions
-
-		/** MODES in the screen
-		 *   1.coming from RESERVATION_DETAILS --> now at terms and conditions 
-		 *   2. --> check reservation for deposit needed & if switch is active
-		 *   
-		 **/
+		/**********************************************************************************************
+		**		Please note that, not all the stateparams passed to this state will not be used in this state, 
+        **      however we will have to pass this so as to pass again in future states which will use these.
+		**
+        **      Expected state params -----> reservation_id,  first_name, guest_id ,payment_type_id
+        **       ,deposit_amount , guest_email_blacklisted, room_no, room_status and email           
+        **      Exit function -> updateComplete                             
+        **                                                                       
+        ***********************************************************************************************/
 
 		BaseCtrl.call(this, $scope);
 		
