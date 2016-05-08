@@ -56,11 +56,17 @@ sntZestStation.controller('zsAdminCtrl', [
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.zestStationData.set_workstation_id;
             });
-            $scope.workstation = {
-                'selected': parseInt(selectedWorkStation.id)
-            };
-            $scope.workstation.printer = selectedWorkStation.printer;
-            setPrinterLabel(selectedWorkStation.printer);
+            $scope.workstation = {}
+            if(typeof selectedWorkStation !== 'undefined'){
+                $scope.workstation.selected = parseInt(selectedWorkStation.id);
+                $scope.workstation.printer = selectedWorkStation.printer;
+            }
+            else{
+                $scope.workstation.selected = "";
+                $scope.workstation.printer = ""
+            }
+            //set printer label
+            setPrinterLabel($scope.workstation.printer);
         } else {
             //do nothing as no workstation was set
         };
@@ -308,7 +314,7 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.passWord = "";
             hideNavButtons();
             $scope.setScroller('admin-screen');
-
+$scope.zestStationData.isAdminFirstLogin =true
             //if invoked from chrome app or ipad
             //show direct admin without login
             if ($scope.zestStationData.isAdminFirstLogin) {

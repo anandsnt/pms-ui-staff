@@ -57,14 +57,9 @@
                 <div class="entry with-label">
                     <label>{{'ADMIN_WORKSTATION' |translate}}</label>
                     <div class="entry select">
-                        <select ng-model="workstation.selected" ng-change="worksStationChanged()">
-                            <option ng-selected="workstation.selected === ''" value="">
-                                Select
-                            </option>
-                            <option ng-repeat="work_station in zestStationData.workstations" value="{{work_station.id}}" ng-selected="workstation.selected == work_station.id">
-                                {{work_station.name}}
-                            </option>
-                        </select>
+                         <select ng-options="workstation.id as workstation.name for workstation in zestStationData.workstations" ng-model="workstation.selected" ng-change="worksStationChanged()">
+                    <option style="display:none" value="" class="">Select</option>
+                </select>
                     </div>
                 </div>
                 <div class="entry with-label">
