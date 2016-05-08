@@ -45,7 +45,7 @@ sntZestStation.config(['$stateProvider',
                 
 		//checking credit card swipe                 
       	$stateProvider.state('zest_station.checkInCardSwipe', {
-			url: '/checkInReservationCard/:mode/:id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status',
+			url: '/checkInReservationCard/:mode/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinCCSwipe.html',
 			controller: 'zsCheckinCCSwipeCtrl'
 		});
@@ -57,7 +57,7 @@ sntZestStation.config(['$stateProvider',
 		});
 		//reservation deposit                
       	$stateProvider.state('zest_station.checkInDeposit', {
-			url: '/checkInReservationDeposit/:id/:mode/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:guest_id',
+			url: '/checkInReservationDeposit/:reservation_id/:mode/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:guest_id',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinDeposit.html',
 			controller: 'zsCheckinCCSwipeCtrl'
 		});

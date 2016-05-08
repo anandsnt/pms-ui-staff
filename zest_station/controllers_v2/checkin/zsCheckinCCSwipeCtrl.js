@@ -50,7 +50,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 $state.go('zest_station.checkInCardSwipe',{
                     'mode': 'DEPOSIT',
                     'swipe': 'true',
-                    'id': $stateParams.id,
+                    'id': $stateParams.reservation_id,
                     'room_no':$stateParams.room_no,
                     'room_status':$stateParams.room_status,
                     'guest_email': $stateParams.guest_email,
@@ -110,7 +110,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             var goToCardSign = function(){
                 console.log('show signature');
                 $state.go('zest_station.checkInSignature',{
-                    'reservation_id':$stateParams.id,
+                    'reservation_id':$stateParams.reservation_id,
                     'mode':'SIGNATURE',
                     'payment_type_id':$stateParams.payment_type_id,
                     'room_no':$stateParams.room_no,
