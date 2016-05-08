@@ -21,9 +21,9 @@
             </li>
         </ul>
         <div id="actions" class='select-reservation selectPagingBtns'> <!-- If showing only "Next" button, add class "align-right". When showing only "Previous" button, or both buttons, remove that class -->
-            <button type="button" class="button transparent prev " touch-press='moveToPreviousPage()'>{{'SEL_RES_LAST' |translate}}</button>
+            <button type="button" class="button transparent prev" touch-press='moveToPreviousPage()' ng-show="currentPage !==1">{{'SEL_RES_LAST' |translate}}</button>
             <label >{{currentPage}} / {{totalPages}}</label>
-            <button type="button" class="button transparent next" touch-press='moveToNextPage()'>{{'SEL_RES_NEXT' |translate}}</button>
+            <button type="button" class="button transparent next" touch-press='moveToNextPage()' ng-show="currentPage !== totalPages">{{'SEL_RES_NEXT' |translate}}</button>
         </div>
     </div>
 
