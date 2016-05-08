@@ -23,8 +23,6 @@ sntZestStation.controller('zsRoomErrorCtrl', [
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			//show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-
-			$scope.init();
 		}();
 
 	}
