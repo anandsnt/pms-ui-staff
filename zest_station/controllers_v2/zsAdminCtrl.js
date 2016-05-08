@@ -314,7 +314,6 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.passWord = "";
             hideNavButtons();
             $scope.setScroller('admin-screen');
-$scope.zestStationData.isAdminFirstLogin =true
             //if invoked from chrome app or ipad
             //show direct admin without login
             if ($scope.zestStationData.isAdminFirstLogin) {
