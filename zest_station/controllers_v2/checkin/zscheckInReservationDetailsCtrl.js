@@ -28,6 +28,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 		 **/
 
 		BaseCtrl.call(this, $scope);
+
+        $scope.setScroller('res-details');
+
+        var refreshScroller = function() {
+            $scope.refreshScroller('res-details');
+        };
 		var getSelectedReservation = function() {
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
 			//Deleting reservation details from zsCheckinSrv
@@ -44,6 +50,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 					$scope.selectedReservation.reservation_details.balance = 0;
 				}
 				fetchAddons();
+				setDisplayContentHeight();//utils function
+				refreshScroller();
 			};
 			$scope.invokeApi(zsCheckinSrv.fetchReservationDetails, {
 				'id': $scope.selectedReservation.confirmation_number
@@ -55,6 +63,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 				$scope.selectedReservation.addons = data.existing_packages;
 				//refreshScroller();
 				$scope.$emit('hideLoader');
+				setDisplayContentHeight();
 			};
 			$scope.invokeApi(zsCheckinSrv.fetchAddonDetails, {
 				'id': $scope.selectedReservation.reservation_details.reservation_id

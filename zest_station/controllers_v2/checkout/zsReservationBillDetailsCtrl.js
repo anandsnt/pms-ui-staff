@@ -37,20 +37,6 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          */
         $scope.setScroller('bill-list');
 
-        var setTermsConditionsHeight = function() {
-            if ($('#textual').length) {
-                var $contentHeight = ($('#content').outerHeight()),
-                    $h1Height = $('#content h1').length ? $('#content h1').outerHeight(true) : 0,
-                    $h2Height = $('#content h2').length ? $('#content h2').outerHeight(true) : 0,
-                    $h3Height = $('#content h3').length ? $('#content h3').outerHeight(true) : 0,
-                    $headingsHeight = parseFloat($h1Height + $h2Height + $h3Height),
-                    $textualHeight = parseFloat($contentHeight - $headingsHeight);
-                //$('#textual').css('height', $textualHeight + 'px');
-                $('#textual').css('height', '45%');
-                $('#textual').css('max-height', '100%');
-            }
-        };
-
         var refreshScroller = function() {
             $scope.refreshScroller('bill-list');
         };
@@ -85,7 +71,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             });
 
             //scroller setup
-            setTermsConditionsHeight();
+            setDisplayContentHeight();//utils function
             refreshScroller();
         };
 

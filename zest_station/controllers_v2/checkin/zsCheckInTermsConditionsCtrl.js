@@ -146,21 +146,10 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		 */
 		var initiateTermsAndConditions = function() {
 			$scope.setScroller('terms');
-			var setTermsConditionsHeight = function() {
-				if ($('#textual').length) {
-					var $contentHeight = ($('#content').outerHeight()),
-						$h1Height = $('#content h1').length ? $('#content h1').outerHeight(true) : 0,
-						$h2Height = $('#content h2').length ? $('#content h2').outerHeight(true) : 0,
-						$h3Height = $('#content h3').length ? $('#content h3').outerHeight(true) : 0,
-						$headingsHeight = parseFloat($h1Height + $h2Height + $h3Height),
-						$textualHeight = parseFloat($contentHeight - $headingsHeight);
-					$('#textual').css('max-height', $textualHeight + 'px');
-				}
-			};
+			setDisplayContentHeight();//utils function
 			var refreshScroller = function() {
 				$scope.refreshScroller('terms');
 			};
-			setTermsConditionsHeight();
 			$timeout(function() {
 				refreshScroller();
 			}, 600);
