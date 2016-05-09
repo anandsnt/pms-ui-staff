@@ -41,6 +41,10 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	});
 
 
+        var hideNavButtons = function(){
+            $scope.$emit (zsEventConstants.HIDE_BACK_BUTTON);
+            $scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
+	};
 	/**
 	 * [isInCheckinMode description]
 	 * @return {Boolean} [description]
@@ -514,7 +518,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             $scope.selectedReservation = $state.selectedReservation;
             var view = $state.current.name;
             $scope.input = $state.input;
-
+            
+            hideNavButtons();
+            
             if (view === 'zest_station.make_keys'){
                 $scope.at = 'make-keys';
                 $scope.initKeyCreate();

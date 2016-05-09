@@ -1,7 +1,6 @@
 const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItemClickActionType }) => (
 	
 	<tbody>
-		<RateManagerGridLeftFirstRowContainer/>
 		{
 			leftListingData.map((item, index) => 
 				<RateManagerGridLeftRowComponent

@@ -101,10 +101,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                  * for testing purpsosed commenting out
                  *  need to revert back
                  */
-                 $scope.afterGuestCheckinCallback({'status':'success'});
-                // setTimeout(function(){
-                //     $scope.invokeApi(zsTabletSrv.checkInGuest, checkinParams, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback); 
-                // },500);
+                 //$scope.afterGuestCheckinCallback({'status':'success'});
+                 setTimeout(function(){
+                     $scope.invokeApi(zsTabletSrv.checkInGuest, checkinParams, $scope.afterGuestCheckinCallback, $scope.afterGuestCheckinCallback); 
+                 },500);
                 
         };
         $scope.clearSignature = function(){
