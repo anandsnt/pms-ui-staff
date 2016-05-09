@@ -192,6 +192,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasPagination = false;
 					break;
 
+				case reportNames['MOBILE_CHECKIN_NOW']:
+					break;
+				case reportNames['MOBILE_CHECKIN']:
+					break;
+				case reportNames['CHECKIN_NOW_OR_LATER']:
+					break;
+
 				default:
 					break;
 			};
