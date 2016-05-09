@@ -59,7 +59,7 @@ sntZestStation.config(['$stateProvider',
       	$stateProvider.state('zest_station.checkInDeposit', {
 			url: '/checkInReservationDeposit/:reservation_id/:mode/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:guest_id',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinDeposit.html',
-			controller: 'zsCheckinCCSwipeCtrl'
+			controller: 'zsCheckinDepositCtrl'
 		});
 		//pickup key dispense
 		$stateProvider.state('zest_station.checkinKeyDispense', {
