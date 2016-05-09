@@ -46,7 +46,8 @@ module.exports = {
 			'guestweb_crawford':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_beacon_hill':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_boston_park':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_dutch':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }
