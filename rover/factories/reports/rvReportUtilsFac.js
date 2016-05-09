@@ -431,6 +431,13 @@ angular.module('reportsModule')
                     report['hasRestrictionListFilter'] = filter;
                 };
 
+                if(filter.value === 'ORIGIN') {
+                    report['hasOriginFilter'] = filter;
+                };
+
+                if(filter.value === 'URLS') {
+                    report['hasURLsList'] = filter;
+                };
 
                 // check for time filter and keep a ref to that item
                 // create std 15min stepped time slots
@@ -639,6 +646,17 @@ angular.module('reportsModule')
                             reportsSubSrv.fetchAddons({ 'addon_group_ids' : _.pluck(chargeNAddonGroups, 'id') })
                                 .then( fillAGAs.bind(null, chargeNAddonGroups) );
                         });
+                }
+                else if ( 'URLS' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchURLs()
+                        .then( fillURLs );
+                }
+
+                else if ( 'ORIGIN' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchOrigins()
+                        .then( fillOrigins );
                 }
 
                 else {
@@ -866,6 +884,59 @@ angular.module('reportsModule')
                                 selectAll: true,
                                 key: 'description',
                                 defaultValue: 'Select Restriction(s)'
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            };
+            function fillOrigins (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'ORIGIN' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasOriginFilter = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'description',
+                                defaultValue: 'Select Origin(s)'
+                            },
+                            affectsFilter: {
+                                name: 'hasURLsList',
+                                process: function(filter, selectedItems) {
+                                    var hasUrl = _.find(selectedItems, { value: 'URL' });
+                                    console.log(!hasUrl);
+                                    filter.updateData(!hasUrl);
+                                }
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            };
+
+            function fillURLs (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'URLS'});
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasURLsList = {
+                            data: angular.copy( data ),
+                            originalData: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'name',
+                                defaultValue: 'Select URL(s)'
+                            },
+                            updateData: function(shouldHide) {
+                                this.data = shouldHide ? [] : this.originalData;
                             }
                         }
                     };

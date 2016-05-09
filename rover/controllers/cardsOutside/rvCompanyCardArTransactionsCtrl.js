@@ -11,7 +11,6 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			$scope.arTransactionDetails.ar_transactions = [];
 			$scope.paymentModalOpened = false;
 			fetchData();
-			$scope.statementEmailAddress = '';
 		};
 
 		var refreshArTabScroller = function(){
@@ -39,7 +38,8 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 			'perPage':50,
 			'textInQueryBox': '',
 			'viewFromOutside': false,
-			'transactionType' : 'ALL'
+			'transactionType' : 'ALL',
+			'statementEmailAddress' : ''
 		};
 
 		$scope.arTransactionDetails = {
@@ -526,7 +526,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 			var dataFetchSuccess = function(data){
 				$scope.$emit('hideLoader');
-				$scope.statementEmailAddress = data.data.to_address;
+				$scope.filterData.statementEmailAddress = data.data.to_address;
 
 				ngDialog.open({
 		      		template:'/assets/partials/companyCard/rvArStatementPopup.html',
@@ -621,7 +621,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		// Handle AR Statement-EMAIL button click
 		$scope.clickedEmailArStatementButton = function(){
 			var params = getParamsToSend();
-			params.to_address = $scope.statementEmailAddress;
+			params.to_address = $scope.filterData.statementEmailAddress;
 			$scope.closeDialog();
 
 			var emailSuccess = function(successData){
