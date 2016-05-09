@@ -8,24 +8,18 @@
 
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
      
-        <div class="entry full-width hidden">
+        <div class="entry full-width">
             <label for="company-email">Email</label>
-            <input type="email" name="email" placeholder="Enter an Email" value="{company/travel-agent contact email}"/>
+            <input type="email" name="email" placeholder="Enter an Email" ng-model="filterData.statementEmailAddress"/>
         </div>
 
         <div class="actions">
-            <!-- if email is empty:
-                    - remove class .blue,
-                    - add class .grey,
-                    - add attribute disabled="disabled" -->
-            <button type="button" class="button with-icon blue open-modal grey overlay" ng-click="clickedEmailArStatementButton()">
+            
+            <button type="button" class="button with-icon open-modal" ng-class="{ 'blue': filterData.statementEmailAddress !== '' , 'grey overlay': filterData.statementEmailAddress === ''}" ng-click="clickedEmailArStatementButton()">
                 <span class="icons icon-email"></span>
                  Email
             </button>
-            <!-- on click:
-                    - add class 'print-statement' to .cards
-                    - add class 'no-print' to .nav-bar
-                -->
+            
             <button type="button" class="button with-icon blue modal-close" ng-click="clickedPrintArStatementButton()">
                 <span class="icons icon-print"></span>
                 Print 

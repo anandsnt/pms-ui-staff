@@ -6,7 +6,7 @@
     <span class="has-arrow next-view"></span>
 </button>
 <!-- If new allotment and/or room block have not been set: -->
-<div class="no-content" ng-hide="shouldHideAddRoomsButton()">
+<div class="no-content" ng-hide="allotmentConfigData.summary.is_cancelled || shouldHideAddRoomsButton()">
     <div class="info">
         <a ng-click="clickedOnAddRoomsAndRatesButton()" class="button"
             ng-disabled="shouldDisableAddRoomsAndRate()"
@@ -20,7 +20,7 @@
 </div>
 
 <!-- Room block actions -->
-<div class="room-block-actions release-range" ng-show="shouldHideAddRoomsButton()">
+<div class="room-block-actions release-range" ng-show="shouldShowRoomsRates()">
     <div class="entry">
         <label for="allotment-release-range">Release Range (In Days)</label>
         <input id="allotment-release-range" type="text" class="highlight" ng-model="allotmentConfigData.roomblock.common_ui_release_days" />
@@ -42,7 +42,7 @@
 </div>
 
 <!-- Room block room types -->
-<div class="room-block-sidebar release-range scrollable" ng-show="shouldHideAddRoomsButton()"
+<div class="room-block-sidebar release-range scrollable" ng-show="shouldShowRoomsRates()"
     ng-iscroll="room_block_scroller">
     <div class="wrapper" bindonce>
         <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
@@ -100,7 +100,7 @@
 <!-- Room block days -->
 <div class="room-block-timeline release-range paginated scrollable"
     ng-iscroll="room_rates_timeline_scroller"
-    ng-show="shouldHideAddRoomsButton()"
+    ng-show="shouldShowRoomsRates()"
     bindonce>
 
     <ul class="wrapper" bindonce style="width:{{getWidthForReleaseViewTimeLine()}};">
@@ -126,7 +126,7 @@
 
 <!-- Room block grid -->
 <div class="room-block-grid release-range paginated scrollable" ng-iscroll="room_rates_grid_scroller"
-    ng-show="shouldHideAddRoomsButton()">
+    ng-show="shouldShowRoomsRates()">
     <div class="wrapper" bindonce style="width:{{getWidthForReleaseViewTimeLine()}};">
         <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
         <div class="row" ngrepeatend ng-repeat="roomType in allotmentConfigData.roomblock.selected_room_types_and_bookings">

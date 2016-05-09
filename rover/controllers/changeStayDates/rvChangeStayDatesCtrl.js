@@ -302,7 +302,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					return false; // Exit from loop
 				}
 				//we have to add rate between the calendar checkin date & calendar checkout date only
-				if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && tzIndependentDate(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
+				if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && tzIndependentDate(this.date).getTime() <= $scope.checkoutDateInCalender.getTime()) {
 					$scope.totRate += escapeNull(this.rate) === "" ? 0 : parseInt(this.rate);
 				}
 				//if calendar checkout date is same as calendar checking date, total rate is same as that day's checkin rate
@@ -629,7 +629,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			 * Three new params added to the API:
 			 * 			is_house_available: true/false
 			 *  		is_room_type_available: true/false
-			 *  		is_restricted: true/false 
+			 *  		is_restricted: true/false
 			 */
 
 			var events = [],

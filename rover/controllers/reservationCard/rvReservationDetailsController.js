@@ -223,6 +223,12 @@ sntRover.controller('reservationDetailsController',
 			}
 		}, datePickerCommon);
 
+		// for groups this date picker must not allow user to pick
+		// a date that is after the group end date.
+		if ( !! $scope.reservationData.reservation_card.group_id ) {
+			$scope.departureDateOptions.maxDate = $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat);
+		}
+
 		$scope.reservationData.paymentTypes = paymentTypes;
 		$scope.reservationData.reseravationDepositData = reseravationDepositData;
 
@@ -569,21 +575,26 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		$scope.isStayDatesChangeAllowed = function() {
+			var is_hourly_reservation = $scope.reservationData.reservation_card.is_hourly_reservation,
+				reservation_status    = $scope.reservationData.reservation_card.reservation_status,
+				group_id              = $scope.reservationData.reservation_card.group_id;
+
+			var not_hourly_reservation = ! is_hourly_reservation,
+				checking_in_reserved   = {'CHECKING_IN': true, 'RESERVED': true}[reservation_status],
+				group_checked_in       = {'CHECKEDIN': true}[reservation_status] && !! group_id;
+
 			isStayDatesChangeAllowed = false;
 
-			if ($rootScope.isStandAlone &&
-				!$scope.reservationData.reservation_card.is_hourly_reservation &&
-				($scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN' ||
-					$scope.reservationData.reservation_card.reservation_status === 'RESERVED')) {
-
+			if (
+				$rootScope.isStandAlone &&
+				not_hourly_reservation &&
+				hasPermissionToChangeStayDates() &&
+				(checking_in_reserved || group_checked_in)
+			) {
 				isStayDatesChangeAllowed = true;
-
-				if (!hasPermissionToChangeStayDates()) {
-					isStayDatesChangeAllowed = false;
-				}
 			}
-			return isStayDatesChangeAllowed;
 
+			return isStayDatesChangeAllowed;
 		};
 
 		/**
@@ -592,10 +603,10 @@ sntRover.controller('reservationDetailsController',
 		 * @return {Boolean} flag to disable button
 		 */
 		$scope.shouldDisableExtendNightsButton = function() {
-			var isAllotmentPresent	= $scope.reservationData.allotment_id || $scope.reservationData.reservation_card.allotment_id,
-				isGroupPresent 		= $scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id;
+			var isAllotmentPresent	= $scope.reservationData.allotment_id || $scope.reservationData.reservation_card.allotment_id;
 
-			return (isAllotmentPresent || isGroupPresent);
+
+			return (isAllotmentPresent);
 		};
 
 		$scope.extendNights = function() {
@@ -649,7 +660,8 @@ sntRover.controller('reservationDetailsController',
 				fromState: $state.current.name,
 				company_id: $scope.$parent.reservationData.company.id,
 				travel_agent_id: $scope.$parent.reservationData.travelAgent.id,
-				group_id: $scope.$parent.reservationData.group.id,
+				group_id: $scope.borrowForGroups ? '' : $scope.$parent.reservationData.group.id,
+				borrow_for_groups: $scope.borrowForGroups,
 				room_type_id: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
                 adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
                 children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren
@@ -866,6 +878,7 @@ sntRover.controller('reservationDetailsController',
 					if (response.errors.length === 0) {
 						$scope.responseValidation = response.data;
 						$scope.stayDatesExtendedForOutsideGroup = (response.data.is_group_reservation && response.data.outside_group_stay_dates) ? true : false;
+						$scope.borrowForGroups = (response.data.is_group_reservation && ! response.data.is_room_type_available) ? true : false;
 
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
@@ -934,7 +947,8 @@ sntRover.controller('reservationDetailsController',
 			$scope.reservationParentData.departureDate = $filter('date')(departureDate, 'yyyy-MM-dd');
 			$scope.reservationParentData.numNights = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 			initStayDates(0);
-			navigateToRoomAndRates($filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+			navigateToRoomAndRates(
+				$filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
 				$filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd')
 			);
 			$scope.closeDialog();
@@ -1133,6 +1147,10 @@ sntRover.controller('reservationDetailsController',
 				$scope.errorMessage = errorMessage;
 			};
 
+			//CICO-28042 - Flag added to show/hide between credit card and
+			//auth release for credit card sections
+			$scope.hasShownReleaseConfirm = false;
+
 			var data = {
 				"reservation_id":$scope.reservationData.reservation_card.reservation_id
 			};
@@ -1298,5 +1316,44 @@ sntRover.controller('reservationDetailsController',
      });
 
      $scope.$on( '$destroy', unbindChildContentModListener );
+
+    /**
+	* Method to invoke when release btn on each authorized cards are clicked
+	* @param {object} selected card with auth details
+	*/
+     $scope.onReleaseBtnClick = function(cardData) {
+     	$scope.selectedCardData = cardData;
+     	$scope.hasShownReleaseConfirm = true;
+     };
+
+    /**
+	* Method to invoke while clicking on cancel btn in release confirm section
+	*/
+     $scope.onCancelClick = function() {
+     	$scope.hasShownReleaseConfirm = false;
+     };
+
+    /**
+	* Method to release the authorization of a credit card
+	* @param {int} payment method id
+	*/
+     $scope.releaseAuthorization = function(paymentMethodId) {
+     	var onReleaseAuthorizationSuccess = function(response) {
+				$scope.$emit('hideLoader');
+				$scope.hasShownReleaseConfirm = false;
+				$scope.showAuthAmountPopUp();
+			};
+
+			var onReleaseAuthorizationFaliure = function(errorMessage) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorMessage;
+				$scope.hasShownReleaseConfirm = false;
+			};
+			$scope.errorMessage = "";
+			var postData = {
+				"payment_method_id"	: paymentMethodId
+			};
+			$scope.invokeApi(RVCCAuthorizationSrv.releaseAuthorization, postData, onReleaseAuthorizationSuccess, onReleaseAuthorizationFaliure);
+     };
 
 }]);

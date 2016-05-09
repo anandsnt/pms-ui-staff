@@ -7,6 +7,7 @@ module.exports = {
               nonMinifiedFiles: [
                   roverRoot + 'react/rateManager/components/**/*.js',
                   roverRoot + 'react/rateManager/containers/**/*.js',
+                  roverRoot + 'react/rateManager/utils/**/*.js',
                   roverRoot + 'constants/rateManager/**/*.js',
                   roverRoot + 'redux/rateManager/**/*.js',
                   roverRoot + 'constants/eventConstants/rvTwoMonthCalendarEventConstants.js',
