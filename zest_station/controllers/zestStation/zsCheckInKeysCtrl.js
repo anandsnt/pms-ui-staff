@@ -239,12 +239,10 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.hopperIsEmpty = function(msg){
             if (typeof msg === typeof 'str'){
                 if (msg.toLowerCase().indexOf('card from hopper') !== -1){
-                     $scope.zestStationData.wsIsOos = true;
-                     $scope.zestStationData.wsFailedReason =  $filter('translate')('PICKUP_KEY_FAIL_EMPTY');
-                     console.info('$scope.zestStationData.wsFailedReason: ',$scope.zestStationData.wsFailedReason)
-                     console.warn('Setting out of order due to empty key dispenser');
-                     $scope.emitKeyError(msg);
-                     return;
+                    $scope.prepForOOS($filter('translate')('PICKUP_KEY_FAIL_EMPTY'));
+                        
+                    $scope.emitKeyError(msg);
+                    return;
                 }    
             }    
         };
@@ -257,23 +255,23 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             if($scope.isInCheckinMode()){
                 
                 if (response.indexOf(emptyHopper) !== -1){
-                      $scope.zestStationData.wsFailedReason = $filter('translate')('CHECKIN_KEY_FAIL_EMPTY');
+                    $scope.prepForOOS($filter('translate')('CHECKIN_KEY_FAIL_EMPTY'));
                 } else {
-                    $scope.zestStationData.wsFailedReason = $filter('translate')('CHECKIN_KEY_FAIL');
+                    $scope.prepForOOS($filter('translate')('CHECKIN_KEY_FAIL'));
                 }
                 
             } else if ($scope.isInPickupKeyMode()){
                  
                 if (response.indexOf(emptyHopper) !== -1){
-                    $scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL_EMPTY');
+                    $scope.prepForOOS($filter('translate')('PICKUP_KEY_FAIL_EMPTY'));
                 } else {
-                    $scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL');
+                    $scope.prepForOOS($filter('translate')('PICKUP_KEY_FAIL'));
                 }
             }
             
             //if related to websocket failure, append info
             if (response.indexOf(failedSocketConnectionText) !== -1){
-                $scope.zestStationData.wsFailedReason = $scope.zestStationData.wsFailedReason + $filter('translate')('SERVICE_FAILURE');
+                $scope.prepForOOS($filter('translate')('SERVICE_FAILURE'));
             } 
         };
         
@@ -282,7 +280,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             setFailureReason(response);
             
             $scope.$emit('MAKE_KEY_ERROR',response);
-            $scope.zestStationData.wsIsOos = true;
             //$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
         };
 

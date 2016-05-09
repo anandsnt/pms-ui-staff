@@ -1,0 +1,21 @@
+<td class="name">
+    <strong>{{transaction.name}}</strong>
+    <em>{{transaction.identifier}}</em>
+</td>
+<td class="room">{{transaction.room_no}}</td>
+<td>
+    <div class="date">
+        <span class="icons time check-in"></span>
+        <span>{{transaction.start_date | date : dateFormat}}</span>
+    </div>
+    <div class="date">
+        <span class="icons time check-out"></span>
+        <span>{{transaction.end_date | date : dateFormat}}</span>
+    </div>
+</td>
+<td class="description">
+    <span>{{transaction.charge_description}}</span>
+    <span class="reference">{{transaction.charge_code}}</span>
+</td>
+<td class="balance red">{{transaction.debit | currency:currencySymbol:2 }}</td>
+<td class="balance green">{{transaction.credit | currency:currencySymbol:2 }}</td>

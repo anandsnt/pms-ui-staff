@@ -85,18 +85,18 @@
                             </span>
                             <span class="count red" ng-show="!stateCheck.stayDatesMode && room.availability < 5">
                                 {{room.availability}} room(s) left
-                                <label ng-if="room.defaultRate.isGroupRate"> in Group Block</label>
-                                <label ng-if="room.defaultRate.isAllotmentRate"> in Allotment</label>
+                                <label ng-if="!borrowForGroups && room.defaultRate.isGroupRate"> in Group Block</label>
+                                <label ng-if="!borrowForGroups && room.defaultRate.isAllotmentRate"> in Allotment</label>
                             </span>
                             <span class="count green" ng-show="stateCheck.stayDatesMode && room.defaultRate.dates[stateCheck.dateModeActiveDate].availability > 4">
                                 {{room.defaultRate.dates[stateCheck.dateModeActiveDate].availability}} room(s) left
-                                <label ng-if="room.defaultRate.isGroupRate"> in Group Block</label>
-                                <label ng-if="room.defaultRate.isAllotmentRate"> in Allotment</label>
+                                <label ng-if="!borrowForGroups && room.defaultRate.isGroupRate"> in Group Block</label>
+                                <label ng-if="!borrowForGroups && room.defaultRate.isAllotmentRate"> in Allotment</label>
                             </span>
                             <span class="count green" ng-show="!stateCheck.stayDatesMode && room.availability > 4">
                                 {{room.availability}} room(s) left
-                                <label ng-if="room.defaultRate.isGroupRate"> in Group Block</label>
-                                <label ng-if="room.defaultRate.isAllotmentRate"> in Allotment</label>
+                                <label ng-if="!borrowForGroups && room.defaultRate.isGroupRate"> in Group Block</label>
+                                <label ng-if="!borrowForGroups && room.defaultRate.isAllotmentRate"> in Allotment</label>
                             </span>
                         </div>
                         <div class="book-rate" ng-if="room.isCollapsed">
@@ -112,7 +112,12 @@
                             <button class="button white blue-text" ng-show="stateCheck.selectedStayDate.rate.id == room.defaultRate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)" ng-click="handleNoEdit($event,room.id,room.defaultRate.id)">
                                 CURRENT RATE
                             </button>
-                            <button class="button {{room.defaultRate.buttonClass}}" ng-hide="(stateCheck.selectedStayDate.rate.id == room.defaultRate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id )) || restrictIfOverbook(room.id,room.defaultRate.id)" ng-click="handleBooking(room.id,room.defaultRate.id,$event)" translate>
+                            <!-- making sure that this button always hidden when borrow -->
+                            <button class="button {{room.defaultRate.buttonClass}}" ng-hide="borrowForGroups || (stateCheck.selectedStayDate.rate.id == room.defaultRate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id )) || restrictIfOverbook(room.id,room.defaultRate.id)" ng-click="handleBooking(room.id,room.defaultRate.id,$event)" translate>
+                                RESV_BOOK
+                            </button>
+                            <!-- making sure that this button always show when borrow -->
+                            <button class="button {{room.defaultRate.buttonClass}}" ng-show="borrowForGroups" ng-click="handleBooking(room.id,room.defaultRate.id,$event)" translate>
                                 RESV_BOOK
                             </button>
                         </div>
@@ -143,10 +148,10 @@
                                     SR
                                     <span translate>RESV_AVG_NIGHT</span>
                                 </div>
-                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)" class="button white blue-text" ng-click="handleNoEdit($event,room.id,rate.id)">
+                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id) && !borrowForGroups" class="button white blue-text" ng-click="handleNoEdit($event,room.id,rate.id)">
                                     CURRENT RATE
                                 </button>
-                                <button class="button {{rate.buttonClass}}" ng-hide="(stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)) || restrictIfOverbook(room.id,rate.id)" ng-click="handleBooking(room.id,rate.id, $event)" translate>RESV_BOOK
+                                <button class="button {{rate.buttonClass}}" ng-hide="!borrow && (stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)) || restrictIfOverbook(room.id,rate.id)" ng-click="handleBooking(room.id,rate.id, $event)" translate>RESV_BOOK
                                 </button>
                             </a>
                             <div class="rate-details" ng-if="rate.showDays">

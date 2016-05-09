@@ -811,10 +811,22 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 per_page: $scope.perPage,
                 page: $scope.page,
                 sorting_field: $scope.sorting_field,
-                sort_dir: $scope.sort_dir
-            };
+                sort_dir: $scope.sort_dir,
+                arrival_date: formatDateForAPI($scope.arrival_date),
+                dep_date: formatDateForAPI($scope.dep_date),
+                query: $scope.query,
+                exclude_cancel: $scope.exclude_cancel,
+                show_pending_only: $scope.show_pending_only
+            }
+
             return params;
         };
+
+        $scope.clearQuery = function() {
+            $scope.query = '';
+            runDigestCycle();
+            $timeout( $scope.fetchReservations, 500 );
+        }
 
         /**
          * to fetch reservations against group
@@ -829,23 +841,17 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
         };
 
+        $scope.debounceFetchReservations = _.debounce( $scope.fetchReservations, 500 );
+
         /**
-         * Function to clear from Date
+         * Function to clear Dates
          * @return {None}
          */
-        $scope.clearFromDate = function() {
-            $scope.fromDate = '';
+        $scope.clearDate = function(date) {
+            $scope[date] = '';
             runDigestCycle();
         };
 
-        /**
-         * Function to clear to Date
-         * @return {None}
-         */
-        $scope.clearToDate = function() {
-            $scope.toDate = '';
-            runDigestCycle();
-        };
 
         /**
          * when the start Date choosed,
@@ -923,6 +929,12 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
             //default to date, as per CICO-13900 it will be block_to date
             $scope.toDate = refData.block_to;
+
+            //default block_from date
+            $scope.arrival_date = refData.block_from;
+
+            //default block_to date
+            $scope.dep_date = refData.block_to;
         };
 
         /**

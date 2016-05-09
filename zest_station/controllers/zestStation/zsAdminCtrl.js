@@ -126,6 +126,11 @@ sntZestStation.controller('zsAdminCtrl', [
         
 
         var initialize = function() {
+            if ($scope.zestStationData.workstationStatus === 'in-order'){
+                $scope.inServiceAtStart = true;
+            } else {
+                $scope.inServiceAtStart = false;
+            }
             $scope.adminLoginError = false;
             $scope.input = {
                 "inputTextValue": ""
@@ -218,8 +223,20 @@ sntZestStation.controller('zsAdminCtrl', [
                     id: station.station_identifier
                 });  
                 $scope.zestStationData.set_workstation_id = station.id;
-                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':$scope.zestStationData.workstationStatus,'reason':$scope.zestStationData.workstationOooReason});
-                $scope.cancelAdminSettings();
+                
+                var reason;
+                if ($scope.inServiceAtStart && station.is_out_of_order){
+                    reason = 'ADMIN_OOS';
+                    $scope.zestStationData.workstationOooReason = reason;
+                } else {
+                    reason = $scope.zestStationData.workstationOooReason;
+                }
+                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':$scope.zestStationData.workstationStatus,'reason':reason});
+                
+                setTimeout(function(){
+                    $scope.cancelAdminSettings();    
+                },2000);
+                
             };
             var failureCallBack = function(response) {
                 console.warn('unable to save workstation settings');
@@ -228,8 +245,7 @@ sntZestStation.controller('zsAdminCtrl', [
             var station = $scope.savedSettings.kiosk.workstation;
             
             if (station) {
-                station.is_out_of_order = ($scope.zestStationData.workstationStatus !== 'in-order' ? false : true);
-                
+                station.is_out_of_order = ($scope.zestStationData.workstationStatus !== 'in-order' ? true : false);
                 var params = {
                     'default_key_encoder_id': station.key_encoder_id,
                     'identifier': station.station_identifier,
@@ -241,7 +257,9 @@ sntZestStation.controller('zsAdminCtrl', [
                     'id': station.id
                 };
             };
-
+            if (!station.is_out_of_order){
+                $scope.prepForInService();
+            }
             if ($scope.savedSettings.printer) {
                 params.printer = $scope.savedSettings.printer;
             }
