@@ -481,9 +481,16 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                  $scope.qrCodeScanFailed = true;
                  console.warn('scan failed..');
                  $scope.$digest();
-             } else if (info.msg.indexOf(' : ') !== -1){
+             } else if (info.msg.indexOf(' : ') !== -1 &&  info.msg.indexOf('$') === -1){
                  //qr code coming from the samsotech will look like "PR_DF_BC1 : somevalue"
                  var reservationId = info.msg.split(' : ')[1];
+                 if (reservationId){
+                    $state.qr_code = reservationId;
+                     $scope.initQRCodeReservation();
+                }
+             } else if (info.msg.indexOf(' : ') === -1 &&  info.msg.indexOf('$') !== -1){
+                 //qr code coming from the samsotech will look like "PR_DF_BC1 : somevalue"
+                 var reservationId = info.msg.split('$')[1];
                  if (reservationId){
                     $state.qr_code = reservationId;
                      $scope.initQRCodeReservation();
