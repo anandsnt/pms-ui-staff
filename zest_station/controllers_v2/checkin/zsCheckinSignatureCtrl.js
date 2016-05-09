@@ -8,7 +8,8 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
     'zsCheckinSrv',
     'zsModeConstants',
     'zsGeneralSrv',
-    function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv) {
+    'zsUtilitySrv',
+    function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv) {
 
         /**********************************************************************************************
         **      Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -34,6 +35,9 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             $("#signature").jSignature("clear");
         };
 
+        var checkIfEmailIsBlackListedOrValid = function(){
+            return  ($stateParams.email.length> 0 && !($stateParams.guest_email_blacklisted ==='true') && zsUtilitySrv.isValidEmail($stateParams.email));
+        };
 
         /**
          * [afterGuestCheckinCallback description]
@@ -41,17 +45,18 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
          * @return {[type]}          [description]
          */
         var afterGuestCheckinCallback = function(response) {
-            var haveValidGuestEmail = $stateParams.email.length > 0 ? true : false;
-             var stateParams = {
+            //if email is valid and is not blacklisted
+            var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid();
+            var stateParams = {
                     'guest_id': $stateParams.guest_id,
-                    'email': $stateParams.email,
                     'reservation_id': $stateParams.reservation_id,
                     'room_no': $stateParams.room_no,
                     'first_name': $stateParams.first_name
-                }
+            }
 
 
             if (haveValidGuestEmail) {
+                stateParams.email = $stateParams.email;
                 $state.go('zest_station.checkinKeyDispense', stateParams);
             } else {
                 $state.go('zest_station.checkInEmailCollection', stateParams);

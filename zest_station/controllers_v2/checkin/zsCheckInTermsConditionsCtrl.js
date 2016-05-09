@@ -56,7 +56,8 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'reservation_id': $stateParams.reservation_id,
 				'room_no': $stateParams.room_no,
 				'guest_id': $stateParams.guest_id,
-				'first_name': $stateParams.first_name
+				'first_name': $stateParams.first_name,
+				'guest_email_blacklisted': $stateParams.guest_email_blacklisted
 			};
 			$state.go('zest_station.checkInSignature', stateParams);
 		};

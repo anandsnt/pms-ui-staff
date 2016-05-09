@@ -111,6 +111,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 console.log('show signature');
                 $state.go('zest_station.checkInSignature',{
                     'reservation_id':$stateParams.reservation_id,
+                    'guest_id': $stateParams.guest_id,
                     'mode':'SIGNATURE',
                     'payment_type_id':$stateParams.payment_type_id,
                     'room_no':$stateParams.room_no,

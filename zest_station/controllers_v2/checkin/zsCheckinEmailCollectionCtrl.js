@@ -35,7 +35,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             //show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-            $scope.email = $stateParams.email.length > 0 ? $stateParams.email : "";
+            $scope.email = "";
             $scope.mode = "EMAIL_ENTRY_MODE";
         }();
         /**
