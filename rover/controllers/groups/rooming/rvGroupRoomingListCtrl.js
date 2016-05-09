@@ -28,6 +28,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
     $stateParams) {
 
         BaseCtrl.call(this, $scope);
+        $scope.isPrintClicked = false;
+        $scope.isAnyPopupOpen = false;
 
         /**
          * Has Permission To Create group room block
@@ -299,7 +301,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return {undefined} [description]
          */
         $scope.gotoRoomBlockTab = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             $scope.switchTabTo('ROOM_BLOCK');
         };
 
@@ -645,6 +647,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             } else {
 
                 $scope.selected_reservations.push(reservation);
+                //We have to show in the same order - in popup
                 $scope.selected_reservations = _.sortBy($scope.selected_reservations, "confirm_no")
                 $scope.selected_reservations = _.sortBy($scope.selected_reservations, $scope.sorting_field);
                 if($scope.sort_dir === 'DESC'){
@@ -783,6 +786,18 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             runDigestCycle();
             //we changed data, so
             refreshScrollers();
+            // Added to resolve the issue - CICO-23144 - QA comment
+            //updating from one popup not updating in other
+            _.each($scope.selected_reservations, function(eachData, resIndex){
+
+                var reservationIndex = _.findIndex(data.results, {"id": eachData.id})
+                if(reservationIndex != -1){
+                    $scope.selected_reservations[resIndex] = $scope.reservations[reservationIndex];
+                }
+
+            });
+
+
         };
 
 
@@ -1061,7 +1076,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         $scope.closeAutoRoomAssignSuccessPopup = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             //resetting the selected reservations
             $scope.selected_reservations = [];
 
@@ -1101,7 +1116,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         $scope.autoRoomAssignQualifiedReservations = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             $timeout(function() {
                 var params = {
                     group_id: $scope.groupConfigData.summary.group_id,
@@ -1178,7 +1193,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         $scope.closeMassCheckinSuccessPopup = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             //resetting the selected reservations
             $scope.selected_reservations = [];
 
@@ -1218,7 +1233,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         $scope.checkInQualifiedReservations = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             $timeout(function() {
                 var params = {
                     group_id: $scope.groupConfigData.summary.group_id,
@@ -1302,7 +1317,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         $scope.checkOutQualifiedReservations = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             $timeout(function() {
                 var params = {
                     group_id: $scope.groupConfigData.summary.group_id,
@@ -1344,7 +1359,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         $scope.closeMassCheckoutSuccessPopup = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             //resetting the selected reservations
             $scope.selected_reservations = [];
 
@@ -1609,6 +1624,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         var printRoomingList = function() {
+
             //changing the orientation to landscape
             addPrintOrientation();
 
@@ -1644,8 +1660,13 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                         removePrintOrientation();
                         $scope.reservations = util.deepCopy($scope.resevationsBeforePrint);
                         $scope.resevationsBeforePrint = [];
+
                     }, 1200);
+                    $timeout(function() {
+                        $scope.isPrintClicked = false;
+                    }, 200);
                 });
+
 
         };
 
@@ -1672,9 +1693,11 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         var successCallBackOfFetchAllReservationsForPrint = function(data) {
             //if you are looking for where the HELL this list is printing
             //look for "NG_REPEAT_COMPLETED_RENDERING", thanks!!
+            $scope.isPrintClicked = true;
             $scope.resevationsBeforePrint = util.deepCopy($scope.reservations);
             $scope.reservations = data.results;
             $scope.print_type = 'rooming_list';
+
         };
 
         /**
@@ -1700,6 +1723,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 // if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
                 //     $scope.sendEmail($scope.groupConfigData.summary.contact_email);
                 // } else {
+                    $scope.isAnyPopupOpen = true;
                     ngDialog.open({
                         template: '/assets/partials/groups/rooming/popups/general/rvRoomingListEmailPrompt.html',
                         className: '',
@@ -1707,6 +1731,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                         closeByDocument: false,
                         closeByEscape: false
                     });
+
                 // }
             };
             /**
@@ -1714,16 +1739,23 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
              * @return - None
              */
         $scope.sendEmail = function(mailTo) {
+            if(!mailTo){
+                $scope.errorMessage =  ["Please enter email!!"];
+                return;
+            }
+            $scope.errorMessage = "";
             var mailSent = function(data) {
-                    $scope.closeDialog();
+                    $scope.closeDialogBox();
+                    $scope.isAnyPopupOpen = false;
                 },
                 mailFailed = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
-                    $scope.closeDialog();
+                   // $scope.closeDialog();
                 };
             var params = {
                 "to_address": mailTo,
-                "group_id": $scope.groupConfigData.summary.group_id
+                "group_id": $scope.groupConfigData.summary.group_id,
+                "is_include_rate": $scope.groupConfigData.summary.hide_rates
             };
             $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, {
                 successCallBack: mailSent,
@@ -1731,6 +1763,10 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 params: params
             });
         };
+        $scope.closeDialogBox = function(){
+            $scope.closeDialog();
+            $scope.isAnyPopupOpen = false;
+        }
 
         $scope.printRegistrationCards = function() {
             // add the print orientation after printing
