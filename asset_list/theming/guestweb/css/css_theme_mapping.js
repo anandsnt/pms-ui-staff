@@ -49,7 +49,8 @@ module.exports = {
 			'guestweb_beau_mont':[ themeCSSRoot + 'guestweb_beau_mont.css'],
 			'guestweb_kingsley':[ themeCSSRoot + 'guestweb_kingsley.css'],
 			'guestweb_avery':[ themeCSSRoot + 'guestweb_avery.css'],
-			'guestweb_knickerbocker_yacht_club':[ themeCSSRoot + 'guestweb_knickerbocker_yacht_club.css']
+			'guestweb_knickerbocker_yacht_club':[ themeCSSRoot + 'guestweb_knickerbocker_yacht_club.css'],
+			'guestweb_paradise_point':[ themeCSSRoot + 'guestweb_paradise_point.css']
 		}
 	}
 }
