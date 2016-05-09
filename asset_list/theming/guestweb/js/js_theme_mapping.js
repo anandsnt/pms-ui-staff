@@ -48,7 +48,8 @@ module.exports = {
 			'guestweb_boston_park':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_dutch':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_beau_mont':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_beau_mont':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_kingsley':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }

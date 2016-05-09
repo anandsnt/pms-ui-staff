@@ -46,7 +46,8 @@ module.exports = {
 			'guestweb_boston_park':[ themeCSSRoot + 'guestweb_boston_park.css'],
 			'guestweb_hotel_ivrine':[ themeCSSRoot + 'guestweb_hotel_ivrine.css'],
 			'guestweb_dutch':[ themeCSSRoot + 'guestweb_dutch.css'],
-			'guestweb_beau_mont':[ themeCSSRoot + 'guestweb_beau_mont.css']
+			'guestweb_beau_mont':[ themeCSSRoot + 'guestweb_beau_mont.css'],
+			'guestweb_kingsley':[ themeCSSRoot + 'guestweb_kingsley.css']
 		}
 	}
 }
