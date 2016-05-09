@@ -1,19 +1,18 @@
 <!--------------------- select no of keys mode ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_MODE'">
-    <div id="content">
-        <h1 class="no-margin">{{selectedReservation.first_name}}</h2>
-            <h1 translate>PUK_CHKED_IN_MSG</h1>
+   <div id="content">
+        <h2 class="no-margin">{{'CHKED_IN_SUCCESS_HEADER' |translate}} {{selectedReservation.guest_details[0].first_name}}.</h2>
+        <h1>{{'CHKED_IN_SUCCESS_MSG' |translate}}</h1>
         <div id="room" ng-show="zestStationData.show_room_number">
             <span class="number">{{selectedReservation.room}}</span>
         </div>
         <div id="keys">
-            <h2 translate>HOW_MANY_KEYS</h2>
+            <h2>{{'HOW_MANY_KEYS' |translate}}</h2>
             <div id="key-options">
-                <button type="button" class="button" touch-press="makeKeys(1)" translate>UNO_KEY</button>
-                <button type="button" class="button" touch-press="makeKeys(2)" translate>DOS_KEY</button>
+                <button type="button" class="button" touch-press="makeKeys(1)">{{'UNO_KEY' |translate}}</button>
+                <button type="button" class="button" touch-press="makeKeys(2)">{{'DOS_KEY' |translate}}</button>
             </div>
         </div>
-    </div>
     </div>
     <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
 </section>
@@ -56,7 +55,7 @@
     <div id="content">
         <h1 translate>SUCCESS_HDR</h1>
         <h2 translate>GRAB_KEYS</h2>
-        <button type="button" class="button" ng-click="clickedOnCloseButton()" translate>DONE</button>
+        <button type="button" class="button" ng-click="goToNextScreen('success')" translate>DONE</button>
     </div>
 </section>   
 
@@ -73,6 +72,15 @@
                         <div ng-include="icons.url.key"></div>
                     </button>
                     <h1 translate>TRY_AGAIN</h1>
+                </li>
+                <li class="break">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li> 
+                    <button type="button" class="button option" ng-click="goToNextScreen('failed')">
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    <h1 translate>CONTINUE</h1>
                 </li>
                 <li class="break">
                     <span translate>OR_TEXT</span>

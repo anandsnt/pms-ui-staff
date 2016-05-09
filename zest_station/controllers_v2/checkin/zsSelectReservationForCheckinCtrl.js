@@ -6,7 +6,15 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
     'zsCheckinSrv',
     '$stateParams',
     function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams) {
-
+        
+        /**********************************************************************************************
+        **      Please note that, not all the stateparams passed to this state will not be used in this state, 
+        **      however we will have to pass this so as to pass again to future states which will use these.
+        **
+        **      Expected state params -----> guest_id    
+        **      Exit function -> selectReservation                              
+        **                                                                       
+        ***********************************************************************************************/
 
         //This controller is to select checkin reservation from list of reservations.
 
@@ -56,8 +64,8 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             zsCheckinSrv.setCheckInReservations([]);
         };
         var init = function() {
-            //show back button
-            $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+            //hide back button
+            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             //show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             //back button action

@@ -11,6 +11,17 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 	function($scope, $stateParams, $state, zsEventConstants,$controller,$timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv) {
             BaseCtrl.call(this, $scope);
 
+            /**********************************************************************************************
+            **      Please note that, not all the stateparams passed to this state will not be used in this state, 
+            **      however we will have to pass this so as to pass again to future states which will use these.
+            **       
+            **      Expected state params -----> mode, id, guest_id, swipe, guest_email, guest_email_blacklisted, 
+            **      room_no and room_status           
+            **      Exit function -> goToCardSign                              
+            **                                                                       
+            ***********************************************************************************************/
+
+
             /*
              *  Card Signature View - Used for Credit Card or Deposit via Credit Card
              *  
@@ -39,7 +50,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 $state.go('zest_station.checkInCardSwipe',{
                     'mode': 'DEPOSIT',
                     'swipe': 'true',
-                    'id': $stateParams.id,
+                    'id': $stateParams.reservation_id,
                     'room_no':$stateParams.room_no,
                     'room_status':$stateParams.room_status,
                     'guest_email': $stateParams.guest_email,
@@ -99,13 +110,14 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             var goToCardSign = function(){
                 console.log('show signature');
                 $state.go('zest_station.checkInSignature',{
-                    'id':$stateParams.id,
+                    'reservation_id':$stateParams.reservation_id,
+                    'guest_id': $stateParams.guest_id,
                     'mode':'SIGNATURE',
                     'payment_type_id':$stateParams.payment_type_id,
                     'room_no':$stateParams.room_no,
                     'room_status':$stateParams.room_status,
                     'deposit_amount':$stateParams.deposit_amount,
-                    'guest_email':$stateParams.guest_email,
+                    'email':$stateParams.guest_email,
                     'guest_email_blacklisted':$stateParams.guest_email_blacklisted
                     
                 });
@@ -266,7 +278,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 		 */
                 
 		var initializeMe = function() {
-			$controller('zsKeyDispenseCtrl', {$scope: $scope});
+			 BaseCtrl.call(this, $scope);
+             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
                     
 		}();
 
@@ -277,22 +290,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.showDeposit = false;
             
         };
-
-
-		/**
-		 * [Screen navigations]
-		 */
-		
-		var navigateToNextScreen = function(){
-		   
-		};
-
-		/**
-		 * when the back button clicked
-		 */
-		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			
-		});
 
 	}
 ]);

@@ -5,6 +5,12 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
     'zsCheckinSrv',
     function($scope, $state, zsEventConstants, zsCheckinSrv) {
 
+        /**********************************************************************************************
+        **      Expected state params -----> none           
+        **      Exit function -> $scope.goToNext                              
+        **                                                                       
+        ***********************************************************************************************/
+
         BaseCtrl.call(this, $scope);
         /**
          * when the back button clicked
@@ -12,7 +18,8 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
          * @return {[type]}
          */
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-            $state.go('zest_station.checkInReservationSearch');
+            zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
+            $state.go('zest_station.checkInReservationDetails');
         });
 
         $scope.navToPrev = function() {

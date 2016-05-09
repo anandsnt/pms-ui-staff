@@ -4,9 +4,14 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 	'$state',
 	'zsEventConstants',
 	'$timeout',
-	function($scope, $stateParams, $state, zsEventConstants, $timeout) {
+	'zsGeneralSrv',
+	function($scope, $stateParams, $state, zsEventConstants, $timeout, zsGeneralSrv) {
 
-
+		/**********************************************************************************************
+		**		Expected state params -----> none			  
+		**		Exit function -> onSuccessFetchReservation								
+		**																		 
+		***********************************************************************************************/
 
 		var qrScanFailed = function() {
 			$scope.$emit('hideLoader');
@@ -24,12 +29,6 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 			/*
 			 * The Scanned QR-code returns the Reservation_id
 			 *  to lookup the reservation, we need to get the Room No. + Last name
-			 *  then just do the reservation search like normal.
-			 *  
-			 *  Well i am not convinced by above comment, why do we need to find reservation 
-			 *  by room no and last name when we already have reservation id ? 
-			 *  Using that itslef now, as i don't have time --  resheil
-			 *  
 			 */
 			var room_no, last_name;
 
@@ -40,18 +39,12 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				qrScanFailed();
 			};
 			var onSuccessFetchReservation = function(response) {
-
-				console.info(response);
-				room_no = response.data.reservation_card.room_number;
-
-				var onFetchGuestDataSuccess = function(response) {
-					// what is the purpose ????
-					// var options = $scope.getPickupKeyOptions();
-					// $scope.fetchReservations(options);
+				var room_no = response.reservation_card.room_number;
+				var onFetchGuestDataSuccess = function(guest_response) {
 					var stateParams = {
 						'reservation_id': reservation_id,
-						'room_no': response.data.reservation_card.room_number,
-						"first_name": response.primary_guest_details.first_name
+						'room_no': room_no,
+						'first_name': guest_response.primary_guest_details.first_name
 					};
 					$state.go('zest_station.pickUpKeyDispense', stateParams);
 				};
@@ -64,7 +57,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 					successCallBack: onFetchGuestDataSuccess,
 					failureCallBack: onFailureFetchReservation
 				};
-				$scope.callAPI(zsTabletSrv.fetchGuestDetails, options);
+				$scope.callAPI(zsGeneralSrv.fetchGuestDetails, options);
 			};
 
 
@@ -90,7 +83,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
 		var initChromeAppQRCodeScanner = function() {
 			if ($scope.inChromeApp) {
-				new chromeApp($scope.onChromeAppResponse, $scope.zestStationData.chrome_app_id, true);
+				$scope.chromeApp.fetchQRCode();
 				console.info("::Starting QR Code Scanner::");
 			} else {
 				$scope.$emit('showLoader');

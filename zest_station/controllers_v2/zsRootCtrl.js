@@ -42,7 +42,7 @@ sntZestStation.controller('zsRootCtrl', [
 		window.history.pushState("initial", "Showing Landing Page", "#/home");
 
 		$scope.$on('GENERAL_ERROR',function(){
-			$state.go('speakToStaff');
+			$state.go('zest_station.speakToStaff');
 		});
 
 		/**
@@ -405,7 +405,15 @@ sntZestStation.controller('zsRootCtrl', [
 			//find workstation with the local storage data
 			var station = getSavedWorkStationObj(storedWorkStation);
 			if (typeof station === typeof undefined) {
-				return null;
+				$scope.zestStationData.set_workstation_id = "";
+				$scope.zestStationData.key_encoder_id = "";
+				$scope.zestStationData.workstationStatus = "out-of-order";
+				if($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)){
+			        $state.go('zest_station.admin');
+			    }
+			    else{
+			    	//do nothing
+			    }
 			} else {
 				$scope.workstation = {
 					'selected': station
@@ -416,14 +424,36 @@ sntZestStation.controller('zsRootCtrl', [
 				var previousWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
 				$scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
 				var newWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
-				if ($scope.zestStationData.workstationStatus === 'out-of-order') {
-					$state.go('zest_station.outOfService');
+				//if app is invoked from ipad, chrome app etc
+				//don't go to OOS even if workstation status is oos
+				if (!($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad))
+					&& $scope.zestStationData.workstationStatus === 'out-of-order') {
+					if($state.current.name !== 'zest_station.admin'){
+					  $state.go('zest_station.outOfService');
+					}else{
+						//do nothing
+					}
 				} else {
+					//when status is changed from admin
 					if(previousWorkStationStatus === 'out-of-order' && newWorkStationStatus ==='in-order'){
 						$state.go('zest_station.home');
 					}
 					else{
-						//do nothing
+						//if application is launched either in chrome app or ipad go to login page
+			            if($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)){
+			                $state.go('zest_station.admin');
+			            }
+			            else{
+			                //we want to treat other clients are normal, ie need to provide 
+			                //user credentials before accesing admin
+			                $scope.zestStationData.isAdminFirstLogin = false;
+			                if(previousWorkStationStatus === 'out-of-order' && newWorkStationStatus ==='in-order'){
+			                	$state.go('zest_station.home');
+			                }
+			                else{
+			                	//do nothing
+			                }
+			            }
 					}
 				}
 				// set oos reason from local storage
@@ -555,7 +585,7 @@ sntZestStation.controller('zsRootCtrl', [
 		var maximizeScreen = function() {
 			var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
 			console.info("chrome app id [ " + chromeAppId + ' ]');
-			//minimize the chrome app on loging out
+			//maximize the chrome app in the starting
 			(chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, "zest-station-login"): "";
 		};
 		/***
@@ -566,12 +596,12 @@ sntZestStation.controller('zsRootCtrl', [
 			$('body').css('display', 'none'); //this will hide contents until svg logos are loaded
 			//call Zest station settings API
 			$scope.zestStationData = zestStationSettings;
+			$scope.zestStationData.isAdminFirstLogin = true;
 			CheckForWorkStationStatusContinously();
 			$scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;
 			setAUpIdleTimer();
 			$scope.zestStationData.workstationOooReason = "";
 			$scope.zestStationData.workstationStatus = "";
-			$scope.zestStationData.isAdminFirstLogin = true;
 			$scope.zestStationData.wsIsOos = false;
 			$scope.showLanguagePopup = false;
 			$scope.inChromeApp ? maximizeScreen() : "";

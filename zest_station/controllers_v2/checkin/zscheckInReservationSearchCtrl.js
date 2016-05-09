@@ -6,7 +6,15 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 	'zsCheckinSrv',
 	function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv) {
 
-
+		/**********************************************************************************************
+		**		Please note that, not all the stateparams passed to this state will not be used in this state, 
+        **      however we will have to pass this so as to pass again to future states which will use these.
+		**
+        **      Expected state params -----> none    
+        **      Exit function -> checkinVerificationSuccess                              
+        **                                                                       
+        ***********************************************************************************************/
+        
 		//This controller is used for searching reservation using last name
 		//and other optional params
 

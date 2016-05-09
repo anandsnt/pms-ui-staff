@@ -9,6 +9,12 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 	'$filter',
 	function($scope, $stateParams, $state, zsEventConstants, $controller, zsGeneralSrv, $timeout, $filter) {
 
+		/**********************************************************************************************
+		**		Expected state params -----> reservation_id, room_no and first_name'			  
+		**		Exit function -> clickedOnCloseButton- root ctrl function						
+		**																		 
+		***********************************************************************************************/
+
 		/**
 		 *    MODES inside the page
 		 *    
@@ -68,7 +74,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 * we need to set the oos reason message in admin
 		 */
 		var setFailureReason = function(response) {
-			$scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL');
+			$scope.zestStationData.workstationOooReason = $filter('translate')('PICKUP_KEY_FAIL');
 			$scope.zestStationData.workstationStatus = 'out-of-order';
 			onGeneralFailureCase();
 		};
@@ -111,12 +117,12 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 			onGeneralFailureCase();
 		});
 		$scope.$on('SOCKET_FAILED', function() {
-			$scope.zestStationData.wsFailedReason = $filter('translate')('SOCKET_FAILED');
+			$scope.zestStationData.workstationOooReason = $filter('translate')('SOCKET_FAILED');
 			$scope.zestStationData.workstationStatus = 'out-of-order';
 			onGeneralFailureCase();
 		});
 		$scope.$on('DISPENSE_CARD_EMPTY', function() {
-			$scope.zestStationData.wsFailedReason = $filter('translate')('PICKUP_KEY_FAIL_EMPTY');
+			$scope.zestStationData.workstationOooReason = $filter('translate')('PICKUP_KEY_FAIL_EMPTY');
 			$scope.zestStationData.workstationStatus = 'out-of-order';
 			onGeneralFailureCase();
 		});
@@ -137,7 +143,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 					dispenseKey();
 				}
 			} else {
-				onGeneralFailureCase();
+				setFailureReason();
 			}
 		};
 		/**
@@ -173,7 +179,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				params: params,
 				"loader": "none", //to hide loader
 				'successCallBack': onResponseSuccess,
-				'failureCallBack': onGeneralFailureCase
+				'failureCallBack': setFailureReason
 			});
 		};
 

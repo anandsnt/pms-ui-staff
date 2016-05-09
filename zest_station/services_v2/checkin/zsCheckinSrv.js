@@ -166,5 +166,20 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchReservationBalanceDetails = function(params){
+
+            var deferred = $q.defer();
+            url = 'zest_station/reservations/' + params.reservation_id;
+            var param = {
+                "nationality_id": params.nationality_id
+            }
+            zsBaseWebSrv2.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);

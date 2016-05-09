@@ -7,6 +7,12 @@ sntZestStation.controller('zsEmailBillCtrl', [
 	'zsCheckoutSrv',
 	function($scope, $stateParams, $state, zsEventConstants, zsUtilitySrv, zsCheckoutSrv) {
 
+		/***********************************************************************************************
+		**		Expected state params -----> printopted, reservation_id, email and guest_detail_id			  
+		**		Exit functions -> checkOutSuccess							
+		**																		 
+		************************************************************************************************/
+
 
 		/** MODES in the screen
 		*   1.EMAIL_BILL_GUEST_OPTIONS --> two options - send email and edit email
@@ -21,7 +27,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		var initializeMe = function() {
 			BaseCtrl.call(this, $scope);
 			//hide back button
-			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			//hide close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.email = $stateParams.email;
@@ -32,26 +38,6 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			$scope.mode = !!$scope.email ? "EMAIL_BILL_GUEST_OPTIONS" : "EMAIL_BILL_EDIT_MODE";
 
 		}();
-		/**
-		 * when the back button clicked
-		 * @param  {[type]} event
-		 * @return {[type]} 
-		 */
-		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-			var stateParams = {
-					"from": $stateParams.from,
-					"reservation_id": $stateParams.reservation_id,
-					"email": $stateParams.email,
-					"guest_detail_id": $stateParams.guest_detail_id,
-					"has_cc": $stateParams.has_cc,
-					"first_name": $stateParams.first_name,
-					"last_name": $stateParams.last_name,
-					"days_of_stay": $stateParams.days_of_stay,
-					"hours_of_stay": $stateParams.hours_of_stay,
-					"is_checked_out": $stateParams.is_checked_out
-			};
-			$state.go('zest_station.checkoutReservationBill',stateParams);
-		});
 
 		$scope.editEmailAddress = function() {
 			$scope.mode = "EMAIL_BILL_EDIT_MODE";

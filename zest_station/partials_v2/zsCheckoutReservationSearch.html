@@ -1,4 +1,4 @@
-<section id="main" role="main" ng-class="{'centered': mode === 'NO_MATCH'}" click-touch='resetTime()'>
+<section id="main" role="main" class="centered" click-touch='resetTime()' ng-hide="alreadyCheckedOut">
     <!-- last name -->
     <div id="content" ng-show="mode === 'LAST_NAME_ENTRY'">
         <h1 translate>TYPE_LAST</h1>
@@ -14,6 +14,13 @@
     <!-- room number -->
     <div id="content" ng-show="mode === 'ROOM_NUMBER_ENTRY'">
         <h1 translate>NEXT_ROOM_NUMBER</h1>
+         <form class="form" ng-if='showTowers'>
+            <div class="entry">
+                <select ng-model="tower.selected" class="checkout-screen-select-box" ng-change="changedTheSelectedTower()">
+                    <option ng-repeat="tower in towerList" ng-selected="tower.value === tower.selected" value="{{tower.value}}">{{tower.name}}</option>
+                </select>
+            </div>
+        </form>
         <form method="post" class="form">
             <div class="entry input">
                 <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" ng-click="showOnScreenKeyboard('input_text')" ng-model="reservationParams.room_no" enter-press="roomNumberEntered()"/>
@@ -62,4 +69,14 @@
             </ul>
         </nav>
     </div>
+</section>
+
+<!-- user has already checkout -->
+<section id="main" class="centered" role="main" ng-show="alreadyCheckedOut">
+    <div id="content">
+        <h1>{{'USER_CHECKED_OUT_ALRDY_HEADER' |translate}}</h1>
+        <h2 class="nocaps">{{'USER_CHECKED_OUT_ALRDY_SUB' |translate}}</h2>
+        <button type="button" class="button" ng-click="alreadyCheckedOutActions()">{{'USER_CHECKED_OUT_ALRDY_RTN' |translate}}</button>
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
 </section>

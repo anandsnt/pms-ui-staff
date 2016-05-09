@@ -5,6 +5,19 @@
 sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2',
     function($http, $q, zsBaseWebSrv, zsBaseWebSrv2) {
         var that = this;
+
+        this.fetchSettings = function() {
+            var deferred = $q.defer(),
+                url = '/api/hotel_settings/kiosk';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.getDoorLockSettings = function() {
             var deferred = $q.defer(),
                 url = 'api/door_lock_interfaces.json';
@@ -38,6 +51,18 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             }, function(data) {
                 deferred.reject(data);
             });
+            return deferred.promise;
+        };
+
+        this.fetchGuestDetails = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/' + params.id + '/reservations_guest_details';
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
             return deferred.promise;
         };
 

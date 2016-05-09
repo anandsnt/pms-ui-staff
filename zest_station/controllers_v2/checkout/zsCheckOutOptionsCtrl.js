@@ -7,6 +7,12 @@ sntZestStation.controller('zsCheckOutOptionsCtrl', [
 	'$sce', 'zsTabletSrv',
 	function($scope, $state, zsEventConstants,zsModeConstants, $stateParams, $sce, zsTabletSrv) {
 
+		/*********************************************************************************
+		**		Expected state params -----> nothing			  
+		**		Exit functions -> $scope.searchByName and 	$scope.captureKey							
+		**																		 
+		**********************************************************************************/
+
 		BaseCtrl.call(this, $scope);
 
 		$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);

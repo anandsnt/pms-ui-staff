@@ -5,6 +5,13 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 	'$stateParams', 'zsCheckinSrv', '$rootScope', '$window',
 	function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $rootScope, $window) {
 
+		/**********************************************************************************************
+        **      Expected state params -----> guest_id    
+        **      Exit function -> closePopup                              
+        **                                                                       
+        ***********************************************************************************************/
+
+
 		BaseCtrl.call(this, $scope);
 
 		var printActions = function() {
