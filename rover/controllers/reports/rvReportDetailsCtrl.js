@@ -56,7 +56,24 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// 	$scope.refreshSidebarScroll();
 		// };
 
-
+                var setTotalsForCheckinNowReport = function(totals){
+                        var totalsForMobileCheckinNow = [], v;
+                        _.each(totals, function(item) {
+                            if (item.label.indexOf('Conversion')!==-1){
+                                if (typeof item.value == typeof 'str' && item.value.indexOf('%')!=-1){
+                                    v = item.value.split('%')[0]+'%';
+                                } else {
+                                    v = 'N/A';
+                                }
+                            } else if (item.label){
+                                v = parseInt(item.value);
+                            } else {
+                                v = 0;
+                            }
+                            totalsForMobileCheckinNow.push(v);
+                          });
+                        $scope.resultsTotalRow = totalsForMobileCheckinNow;  
+                };
 		// common methods to do things after fetch report
 		var afterFetch = function() {
 			var totals          = $scope.$parent.totals,
@@ -193,6 +210,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['MOBILE_CHECKIN_NOW']:
+                                        $scope.hasReportTotals = true;
+                                        $scope.hasNoResults = false;
+                                        $scope.hasNoTotals = false;
+                                        setTotalsForCheckinNowReport(totals);
 					break;
 				case reportNames['MOBILE_CHECKIN']:
 					break;
