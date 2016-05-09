@@ -585,7 +585,7 @@ sntZestStation.controller('zsRootCtrl', [
 		var maximizeScreen = function() {
 			var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
 			console.info("chrome app id [ " + chromeAppId + ' ]');
-			//minimize the chrome app on loging out
+			//maximize the chrome app in the starting
 			(chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, "zest-station-login"): "";
 		};
 		/***
