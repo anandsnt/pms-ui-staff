@@ -68,20 +68,20 @@ const RateManagerGridViewRootComponent = createClass ({
 
 	leftScrollingEnded() {
 
-		if(this.scrolling && 
-			this.startingScroll_Y_Position > this.leftScroller.y &&
-			Math.abs(this.leftScroller.maxScrollY) * 0.99 < Math.abs(this.leftScroller.y)) {
+		// if(this.scrolling && 
+		// 	this.startingScroll_Y_Position > this.leftScroller.y &&
+		// 	Math.abs(this.leftScroller.maxScrollY) * 0.99 < Math.abs(this.leftScroller.y)) {
 
-			this.scrolling = false;
-			this.props.scrollReachedBottom(this.rightScroller.x, this.rightScroller.scrollerWidth, this.rightScroller.y, this.rightScroller.scrollerHeight);
-		}
-		if(this.scrolling &&
-			this.startingScroll_Y_Position < this.leftScroller.y &&
-			Math.abs(this.leftScroller.maxScrollY) * 0.01 > Math.abs(this.leftScroller.y)) {
+		// 	this.scrolling = false;
+		// 	this.props.scrollReachedBottom(this.rightScroller.x, this.rightScroller.scrollerWidth, this.rightScroller.y, this.rightScroller.scrollerHeight);
+		// }
+		// if(this.scrolling &&
+		// 	this.startingScroll_Y_Position < this.leftScroller.y &&
+		// 	Math.abs(this.leftScroller.maxScrollY) * 0.01 > Math.abs(this.leftScroller.y)) {
 
-			this.scrolling = false;
-			this.props.scrollReachedTop(this.rightScroller.x, this.rightScroller.scrollerWidth, this.rightScroller.y, this.rightScroller.scrollerHeight);
-		}
+		// 	this.scrolling = false;
+		// 	this.props.scrollReachedTop(this.rightScroller.x, this.rightScroller.scrollerWidth, this.rightScroller.y, this.rightScroller.scrollerHeight);
+		// }
 		this.startingScroll_Y_Position = this.leftScroller.y;
 	},
 
@@ -103,23 +103,23 @@ const RateManagerGridViewRootComponent = createClass ({
 
 	rightScrollingEnded() {
 
-		//bottom
-		if(this.scrolling && 
-			this.startingScroll_Y_Position > this.rightScroller.y &&
-			Math.abs(this.rightScroller.maxScrollY) * 0.99 < Math.abs(this.rightScroller.y)) {
+		// //bottom
+		// if(this.scrolling && 
+		// 	this.startingScroll_Y_Position > this.rightScroller.y &&
+		// 	Math.abs(this.rightScroller.maxScrollY) * 0.99 < Math.abs(this.rightScroller.y)) {
 
-			this.scrolling = false;
-			this.props.scrollReachedBottom(this.rightScroller.x, this.rightScroller.scrollerWidth, this.rightScroller.y, this.rightScroller.scrollerHeight);
-		}
+		// 	this.scrolling = false;
+		// 	this.props.scrollReachedBottom(this.rightScroller.x, this.rightScroller.scrollerWidth, this.rightScroller.y, this.rightScroller.scrollerHeight);
+		// }
 
-		//top
-		if(this.scrolling && 
-			this.startingScroll_Y_Position < this.rightScroller.y &&
-			Math.abs(this.rightScroller.maxScrollY) * 0.01 > Math.abs(this.rightScroller.y)) {
+		// //top
+		// if(this.scrolling && 
+		// 	this.startingScroll_Y_Position < this.rightScroller.y &&
+		// 	Math.abs(this.rightScroller.maxScrollY) * 0.01 > Math.abs(this.rightScroller.y)) {
 
-			this.scrolling = false;
-			this.props.scrollReachedTop(this.rightScroller.x, this.rightScroller.scrollerWidth, this.rightScroller.y, this.rightScroller.scrollerHeight);
-		}
+		// 	this.scrolling = false;
+		// 	this.props.scrollReachedTop(this.rightScroller.x, this.rightScroller.scrollerWidth, this.rightScroller.y, this.rightScroller.scrollerHeight);
+		// }
 
 
 		this.startingScroll_Y_Position = this.rightScroller.y;	

@@ -85,7 +85,9 @@ const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 			mode: state.mode,
 			fromDate: state.dates[0],
 			toDate: state.dates[state.dates.length-1],
-			callBackForSingleRateFetch: state.callBacksFromAngular.singleRateViewCallback
+			callBackForSingleRateFetch: state.callBacksFromAngular.singleRateViewCallback,
+			goToPrevPage: state.callBacksFromAngular.goToPrevPage,
+			goToNextPage: state.callBacksFromAngular.goToNextPage
 		};
 	}
 	else if(state.mode === RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
@@ -122,7 +124,9 @@ const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatch
 				})
 			}				
 		},
-		leftListingData: stateProps.leftListingData
+		leftListingData: stateProps.leftListingData,
+		goToPrevPage: stateProps.goToPrevPage,
+		goToNextPage: stateProps.goToNextPage
 	}
 };
 

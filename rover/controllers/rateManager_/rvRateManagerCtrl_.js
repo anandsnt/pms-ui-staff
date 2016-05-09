@@ -542,7 +542,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             clickedOnRoomTypeViewCell,
             clickedOnRoomTypeAndAmountCell,
             allRatesScrollReachedBottom,
-            allRatesScrollReachedTop
+            allRatesScrollReachedTop,
+            goToPrevPage,
+            goToNextPage
         }
     };
 
@@ -1308,6 +1310,37 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             date: successCallBackParameters.date
         };
         showRateRestrictionPopup(data);
+    };
+
+    var goToPrevPage = ()=>{
+        console.log("navigation to previous page");
+        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.UP;
+
+        lastSelectedFilterValues[activeFilterIndex].allRate.currentPage--;
+        if(lastSelectedFilterValues[activeFilterIndex].allRate.currentPage === 0){
+           lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = 1;
+           return;
+        }
+        lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
+        
+        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
+    };
+
+    var goToNextPage = ()=>{
+        console.log("navigation to next page");
+        lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.DOWN;
+
+        lastSelectedFilterValues[activeFilterIndex].allRate.currentPage++;
+        var lastPage = Math.ceil(totalRatesCountForPagination / paginationRatePerPage);
+        //reached last page
+        if( lastSelectedFilterValues[activeFilterIndex].allRate.currentPage > lastPage ) {
+            lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = lastPage;
+            return;
+        }
+
+        lastSelectedFilterValues[activeFilterIndex].fromLeftFilter = false;
+        
+        $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]);
     };
 
     /**
