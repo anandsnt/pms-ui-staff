@@ -669,7 +669,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.refreshActionList = function(del, selected){
             $scope.fetchDepartments();//store this to use in assignments of department
             var onSuccess = function(data){
-                $scope.hotel_time = data.business_date_time;
+                var splitTimeString = data.business_date_time.split("T");
+                $scope.hotel_time = splitTimeString[0] + "T" +  splitTimeString[1].split(/[+-]/)[0];
+
                 var list = data.data;
                 //if doing a refresh, dont replace the actions array, since it will cause the UI to flash
                 //and look like a bug, instead go through the objects and update them
@@ -864,7 +866,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.fetchActionsList = function(){
             $scope.fetchDepartments();//store this to use in assignments of department
             var onSuccess = function(data){
-                $scope.hotel_time = data.business_date_time;
+                var splitTimeString = data.business_date_time.split("T");
+                $scope.hotel_time = splitTimeString[0] + "T" +  splitTimeString[1].split(/[+-]/)[0];
 
                 var list = data.data;
                 var matchObj;
