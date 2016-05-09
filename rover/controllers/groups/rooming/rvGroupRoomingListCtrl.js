@@ -324,7 +324,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          */
         var successCallBackOfFetchRoomingDetails = function(data) {
             var toI = util.convertToInteger;
-            
+
             //adding available room count over the data we got
             $scope.roomTypesAndData = _.map(data.result, function(data) {
                 data.availableRoomCount = toI(data.total_rooms) - toI(data.total_pickedup_rooms);
@@ -396,25 +396,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         var successCallBackOfAddReservations = function(data) {
             $scope.selected_reservations = data.results;
             $scope.updateGroupReservationsGuestData();
-            // $scope.newReservations = [];
-            // _.each(data.results, function(reservation) {
-            //     $scope.newReservations.push(reservation);
-            //     $scope.reservations.unshift(reservation);
-            // });
 
-            // //total result count
-            // $scope.totalResultCount += (data.results.length);
-
-            // //pickup
-            // $scope.totalPickUpCount = data.total_pickup_count;
-
-            // //we changed data, so
-            // refreshScrollers();
-
-            // //rooming data will change after adding some reservation
-            // $scope.fetchRoomingDetails();
-            // //check for default charge routings
-            // checkDefaultChargeRoutings();
         };
 
         /**
@@ -785,6 +767,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          */
         var successCallBackOfFetchReservations = function(data) {
             $scope.reservations = data.results;
+
 
             //total result count
             $scope.totalResultCount = data.total_count;
@@ -1614,16 +1597,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
         }());
 
-    	/**
-    	 * event exposed for other (mainly for children) controllers to update the data
-    	 */
-    	$scope.$on("REFRESH_GROUP_ROOMING_LIST_DATA", function (event) {
-    		//calling initially required APIs
-            callInitialAPIs();
-    	});
-        $scope.$on("REFRESH_GROUP_ROOMING_LIST_WITH_UPDATES", function (event) {
-            initializeMe();
-        });
+
 
         $scope.checkoutReservation = function(reservation) {
             //  It navigates to the Guest Bill for the selected record.
@@ -1930,6 +1904,16 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 }, 10);
             }
         }();
+
+
+        /**
+         * event exposed for other (mainly for children) controllers to update the data
+         */
+        $scope.$on("REFRESH_GROUP_ROOMING_LIST_DATA", function (event) {
+            //calling initially required APIs
+            callInitialAPIs();
+        });
+
 
     }
 ]);

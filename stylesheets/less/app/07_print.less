@@ -983,6 +983,10 @@ table {
                                 border-bottom:1px solid @grey2;
                                 padding: 4pt 4pt 4pt 0;
 
+                                &.charge-description {
+                                    padding-right:8pt;
+                                }
+
                                 &:last-child {
                                     padding-right: 4pt;
                                 }
@@ -1015,6 +1019,10 @@ table {
                             clear: both;
                             content: '';
                         }
+                    }
+
+                    .statement-header-text {
+                        text-align:center;
                     }
 
                     .invoice-header {
@@ -1074,6 +1082,7 @@ table {
 
                             &:first-child {
                                 text-align: left;
+                                padding-left: 4pt;
                             }
                         }
                         

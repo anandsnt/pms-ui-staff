@@ -80,9 +80,8 @@ let convertSingleRateRoomTypesDataForLeftListing = (roomTypes, expandedRows) => 
 
 const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 	if(state.mode === RM_RX_CONST.RATE_VIEW_MODE) {
-		let actualRateList = state.list.slice(1, state.list.length); //first index contains all restrcition for all rates
 		return {
-			leftListingData: convertRatesDataForLeftListing(actualRateList),
+			leftListingData: convertRatesDataForLeftListing(state.list),
 			mode: state.mode,
 			fromDate: state.dates[0],
 			toDate: state.dates[state.dates.length-1],
@@ -90,15 +89,13 @@ const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 		};
 	}
 	else if(state.mode === RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
-		let actualRoomTypeList = state.list.slice(1, state.list.length); //first index contains all restrcition for all room types
 		return {
-			leftListingData: convertRoomTypesDataForLeftListing(actualRoomTypeList)
+			leftListingData: convertRoomTypesDataForLeftListing(state.list)
 		};
 	}
 	else if(state.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
-		let actualRoomTypeList = state.list.slice(1, state.list.length); //first index contains all restrcition for all room types
 		return {
-			leftListingData: convertSingleRateRoomTypesDataForLeftListing(actualRoomTypeList, state.expandedRows),
+			leftListingData: convertSingleRateRoomTypesDataForLeftListing(state.list, state.expandedRows),
 			mode: state.mode
 		};
 	}	

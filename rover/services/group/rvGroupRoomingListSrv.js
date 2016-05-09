@@ -44,7 +44,7 @@ angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrv
 		 */
 		this.fetchReservations = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/group_reservations/' + params.group_id + 'list';
+				url = '/api/group_reservations/' + params.group_id + '/list';
 
 			var data = $.extend(
 				{},
@@ -54,7 +54,7 @@ angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrv
 				}
 			);
 
-			var keys = ['sorting_field', 'sort_dir' 'arrival_date', 'dep_date', 'query', 'exclude_cancel', 'show_pending_only'];
+			var keys = ['sorting_field', 'sort_dir', 'arrival_date', 'dep_date', 'query', 'exclude_cancel', 'show_pending_only'];
 
 			_.each(keys, function(key) {
 				if ( typeof params[key] !== typeof true && !! params[key] ) {

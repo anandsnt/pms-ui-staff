@@ -31,6 +31,7 @@ sntZestStation.controller('zsFindByNoOfNightsCtrl', [
         };
 
         $scope.nextButtonClicked = function() {
+            $scope.hideKeyboardIfUp();
             if ($scope.input.inputTextValue === '') {
                 return;
             }
