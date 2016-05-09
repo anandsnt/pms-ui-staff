@@ -33,4 +33,21 @@ angular.module('sntRover').service('RVCCAuthorizationSrv', ['$http', '$q', 'RVBa
 			return deferred.promise;
 		};
 
+
+		/**
+		* Performs the release of already authorized ones
+		* @param {Object} - contain payment_method_id.
+		* @return {Promise} - After resolving it will return promise.
+		*/
+		this.releaseAuthorization = function(param) {
+			var deferred = $q.defer();
+			var url = '/api/cc/reverse';
+			rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
 }]);

@@ -119,7 +119,7 @@
             <div class="entry full-width with-button">
                 <label for="group-rate" translate>RATE</label>
                 <div class="select">
-                    <select id="group-rate" ng-model="groupConfigData.summary.rate" iscroll-stop-propagation ng-change="onRateChange()" ng-disabled="isInStaycardScreen()">
+                    <select id="group-rate" ng-model="groupConfigData.summary.rate" iscroll-stop-propagation ng-change="onRateChange()" ng-disabled="shouldDisableRateChange()">
                         <optgroup>Group Rates</optgroup>
                         <option value="" ng-if="!groupConfigData.summary.rate" selected>Select Rate</option>
                         <option value="-1" ng-selected="groupConfigData.summary.rate == -1">Custom Rate</option>

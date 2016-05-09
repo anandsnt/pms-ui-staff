@@ -538,6 +538,8 @@ sntZestStation.controller('zsHomeCtrl', [
         $state.earlyCheckinPurchased = false;
         $scope.zestStationData.is_early_prepaid = false;
         
+        $state.hasAutoPrinted = false;
+        
         $state.qr_code = null;
         $state.search = false;
         //for change into default language after 120sec

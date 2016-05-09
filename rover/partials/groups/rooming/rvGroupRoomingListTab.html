@@ -47,7 +47,7 @@
             <div class="entry date-range">
                 <div class="has-datepicker">
                     <label for="rooming-date-from" translate>FROM</label>
-                    <button class="clear-query" ng-class="{'visible': !isEmpty(fromDate.toString())}" ng-click="clearFromDate()">
+                    <button class="clear-query" ng-class="{'visible': !isEmpty(fromDate.toString())}" ng-click="clearDate('fromDate')">
                         <!-- Add class "visible" when date is selected -->
                         <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
                     </button>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="has-datepicker">
                     <label for="rooming-date-to" translate>TO</label>
-                    <button class="clear-query" ng-class="{'visible': !isEmpty(toDate.toString())}" ng-click="clearToDate()">
+                    <button class="clear-query" ng-class="{'visible': !isEmpty(toDate.toString())}" ng-click="clearDate('toDate')">
                         <!-- Add class "visible" when date is selected -->
                         <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
                     </button>
@@ -67,12 +67,11 @@
             </div>
         </div>
     <ul class="totals">
-            <li>
-                <div class="data">
-                    <span class="label">{{'GROUP_PICKED_UP'|translate}}</span>
-                    <span class="value">{{totalPickUpCount}}</span>
-                </div>
-            </li>
+        <li>
+            <div class="data">
+                <span class="label">{{'GROUP_PICKED_UP'|translate}}</span>
+                <span class="value">{{totalPickUpCount}}</span>
+            </div>
         </li>
         <li ng-show="shouldShowCheckInCheckoutButton()">
 
@@ -96,9 +95,18 @@
                 {{'GROUP_AUTO_ASSIGN_ROOMS'|translate}}
             </button> <!-- Replace class "grey" with "brand-colors" when rooms selected in the rooming list -->
         </li>
-        <li> 
+        <!-- Don't show this <li> if there are no rooms selected -->
+         <li>
+             <!-- This button opens modal ../modals/rooming-list/add-or-edit.html -->
+            <button type="button" ng-class="{'grey': shouldDisableAutoRoomAssignButton(), 'brand-colors': !shouldDisableAutoRoomAssignButton()}" ng-disabled="shouldDisableAutoRoomAssignButton()" class="button purple" ng-click="updateGroupReservationsGuestData()">Edit Names</button>
+        </li>
+        <li>
             <!-- Don't show if there are no rooms in the rooming list -->
-            <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked': groupConfigData.summary.hide_rates }">
+            <button type="button" ng-click="sendRoomingList()" class="button with-icon blue email-print">
+                <span class="icons icon-invoice"></span>
+                Email/Print
+            </button>
+           <!--  <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked': groupConfigData.summary.hide_rates }">
                 <span class="icon-form icon-checkbox" ng-class="{ 'checked':groupConfigData.summary.hide_rates }"></span>
                 <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
                 {{ 'DONT_PRINT_RATE' | translate }}
@@ -111,9 +119,9 @@
             <button type="button" class="button blue with-icon only-icon" ng-hide="reservations.length ==0" ng-click="fetchReservationsForPrintingRoomingList()">
                 <span class="icons icon-print"></span>
                 {{'GROUP_PRINT'|translate}}
-            </button>
-            <button type="button" class="batch button with-icon" ng-click="printRegistrationCards();" 
-                    ng-class="{'grey' : totalPickUpCount < 1,'brand-colors' : totalPickUpCount > 0}" 
+            </button> -->
+            <button type="button" class="batch button with-icon" ng-click="printRegistrationCards();"
+                    ng-class="{'grey' : totalPickUpCount < 1,'brand-colors' : totalPickUpCount > 0}"
                     ng-disabled="totalPickUpCount < 1">
                     <span class="icons icon-print"></span> {{'GROUP_BATCH'|translate}}
                 </button>
@@ -123,6 +131,58 @@
             </button>
         </li>
     </ul>
+    <div class="search-form search-bar">
+        <div class="entry search">
+            <!-- add class .visible when search text has been entered -->
+            <button class="clear-query" ng-class="{'visible': query.length}" ng-click="clearQuery()">
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <button type="submit" name="submit" class="icons icon-search">
+                Search
+            </button>
+            <input class="query" placeholder="Search by Name, Room No. or Confirmation No." type="search" autocomplete="off" ng-model="query" ng-keyup="debounceFetchReservations()" />
+        </div>
+        <div class="entry date-range">
+            <div class="has-datepicker">
+                <label for="group-filter-arrival-form-id">
+                    <span class="green" translate>ARRIVAL</span> {{'ON'|translate}}
+                </label>
+                <!-- add class .visible when there is a date -->
+                <button class="clear-query" ng-class="{'visible': !isEmpty(arrival_date.toString())}" ng-click="clearDate('arrival_date')">
+                    <span class="icons icon-clear-search">Clear query</span>
+                </button>
+                <input id="group-filter-arrival-form-id" type="text" class="range-datepicker" readonly rv-clear-text-box listen-this="arrival_date" ui-date="fromDateOptions" ng-model="arrival_date" value="{{arrival_date|date:dateFormat}}" ng-change="fetchReservations()" />
+            </div>
+            <div class="has-datepicker">
+                <label for="group-filter-departure-form-id">
+                    <span class="red" translate>DEPARTURE</span> {{'ON'|translate}}
+                </label>
+                <!-- add class .visible when there is a date -->
+                <button class="clear-query" ng-class="{'visible': !isEmpty(dep_date.toString())}" ng-click="clearDate('dep_date')">
+                    <span class="icons icon-clear-search">Clear query</span>
+                </button>
+                <input id="group-filter-departure-form-id" type="text" class="range-datepicker" readonly rv-clear-text-box listen-this="dep_date" ui-date="toDateOptions" ng-model="dep_date" value="{{dep_date|date:dateFormat}}" ng-change="fetchReservations()" />
+            </div>
+        </div>
+        <div class="entry has-checkboxes">
+            <!-- add .checked when checked -->
+            <label class="checkbox inline" ng-class="{'checked': show_pending_only}">
+                <!-- add .checked when checked -->
+                <span class="icon-form icon-checkbox" ng-class="{'checked': show_pending_only}"></span>
+                <!-- add attribute checked="checked" when checked -->
+                <input type="checkbox" value="pending-only" ng-model="show_pending_only" ng-change="fetchReservations()" />
+                <span translate>PENDING_ONLY</span>
+            </label>
+            <!-- add .checked when checked -->
+            <label class="checkbox inline" ng-class="{'checked': exclude_cancel}">
+                <!-- add .checked when checked -->
+                <span class="icon-form icon-checkbox" ng-class="{'checked': exclude_cancel}"></span>
+                <!-- add attribute checked="checked" when checked -->
+                <input type="checkbox" value="exclude-cancelled" ng-model="exclude_cancel" ng-change="fetchReservations()" />
+                <span translate>EXCLUDE_CANCELLED</span>
+            </label>
+        </div>
+    </div>
 </div>
 
 <div id="group-room-list-content" class="tab-details" ng-class="{'no-print' : isPrintRegistrationCard}">
@@ -135,12 +195,12 @@
             <span class="h2">{{'GROUP_ADD_RESERVATIONS_TO_ROOMING_LIST'|translate}}</span>
         </div>
     </div>
-    
+
     <!-- Rooming List Header -->
     <ul class="rooming-list-header" ng-show="!shouldShowNoReservations()">
         <li class="check">
-            <label class="checkbox inline" for="rooming-list-all" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}"> 
-                <span class="icon-form icon-checkbox" 
+            <label class="checkbox inline" for="rooming-list-all" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}">
+                <span class="icon-form icon-checkbox"
                     ng-class="{'checked': whetherAllReservationsSelected(), 'semi-checked': whetherReservationsArePartiallySelected()}"></span> <!-- Add class "checked" if checked or all items in rooming list are selected. Add class "semi-checked" (and make sure it has no class "checked") when not all items in the rooming list are selected -->
                 <input id="rooming-list-all" ng-disabled="!!groupConfigData.summary.is_cancelled" type="checkbox" ng-click="selectOrUnSelectAllReservation()" />
             </label>
@@ -166,7 +226,7 @@
     </div>
 
     <!-- Rooming List Content -->
-    <div id="rooming-grid" class="rooming-grid scrollable" 
+    <div id="rooming-grid" class="rooming-grid scrollable"
         ng-show="!shouldShowNoReservations()"
         ng-class="{'with-pagination': shouldShowPagination()}"
         ng-iscroll="rooming_list" ng-iscroll-delay="100"> <!-- Add class "with-pagination" if pagination is used -->
@@ -175,7 +235,7 @@
             <li class="reservation rooming-list" ng-repeat="reservation in reservations" ngrepeatend>
 
                 <div class="check">
-                    <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}"> 
+                    <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}">
                         <span class="icon-form icon-checkbox" ng-class="{'checked': isReservationInSelectedReservation(reservation)}"></span> <!-- Add class "checked" if checked -->
                         <input id="guest-id" value="{Guest}" type="checkbox" ng-click="addOrRemoveFromSelectedReservation(reservation)" ng-disabled="!!groupConfigData.summary.is_cancelled">
                     </label>
@@ -183,24 +243,24 @@
                 <a ng-click="clickedOnReservation(reservation)">
                     <div class="data">
                         <h2 ng-show="!isGuestBlank(reservation)">
-                            {{reservation.lastname}}, {{reservation.firstname}}
+                            <span ng-bind-html="escapeNull(reservation.lastname)|highlight:query:false"></span>, <span ng-bind-html="escapeNull(reservation.firstname)|highlight:query:false"></span>
                         </h2>
-                            <h2 ng-show="isGuestBlank(reservation)">
+                        <h2 ng-show="isGuestBlank(reservation)">
                             <!-- If new room, show this instead: -->
                             <span class="highlight">{{'GROUP_PENDING'|translate}}</span>
                         </h2>
                         <span class="room" ng-show="!isRoomUnAssigned(reservation)">
                             <!-- Add class "unassigned" if new room -->
+
                             {{'GROUP_ROOM'|translate}} 
-                            <span ng-class="getRoomStatusClass(reservation)">
-                                {{reservation.room_no}}
-                            </span>
+                            <span ng-class="getRoomStatusClass(reservation)" ng-bind-html="escapeNull(reservation.room_no)|highlight:query:false"></span>
+
                             <!-- If new room, show this instead: Unassigned -->
                         </span>
                             <span class="room unassigned" ng-show="isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
-                           {{'GROUP_UNASSIGNED'|translate}} 
+                           {{'GROUP_UNASSIGNED'|translate}}
                         </span> |
-                            <span class="confirmation">{{reservation.confirm_no}}</span>
+                            <span class="confirmation" ng-bind-html="escapeNull(reservation.confirm_no)|highlight:query:false"></span>
                         </div>
                         <div class="reservation-info">
                             <div class="arrival-departure">
@@ -218,7 +278,7 @@
                         </div>
                         <div class="rate">
                             {{reservation.room_rate_amount}}
-                        </div>                        
+                        </div>
                         <div class="reservation-status">
                             <!-- No status if it's a new room -->
                             <span class="guest-status" ng-class="getReservationClass(reservation.reservation_status)">{{reservation.reservation_status}}</span>
