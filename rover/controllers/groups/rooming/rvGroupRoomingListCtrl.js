@@ -1728,10 +1728,10 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
         };
         /**
-         * Function to pop up for mail Rooming list.
+         * Function to pop up for print/mail option Rooming list.
          * @return - None
          */
-        $scope.sendRoomingList = function() {
+        $scope.openEmailPrintPopup = function() {
                 // if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
                 //     $scope.sendEmail($scope.groupConfigData.summary.contact_email);
                 // } else {
@@ -1767,7 +1767,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             var params = {
                 "to_address": mailTo,
                 "group_id": $scope.groupConfigData.summary.group_id,
-                "is_include_rate": $scope.groupConfigData.summary.hide_rates
+                "is_include_rate": !$scope.groupConfigData.summary.hide_rates
             };
             $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, {
                 successCallBack: mailSent,

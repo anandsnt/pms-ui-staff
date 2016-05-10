@@ -18,12 +18,12 @@
                 <label for="first-guest-first-name">Accompanying Guest(s)</label>
                 <div ng-repeat="accompanying_guest in ngDialogData.accompanying_guests_details">
                     <div class="entry margin" >
-                        <input id="first-guest-first-name" placeholder="First Name" value="{{accompanying_guest.first_name}}" type="text" ng-model="accompanying_guest.first_name" />
+                        <input id="first-guest-first-name" placeholder="First Name" value="{{accompanying_guest.first_name}}" type="text" ng-model="accompanying_guest.first_name" ng-disabled="shouldDisableNameField(ngDialogData)"/>
                     </div>
                     <div class="entry">
                         <input id="first-guest-last-name" placeholder="Last Name"
                         value="{{accompanying_guest.last_name}}" type="text"
-                        ng-model="accompanying_guest.last_name" />
+                        ng-model="accompanying_guest.last_name" ng-disabled="shouldDisableNameField(ngDialogData)"/>
                     </div>
                 </div>
 
