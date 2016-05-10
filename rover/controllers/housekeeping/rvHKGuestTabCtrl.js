@@ -7,7 +7,8 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 	'$filter',
 	'rvPermissionSrv',
 	'ngDialog',
-	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, $filter, rvPermissionSrv, ngDialog) {
+	'$timeout',
+	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, $filter, rvPermissionSrv, ngDialog, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 		// keep ref to room details in local scope
@@ -102,6 +103,16 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 		$scope.changeHouseKeepingStatus = function() {
 			var success = function(data) {
 				$scope.$emit('hideLoader');
+
+				$timeout(function() {
+					$state.go('rover.housekeeping.roomDetails', {
+						id: $scope.roomDetails.id
+					}, {
+						reload: true
+					});
+
+					// $state.reload($state.current.name);
+				}, 100);
 			};
 
 			var error = function(error) {
@@ -113,7 +124,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 			};
 
 			var data = {
-				room_no: $scope.roomDetails.current_room_no
+				room_no: $scope.roomDetails.id
 			};
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.changeHouseKeepingStatus, data, success, error);
