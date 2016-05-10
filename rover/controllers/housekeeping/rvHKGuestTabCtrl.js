@@ -124,7 +124,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 			};
 
 			var data = {
-				room_no: $scope.roomDetails.id
+				id: $scope.roomDetails.id
 			};
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.changeHouseKeepingStatus, data, success, error);
