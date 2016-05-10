@@ -16,7 +16,6 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
                 });
                 return $scope.$parent.selectedLanguage;
             }
-            $scope.zestStationData.zest_lang.default_language = "French";
             //if some default language is set and corresposnding file is updated
             if (!!$scope.zestStationData.zest_lang.default_language) {
                 $scope.zestStationData.zest_lang.default_language = $scope.zestStationData.zest_lang.default_language;
