@@ -32,10 +32,10 @@
                     <div class="faux-anchor has-arrow toggle" ng-class="{'active': selectedReservations.isOpenAccompanyingGuest}" ng-click="toggleAccompanyingGuest($index)">
                         <div class="guest-name">
                             <div class="entry margin">
-                                <input type="text" placeholder="First Name" value="{{selectedReservations.firstname}}" ng-model="selectedReservations.firstname" ng-click="childClick()">
+                                <input type="text" placeholder="First Name" value="{{selectedReservations.firstname}}" ng-model="selectedReservations.firstname" ng-click="childClick()" ng-disabled="isDataEditable(selectedReservations)">
                             </div>
                             <div class="entry">
-                                <input type="text" placeholder="Last Name" value="{{selectedReservations.lastname}}" ng-model="selectedReservations.lastname">
+                                <input type="text" placeholder="Last Name" value="{{selectedReservations.lastname}}" ng-model="selectedReservations.lastname" ng-disabled="isDataEditable(selectedReservations)">
                             </div>
                         </div>
                         <div class="arrival-departure">
@@ -65,10 +65,10 @@
                             <label>Accompanying Guest(s)</label>
                             <span ng-repeat="accompanyingGuest in selectedReservations.accompanying_guests_details">
                                 <div class="entry margin">
-                                    <input placeholder="First Name" value="{{accompanyingGuest.first_name}}" type="text" ng-model="accompanyingGuest.first_name">
+                                    <input placeholder="First Name" value="{{accompanyingGuest.first_name}}" type="text" ng-model="accompanyingGuest.first_name" ng-disabled="isDataEditable(selectedReservations)">
                                 </div>
                                 <div class="entry">
-                                    <input placeholder="Last Name" value="{{accompanyingGuest.last_name}}" type="text" ng-model="accompanyingGuest.last_name">
+                                    <input placeholder="Last Name" value="{{accompanyingGuest.last_name}}" type="text" ng-model="accompanyingGuest.last_name" ng-disabled="isDataEditable(selectedReservations)">
                                 </div>
                             </span>
 

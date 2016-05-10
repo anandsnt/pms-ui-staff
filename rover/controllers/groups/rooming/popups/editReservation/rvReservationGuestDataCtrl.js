@@ -99,6 +99,17 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
         $scope.closeDialog();
         $scope.$emit("REFRESH_GROUP_ROOMING_LIST_DATA");
     };
+    /*
+     * check reservation status
+     */
+    $scope.isDataEditable = function(reservation) {
+        var rStatus = reservation.reservation_status;
+        var isDisabled = false;
+        if(rStatus === "CANCELED"){
+            isDisabled = true;
+        }
+        return isDisabled;
+    };
 
 
 
