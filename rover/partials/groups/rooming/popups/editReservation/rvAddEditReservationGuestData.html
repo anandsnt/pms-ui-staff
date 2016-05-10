@@ -1,6 +1,6 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
     <div class="modal-content form group-guest-rooms " >
-        <button id="modal-close" type="button" class="modal-close"  ng-click="closeDialog()">
+        <button id="modal-close" type="button" class="modal-close"  ng-click="refreshScreenWithNewReservations()">
         <span class="icons icon-close invert"></button>
 
 
@@ -81,7 +81,7 @@
 
         <!-- Actions -->
         <div class="actions">
-            <button type="button" class="button blank"  ng-click="closeDialog()">Cancel</button>
+            <button type="button" class="button blank"  ng-click="refreshScreenWithNewReservations()">Cancel</button>
             <button type="button" class="button green" ng-click="updateCompleteGuestData()">Save</button>
         </div>
     </div>

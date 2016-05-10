@@ -91,6 +91,14 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
         $scope.callAPI(rvGroupRoomingListSrv.updateGuestData, options);
 
     };
+    /*
+     * Even the screen is cancelled. We have to create the reservations.
+     * CICO-23144
+     */
+    $scope.refreshScreenWithNewReservations = function(){
+        $scope.closeDialog();
+        $scope.$emit("REFRESH_GROUP_ROOMING_LIST_DATA");
+    };
 
 
 
