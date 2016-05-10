@@ -3,7 +3,7 @@
     	<button ng-click="closeDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <fieldset class="content-left">
-            <strong class="h2 message" translate>CREDIT_CARDS</strong>
+            <strong class="h2 message" translate>CREDIT_CARD_AUTHORIZATION</strong>
             <div class="credit-cards scrollable" ng-iscroll='cardsList' ng-iscroll-delay='300'>
                 <ul class="wrapper">
                     <li ng-click="selectCCforAuth($index)" class="block-item item-payment" ng-class="{ 'item-active' : card.active }" ng-repeat="card in authData.billData">
@@ -102,7 +102,7 @@
                  <img ng-src="/assets/images/{{selectedCardData.card_code | lowercase }}.png" alt="" />
             </figure>
             <span class="number">{{ 'NO.' | translate }}
-                <span class="value">{{selectedCardData.last_authorization.card_number}}</span>
+                <span class="value">{{selectedCardData.card_number}}</span>
             </span>
             <span class="code">{{ 'CODE' | translate }}
                 <span class="value">{{selectedCardData.last_authorization.code}}</span>
