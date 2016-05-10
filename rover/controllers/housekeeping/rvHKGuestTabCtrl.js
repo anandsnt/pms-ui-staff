@@ -99,6 +99,26 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 			$scope.invokeApi(RVHkRoomDetailsSrv.updateHKStatus, data, callback);
 		};
 
+		$scope.changeHouseKeepingStatus = function() {
+			var success = function(data) {
+				$scope.$emit('hideLoader');
+			};
+
+			var error = function(error) {
+				if ( !!error && error.hasOwnProperty('errors') ) {
+					$scope.message = error.errors[0];
+				}
+
+				$scope.$emit('hideLoader');
+			};
+
+			var data = {
+				room_no: $scope.roomDetails.current_room_no
+			};
+
+			$scope.invokeApi(RVHkRoomDetailsSrv.changeHouseKeepingStatus, data, success, error);
+		};
+
 		var init = function(){
 			var currentStatus = $scope.roomDetails.current_room_reservation_status;
 			switch(currentStatus) {
