@@ -27,8 +27,9 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             }, getBindabaleAction = function (response) {
                 var action = angular.copy(response);
                 action.department = action.assigned_to && action.assigned_to.id || "";
+                var splitDueTimeString = action.due_at_str.split("T");
                 action.dueDate = dateFilter(action.due_at_str, $rootScope.dateFormatForAPI);
-                action.dueTime = dateFilter(action.due_at_str, "HH:mm");
+                action.dueTime = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm");
                 return action;
             },
             getActionDetails = function () {

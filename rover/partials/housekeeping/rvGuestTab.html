@@ -1,7 +1,18 @@
 <div ng-controller="RVHKGuestTabCtrl">
+  <div class="room-actions">
+    <div class="select">
+      <select id="front-office-status" name="front-office-status" disabled ng-hide="true">
+        <option value="arrival">Arrival</option>
+        <option value="arrived">Arrived</option>
+        <option value="due-out">Due Out</option>
+        <option value="departed">Departed</option>
+        <option value="stayover">Stayover</option>
+      </select>
+    </div>
+  </div>
 
   <!-- 1.A Guest Tab - Room vacant, not queued -->
-  <div class="no-content" ng-if="roomDetails.is_occupied == 'false'">
+  <div class="room-content no-content" ng-if="roomDetails.is_occupied == 'false'">
     <div class="info">
       <span class="icon-no-content icon-room"></span>
       <strong class="h1" translate>ROOM_IS_VACANT</strong>
@@ -18,17 +29,6 @@
   </div> -->
 
   <!-- 1.C Guest Tab - Room Occupied -->
-  <div class="room-actions">
-    <div class="select">
-      <select id="front-office-status" name="front-office-status" disabled ng-hide="true">
-        <option value="arrival">Arrival</option>
-        <option value="arrived">Arrived</option>
-        <option value="due-out">Due Out</option>
-        <option value="departed">Departed</option>
-        <option value="stayover">Stayover</option>
-      </select>
-    </div>
-  </div>
   <div class="room-content scrollable" ng-if="roomDetails.is_occupied == 'true'">
     <div class="wrapper">
       <strong class="h2">
@@ -51,4 +51,11 @@
     </div>
   </div>
 
+  <div class="entry actions">
+      <div class="action">
+          <button type="button" class="button white with-icon only-icon" ng-click="changeHouseKeepingStatus()" style="margin: 0 auto; display: block;">
+              <span class="icons icon-reset"></span>
+          </button>
+      </div>
+  </div>
 </div>
