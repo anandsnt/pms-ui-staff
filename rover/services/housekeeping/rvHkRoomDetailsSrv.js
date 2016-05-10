@@ -255,7 +255,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 
 		this.changeHouseKeepingStatus = function(params) {
 			var deferred = $q.defer(),
-				url = 'house/change_house_keeping_status.json';
+				url = 'house/change_fo_status.json';
 
 			RVBaseWebSrv.postJSON(url, params)
 				.then(function(data) {
