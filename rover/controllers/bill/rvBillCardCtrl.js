@@ -394,6 +394,14 @@ sntRover.controller('RVbillCardController',
                 } else {
                     $scope.putInQueue = false;
                 }
+
+		if ($rootScope.advanced_queue_flow_enabled && $rootScope.queuedCheckIn) {
+			if ($scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "CC") {
+				isAlreadyShownPleaseSwipeForCheckingIn = true;
+			}
+			$scope.saveData.termsAndConditions = true;
+		}
+
 		/*
 		 * Adding billValue and oldBillValue with data. Adding with each bills fees details
 		 * To handle move to bill action
