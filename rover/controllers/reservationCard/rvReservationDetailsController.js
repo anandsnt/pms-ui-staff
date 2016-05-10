@@ -581,7 +581,7 @@ sntRover.controller('reservationDetailsController',
 
 			var not_hourly_reservation = ! is_hourly_reservation,
 				checking_in_reserved   = {'CHECKING_IN': true, 'RESERVED': true}[reservation_status],
-				group_checked_in       = {'CHECKEDIN': true}[reservation_status] && !! group_id;
+				group_checked_in       = {'CHECKEDIN': true, 'CHECKING_OUT': true}[reservation_status] && !! group_id;
 
 			isStayDatesChangeAllowed = false;
 

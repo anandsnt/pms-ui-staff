@@ -18,7 +18,7 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
             eachData.isOpenAccompanyingGuest = false;
             var cnt = 0;
             angular.forEach(eachData.accompanying_guests_details, function(value, key) {
-              if(value.first_name !== "" && value.first_name !== null){
+              if((value.first_name !== "" && value.first_name !== null) || (value.last_name !== "" && value.last_name !== null) ){
                   cnt = cnt + 1;
               }
         });
@@ -98,6 +98,17 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
     $scope.refreshScreenWithNewReservations = function(){
         $scope.closeDialog();
         $scope.$emit("REFRESH_GROUP_ROOMING_LIST_DATA");
+    };
+    /*
+     * check reservation status
+     */
+    $scope.isDataEditable = function(reservation) {
+        var rStatus = reservation.reservation_status;
+        var isDisabled = false;
+        if(rStatus === "CANCELED"){
+            isDisabled = true;
+        }
+        return isDisabled;
     };
 
 
