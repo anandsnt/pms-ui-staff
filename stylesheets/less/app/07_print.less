@@ -1743,6 +1743,22 @@ table {
                         }
                     }
                 }
+
+                &.deposit-balance-summary {
+                    table-layout: fixed;
+                    margin-bottom: 16pt;
+
+                    thead {
+                        th {
+                            &:nth-child(1) { .calc-width(75, 255);  }
+                            &:nth-child(2) { width: 100px; }
+                            &:nth-child(3) { width: 170px; }
+                            &:nth-child(4) { .calc-width(25, 255); }
+                            &:nth-child(5),
+                            &:nth-child(6) { width: 120px; }
+                        }
+                    }
+                }
             }
 
             &.forecast-reports {

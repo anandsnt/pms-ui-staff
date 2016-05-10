@@ -106,20 +106,7 @@
                 <span class="icons icon-invoice"></span>
                 Email/Print
             </button>
-           <!--  <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked': groupConfigData.summary.hide_rates }">
-                <span class="icon-form icon-checkbox" ng-class="{ 'checked':groupConfigData.summary.hide_rates }"></span>
-                <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
-                {{ 'DONT_PRINT_RATE' | translate }}
-            </label>
 
-            <button type="button" class="button with-icon only-icon blue" ng-hide="reservations.length ==0" ng-click="sendRoomingList()">
-                <span class="icons icon-email"></span>
-                {{'GROUP_EMAIL'|translate}}
-            </button>
-            <button type="button" class="button blue with-icon only-icon" ng-hide="reservations.length ==0" ng-click="fetchReservationsForPrintingRoomingList()">
-                <span class="icons icon-print"></span>
-                {{'GROUP_PRINT'|translate}}
-            </button> -->
             <button type="button" class="batch button with-icon" ng-click="printRegistrationCards();"
                     ng-class="{'grey' : totalPickUpCount < 1,'brand-colors' : totalPickUpCount > 0}"
                     ng-disabled="totalPickUpCount < 1">
@@ -186,7 +173,7 @@
 </div>
 
 <div id="group-room-list-content" class="tab-details" ng-class="{'no-print' : isPrintRegistrationCard}">
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_message.html'" ng-hide="isAnyPopupOpen"></div>
     <!-- When no rooms in list -->
     <div class="no-content" ng-show="shouldShowNoReservations()">
         <div class="info">
@@ -210,7 +197,9 @@
         <li class="date sort" ng-class="getSortClass('arrival_date')" ng-click="sortBy('arrival_date')">{{'GROUP_ARRIVAL'|translate}}</li>
         <li class="date sort" ng-class="getSortClass('departure_date')" ng-click="sortBy('departure_date')">{{'GROUP_DEPARTURE'|translate}}</li>
         <li class="type sort" ng-class="getSortClass('room_type_id')" ng-click="sortBy('room_type_id')">{{'GROUP_ROOM_TYPE'|translate}}</li>
-        <li class="rate sort" ng-class="getSortClass('room_rate_amount')" ng-click="sortBy('room_rate_amount')">{{'GROUP_ROOM RATE'|translate}}</li>
+        <li ng-hide="groupConfigData.summary.hide_rates && isPrintClicked" class="rate sort" ng-class="getSortClass('room_rate_amount')" ng-click="sortBy('room_rate_amount')">{{'GROUP_ROOM RATE'|translate}}</li>
+        <!-- To fix a design issue while print. Not Good -->
+        <li ng-show="groupConfigData.summary.hide_rates && isPrintClicked" class="rate sort" ng-class="getSortClass('room_rate_amount')" ng-click="sortBy('room_rate_amount')"> &nbsp;</li>
         <li class="status sort" ng-class="getSortClass('reservation_status')" ng-click="sortBy('reservation_status')">{{'GROUP_STATUS'|translate}}</li>
     </ul>
 
@@ -276,8 +265,12 @@
                             <strong class="room-type">{{reservation.room_type_name}}</strong>
                             <em class="room-occupancy">{{occupancyTextMap[reservation.occupancy]}}</em>
                         </div>
-                        <div class="rate">
+                        <div class="rate" ng-hide="groupConfigData.summary.hide_rates && isPrintClicked">
                             {{reservation.room_rate_amount}}
+                        </div>
+                        <!-- To fix a design issue while print. Not Good -->
+                        <div class="rate" ng-show="groupConfigData.summary.hide_rates && isPrintClicked">
+                            &nbsp;
                         </div>
                         <div class="reservation-status">
                             <!-- No status if it's a new room -->
