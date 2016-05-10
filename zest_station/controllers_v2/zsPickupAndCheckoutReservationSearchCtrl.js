@@ -126,7 +126,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
 		// $scope.zestStationData.towers will be valid only for hotels that has
 		// and will be supplied in api only then
-		$scope.showTowers = (typeof $scope.zestStationData.towers !== 'undefined');
+		$scope.showTowers = (typeof $scope.zestStationData.towers !== 'undefined' && $scope.zestStationData.towers.length > 0);
 		$scope.showTowers ? setTowers() : "";
 	}
 ]);

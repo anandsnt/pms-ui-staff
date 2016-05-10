@@ -440,5 +440,29 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			});
 			return deferred.promise;
 		};
+
+		// To email the AR Statement pdf.
+		this.emailArStatement = function(params){
+			var deferred = $q.defer();
+			var url = '/api/ar_transactions/email';
+			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+		   	 	deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+
+		// To fetch statement data
+		this.fetchArStatementData = function(params){
+			var deferred = $q.defer();
+			var url = '/api/ar_transactions/get_email?id='+params.id;
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+		   	 	deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});
+			return deferred.promise;
+		};
 	}
 ]);

@@ -638,9 +638,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var dates = _.pluck(rateRestrictions, 'date');
         showAndFormDataForTopBar(dates);
 
-        var ratesWithRestrictions = formRenderingDataModelForAllRates(dates, rateRestrictions, commonRestrictions, cachedRateList);
+        var renderableData = formRenderingDataModelForAllRates(dates, rateRestrictions, commonRestrictions, cachedRateList);
+
+        var ratesWithRestrictions = renderableData.ratesWithRestrictions;
         
-        updateAllRatesView(ratesWithRestrictions, dates);
+        updateAllRatesView(ratesWithRestrictions, dates, renderableData.restrictionSummary);
 
         //we need to keep track what we're showing the react part for determining the scrolling position & other things later. so,
         addToShowingDataArray(dates, ratesWithRestrictions, RM_RX_CONST.RATE_VIEW_CHANGED);
@@ -654,10 +656,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {array} ratesWithRestrictions
      * @param  {array} dates
      */
-    const updateAllRatesView = (ratesWithRestrictions, dates) => {
+    const updateAllRatesView = (ratesWithRestrictions, dates, restrictionSummary) => {
         var reduxActionForAllRateView = {
             type                : RM_RX_CONST.RATE_VIEW_CHANGED,
             rateRestrictionData : [...ratesWithRestrictions],
+            restrictionSummaryData: [...restrictionSummary],
             businessDate        : tzIndependentDate($rootScope.businessDate),
             callbacksFromAngular: getTheCallbacksFromAngularToReact(),
             dates,
@@ -706,13 +709,20 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             return _.omit(rate, 'restrictions');
         });
 
-        //forming the top row (All rates) with common restrictions
-        ratesWithRestrictions.unshift({
+        /**
+         * Summary information holds the first row - this is rendered in the header of the grid
+         * @type {Array}
+         */
+        var restrictionSummary = [{
             restrictionList: dates.map((date) => {
                 return _.findWhere(commonRestrictions, { date: date }).restrictions;
-            })
-        });
-        return ratesWithRestrictions;
+            })   
+        }];
+        
+        return {
+            ratesWithRestrictions : ratesWithRestrictions,
+            restrictionSummary: restrictionSummary
+        };
     };
 
     /**
@@ -943,14 +953,20 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             return _.omit(roomType, 'restrictions');
         });
 
-        //forming the top row (All rates) with common restrictions
-        roomTypeWithRestrictions.unshift({
+        /**
+         * Summary information holds the first row - this is rendered in the header of the grid
+         * @type {Array}
+         */
+        var restrictionSummary = [{
             restrictionList: dates.map((date) => {
                 return _.findWhere(commonRestrictions, { date: date }).restrictions;
-            })
-        });
+            })   
+        }]; 
 
-        return roomTypeWithRestrictions;
+        return {
+            roomTypeWithRestrictions : roomTypeWithRestrictions,
+            restrictionSummary: restrictionSummary
+        };
     };
 
     /**
@@ -959,9 +975,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {array} roomTypeWithRestrictions
      * @param  {array} dates
      */
-    var updateAllRoomTypesView = (roomTypeWithRestrictions, dates) => {
+    var updateAllRoomTypesView = (roomTypeWithRestrictions, dates, restrictionSummary) => {
         var reduxActionForAllRoomTypesView = {
             type                : RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED,
+            restrictionSummaryData : [...restrictionSummary],
             roomTypeRestrictionData : [...roomTypeWithRestrictions],
             businessDate        : tzIndependentDate($rootScope.businessDate),
             callbacksFromAngular: getTheCallbacksFromAngularToReact(),
@@ -988,10 +1005,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var dates = _.pluck(roomTypeRestrictions, 'date');
         showAndFormDataForTopBar(dates);
 
-        var roomTypeWithRestrictions = formRenderingDataModelForAllRoomTypes(dates, roomTypeRestrictions, commonRestrictions, cachedRoomTypeList);
+        var renderableData = formRenderingDataModelForAllRoomTypes(dates, roomTypeRestrictions, commonRestrictions, cachedRoomTypeList);
 
+        var roomTypeWithRestrictions = renderableData.roomTypeWithRestrictions;
+        
         //updating the view with results
-        updateAllRoomTypesView(roomTypeWithRestrictions, dates);
+        updateAllRoomTypesView(roomTypeWithRestrictions, dates, renderableData.restrictionSummary);
 
         //closing the left side filter section
         $scope.$broadcast(rvRateManagerEventConstants.CLOSE_FILTER_SECTION);        
@@ -1084,12 +1103,14 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var onFetchMultipleRateRestrictionDetailsForRateCell = (response, successCallBackParameters) => {
         var restrictionData = response.dailyRateAndRestrictions,
             commonRestrictions = response.commonRestrictions[0].restrictions,
-            rates = !cachedRateList.length ? response.rates : cachedRateList,
-            rateIDs = successCallBackParameters.rateIDs,
-            rates = rates.filter(rate => (rateIDs.indexOf(rate.id) > -1 ? rate : false));
+            rates = !cachedRateList.length ? response.rates : cachedRateList;
 
         //caching the rate list
-        cachedRateList = rates;
+        cachedRateList = [...rates];
+        
+        var rateIDs = successCallBackParameters.rateIDs;
+        
+        rates = rates.filter(rate => (rateIDs.indexOf(rate.id) > -1 ? rate : false))
 
         var data = {
             rates,
@@ -1190,12 +1211,16 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * callback from react when clicked on a cell in rate view
      */
     var clickedOnRateViewCell = ({ rateIDs, date }) => {
-        if(rateIDs.length > 1) {
-
+        // This method is invoked with rateIDs as an empty array IFF the ALL RATES / ALL ROOM TYPES row's cell is clicked
+        if(rateIDs.length === 0) {
             //in pagination context we've to fetch all the visible/invisible rate's details
             let leftSideFilterSelectedRates = lastSelectedFilterValues[activeFilterIndex].selectedRates;
+
+            // In case no rates are specifically selected in the filter proceed with empty arrays else, populate array with all selected rate IDs
             if(!leftSideFilterSelectedRates.length) {
                 rateIDs = [];
+            } else{
+                rateIDs = _.pluck(leftSideFilterSelectedRates, "id");
             }
             
             fetchMultipleRateRestrictionsDetailsForPopup(rateIDs, date);  
@@ -1464,15 +1489,21 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             }
         );
 
-        //first row
-        roomTypeWithRestrictions.unshift({
+        /**
+         * Summary information holds the first row - this is rendered in the header of the grid
+         * @type {Array}
+         */
+        var restrictionSummary = [{
             rateDetails: [],
             restrictionList: dates.map((date) => {
                 return _.findWhere(commonRestrictions, {date: date}).restrictions;
             })
-        });
-
-        return roomTypeWithRestrictions;
+        }];
+        
+        return {
+            roomTypeWithRestrictions : roomTypeWithRestrictions,
+            restrictionSummary: restrictionSummary
+        }; 
     }; 
 
     /**
@@ -1481,10 +1512,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {array} roomTypeWithAmountAndRestrictions
      * @param  {array} dates
      */
-    var updateSingleRatesView = (roomTypeWithAmountAndRestrictions, dates) => {
+    var updateSingleRatesView = (roomTypeWithAmountAndRestrictions, dates, restrictionSummary) => {
         store.dispatch({
             type                        : RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_CHANGED,
             singleRateRestrictionData   : [...roomTypeWithAmountAndRestrictions],
+            restrictionSummaryData      : [...restrictionSummary],
             businessDate                : tzIndependentDate($rootScope.businessDate),
             callbacksFromAngular        : getTheCallbacksFromAngularToReact(),
             restrictionTypes,
@@ -1516,11 +1548,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         showAndFormDataForTopBar(dates);
 
         //grid view data model
-        var roomTypeWithAmountAndRestrictions = formRenderingDataModelForSingleRateDetailsAndRestrictions
+        var renderableData = formRenderingDataModelForSingleRateDetailsAndRestrictions
             (dates, roomTypeAmountAndRestrictions, commonRestrictions, cachedRoomTypeList);
+
+        var roomTypeWithAmountAndRestrictions = renderableData.roomTypeWithRestrictions;
         
         //let's view results ;)
-        updateSingleRatesView(roomTypeWithAmountAndRestrictions, dates);
+        updateSingleRatesView(roomTypeWithAmountAndRestrictions, dates, renderableData.restrictionSummary);
         
         //we need to keep track what we're showing the react part for determining the scrolling position & other things later. so,
         addToShowingDataArray(dates, roomTypeWithAmountAndRestrictions, 

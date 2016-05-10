@@ -46,17 +46,17 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.swipeData = {};
 
 
-            $scope.proceedToDeposit = function(){
-                $state.go('zest_station.checkInCardSwipe',{
-                    'mode': 'DEPOSIT',
-                    'swipe': 'true',
-                    'id': $stateParams.reservation_id,
-                    'room_no':$stateParams.room_no,
-                    'room_status':$stateParams.room_status,
-                    'guest_email': $stateParams.guest_email,
-                    'guest_email_blacklisted': $stateParams.guest_email_blacklisted
-                }); 
-            };
+            // $scope.proceedToDeposit = function(){
+            //     $state.go('zest_station.checkInCardSwipe',{
+            //         'mode': 'DEPOSIT',
+            //         'swipe': 'true',
+            //         'id': $stateParams.reservation_id,
+            //         'room_no':$stateParams.room_no,
+            //         'room_status':$stateParams.room_status,
+            //         'guest_email': $stateParams.guest_email,
+            //         'guest_email_blacklisted': $stateParams.guest_email_blacklisted
+            //     }); 
+            // };
             
 
             $scope.$on('USER_ACTIVITY_TIMEOUT',function(){

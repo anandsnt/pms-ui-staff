@@ -10,7 +10,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 * @return {Boolean} [description]
 		 */
 		var whetherSummaryDataChanged = function() {
-			var currentSummaryData = _.omit($scope.groupConfigData.summary, ['rooms_total']);
+			// Some properties not in original defenition should be left out
+			var currentSummaryData = $scope.groupConfigData.summary;
+			summaryMemento = _.omit(summaryMemento, [
+								'rooms_total',
+								'selected_room_types_and_bookings',
+								'selected_room_types_and_occupanies'
+							]);
 			for (var key in summaryMemento) {
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return false;
@@ -307,6 +313,14 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 * @return {[type]} [description]
 		 */
 		$scope.shouldDisableHoldStatusChange = function() {
+			return ($scope.groupConfigData.summary.is_cancelled || $scope.isInStaycardScreen());
+		};
+
+		/**
+		 * Decide whether we need to disable rate change or not
+		 * @return {Boolean} disalbe or not
+		 */
+		$scope.shouldDisableRateChange = function() {
 			return ($scope.groupConfigData.summary.is_cancelled || $scope.isInStaycardScreen());
 		};
 

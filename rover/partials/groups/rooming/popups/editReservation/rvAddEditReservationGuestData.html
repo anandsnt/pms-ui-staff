@@ -1,0 +1,88 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+    <div class="modal-content form group-guest-rooms " >
+        <button id="modal-close" type="button" class="modal-close"  ng-click="closeDialog()">
+        <span class="icons icon-close invert"></button>
+
+
+
+        <!-- 'Modal Title':
+                - When adding rooms -> Add X Rooms
+                - When editing rooms -> Edit X Rooms
+                'X' represents the number of selected/added rooms-->
+        <span class="message h2">{{title}} {{totalCountForUpdate}} Rooms</span>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <ul class="rooms-header">
+            <li class="guest-name">
+                Guest Name
+            </li>
+            <li class="arrival-departure">
+                Arrival/Depature
+            </li>
+            <li class="room-type">Room Type</li>
+            <li class="acc-guests">Acc. Guests</li>
+        </ul>
+
+        <!-- Vertical Scroll on .holder -->
+
+        <div class="holder scrollable" ng-iscroll="guest-data-scroll">
+
+            <ul class="wrapper">
+                <li class="room-item" ng-repeat="selectedReservations in selected_reservations" >
+                    <!-- Add class .active if we are showing the acc guests (on click) -->
+                    <div class="faux-anchor has-arrow toggle" ng-class="{'active': selectedReservations.isOpenAccompanyingGuest}" ng-click="toggleAccompanyingGuest($index)">
+                        <div class="guest-name">
+                            <div class="entry margin">
+                                <input type="text" placeholder="First Name" value="{{selectedReservations.firstname}}" ng-model="selectedReservations.firstname" ng-click="childClick()">
+                            </div>
+                            <div class="entry">
+                                <input type="text" placeholder="Last Name" value="{{selectedReservations.lastname}}" ng-model="selectedReservations.lastname">
+                            </div>
+                        </div>
+                        <div class="arrival-departure">
+                            <span class="guest-status check-in">check-in</span>
+                            <time class="guest-time guest-time-arrival" datetime="{check-in-time | format: Month-Day-Year}">
+                                {{selectedReservations.arrival_date}}
+                            </time>
+
+                            <span class="guest-status check-out">check-out</span>
+                            <time class="guest-time guest-time-departure" datetime="{check-out-time  | format: Month-Day-Year}">
+                              {{selectedReservations.departure_date}}
+                            </time>
+
+                        </div>
+                        <div class="room-type">
+                            <strong>{{selectedReservations.room_type_name}}</strong>
+                            <em>{{selectedReservations.occupancyName}}</em>
+                        </div>
+                        <div class="acc-guests" >
+                            {{selectedReservations.accompanyingLength}}
+                        </div>
+
+                    </div>
+                     <!-- Remove class .hidden if we are showing the acc guests (on click) -->
+                    <div class="acc-guests-form " ng-class="{'hidden': !selectedReservations.isOpenAccompanyingGuest}">
+                        <div class="entry full-width">
+                            <label>Accompanying Guest(s)</label>
+                            <span ng-repeat="accompanyingGuest in selectedReservations.accompanying_guests_details">
+                                <div class="entry margin">
+                                    <input placeholder="First Name" value="{{accompanyingGuest.first_name}}" type="text" ng-model="accompanyingGuest.first_name">
+                                </div>
+                                <div class="entry">
+                                    <input placeholder="Last Name" value="{{accompanyingGuest.last_name}}" type="text" ng-model="accompanyingGuest.last_name">
+                                </div>
+                            </span>
+
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions">
+            <button type="button" class="button blank"  ng-click="closeDialog()">Cancel</button>
+            <button type="button" class="button green" ng-click="updateCompleteGuestData()">Save</button>
+        </div>
+    </div>
+</div>

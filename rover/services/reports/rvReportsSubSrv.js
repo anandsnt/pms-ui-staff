@@ -257,6 +257,22 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				resKey : 'results'
 			});			
 		};
+		service.fetchOrigins = function() {
+			return callApi({
+				name   : 'origins',
+				method : 'getJSON',
+				url    : 'api/reports/origins',
+				resKey : 'origins'
+			});
+		};
+		service.fetchURLs = function() {
+			return callApi({
+				name   : 'URLs',
+				method : 'getJSON',
+				url    : 'api/guest_web_urls/?application=URL&guest_web_url_type=CHECKIN',
+				resKey : 'data'
+			});
+		};
 		return service;
 	}
 ]);

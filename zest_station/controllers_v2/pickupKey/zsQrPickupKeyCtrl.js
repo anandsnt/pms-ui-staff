@@ -8,10 +8,10 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 	function($scope, $stateParams, $state, zsEventConstants, $timeout, zsGeneralSrv) {
 
 		/**********************************************************************************************
-		**		Expected state params -----> none			  
-		**		Exit function -> onSuccessFetchReservation								
-		**																		 
-		***********************************************************************************************/
+		 **		Expected state params -----> none			  
+		 **		Exit function -> onSuccessFetchReservation								
+		 **																		 
+		 ***********************************************************************************************/
 
 		var qrScanFailed = function() {
 			$scope.$emit('hideLoader');
@@ -73,11 +73,12 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
 		};
 
+		/**************** datalogic *****************/
 		/**
-		*  Call back action broadcasted from root ctrl
-		**/
+		 *  Call back action broadcasted from root ctrl
+		 **/
 		$scope.$on('QR_SCAN_SUCCESS', function(event, data) {
-			console.info("QR scanned reservation_id:------>"+data.reservation_id);
+			console.info("QR scanned reservation_id:------>" + data.reservation_id);
 			fetchReservationDetails(data.reservation_id);
 		});
 
@@ -92,6 +93,56 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				}, 1000);
 			}
 		};
+
+		/**************** datalogic ************************/
+
+		/******************* SAMSOTECH ********************/
+
+		$scope.$on('QR_PASSPORT_SCAN_MSG', function(evt, info) {
+			console.log(arguments);
+			if (typeof info.msg === typeof 'str') {
+				if (info.msg.indexOf('Invalid') !== -1) {
+					$scope.at = 'input-qr-code';
+					qrScanFailed();
+					console.warn('scan failed..');
+					$scope.runDigestCycle();
+				} else if (info.msg.indexOf(' : ') !== -1) {
+					//qr code coming from the samsotech will look like "PR_DF_BC1 : somevalue"
+					var reservationId = info.msg.split(' : ')[1];
+					if (reservationId) {
+						fetchReservationDetails(reservationId);
+					}
+					else {
+						qrScanFailed();
+					}
+				}
+			}
+		});
+
+
+		var listenForWebsocketActivity = function() {
+			$scope.$on('SOCKET_CONNECTED', function() {
+				console.info('socket connected, start capture');
+				$scope.socketOperator.CaptureQRViaPassportScanner();
+			});
+			$scope.$on('SOCKET_FAILED', function() {
+				console.info('socket failed...');
+				qrScanFailed();
+			});
+		};
+
+		var samsoTechScan = function() {
+			if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+				$scope.socketOperator.CaptureQRViaPassportScanner();
+			} else {
+				listenForWebsocketActivity();
+				$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
+			}
+		}
+
+		/******************* SAMSOTECH ********************/
+
+
 		/**
 		 * [initializeMe description]
 		 */
@@ -106,7 +157,12 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				$state.go('zest_station.home');
 			});
 			$scope.qrCodeScanFailed = false;
-			initChromeAppQRCodeScanner();
+			if ($scope.zestStationData.qr_scanner_samsotech) {
+				samsoTechScan();
+			} else {
+				//$scope.zestStationData.qr_scanner_datalogic
+				initChromeAppQRCodeScanner();
+			}
 		}();
 
 		/**
