@@ -42,6 +42,14 @@ sntZestStation.controller('zsHomeCtrl', [
 				$state.go('zest_station.checkoutSearchOptions');
 			};
 		};
+		var initiateLanguagePopUpSetting = function(){
+			$scope.showLanguagePopup =false;
+			//This value will be updated from child controller ie, zsLanguageHandlerCtrl during init
+			$scope.selectedLanguage= {};
+		};
+		$scope.languageSelect = function(){
+			$scope.showLanguagePopup = !$scope.showLanguagePopup;
+		};
 
 		/**
 		 * [initializeMe description]
@@ -56,7 +64,7 @@ sntZestStation.controller('zsHomeCtrl', [
 			$scope.$emit('EJECT_KEYCARD');
 			//set this to false always on entering home screen
 			$scope.zestStationData.keyCardInserted = false;
-			
+			initiateLanguagePopUpSetting();
             if($scope.zestStationData.workstationStatus === 'out-of-order'){
             	var params = {};
             	params.reason = $scope.zestStationData.wsFailedReason;

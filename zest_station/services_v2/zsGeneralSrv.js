@@ -143,6 +143,70 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+        //This data supposed to be handled in back end.
+        //TODO : Move to api
+        this.returnLanguageList = function() {
+            return [ //in our admin/API, these are saved in english, we will keep reference here if needed
+                {
+                    'name': 'Castellano',
+                    'info': {
+                        'prefix': '',
+                        'code': 'cl',
+                        'flag': 'flag-ca',
+                    'language': 'Castellano'
+                         //using name as an english reference (which is in the api call)
+                    }
+                }, {
+                    'name': 'German',
+                    'info': {
+                        'prefix': '',
+                        'code': 'de',
+                        'flag': 'flag-de',
+                        'language': 'Deutsche'
+                    }
+                }, {
+                    'name': 'English',
+                    'info': {
+                        'prefix': 'EN',
+                        'code': 'en',
+                        'flag': 'flag-gb',
+                        'language': 'English'
+                    }
+                }, {
+                    'name': 'Spanish',
+                    'info': {
+                        'prefix': 'ES',
+                        'code': 'es',
+                        'flag': 'flag-es',
+                        'language': 'Español'
+                    }
+                }, {
+                    'name': 'French',
+                    'info': {
+                        'prefix': 'FR',
+                        'code': 'fr',
+                        'flag': 'flag-fr',
+                        'language': 'Français'
+                    }
+                }, {
+                    'name': 'Italian',
+                    'info': {
+                        'prefix': '',
+                        'code': 'it',
+                        'flag': 'flag-it',
+                        'language': 'Italiano'
+                    }
+                }, {
+                    'name': 'Netherlands',
+                    'info': {
+                        'prefix': 'NL',
+                        'code': 'nl',
+                        'flag': 'flag-nl',
+                        'language': 'Nederlands'
+                    }
+                }
+            ];
+        }
 
     }
 ]);
