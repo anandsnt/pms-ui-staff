@@ -827,20 +827,40 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         };
 
         var fetchReservationsViaQuery = function() {
-            var query = $scope.query.trim();
-            var params = formFetchReservationsParams();
-            var options = {
-                params: params,
-                successCallBack: successCallBackOfFetchReservations
-            };
+            var query = $scope.query.trim(),
+                params,
+                options;
 
-            if ( query.length < 3 ) {
-                return;
+            if ( query.length > 2 ) {
+                params = formFetchReservationsParams();
+                options = {
+                    params: params,
+                    successCallBack: successCallBackOfFetchReservations
+                };
+
+                $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
             }
-
-            $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
         };
-        $scope.debounceFetchReservations = _.debounce( fetchReservationsViaQuery, 500 );
+        $scope.debounceFetchReservations = fetchReservationsViaQuery;
+        
+        $scope.fiterBy = function() {
+            var query = $scope.query.trim(),
+                params,
+                options;
+
+            console.log( $scope.query );
+            console.log( query );
+
+            if ( query.length > 2 ) {
+                params = formFetchReservationsParams();
+                options = {
+                    params: params,
+                    successCallBack: successCallBackOfFetchReservations
+                };
+
+                $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
+            }
+        };
 
         /**
          * Function to clear Dates
