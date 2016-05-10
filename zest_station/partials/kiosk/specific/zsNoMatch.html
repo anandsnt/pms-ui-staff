@@ -6,6 +6,14 @@
         <h2>{{'NO_MATCH_HEADER_SUB' |translate}}</h2>
         <nav id="options" role="nav">
             <ul role="menu">
+                <li ng-if="qrCodeScanFailed">
+                    <button type="button" 
+                            class="button option" 
+                            touch-press='retryQRScan()'>
+                        <div ng-include="icons.url.qr_noarrow"></div>
+                    </button>
+                    {{'QR_SCAN_RETRY' |translate}}
+                </li>
                 <li>
                     <button type="button" class="button option" touch-press='reEnter("last")'>
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
