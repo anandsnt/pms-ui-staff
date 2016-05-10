@@ -105,7 +105,7 @@
                     </th>        
                 </thead>
                 <tbody>
-                    <tr ng-repeat="gridItem in $data | filter:searchText">
+                    <tr ng-repeat="gridItem in $data | filter:filterComponents">
                         <td><a >{{gridItem.name}}</a>
                         <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>
@@ -160,7 +160,7 @@
                         <th class="width-10" translate> DELETE_LABEL</th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="gridItem in $data | filter:searchText">
+                    <tr ng-repeat="gridItem in $data | filter:filterComponents">
                         <td><a ng-click="componentSelected(gridItem)">{{gridItem.name}}</a>
                         <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>
@@ -218,7 +218,7 @@
                         <th class="width-10" translate> DELETE_LABEL</th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="gridItem in $data | filter:searchText">
+                    <tr ng-repeat="gridItem in $data | filter:filterComponents">
                         <td><a ng-click="componentSelected(gridItem)">{{gridItem.name}}</a>
                         <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>                        
@@ -282,7 +282,7 @@
                         <th class="width-10" translate> DELETE_LABEL</th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="gridItem in $data | filter:searchText">
+                    <tr ng-repeat="gridItem in $data | filter:filterComponents">
                         <td><a ng-click="componentSelected(gridItem)">{{gridItem.name}}</a>
                         <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
                         <td>{{gridItem.page_template}}</td>
