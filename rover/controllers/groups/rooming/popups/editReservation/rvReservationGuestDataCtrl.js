@@ -18,7 +18,7 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
             eachData.isOpenAccompanyingGuest = false;
             var cnt = 0;
             angular.forEach(eachData.accompanying_guests_details, function(value, key) {
-              if(value.first_name !== "" && value.first_name !== null){
+              if(value.first_name !== "" || value.first_name !== null){
                   cnt = cnt + 1;
               }
         });
