@@ -45,7 +45,7 @@ sntZestStation.config(['$stateProvider',
                 
 		//checking credit card swipe                 
       	$stateProvider.state('zest_station.checkInCardSwipe', {
-			url: '/checkInReservationCard/:mode/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status',
+			url: '/checkInReservationCard/:mode/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:payment_type_id/:deposit_amount',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinCCSwipe.html',
 			controller: 'zsCheckinCCSwipeCtrl'
 		});

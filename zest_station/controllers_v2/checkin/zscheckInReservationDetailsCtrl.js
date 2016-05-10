@@ -121,29 +121,18 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 		};
 		var initTermsPage = function() {
 			console.log($scope.zestStationData);
-			var bypassTerms = !$scope.zestStationData.kiosk_display_terms_and_condition;
-			if (bypassTerms) { //add early check-in check here
-				/*
-				 * to be done:
-				 *  -check for skipe CC 
-				 *  -force deposit
-				 */
-				goToSignaturePage();
-
-			} else {
-				var stateParams = {
-					'guest_id': $scope.selectedReservation.guest_details[0].id,
-					'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
-					'deposit_amount': $scope.selectedReservation.reservation_details.deposit_amount,
-					'room_no': $scope.selectedReservation.reservation_details.room_no,
-					'room_status': $scope.selectedReservation.reservation_details.room_status,
-					'payment_type_id': $scope.selectedReservation.reservation_details.payment_type,
-					'guest_email': $scope.selectedReservation.guest_details[0].email,
-					'guest_email_blacklisted': $scope.selectedReservation.guest_details[0].is_email_blacklisted,
-					'first_name': $scope.selectedReservation.guest_details[0].first_name
-				}
-				$state.go('zest_station.checkInTerms', stateParams);
+			var stateParams = {
+				'guest_id': $scope.selectedReservation.guest_details[0].id,
+				'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
+				'deposit_amount': $scope.selectedReservation.reservation_details.deposit_amount,
+				'room_no': $scope.selectedReservation.reservation_details.room_no,
+				'room_status': $scope.selectedReservation.reservation_details.room_status,
+				'payment_type_id': $scope.selectedReservation.reservation_details.payment_type,
+				'guest_email': $scope.selectedReservation.guest_details[0].email,
+				'guest_email_blacklisted': $scope.selectedReservation.guest_details[0].is_email_blacklisted,
+				'first_name': $scope.selectedReservation.guest_details[0].first_name
 			}
+			$state.go('zest_station.checkInTerms', stateParams);
 		};
 
 		var initRoomError = function() {
