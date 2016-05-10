@@ -3,11 +3,14 @@
         <button id="modal-close" type="button" class="modal-close"  ng-click="closeDialog()">
         <span class="icons icon-close invert"></button>
 
+
+
         <!-- 'Modal Title':
                 - When adding rooms -> Add X Rooms
                 - When editing rooms -> Edit X Rooms
                 'X' represents the number of selected/added rooms-->
         <span class="message h2">{{title}} {{totalCountForUpdate}} Rooms</span>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <ul class="rooms-header">
             <li class="guest-name">
                 Guest Name
@@ -20,7 +23,9 @@
         </ul>
 
         <!-- Vertical Scroll on .holder -->
+
         <div class="holder scrollable" ng-iscroll="guest-data-scroll">
+
             <ul class="wrapper">
                 <li class="room-item" ng-repeat="selectedReservations in selected_reservations" >
                     <!-- Add class .active if we are showing the acc guests (on click) -->

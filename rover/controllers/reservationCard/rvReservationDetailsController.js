@@ -1141,6 +1141,10 @@ sntRover.controller('reservationDetailsController',
 				$scope.errorMessage = errorMessage;
 			};
 
+			//CICO-28042 - Flag added to show/hide between credit card and
+			//auth release for credit card sections
+			$scope.hasShownReleaseConfirm = false;
+
 			var data = {
 				"reservation_id":$scope.reservationData.reservation_card.reservation_id
 			};
@@ -1306,5 +1310,44 @@ sntRover.controller('reservationDetailsController',
      });
 
      $scope.$on( '$destroy', unbindChildContentModListener );
+
+    /**
+	* Method to invoke when release btn on each authorized cards are clicked
+	* @param {object} selected card with auth details
+	*/
+     $scope.onReleaseBtnClick = function(cardData) {
+     	$scope.selectedCardData = cardData;
+     	$scope.hasShownReleaseConfirm = true;
+     };
+
+    /**
+	* Method to invoke while clicking on cancel btn in release confirm section
+	*/
+     $scope.onCancelClick = function() {
+     	$scope.hasShownReleaseConfirm = false;
+     };
+
+    /**
+	* Method to release the authorization of a credit card
+	* @param {int} payment method id
+	*/
+     $scope.releaseAuthorization = function(paymentMethodId) {
+     	var onReleaseAuthorizationSuccess = function(response) {
+				$scope.$emit('hideLoader');
+				$scope.hasShownReleaseConfirm = false;
+				$scope.showAuthAmountPopUp();
+			};
+
+			var onReleaseAuthorizationFaliure = function(errorMessage) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorMessage;
+				$scope.hasShownReleaseConfirm = false;
+			};
+			$scope.errorMessage = "";
+			var postData = {
+				"payment_method_id"	: paymentMethodId
+			};
+			$scope.invokeApi(RVCCAuthorizationSrv.releaseAuthorization, postData, onReleaseAuthorizationSuccess, onReleaseAuthorizationFaliure);
+     };
 
 }]);

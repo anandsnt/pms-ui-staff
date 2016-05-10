@@ -59,8 +59,12 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
     };
     var successCallBackOfUpdateGuestData = function(){
         $scope.closeDialog();
-        $scope.$emit("REFRESH_GROUP_ROOMING_LIST_WITH_UPDATES");
+
+        $scope.$emit("REFRESH_GROUP_ROOMING_LIST_DATA");
     };
+    var failureCallBackOfUpdateGuestData = function(error){
+        $scope.errorMessage = error;
+    }
     /*
      * To update all selected reservations guest data
      */
@@ -78,10 +82,11 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
         });
         var data = {};
         data.guest_data = guestData;
-
+        $scope.errorMessage = "";
         var options = {
             params: data,
-            successCallBack: successCallBackOfUpdateGuestData
+            successCallBack: successCallBackOfUpdateGuestData,
+            failureCallBack: failureCallBackOfUpdateGuestData
         };
         $scope.callAPI(rvGroupRoomingListSrv.updateGuestData, options);
 
