@@ -26,7 +26,11 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			//back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-				$state.go('zest_station.home');
+				if (!$scope.zestStationData.checkout_keycard_lookup || $stateParams.mode === 'PICKUP_KEY') {
+					$state.go('zest_station.home');
+				} else {
+					$state.go('zest_station.checkoutSearchOptions');
+				};
 			});
 			//starting mode
 			$scope.mode = "LAST_NAME_ENTRY";

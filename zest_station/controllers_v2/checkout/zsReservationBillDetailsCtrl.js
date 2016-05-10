@@ -163,10 +163,20 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          */
         var initializeMe = function() {
             //show back button
-            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+            $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 
             //show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+
+            //back button action
+            $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
+                 if($stateParams.from === 'searchByName'){
+                    $state.go('zest_station.checkOutReservationSearch');
+                 }
+                 else{
+                    $state.go('zest_station.checkoutKeyCardLookUp');
+                };
+            });
 
             $scope.init();
         }();
