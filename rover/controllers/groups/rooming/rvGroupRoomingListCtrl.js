@@ -843,7 +843,21 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
         };
 
-        $scope.debounceFetchReservations = _.debounce( $scope.fetchReservations, 500 );
+        var fetchReservationsViaQuery = function() {
+            var query = $scope.query.trim();
+            var params = formFetchReservationsParams();
+            var options = {
+                params: params,
+                successCallBack: successCallBackOfFetchReservations
+            };
+
+            if ( query.length < 3 ) {
+                return;
+            }
+
+            $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
+        };
+        $scope.debounceFetchReservations = _.debounce( fetchReservationsViaQuery, 500 );
 
         /**
          * Function to clear Dates

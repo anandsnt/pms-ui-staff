@@ -589,7 +589,6 @@ sntRover.controller('reservationDetailsController',
 				}
 			}
 			return isStayDatesChangeAllowed;
-
 		};
 
 		/**
