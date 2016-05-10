@@ -89,11 +89,6 @@ sntZestStation.controller('zsRootCtrl', [
 		};
 
 
-		$scope.translateTo = function(lan){
-			$translate.use(lan);
-		};
-
-
 		/**
 		 * [navToPrev and close button description]
 		 * @return {[type]} [description]

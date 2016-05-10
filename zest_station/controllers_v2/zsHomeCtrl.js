@@ -3,7 +3,8 @@ sntZestStation.controller('zsHomeCtrl', [
 	'$rootScope',
 	'$state',
 	'zsEventConstants',
-	function($scope, $rootScope, $state, zsEventConstants) {
+	'$translate',
+	function($scope, $rootScope, $state, zsEventConstants,$translate) {
 
 		/**
 		 * when we clicked on pickup key from home screen
@@ -29,6 +30,13 @@ sntZestStation.controller('zsHomeCtrl', [
 
 		$scope.closeExternalWebPage = function(){
 			$scope.showExternalWebPage =false;
+		};
+
+		$scope.language = {};
+
+		$scope.translateTo = function(lang_code,language){
+			$translate.use(lang_code);
+			$scope.selectedLanguage = language;
 		};
 
 

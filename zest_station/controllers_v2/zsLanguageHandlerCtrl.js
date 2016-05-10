@@ -7,23 +7,33 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
         BaseCtrl.call(this, $scope);
 
         var setDefaultLanguage = function() {
-            _.each($scope.languageDetails, function(language) {
-                if ($scope.zestStationData.zest_lang.default_language == language.name) {
-                    $scope.$parent.selectedLanguage = language;
-                };
-            });
-            if (!!$scope.$parent.selectedLanguage) {
-                //if no default language is selected and englsih file 
-                //is updated. use it else use the EN_snt
-                if ($scope.zestStationData.zest_lang.english_translations_file_updated) {
-                    $scope.translateTo('en')
-                } else {
-                    $scope.translateTo('EN_snt');
-                }
-            } else {
-                //if some default language is set and corresposnding file is updated
-                $scope.translateTo($scope.$parent.selectedLanguage.info.code);
+
+            var findTheDefaultLanguage = function(){
+                _.each($scope.languageDetails, function(language) {
+                    if ($scope.zestStationData.zest_lang.default_language == language.name) {
+                        $scope.$parent.selectedLanguage = language;
+                    };
+                });
+                return $scope.$parent.selectedLanguage;
             }
+            $scope.zestStationData.zest_lang.default_language = "French";
+            //if some default language is set and corresposnding file is updated
+            if (!!$scope.zestStationData.zest_lang.default_language) {
+                $scope.zestStationData.zest_lang.default_language = $scope.zestStationData.zest_lang.default_language;
+                var language = findTheDefaultLanguage();
+                $scope.translateTo(language.info.code,language);
+            }
+            else{
+                //if no default language was set and english translation file was updated
+                //use en translations. If no file was updtaed use the EN_snt file
+                $scope.zestStationData.zest_lang.default_language = "English";
+                var language = findTheDefaultLanguage();
+                if ($scope.zestStationData.zest_lang.english_translations_file_updated) {
+                    $scope.translateTo('en',language);
+                } else {
+                    $scope.translateTo('EN_snt',language);
+                }
+            };
 
         };
         var setlanguageListForPopUp = function() {
@@ -41,7 +51,7 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
         };
         $scope.selectLanguage = function(language) {
             $scope.$parent.selectedLanguage = language;
-            $scope.translateTo($scope.$parent.selectedLanguage.info.code);
+            $scope.translateTo($scope.$parent.selectedLanguage.info.code,$scope.$parent.selectedLanguage);
             $scope.$parent.languageSelect();
         };
 
