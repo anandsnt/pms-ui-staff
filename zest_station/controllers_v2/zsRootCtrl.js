@@ -28,7 +28,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		$translate.use('EN_snt'); // for now. need to do translations later
+		
 		$scope.cssMappings = cssMappings;
 
 		//in order to prevent url change or fresh url entering with states

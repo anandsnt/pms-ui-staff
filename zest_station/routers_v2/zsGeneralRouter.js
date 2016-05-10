@@ -19,32 +19,130 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 				zestStationSettings: function(zsGeneralSrv) {
 					return zsGeneralSrv.fetchSettings();
 				},
-				//fetch language files in the starting itself
-				//so as to speeden the process laterwards
-				fetchTranslations: function(zsHotelDetailsSrv) {
 
-					zsHotelDetailsSrv.fetchTranslationData('en').then(function(translations) {
-						$translateProvider.translations('en', translations);
+				/**
+				** $translateProvider will be only available inside config
+				** If someone has better solution to set language, please inform
+				** The resolve is expecting some promise, 
+				** so before resolving promise we will set the translation data.
+				** There may be cleaner way to set to translate provider in a cleaner way.
+				** Due to lack of time, i am leaving this as below.
+				* */
+				fetchFrenchTranslations: function($q, $http) {
+
+			        // Set up a promise to return
+			        var deferred = $q.defer();
+			        var url =  '/api/locales/fr.json';
+			        $http.get(url).success(function(response) {
+			      		$translateProvider.translations('fr', response.data);
+						deferred.resolve(response);
+					}.bind(this))
+					.error(function() {
+						deferred.reject();
 					});
-					zsHotelDetailsSrv.fetchTranslationData('fr').then(function(translations) {
-						$translateProvider.translations('fr', translations);
+					return deferred.promise;
+			    },
+			    //fetch language files in the starting itself
+				//so as to speeden the process laterwards
+			    fetchEnglishTranslations: function($q, $http) {
+
+			        // Set up a promise to return
+			        var deferred = $q.defer();
+			        var url =  '/api/locales/en.json';
+			        $http.get(url).success(function(response) {
+			      		$translateProvider.translations('en', response.data);
+						deferred.resolve(response);
+					}.bind(this))
+					.error(function() {
+						deferred.reject();
 					});
-					zsHotelDetailsSrv.fetchTranslationData('es').then(function(translations) {
-						$translateProvider.translations('es', translations);
+					return deferred.promise;
+			    },
+			    fetchFrenchTranslations: function($q, $http) {
+
+			        // Set up a promise to return
+			        var deferred = $q.defer();
+			        var url =  '/api/locales/fr.json';
+			        $http.get(url).success(function(response) {
+			      		$translateProvider.translations('fr', response.data);
+						deferred.resolve(response);
+					}.bind(this))
+					.error(function() {
+						deferred.reject();
 					});
-					zsHotelDetailsSrv.fetchTranslationData('de').then(function(translations) {
-						$translateProvider.translations('de', translations);
+					return deferred.promise;
+			    },
+				fetchGermanTranslations: function($q, $http) {
+
+			        // Set up a promise to return
+			        var deferred = $q.defer();
+			        var url =  '/api/locales/de.json';
+			        $http.get(url).success(function(response) {
+			      		$translateProvider.translations('de', response.data);
+						deferred.resolve(response);
+					}.bind(this))
+					.error(function() {
+						deferred.reject();
 					});
-					zsHotelDetailsSrv.fetchTranslationData('cl').then(function(translations) {
-						$translateProvider.translations('cl', translations);
+					return deferred.promise;
+			    },
+			    fetchSpanishTranslations: function($q, $http) {
+
+			        // Set up a promise to return
+			        var deferred = $q.defer();
+			        var url =  '/api/locales/es.json';
+			        $http.get(url).success(function(response) {
+			      		$translateProvider.translations('es', response.data);
+						deferred.resolve(response);
+					}.bind(this))
+					.error(function() {
+						deferred.reject();
 					});
-					zsHotelDetailsSrv.fetchTranslationData('it').then(function(translations) {
-						$translateProvider.translations('it', translations);
+					return deferred.promise;
+			    },
+			    fetchCastellanoTranslations: function($q, $http) {
+
+			        // Set up a promise to return
+			        var deferred = $q.defer();
+			        var url =  '/api/locales/cl.json';
+			        $http.get(url).success(function(response) {
+			      		$translateProvider.translations('cl', response.data);
+						deferred.resolve(response);
+					}.bind(this))
+					.error(function() {
+						deferred.reject();
 					});
-					zsHotelDetailsSrv.fetchTranslationData('nl').then(function(translations) {
-						$translateProvider.translations('nl', translations);
+					return deferred.promise;
+			    },
+			    fetchItalianTranslations: function($q, $http) {
+
+			        // Set up a promise to return
+			        var deferred = $q.defer();
+			        var url =  '/api/locales/it.json';
+			        $http.get(url).success(function(response) {
+			      		$translateProvider.translations('it', response.data);
+						deferred.resolve(response);
+					}.bind(this))
+					.error(function() {
+						deferred.reject();
 					});
-				}
+					return deferred.promise;
+			    },
+			    fetchDutchTranslations: function($q, $http) {
+
+			        // Set up a promise to return
+			        var deferred = $q.defer();
+			        var url =  '/api/locales/nl.json';
+			        $http.get(url).success(function(response) {
+			      		$translateProvider.translations('nl', response.data);
+						deferred.resolve(response);
+					}.bind(this))
+					.error(function() {
+						deferred.reject();
+					});
+					return deferred.promise;
+			    }
+				
 			}
 		});
 
@@ -53,7 +151,8 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 			templateUrl: '/assets/partials_v2/zsHomePage.html',
 			controller: 'zsHomeCtrl',
 			resolve: {
-				waitforParentDependencies: function(cssMappings, zestStationSettings, $q) {
+				waitforParentDependencies: 
+				function(cssMappings,$q,zestStationSettings,fetchEnglishTranslations,fetchFrenchTranslations,fetchGermanTranslations,fetchSpanishTranslations,fetchCastellanoTranslations,fetchItalianTranslations,fetchDutchTranslations) {
 					var deferred = $q.defer();
 					setTimeout(function() {
 						deferred.resolve();
