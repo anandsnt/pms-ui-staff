@@ -102,7 +102,7 @@
         </li>
         <li>
             <!-- Don't show if there are no rooms in the rooming list -->
-            <button type="button" ng-click="sendRoomingList()" class="button with-icon blue email-print">
+            <button type="button" ng-click="openEmailPrintPopup()" class="button with-icon blue email-print">
                 <span class="icons icon-invoice"></span>
                 Email/Print
             </button>
@@ -241,7 +241,7 @@
                         <span class="room" ng-show="!isRoomUnAssigned(reservation)">
                             <!-- Add class "unassigned" if new room -->
 
-                            {{'GROUP_ROOM'|translate}} 
+                            {{'GROUP_ROOM'|translate}}
                             <span ng-class="getRoomStatusClass(reservation)" ng-bind-html="escapeNull(reservation.room_no)|highlight:query:false"></span>
 
                             <!-- If new room, show this instead: Unassigned -->
