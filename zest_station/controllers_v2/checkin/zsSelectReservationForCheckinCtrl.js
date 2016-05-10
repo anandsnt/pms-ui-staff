@@ -65,7 +65,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
         };
         var init = function() {
             //hide back button
-            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+            $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
             //show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             //back button action

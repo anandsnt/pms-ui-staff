@@ -27,13 +27,22 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			$scope.nationalityId = "";
 		};
 
+		 /**
+         * when the back button clicked
+         * @param  {[type]} event
+         * @return {[type]}
+         */
+        $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
+            $state.go('zest_station.checkInReservationSearch');
+        });
+
 		/**
 		 * [initializeMe description]
 		 * @return {[type]} [description]
 		 */
 		var initializeMe = function() {
 			//hide back button
-			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			//show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
