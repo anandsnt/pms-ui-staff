@@ -33,7 +33,14 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
          * @return {[type]}
          */
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
+        	var reservations = zsCheckinSrv.getCheckInReservations();
             $state.go('zest_station.checkInReservationSearch');
+            if(reservations.length > 0){
+				$state.go('zest_station.selectReservationForCheckIn');
+			}
+			else{
+				$state.go('zest_station.checkInReservationSearch');
+			}
         });
 
 		/**

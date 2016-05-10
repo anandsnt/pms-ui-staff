@@ -35,9 +35,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $scope.refreshScroller('res-details');
         };
 		var getSelectedReservation = function() {
+			  //the data is service will be reset after the process from zscheckInReservationSearchCtrl
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
-			//Deleting reservation details from zsCheckinSrv
-			zsCheckinSrv.setSelectedCheckInReservation([]);
 		};
 		var setSelectedReservation = function() {
 			zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
@@ -79,12 +78,20 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
 		var init = function() {
 			//hide back button
-			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			//show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			//back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-				$state.go('zest_station.checkInReservationSearch');
+				var reservations = zsCheckinSrv.getCheckInReservations();
+				if($scope.zestStationData.check_in_collect_nationality){
+					$state.go('zest_station.collectNationality',{'guestId':$scope.selectedReservation.guest_details[0].id});
+				}else if(reservations.length > 0){
+					$state.go('zest_station.selectReservationForCheckIn');
+				}
+				else{
+					$state.go('zest_station.checkInReservationSearch');
+				}
 				//what needs to be passed back to re-init search results
 				//  if more than 1 reservation was found? else go back to input 2nd screen (confirmation, no of nites, etc..)
 			});

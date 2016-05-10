@@ -29,6 +29,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		**/
 
 		BaseCtrl.call(this, $scope);
+		//flush out previous search results
+		zsCheckinSrv.setSelectedCheckInReservation([]);
+		zsCheckinSrv.setCheckInReservations([]);
 
 		$scope.findByDate = function(){
 			$scope.mode = 'FIND_BY_DATE';
