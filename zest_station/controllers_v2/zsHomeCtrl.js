@@ -4,7 +4,8 @@ sntZestStation.controller('zsHomeCtrl', [
 	'$state',
 	'zsEventConstants',
 	'$translate',
-	function($scope, $rootScope, $state, zsEventConstants,$translate) {
+	'zsCheckinSrv',
+	function($scope, $rootScope, $state, zsEventConstants,$translate,zsCheckinSrv) {
 
 		/**
 		 * when we clicked on pickup key from home screen
