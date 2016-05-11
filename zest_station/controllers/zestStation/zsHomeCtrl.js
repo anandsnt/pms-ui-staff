@@ -217,6 +217,16 @@ sntZestStation.controller('zsHomeCtrl', [
         }
       }
     };
+    var setCurrentStation = function(id){
+        console.info('setting: ',id)
+        $scope.sessionStation;
+        for (var i in $scope.zestStationData.workstations){
+            if ($scope.zestStationData.workstations[i].id === id){
+                $scope.zestStationData.workstations[i].is_workstation_present = true;
+                $scope.sessionStation = $scope.zestStationData.workstations[i];
+            }
+        }
+    }
     $scope.initialWorkstation = false;
     $scope.$watch('workstation.selected',function(to, from){
         if (to){
@@ -224,13 +234,35 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.initialWorkstation = true;
         }
         $scope.setWorkstationPrinter($scope.set_workstation_id);
+        setCurrentStation($scope.set_workstation_id);
         
     });
+    var setWorkstationInSession = function(){
+            var workstation = $scope.sessionStation;
+            var successCallBack = function(response){
+                $scope.$emit('hideLoader');
+            };
+            var failureCallBack = function(response){
+                $scope.$emit('hideLoader');
+                console.warn('failed to set workstation in session');
+                console.log(response);
+            };
+             var options = {
+    		params: 			workstation,
+                successCallBack:                successCallBack,
+                failureCallBack:                failureCallBack
+            };
+            $scope.callAPI(zsTabletSrv.setSessionWorkstation, options);
+    };
+    
+    
     $scope.saveWorkStation = function(id){
+        console.info('save workstation')
         if ($scope.workstation !== ''){
             for (var i in $scope.zestStationData.workstations){
                 if ($scope.zestStationData.workstations[i].station_identifier === id){
                     $scope.zestStationData.selectedWorkStation = $scope.zestStationData.workstations[i].station_identifier;
+                    setWorkstationInSession($scope.zestStationData.selectedWorkStation);
                 }
             }
         } else {
@@ -502,8 +534,11 @@ sntZestStation.controller('zsHomeCtrl', [
                     'emv_terminal_id': station.emv_terminal_id,
                     'id':station.id
                 };
+                console.info('yep: ---> ',params)
+                
                 $rootScope.$broadcast('UPDATE_WORKSTATION',{id: station.station_identifier});
             };
+                setWorkstationInSession();
             
             if ($scope.savedSettings.printer){
                 params.printer = $scope.savedSettings.printer;
