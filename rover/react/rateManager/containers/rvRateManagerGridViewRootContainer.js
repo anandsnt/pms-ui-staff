@@ -25,7 +25,8 @@ const mapStateToRateManagerGridViewRootComponentProps = (state) => {
 
 const mapDispatchToRateManagerGridViewRootComponentProps = (stateProps, dispatchProps, ownProps) => {
     var wrapperClass = 'calendar-wraper',
-        isLastPage = Math.ceil(stateProps.paginationStateData.totalRows / stateProps.paginationStateData.perPage) ===  stateProps.paginationStateData.page;
+        isLastPage = stateProps.mode === RM_RX_CONST.RATE_VIEW_MODE &&
+            Math.ceil(stateProps.paginationStateData.totalRows / stateProps.paginationStateData.perPage) ===  stateProps.paginationStateData.page;
 
     if(stateProps.mode === RM_RX_CONST.RATE_VIEW_MODE && stateProps.paginationStateData.page > 1){
         wrapperClass += ' load-top';
