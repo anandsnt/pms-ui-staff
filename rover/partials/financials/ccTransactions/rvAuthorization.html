@@ -8,7 +8,7 @@
                 <a class="transaction-title green toggle" ng-click="clickedApprovedTab()"  ng-class="{'active':data.authData.approved.active, 'has-arrow': hasAnyElements(data.authData.approved) }">
                     <strong class="name" translate>APPROVED</strong>
                 </a>
-                <div id="authorization-approved" class="grid-charge"  ng-repeat="item in data.authData.approved" ng-show="data.authData.approved.active" > <!-- To show, remove class "hidden" when L61 is clicked -->
+                <div id="authorization-approved" class="grid-charge"  ng-repeat="item in data.authData.approved" ng-show="data.authData.approved.active && item.description">
                     <!-- CC Types -->
                     <a ng-click="clickedApprovedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0}">
                         <strong class="name">{{item.description}}</strong>
@@ -46,7 +46,7 @@
                 <a ng-click="clickedDeclinedTab()" class="transaction-title red toggle" ng-class="{'active':data.authData.declined.active, 'has-arrow': hasAnyElements(data.authData.declined)}">
                     <strong class="name" translate>DECLINED</strong>
                 </a>
-                <div id="authorization-declined" class="grid-charge" ng-repeat="item in data.authData.declined" ng-show="data.authData.declined.active"> <!-- To show, remove class "hidden" when L101 is clicked -->
+                <div id="authorization-declined" class="grid-charge" ng-repeat="item in data.authData.declined" ng-show="data.authData.declined.active && item.description">
                     <a ng-click="clickedDeclinedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0}">
                         <strong class="name">{{item.description}}</strong>
                         <span class="value">{{currencySymbol}}{{item.total_amount|number:2}}</span>
@@ -83,7 +83,7 @@
                 <a ng-click="clickedReversalsTab()" class="transaction-title grey toggle" ng-class="{'active':data.authData.reversals.active, 'has-arrow': hasAnyElements(data.authData.reversals)}">
                     <strong class="name" translate>REVERSE_AUTHORIZATIONS</strong>
                 </a>
-                <div id="authorization-reverse" class="grid-charge" ng-repeat="item in data.authData.reversals" ng-show="data.authData.reversals.active"> <!-- To show, remove class "hidden" when L109 is clicked -->
+                <div id="authorization-reverse" class="grid-charge" ng-repeat="item in data.authData.reversals" ng-show="data.authData.reversals.active && item.description">
                     <a ng-click="clickedReversalTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0 }">
                         <strong class="name">{{item.description}}</strong>
                         <span class="value">{{currencySymbol}}{{item.total_amount|number:2}}</span>
