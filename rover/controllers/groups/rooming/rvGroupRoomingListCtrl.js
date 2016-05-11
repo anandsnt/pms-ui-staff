@@ -847,6 +847,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 options;
 
             if ( ! query.length || query.length > 2 ) {
+                $scope.page = 1;
+                
                 params = formFetchReservationsParams();
                 options = {
                     params: params,
