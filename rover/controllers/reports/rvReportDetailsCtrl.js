@@ -930,6 +930,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['GUEST_BALANCE_REPORT']:
 				case reportNames['ADDON_FORECAST']:
 				case reportNames['CREDIT_CHECK_REPORT']:
+				case reportNames['DEPOSIT_SUMMARY']:
 					orientation = 'landscape';
 					break;
 

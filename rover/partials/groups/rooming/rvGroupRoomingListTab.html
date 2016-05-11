@@ -102,7 +102,7 @@
         </li>
         <li>
             <!-- Don't show if there are no rooms in the rooming list -->
-            <button type="button" ng-click="sendRoomingList()" class="button with-icon blue email-print">
+            <button type="button" ng-click="openEmailPrintPopup()" class="button with-icon blue email-print">
                 <span class="icons icon-invoice"></span>
                 Email/Print
             </button>
@@ -127,7 +127,7 @@
             <button type="submit" name="submit" class="icons icon-search">
                 Search
             </button>
-            <input class="query" placeholder="Search by Name, Room No. or Confirmation No." type="search" autocomplete="off" ng-model="query" ng-keyup="debounceFetchReservations()" />
+            <input class="query" placeholder="Search by Name" type="search" autocomplete="off" ng-model="query" ng-keyup="debounceFetchReservations()" />
         </div>
         <div class="entry date-range">
             <div class="has-datepicker">
@@ -241,7 +241,7 @@
                         <span class="room" ng-show="!isRoomUnAssigned(reservation)">
                             <!-- Add class "unassigned" if new room -->
 
-                            {{'GROUP_ROOM'|translate}} 
+                            {{'GROUP_ROOM'|translate}}
                             <span ng-class="getRoomStatusClass(reservation)" ng-bind-html="escapeNull(reservation.room_no)|highlight:query:false"></span>
 
                             <!-- If new room, show this instead: Unassigned -->
