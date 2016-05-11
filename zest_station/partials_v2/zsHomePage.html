@@ -42,7 +42,7 @@
 <div class="popup iframe-popup open" ng-if="showExternalWebPage">
     <div class="popup-content iframe-content">
         <i class="close-popup" touch-press="closeExternalWebPage()"></i>
-        <iframe ng-click="showKeyboardOnInput()" id="booking_iframe" src="{{zestStationData.home_screen.booking_pop_up.booking_engine_url| trustAsResourceUrl}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock"></iframe>
+        <iframe click-touch="showKeyboardOnInput()" id="booking_iframe" src="{{zestStationData.home_screen.booking_pop_up.booking_engine_url| trustAsResourceUrl}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock"></iframe>
     </div>
 </div>
 <!--PopUp For Translation-->

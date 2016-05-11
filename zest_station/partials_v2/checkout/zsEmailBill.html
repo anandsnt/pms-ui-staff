@@ -42,7 +42,7 @@
         <h1>{{'TYPE_EMAIL' |translate}}</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input class="start-focused" id="email_text" ng-focus="showOnScreenKeyboard('email_text')" ng-click="showOnScreenKeyboard('email_text')" type="text" ng-keydown="resetTime()" ng-model="email" placeholder="" enter-press="saveEmail()" value="" touch-press />
+                <input class="start-focused" id="email_text" ng-focus="showOnScreenKeyboard('email_text')" click-touch="showOnScreenKeyboard('email_text')" type="text" ng-keydown="resetTime()" ng-model="email" placeholder="" enter-press="saveEmail()" value="" touch-press />
             </div>
             <div class="entry action">
                 <button type="button" class="button" touch-press='saveEmail()' ng-class="{'overlay': email.length < 1}">{{'NEXT_BTN' |translate}}</button>
