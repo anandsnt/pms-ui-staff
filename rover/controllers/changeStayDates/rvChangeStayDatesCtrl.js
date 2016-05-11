@@ -744,7 +744,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				//borrow_for_groups - this stateParam is used in rooms and rates screen to show/hide ceratin fields
 				//borrow_for_groups - from this screen - if grp id present then this flag will be false
 				group_id: '',
-				borrow_for_groups: ($scope.reservationData.group.id) ? 'false': 'true',
+				borrow_for_groups: ($scope.reservationData.group.id) ? 'true': 'false',
                 room_type_id: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
                 adults: $scope.reservationData.tabs[$scope.viewState.currentTab].numAdults,
                 children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren
