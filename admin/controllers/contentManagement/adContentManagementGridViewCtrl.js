@@ -325,6 +325,13 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 	/* delete component ends here*/
 
 
+	$scope.trimComponent = function(component){
+
+		var trimmedComponent = component.substring(0, 20);
+		return component.length > 20? trimmedComponent + "..." : trimmedComponent;
+
+	}
+
 	/* search predicate functions for cms components*/
 
 	$scope.filterComponents = function(value, index, array){

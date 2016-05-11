@@ -32,10 +32,17 @@
   <div class="room-content scrollable" ng-if="roomDetails.is_occupied == 'true'">
     <div class="wrapper">
       <strong class="h2">
-        <span ng-if="roomDetails.is_late_checkout == 'true'">LATE CHECKOUT / </span><span>{{ roomDetails.current_room_reservation_status }}</span><span ng-if="roomDetails.hasDept">.</span>
+        <span ng-if="roomDetails.is_late_checkout == 'true'">LATE CHECKOUT / </span>
+        <span> {{ roomDetails.current_room_reservation_status }}</span>
+        <span ng-if="roomDetails.hasDept">. </span>
 
         <!-- spaces removed so that in end UI there should not be a space b/w text and last full stop -->
-        <span class="red" ng-if="roomDetails.hasDept">Departing<span ng-if="!!roomDetails.departure.time"> at {{ roomDetails.departure.time }}</span><span ng-if="!!roomDetails.departure.date"> on {{ roomDetails.departure.date | date : dateFormat }}</span>.</span>
+        <span class="red" ng-if="roomDetails.hasDept">
+          <labrl>Departing </labrl>
+          <span ng-if="!!roomDetails.departure.time"> at {{ roomDetails.departure.time }} </span>
+          <span ng-if="!!roomDetails.departure.date"> on {{ roomDetails.departure.date | date : dateFormat }} </span>
+          <label>.</label>
+        </span>
       </strong>
       <figure class="guest-image">
         <img src="{{ roomDetails.avatar_src }}" alt="">

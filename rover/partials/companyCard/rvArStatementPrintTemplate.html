@@ -101,8 +101,8 @@
                 </tr>
 
                 <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.tax_details">
-                    <td colspan="6"><strong>{{tax.description}}</strong></td>
-                    <td><strong>{{currencySymbol}}{{tax.tax_amount | number: precisonTwo}}</strong></td>
+                    <td colspan="6">{{tax.description}}</td>
+                    <td>{{currencySymbol}}{{tax.tax_amount | number: precisonTwo}}</td>
                 </tr>
 
             </tfoot>
