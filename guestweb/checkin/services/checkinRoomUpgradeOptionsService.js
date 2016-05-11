@@ -9,6 +9,8 @@
 
 		var deferred = $q.defer();
 		var url = '/guest_web/upgrade_options.json';
+		data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
+		data.url_suffix = (typeof $rootScope.urlSuffix !=="undefined") ? $rootScope.urlSuffix : "";
 		$http.get(url,{
 			params: data
 		}).success(function(response) {
