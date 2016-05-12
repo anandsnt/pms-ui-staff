@@ -19,7 +19,7 @@ sntRover
 
 				$scope.toggleView = function(bool) {
 					$scope.closed = typeof bool === typeof true ? bool : ! $scope.closed;
-					$timeout($scope.onUpdate, 100);
+					$timeout($scope.onUpdate, 150);
 				};
 
 				$scope.toggleSelectAll = function() {
@@ -32,6 +32,7 @@ sntRover
 
 				$scope.clearSearch = function() {
 					$scope.search = '';
+					$scope.onSearchChange();
 				};
 
 				$scope.onSearchChange = function() {
@@ -74,7 +75,9 @@ sntRover
 						} else {
 							each[key] = value;
 						}
-					})
+					});
+
+					$timeout($scope.onUpdate, 150);
 				};
 
 				function updateSelectedValue() {
@@ -96,6 +99,8 @@ sntRover
 					if ( typeof $scope.affectsFilter == typeof {} ) {
 						$scope.affectsFilter.process( $scope.report[$scope.affectsFilter.name], selectedItems );
 					};
+
+					$timeout($scope.onUpdate, 150);
 				};
 
 				/**/

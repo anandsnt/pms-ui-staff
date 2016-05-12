@@ -3,7 +3,8 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 	'$rootScope',
 	'$filter',
 	'$stateParams',
-	function($scope, $rootScope, $filter, $stateParams) {
+	'$timeout',
+	function($scope, $rootScope, $filter, $stateParams, $timeout) {
 		BaseCtrl.call(this, $scope);
 
 		/**
@@ -174,6 +175,69 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 	        params['sort_field'] = $scope.sort_field;
 	        $scope.$emit("updateLogdata",params);
     	};
+
+		/**
+         * add the print orientation before printing
+         * @return - None
+         */
+        var addPrintOrientation = function() {
+            $('head').append("<style id='print-orientation'>@page { size: landscape; }</style>");
+        };
+
+        /**
+         * remove the print orientation before printing
+         * @return - None
+         */
+        var removePrintOrientation = function() {
+            $('#print-orientation').remove();
+        };
+
+        /**
+         * CICO-27954: missing print functionality for activity logs
+         */
+    	$scope.print = function() {
+
+    		$("header h1").addClass('text-hide');
+    		$(".cards-header").css({marginBottom: '2%'});
+
+    		//changing the orientation to landscape
+            addPrintOrientation();
+
+            //as part of https://stayntouch.atlassian.net/browse/CICO-14384?focusedCommentId=48871&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-48871
+            //We dont know the icon background-image loaded or not. We need to start print preview
+            //only when it is loaded, this is wrong practice (accessing DOM elements from controller), but there is no option
+            var $container = $('#print-orientation'),
+                bg = $container.css('background-image'),
+                src = bg.replace(/(^url\()|(\)$|[\"\'])/g, ''),
+                $img = $('<img>').attr('src', src).on('load', function() {
+                    //unbinding the events & removing the elements inorder to prevent memory leaks
+                    $(this).off('load');
+                    $(this).remove();
+
+                    //yes we have everything we wanted
+                    window.print();
+
+                    //if we are in the app
+                    $timeout(function() {
+                        if (sntapp.cordovaLoaded) {
+                            cordova.exec(
+                                function(success) {},
+                                function(error) {},
+                                'RVCardPlugin',
+                                'printWebView', []
+                            );
+                        };
+                    }, 300);
+
+
+                    $timeout(function() {
+                    	$("header h1").removeClass('text-hide');
+                    	$(".cards-header").css({marginBottom: '0'});
+                        removePrintOrientation();
+                    }, 1200);
+                });
+    	};
+
     	$scope.init();
 	}
 ]);

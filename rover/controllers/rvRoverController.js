@@ -94,6 +94,7 @@ sntRover.controller('roverController',
     /*
      * hotel Details
      */
+    $rootScope.hotelDetails = hotelDetails;
 
     $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
     $rootScope.businessDate = hotelDetails.business_date;
@@ -527,7 +528,7 @@ sntRover.controller('roverController',
     };
 
     $scope.uuidServiceSuccessCallBack = function(response) {
-      $rootScope.UUID = response.Data;
+      $rootScope.UUID = response.Message;
     };
 
     $scope.uuidServiceFailureCallBack = function(error) {

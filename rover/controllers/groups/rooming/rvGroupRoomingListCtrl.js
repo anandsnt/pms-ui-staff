@@ -330,6 +330,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             //adding available room count over the data we got
             $scope.roomTypesAndData = _.map(data.result, function(data) {
                 data.availableRoomCount = toI(data.total_rooms) - toI(data.total_pickedup_rooms);
+                data.availableRoomCount = (data.availableRoomCount < 0) ? 0 : data.availableRoomCount;
                 return data;
             });
             //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
@@ -842,7 +843,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         };
         
         $scope.filterReservation = function() {
-            $scope.page = 1;
+            initialisePagination();
             $timeout( $scope.fetchReservations, 10 );
         };
         $scope.fiterByQuery = function() {
@@ -851,7 +852,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 options;
 
             if ( ! query.length || query.length > 2 ) {
-                $scope.page = 1;
+                initialisePagination();
 
                 params = formFetchReservationsParams();
                 options = {
@@ -951,11 +952,12 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             //default to date, as per CICO-13900 it will be block_to date
             $scope.toDate = refData.block_to;
 
-            //default block_from date
-            $scope.arrival_date = refData.block_from;
-
-            //default block_to date
-            $scope.dep_date = refData.block_to;
+            // GOD KNOW WHY DEFAULTING THE DATES TO THE GROUP START END DATE IS A PROBLEM!!!!!??
+            // #@$%%$^%$^%$^%$^%$@#$
+            // default block_from date
+            // $scope.arrival_date = refData.block_from;
+            // default block_to date
+            // $scope.dep_date = refData.block_to;
         };
 
         /**
