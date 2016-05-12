@@ -330,6 +330,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             //adding available room count over the data we got
             $scope.roomTypesAndData = _.map(data.result, function(data) {
                 data.availableRoomCount = toI(data.total_rooms) - toI(data.total_pickedup_rooms);
+                data.availableRoomCount = (data.availableRoomCount < 0) ? 0 : data.availableRoomCount;
                 return data;
             });
             //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
