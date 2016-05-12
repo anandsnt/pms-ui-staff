@@ -1071,6 +1071,10 @@ angular.module('reportsModule')
                                 }
                             }
                         }
+
+                        console.log( '=====================' );
+                        console.log( report['title'] );
+                        console.log( report.hasByChargeGroup );
                     };
 
                     foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' }) || _.find(report['filters'], { value: 'SHOW_CHARGE_CODES' });
