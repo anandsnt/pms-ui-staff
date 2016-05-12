@@ -20,6 +20,13 @@ sntRover.controller('rvBorrowRoomTypeCtrl',[
         $scope.closeDialog();
         $scope.$emit('upgradeSelected', $scope.selectedUpgrade);
     };
+
+    var failureCallbackselectUpgrade = function(error) {
+        $scope.$emit('hideLoader');
+        $scope.$parent.errorMessage = error;
+        $scope.closeDialog();
+    };
+
     $scope.clickedBorrowButton = function(){
         var resData     = $scope.reservationData.reservation_card,
             resStatus   = resData.reservation_status,
@@ -43,7 +50,8 @@ sntRover.controller('rvBorrowRoomTypeCtrl',[
 
         var options = {
             params          : params,
-            successCallBack : successCallbackselectUpgrade
+            successCallBack : successCallbackselectUpgrade,
+            failureCallBack : failureCallbackselectUpgrade
 
         };
         $scope.callAPI(apiToCall, options);

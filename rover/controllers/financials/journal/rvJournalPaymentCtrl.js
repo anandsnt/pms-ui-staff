@@ -37,6 +37,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
     $rootScope.$on('fromDateChanged',function(){
         initPaymentData();
+        $rootScope.$broadcast('REFRESH_SUMMARY_DATA', $scope.data.fromDate);
     });
 
     $rootScope.$on('toDateChanged',function(){
