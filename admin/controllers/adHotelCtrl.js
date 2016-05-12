@@ -37,7 +37,7 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 		var options = {
 				'query': $scope.searchTerm
 		};
-		$scope.invokeApi(ADHotelListSrv.searchHotels, options, fetchSuccess);
+		$scope.invokeApi(ADHotelListSrv.fetch, options, fetchSuccess);
 	};
 
 	/**
