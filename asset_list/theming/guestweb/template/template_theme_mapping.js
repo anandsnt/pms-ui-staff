@@ -240,7 +240,6 @@ module.exports = {
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
 										precheckinPartials+'*.html'],
-<<<<<<< HEAD
 			'guestweb_beacon_hill'		 : [ 'guestweb/**/common_templates/partials/checkin/**.html',
 										'guestweb/**/common_templates/partials/checkout/**.html',
 										'guestweb/**/common_templates/partials/gwNoOption.html',
