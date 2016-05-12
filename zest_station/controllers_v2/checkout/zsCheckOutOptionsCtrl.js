@@ -4,8 +4,8 @@ sntZestStation.controller('zsCheckOutOptionsCtrl', [
 	'zsEventConstants',
 	'zsModeConstants',
 	'$stateParams',
-	'$sce', 'zsTabletSrv',
-	function($scope, $state, zsEventConstants,zsModeConstants, $stateParams, $sce, zsTabletSrv) {
+	'$sce',
+	function($scope, $state, zsEventConstants,zsModeConstants, $stateParams, $sce) {
 
 		/*********************************************************************************
 		**		Expected state params -----> nothing			  

@@ -18,6 +18,30 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchHotelSettings = function() { //to get terms & conditions
+            var deferred = $q.defer();
+            var url = '/api/hotel_settings.json';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchHotelTheme = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/email_templates/list.json?hotel_id=' + params.id;
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
         this.getDoorLockSettings = function() {
             var deferred = $q.defer(),
                 url = 'api/door_lock_interfaces.json';
@@ -153,8 +177,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                         'prefix': '',
                         'code': 'cl',
                         'flag': 'flag-ca',
-                    'language': 'Castellano'
-                         //using name as an english reference (which is in the api call)
+                        'language': 'Castellano'
+                            //using name as an english reference (which is in the api call)
                     }
                 }, {
                     'name': 'German',
@@ -207,6 +231,81 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 }
             ];
         }
+
+
+
+        this.fetchWorkStations = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/workstations.json';
+
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        this.fetchWorkStationStatus = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/workstations/' + params.id + '/status';
+
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.updateWorkStations = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/workstations/' + params.id;
+
+            zsBaseWebSrv.putJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.updateWorkStationOos = function(params) {
+            var deferred = $q.defer(),
+                url = 'api/workstations/' + params.id + '/set_out_or_order.json';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
+        this.saveSettings = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/hotel_settings/change_settings';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
+        this.validate = function(params) {
+            var deferred = $q.defer(),
+                url = 'api/users/check_if_admin';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
     }
 ]);

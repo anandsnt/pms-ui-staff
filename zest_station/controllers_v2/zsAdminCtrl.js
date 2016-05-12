@@ -1,7 +1,7 @@
 sntZestStation.controller('zsAdminCtrl', [
     '$scope',
-    '$state', 'zsEventConstants', 'zsTabletSrv', 'zsLoginSrv', '$window', '$rootScope',
-    function($scope, $state, zsEventConstants, zsTabletSrv, zsLoginSrv, $window, $rootScope) {
+    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope',
+    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope) {
 
         BaseCtrl.call(this, $scope);
 
@@ -111,7 +111,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 successCallBack: onSuccess,
                 failureCallBack: onFail
             };
-            $scope.callAPI(zsTabletSrv.validate, options);
+            $scope.callAPI(zsGeneralSrv.validate, options);
         };
         /**
          * Go to home page
@@ -243,7 +243,7 @@ sntZestStation.controller('zsAdminCtrl', [
             if (station) {
                 //if no workstation is selected, we dont have an id to update settings for
                 //since the workstation station_id itself is saved in the browser
-                $scope.callAPI(zsTabletSrv.updateWorkStations, options);
+                $scope.callAPI(zsGeneralSrv.updateWorkStations, options);
             }
         };
 
@@ -277,7 +277,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 successCallBack: successCallBack,
                 failureCallBack: failureCallBack
             };
-            $scope.callAPI(zsTabletSrv.saveSettings, options);
+            $scope.callAPI(zsGeneralSrv.saveSettings, options);
         };
 
         var restartTimers = function() {
