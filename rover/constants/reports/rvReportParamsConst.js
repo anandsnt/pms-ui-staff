@@ -49,5 +49,7 @@ angular.module('reportsModule')
         'RATE_TYPE_IDS'          : 'rate_type_ids',
         'RESTRICTION_IDS'        : 'restriction_ids',
         'ROOM_TYPE_IDS'          : 'room_type_ids',
-        'RATE_ID'                : 'rate_id'
+        'RATE_ID'                : 'rate_id',
+        'ORIGIN_VALUES'          : 'origin',
+        'ORIGIN_URLS'            : 'urls'
     });

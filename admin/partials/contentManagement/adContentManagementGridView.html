@@ -10,40 +10,53 @@
                 <div class="entry filter">
                     <label for="showing-structure" translate>SHOWING_LABEL</label>
                     <div class="select">
-                        <select id="showing-structure" ng-change="viewSelected()" ng-model="selectedView">
-                            <option value="section" selected translate>SECTIONS_OPTION</option>
-                            <option value="category" translate>CATEGORIES_OPTION</option>
-                            <option value="item" translate>ITEMS_OPTION</option>
+                        <select id="showing-structure" class="grid-select" ng-change="viewSelected()" ng-model="selectedView">
+                            <option value="home screens" selected translate>DASHBOARDS_OPTION</option>
+                            <option value="sections" selected translate>SECTIONS_OPTION</option>
+                            <option value="categories" translate>CATEGORIES_OPTION</option>
+                            <option value="items" translate>ITEMS_OPTION</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!--Filter by home screen, hidden by default - show only when listing sections -->
+                <div class="entry filter" ng-show="selectedView == 'sections'">
+                    <label for="showing-items" translate>FROM_HOME_SCREEN_LABEL</label>
+                    <div class="select" >
+                        <select id="showing-items" ng-model = "fromHomeScreen" ng-change="filterBySectionAndCategory()" class="placeholder" ng-disabled = "showUnMappedList">
+                            <option value="all" translate>ALL_HOME_SCREEN_LABEL</option>
+                             <option value="{{home_screen.id}}" ng-repeat="home_screen in home_screens">{{trimComponent(home_screen.name)}}</option>
+                            
                         </select>
                     </div>
                 </div>
 
                 <!-- Filter by section, hidden by default - show only when listing categories or items --> 
-                <div class="entry filter" ng-show="selectedView == 'category'">
+                <div class="entry filter" ng-show="selectedView == 'categories'">
                     <label for="showing-categories" translate>FROM_SECTION_LABEL</label>
                     <div class="select">
                         <select id="showing-categories" ng-model="fromSection" ng-change="filterBySectionAndCategory()" class="placeholder" ng-disabled = "showUnMappedList">
                             <option value="all" translate>ALL_SECTIONS_LABEL</option>
-                            <option value="{{section.id}}" ng-repeat="section in sections">{{section.name}}</option>
+                            <option value="{{section.id}}" ng-repeat="section in section_options">{{trimComponent(section.name)}}</option>
                             
                         </select>
                     </div>
                 </div>
 
                 <!--Filter by category, hidden by default - show only when listing items -->
-                <div class="entry filter" ng-show="selectedView == 'item'">
+                <div class="entry filter" ng-show="selectedView == 'items'">
                     <label for="showing-items" translate>FROM_CATEGORIES_LABEL</label>
                     <div class="select" >
                         <select id="showing-items" ng-model = "fromCategory" ng-change="filterBySectionAndCategory()" class="placeholder" ng-disabled = "showUnMappedList">
                             <option value="all" translate>ALL_CATEGORIES_LABEL</option>
-                             <option value="{{category.id}}" ng-repeat="category in category_options">{{category.name}}</option>
+                             <option value="{{category.id}}" ng-repeat="category in category_options">{{trimComponent(category.name)}}</option>
                             
                         </select>
                     </div>
                 </div>
 
                 <!-- Show only unassigned categories or items, hidden by default - show only when listing items or categories -->
-                <div class="entry radio-check " ng-show="selectedView != 'section'">
+                <div class="entry radio-check " ng-show="selectedView != 'sections' && selectedView != 'home screens' ">
                     <label for="unassigned" class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{'checked': showUnMappedList}"></span>
                         <span translate>SHOW_UNASSIGNED_LABEL</span>
@@ -56,13 +69,54 @@
                     <label for="structure-search" translate>SEARCH_LABEL</label>
                     <div class="holder">
                         <button type="submit" name="submit" class="icons icon-search" translate>SEARCH_LABEL</button>
-                        <input type="search" class="query" placeholder="Search sections, categories or items" ng-model="searchText"  id="structure-search" autocomplete="off" />
+                        <input type="search" class="query grid-search" placeholder="{{ selectedView }}" ng-model="searchText"  id="structure-search" autocomplete="off" />
                     </div>
                 </div>    
             </div>
 
             <!-- Grid content -->
-            <table class="grid datatable ng-table" ng-show="selectedView == 'section'" ng-table="sectionParams">
+            <table class="grid datatable ng-table" ng-show="selectedView == 'home screens'" ng-table="homeScreenParams">
+                
+                <!-- Section table HTML -->
+                <thead>                 
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': homeScreenParams.isSortBy('name', 'asc'),
+                        'sort-desc': homeScreenParams.isSortBy('name', 'desc')
+                      }"
+                        ng-click="homeScreenParams.sorting({'name' : homeScreenParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NAME_LABEL</span></div>
+                    </th>
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': homeScreenParams.isSortBy('last_updated', 'asc'),
+                        'sort-desc': homeScreenParams.isSortBy('last_updated', 'desc')
+                      }"
+                        ng-click="homeScreenParams.sorting({'last_updated' : homeScreenParams.isSortBy('last_updated', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>LAST_UPDATE_LABEL</span></div>
+                    </th> 
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': homeScreenParams.isSortBy('no_of_section_items', 'asc'),
+                        'sort-desc': homeScreenParams.isSortBy('no_of_section_items', 'desc')
+                      }"
+                        ng-click="homeScreenParams.sorting({'no_of_section_items' : homeScreenParams.isSortBy('no_of_section_items', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NO_OF_SECTIONS_LABEL</span></div>
+                    </th>        
+                </thead>
+                <tbody>
+                    <tr ng-repeat="gridItem in $data | filter:filterComponents">
+                        <td><a >{{gridItem.name}}</a>
+                        <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
+                        <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>
+                        <td>{{gridItem.no_of_section_items}}</td>
+                        
+                    </tr>
+                </tbody>
+             </table> 
+
+            <!-- Grid content -->
+            <table class="grid datatable ng-table" ng-show="selectedView == 'sections'" ng-table="sectionParams">
                 
                 <!-- Section table HTML -->
                 <thead>                 
@@ -106,26 +160,27 @@
                         <th class="width-10" translate> DELETE_LABEL</th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="gridItem in $data | filter:searchText">
-                        <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
+                    <tr ng-repeat="gridItem in $data | filter:filterComponents">
+                        <td><a ng-click="componentSelected(gridItem)">{{gridItem.name}}</a>
+                        <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>
                         <td>{{gridItem.no_of_categories}}</td>
                         <td>{{gridItem.no_of_section_items}}</td>
                         <td >
-                            <div class="switch-button " ng-class="{'on':gridItem.status}">
+                            <div class="switch-button " ng-show="!gridItem.is_system_defined" ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
                         <td class="delete">
-                            <a  class="icons icon-delete large-icon" ng-click="deleteItem(gridItem.id)">Delete</a>
+                            <a  class="icons icon-delete large-icon" ng-show="!gridItem.is_system_defined" ng-click="deleteItem(gridItem.id)">Delete</a>
                         </td>
                     </tr>
                 </tbody>
              </table> 
 
              <!-- Categories table HTML -->
-             <table class="grid datatable ng-table" ng-show="selectedView == 'category'" ng-table="categoryParams">
+             <table class="grid datatable ng-table" ng-show="selectedView == 'categories'" ng-table="categoryParams">
                 
                 
                 <thead>                 
@@ -163,25 +218,26 @@
                         <th class="width-10" translate> DELETE_LABEL</th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="gridItem in $data | filter:searchText">
-                        <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
+                    <tr ng-repeat="gridItem in $data | filter:filterComponents">
+                        <td><a ng-click="componentSelected(gridItem)">{{gridItem.name}}</a>
+                        <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>                        
                         <td>{{gridItem.no_of_items}}</td>
                         <td >
-                            <div class="switch-button " ng-class="{'on':gridItem.status}">
+                            <div class="switch-button " ng-show="!gridItem.is_system_defined" ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
                         <td class="delete">
-                            <a  class="icons icon-delete large-icon" ng-click="deleteItem(gridItem.id)">Delete</a>
+                            <a  class="icons icon-delete large-icon" ng-show="!gridItem.is_system_defined" ng-click="deleteItem(gridItem.id)">Delete</a>
                         </td>
                     </tr>
                 </tbody>
              </table>
 
              <!-- Items table HTML -->
-             <table class="grid datatable ng-table" ng-show="selectedView == 'item'" ng-table="itemParams">               
+             <table class="grid datatable ng-table" ng-show="selectedView == 'items'" ng-table="itemParams">               
                 
                 <thead>                 
 
@@ -226,19 +282,20 @@
                         <th class="width-10" translate> DELETE_LABEL</th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="gridItem in $data | filter:searchText">
-                        <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
+                    <tr ng-repeat="gridItem in $data | filter:filterComponents">
+                        <td><a ng-click="componentSelected(gridItem)">{{gridItem.name}}</a>
+                        <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
                         <td>{{gridItem.page_template}}</td>
                         <td>{{gridItem.screen_id}}</td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>                        
                         <td >
-                            <div class="switch-button " ng-class="{'on':gridItem.status}">
+                            <div class="switch-button " ng-show="!gridItem.is_system_defined" ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
                         <td class="delete">
-                            <a  class="icons icon-delete large-icon"ng-click="deleteItem(gridItem.id)">Delete</a>
+                            <a  class="icons icon-delete large-icon" ng-show="!gridItem.is_system_defined" ng-click="deleteItem(gridItem.id)">Delete</a>
                         </td>
                     </tr>
                 </tbody>

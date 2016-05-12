@@ -54,7 +54,6 @@
                 <ad-toggle-button is-checked="zestSettings.check_in_collect_nationality" label="{{'COLLECT_USER_NATIONALITY'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
             <fieldset class="holder left">
-                <div class="form-title">
                 <div class="form-title full-width">
                     <h3><span translate>SECOND_AUTHENTICATION</span> </h3>
                 </div>
@@ -75,38 +74,44 @@
                 </div>
                 <ad-toggle-button is-checked="zestSettings.bypass_cc_for_prepaid_reservation" label="{{'BYPASS_CC_FOR_PREPAID_RESERVATIOIN'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
-            <!-- Message Overrides for Zest Station Check-in, these override the active locale -->
             <fieldset class="holder right">
+                <div class="form-title full-width">
+                    <h3><span translate>DISPLAY_TERMS_AND_CONDITIONS </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.kiosk_display_terms_and_condition" label="{{'DISPLAY_TERMS_AND_CONDITIONS'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
+            <!-- Message Overrides for Zest Station Check-in, these override the active locale -->
+            <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>NO_AVAIL_ROOM_MSG</span> </h3>
                 </div>
                 <ad-textbox value="zestSettings.check_in_message_texts.speak_to_crew_mod_message1" name="zest-web" id="zest-web" label="" placeholder="{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width"></ad-textbox>
             </fieldset>
-            <fieldset class="holder left">
+            <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate>KEY_PRINT_SUCCESS_MSG</span> </h3>
                 </div>
                 <ad-textbox value="zestSettings.check_in_message_texts.key_success_print_success_message" name="zest-web" id="zest-web" label="" placeholder="{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width"></ad-textbox>
             </fieldset>
-            <fieldset class="holder right">
+            <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate> KEY_SUCCESS_PRINT_FAIL_MSG</span> </h3>
                 </div>
                 <ad-textbox value="zestSettings.check_in_message_texts.key_success_print_fail_message" name="zest-web" id="zest-web" label="" placeholder="{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width"></ad-textbox>
             </fieldset>
-            <fieldset class="holder left">
+            <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate>KEY_FAIL_PRINT_SUCCESS</span> </h3>
                 </div>
                 <ad-textbox value="zestSettings.check_in_message_texts.key_fail_print_success_message" name="zest-web" id="zest-web" label="" placeholder="{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width"></ad-textbox>
             </fieldset>
-            <fieldset class="holder right">
+            <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate> KEY_AND_PRINT_FAIL_MSG</span> </h3>
                 </div>
                 <ad-textbox value="zestSettings.check_in_message_texts.key_fail_print_fail_message" name="zest-web" id="zest-web" label="" placeholder="{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width"></ad-textbox>
             </fieldset>
-            <fieldset class="holder left">
+            <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate> CHECKIN_WAIT_MSG</span> </h3>
                 </div>

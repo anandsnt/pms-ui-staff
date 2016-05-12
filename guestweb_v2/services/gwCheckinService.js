@@ -14,7 +14,14 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 	this.findUser = function(params) {
 		var deferred = $q.defer();
 		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
-		var url = '/guest_web/checkin_reservation_search.json';
+		//use dummy data for demo mode
+		var url= "";
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/ext_checkin_verfication.json';
+		}
+		else{
+			url = '/guest_web/checkin_reservation_search.json';
+		}; 
 		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -46,7 +53,13 @@ sntGuestWeb.service('GwCheckinSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwW
 
 	this.fetchRoomUpgradesDetails = function(params) {
 		var deferred = $q.defer();
-		var url = '/guest_web/upgrade_options.json';
+		var url= "";
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/room_upgrades.json';
+		}
+		else{
+			url = '/guest_web/upgrade_options.json';
+		}
 		GWBaseWebSrv.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {

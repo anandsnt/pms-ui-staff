@@ -151,4 +151,94 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
        	templateUrl: '/assets/common_templates/partials/MGM/Luxor/gwCheckoutfinal.html',
 		title: 'Status - Check-out Now'
    	 });
+
+   	$stateProvider.state('externalCheckinVerification', {
+		url: '/externalCheckinVerification',
+		templateUrl: '/assets/common_templates/partials/MGM/gwExternalCheckin.html',
+		controller: 'externalCheckinVerificationViewController',
+		title: 'External Check in verification'
+	}).state('guestCheckinTurnedOff',{
+	 	url: '/guestCheckinTurnedOff',
+	 	templateUrl: '/assets/common_templates/partials/MGM/gwExternalCheckInTurnedOff.html',
+	 	title: 'Check-in'
+	 }).state('guestCheckinEarly', {
+		url: '/guestCheckinEarly/:date',
+		templateUrl: '/assets/common_templates/partials/MGM/gwEarlyToCheckin.html',
+		controller: 'earlyToCheckinCtrl',
+		title: 'Check-in'
+	}).state('guestCheckinLate', {
+		url: '/guestCheckinLate',
+		templateUrl: '/assets/common_templates/partials/MGM/gwLateToCheckin.html',
+		title: 'Check-in'
+	}).state('birthDateDetails', {
+		url: '/birthDateDetails',
+		templateUrl: '/assets/common_templates/partials/MGM/gwBirthDataDetails.html',
+		controller: 'birthDateDetailsController',
+		title: 'Birthdate'
+	}).state('promptGuestDetails', {
+		url: '/promptGuestDetails',
+		templateUrl: '/assets/common_templates/partials/MGM/gwPromptGuestDetails.html',
+		controller: 'guestDetailsController',
+		title: 'Guest Details'
+	}).state('guestNotEligible', {
+		url: '/guestNotEligible',
+		templateUrl: '/assets/common_templates/partials/MGM/gwGuestNotEligible.html',
+		title: 'Guest Details'
+	});
+
+
+	$stateProvider.state('checkinCcVerification', {
+		url: '/checkinCcVerification',
+		templateUrl: '/assets/common_templates/partials/MGM/gwCheckinCCAddition.html',
+		controller: 'checkinCcVerificationController',
+		title: 'CC verification'
+	}).state('emailAddition', {
+		url: '/emailAddition/:isFrom',
+		templateUrl: '/assets/common_templates/partials/MGM/gwEmailEntry.html',
+		controller: 'emailEntryController',
+		title: 'E-mail entry'
+	}).state('mobileNumberAddition', {
+		url: '/mobileNumberAddition',
+		templateUrl: '/assets/common_templates/partials/MGM/gwPhoneNumberUpdate.html',
+		controller: 'mobileEntryController',
+		title: 'Phone number entry'
+	}).state('mobileNumberOptions', {
+		url: '/mobileNumberOptions',
+		templateUrl: '/assets/common_templates/partials/MGM/gwMobielNUmberOptions.html',
+		controller: 'mobileOptionsController',
+		title: 'Phone number entry'
+	});
+
+	//checkin now states
+	$stateProvider.state('guestCheckinOptions', {
+		url: '/guestCheckinOptions',
+		templateUrl: '/assets/common_templates/partials/MGM/gwCheckinOptions.html',
+		controller: 'checkinOptionsController',
+		title: 'Checkin options'
+	}).state('earlyCheckinReady', {
+		url: '/earlyCheckinReady',
+		controller:'earlyCheckinReadyController',
+		templateUrl: '/assets/common_templates/partials/MGM/gwEarlyCheckinReady.html',
+		title: 'Early Check in ready'
+	}).state('roomNotReady', {
+		url: '/roomNotReady',
+		templateUrl: '/assets/common_templates/partials/MGM/gwCheckinNowCommon.html',
+		controller: 'roomNotReadyController',
+		title: 'Room unavailable'
+	}).state('roomAssignFailed', {
+		url: '/roomAssignFailed',
+		templateUrl: '/assets/common_templates/partials/MGM/gwCheckinNowCommon.html',
+		controller: 'roomAssignFailedController',
+		title: 'Room Assign Failed'
+	}).state('eciOffroomAssignFailed', {
+		url: '/eciOffroomAssignFailed',
+		templateUrl: '/assets/common_templates/partials/MGM/gwCheckinNowCommon.html',
+		controller: 'eciOffRoomAssignmentFailedController',
+		title: 'Room Assign Failed'
+	}).state('eciOffRoomNotReady', {
+		url: '/eciOffRoomNotReady',
+		templateUrl: '/assets/common_templates/partials/MGM/gwCheckinNowCommon.html',
+		controller: 'eciOffRoomNotReadyController',
+		title: 'Room unavailable'
+	});
 }]);

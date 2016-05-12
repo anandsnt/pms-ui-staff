@@ -448,6 +448,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			'journals': 			['ACCESS_JOURNAL'],
 			'ccTransactions':   	['VIEW_CC_TRANSACTIONS'],
 
+			'accountsReceivables': 	['ACCESS_ACCOUNTING_INTERFACE'],
 			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],
 			'commisions': 			['ACCESS_COMMISSIONS'],
 			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],

@@ -10,5 +10,6 @@
         "FAILED_INTERFACE_MESSAGES": "Failed OTA Messages",
 	"WORKSTATION_IS_OOS":"Out of Service",
 	"WORKSTATION_OOS_MSG":"OOS Message",
+	"OOS_REASON":"OOS Reason",
         "ROVER_DEVICE_ID" : "Rover Device ID"
 

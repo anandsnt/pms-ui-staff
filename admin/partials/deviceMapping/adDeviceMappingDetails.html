@@ -43,6 +43,11 @@
                label = "{{'ROVER_DEVICE_ID' | translate}}" placeholder = "{{'ROVER_DEVICE_ID'| translate}}"  
                styleclass="full-width" readonly="{{isDeviceIdReadOnly}}"></ad-textbox>
             <ad-toggle-button is-checked="mapping.is_out_of_order" label="{{ 'WORKSTATION_IS_OOS' | translate}}"></ad-toggle-button>
+
+            <ad-textbox ng-show="mapping.is_out_of_order" inputtype="text" value="mapping.oo_reason" 
+               label = "{{'OOS_REASON' | translate}}" placeholder = "{{'OOS_REASON'| translate}}"  
+               styleclass="full-width" required="yes"></ad-textbox>
+
          </fieldset>
          <div class="actions float">
             <button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()" translate>

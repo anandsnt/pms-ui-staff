@@ -202,6 +202,15 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
               room_type_id: parseInt(reservation.room_type_id),
               room_id: parseInt(reservation.room_id)
             });
+            angular.forEach(reservation.accompanying_guests_details, function(guest, index) {
+
+                if (!guest.first_name && !guest.last_name) {
+                  guest.first_name = null;
+                  guest.last_name = null;
+                }
+
+            });
+
 
             var options = {
               params: reservation,

@@ -91,6 +91,9 @@
                 <button ng-show="arTransactionDetails.ar_transactions.length > 0" ng-click="clickedPrintButton()" type="button" class="button blue with-icon only-icon">
                     <span class="icons icon-print"></span>
                 </button>
+                <button ng-show="arTransactionDetails.ar_transactions.length > 0" type="button" class="button orange with-icon only-icon" ng-click="clickedArStatementButton()">
+                    <span class="icons icon-invoice"></span>
+                </button>
             </li>
         </ul>
     </div>
@@ -101,16 +104,23 @@
         <div class="wrapper">
 
             <ul class="search-results">
-                <li class="reservation transaction" ng-click="goToReservationDetails($index, $event)" ng-repeat="transaction in arTransactionDetails.ar_transactions">
+                <li class="reservation transaction" ng-repeat="transaction in arTransactionDetails.ar_transactions">
 
-                    <div class="faux-anchor" class="guest-{reservation-status}" ng-show="transaction.transaction_type == 'DEBIT'">
+                    <div class="faux-anchor has-arrow toggle" ng-click="clickedOnTransaction($index,$event)" ng-class="{'active':(transaction.active && transaction.transaction_type == 'DEBIT')}" ng-show="transaction.transaction_type == 'DEBIT'">
                         <figure class="guest-image" ng-if="transaction.associated_type == 'Reservation'">
                             <img src="{{transaction.icon_url}}" alt="" />
                             <span class="vip" ng-if="transaction.guest_is_vip">VIP</span>
                         </figure>
                         <div class="data" ng-if="transaction.associated_type == 'Reservation'">
                             <h2><span>{{transaction.guest_first_name}}</span> <span>{{transaction.guest_last_name}}</span></h2>
-                            <span class="confirmation">{{transaction.reservation_confirm_no}}</span>
+                            <span class="confirmation" ng-if="transaction.external_reference_number">
+                                EXT. REF: 
+                                <span class="value">{{transaction.external_reference_number}}</span>
+                            </span>
+                            <span class="confirmation" ng-if="transaction.reservation_confirm_no && !transaction.external_reference_number">
+                                CONF. NO:
+                                <span class="value">{{transaction.reservation_confirm_no}}</span>
+                            </span>  
                             <div class="arrival">
                                 <span class="guest-status small-icon check-in">CHECK-IN</span>
                                 <time>
@@ -189,9 +199,36 @@
                         <span class="employee">{{transaction.user_name}}</span>
                     </div>
 
+                    <div class="grid-items" ng-show="transaction.active">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col" translate>CHARGE_CODE</th>
+                                    <th scope="col" translate>DESCRIPTION</th>
+                                    <th scope="col" translate>FEES</th>
+                                    <th scope="col" translate>CREDITS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in transaction.details">
+                                    <td>{{item.charge_code}}</td>
+                                    <td class="description">{{item.description}}</td>
+                                    <td ng-if="item.fees">{{currencySymbol}}{{item.fees | number:2 }}</td>
+                                    <td ng-if="!item.fees"></td>
+                                    <td ng-if="item.credits">{{currencySymbol}}{{item.credits | number:2 }}</td>
+                                    <td ng-if="!item.credits"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="actions" ng-show="filterData.viewFromOutside">
+                            <button type="button" class="button brand-colors" ng-click="goToReservationDetails($index)">StayCard</button>
+                        </div>
+                    </div>
+
                 </li>
             </ul>
          </div>
+         <div ng-include="'/assets/partials/companyCard/rvArStatementPrintTemplate.html'"></div>
     </div>
 
     <!-- When no open bills / all bills paid -->

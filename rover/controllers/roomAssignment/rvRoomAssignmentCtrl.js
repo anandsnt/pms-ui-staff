@@ -31,6 +31,7 @@ sntRover.controller('RVroomAssignmentController',[
 	var isKeySystemAvailable = false;
 
 	var oldRoomType = '';
+	var selectedRoomObject = null;
 	$scope.errorMessage = '';
 	$scope.searchText = '';
 	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
@@ -193,7 +194,7 @@ sntRover.controller('RVroomAssignmentController',[
 
 			$scope.roomTransfer.newRoomNumber = roomObject.room_number;
 			if(showOccupancyMessage){
-
+				selectedRoomObject = roomObject;
 		    	$scope.oldRoomType = oldRoomType;
 				ngDialog.open({
 	                  template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
@@ -229,7 +230,7 @@ sntRover.controller('RVroomAssignmentController',[
 	 */
 	var openWantedToBorrowPopup = function(dataToBorrowRoom) {
 		$scope.passingParams = {
-			"errorMessage": dataToBorrowRoom.errorMessage,
+			"errorMessage": (typeof dataToBorrowRoom.errorMessage === "object")? dataToBorrowRoom.errorMessage[0] : dataToBorrowRoom.errorMessage,
 			"upsell_amount" : dataToBorrowRoom.upsell_amount
 		};
 		ngDialog.open(
@@ -255,7 +256,14 @@ sntRover.controller('RVroomAssignmentController',[
         if(reservationStatus === "CHECKEDIN"){
             	$scope.moveInHouseRooms();
        	}else{
-        	    $scope.openApplyChargeDialog();
+    	    if(selectedRoomObject && (oldRoomType !== selectedRoomObject.room_type_code)){
+				$scope.oldRoomType = oldRoomType;
+				$scope.openApplyChargeDialog();
+			} else {
+				$scope.roomTransfer.withoutRateChange = true;
+				$scope.assignRoom();
+			}
+			selectedRoomObject = null;
        	}
 
 	};
@@ -417,7 +425,7 @@ sntRover.controller('RVroomAssignmentController',[
 			switch (error.httpStatus) {
 				case 470:
 						wanted_to_forcefully_assign = true;
-						openWantedToBorrowPopup (error);
+						$timeout(openWantedToBorrowPopup.bind(null, error), 500);
 				 	break;
 				default:
 					break;

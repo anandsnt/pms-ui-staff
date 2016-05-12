@@ -1,0 +1,26 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <!-- email entry -->
+    <div class="row" ng-hide="isLoading || netWorkError || mobileUpdated">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing sm-no-top-spacing">
+            <div class="top-spacing section-container">
+                <p class="main-text"> Mobile Phone Number</p>
+                <p class="sub-main-text"> Your current mobile phone number is {{userMobile}}.
+                    <br/> Do you want to update it ?.
+                </p>
+            </div>
+            <!--  submit button-->
+            <a class="btn btn-template" ng-click="changeNumber()">Yes</a>
+            <a class="btn btn-template  margin-top-10 grey-btn" ng-click="skip()"> NO</a>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+</div>

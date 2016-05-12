@@ -37,28 +37,33 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 			}
 		};
 		var ccvOpts = angular.copy($scope.errorOpts);
-		ccvOpts.templateUrl =  '/assets/partials/ccVerificationNumberModal.html',
-      	ccvOpts.resolve = {
-			message:  function() {
-				return ""
-			}
-		};
+		ccvOpts.templateUrl = '/assets/partials/ccVerificationNumberModal.html',
+			ccvOpts.resolve = {
+				message: function() {
+					return ""
+				}
+			};
 
 		$scope.showCcvPopup = function() {
 			$modal.open(ccvOpts); // error modal popup
+		};
+		var navigateToNextPage = function() {
+			if ($stateParams.isFromCheckoutNow === "true") {
+				$state.go('checkOutFinal');
+			} else {
+				$state.go('checkOutLaterFinal', {
+						time: $stateParams.time,
+						ap: $stateParams.ap,
+						amount: $stateParams.amount
+				});
+			}
 		};
 
 		//save payment method and proceed
 		var goToNextStep = function() {
 			var cardExpiryDate = $scope.yearSelected + "-" + $scope.monthSelected + "-" + "01";
 			var onSuccess = function() {
-				if ($stateParams.isFromCheckoutNow === "true") {
-					$state.go('checkOutFinal');
-				} else {
-					$state.go('checkOutLaterFinal', {
-						id: $scope.fee
-					});
-				}
+				navigateToNextPage();
 			};
 			var onFailure = function() {
 				$state.go('seeFrontDesk');
@@ -104,7 +109,12 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 					};
 				}
 			};
-			fetchMLISessionId();
+			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+				navigateToNextPage();
+			} else {
+				fetchMLISessionId();
+			}
+
 		};
 	}
 ]);

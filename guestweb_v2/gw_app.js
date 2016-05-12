@@ -42,8 +42,8 @@ sntGuestWeb.controller('RootController', ['$scope', '$rootScope', '$state', '$co
 
 }]);
 
-sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$controller', 'zestwebData', 'screenMappings', 'zestWebGlobalSettings', 'GwWebSrv',
-    function($scope, $rootScope, $state, $controller, zestwebData, screenMappings, zestWebGlobalSettings, GwWebSrv) {
+sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$controller', 'zestwebData', 'screenMappings', 'GwWebSrv',
+    function($scope, $rootScope, $state, $controller, zestwebData, screenMappings, GwWebSrv) {
 
         $controller('BaseController', {
             $scope: $scope
@@ -56,6 +56,12 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         GwWebSrv.setzestwebData(zestwebData);
         //override styles if styles are set in hotel admin
         !!reservationAndhotelDetails.zest_web ? overrideStylesWithCMSdata(reservationAndhotelDetails.zest_web) :'';
+        //check if demo mode is set, if so all APIS will be called using sample JSON
+        GwWebSrv.zestwebData.isInZestwebDemoMode = !!reservationAndhotelDetails.zest_web ? reservationAndhotelDetails.zest_web.is_zestweb_demo_mode_on : false;
+        
+        ///to delete afterwards
+        GwWebSrv.zestwebData.isInZestwebDemoMode = true;
+
         //set static items
         $rootScope.hotelLogo = reservationAndhotelDetails.hotel_logo;
         $rootScope.currencySymbol = reservationAndhotelDetails.currency_symbol;

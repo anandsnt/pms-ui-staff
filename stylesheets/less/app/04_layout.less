@@ -218,9 +218,15 @@ body { overflow: hidden; }
 
 			/* With search bar ***/
 			&#dashboard,
-			&#find-cards {
+            &#find-cards,
+            &#reports {
 				top: 120px;
 				.calc-height(100, 120);
+
+				&.no-search-form {
+					top: 60px;
+					.calc-height(100, 60);
+				}
 			}
 
 			/* With pagination **/
@@ -994,7 +1000,7 @@ body { overflow: hidden; }
 	/* 768px+		 		==============================*/
 	@media only screen and (min-width: 768px) {
 		.search-form {
-			display: block !important;
+			display: block;
 
 			/* Enable adding ***/
 			&.enable-adding {
@@ -1087,6 +1093,71 @@ body { overflow: hidden; }
 					}
 				}
 			}
+
+			/* Room Types - Find Reservation form ***/
+			&.has-room-types {
+		        .entry {
+		            &.search { .calc-width(100, 520); }
+
+		            &.room-types {
+		                width: 200px;
+
+		                select {
+		                    text-transform: uppercase;
+		                    height: 40px;
+		                    text-indent: -1px;
+		                }
+		            }
+
+		            &.dates {
+		                width: 290px;
+		                .entry-data { 
+		                    width: 135px;
+		                    input {
+		                    	font-size:14px;
+		                    }
+		                }
+		            }
+
+		            .select,
+		            .input {
+		                &.with-label {
+
+		                    select {
+		                        padding: 15px 30px 0 10px;
+		                        font-size:14px;
+		                    }
+
+		                    input {
+		                        padding: 10px 10px 0 10px;
+		                    }
+
+		                    label {
+		                        position: absolute;
+		                        top: 0;
+		                        left: 10px;
+		                        font-size: 12px;
+		                        text-transform: uppercase;
+		                        color: @grey3;
+		                    }
+		                }
+		            }
+		        }
+
+		        &.enable-adding {
+		            .entry {
+		                &.search { .calc-width(100, 620); }
+		                
+		                &.dates {
+		                    
+		                    padding-right: 10px;
+		                    .box-shadow(~'inset 1px 0 0 rgba(0,0,0,.1), 1px 0 0 rgba(0,0,0,.1)');
+
+		                    .entry-data { width: 130px; }
+		                }
+		            }
+		        }
+		    }
 
 			/* Room search ***/
 			&.room-search {
@@ -1970,6 +2041,7 @@ body { overflow: hidden; }
 				.settings-content {
 					width: 235px;
 					padding: 20px;
+					height: auto;
 
 					label:not(.radio) {
 						font-size: 14px;
@@ -1986,7 +2058,7 @@ body { overflow: hidden; }
 
 			&#report-update {
 				top: 50px;
-				.calc-height(100, 50);
+				.calc-height(100, 110);
 				.transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
 
 				&.open {
@@ -2321,10 +2393,10 @@ body { overflow: hidden; }
 
 		                .icon-action {
 		                	position: absolute;
-		                	top: 8px !important;
+		                	top: 10px;
 		                	left: 10px;
 		                	font-size: 10px;
-		                	line-height: 1 !important;
+		                	line-height: 1;
 		                	text-transform: uppercase;
 		                	font-weight: 600;
 		                	text-align: center;
@@ -2332,9 +2404,12 @@ body { overflow: hidden; }
 		                	vertical-align: bottom;
 		                	.square(40px);
 
+		                	&.action-set-mid { margin-top: 10px; }
+
 		                	&.icon-unassigned { color: @red; }
 		                	&.icon-assigned { color: @orange; }
 		                	&.icon-completed { color: @green; }
+		                	&.icon-specials { color: @blue; }
 		                }
 		                
 		                .data {
@@ -2342,7 +2417,7 @@ body { overflow: hidden; }
 		                		font-size: 18px;
 		                		font-weight: 600;
 		                		line-height: 1;
-		                		max-height: 37px;
+		                		max-height: 38px;
 							   	overflow: hidden;
 							   	text-overflow: ellipsis;
 							   	display: -webkit-box;
@@ -2466,25 +2541,21 @@ body { overflow: hidden; }
 	                    .calc-width(100, 370);
 	                    .pull-left;
 
-	                    h1,
-	                    .h2 {
-	                        font-weight: 600;
-	                        white-space: nowrap;
-	                        overflow: hidden;
-	                        text-overflow: ellipsis;
+	                    h1 {
+	                        font-weight: 700;
+	                        .nowrap();
 	                    }
 
-	                    .h4 {
-	                        font-weight: 400;
-	                        white-space: nowrap;
-	                        overflow: hidden;
-	                        text-overflow: ellipsis;
+	                    strong {
+	                        font-size: 18px;
+	                        font-weight: 600;
+	                        .nowrap();
 	                    }
 	                }
 
 	                .dates {
 						position: absolute;
-	                	top: 20px;
+	                	top: 23px;
 	                	right: 120px;
 	                    width: 200px;
 
@@ -2492,7 +2563,7 @@ body { overflow: hidden; }
 							font-size: 14px;
 							line-height: 20px; 
 
-							&:first-child { margin-bottom: 10px; }
+							&:first-child { margin-bottom: 5px; }
 						}
 
 						.guest-status {
@@ -2505,7 +2576,7 @@ body { overflow: hidden; }
 	                	position: absolute;
 	                	top: 25px;
 	                	right: 20px;
-	                	padding: 0 10px;
+	                	padding: 0;
 	                	width: 100px;
 	                	.show;
 	                }                  
@@ -2639,13 +2710,14 @@ body { overflow: hidden; }
 						}
 
 	                    label {
-                          margin-bottom: 0;
-                          .char-count{
-                            color: @green;
-                            &.full{ color: @red; }
-                          }
-                        }
+                        	margin-bottom: 0;
 
+                        	.char-count,
+                        	[color="green"] { color: @green; }
+                        	
+                        	.char-count.full,
+                        	[color="red"] { color: @red; }
+                        }
 
 	                    .entry:not(.full-width) {
 	                        .calc-width(50, 10);
@@ -2736,7 +2808,7 @@ body { overflow: hidden; }
 		    				.show;
 		    			}
 
-		    			&:last-child {
+		    			&.centered-action-btn, &:last-child {
 		    				&:after { .hide; }
 		    			}
 		    		}

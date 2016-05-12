@@ -49,6 +49,9 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             resolve: {
                 dashBoarddata: function(RVDashboardSrv, mappingList) {
                     return RVDashboardSrv.fetchDashboardDetails();
+                },
+                roomTypes : function(RVHkRoomStatusSrv) {
+                    return RVHkRoomStatusSrv.fetchRoomTypes();
                 }
             }
         });
@@ -76,10 +79,12 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',
             controller: 'RVdashboardController',
             resolve: {
-
                 dashBoarddata: function(RVDashboardSrv, mappingList) {
                     return RVDashboardSrv.fetchDashboardDetails();
                 },
+                roomTypes : function(RVHkRoomStatusSrv, mappingList) {
+                    return RVHkRoomStatusSrv.fetchRoomTypes();
+                }
             } ,
              onEnter: function (ngDialog,$stateParams, mappingList, dashBoarddata, jsMappings) {
 

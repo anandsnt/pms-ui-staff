@@ -113,6 +113,8 @@
    "TERMS_CONDITIONS_HEADER":"Terms & Conditions",
    "TERMS_CONDITIONS_ACCEPT":"I Agree",
    "TERMS_CONDITIONS_CANCEL":"Cancel",
+   "TERMS_CONDITIONS_SUB" : "",
+   "TERMS_CONDITIONS_SUB_ADDITIONAL" : "",
 
 
    "TYPE_EMAIL_IN": "Enter your email",
@@ -363,6 +365,17 @@
      "ADMIN_TIME_OUT": "Idle Time-out (Seconds)",
      "ADMIN_TIME_POP": "Idle Screen Prompt After (Seconds)",
      "ADMIN_WORKSTATION": "Work Station",
-     "ADMIN_STATION_PRINTER": "Select Printer"
+     "ADMIN_STATION_PRINTER": "Select Printer",
+
+
+     "CHECKIN_KEY_FAIL" : "Check-In Key Fail",
+     "CHECKIN_KEY_FAIL_EMPTY" : "Check-In Key Fail, Empty Key Dispenser",
+     "CHECKIN_PRINT_FAIL" : "Check-In Print Fail",
+     "CHECKIN_KEY_AND_PRINT_FAIL" : "Check-In Print & Key Fail",
+     "PICKUP_KEY_FAIL" : "Pickup Key Fail",
+     "SERVICE_FAILURE" : " : Service Failure, Restart Service",
+     "PICKUP_KEY_FAIL_EMPTY" : "Pickup Key Fail, Empty Key Dispenser",
+     "CHECKOUT_PRINT_FAILED" : "Check-Out Print Fail"
+
 
 }

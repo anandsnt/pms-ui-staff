@@ -43,6 +43,13 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         initPaymentData();
     });
 
+    // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
+    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA',function( event, date ){
+        $scope.data.fromDate = date;
+        $scope.data.toDate   = date;
+        initPaymentData();
+    });
+
     // Load the transaction details
     var loadTransactionDeatils = function(chargeCodeItem, isFromPagination){
 
