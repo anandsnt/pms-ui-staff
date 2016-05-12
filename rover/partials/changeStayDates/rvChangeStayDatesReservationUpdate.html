@@ -1,11 +1,11 @@
 <div id="reservation-details" class="reservation-updates">
-	
+
 	<div id="no-reservation-updates" class="updates-content no-content" ng-show="rightSideReservationUpdates==''">
 		<div class="info">
 			<strong class="h1" translate>CAHNGE_STAY_DATE_TO_SEE_ROOM_AND_RATE_CHANGES</strong>
 		</div>
 	</div>
-	
+
 	<!--Room Available Section -->
 	<div id="reservation-updates" class="updates-content " ng-show="rightSideReservationUpdates=='ROOM_AVAILABLE'" ng-class="{'hidden': rightSideReservationUpdates!='ROOM_AVAILABLE'}">
 		<h4 class="available-title" translate>RESERVATION_UPDATES</h4>
@@ -104,7 +104,7 @@
 			<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
 		</div>
 	</div>
-	
+
 	<!--If restrictions exist for the rate / room / date combination -->
 	<div id="room-restricted-continue" class="updates-content" ng-show="rightSideReservationUpdates=='RESTRICTION_EXISTS'" ng-class="{'hidden': rightSideReservationUpdates!='RESTRICTION_EXISTS'}">
 		<div id="unassign-room" class="details scrollable">
@@ -127,7 +127,7 @@
 
 	<!-- If room is pre-assigned to another guest -->
 	<div id="room-assigned-to-another" class="updates-content" ng-show="rightSideReservationUpdates=='PREASSIGNED'" ng-class="{'hidden': rightSideReservationUpdates!='PREASSIGNED'}">
-		<h4 class="available-title error"><span translate>ROOM</span> 
+		<h4 class="available-title error"><span translate>ROOM</span>
 			{{roomSelected}}
 			<span translate>NOT_AVAILABLE_FOR_DATE_RANGE</span>
 		</h4>
@@ -137,7 +137,7 @@
 					<span translate>
 						UNASSIGN_ROOM_FROM
 					</span>
-					<strong>{{stayDetails.preassignedGuest.name}}</strong>, 
+					<strong>{{stayDetails.preassignedGuest.name}}</strong>,
 					<span translate>ARRIVING </span>
 					<strong>{{stayDetails.preassignedGuest.arrival_date|date:mmddyyyyFormat}}</strong>
 					?
@@ -156,13 +156,13 @@
 			<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
 		</div>
 	</div>
-	
+
 	<!--no house or room type availabile. User will be provided with an option to go to the find room and rates screen -->
 	<div id="unable-to-extend" class="updates-content no-content" ng-show="rightSideReservationUpdates=='NO_HOUSE_AVAILABLE'" ng-class="{'hidden': rightSideReservationUpdates!='NO_HOUSE_AVAILABLE'}">
 		<div class="info">
 			<span class="h1 error" translate>UNABLE_TO_EXTEND_STAY</span>
 			<span class="h2" translate>NO_ROOMS_AVAILABLE_FOR_ROOM_TYPE</span>
-			<button type="button" class="button green" ng-click="goToRoomAndRates()" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
+			<button type="button" class="button green" ng-click="goToRoomAndRates()" translate ng-hide="reservationData.group.id !=''">FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
 		</div>
 	</div>
 
@@ -170,11 +170,12 @@
 	<div id="unable-to-extend" class="updates-content no-content" ng-show="rightSideReservationUpdates=='HAS_MULTIPLE_RATES'" ng-class="{'hidden': rightSideReservationUpdates!='HAS_MULTIPLE_RATES'}">
 		<div class="info">
 			<span class="h2" translate>MULTIPLE_RATES_EXISTS</span>
-			<button type="button" class="button green" ng-click="goToRoomAndRates()" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
+			<button type="button" class="button green" ng-click="goToRoomAndRates()" translate ng-hide="reservationData.group.id !=''">FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
 		</div>
 	</div>
 
 	<!-- Find rooms and rates option is not available for non-standalone PMS (ROOM_TYPE_AVAILABLE, ROOM_NOT_AVAILABLE) -->
 	<button type="button" id="find-rooms-and-rates" class="button green" ng-click="goToRoomAndRates()" ng-hide="!isStandAlone || rightSideReservationUpdates=='ROOM_TYPE_AVAILABLE' || rightSideReservationUpdates=='ROOM_AVAILABLE' || rightSideReservationUpdates=='ROOM_NOT_AVAILABLE' || rightSideReservationUpdates=='NO_HOUSE_AVAILABLE' ||
-	rightSideReservationUpdates=='HAS_MULTIPLE_RATES' || rightSideReservationUpdates=='RESTRICTION_EXISTS'" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
+	rightSideReservationUpdates=='HAS_MULTIPLE_RATES' || rightSideReservationUpdates=='RESTRICTION_EXISTS' ||
+	reservationData.group.id !=''" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
 </div>
