@@ -13,24 +13,37 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		$timeout(function() {
-			$scope.setScroller( 'report-details-scroll', {tap: true, preventDefault: false} );
-			$scope.setScroller( 'report-filter-sidebar-scroll', {tap: true, preventDefault: false} );
-		}, 1000);
+		var REPORT_DETAILS_SCROLL = 'report-details-scroll';
+		var REPORT_FILTER_SIDEBAR_SCROLL = 'report-filter-sidebar-scroll';
+
+		var setScroller = function() {
+			//setting scroller things
+			var scrollerOptions = {
+				tap: true,
+				preventDefault: false
+			};
+
+			$scope.setScroller(REPORT_DETAILS_SCROLL, scrollerOptions);
+			$scope.setScroller(REPORT_FILTER_SIDEBAR_SCROLL, scrollerOptions);
+		};
+
+		setScroller();
 
 		var refreshScroll = function() {
-			$scope.refreshScroller( 'report-details-scroll' );
-			if ( $scope.myScroll && $scope.myScroll.hasOwnProperty('report-details-scroll') ) {
-				$scope.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			$scope.refreshScroller( REPORT_DETAILS_SCROLL );
+			if ( $scope.myScroll && $scope.myScroll.hasOwnProperty(REPORT_DETAILS_SCROLL) ) {
+				$scope.myScroll[REPORT_DETAILS_SCROLL].scrollTo(0, 0, 100);
 			}
 		};
 
 		$scope.refreshSidebarScroll = function() {
-			$scope.refreshScroller( 'report-filter-sidebar-scroll' );
-			if ( $scope.myScroll && $scope.myScroll.hasOwnProperty('report-filter-sidebar-scroll') ) {
-				$scope.myScroll['report-filter-sidebar-scroll'].scrollTo(0, 0, 100);
-			}
+			$scope.refreshScroller( REPORT_FILTER_SIDEBAR_SCROLL );
 		};
+
+		var reportDetailsFilterScrollRefresh = $scope.$on(reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'], function() {
+			$scope.refreshSidebarScroll();
+		});
+		$scope.$on( '$destroy', reportDetailsFilterScrollRefresh );
 
 
 		var $_pageNo = 1;
@@ -47,33 +60,25 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
 
-		// ref to parents for filter item toggles
-		// $scope.filterItemsToggle = $scope.$parent.filterItemsToggle;
-		// $scope.toggleFilterItems = function(item) {
-		// 	if ( item ) {
-		// 		$scope.$parent.toggleFilterItems(item);
-		// 	};
-		// 	$scope.refreshSidebarScroll();
-		// };
+        var setTotalsForCheckinNowReport = function(totals){
+                var totalsForMobileCheckinNow = [], v;
+                _.each(totals, function(item) {
+                    if (item.label.indexOf('Conversion')!==-1){
+                        if (typeof item.value == typeof 'str' && item.value.indexOf('%')!=-1){
+                            v = item.value.split('%')[0]+'%';
+                        } else {
+                            v = 'N/A';
+                        }
+                    } else if (item.label){
+                        v = parseInt(item.value);
+                    } else {
+                        v = 0;
+                    }
+                    totalsForMobileCheckinNow.push(v);
+                  });
+                $scope.resultsTotalRow = totalsForMobileCheckinNow;  
+        };
 
-                var setTotalsForCheckinNowReport = function(totals){
-                        var totalsForMobileCheckinNow = [], v;
-                        _.each(totals, function(item) {
-                            if (item.label.indexOf('Conversion')!==-1){
-                                if (typeof item.value == typeof 'str' && item.value.indexOf('%')!=-1){
-                                    v = item.value.split('%')[0]+'%';
-                                } else {
-                                    v = 'N/A';
-                                }
-                            } else if (item.label){
-                                v = parseInt(item.value);
-                            } else {
-                                v = 0;
-                            }
-                            totalsForMobileCheckinNow.push(v);
-                          });
-                        $scope.resultsTotalRow = totalsForMobileCheckinNow;  
-                };
 		// common methods to do things after fetch report
 		var afterFetch = function() {
 			var totals          = $scope.$parent.totals,
@@ -471,16 +476,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			        };
 			    };
 			};
-
-			// scroller refresh and reset position
-			$timeout(function () {
-				refreshScroll();
-				$scope.refreshSidebarScroll();
-			}, 200);
-
-
-
-
 
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
@@ -1068,6 +1063,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$_pageNo = 1;
 			$scope.errorMessage = [];
 			/**/
+			setScroller();
 			afterFetch();
 			findBackNames();
 			calPagination();
@@ -1077,6 +1073,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], function() {
 			$scope.errorMessage = [];
 			/**/
+			setScroller();
 			afterFetch();
 			findBackNames();
 			calPagination();
@@ -1107,17 +1104,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 			refreshScroll();
 		});
 
-		var reportDetailsFilterScrollRefresh = $scope.$on(reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'], function() {
-			$scope.refreshSidebarScroll();
-		});
-
 		// removing event listners when scope is destroyed
 		$scope.$on( '$destroy', reportSubmited );
 		$scope.$on( '$destroy', reportUpdated );
 		$scope.$on( '$destroy', reportPageChanged );
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportAPIfailed );
-		$scope.$on( '$destroy', $scope.refreshSidebarScroll );
     }
 
 ]);
