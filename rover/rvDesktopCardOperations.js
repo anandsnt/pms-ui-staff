@@ -39,7 +39,7 @@ var DesktopCardOperations = function(){
 		ws.onmessage = function (event) {
 			var cardData = event.data;
 			var cardDataJSON = JSON.parse(cardData);
-			if(cardDataJSON.ResponseCode == 0) {
+			if(cardDataJSON.Command == "cmd_device_uid") {
 				that.swipeCallbacks.uuidServiceSuccessCallBack(cardDataJSON);
 			}
 			else {
