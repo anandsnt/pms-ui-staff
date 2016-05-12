@@ -6,6 +6,11 @@
 				<h2>Hotels</h2>
 				<span class="count">({{data.hotels.length}})</span>
 				<a ui-sref="admin.snthoteldetails({action:'add'})" class="action add" ng-show="isSntAdmin && !isServiceProvider">Add new</a>
+				<div class="entry table-search">
+					<span class="search-text">Search</span>
+					<span class="icons icon-search" name="submit" type="submit"></span>
+					<input placeholder="" autocomplete="off" type="text" ad-delay-textbox="" ng-model="searchTerm" delay="1000" function-to-fire="searchHotels" class="ng-isolate-scope ng-pristine ng-valid">
+				</div>
 			</header>
 			<section class="content-scroll">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
