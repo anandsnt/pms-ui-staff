@@ -27,10 +27,10 @@ var DesktopCardOperations = function(){
 		//Triggers when websocket connection is established.
 	    ws.onopen = function () {
 	    	that.isActive = true;
-			ws.send("observeForSwipe");
+			ws.send("{\"Command\" : \"cmd_observe_for_swipe\"}");
 
 			if (that.isDesktopUUIDServiceInvoked) {
-				ws.send("UUIDforDevice");
+				ws.send("{\"Command\" : \"cmd_device_uid\"}");
 			}
 
 	    };
@@ -39,7 +39,7 @@ var DesktopCardOperations = function(){
 		ws.onmessage = function (event) {
 			var cardData = event.data;
 			var cardDataJSON = JSON.parse(cardData);
-			if(cardDataJSON.ResponseType) {
+			if(cardDataJSON.ResponseCode == 0) {
 				that.swipeCallbacks.uuidServiceSuccessCallBack(cardDataJSON);
 			}
 			else {
