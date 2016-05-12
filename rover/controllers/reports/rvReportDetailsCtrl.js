@@ -103,7 +103,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
-			$scope.showSortBy    = true;
 			$scope.hasPagination = true;
 
 
@@ -113,26 +112,22 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['ARRIVAL']:
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
-					$scope.showSortBy = false;
 					break;
 
 				case reportNames['EARLY_CHECKIN']:
 					$scope.isGuestReport = true;
-					$scope.showSortBy = true;
 					break;
 
 				case reportNames['CANCELLATION_NO_SHOW']:
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.hasNoSorting = true;
-					$scope.showSortBy = false;
 					break;
 
 				case reportNames['LOGIN_AND_OUT_ACTIVITY']:
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.isLogReport = true;
-					$scope.showSortBy = false;
 					break;
 
 				case reportNames['RESERVATIONS_BY_USER']:
@@ -188,19 +183,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['AR_SUMMARY_REPORT']:
 					$scope.hasNoTotals = false;
-					$scope.showSortBy = true;
 					$scope.isBalanceReport = true;
 					break;
 
 				case reportNames['GUEST_BALANCE_REPORT']:
 					$scope.hasNoTotals = false;
-					$scope.showSortBy = true;
 					$scope.isBalanceReport = true;
 					break;
 
 				case reportNames['DEPOSIT_SUMMARY']:
 					$scope.hasNoTotals = true;
-					$scope.showSortBy = true;
 					$scope.isDepositBalanceReport = true;
 					$scope.isBalanceReport = true;
 					break;
