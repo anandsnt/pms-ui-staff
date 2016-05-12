@@ -28,13 +28,13 @@
 						<span class="guest-status small-icon check-in" translate>CHECK_IN</span>
 						<span id="new-check-in">
 							{{getSimplifiedDayName(checkinDateInCalender)}}
-							{{checkinDateInCalender|date:mmddyyyyFormat}}</span>
+							{{checkinDateInCalender|date:dateFormat}}</span>
 					</li>
 					<li class="date">
 						<span class="guest-status small-icon check-out" translate>CHECK_OUT</span>
 						<span id="new-check-out">
 							{{getSimplifiedDayName(checkoutDateInCalender)}}
-							{{checkoutDateInCalender|date:mmddyyyyFormat}}</span>
+							{{checkoutDateInCalender|date:dateFormat}}</span>
 					</li>
 				</ul>
 				<p class="rate">
@@ -139,7 +139,7 @@
 					</span>
 					<strong>{{stayDetails.preassignedGuest.name}}</strong>,
 					<span translate>ARRIVING </span>
-					<strong>{{stayDetails.preassignedGuest.arrival_date|date:mmddyyyyFormat}}</strong>
+					<strong>{{stayDetails.preassignedGuest.arrival_date|date:dateFormat}}</strong>
 					?
 				</h3>
 				<button id="extend-stay" type="button" class="button green" ng-click="showRoomAvailable();" translate>YES</button>
