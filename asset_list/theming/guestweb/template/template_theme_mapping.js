@@ -180,7 +180,6 @@ module.exports = {
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
 										precheckinPartials+'*.html'],
-
 			'guestweb_mgm_grand'		: [ 'guestweb/**/common_templates/partials/MGM/**/*.html',
 										'guestweb/**/common_templates/partials/gwNoOption.html',
 										checkoutNowPartials+'*.html',
