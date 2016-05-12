@@ -48,6 +48,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 
     $rootScope.$on('fromDateChanged',function(){
         initRevenueData();
+        $rootScope.$broadcast('REFRESH_SUMMARY_DATA', $scope.data.fromDate);
     });
 
     $rootScope.$on('toDateChanged',function(){
