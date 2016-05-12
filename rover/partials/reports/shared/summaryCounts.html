@@ -171,7 +171,7 @@
 <ul ng-if="isThisReport( 'DEPOSIT_SUMMARY' )" class="totals">
     <li ng-hide="appliedFilter.guestOrAccount == 'Account'">Total Guest<span>{{summaryCounts.total_guest_deposit_balance | currency:currencySymbol:2 }}</span></li>
     <!-- Hide if not showing Guest -->
-    <li ng-hide="appliedFilter.guestOrAccount == 'Guest'">Total Group<span>{{summaryCounts.total_group_deposit_balance | currency:currencySymbol:2 }}</span></li>
+    <li ng-hide="appliedFilter.guestOrAccount == 'Guest'">Total Account<span>{{summaryCounts.total_group_deposit_balance | currency:currencySymbol:2 }}</span></li>
     <!-- Hide if not showing Group -->
     <li>Total Deposit Balance<span class="green">{{summaryCounts.total_deposit_balance | currency:currencySymbol:2 }}</span></li>
 </ul>

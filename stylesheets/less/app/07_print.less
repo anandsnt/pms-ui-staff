@@ -929,6 +929,12 @@ table {
 
                 .ar-statement {
                     display: block;
+
+                    .statement-header-text,
+                    .invoice-footer {
+                        text-align: justify;
+                    }
+                    
                     img {
                         -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
                         filter: grayscale(100%);
@@ -983,6 +989,10 @@ table {
                                 border-bottom:1px solid @grey2;
                                 padding: 4pt 4pt 4pt 0;
 
+                                &.charge-description {
+                                    padding-right:8pt;
+                                }
+
                                 &:last-child {
                                     padding-right: 4pt;
                                 }
@@ -1015,6 +1025,10 @@ table {
                             clear: both;
                             content: '';
                         }
+                    }
+
+                    .statement-header-text {
+                        text-align:left;
                     }
 
                     .invoice-header {
@@ -1074,6 +1088,7 @@ table {
 
                             &:first-child {
                                 text-align: left;
+                                padding-left: 4pt;
                             }
                         }
                         
@@ -1731,6 +1746,22 @@ table {
                             min-width: 3cm;
                             padding-right: 0;
                             .nowrap();
+                        }
+                    }
+                }
+
+                &.deposit-balance-summary {
+                    table-layout: fixed;
+                    margin-bottom: 16pt;
+
+                    thead {
+                        th {
+                            &:nth-child(1) { .calc-width(75, 255);  }
+                            &:nth-child(2) { width: 100px; }
+                            &:nth-child(3) { width: 170px; }
+                            &:nth-child(4) { .calc-width(25, 255); }
+                            &:nth-child(5),
+                            &:nth-child(6) { width: 120px; }
                         }
                     }
                 }

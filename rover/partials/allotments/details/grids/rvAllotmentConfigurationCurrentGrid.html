@@ -20,7 +20,7 @@
 </div>
 
 <!-- Room block actions -->
-<div class="room-block-actions extended-timeline" ng-show="shouldHideAddRoomsButton()">
+<div class="room-block-actions extended-timeline" ng-show="shouldShowRoomsRates()">
     <button type="butotn" class="button blue"
         ng-click="clickedOnAddRoomsAndRatesButton()"
         translate>
@@ -29,7 +29,7 @@
 </div>
 
 <!-- Room block room types -->
-<div class="room-block-sidebar extended-timeline scrollable" ng-show="shouldHideAddRoomsButton()"
+<div class="room-block-sidebar extended-timeline scrollable" ng-show="shouldShowRoomsRates()"
     ng-iscroll="room_block_scroller">
     <div class="wrapper" bindonce>
         <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
@@ -87,7 +87,7 @@
 <!-- Room block days -->
 <div class="room-block-timeline extended-timeline paginated scrollable"
     ng-iscroll="room_rates_timeline_scroller"
-    ng-show="shouldHideAddRoomsButton()"
+    ng-show="shouldShowRoomsRates()"
     bindonce>
 
     <ul class="wrapper" bindonce style="width:{{getWidthForCurrentViewTimeLine()}};">
@@ -114,7 +114,7 @@
 
 <!-- Room block grid -->
 <div class="room-block-grid extended-timeline paginated scrollable" ng-iscroll="room_rates_grid_scroller"
-    ng-show="shouldHideAddRoomsButton()">
+    ng-show="shouldShowRoomsRates()">
     <div class="wrapper" bindonce style="width:{{getWidthForCurrentViewTimeLine()}};">
         <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
         <div class="row" ng-repeat="roomType in allotmentConfigData.roomblock.selected_room_types_and_bookings" ngrepeatend>

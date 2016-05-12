@@ -136,6 +136,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.clickedOnCloseButton = function() {
+            $scope.hideKeyboardIfUp();
         //if key card was inserted we need to eject that
             if($scope.zestStationData.keyCardInserted && !$scope.zestStationData.keyCaptureDone){
                 $scope.socketOperator.EjectKeyCard();
@@ -670,6 +671,26 @@ sntZestStation.controller('zsRootCtrl', [
           }
           return $scope.hasWorkstationAssigned;
         };
+        
+        
+        var callSetSessionStation = function(station){
+            var workstation = $scope.sessionStation;
+            var successCallBack = function(response){
+                console.info('set to session');
+                $scope.$emit('hideLoader');
+            };
+            var failureCallBack = function(response){
+                $scope.$emit('hideLoader');
+                console.warn('failed to set workstation in session');
+                console.log(response);
+            };
+             var options = {
+    		params: 			station,
+                successCallBack:                successCallBack,
+                failureCallBack:                failureCallBack
+            };
+            $scope.callAPI(zsTabletSrv.setSessionWorkstation, options);
+        }
         $scope.setWorkStation = function(){
             /*
              * This method will get the device's last saved workstation, and from the last fetched list of workstations
@@ -699,6 +720,7 @@ sntZestStation.controller('zsRootCtrl', [
                                      hasWorkstation = true;
                                      $state.hasWorkstation = true;
                                      $scope.zestStationData.printerLabel = $scope.getPrinterLabel(station.printer);
+                                     callSetSessionStation(station);
                                 }
                             }
                         } else {

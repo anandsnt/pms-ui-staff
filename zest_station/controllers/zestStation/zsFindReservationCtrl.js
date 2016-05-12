@@ -409,6 +409,11 @@ sntZestStation.controller('zsFindReservationCtrl', [
             if ($scope.lastAt === 'pick-up-room'){
                 $scope.input.room = $state.input.room;
             }
+            if ($state.qr_code){
+                $scope.qrCodeScanFailed = true;
+            } else {
+                $scope.qrCodeScanFailed = false;
+            }
         };
 
 

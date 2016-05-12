@@ -18,7 +18,7 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
             eachData.isOpenAccompanyingGuest = false;
             var cnt = 0;
             angular.forEach(eachData.accompanying_guests_details, function(value, key) {
-              if(value.first_name !== "" && value.first_name !== null){
+              if((value.first_name !== "" && value.first_name !== null) || (value.last_name !== "" && value.last_name !== null) ){
                   cnt = cnt + 1;
               }
         });
@@ -59,8 +59,12 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
     };
     var successCallBackOfUpdateGuestData = function(){
         $scope.closeDialog();
-        $scope.$emit("REFRESH_GROUP_ROOMING_LIST_WITH_UPDATES");
+
+        $scope.$emit("REFRESH_GROUP_ROOMING_LIST_DATA");
     };
+    var failureCallBackOfUpdateGuestData = function(error){
+        $scope.errorMessage = error;
+    }
     /*
      * To update all selected reservations guest data
      */
@@ -78,13 +82,33 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
         });
         var data = {};
         data.guest_data = guestData;
-
+        $scope.errorMessage = "";
         var options = {
             params: data,
-            successCallBack: successCallBackOfUpdateGuestData
+            successCallBack: successCallBackOfUpdateGuestData,
+            failureCallBack: failureCallBackOfUpdateGuestData
         };
         $scope.callAPI(rvGroupRoomingListSrv.updateGuestData, options);
 
+    };
+    /*
+     * Even the screen is cancelled. We have to create the reservations.
+     * CICO-23144
+     */
+    $scope.refreshScreenWithNewReservations = function(){
+        $scope.closeDialog();
+        $scope.$emit("REFRESH_GROUP_ROOMING_LIST_DATA");
+    };
+    /*
+     * check reservation status
+     */
+    $scope.isDataEditable = function(reservation) {
+        var rStatus = reservation.reservation_status;
+        var isDisabled = false;
+        if(rStatus === "CANCELED"){
+            isDisabled = true;
+        }
+        return isDisabled;
     };
 
 
