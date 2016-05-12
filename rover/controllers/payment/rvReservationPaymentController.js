@@ -43,4 +43,9 @@ sntRover.controller('reservationPaymentController',['$scope','$rootScope', funct
 			$scope.reservationData.reservation_card.payment_details.card_expiry = data.card_expiry;
 			$scope.reservationData.reservation_card.payment_details.is_swiped = data.is_swiped;
 	});
+
+	//CICO-29224 - Listener to update the CC selection to show the CC Auth btn in staycard
+	$rootScope.$on('REFRESHCCSELECTION', function(event, isCC) {
+		$scope.reservationData.reservation_card.has_any_credit_card_attached_bill = typeof isCC === 'undefined' ? true : isCC;
+	});
 }]);
