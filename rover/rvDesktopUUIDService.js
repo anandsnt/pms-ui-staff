@@ -19,7 +19,7 @@ var DesktopUUIDService = function() {
         //Triggers when websocket connection is established.
         ws.onopen = function () {
             that.isActive = true;
-            ws.send("UUIDforDevice");
+            ws.send("{\"Command\" : \"cmd_device_uid\"}");
 
         };
 
