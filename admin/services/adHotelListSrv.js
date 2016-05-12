@@ -3,11 +3,11 @@ admin.service('ADHotelListSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 	/**
     *   A getter method to return the hotel list
     */
-	this.fetch = function(){
+	this.fetch = function(params){
 		var deferred = $q.defer();
 		var url = '/admin/hotels.json';
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrv.getJSON(url,params).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -27,20 +27,6 @@ admin.service('ADHotelListSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
-		});
-		return deferred.promise;
-	};
-	/**
-	 *   A GET method to search for hotels.
-	 *   @param {Object} with query .
-	 */
-	this.searchHotels = function(params){
-		var deferred = $q.defer();
-		var url = '/api/hotels/search';
-		ADBaseWebSrv.getJSON(url, params).then(function(data) {
-			deferred.resolve(data);
-		},function(data){
-			deferred.reject(data);
 		});
 		return deferred.promise;
 	};
