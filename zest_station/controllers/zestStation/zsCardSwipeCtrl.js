@@ -223,15 +223,25 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             var firstName = guestData.guest_details[0].first_name;
             var lastName = guestData.guest_details[0].last_name;
             $scope.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" +firstName + "&card_holder_last_name=" + lastName + "&service_action=createtoken&time="+time;
-            
             setTimeout(function(){
+                console.info('getting sixpay session');
                 /////on slow networks this iframe may be an issue, we can attempt to do some re-try actions looking for the .src of the iframe
                     //need more testing on this (simulated slow networks)
                     var iFrame = {};
-                    iFrame.src = document.getElementById('sixIframe').src;
-                    iFrame.src = $scope.iFrameUrl;
-                    $scope.sixPaymentSwipe();
-            },800);
+                    if (!!$("#sixIframe").length){
+                        setTimeout(function(){
+                            console.info('refreshing with guest data');
+                            $scope.refreshIframeWithGuestData(guestData);
+                        },2000);
+                        
+                    } else {
+                        console.info('reader online, please swipe');
+                        iFrame.src = $scope.iFrameUrl;
+                        console.info('iFrame.src: ',$scope.iFrameUrl);
+                            $scope.sixPaymentSwipe();
+                    }
+                    
+            },1500);
         };
         
         $scope.shouldShowWaiting = false;
