@@ -14,6 +14,7 @@ admin.service('ADHotelListSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 		});
 		return deferred.promise;
 	};
+
 	/**
     *   A post method to update ReservationImport for a hotel
     *   @param {Object} data for the hotel list item details.
@@ -26,6 +27,20 @@ admin.service('ADHotelListSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+	/**
+	 *   A GET method to search for hotels.
+	 *   @param {Object} with query .
+	 */
+	this.searchHotels = function(params){
+		var deferred = $q.defer();
+		var url = '/api/hotels/search';
+		ADBaseWebSrv.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
 		});
 		return deferred.promise;
 	};
