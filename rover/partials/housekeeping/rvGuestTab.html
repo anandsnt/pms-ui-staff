@@ -51,7 +51,7 @@
     </div>
   </div>
 
-  <div class="entry actions" ng-if="isStandAlone">
+  <div class="entry actions" ng-if="isStandAlone && !hotelDetails.is_hourly_rate_on">
       <div class="action">
           <button type="button" class="button white with-icon only-icon" ng-click="changeHouseKeepingStatus()" style="margin: 0 auto; display: block;">
               <span class="icons icon-reset"></span>
