@@ -25,7 +25,7 @@
                     <div class="select" >
                         <select id="showing-items" ng-model = "fromHomeScreen" ng-change="filterBySectionAndCategory()" class="placeholder" ng-disabled = "showUnMappedList">
                             <option value="all" translate>ALL_HOME_SCREEN_LABEL</option>
-                             <option value="{{home_screen.id}}" ng-repeat="home_screen in home_screens">{{home_screen.name}}</option>
+                             <option value="{{home_screen.id}}" ng-repeat="home_screen in home_screens">{{trimComponent(home_screen.name)}}</option>
                             
                         </select>
                     </div>
@@ -37,7 +37,7 @@
                     <div class="select">
                         <select id="showing-categories" ng-model="fromSection" ng-change="filterBySectionAndCategory()" class="placeholder" ng-disabled = "showUnMappedList">
                             <option value="all" translate>ALL_SECTIONS_LABEL</option>
-                            <option value="{{section.id}}" ng-repeat="section in section_options">{{section.name}}</option>
+                            <option value="{{section.id}}" ng-repeat="section in section_options">{{trimComponent(section.name)}}</option>
                             
                         </select>
                     </div>
@@ -49,7 +49,7 @@
                     <div class="select" >
                         <select id="showing-items" ng-model = "fromCategory" ng-change="filterBySectionAndCategory()" class="placeholder" ng-disabled = "showUnMappedList">
                             <option value="all" translate>ALL_CATEGORIES_LABEL</option>
-                             <option value="{{category.id}}" ng-repeat="category in category_options">{{category.name}}</option>
+                             <option value="{{category.id}}" ng-repeat="category in category_options">{{trimComponent(category.name)}}</option>
                             
                         </select>
                     </div>
@@ -165,7 +165,7 @@
                         <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
                         <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>
                         <td>{{gridItem.no_of_categories}}</td>
-                        <td>{{gridItem.no_of_section_items}}</td>
+                        <td>{{gridItem.no_of_items}}</td>
                         <td >
                             <div class="switch-button " ng-show="!gridItem.is_system_defined" ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />

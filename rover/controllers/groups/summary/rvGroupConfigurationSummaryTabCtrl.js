@@ -392,8 +392,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				refData.release_date = refData.block_from;
 			}
 
-			if ($scope.isInAddMode()){
-				updateRateAndSegment();
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
 			}
 
 			//if it is is Move Date mode
@@ -488,10 +488,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				oldBlockTo	= new tzIndependentDate(summaryMemento.block_to),
 				chActions 	= $scope.changeDatesActions;
 
-			if ($scope.isInAddMode()){
-				updateRateAndSegment();
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
 			}
-
 			// check move validity
 			// departure left date change
 			else if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
