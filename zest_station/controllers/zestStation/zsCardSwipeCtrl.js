@@ -396,7 +396,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                  console.info(params);
                 setTimeout(function(){
                     $scope.hasLoader = false;
-                    $scope.invokeApi(zsPaymentSrv.submitDeposit, params, $scope.successDeposit, reTryCardSwipe); 
+                    $scope.invokeApi(zsPaymentSrv.submitDeposit, params, $scope.successDeposit, reTryCardSwipe, "NONE"); //dont show loader using "NONE"
                 },500);
         };
         
@@ -821,11 +821,11 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     }
                     
                     data.reservation_id = $state.selectedReservation.id;
-                    data.guest_id = $state.selectedReservation.guest_details[0].id;
+                   // data.guest_id = $state.selectedReservation.guest_details[0].id;
                     //data.add_to_guest_card = true;
                     //data.guest_id = $state.selectedReservation.guest_details[0].id;
                     data.is_emv_request = true;
-                    data.payment_type = "CC";
+                  //  data.payment_type = "CC";
                     
                // data.emv_terminal_id = $state.emv_terminal_id;
                 console.log('listening for C&P or swipe...');
@@ -843,13 +843,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                         $state.swipe_error_msg = error;
                         $state.go('zest_station.swipe_pay_error');
 		};
-                
-                 $scope.callAPI(zsTabletSrv.chipAndPinGetToken, {
-                    params: data,
-                    'successCallBack':successGetToken,
-                    'failureCallBack':onFailure
-                });
-                
+                console.log('$scope: ',$scope)
+                    $scope.invokeApi(zsPaymentSrv.authorizeCC, data, successGetToken, onFailure, "NONE"); 
 	};
         
 	var successSixSwipe = function(response){

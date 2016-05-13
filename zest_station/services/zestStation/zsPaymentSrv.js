@@ -4,7 +4,7 @@
 
 sntZestStation.service('zsPaymentSrv',
         ['$http', '$q', 'zsBaseWebSrv',
-            function ($http, $q, zsBaseWebSrv, zsBaseWebSrv2) {
+            function ($http, $q, zsBaseWebSrv) {
                 //service provider for common utilities
                 var that = this;
                 
