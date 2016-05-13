@@ -973,9 +973,14 @@ sntRover.controller('reservationActionsController', [
 		 */
 		$scope.isReinstateVisible = function() {
                         //set not visible for Hourly in 1.11
-                    if ($scope.reservationData.reservation_card.is_hourly_reservation){
-                        return false;
-                    }
+            if ($scope.reservationData.reservation_card.is_hourly_reservation){
+                return false;
+            }
+            //CICO-29302 - Check comment
+            if ($scope.reservationData.reservation_card.group_id !== ''){
+                return false;
+            }
+
 			var resData = $scope.reservationData.reservation_card;
 			return resData.reservation_status === 'CANCELED' && // ONLY cancelled reservations can be reinstated
 				new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed

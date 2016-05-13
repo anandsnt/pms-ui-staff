@@ -528,7 +528,7 @@ sntRover.controller('roverController',
     };
 
     $scope.uuidServiceSuccessCallBack = function(response) {
-      $rootScope.UUID = response.Message;
+      $rootScope.UUID = response.Data;
     };
 
     $scope.uuidServiceFailureCallBack = function(error) {
