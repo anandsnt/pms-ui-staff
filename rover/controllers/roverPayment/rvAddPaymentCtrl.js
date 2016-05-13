@@ -184,10 +184,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			return;
 		};
 
-		//CICO-29224 - Done to hide the CC Auth btn for payment type other than CC
-		if($scope.dataToSave && $scope.dataToSave.paymentType != 'CC') {
-			$scope.$emit('REFRESHCCSELECTION', false);
-		}
 		refreshCardsList();
 	};
 
@@ -297,7 +293,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$rootScope.$emit('UPDATEDPAYMENTLIST', $scope.paymentData.bills[billNumber].credit_card_details );
 		};
 		$rootScope.$broadcast('BALANCECHANGED', dataToUpdate);
-		$scope.$emit('REFRESHCCSELECTION');
+		$scope.$emit('UPDATECCATTACHEDBILLSTATUS', data.has_any_credit_card_attached_bill);
 	};
 
 	/*
@@ -336,7 +332,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.paymentData.reservation_card.payment_details.card_type_image ='images/' + creditCardType.toLowerCase()+".png";
 		$scope.paymentData.reservation_card.payment_details.card_number = retrieveCardNumber();
 		$scope.paymentData.reservation_card.payment_details.card_expiry = retrieveExpiryDate();
-		$scope.$emit('REFRESHCCSELECTION');
+		$scope.$emit('UPDATECCATTACHEDBILLSTATUS', data.has_any_credit_card_attached_bill);
 	};
 
 	/*
@@ -347,7 +343,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 		// Update reservation type
 		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id, data.id );
-		$scope.$emit('REFRESHCCSELECTION');
+		$scope.$emit('UPDATECCATTACHEDBILLSTATUS', data.has_any_credit_card_attached_bill);
 		$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
 		$scope.paymentData.reservation_card.payment_details.card_type_image = 'images/' + $scope.renderData.creditCardType+".png";
 		$scope.paymentData.reservation_card.payment_details.card_number = $scope.renderData.endingWith;
@@ -375,7 +371,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		};
 		$scope.cardsList.push(dataToGuestList);
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
-		$scope.$emit('REFRESHCCSELECTION');
 	};
 
 	var saveCCToGuestCardSuccess = function(data){
@@ -508,6 +503,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 			// Update reservation type
 			$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id, data.id);
+			$scope.$emit('UPDATECCATTACHEDBILLSTATUS', data.has_any_credit_card_attached_bill);
 		};
     	$scope.closeDialog();
     };
@@ -607,7 +603,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 				$scope.cardsList.push(dataToGuestList);
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		};
-		$scope.$emit('REFRESHCCSELECTION');
 		$scope.closeDialog();
 
 	};
