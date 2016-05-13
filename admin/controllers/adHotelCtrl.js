@@ -20,7 +20,11 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 		}, {
 			// length of data
 			total: $scope.data.hotels.length,
-			getData: function ($defer, params) {
+			getData: function ($defer, params)
+			{
+				if (params.settings().$scope == null) {
+					params.settings().$scope = $scope;
+				};
 				// use build-in angular filter
 				var orderedData = params.sorting() ?
 					$filter('orderBy')($scope.data.hotels, params.orderBy()) :
