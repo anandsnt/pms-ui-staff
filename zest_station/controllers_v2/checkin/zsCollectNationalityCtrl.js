@@ -3,8 +3,8 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 	'$state',
 	'zsEventConstants',
 	'$stateParams',
-	'$sce', 'countryList', 'zsCheckinSrv',
-	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, zsCheckinSrv) {
+	'$sce', 'countryList', 'sortedCountryList', 'zsCheckinSrv',
+	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, sortedCountryList, zsCheckinSrv) {
 
 		/**********************************************************************************************
 		**		Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -24,8 +24,11 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 
 		$scope.init = function() {
 			$scope.countryList = countryList;
-			$scope.nationalityId = "";
+			$scope.sortedCountries = sortedCountryList.sorted;
+			$scope.unSortedCountries = sortedCountryList.unsorted;
+			$scope.selectedCountry = {"id":""};
 		};
+
 
 		 /**
          * when the back button clicked
@@ -63,7 +66,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			var options = {
 				params: {
 					guest_id: $stateParams.guestId,
-					nationality_id: $scope.nationalityId
+					nationality_id: $scope.selectedCountry.id
 				},
 				successCallBack: successCallBack
 			}

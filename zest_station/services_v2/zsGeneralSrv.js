@@ -136,8 +136,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
 
         this.fetchCountryList = function() {
-            var deferred = $q.defer(),
-                url = '/ui/country_list.json';
+            var deferred = $q.defer();
+            var url = '/ui/country_list.json';
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -145,6 +145,19 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+
+        this.fetchSortedCountryList = function() {
+            var deferred = $q.defer();
+            var url = '/api/countries/sorted_list.json';
+            zsBaseWebSrv2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
         this.fetchHotelTime = function() {
             var deferred = $q.defer(),
                 url = '/api/hotel_current_time.json';

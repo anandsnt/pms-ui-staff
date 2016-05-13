@@ -27,6 +27,9 @@ sntZestStation.config(['$stateProvider',
             resolve: {
                 countryList: function(zsGeneralSrv){
                     return zsGeneralSrv.fetchCountryList();
+                },
+                sortedCountryList: function(zsGeneralSrv){
+                     return zsGeneralSrv.fetchSortedCountryList();
                 }
             }
         });
