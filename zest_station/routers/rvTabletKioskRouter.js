@@ -66,6 +66,9 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             resolve: {
                 countryList: function(zsHotelDetailsSrv){
                     return zsHotelDetailsSrv.fetchCountryList();
+                },
+                sortedCountryList: function(zsHotelDetailsSrv){
+                     return zsHotelDetailsSrv.fetchSortedCountryList();
                 }
             }
         });
