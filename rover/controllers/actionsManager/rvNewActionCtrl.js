@@ -44,7 +44,7 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                 payLoad = {
                     description: ref.note,
                     assigned_to: ref.department? parseInt(ref.department, 10) : "",
-                    due_at: dateFilter(new tzIndependentDate(ref.dueDate), $rootScope.dateFormatForAPI) + "T" + ref.dueTime + ":00",
+                    due_at: dateFilter(ref.dueDateObj, $rootScope.dateFormatForAPI) + "T" + ref.dueTime + ":00",
                     reservation_id: ref.reservation.id
                 };
 
