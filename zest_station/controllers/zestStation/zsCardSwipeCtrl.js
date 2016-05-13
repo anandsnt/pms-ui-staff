@@ -370,15 +370,35 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         };
         $scope.successDeposit = function(response){
             console.info(response);
-            if ($scope.isSixPayPayment() || $scope.isSimulated){
-                console.info('init sixpay payment!')
-                $scope.initSixPaySuccess(response);
-            }
+            var postData = getCardSaveData(response);
+            console.info("saving payment",postData);
+            $scope.invokeApi(zsPaymentSrv.savePayment, postData, function(){
+                //saving payment success, continue...
+                if ($scope.isSixPayPayment() || $scope.isSimulated){
+                    $scope.initSixPaySuccess(response);
+                }
+            }, $scope.failSavePayment, "NONE"); 
+            
             $scope.$emit('hideLoader');
         };
-        
+        var getDebugDepositData = function(){
+            return {authorization_code :"930984",
+                        bill_balance: "-13.9",
+                        is_eod_in_progress:false,
+                        is_eod_manual_started: false,
+                        payment_method: {id: 29167, token: "4807612087704130088", expiry_date: "12/17", card_type: "VA", ending_with: "0088"},
+                        card_type : "VA",
+                        ending_with : "0088",
+                        expiry_date:"12/17",
+                        id :29167,
+                        token :"4807612087704130088",
+                        reservation_balance :"125.10",
+                        reservation_id:1343204,
+                reservation_type_id:5};
+        }
                            //$scope.initSixPaySuccess();
         $scope.payDeposit = function(){
+            console.info("paying deposit");
             $scope.$emit('hideLoader');
              var reservation_id = $scope.selectedReservation.id,
                     //payment_type = $scope.selectedReservation.payment_type,
@@ -394,8 +414,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     'payment_type_id': $scope.selectedReservation.reservation_details.data.reservation_card.payment_type
                  };
                  console.info(params);
+                 //debug card deposit
+               //  var debugDepositData = getDebugDepositData();
+                //$scope.successDeposit(debugDepositData);
                 setTimeout(function(){
-                    $scope.hasLoader = false;
                     $scope.invokeApi(zsPaymentSrv.submitDeposit, params, $scope.successDeposit, reTryCardSwipe, "NONE"); //dont show loader using "NONE"
                 },500);
         };
@@ -438,15 +460,17 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 $scope.subsubheadingText = 'DEPOSIT_REMAIN_SUB_SUB';
             } else {
                 $scope.at = 'card-swipe';
-                
                 $scope.setInitSwipeSettings();
                 $scope.initCardReaders();
+                setTimeout(function(){
+                    try{
+                        $scope.$digest();
+                    }catch(er){
+                        
+                    }
+                },200);
             }
-            
             $state.from = $scope.at;
-            $scope.show = {
-                swipecardScreen: true
-            };
             
             if (current !== 'zest_station.deposit_agree'){
                 $scope.headingText = 'TO_COMPLETE';
@@ -557,6 +581,25 @@ sntZestStation.controller('zsCardSwipeCtrl', [
 
 		return swipedCardDataToRender;
 	};
+        
+        
+        var getCardSaveData = function(data){
+            var expirYear = '20'+data.expiry_date.split('/')[0];
+            var expirMonth = data.expiry_date.split('/')[1];
+            var postData = {
+                 card_code: data.card_type.toLowerCase(),
+                 card_type: data.card_type,
+                 card_expiry: data.expirYear,
+                 payment_type: "CC",
+                 reservation_id: $scope.selectedReservation.id,
+                 expirMonth: expirMonth,
+                 expirYear: expirYear,
+                 card_number: "xxxx-xxxx-xxxx-" + data.token.slice(-4),
+                 token: data.token
+             };
+             return postData;
+        };
+        
         
         $scope.saveSwipedCardMLI = function(data){
             if (!data){
@@ -735,8 +778,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
     
     
     
-
+    
+        $scope.showCardSwipeIcon = false;
         $scope.initiateCardReader = function() {
+            $scope.showCardSwipeIcon = true;
             console.info('init card reader for sixpay');
             //if ((sntapp.browser === 'rv_native') && sntapp.cordovaLoaded) {
             if (true) {//debugging ?
@@ -759,17 +804,6 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         /*
          * Start Card reader now!.
          */
-        var authorizeCC = function(params){
-            console.info('authorize: ',params)
-            var params = {
-                  //  "payment_method_id"         : params.payment_id,
-                    "amount"			: amt,
-                    "is_emv_request"            : true
-            };
-            console.info('collect cc',params);
-            $scope.invokeApi(zsPaymentSrv.authorizeCC, params, $scope.successDeposit,$scope.failDeposit); 
-            
-        };
          $scope.setInitSwipeSettings = function(){
             console.info('Attempting to connec to Card Readers');
                 if ($scope.zestStationData.payment_gateway !== "sixpayments") {
@@ -832,7 +866,6 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 
                 var successGetToken = function(response){
                     console.info(response)
-                  //  authorizeCC(response);
                         console.info('success: ',response);
 			successSixSwipe(response);
 		};
