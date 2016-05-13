@@ -117,6 +117,12 @@
                 </div>
                 <ad-textbox value="zestSettings.check_in_message_texts.not_available_message" name="zest-web" id="zest-web" label="" placeholder="{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width"></ad-textbox>
             </fieldset>
+            <fieldset class="holder left">
+                    <div class="form-title half-width-title">
+                        <h3><span translate>ADDRESS_COUNTRY_LIST </span> </h3>
+                    </div>
+                    <ad-toggle-button is-checked="zestSettings.kiosk_enforce_country_sort" label="{{'ENFORCE_COUNTRY_SORT'| translate}}" div-class="full-width"></ad-toggle-button>
+                </fieldset>
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL
