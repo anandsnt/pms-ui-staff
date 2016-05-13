@@ -20,6 +20,7 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                 numberOfMonths: 1,
                 onSelect: function (date, datePickerObj) {
                     $scope.newAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj));
+                    $scope.newAction.dueDateObj = $scope.newAction.dueDate;
                 },
                 beforeShow:function(){
                     angular.element("#ui-datepicker-div").after(angular.element('<div></div>',{
