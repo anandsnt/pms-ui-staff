@@ -311,6 +311,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				}
 
 			});
+			var firstDateInAvailableDate = $scope.stayDetails.calendarDetails.available_dates[0].date;
+			var indexOfFirstAvailableDateInStayDates = _.findIndex($scope.stayDetails.calendarDetails.stay_dates, {"date": firstDateInAvailableDate})
+			var remainingStayDatesArray = _.first($scope.stayDetails.calendarDetails.stay_dates, parseInt(indexOfFirstAvailableDateInStayDates));
+			$(remainingStayDatesArray).each(function(index) {
+				$scope.totRate += escapeNull(this.rate) === "" ? 0 : parseInt(this.rate);
+			});
 
 			if (!$scope.isStayRatesSuppressed) {
 				//calculating the avg. rate
