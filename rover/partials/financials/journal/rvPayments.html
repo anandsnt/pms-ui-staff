@@ -81,7 +81,7 @@
                                     <td>{{level3.name}}<br/>{{level3.account_name}}</td>
                                     <td>{{level3.reservation_number}}</td>
                                     <td ng-bind-html="level3.details"></td>
-                                    <td>{{getTimeString(level3.date, level3.time)}}</td>                              
+                                    <td>{{level3.time}}</td>                              
                                     <td>{{currencySymbol}}{{level3.credit | number: precisonTwo}}</td>
                                 </tr>
 
@@ -120,7 +120,7 @@
                                     <td>{{level2.name}}<br/>{{level2.account_name}}</td>
                                     <td>{{level2.reservation_number}}</td>
                                     <td ng-bind-html="level2.details"></td>
-                                    <td>{{getTimeString(level2.date, level2.time)}}</td>
+                                    <td>{{level2.time}}</td>
                                     <td>{{currencySymbol}}{{level2.credit | number: precisonTwo}}</td>
                                 </tr>
 
