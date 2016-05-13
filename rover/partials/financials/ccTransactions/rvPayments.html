@@ -11,7 +11,7 @@
                 <a ng-click="clickedApprovedTab()" class="transaction-title green toggle" ng-class="{'active':data.paymentData.approved.active, 'has-arrow': hasAnyElements(data.paymentData.approved)}">
                     <strong class="name" translate>APPROVED</strong>
                 </a>
-                <div ng-show="data.paymentData.approved.active && item.description" class="grid-charge" ng-repeat="item in data.paymentData.approved"> 
+                <div ng-if="data.paymentData.approved.active && item.description" class="grid-charge" ng-repeat="item in data.paymentData.approved"> 
                     
                     <a ng-click="clickedApprovedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0 }">
                         <strong class="name">{{item.description}}</strong>
@@ -49,7 +49,7 @@
                 <a ng-click="clickedDeclinedTab()"  class="transaction-title red toggle" ng-class="{'active':data.paymentData.declined.active, 'has-arrow': hasAnyElements(data.paymentData.declined) }">
                     <strong class="name" translate>DECLINED</strong>
                 </a>
-                <div ng-show="data.paymentData.declined.active && item.description" class="grid-charge" ng-repeat="item in data.paymentData.declined"> 
+                <div ng-if="data.paymentData.declined.active && item.description" class="grid-charge" ng-repeat="item in data.paymentData.declined"> 
 
                     <a ng-click="clickedDeclinedTransactionItem(item)" class="transaction-title toggle" ng-class="{'active':item.active, 'has-arrow': item.cc_transactions.length > 0 }">
                         <strong class="name">{{item.description}}</strong>
