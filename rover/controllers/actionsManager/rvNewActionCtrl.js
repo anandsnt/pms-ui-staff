@@ -20,7 +20,6 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                 numberOfMonths: 1,
                 onSelect: function (date, datePickerObj) {
                     $scope.newAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj));
-                    $scope.newAction.dueDateObj = $scope.newAction.dueDate;
                 },
                 beforeShow:function(){
                     angular.element("#ui-datepicker-div").after(angular.element('<div></div>',{
@@ -45,10 +44,10 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                 payLoad = {
                     description: ref.note,
                     assigned_to: ref.department? parseInt(ref.department, 10) : "",
-                    due_at: dateFilter(ref.dueDateObj, $rootScope.dateFormatForAPI) + "T" + ref.dueTime + ":00",
+                    due_at: dateFilter(ref.dueDate, $rootScope.dateFormatForAPI) + "T" + ref.dueTime + ":00",
                     reservation_id: ref.reservation.id
                 };
-
+            
             $scope.callAPI(rvActionTasksSrv.postNewAction,{
                 params: payLoad,
                 successCallBack: function(){
@@ -75,10 +74,8 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
             // CICO-27905
             var businessDate = new tzIndependentDate($rootScope.businessDate),
                 arrivalDate = new tzIndependentDate(selectedReservation.arrival_date);
-            
-            $scope.newAction.dueDateObj = businessDate > arrivalDate ? businessDate : arrivalDate;
 
-            $scope.newAction.dueDate = $filter('date')( $scope.newAction.dueDateObj, $rootScope.dateFormat);
+            $scope.newAction.dueDate = businessDate > arrivalDate ? businessDate : arrivalDate;
         });
 
         init();
