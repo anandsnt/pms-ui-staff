@@ -588,6 +588,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         
         var getCardSaveData = function(data){
+            console.log('getCardSaveData data: ',data);
             var expirYear = '20'+data.expiry_date.split('/')[0];
             var expirMonth = data.expiry_date.split('/')[1];
             var postData = {
