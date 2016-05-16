@@ -585,8 +585,15 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         var getCardSaveData = function(data){
             console.log('getCardSaveData data: ',data);
-            var expirYear = '20'+data.expiry_date.split('/')[0];
-            var expirMonth = data.expiry_date.split('/')[1];
+            var expirYear, expirMonth;
+            if (!data.expiry_date && data.payment_method.expiry_date){
+                expirYear = '20'+data.payment_method.expiry_date.split('/')[0];
+                expirMonth = data.payment_method.expiry_date.split('/')[1];
+            } else {
+                expirYear = '20'+data.expiry_date.split('/')[0];
+                expirMonth = data.expiry_date.split('/')[1];
+            }
+            
             var postData = {
                  card_code: data.card_type.toLowerCase(),
                  card_type: data.card_type,
