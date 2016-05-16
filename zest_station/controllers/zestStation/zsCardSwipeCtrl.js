@@ -589,8 +589,16 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         var getCardSaveData = function(data){
             console.log('getCardSaveData data: ',data);
-            var expirYear = '20'+data.expiry_date.split('/')[0];
-            var expirMonth = data.expiry_date.split('/')[1];
+            var expirYear, expirMonth;
+            if (!data.expiry_date && data.payment_method.expiry_date){
+                //check if settings inside payment_method or not
+                //this is different per sixpay response for the card type
+                data = data.payment_method;
+            } 
+            
+            expirYear = '20'+data.expiry_date.split('/')[0];
+            expirMonth = data.expiry_date.split('/')[1];
+            
             var postData = {
                  card_code: data.card_type.toLowerCase(),
                  card_type: data.card_type,
