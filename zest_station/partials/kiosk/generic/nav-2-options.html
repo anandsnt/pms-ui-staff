@@ -9,13 +9,11 @@
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- card swipe -->
-                <li ng-show='show.swipecardScreen && at === "card-swipe"' touch-press='simulateSixPay()'>
-                    <button type="button" class="button option">
+                <li ng-show='at === "card-swipe"'>
+                    <button type="button" class="button option" touch-press='simulateSixPay()'>
                         <div ng-include="icons.url.creditcard"></div>
-                        
                     </button>
                     <span translate>SWIPE_CARD_PLEASE</span>
-                    <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
                 </li>
                 
                 <!-- deliver-registration -->
