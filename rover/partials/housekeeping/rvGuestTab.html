@@ -38,7 +38,7 @@
 
         <!-- spaces removed so that in end UI there should not be a space b/w text and last full stop -->
         <span class="red" ng-if="roomDetails.hasDept">
-          <labrl>Departing </labrl>
+          <label>Departing </label>
           <span ng-if="!!roomDetails.departure.time"> at {{ roomDetails.departure.time }} </span>
           <span ng-if="!!roomDetails.departure.date"> on {{ roomDetails.departure.date | date : dateFormat }} </span>
           <label>.</label>
@@ -54,7 +54,7 @@
       </h2>
       <!-- If Guest Due Out, show Check Out button -->
         <button type="button" class="button red" ng-show="roomDetails.reservation_is_due_out && hasCheckOutReservationPermission()" ng-click="checkOutReservation()">Check Out</button>
-               
+
     </div>
   </div>
 
