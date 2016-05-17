@@ -1,7 +1,9 @@
 angular.module('dashboardModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider){
 
         $stateProvider.state('rover.search', {
-            url: '/search/:type/:from_page/:useCache',
+            //as we dont have a status called Mobile checkin, we still need to pass as PRE_CHECKIN
+            //along with that we will pass is mobile checkin variable. This will be null if not send
+            url: '/search/:type/:from_page/:useCache/:isMobileCheckin',
             templateUrl: '/assets/partials/search/rvSearchReservation.html',
             controller: 'rvReservationSearchController',
             resolve: {
