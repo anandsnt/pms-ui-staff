@@ -52,7 +52,10 @@ module.exports = {
 			'guestweb_kingsley':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_avery':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_knickerbocker_yacht_club':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_paradise_point':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_paradise_point':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_valencia_santana_row':[ themeJsRoot + 'app_router_common.js']
+
+
 		}
 	}
 }
