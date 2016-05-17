@@ -549,6 +549,15 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		/**
+		 * CICO-29324: disable duests button for cancel and no show
+		 * @return {Boolean} disable or not.
+		 */
+		$scope.shouldDisableGuestsButton = function() {
+			var reservationStatus = $scope.reservation.reservation_card.reservation_status;
+			return (reservationStatus === 'CANCELED' || reservationStatus === 'NOSHOW');
+		};
+
+		/**
 		 * we will not show "Nights" button in case of hourly, isNightsEnabled()
 		 * as part of CICO-17712, we are hiding it for now (group rservation)
 		 * @return {Boolean}
