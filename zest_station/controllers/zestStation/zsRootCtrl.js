@@ -605,11 +605,15 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.stopLanguageCounter = function(){
             $timeout.cancel($scope.languageCounter);
         };
-        $scope.prepForOOS = function(reason){
+        $scope.prepForOOS = function(reason, hardwareFailure){
             //this will get the kiosk ready to go into oos, 
             //once the home page initializes next,  the wsIsOos will be checked and go into OOS,
             //the reason will be used by the admin setting when going to place back in service.
-            $scope.zestStationData.wsIsOos = true;
+            if (hardwareFailure){
+                //only put station out of service if due to hardware failure,
+                //if somehow the reservation itself causes the key failure, do not put oos
+                $scope.zestStationData.wsIsOos = true;
+            }
             $scope.zestStationData.wsFailedReason =  reason;
         };
         $scope.prepForInService = function(){

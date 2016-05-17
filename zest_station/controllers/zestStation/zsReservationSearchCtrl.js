@@ -467,7 +467,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         }); 
         $scope.$on('SOCKET_FAILED',function(){
             console.info('socket failed...');
-                    $scope.prepForOOS($filter('translate')('SOCKET_FAILED'));
+                    $scope.prepForOOS($filter('translate')('SOCKET_FAILED'), true);
             $scope.initErrorScreen();
        });
     };
