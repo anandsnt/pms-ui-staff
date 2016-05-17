@@ -26,7 +26,8 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       'QUEUED_ROOMS': 'QUEUED_ROOMS_TITLE',
       'VIP': 'DASHBOARD_SEARCH_VIP',
       'NORMAL_SEARCH': 'SEARCH_NORMAL',
-      'PRE_CHECKIN': 'PRE_CHECKIN'
+      'PRE_CHECKIN': 'PRE_CHECKIN',
+      'MOBILE_CHECKIN' : 'MOBILE_CHECKIN'
     };
 
     //Special case: Search by swipe in back navigation. We have to display the card number as well.
@@ -41,6 +42,9 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       }
 
     }
+
+
+    heading = !!$stateParams.isMobileCheckin ? 'MOBILE_CHECKIN' : heading;
 
     // set up a back button
     if ($stateParams.type !== '' && $stateParams.type !== null) {
