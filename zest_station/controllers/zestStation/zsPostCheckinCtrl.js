@@ -229,6 +229,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         
         $scope.skipKeys = function(){
+            
             if ($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled){
                 $state.go('zest_station.delivery_options');
             } else {
@@ -480,29 +481,57 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             }
         };
         $scope.updateSubHeadingTextForLastConfirmPage = function(){
+            var printSuccess = $state.selectedReservation.printSuccess === true,
+                    keySuccess = $state.selectedReservation.keySuccess === true,
+                    /*
+                    keyPrintSuccessMsg = $scope.zestStationData.check_in_message_texts.key_success_print_success_message,
+                    keyFailPrintSuccessMsg = $scope.zestStationData.check_in_message_texts.key_fail_print_success_message,
+                    //bad day for kiosk.
+                    superFail = $scope.zestStationData.check_in_message_texts.key_fail_print_fail_message,
+                      */      
+             
+                    keyPrintSuccessMsg = $filter('translate')('PRINTED_BELOW'),     //success + success
+                    keyPrintFailMsg = $filter('translate')('PRINTED_NOKEYS'),     //success + fail
+                    keyFailPrintSuccessMsg = $filter('translate')('PRINTED_NO'),//fail + success
+                    //bad day for kiosk.
+                    superFail = $filter('translate')('PRINTED_FAIL'),               //fail + fail
+                            failure = false;
             
-            if($state.selectedReservation.printSuccess === true){
-                if($state.selectedReservation.keySuccess)
-                {
-                        $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_success_print_success_message;
+            var msg;
+            if(keySuccess && printSuccess){//success + success = :D
+                    msg = keyPrintSuccessMsg;
+                    //if check-in without hardware failure, this should be set back to admin reason,
+                    //if station is placed out of service without hardare failure, its due to admin manually placing oos or network failure
+                    $scope.zestStationData.wsFailedReason =  $filter('translate')('ADMIN_OR_NETWORK_OOS');
                     
-                }else{
-                    $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_fail_print_success_message;
-                }
-            }else{
-                if($state.selectedReservation.keySuccess)
-                {
-                        $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_success_print_fail_message;
                     
-                }else{
-                    // $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_AND_PRINT_FAIL');
-                     $scope.zestStationData.wsIsOos = true;
-                     $scope.zestStationData.wsFailedReason =  $filter('translate')('CHECKIN_KEY_AND_PRINT_FAIL');
-                    // $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
-                        $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_fail_message;
+            } else if(keySuccess && !printSuccess){//success + fail = :/
+                    msg = keyPrintFailMsg;
+                    //if check-in without hardware failure, this should be set back to admin reason,
+                    //if station is placed out of service without hardare failure, its due to admin manually placing oos or network failure
+                    $scope.zestStationData.wsFailedReason =  $filter('translate')('CHECKIN_KEY_SUCCESS_PRINT_FAIL');
                     
-                }
-            };
+                    
+            } else if (!keySuccess && printSuccess) {//fail + success = :/
+                    msg = keyFailPrintSuccessMsg;
+                    
+                    failure = true;
+                    $scope.zestStationData.wsFailedReason =  $filter('translate')('CHECKIN_KEY_FAIL_PRINT_SUCCESS');
+                    
+                    
+            } else if (!keySuccess && !printSuccess){// fail + fail = :(
+                    msg = superFail;
+                    
+                    failure = true;
+                    $scope.zestStationData.wsFailedReason =  $filter('translate')('CHECKIN_KEY_FAIL_PRINT_FAIL');
+                    
+            }
+            
+            if (failure){
+                $scope.zestStationData.wsIsOos = true;
+            }
+            console.info(msg);
+            $scope.subHeadingText = msg;
         };
         /*
          * placeholder for updating these values, need to add two scenarios, where print is not selected

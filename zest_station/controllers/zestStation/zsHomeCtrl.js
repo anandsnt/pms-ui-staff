@@ -409,6 +409,7 @@ sntZestStation.controller('zsHomeCtrl', [
     
     $scope.init = function(){
         //reset early check-in flags
+        //$state.selectedReservation.keySuccess = true;
         $scope.zestStationData.reservation_in_early_checkin_window = false;
         $state.earlyCheckinPurchased = false;
         $scope.zestStationData.is_early_prepaid = false;
