@@ -37,13 +37,13 @@
         </div>
         <div class="info-right" ng-if="printData.card_type === 'COMPANY'">
             <strong>Account Name:</strong>{{printData.account_name}}<br/>
-            <strong ng-if="printData.account_contact">Account Contact:</strong>{{printData.account_contact}}<br ng-if="printData.account_contact" />
+            <strong ng-if="printData.group_account_contact && printData.is_group">Account Contact:</strong>{{printData.account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
             <strong ng-if="printData.company_card_details.payment_due_in_days">Payment Due In (days):</strong>{{printData.company_card_details.payment_due_in_days}}<br ng-if="printData.company_card_details.payment_due_in_days" />
             <strong>Corp ID :</strong>{{printData.company_card_details.corporate_id}}
         </div>
         <div class="info-right" ng-if="printData.card_type === 'TRAVELAGENT'">
             <strong>Account Name:</strong>{{printData.account_name}}<br/>
-            <strong ng-if="printData.account_contact">Account Contact:</strong>{{printData.account_contact}}<br ng-if="printData.account_contact" />
+            <strong ng-if="printData.group_account_contact && printData.is_group">Account Contact:</strong>{{printData.account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
             <strong ng-if="printData.ta_card_details.payment_due_in_days">Payment Due In (days):</strong>{{printData.ta_card_details.payment_due_in_days}}<br ng-if="printData.ta_card_details.payment_due_in_days" />
             <strong>IATA #:</strong>{{printData.ta_card_details.iata_no}}
         </div>
