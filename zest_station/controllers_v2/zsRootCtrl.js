@@ -8,12 +8,12 @@
 sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
-	'$state', 'zsTabletSrv', '$rootScope', 'ngDialog', '$sce',
+	'$state', 'zsGeneralSrv', '$rootScope', 'ngDialog', '$sce',
 	'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings', '$timeout', 'zsModeConstants','hotelTimeData',
 	function($scope,
 		zsEventConstants,
 		$state,
-		zsTabletSrv,
+		zsGeneralSrv,
 		$rootScope,
 		ngDialog,
 		$sce,
@@ -28,7 +28,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		$translate.use('EN_snt'); // for now. need to do translations later
+		
 		$scope.cssMappings = cssMappings;
 
 		//in order to prevent url change or fresh url entering with states
@@ -141,7 +141,7 @@ sntZestStation.controller('zsRootCtrl', [
 				params: {},
 				successCallBack: onSuccess
 			};
-			$scope.callAPI(zsTabletSrv.fetchHotelSettings, options);
+			$scope.callAPI(zsGeneralSrv.fetchHotelSettings, options);
 		};
 		/**
 		 * This fetches hotel admin workstation settings
@@ -167,7 +167,7 @@ sntZestStation.controller('zsRootCtrl', [
 				successCallBack: onSuccess,
 				failureCallBack: onFail
 			};
-			$scope.callAPI(zsTabletSrv.fetchWorkStations, options);
+			$scope.callAPI(zsGeneralSrv.fetchWorkStations, options);
 		};
 		/********************************************************************************
 		 *  User activity timer
@@ -493,7 +493,7 @@ sntZestStation.controller('zsRootCtrl', [
 				failureCallBack: onFail,
 				'loader': 'none'
 			};
-			$scope.callAPI(zsTabletSrv.fetchWorkStations, options);
+			$scope.callAPI(zsGeneralSrv.fetchWorkStations, options);
 		};
 		/**
 		 *   When workstation is in OOS fetch status continously 
@@ -552,7 +552,7 @@ sntZestStation.controller('zsRootCtrl', [
 					}
 				};
 				$state.go('zest_station.outOfService');
-				$scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+				$scope.callAPI(zsGeneralSrv.updateWorkStationOos, options);
 			} else {
 				//Make work stataion back to in order
 				console.info('putting station back in order');
@@ -562,7 +562,7 @@ sntZestStation.controller('zsRootCtrl', [
 						'id': $scope.zestStationData.set_workstation_id
 					}
 				};
-				$scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+				$scope.callAPI(zsGeneralSrv.updateWorkStationOos, options);
 				//update local storage
 				try {
 					//set workstation status in localstorage

@@ -1,5 +1,5 @@
-sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'dateFilter', 'rvActionTasksSrv',
-    function ($scope, $rootScope, rvUtilSrv, dateFilter, rvActionTasksSrv) {
+sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'dateFilter', 'rvActionTasksSrv', '$filter',
+    function ($scope, $rootScope, rvUtilSrv, dateFilter, rvActionTasksSrv, $filter) {
         BaseCtrl.call(this, $scope);
 
         var init = function(){
@@ -44,7 +44,7 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                 payLoad = {
                     description: ref.note,
                     assigned_to: ref.department? parseInt(ref.department, 10) : "",
-                    due_at: dateFilter(ref.dueDate, $rootScope.dateFormatForAPI) + "T" + ref.dueTime + ":00",
+                    due_at: dateFilter(new tzIndependentDate(ref.dueDate), $rootScope.dateFormatForAPI) + "T" + ref.dueTime + ":00",
                     reservation_id: ref.reservation.id
                 };
 
@@ -71,7 +71,13 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
         });
 
         var listenerReservationSelect = $scope.$on("RESERVATION_SELECTED",function(e, selectedReservation){
-            $scope.newAction.dueDate = selectedReservation.arrival_date;
+            // CICO-27905
+            var businessDate = new tzIndependentDate($rootScope.businessDate),
+                arrivalDate = new tzIndependentDate(selectedReservation.arrival_date);
+            
+            $scope.newAction.dueDateObj = businessDate > arrivalDate ? businessDate : arrivalDate;
+
+            $scope.newAction.dueDate = $filter('date')( $scope.newAction.dueDateObj, $rootScope.dateFormat);
         });
 
         init();

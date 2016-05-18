@@ -22,4 +22,10 @@ admin.controller('adDeleteContentController',['$scope', '$rootScope', 'ADContent
    	 	ngDialog.close();
     };
 
+    $scope.getComponentType = function(component){
+
+    	return component.component_type == "PAGE"? "ITEM" : component.component_type;
+
+    }
+
 }]);

@@ -18,7 +18,7 @@
                 <input type="{{inputType}}" 
                     id="input_text"
                     ng-focus="showOnScreenKeyboard('input_text')" 
-                    ng-click="showOnScreenKeyboard('input_text')"
+                    click-touch="showOnScreenKeyboard('input_text')"
                     ng-hide='passwordField' 
                     class="start-focused" 
                     ng-keydown="resetTime()" 
@@ -29,7 +29,7 @@
                 <input type="password"      
                     id="password_text"
                     ng-focus="showOnScreenKeyboard('password_text')" 
-                    ng-click="showOnScreenKeyboard('password_text')"
+                    click-touch="showOnScreenKeyboard('password_text')"
                     ng-show='passwordField' 
                     class="start-focused" 
                     ng-keydown="resetTime()" 
@@ -89,7 +89,7 @@
                     <label translate>ADMIN_TIME_OUT</label>
                     <input touch-press 
                            id="timeout_text"
-                           ng-focus="showOnScreenKeyboard('timeout_text')" ng-click="showOnScreenKeyboard('timeout_text')"
+                           ng-focus="showOnScreenKeyboard('timeout_text')" click-touch="showOnScreenKeyboard('timeout_text')"
                            type="number"
                            min='1' 
                            max='9999' 
@@ -98,11 +98,11 @@
                 </div>
                 <div class="entry with-label">
                     <label>{{'ADMIN_TIME_POP' |translate}}</label>
-                    <input touch-press id="prompt_text" ng-focus="showOnScreenKeyboard('prompt_text')" ng-click="showOnScreenKeyboard('prompt_text')" type="number" min='1' max='9999' ng-model='zestStationData.idle_timer.prompt'/>
+                    <input touch-press id="prompt_text" ng-focus="showOnScreenKeyboard('prompt_text')" click-touch="showOnScreenKeyboard('prompt_text')" type="number" min='1' max='9999' ng-model='zestStationData.idle_timer.prompt'/>
                 </div>
                 <div class="entry with-label">
                     <label>{{'ADMIN_STATION_PRINTER' |translate}}</label>
-                    <!-- <input touch-press id="prompt_text" disabled="true" ng-model='zestStationData.printerLabel' ng-click='openPrinterMenu()'/> -->
+                    <!-- <input touch-press id="prompt_text" disabled="true" ng-model='zestStationData.printerLabel' click-touch='openPrinterMenu()'/> -->
                      <div class="entry select " ng-class="{'disabled':!isIpad}" touch-press='openPrinterMenu()'>
                            <select disabled="true" ng-model="zestStationData.printer_selected">
                                <option value="">{{printerLabel}}</option>

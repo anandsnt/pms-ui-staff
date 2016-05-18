@@ -62,7 +62,7 @@ module.exports = {
 				zestRoot + 'controllers_v2/**/*.js',
 				zestRoot + 'directives/**/*.js',
 				zestRoot + 'services_v2/**/*.js',
-				zestRoot + 'services/**/*.js',
+				// zestRoot + 'services/**/*.js',
 				zestRoot + 'filters/*.js',
 				//zestRoot + 'routers/**/*.js',
 				zestRoot + 'routers_v2/**/*.js',

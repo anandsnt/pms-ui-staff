@@ -59,13 +59,12 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             });
         };
         var getCheckInReservations = function(){
+            //the data is service will be reset after the process from zscheckInReservationSearchCtrl
             $scope.reservations = zsCheckinSrv.getCheckInReservations();
-            //Deleting reservation details from zsCheckinSrv
-            zsCheckinSrv.setCheckInReservations([]);
         };
         var init = function() {
             //hide back button
-            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+            $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
             //show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             //back button action

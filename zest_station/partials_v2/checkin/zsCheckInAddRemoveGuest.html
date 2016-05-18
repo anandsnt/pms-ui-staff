@@ -17,7 +17,7 @@
         <h3>{{subHeadingText |translate}}</h3>
         <form class="form" click-touch='resetTime()'>
             <div class="entry input">
-                <input type="{{inputType}}" ng-focus="showOnScreenKeyboard('input_text')" ng-click="showOnScreenKeyboard('input_text')"
+                <input type="{{inputType}}" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')"
                        class="start-focused" ng-keydown="resetTime()" ng-model='guest.Name' placeholder="{{inputTextPlaceholder}}"
                        enter-press="firstNameEntered()" value="" touch-press />
             </div>

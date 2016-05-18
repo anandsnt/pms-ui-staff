@@ -4,7 +4,8 @@ sntZestStation.controller('zsHomeCtrl', [
 	'$state',
 	'zsEventConstants',
 	'$translate',
-	function($scope, $rootScope, $state, zsEventConstants,$translate) {
+	'zsCheckinSrv',
+	function($scope, $rootScope, $state, zsEventConstants,$translate,zsCheckinSrv) {
 
 		/**
 		 * when we clicked on pickup key from home screen
@@ -68,6 +69,9 @@ sntZestStation.controller('zsHomeCtrl', [
 
 			//hide close button
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
+			//flush out previous search results
+			zsCheckinSrv.setSelectedCheckInReservation([]);
+			zsCheckinSrv.setCheckInReservations([]);
 			//eject if any key card is inserted
 			$scope.$emit('EJECT_KEYCARD');
 			//set this to false always on entering home screen

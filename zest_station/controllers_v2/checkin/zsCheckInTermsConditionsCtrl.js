@@ -24,12 +24,12 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		
 		var init = function() {
 			//hide back button
-			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			//show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			//back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-				$state.go('zest_station.zscheckInReservationDetailsCtrl');
+				 $state.go('zest_station.checkInReservationDetails');
 			});
 			//starting mode
 			$scope.mode = "TERMS_CONDITIONS";

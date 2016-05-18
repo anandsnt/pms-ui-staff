@@ -1,10 +1,10 @@
 sntZestStation.controller('zsThemeActionsCtrl', [
 	'$scope',
 	'$state',
-	'zsTabletSrv',
+	'zsGeneralSrv',
 	'$timeout',
 	'zsHotelDetailsSrv',
-	function($scope, $state, zsTabletSrv, $timeout, zsHotelDetailsSrv) {
+	function($scope, $state, zsGeneralSrv, $timeout, zsHotelDetailsSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -170,7 +170,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 				},
 				successCallBack: setHotelBasedTheme
 			};
-			$scope.callAPI(zsTabletSrv.fetchHotelTheme, options);
+			$scope.callAPI(zsGeneralSrv.fetchHotelTheme, options);
 		}();
 	}
 ]);

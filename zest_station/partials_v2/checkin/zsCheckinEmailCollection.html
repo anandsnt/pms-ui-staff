@@ -5,7 +5,7 @@
         <h3 translate>TYPE_EMAIL_IN_SUB</h3>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" id="input_text" ng-focus="showOnScreenKeyboard('input_text')" ng-click="showOnScreenKeyboard('input_text')" class="start-focused" ng-keydown="resetTime()" ng-model='email' enter-press="goToNext()" value="" touch-press />
+                <input type="text" id="input_text" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" class="start-focused" ng-keydown="resetTime()" ng-model='email' enter-press="goToNext()" value="" touch-press />
             </div>
             <div class="entry action">
                 <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': email.length < 1}" translate>NEXT_BTN</button>
@@ -31,7 +31,7 @@
             </ul>
         </nav>
         <div id="actions" class="align-right">
-            <button type="button" class="button transparent" ng-click="skipEmail()">Skip This</button>
+            <button type="button" class="button transparent" click-touch="skipEmail()">Skip This</button>
         </div>
     </div>
 </section>

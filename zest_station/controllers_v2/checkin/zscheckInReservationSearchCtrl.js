@@ -29,6 +29,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		**/
 
 		BaseCtrl.call(this, $scope);
+		//flush out previous search results
+		zsCheckinSrv.setSelectedCheckInReservation([]);
+		zsCheckinSrv.setCheckInReservations([]);
 
 		$scope.findByDate = function(){
 			$scope.mode = 'FIND_BY_DATE';
@@ -180,7 +183,13 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			//back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-				$state.go('zest_station.home');
+				if($scope.mode === "LAST_NAME_ENTRY"){
+					$state.go('zest_station.home');
+				}
+				else{
+					$scope.mode = "LAST_NAME_ENTRY";
+				};
+				
 			});
 			//starting mode
 			$scope.showDatePick = false;

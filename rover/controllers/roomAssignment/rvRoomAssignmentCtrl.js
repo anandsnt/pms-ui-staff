@@ -431,15 +431,15 @@ sntRover.controller('RVroomAssignmentController',[
 					break;
 			}
 		}
-		else if(!$scope.isStandAlone) {
+		else {
 				if (!$rootScope.isStandAlone) {
-					openRoomAlreadyChoosedPopup ();
+					$timeout(openRoomAlreadyChoosedPopup, 400);
 				}
 				else {
 					var errorMessagePopup = {
-						errorMessage: error.toString()
+						error: error.toString()
 					};
-					openPopupForErrorMessageShowing(errorMessagePopup);
+					$timeout(openPopupForErrorMessageShowing.bind(null, errorMessagePopup), 500);
 				}
 		}
 

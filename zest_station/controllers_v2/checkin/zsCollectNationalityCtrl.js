@@ -3,8 +3,8 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 	'$state',
 	'zsEventConstants',
 	'$stateParams',
-	'$sce', 'countryList', 'zsCheckinSrv',
-	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, zsCheckinSrv) {
+	'$sce', 'countryList', 'sortedCountryList', 'zsCheckinSrv',
+	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, sortedCountryList, zsCheckinSrv) {
 
 		/**********************************************************************************************
 		**		Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -24,8 +24,27 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 
 		$scope.init = function() {
 			$scope.countryList = countryList;
-			$scope.nationalityId = "";
+			$scope.sortedCountries = sortedCountryList.sorted;
+			$scope.unSortedCountries = sortedCountryList.unsorted;
+			$scope.selectedCountry = {"id":""};
 		};
+
+
+		 /**
+         * when the back button clicked
+         * @param  {[type]} event
+         * @return {[type]}
+         */
+        $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
+        	var reservations = zsCheckinSrv.getCheckInReservations();
+            $state.go('zest_station.checkInReservationSearch');
+            if(reservations.length > 0){
+				$state.go('zest_station.selectReservationForCheckIn');
+			}
+			else{
+				$state.go('zest_station.checkInReservationSearch');
+			}
+        });
 
 		/**
 		 * [initializeMe description]
@@ -33,7 +52,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 		 */
 		var initializeMe = function() {
 			//hide back button
-			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			//show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
@@ -47,7 +66,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			var options = {
 				params: {
 					guest_id: $stateParams.guestId,
-					nationality_id: $scope.nationalityId
+					nationality_id: $scope.selectedCountry.id
 				},
 				successCallBack: successCallBack
 			}
