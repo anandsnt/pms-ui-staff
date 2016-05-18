@@ -7,7 +7,7 @@
 </div>
 
 <div class="invoice-logo envelope smaller">
-    <h1>Invoice</h1>
+    <h1 translate>INVOICE</h1>
 </div>
 
 <div class="info-container account-info">
@@ -32,20 +32,20 @@
 
     <div class="info-bottom">
         <div class="info-left">
-            <strong>Invoice Date:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <strong>Invoice Number:</strong>{{printData.invoice_number}}<br/>
+            <strong translate>INVOICE_DATE:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
+            <strong translate>INVOICE_NO:</strong>{{printData.invoice_number}}<br/>
         </div>
         <div class="info-right" ng-if="printData.card_type === 'COMPANY'">
-            <strong>Account Name:</strong>{{printData.account_name}}<br/>
-            <strong ng-if="printData.group_account_contact && printData.is_group">Account Contact:</strong>{{printData.account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
-            <strong ng-if="printData.company_card_details.payment_due_in_days">Payment Due In (days):</strong>{{printData.company_card_details.payment_due_in_days}}<br ng-if="printData.company_card_details.payment_due_in_days" />
-            <strong>Corp ID :</strong>{{printData.company_card_details.corporate_id}}
+            <strong translate>ACCOUNT_NAME:</strong>{{printData.account_name}}<br/>
+            <strong ng-if="printData.group_account_contact && printData.is_group">ACCOUNT_CONTACT:</strong>{{printData.account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
+            <strong ng-if="printData.company_card_details.payment_due_in_days" translate>PAYMENT_DUE_IN_DAYS:</strong>{{printData.company_card_details.payment_due_in_days}}<br ng-if="printData.company_card_details.payment_due_in_days" />
+            <strong translate>CORP_ID:</strong>{{printData.company_card_details.corporate_id}}
         </div>
         <div class="info-right" ng-if="printData.card_type === 'TRAVELAGENT'">
-            <strong>Account Name:</strong>{{printData.account_name}}<br/>
-            <strong ng-if="printData.group_account_contact && printData.is_group">Account Contact:</strong>{{printData.account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
-            <strong ng-if="printData.ta_card_details.payment_due_in_days">Payment Due In (days):</strong>{{printData.ta_card_details.payment_due_in_days}}<br ng-if="printData.ta_card_details.payment_due_in_days" />
-            <strong>IATA #:</strong>{{printData.ta_card_details.iata_no}}
+            <strong translate>ACCOUNT_NAME:</strong>{{printData.account_name}}<br/>
+            <strong ng-if="printData.group_account_contact && printData.is_group" translate>ACCOUNT_CONTACT:</strong>{{printData.account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
+            <strong ng-if="printData.ta_card_details.payment_due_in_days" translate>PAYMENT_DUE_IN_DAYS:</strong>{{printData.ta_card_details.payment_due_in_days}}<br ng-if="printData.ta_card_details.payment_due_in_days" />
+            <strong translate>IATA_#:</strong>{{printData.ta_card_details.iata_no}}
         </div>
     </div>
 </div>
@@ -58,29 +58,29 @@
     <table class="invoice-details">
         <thead>
             <tr>
-                <th>Date of Charge</th>
-                <th>Charge Code</th>
-                <th>Charge description</th>
-                <th class="align-right">Charge amount</th>
-                <th class="align-right">Credit amount</th>
+                <th translate>DATE_OF_CHARGE</th>
+                <th translate>CHARGE_CODE</th>
+                <th translate>CHARGE_DESCRIPTION</th>
+                <th class="align-right" translate>CHARGE_AMOUNT</th>
+                <th class="align-right" translate>CREDIT_AMOUNT</th>
             </tr>
         </thead>
 
         <tfoot>
             <tr>
-                <td colspan="4"><strong>Total Charge</strong></td>
+                <td colspan="4"><strong translate>TOTAL_CHARGE</strong></td>
                 <td><strong>{{currencySymbol}}{{printData.bill_transactions_info.total_charge | number:2}}</strong></td>
             </tr>
             <tr>
-                <td colspan="4"><strong>Total Credits</strong></td>
+                <td colspan="4"><strong translate>TOTAL_CREDITS</strong></td>
                 <td><strong>{{currencySymbol}}{{printData.bill_transactions_info.total_credits | number:2}}</strong></td>
             </tr>
             <tr>
-                <td colspan="4"><strong>Balance</strong></td>
+                <td colspan="4"><strong translate>BALANCE</strong></td>
                 <td><strong>{{currencySymbol}}{{printData.bill_transactions_info.balance | number:2}}</strong></td>
             </tr>
             <tr>
-                <td colspan="4">Net Amount</td>
+                <td colspan="4" translate>NET_AMOUNT</td>
                 <td>{{currencySymbol}}{{printData.bill_transactions_info.net_amount | number:2}}</td>
             </tr>
             <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.bill_transactions_info.tax_info">
@@ -88,7 +88,7 @@
                 <td>{{currencySymbol}}{{tax.amount | number : 2}}</td>
             </tr>
             <tr>
-                <td colspan="4">Total Incl Tax</td>
+                <td colspan="4" translate>TOTAL_INCL_TAX</td>
                 <td>{{currencySymbol}}{{printData.bill_transactions_info.total_incl_tax | number:2}}</td>
             </tr>
         </tfoot>
