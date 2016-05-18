@@ -108,6 +108,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 			'DUE IN'    : 'check-in',
 			'INHOUSE'   : 'inhouse',
 			'DUE OUT'   : 'check-out',
+			'CHECKEDOUT' : 'check-out',
 			'CANCELLED' : 'cancel',
 			'NOSHOW'    : 'no-show'
 		}
@@ -228,8 +229,8 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  		};
 
  		function setup () {
- 			addonGroups  = mainCtrlScope.addonGroups || $scope.chosenReport.hasAddonGroups.data;
- 			addons       = mainCtrlScope.addons ||  $scope.chosenReport.hasAddons.data;
+ 			addonGroups  = $scope.chosenReport.hasAddonGroups.data || [];
+ 			addons       = $scope.chosenReport.hasAddons.data || [];
  			results      = mainCtrlScope.results;
 			addonGrpHash = {};
 			addonHash    = {};
@@ -239,9 +240,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			});
 
  			_.each(addons, function(item) {
- 				_.each(item['list_of_addons'], function(entry) {
- 					addonHash[entry.addon_id] = entry.addon_name;
- 				});
+ 				addonHash[item.addon_id] = item.addon_name;
  			});	
 
  			$scope.modifiedResults = {};

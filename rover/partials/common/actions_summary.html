@@ -1,7 +1,7 @@
 <div id="action-summary"><!-- only in overlay hide -->
 
     <!-- DISPLAY FIELD (LABEL) -->
-    <h3 ng-show="!editingDescriptionInline" ng-click="startEditDescription()">{{selectedAction.description}}</h3>
+    <h3 class="word_wrap" ng-show="!editingDescriptionInline" ng-click="startEditDescription()">{{selectedAction.description}}</h3>
 
     <!-- INPUT FIELD -->
     <h3 id="input-description"  ng-click="startEditDescription()" ng-show="editingDescriptionInline">
@@ -15,7 +15,7 @@
     <div class="info created" ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)" >
         <span class="label" ng-if="!selectedAction.created_by_null">Created By</span>
         <span class="label" ng-if="selectedAction.created_by_null">Created </span>
-        {{selectedAction.created_by.name}} {{selectedAction.created_at_date}} &#8226; {{selectedAction.created_at_time}} 
+        {{selectedAction.created_by.name}} {{selectedAction.created_at_date}} &#8226; {{selectedAction.created_at_time}}
     </div>
     <div class="entry action-info date" ng-click="showSelectCalendar()" ng-class="{'overlay': selectedAction.date_completed}" ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)">
         <label for="due-date">Date Due</label>
@@ -43,31 +43,31 @@
     <span>Completed By</span>
     {{selectedAction.completed_by.name}} {{selectedAction.completed_at | date: dateFormat}} &#8226;
     {{selectedAction.completed_at | date: "hh:mm a"}}
-</div> 
+</div>
 
 <div class="detail-actions col-2" ng-hide="(!isStandAlone && isRequest(selectedAction.action_task_type)) || selectedAction.date_completed" ng-class="{'margin-bottom:-30px':isActionManager}">
-    <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || selectedAction.assigned" 
-        ng-class="{'centered-action-btn' : !isStandAlone}" 
-        type="button" 
-        class="button white brand-text" 
+    <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || selectedAction.assigned"
+        ng-class="{'centered-action-btn' : !isStandAlone}"
+        type="button"
+        class="button white brand-text"
         ng-click="assignAction()">
         Assign
-    </button> 
+    </button>
     <!-- Change text to "Reassign" for assigned action -->
-    
-    <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !selectedAction.assigned"  
-        ng-class="{'centered-action-btn' : !isStandAlone}" 
-        type="button" 
-        class="button white brand-text" 
+
+    <button ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !selectedAction.assigned"
+        ng-class="{'centered-action-btn' : !isStandAlone}"
+        type="button"
+        class="button white brand-text"
         ng-click="reassignAction()">
         Re-assign
     </button>
-    
+
     <button ng-hide="!isStandAlone" type="button" class="button white green-text" ng-click="completeAction()">Complete</button> <!-- THESE HIDDEN FOR SPECIALS -->
-    
-    <button ng-show="!isStandAlone && isAlert(selectedAction.action_task_type)" 
-        type="button" 
-        class="button white green-text centered-action-btn" 
+
+    <button ng-show="!isStandAlone && isAlert(selectedAction.action_task_type)"
+        type="button"
+        class="button white green-text centered-action-btn"
         ng-click="completeAction('delete', selectedAction)">
         Delete
     </button>
