@@ -41,7 +41,7 @@
             <div class="entry occupancy">
                 <label for="rooming-occupancy">{{'GROUP_OCCUPANCY'|translate}}</label>
                 <div class="select">
-                    <select id="rooming-occupancy" ng-model="ngDialogData.occupancy" ng-disabled="shouldDisableReservationOccuppancyChange(ngDialogData)">
+                    <select id="rooming-occupancy" ng-model="ngDialogData.occupancy" ng-disabled="shouldDisableReservationOccuppancyChange(ngDialogData)" ng-change="changedReservationOccupancy()">
                         <option value="1" ng-show="shouldShowThisOccupancyAgainstRoomType('single_occupancy')">
                             {{'GROUP_SINGLE'|translate}}
                         </option>
@@ -72,7 +72,8 @@
             <div class="entry room">
                 <label for="room">Room</label>
                 <div class="select">
-                    <select id="room" ng-disabled="shouldDisableChangeRoom(ngDialogData)" ng-model="ngDialogData.room_id" ng-class="{'placeholder': isEmptyRoomNumber(ngDialogData.room_no)}">
+                    <select id="room" ng-disabled="shouldDisableChangeRoom(ngDialogData)" ng-model="ngDialogData.room_id" ng-class="{'placeholder': isEmptyRoomNumber(ngDialogData.room_no)}"
+                    ng-change="changedReservationRoom()">
                         <!-- Add class "placeholder" if "N/A" set as option -->
                         <option value="" ng-selected="isEmptyRoomNumber(ngDialogData.room_no)">N/A</option>
                         <option value="{{roomData.id}}" ng-selected="ngDialogData.room_id===roomData.id" ng-repeat="roomData in ngDialogData.roomsFreeToAssign">{{roomData.room_number}}</option>

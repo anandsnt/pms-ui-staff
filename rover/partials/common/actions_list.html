@@ -45,7 +45,7 @@
 
         <div class="data">
             <h3>{{action.description}}</h3>
-            <em ng-show="isStandAloneAction(action)">{{action.due_at_date}} &#8226; {{action.due_at_str | date: "hh:mm a" }}</em>
+            <em ng-show="isStandAloneAction(action)">{{action.due_at_date}} &#8226; {{action.due_at_time_str}}</em>
             <em ng-show="isTrace(action.action_task_type)">{{action.due_at_date}}</em>
             <em ng-show="isRequest(action.action_task_type) || isAlert(action.action_task_type)"></em>
         </div>
