@@ -180,6 +180,18 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+        
+        this.fetchUpsellDetails = function(reservation) {
+            var deferred = $q.defer(),
+                url = 'guest_web/reservations/'+reservation.id+'.json';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
     }
 ]);

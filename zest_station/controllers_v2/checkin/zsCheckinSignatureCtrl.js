@@ -52,7 +52,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                     'reservation_id': $stateParams.reservation_id,
                     'room_no': $stateParams.room_no,
                     'first_name': $stateParams.first_name
-            }
+            };
 
 
             if (haveValidGuestEmail) {
@@ -101,6 +101,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
         };
 
         $scope.reSignCC = function() {
+            $scope.resetTime();
             $scope.mode = "SIGNATURE_MODE";
         };
 

@@ -101,6 +101,14 @@ sntZestStation.config(['$stateProvider',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomError.html',
 			controller: 'zsRoomErrorCtrl'
 		});
+                
+                
+      	// early check-in
+      	$stateProvider.state('zest_station.earlyCheckin', {
+			url: '/checkinEarly/:early_checkin_data:/:early_charge_symbol',
+			templateUrl: '/assets/partials_v2/checkin/zsCheckinEarly.html',
+			controller: 'zsCheckinEarlyCtrl'
+		});
       	
 	}
 ]);
