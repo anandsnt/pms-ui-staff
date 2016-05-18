@@ -944,7 +944,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				value['roomTypeId'] = parseInt(roomsArray[value.room_id].room_type_id, 10);
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
 				value['roomNumber'] = roomsArray[value.room_id].room_no;
-				roomTypes.push(parseInt(value.roomTypeId, 10))
+				roomTypes.push(parseInt(value.roomTypeId, 10));
 			});
 			roomTypes = _.uniq(roomTypes);
 			$scope.reservationData.tabs = RVReservationDataService.getTabDataModel(roomTypes.length, roomTypes);
@@ -1060,6 +1060,25 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				room.room_id = refData.room_id;
 				room.room_no = refData.room_no;
 				room.room_type = refData.room_type;
+
+				// tData will have addons IFF the hourly reservation is being edited; while creation tData.addons will be undefined
+				if(tData.addons){
+					room.addons = [];
+					angular.forEach(tData.addons, function(item) {
+						room.addons.push({
+							quantity: item.addon_count,
+							id: item.id,
+							price: parseFloat(item.amount),
+							amountType: item.amount_type,
+							postType: item.post_type,
+							title: item.name,
+							totalAmount: item.addon_count * parseFloat(item.amount),
+							is_inclusive: item.is_inclusive,
+							taxes: item.taxes,
+							is_rate_addon: item.is_rate_addon
+						});
+					});
+				}
 
 				room.rateId = refData.rateId;
 				room.roomAmount = refData.amount;
