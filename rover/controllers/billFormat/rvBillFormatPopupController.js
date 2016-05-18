@@ -60,7 +60,7 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
 
         }
         params.bill_number = $scope.billNo;
-
+        params.type = 'COMPANY';
         return params;
     };
 
