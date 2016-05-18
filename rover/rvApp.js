@@ -68,7 +68,6 @@ sntRover.run([
 	function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv) {
 		$rootScope.$state = $state;
 		$rootScope.$stateParams = $stateParams;
-
 		$rootScope.setPrevState = {};
 		$rootScope.setNextState = {};
 
