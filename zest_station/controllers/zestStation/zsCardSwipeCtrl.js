@@ -379,7 +379,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             $state.from = $scope.at;
             
             if (current !== 'zest_station.deposit_agree'){
-                $scope.headingText = 'TO_COMPLETE';
+                $scope.headingText = 'RES_AUTH_DEPOSIT';
+                $scope.subHeadingText = 'RES_AUTH_DEPOSIT_SUB';
             }
             $scope.signatureData = "";
             
@@ -694,9 +695,14 @@ sntZestStation.controller('zsCardSwipeCtrl', [
     
     
     
-        $scope.showCardSwipeIcon = false;
         $scope.initiateCardReader = function() {
-            $scope.showCardSwipeIcon = true;
+            setTimeout(function(){
+                    try{
+                        $scope.$digest();
+                    }catch(er){
+                        
+                    }
+                },200);
             console.info('init card reader for sixpay');
             //if ((sntapp.browser === 'rv_native') && sntapp.cordovaLoaded) {
             if (true) {//debugging ?
@@ -821,11 +827,27 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 }
                 data.reservation_id = $state.selectedReservation.id;
                 data.is_emv_request = isEmv;
-                console.info('sending: ',data)
+                console.info('sending: ',data);
             var onSuccess = function(){
                     continueToSign();
             }
-            $scope.subHeadingText = 'RESERVATION_AUTH_REMAIN_SUB ';
+            
+            if ($state.paidDeposit){
+                $scope.headingText = 'RES_AUTH_REMAIN';
+                $scope.subHeadingText = 'RES_AUTH_REMAIN_SUB ';
+            } else {
+                $scope.headingText = 'RES_AUTH';
+                $scope.subHeadingText = 'RES_AUTH_SUB ';
+            }
+            
+            
+            setTimeout(function(){
+                    try{
+                        $scope.$digest();
+                    }catch(er){
+                        
+                    }
+                },200);
             $scope.invokeApi(zsPaymentSrv.authorizeCC, data, onSuccess, onSwipeError, "NONE"); 
         }
         
@@ -845,7 +867,6 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             };
             var onSuccess = function(response){
                 console.info('refetched details: ',response);
-               // $scope.headingText = 'RESERVATION_AUTH_REMAIN_SUB';
                setTimeout(function(){
                     try{
                         $scope.$digest();
