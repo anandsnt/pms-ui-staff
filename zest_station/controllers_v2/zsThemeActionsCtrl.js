@@ -59,12 +59,11 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 * get paths for theme based Icon files
 		 **/
 		var updateIconPath = function(theme) {
-                        $scope.useNavIcons = true;
 			if (theme === 'yotel') {
-                                $scope.useNavIcons = false;
+                $scope.$emit('DONT_USE_NAV_ICONS');
 				$scope.theme = theme;
 				iconsPath = '/assets/zest_station/css/icons/yotel';
-				setSvgsToBeLoaded();
+				$scope.setSvgsToBeLoaded();
 			} else if (theme === 'fontainebleau') {
 				//nothing else
 			};
@@ -84,40 +83,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 			// setPrinterOptions(); - to do
 		};
 
-		/**
-		 * SVGs are ng-included inside HTML
-		 **/
-		var setSvgsToBeLoaded = function() {
-			$scope.icons = {};
-			$scope.activeScreenIcon = '';
-			$scope.icons = {
-				url: {
-					active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
-					key: iconsPath + '/key.svg',
-					date: iconsPath+ '/date.svg',
-					checkin: iconsPath + '/checkin.svg',
-					checkout: iconsPath + '/checkout.svg',
-					oos: iconsPath + '/oos.svg',
-					staff: iconsPath + '/staff.svg',
-					email: iconsPath + '/email.svg',
-					pen: iconsPath + '/pen.svg',
-					creditcard: iconsPath + '/creditcard.svg',
-					keyboard: iconsPath + '/keyboard.svg',
-					noprint: iconsPath + '/no-print.svg',
-					print: iconsPath + '/print.svg',
-					confirmation: iconsPath + '/confirmation.svg',
-					moon: iconsPath + '/moon.svg',
-					back: iconsPath + '/back.svg',
-					close: iconsPath + '/close.svg',
-					qr: iconsPath + '/qr-scan.svg',
-					qr_noarrow: iconsPath + '/qr-scan_noarrow.svg',
-					createkey: iconsPath + '/create-key.svg',
-					logo: iconsPath + '/print_logo.svg',
-					watch: iconsPath + '/watch.svg'
-				}
-			};
-		};
-		setSvgsToBeLoaded();
+		
+		$scope.setSvgsToBeLoaded(iconsPath);
 
 		var setPrinterOptions = function(theme) {
 			//zsUtils function
