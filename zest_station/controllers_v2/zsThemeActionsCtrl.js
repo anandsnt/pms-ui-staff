@@ -63,7 +63,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 $scope.$emit('DONT_USE_NAV_ICONS');
 				$scope.theme = theme;
 				iconsPath = '/assets/zest_station/css/icons/yotel';
-				$scope.setSvgsToBeLoaded();
+				$scope.setSvgsToBeLoaded(iconsPath);
 			} else if (theme === 'fontainebleau') {
 				//nothing else
 			};
