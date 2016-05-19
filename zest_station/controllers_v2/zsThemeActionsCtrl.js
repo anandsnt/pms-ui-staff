@@ -60,7 +60,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 **/
 		var updateIconPath = function(theme) {
 			if (theme === 'yotel') {
-                $scope.$emit('DONT_USE_NAV_ICONS');
+				$scope.$emit('DONT_USE_NAV_ICONS');
 				$scope.theme = theme;
 				iconsPath = '/assets/zest_station/css/icons/yotel';
 				$scope.setSvgsToBeLoaded(iconsPath);
@@ -83,7 +83,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 			// setPrinterOptions(); - to do
 		};
 
-		
+
 		$scope.setSvgsToBeLoaded(iconsPath);
 
 		var setPrinterOptions = function(theme) {
@@ -126,6 +126,37 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 				return;
 			};
 		};
+
+
+		var setQRArrowDirection = function() {
+			var scannerArrowDirection = $scope.zestStationData.qr_scanner_arrow_direction;
+			var styleString = "";
+			if (scannerArrowDirection === 'Top') {
+				styleString = ".qr-scan-button{transform:rotate(-90deg);margin-top: 75px !important;}";
+			} else if (scannerArrowDirection === 'Top right') {
+				styleString = ".qr-scan-button{transform:rotate(-45deg);margin-top: 75px !important;}"
+			} else if (scannerArrowDirection === 'Right') {
+				styleString = ".qr-scan-button{transform:rotate(0deg)}"
+			} else if (scannerArrowDirection === 'Bottom right') {
+				styleString = ".qr-scan-button{transform:rotate(45deg);margin-bottom: 75px !important;}"
+			} else if (scannerArrowDirection === 'Bottom') {
+				styleString = ".qr-scan-button{transform:rotate(90deg);margin-bottom: 95px !important;}"
+			} else if (scannerArrowDirection === 'Bottom left') {
+				styleString = ".qr-scan-button{transform:rotate(135deg);margin-bottom: 75px !important;}"
+			} else if (scannerArrowDirection === 'Left') {
+				styleString = ".qr-scan-button{transform:rotate(180deg)}"
+			} else if (scannerArrowDirection === 'Top left') {
+				styleString = ".qr-scan-button{transform:rotate(-135deg);margin-top: 75px !important;}"
+			} else {
+				styleString = ".qr-scan-button{transform:rotate(0deg)}"
+			}
+
+			createStyleNodeWithString(styleString);
+
+		}();
+
+
+
 		/********************************************************************************
 		 *  Theme based actions ends here
 		 ********************************************************************************/
