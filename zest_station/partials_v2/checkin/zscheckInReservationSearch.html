@@ -1,0 +1,167 @@
+<section id="main" role="main" class="centered" click-touch='resetTime()'>
+
+
+    <!---------------------------------- last name -------------------------------->
+    <div id="content" ng-show="mode === 'LAST_NAME_ENTRY'">
+        <h1 translate>TYPE_LAST</h1>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered()" />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" click-touch="lastNameEntered()">Next</button>
+            </div>
+        </form>
+    </div>
+
+
+    <!---------------------------------- choose options -------------------------------->
+    <div id="content" ng-show="mode === 'CHOOSE_OPTIONS'">
+        <h1>{{'CHECK_IN_SELECT_HEADER' |translate}}</h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li ng-show="zestStationData.checkin_screen.authentication_settings.departure_date && !zestStationData.isHourlyRateOn">
+                    <button type="button" class="button option" touch-press='findByDate(); resetTime();'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
+                        <div ng-include="icons.url.moon"></div>
+                    </button>
+                    {{'CHECK_IN_SELECT_DATE' |translate}}
+                </li>
+                <li class="break" ng-show="zestStationData.checkin_screen.authentication_settings.departure_date && !zestStationData.isHourlyRateOn">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li ng-show="zestStationData.checkin_screen.authentication_settings.number_of_nights && !zestStationData.isHourlyRateOn">
+                    <button type="button" class="button option" touch-press='findByNoOfNights()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
+                        <div ng-include="icons.url.moon"></div>
+                    </button>
+                    {{'CHECK_IN_NO_OF_NIGHTS' |translate}}
+                    <span translate>CHECK_IN_NO_OF_NIGHTS_SUB</span>
+                </li>
+                <li class="break" ng-show="zestStationData.checkin_screen.authentication_settings.number_of_nights && !zestStationData.isHourlyRateOn">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li ng-show="zestStationData.checkin_screen.authentication_settings.email">
+                    <button type="button" class="button option" touch-press='findByEmail(); resetTime(); clearInputText();'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/email.svg'"></div-->
+                        <div ng-include="icons.url.email"></div>
+                    </button>
+                    {{'CHECK_IN_SELECT_EMAIL' |translate}}
+                    <span translate>CHECK_IN_SELECT_EMAIL_SUB</span>
+                </li>
+                <li class="break" ng-show="zestStationData.checkin_screen.authentication_settings.email">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li ng-show="zestStationData.checkin_screen.authentication_settings.confirmation">
+                    <button type="button" class="button option" touch-press='findByConfirmation(); resetTime()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/confirmation.svg'"></div-->
+                        <div ng-include="icons.url.confirmation"></div>
+                    </button>
+                    {{'CHECK_IN_SELECT_CONF' |translate}}
+                    <span translate>CHECK_IN_SELECT_CONF_SUB</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+
+    <!---------------------------------- date -------------------------------->
+    <div id="content" ng-show="mode === 'FIND_BY_DATE'">
+        <h1 translate>FIND_BY_DATE</h1>
+        <form method="post" class="form short">
+            <div class="entry input" click-touch="showDatePicker()">
+                <!--div ng-include="'/assets/css/icons/date.svg'"></div-->
+                <div ng-include="icons.url.date"></div>
+                <input id="datepicker"  placeholder="" class="hasDatepicker start-focused"  ng-model="reservationParams.date" readonly >
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" click-touch="dateEntered()">Next</button>
+            </div>
+        </form>
+    </div>
+
+
+    <!---------------------------------- conf number -------------------------------->
+    <div id="content" ng-show="mode === 'CONFIRM_NO_MODE'">
+        <h1 translate>TYPE_CONF</h1>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.alt_confirmation_number" enter-press="confNumberEntered()" />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" click-touch="confNumberEntered()">Next</button>
+            </div>
+        </form>
+    </div>
+
+
+    <!---------------------------------- no of nights -------------------------------->
+    <div id="content" ng-show="mode === 'NO_OF_NIGHTS_MODE'">
+        <h1 translate>FIND_BY_DATE_SUB</h1>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.no_of_nights" enter-press="noOfNightsEntered()" />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" click-touch="noOfNightsEntered()">Next</button>
+            </div>
+        </form>
+    </div>
+
+
+    <!---------------------------------- email -------------------------------->
+    <div id="content" ng-show="mode === 'EMAIL_ENTRY_MODE'">
+        <h1 translate>TYPE_EMAIL</h1>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.email" enter-press="emailEntered()" />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" click-touch="emailEntered()">Next</button>
+            </div>
+        </form>
+    </div>
+
+    
+    <!---------------------------------- no match -------------------------------->
+    <div id="content" ng-show="mode === 'NO_MATCH'">
+        <h1 translate>RES_SRCH_SRY</h1>
+        <h2 translate>RES_SRCH_SRY_SUB</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press="reEnterText('name')">
+                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    {{'RES_SRCH_RE_ENTER_LAST' |translate}}
+                    <span ng-bind="reservationParams.last_name"></span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press="reEnterText('')">
+                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    {{'RES_SRCH_RE_ENTER_ROOM' |translate}}
+                    <span>{{reservationParams.email||reservationParams.no_of_nights||reservationParams.date||reservationParams.alt_confirmation_number}}</span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    {{'RES_SRCH_TALK' |translate}}
+                    <span>{{'RES_SRCH_TALK_SUB' |translate}}</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
+</section>
+<div ng-show="showDatePick" ui-date="dateOptions" ng-model="reservationParams.date" ui-date-format="MM-dd-yy" id='picker' >
