@@ -834,7 +834,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		//blur action to navigate to dashboard if no query
 		$scope.focusOutOnSearchText = function() {
 
-			if ($scope.textInQueryBox.length === 0 && $scope.toDate === '') {
+			if ($scope.textInQueryBox.length === 0 && $scope.toDate === '' && $scope.fromDate === '') {
 				$scope.$apply(function() {
 					$scope.$emit("HeaderBackButtonClicked");
 				});
