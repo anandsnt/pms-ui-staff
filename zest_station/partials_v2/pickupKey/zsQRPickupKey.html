@@ -1,13 +1,13 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <!-- scanning mode -->
-    <div id="content" ng-hide="qrCodeScanFailed">
+    <div id="content" ng-hide="qrCodeScanFailed"  touch-press='initChromeAppQRCodeScanner()'>
         <h1>{{'QR_LOOKUP_HEADER' |translate}}</h1>
         <h2>{{'QR_LOOKUP_SUB_HEADER' |translate}}</h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
-                    <button type="button" class="button option" touch-press='scanQRCode()'>
-                        <div ng-include="icons.url.qr"></div>
+                    <button type="button" class="button option">
+                        <div ng-include="icons.url.qr_noarrow"></div>
                     </button>
                 </li>
             </ul>
