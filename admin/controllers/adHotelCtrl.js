@@ -72,7 +72,6 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 	var populateHighlightWordArray = function(newVal){
 		$scope.searchWords = [];
 		$scope.searchWords.push(newVal);
-
 	};
 
 	var initMe = function(){
