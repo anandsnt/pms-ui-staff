@@ -382,6 +382,7 @@
      "CHECKIN_KEY_FAIL_PRINT_SUCCESS" : "Check-In Key Fail & Print Success",
      
      
+     "RESERVATION_AUTH_REMAIN_SUB" : "Please Swipe to Authorize Remaining Balance",
      "PICKUP_KEY_FAIL" : "Pickup Key Fail",
      "PICKUP_KEY_FAIL_RESERVATION" : "Pickup Key Fail, Reservation Error",
      "SERVICE_FAILURE" : " : Service Failure, Restart Service",
