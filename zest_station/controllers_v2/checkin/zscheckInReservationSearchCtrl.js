@@ -26,6 +26,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		*   6.EMAIL_ENTRY_MODE --> email entry mode
 		*   7.FIND_BY_DATE --> find by date 
 		*   5.NO_MATCH --> No match
+		*   6.FIRST_NAME_ENTRY_MODE
 		**/
 
 		BaseCtrl.call(this, $scope);
@@ -73,6 +74,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			var checkinVerificationCallBack = function() {
 				$scope.mode = 'NO_MATCH';
 			};
+			if($scope.zestStationData.kiosk_validate_first_name){
+				params.first_name = $scope.reservationParams.first_name;
+			}
 			var options = {
 				params: params,
 				successCallBack: checkinVerificationSuccess,
@@ -88,9 +92,32 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			    $scope.reservationParams.email.length >0||
 				$scope.reservationParams.date.length >0
 			) {
-				searchReservation($scope.reservationParams);
+				if($scope.zestStationData.kiosk_validate_first_name){
+					$scope.mode = 'FIRST_NAME_ENTRY_MODE';
+				}
+				else{
+					searchReservation($scope.reservationParams);
+				}
 			} else {
-				$scope.mode = $scope.reservationParams.last_name.length >0 ? "CHOOSE_OPTIONS" :$scope.mode;
+				if($scope.zestStationData.kiosk_validate_first_name){
+					$scope.mode = 'FIRST_NAME_ENTRY_MODE';
+				}
+				else{
+					$scope.mode = $scope.reservationParams.last_name.length >0 ? "CHOOSE_OPTIONS" :$scope.mode;
+				}
+			};
+		};
+
+		$scope.firstNameEntered = function() {
+			//if room is already entered, no need to enter again
+			if ($scope.reservationParams.no_of_nights.length > 0 ||
+			    $scope.reservationParams.alt_confirmation_number.length >0  ||
+			    $scope.reservationParams.email.length >0||
+				$scope.reservationParams.date.length >0
+			) {
+					searchReservation($scope.reservationParams);
+			} else {
+				$scope.mode = $scope.reservationParams.first_name.length >0 ? "CHOOSE_OPTIONS" :$scope.mode;
 			};
 		};
 

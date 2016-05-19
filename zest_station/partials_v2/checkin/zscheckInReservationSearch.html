@@ -14,6 +14,19 @@
         </form>
     </div>
 
+    <!---------------------------------- first name -------------------------------->
+    <div id="content" ng-show="mode === 'FIRST_NAME_ENTRY_MODE'">
+        <h1 translate>TYPE_FIRST_NAME</h1>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.first_name" enter-press="firstNameEntered()" />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" click-touch="firstNameEntered()">Next</button>
+            </div>
+        </form>
+    </div>
+
 
     <!---------------------------------- choose options -------------------------------->
     <div id="content" ng-show="mode === 'CHOOSE_OPTIONS'">
