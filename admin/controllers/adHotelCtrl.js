@@ -26,9 +26,7 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 					params.settings().$scope = $scope;
 				};
 				// use build-in angular filter
-				var orderedData = params.sorting() ?
-					$filter('orderBy')($scope.data.hotels, params.orderBy()) :
-					$scope.data.hotels;
+				var orderedData = $scope.data.hotels;
 				$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 			}
 		});
