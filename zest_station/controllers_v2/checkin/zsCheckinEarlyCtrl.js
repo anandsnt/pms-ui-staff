@@ -39,25 +39,33 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
                     } else return true;
                     
                 };
-                
+                var earlyCheckinUnavailable = function(data){
+                     if (!data.early_checkin_available && //if no early checkin is available but early checkin flow is On, go to unavailable screen
+                            $scope.zestStationData.offer_early_checkin &&
+                            data.early_checkin_on) {
+                            return true;
+                        } else return false;
+                };
                 var setEarlyParams = function(response){
                     console.info('===============')
-                    console.info('===============',response)
+                    console.info('===============',response);
                     console.info('===============')
-                    response.is_early_prepaid = false;
                     $scope.reservation_in_early_checkin_window = response.reservation_in_early_checkin_window;
-
+                    $scope.is_early_prepaid = false;
+                    
                     if (response.offer_eci_bypass) {//if bypass is true, early checkin may be part of their Rate
-                        response.is_early_prepaid = false;
+                        $scope.is_early_prepaid = false;
+                        $scope.bypass = response.offer_eci_bypass;
                     }
 
                     if (response.is_early_checkin_purchased || response.is_early_checkin_bundled_by_addon) {//user probably purchased an early checkin from zest web, or through zest station
-                        response.is_early_prepaid = true;                                         //or was bundled in an add-on (the add-on could be paid or free, so show prepaid either way)
+                        $scope.is_early_prepaid = true;                                         //or was bundled in an add-on (the add-on could be paid or free, so show prepaid either way)
                     }
-                    console.log('is_early_prepaid: ',response.is_early_prepaid);
-                    $scope.is_early_prepaid = response.is_early_prepaid;
+                    console.log('is_early_prepaid: ',$scope.is_early_prepaid);
+                    
                     $scope.standardCheckinTime = response.checkin_time;
-                    $scope.early_checkin_charge
+                    $scope.unavailable = earlyCheckinUnavailable(response);
+                    //$scope.early_checkin_charge
                 };
 
 		/**

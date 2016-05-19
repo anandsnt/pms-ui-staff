@@ -1,22 +1,20 @@
 <nav id="header" role="nav" class="kiosk">
     <!-- Back button, if applicable -->
     <button type="button" id="back-button" class="button blank" click-touch='clickedOnBackButton()' ng-hide="hideBackButton">
-        <!--div ng-include="'/assets/zest_station/css/icons/back.svg'"></div-->
-        <div ng-include="icons.url.back"></div>
-    </button>
-    <button type="button" id="back-button" class="button blank" click-touch='clickedOnBackButton()' ng-hide="hideBackButton">
-        <span translate>NAV_BACK</span>
+        <span ng-hide="useNavIcons" translate>NAV_BACK</span>
+        <div ng-show="useNavIcons" ng-include="icons.url.back"></div>
     </button>
     <!-- Hotel logo  !this needs to be swappable between hotels-->
     <div id="logo">
     </div>
     <!-- Close button, if applicable -->
+    
     <button type="button" id="close-button" class="button blank" click-touch='clickedOnCloseButton()' ng-hide="hideCloseButton">
-        <div ng-include="icons.url.close"></div>
-    </button>
-    <button type="button" id="close-button" class="button blank" click-touch='clickedOnCloseButton()'
-    ng-hide="hideCloseButton">
-        <span translate>NAV_CANCEL</span>
+        
+        <span ng-hide="useNavIcons" translate>NAV_CANCEL</span>
+        
+        <div ng-show="useNavIcons" ng-include="icons.url.close"></div>
+        
     </button>
 </nav>
 <div id="screen-icon" ng-show='showScreenIcons()'>
