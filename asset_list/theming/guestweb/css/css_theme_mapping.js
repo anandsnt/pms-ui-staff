@@ -42,10 +42,18 @@ module.exports = {
 			'guestweb_porto_vista':[ themeCSSRoot + 'guestweb_porto_vista.css'],
 			'guestweb_chalet_view':[ themeCSSRoot + 'guestweb_chalet_view.css'],
 			'guestweb_crawford':[ themeCSSRoot + 'guestweb_crawford.css'],
-			'guestweb_beacon_hill':[ themeCSSRoot + 'guestweb_beacon_hill.css'],
-			'guestweb_boston_park':[ themeCSSRoot + 'guestweb_boston_park.css'],
+			'guestweb_dutch':[ themeCSSRoot + 'guestweb_dutch.css'],
+			'guestweb_beau_mont':[ themeCSSRoot + 'guestweb_beau_mont.css'],
 			'guestweb_hotel_ivrine':[ themeCSSRoot + 'guestweb_hotel_ivrine.css'],
-			'guestweb_valencia':[ themeCSSRoot + 'guestweb_valencia.css']
+			'guestweb_boston_park':[ themeCSSRoot + 'guestweb_boston_park.css'],
+			'guestweb_beacon_hill':[ themeCSSRoot + 'guestweb_beacon_hill.css'],
+			'guestweb_paradise_point':[ themeCSSRoot + 'guestweb_paradise_point.css'],
+			'guestweb_knickerbocker_yacht_club':[ themeCSSRoot + 'guestweb_knickerbocker_yacht_club.css'],
+			'guestweb_kingsley':[ themeCSSRoot + 'guestweb_kingsley.css'],
+			'guestweb_avery':[ themeCSSRoot + 'guestweb_avery.css'],
+			'guestweb_newyork':[ themeCSSRoot + 'guestweb_newyork.css'],
+			'guestweb_valencia':[ themeCSSRoot + 'guestweb_valencia.css'],
+			
 		}
 	}
 }

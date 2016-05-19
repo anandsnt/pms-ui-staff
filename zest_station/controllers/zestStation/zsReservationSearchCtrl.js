@@ -5,7 +5,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     'zsEventConstants',
     'zsTabletSrv','zsCheckoutSrv',
     '$stateParams', 'zsHotelDetailsSrv','$timeout', 'zestStationSettings',
-    function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv,zsCheckoutSrv, $stateParams, hotelDetailsSrv,$timeout, zestStationSettings) {
+    '$filter',
+    function($scope, $state, zsModeConstants, zsEventConstants, zsTabletSrv,zsCheckoutSrv, $stateParams, hotelDetailsSrv,$timeout, zestStationSettings, $filter) {
 
     BaseCtrl.call(this, $scope);
 
@@ -84,7 +85,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                 $scope.at = 'no-match';
                 
                 if ($scope.isInCheckinMode()){
-                    $state.go('zest_station.find_reservation_no_match');
+                    $state.go('zest_station.find_reservation_no_match',{
+                        mode: zsModeConstants.CHECKIN_MODE
+                    });
                 }
             } else if ($scope.reservations.length === 1 && !$scope.fetchingList){
                 $scope.mode = "single-reservation";
@@ -100,7 +103,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * @return {Boolean} [description]
      */
     $scope.isInCheckinMode = function() {
-        return ($state.mode === zsModeConstants.CHECKIN_MODE);
+        return ($stateParams.mode === zsModeConstants.CHECKIN_MODE);
     };
 
     /**
@@ -116,7 +119,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
      * @return {Boolean} [description]
      */
     $scope.isInPickupKeyMode = function() {
-        return ($state.mode === zsModeConstants.PICKUP_KEY_MODE);
+        return ($stateParams.mode === zsModeConstants.PICKUP_KEY_MODE);
     };
 
     var isItFontainebleauHotel = function(){
@@ -379,7 +382,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                     return;
                 }
             }
-                $scope.initErrorScreen();
+            $scope.initErrorScreen();
         };
         var options = {
             params:             {"last_name":$scope.pickupValues.last,"room_no":$scope.pickupValues.room},
@@ -393,7 +396,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.at = 'no-match';
         $scope.lastAt = 'pick-up-room';
         $state.lastAt = 'pick-up-room';
-        $state.go('zest_station.find_reservation_no_match');
+        $state.go('zest_station.find_reservation_no_match', {
+            mode: zsModeConstants.PICKUP_KEY_MODE
+        });
     };
     $scope.pickupValues = {
       'last':'',
@@ -454,9 +459,65 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         };
     };
     
+    
+    var listenForWebsocketActivity = function(){
+        $scope.$on('SOCKET_CONNECTED',function(){
+            console.info('socket connected, start capture');
+            $scope.socketOperator.CaptureQRViaPassportScanner();
+        }); 
+        $scope.$on('SOCKET_FAILED',function(){
+            console.info('socket failed...');
+                    $scope.prepForOOS($filter('translate')('SOCKET_FAILED'), true);
+            $scope.initErrorScreen();
+       });
+    };
+    
+    $scope.$on('QR_PASSPORT_SCAN_MSG',function(evt, info){
+         console.log(arguments);
+         if (typeof info.msg === typeof 'str'){
+             
+             if (info.msg.indexOf('Invalid') !== -1 || info.msg.indexOf('program error') !== -1 || info.msg.indexOf('no device found') !== -1){
+                 $scope.at = 'input-qr-code';
+                 $scope.qrCodeScanFailed = true;
+                 console.warn('scan failed..');
+                 $scope.$digest();
+             } else if (info.msg.indexOf(' : ') !== -1 && info.msg.indexOf('$') === -1){
+                 //qr code coming from the samsotech will look like "PR_DF_BC1 : somevalue"
+                 var reservationId = info.msg.split(' : ')[1];
+                 if (reservationId){
+                    $state.qr_code = reservationId;
+                     $scope.initQRCodeReservation();
+                }
+             } else if (info.msg.indexOf(' : ') !== -1 && info.msg.indexOf('$') !== -1){
+                 //qr code coming from the samsotech will look like "PR_DF_BC1 : somevalue"
+                 var reservationId = info.msg.split('$')[1];
+                 if (reservationId){
+                    $state.qr_code = reservationId;
+                     $scope.initQRCodeReservation();
+                }
+             }
+         }
+    });
     $scope.scanQRCode = function(){
-        $scope.qrCodeScanFailed = false;
-        $scope.initChromeAppQRCodeScanner();
+        //depending on which scanner is enabled, from hotel settings > station > pickup keys
+        //samsotech scans via websocket to .net app, the datalogic will use the chromeapp to scan directly
+        if($scope.zestStationData.qr_scanner_samsotech){
+            console.log($scope.socketOperator.returnWebSocketObject());
+            
+            if($scope.socketOperator.returnWebSocketObject().readyState === 1){
+                $scope.socketOperator.CaptureQRViaPassportScanner();
+            } else{
+                listenForWebsocketActivity();
+                $scope.$emit('CONNECT_WEBSOCKET'); // connect socket
+
+            }
+          
+        } else if ($scope.zestStationData.qr_scanner_datalogic){
+            $scope.qrCodeScanFailed = false;
+            $scope.initChromeAppQRCodeScanner();
+        }
+
+
     };
     
     $scope.initChromeAppQRCodeScanner = function(){
@@ -552,6 +613,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         var onFailureFetchReservation = function(response){
             console.warn(response);
             $scope.qrCodeScanFailed = true;
+            //need to fail for (time-out + bad scan), 
+            //if a hardware failure - websocket cannot connect, this needs to go to OOS via see a staff member
+            
         };
         var onSuccessFetchReservation = function(response){
             console.log(response);
@@ -593,9 +657,11 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     };
     
     $scope.retryQRScan = function(){
-        $state.go('zest_station.reservation_search');
+        $scope.qrCodeScanFailed = false;
+        $scope.init();
     };
     $scope.initPuk = function(){
+        $scope.setScreenIcon('key');
         console.log(':::: ',$state.current.name,' ::::');
         if ($state.current.name === 'zest_station.reservation_search_qrcode'){
             console.info('Init Reservation by QR Code Scan');
@@ -604,8 +670,9 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         
         $scope.mode = "pickup-mode";
         if ($scope.zestStationData.pickup_qr_scan){
+            console.info('start qr code scan...')
             console.info('Start QR Code Scan');
-            $scope.setScreenIcon('key');
+            
             $scope.at = 'input-qr-code';
             $scope.headingText = "QR_LOOKUP_HEADER";
             $scope.subHeadingText = "QR_LOOKUP_SUB_HEADER";
@@ -633,9 +700,8 @@ sntZestStation.controller('zsReservationSearchCtrl', [
     $scope.init = function(){
         $scope.inputType = 'text';
 
-        if ($state.search){
+        if ($scope.isInCheckinMode()){
             $scope.searchReservations();
-            $state.search = false;
         }
 
         if ($scope.isInCheckoutMode()){

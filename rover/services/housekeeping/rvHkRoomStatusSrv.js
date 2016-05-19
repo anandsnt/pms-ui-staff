@@ -288,8 +288,8 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			var url = 'api/room_types?exclude_pseudo=true&exclude_suite=true';
 			var deferred = $q.defer();
 
-			if ( this.roomTypes.length ) {
-				deferred.resolve(this.roomTypes);
+			if ( that.roomTypes.length ) {
+				deferred.resolve(that.roomTypes);
 			} else {
 				BaseWebSrvV2.getJSON(url)
 					.then(function(data) {

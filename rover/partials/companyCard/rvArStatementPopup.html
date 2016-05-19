@@ -1,0 +1,30 @@
+<div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()" ng-class="{'modal-show': !modalClosing}">
+    <div class="modal-content form format-bill">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
+            <span class="icons icon-close invert">
+        </button>
+
+        <strong class="h2 message">Statement</strong>
+
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+     
+        <div class="entry full-width">
+            <label for="company-email">Email</label>
+            <input type="email" name="email" placeholder="Enter an Email" ng-model="filterData.statementEmailAddress"/>
+        </div>
+
+        <div class="actions">
+            
+            <button type="button" class="button with-icon open-modal" ng-class="{ 'blue': filterData.statementEmailAddress !== '' , 'grey overlay': filterData.statementEmailAddress === ''}" ng-click="clickedEmailArStatementButton()">
+                <span class="icons icon-email"></span>
+                 Email
+            </button>
+            
+            <button type="button" class="button with-icon blue modal-close" ng-click="clickedPrintArStatementButton()">
+                <span class="icons icon-print"></span>
+                Print 
+            </button>
+            <button type="button" class="button blank modal-close inline" ng-click="closeDialog()">Cancel</button> 
+        </div>
+    </div>
+</div>

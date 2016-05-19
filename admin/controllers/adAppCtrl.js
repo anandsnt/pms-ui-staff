@@ -49,6 +49,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
 		$rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";//Wednesday, 06-04-2014
 		$rootScope.longDateFormat = "MMM dd, yyyy";//Wednesday, 06-04-2014
+		$rootScope.dateFormatForAPI = "yyyy-MM-dd";
 		$rootScope.currencySymbol = "";
 		// Initialise $rootScope.isHourlyRatesEnabled to false; the value is set on call to api/hotel_settings
 		$rootScope.isHourlyRatesEnabled = false;
@@ -531,6 +532,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.isEnabledRoomTypeByRoomClass = data.is_enabled_room_type_by_class;
 
 			$rootScope.isRoomStatusImportPerRoomTypeOn = data.is_room_status_import_per_room_type_on ? data.is_room_status_import_per_room_type_on : false;
+
+			// CICO-27286
+			$rootScope.rateDateRangeLimit = data.rate_date_range_limit;
 
 			setupLeftMenu();
 

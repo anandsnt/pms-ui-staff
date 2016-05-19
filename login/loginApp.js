@@ -269,7 +269,6 @@ login.controller('stationLoginCtrl',['$scope', 'loginSrv', '$window', '$state', 
 	 	$scope.successMessage = "";
  		loginSrv.login($scope.data, $scope.successLoginCallback, $scope.failureCallBack);
 	};
-
          
         $scope.showOnScreenKeyboard = function(id) {
            //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
@@ -281,10 +280,6 @@ login.controller('stationLoginCtrl',['$scope', 'loginSrv', '$window', '$state', 
              }
         };
         $scope.showOnScreenKeyboard();
-
-
-         
-         
          
 }]);
 

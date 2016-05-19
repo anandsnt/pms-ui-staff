@@ -3,7 +3,8 @@ angular.module('sntRover').service('RVUpgradesSrv',['$q', 'RVBaseWebSrv', functi
 
 	this.getAllUpgrades = function(param){
 		var deferred = $q.defer();
-		var url =  '/staff/reservations/room_upsell_options.json';
+		var url =  '/staff/reservations/upgrade_room_type_upsell_options.json';
+
 		RVBaseWebSrv.getJSON(url, param).then(function(data) {
 			deferred.resolve(data);
 		},function(data){

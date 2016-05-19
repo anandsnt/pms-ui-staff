@@ -131,7 +131,8 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	$scope.excludeActivereservationFromsSearch = function(){
 		var filteredResults = [];
 	  	for(var i = 0; i < $scope.results.reservations.length; i++){
-	  		if(($scope.results.reservations[i].id !== $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status === 'CHECKING_IN' || $scope.results.reservations[i].reservation_status === 'CHECKEDIN' || $scope.results.reservations[i].reservation_status === 'CHECKING_OUT')){
+            //CICO-26728 Added the future reservations as well in the search results
+	  		if(($scope.results.reservations[i].id !== $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status === 'CHECKING_IN' || $scope.results.reservations[i].reservation_status === 'CHECKEDIN' || $scope.results.reservations[i].reservation_status === 'CHECKING_OUT' || $scope.results.reservations[i].reservation_status === 'RESERVED')){
 
 	  			filteredResults.push($scope.results.reservations[i]);
 	  		}
