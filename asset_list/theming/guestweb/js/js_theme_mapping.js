@@ -17,7 +17,7 @@ module.exports = {
 			'guestweb_fulton' 	: [ themeJsRoot + 'app_router_fulton.js'],
 			'guestweb_galleria' 	: [ themeJsRoot + 'app_router_galleria.js'],
 			'guestweb_huntley' 	: [ themeJsRoot + 'app_router_huntley.js'],
-			'guestweb_mgm' 		: [ themeJsRoot + 'app_router_mgm.js'],
+			'guestweb_mgm' 		: [ themeJsRoot + 'app_router_mgm_chain.js' , themeJsRoot + 'app_router_aria.js'],
 			'guestweb_montauk' 	: [ themeJsRoot + 'app_router_montauk.js'],
 			'guestweb_nikko' 	: [ themeJsRoot + 'app_router_niko.js'],
 			'guestweb_palms' 	: [ themeJsRoot + 'app_router_palm_spa.js'],
