@@ -32,8 +32,6 @@ const RateManagerGridViewRootComponent = createClass ({
 		}
 		if(this.props.shouldShow && !this.leftScroller) {
 			this.leftScroller = new IScroll(this.leftScrollableElement, this.commonIScrollOptions);
-			this.leftScroller.on('scrollStart', this.leftScrollerStarted);
-			this.leftScroller.on('scrollEnd', this.leftScrollingEnded);
 		}
 	},
 
@@ -61,70 +59,8 @@ const RateManagerGridViewRootComponent = createClass ({
 				scrollX: true,
 				scrollbars: 'custom'
 			});
-			this.rightScroller.on('scrollStart', this.rightScrollerStarted);
-			this.rightScroller.on('scrollEnd', this.rightScrollingEnded);
 		}
 	},
-
-	leftScrollingEnded() {
-
-		if(this.scrolling && 
-			this.startingScroll_Y_Position > this.leftScroller.y &&
-			Math.abs(this.leftScroller.maxScrollY) * 0.99 < Math.abs(this.leftScroller.y)) {
-
-			this.scrolling = false;
-			this.props.scrollReachedBottom(this.rightScroller.x, this.rightScroller.scrollerWidth, this.rightScroller.y, this.rightScroller.scrollerHeight);
-		}
-		if(this.scrolling &&
-			this.startingScroll_Y_Position < this.leftScroller.y &&
-			Math.abs(this.leftScroller.maxScrollY) * 0.01 > Math.abs(this.leftScroller.y)) {
-
-			this.scrolling = false;
-			this.props.scrollReachedTop(this.rightScroller.x, this.rightScroller.scrollerWidth, this.rightScroller.y, this.rightScroller.scrollerHeight);
-		}
-		this.startingScroll_Y_Position = this.leftScroller.y;
-	},
-
-	leftScrollerStarted() {
-
-		this.scrolling = true;
-		this.startingScroll_Y_Position = this.leftScroller.y;
-
-		if(this.startingScroll_Y_Position === 0) {
-
-		}
-	},
-
-	rightScrollerStarted() {
-
-		this.scrolling = true;
-		this.startingScroll_Y_Position = this.rightScroller.y;
-	},
-
-	rightScrollingEnded() {
-
-		//bottom
-		if(this.scrolling && 
-			this.startingScroll_Y_Position > this.rightScroller.y &&
-			Math.abs(this.rightScroller.maxScrollY) * 0.99 < Math.abs(this.rightScroller.y)) {
-
-			this.scrolling = false;
-			this.props.scrollReachedBottom(this.rightScroller.x, this.rightScroller.scrollerWidth, this.rightScroller.y, this.rightScroller.scrollerHeight);
-		}
-
-		//top
-		if(this.scrolling && 
-			this.startingScroll_Y_Position < this.rightScroller.y &&
-			Math.abs(this.rightScroller.maxScrollY) * 0.01 > Math.abs(this.rightScroller.y)) {
-
-			this.scrolling = false;
-			this.props.scrollReachedTop(this.rightScroller.x, this.rightScroller.scrollerWidth, this.rightScroller.y, this.rightScroller.scrollerHeight);
-		}
-
-
-		this.startingScroll_Y_Position = this.rightScroller.y;	
-	},
-
 
 	setScrollerSync() {
 		if(this.rightScroller && this.leftScroller && this.rightHeadScroller ) {
@@ -199,7 +135,7 @@ const RateManagerGridViewRootComponent = createClass ({
 		}
 
 		return (
-			<div className='calendar-wraper'>
+			<div className={this.props.wrapperClass}>
 				<RateManagerGridLeftSideComponent/>
 				<RateManagerGridRightSideHeaderContainer/>
 				<RateManagerGridRightSideBottomComponent/>
