@@ -1,0 +1,106 @@
+@media not print {
+    .container .commisions-content {
+        top:120px;
+        .calc-height( 100, 120 );
+    }
+
+    .commisions-header {
+        height:80px;
+        width:100%;
+        display:block;
+        .box-shadow(1px 1px 2px rgba(0, 0, 0, 0.15));
+        z-index: 99;
+        position: relative;
+        padding:15px;
+    }
+
+    .commisions-list {
+        .calc-height( 100, 140 );
+        position: relative; 
+
+        &.no-pagination {
+            .calc-height( 100, 100 );
+        }
+
+        &.no-commisions-header {
+            .calc-height( 100, 80 );
+
+            &.no-pagination {
+                .calc-height( 100, 20 );
+            }
+        }
+    }
+
+    .commisions-totals {
+        
+        li {
+            width: 165px;
+            margin:0;
+
+            span {
+                &.amount {
+                    
+                    &.green {
+                        color: @green;
+                    }
+                    &.red {
+                        color:@red;
+                    }
+                }
+            }
+
+            &.check {
+                position: absolute;
+                left: 5px;
+                top: 0;
+                bottom: 0;
+                margin: auto 0;
+                height: 50px;
+                width: 80px;
+                padding: 0 10px;
+                border-right: none;
+                .checkbox {
+                    padding: 0;
+                    margin: -20px 0 0 0;
+                    width: 20px;
+                    height: 40px;
+                }
+            }
+
+            border-right: 1px solid @grey2;
+
+            &:last-child {
+                border-right-color:transparent;
+            }
+        }
+    }
+}
+
+.commisions-totals {
+    text-align: center;
+     
+    li {
+        display:inline-block;
+        text-align: center;
+        font-size: 28px;
+
+        span {
+            display:block;
+            color: @grey3;
+            text-transform: uppercase;
+            font-size: 16px;
+            line-height: 21px;
+            &.amount {
+                font-size:30px;
+                line-height: 1;
+                color:@black;
+            }
+        }
+
+        &.guest-bills {
+            .amount {
+                font-weight: 300;
+            }
+        }
+    }
+}
