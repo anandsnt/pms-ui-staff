@@ -80,9 +80,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 params: checkinParams,
                 successCallBack: afterGuestCheckinCallback
             };
-            afterGuestCheckinCallback();
-            // commment out after finishing
-            //$scope.callAPI(zsCheckinSrv.checkInGuest, options);
+            $scope.callAPI(zsCheckinSrv.checkInGuest, options);
         };
         /**
          * [submitSignature description]
