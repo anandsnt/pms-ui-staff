@@ -83,9 +83,6 @@ sntZestStation.controller('zsRootCtrl', [
         var oosReason = params.reason;
         var workstationStatus = params.status;
         
-        console.info('update to:  ',workstationStatus);
-        
-        
         $scope.zestStationData.workstationStatus = workstationStatus;
 
         updateLocalStorage(oosReason, workstationStatus);
@@ -139,6 +136,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.clickedOnCloseButton = function() {
+            $scope.hideKeyboardIfUp();
         //if key card was inserted we need to eject that
             if($scope.zestStationData.keyCardInserted && !$scope.zestStationData.keyCaptureDone){
                 $scope.socketOperator.EjectKeyCard();
@@ -607,6 +605,21 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.stopLanguageCounter = function(){
             $timeout.cancel($scope.languageCounter);
         };
+        $scope.prepForOOS = function(reason, hardwareFailure){
+            //this will get the kiosk ready to go into oos, 
+            //once the home page initializes next,  the wsIsOos will be checked and go into OOS,
+            //the reason will be used by the admin setting when going to place back in service.
+            if (hardwareFailure){
+                //only put station out of service if due to hardware failure,
+                //if somehow the reservation itself causes the key failure, do not put oos
+                $scope.zestStationData.wsIsOos = true;
+            }
+            $scope.zestStationData.wsFailedReason =  reason;
+        };
+        $scope.prepForInService = function(){
+            $scope.zestStationData.wsIsOos = false;
+            $scope.zestStationData.wsFailedReason =  '';
+        };
         
         
         $scope.timeStopped = false;
@@ -662,6 +675,26 @@ sntZestStation.controller('zsRootCtrl', [
           }
           return $scope.hasWorkstationAssigned;
         };
+        
+        
+        var callSetSessionStation = function(station){
+            var workstation = $scope.sessionStation;
+            var successCallBack = function(response){
+                console.info('set to session');
+                $scope.$emit('hideLoader');
+            };
+            var failureCallBack = function(response){
+                $scope.$emit('hideLoader');
+                console.warn('failed to set workstation in session');
+                console.log(response);
+            };
+             var options = {
+    		params: 			station,
+                successCallBack:                successCallBack,
+                failureCallBack:                failureCallBack
+            };
+            $scope.callAPI(zsTabletSrv.setSessionWorkstation, options);
+        }
         $scope.setWorkStation = function(){
             /*
              * This method will get the device's last saved workstation, and from the last fetched list of workstations
@@ -691,6 +724,7 @@ sntZestStation.controller('zsRootCtrl', [
                                      hasWorkstation = true;
                                      $state.hasWorkstation = true;
                                      $scope.zestStationData.printerLabel = $scope.getPrinterLabel(station.printer);
+                                     callSetSessionStation(station);
                                 }
                             }
                         } else {
@@ -1036,10 +1070,16 @@ sntZestStation.controller('zsRootCtrl', [
                //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
                 var isTouchDevice = 'ontouchstart' in document.documentElement,
                     agentString = window.navigator.userAgent;
+            console.log('theme: ',$scope.theme);
+            var themeUsesKeyboard = false;
+            if ($scope.theme === 'yotel' || !$scope.theme){
+                themeUsesKeyboard = true;
+            }
+            console.info('themeUsesKeyboard: ',themeUsesKeyboard)
                 var shouldShowKeyboard = (typeof chrome) && 
                         (agentString.toLowerCase().indexOf('window')!==-1) && 
                         isTouchDevice && 
-                        $scope.inChromeApp && $scope.theme === 'yotel';
+                        $scope.inChromeApp && themeUsesKeyboard;
                 if (shouldShowKeyboard){
                      if (id){
                          new initScreenKeyboardListener('station', id, true);

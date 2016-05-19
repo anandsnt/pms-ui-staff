@@ -2,9 +2,10 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 	'$http',
 	'$q',
 	'rvBaseWebSrvV2',
+	'RVBaseWebSrv',
 	'$window',
 	'$filter',
-	function($http, $q, rvBaseWebSrvV2, $window, $filter) {
+	function($http, $q, rvBaseWebSrvV2, RVBaseWebSrv, $window, $filter) {
 
 		this.roomDetails = {};
 
@@ -249,6 +250,20 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 				}.bind(this), function(data) {
 					deferred.reject(data);
 				});
+			return deferred.promise;
+		};
+
+		this.changeHouseKeepingStatus = function(params) {
+			var deferred = $q.defer(),
+				url = 'house/change_fo_status.json';
+
+			rvBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
 			return deferred.promise;
 		};
 	}

@@ -36,6 +36,7 @@ angular.module('reportsModule')
                         'COMPANY_TA_TOP_PRODUCERS'     : 'icon-report icon-cards',
                         'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': 'icon-report icon-forecast',
                         'CREDIT_CHECK_REPORT'          : 'icon-report icon-deposit',
+                        'DEPOSIT_SUMMARY'              : 'icon-report icon-deposit',
                         /* default class name */
                         'DEFAULT'                      : 'icon-report'
                     };

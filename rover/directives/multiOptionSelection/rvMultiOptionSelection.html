@@ -10,7 +10,7 @@
         </div>
       
         <div class="search" ng-show="options.hasSearch">
-            <button id="multi-select-clear-query" class="clear-query" ng-click="clearSearch()">
+            <button id="multi-select-clear-query" class="clear-query" ng-class="{'visible': search.length}" ng-click="clearSearch()">
                 <span class="icons icon-clear-search">Clear query</span>
             </button>
             <button type="submit" name="submit" class="icons icon-search">Search</button>

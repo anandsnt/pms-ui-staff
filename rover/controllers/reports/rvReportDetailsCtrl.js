@@ -13,24 +13,37 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		$timeout(function() {
-			$scope.setScroller( 'report-details-scroll', {tap: true, preventDefault: false} );
-			$scope.setScroller( 'report-filter-sidebar-scroll', {tap: true, preventDefault: false} );
-		}, 1000);
+		var REPORT_DETAILS_SCROLL = 'report-details-scroll';
+		var REPORT_FILTER_SIDEBAR_SCROLL = 'report-filter-sidebar-scroll';
+
+		var setScroller = function() {
+			//setting scroller things
+			var scrollerOptions = {
+				tap: true,
+				preventDefault: false
+			};
+
+			$scope.setScroller(REPORT_DETAILS_SCROLL, scrollerOptions);
+			$scope.setScroller(REPORT_FILTER_SIDEBAR_SCROLL, scrollerOptions);
+		};
+
+		setScroller();
 
 		var refreshScroll = function() {
-			$scope.refreshScroller( 'report-details-scroll' );
-			if ( $scope.myScroll && $scope.myScroll.hasOwnProperty('report-details-scroll') ) {
-				$scope.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			$scope.refreshScroller( REPORT_DETAILS_SCROLL );
+			if ( $scope.myScroll && $scope.myScroll.hasOwnProperty(REPORT_DETAILS_SCROLL) ) {
+				$scope.myScroll[REPORT_DETAILS_SCROLL].scrollTo(0, 0, 100);
 			}
 		};
 
 		$scope.refreshSidebarScroll = function() {
-			$scope.refreshScroller( 'report-filter-sidebar-scroll' );
-			if ( $scope.myScroll && $scope.myScroll.hasOwnProperty('report-filter-sidebar-scroll') ) {
-				$scope.myScroll['report-filter-sidebar-scroll'].scrollTo(0, 0, 100);
-			}
+			$scope.refreshScroller( REPORT_FILTER_SIDEBAR_SCROLL );
 		};
+
+		var reportDetailsFilterScrollRefresh = $scope.$on(reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'], function() {
+			$scope.refreshSidebarScroll();
+		});
+		$scope.$on( '$destroy', reportDetailsFilterScrollRefresh );
 
 
 		var $_pageNo = 1;
@@ -47,15 +60,24 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
 
-		// ref to parents for filter item toggles
-		// $scope.filterItemsToggle = $scope.$parent.filterItemsToggle;
-		// $scope.toggleFilterItems = function(item) {
-		// 	if ( item ) {
-		// 		$scope.$parent.toggleFilterItems(item);
-		// 	};
-		// 	$scope.refreshSidebarScroll();
-		// };
-
+        var setTotalsForCheckinNowReport = function(totals){
+                var totalsForMobileCheckinNow = [], v;
+                _.each(totals, function(item) {
+                    if (item.label.indexOf('Conversion')!==-1){
+                        if (typeof item.value == typeof 'str' && item.value.indexOf('%')!=-1){
+                            v = item.value.split('%')[0]+'%';
+                        } else {
+                            v = 'N/A';
+                        }
+                    } else if (item.label){
+                        v = parseInt(item.value);
+                    } else {
+                        v = 0;
+                    }
+                    totalsForMobileCheckinNow.push(v);
+                  });
+                $scope.resultsTotalRow = totalsForMobileCheckinNow;  
+        };
 
 		// common methods to do things after fetch report
 		var afterFetch = function() {
@@ -82,12 +104,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isDepositReport = false;
 			$scope.isCondensedPrint = false;
 			$scope.isBalanceReport = false;
+			$scope.isDepositBalanceReport = false;
 
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
-			$scope.showSortBy    = true;
 			$scope.hasPagination = true;
-			
+
 
 			switch ( $scope.chosenReport.title ) {
 				case reportNames['IN_HOUSE_GUEST']:
@@ -95,26 +117,22 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['ARRIVAL']:
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
-					$scope.showSortBy = false;
 					break;
 
 				case reportNames['EARLY_CHECKIN']:
 					$scope.isGuestReport = true;
-					$scope.showSortBy = true;
 					break;
 
 				case reportNames['CANCELLATION_NO_SHOW']:
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.hasNoSorting = true;
-					$scope.showSortBy = false;
 					break;
 
 				case reportNames['LOGIN_AND_OUT_ACTIVITY']:
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
 					$scope.isLogReport = true;
-					$scope.showSortBy = false;
 					break;
 
 				case reportNames['RESERVATIONS_BY_USER']:
@@ -167,21 +185,36 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['GROUP_DEPOSIT_REPORT']:
 					$scope.isDepositReport = true;
 					break;
-					
+
 				case reportNames['AR_SUMMARY_REPORT']:
 					$scope.hasNoTotals = false;
-					$scope.showSortBy = true;
 					$scope.isBalanceReport = true;
 					break;
 
 				case reportNames['GUEST_BALANCE_REPORT']:
 					$scope.hasNoTotals = false;
-					$scope.showSortBy = true;
+					$scope.isBalanceReport = true;
+					break;
+
+				case reportNames['DEPOSIT_SUMMARY']:
+					$scope.hasNoTotals = true;
+					$scope.isDepositBalanceReport = true;
 					$scope.isBalanceReport = true;
 					break;
 
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
 					$scope.hasPagination = false;
+					break;
+
+				case reportNames['MOBILE_CHECKIN_NOW']:
+                                        $scope.hasReportTotals = true;
+                                        $scope.hasNoResults = false;
+                                        $scope.hasNoTotals = false;
+                                        setTotalsForCheckinNowReport(totals);
+					break;
+				case reportNames['MOBILE_CHECKIN']:
+					break;
+				case reportNames['CHECKIN_NOW_OR_LATER']:
 					break;
 
 				default:
@@ -291,7 +324,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 3;
 					break;
-					
+
 				case reportNames['GUEST_BALANCE_REPORT']:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 3;
@@ -310,6 +343,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['CREDIT_CHECK_REPORT']:
 					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 2;
+					break;
+
+				case reportNames['DEPOSIT_SUMMARY']:
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 3;
 					break;
 
 				default:
@@ -439,16 +477,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 			    };
 			};
 
-			// scroller refresh and reset position
-			$timeout(function () {
-				refreshScroll();
-				$scope.refreshSidebarScroll();
-			}, 200);
-
-
-
-
-
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
 
@@ -500,6 +528,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 						$scope.detailsTemplateUrl = '/assets/partials/reports/shared/rvCommonReportDetails.html';
 					};
 					break;
+				case reportNames['DEPOSIT_SUMMARY']:
+						$scope.hasReportTotals    = true;
+						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
+						$scope.detailsTemplateUrl = '/assets/partials/reports/depositBalanceSummary/rvGuestAndGroupDepositBalanceDetails.html';
+
+					break;
 
 				case reportNames['FORECAST_BY_DATE']:
 					$scope.hasReportTotals    = false;
@@ -540,7 +574,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionRoomTypeReport.html';
 					break;
-					
+
 				case reportNames['DAILY_PRODUCTION_DEMO']:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
@@ -693,9 +727,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// clear old results and update total counts
 			$scope.netTotalCount = $scope.$parent.totalCount;
 
-			if ( typeof $scope.$parent.results === 'array' ) {
+			if ( angular.isArray($scope.$parent.results)) {
 				$scope.uiTotalCount = $scope.$parent.results.length;
-			} else if ( typeof $scope.$parent.results === 'object' ) {
+			} else if ( angular.isObject($scope.$parent.results)) {
 				$scope.uiTotalCount = 0;
 				_.each($scope.$parent.results, function(item) {
 					if ( typeof item === 'array' ) {
@@ -883,6 +917,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['GUEST_BALANCE_REPORT']:
 				case reportNames['ADDON_FORECAST']:
 				case reportNames['CREDIT_CHECK_REPORT']:
+				case reportNames['DEPOSIT_SUMMARY']:
 					orientation = 'landscape';
 					break;
 
@@ -1028,6 +1063,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$_pageNo = 1;
 			$scope.errorMessage = [];
 			/**/
+			setScroller();
 			afterFetch();
 			findBackNames();
 			calPagination();
@@ -1037,6 +1073,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], function() {
 			$scope.errorMessage = [];
 			/**/
+			setScroller();
 			afterFetch();
 			findBackNames();
 			calPagination();
@@ -1067,17 +1104,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 			refreshScroll();
 		});
 
-		var reportDetailsFilterScrollRefresh = $scope.$on(reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'], function() {
-			$scope.refreshSidebarScroll();
-		});
-
 		// removing event listners when scope is destroyed
 		$scope.$on( '$destroy', reportSubmited );
 		$scope.$on( '$destroy', reportUpdated );
 		$scope.$on( '$destroy', reportPageChanged );
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportAPIfailed );
-		$scope.$on( '$destroy', $scope.refreshSidebarScroll );
     }
 
 ]);

@@ -103,7 +103,7 @@
             </div>
         </div>
         <!-- Room block actions -->
-        <div class="room-block-actions" ng-show="shouldHideAddRoomsButton()">
+        <div class="room-block-actions" ng-show="shouldShowRoomsRates()">
             <button type="button" class="button green"
                 tabindex="-1"
                 ng-click = "clickedOnSaveButton()"
@@ -128,7 +128,7 @@
             </button>
         </div>
         <!-- Room block room types -->
-        <div class="room-block-sidebar scrollable" ng-show="shouldHideAddRoomsButton()"
+        <div class="room-block-sidebar scrollable" ng-show="shouldShowRoomsRates()"
             ng-iscroll="room_block_scroller">
             <div class="wrapper">
                 <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
@@ -186,7 +186,7 @@
         <!-- Room block days -->
         <div class="room-block-timeline scrollable"
             ng-iscroll="room_rates_timeline_scroller"
-            ng-show="shouldHideAddRoomsButton()">
+            ng-show="shouldShowRoomsRates()">
 
             <ul style="width:{{getWidthForRoomBlockTimeLine()}};" class="wrapper">
                 <li ng-repeat="occupancy in groupConfigData.summary.selected_room_types_and_occupanies">
@@ -210,7 +210,7 @@
         </div>
         <!-- Room block grid -->
         <div class="room-block-grid scrollable" ng-iscroll="room_rates_grid_scroller"
-            ng-show="shouldHideAddRoomsButton()">
+            ng-show="shouldShowRoomsRates()">
             <div class="wrapper" style="width:{{getWidthForRoomBlockTimeLine()}};">
                 <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
                 <div class="row" ng-repeat="roomType in groupConfigData.summary.selected_room_types_and_bookings" emit-when="{event: 'ALL_RENDERED', condition: $last}">

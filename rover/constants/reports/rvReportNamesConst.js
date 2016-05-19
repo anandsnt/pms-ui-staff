@@ -1,6 +1,7 @@
 angular.module('reportsModule')
 	.constant('RVReportNamesConst', {
 		'CHECK_IN_CHECK_OUT'           : 'Check In / Check Out',
+		'CHECKIN_NOW_OR_LATER'         : 'Check In - Now or Later',
 		'UPSELL'                       : 'Upsell',
 		'WEB_CHECK_OUT_CONVERSION'     : 'Web Check Out Conversion',
 		'WEB_CHECK_IN_CONVERSION'      : 'Web Check In Conversion',
@@ -23,6 +24,8 @@ angular.module('reportsModule')
 		'ROOMS_QUEUED'                 : 'Rooms Queued',
 		'FORECAST_GUEST_GROUPS'        : 'Forecast Guests & Groups',
 		'MARKET_SEGMENT_STAT_REPORT'   : 'Market Segment Statistics Report',
+		'MOBILE_CHECKIN_NOW'           : 'Mobile Check In - Now',
+		'MOBILE_CHECKIN'               : 'Mobile Check In',
 		'COMPARISION_BY_DATE'          : 'Comparison',
 		'RATE_ADJUSTMENTS_REPORT'      : 'Rate Adjustment Report',
 		'GROUP_PICKUP_REPORT'          : 'Group Pick Up Report',
@@ -36,5 +39,6 @@ angular.module('reportsModule')
 		'EMAIL_CHECKIN_SUMMARY'		   : 'Email Check In Summary',
 		'COMPANY_TA_TOP_PRODUCERS'     : 'Company/TA Top Producers',
 		'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': 'Financial Transactions - Adjustment Report',
-		'CREDIT_CHECK_REPORT'          : 'Credit Check Report'
+		'CREDIT_CHECK_REPORT'          : 'Credit Check Report',
+		'DEPOSIT_SUMMARY' : 'Deposit Balance Summary'
 	});

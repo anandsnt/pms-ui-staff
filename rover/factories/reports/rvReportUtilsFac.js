@@ -431,6 +431,13 @@ angular.module('reportsModule')
                     report['hasRestrictionListFilter'] = filter;
                 };
 
+                if(filter.value === 'ORIGIN') {
+                    report['hasOriginFilter'] = filter;
+                };
+
+                if(filter.value === 'URLS') {
+                    report['hasURLsList'] = filter;
+                };
 
                 // check for time filter and keep a ref to that item
                 // create std 15min stepped time slots
@@ -639,6 +646,17 @@ angular.module('reportsModule')
                             reportsSubSrv.fetchAddons({ 'addon_group_ids' : _.pluck(chargeNAddonGroups, 'id') })
                                 .then( fillAGAs.bind(null, chargeNAddonGroups) );
                         });
+                }
+                else if ( 'URLS' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchURLs()
+                        .then( fillURLs );
+                }
+
+                else if ( 'ORIGIN' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchOrigins()
+                        .then( fillOrigins );
                 }
 
                 else {
@@ -874,6 +892,59 @@ angular.module('reportsModule')
                 completed++;
                 checkAllCompleted();
             };
+            function fillOrigins (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'ORIGIN' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasOriginFilter = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'description',
+                                defaultValue: 'Select Origin(s)'
+                            },
+                            affectsFilter: {
+                                name: 'hasURLsList',
+                                process: function(filter, selectedItems) {
+                                    var hasUrl = _.find(selectedItems, { value: 'URL' });
+                                    console.log(!hasUrl);
+                                    filter.updateData(!hasUrl);
+                                }
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            };
+
+            function fillURLs (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'URLS'});
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasURLsList = {
+                            data: angular.copy( data ),
+                            originalData: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'name',
+                                defaultValue: 'Select URL(s)'
+                            },
+                            updateData: function(shouldHide) {
+                                this.data = shouldHide ? [] : this.originalData;
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            };
 
             var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
                 var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
@@ -1000,6 +1071,10 @@ angular.module('reportsModule')
                                 }
                             }
                         }
+
+                        console.log( '=====================' );
+                        console.log( report['title'] );
+                        console.log( report.hasByChargeGroup );
                     };
 
                     foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' }) || _.find(report['filters'], { value: 'SHOW_CHARGE_CODES' });
@@ -1118,7 +1193,7 @@ angular.module('reportsModule')
                 report['groupByOptions'] = _.reject(report['group_fields'], { value: 'BLANK' });
             };
 
-            // patch 
+            // patch
             if ( report['title'] === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
                 report['groupByOptions'] = undefined;
             };
@@ -1344,6 +1419,21 @@ angular.module('reportsModule')
                 report['sort_fields'][7] = null;
                 report['sort_fields'][8] = null;
                 report['sort_fields'][9] = null;
+            };
+
+            // need to reorder the sort_by options
+            // for guest balance report in the following order
+            if ( report['title'] === reportNames['DEPOSIT_SUMMARY'] ) {
+                var credit = angular.copy( _.find(report['sort_fields'], { 'value': 'CREDIT' }) ),
+                    debit    = angular.copy( _.find(report['sort_fields'], { 'value': 'DEBIT' }) ),
+                    name    = angular.copy( _.find(report['sort_fields'], { 'value': 'NAME' }) );
+
+                report['sort_fields'][0] = name;
+                report['sort_fields'][1] = null;
+                report['sort_fields'][2] = null;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = debit;
+                report['sort_fields'][5] = credit;
             };
         };
 

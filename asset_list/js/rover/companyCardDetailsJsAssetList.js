@@ -16,6 +16,7 @@ module.exports = {
 				'rover/controllers/contractStartCalendarCtrl.js',
 				'rover/controllers/contractEndCalendarCtrl.js',
 				'rover/controllers/cardsOutside/rvArTransactionsPayCreditsController.js',
+				'rover/controllers/cardsOutside/rvArTransactionsDatePickerController.js',
 				'rover/controllers/contractedNightsCtrl.js'
 			]
 		};

@@ -61,6 +61,7 @@ sntZestStation.controller('zsAdminCtrl', [
         //if workstation changes -> change printer accordingly
         $scope.worksStationChanged = function(){
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
+                setCurrentStation($scope.set_workstation_id);
                 return workstation.id == $scope.workstation.selected;
             });
             setPrinterLabel(selectedWorkStation.printer);
@@ -126,6 +127,11 @@ sntZestStation.controller('zsAdminCtrl', [
         
 
         var initialize = function() {
+            if ($scope.zestStationData.workstationStatus === 'in-order'){
+                $scope.inServiceAtStart = true;
+            } else {
+                $scope.inServiceAtStart = false;
+            }
             $scope.adminLoginError = false;
             $scope.input = {
                 "inputTextValue": ""
@@ -218,8 +224,20 @@ sntZestStation.controller('zsAdminCtrl', [
                     id: station.station_identifier
                 });  
                 $scope.zestStationData.set_workstation_id = station.id;
-                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':$scope.zestStationData.workstationStatus,'reason':$scope.zestStationData.workstationOooReason});
-                $scope.cancelAdminSettings();
+                
+                var reason;
+                if ($scope.inServiceAtStart && station.is_out_of_order){
+                    reason = 'ADMIN_OOS';
+                    $scope.zestStationData.workstationOooReason = reason;
+                } else {
+                    reason = $scope.zestStationData.workstationOooReason;
+                }
+                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':$scope.zestStationData.workstationStatus,'reason':reason});
+                
+                setTimeout(function(){
+                    $scope.cancelAdminSettings();    
+                },2000);
+                
             };
             var failureCallBack = function(response) {
                 console.warn('unable to save workstation settings');
@@ -228,8 +246,7 @@ sntZestStation.controller('zsAdminCtrl', [
             var station = $scope.savedSettings.kiosk.workstation;
             
             if (station) {
-                station.is_out_of_order = ($scope.zestStationData.workstationStatus !== 'in-order' ? false : true);
-                
+                station.is_out_of_order = ($scope.zestStationData.workstationStatus !== 'in-order' ? true : false);
                 var params = {
                     'default_key_encoder_id': station.key_encoder_id,
                     'identifier': station.station_identifier,
@@ -240,8 +257,11 @@ sntZestStation.controller('zsAdminCtrl', [
                     'emv_terminal_id': station.emv_terminal_id,
                     'id': station.id
                 };
+                saveWorkStation(station.id);
             };
-
+            if (!station.is_out_of_order){
+                $scope.prepForInService();
+            }
             if ($scope.savedSettings.printer) {
                 params.printer = $scope.savedSettings.printer;
             }
@@ -253,9 +273,55 @@ sntZestStation.controller('zsAdminCtrl', [
             if (station) {
                 //if no workstation is selected, we dont have an id to update settings for
                 //since the workstation station_id itself is saved in the browser
+                
                 $scope.callAPI(zsTabletSrv.updateWorkStations, options);
             }
         };
+        
+    var setWorkstationInSession = function(){
+            var workstation = $scope.sessionStation;
+            var successCallBack = function(response){
+                $scope.$emit('hideLoader');
+            };
+            var failureCallBack = function(response){
+                $scope.$emit('hideLoader');
+                console.warn('failed to set workstation in session');
+                console.log(response);
+            };
+             var options = {
+    		params: 			workstation,
+                successCallBack:                successCallBack,
+                failureCallBack:                failureCallBack
+            };
+            $scope.callAPI(zsTabletSrv.setSessionWorkstation, options);
+    };
+    
+    
+    var setCurrentStation = function(id){
+        console.info('setting: ',id)
+        $scope.sessionStation;
+        for (var i in $scope.zestStationData.workstations){
+            if ($scope.zestStationData.workstations[i].id === id){
+                $scope.zestStationData.workstations[i].is_workstation_present = true;
+                $scope.sessionStation = $scope.zestStationData.workstations[i];
+            }
+        }
+    }
+        saveWorkStation = function(id){
+            console.info('save workstation')
+            if ($scope.workstation !== ''){
+                for (var i in $scope.zestStationData.workstations){
+                    if ($scope.zestStationData.workstations[i].station_identifier === id){
+                        $scope.zestStationData.selectedWorkStation = $scope.zestStationData.workstations[i].station_identifier;
+                        setWorkstationInSession($scope.zestStationData.selectedWorkStation);
+                    }
+                }
+            } else {
+                $scope.zestStationData.selectedWorkStation = '';
+            }
+
+        };
+        
         var getTheSelectedWorkStation = function() {
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.workstation.selected;

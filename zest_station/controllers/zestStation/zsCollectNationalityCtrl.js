@@ -3,8 +3,8 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 	'$state',
 	'zsEventConstants',
 	'$stateParams',
-	'$sce', 'countryList', 'zsTabletSrv',
-	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, zsTabletSrv) {
+	'$sce', 'countryList','sortedCountryList', 'zsTabletSrv',
+	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList,sortedCountryList, zsTabletSrv) {
 
 		BaseCtrl.call(this, $scope);
 		sntZestStation.filter('unsafe', function($sce) {
@@ -27,7 +27,9 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 
 		$scope.init = function() {
 			$scope.countryList = countryList;
-			$scope.nationalityId = "";
+			$scope.sortedCountries = sortedCountryList.sorted;
+			$scope.unSortedCountries = sortedCountryList.unsorted;
+			$scope.selectedCountry = {"id":""};
 		};
 
 		/**
@@ -51,7 +53,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			var options = {
 				params: {
 					guest_id: $stateParams.guestId,
-					nationality_id: $scope.nationalityId
+					nationality_id: $scope.selectedCountry.id
 				},
 				successCallBack: successCallBack
 			}
