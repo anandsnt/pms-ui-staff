@@ -3,9 +3,9 @@
 	The landing page when the guestweb is accessed without the link from the email.
 	This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> zest -> Checkout
 */
-sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$state', '$controller', 'GwCheckoutSrv', 'GwWebSrv', '$timeout', '$filter','$modal',
-	function($scope, $state, $controller, GwCheckoutSrv, GwWebSrv, $timeout, $filter,$modal) {
-		//TODO : remove unwanted injections like $timeout
+sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$state', '$controller', 'GwCheckoutSrv', 'GwWebSrv', '$filter','$modal',
+	function($scope, $state, $controller, GwCheckoutSrv, GwWebSrv, $filter,$modal) {
+
 		$controller('BaseController', {
 			$scope: $scope
 		});
@@ -55,7 +55,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 				// check and navigate base upon checkout later option is available
 				GwWebSrv.zestwebData.isLateCheckoutAvailable ? $state.go('checkOutOptions') : $state.go('checkOutConfirmation');
 			};
-			var onFail = function(data) {
+			var onFailure = function(data) {
 				var popupOptions = angular.copy($scope.errorOpts);
 				popupOptions.resolve = {
 					message: function() {
@@ -67,7 +67,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 			var options = {
 				params: $scope.stayDetails,
 				successCallBack: onSuccess,
-				failureCallBack: onFail
+				failureCallBack: onFailure
 			};
 			$scope.callAPI(GwCheckoutSrv.verifyCheckoutUser, options);
 		};

@@ -1,0 +1,82 @@
+<section id="main" role="main" class="centered" click-touch='resetTime()' ng-hide="alreadyCheckedOut">
+    <!-- last name -->
+    <div id="content" ng-show="mode === 'LAST_NAME_ENTRY'">
+        <h1 translate>TYPE_LAST</h1>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered()"/>
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" click-touch="lastNameEntered()">Next</button>
+            </div>
+        </form>
+    </div>
+    <!-- room number -->
+    <div id="content" ng-show="mode === 'ROOM_NUMBER_ENTRY'">
+        <h1 translate>NEXT_ROOM_NUMBER</h1>
+         <form class="form" ng-if='showTowers'>
+            <div class="entry">
+                <select ng-model="tower.selected" class="checkout-screen-select-box" ng-change="changedTheSelectedTower()">
+                    <option ng-repeat="tower in towerList" ng-selected="tower.value === tower.selected" value="{{tower.value}}">{{tower.name}}</option>
+                </select>
+            </div>
+        </form>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.room_no" enter-press="roomNumberEntered()"/>
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" click-touch="roomNumberEntered()">Next</button>
+            </div>
+        </form>
+    </div>
+    <!-- no match -->
+    <div id="content" ng-show="mode === 'NO_MATCH'">
+        <h1 translate>RES_SRCH_SRY</h1>
+        <h2 translate>RES_SRCH_SRY_SUB</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press="reEnterText('name')">
+                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    {{'RES_SRCH_RE_ENTER_LAST' |translate}}
+                    <span ng-bind="reservationParams.last_name"></span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press="reEnterText('room')">
+                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    {{'RES_SRCH_RE_ENTER_ROOM' |translate}}
+                    <span ng-bind="reservationParams.room_no"></span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    {{'RES_SRCH_TALK' |translate}}
+                    <span>{{'RES_SRCH_TALK_SUB' |translate}}</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<!-- user has already checkout -->
+<section id="main" class="centered" role="main" ng-show="alreadyCheckedOut">
+    <div id="content">
+        <h1>{{'USER_CHECKED_OUT_ALRDY_HEADER' |translate}}</h1>
+        <h2 class="nocaps">{{'USER_CHECKED_OUT_ALRDY_SUB' |translate}}</h2>
+        <button type="button" class="button" click-touch="alreadyCheckedOutActions()">{{'USER_CHECKED_OUT_ALRDY_RTN' |translate}}</button>
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
+</section>

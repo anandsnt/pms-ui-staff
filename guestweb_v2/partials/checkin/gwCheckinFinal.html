@@ -5,8 +5,14 @@
         <div class="col-md-1"></div>
         <!-- left side -->
         <div class="col-md-4 top-spacing">
-            <p class="main-text final-text">You're checked in!</p>
-            <p class="sub-text">Reservation #:{{confirmationNumber}}</p>
+            <!-- default main  text -->
+            <p class="main-text final-text" ng-if="!screenCMSDetails.title">You're checked in!</p>
+            <!-- CMS main text -->
+            <p class="main-text" ng-if="screenCMSDetails.title" ng-bind-html="screenCMSDetails.title"></p>
+            <!-- default sub  text -->
+            <p class="sub-text" ng-if="!screenCMSDetails.description">Reservation #:{{confirmationNumber}}</p>
+            <!-- CMS sub  text -->
+            <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
         </div>
         <div class="horizontal-line-sep-mobile"></div>
         <!-- right side -->

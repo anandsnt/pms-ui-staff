@@ -1,43 +1,63 @@
-	sntGuestWeb.service('GwWebSrv', ['$q', '$http', 'GwScreenMappingSrv','$rootScope',
-		function($q, $http, GwScreenMappingSrv,$rootScope) {
+	sntGuestWeb.service('GwWebSrv', ['$q', '$http', 'GwScreenMappingSrv', '$rootScope',
+		function($q, $http, GwScreenMappingSrv, $rootScope) {
 
 
-			this.screenList = [];
-			this.cMSdata = [];
 			this.zestwebData = {};
+			this.cms_screen_details = [];
 			var that = this;
+
+			var fetchScreenWiseData = function(hotel_identifier) {
+				var deferred = $q.defer();
+				var url = '/api/hotels/custom_cms_messages.json?application=ZEST_WEB&hotel_identifier=' + hotel_identifier;
+				$http.get(url).success(function(response) {
+						that.cms_screen_details = _.find(response.screen_list, function(cms_item) {
+							return cms_item.screen_name === "ZEST WEB SCREENS"
+						});
+						that.cms_screen_details = typeof that.cms_screen_details !== 'undefined' ? that.cms_screen_details.screen_messages : [];
+						deferred.resolve(response);
+					}.bind(this))
+					.error(function() {
+						deferred.reject();
+					});
+				return deferred.promise;
+			};
+				//call CMS details only for checkin URLs now
+			var absUrl = window.location.href;
+			// if the guestweb is accessed normaly, ie invoked using
+			// the mail sent from the hotel admin
+			if (absUrl.indexOf("/guest_web/home/index?guest_web_token=") !== -1) {
+				var offset = absUrl.indexOf("?");
+				var remainingURl = absUrl.substring(offset, absUrl.length);
+				var startingUrl = absUrl.substring(0, offset);
+				apiUrl = startingUrl + "_data" + remainingURl;
+
+			} else if (absUrl.indexOf("checkin") !== -1) {
+				//to strip away state URLS
+				absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
+				var urlComponents = absUrl.split('/');;
+				var hotel_identifier = urlComponents[urlComponents.length - 2];
+				fetchScreenWiseData(hotel_identifier);
+			} // direct URL checkout - accessing URLS set in hotel admin for checkin
+			else {
+				//to strip away state URLS
+				absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
+				var urlComponents = absUrl.split('/');;
+				var hotel_identifier = urlComponents[urlComponents.length - 1];
+				fetchScreenWiseData(hotel_identifier);
+			};
 
 
 			this.fetchHotelDetailsFromUrl = function(url) {
 				var deferred = $q.defer();
+
 				/*
-				 * To fetch CMS data
+				 * To fetch reservation and hotel data
 				 * @return {object} CMS details
 				 */
-
-				var fetchScreenFromCMSSetup = function(language) {
-						var language = (language !== null && typeof language !== "undefined") ? language : 'EN'; //if no language is selected
-						var url = '/sample_json/zestweb_v2/screen_list_' + language + '.json';
-						$http.get(url).success(function(response) {
-								that.cMSdata = response;
-								deferred.resolve(that.zestwebData);
-							}.bind(this))
-							.error(function() {
-								deferred.reject();
-							});
-					}
-					/*
-					 * To fetch reservation and hotel data
-					 * @return {object} CMS details
-					 */
 				$http.get(url).success(function(response) {
 						if (response.status === "success") {
 							that.zestwebData = response.data;
-							if (!!response.data.zest_web) {
-								fetchScreenFromCMSSetup(response.data.zest_web.language);
-							} else {
-								deferred.resolve(that.zestwebData);
-							}
+							deferred.resolve(that.zestwebData);
 						} else {
 							// when some thing is broken , need to redirect to error page with default theme
 							response.data.hotel_theme = "guestweb";
@@ -60,29 +80,13 @@
 				return GwScreenMappingSrv.screenMappingList;
 
 			};
-			/*
-			 * To fetch Zestweb global settings
-			 * @return {object} Zestweb global settings details
-			 */
-			this.fetchZestwebGlobalSettings = function() {
-				var deferred = $q.defer();
-				var url = '/sample_json/zestweb_v2/zestweb_global_settings.json';
-				$http.get(url).success(function(response) {
-						deferred.resolve(response);
-					}.bind(this))
-					.error(function() {
-						deferred.reject();
-					});
-				return deferred.promise;
-
-			};
 
 			this.setScreenList = function(list) {
 				that.screenList = list;
 			};
 
 			this.extractScreenDetails = function(screen_identifier) {
-				return extractScreenDetails(screen_identifier, that.screenList, that.cMSdata);
+				return extractScreenDetails(screen_identifier, that.screenList, that.cms_screen_details);
 			};
 
 			this.setReservationDataForExternalCheckout = function(response) {
@@ -160,6 +164,7 @@
 				that.zestwebData.userEmail = zestwebData.primary_guest_email;
 				that.zestwebData.keyDeliveryByEmail = true;
 				//that.zestwebData.keyDeliveryByText  = true;
+				that.zestwebData.zestCheckinNoServiceMsg = zestwebData.zest_checkin_no_service_msg;
 
 				that.zestwebData.offerRoomDeliveryOptions = (zestwebData.offer_room_delivery_options === "true") ? true : false;
 

@@ -1,23 +1,23 @@
+
 <!-- Report content -->
-    <div id="report-content" class="report-content grid scrollable" ng-controller="RVAddonForecastReportByAddonCtrl" ng-iscroll="addon-forecast-report-scroll">
-
-        <div ng-hide="hasResults" class="report-content no-content">
-            <div class="info">
-                <span class="icon-no-content icon-reports"></span>
-                <strong class="h1">No reports found</strong>
-                <span class="h2">Try changing search criteria or modify dates</span>
-            </div>
+<div  ng-controller="RVAddonForecastReportByAddonCtrl">
+    <div ng-if="!hasResults" class="report-content no-content">
+        <div class="info">
+            <span class="icon-no-content icon-reports"></span>
+            <strong class="h1">No reports found</strong>
+            <span class="h2">Try changing search criteria or modify dates</span>
         </div>
-
-        <div ng-show="hasResults" class="wrapper">
+    </div>
+    <div ng-if="hasResults" id="report-content" class="report-content grid scrollable" ng-iscroll="addon-forecast-report-scroll">
+        <div class="wrapper">
             <ul class="grid-header dates">
-                <li class="guests"></li>
-                <li class="guests"></li>
+                <li class="guests">Booked</li>
+                <li class="guests">Remaining</li>
                 <li class="guests">Guests</li>
                 <li class="revenue">Revenue</li>
             </ul>
 
-            <div ng-repeat="(key1, item1) in modifiedResults">
+            <div ng-repeat="(key1, item1) in modifiedResults" emit-when="{event: 'ALL_RENDERED', condition: $last}">
                 <!-- Level 1 - Date -->
                 <a ng-if="item1.hasData" href="#addon-{date}" class="title-1 toggle" ng-class="{ 'has-arrow': item1.addons.length }" ng-click="toggleSub(item1)">
                     <strong>{{ getAddonGrpName(key1) }}</strong>
@@ -34,9 +34,9 @@
                     <div ng-if="item2Values.hasData" ng-repeat="item3 in item2Values.dates" ng-init="item3Values = getKeyValues(item3)" class="grid-content" ng-class="{ 'hidden': !openDate && !item2Values.hidden }"> <!-- Toggle class hidden when L142-146 tapped -->
                         <ul class="grid-header addons">
                             <li class="name">Add-On</li>
-                            <li>Booked </li>
-                            <li>Remaining </li>
-                            <li>Guests </li>
+                            <li> </li>
+                            <li> </li>
+                            <li> </li>
                             <li>Revenue</li>
                         </ul>
                         <!-- Level 3 - Add-On -->
@@ -77,10 +77,8 @@
                                     <td class="guests">
                                         <span>{{ item4.guests_count.adults }} Adults</span>&#8226; <span>{{ item4.guests_count.children }} Children</span>
                                     </td>
-                                    <td class="guests">
-                                        <span ng-repeat="guest in item4.accompanying_guests">
-                                            {{ guest }}<span ng-if="!$last">&#8226;</span>
-                                        </span>
+                                    <td class="guests accompany">
+                                        <span>{{ item4.accompanying_guests.join(', ') }}</span>
                                     </td>
                                     <td>
                                         {{ item4.price | currency:currencySymbol:2 }}
@@ -124,4 +122,5 @@
             </ul>     
         </div>
     </div>   
+</div>
 </section>

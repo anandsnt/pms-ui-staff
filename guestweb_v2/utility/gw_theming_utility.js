@@ -23,7 +23,7 @@ var applyStyle = function(target, style, type) {
 		if (type === "font-size") {
 			appendStyleString(target + style + 'px !important}');
 		} else if (type === "media-query") {
-			appendStyleString('@media (max-width: 480px) {'+target + style + 'px !important}}');
+			appendStyleString('@media (max-width: 480px) {' + target + style + 'px !important}}');
 		} else {
 			appendStyleString(target + style + ' !important}');
 		}
@@ -34,24 +34,27 @@ var applyStyle = function(target, style, type) {
 };
 
 // icons of each color has to be in corresponding folders
-var applyIconStyles =  function(color){
-	var styleString =""
-	
-	styleString = styleString + ".calendar-back {background-image: url('/assets/guestweb_v2/images/"+color+"/back_icon.png')}";
-	styleString = styleString + ".calendar-done{background-image: url('/assets/guestweb_v2/images/"+color+"/done_icon.png')}";
-	styleString = styleString + ".circle-bg { background: url('/assets/guestweb_v2/images/"+color+"/circle_bg.png')  no-repeat scroll center top transparent;}";
-	styleString = styleString + ".back-to-checkout{background: url('/assets/guestweb_v2/images/"+color+"/left_arrow.png')no-repeat scroll center top transparent}";
-	styleString = styleString + ".checkout-icon{background-image: url('/assets/guestweb_v2/images/"+color+"/checkout_icon.png')}";
-	styleString = styleString + ".late-checkout-icon{ background-image: url('/assets/guestweb_v2/images/"+color+"/checkout_later.png')}";
-	styleString = styleString + ".accept-charge-icon{background-image: url('/assets/guestweb_v2/images/"+color+"/creditcard_icon.png')}";
-	styleString = styleString + ".upgrade-icon{background-image: url('/assets/guestweb_v2/images/"+color+"/upgrade_icon.png')}";
+var applyIconStyles = function(color) {
+	if (color !== null) {
+		var styleString = ""
+		styleString = styleString + ".calendar-back {background-image: url('/assets/guestweb_v2/images/" + color + "/back_icon.png')}";
+		styleString = styleString + ".calendar-done{background-image: url('/assets/guestweb_v2/images/" + color + "/done_icon.png')}";
+		styleString = styleString + ".circle-bg { background: url('/assets/guestweb_v2/images/" + color + "/circle_bg.png')  no-repeat scroll center top transparent;}";
+		styleString = styleString + ".back-to-checkout{background: url('/assets/guestweb_v2/images/" + color + "/left_arrow.png')no-repeat scroll center top transparent}";
+		styleString = styleString + ".checkout-icon{background-image: url('/assets/guestweb_v2/images/" + color + "/checkout_icon.png')}";
+		styleString = styleString + ".late-checkout-icon{ background-image: url('/assets/guestweb_v2/images/" + color + "/checkout_later.png')}";
+		styleString = styleString + ".accept-charge-icon{background-image: url('/assets/guestweb_v2/images/" + color + "/creditcard_icon.png')}";
+		styleString = styleString + ".upgrade-icon{background-image: url('/assets/guestweb_v2/images/" + color + "/upgrade_icon.png')}";
+		addStyleString(styleString);
+	} else {
+		return;
+	}
 
-	addStyleString(styleString);
 }
-/*
- * This is to override the existing demo theme styling with the CMS contents if
- * set in the admin
- */
+	/*
+	 * This is to override the existing demo theme styling with the CMS contents if
+	 * set in the admin
+	 */
 var overrideStylesWithCMSdata = function(styles) {
 	//set the background color
 	applyStyle('body { background:', styles.main_bg.background);
@@ -108,7 +111,7 @@ var overrideStylesWithCMSdata = function(styles) {
 	// set label font size for small devices
 	applyStyle('.sub-text{ font-size:', styles.label_text.sd_font_size, "media-query");
 	//apply icon styles
-	if(styles.icon_color !== "White"){
+	if (styles.icon_color !== "White") {
 		applyIconStyles(styles.icon_color)
 	}
 	if (styleString.length > 0) {

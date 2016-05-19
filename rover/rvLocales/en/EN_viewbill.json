@@ -160,5 +160,18 @@
     "NOT_DEFINED": "Not Defined",
     "DONT_PRINT_RATE" : "Don't Print Rate",
 
-    "CREDIT_LIMIT_HAS_BEEN_EXCEEDED" : "Credit Limit has been exceeded"
+    "CREDIT_LIMIT_HAS_BEEN_EXCEEDED" : "Credit Limit has been exceeded",
+
+    "COMAPNY_NAME" : "Company Name",
+    "TA_NAME" : "Travel Agent Name",
+    "C_ID_OR_IATA" : "Corp ID / IATA number",
+    "CORP_ID" : "Corp ID",
+    "IATA_NO" : "IATA number",
+
+    "TAX_DESCRIPTION" : "Tax description",
+    "GROSS" : "Gross",
+    "NET" : "Net",
+    "TAX" : "Tax",
+    "TOTAL" : "Total"
+
 

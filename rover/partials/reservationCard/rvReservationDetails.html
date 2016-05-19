@@ -19,19 +19,19 @@
 				<span class="date">
 	            	<span class="guest-status small-icon check-in">&nbpsp;</span>
 		            <span ng-show="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEEE'}}</span>
-		            <span ng-hide="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEE'}}</span> 
+		            <span ng-hide="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEE'}}</span>
 		            {{reservationData.reservation_card.arrival_date|date:dateFormat}}
 		            <span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.arrival_time}} </span>
 	            </span>
 	            <span class="date">
 	            	<span class="guest-status small-icon check-out">&nbpsp;</span>
 		            <span ng-show="!isIpad">{{reservationData.reservation_card.departure_date|date:fulldayInWeek}}</span>
-		            <span ng-hide="!isIpad">{{reservationData.reservation_card.departure_date|date:'EEE'}}</span> 
+		            <span ng-hide="!isIpad">{{reservationData.reservation_card.departure_date|date:'EEE'}}</span>
 		            {{reservationData.reservation_card.departure_date|date:dateFormat}}
 		            <span ng-show="reservationData.reservation_card.is_hourly_reservation">{{reservationData.reservation_card.departure_time}} </span>
 	            </span>
 			</span>
-            
+
 
             <a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.arrival_time, 'active': shouldShowTimeDetails}" ng-if="!reservationData.reservation_card.is_opted_late_checkout && (reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED')" class="button times check-in toggle">
                 <span class="icons time check-in"></span>{{reservationData.reservation_card.arrival_time ? reservationData.reservation_card.arrival_time : 'NOT SET' }}
@@ -43,9 +43,15 @@
                 <span class="icons time late-check-out"></span>{{reservationData.reservation_card.late_checkout_time}}
             </a>
 
-            <a class="button toggle" ng-class="{'active': shouldShowGuestDetails, 'has-arrow' : !(reservationData.group_id || reservationData.reservation_card.group_id)}" ng-click="toggleGuests()">
+
+            <a class="button toggle has-arrow" ng-class="{'active': shouldShowGuestDetails }" ng-click="toggleGuests()" ng-hide="shouldDisableGuestsButton()">
+
                 <span class="label">Guests</span> {{ reservationParentData.rooms[0].numInfants + reservationParentData.rooms[0].numChildren + reservationParentData.rooms[0].numAdults }}
             </a>
+            <div class="inactive-nights" ng-show="shouldDisableGuestsButton()">
+                <span class="label">Guests</span> {{ reservationParentData.rooms[0].numInfants + reservationParentData.rooms[0].numChildren + reservationParentData.rooms[0].numAdults }}
+            </div>
+
             <!-- nights button is clickable only for the below status -->
             <a class="button next-view" ng-show="shouldShowChangeStayDatesButton()" ng-click="extendNights()" ng-class="{'has-arrow' : !shouldDisableExtendNightsButton()}">
                 <span class="label">
@@ -181,8 +187,8 @@
                     <label class="label" for="adults-count">Adults</label>
                     <!-- <input name="adults-count" id="adults-count" type="text" ng-model="guestData.adult_count" value="{{guestData.adult_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
                     <div class="select">
-                        <select ng-readonly="!isStandAlone" name="adults-count" id="adults-count" ng-model="guestData.adult_count" ng-change="onStayCardOccupancyChange()">
-                            <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==guestData.adult_count">{{i}}</option>
+                        <select ng-readonly="!isStandAlone" name="adults-count" id="adults-count" ng-model="guestData.adult_count" ng-change="onStayCardOccupancyChange()" >
+                            <option ng-repeat="i in [1, maxAdultsForReservation] | makeRange" value="{{i}}" ng-selected="i==guestData.adult_count">{{i}}</option>
                         </select>
                     </div>
                 </li>
@@ -207,7 +213,7 @@
                     </div>
                 </li>
             </ul>
-            
+
             <!-- Accompany in guest card -->
             <div ng-if="reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
 
@@ -264,10 +270,10 @@
             <div ng-include="'/assets/partials/reservationCard/rvReservationHouseKeeping.html'" ng-controller="rvReservationCardHKController"></div>
 
             <!-- Additional Details -->
-            <div ng-include="'/assets/partials/reservationCard/rvReservationAdditional.html'" ng-controller="rvReservationAdditionalController" ng-if="isStandAlone"></div>  
+            <div ng-include="'/assets/partials/reservationCard/rvReservationAdditional.html'" ng-controller="rvReservationAdditionalController" ng-if="isStandAlone"></div>
 
             <!-- External Reference Numbers -->
-            <div ng-include="'/assets/partials/reservationCard/rvExternalReferences.html'" ng-controller="rvExternalReferencesCtrl" ng-if="isStandAlone"></div>            
+            <div ng-include="'/assets/partials/reservationCard/rvExternalReferences.html'" ng-controller="rvExternalReferencesCtrl" ng-if="isStandAlone"></div>
 
             <!-- Activity Log -->
             <div ng-include="'/assets/partials/reservationCard/rvReservationCardActivityLog.html'" ng-controller="rvReservationCardActivityLogCtrl"></div>

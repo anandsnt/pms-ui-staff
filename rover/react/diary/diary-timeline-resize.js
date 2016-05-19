@@ -10,7 +10,7 @@ var Resizable = React.createClass({
 				display: (props.edit.active || props.edit.passive) ? 'block' : 'none'
 			}
 		},
-		TimelineResizeGrip({
+		React.createElement( TimelineResizeGrip, {
 			key: 				  'resize-left-00',
 			display: 			  props.display,
 			iscroll: 			  props.iscroll,
@@ -24,7 +24,7 @@ var Resizable = React.createClass({
 			currentResizeItem:    props.currentResizeItem,
 			currentResizeItemRow: props.currentResizeItemRow
 		}),
-		TimelineResizeGrip({
+		React.createElement( TimelineResizeGrip, {
 			key: 				  'resize-right-01',
 			display: 			  props.display,
 			iscroll: 			  props.iscroll,

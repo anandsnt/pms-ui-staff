@@ -1,119 +1,213 @@
 <!-- Navbar -->
-<header class="nav-bar no-print" role="banner"> <!-- Make sure to add class "no-print" in this screen, as we need to hide this from the invoice -->
-    <!-- Back button -->
-    <a class="back-button">Back</a>
-
-    <!-- Logo -->
-    <div class="logo">
-        <img src="{image}" alt="" />
-    </div>
-
-    <!-- Title -->
-    <h1>
-        <strong class="hotel">{{currentHotelData.name}}</strong>
-        {{heading | translate}}
-        <div class="user">
-            <strong>{{userInfo.first_name}}
-		{{userInfo.last_name}}</strong>
-             <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em>
-             <em class="date updating" ng-show="isBussinessDateChanging">End of Day Routine in Progress</em>
-        </div>
-    </h1>
-    
-    
-</header>
-
+<span ng-include="'/assets/partials/common/header.html'"></span>
 <!-- Actions -->
-<section id="actions" class="content actions-content actions-manager" role="main">
+<section id="actions" class="content actions-content actions-manager" role="main" ng-cloak>
 
     <!-- Actions list -->
     <div class="content-left">
 
         <!-- Search / filter -->
-        <form method="post" action="" id="actions-search"  ng-class="{'action_filters_visible':showExtraFilters}" class="search-form actions-form" role="search"> <!-- Add class "open" when filters are opened -->
-            <button ng-click="toggleExtraFilters()" type="button" class="button with-icon only-icon" ng-class="{'active':showExtraFilters}">
-                <span class="icons icon-filter" ></span>
+        <form method="post" action="" id="actions-search"
+              ng-class="{'action_filters_visible open':filterOptions.showFilters}" class="search-form actions-form"
+              role="search"> <!-- Add class "open" when filters are opened -->
+            <button ng-click="toggleExtraFilters()" type="button" class="button white with-icon only-icon"
+                    ng-class="{'active open':filterOptions.showFilters}">
+                <span class="icons icon-filter" ng-class="{'active':filterOptions.showFilters}"></span>
             </button>
+
             <div class="entry dates">
-                <input id="filter-date" class="button white with-icon only-icon datepicker" value="" readonly click-touch="openDateFilter()"/>
+                <input id="filter-date" class="button white with-icon only-icon datepicker" ui-date="selectDateOptions"
+                       ng-model="filterOptions.selectedDay" value="" readonly/>
             </div>
-            
-            <div class="ngmodal-uidate-wrap" id="selectCalendar" ng-include="'/assets/partials/actionsManager/rvActionsMgrFilterCalendar.html'"  ng-hide="(!isStandAlone && !isTrace(selectedAction.action_task_type)) || !filterCalendarShow">
-            </div>
+
             <div class="entry search">
-                <button type="button" class="clear-query"> <!-- Add class "visible" to show. Clicking it clears search input and resets results -->
+                <button type="button" class="clear-query" ng-class="{'visible':!!filterOptions.query}"
+                        ng-click="queryActions(true)">
+                    <!-- Add class "visible" to show. Clicking it clears search input and resets results -->
                     <span class="icons icon-clear-search">Clear query</span>
-                </button> 
+                </button>
                 <button type="submit" name="submit" class="icons icon-search">Search</button>
-                <input id="actions-query" ng-model="textInFilterdBox" placeholder="Search Actions" type="search" class="query" autocomplete="off" />
+                <input id="actions-query" ng-model="filterOptions.query" placeholder="Search Actions" type="search"
+                       class="query" autocomplete="off" rv-delay-textbox delay="1000"
+                       function-to-fire="queryActions"/>
             </div>
+
             <!-- Advanced search fields -->
             <ul id="extra_filters" class="filters">
-                <li ng-click="setActiveFilter('All')" ng-class="{'active':activeFilter === 'All'}">All</li>
-                <li ng-click="setActiveFilter('Unassigned')"  ng-class="{'active':activeFilter === 'Unassigned'}">Unassigned</li>
-                <li ng-click="setActiveFilter('Assigned')"  ng-class="{'active':activeFilter === 'Assigned'}">Assigned</li>
-                <li ng-click="setActiveFilter('Completed')"  ng-class="{'active':activeFilter === 'Completed'}">Completed</li>
+                <li ng-click="setActiveFilter('ALL')" ng-class="{'active':filterOptions.selectedStatus === 'ALL'}">All
+                </li>
+                <li ng-click="setActiveFilter('UNASSIGNED')"
+                    ng-class="{'active':filterOptions.selectedStatus === 'UNASSIGNED'}">Unassigned
+                </li>
+                <li ng-click="setActiveFilter('ASSIGNED')"
+                    ng-class="{'active':filterOptions.selectedStatus === 'ASSIGNED'}">Assigned
+                </li>
+                <li ng-click="setActiveFilter('COMPLETED')"
+                    ng-class="{'active':filterOptions.selectedStatus === 'COMPLETED'}">Completed
+                </li>
             </ul>
         </form>
 
-        <!-- Listing, this is the same list of actions view used for both Action Manager and Actions from within a staycard -->
-            <div ng-include="'/assets/partials/common/actions_list.html'" class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"></div>
+        <!-- Listing -->
+        <div class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="1000" ng-if="actions.length > 0"
+             ng-class="{'with-pagination':filterOptions.totalCount > filterOptions.perPage}">
+            <ul class="wrapper">
+                <!-- Add class "overdue" when past due date. Add class "active" when selected, first one should be active by default when screen is loaded -->
+                <li ng-class="{'active': action.id === filterOptions.selectedActionId,'overdue': action.is_overdue === 'true'}"
+                    ng-repeat="action in actions"
+                    ng-click="onSelectAction(action.id)">
+                    <!-- {type} can be "unassigned", "assigned", "completed" or "specials". Also add class "active" when selected, first one should be active by default when screen is loaded -->
+                    <span class="icons icon-action {{action.iconClass}}"
+                          ng-class="{'active' : action.id === filterOptions.selectedActionId}"
+                          ng-if="action.is_overdue === 'true' && action.action_status != _actionCompleted">
+                        {{action.action_type}}
+                        overdue
+                    </span>
+                     <span class="icons icon-action {{action.iconClass}}"
+                           ng-class="{'active' : action.id === filterOptions.selectedActionId}"
+                           ng-if="action.is_overdue !== 'true' || action.action_status === _actionCompleted">
+                         {{action.action_type}}
+                    </span>
+                    <div class="data">
+                        <h3>{{action.description}}</h3>
+                        <em><span class="room">{{action.room_no}}</span>{{action.guest_name}}</em>
+                    </div>
+                    <span class="department">{{action.departmentName}}</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="no-content" ng-if="actions.length === 0">
+            <div class="info">
+                <span class="icon-no-content icon-actions"></span>
+                <strong class="h1">No Actions</strong>
+                <span class="h2">You can select different department or add a new action.</span>
+            </div>
+        </div>
+
+        <div class="search-pagination" ng-if="filterOptions.totalCount > filterOptions.perPage">
+            <button class="button dark-grey next" ng-click="loadNextPage($event)"
+                    ng-class="{'disabled': filterOptions.isLastPage}" ng-disabled="filterOptions.isLastPage">Next
+            </button>
+            <button class="button dark-grey prev" ng-click="loadPrevPage($event)"
+                    ng-class="{'disabled': filterOptions.page === 1}" ng-disabled="filterOptions.page === 1">Prev
+            </button>
+            <p>
+                Showing
+                <strong class="ng-binding">
+                    {{filterOptions.startRecord}}-{{filterOptions.endRecord}}
+                </strong>
+                of
+                <strong id="total-count" class="ng-binding">
+                    {{filterOptions.totalCount}}
+                </strong>
+                items
+            </p>
+        </div>
     </div>
 
     <!-- Action details -->
-    <div class="content-right">
+    <div class="content-right" ng-if="actions.length > 0">
         <div class="sender-details">
-            <figure class="guest-image"  ng-show="showGuestDetails"> <!-- If accompany, add class accompany -->
-                <!-- If accompany, show primar guest image here: <img src="{primary guest}" alt="" /> -->
-                <img src="{{selectedAction.guest_image}}" alt="" />
+            <figure class="guest-image" ng-class="{'accompany': selectedAction.guest_images.length > 1}">
+                <!-- If accompany, add class accompany -->
+                <!-- If accompany, show primary guest image here:  -->
+                <img ng-src="{{avatar.guest_image}}" ng-repeat="avatar in selectedAction.guest_images"/>
             </figure>
-            <div class="data"  ng-show="showGuestDetails">
-                <h1>{{selectedAction.firstname}} {{selectedAction.lastname}}</h1>
-                <strong class="h2">Room {{selectedAction.room}}</strong>
+            <div class="data">
+                <h1>{{selectedAction.guest_name}}</h1>
+                <strong ng-if="selectedAction.room_no">Room {{selectedAction.room_no}}</strong>
             </div>
-            <div class="dates"  ng-show="showGuestDetails">
+            <div class="dates">
                 <div class="date">
                     <span class="guest-status small-icon check-in">check-in</span>
-                    {{selectedAction.arrive_weekday}}{{selectedAction.arrival_date}} {{selectedAction.arrival_time}}
+                    {{selectedAction.arrival_date | date:dayInWeek }}&nbsp;{{selectedAction.arrival_date |
+                    date:dateFormat}}
+                    &nbsp;{{selectedAction.arrival_time}}
                 </div>
                 <div class="date">
                     <span class="guest-status small-icon check-out">check-out</span>
-                    {{selectedAction.depart_weekday}}{{selectedAction.departure_date}} {{selectedAction.departure_time}}
+                    {{selectedAction.departure_date|date:dayInWeek}}&nbsp;{{selectedAction.departure_date | date:
+                    dateFormat}}
+                    &nbsp;{{selectedAction.departure_time}}
                 </div>
             </div>
-            <button type="button" class="button brand-colors">Stay Card</button>
+            <button type="button" class="button brand-colors" ng-click="toStayCard()">Stay Card</button>
         </div>
         <div class="summary">
-            <!-- Action summary -->
-            <div  ng-show="showActionSummary()" ng-click="stopEditClick()" class="scrollable">
-                <div ng-include=" '/assets/partials/common/actions_summary.html'" ></div>
-            </div>
-            <!-- Action Assignment -->
-            <div ng-show="showAssignScreen()" class="scrollable">
-                <div ng-include=" '/assets/partials/common/actions_assign.html'"></div>
+            <div id="action-summary">
+                <h3 class="word_wrap">{{selectedAction.description}}</h3>
+                <div class="info assigned">
+                    <span class="label">Assigned To</span>
+                    {{selectedAction.assigned_to.name}}
+                </div>
+                <div class="info created">
+                    <span class="label">Created By</span>
+                    {{selectedAction.created_by.name}} {{selectedAction.created_at | date:dateFormat}} &#8226;
+                    {{selectedAction.created_at | date:"hh:mm a"}}
+                </div>
+                <div class="entry action-info date">
+                    <label for="due-date">Date Due</label>
+                    <button class="clear-query"> <!-- Add class "visible" to show (when date is not blank) -->
+                        <span class="icons icon-clear-search">Clear query</span>
+                    </button>
+                    <input id="due-date" class="datepicker" ui-date="dueDateEditOptions"
+                           ng-model="selectedAction.dueDate" value="" readonly
+                           ng-disabled="selectedAction.action_status === _actionCompleted"/>
+                </div>
+                <div class="entry action-info time">
+                    <label for="due-time">Time Due</label>
+                    <div class="select">
+                        <select id="due-time" ng-model="selectedAction.dueTime" ng-change="updateAction()"
+                                ng-disabled="selectedAction.action_status === _actionCompleted">
+                            <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList"
+                                    ng-selected="selectedAction.dueTime === timeSelector.value">
+                                {{timeSelector.text}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <!-- If action completed, show this as well: -->
+                <div class="notice" ng-if="selectedAction.action_status === _actionCompleted">
+                    <span>Completed By</span>
+                    {{selectedAction.completed_by.name}} {{selectedAction.completed_at | date: dateFormat}} &#8226;
+                    {{selectedAction.completed_at | date: "hh:mm a"}}
+                </div>
             </div>
 
-            <div  ng-show="showNewAction()" ng-class="{'full-width': actions.totalCount === 0}">
-                <div ng-include=" '/assets/partials/common/actions_new_action.html'"></div>
+            <div class="detail-actions col-2" ng-if="selectedAction.action_status !== _actionCompleted">
+                <button type="button" ng-hide="" class="button white brand-text" ng-click="changeAssignment()">
+                    {{!!selectedAction.assigned_to.name? "Re-Assign": "Assign"}}
+                </button>
+                <button type="button" class="button white green-text" ng-click="completeAction()">Complete
+                </button>
             </div>
-        
         </div>
-        
-        
     </div>
 
+    <div class="content-right" ng-if="actions.length === 0" ng-controller="RVNewActionCtrl">
+        <!--New Action-->
+        <div class="summary add-content form" ng-include="'/assets/partials/actionsManager/rvAddAction.html'">
+        </div>
+    </div>
 </section>
 
 <!-- Post form -->
 <form method="get" action="" id="actions-post" class="post-form">
-    
+
     <!-- Change department -->
     <div id="change-department" class="select">
-        <select name="change-department" ng-options="department.name for department in departments" ng-model="filter_department">
+        <select name="change-department" ng-options="department.name for department in departments"
+                ng-model="filterOptions.department" ng-change="onDepartmentSelectionChange()">
             <option value="" selected>All Departments</option>
+            <option value="department.value" ng-selected="filterOptions.department == department.value"
+                    ng-repeat="department in departments">
+                {{department.name}}
+            </option>
         </select>
     </div>
 
     <!-- New Action -->
-    <button type="button" class="button green" ng-click='initNewAction()'>New Action</button>
-</form> 
+    <button type="button" ng-hide="actions.length === 0" class="button green" ng-click='initNewAction()'>New Action
+    </button>
+</form>

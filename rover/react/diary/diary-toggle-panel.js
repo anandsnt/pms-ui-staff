@@ -26,7 +26,7 @@ var TogglePanel = React.createClass({
 		return React.DOM.div({
 			className: 'diary-toggle'
 		},
-		Toggle({
+		React.createElement( Toggle, {
 			mode: this.state.mode,
 			__onClick: self.__onClick
 		}));

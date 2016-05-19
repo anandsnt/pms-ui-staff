@@ -98,6 +98,18 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       $scope.$emit('hideLoader');
       $scope.isLoading = false;
       $scope.checkinData = data;
+      if (!$scope.checkinData.next_day_checkin_alert_primetime){
+          $scope.checkinData.next_day_checkin_alert_primetime = 'AM';
+      }
+      if (!$scope.checkinData.checkin_alert_primetime){
+          $scope.checkinData.checkin_alert_primetime = 'AM';
+      }
+      if (!$scope.checkinData.zest_checkin_alert_primetime){
+          $scope.checkinData.zest_checkin_alert_primetime = 'AM';
+      }
+      if (!$scope.checkinData.zest_precheckin_alert_primetime){
+          $scope.checkinData.zest_precheckin_alert_primetime = 'AM';
+      }
       if ($scope.checkinData.start_auto_checkin_from) {
         $scope.checkinData.auto_checkin_from_hour = $scope.checkinData.start_auto_checkin_from.split(":")[0];
         $scope.checkinData.auto_checkin_from_minute = $scope.checkinData.start_auto_checkin_from.split(":")[1];
@@ -149,6 +161,9 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     var checkinAlertTime = ($scope.checkinData.checkin_alert_time_hour !== "" && $scope.checkinData.checkin_alert_time_minute !== "" && $scope.checkinData.checkin_alert_time_hour && $scope.checkinData.checkin_alert_time_minute) ? $scope.checkinData.checkin_alert_time_hour + ":" + $scope.checkinData.checkin_alert_time_minute : "";
     var nextDayCheckinAlertTime = ($scope.checkinData.next_day_checkin_alert_time_hour !== "" && $scope.checkinData.next_day_checkin_alert_time_minute !== "" && $scope.checkinData.next_day_checkin_alert_time_hour && $scope.checkinData.next_day_checkin_alert_time_minute) ? $scope.checkinData.next_day_checkin_alert_time_hour + ":" + $scope.checkinData.next_day_checkin_alert_time_minute : "";
     var zestCheckinAlertTime = ($scope.checkinData.zest_checkin_alert_time_hour !== "" && $scope.checkinData.zest_checkin_alert_time_min !== "" && $scope.checkinData.zest_checkin_alert_time_hour && $scope.checkinData.zest_checkin_alert_time_min) ? $scope.checkinData.zest_checkin_alert_time_hour + ":" + $scope.checkinData.zest_checkin_alert_time_min : "";
+
+    var zestPrecheckinAlertTime = ($scope.checkinData.zest_precheckin_alert_time_hour !== "" && $scope.checkinData.zest_precheckin_alert_time_min !== "" && $scope.checkinData.zest_precheckin_alert_time_hour && $scope.checkinData.zest_precheckin_alert_time_min) ? $scope.checkinData.zest_precheckin_alert_time_hour + ":" + $scope.checkinData.zest_precheckin_alert_time_min : "";
+
     var startAutoCheckinFrom = ($scope.checkinData.auto_checkin_from_hour !== "" && $scope.checkinData.auto_checkin_from_minute !== "" && $scope.checkinData.auto_checkin_from_hour && $scope.checkinData.auto_checkin_from_minute) ? $scope.checkinData.auto_checkin_from_hour + ":" + $scope.checkinData.auto_checkin_from_minute : "";
     var startAutoCheckinTo = ($scope.checkinData.auto_checkin_to_hour !== "" && $scope.checkinData.auto_checkin_to_minute !== "" && $scope.checkinData.auto_checkin_to_hour && $scope.checkinData.auto_checkin_to_minute) ? $scope.checkinData.auto_checkin_to_hour + ":" + $scope.checkinData.auto_checkin_to_minute : "";
     var uploadData = {
@@ -164,9 +179,11 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'prime_time': $scope.checkinData.checkin_alert_primetime,
       'next_day_prime_time': $scope.checkinData.next_day_checkin_alert_primetime,
       'zest_alert_prime_time': $scope.checkinData.zest_checkin_alert_primetime,
+      'zest_precheckin_alert_prime_time': $scope.checkinData.zest_precheckin_alert_primetime,
       'checkin_alert_time': checkinAlertTime,
       'next_day_checkin_alert_time': nextDayCheckinAlertTime,
       'zest_app_checkin_alert_time': zestCheckinAlertTime,
+      'zest_app_precheckin_alert_time': zestPrecheckinAlertTime,
       'require_cc_for_checkin_email': $scope.checkinData.require_cc_for_checkin_email,
       'is_precheckin_only': $scope.checkinData.is_precheckin_only ? 'true' : 'false',
 
@@ -195,8 +212,10 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'guest_delivery_communication':$scope.checkinData.guest_delivery_communication,
       'offer_room_delivery_options':$scope.checkinData.offer_room_delivery_options,
       'zest_checkin_later_text':$scope.checkinData.zest_checkin_later_text,
-      'zest_checkin_now_text':$scope.checkinData.zest_checkin_now_text
-
+      'zest_checkin_now_text':$scope.checkinData.zest_checkin_now_text,
+      'eta_enforcement':$scope.checkinData.eta_enforcement,
+      'zestweb_enforce_deposit':$scope.checkinData.zestweb_enforce_deposit,
+      'enforce_country_sort' : $scope.checkinData.enforce_country_sort
     };
 
     var saveCheckinDetailsFailureCallback = function (data) {

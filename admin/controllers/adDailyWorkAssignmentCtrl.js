@@ -31,6 +31,29 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 
+		var SCROLL_POS_KEY = 'rooms_task_management_scroll';
+		/**/
+		var $dailyWorkAssign = document.getElementById( 'daily-work-assignment' );
+		/**/
+		var setScrollPos = function() {
+			localStorage.setItem( SCROLL_POS_KEY, $dailyWorkAssign.scrollTop );
+		};
+		/**/
+		var getScrollPos = function() {
+			var pos = parseInt( localStorage.getItem(SCROLL_POS_KEY) );
+			return isNaN(pos) ? 0 : pos;
+		};
+		/**/
+		var scrollToPos = function() {
+			var toPos = getScrollPos();
+
+			$timeout(function() {
+				$dailyWorkAssign.scrollTop = toPos;
+				localStorage.removeItem( SCROLL_POS_KEY );
+			}, 100);
+		};
+
+
 		// fetch work types
 		var fetchWorkType = function() {
 			var callback = function(data) {
@@ -291,6 +314,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 
+//=========== task list ================
+
 		// fetch task list
 		var fetchTaskList = function() {
 			var callback = function(data) {
@@ -358,8 +383,15 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var times = {};
 			_.each($scope.roomTypesList, function(room, index) {
 				if ( !!$scope.eachTaskList.room_type_ids[index] ) {
-					if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins && !!$scope.eachTaskList.rooms_task_completion[room.id].hours) {
-						times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
+					if (!!$scope.eachTaskList.rooms_task_completion[room.id].mins || !!$scope.eachTaskList.rooms_task_completion[room.id].hours) {
+						//CICO-27994
+						console.log("reached here")
+						if(!!$scope.eachTaskList.rooms_task_completion[room.id].mins && !!$scope.eachTaskList.rooms_task_completion[room.id].hours)
+							times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':' + $scope.eachTaskList.rooms_task_completion[room.id].mins + ':00';
+						else if(!!$scope.eachTaskList.rooms_task_completion[room.id].hours)
+							times[room.id] = $rootScope.businessDate + ' ' + $scope.eachTaskList.rooms_task_completion[room.id].hours + ':00:00';
+						else if(!!$scope.eachTaskList.rooms_task_completion[room.id].mins)
+							times[room.id] = $rootScope.businessDate + ' ' + '00:'+ $scope.eachTaskList.rooms_task_completion[room.id].mins +':00';
 					} else {
 						times[room.id] = '';
 					}
@@ -380,7 +412,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				hours                        : '',
 				mins                         : '',
 				task_completion_hk_status_id : '',
-				rooms_task_completion        : initateRoomTaskTimes()
+				rooms_task_completion        : initateRoomTaskTimes(),
+				is_pickup					 : false,
+				is_clean			 	 	 : false,
+				is_dirty					 : false
 			};
 
 			var frequencyParams = {};
@@ -400,10 +435,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		$scope.updateIndividualTimes = function() {
 			_.each($scope.roomTypesList, function(room) {
-				if ($scope.eachTaskList.rooms_task_completion[room.id].hours === '' || $scope.eachTaskList.rooms_task_completion[room.id].hours === '00') {
+				if ($scope.eachTaskList.rooms_task_completion[room.id].hours === '' || $scope.eachTaskList.rooms_task_completion[room.id].hours === '00' || $scope.eachTaskList.rooms_task_completion[room.id].hours === '0') {
 					$scope.eachTaskList.rooms_task_completion[room.id].hours = $scope.eachTaskList.hours;
 				}
-				if ($scope.eachTaskList.rooms_task_completion[room.id].mins === '' || $scope.eachTaskList.rooms_task_completion[room.id].mins === '00') {
+				if ($scope.eachTaskList.rooms_task_completion[room.id].mins === '' || $scope.eachTaskList.rooms_task_completion[room.id].mins === '00' || $scope.eachTaskList.rooms_task_completion[room.id].hours === '0') {
 					$scope.eachTaskList.rooms_task_completion[room.id].mins = $scope.eachTaskList.mins;
 				}
 			});
@@ -476,41 +511,63 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			return returnObj;
 		};
 
+		var resetShowFlags = function() {
+			// reset flag
+			_.map($scope.roomTypesList, function(roomType) {
+				roomType.show = false;
+				return roomType
+			});
+		};
+
 		$scope.openTaskListForm = function(typeIndex, isSystemDefined) {
+			var item = this.item;
+
+			setScrollPos();
+
+			$timeout(function() {
+				openTaskListForm(item, typeIndex, isSystemDefined);
+			}, 100);
+		};
+
+		function openTaskListForm (item, typeIndex, isSystemDefined) {
 			if(!isSystemDefined)
 			{
 				if (typeIndex === 'new') {
 					$scope.taskListForm = 'add';
 					$scope.taskListClickedElement = 'new';
 					resetEachTaskList();
+					resetShowFlags();
 					$timeout(function() {
 						$location.hash('new-form-holder-task-list');
 						$anchorScroll();
 					});
 				} else {
 					$scope.taskListForm = 'edit';
-					var frequencyType = checkForFrequencyType(this.item.frequency);
+					var frequencyType = checkForFrequencyType(item.frequency);
 					$scope.taskListClickedElement = typeIndex;
-					var time = this.item.completion_time;
+					var time = item.completion_time;
 
 					$scope.eachTaskList = {
-						name                         : this.item.name,
-						work_type_id                 : this.item.work_type_id,
-						room_type_ids                : applyIds( $scope.roomTypesList, this.item.room_type_ids ),
-						front_office_status_ids      : applyIds( $scope.foStatusList, this.item.front_office_status_ids ),
-						reservation_statuses_ids     : applyIds( $scope.resHkStatusList, this.item.reservation_statuses_ids ),
-						is_occupied                  : this.item.is_occupied,
-						is_vacant                    : this.item.is_vacant,
+						name                         : item.name,
+						work_type_id                 : item.work_type_id,
+						room_type_ids                : applyIds( $scope.roomTypesList, item.room_type_ids ),
+						front_office_status_ids      : applyIds( $scope.foStatusList, item.front_office_status_ids ),
+						reservation_statuses_ids     : applyIds( $scope.resHkStatusList, item.reservation_statuses_ids ),
+						is_occupied                  : item.is_occupied,
+						is_vacant                    : item.is_vacant,
 						hours                        : !!time ? time.split(':')[0] : '',
 						mins                         : !!time ? time.split(':')[1] : '',
-						task_completion_hk_status_id : this.item.task_completion_hk_status_id,
-						id                           : this.item.id,
-						rooms_task_completion        : initateRoomTaskTimes(time, this.item.room_types_completion_time),
+						task_completion_hk_status_id : item.task_completion_hk_status_id,
+						id                           : item.id,
+						rooms_task_completion        : initateRoomTaskTimes(time, item.room_types_completion_time),
 						isWeekDay                    :frequencyType.isWeekDay,
 						isWeekEnd                    :frequencyType.isWeekEnd,
 						isCustom                     :frequencyType.isCustom,
-						frequency 					 : this.item.frequency,
-						is_active					 : this.item.is_active
+						frequency 					 : item.frequency,
+						is_active					 : item.is_active,
+						is_dirty					 : item.is_dirty,
+						is_clean 					 : item.is_clean,
+						is_pickup					 : item.is_pickup
 					};
 					mapRoomShowflag($scope.eachTaskList);
 					if(frequencyType.isCustom === true){
@@ -525,6 +582,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.closeTaskListForm = function() {
 			$scope.taskListClickedElement = -1;
 			resetEachTaskList();
+
+			scrollToPos();
 		};
 
 		$scope.deleteTaskListItem = function() {
@@ -563,7 +622,11 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				completion_time              : $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
 				rooms_task_completion        : getRoomTaskTimes(),
-				is_active   			     : true
+				is_active   			     : true,
+				is_dirty					 : $scope.eachTaskList.is_dirty,
+				is_clean 					 : $scope.eachTaskList.is_clean,
+				is_pickup					 : $scope.eachTaskList.is_pickup
+
 			};
 
 			var frequencyParams = {};
@@ -626,7 +689,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				task_completion_hk_status_id : $scope.eachTaskList.task_completion_hk_status_id,
 				id                           : $scope.eachTaskList.id,
 				rooms_task_completion        : getRoomTaskTimes(),
-				is_active					 : $scope.eachTaskList.is_active
+				is_active					 : $scope.eachTaskList.is_active,
+				is_clean					 : $scope.eachTaskList.is_clean,
+				is_dirty 					 : $scope.eachTaskList.is_dirty,
+				is_pickup					 : $scope.eachTaskList.is_pickup
 			};
 			var frequencyParams = {};
 			frequencyParams.monday = false;
@@ -685,7 +751,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		$scope.checkCopyBtnShow = function(id) {
 			var room = $scope.eachTaskList.rooms_task_completion[id];
-			return !!room.hours && !!room.mins ? true : false;
+			return !!room.hours || !!room.mins ? true : false;
 		};
 
 		$scope.changedSelectedRooms = function (item, index) {

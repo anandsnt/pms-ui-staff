@@ -30,10 +30,9 @@
                     "sorting-desc" when DESC sorting -->
                 <tr>
                     <th ng-repeat="item in subHeaders track by $index">
-                        <span ng-class="{'sort'         : !!chosenReport.sortByOptions[$index],
-                                         'sorting-asc'  : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === true,
-                                         'sorting-desc' : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === false
-                                     }" ng-click="sortResultBy(chosenReport.sortByOptions[$index])">{{ item }}</span>
+                        <span ng-class="{'sort': hasSort($index), 'sorting-asc': isAsc($index), 'sorting-desc': isDesc($index)}" ng-click="sortResultBy(chosenReport.sortByOptions[$index], chosenReport)">
+                            {{ item }}
+                        </span>
                     </th>
                 </tr>
             </thead>

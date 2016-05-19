@@ -1,50 +1,56 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
-    <div class="modal-content form card-authorize">
+    <div class="modal-content form card-authorize" ng-show="!hasShownReleaseConfirm">
     	<button ng-click="closeDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <fieldset class="content-left">
-            <strong class="h2 message" translate>CREDIT_CARDS</strong>
+            <strong class="h2 message" translate>CREDIT_CARD_AUTHORIZATION</strong>
             <div class="credit-cards scrollable" ng-iscroll='cardsList' ng-iscroll-delay='300'>
-                <div class="wrapper">
-                    <button ng-click="selectCCforAuth($index)" class="block-item item-payment" ng-class="{ 'item-active' : card.active }" ng-repeat="card in authData.billData">
+                <ul class="wrapper">
+                    <li ng-click="selectCCforAuth($index)" class="block-item item-payment" ng-class="{ 'item-active' : card.active }" ng-repeat="card in authData.billData">
                         <figure class="card-logo">
                             <img ng-src="/assets/images/{{card.card_code | lowercase }}.png" alt="" />
                         </figure>
                         <span class="number">
-                                {{ 'NO' | translate }}
+                                {{ 'NO.' | translate }}
                             <span class="value">
                                 {{card.card_number}}
                             </span>
                         </span>
-                        <span class="code"> 
+                        <span class="code">
                                 {{ 'CODE' | translate }}
                             <span class="value" ng-if="card.last_authorization.code">
                                 {{card.last_authorization.code}}
                             </span>
                             <span class="value" ng-if="!card.last_authorization.code">-</span>
                         </span>
-                        <span class="amount"> 
+                        <span class="amount">
                                 {{ 'AMOUNT' | translate }}
                             <span class="value" ng-if="card.last_authorization.amount">
-                                {{ currencySymbol }}{{card.last_authorization.amount}}
+                                {{ currencySymbol }}{{ card.last_authorization.amount | number : 2 }}
                             </span>
                             <span class="value" ng-if="!card.last_authorization.amount">-</span>
                         </span>
-                    </button>
-                    
-                </div>
+                        <!-- Show this only if the code and amount are not "-"-->
+                    <!-- on click open: alerts/manual-authorization-release.html -->
+
+                        <button type="button" class="button blue release-auth" ng-if="!!card.last_authorization.amount && !!card.last_authorization.code" ng-click="onReleaseBtnClick(card)">
+                           {{ 'RELEASE' | translate }}
+                        </button>
+                    </li>
+
+                </ul>
             </div>
         </fieldset>
 
         <fieldset class="content-right">
-            <span class="h2 message" ng-hide="authData.selectedCardDetails.name == '' && authData.selectedCardDetails.number == '' " >      {{authData.selectedCardDetails.name}} {{ 'NO' | translate }} {{authData.selectedCardDetails.number}}
+            <span class="h2 message" ng-hide="authData.selectedCardDetails.name == '' && authData.selectedCardDetails.number == '' " >      {{authData.selectedCardDetails.name}} {{ 'NO.' | translate }} {{authData.selectedCardDetails.number}}
             </span>
-            
+
             <span class="text" ng-hide="authData.selectedCardDetails.last_auth_date == '' ">
-                {{ 'LAST_AUTHORIZATION' | translate }} 
+                {{ 'LAST_AUTHORIZATION' | translate }}
                 <time>{{authData.selectedCardDetails.last_auth_date | date : dateFormat}}</time>
             </span>
-            
+
             <div class="authorization-bills scrollable">
                 <div class="wrapper">
                     <table>
@@ -54,13 +60,13 @@
                                 {{authData.selectedCardDetails.bill_no}}
                             </td>
                             <td translate>BALANCE</td>
-                            <td class="value" ng-class="{ 
+                            <td class="value" ng-class="{
                                 'green' : authData.selectedCardDetails.bill_balance == 0.00,
                                 'red'   : authData.selectedCardDetails.bill_balance > 0.00 }">
-                                {{ currencySymbol }} {{authData.selectedCardDetails.bill_balance}}
+                                {{ currencySymbol }} {{ authData.selectedCardDetails.bill_balance | number : 2 }}
                             </td>
                         </tr>
-                        
+
                     </table>
                 </div>
             </div>
@@ -88,4 +94,34 @@
             </div>
         </fieldset>
     </div>
+
+    <div class="modal-content card-authorize-confirm" ng-show="hasShownReleaseConfirm">
+        <span class="h2 message">{{ 'RELEASE' | translate }}?</span>
+        <div class="block-item item-payment">
+            <figure class="card-logo">
+                 <img ng-src="/assets/images/{{selectedCardData.card_code | lowercase }}.png" alt="" />
+            </figure>
+            <span class="number">{{ 'NO.' | translate }}
+                <span class="value">{{selectedCardData.card_number}}</span>
+            </span>
+            <span class="code">{{ 'CODE' | translate }}
+                <span class="value">{{selectedCardData.last_authorization.code}}</span>
+            </span>
+            <span class="amount">{{ 'AMOUNT' | translate }}
+                <span class="value">{{ currencySymbol }}{{ selectedCardData.last_authorization.amount | number : 2 }}</span>
+            </span>
+        </div>
+        <div class="actions">
+            <button type="button" class="button green open-modal" ng-click="releaseAuthorization(selectedCardData.payment_method_id)">
+                {{ 'RELEASE' | translate }}
+            </button>
+            <button type="button" class="button blank open-modal" ng-click="onCancelClick()">
+                {{ 'CANCEL' | translate }}
+            </button>
+        </div>
+    </div>
+
+
+
+
 </div>

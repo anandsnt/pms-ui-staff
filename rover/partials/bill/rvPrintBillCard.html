@@ -1,61 +1,69 @@
-<div class="invoice-logo">
+<div class="invoice-header top-header">
+    <h1>{{printData.hotel_name}}</h1>
+    <span class="invoice-header-address">
+        {{printData.hotel_address}}
+    </span>
+</div>
+<div class="invoice-logo envelope">
     <h1 translate>INVOICE</h1>
     <img ng-src="{{printData.hotel_logo}}" alt="" />
 </div>
-<table class="guest-info">
-    <tbody>
-        <tr>
-            <th translate>GUEST_FULL_NAME</th>
-            <th translate>ARRIVAL_DATE</th>
-            <th translate>DEPARTURE_DATE</th>
-            <th translate>INVOICE_NO</th>
-        </tr>
-        <tr>
-            <td>{{printData.guest_details.first_name}}&nbsp;{{printData.guest_details.last_name}}</td>
-            <td>{{printData.arrival_date | date:dateFormat}}</td>
-            <td>{{printData.departure_date | date:dateFormat}}</td>
-            <td>{{printData.invoice_number}}</td>
-        </tr>
-        <tr>
-            <th translate>CITY</th>
-            <th translate>STATE</th>
-            <th translate>POSTAL_CODE</th>
-            <th translate>COUNTRY</th>
-        </tr>
-        <tr>
-            <td>{{printData.guest_details.city}}</td>
-            <td>{{printData.guest_details.state}}</td>
-            <td>{{printData.guest_details.postal_code}}</td>
-            <td>{{printData.guest_details.country}}</td>
-        </tr>
-        <tr>
-            <th translate>CONFIRMATION_NO</th>
-            <th translate>ROOM_NO</th>
-            <th translate>TAX_NO</th>
-            <th translate ng-if="printData.reference_number">REFERENCE_NO</th>
-        </tr>
-        <tr>
-            <td>{{printData.confirmation_number}}</td>
-            <td>{{printData.room_number}}</td>
-            <td>{{printData.tax_number}}</td>
-            <td ng-if="printData.reference_number">{{printData.reference_number}}</td>
-        </tr>
-    </tbody>
-</table>
-<div class="invoice-header">
+
+<!-- Case 1: Guest Bill -->
+<div class="info-container" ng-if="!printData.is_from_cards">
+    <div class="info-left">
+        {{printData.guest_details.first_name}} {{printData.guest_details.last_name}}<br/>
+        {{printData.guest_details.street}}<br ng-if="printData.guest_details.street"/>
+        {{printData.guest_details.street2}}<br ng-if="printData.guest_details.street2"/> 
+        {{printData.guest_details.city_address}}<br ng-if="printData.guest_details.city_address"/>
+        {{printData.guest_details.country}}
+        <div class="info-bottom">
+            <strong translate>INVOICE_DATE:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
+            <strong translate>INVOICE_NO:</strong>{{printData.invoice_number}}<br/>
+        </div>
+    </div>
+    <div class="info-right">
+        <strong translate>ARRIVAL_DATE:</strong>{{printData.arrival_date | date:dateFormat}}<br/>
+        <strong translate>DEPARTURE_DATE:</strong>{{printData.departure_date | date:dateFormat}}<br/>
+        <strong translate>ROOM_NO:</strong>{{printData.room_number}}<br/> 
+        <strong translate>CONFIRMATION_NO:</strong>{{printData.confirmation_number}}<br/>
+        <strong translate>TAX_NO:</strong>{{printData.tax_number}}
+    </div>
+</div>
+
+<!-- Case 2: Company / Travel Agent Bill -->
+<div class="info-container" ng-if="printData.is_from_cards">
+    <div class="info-left">
+        {{printData.card_details.name}}<br ng-if="printData.card_details.name"/>
+        {{printData.card_details.contact_name}}<br ng-if="printData.card_details.contact_name"/>
+        {{printData.card_details.address_line_1}}<br ng-if="printData.card_details.address_line_1"/>
+        {{printData.card_details.address_line_2}}<br ng-if="printData.card_details.address_line_2"/>  
+        {{printData.card_details.city_address}}<br ng-if="printData.card_details.city_address"/>
+        {{printData.card_details.country}}
+        <div class="info-bottom">
+            <strong translate>INVOICE_DATE:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
+            <strong translate>INVOICE_NO:</strong>{{printData.invoice_number}}<br/>
+            <strong ng-if="printData.payment_due_in_days" translate>PAYMENT_DUE_DAYS:</strong>{{printData.payment_due_in_days}}<br/>
+        </div>
+    </div>
+    <div class="info-right">
+        <strong translate>GUEST_NAME:</strong>{{printData.guest_details.first_name}} {{printData.guest_details.last_name}}<br/>
+        <strong translate>ARRIVAL_DATE:</strong>{{printData.arrival_date | date:dateFormat}}<br/>
+        <strong translate>DEPARTURE_DATE:</strong>{{printData.departure_date | date:dateFormat}}<br/>
+        <strong translate>ROOM_NO:</strong>{{printData.room_number}}<br/> 
+        <strong translate>CONFIRMATION_NO:</strong>{{printData.confirmation_number}}<br/>
+        <strong translate>NO_OF_GUESTS:</strong>{{printData.no_of_guests}}<br/>
+        <strong ng-if="printData.card_details.type ==='COMPANY'" translate>CORP_ID:</strong>{{printData.card_details.corporate_id}}
+        <strong ng-if="printData.card_details.type ==='TRAVELAGENT'" translate>IATA_#:</strong>{{printData.card_details.iata_no}}
+    </div>
+</div>
+
+<div class="invoice-header text-center">
     {{printData.custom_text_header}}
 </div>
+
 <div class="invoice-body">
-    <p class="date"><strong translate>INVOICE_DATE</strong>{{printData.invoice_date | date:dateFormat}}</p>
     <table class="invoice-details">
-        <caption>
-            {{printData.hotel_name}}
-            <span ng-if="printData.show_hotel_address">
-               {{printData.street}}&nbsp;&#9830;&nbsp;{{printData.city}},&nbsp;{{printData.state}}&nbsp; {{printData.zipcode}}&nbsp;&#9830;&nbsp;{{printData.country}}
-               <br>
-               {{ printData.phone }}&nbsp;&#9830;&nbsp;{{ printData.email }}
-            </span>
-        </caption>
         <thead>
             <tr>
                 <th translate>DATE_OF_CHARGE</th>
@@ -83,7 +91,7 @@
                 <td>{{currencySymbol}}{{printData.net_amount}}</td>
             </tr>
 
-            <tr ng-repeat="item in printData.tax_details">
+            <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="item in printData.tax_details">
                 <td colspan="3">
                     {{item.description}}
                 </td>
@@ -91,9 +99,7 @@
                     {{currencySymbol}}{{item.amount | number: precisonTwo}}
                 </td>
             </tr>
-
         </tfoot>
-
         <tbody>
             <tr ng-repeat="item in printData.charge_details_list">
                 <td>{{item.date | date:dateFormat}}</td>
@@ -115,9 +121,36 @@
                 <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}</td>
             </tr>
         </tbody>
-
     </table>
 </div>
-<div class="invoice-footer">
+
+<table class="invoice-details extended-tax-table" ng-if="printData.has_enabled_extended_tax_breakdown">
+    <thead>
+        <tr>
+            <th class="text-align-left" translate>TAX_DESCRIPTION</th>
+            <th translate>GROSS</th>
+            <th translate>NET</th>
+            <th translate>TAX</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in printData.extended_tax_breakdown.details">
+            <td class="text-align-left">{{ item.description }}</td>
+            <td>{{currencySymbol}}{{ item.gross_amount | number: precisonTwo }}</td>
+            <td>{{currencySymbol}}{{ item.net_amount | number: precisonTwo }}</td>
+            <td>{{currencySymbol}}{{ item.tax_amount | number: precisonTwo }}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="text-align-left" translate>TOTAL</td>
+            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo }}</td>
+            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_net_amount | number: precisonTwo }}</td>
+            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo }}</td>
+        </tr>
+    </tfoot>           
+</table>
+
+<div class="invoice-footer text-center">
     {{printData.custom_text_footer}}
 </div>

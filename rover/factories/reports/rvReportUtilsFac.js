@@ -187,8 +187,16 @@ angular.module('reportsModule')
 
         var __showFilterNames = {
             'SHOW_COMPANY': true,
-            'SHOW_TRAVEL_AGENT': true
+            'SHOW_TRAVEL_AGENT': true,
+            // for CREDIT_CHECK_REPORT
+            'INCLUDE_DUE_OUT': true,
+            'INCLUDE_INHOUSE': true
         };
+
+        var __chargeTypeFilterNames = {
+            SHOW_DELETED_CHARGES: true,
+            SHOW_ADJUSTMENTS: true
+        }
 
         /**
          * Create a DS representing the found filter into the general options DS
@@ -216,13 +224,11 @@ angular.module('reportsModule')
             // if filter is this, make it selected by default
             if ( report['title'] == reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
                 selected = true;
-                report['hasGeneralOptions']['title'] = filter.description;
             };
 
             // if filter value is either of these, make it selected by default
             if ( dueInDueOut[filter.value] ) {
                 selected = true;
-                report['hasGeneralOptions']['title'] = filter.description;
             };
 
             // if filter value is either of these, must include when report submit
@@ -232,18 +238,16 @@ angular.module('reportsModule')
 
             // if filter value is either of these, must include when report submit
             if ( report['title'] == reportNames['FORECAST_GUEST_GROUPS'] ) {
-                report['hasGeneralOptions']['title'] = filter.description;
+                selected = true;
             };
 
             if (report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'EXCLUDE_TAX'){
                 selected = true;
-                report['hasGeneralOptions']['title'] = filter.description;
             }
 
             // if filter is this, make it selected by default
             if ( report['title'] == reportNames['DAILY_PRODUCTION_ROOM_TYPE'] && filter.value == 'INCLUDE_ADDONS' ) {
                 selected = true;
-                report['hasGeneralOptions']['title'] = filter.description;
             };
 
             report['hasGeneralOptions']['data'].push({
@@ -261,10 +265,9 @@ angular.module('reportsModule')
          */
         var __pushDisplayData = function(report, filter) {
             var selected = false;
-            
+
             if ( report['title'] == reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'INCLUDE_MARKET' ) {
                 selected = true;
-                report['hasDisplay']['title'] = filter.description;
             };
 
             report['hasDisplay']['data'].push({
@@ -291,7 +294,15 @@ angular.module('reportsModule')
             report['hasShow']['data'].push({
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
-                selected    : false
+                selected    : true
+            });
+        };
+
+        var __pushChargeTypeData = function(report, filter) {
+            report['hasChargeTypes']['data'].push({
+                paramKey    : filter.value.toLowerCase(),
+                description : filter.description,
+                selected    : true
             });
         };
 
@@ -319,78 +330,86 @@ angular.module('reportsModule')
          */
         factory.processFilters = function ( report, data ) {
 
-            // pre-process charge groups and charge codes
-            var processedCGCC = {};
+            if ( report.hasUserFilter ) {
+                report.empList = {
+                    data: angular.copy( data.activeUserList ),
+                    options: {
+                        selectAll: true,
+                        hasSearch: true,
+                        key: 'full_name',
+                        altKey: 'email'
+                    }
+                }
+            };
 
             // create DS for options combo box
-            __setData(report, 'hasGeneralOptions', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : false,
-                defaultTitle : 'Select Options',
-                title        : 'Select Options',
-                data         : []
-            });
+            report.hasGeneralOptions = {
+                data: [],
+                options: {
+                    selectAll: false,
+                    hasSearch: false,
+                    key: 'description'
+                }
+            }
 
             // create a name space for chosen options
             report.chosenOptions = {};
 
-            // create DS for display combo box
-            __setData(report, 'hasDisplay', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : false,
-                defaultTitle : 'Select displays',
-                title        : 'Select displays',
-                data         : []
-            });
-
+            report.hasDisplay = {
+                data: [],
+                options: {
+                    selectAll: true,
+                    hasSearch: false,
+                    key: 'description',
+                    defaultValue: 'Select displays'
+                }
+            }
 
             // create DS for Exclude combo box
-            __setData(report, 'hasExclusions', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : false,
-                defaultTitle : 'Exclude',
-                title        : 'Exclude',
-                data         : []
-            });
+            report.hasExclusions = {
+                data: [],
+                options: {
+                    selectAll: false,
+                    hasSearch: false,
+                    key: 'description',
+                    defaultValue: 'Exclude'
+                }
+            }
 
             // create DS for guest or account
-            __setData(report, 'hasGuestOrAccountFilter', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : true,
-                defaultTitle : 'Select',
-                title        : 'All Selected',
-                data         : []
-            });
+            report.hasGuestOrAccountFilter = {
+                data: [],
+                options: {
+                    selectAll: true,
+                    hasSearch: false,
+                    key: 'description'
+                }
+            }
 
             // create DS for options combo box
-            __setData(report, 'hasShow', {
-                type         : 'FAUX_SELECT',
-                show         : false,
-                selectAll    : false,
-                defaultTitle : 'Select Options',
-                title        : 'Select Options',
-                data         : []
-            });
+            report.hasShow = {
+                data: [],
+                options: {
+                    selectAll: true,
+                    hasSearch: false,
+                    key: 'description',
+                    allValue: 'Both',
+                    defaultValue: 'Select options'
+                }
+            }
 
-            // track all the dates avaliable on this report
-            report.allDates = [];
+            // create DS for options combo box
+            report.hasChargeTypes = {
+                data: [],
+                options: {
+                    selectAll: true,
+                    hasSearch: false,
+                    key: 'description'
+                }
+            }
 
             // going around and taking a note on filters
             _.each(report['filters'], function(filter) {
-
-                if ( (filter.value === 'INCLUDE_CHARGE_CODE' || filter.value === 'INCLUDE_CHARGE_GROUP') && _.isEmpty(processedCGCC) ) {
-                    if ( report['title'] === reportNames['DAILY_TRANSACTIONS'] ) {
-                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, 'REMOVE_PAYMENTS' );
-                    } else if ( report['title'] === reportNames['DAILY_PAYMENTS'] ) {
-                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, 'ONLY_PAYMENTS' );
-                    } else {
-                        processedCGCC = __adjustChargeGroupsCodes( data.chargeNAddonGroups, data.chargeCodes, '' );
-                    };
-                };
 
                 if(filter.value === 'RATE_TYPE') {
                     report['hasRateTypeFilter'] = filter;
@@ -399,59 +418,6 @@ angular.module('reportsModule')
                 if(filter.value === 'RATE') {
                     report['hasRateFilter'] = filter;
                 }
-
-                // check for date filter and keep a ref to that item
-                if ( filter.value === 'DATE_RANGE' ) {
-                    report['hasDateFilter'] = filter;
-
-                    // for 'Cancellation & No Show' report the description should be 'Arrival Date Range'
-                    // rather than the default 'Date Range'
-                    if ( report['title'] === 'Cancellation & No Show' ) {
-                        report['hasDateFilter']['description'] = 'Arrival Date Range';
-                    };
-
-                    // for 'Booking Source & Market Report' report the description should be 'Booked Date'
-                    if ( report['title'] === 'Booking Source & Market Report' ) {
-                        report['hasDateFilter']['description'] = 'Booked Date';
-                    };
-
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasDateFilter'], {
-                        showRemove : true,
-                        fromModel  : 'fromDate',
-                        untilModel : 'untilDate'
-                    });
-                    report.allDates.push( 'hasDateFilter' );
-                };
-
-                // check for cancellation date filter and keep a ref to that item
-                if ( filter.value === 'CANCELATION_DATE_RANGE' || filter.value === 'CANCELLATION_DATE_RANGE' ) {
-                    report['hasCancelDateFilter'] = filter;
-
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasCancelDateFilter'], {
-                        showRemove : true,
-                        fromModel  : 'fromCancelDate',
-                        untilModel : 'untilCancelDate'
-                    });
-                    report.allDates.push( 'hasCancelDateFilter' );
-                };
-
-                // check for arrival date filter and keep a ref to that item
-                if ( filter.value === 'ARRIVAL_DATE_RANGE' ) {
-                    report['hasArrivalDateFilter'] = filter;
-
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasArrivalDateFilter'], {
-                        showRemove : true,
-                        fromModel  : 'fromArrivalDate',
-                        untilModel : 'untilArrivalDate'
-                    });
-                    report.allDates.push( 'hasArrivalDateFilter' );
-                };
 
                 if(filter.value === 'RATE_CODE') {
                     report['hasRateCodeFilter'] = filter;
@@ -463,93 +429,15 @@ angular.module('reportsModule')
 
                 if(filter.value === 'RESTRICTION') {
                     report['hasRestrictionListFilter'] = filter;
-                };                
-                
-                // check for group start date filter and keep a ref to that item
-                if ( filter.value === 'GROUP_START_DATE_RANGE' ) {
-                    report['hasGroupStartDateRange'] = filter;
-
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasGroupStartDateRange'], {
-                        showRemove : true,
-                        fromModel  : 'groupStartDate',
-                        untilModel : 'groupEndDate'
-                    });
-                    report.allDates.push( 'hasGroupStartDateRange' );
                 };
 
-                // check for Deposit due date range filter and keep a ref to that item
-                if ( filter.value === 'DEPOSIT_DATE_RANGE' ) {
-                    report['hasDepositDateFilter'] = filter;
-
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasDepositDateFilter'], {
-                        showRemove : true,
-                        fromModel  : 'fromDepositDate',
-                        untilModel : 'untilDepositDate'
-                    });
-                    report.allDates.push( 'hasDepositDateFilter' );
+                if(filter.value === 'ORIGIN') {
+                    report['hasOriginFilter'] = filter;
                 };
 
-                // check for create date range filter and keep a ref to that item
-                if ( filter.value === 'CREATE_DATE_RANGE' ) {
-                    report['hasCreateDateFilter'] = filter;
-
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasCreateDateFilter'], {
-                        showRemove : true,
-                        fromModel  : 'fromCreateDate',
-                        untilModel : 'untilCreateDate'
-                    });
-                    report.allDates.push( 'hasCreateDateFilter' );
+                if(filter.value === 'URLS') {
+                    report['hasURLsList'] = filter;
                 };
-
-                // check for paid date range filter and keep a ref to that item
-                if ( filter.value === 'PAID_DATE_RANGE' ) {
-                    report['hasPaidDateRange'] = filter;
-
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasPaidDateRange'], {
-                        showRemove : true,
-                        fromModel  : 'fromPaidDate',
-                        untilModel : 'untilPaidDate'
-                    });
-                    report.allDates.push( 'hasPaidDateRange' );
-                };
-
-                // check for "by single date" filter and keep a ref to that item
-                if ( filter.value === 'SINGLE_DATE' ) {
-                    report['hasSingleDateFilter'] = filter;
-
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasSingleDateFilter'], {
-                        showRemove : true,
-                        fromModel  : 'singleValueDate'
-                    });
-                    report.allDates.push( 'hasSingleDateFilter' );
-                };
-
-                // check for rate adjustment date range filter and keep a ref to that item
-                if ( filter.value === 'ADJUSTMENT_DATE_RANGE' ) {
-                    report['hasAdjustmentDateRange'] = filter;
-
-                    // track - showRemove flag, model names.
-                    // push date name to 'allDates'
-                    angular.extend(report['hasAdjustmentDateRange'], {
-                        showRemove : true,
-                        fromModel  : 'fromAdjustmentDate',
-                        untilModel : 'untilAdjustmentDate'
-                    });
-                    report.allDates.push( 'hasAdjustmentDateRange' );
-                };
-
-
-
 
                 // check for time filter and keep a ref to that item
                 // create std 15min stepped time slots
@@ -557,8 +445,6 @@ angular.module('reportsModule')
                     report['hasTimeFilter'] = filter;
                     report['timeFilterOptions'] = factory.createTimeSlots();
                 };
-
-
 
 
                 // check for CICO filter and keep a ref to that item
@@ -578,14 +464,23 @@ angular.module('reportsModule')
                 };
 
 
-
+                // check for include company/ta filter and keep a ref to that item
+                if ( filter.value === 'INCLUDE_COMPANYCARD_TA' ) {
+                    report['hasIncludeCompanyTa'] = filter;
+                };
 
                 // check for include company/ta/group filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' || filter.value === 'GROUP_COMPANY_TA_CARD' ) {
-                    report['hasIncludeComapnyTaGroup'] = filter;
+                    report['hasIncludeCompanyTaGroup'] = filter;
                 };
 
 
+                if ( filter.value === 'MIN_REVENUE' ) {
+                    report['hasMinRevenue'] = filter;
+                };
+                if ( filter.value === 'MIN_ROOM_NIGHTS' ) {
+                    report['hasMinRoomNights'] = filter;
+                };
 
 
                 // fill up DS for options combo box
@@ -595,15 +490,13 @@ angular.module('reportsModule')
 
                  // fill up DS for options combo box
                 if ( __excludeFilterNames[filter.value] ) {
-                    
                     var selected = false;
-            
+
                     if (report['title'] == reportNames['DAILY_PRODUCTION_DEMO'] || reportNames['DAILY_PRODUCTION_RATE']) {
-                        selected = true;
-                        report['hasExclusions']['title'] = filter.description;
+                        report['hasExclusions'].options.selectAll = true;
                     };
 
-                    report['hasExclusions']['data'].push({
+                    report['hasExclusions'].data.push({
                         paramKey    : filter.value.toLowerCase(),
                         description : filter.description,
                         selected    : selected
@@ -640,6 +533,10 @@ angular.module('reportsModule')
                 if ( __showFilterNames[filter.value] ) {
                     __pushShowData( report, filter );
                 };
+
+                if ( __chargeTypeFilterNames[filter.value] ) {
+                    __pushChargeTypeData( report, filter );
+                };
             });
         };
 
@@ -675,7 +572,7 @@ angular.module('reportsModule')
                 if ( 'INCLUDE_GUARANTEE_TYPE' == filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchGuaranteeTypes()
-                        .then( fillGarntTypes );  
+                        .then( fillGarntTypes );
                 }
 
                 else if ( 'CHOOSE_MARKET' == filter.value && ! filter.filled ) {
@@ -730,10 +627,10 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchRestrictionList()
                         .then( fillRestrictionList );
-                }        
-                
-                else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('INCLUDE_CHARGE_CODE' == filter.value && ! filter.filled)  || ('ADDON_GROUPS' == filter.value && ! filter.filled) ) {
-                    
+                }
+
+                else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('INCLUDE_CHARGE_CODE' == filter.value && ! filter.filled)  || ('ADDON_GROUPS' == filter.value && ! filter.filled) || ('SHOW_CHARGE_CODES' == filter.value && ! filter.filled) ) {
+
                     // fetch charge groups
                     requested++;
                     reportsSubSrv.fetchChargeNAddonGroups()
@@ -750,12 +647,23 @@ angular.module('reportsModule')
                                 .then( fillAGAs.bind(null, chargeNAddonGroups) );
                         });
                 }
+                else if ( 'URLS' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchURLs()
+                        .then( fillURLs );
+                }
+
+                else if ( 'ORIGIN' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchOrigins()
+                        .then( fillOrigins );
+                }
 
                 else {
                     // no op
                 };
-            });           
-            
+            });
+
             // lets just resolve the deferred already!
             if ( 0 == requested ) {
                 checkAllCompleted();
@@ -769,15 +677,16 @@ angular.module('reportsModule')
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        __setData(report, 'hasGuaranteeType', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Guarantees',
-                            title        : 'Select Guarantees',
-                            data         : angular.copy( data )
-                        });
+
+                        report.hasGuaranteeType = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: true,
+                                key: 'name',
+                                defaultValue: 'Select guarantees'
+                            }
+                        }
                     };
                 });
 
@@ -793,15 +702,14 @@ angular.module('reportsModule')
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        __setData(report, 'hasMarketsList', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Markets',
-                            title        : 'Select Markets',
-                            data         : angular.copy( data )
-                        });
+                        report.hasMarketsList = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: false,
+                                key: 'name'
+                            }
+                        }
                     };
                 });
 
@@ -817,15 +725,14 @@ angular.module('reportsModule')
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        __setData(report, 'hasSourcesList', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Sources',
-                            title        : 'Select Sources',
-                            data         : angular.copy( data )
-                        });
+                        report.hasSourcesList = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: false,
+                                key: 'name'
+                            }
+                        }
                         report['filters']['filled'] = true;
                     };
                 });
@@ -842,15 +749,14 @@ angular.module('reportsModule')
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        __setData(report, 'hasOriginsList', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Origins',
-                            title        : 'Select Origins',
-                            data         : angular.copy( data )
-                        });
+                        report.hasOriginsList = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: false,
+                                key: 'name'
+                            }
+                        }
                     };
                 });
 
@@ -866,15 +772,14 @@ angular.module('reportsModule')
 
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        __setData(report, 'hasHoldStatus', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Hold Status',
-                            title        : 'Select Hold Status',
-                            data         : angular.copy( data )
-                        });
+                        report.hasHoldStatus = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: false,
+                                key: 'name'
+                            }
+                        }
                     };
                 });
 
@@ -905,20 +810,15 @@ angular.module('reportsModule')
                             ];
                         };
 
-                        __setData(report, 'hasReservationStatus', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select Status',
-                            title        : 'Select Status',
-                            data         : angular.copy( customData )
-                        });
-
-                        if ( report['title'] === reportNames['DEPOSIT_REPORT'] ) {
-                            report['hasReservationStatus'].selectAll = true;
-                            report['hasReservationStatus'].title = 'All Selected';
-                        };
+                        report.hasReservationStatus = {
+                            data: customData,
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'status',
+                                defaultValue: 'Select Status'
+                            }
+                        }
                     };
                 });
 
@@ -932,79 +832,125 @@ angular.module('reportsModule')
                     foundFilter = _.find(report['filters'], { value: 'RATE_CODE' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        
-                        __setData(report, 'hasRateCodeFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : false,
-                            defaultTitle : 'Select one Rate Code',
-                            title        : data[0].description,
-                            data         : angular.copy( data )
-                        });
+
+                        report.hasRateCodeFilter = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: true,
+                                selectAll: false,
+                                singleSelect: true,
+                                key: 'description',
+                                defaultValue: 'Select Rate'
+                            }
+                        }
                     };
                 });
 
                 completed++;
                 checkAllCompleted();
             };
-            
+
             function fillRoomTypeList (data) {
-                _.each(data, function(roomType){
-                    roomType.selected = true;
-                });                
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        
-                        __setData(report, 'hasRoomTypeFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Selecte Room Type(s)',
-                            title        : 'All Selected',
-                            data         : angular.copy( data )
-                        });
+
+                        report.hasRoomTypeFilter = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'name'
+                            }
+                        }
                     };
                 });
 
                 completed++;
                 checkAllCompleted();
-            }; 
+            };
 
             function fillRestrictionList (data) {
-                _.each(data, function(restriction){
-                    restriction.selected = true;
-                });
-
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RESTRICTION' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        
-                        __setData(report, 'hasRestrictionListFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Restriction(s)',
-                            title        : 'All Selected',
-                            data         : angular.copy( data )
-                        });
+
+                        report.hasRestrictionListFilter = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'description',
+                                defaultValue: 'Select Restriction(s)'
+                            }
+                        }
                     };
                 });
 
                 completed++;
                 checkAllCompleted();
-            };        
+            };
+            function fillOrigins (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'ORIGIN' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasOriginFilter = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'description',
+                                defaultValue: 'Select Origin(s)'
+                            },
+                            affectsFilter: {
+                                name: 'hasURLsList',
+                                process: function(filter, selectedItems) {
+                                    var hasUrl = _.find(selectedItems, { value: 'URL' });
+                                    console.log(!hasUrl);
+                                    filter.updateData(!hasUrl);
+                                }
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            };
+
+            function fillURLs (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'URLS'});
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasURLsList = {
+                            data: angular.copy( data ),
+                            originalData: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'name',
+                                defaultValue: 'Select URL(s)'
+                            },
+                            updateData: function(shouldHide) {
+                                this.data = shouldHide ? [] : this.originalData;
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            };
 
             var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
                 var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
                     rateTypeListIds      = _.unique(rateTypeListIds),
                     rateTypeObject       = {},
-                    rateTypeListToReturn = rateTypeListIds.map(function(id){ 
+                    rateTypeListToReturn = rateTypeListIds.map(function(id){
                         rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
                         if(rateTypeObject) {
                             rateTypeObject.name = rateTypeObject.rate_type_name;
@@ -1025,7 +971,7 @@ angular.module('reportsModule')
             //
             function fillRateTypesAndRateList(data) {
                 var foundFilter;
-                
+
                 //default all are selected for rate & rate types
                 _.each(data, function(rate) {
                     rate.selected = true;
@@ -1035,31 +981,29 @@ angular.module('reportsModule')
                     foundFilter = _.find(report['filters'], { value: 'RATE' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-                        
-                        __setData(report, 'hasRateTypeFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Rate Type',
-                            title        : 'All Selected',
-                            data         : angular.copy( extractRateTypesFromRateTypesAndRateList( data ) )
-                        });
 
-                        __setData(report, 'hasRateFilter', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundFilter,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Rate',
-                            title        : 'All Selected',
-                            data         : angular.copy( extractRatesFromRateTypesAndRateList( data ) )
-                        });
+                        report.hasRateTypeFilter = {
+                            data: angular.copy( extractRateTypesFromRateTypesAndRateList(data) ),
+                            options: {
+                                selectAll: true,
+                                hasSearch: true,
+                                key: 'name'
+                            }
+                        }
+
+                        report.hasRateFilter = {
+                            data: angular.copy( extractRatesFromRateTypesAndRateList(data) ),
+                            options: {
+                                selectAll: true,
+                                hasSearch: true,
+                                key: 'name'
+                            }
+                        }
                     };
                 });
 
                 completed++;
-                checkAllCompleted();                
+                checkAllCompleted();
             };
 
             // fill charge group and charge codes
@@ -1070,6 +1014,8 @@ angular.module('reportsModule')
 
                     var title,
                         selected;
+
+                    var foundCCC;
 
                 _.each(reportList, function(report) {
 
@@ -1097,31 +1043,62 @@ angular.module('reportsModule')
 
                     if ( !! foundCG ) {
                         foundCG['filled'] = true;
-                        __setData(report, 'hasByChargeGroup', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundCG,
-                            show         : false,
-                            selectAll    : selected,
-                            defaultTitle : 'Select Groups',
-                            title        : selected ? 'All Selected' : 'Select Groups',
-                            data         : angular.copy( processedCGCC.chargeGroups )
-                        });
+                        report.hasByChargeGroup = {
+                            data: angular.copy( processedCGCC.chargeGroups ),
+                            options: {
+                                selectAll: selected,
+                                hasSearch: false,
+                                key: 'name'
+                            },
+                            affectsFilter: {
+                                name: 'hasByChargeCode',
+                                process: function(filter, selectedItems) {
+                                    _.each(filter.originalData, function (od) {
+                                        od.disabled = true;
+                                    });
+                                    /**/
+                                    _.each(filter.originalData, function (od) {
+                                        _.each(od.associcated_charge_groups, function (cg) {
+                                            _.each(selectedItems, function (si) {
+                                                if (cg.id === si.id) {
+                                                    od.disabled = false;
+                                                }
+                                            });
+                                        });
+                                    });
+                                    /**/
+                                    filter.updateData();
+                                }
+                            }
+                        }
+
+                        console.log( '=====================' );
+                        console.log( report['title'] );
+                        console.log( report.hasByChargeGroup );
                     };
 
-                    foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' });
+                    foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' }) || _.find(report['filters'], { value: 'SHOW_CHARGE_CODES' });
 
                     if ( !!foundCC ) {
                         foundCC['filled'] = true;
-                        __setData(report, 'hasByChargeCode', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundCC,
-                            show         : false,
-                            selectAll    : selected,
-                            defaultTitle : 'Select Codes',
-                            title        : selected ? 'All Selected' : 'Select Codes',
-                            data         : angular.copy( processedCGCC.chargeCodes ),
-                            originalData : angular.copy( processedCGCC.chargeCodes )
-                        });
+                        report.hasByChargeCode = {
+                            data: angular.copy( processedCGCC.chargeCodes ),
+                            originalData: angular.copy( processedCGCC.chargeCodes ),
+                            options: {
+                                selectAll: selected,
+                                hasSearch: false,
+                                key: 'name',
+                            },
+                            updateData: function() {
+                                var enabled = [];
+                                _.each (this.originalData, function (od) {
+                                    if ( ! od.disabled ) {
+                                        enabled.push(od);
+                                    }
+                                });
+                                this.data = enabled;
+                            }
+                        }
                     };
                 });
 
@@ -1134,35 +1111,67 @@ angular.module('reportsModule')
                 var foundAG,
                     foundAs;
 
+                var flattenAddons = function(addons) {
+                    var data = [];
+                    _.each (addons, function (addon) {
+                        if ( ! addon.disabled ) {
+                            _.each(addon.list_of_addons, function(la) {
+                                data.push(la);
+                            });
+                        }
+                    });
+                    return data;
+                }
+
                 _.each(reportList, function(report) {
                     foundAG = _.find(report['filters'], { value: 'ADDON_GROUPS' });
 
                     if ( !! foundAG ) {
                         foundAG['filled'] = true;
-                        __setData(report, 'hasAddonGroups', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundAG,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Addon Group',
-                            title        : 'All Selected',
-                            data         : selectAllAddonGroups( angular.copy(chargeNAddonGroups) ),
-                        });
+                        report.hasAddonGroups = {
+                            data: angular.copy(chargeNAddonGroups),
+                            options: {
+                                selectAll: true,
+                                hasSearch: true,
+                                key: 'name'
+                            },
+                            affectsFilter: {
+                                name: 'hasAddons',
+                                process: function(filter, selectedItems) {
+                                    _.each(filter.originalData, function (od) {
+                                        od.disabled = true;
+                                    });
+                                    /**/
+                                    _.each(filter.originalData, function (od) {
+                                        _.each(selectedItems, function (si) {
+                                            if (od.group_id === si.id) {
+                                                od.disabled = false;
+                                            }
+                                        });
+                                    });
+                                    /**/
+                                    filter.updateData();
+                                }
+                            }
+                        }
                     };
 
                     foundAs = _.find(report['filters'], { value: 'ADDONS' });
 
                     if ( !!foundAs ) {
                         foundAs['filled'] = true;
-                        __setData(report, 'hasAddons', {
-                            type         : 'FAUX_SELECT',
-                            filter       : foundAs,
-                            show         : false,
-                            selectAll    : true,
-                            defaultTitle : 'Select Addon',
-                            title        : 'All Selected',
-                            data         : selectAllAddons( angular.copy(addons) )
-                        });
+                        report.hasAddons = {
+                            data: flattenAddons(addons),
+                            originalData: angular.copy( addons ),
+                            options: {
+                                selectAll: true,
+                                hasSearch: true,
+                                key: 'addon_name',
+                            },
+                            updateData: function() {
+                                this.data = flattenAddons(this.originalData);
+                            }
+                        }
                     };
                 });
 
@@ -1182,6 +1191,11 @@ angular.module('reportsModule')
             // remove the value for 'BLANK'
             if ( report['group_fields'] && report['group_fields'].length ) {
                 report['groupByOptions'] = _.reject(report['group_fields'], { value: 'BLANK' });
+            };
+
+            // patch
+            if ( report['title'] === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
+                report['groupByOptions'] = undefined;
             };
         };
 
@@ -1369,6 +1383,58 @@ angular.module('reportsModule')
                 report['sort_fields'][3] = null;
                 report['sort_fields'][4] = balance;
             };
+
+            // need to reorder the sort_by options
+            // for guest balance report in the following order
+            if ( report['title'] === reportNames['COMPANY_TA_TOP_PRODUCERS'] ) {
+                var accountName = angular.copy( _.find(report['sort_fields'], { 'value': 'COMPANY_TA_NAME' }) ),
+                    roomNights  = angular.copy( _.find(report['sort_fields'], { 'value': 'ROOM_NIGHTS' }) ),
+                    revenue     = angular.copy( _.find(report['sort_fields'], { 'value': 'REVENUE' }) );
+
+                report['sort_fields'][0] = accountName;
+                report['sort_fields'][1] = null;
+                report['sort_fields'][2] = null;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = roomNights;
+                report['sort_fields'][5] = null;
+                report['sort_fields'][6] = null;
+                report['sort_fields'][7] = revenue;
+                report['sort_fields'][8] = null;
+                report['sort_fields'][9] = null;
+            };
+
+            // need to reorder the sort_by options
+            // for guest balance report in the following order
+            if ( report['title'] === reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT'] ) {
+                var chargeCode = angular.copy( _.find(report['sort_fields'], { 'value': 'CHARGE_CODE' }) ),
+                    date  = angular.copy( _.find(report['sort_fields'], { 'value': 'DATE' }) );
+
+                report['sort_fields'][0] = null;
+                report['sort_fields'][1] = chargeCode;
+                report['sort_fields'][2] = null;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = null;
+                report['sort_fields'][5] = date;
+                report['sort_fields'][6] = null;
+                report['sort_fields'][7] = null;
+                report['sort_fields'][8] = null;
+                report['sort_fields'][9] = null;
+            };
+
+            // need to reorder the sort_by options
+            // for guest balance report in the following order
+            if ( report['title'] === reportNames['DEPOSIT_SUMMARY'] ) {
+                var credit = angular.copy( _.find(report['sort_fields'], { 'value': 'CREDIT' }) ),
+                    debit    = angular.copy( _.find(report['sort_fields'], { 'value': 'DEBIT' }) ),
+                    name    = angular.copy( _.find(report['sort_fields'], { 'value': 'NAME' }) );
+
+                report['sort_fields'][0] = name;
+                report['sort_fields'][1] = null;
+                report['sort_fields'][2] = null;
+                report['sort_fields'][3] = null;
+                report['sort_fields'][4] = debit;
+                report['sort_fields'][5] = credit;
+            };
         };
 
 
@@ -1397,6 +1463,24 @@ angular.module('reportsModule')
                     if ( !! roomType ) {
                         roomType['sortDir'] = true;
                         report['chosenSortBy'] = roomType['value'];
+                    };
+                };
+
+                // making sort by Revenue [desc] default
+                if ( report['title'] === reportNames['COMPANY_TA_TOP_PRODUCERS'] ) {
+                    var revenue = _.find(report['sort_fields'], { 'value': 'REVENUE' });
+                    if ( !! revenue ) {
+                        revenue['sortDir'] = false;
+                        report['chosenSortBy'] = revenue['value'];
+                    };
+                };
+
+                // making sort by Room Number [asc] default
+                if ( report['title'] === reportNames['CREDIT_CHECK_REPORT'] ) {
+                    var roomNo = _.find(report['sort_fields'], { 'value': 'ROOM_NO' });
+                    if ( !! roomNo ) {
+                        roomNo['sortDir'] = true;
+                        report['chosenSortBy'] = roomNo['value'];
                     };
                 };
             };
@@ -1556,7 +1640,8 @@ angular.module('reportsModule')
                 _mm   = '',
                 _step = 15;
 
-            var i = m = 0,
+            var i = 0,
+                m = 0,
                 h = -1;
 
             // 4 parts in each of 24 hours (00 -> 23)

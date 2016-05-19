@@ -6,8 +6,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		//store basic details as rootscope variables
 		$rootScope.adminRole = adminDashboardConfigData.admin_role;
+		$rootScope.isServiceProvider = adminDashboardConfigData.is_service_provider;
 		$rootScope.hotelId = adminDashboardConfigData.hotel_id;
 		$rootScope.isPmsConfigured = (adminDashboardConfigData.is_pms_configured === 'true') ? true : false;
+
+		$rootScope.isSntAdmin = $rootScope.adminRole === 'snt-admin' ? true : false;
 
 		//when there is an occured while trying to access any menu details, we need to show that errors
 		$scope.errorMessage = '';
@@ -46,6 +49,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
 		$rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";//Wednesday, 06-04-2014
 		$rootScope.longDateFormat = "MMM dd, yyyy";//Wednesday, 06-04-2014
+		$rootScope.dateFormatForAPI = "yyyy-MM-dd";
 		$rootScope.currencySymbol = "";
 		// Initialise $rootScope.isHourlyRatesEnabled to false; the value is set on call to api/hotel_settings
 		$rootScope.isHourlyRatesEnabled = false;
@@ -160,11 +164,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					title: "MENU_REV_MAN",
 					action: "",
 					iconClass: "icon-revenue",
-					submenu: [{
-						title: "MENU_RATE_MANAGER",
-						action: "staff#/staff/rateManager",
-						menuIndex: "rateManager"
-					}, {
+					submenu: [
+					{
+ 		            title: "MENU_RATE_MANAGER",
+		            action: "staff#/staff/ratemanager/",
+		            menuIndex: "rateManager"
+		        	}, 
+		        	{
 						title: "MENU_TA_CARDS",
 						action: "staff#/staff/cardsearch/",
 						menuIndex: "cards"
@@ -201,13 +207,20 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						title: "MENU_CC_TRANSACTIONS",
 						action: "staff#/staff/financials/ccTransactions/0"
 					}, {
-						title: "MENU_ACCOUNTING",
-						action: ""
+						title: "MENU_ACCOUNTS_RECEIVABLES",
+						action: "staff#/staff/financials/accountsReceivables"
 					}, {
 						title: "MENU_COMMISIONS",
 						action: ""
 					}]
 				}, {
+                        title: "MENU_ACTIONS_MANAGER",
+                        action: "staff#/staff/actions/",
+                        iconClass: "icon-actions",
+                        menuIndex: "actionManager",
+                        submenu: []
+
+                    },{
 					title: "MENU_REPORTS",
 					action: "staff#/staff/reports",
 					menuIndex: "reports",
@@ -519,6 +532,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.isEnabledRoomTypeByRoomClass = data.is_enabled_room_type_by_class;
 
 			$rootScope.isRoomStatusImportPerRoomTypeOn = data.is_room_status_import_per_room_type_on ? data.is_room_status_import_per_room_type_on : false;
+
+			// CICO-27286
+			$rootScope.rateDateRangeLimit = data.rate_date_range_limit;
 
 			setupLeftMenu();
 

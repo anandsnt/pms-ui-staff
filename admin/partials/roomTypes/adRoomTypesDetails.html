@@ -33,18 +33,20 @@
 			<ad-textbox value="roomTypeData.room_type_code" name = "room-type-code" id = "room-type-code" label = "{{ 'CODE' | translate }}" placeholder = "{{ 'ROOM_TYPE__CODE_PLACE_HOLDER' | translate }}" required = "yes" ></ad-textbox>
             <ad-textbox value="roomTypeData.max_occupancy" name = "max-occupancy" id = "max-occupancy" label = "{{ 'MAX_OCCUPANCY' | translate }} " placeholder = "{{ 'MAX_OCCUPANCY_PLACE_HOLDER' | translate }}" required = "" ></ad-textbox>
 
-			 <div class="entry full-width">
+			 <div class="entry full-width ">
 				<label for="room-type-picture"> {{ 'CHOOSE_FILE' | translate }} </label>
 				<div class="file-upload with-preview">
-					<span class="input">{{fileName}}</span>
+					<span class="input" >{{imageFileName}}</span>
+					<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if = "roomTypeData.image_of_room_type" ng-click="deleteRoomImage()" ></a>
 					<input type="file" ng-model="roomTypeData.image_of_room_type" accept="image/*" app-filereader />
 					<button type="button" class="button brand-colors">
 						{{ 'PICTURE' | translate }}
 					</button>
 				</div>
-				<span class="file-preview"><img ng-src="{{roomTypeData.image_of_room_type}}" id="file-preview" alt=""> </span>
+				<span class="file-preview"><img ng-show = "roomTypeData.image_of_room_type" ng-src="{{roomTypeData.image_of_room_type}}" id="file-preview" alt="" height="112" width="auto" ></span>
 			</div>
-			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_pseudo_room_type" label="{{ 'PSEUDO_ROOM_TYPE' | translate }}"></ad-checkbox>
+
+			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_pseudo_room_type" hide="{{ isStandAlone }}" label="{{ 'PSEUDO_ROOM_TYPE' | translate }}"></ad-checkbox>
 			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_suite" label="{{ 'SUITE_ROOM_TYPE' | translate }}"></ad-checkbox>
 			<ad-checkbox hide="{{ !isRoomStatusImportPerRoomTypeOn || isStandAlone }}" div-class="full-width" is-checked="roomTypeData.is_room_type_ows_request_per_status_type" label="{{ 'SEND_INTERFACE_REQUEST' | translate }}"></ad-checkbox>
 		</fieldset>

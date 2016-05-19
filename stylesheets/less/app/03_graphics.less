@@ -321,6 +321,10 @@
 				&.time-out { background-position: 10px -4110px; }
 			}
 
+			&.icon-room-lock { background-position: 0 -9040px; }
+
+			&.icon-invoice { background-position: 2px -9160px; }
+
 		/* Credit Cards ***/
 			&.icon-swiped,
 			&.icon-authenticated,
@@ -467,19 +471,49 @@
 
 			&.icon-reset { background-position: 0 -6220px; }
 
+			&.delete_small {
+				background-color: transparent;
+				background-position: 0px -140px !important;
+				background-size:70px;
+				.square(10px);
+				.hide-text;
+			}
+
+			&.icon-double-arrow {
+				background: @icons 10px -1587px no-repeat;
+				.square(40px);
+				@media @highdpi {
+					background-image: @icons2x;
+					background-size: 120px;
+				}
+			}
+
 		/* Actions ***/
 			&.icon-action {
 				
-				&.icon-unassigned { background-position: 0 -7120px; }
-				&.icon-assigned { background-position: 0 -7240px; }
-				&.icon-completed { background-position: 0 -7360px; }
+				&.icon-unassigned { background-position: 8px -7120px; }
+				&.icon-assigned { background-position: 8px -7240px; }
+				&.icon-completed { background-position: 8px -7360px; }
+				&.icon-specials { background-position: 8px -8560px; }
 
 				&.active {
-					&.icon-unassigned { background-position: 0 -7180px; }
-					&.icon-assigned { background-position: 0 -7300px; }
-					&.icon-completed { background-position: 0 -7420px; }
+					&.icon-unassigned { background-position: 8px -7180px; }
+					&.icon-assigned { background-position: 8px -7300px; }
+					&.icon-completed { background-position: 8px -7420px; }
+					&.icon-specials { background-position: 8px -8620px; }
 				}
 			}
+
+		/* Rotations */
+		&.rotate-down {
+			transform:rotate(-90deg);
+		}
+		&.rotate-up {
+			transform:rotate(90deg);
+		}
+		&.rotate-right {
+			transform:rotate(180deg);
+		}
 
 		/* @2x Icons ***/
 		@media @highdpi {
@@ -514,6 +548,8 @@
 
 		&.settings-title { background-position: 205px 50%; }
 
+		&.disabled { background: none }
+
 		@media @highdpi {
 			&.next-view { background-image: @arrowRight2x; background-size: 14px 14px; }
 			&.prev-view { background-image: @arrowLeft2x; background-size: 14px 14px; }
@@ -541,27 +577,33 @@
 		background-image: @iconReports;
 		background-repeat: no-repeat;
 		border: 0;
-		.pull-left;
 		.square(30px);
 		.show;
 
+		/* Report menu icons ***/
+        &.icon-all-reports { background-position: 0 -510px; }
+        &.icon-schedule { background-position: 0 -540px; }
+        &.icon-category { background-position: 0 -570px; }
+        &.icon-user { background-position: 0 -600px; }
+
+        /* Individual report icons ***/
 		&.icon-check-in-check-out { background-position: 0 5px;}
-		&.icon-upsell { background-position: 0 -25px;}
-		&.icon-check-out { background-position: 0 -55px;}
-		&.icon-check-in { background-position: 0 -85px;}
-		&.icon-booking { background-position: 0 -120px;}
-		&.icon-occupancy { background-position: 0 -150px;}
-		&.icon-activity { background-position: 0 -180px;}
-		&.icon-deposit { background-position: 0 -210px;}
-		&.icon-reservations { background-position: 0 -240px;}
-		&.icon-transactions { background-position: 0 -270px;}
-		&.icon-comparison { background-position: 0 -300px;}
-		&.icon-forecast { background-position: 0 -330px;}
-		&.icon-market { background-position: 0 -360px;}
-		&.icon-rate { background-position: 0 -390px;}
-		&.icon-group { background-position: 0 -420px;}
-		&.icon-balance { background-position: 0 -450px; }
-		&.icon-cards { background-position: 0 -480px; }
+        &.icon-upsell { background-position: 0 -26px;}
+        &.icon-check-out { background-position: 0 -52px;}
+        &.icon-check-in { background-position: 0 -83px;}
+        &.icon-booking { background-position: 0 -120px;}
+        &.icon-occupancy { background-position: 0 -150px;}
+        &.icon-activity { background-position: 0 -180px;}
+        &.icon-deposit { background-position: 0 -210px;}
+        &.icon-reservations { background-position: 0 -240px;}
+        &.icon-transactions { background-position: 0 -270px;}
+        &.icon-comparison { background-position: 0 -300px;}
+        &.icon-forecast { background-position: 0 -330px;}
+        &.icon-market { background-position: 0 -360px;}
+        &.icon-rate { background-position: 0 -390px;}
+        &.icon-group { background-position: 0 -420px;}
+        &.icon-balance { background-position: 0 -450px; }
+        &.icon-cards { background-position: 0 -480px; }
 
 		@media @highdpi {
 			background-image: @iconReports2x;
@@ -849,28 +891,34 @@
 		color: @white;
 		text-align: center;
 		.square(20px);
+		background-color: rgba(0,0,0, .15);
 
 		/* Color only ***/
 		&.bg-red { background-color: @red; }
 		&.bg-blue { background-color: @blue; }
 		&.bg-grey { background-color: @grey3; }
-		&.bg-purple { background-color: @purpleStart; }
+		&.bg-violet { background-color: @purpleStart; } 
 		&.bg-green { background-color: @green; }
+		&.bg-drk { background-color: @black; }
 
 		/* With image ***/
-		&.closed,
-		&.arrival {
-			background-image: @icons;
-			background-repeat: no-repeat;
+        &.closed,
+        &.arrival,
+        &.icon-cross,
+        &.icon-block {
+            background-image: @icons;
+            background-repeat: no-repeat;
 
-			@media @highdpi {
-				background-image: @icons2x;
-				background-size: 120px;
-			}
-		}
+            @media @highdpi {
+                background-image: @icons2x;
+                background-size: 120px;
+            }
+        }
 
-		&.closed { background-position: 5px -7835px; }
-		&.arrival {	background-position: 5px -7895px; }
+        &.closed,
+        &.icon-cross { background-position: 5px -7835px; }
+        &.arrival,
+        &.icon-block { background-position: 5px -7895px; }
 	}
 
 /* 4. LAYOUT

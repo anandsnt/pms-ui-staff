@@ -36,8 +36,23 @@ module.exports = {
 			'guestweb_signature_at_mgm':[ themeCSSRoot + 'guestweb_signature_at_mgm.css'],
 			'guestweb_11Howard':[ themeCSSRoot + 'guestweb_11Howard.css'],
 			'guestweb_excalibur':[ themeCSSRoot + 'guestweb_excalibur.css'],
-			'guestweb_terranea':[ themeCSSRoot + 'guestweb_terranea.css']
-
+			'guestweb_naples_grande':[ themeCSSRoot + 'guestweb_naples_grande.css'],
+			'guestweb_terranea':[ themeCSSRoot + 'guestweb_terranea.css'],
+			'guestweb_time_hotel':[ themeCSSRoot + 'guestweb_time_hotel.css'],
+			'guestweb_porto_vista':[ themeCSSRoot + 'guestweb_porto_vista.css'],
+			'guestweb_chalet_view':[ themeCSSRoot + 'guestweb_chalet_view.css'],
+			'guestweb_crawford':[ themeCSSRoot + 'guestweb_crawford.css'],
+			'guestweb_dutch':[ themeCSSRoot + 'guestweb_dutch.css'],
+			'guestweb_beau_mont':[ themeCSSRoot + 'guestweb_beau_mont.css'],
+			'guestweb_hotel_ivrine':[ themeCSSRoot + 'guestweb_hotel_ivrine.css'],
+			'guestweb_boston_park':[ themeCSSRoot + 'guestweb_boston_park.css'],
+			'guestweb_beacon_hill':[ themeCSSRoot + 'guestweb_beacon_hill.css'],
+			'guestweb_paradise_point':[ themeCSSRoot + 'guestweb_paradise_point.css'],
+			'guestweb_knickerbocker_yacht_club':[ themeCSSRoot + 'guestweb_knickerbocker_yacht_club.css'],
+			'guestweb_kingsley':[ themeCSSRoot + 'guestweb_kingsley.css'],
+			'guestweb_avery':[ themeCSSRoot + 'guestweb_avery.css'],
+			'guestweb_newyork':[ themeCSSRoot + 'guestweb_newyork.css'],
+			'guestweb_mirage':[ themeCSSRoot + 'guestweb_mirage.css']
 		}
 	}
 }

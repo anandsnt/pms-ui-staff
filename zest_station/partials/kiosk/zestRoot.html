@@ -1,7 +1,46 @@
-<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
+<div ng-show="hasLoader" id="loading">
+    <div id="loading-spinner"></div>
+</div>
 
 <div ng-include="'/assets/partials/rvTabletHeader.html'"></div>
+<!--PopUp For External webPage-->
+<div class="popup iframe-popup open" ng-if="showExternalWebPage">
+    <div class="popup-content iframe-content">
+        <i class="close-popup" touch-press="closeExternalWebPage()"></i>
+        <iframe ng-click="showKeyboardOnInput()" id="booking_iframe" src="{{zestStationData.home_screen.booking_pop_up.booking_engine_url| trustAsResourceUrl}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock" ></iframe>
+    </div>
+</div>
+<!-- Popup -->
+<div class="popup" ng-class="{'open':timeOut && !showLanguagePopup}"> <!-- Remove class "open" to hide popup content -->
+    <div class="popup-content">
+        <h2 class="nocaps">{{'IDLE_TIMEOUT_MSG'|translate}}</h2>
+        <button type="button" class="button" click-touch='resetTime();'>{{'IDLE_TIMEOUT_YES'|translate}}</button>
+    </div>
+</div>
+
+<div class="popup" ng-class="{'open':showLanguagePopup}">
+    <div class="popup-content">
+        <i class="close-popup" data-action="popup" touch-press="closeLangPopUp()"></i>
+        <h2 class="nocaps">Select Language</h2>
+        <div id="languages">
+            <button ng-repeat="language in langInfo" ng-hide="!isSupported(language.info.name)" 
+                    touch-press="selectLanguage(language)" 
+                    type="button" class="button with-icon"
+                    ng-class=" {'active':selectedLanguage==='{{language.language}}' }">
+                <i class="icons icon-flag {{language.info.flag}}"></i>
+                {{language.language}}
+            </button>
+            <!--button ng-hide="!isSupported('nl')" touch-press="selectLanguage('nl')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='nl' }">
+                <i class="icons icon-flag flag-nl"></i>
+                Nederlands
+            </button-->
+        </div>
+    </div>
+</div>
+
+<div id="popup-overlay"
+     ng-class="{'open':timeOut, 'ng-hide':!timeOut}"></div> <!-- Remove class "open" to hide popup overlay -->
 
 <ui-view></ui-view>
 
-<div ng-include="'/assets/partials/rvTabletFooter.html'" ></div>
+<div ng-include="'/assets/partials/rvTabletFooter.html'"></div>

@@ -288,8 +288,8 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			var url = 'api/room_types?exclude_pseudo=true&exclude_suite=true';
 			var deferred = $q.defer();
 
-			if ( this.roomTypes.length ) {
-				deferred.resolve(this.roomTypes);
+			if ( that.roomTypes.length ) {
+				deferred.resolve(that.roomTypes);
 			} else {
 				BaseWebSrvV2.getJSON(url)
 					.then(function(data) {
@@ -479,7 +479,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 				isOOSorOOO = room.hk_status.value === 'OO' || room.hk_status.value === 'OS' || room.room_reservation_hk_status === 2 || room.room_reservation_hk_status === 3;
 			};
 
-			if (roomList.checkin_inspected_only === "true") {
+			if (!isOOSorOOO && roomList.checkin_inspected_only === "true") {
 				if (room.hk_status.value === 'INSPECTED') {
 					room.roomStatusClass = 'clean';
 					return;

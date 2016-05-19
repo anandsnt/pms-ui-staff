@@ -8,11 +8,14 @@
 "VIEW_GRID_LABEL": "View grid",
 "VIEW_TREE_LABEL": "View tree",
 "SHOWING_LABEL": "Showing",
+"DASHBOARDS_OPTION": "Home Screens",
 "SECTIONS_OPTION": "Sections",
 "CATEGORIES_OPTION": "Categories",
 "ITEMS_OPTION": "Items",
 "FROM_SECTION_LABEL": "From Section",
 "ALL_SECTIONS_LABEL": "All Sections",
+"ALL_HOME_SCREEN_LABEL": "All Home Screens",
+"FROM_HOME_SCREEN_LABEL": "From Home Screen",
 "FROM_CATEGORIES_LABEL": "From Category",
 "ALL_CATEGORIES_LABEL": "All Categories",
 "SHOW_UNASSIGNED_LABEL": "Show only unassigned",
@@ -20,6 +23,7 @@
 
 "NAME_LABEL": "NAME",
 "LAST_UPDATE_LABEL": "Last Update",
+"NO_OF_SECTIONS_LABEL": "No. of sections",
 "NO_OF_CATEGORIES_LABEL": "No. of categories",
 "NO_OF_ITEMS_LABEL": "No. of items",
 "STATUS_LABEL": "Status",
@@ -69,6 +73,7 @@
 
 "SECTION_ICON_LABEL": "Section icon",
 "CATEGORY_ICON_LABEL": "Category icon",
+"ITEM_ICON_LABEL": "Item icon",
 "ITEM_IMAGE_LABEL": "Image",
 "ICON_SPEC": "(Transparent PNG, 128x128px in size)",
 "IMAGE_SPEC": "(960x600px in size)",
@@ -90,11 +95,16 @@
 "REPLACE_IMAGE_LABEL" : "Replace image",
 "ADD_ICON_LABEL" : "Add icon",
 "ADD_IMAGE_LABEL" : "Add image",
+"ASSIGN_TO_CHAIN_LABEL": "Assign to Chain Home Screen",
 "SECTION_DESCRIPTION_VISIBLE_LABEL": "SECTION DESCRIPTION VISIBLE",
 "SECTION_DESCRIPTION_ALIGNMENT_LABEL": "SECTION DESCRIPTION ALIGNMENT",
 "SECTION_DESCRIPTION_LABEL": "SECTION DESCRIPTION",
 "ITEM_SEARCH_SWITCH_LABEL": "Enable Item search from zest",
 "PRODUCT_LABEL": "ASSIGN PRODUCT",
-"SELECT_PRODUCT_PLACEHOLDER": "Select product"
+"SELECT_PRODUCT_PLACEHOLDER": "Select product",
+"CAROUSAL_SWITCH_LABEL": "Enable carousel",
+"AUTO_ADVANCE_SWITCH_LABEL": "Enable carousel auto advance",
+"CAROUSAL_ADVANCE_DELAY_LABEL": "Carousel delay  (in seconds)",
+"CAROUSAL_LOOP_SWITCH_LABEL": "Enable carousel Loop"
 
 

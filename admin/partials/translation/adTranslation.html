@@ -1,0 +1,75 @@
+<section id="translations" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()' ng-class="{'has-notification' : !!errorMessage || !!successMessage }">
+    
+    <!-- Page Title -->
+    <header class="content-title float">
+        <h2>Translations</h2>
+        <div class="filters">
+            <span>Select Language</span>
+            <div class="select filter">
+                <select ng-model="filter.locale" name="locale" ng-change="onLocaleChange()">
+                    <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==filter.locale"> {{locale.description}} </option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- Filters -->
+    <div id="translation-filters">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
+        <div class="grid-options">
+            <div class="entry filter">
+                <label translate>MENU_OPTION</label>
+                <div class="select translation-filter-select">
+                    <select ng-model="filter.menuOption" name="menu-option" id="menu-option" class="placeholder-translation" ng-change="onMenuOptionChange()">
+                        <option ng-model="menuOption.id" ng-repeat="menuOption in menuDetails.menu_options" value="{{menuOption.id}}" ng-selected="menuOption.id==filter.menuOption"> {{menuOption.name}} </option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry filter">
+                <label translate>ITEM</label>
+                <div class="select translation-filter-select">
+                    <select ng-model="filter.item" name="item" id="item" class="placeholder-translation" ng-change="onItemChange()">
+                        <option ng-model="item.id" ng-repeat="item in items" value="{{item.id}}" ng-selected="item.id==filter.item"> {{item.name}} </option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry search">
+                <label translate>SEARCH</label>
+                <div class="holder">
+                    <button class="icons icon-search ng-scope" translate="" name="submit" type="submit">SEARCH</button>
+                    <input class="query ng-pristine ng-valid" placeholder="Search by Label" ng-model="filter.searchText" id="structure-search" autocomplete="off" type="search" ng-change="searchEntered()">
+                    <!-- <input placeholder="Search by Label" autocomplete="off" type="text" ad-delay-textbox ng-model="filter.searchText" delay="1000" function-to-fire="searchEntered" id="structure-search"/> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll -->
+    <div class="content-scroll">
+        <table class="grid" ng-table="tableParams" template-pagination="nil">
+            <tbody>
+                <tr ng-repeat="translation in $data">
+                    <td data-title="'Label'" sortable="'name'">
+                        <span class="bold">{{translation.name}}</span>
+                    </td>
+
+                    <td data-title="'Translation'"  sortable="'value'">
+                        <input type="text" ng-model="translation.value" ng-change="onTranslationChange(translation.id,translation.value)" placeholder="Translation missing!" ng-class="{'error' : !translation.value}"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Actions -->
+    <div id="translation-actions" class="actions float">
+        <button type="button" ng-click ="goBackToPreviousState()" class="button blank">
+            Cancel
+        </button>
+        <button type="button" ng-click="clickedSave()" class="button green">
+            Save Translations
+        </button>
+    </div>
+</section>

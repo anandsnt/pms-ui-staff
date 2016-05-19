@@ -6,11 +6,11 @@ var DailyProductionAvailabilityToggle = React.createClass({
 		}, 0);
 	},
 	componentDidMount: function() {
-		this.getDOMNode().addEventListener('click', this.toggleTheAvailability);
-		this.getDOMNode().checked = this.props.header.showAvailable;
+		ReactDOM.findDOMNode(this).addEventListener('click', this.toggleTheAvailability);
+		ReactDOM.findDOMNode(this).checked = this.props.header.showAvailable;
 	},
 	componentDidUpdate: function() {
-		this.getDOMNode().checked = this.props.header.showAvailable;
+		ReactDOM.findDOMNode(this).checked = this.props.header.showAvailable;
 	},
 	render: function(){
 		return React.DOM.div({

@@ -1,0 +1,12 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+	<div class="modal-content confirmation">
+	    <button class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"  ng-click="closePopup()"></span></button>
+	    
+	    <span class="h2 message">This will delete the current contract.</span>
+	       
+	    <div class="actions">
+	        <button type="button" class="button red" ng-click="deleteContractConfirmed($event)">Delete Contract</button>
+	        <button type="button" class="button blank" ng-click="closePopup()">Cancel</button> 
+	    </div>
+	</div>
+</div>

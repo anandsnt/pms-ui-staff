@@ -1,0 +1,392 @@
+ {
+
+   "PICKUP_KEY": "Pick up Key",
+   "CHECK_IN": "Check In",
+   "CHECK_OUT": "Check Out",
+   "HOME_PUK_SUB": "If you have already checked in",
+   "NAV_CANCEL": "Cancel",
+   "NAV_BACK": "Back",
+
+
+   "TYPE_LAST": "Enter Your Last Name",
+
+
+   "CHECK_IN_SELECT_HEADER": "Next, type in one of the following",
+   "CHECK_IN_SELECT_DATE": "Departure Date",
+   "CHECK_IN_SELECT_NIGHTS": "Number",
+   "CHECK_IN_SELECT_NIGHTS_SUB": "of Nights",
+   "CHECK_IN_SELECT_EMAIL": "E-mail",
+   "CHECK_IN_SELECT_EMAIL_SUB": "Used to make Reservation",
+   "CHECK_IN_SELECT_CONF": "Confirmation",
+   "CHECK_IN_SELECT_CONF_SUB": "Number",
+   "OR_TEXT": "Or",
+   "CHECK_IN_NO_OF_NIGHTS":"Number",
+   "CHECK_IN_NO_OF_NIGHTS_SUB":"of Nights",
+   "TYPE_NO_OF_NIGHTS":"Enter Number of Nights",
+   "FIND_BY_DATE":"Find By Date",
+   "FIND_BY_DATE_SUB":"How many nights are you staying?",
+   "FIND_BY_DATE_NEXT":"Next",
+   "TYPE_EMAIL": "Enter your email address",
+
+   "TYPE_CONF": "Enter Your Confirmation Number",
+
+
+   "NO_MATCH_HEADER": "Please reach out to a Staff Member.",
+   "NO_MATCH_HEADER_SUB":"We can't seem to find your reservation",
+   "NO_MATCH_RE_LAST":"Re-Enter",
+   "NO_MATCH_TALK":"Talk",
+   "NO_MATCH_TALK_SUB":"to a Staff Member",
+
+
+   "TALK_TO_STAFF": "Please speak to a Staff Member.",
+   "ROOM_NOT_AVAIL_MSG": "We can take care of your luggage until a room becomes available.",
+   "DONE_BTN": "DONE",
+
+
+   "SEL_RES_HEADER":"Select a Reservation",
+   "SEL_RES_NAME":"Name",
+   "SEL_RES_CO_DATE_ROOM_TYPE":"Check Out Date / Room Type",
+   "SEL_RES_LAST":"Previous",
+   "SEL_RES_NEXT":"Next",
+
+   "NATIONALITY":"Please select your nationality from the list below.",
+
+
+   "RES_DETAIL_HEADER": "Check your reservation details",
+   "RESIDENTS": "guest(s)",
+   "ADDTL_GUESTS_HEADING": "Additional Guests",
+   "ADD_REMOVE_GUESTS": "Add / Remove Guests",
+   "DAY_NIGHTS": "Nights",
+   "AVG_DAILY": "Average Daily Rate",
+   "RES_TAX_FEES":"Taxes / Fees",
+   "RES_SUB":"Subtotal",
+   "RES_DEPOSITS":"Deposits",
+   "RES_BAL_DUE":"Balance due",
+   "RES_NEXT":"Next",
+   "RES_Q":"Questions?",
+   "RES_Q_SUB":"Tap “X” and see a Staff Member.",
+   "INCLUDED": "INCLUDED",
+   "HOURLY_RATE":"Hourly Rate",
+   "HOURS":"Hours",
+   "FIND_RESERVATION_HOURLY_NIGHTLY":"NIGHTS",
+
+
+
+   "ADDTL_RESIDENTS": "Additional Guests",
+   "REMOVE_BTN": "Remove",
+   "ADD_BTN": "+ Add A Guest",
+
+
+   "ENTER_LAST": "Enter the Guest’s Last Name",
+   "ENTER_FIRST": "Enter the Guest’s First Name",
+
+
+   "DEPOSIT_REMAIN": "Your remaining deposit is due",
+   "DEPOSIT_REMAIN_SUB": "On the next screen we will be collecting your outstanding balance of",
+   "DEPOSIT_REMAIN_SUB_SUB": "Would you like to:",
+   "DEPOSIT_NEXT_BUTTON":"Proceed",
+
+
+   "TO_COMPLETE": "To Complete Check-in...",
+   "SWIPE_CARD_PLEASE": "Swipe Credit Card",
+
+
+   "SWIPE_ERR_HEADER": "An Error Occurred",
+
+
+   "SIGN_SCREEN": "Sign The Screen",
+   "SIGN_SCREEN_SUB": "",
+   "NEXT_BTN": "Next",
+   "CLEAR_BTN": "Clear",
+
+
+   "CC_SIGN_TIMEOUT":"Hello? 你好? Здравствуйте? Are you still there?",
+   "CC_SIGN_TIMEOUT_SUB":"We haven't detected your signature. Please select one of the following:",
+   "CC_SIGN_TIMEOUT_SIGN":"Re-Sign",
+
+
+   "CC_SWIPE_TIMEOUT":"Are you still there?",
+   "CC_SWIPE_TIMEOUT_SUB":"We haven't detected your credit card. Please select one of the following:",
+   "CC_SWIPE_TIMEOUT_SWIPE":"Re-Swipe",
+
+
+   "TERMS_CONDITIONS_VIEW_HEADER":"Please Agree to Continue",
+   "TERMS_CONDITIONS_HEADER":"Terms & Conditions",
+   "TERMS_CONDITIONS_ACCEPT":"I Agree",
+   "TERMS_CONDITIONS_CANCEL":"Cancel",
+   "TERMS_CONDITIONS_SUB" : "SUBHEADING",
+   "TERMS_CONDITIONS_SUB_ADDITIONAL" : "LOREM IPSUM DOLOR SIT AMET, CONSECTETUER ADIPISCING ELIT",
+
+
+   "TYPE_EMAIL_IN": "Enter your email",
+   "TYPE_EMAIL_IN_SUB": "Why? You will be able to receive a copy of your bill, check out online, order a late check out and more!",
+
+
+   "EMAIL_ERR_HEADER": "Sorry",
+   "EMAIL_ERR_HEADER_SUB": "This does not appear to be a valid e-mail address.",
+   "RE_TYPE": "Re-Enter",
+   "SKIP_BTN": "Skip This",
+
+
+   "WAIT_MOMENT": "Just a moment as we check you in",
+
+
+   "CHKED_IN_SUCCESS_HEADER": "Congratulations",
+   "CHKED_IN_SUCCESS_MSG": "You are now officially checked-in.",
+   "IN_ROOM": "You are in room",
+   "HOW_MANY_KEYS": "How many keys do you need?",
+   "UNO_KEY": "1",
+   "DOS_KEY": "2",
+
+
+   "MAKE_KEY": "Just one moment as we make keys…",
+   "MAKE_KEY_MSG": "Select a blank key and place it on the target below. When the green light appears, the key is made",
+   "GRAB_KEY_BELOW": "Please grab your key from the target below",
+   "MAKE_FIRST_KEY": "Make your first key!",
+   "MAKE_FIRST_KEY_SUB": "Select a Blank Key and place it on the target below. When the green light appears, the key is made.",
+   "MADE_FIRST_KEY_MSG": "Success! Make your second key",
+   "MADE_FIRST_KEY_MSG_SUB": "Remove the first key, select a Blank Key and place it on the target below. When the green light appears, the key is made.",
+   "GRAB_KEYS": "Please grab your key(s) from the target below",
+   "SUCCESS_HDR": "Success!",
+
+
+   "PRINTED_BELOW": "Your registration has been printed below.",
+   "PRINTED_NOKEYS":  "",
+   "PRINTED_NO":  "",
+   "PRINTED_FAIL":  "",
+
+
+   "NO_KEYS_MADE": "We were not able to make keys.",
+   "NO_KEYS_MADE_SUB": "Unable to make keys.",
+
+
+   "REGISTRATION_READY_HEADER": "Your registration is ready.",
+   "REGISTRATION_READY_HEADER_SUB": "How would you like to receive it?",
+   "SEND_REGISTRATION_TO": "We will send your registration to:",
+
+
+
+   "REGISTRATION_READY_PRINT_BUSINESS_DATE_LABEL": "",
+   "REGISTRATION_READY_PRINT_ROOM_NO": "YOUR CABIN NUMBER IS",
+   "REGISTRATION_READY_PRINT_DEPART_DATE": "Date of departure : ",
+   "REGISTRATION_READY_PRINT_STD_CHECKOUT": "Our standard check out is ",
+   "REGISTRATION_READY_PRINT_MSG_1": "YOTEL is 100% non-smoking. Including all of our public spaces. There is a fee of $250 if you choose to smoke. An expensive cigarette! ",
+   "REGISTRATION_READY_PRINT_MSG_2": "Complimentary coffee and muffins on FOUR between 7am and 10am (10.30 weekends).  Complimentary tea/coffee/water station on FOUR (24/7).",
+   "REGISTRATION_READY_PRINT_MSG_3": "Our concierge team on FOUR can assist you with many services including theater tickets, sightseeing tours, transportation to and from local airports, restaurant reservations, florists, and more.",
+   "REGISTRATION_READY_PRINT_FOOTER": "NOW TAKE THE ELEVATORS TO \"FOUR\"",
+
+
+
+
+
+   "EARLY_AVAIL_HEADER":"You're a little early!",
+   "EARLY_AVAIL_SUB_HEADER":"Our standard check in time is ",
+   "EARLY_AVAIL_SUB_HEADER_2":"Early check-in is available for a fee of only",
+   "EARLY_AVAIL_PURCHASE":"Check In Now",
+   "EARLY_AVAIL_PURCHASE_SUB":"Apply early check-in fee of",
+   "EARLY_AVAIL_PURCHASE_SUB_2":"to my bill.",
+   "EARLY_AVAIL_LATER":"Check In Later",
+
+   "EARLY_SUB_1":"Usual check in time is",
+   "EARLY_SUB_2":"We're happy to store your bags in the mean time",
+   "EARLY_SUB_3":"Please see a staff member for help",
+
+   "EARLY_AVAIL_PURCHASED":"But your Early Check-In is available.",
+   "EARLY_AVAIL_PURCHASED_REALLY_EARLY":"Sorry, Your Early Check-In is not available yet.",
+   "EARLY_AVAIL_FREE":"But you are eligible for a FREE Early Check-in.",
+
+
+
+
+   "CO_FIND_BILL_CHOICE": "Find Your Bill Summary",
+   "FIND_YOUR_BILL_SUMMARY":"Find Your Bill Summary",
+   "CO_INSERT_KEY": "Use Keycard",
+   "CO_BY_NAME": "Enter Name",
+
+   "NEXT_ROOM_NUMBER": "Next, Enter your Room number",
+   "NEXT_ROOM_NUMBER_SUB": "",
+   "CHOOSE_TOWER_AND_ENTER_ROOM_NUMBER": "",
+
+
+   "USE_KEY_CARD":"Use Keycard",
+   "ENTER_NAME":"Enter Name",
+   "INSERT_KEY_CARD_FOR_CHECKOUT":"Please insert your key card in the “Check-Out Key” slot below",
+   "INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT":"Additional keys can be dropped in the “Extra Keys” slot",
+   "KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING":"Sorry",
+   "KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT": "The keycard lookup has failed",
+   "INSERT_KEY_CARD":"Insert card",
+
+
+   "SPEAK_TO_STAFF": "Sorry!",
+   "SPEAK_TO_STAFF_SUB": "Please find a Staff Member to help you.",
+   "SPEAK_TO_STAFF_RETURN": "Done",
+
+
+   "RES_SRCH_SRY":"Sorry.",
+   "RES_SRCH_SRY_SUB":"We can't seem to find you.",
+   "RES_SRCH_RE_ENTER_LAST":"Re-Enter",
+   "RES_SRCH_RE_ENTER_ROOM":"Re-Enter",
+   "RES_SRCH_TALK":"Talk",
+   "RES_SRCH_TALK_SUB":"To a Staff Member ",
+
+
+   "USER_CHECKED_OUT_ALRDY_HEADER":"Sorry",
+   "USER_CHECKED_OUT_ALRDY_SUB":"You have already been checked out.",
+   "USER_CHECKED_OUT_ALRDY_RTN":"Return",
+
+
+   "RES_SRCH_SEL":"Select a Reservation",
+   "RES_SRCH_NAME":"Name",
+   "RES_SRCH_CHK_OUT_ROOM":"Check Out Date / Room Type",
+
+
+   "BILL_REVIEW":"Review your bill",
+   "BILL_DATE":"Date",
+   "BILL_DESC":"Description",
+   "BILL_AMT":"Amount",
+   "BILL_SUB":"Subtotal",
+   "BILL_DEP":"Deposits",
+   "BILL_BAL":"Balance due",
+   "BILL_QUEST":"Questions?",
+   "BILL_SUB_QUESTION":"Tap “X” and see a Staff Member.",
+   "BILL_NEXT":"Next",
+
+
+   "THANKS_FOR_STAY": "Thanks for staying!",
+   "EMAILED_BILL": "We’ve already e-mailed your bill. But perhaps you want it printed?",
+   "PRINT_TEXT": "Print",
+   "NO_THX": "No, thanks",
+
+
+   "PRINT_IN_PRO": "Just one moment, printing in progress",
+
+
+   "BILL_PRINTED_BELOW": "Your bill has been printed below.",
+
+
+   "SEND_BILL_TO": "We will send your bill to:",
+   "PRINT_BILL": "Print Bill",
+   "EMAIL_BILL_SENT_MSG": "A copy of your bill has been delivered to your e-mail.",
+   "EMAIL_BILL_NOT_SENT_MSG": "A copy of your bill could not be delivered to your e-mail. Please see a staff member.",
+
+
+   "END_THANKS": "Thanks for staying!",
+
+
+
+   "OOS_HEADER":"Out of service",
+   "OOS_SUB":"Please try another kiosk or Speak to a Staff Member.",
+
+
+   "ERR_PAGE": "Sorry!",
+   "ERR_PAGE_SUB": "Please find a Staff Member to help you.",
+
+
+    "IDLE_TIMEOUT_MSG":"Still there?",
+    "IDLE_TIMEOUT_YES":"Yes!",
+
+
+    "BROKE_HEADER_SUB": "Something is broken. Please speak to a Staff Member.",
+    "BROKE_HEADER": "Sorry",
+
+
+    "TRY_AGAIN": "Try Again",
+    "SPEAK": "Talk",
+    "SPEAK_SUB": "to a Staff Member",
+
+
+
+    "MAKE_RES": "Make Reservation",
+
+    "LANGUAGE_SEL": "Select Language",
+
+
+
+    "QR_LOOKUP_HEADER": "To Pick Up Your Keys...",
+    "QR_LOOKUP_SUB_HEADER": "Scan The QR Code You Received.",
+    "QR_LOOKUP_BUTTON_TEXT": "Scanner To The Right",
+
+
+    "PUK_CHKED_IN_MSG": "You are checked-in.",
+
+
+    "QR_SCAN_FAILED_HEADING":   "Are you still there?",
+    "QR_SCAN_FAILED_SUB_TEXT":   "We haven't detected your QR code. Please select one of the following",
+    "QR_SCAN_RETRY":   "Re-try Scan",
+    "QR_SCAN_FAILED_SEARCH" : "Search",
+    "QR_SCAN_FAILED_BY_NAME":"by name",
+
+
+   "EMAIL_TEXT": "E-Mail",
+   "EDIT_EMAIL": "Edit My E-mail Address",
+   "CONTINUE_TEXT": "Continue",
+   "SEND_EMAIL": "Send E-Mail",
+   "EMAIL_SENT_MSG": "The e-mail has been delivered.",
+
+
+
+     "INVOICE_HEADER": "Invoice",
+     "INVOICE_FULLNAME":"Guest Full Name",
+     "INVOICE_ARRIVAL":"Arrival Date",
+     "INVOICE_DEPARTURE":"Departure Date",
+     "INVOICE_NO":"Invoice No.",
+     "INVOICE_CITY":"City",
+     "INVOICE_STATE":"State",
+     "INVOICE_PC":"Postal Code",
+     "INVOICE_COUNTRY":"Country",
+     "INVOICE_COUNF":"Confirmation No.",
+     "INVOICE_ROOM":"Room No.",
+     "INVOICE_TAX":"Tax No.",
+     "INVOICE_REF":"Reference Number",
+     "INVOICE_DATE":"Invoice date",
+     "INVOICE_DATE_OF":"Date of Charge",
+     "INVOICE_CHARGE_CODE":"Charge Code",
+     "INVOICE_CHARGE_DESC":"Charge description",
+     "INVOICE_CHARGE_AMT":"Charge amount",
+     "INVOICE_CREDIT_AMT":"Credit amount",
+
+     "INVOICE_TOTAL":"Total Charge",
+     "INVOICE_TOTAL_CR":"Total Credits",
+     "INVOICE_TOTAL_BAL":"Balance",
+     "INVOICE_NET":"Net Amount",
+
+
+
+
+     "ADMIN_LOGIN_ERROR":"Invalid Login, Please Try Again",
+     "EXIT_BTN":"Exit",
+     "ADMIN_HEADER":"Administrator",
+     "ADMIN_LOGIN":"Login",
+     "ADMIN_EXIT":"Exit",
+
+     "ADMIN_SAVE": "Save",
+     "ADMIN_CANCEL": "Cancel",
+     "ADMIN_TITLE": "Admin",
+     "ADMIN_TIMER_ENABLED_BTN": "Kiosk Idle Timer",
+     "ADMIN_TIME_OUT": "Idle Time-out (Seconds)",
+     "ADMIN_TIME_POP": "Idle Screen Prompt After (Seconds)",
+     "ADMIN_WORKSTATION": "Work Station",
+     "ADMIN_STATION_PRINTER": "Select Printer",
+
+
+     "CHECKIN_KEY_FAIL" : "Check-In Key Fail",
+     "CHECKIN_KEY_FAIL_RESERVATION" : "Check-In Key Fail, Reservation Error",
+     "CHECKIN_KEY_FAIL_EMPTY" : "Check-In Key Fail, Empty Key Dispenser",
+     
+     "CHECKIN_PRINT_FAIL" : "Check-In Print Fail",
+     
+     "ADMIN_OR_NETWORK_OOS" : "Admin or Network OOS",
+     "CHECKIN_KEY_SUCCESS_PRINT_FAIL" : "Check-In Print & Key Fail",
+     "CHECKIN_KEY_FAIL_PRINT_FAIL" : "Check-In Key & Print Fail",
+     "CHECKIN_KEY_FAIL_PRINT_SUCCESS" : "Check-In Key Fail & Print Success",
+     "CHECKIN_KEY_FAIL_PRINT_SUCCESS" : "Check-In Key Fail & Print Success",
+     
+     
+     "PICKUP_KEY_FAIL" : "Pickup Key Fail",
+     "PICKUP_KEY_FAIL_RESERVATION" : "Pickup Key Fail, Reservation Error",
+     "SERVICE_FAILURE" : " : Service Failure, Restart Service",
+     "PICKUP_KEY_FAIL_EMPTY" : "Pickup Key Fail, Empty Key Dispenser",
+     "CHECKOUT_PRINT_FAILED" : "Check-Out Print Fail"
+
+
+}

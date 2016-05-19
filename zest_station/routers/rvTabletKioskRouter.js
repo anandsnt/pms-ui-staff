@@ -1,35 +1,74 @@
-sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvider', function ($stateProvider, $urlRouterProvider, $translateProvider) {
+sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvider', function($stateProvider, $urlRouterProvider, $translateProvider) {
 
-        
-        $urlRouterProvider.otherwise('/zest_station/home');
-        
-        $stateProvider.state('zest_station', {
-            abstract    : true,
-            url         : '/zest_station',
-            templateUrl : '/assets/partials/kiosk/zestRoot.html',
-            controller  : 'zsRootCtrl',
-            resolve     : {
-                cssMappings: function(zsCSSMappings) {
-                    return zsCSSMappings.fetchCSSMappingList();
-                },
-                zestStationSettings: function(zsTabletSrv){
-                    return zsTabletSrv.fetchSettings();
-                }
+
+    $urlRouterProvider.otherwise('/zest_station/home');
+
+    $stateProvider.state('zest_station', {
+        abstract: true,
+        url: '/zest_station',
+        templateUrl: '/assets/partials/kiosk/zestRoot.html',
+        controller: 'zsRootCtrl',
+        resolve: {
+            cssMappings: function(zsCSSMappings) {
+                return zsCSSMappings.fetchCSSMappingList();
+            },
+            zestStationSettings: function(zsTabletSrv) {
+                return zsTabletSrv.fetchSettings();
+            },
+            //fetch language files in the starting itself
+            //so as to speeden the process laterwards
+            fetchTranslations: function(zsHotelDetailsSrv) {
+
+                    zsHotelDetailsSrv.fetchTranslationData('en').then(function(translations) {
+                        $translateProvider.translations('en', translations);
+                    });
+                    zsHotelDetailsSrv.fetchTranslationData('fr').then(function(translations) {
+                        $translateProvider.translations('fr', translations);
+                    });
+                    zsHotelDetailsSrv.fetchTranslationData('es').then(function(translations) {
+                        $translateProvider.translations('es', translations);
+                    });
+                    zsHotelDetailsSrv.fetchTranslationData('de').then(function(translations) {
+                        $translateProvider.translations('de', translations);
+                    });
+                    zsHotelDetailsSrv.fetchTranslationData('cl').then(function(translations) {
+                        $translateProvider.translations('cl', translations);
+                    });
+                    zsHotelDetailsSrv.fetchTranslationData('it').then(function(translations) {
+                        $translateProvider.translations('it', translations);
+                    });
+                    zsHotelDetailsSrv.fetchTranslationData('nl').then(function(translations) {
+                        $translateProvider.translations('nl', translations);
+                    });
             }
-        });           
+        }
+    });
 
-        $stateProvider.state('zest_station.home', {
-            url         : '/home',
-            templateUrl : '/assets/partials/kiosk/home.html',
-            controller  : 'zsHomeCtrl',
+    $stateProvider.state('zest_station.home', {
+        url: '/home',
+        templateUrl: '/assets/partials/kiosk/home.html',
+        controller: 'zsHomeCtrl',
+        resolve: {
+            waitforParentDependencies: function (cssMappings, zestStationSettings, $q) {
+                var deferred = $q.defer();
+
+                setTimeout(function () {
+                    deferred.resolve();
+                }, 10);
+                return deferred.promise;
+            }
+        }
+        });
+        $stateProvider.state('zest_station.collect_nationality', {
+            url         : '/collect_nationality/:guestId',
+            templateUrl : '/assets/partials/kiosk/specific/zsCollectNationality.html',
+            controller  : 'zsCollectNationalityCtrl',
             resolve: {
-                waitforParentDependencies: function(cssMappings, zestStationSettings, $q){
-                    var deferred = $q.defer();
-
-                    setTimeout(function(){
-                        deferred.resolve();
-                    }, 10);
-                    return deferred.promise;
+                countryList: function(zsHotelDetailsSrv){
+                    return zsHotelDetailsSrv.fetchCountryList();
+                },
+                sortedCountryList: function(zsHotelDetailsSrv){
+                     return zsHotelDetailsSrv.fetchSortedCountryList();
                 }
             }
         });
@@ -54,6 +93,11 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
         });
 
         $stateProvider.state('zest_station.reservation_search', {
+            url         : '/reservation_search/:mode',
+            templateUrl : '/assets/partials/kiosk/reservation_search.html',
+            controller  : 'zsReservationSearchCtrl'
+        });
+        $stateProvider.state('zest_station.reservation_search_qrcode', {
             url         : '/reservation_search/:mode',
             templateUrl : '/assets/partials/kiosk/reservation_search.html',
             controller  : 'zsReservationSearchCtrl'
@@ -91,6 +135,38 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             templateUrl: '/assets/partials/kiosk/specific/reservation-details.html',
             controller: 'zsReservationDetailsCtrl'
          });
+         
+         // //check-in [ reservation-details ]
+         $stateProvider.state('zest_station.early_checkin_upsell', {
+            url        : '/reservation_details/:mode/:early_checkin_offer_id',
+            templateUrl: '/assets/partials/kiosk/specific/reservation-details.html',
+            controller: 'zsEarlyCheckinCtrl'
+         });
+         
+         
+        // //early-check-in unavailable [ reservation-details ]
+         $stateProvider.state('zest_station.early_checkin_unavailable', {
+            url        : '/reservation_details/:mode/:early_checkin_offer_id',
+            templateUrl: '/assets/partials/kiosk/specific/early-unavailable.html',
+            controller: 'zsEarlyCheckinCtrl'
+            
+         });
+        // //early-check-in unavailable [ reservation-details ]
+         $stateProvider.state('zest_station.early_checkin_prepaid', {
+            url        : '/reservation_details/:mode/:early_checkin_offer_id',
+            templateUrl: '/assets/partials/kiosk/specific/early-prepaid.html',
+            controller: 'zsEarlyCheckinCtrl'
+         });
+        // //early-check-in selection nav [ reservation-details ]
+         $stateProvider.state('zest_station.early_checkin_nav', {
+            url        : '/reservation_details/:mode/:early_checkin_offer_id',
+            templateUrl: '/assets/partials/kiosk/specific/early-available.html',
+            controller: 'zsEarlyCheckinCtrl'
+         });
+         
+         
+         
+         
         // //check-in [ reservation-details ]
          $stateProvider.state('zest_station.add_remove_guests', {
             url        : '/reservation_details/:mode',
@@ -209,7 +285,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          $stateProvider.state('zest_station.find_reservation', {
              url: '/find_reservation', 
              controller: 'zsFindReservationCtrl',
-             templateUrl: '/assets/partials/kiosk/specific/find-reservation.html',
+             templateUrl: '/assets/partials/kiosk/specific/zsFindReservation.html'
          });
          
          
@@ -220,6 +296,11 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              templateUrl: '/assets/partials/kiosk/generic/input-date.html'
          });
 
+    $stateProvider.state('zest_station.find_by_no_of_nights', {
+        url: '/find_reservation',
+        controller: 'zsFindByNoOfNightsCtrl',
+        templateUrl: '/assets/partials/kiosk/generic/zsFindByNoOfNights.html'
+    });
          // //check-in [ find-by-email ]
          $stateProvider.state('zest_station.find_by_email', {
              url: '/find_reservation', 
@@ -278,14 +359,14 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          $stateProvider.state('zest_station.find_reservation_no_match', {
              url: '/find_reservation', 
              controller: 'zsFindReservationCtrl',
-             templateUrl: '/assets/partials/kiosk/specific/no-match.html',
+             templateUrl: '/assets/partials/kiosk/specific/zsNoMatch.html',
          });
 
           // //check-in [ admin-popup ]
          $stateProvider.state('zest_station.admin', {
              url: '/find_reservation', 
              controller: 'zsAdminCtrl',
-             templateUrl: '/assets/partials/kiosk/admin.html',
+             templateUrl: '/assets/partials/kiosk/specific/zsAdminSettings.html',
          });
 
          
@@ -309,6 +390,21 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
              controller: 'zsPostCheckinCtrl',
              templateUrl: '/assets/partials/kiosk/specific/signature-time-out.html'
          });
-         
+
+        //check-out[ reservation checkout options]
+         $stateProvider.state('zest_station.checkout_options', {
+             url: '/zest_station', 
+             controller: 'zsCheckOutOptionsCtrl',
+             templateUrl: '/assets/partials/kiosk/specific/zsCheckOutOptions.html'
+         });
+
+        //check-out[ reservation checkout option key card look up]
+         $stateProvider.state('zest_station.checkout_key_card_look_up', {
+             url: '/zest_station', 
+             controller: 'zsCheckoutKeyCardActionsCtrl',
+             templateUrl: '/assets/partials/kiosk/specific/zsCheckoutKeyCardActions.html'
+         });
+
+
 
     }]);

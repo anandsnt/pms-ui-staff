@@ -53,7 +53,12 @@ angular.module('sntRover').service('BaseWebSrvV2',['$http', '$q', '$window', fun
 			else if(status === 401){ // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
-			}else{
+			}
+			// CICO-26779 : Handling 404 - Not found.
+			else if(status === 404){
+				console.warn("Found 404 Error : " + url );
+			}
+			else{
 				deferred.reject(errors);
 			}
 

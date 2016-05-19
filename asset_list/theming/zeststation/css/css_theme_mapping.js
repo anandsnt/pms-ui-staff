@@ -7,6 +7,7 @@ module.exports = {
 			'fontainebleau' : [ themeCSSRoot + 'fontainebleau.less'],
 			'yotel' : [ themeCSSRoot + 'yotel.less'],
 			'snt' : [ themeCSSRoot + 'snt.less']
+                        
 		}
 	}
 }

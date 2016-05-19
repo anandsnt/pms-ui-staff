@@ -1,4 +1,4 @@
-sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2', function($q, GWBaseWebSrv,GWBaseWebSrv2){
+sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'GwWebSrv', function($q, GWBaseWebSrv, GWBaseWebSrv2, GwWebSrv) {
 
 	/**
 	 * to verify checkout user
@@ -6,13 +6,23 @@ sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2', funct
 	 */
 	this.verifyCheckoutUser = function(params) {
 		var deferred = $q.defer();
-		var url = '/guest_web/authenticate_checkout_guest';
-
-		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
-			deferred.resolve(data);
-		},function(data){
-			deferred.reject(data);
-		});
+		var url = "";
+		//use dummy data for demo mode
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/checkout_user_verification.json';
+			GWBaseWebSrv2.getJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		} else {
+			url = '/guest_web/authenticate_checkout_guest';
+			GWBaseWebSrv2.postJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		};
 		return deferred.promise;
 	};
 
@@ -26,7 +36,7 @@ sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2', funct
 
 		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -37,13 +47,23 @@ sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2', funct
 	 */
 	this.verifyRoom = function(params) {
 		var deferred = $q.defer();
-		var url = '/guest_web/verify_room.json';
-
-		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
-			deferred.resolve(data);
-		},function(data){
-			deferred.reject(data);
-		});
+		var url = '';
+		//use dummy data for demo mode
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/return_status_success.json';
+			GWBaseWebSrv.getJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		} else {
+			url = '/guest_web/verify_room.json';
+			GWBaseWebSrv.postJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		}
 		return deferred.promise;
 	};
 
@@ -53,11 +73,16 @@ sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2', funct
 	 */
 	this.fetchBillDetails = function(params) {
 		var deferred = $q.defer();
-		// var url = '/sample_json/zestweb_v2/bill_details.json';
-		var url = '/guest_web/home/bill_details.json';
+		var url = "";
+		//use dummy data for demo mode
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/bill_details.json';
+		} else {
+			url = '/guest_web/home/bill_details.json';
+		};
 		GWBaseWebSrv.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -69,11 +94,16 @@ sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2', funct
 	 */
 	this.fetchLateCheckoutOptions = function(params) {
 		var deferred = $q.defer();
-		//var url = '/sample_json/zestweb_v2/late_checkout_options.json';
-		var url = '/guest_web/get_late_checkout_charges.json';
+		var url = "";
+		//use dummy data for demo mode
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/late_checkout_options.json';
+		} else {
+			url = '/guest_web/get_late_checkout_charges.json';
+		};
 		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(data){
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -84,14 +114,25 @@ sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2', funct
 	 */
 	this.updateReservationWithNewCheckoutOptions = function(params) {
 		var deferred = $q.defer();
-		//var url = '/sample_json/zestweb_v2/late_checkout_options.json';
-		var url = '/guest_web/apply_late_checkout';
-		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
-			deferred.resolve(data);
-		},function(data){
-			deferred.reject(data);
-		});
+		var url = "";
+		//use dummy data for demo mode
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/return_blank.json';
+			GWBaseWebSrv2.getJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		} else {
+			url = '/guest_web/apply_late_checkout';
+			GWBaseWebSrv2.postJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		};
 		return deferred.promise;
+
 	};
 
 
@@ -102,15 +143,25 @@ sntGuestWeb.service('GwCheckoutSrv',['$q', 'GWBaseWebSrv','GWBaseWebSrv2', funct
 	 */
 	this.completeCheckout = function(params) {
 		var deferred = $q.defer();
-		var url = '/guest_web/home/checkout_guest.json';
-
-		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
-			deferred.resolve(data);
-		},function(data){
-			deferred.reject(data);
-		});
+		var url = "";
+		//use dummy data for demo mode
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/return_status_success.json';
+			GWBaseWebSrv.getJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		} else {
+			url = '/guest_web/home/checkout_guest.json';
+			GWBaseWebSrv.postJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		};
 		return deferred.promise;
 	};
 
-	
+
 }]);

@@ -42,6 +42,15 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldHideAddRoomsButton = function() {
+			return ($scope.allotmentConfigData.summary.is_cancelled ||
+					$scope.allotmentConfigData.roomblock.selected_room_types_and_bookings.length > 0);
+		};
+
+		/**
+		 * Function to decide whether to hide 'Rooms and Rates Button'
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowRoomsRates = function() {
 			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings.length > 0);
 		};
 
@@ -144,7 +153,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * Should we show buttons in roomblock
 		 */
 		$scope.shouldShowRoomBlockActions = function() {
-			return $scope.shouldHideAddRoomsButton();
+			return !$scope.allotmentConfigData.summary.is_cancelled && $scope.shouldHideAddRoomsButton();
 		};
 
 		$scope.shouldShowApplyToHeldCountsButton = function() {
@@ -1127,7 +1136,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		/**
 		 * To open Room Block Pickedup Reservations Popup.
 		 */
-		var updateRateEvent = $scope.$on('updateRate', function (event, selectedRoomTypeAndRates) {
+		$scope.confirmUpdateRatesWithPickedReservations = function(selectedRoomTypeAndRates) {
 			roomsAndRatesSelected = selectedRoomTypeAndRates;
 			ngDialog.open({
 				template: '/assets/partials/allotments/details/rvAllotmentRoomBlockPickedupReservationsPopup.html',
@@ -1136,7 +1145,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				closeByDocument: false,
 				closeByEscape: false
 			});
-		});
+		};
 
 		/**
 		 * To check whether inhouse reservations exists.
@@ -1427,7 +1436,6 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		});
 
 		// removing event listners when scope is destroyed
-		$scope.$on( '$destroy', updateRateEvent );
 		$scope.$on( '$destroy', tabSwitchEvent );
 		$scope.$on( '$destroy', summaryUpdateEvent );
 		$scope.$on( '$destroy', summaryUpdateFailEvent );

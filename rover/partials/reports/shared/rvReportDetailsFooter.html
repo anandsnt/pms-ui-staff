@@ -15,9 +15,9 @@
 			<label>Cancellation Dates - </label>
 			From: <span>{{ appliedFilter.cancelFromDate | date:dateFormat }}</span> To: <span>{{ appliedFilter.cancelToDate | date:dateFormat }}</span>
 		</div>
-		
-		
-		
+
+
+
 		<!-- rate adjustment date range -->
 		<div ng-if="appliedFilter.adjustmentFromDate || appliedFilter.adjustmentToDate">
 			<label>Rate Adjustment Dates - </label>
@@ -120,6 +120,20 @@
 
 
 
+		<!-- chosen show -->
+		<div ng-if="appliedFilter.show.length">
+			Show: <span>{{ appliedFilter.show.join(', ') }}</span>
+		</div>
+
+
+
+		<!-- Company / TA -->
+		<div ng-if="appliedFilter.companyTa">
+			Company / TA: <span>{{ appliedFilter.companyTa }}</span>
+		</div>
+
+
+
 		<!-- Company / TA / Group -->
 		<div ng-if="appliedFilter.companyTaGroup">
 			Company / TA / Group: <span>{{ appliedFilter.companyTaGroup }}</span>
@@ -168,13 +182,37 @@
 		</div>
 
 		<!-- chosen charge codes -->
-		<div ng-if="appliedFilter.guestOrAccount.length">
+		<div ng-if="appliedFilter.chargeTypes.length">
+			Charge Types: <span>{{ appliedFilter.chargeTypes.join(', ') }}</span>
+		</div>
+
+		<!-- chosen charge codes -->
+		<div ng-if="appliedFilter.guestOrAccount.length && !isDepositBalanceReport">
 			Guest/Account: <span>{{ appliedFilter.guestOrAccount.join(', ') }}</span>
 		</div>
+
 
 		<!-- chosen charge codes -->
 		<div ng-if="appliedFilter.reservationAddons.length">
 			Reservation Addons: <span>{{ appliedFilter.reservationAddons.join(', ') }}</span>
+		</div>
+
+
+		<!-- Minimum revenue -->
+		<div ng-if="appliedFilter.hasMinRevenue">
+			Minimum Revenue: <span>{{ appliedFilter.hasMinRevenue | currency:currencySymbol:2 }}</span>
+		</div>
+
+
+		<!-- Minimum Room Nights -->
+		<div ng-if="appliedFilter.hasMinRoomNights">
+			Minimum Room Nights: <span>{{ appliedFilter.hasMinRoomNights }}</span>
+		</div>
+
+
+		<div ng-if="appliedFilter.guestOrAccount.length && isDepositBalanceReport">
+			From <span>{{summaryCounts.deposit_from_date | date:dateFormat }}</span> to <span>{{summaryCounts.deposit_to_date | date:dateFormat }}</span><br/>
+			Guest/Account: <span>{{ appliedFilter.guestOrAccount.join(', ') }}</span>
 		</div>
 
 

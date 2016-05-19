@@ -3,6 +3,7 @@ module.exports = {
 		var sharedRoot 	= 'shared/',
 		jsLibRoot 		= sharedRoot + 'lib/js/',
 		loginRoot 		= 'login/',
+                //remove ref when virtual keyboard files have updated loading
 		loginJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'angular.min.js',
@@ -10,6 +11,8 @@ module.exports = {
 			],
 			nonMinifiedFiles: [
 				sharedRoot + 'directives/documentTouchMovePrevent/*.js',
+				loginRoot + 'loginApp.js',
+				loginRoot + 'loginRouter.js',
 				loginRoot + "**/*.js",
 				'!'+loginRoot+'loginJsAssetList.js'
 			]	

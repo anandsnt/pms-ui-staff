@@ -64,7 +64,7 @@
 			$scope.success = true;
 			$scope.posted = true;
 			$rootScope.isLateCheckoutAvailable = false;
-			$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap;
+			// $rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap;
 		}
 		else{
 			$scope.lateCheckOut = _.find(charges, function(charge) {

@@ -29,8 +29,8 @@ angular.module('sntRover').controller('rvDailyProdByDemographicsCtrl',
       completedUpdating	: completedUpdating
     };
     startedRendering();
-    React.renderComponent(
-	    DailyProductionByDemographics(props),
+    ReactDOM.render(
+	    React.createElement(DailyProductionByDemographics, props),
 	    document.getElementById('daily-prod-demographics')
     );
   };

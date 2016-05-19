@@ -16,6 +16,7 @@
     "EMAIL_TO_ALL_ARRIVALS": "Send email to guests on day of arrival",
     "EMAIL_TO_ALL_DAY_BEFORE_ARRIVALS": "SEND EMAIL TO GUESTS ON DAY BEFORE ARRIVAL",
     "ZEST_ALERT_TO_ALL_ARRIVALS": "Send alert and enable zest app checkin ",
+    "ZEST_PRECHECKIN_ALERT_TO_ALL_ARRIVALS": "Send alert and enable zest app pre-checkin ",
     "CHECKIN_ALERT": "Check in Alert",
     "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
@@ -49,4 +50,8 @@
     "TEXT_MESSAGE":"Text Message",
     "ROOM_KEY_COMMUNICATION_OPTIONS":"Room key communication options",
     "EMAIL_AND_TEXT_MESSAGE":"Email and Text Message",
-    "EMAIL_OR_TEXT_MESSAGE":"Email or Text Message"
+    "EMAIL_OR_TEXT_MESSAGE":"Email or Text Message",
+    "ETA_ENFORCEMENT":"ETA enforcement",
+    "ARRIVAL_TIMES":"Arrival Times",
+    "LIMIT_ARRIVAL_TIMES":"Limit Arrival Times based on Hotel's local time"
+

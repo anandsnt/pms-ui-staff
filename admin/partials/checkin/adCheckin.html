@@ -10,9 +10,9 @@
             <form style="overflow-y:auto;" class="form float">
                 <fieldset class="holder left">
                     <ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="{{ 'SEND_CHECKIN_ALERT' | translate}}" is-disabled="checkinData.is_precheckin_only"></ad-toggle-button>
-                    <ad-toggle-button is-checked="checkinData.is_precheckin_only" label="{{ 'PRE_CHECK_IN_ONLY' | translate}}"  ></ad-toggle-button>
-                    <ad-toggle-button is-checked="checkinData.is_send_zest_alert_flag" label="{{ 'SEND_ZEST_CHECKIN_ALERT' | translate}}" ></ad-toggle-button>
-                    <ad-toggle-button is-checked="checkinData.is_allow_early_checkin_from_zest" label="{{ 'ZEST_ALLOW_EARLY_CHECKIN' | translate}}"  ></ad-toggle-button>
+                    <ad-toggle-button is-checked="checkinData.is_precheckin_only" label="{{ 'PRE_CHECK_IN_ONLY' | translate}}"></ad-toggle-button>
+                    <ad-toggle-button is-checked="checkinData.is_send_zest_alert_flag" label="{{ 'SEND_ZEST_CHECKIN_ALERT' | translate}}"></ad-toggle-button>
+                    <ad-toggle-button is-checked="checkinData.is_allow_early_checkin_from_zest" label="{{ 'ZEST_ALLOW_EARLY_CHECKIN' | translate}}"></ad-toggle-button>
                     <ad-checkbox is-checked="checkinData.is_notify_on_room_not_assigned_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_NOT_ASSIGNED_TITLE' | translate}}" div-class="full-width"></ad-checkbox>
                     <ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only" ng-show="!checkinData.is_precheckin_only"></ad-checkbox>
                     <ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width"></ad-checkbox>
@@ -87,6 +87,31 @@
                             </div>
                             <div class="select select-col select-margin">
                                 <select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.zest_checkin_alert_primetime">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="holder right holder_margin">
+                    <div class="entry full-width">
+                        <label>
+                            {{ 'ZEST_PRECHECKIN_ALERT_TO_ALL_ARRIVALS' | translate}}
+                        </label>
+                        <div class="entry full-width float">
+                            <div class="select select-col select-margin">
+                                <select ng-model="checkinData.zest_precheckin_alert_time_hour">
+                                    <option value="">HH</option>
+                                    <option ng-repeat="hour  in hours" value="{{hour}}" ng-bind="hour"></option>
+                                </select>
+                            </div>
+                            <div class="select select-col select-margin">
+                                <select ng-model="checkinData.zest_precheckin_alert_time_min">
+                                    <option value="">MM</option>
+                                    <option ng-repeat="minute  in minutes" value="{{minute}}" ng-bind="minute"></option>
+                                </select>
+                            </div>
+                            <div class="select select-col select-margin">
+                                <select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.zest_precheckin_alert_primetime">
                                 </select>
                             </div>
                         </div>
@@ -175,6 +200,10 @@
                 </fieldset>
                 <fieldset class="holder full-width" ng-show="checkinData.is_precheckin_only">
                     <ad-checkbox is-checked="checkinData.is_sent_none_cc_reservations_to_front_desk_only" label="{{ 'SENT_NONE_CC_RESERVATIONS_TO_FRONT_DESK_ONLY' | translate}}" div-class="full-width margin-top-30"></ad-checkbox>
+                    <div class="form-title">
+                        <h3 class="ng-binding"><span class="ng-scope" translate="">ARRIVAL_TIMES</span> </h3>
+                    </div>
+                    <ad-toggle-button is-checked="checkinData.eta_enforcement" label="{{ 'LIMIT_ARRIVAL_TIMES' | translate}}"></ad-toggle-button>
                 </fieldset>
                 <fieldset class="holder left" ng-hide="!checkinData.is_precheckin_only">
                     <ad-textbox value="checkinData.max_webcheckin" label="{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}" placeholder="{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}" styleclass="full-width" maxlength="4"></ad-textbox>
@@ -207,8 +236,8 @@
                                 </div>
                                 <div class="entry">
                                     <span class="entry">
-										<a class="icons icon-delete large-icon align-text-center" ng-click="deleteRateCode(rateCode.id)"></a>
-									</span>
+                                        <a class="icons icon-delete large-icon align-text-center" ng-click="deleteRateCode(rateCode.id)"></a>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -236,8 +265,8 @@
                                 </div>
                                 <div class="entry">
                                     <span class="entry">
-										<a class="icons icon-delete large-icon align-text-center" ng-click="deleteBlockCode(blockCode.id)"></a>
-									</span>
+                                        <a class="icons icon-delete large-icon align-text-center" ng-click="deleteBlockCode(blockCode.id)"></a>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -265,8 +294,8 @@
                                 </div>
                                 <div class="entry">
                                     <span class="entry">
-											<a class="icons icon-delete large-icon align-text-center" ng-click="deleteRoomType(roomType.id)"></a>
-										</span>
+                                            <a class="icons icon-delete large-icon align-text-center" ng-click="deleteRoomType(roomType.id)"></a>
+                                        </span>
                                 </div>
                             </div>
                         </div>
@@ -374,6 +403,18 @@
                         </label>
                     </div>
                 </fieldset>
+                <fieldset class="holder right">
+                    <div class="form-title half-width-title">
+                        <h3><span translate>ENFORCE_DEPOSIT </span> </h3>
+                    </div>
+                    <ad-toggle-button is-checked="checkinData.zestweb_enforce_deposit" label="{{'ENFORCE_DEPOSIT'| translate}}" div-class="full-width"></ad-toggle-button>
+                </fieldset>
+                <fieldset class="holder left">
+                    <div class="form-title half-width-title">
+                        <h3><span translate>ADDRESS_COUNTRY_LIST </span> </h3>
+                    </div>
+                    <ad-toggle-button is-checked="checkinData.enforce_country_sort" label="{{'ENFORCE_COUNTRY_SORT'| translate}}" div-class="full-width"></ad-toggle-button>
+                </fieldset>
                 <div class="actions float">
                     <button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline">{{ 'CANCEL' | translate}}</button>
                     <button type="button" ng-click="saveCheckin()" class="button green">{{ 'SAVE_CHANGES' | translate}}</button>
@@ -381,4 +422,4 @@
             </form>
         </section>
     </div>
-</section>
+</section

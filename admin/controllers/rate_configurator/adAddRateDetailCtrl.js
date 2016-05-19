@@ -71,30 +71,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             return ispromo;
         };
 
-
-
-        $scope.hideBasedOn = function() {
-            var hideBasedOn = false, classification = '';
-            if ($scope.rateTypesDetails) {
-                angular.forEach($scope.rateTypesDetails.rate_types, function(rate_type) {
-                    if ($scope.rateData.rate_type.id === rate_type.id) {
-                        if ($scope.rateData.classification){
-                            classification = $scope.rateData.classification.toLowerCase();
-                        } else {
-                            classification = '';
-                        }
-                        
-                        if (classification === "corporate") {
-                            hideBasedOn = true;
-                        } else {
-                            hideBasedOn = false;
-                        }
-                    }
-                });
-            }
-            return hideBasedOn;
-        };
-
         /*
          * Validate Rate Details Form
          */
@@ -141,8 +117,18 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             });
             angular.forEach($scope.rateTypesDetails.cancelationPenalties, function(cancelationPenalty) {
                 var symbol = (cancelationPenalty.amount_type === "amount") ? '$' : '%';
+                if(cancelationPenalty.amount_type === "amount") {
+                	symbol = "$";
+                } else if(cancelationPenalty.amount_type === "day") {
+                	symbol = "Night(s)";
+                } else {
+                	symbol = "%";
+                }
+                
                 if (symbol === '%') {
                     cancelationPenalty.displayData = cancelationPenalty.name + "   " + "(" + cancelationPenalty.amount + symbol + ")";
+                } else if (symbol === 'Night(s)') {
+                	cancelationPenalty.displayData = cancelationPenalty.name + "   " + "(" + cancelationPenalty.amount + ' ' + symbol + ")";
                 } else {
                     cancelationPenalty.displayData = cancelationPenalty.name + "   " + "(" + symbol + cancelationPenalty.amount + ")";
                 }
@@ -336,19 +322,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         $scope.toggleChannelOnly = function(){
             if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only){
                 $scope.rateData.is_pms_only = false;
-            }
-        };
-
-        $scope.onChangeRateType = function() {
-            // CICO-19686 In case, the based On rates have to be removed;
-            if ($scope.hideBasedOn()) {
-                console.log('reset based on details');
-                $scope.rateData.based_on = {
-                    id: "",
-                    type: "",
-                    value_abs: "",
-                    value_sign: ""
-                };
             }
         };
 

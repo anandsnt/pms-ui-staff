@@ -8,7 +8,7 @@ var GridPanel = React.createClass({
 		return React.DOM.div({
 			className: 'diary-grid'
 		},
-		Grid({
+		React.createElement( Grid, {
 			viewport: 			props.viewport,
 			display: 			props.display,
 			filter: 			props.filter,

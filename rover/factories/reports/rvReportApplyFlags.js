@@ -5,7 +5,6 @@ angular.module('reportsModule')
             return {
                 init: function ( report ) {
                     var flags = {
-                        'CANCELLATION_NO_SHOW'         : ['canRemoveDate'],
                         'BOOKING_SOURCE_MARKET_REPORT' : ['canRemoveDate'],
                         'LOGIN_AND_OUT_ACTIVITY'       : ['hasUserFilter'],
                         'DEPOSIT_REPORT'               : ['canRemoveDate'],
@@ -19,7 +18,9 @@ angular.module('reportsModule')
                         'DAILY_PRODUCTION_ROOM_TYPE'   : ['canRemoveDate', 'hasOneYearLimit'],
                         'DAILY_PRODUCTION_DEMO'        : ['hasOneYearLimit'],
                         'DAILY_PRODUCTION_RATE'        : ['hasOneYearLimit'],
-                        'RATE_RESTRICTION_REPORT'      : ['hasOneMonthLimit']
+                        'RATE_RESTRICTION_REPORT'      : ['hasOneMonthLimit'],
+                        'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT' : ['hasUserFilter'],
+                        'CANCELLATION_NO_SHOW'          : ['canRemoveDate']
                     };
 
                     var reportName = _.findKey(reportNames, function(value, key){ return value === report['title'] });

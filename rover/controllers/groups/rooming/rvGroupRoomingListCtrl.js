@@ -28,6 +28,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
     $stateParams) {
 
         BaseCtrl.call(this, $scope);
+        $scope.isPrintClicked = false;
+        $scope.isAnyPopupOpen = false;
 
         /**
          * Has Permission To Create group room block
@@ -299,7 +301,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return {undefined} [description]
          */
         $scope.gotoRoomBlockTab = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             $scope.switchTabTo('ROOM_BLOCK');
         };
 
@@ -324,50 +326,15 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          */
         var successCallBackOfFetchRoomingDetails = function(data) {
             var toI = util.convertToInteger;
-            //if we dont have any data in our hand
-            if ($scope.roomTypesAndData.length === 0) {
-                //adding available room count over the data we got
-                $scope.roomTypesAndData = _.map(data.result, function(data) {
-                    data.availableRoomCount = toI(data.total_rooms) - toI(data.total_pickedup_rooms);
-                    return data;
-                });
-                //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
-                $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
 
-            }
-            //if we have any data in our hand, just updating the available room count
-            else {
-                _.each($scope.roomTypesAndData, function(roomTypeData) {
-                    var correspondingActualData = _.findWhere(data.result, {
-                        room_type_id: roomTypeData.room_type_id
-                    });
-
-                    //CICO-20169 Handles cases where total rooms are updated in room block
-                    _.extend(roomTypeData, correspondingActualData);
-
-                    roomTypeData.availableRoomCount = toI(correspondingActualData.total_rooms) - toI(correspondingActualData.total_pickedup_rooms);
-                });
-
-                //if we've added a new room type from room block & we are switching the tab
-                if (data.result.length !== $scope.roomTypesAndData.length) {
-                    //we've to find the newly added id of room types
-                    var new_room_type_ids = _.pluck(data.result, "room_type_id"),
-                        existing_room_type_ids = _.pluck($scope.roomTypesAndData, "room_type_id"),
-                        room_type_ids_to_add = _.difference(new_room_type_ids, existing_room_type_ids);
-
-                    //adding the newly added room type to the existing array
-                    for (var i = 0; i < room_type_ids_to_add.length; i++) {
-                        var room_type_to_add = _.findWhere(data.result, {
-                            room_type_id: room_type_ids_to_add[i]
-                        });
-
-                        if (room_type_to_add) {
-                            room_type_to_add.availableRoomCount = toI(room_type_to_add.total_rooms) - toI(room_type_to_add.total_pickedup_rooms);
-                        }
-                        $scope.roomTypesAndData.push(room_type_to_add);
-                    }
-                }
-            }
+            //adding available room count over the data we got
+            $scope.roomTypesAndData = _.map(data.result, function(data) {
+                data.availableRoomCount = toI(data.total_rooms) - toI(data.total_pickedup_rooms);
+                data.availableRoomCount = (data.availableRoomCount < 0) ? 0 : data.availableRoomCount;
+                return data;
+            });
+            //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
+            $scope.selectedRoomType = $scope.roomTypesAndData.length > 0 ? $scope.roomTypesAndData[0].room_type_id : undefined;
 
             //we have to populate possible number of rooms & occupancy against a
             $scope.changedSelectedRoomType();
@@ -430,25 +397,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successCallBackOfAddReservations = function(data) {
-            $scope.newReservations = [];
-            _.each(data.results, function(reservation) {
-                $scope.newReservations.push(reservation);
-                $scope.reservations.unshift(reservation);
-            });
+            $scope.selected_reservations = data.results;
+            $scope.updateGroupReservationsGuestData();
 
-            //total result count
-            $scope.totalResultCount += (data.results.length);
-
-            //pickup
-            $scope.totalPickUpCount = data.total_pickup_count;
-
-            //we changed data, so
-            refreshScrollers();
-
-            //rooming data will change after adding some reservation
-            $scope.fetchRoomingDetails();
-            //check for default charge routings
-            checkDefaultChargeRoutings();
         };
 
         /**
@@ -488,6 +439,10 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
         };
 
+        var formatDateForAPI = function(date) {
+            return $filter('date')(date, $rootScope.dateFormatForAPI)
+        };
+
         /**
          * [fetchRoomingDetails description]
          * @return {[type]} [description]
@@ -502,7 +457,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             }
 
             var params = {
-                id: $scope.groupConfigData.summary.group_id
+                id: $scope.groupConfigData.summary.group_id,
+                from_date: formatDateForAPI($scope.fromDate),
+                to_date: formatDateForAPI($scope.toDate)
             };
 
             var options = {
@@ -520,6 +477,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             if (activeTab !== 'ROOMING') {
                 return;
             }
+
+            //clear previos error message
+            $scope.errorMessage = "";
 
             //re-initializing date pickers as there is to update from other tab & come back here
             setDatePickerOptions();
@@ -686,7 +646,15 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 var index = _.indexOf(_.pluck($scope.selected_reservations, "id"), reservation.id);
                 $scope.selected_reservations.splice(index, 1);
             } else {
+
                 $scope.selected_reservations.push(reservation);
+                //We have to show in the same order - in popup
+                $scope.selected_reservations = _.sortBy($scope.selected_reservations, "confirm_no")
+                $scope.selected_reservations = _.sortBy($scope.selected_reservations, $scope.sorting_field);
+                if($scope.sort_dir === 'DESC'){
+                    $scope.selected_reservations = $scope.selected_reservations.reverse();
+                }
+
             }
         };
 
@@ -779,6 +747,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             //forming [1,2,3,4]
             $scope.possibleNumberOfRooms = isValidSelectedRoomType ? _.range(1, util.convertToInteger(selectedRoomType.total_rooms) + 1) : [];
 
+            // setting single as default occupancy as part of CICO-27540
+            $scope.selectedOccupancy = '1';
             //we are unselecting the selected occupancy incase of invalid roomt type
             if (!isValidSelectedRoomType) {
                 $scope.selectedOccupancy = '-1';
@@ -802,6 +772,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         var successCallBackOfFetchReservations = function(data) {
             $scope.reservations = data.results;
 
+
             //total result count
             $scope.totalResultCount = data.total_count;
 
@@ -816,6 +787,18 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             runDigestCycle();
             //we changed data, so
             refreshScrollers();
+            // Added to resolve the issue - CICO-23144 - QA comment
+            //updating from one popup not updating in other
+            _.each($scope.selected_reservations, function(eachData, resIndex){
+
+                var reservationIndex = _.findIndex(data.results, {"id": eachData.id})
+                if(reservationIndex != -1){
+                    $scope.selected_reservations[resIndex] = $scope.reservations[reservationIndex];
+                }
+
+            });
+
+
         };
 
 
@@ -829,10 +812,22 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 per_page: $scope.perPage,
                 page: $scope.page,
                 sorting_field: $scope.sorting_field,
-                sort_dir: $scope.sort_dir
-            };
+                sort_dir: $scope.sort_dir,
+                arrival_date: formatDateForAPI($scope.arrival_date),
+                dep_date: formatDateForAPI($scope.dep_date),
+                query: $scope.query,
+                exclude_cancel: $scope.exclude_cancel,
+                show_pending_only: $scope.show_pending_only
+            }
+
             return params;
         };
+
+        $scope.clearQuery = function() {
+            $scope.query = '';
+            runDigestCycle();
+            $timeout( $scope.fetchReservations, 500 );
+        }
 
         /**
          * to fetch reservations against group
@@ -846,24 +841,39 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             };
             $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
         };
+        
+        $scope.filterReservation = function() {
+            initialisePagination();
+            $timeout( $scope.fetchReservations, 10 );
+        };
+        $scope.fiterByQuery = function() {
+            var query = $scope.query.trim(),
+                params,
+                options;
+
+            if ( ! query.length || query.length > 2 ) {
+                initialisePagination();
+
+                params = formFetchReservationsParams();
+                options = {
+                    params: params,
+                    successCallBack: successCallBackOfFetchReservations
+                };
+
+                $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
+            }
+        };
+        $scope.debounceFetchReservations = _.debounce( $scope.fiterByQuery, 500 );
 
         /**
-         * Function to clear from Date
+         * Function to clear Dates
          * @return {None}
          */
-        $scope.clearFromDate = function() {
-            $scope.fromDate = '';
+        $scope.clearDate = function(date) {
+            $scope[date] = '';
             runDigestCycle();
         };
 
-        /**
-         * Function to clear to Date
-         * @return {None}
-         */
-        $scope.clearToDate = function() {
-            $scope.toDate = '';
-            runDigestCycle();
-        };
 
         /**
          * when the start Date choosed,
@@ -877,6 +887,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             // we will clear end date if chosen start date is greater than end date
             if ($scope.fromDate > $scope.toDate) {
                 $scope.toDate = '';
+            }
+            else {
+                $scope.fetchRoomingDetails();
             }
 
             runDigestCycle();
@@ -893,6 +906,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             // we will clear end date if chosen start date is greater than end date
             if ($scope.fromDate > $scope.toDate) {
                 $scope.fromDate = '';
+            }
+            else {
+                $scope.fetchRoomingDetails();
             }
 
             runDigestCycle();
@@ -935,6 +951,13 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
             //default to date, as per CICO-13900 it will be block_to date
             $scope.toDate = refData.block_to;
+
+            // GOD KNOW WHY DEFAULTING THE DATES TO THE GROUP START END DATE IS A PROBLEM!!!!!??
+            // #@$%%$^%$^%$^%$^%$@#$
+            // default block_from date
+            // $scope.arrival_date = refData.block_from;
+            // default block_to date
+            // $scope.dep_date = refData.block_to;
         };
 
         /**
@@ -1088,7 +1111,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         $scope.closeAutoRoomAssignSuccessPopup = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             //resetting the selected reservations
             $scope.selected_reservations = [];
 
@@ -1128,7 +1151,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         $scope.autoRoomAssignQualifiedReservations = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             $timeout(function() {
                 var params = {
                     group_id: $scope.groupConfigData.summary.group_id,
@@ -1205,7 +1228,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         $scope.closeMassCheckinSuccessPopup = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             //resetting the selected reservations
             $scope.selected_reservations = [];
 
@@ -1245,7 +1268,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         $scope.checkInQualifiedReservations = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             $timeout(function() {
                 var params = {
                     group_id: $scope.groupConfigData.summary.group_id,
@@ -1329,7 +1352,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         $scope.checkOutQualifiedReservations = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             $timeout(function() {
                 var params = {
                     group_id: $scope.groupConfigData.summary.group_id,
@@ -1371,7 +1394,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         $scope.closeMassCheckoutSuccessPopup = function() {
-            $scope.closeDialog();
+             $scope.closeDialogBox();
             //resetting the selected reservations
             $scope.selected_reservations = [];
 
@@ -1450,8 +1473,11 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
             //rooming details fetch
             var paramsForRoomingDetails = {
-                id: $scope.groupConfigData.summary.group_id
+                id: $scope.groupConfigData.summary.group_id,
+                from_date: formatDateForAPI($scope.fromDate),
+                to_date: formatDateForAPI($scope.toDate)
             };
+
             promises.push(rvGroupRoomingListSrv
                 .getRoomTypesConfiguredAgainstGroup(paramsForRoomingDetails)
                 .then(successCallBackOfFetchRoomingDetails)
@@ -1609,13 +1635,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
         }());
 
-    	/**
-    	 * event exposed for other (mainly for children) controllers to update the data
-    	 */
-    	$scope.$on("REFRESH_GROUP_ROOMING_LIST_DATA", function (event) {
-    		//calling initially required APIs
-            callInitialAPIs();
-    	});
+
 
         $scope.checkoutReservation = function(reservation) {
             //  It navigates to the Guest Bill for the selected record.
@@ -1639,6 +1659,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return undefined
          */
         var printRoomingList = function() {
+
             //changing the orientation to landscape
             addPrintOrientation();
 
@@ -1674,8 +1695,13 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                         removePrintOrientation();
                         $scope.reservations = util.deepCopy($scope.resevationsBeforePrint);
                         $scope.resevationsBeforePrint = [];
+
                     }, 1200);
+                    $timeout(function() {
+                        $scope.isPrintClicked = false;
+                    }, 200);
                 });
+
 
         };
 
@@ -1702,9 +1728,11 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         var successCallBackOfFetchAllReservationsForPrint = function(data) {
             //if you are looking for where the HELL this list is printing
             //look for "NG_REPEAT_COMPLETED_RENDERING", thanks!!
+            $scope.isPrintClicked = true;
             $scope.resevationsBeforePrint = util.deepCopy($scope.reservations);
             $scope.reservations = data.results;
             $scope.print_type = 'rooming_list';
+
         };
 
         /**
@@ -1723,13 +1751,14 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
         };
         /**
-         * Function to pop up for mail Rooming list.
+         * Function to pop up for print/mail option Rooming list.
          * @return - None
          */
-        $scope.sendRoomingList = function() {
-                if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
-                    $scope.sendEmail($scope.groupConfigData.summary.contact_email);
-                } else {
+        $scope.openEmailPrintPopup = function() {
+                // if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
+                //     $scope.sendEmail($scope.groupConfigData.summary.contact_email);
+                // } else {
+                    $scope.isAnyPopupOpen = true;
                     ngDialog.open({
                         template: '/assets/partials/groups/rooming/popups/general/rvRoomingListEmailPrompt.html',
                         className: '',
@@ -1737,23 +1766,31 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                         closeByDocument: false,
                         closeByEscape: false
                     });
-                }
+
+                // }
             };
             /**
              * Function to send e-mail of Rooming list.API call goes here.
              * @return - None
              */
         $scope.sendEmail = function(mailTo) {
+            if(!mailTo){
+                $scope.errorMessage =  ["Please enter email!!"];
+                return;
+            }
+            $scope.errorMessage = "";
             var mailSent = function(data) {
-                    $scope.closeDialog();
+                    $scope.closeDialogBox();
+                    $scope.isAnyPopupOpen = false;
                 },
                 mailFailed = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
-                    $scope.closeDialog();
+                   // $scope.closeDialog();
                 };
             var params = {
                 "to_address": mailTo,
-                "group_id": $scope.groupConfigData.summary.group_id
+                "group_id": $scope.groupConfigData.summary.group_id,
+                "is_include_rate": !$scope.groupConfigData.summary.hide_rates
             };
             $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, {
                 successCallBack: mailSent,
@@ -1761,6 +1798,10 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 params: params
             });
         };
+        $scope.closeDialogBox = function(){
+            $scope.closeDialog();
+            $scope.isAnyPopupOpen = false;
+        }
 
         $scope.printRegistrationCards = function() {
             // add the print orientation after printing
@@ -1772,6 +1813,19 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 },
                 sucessCallback = function(data) {
                     $scope.$emit('hideLoader');
+
+                    // CICO-21803: filter selected reservations for print
+                    var selectedForPrint = _($scope.selected_reservations).pluck('id'),
+                        totalSelected    = selectedForPrint.length;
+
+                    data.group_reservations = _.map(data.group_reservations, function (reservation) {
+                        reservation.print = true;
+                        if (totalSelected > 0 && selectedForPrint.indexOf(reservation.id) < 0) {
+                            reservation.print = false;
+                        }
+                        return reservation;
+                    });
+
                     $scope.printRegCardData = data;
                     $scope.errorMessage = "";
 
@@ -1851,6 +1905,21 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 params: params
             });
         };
+        $scope.updateGroupReservationsGuestData = function(){
+            $scope.isUpdateReservation = true;
+            $scope.totalCountForUpdate = $scope.selected_reservations.length;
+
+
+            ngDialog.open({
+                        template: '/assets/partials/groups/rooming/popups/editReservation/rvAddEditReservationGuestData.html',
+                        className: '',
+                        scope: $scope,
+                        closeByDocument: false,
+                        closeByEscape: false,
+                        controller: 'rvReservationGuestDataPopupCtrl'
+                    });
+
+        };
 
         /**
          * to set the active left side menu
@@ -1891,9 +1960,19 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             if (isInRoomingList && (amDirectlyComingToRoomingList)) {
                 $timeout(function(){
                     callInitialAPIs();
-                }, 10);                
+                }, 10);
             }
         }();
+
+
+        /**
+         * event exposed for other (mainly for children) controllers to update the data
+         */
+        $scope.$on("REFRESH_GROUP_ROOMING_LIST_DATA", function (event) {
+            //calling initially required APIs
+            callInitialAPIs();
+        });
+
 
     }
 ]);

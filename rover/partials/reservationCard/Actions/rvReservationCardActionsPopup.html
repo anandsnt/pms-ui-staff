@@ -6,7 +6,8 @@
         <div class="modal-header" ng-hide='!hasActionStatus() && !refreshingToNonEmpty()'>
             <h1>Actions</h1>
             <strong ng-if="$parent.reservationData.reservation_card.room_number">Room {{$parent.reservationData.reservation_card.room_number}}</strong>
-            Hotel Time: {{hotel_time}}
+            <span class="time">
+            Hotel Time: {{hotel_time | date:"hh:mm a"}}</span>
             <div class="dates">
                 <div class="date" ng-show="hasArrivalDate">
                     <span class="guest-status small-icon check-in">check-in</span>

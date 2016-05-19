@@ -1,42 +1,43 @@
-<div id="restrictionDays" class="price-div" ng-controller = "RestrictionWeekdaysCtrl">
-	<div class="scrollable">
-		<div class="restriction_text" >
-			DAYS OF WEEK
-		</div>
-		<div class="price-set-title">
+<!-- Show checked icon when clicked on label -->
+<div id="restrictionDays" ng-controller="RestrictionWeekdaysCtrl">
+		 <h3>Apply to Dates</h3>
+
+		 <label ng-if="hasPermissionToUpdateRates()" for="cb_price" class="checkbox" ng-click="daysOptions.applyToPrice = !daysOptions.applyToPrice" ng-show="popupData.fromRoomTypeView" ng-hide="calendarData.is_child">
+			<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToPrice}"></span>
+			<input id="cb_price" type="checkbox" ng-model="daysOptions.applyToPrice">
+			APPLY TO PRICE 
+		</label>
+
+		<label ng-if="hasPermissionToUpdateRestrictions()" for="cb_restrictions" class="checkbox" ng-click="daysOptions.applyToRestrictions = !daysOptions.applyToRestrictions" ng-hide="showExpandedView && !popupData.fromRoomTypeView && !popupData.all_data_selected">
+			<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToRestrictions}" ></span>
+			<input id="cb_restrictions" type="checkbox" ng-model="daysOptions.applyToRestrictions">
+			APPLY TO RESTRICTIONS
+		</label>
+
+		<h4>For every</h4>
+		<div class="list_week_days">
+			 
 			<label for="cb_day" class="checkbox" ng-repeat="day in daysOptions.days"  ng-click="day.value = !day.value">
 				<span class="icon-form icon-checkbox" ng-class="{'checked': day.value}"></span>
 				<input id="cb_day" type="checkbox" ng-model="day.value">
-				<span> {{day.day}} </span> 
+				{{day.key}}
           	</label>
-		
+
+          	<!-- Replace text with 'Select None' if everything has been selected -->
+          	<!-- On click = if the text is 'Select All' then check every days, if it is 'Select None', uncheck everything -->
+          	<button>Select All</button>
+		 
 		</div>
-		<div class="restriction_text price-div" >
-			WEEKS
-		</div>
-		<div class="select weeks-select">
-			<select ng-model="daysOptions.numOfWeeks">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-			</select>
-		</div>
+
+
+		<h4>Until</h4>
+		<!-- open a datepicker -->
+        <div class="has-datepicker">
+            <input placeholder="Select Date Range" readonly="" maxlength="8" class="hasDatepicker" name="">
+            <button type="button" class="ui-datepicker-trigger">...</button>
+        </div>
 
 <!-- ng-hide="!popupData.fromRoomTypeView" -->
 
-		<div class="price-set-title application">
-
-			<label ng-if="hasPermissionToUpdateRates()" for="cb_price" class="checkbox" ng-click="daysOptions.applyToPrice = !daysOptions.applyToPrice" ng-show="popupData.fromRoomTypeView" ng-hide="calendarData.is_child">
-				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToPrice}"></span>
-				<input id="cb_price" type="checkbox" ng-model="daysOptions.applyToPrice">
-				<span>APPLY TO PRICE </span> 
-			</label>
-			<label ng-if="hasPermissionToUpdateRestrictions()" for="cb_restrictions" class="checkbox" ng-click="daysOptions.applyToRestrictions = !daysOptions.applyToRestrictions" ng-hide="showExpandedView && !popupData.fromRoomTypeView && !popupData.all_data_selected">
-				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToRestrictions}" ></span>
-				<input id="cb_restrictions" type="checkbox" ng-model="daysOptions.applyToRestrictions">
-				<span>APPLY TO RESTRICTIONS </span> 
-			</label>
-		</div>
-	</div>
+		
 </div>

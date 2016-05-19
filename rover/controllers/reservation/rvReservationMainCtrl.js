@@ -349,7 +349,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                             // -- Calculate the rate amount for the Room for that rate for that day --
                             // --------------------------------------------------------------------------------//
                             { // STEP ONE -- rate computation block
-                                var roomAmount = todaysMetaData.amount,
+                                var roomAmount = todaysMetaData.rateDetails.actual_amount,
                                     roomAmountRounded = Number(roomAmount.toFixed(2));
                                 if (reset) { // -- in case of rate changes reset the modified rate amount as well
                                     stay.rateDetails.actual_amount = $filter('number')(roomAmount, 2);
@@ -845,7 +845,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     data.room_id.push(room.room_id);
                 }
             });
-            data.outside_group_stay_dates = RVReservationStateService.getReservationFlag('outsideStaydatesForGroup');
+
+            // This senario is currently discharged for now, may be in future
+            // 'is_outside_group_stay_dates' will always be sent as 'false' from server
+            // data.outside_group_stay_dates = RVReservationStateService.getReservationFlag('outsideStaydatesForGroup');
+            
+            data.borrow_for_groups = RVReservationStateService.getReservationFlag('borrowForGroups');
 
             //to delete ends here
             return data;
@@ -1178,12 +1183,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                         $scope.reservationData.confirmNum = $scope.reservationData.reservations[0].confirm_no;
                         $scope.reservationData.status = $scope.reservationData.reservations[0].status;
                         $scope.viewState.reservationStatus.number = $scope.reservationData.reservations[0].id;
+                        $scope.reservationData.is_custom_text_per_reservation = $scope.reservationData.reservations[0].is_custom_text_per_reservation;
                     } else {
                         $scope.reservationData.reservationId = data.id;
                         $scope.reservationData.confirmNum = data.confirm_no;
                         $scope.reservationData.rooms[0].confirm_no = data.confirm_no;
                         $scope.reservationData.status = data.status;
                         $scope.viewState.reservationStatus.number = data.id;
+                        $scope.reservationData.is_custom_text_per_reservation = data.is_custom_text_per_reservation;
                     }
                     /*
                      * TO DO:ends here
@@ -1277,6 +1284,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     $scope.reservationData.is_routing_available = data.is_routing_available;
 
                     $scope.reservationData.status = data.reservation_status;
+
+                    // resetting borrowForGroups anyway
+                    RVReservationStateService.setReservationFlag('borrowForGroups', false);
 
                     if (nextState) {
                         if (!nextStateParameters) {
@@ -1526,6 +1536,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             } else {
                 $scope.reservationData.rooms.splice(firstIndex, totalCount - currentCount);
             }
+            $scope.$broadcast('TABS_MODIFIED');
             devlogRoomsArray();
         };
 

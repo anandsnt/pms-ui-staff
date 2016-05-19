@@ -9,7 +9,7 @@
          </span>
          <span class="nights">
          <span class="guest-status nights"></span>
-         {{headerData.total_nights+" "+setNightsText()}} 
+         {{headerData.total_nights+" "+setNightsText()}}
          </span>
          <span class="date">
          <span class="guest-status small-icon check-in">check-in</span>
@@ -33,7 +33,7 @@
                      <a class="toggle has-arrow" ng-click="toggleUpgradeDescriptionStatus($index)" translate>DETAILS_LABEL</a>
                   </div>
                   <div id="room2008-details" ng-class="{'hidden':!isDescriptionVisible($index)}" class="room-details" ng-bind-html="upgrade.upgrade_room_description">
-                     
+
                   </div>
                   <a id="upgrade-room-select" class="button green submit-value hover-hand" ng-click="showMaximumOccupancyDialog($index)">
                   Upgrade for only
@@ -42,15 +42,15 @@
                   </a>
                   <figure class="room-image">
                      <img ng-src="{{upgrade.room_type_image}}" alt="" ng-if="upgrade.room_type_image !== ''">
-                     <img ng-src="/assets/bedroom-blank.png" alt="" ng-if="upgrade.room_type_image === ''">
+                     <img ng-src="/assets/images/bedroom-blank.png" alt="" ng-if="upgrade.room_type_image === ''">
                   </figure>
                </li>
-               
+
             </ul></div>
-           
+
          	<a id="no-thanks" class="button green no-auto-bind" ng-show="clickedButton == 'checkinButton'" ng-click="goToCheckinScreen()">{{buttonText.noThanks}}</a>
          </div>
-         
+
       </div>
    </div>
 </section>

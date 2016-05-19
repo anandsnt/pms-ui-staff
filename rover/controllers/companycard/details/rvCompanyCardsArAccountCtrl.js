@@ -25,7 +25,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 		$scope.$on('setgenerateNewAutoAr', function(e, bool) {
 			$scope.$parent.generateNewAutoAr = bool;
-			if( !$scope.arAccountDetails.is_auto_assign_ar_numbers ) {
+			if( !$scope.arAccountDetails.is_auto_assign_ar_numbers && bool ) {
 				updateArAccount(true);
 			}
 		});
@@ -83,7 +83,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 				refreshScroller();
 			}, 500);
 			// if automatic mode is on,call save action to generate a random number
-			if ($scope.arAccountDetails.is_auto_assign_ar_numbers && !$scope.arAccountDetails.ar_number) {
+			if (!!$scope.arAccountDetails && !!$scope.arAccountDetails.is_auto_assign_ar_numbers && !$scope.arAccountDetails.ar_number) {
 				updateArAccount();
 			}
 			

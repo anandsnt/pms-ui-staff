@@ -3,13 +3,12 @@
     <!-- Reservation header -->
     <div id="rooms-and-rates-header" class="reservation-header">
         <!-- If multiple room types: -->
-        <ul id="multiple-rooms" class="display" ng-if="reservationData.rooms.length > 1">
+        <ul id="multiple-rooms" class="display" ng-if="!borrowForGroups && reservationData.rooms.length > 1">
             <li ng-class="{'active':activeRoom === tabIndex}" ng-click="changeActiveRoomType(tabIndex)" ng-show="reservationData.tabs.length > tabIndex" ng-repeat="tabIndex in [0,1,2,3]">
                 {{getTabTitle(tabIndex)}}
             </li>
         </ul>
-        <div class="switch-button on" ng-click="toggleCalendar()">
-            <!-- CICO-15042 we will be disabling calendar switch for now -->
+        <div class="switch-button on" ng-click="toggleCalendar()" ng-hide="borrowForGroups">
             <input name="rooms-availability-toggle" id="rooms-availability-toggle" value="rooms-availability" type="checkbox" checked />
             <label class="data-off">
                 <span class="value">Rooms &amp; Rates</span>
@@ -20,13 +19,13 @@
                 <span class="value">Calendar</span>
             </label>
         </div>
-        <label class="checkbox inline dates-toggle" ng-click="toggleSearchWithRestrictions()" ng-show="stateCheck.activeMode=='CALENDAR'">
+        <label class="checkbox inline dates-toggle" ng-click="toggleSearchWithRestrictions()" ng-show="!borrowForGroups && stateCheck.activeMode=='CALENDAR'">
             <span class="icon-form icon-checkbox" ng-class="{'checked': stateCheck.calendarState.searchWithRestrictions}"></span> {{'SEARCH_WITH_RESTRICTIONS'|translate}}
         </label>
-        <label class="checkbox inline dates-toggle" ng-click="toggleShowOnlyAvailable()" ng-show="stateCheck.activeMode=='CALENDAR' && stateCheck.calendarState.calendarType == 'BEST_AVAILABLE'">
+        <label class="checkbox inline dates-toggle" ng-click="toggleShowOnlyAvailable()" ng-show="!borrowForGroups && stateCheck.activeMode=='CALENDAR' && stateCheck.calendarState.calendarType == 'BEST_AVAILABLE'">
             <span class="icon-form icon-checkbox" ng-class="{'checked': stateCheck.calendarState.showOnlyAvailableRooms}"></span> {{'ONLY_AVAILABLE_ROOMS'|translate}}
         </label>
-        <label class="checkbox inline dates-toggle" ng-click="toggleStayDaysMode()" ng-hide="stateCheck.activeMode=='CALENDAR'">
+        <label class="checkbox inline dates-toggle" ng-click="toggleStayDaysMode()" ng-hide="borrowForGroups || stateCheck.activeMode=='CALENDAR'">
             <span class="icon-form icon-checkbox" ng-class="{'checked': stateCheck.stayDatesMode}"></span> {{'SHOW_STAY_DATES'|translate}}
         </label>
         <label class="checkbox inline" ng-click="toggleClosedRates();" ng-hide="stateCheck.activeMode=='CALENDAR'">
@@ -34,16 +33,16 @@
         </label>
     </div>
     <!-- Stay Dates: visible only when checked -->
-    <div id="stay-days" class="stay-days" ng-class="{'open': stateCheck.stayDatesMode}">
+    <div id="stay-days" class="stay-days" ng-class="{'open': stateCheck.stayDatesMode}" ng-hide="borrowForGroups">
         <div id="stay-days-listing" class="days scrollable" ng-iscroll="stayDates">
             <ul class="wrapper" style="width:{{(stateCheck.dateButtonContainerWidth)}}px">
                 <li ng-repeat="stayday in reservationData.stayDays" ng-class="{'booked': reservationData.rooms[0].stayDates[stayday.date].rate.id != '','check-in':$first,'check-out':$last, 'active' : (!$last && stateCheck.dateModeActiveDate == stayday.date)}" ng-click="showStayDateDetails(stayday.date)">
                     <span class="day">{{stayday.dayOfWeek}}</span>
                     <span class="date">{{stayday.day}}</span>
                     <span ng-if="$first || $last" class="guest-status small-icon" ng-class="{'check-in':$first,'check-out':$last}"></span>
-                    <span ng-if="!reservationData.ratesMeta[reservationData.rooms[activeRoom].stayDates[stayday.date].rate.id].is_suppress_rate_on" class="price" ng-show="!$last && stateCheck.lookUp[stateCheck.preferredType].rates[reservationData.rooms[activeRoom].stayDates[stayday.date].rate.id].dates[stayday.date].amount">
+                    <span ng-if="!reservationData.ratesMeta[reservationData.rooms[activeRoom].stayDates[stayday.date].rate.id].is_suppress_rate_on" class="price" ng-show="!$last && stateCheck.stayDates[stayday.date].amount">
                         {{currencySymbol}}
-                        {{stateCheck.lookUp[stateCheck.preferredType].rates[reservationData.rooms[activeRoom].stayDates[stayday.date].rate.id].dates[stayday.date].amount | number: 0}}
+                        {{stateCheck.stayDates[stayday.date].amount | number : 0}}
                     </span>
                     <span ng-if="reservationData.ratesMeta[reservationData.rooms[activeRoom].stayDates[stayday.date].rate.id].is_suppress_rate_on" class="price" ng-show="!$last && stateCheck.lookUp[stateCheck.preferredType].rates[reservationData.rooms[activeRoom].stayDates[stayday.date].rate.id].dates[stayday.date].amount ">
                         SR
@@ -60,10 +59,3 @@
     <!-- <div ng-if="stateCheck.activeMode=='CALENDAR'" ng-include src="'assets/partials/reservation/rvStayDatesCalendar.html'"></div> -->
     <div ng-if="stateCheck.activeMode=='CALENDAR'" ng-include src="'/assets/partials/reservation/rvRoomRatesCalendar.html'"></div>
 </section>
-<ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all find-rate" tabindex="0" ng-show="filteredRates.length > 0 && isRateFilterActive==true" style="width: 280px; top: 265px; left: 25px;">
-    <li ng-repeat="rate in filteredRates" class="ui-menu-item" role="presentation">
-        <a class="ui-corner-all" tabindex="-1" ng-click="selectRate(rate)">
-            <span ng-bind-html="rate.name |highlight:stateCheck.rateFilterText:false"></span>
-        </a>
-    </li>
-</ul>

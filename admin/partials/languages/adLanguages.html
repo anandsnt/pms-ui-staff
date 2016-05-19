@@ -1,0 +1,35 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
+    <div class="inline-edit">
+        <header class="content-title float">
+            <h2 translate> LANGUAGES </h2>
+            <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+            <div class="header-title">
+                <h2>Use Languages</h2>
+                <div name="active-inactive-toggle" class="switch-button single header-switch-btn" ng-class="{ on: languageData.show_language_field }" ng-click="toggleLanguagesUse()">
+                    <input type="checkbox">
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+        </header>
+        <section class="content-scroll" ng-class="{'overlay' : !languageData.show_language_field}">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <table id="languages" class="grid datatable dataTable" ng-table="itemList">
+                <tbody>
+                    <tr ng-repeat="language in languageData.languages track by $index">
+                        <td data-item="1" data-title="'Language'" header-class="width-50">
+                            {{language.language}}
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: language.is_show_on_guest_card }">
+                                    <input type="checkbox" ng-click="onToggleActivation(language)">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</section>

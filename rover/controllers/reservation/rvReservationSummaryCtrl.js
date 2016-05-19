@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q', 'paymentMethods',
-    function($rootScope, jsMappings, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q, paymentMethods) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q', 'paymentMethods', 'RVReservationPackageSrv',
+    function($rootScope, jsMappings, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q, paymentMethods, RVReservationPackageSrv) {
 
 
         BaseCtrl.call(this, $scope);
@@ -11,8 +11,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         var that = this;
 
-        var roomAndRatesState ='rover.reservation.staycard.mainCard.room-rates';
-        
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+
 
 
         $rootScope.setPrevState = {
@@ -511,16 +511,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         // set the previous state --
 
         if ($stateParams.reservation !== "HOURLY") {
-            // if ($rootScope.isAddonOn) {
-            //     $rootScope.setPrevState = {
-            //         title: $filter('translate')('ENHANCE_STAY'),
-            //         name: 'rover.reservation.staycard.mainCard.addons',
-            //         param: {
-            //             from_date: $scope.reservationData.arrivalDate,
-            //             to_date: $scope.reservationData.departureDate
-            //         }
-            //     };
-            // } else {
             $rootScope.setPrevState = {
                 title: $filter('translate')('ROOM_RATES'),
                 name: roomAndRatesState,
@@ -531,10 +521,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                     company_id: $scope.reservationData.company.id,
                     travel_agent_id: $scope.reservationData.travelAgent.id,
                     group_id: $scope.reservationData.group.id,
-                    allotment_id: $scope.reservationData.allotment.id
+                    allotment_id: $scope.reservationData.allotment.id,
+                    room_type_id: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
+                    adults: $scope.reservationData.tabs[$scope.viewState.currentTab].numAdults,
+                    children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren
                 }
             };
-            // }
         }
 
         var save = function() {
@@ -615,9 +607,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                  * IF ( addons are enabled AND addons are configured AND user is taken to the addons screen from diary) THEN
                  *  - The data from vault would be processed in the addons controller
                  *  - the below block need not be entered
-                 *  - IFF the reservation has not be edited 
+                 *  - IFF the reservation has not be edited
                  *  -- NOTE: if EDIT_HOURLY is set as mode in stateparams, then the reservation has been edited & the vault data has to be parsed
-                 * 
+                 *
                  */
                 if ($rootScope.previousState.name !== 'rover.reservation.staycard.mainCard.addons' || $stateParams.mode === "EDIT_HOURLY") {
                     var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
@@ -657,10 +649,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                                     }
                                     $scope.showSelectedCreditCard = true;
                                 }
+                                //CICO-29487 -> Before proceeding to this; need to fetch the addons details
+                                $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, room.reservation_id, function(response){
+                                    temporaryReservationDataFromDiaryScreen.addons =  response.existing_packages;
+                                    $scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen, true);
+                                    createReservation();
+                                    refreshScrolls();
+                                });
+                            }else{
+                                //CICO-29487 -> In case of creation; The addons are not part of the flow; So whilst creation; an hourly reservation cannot have addons
+                                $scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen, true);
+                                createReservation();
+                                refreshScrolls();
                             }
-                            $scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen, true);
-                            createReservation();
-                            refreshScrolls();
+
                         };
                         $scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
                     }
@@ -778,14 +780,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             });
         };
 
-
         $scope.confirmReservation = function(skipAPICall) {
             if (!$scope.isDemographicsFormValid(true)) {
                 $scope.summaryState.forceDemographicsData = true;
                 $scope.setDemographics(true);
                 return;
             }
-            var postData = $scope.computeReservationDataforUpdate(false, true);
+            var postData = $scope.computeReservationDataforUpdate(true, true);
             postData.payment_type = {};
             angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
                 if (value.value === $scope.reservationData.paymentType.type.value) {
@@ -825,8 +826,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }
         };
 
-        $scope.clickedContinueButton = function() {
-
+        var onSavePaymentMethodSuccess = function(){
             if (!$scope.isDemographicsFormValid(true)) {
                 $scope.summaryState.forceDemographicsData = true;
                 $scope.setDemographics(true);
@@ -888,6 +888,64 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 //
 
             }
+        };
+
+        var savePayment = function(callback){
+            var promises = [];
+            $scope.$emit('showLoader');
+
+            var updateSuccess = function(data) {
+                $scope.$emit('hideLoader');
+                callback();
+            };
+
+            var updateFailure = function(data) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = data;
+            };
+
+            var postData = {
+                payment_type : {}
+            };
+
+            if ($scope.reservationData.paymentType.type.value !== null) {
+                angular.forEach($scope.reservationData.paymentMethods, function(item) {
+                    if ($scope.reservationData.paymentType.type.value === item.value) {
+                        if ($scope.reservationData.paymentType.type.value === "CC") {
+                            postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
+                        } else {
+                            postData.payment_type.type_id = item.id;
+                        }
+                    }
+                });
+                postData.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear === "" || $scope.reservationData.paymentType.ccDetails.expYear === "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
+                $scope.reservationData.paymentType.ccDetails.expMonth + "-01";
+                postData.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
+            }
+
+            $scope.errorMessage = [];
+
+            if (typeof index === 'undefined') {
+                // TO HANDLE OVERRIDE ALL SCENARIO
+                _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                    postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
+                    promises.push(RVReservationSummarySrv.updateReservation(postData));
+                });
+            } else {
+                postData.reservationId = reservationId;
+                promises.push(RVReservationSummarySrv.updateReservation(postData));
+            }
+            $q.all(promises).then(updateSuccess, updateFailure);
+        };
+
+        $scope.onPayDepositLater = function(){
+            savePayment($scope.confirmReservation);
+        };
+
+
+        // Save the payment information initially and then proceed with the demographics check!
+        $scope.clickedContinueButton = function() {
+            savePayment(onSavePaymentMethodSuccess);
         };
 
         $scope.proceedCreatingReservation = function() {
@@ -1272,17 +1330,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.reservationData.user_id = $scope.reservationData.company.id;
             }
 
-            $scope.$emit('showLoader'); 
+            $scope.$emit('showLoader');
             jsMappings.fetchAssets(['addBillingInfo', 'directives'])
-            .then(function(){
-                $scope.$emit('hideLoader'); 
-                ngDialog.open({
-                    template: '/assets/partials/bill/rvBillingInformationPopup.html',
-                    controller: 'rvBillingInformationPopupCtrl',
-                    className: '',
-                    scope: $scope
+                .then(function() {
+                    $scope.$emit('hideLoader');
+                    ngDialog.open({
+                        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+                        controller: 'rvBillingInformationPopupCtrl',
+                        className: '',
+                        scope: $scope
+                    });
                 });
-            });
         };
 
         $scope.updateAdditionalDetails = function(reservationId, index, goToConfirmationScreen) {
@@ -1335,7 +1393,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         $rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId) {
             $scope.reservationData.reservation_type = data;
             // CICO-24768 - Updating Payment id after adding new CC.
-            if(!!paymentId){
+            if (!!paymentId) {
                 $scope.reservationData.reservation_card.payment_details.id = paymentId;
             }
         });
@@ -1349,7 +1407,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             $scope.demographics = ($scope.reservationData.rooms[index] && $scope.reservationData.rooms[index].demographics) || angular.copy($scope.reservationData.demographics);
             // CICO-18594 - Urgent fix
-            if (typeof $scope.reservationData.reservation_type !== "undefined") {
+            if (typeof $scope.reservationData.reservation_type !== "undefined" && !$scope.reservationData.group.id ) {
                 $scope.demographics.reservationType = $scope.reservationData.reservation_type;
             };
 
@@ -1373,7 +1431,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         };
 
 
-        var validateDemographicsData = function(demographicsData){
+        var validateDemographicsData = function(demographicsData) {
             var isValid = true;
             // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
             if ($scope.otherData.reservationTypeIsForced && $scope.otherData.reservationTypes.length > 0) {

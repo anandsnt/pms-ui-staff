@@ -40,6 +40,16 @@ angular.module('sntRover').service('RVContactInfoSrv', ['$q', 'RVBaseWebSrv', 'r
 			return deferred.promise;
 		};
 
+		this.fetchGuestLanguages = function(param) {
+			var deferred = $q.defer();
+			var url = '/api/guest_languages';
+			rvBaseWebSrvV2.getJSON(url,param).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
 
 	}
 ]);

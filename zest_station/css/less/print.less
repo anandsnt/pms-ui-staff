@@ -9,7 +9,11 @@
     -webkit-print-color-adjust: exact;
 }
 
-@page { margin: 1cm 3cm; }
+/*
+commenting out as it is overriding other styles, which has to be added dynamically
+based on admin settings
+
+ @page { margin: 1cm 3cm; }*/
 
 body {
     font-family: @fontFamily;
@@ -38,7 +42,8 @@ strong { font-weight: bold; }
 /* 2. SCREEN
 ==========================================================*/
     #header,
-    #main { .hide; }
+    #main,
+    #screen-icon { display: none !important; }
 
 /* 3. PRINT
 ==========================================================*/
@@ -192,5 +197,28 @@ strong { font-weight: bold; }
 
         .terms { 
             color: rgba(0,0,0,.5);
+        }
+    }
+
+    /* Message Popup ***/
+    #popup {
+        .square(100%);
+
+        .popup-content {
+            .square(100%);
+        }
+
+        h2,
+        .button,
+        #message-action { display: none !important; }
+
+        #message-content {
+            overflow: hidden;
+            padding-top: 2cm;
+            .size(50%, 100%);
+            #flexbox > .flex();
+            #flexbox > .parent(column wrap, space-around, center, '');
+
+      
         }
     }

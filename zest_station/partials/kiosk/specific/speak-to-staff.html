@@ -1,9 +1,10 @@
 <!-- speak to staff -->
 <section id="main" class="centered" role="main">
     <div id="content">
-        <h1>{{"SPEAK_TO_STAFF" |translate}}</h1>
+        <h1 ng-hide="zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 === ''">{{"SPEAK_TO_STAFF" |translate}}</h1>
+        <h1 ng-show="zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 !== ''">{{messageOverrideSpeak}}</h1>
         <h2 class="nocaps">{{"SPEAK_TO_STAFF_SUB" |translate}}</h2>
-        <button type="button" class="button" ui-sref="zest_station.home">{{"SPEAK_TO_STAFF_RETURN" |translate}}</button>
+        <button type="button" class="button" ng-click="navToHome()">{{"SPEAK_TO_STAFF_RETURN" |translate}}</button>
     </div>
     <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
 </section>

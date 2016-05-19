@@ -53,12 +53,33 @@
 			    </div>
 			</div>
 			<div class="entry full-width">
-			    <label for="item-type">Fo status <strong>*</strong></label>
+			    <label for="item-type">Fo status </label>
 			    <div class="boxes">
 			        <label class="checkbox inline" ng-repeat="item in foStatusList" style="width: 46% !important">
 			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.front_office_status_ids[$index]}"></span>
 			            <input type="checkbox" ng-model="eachTaskList.front_office_status_ids[$index]">
 			            {{ item.description }}
+			        </label>
+			    </div>
+			</div>
+
+			<div class="entry full-width">
+			    <label for="item-type">Room status</label>
+			    <div class="boxes">
+			        <label class="checkbox inline-width-30">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.is_clean}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.is_clean">
+			            Clean
+			        </label>
+			        <label class="checkbox inline-width-30">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.is_dirty}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.is_dirty">
+			            Dirty
+			        </label>
+			        <label class="checkbox inline-width-30">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.is_pickup}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.is_pickup">
+			            Pickup
 			        </label>
 			    </div>
 			</div>
@@ -149,10 +170,10 @@
 				<label>Task completion time</label>
 				<div class="entry full-width">
 					<div class="select no-bg select-col col1-3">
-						<input ng-model="eachTaskList.hours" limit-input-range="{from: 0, to: 12, callback: 'updateIndividualTimes'}"></input>
+						<input placeholder="hh" ng-model="eachTaskList.hours" limit-input-range="{from: 0, to: 12, zeroPrefix: true, callback: 'updateIndividualTimes'}"></input>
 					</div>
 					<div class="select no-bg select-col col1-3">
-						<input ng-model="eachTaskList.mins" limit-input-range="{from: 0, to: 59, callback: 'updateIndividualTimes'}"></input>
+						<input placeholder="mm" ng-model="eachTaskList.mins" limit-input-range="{from: 0, to: 59, zeroPrefix: true, callback: 'updateIndividualTimes'}"></input>
 					</div>
 				</div>
 			</div>
@@ -168,25 +189,23 @@
 			<div class="entry full-width">
 				<label>Task completion Time (Individual rooms)</label>
 				<div class="boxes">
-					<div ng-repeat="room in roomTypesList | filter: selectedRoomsFilter">
-						<div class="float">
-							<div class="select select-col col1-2 no-bg">
-								<span>{{room.name}}</span>
-							</div>
-							<div class="select no-bg select-col col1-5">
-								<input ng-model="eachTaskList.rooms_task_completion[room.id].hours" limit-input-range="{from: 0, to: 12}"></input>
-							</div>
-							<div class="select no-bg select-col col1-5">
-								<input ng-model="eachTaskList.rooms_task_completion[room.id].mins" limit-input-range="{from: 0, to: 59}"></input>
-							</div>
-							<div ng-show="checkCopyBtnShow(room.id)">
-								<button type="button" class="button blue with-icon only-icon" ng-click="copyNpaste(room.id)">
-									<span class="icons" ng-class="{'icon-copy-down':$first,
-										'icon-copy-up':$last,
-										'icon-copy-both':$middle}">
-								 	</span>
-								</button>
-							</div>
+					<div ng-repeat="room in roomTypesList | filter: selectedRoomsFilter" style="padding-bottom: 15px; overflow: hidden; clear: both;">
+						<div class="select select-col col1-2 no-bg">
+							<span>{{room.name}}</span>
+						</div>
+						<div class="select no-bg select-col col1-5">
+							<input placeholder="hh" ng-model="eachTaskList.rooms_task_completion[room.id].hours" limit-input-range="{from: 0, to: 12, zeroPrefix: true}"></input>
+						</div>
+						<div class="select no-bg select-col col1-5">
+							<input placeholder="mm" ng-model="eachTaskList.rooms_task_completion[room.id].mins" limit-input-range="{from: 0, to: 59, zeroPrefix: true}"></input>
+						</div>
+						<div ng-show="checkCopyBtnShow(room.id)">
+							<button type="button" class="button blue with-icon only-icon" ng-click="copyNpaste(room.id)">
+								<span class="icons" ng-class="{'icon-copy-down':$first,
+									'icon-copy-up':$last,
+									'icon-copy-both':$middle}">
+							 	</span>
+							</button>
 						</div>
 					</div>
 				</div>

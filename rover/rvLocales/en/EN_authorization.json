@@ -1,10 +1,12 @@
 "CREDIT_CARDS" : "Credit Cards",
-"NO" : "No.",
+"NO." : "No.",
 "CODE" : "Code",
 "AMOUNT" : "Amount",
-"LAST_AUTHORIZATION" : "Last Authorization:",
+"LAST_AUTHORIZATION" : "Last Authorization: ",
 "BILL_#" : "Bill #",
 "BALANCE" : "Balance",
 "ADDITIONAL_AMOUNT" : "Additional Amount",
 "MANUAL_AUTH" : "Manual Auth.",
-"AUTHORIZE" : "Authorize"
+"AUTHORIZE" : "Authorize",
+"RELEASE" : "Release",
+"CREDIT_CARD_AUTHORIZATION" : "Credit Card Authorization"

@@ -34,4 +34,10 @@ angular.module('FinancialsModule', [])
         controller: 'RVccTransactionsController'
     });
 
+    $stateProvider.state('rover.financials.accountsReceivables', {
+        url: '/accountsReceivables',
+        templateUrl: '/assets/partials/financials/accountsReceivables/rvAccountsReceivables.html',
+        controller: 'RVAccountsReceivablesController'
+    });
+
 });

@@ -61,6 +61,43 @@
 
 			</fieldset>
 
+                    
+                        <div class="form-title">
+				<h3>
+					<span></span>
+					Customer Email Server Settings
+				</h3>
+			</div>
+                    <div>
+                        <label style="vertical-align: super;" class="switch-label">ACTIVE</label>
+                        <div class="switch-button single" 
+                             ng-class="{ on: editData.smtp_active }" ng-click="editData.smtp_active = !editData.smtp_active">
+                            <input type="checkbox">
+                            <span class="switch-icon"></span>
+                        </div>
+                    </div>
+            <div>
+                <label style="vertical-align: super;" class="switch-label">Enable STARTTLS</label>
+                <div class="switch-button single"
+                     ng-class="{ on: editData.smtp_enable_starttls }" ng-click="editData.smtp_enable_starttls = !editData.smtp_enable_starttls">
+                    <input type="checkbox">
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+                    
+                    
+                    
+			<fieldset class="holder left float">  
+				<ad-textbox value="editData.smtp_address"   label = "Address" placeholder = "Enter Email Server Address"  styleclass="full-width"></ad-textbox>
+				<ad-textbox value="editData.smtp_port"      label = "Port" placeholder = "Enter Port"  styleclass="full-width"></ad-textbox>
+			</fieldset>
+			<fieldset class="holder right float">
+                                <ad-textbox value="editData.smtp_username"   label = "Username" placeholder = "Enter Username"  styleclass="full-width"></ad-textbox>
+				<ad-textbox value="editData.smtp_password"   label = "Password" placeholder = "Enter Password"  styleclass="full-width" inputtype="password"></ad-textbox>
+			</fieldset>
+
+                    
+                    
 			<div class="form-title">
 				<h3>
 					<span></span>
@@ -120,6 +157,50 @@
 
 				<ad-textbox value="editData.apns_passphrase"   label = "APNS Passphrase" placeholder = "Enter APNS Passphrase"  styleclass="full-width"></ad-textbox>
 			</fieldset>
+
+
+			<fieldset class="full-width">
+                    
+						<div class="form-title key-server-details-title">
+							<h3><span translate>ZEST APP FORCE UPGRADE SETTINGS</span></h3>
+							<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+						</div>
+
+						<div class = "holder left">
+						     <div class="form-title">
+							<h3><span translate>IOS</span></h3>
+							
+						    </div>
+
+						    <ad-toggle-button is-checked="editData.ios_force_upgrade_enabled" label="ENABLE FORCE UPGRADE" ></ad-toggle-button>
+
+						    <ad-textbox value="editData.ios_force_upgrade_version"   label = "UPGRADE VERSION" placeholder = "Enter version" required = "yes"  styleclass="full-width" disabled = "!editData.ios_force_upgrade_enabled"></ad-textbox>
+
+						    <ad-textbox value="editData.ios_force_upgrade_url"   label = "UPGRADE URL" placeholder = "Enter url" disabled = "!editData.ios_force_upgrade_enabled" required = "yes" styleclass="full-width"></ad-textbox>
+
+						    <ad-textbox value="editData.ios_force_upgrade_message"   label = "UPGRADE MESSAGE" disabled = "!editData.ios_force_upgrade_enabled" placeholder = "Enter message" required = "yes"  styleclass="full-width"></ad-textbox>
+
+						    <ad-textbox value="editData.ios_force_upgrade_button_label"   label = "ACTION LABEL" disabled = "!editData.ios_force_upgrade_enabled" required = "yes" placeholder = "Enter action label"  styleclass="full-width"></ad-textbox>
+
+						    
+						</div>
+						<div class = "holder right">
+                            <div class="form-title">
+							<h3><span translate>ANDROID</span></h3>
+							
+						    </div>
+						    <ad-toggle-button is-checked="editData.android_force_upgrade_enabled" label="ENABLE FORCE UPGRADE" required = "yes"></ad-toggle-button>
+
+						    <ad-textbox value="editData.android_force_upgrade_version"   label = "UPGRADE VERSION" required = "yes" placeholder = "Enter version"  styleclass="full-width" disabled = "!editData.android_force_upgrade_enabled"></ad-textbox>
+
+						    <ad-textbox value="editData.android_force_upgrade_url"   label = "UPGRADE URL" required = "yes" placeholder = "Enter url"  styleclass="full-width" disabled = "!editData.android_force_upgrade_enabled"></ad-textbox>
+						    
+						    <ad-textbox value="editData.android_force_upgrade_message"   label = "UPGRADE MESSAGE" required = "yes" placeholder = "Enter message"  styleclass="full-width" disabled = "!editData.android_force_upgrade_enabled"></ad-textbox>
+
+						    <ad-textbox value="editData.android_force_upgrade_button_label"   label = "ACTION LABEL" required = "yes" placeholder = "Enter action label"  styleclass="full-width" disabled = "!editData.android_force_upgrade_enabled"></ad-textbox>
+
+						</div>
+					</fieldset>
 
 			<div class="form-title">
 				<h3>
@@ -219,7 +300,7 @@
                                         StayNTouch
                                 </label>
                                 <span style='margin-bottom:15px;'>&nbsp</span>
-                                <ad-textbox value="editData.code"   label = "SMS Code" placeholder = "" required = "yes" styleclass="full-width"></ad-textbox>
+                                <ad-textbox value="editData.sms_code"   label = "SMS Code" placeholder = "" required = "yes" styleclass="full-width"></ad-textbox>
                                 <ad-textbox value="editData.sms_auth_token"   label = "SMS Auth Token" placeholder = "" required = "no" styleclass="full-width"></ad-textbox>
                                 <ad-textbox value="editData.sms_account_sid"   label = "SMS Account SID" placeholder = "" required = "no" styleclass="full-width"></ad-textbox>
                                 

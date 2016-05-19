@@ -1,0 +1,165 @@
+<div id="rateManagerLeftPanel" ng-controller="rvRateManagerLeftSideFilterCtrl" class="filter-options"
+     ng-click="hideCompanyCardSearchResults()" 
+     ng-class="{'slide_right': isFilterVisible, 'slide_left': !isFilterVisible}" >
+
+    <a class="leftMenuHandle" ng-click="toggleFilterVisibility()"></a>
+    <div class="filter-container">
+        <div class="fixed-container">
+            <h3>FILTER OPTIONS</h3>
+
+
+            <div class="scrolling-container scrollable" ng-iscroll="filter_details" ng-iscroll-delay="50">
+
+                <div class="wrapper">
+
+                    <div class="entry has-datepicker">
+                        <label for="rmDateRange">DATE RANGE</label>
+                        <input id="rmDateRange" placeholder="Select Date Range" readonly="" maxlength="8" value="{{selectedDateRange}}" class="hasDatepicker">
+                        <button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
+                    </div>
+
+                    <div class="entry">
+                        <label for="rmSort">ORDER BY</label>
+                        <div class="select">
+                            <select iscroll-stop-propagation="" id="rmSort" name="sort-order"
+                                    ng-model="orderBySelectedValue">
+                                <option ng-selected="orderBy.id === orderBySelectedValue"
+                                        ng-repeat="orderBy in orderByValues"
+                                        class="placeholder" value="{{orderBy.id}}">
+                                        {{orderByValueMappings[orderBy.value]}}
+                                </option>
+                                
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="entry">
+                        <label for="rmGroup">GROUP BY</label>
+                        <div class="select">
+                            <select iscroll-stop-propagation ng-model="groupBySelectedValue" id="rmGroup" name="group-order">
+                                <option value="" ng-selected="groupBySelectedValue === ''">Select Group Order</option>
+                                <option ng-repeat="groupBy in groupByValues"
+                                    value="{{groupBy.value}}" ng-selected="groupBy.value === groupBySelectedValue">
+                                    {{groupBy.text}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- ADD Class .active on clicked item, remove otherwise -->
+                    <ul class="tabs-nav">
+                        <li><a href="#radioShowContainer" ng-click="switchTabAndCorrespondingActions('SHOW_ALL')" ng-class="{'active': chosenTab ==='SHOW_ALL'}">Show All</a></li>
+                        
+                        <li><a href="#select-rate" ng-click="switchTabAndCorrespondingActions('SELECT_RATE')" ng-class="{'active': chosenTab ==='SELECT_RATE'}" >Select Rate</a></li>
+                    </ul>
+
+                    <!-- Active tab has class .active -->
+                    <div id="radioShowContainer" class="tab show-rate-or-room"
+                         ng-class="{'active': chosenTab ==='SHOW_ALL'}">
+                        <!-- add Class .checked to label and icon, add attribute checked='checked' on input
+                            when checked, otherwise remove all that
+                         -->
+                        <label class="checkbox radio inline" ng-class="{'checked': showAllRates}">
+                            <span class="icon-form icon-radio"
+                                  ng-class="{'checked': showAllRates}"></span>
+                            <input name="show" value="rates" type="radio" ng-change="changedAllRatesSelection()"
+                                   ng-model="showAllRates">
+                            ALL RATES
+                        </label>
+
+                        <label class="checkbox radio inline " 
+                            ng-class="{'checked': showAllRoomTypes}">
+                            <span class="icon-form icon-radio " 
+                                ng-class="{'checked': showAllRoomTypes}"></span>
+                            <input name="show" ng-change="changedAllRoomTypes()" value="rooms" type="radio" ng-model="showAllRoomTypes">
+                            ALL ROOM TYPES
+                        </label>
+                    </div>
+
+                    <!-- Add class .active if clicked on tab 'Select Rate' -->
+                    <div id="select-rate" class="tab" 
+                        ng-class="{'active': chosenTab ==='SELECT_RATE'}">
+                        
+                        <div class="entry">
+                            <div class="select">
+                                <select ng-change="rateTypeSelected()" ng-model="selectedRateTypeID" 
+                                iscroll-stop-propagation id="rmRateType" name="rate-type">
+                                    <option class="placeholder" value="">Select Rate Type</option>
+                                    <option ng-repeat="rateType in rateTypes" value="{{rateType.id}}">
+                                        {{rateType.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="rates-box" id='selected-rate-type-list' ng-repeat="rateType in selectedRateTypes">
+                            <span class="rate-data">{{rateType.name}}</span>
+                            <span ng-click="deleteSelectedRateType(rateType.id)" class="icons delete_small"> &nbsp;</span>
+                        </div>
+
+                        <span class="deleteall" ng-show="selectedRateTypes.length > 2">
+                            <a ng-click="deleteAllSelectedRateTypes()">
+                                CLEAR ALL RATE TYPES
+                            </a>
+                        </span>
+
+                        <div class="entry">
+                            <div id="rmCurrentFilterData" class="select">
+                                <select iscroll-stop-propagation ng-model="selectedRateID" id="rmRate" ng-change="rateSelected()">
+                                    <option class="placeholder" value="">Select Rate</option>
+                                    <option ng-show="shouldShowRate(rate)" ng-repeat="rate in rates"
+                                        value="{{rate.id}}" >
+                                        {{rate.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="rates-box" id='selected-rate-list' ng-repeat="rate in selectedRates">
+                            <span class="rate-data">{{rate.name}}</span>
+                            <span ng-click="deleteSelectedRate(rate.id)" class="icons delete_small"> &nbsp;</span>
+                        </div>
+
+                        <span class="deleteall" ng-show="selectedRates.length > 2">
+                            <a ng-click="deleteAllSelectedRates()">
+                                CLEAR ALL RATES
+                            </a>
+                        </span>
+                    </div>
+
+                    <hr>
+
+                    <div id="accountsHolder" class="entry entry-company-card">
+                        <label for="company-card" class="search-text">NAME CARD, IATA # OR CORPORATE ID</label>
+                        <span type="submit" name="submit" class="icons icon-search1"></span>
+                        <input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off" ng-model="cardSearchText"  rv-cc-ta-auto-complete select-handler="cardSelected">
+                    </div>
+
+                    <div id='rm-selected-card-list' class="rates-box" ng-class="{'dark': card.account_type === 'COMPANY', 'purple': card.account_type === 'TRAVELAGENT'}" ng-repeat="card in selectedCards">
+                        <span class="rate-data">{{card.account_name}}</span>
+                        <span ng-click="deleteSelectedCard(card.id)" class="icons delete_small"> &nbsp;</span>
+                    </div>
+
+                    <div class="entry">
+                        <span class="deleteall" ng-show="selectedCards.length > 2">
+                            <a ng-click="deleteAllSelectedCards()">
+                                CLEAR ALL CARDS
+                            </a>
+                        </span>  
+                    </div>                                    
+                </div> 
+            </div>
+        </div>
+    </div>
+
+    <div class="entry action-filter">
+        <div class="actions float">
+            <button class="button" type="button" ng-click="clickedOnShowRates()"
+                    ng-disabled="shouldDisableShowRateButton()"
+                    ng-class="{ 'grey': shouldDisableShowRateButton(), 'green': !shouldDisableShowRateButton() }" style="">Show Rates
+            </button>
+        </div>
+    </div>
+</div>

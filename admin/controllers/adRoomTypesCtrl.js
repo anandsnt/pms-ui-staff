@@ -7,7 +7,9 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 	$scope.roomTypeData = {};
 	$scope.successMessage = "";
 	$scope.errorMessage ="";
+	$scope.is_image_deleted = false;
 	$scope.fileName = "Choose File....";
+	$scope.imageFileName = $scope.fileName;
 	if($rootScope.isEnabledRoomTypeByRoomClass && !$rootScope.isStandAlone){
 		$scope.getRoomClassList();
 	}	
@@ -107,13 +109,16 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 
 		var unwantedKeys = [];
 		if($scope.roomTypeData.image_of_room_type.indexOf("data:")!== -1){
+			unwantedKeys = ["is_image_deleted"];
 		} else {
+			$scope.roomTypeData.is_image_deleted = $scope.is_image_deleted;
 			unwantedKeys = ["image_of_room_type"];
 		}
 		 var data = dclone($scope.roomTypeData, unwantedKeys);
-
+		 
     	var editSuccessCallbackSave = function(data){
     		$scope.$emit('hideLoader');
+    		$scope.is_image_deleted = false;
     		//Since the list is ordered. Update the ordered data
     		$scope.orderedData[parseInt($scope.currentClickedElement)].name = $scope.roomTypeData.room_type_name;
     		$scope.orderedData[parseInt($scope.currentClickedElement)].code = $scope.roomTypeData.room_type_code;
@@ -122,6 +127,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
     	var addSuccessCallbackSave = function(data){
     		$scope.$emit('hideLoader');
     		$scope.isAddMode = false;
+    		$scope.is_image_deleted = false;
     		$scope.data.room_types.push({'name':$scope.roomTypeData.room_type_name,'code':$scope.roomTypeData.room_type_code,'id':data.id});
     		$scope.tableParams.reload();
     	};
@@ -134,13 +140,19 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
     	    $scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , editSuccessCallbackSave);
     	}
     };
-   /*
-    * To handle click event
-    */
+   /*Handle click
+    of image delete*/
+
+    $scope.deleteRoomImage = function(){
+    	$scope.roomTypeData.image_of_room_type = "";
+    	$scope.is_image_deleted = true;
+    };
+
 	$scope.clickCancel = function(){
 		if($scope.isAddMode){
 			$scope.isAddMode =false;
 			$scope.fileName = "";
+			$scope.imageFileName = $scope.fileName;
         }
 		else {
 		    $scope.currentClickedElement = -1;
@@ -182,6 +194,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 		$scope.currentClickedElement = -1;
 		$scope.isAddMode = $scope.isAddMode ? false : true;
 		$scope.fileName = "Choose File....";
+		$scope.imageFileName = $scope.fileName;
 
 		//reset data
 		$scope.roomTypeData = {
@@ -194,7 +207,8 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 			"is_suite": "",
 			"image_of_room_type": "",
 			"is_room_type_ows_request_per_status_type": false,
-			"room_class_id":""
+			"room_class_id":"",
+			"is_image_deleted":""
 		};
 		$timeout(function() {
             $location.hash('new-form-holder');

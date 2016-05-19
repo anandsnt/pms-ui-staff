@@ -1,7 +1,8 @@
 <nav id="header" role="nav">
     <!-- Back button, if applicable -->
     <button type="button" id="back-button" class="button blank" ng-hide="!hasPrev">
-        <div ng-include="'/assets/zest_station/css/icons/back.svg'"></div>
+        <!--div ng-include="'/assets/zest_station/css/icons/back.svg'"></div-->
+        <div ng-include="icons.url.back"></div>
     </button>
 
     <!-- Hotel logo -->
@@ -11,6 +12,8 @@
 
     <!-- Close button, if applicable -->
     <button type="button" id="close-button" class="button blank">
-        <div ng-include="'assets/partials/zestStation/zestStation/icons/close.svg'" ng-hide="hideNavBtns"></div>
+        <!--div ng-include="'assets/partials/zestStation/zestStation/icons/close.svg'" ng-hide="hideNavBtns"></div-->
+        <div ng-include="icons.url.close"></div>
     </button>
+    
 </nav> 

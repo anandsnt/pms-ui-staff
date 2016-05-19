@@ -2,13 +2,128 @@ sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
-	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings',
-	function($scope, zsEventConstants, $state,zsTabletSrv, $rootScope,ngDialog, $sce, zsUtilitySrv, $translate, hotelDetailsSrv, cssMappings, zestStationSettings) {
+	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings','$timeout', 'zsModeConstants',
+	function($scope, 
+        zsEventConstants, 
+        $state,
+        zsTabletSrv, 
+        $rootScope,
+        ngDialog, 
+        $sce, 
+        zsUtilitySrv, 
+        $translate, 
+        zsHotelDetailsSrv, 
+        cssMappings, 
+        zestStationSettings,
+        $timeout, 
+        zsModeConstants) {
 
 	BaseCtrl.call(this, $scope);
         $scope.storageKey = 'snt_zs_workstation';
         $scope.oosKey = 'snt_zs_workstation.in_oos';
+        $scope.chromeAppKey = 'snt.in_chromeapp';
         $scope.syncOOSInterval = 119;//in seconds (0-based) // currently will re-sync every 2 minutes, next release will be an admin setting per hotel
+    
+    // This is workaround till we find how to detect if app
+    // is invoked from chrome app, we will be hidding this tag from chrome app and
+    // checking that to distinguish if app was launched using chrome app or not 
+    var CheckIfItsChromeApp = function(){
+         $scope.inChromeApp = $("#hideFromChromeApp").css("visibility") === 'hidden' ;
+         console.info(":: is in chrome app ->"+$scope.inChromeApp);
+    }();
+
+    /**
+     * to run angular digest loop,
+     * will check if it is not running
+     * return - None
+     */
+    $scope.runDigestCycle = function() {
+        if (!$scope.$$phase) {
+            $scope.$digest();
+        } else {
+            return;
+        }
+    };    
+
+    $scope.navToHome = function(){
+       //update workstation station. I cant find anyother suitable place
+        //the above codes needs to refactored
+        if($scope.zestStationData.wsIsOos){
+                //update work station status
+                $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
+                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
+                $state.go('zest_station.oos');
+        } else{
+                $state.go ('zest_station.home');
+        };
+    };
+        
+    $translate.use('EN_snt');  
+    //store oos status
+    var oosStorageKey = 'snt_zs_workstation.in_oos',
+        oosReasonKey = 'snt_zs_workstation.oos_reason',
+        storage = localStorage;
+    var updateLocalStorage = function(oosReason, workstationStatus) {
+
+        try {
+            console.info('set oos status', workstationStatus)
+            storage.setItem(oosStorageKey, workstationStatus);
+        } catch (err) {
+            console.warn(err);
+        }
+        if (!!oosReason) {
+            try {
+                storage.setItem(oosReasonKey, oosReason);
+            } catch (err) {
+                console.warn(err);
+            }
+        }
+    };
+    $scope.$on(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event, params) {
+        var oosReason = params.reason;
+        var workstationStatus = params.status;
+        
+        $scope.zestStationData.workstationStatus = workstationStatus;
+
+        updateLocalStorage(oosReason, workstationStatus);
+        if ($scope.zestStationData.workstationStatus === 'out-of-order') {
+            console.info('placing station out of order')
+            var options = {
+                params: {
+                    'oo_status': true,
+                    'oo_reason': oosReason,
+                    'id': $scope.zestStationData.set_workstation_id
+                }
+            };
+            $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+        } else {
+            console.info('putting station back in order')
+            var options = {
+                params: {
+                    'oo_status': false,
+                    //'oo_reason': oosReason,
+                    'id': $scope.zestStationData.set_workstation_id
+                }
+            };
+            $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+            
+            try {
+                storage.setItem(oosStorageKey, "in-order");
+            } catch (err) {
+                console.warn(err);
+            }
+        }
+    });
+
+    $scope.returnDateObj = function(dateString){
+        //utils
+        if(typeof dateString !== 'undefined'){
+            return returnUnformatedDateObj(dateString,$scope.zestStationData.hotelDateFormat);
+        }else{
+            return dateString;
+        };
+    };
+
 	/**
 	 * [navToPrev description]
 	 * @return {[type]} [description]
@@ -21,7 +136,25 @@ sntZestStation.controller('zsRootCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.clickedOnCloseButton = function() {
-		$state.go ('zest_station.home');
+            $scope.hideKeyboardIfUp();
+        //if key card was inserted we need to eject that
+            if($scope.zestStationData.keyCardInserted && !$scope.zestStationData.keyCaptureDone){
+                $scope.socketOperator.EjectKeyCard();
+            };
+        
+            if($scope.zestStationData.wsIsOos){
+                    //update work station status
+                    $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
+                    $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{
+                        'status' :    'out-of-order',
+                        'reason' :    $scope.zestStationData.workstationOooReason
+                    });
+                    $state.go ('zest_station.home');
+                   
+            } else{
+                     $state.go ('zest_station.home');
+            };
+	
 	};
 
 	/**
@@ -30,7 +163,6 @@ sntZestStation.controller('zsRootCtrl', [
 	 */
 	$scope.goToAdmin = function() {
             $state.go ('zest_station.admin');
-           // $state.go('zest_station.home-admin',{'isadmin':true});//for debugging quickly
 	};
 
 	/**
@@ -38,8 +170,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.closeDialog = function() {
-		ngDialog.hide();
-		ngDialog.close();
+                $scope.zestStationData.popup = false;
 	};
 
 	/**
@@ -92,43 +223,43 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
                 $scope.$emit(zsEventConstants.HIDE_LOADER);
 
-                $scope.disableTimeout();
                 $scope.setOOSInBrowser(true);
-                $scope.zestStationData.is_oos = true;
+                $state.is_oos = true;
                 $state.go('zest_station.oos');
             }
 	});
-            
-        
+
 	$scope.$on (zsEventConstants.OOS_OFF, function(event) {
-           if ($scope.zestStationData.is_oos){
+           if ($state.is_oos){
                 $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
                 $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
                 $scope.$emit(zsEventConstants.HIDE_LOADER);
 
-                $scope.disableTimeout();
                 $scope.setOOSInBrowser(false);
                 //only if coming out of OOS, take to home page, otherwise on-refresh, this will interrupt workflow
                 $state.go('zest_station.home');
             }
 	});
-            
-        
-            
-            
-        $scope.isOOS = true;
+
         $scope.setOOSInBrowser = function(t){
              var storageKey = $scope.oosKey,
                     storage = localStorage;
             try {
+                if (t === 'in-order' || t === true){
+                    t = 'in-order';
+                } else if (t === 'out-of-order' || t === false){
+                    t = 'out-of-order';
+                }
+                
+                
                storage.setItem(storageKey, t);
             } catch(err){
                 console.warn(err);
             }
-            if (storage.getItem(storageKey)){
-                $scope.isOOS = true;
+            if (storage.getItem(storageKey) !== 'in-order'){
+                $state.is_oos = true;
             } else {
-                $scope.isOOS = false;
+                $state.is_oos = false;
             }
             
         };
@@ -142,7 +273,7 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.MLImerchantId = response.mli_merchant_id;
                 }
             };
-            $scope.callAPI(hotelDetailsSrv.fetchHotelSettings, options);
+            $scope.callAPI(zsHotelDetailsSrv.fetchHotelSettings, options);
             
             var theme = null;
             /*
@@ -162,6 +293,7 @@ sntZestStation.controller('zsRootCtrl', [
                     fileref.setAttribute("rel", "stylesheet");
                     fileref.setAttribute("type", "text/css");
                     fileref.setAttribute("href", filename);
+                    $('body').attr('id',theme);
                     $('body').append(fileref);
                 };
                 var url = cssMappings[theme.toLowerCase()];
@@ -169,31 +301,69 @@ sntZestStation.controller('zsRootCtrl', [
                 
                 $scope.setThemeByName(theme);
             }
-            
             $scope.language = theme;
+            $scope.loadTranslations();
             
-            $scope.loadTranslations(theme);
+            if (!zestStationSettings.zest_lang.default_language){
+                zestStationSettings.zest_lang.default_language = 'English';
+            }
+            
+            setDefaultLanguage();
             $scope.$emit('hideLoader');
         };
-        $scope.language = null;
-        $scope.loadTranslations = function(theme){
-            if ($scope.language) {
-                
-              $translate.use('EN_'+theme.toLowerCase());
-            //  $translate.fallbackLanguage('EN');
-              /* For reason unclear, the fallback translation does not trigger
-               * unless a translation is requested explicitly, for second screen
-               * onwards.
-               * TODO: Fix this bug in ng-translate and implement in this here.
-               */
-              setTimeout(function() {
-                $translate('NA');
-              }, 1000); //Word around.
-            } else {
-              $translate.use('EN_snt');
+        
+        $scope.loadTranslations = function(){
+            if($scope.zestStationData.zest_lang.english_translations_file_updated){
+                $translate.use('en');
+            } else{
+                $translate.use('EN_snt');
             };
         };
+        
+        $scope.setScreenIcon = function(name){
+            $scope.activeScreenIcon = name;
+            if ($scope.icons && $scope.icons.url){
+                $scope.icons.url.active_screen_icon = $scope.iconsPath+'/screen-'+$scope.activeScreenIcon+'.svg';
+            }
+        };
         $scope.iconsPath = '/assets/zest_station/css/icons/default';
+        $scope.icons = {};
+        $scope.activeScreenIcon = '';
+        $scope.$watch('iconsPath',function(to, from){
+            if (to){
+                $scope.icons = {
+                    url: {
+                        active_screen_icon: $scope.iconsPath+'/screen-'+$scope.activeScreenIcon+'.svg',
+                        key: $scope.iconsPath+'/key.svg',
+                        checkin: $scope.iconsPath+'/checkin.svg',
+                        checkout: $scope.iconsPath+'/checkout.svg',
+                        oos: $scope.iconsPath+'/oos.svg',
+                        staff: $scope.iconsPath+'/staff.svg',
+                        email: $scope.iconsPath+'/email.svg',
+                        pen: $scope.iconsPath+'/pen.svg',
+                        creditcard: $scope.iconsPath+'/creditcard.svg',
+                        keyboard: $scope.iconsPath+'/keyboard.svg',
+                        noprint: $scope.iconsPath+'/no-print.svg',
+                        print: $scope.iconsPath+'/print.svg',
+                        confirmation: $scope.iconsPath+'/confirmation.svg',
+                        moon: $scope.iconsPath+'/moon.svg',
+                        back: $scope.iconsPath+'/back.svg',
+                        close: $scope.iconsPath+'/close.svg',
+                        qr: $scope.iconsPath+'/qr-scan.svg',
+                        qr_noarrow: $scope.iconsPath+'/qr-scan_noarrow.svg',
+                        createkey: $scope.iconsPath+'/create-key.svg',
+                        logo: $scope.iconsPath+'/print_logo.svg',
+                        watch: $scope.iconsPath+'/watch.svg'
+                    }
+                };
+            }
+        });
+        $scope.showScreenIcons = function(){//currenly we will use this for yotel to detect if screen icons are needed
+            //also attaching this to navigation, yotel has text back & cancel, instead of svg icons for back and close;
+            if ($scope.theme === 'yotel'){
+                return true;
+            } else return false;
+        };
         
         $scope.getLogoSvg = function(theme){
             //need a better workaround/fix so the svg renders properly in all browsers
@@ -233,6 +403,7 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.iconsPath = '/assets/zest_station/css/icons/default';
         $scope.updateIconPath = function(theme){
             if (theme === 'yotel'){
+                $scope.theme = theme;
                 $scope.iconsPath = '/assets/zest_station/css/icons/yotel';
             };
             $rootScope.iconsPath = $scope.iconsPath;
@@ -245,7 +416,7 @@ sntZestStation.controller('zsRootCtrl', [
             link = $scope.getThemeLink(theme);
             logo = $scope.getLogoSvg(theme);
             if (link){
-                hotelDetailsSrv.data.theme = theme.toLowerCase();
+                zsHotelDetailsSrv.data.theme = theme.toLowerCase();
                 $state.theme = theme.toLowerCase();
               //  $('head').append('<link rel="stylesheet" type="text/css" href="'+link+'">');
                 $('#logo').append(logo);
@@ -254,6 +425,8 @@ sntZestStation.controller('zsRootCtrl', [
             setTimeout(function(){
                 $('body').css('display', 'block');
             },50);
+            //based upon admin settings set printer css styles
+            setPrinterOptions();
         };
         
         $scope.getHotelStationTheme = function(){
@@ -304,13 +477,6 @@ sntZestStation.controller('zsRootCtrl', [
     $rootScope.$on('$locationChangeStart', routeChange);
     window.history.pushState("initial", "Showing Dashboard", "#/zest_station/home");
 
-    $scope.toggleOOS = function(){
-        if ($state.isOOS){
-            $rootScope.$emit(zsEventConstants.OOS_OFF);
-        } else {
-            $rootScope.$emit(zsEventConstants.OOS_OFF);
-        }
-    };
         $scope.getWorkStation = function(){
             var onSuccess = function(response){
                 if ($scope.timeStopped){
@@ -363,37 +529,31 @@ sntZestStation.controller('zsRootCtrl', [
                     return;
                 }
                 if (response){
-                    $scope.zestStationData.oos_message_value = response.out_of_order_msg;
                     if (response.is_out_of_order){
                         $scope.$emit(zsEventConstants.PUT_OOS);
                     } else {
                         $scope.$emit(zsEventConstants.OOS_OFF);
                     }
-                    $scope.zestStationData.is_oos = response.is_out_of_order;
+                    $state.is_oos = response.is_out_of_order;
                     $scope.startCounter(hard_reset);
-                    $state.is_oos = $scope.zestStationData.is_oos;
-                    setTimeout(function(){
-                        $rootScope.$broadcast('ZS_SETTINGS_UPDATE');//this will tell the homeCtrl to update oos text
-                    },50);
+                    $rootScope.$broadcast('ZS_SETTINGS_UPDATE',response);//this will tell the homeCtrl to update oos text
                 }
             };
             var onFail = function(response){
                 if ($scope.failedDetected){
                     $scope.startCounter();//the timer should continue to try and re-connect, upon reconnection, it will go back to in-service depending on workstation setting
                 }
-                
                 $scope.failedDetected = true;
-                
                 if ($scope.timeStopped){
                     return;
                 }
                 $scope.$emit(zsEventConstants.PUT_OOS);
             };
             var options = {
-                params:                 {
+                params: {
                     id: $state.workstation_id
                 },
-                successCallBack: 	    onSuccess,
+                successCallBack: 	onSuccess,
                 failureCallBack:        onFail
             };
             options["loader"] = 'false';//disable the loader for this service call
@@ -419,10 +579,49 @@ sntZestStation.controller('zsRootCtrl', [
         });
         $scope.refreshSettings = function(hard_reset){
           $scope.getWorkStationStatus(hard_reset);
+
         };
         $scope.$on('RESET_TIMEOUT',function(evt, params){
             $scope.resetCounter();
         });
+
+
+
+        $scope.languageTimerReset = false;
+        var setDefaultLanguage= function(){
+            intLanguageSettings();
+        };
+
+        var languageCounterCompleted = function(){
+            if($state.current.name ==="zest_station.home"){
+                setDefaultLanguage();
+            }
+        };
+        $scope.startLanguageCounter = function(){
+            var time = 120, inMilliSec = 1000;
+            $scope.languageCounter = $timeout(languageCounterCompleted, time*inMilliSec);
+        };
+
+        $scope.stopLanguageCounter = function(){
+            $timeout.cancel($scope.languageCounter);
+        };
+        $scope.prepForOOS = function(reason, hardwareFailure){
+            //this will get the kiosk ready to go into oos, 
+            //once the home page initializes next,  the wsIsOos will be checked and go into OOS,
+            //the reason will be used by the admin setting when going to place back in service.
+            if (hardwareFailure){
+                //only put station out of service if due to hardware failure,
+                //if somehow the reservation itself causes the key failure, do not put oos
+                $scope.zestStationData.wsIsOos = true;
+            }
+            $scope.zestStationData.wsFailedReason =  reason;
+        };
+        $scope.prepForInService = function(){
+            $scope.zestStationData.wsIsOos = false;
+            $scope.zestStationData.wsFailedReason =  '';
+        };
+        
+        
         $scope.timeStopped = false;
         $scope.startCounter = function(hard_reset){
             var time = $scope.syncOOSInterval;
@@ -476,10 +675,31 @@ sntZestStation.controller('zsRootCtrl', [
           }
           return $scope.hasWorkstationAssigned;
         };
+        
+        
+        var callSetSessionStation = function(station){
+            var workstation = $scope.sessionStation;
+            var successCallBack = function(response){
+                console.info('set to session');
+                $scope.$emit('hideLoader');
+            };
+            var failureCallBack = function(response){
+                $scope.$emit('hideLoader');
+                console.warn('failed to set workstation in session');
+                console.log(response);
+            };
+             var options = {
+    		params: 			station,
+                successCallBack:                successCallBack,
+                failureCallBack:                failureCallBack
+            };
+            $scope.callAPI(zsTabletSrv.setSessionWorkstation, options);
+        }
         $scope.setWorkStation = function(){
             /*
              * This method will get the device's last saved workstation, and from the last fetched list of workstations
              * will set the workstation for the UI, which is also used in determining the device's default printer
+             * //emv_terminal_id and Key_encoder will also get updated from the status update calls
              */
              var storageKey = $scope.storageKey,
                     storage = localStorage,
@@ -491,15 +711,11 @@ sntZestStation.controller('zsRootCtrl', [
                 } catch(err){
                     console.warn(err);
                 }
-                console.info(" storedWorkStation ",storedWorkStation);
-                console.log(typeof storedWorkStation)
-                console.log(storedWorkStation === '');
 
                 if (storedWorkStation === ''){
                     $scope.zestStationData.workstations = 'Select';
                     $state.hasWorkstation = false;
                 } else {
-
                     if ($scope.zestStationData){
                         if ($scope.zestStationData.workstations && $scope.zestStationData.workstations.length > 0){
                             for (var i in $scope.zestStationData.workstations){
@@ -507,6 +723,8 @@ sntZestStation.controller('zsRootCtrl', [
                                      station = $scope.zestStationData.workstations[i];
                                      hasWorkstation = true;
                                      $state.hasWorkstation = true;
+                                     $scope.zestStationData.printerLabel = $scope.getPrinterLabel(station.printer);
+                                     callSetSessionStation(station);
                                 }
                             }
                         } else {
@@ -524,16 +742,13 @@ sntZestStation.controller('zsRootCtrl', [
                         if (station.printer){
                             sntZestStation.selectedPrinter = station.printer;//only set this if not null
                         }
-                        sntZestStation.encoder = station.key_encoder_id;
+                        $state.encoder = station.key_encoder_id;
                         $state.workstation_id = station.id;
                         $state.emv_terminal_id = station.emv_terminal_id;
-
-                        $scope.zestStationData.oos_message_value = station.out_of_order_msg;
-                        $scope.zestStationData.is_oos = station.is_out_of_order;
+                        $state.is_oos = station.is_out_of_order;
                     }
 
                     $scope.hasWorkstationAssigned = hasWorkstation;
-
                     if (!$scope.hasWorkstation()){
                         $state.go('zest_station.oos');
                     }
@@ -541,29 +756,32 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
         
+    $scope.getPrinterLabel = function(name){
+        if (name && typeof name === typeof 'str'){
+             if (name.length > 1){
+                 //printer name convention has something like IPP://somename..
+                 //so lets pull out that IPP:// from the display to user, so they will see its
+                 //HP or other printer identifiers
+                 var str = name.split('ipp://');
+                 if (str[1]){
+                     name = str[1];
+                 }
+             } else {
+                name = 'Select';
+             }
+        } else {
+            name = 'Select';
+        }
+        return name;
+    };
+        
 	$scope.failureCallBack =  function(data){
-            if ($scope.isOOS){
+            if ($state.is_oos){
                 $state.go('zest_station.oos');
             } else {
                 $state.go('zest_station.error_page');
             }
 	};
-        /*
-        $scope.fetchKeyEncoderList = function(){
-            console.log('fetching key encoders')
-            var onSuccess = function(data){
-                console.info('got key encoders: ',data.results)
-                    $scope.zestStationData.key_encoders = data.results;
-                    $scope.$emit('hideLoader');
-            };
-            
-            var options = {
-                params:                 {},
-                successCallBack: 	    onSuccess,
-                failureCallBack:        $scope.failureCallBack
-            };
-            $scope.callAPI(zsTabletSrv.fetchEncoders, options);
-        };*/
 
         $scope.trustAsHtml = function(string) {
             return $sce.trustAsHtml(string);
@@ -576,6 +794,8 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.currencySymbol = data.currency.symbol;
                     $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
                     $scope.zestStationData.payment_gateway = $scope.zestStationData.hotel_settings.payment_gateway;
+                    $scope.zestStationData.hotelDateFormat = !!data.date_format ? data.date_format.value : "DD-MM-YYYY" ;
+                    console.info("::Hotel date format ->"+$scope.zestStationData.hotelDateFormat);
                     $scope.$emit('hideLoader');
             };
             
@@ -586,14 +806,6 @@ sntZestStation.controller('zsRootCtrl', [
                     failureCallBack:        $scope.failureCallBack
                 };
 		$scope.callAPI(zsTabletSrv.fetchHotelSettings, options);
-        };
-        $scope.disableTimeout = function(){
-          //  console.info('timeout Disabled');
-            zsTimeoutEnabled = false;
-        };
-        $scope.enableTimeout = function(){
-            //console.info('timeout Enabled');
-            zsTimeoutEnabled = true;
         };
         $scope.idlePopup = function() {
             var current = $state.current.name;
@@ -609,16 +821,111 @@ sntZestStation.controller('zsRootCtrl', [
                     /*
                      * this is a workaround for the ipad popups, the css is not allowing left; 50% to work properly, and is pushed too far to the right (not an issue in desktop browsers)
                      */
-                    ngDialog.open({
-                            template: '/assets/partials/rvTabletIdlePopup.html',
-                            scope: $scope,
-                            closeByDocument: false,
-                            closeByEscape: false
-                    });
+                    $scope.timeOut = true;
+                    $scope.$apply();
                 }
             }
 
         };
+        
+        $scope.openExternalWebPage = function(){
+            $scope.showExternalWebPage =true;
+            setTimeout(listenForInputBoxClick, 100);
+        };
+        
+        $scope.listenForInputBoxClick = function(){
+            var iframe = $("#booking_iframe")[0];
+            iframe.contentWindow.on('click touchstart',function(){
+                console.log("inside iframe clicking",arguments);
+            });
+        };
+        
+        $scope.closeExternalWebPage = function(){
+            $scope.showExternalWebPage =false;
+        };
+        
+        $scope.languageSelect = function(){
+            $scope.stopLanguageCounter();
+            $scope.showLanguagePopup = true;
+            $scope.timeOut = true;
+        };
+        $scope.isSupported = function(lang){
+            var langs = $scope.supportedLangs;
+            for (var i in langs){
+                if (lang === langs[i]){
+                    return true;
+                }
+            }
+            return false;
+        };
+        
+        var getDefaultLangFlag = function(lang){
+            for (var i in $scope.langInfo){
+                if ($scope.langInfo[i].info.name === lang){
+                    return $scope.langInfo[i].info.flag;
+                }
+            }
+            
+        };
+        
+        var getDefaultLangDisplayName = function(lang){
+                if (lang === 'Castellano'){
+                    return  'Castellano';
+                }
+                if (lang === 'English'){
+                    return  'English';
+                }
+                if (lang === 'French'){
+                    return  'Français';
+                }
+                if (lang === 'German'){
+                    return  'Deutsch';
+                }
+                if (lang === 'Italian'){
+                    return  'Italiano';
+                }
+                if (lang === 'Spanish'){
+                    return  'Español';
+                }
+        };
+        
+        var getLangCode = function(name){
+            for (var i in $scope.langInfo){
+                if ($scope.langInfo[i].info.name === name){
+                    return $scope.langInfo[i].info.code;
+                }
+            }
+        };
+        var intLanguageSettings = function(){
+            //$scope.selectedLanguage = 'English';
+            console.log('using default language: [ '+ zestStationSettings.zest_lang.default_language +' ]')
+            $scope.selectedLanguage = getDefaultLangDisplayName(zestStationSettings.zest_lang.default_language);
+            //$scope.langflag = 'flag-gb';
+            
+            $scope.language = null;
+            $scope.langInfo = zsUtilitySrv.returnLanguageList();
+            
+            $scope.langflag = getDefaultLangFlag(zestStationSettings.zest_lang.default_language);
+            $scope.langCode = getLangCode(zestStationSettings.zest_lang.default_language);
+            
+            $translate.use($scope.langCode);
+        };
+
+        $scope.selectLanguage = function(language){//method used from angular view
+            $scope.selectedLanguage = language.language;//set language name
+            $scope.langflag = language.info.flag;// set language icon
+            $translate.use(language.info.code); //set translations
+            $scope.showLanguagePopup = false; // set popup flag
+            $scope.timeOut = false; // set popup flag
+            $scope.startLanguageCounter();
+        };
+
+        $scope.closeLangPopUp = function()
+        {   $scope.startLanguageCounter();
+            $scope.showLanguagePopup = false;
+            $scope.timeOut = false;
+        };
+        
             $scope.idleTimerSettings = {};
             $scope.$on('UPDATE_IDLE_TIMER',function(evt, params){
                 //updates the idle timer settings here from what was successfully saved in zest station admin
@@ -657,6 +964,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.resetCounter = function(){
                clearInterval($scope.idleTimer);
             };
+            
             $scope.resetTime = function(){
                 ++$scope.adminTimeout;
                 $scope.closePopup();
@@ -665,23 +973,36 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.startIdleCounter();
                 }   
             };
+            
+            $scope.timeOut = false;
             $scope.closePopup = function(){
-		ngDialog.closeAll();
+                //ngDialog.hide();
+                $scope.timeOut = false;
+                //$scope.zestStationData.popup = false;
             };
-            
-            
-            $scope.isFromChromeApp = function(){
-                console.log(chrome.app);
-                console.log(localStorage);
-                return true;
+            $scope.initQRCodeFindReservation = function(reservation_id){
+                $state.qr_code = reservation_id;
+                $state.go('zest_station.reservation_search_qrcode', {
+                    mode: zsModeConstants.PICKUP_KEY_MODE
+                });
             };
+            $scope.onChromeAppResponse = function(response){
+                console.log('msg from ChromeApp: ',response);
+                if (response){
+                    if (response.isChromeApp){
+                        //do nothing
+                    } else if (response.qr_code){
+                        $scope.initQRCodeFindReservation(response.reservation_id);
+                    }
+                }
+            };
+            $scope.chromeApp = new chromeApp($scope.onChromeAppResponse, zestStationSettings.chrome_app_id);
             $scope.getPromptTime = function(){
                 if ($scope.idle_max>$scope.idle_prompt){
                     return $scope.idle_max-$scope.idle_prompt;
                 } else return -1;
             };
             $scope.startIdleCounter = function(){
-                //console.info('isFromChromeApp: ', $scope.isFromChromeApp());
                 var time = $scope.idle_max, promptTime = $scope.getPromptTime();
                 
                     var timer = time, minutes, seconds;
@@ -711,19 +1032,70 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.idleTimer = timerInt;
             };
             $scope.handleIdleTimeout = function(){
-                console.info($state.current.name)
-                if ($state.current.name !== 'zest_station.oos' && $state.current.name !== 'zest_station.admin-screen' && $state.current.name !== 'zest_station.admin'){
-                    $state.go('zest_station.home');
+                if ($state.current.name !== 'zest_station.oos' && 
+                        $state.current.name !== 'zest_station.admin-screen' && 
+                        $state.current.name !== 'zest_station.admin'){
+                        $state.go('zest_station.home');
+                    
+                    /*
+                     * Setting language back to default handled in separate timer function
+                     */
+                    //
+                    //$scope.selectedLanguage = 'English';
+                    //$scope.langflag = 'flag-gb';
+                    //$scope.selectLanguage($scope.selectedLanguage,$scope.langflag);//set back to default language; currently just english
                 } else {
                     console.info('at admin or oos, idle timer stopped');
                 }
                 $scope.closePopup();
             };
             
+            
+            $scope.showKeyboardOnInput = function(){
+                var frameBody = $("#booking_iframe").contents().find("body");
+                    frameBody.focus(function(){ 
+                        console.log('iframe focus')
+                    });
+            };
+            $scope.hideKeyboardIfUp = function(){
+                var focused = $('#'+$scope.lastKeyboardId);
+                if ($(focused)){
+                    if ($(focused).getkeyboard()){
+                        $(focused).getkeyboard().accept(true);
+                    }
+                }
+            };
+            $scope.showOnScreenKeyboard = function(id) {
+                $scope.lastKeyboardId = id;
+               //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
+                var isTouchDevice = 'ontouchstart' in document.documentElement,
+                    agentString = window.navigator.userAgent;
+            console.log('theme: ',$scope.theme);
+            var themeUsesKeyboard = false;
+            if ($scope.theme === 'yotel' || !$scope.theme){
+                themeUsesKeyboard = true;
+            }
+            console.info('themeUsesKeyboard: ',themeUsesKeyboard)
+                var shouldShowKeyboard = (typeof chrome) && 
+                        (agentString.toLowerCase().indexOf('window')!==-1) && 
+                        isTouchDevice && 
+                        $scope.inChromeApp && themeUsesKeyboard;
+                if (shouldShowKeyboard){
+                     if (id){
+                         new initScreenKeyboardListener('station', id, true);
+                      }
+                 } 
+            };
+            
             $scope.$watchCollection(function(){
                 return $state.current.name;
             }, function(){
                 var current = $state.current.name;
+                
+                $scope.hideKeyboardIfUp();
+                if ($scope.theme === 'yotel'){
+                    $scope.setScreenIconByState(current);
+                }
                 if (current === 'zest_station.home'){
                     $scope.resetCounter();
                     $scope.idle_timer_enabled = false;
@@ -735,12 +1107,165 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 }
             });
+            $scope.setScreenIconByState = function(name){
+               switch(name){
+                   //home screen handled from homeCtrl on init, others handled here
+                   case 'zest_station.early_checkin_unavailable':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.early_checkin_nav':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.find_by_confirmation':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.find_by_email':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.find_by_no_of_nights':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.find_reservation':
+                       $scope.setScreenIcon('checkin');
+                       break;
+                   case 'zest_station.oos':
+                       $scope.setScreenIcon('settings');
+                       break;
+                   case 'zest_station.review_bill':
+                       $scope.setScreenIcon('checkout');
+                       break;
+                   case 'zest_station.bill_delivery_options':
+                       $scope.setScreenIcon('checkout');
+                       break;
+                   case 'zest_station.reservation_checked_out':
+                       $scope.setScreenIcon('checkout');
+                       break;
+                   default: $scope.setScreenIcon('bed');
+                       break;
+               }
+            };
         
         
-        
-        
-        
-	/**
+        $scope.setSupportedLangList = function(langs){
+            var allLangs = Object.getOwnPropertyNames(langs).sort();
+           // $scope.supportedLangs = zestStationSettings.zest_lang;
+            
+            var supported = [];
+            for (var i in allLangs){
+                if (zestStationSettings.zest_lang[allLangs[i]]){
+                    if (allLangs[i] === 'enabled'){
+                        continue;
+                    }
+                    supported.push(allLangs[i]);
+                }
+            }
+            $scope.supportedLangs = supported;
+        };
+    var maximizeScreen = function(){
+        var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
+        console.info("chrome app id [ "+chromeAppId+' ]');
+        //minimize the chrome app on loging out
+        (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId,"zest-station-login"):"";
+    };
+    $scope.initChromeAppQRCodeScanner = function(){
+        if ($scope.inChromeApp){
+            var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
+            console.info("chrome app id [ "+chromeAppId+' ]');
+            //minimize the chrome app on loging out
+            new chromeApp($scope.onChromeAppResponse, zestStationSettings.chrome_app_id, true);
+            console.info("::Starting QR Code Scanner::"); 
+        }
+    };
+
+    var setPrinterOptions = function(){
+        $scope.zestStationData.theme = $state.theme;//again a state variable!!!!
+        //need to change all this codes
+        // alert($scope.zestStationData.zest_printer_option)
+         if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
+            //add startac styles
+            if($scope.theme === 'yotel'){
+                 applyStylesForYotelStarTac();//zsUtils function
+            }
+            else{
+                applyStarTacStyles();//zsUtils function
+            }
+           
+         }
+         else if($scope.zestStationData.zest_printer_option === "RECEIPT"){
+            if($scope.theme === 'yotel'){
+               applyStylesForYotelReceipt();//zsUtils function
+            }
+            else{
+                //
+            }
+         }
+         else{
+            //RECEIPT and AIR_PRINT
+            applyPrintMargin();//zsUtils function
+         };
+    };
+
+    /*
+    *  Websocket actions related to keycard lookup
+    *  starts here
+    */
+    var socketActions = function(response) {
+        var cmd = response.Command,
+            msg = response.Message;
+        // to delete after QA pass
+        console.info("Websocket:-> uid=" + response.UID);
+        console.info("Websocket: Command ->"+cmd);
+        console.info("Websocket: msg ->"+msg);
+        console.info("Websocket:-> response code:" + response.ResponseCode);
+
+        if (response.Command === 'cmd_insert_key_card') {
+            //check if the UID is valid
+            //if so find reservation using that
+            if (typeof response.UID !== "undefined" && response.UID !== null) {
+                $scope.$broadcast('UID_FETCH_SUCCESS',{"uid":response.UID});
+            } else {
+                $scope.$broadcast('UID_FETCH_FAILED');
+            };
+        } else if (response.Command === 'cmd_eject_key_card') {
+            //ejectkey card callback
+            if (response.ResponseCode === 19) {
+                // key ejection failed
+                if (!$scope.zestStationData.keyCaptureDone) {
+                    $state.go('zest_station.error_page');
+                };
+            }
+            else{
+                $scope.zestStationData.keyCardInserted =  false;
+            }
+        } else if (response.Command === 'cmd_capture_key_card') {
+            if (response.ResponseCode === 0) {
+                $scope.zestStationData.keyCaptureDone = true;
+            }
+            else{
+                //capture failed
+                $state.go('zest_station.error_page');
+            };
+        } else if( response.Command === 'cmd_dispense_key_card'){
+                $scope.$broadcast('DISPENSE_SUCCESS',{"cmd":response.Command,"msg":response.Message});
+                
+        } else if( response.Command === 'cmd_scan_qr_passport_scanner'){
+                $scope.$broadcast('QR_PASSPORT_SCAN_MSG',{"cmd":response.Command,"msg":response.Message});
+        }
+    };
+    var socketOpenedFailed = function() {
+        console.info("Websocket:-> socket connection failed");
+        $scope.$broadcast('SOCKET_FAILED');
+    };
+    var socketOpenedSuccess = function() {
+        console.info("Websocket:-> socket connected");
+        $scope.$broadcast('SOCKET_CONNECTED');
+    };
+
+    $scope.$on('CONNECT_WEBSOCKET',function(){
+        $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+    });
+
+    /***
 	 * [initializeMe description]
 	 * @return {[type]} [description]
 	 */
@@ -757,23 +1282,36 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        $scope.zestStationData.workstationOooReason = "";
+        $scope.zestStationData.workstationStatus = "";
+        $scope.zestStationData.isAdminFirstLogin = true;
+        $scope.zestStationData.wsIsOos = false;
+        
+        (typeof chrome !== "undefined") ? maximizeScreen():"";
+        //create a websocket obj
+        $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+        $scope.zestStationData.keyCardInserted =  false;
+        $scope.setSupportedLangList(zestStationSettings.zest_lang);
+        $scope.zestStationData.pickup_qr_scan = zestStationSettings.pickup_qr_scan;
+        
+        //$scope.zestStationData.pickup_qr_scan = true;//fake it till ya make it
              
-        _.extend(hotelDetailsSrv.data, zestStationSettings);
+        _.extend(zsHotelDetailsSrv.data, zestStationSettings);
         $scope.settings = zestStationSettings;
         $scope.setupIdleTimer();
         $scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
         $scope.fetchHotelSettings();
         $scope.getWorkStation();
         $scope.getHotelStationTheme();
+        intLanguageSettings();
         //set print and email options set from hotel settings > Zest > zest station
         $scope.zestStationData.printEnabled = $scope.zestStationData.registration_card.print;
+        $scope.zestStationData.auto_print = $scope.zestStationData.registration_card.auto_print;
         $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
+        $scope.setScreenIcon('bed');
+        
 	}();
         
         
-        
-        
-        
-        
-        
 }]);
+

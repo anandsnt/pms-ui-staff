@@ -1,6 +1,7 @@
 <section id="main" class="centered" role="main" ng-show='at === "admin-login-screen" || at === "key-success" || at === "error" || at === "last_confirm" || at === "talk-to-staff"' click-touch='resetTime()'>
     <div id="content">
-        <h1>{{headingText |translate}}</h1>
+        <h1 ng-hide="messageOverride">{{headingText |translate}}</h1>
+        <h1 ng-show="messageOverride">{{messageOverrideSpeak}}</h1>
         <h2>{{subHeadingText |translate}}</h2>
         <!-- General error -->
         <button ng-show="at === 'error'" type="button" class="button" touch-press="navToHome()">{{modalBtn1 |translate}}</button>

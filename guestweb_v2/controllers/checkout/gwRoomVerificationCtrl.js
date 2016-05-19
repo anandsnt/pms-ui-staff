@@ -19,7 +19,7 @@ sntGuestWeb.controller('GwRoomVerificationController', ['$scope', '$state', '$co
 				// check and navigate base upon checkout later option is available
 				GwWebSrv.zestwebData.isLateCheckoutAvailable ? $state.go('checkOutOptions') : $state.go('checkOutConfirmation');
 			};
-			var onFail = function() {
+			var onFailure = function() {
 				var popupOptions = angular.copy($scope.errorOpts);
 				popupOptions.resolve = {
 					message: function() {
@@ -34,7 +34,7 @@ sntGuestWeb.controller('GwRoomVerificationController', ['$scope', '$state', '$co
 					'room_number': $scope.roomNumber
 				},
 				successCallBack: onSuccess,
-				failureCallBack: onFail
+				failureCallBack: onFailure
 			};
 
 			$scope.callAPI(GwCheckoutSrv.verifyRoom, options);

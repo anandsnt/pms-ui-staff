@@ -68,7 +68,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADRoomTypesCtrl',
 			url : '/roomtypes'
 		});
-		
+
 		$stateProvider.state('admin.roomclasses', {
 			templateUrl: '/assets/partials/roomClass/adRoomClassList.html',
 			controller: 'ADRoomClassListCtrl',
@@ -123,7 +123,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADReservationTypeListController',
 			url : '/reservationtypes'
 		});
-                
+
 		$stateProvider.state('admin.interfaceMessages', {
 			templateUrl: '/assets/partials/interfaces/adInterfaceMessages.html',
 			controller: 'adExternalInterfaceCtrl',
@@ -512,7 +512,21 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.stationary', {
 			templateUrl: '/assets/partials/stationary/adStationary.html',
 			controller: 'ADStationaryCtrl',
-			url : '/stationary'
+			url : '/stationary',
+			resolve : {
+				availableGuestLanguages : function(ADTranslationSrv) {
+					return ADTranslationSrv.getGuestLanguages();
+				},
+				availableHoldStatus : function(ADHoldStatusSrv) {
+					return ADHoldStatusSrv.fetch();
+				}
+			}
+		});
+
+		$stateProvider.state('admin.languages', {
+			templateUrl: '/assets/partials/languages/adLanguages.html',
+			controller: 'ADLanguagesCtrl',
+			url : '/languages'
 		});
 
 		$stateProvider.state('admin.analyticsSetup', {
@@ -565,6 +579,20 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			resolve : {
 				invoiceSettingsData : function(ADInvoiceSettingsSrv) {
 					return ADInvoiceSettingsSrv.fetchInvoiceSettings();
+				}
+			}
+		});
+
+		$stateProvider.state('admin.translations', {
+			templateUrl: '/assets/partials/translation/adTranslation.html',
+			controller: 'ADTranslationCtrl',
+			url : '/translation',
+			resolve : {
+				availableLanguages : function(ADTranslationSrv) {
+					return ADTranslationSrv.getGuestLanguages();
+				},
+				menuDetails : function(ADTranslationSrv) {
+					return ADTranslationSrv.getMenuOptionDetails();
 				}
 			}
 		});

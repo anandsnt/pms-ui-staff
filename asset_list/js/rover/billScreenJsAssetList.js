@@ -1,4 +1,4 @@
-module.exports = {	
+module.exports = {
 	getList : function() {
 		var controllerRoot 	= 'rover/controllers/',
 			servicesRoot 	= 'rover/services/',
@@ -7,8 +7,9 @@ module.exports = {
 			minifiedFiles: [
 				sharedJs + 'signature/**/*.js'
 			],
-			nonMinifiedFiles: [						
+			nonMinifiedFiles: [
 				controllerRoot + "bill/**/*.js",
+				controllerRoot + "billFormat/rvBillFormatPopupController.js",
 				servicesRoot + "bill/**/*.js"
 			]
 		};

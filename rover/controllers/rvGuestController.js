@@ -12,7 +12,7 @@ angular.module('sntRover').controller('guestCardController', [
 		$scope.cardVisible = false;
 		//init activeCard as the companyCard
 		$scope.activeCard = "companyCard";
-
+		$scope.isPrintArStatement = false;
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
 		BaseCtrl.call(this, $scope);
@@ -467,6 +467,10 @@ angular.module('sntRover').controller('guestCardController', [
 
 			if ($rootScope.isHourlyRateOn) {
 				cls += " hourly";
+			}
+
+			if ($scope.isPrintArStatement) {
+				cls += " print-statement";
 			}
 
 			return cls;
@@ -1153,7 +1157,7 @@ angular.module('sntRover').controller('guestCardController', [
 				}
 
 			} else {
-				$scope.errrorMessage = error;
+				$scope.errorMessage = error;
 			}
 		};
 
@@ -1213,7 +1217,7 @@ angular.module('sntRover').controller('guestCardController', [
 		 * when we failed in attaching a group
 		 */
 		var failureCallBackOfDetachGroupFromThisReservation = function(error) {
-			$scope.errrorMessage = error;
+			$scope.errorMessage = error;
 		};
 
 		/**
@@ -1479,7 +1483,7 @@ angular.module('sntRover').controller('guestCardController', [
 					showCreditLimitExceedPopup();
 				}
 			} else {
-				$scope.errrorMessage = error.errorMessage;
+				$scope.errorMessage = error;
 			}
 		};
 
@@ -1856,5 +1860,10 @@ angular.module('sntRover').controller('guestCardController', [
 		$scope.$on("SHOWERRORMESSAGE",function( event, errorMessage ){
 			$scope.errorMessage = errorMessage;
 		});
+
+		// CICO-27364 - add class 'print-statement' if printing AR Transactions Statement.
+ 		$scope.$on("PRINT_AR_STATEMENT", function(event, isPrintArStatement ) {
+ 			$scope.isPrintArStatement = isPrintArStatement;
+ 		});
 	}
 ]);

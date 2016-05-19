@@ -149,3 +149,29 @@
     <li>Records<span>{{ summaryCounts.records }}</span></li>
     <li>Balance Amount<span class="red">{{ summaryCounts.balance_amount | currency:currencySymbol:2 }}</span></li>
 </ul>
+
+<!-- Guest Balance Report -->
+<ul ng-if="isThisReport( 'COMPANY_TA_TOP_PRODUCERS' )" class="totals">
+    <li>Total Revenue<span>{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Room Revenue<span>{{ summaryCounts.room_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Reservations<span>{{ summaryCounts.reservations }}</span></li>
+    <li>Nights<span>{{ summaryCounts.nights }}</span></li>
+</ul>
+
+<!-- Guest Balance Report -->
+<ul ng-if="isThisReport( 'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT' )" class="totals">
+    <li>Charge Type<span>{{ appliedFilter.chargeTypes.join(' ') }}</span></li>
+    <li ng-if="appliedFilter.users.length > 1">Users<span>Multiple</span></li>
+    <li ng-if="appliedFilter.users.length == 1">Users<span>{{ appliedFilter.users.join(' ') }}</span></li>
+    <li>Total Adjustments<span class="purple">{{ summaryCounts.total_adjustments_amount | currency:currencySymbol:2 }}</span></li>
+    <li>Total Deleted Charges<span class="red">{{ summaryCounts.total_deleted_charges_amount | currency:currencySymbol:2 }}</span></li>
+</ul>
+
+<!-- Guest/Account Deposit Balance Summary Report -->
+<ul ng-if="isThisReport( 'DEPOSIT_SUMMARY' )" class="totals">
+    <li ng-hide="appliedFilter.guestOrAccount == 'Account'">Total Guest<span>{{summaryCounts.total_guest_deposit_balance | currency:currencySymbol:2 }}</span></li>
+    <!-- Hide if not showing Guest -->
+    <li ng-hide="appliedFilter.guestOrAccount == 'Guest'">Total Account<span>{{summaryCounts.total_group_deposit_balance | currency:currencySymbol:2 }}</span></li>
+    <!-- Hide if not showing Group -->
+    <li>Total Deposit Balance<span class="green">{{summaryCounts.total_deposit_balance | currency:currencySymbol:2 }}</span></li>
+</ul>

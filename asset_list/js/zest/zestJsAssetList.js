@@ -3,6 +3,7 @@ module.exports = {
 		var sharedRoot 	= 'shared/',
 		jsLibRoot 		= sharedRoot + 'lib/js/',
 		zestRoot 		= 'zest_station/',
+                
 		adminJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'jquery.min.js',
@@ -20,7 +21,21 @@ module.exports = {
 				jsLibRoot + 'ngDialog.min.js',
 				jsLibRoot + 'fastclick.min.js',
 				jsLibRoot + 'signature/**/*.js',
-                jsLibRoot + 'fullcalender/**/*.js'
+                                jsLibRoot + 'fullcalender/**/*.js',
+                                //jquery virtual keyboard files
+				//jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-all.min.js',
+				//jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-altkeyspopup.min.js',
+				//jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-caret.min.js',
+				//jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-extender.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-mobile.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-navigation.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-previewkeyset.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-scramble.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-typing.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.mousewheel.min.js',
+				jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-autocomplete.min.js'
+                                
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'bindonce.js',
@@ -35,15 +50,28 @@ module.exports = {
 				sharedRoot + 'directives/touchPress/touchPress.js',
 				sharedRoot + 'directives/enterPress/enterPress.js',
 				sharedRoot + 'directives/clickTouch/clickTouch.js',
-				sharedRoot + 'baseCtrl.js',
 				jsLibRoot + 'date.js',
 				'rover/rvSntApp.js',
 				zestRoot + 'zsApp.js',
-				zestRoot + 'controllers/**/*.js',
+				zestRoot + 'zsUtils.js',
+				zestRoot + 'rvMLIOperations.js',
+				zestRoot + 'zsWebSocketActions.js',
+				zestRoot + 'zsChromeAppActions.js',
+				zestRoot + 'zsVirtualKeyboard.js',
+				//zestRoot + 'controllers/**/*.js',
+				zestRoot + 'controllers_v2/**/*.js',
 				zestRoot + 'directives/**/*.js',
-				zestRoot + 'services/**/*.js',
-				zestRoot + 'routers/**/*.js',
-				zestRoot + 'constants/**/*.js'
+				zestRoot + 'services_v2/**/*.js',
+				// zestRoot + 'services/**/*.js',
+				zestRoot + 'filters/*.js',
+				//zestRoot + 'routers/**/*.js',
+				zestRoot + 'routers_v2/**/*.js',
+				zestRoot + 'constants/**/*.js',
+                                //jquery virtual keyboard files
+                                
+                                zestRoot + 'zsCardOperations.js',
+                                zestRoot + 'zsSwipeOperations.js',
+                                zestRoot + 'zsMLIOperations.js',
 			]
 		};		
 		

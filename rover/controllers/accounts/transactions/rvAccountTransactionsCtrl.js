@@ -635,27 +635,19 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/*----------- edit/remove/split ends here ---------------*/
 		//CICO-13903
 
-		$scope.sendEmail = function(mailTo, billNumber) {
+		$scope.sendEmail = function(params) {
 			var mailSent = function(data) {
 					// Handle mail Sent Success
-					$scope.closeDialog();
+					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+					$scope.status = "success";
+					$scope.showEmailSentStatusPopup();
 				},
 				mailFailed = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-					$scope.closeDialog();
+					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+					$scope.status = "alert";
+					$scope.showEmailSentStatusPopup();
 				};
 
-			var params = {
-				"bill_number": billNumber,
-				"to_address": mailTo,
-				"is_group": !!$scope.groupConfigData
-			};
-
-			if (!!$scope.groupConfigData) {
-				params.group_id = $scope.groupConfigData.summary.group_id;
-			} else {
-				params.account_id = $scope.accountConfigData.summary.posting_account_id;
-			}
 
 			$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
 				successCallBack: mailSent,
@@ -665,38 +657,16 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		};
 
-		$scope.mailInvoice = function(billNumber) {
-			if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
-				$scope.sendEmail($scope.groupConfigData.summary.contact_email, billNumber);
-			} else {
-				ngDialog.open({
-					template: '/assets/partials/accounts/transactions/rvAccountInvoicePromptEmail.html',
-					className: '',
-					scope: $scope,
-					closeByDocument: false,
-					closeByEscape: false,
-					data: JSON.stringify({
-						billNumber: billNumber
-					})
-				});
-			}
+		$scope.clickedEmail = function(requestParams) {
+			$scope.closeDialog();
+			$scope.sendEmail(requestParams);
 		};
 
-		$scope.printInvoice = function(billNo) {
-				printBillCard(billNo);
+		$scope.clickedPrint = function(requestParams) {
+				printBillCard(requestParams);
 		};
 
-		var printBillCard = function(billNo) {
-			var requestParams = {};
-			requestParams.bill_number = billNo;
-
-			if (!!$scope.groupConfigData) {
-				requestParams.group_id = $scope.groupConfigData.summary.group_id;
-				requestParams.is_group = true;
-			} else {
-				requestParams.account_id = $scope.accountConfigData.summary.posting_account_id;
-				requestParams.is_group = false;
-			}
+		var printBillCard = function(requestParams) {
 
 			var printBillSuccess = function(response) {
 				$scope.$emit('hideLoader');
@@ -869,7 +839,29 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			}
 		});
 
+		/*
+		* Opens the popup which have the option to choose the bill layout while print/email
+		*/
+		$scope.showFormatBillPopup = function(billNo) {
+			$scope.billNo = billNo;
+	    	ngDialog.open({
+		    		template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
+		    		controller: 'rvBillFormatPopupCtrl',
+		    		className: '',
+		    		scope: $scope
+	    	});
+    	};
 
+    	/*
+		*  Shows the popup to show the email send status
+		*/
+    	$scope.showEmailSentStatusPopup = function(status) {
+	    	ngDialog.open({
+	    		template: '/assets/partials/popups/rvEmailSentStatusPopup.html',
+	    		className: '',
+	    		scope: $scope
+	    	});
+    	};
 
 	}
 ]);

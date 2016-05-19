@@ -3,9 +3,15 @@
     <div class="row" ng-hide="isPosting">
         <div class="col-md-1"></div>
         <div class="col-md-4 top-spacing section-container">
-            <p class="main-text">Early Check-in</p>
-            <p class="sub-main-text"> You have selected an <b>Early Check-in Time</b> (standard check-in time is {{checkinTime}}). You may check in early for a charge of {{earlyCheckinCharge}}, which will be added to your bill.</em>
+            <!-- default main text -->
+            <p class="main-text" ng-if="!screenCMSDetails.title">Early Check-in</p>
+            <!-- CMS main text -->
+            <p class="main-text final-text" ng-if="screenCMSDetails.title" ng-bind-html="screenCMSDetails.title"></p>
+            <!-- default sub  text -->
+            <p class="sub-main-text" ng-if="!screenCMSDetails.description"> You have selected an <b>Early Check-in Time</b> (standard check-in time is {{checkinTime}}). You may check in early for a charge of {{earlyCheckinCharge}}, which will be added to your bill.</em>
             </p>
+             <!-- CMS sub  text -->
+            <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
         </div>
         <div class="col-md-2">
             <div class="vertical-line">&nbsp;</div>

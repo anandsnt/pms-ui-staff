@@ -1,0 +1,69 @@
+<div id="wrapper" class="content current admin-scrollfix" ng-click="clearErrorMessage()" div-touch-move-stop-propogate >
+    <header class="content-title float">
+        <h2>{{title}}</h2>
+        <a ng-click ="back()" class="action back">Back</a>
+    </header>
+    <section class="content-scroll">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+    <form class="form float" >
+        <fieldset class="holder left">
+            <div class="form-title">
+                <h3><span>Service Provider</span> Name and Location </h3>
+                <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+            </div>
+
+            <ad-textbox value="data.name" name = "name" id = "name" label = "Name" placeholder = "Enter service provider name" required = "yes" ></ad-textbox>
+
+            <ad-textbox value="data.address" name = "address" id = "address" label = "Address" placeholder = "Enter address" ></ad-textbox>
+
+            <ad-textbox label="Phone" value="data.phone"  placeholder="Enter phone number" name="phone" id="phone"></ad-textbox>
+
+			<ad-textbox label="City" value="data.city"  placeholder="Enter city" name="city" id="city"></ad-textbox>
+
+            <div class="entry">
+                <label for="hotel-country"> Country <strong>*</strong> </label>
+                <div class="select">
+                    <select ng-model="data.country" name="country" id="country" class="placeholder">
+                        <option value=""> Country </option>
+                        <option ng-model="country.id" ng-repeat="country in data.countries" value="{{country.id}}" ng-selected="country.id==data.country"> {{country.name}} </option>
+
+                    </select>
+                </div>
+            </div>
+
+        </fieldset>
+
+        <fieldset class="holder right">
+            <div class="form-title">
+                <h3><span>Service Provider</span>Contact Details </h3>
+                <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+            </div>
+            <ad-textbox value="data.title" label = "Title" placeholder = "Enter title"></ad-textbox>
+            <ad-textbox value="data.first_name" label = "First Name" placeholder = "Enter first name" required = "yes"></ad-textbox>
+            <ad-textbox value="data.last_name" label = "Last Name" placeholder = "Enter last name" required = "yes"></ad-textbox>
+
+            <ad-textbox value="data.email" label = "Email" placeholder = "Enter email" required = "yes"></ad-textbox>
+            <div class="entry">
+                    <label for="password"> Password <strong>*</strong></label>
+                    <input type="password" ng-model="data.password" value="{{data.password}}" required="yes" placeholder="Enter password" name="password">
+            </div>
+            <div class="entry">
+                    <label for="password_confirmation"> Confirm Password <strong>*</strong> </label>
+                    <input type="password" ng-model="data.password_confirmation" value="{{data.password_confirmation}}" required="yes" placeholder="Enter confirm password" name="password_confirmation">
+            </div>
+
+        </fieldset>
+
+        <div class="actions float">
+            <button type="button" ng-click ="back()" class="button blank">
+                Cancel
+            </button>
+            <button type="button" ng-click="clickedSave()" class="button green">
+                Save Changes
+            </button>
+        </div>
+
+    </form>
+    </section>
+</div>

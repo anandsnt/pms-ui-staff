@@ -25,6 +25,22 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     //variables
     var initialPopupData = {};
 
+    var fieldsEnabled = {
+      date: true,
+      room: true,
+      occupancy: true,
+      roomType: true
+    };
+
+    var calculateDisableCondition = function(field, value) {
+      fieldsEnabled[field] = value;
+      for (key in fieldsEnabled) {
+        if (key !== field) {
+          fieldsEnabled[key] = !value;
+        }
+      }
+    };
+
     /**
      * should we allow to change the room of a particular reservation
      * @param {Object} reservation
@@ -33,7 +49,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     $scope.shouldDisableChangeRoom = function(reservation) {
         var rStatus = reservation.reservation_status,
             validResStatuses = ["RESERVED", "CHECKING_IN"];
-        return !_.contains(validResStatuses, rStatus);
+        return !(fieldsEnabled['room'] && _.contains(validResStatuses, rStatus));
     };
 
     /**
@@ -44,7 +60,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     $scope.shouldDisableFromDateChange = function(reservation) {
         var rStatus = reservation.reservation_status,
             validResStatuses = ["RESERVED", "CHECKING_IN"];
-        return !_.contains(validResStatuses, rStatus);
+        return !(fieldsEnabled['date'] && _.contains(validResStatuses, rStatus));
     };
 
     /**
@@ -55,7 +71,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     $scope.shouldDisableToDateChange = function(reservation) {
         var rStatus = reservation.reservation_status,
             validResStatuses = ["RESERVED", "CHECKING_IN", "CHECKEDIN", "CHECKING_OUT"];
-        return !_.contains(validResStatuses, rStatus);
+        return !(fieldsEnabled['date'] && _.contains(validResStatuses, rStatus));
     };
 
     /**
@@ -120,15 +136,18 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
         //but should be disabled
         var room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id'),
             containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(reservation.room_type_id)),
-            rStatus = reservation.reservation_status;
+            rStatus = reservation.reservation_status,
+            basicDisableCondition = !( rStatus === "RESERVED" || rStatus === "CHECKING_IN")|| containNonEditableRoomType;
 
         //CICO-18717: disable room type switch once a user checks in
-        return (!(rStatus === "RESERVED" || rStatus === "CHECKING_IN") || containNonEditableRoomType);
+        return (!fieldsEnabled['roomType'] || basicDisableCondition)
     };
 
     $scope.shouldDisableReservationOccuppancyChange = function(reservation) {
-        return ($scope.reservationStatusFlags.isUneditable ||
-                $scope.reservationStatusFlags.isCheckedOut);
+      var basicDisableCondition = $scope.reservationStatusFlags.isUneditable ||
+                                  $scope.reservationStatusFlags.isCheckedOut;
+
+        return !fieldsEnabled['occupancy'] || basicDisableCondition
     };
 
     /**
@@ -202,6 +221,15 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
               room_type_id: parseInt(reservation.room_type_id),
               room_id: parseInt(reservation.room_id)
             });
+            angular.forEach(reservation.accompanying_guests_details, function(guest, index) {
+
+                if (!guest.first_name && !guest.last_name) {
+                  guest.first_name = null;
+                  guest.last_name = null;
+                }
+
+            });
+
 
             var options = {
               params: reservation,
@@ -285,7 +313,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
                 $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
                     "id": reservation.id,
                     "confirmationId": reservation.confirm_no,
-                    "isrefresh": false
+                    "isrefresh": true
                 });
             }, 750);
         }
@@ -330,7 +358,17 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             params: paramsForListOfFreeRooms,
             successCallBack: successCallBackOfListOfFreeRoomsAvailable
         };
+
+        calculateDisableCondition('roomType', true);
         $scope.callAPI(rvGroupRoomingListSrv.getFreeAvailableRooms, options);
+    };
+
+    $scope.changedReservationOccupancy = function() {
+      calculateDisableCondition('occupancy', true);
+    };
+
+    $scope.changedReservationRoom = function() {
+      calculateDisableCondition('room', true);
     };
 
     /**
@@ -379,6 +417,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
      * @return {undefined}
      */
     var reservationFromDateChoosed = function(date, datePickerObj) {
+        calculateDisableCondition('date', true);
         $scope.roomingListState.editedReservationStart = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
         runDigestCycle();
     };
@@ -388,6 +427,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
      * @return {undefined}
      */
     var reservationToDateChoosed = function(date, datePickerObj) {
+        calculateDisableCondition('date', true);
         $scope.roomingListState.editedReservationEnd = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
         runDigestCycle();
     };

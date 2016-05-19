@@ -1,0 +1,61 @@
+
+
+<!-- contentarea starts here-->
+
+<div class="jumbotron">
+
+
+
+	<div class="container backgroundbg" >
+		<div class="container-fluid">
+			<div class="row headerrow template-header-bg">
+				<logo-image></logo-image>
+			</div>
+		</div>
+
+
+	<!--	 show posting message -->
+		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			<p class="msg-head">Your request is being processed.</p>
+			<p class="msg-body">This may take a few seconds..... please wait!</p>
+		</div>
+
+	<!--	show error message -->
+
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+		<p class="msg-head">Our apologies, something went wrong, please complete your check in at our front desk.</p>
+		<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
+		</div>
+
+	
+
+	<!-- contentarea starts here-->
+	<div class="container line-top  line-bottom border-remover" ng-hide="isPosting || netWorkError || isResponseSuccess">
+		<!-- top section starts here-->
+
+		<div class="row checkin-wrapper">
+			<div class="col-md-6 headtext centeralign pad-rt-60">
+				Early Check-in
+				<p class="subTitletext">
+					You have selected an <b>Early Check-in Time</b> (standard check-in time is {{checkinTime}}). You may check in early for a charge of {{earlyCheckinCharge}}, which will be added to your bill.
+				</p>
+			</div>
+
+			<div class="verti-ruler margin-bottom-20"></div>
+
+			<!-- top section ends here-->
+
+
+			<div class="col-md-6 pad-lf-60">
+				<form >
+				<input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button" ng-click="nextButtonClicked()" value="Purchase Early Check-in"/>
+				<input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn early-checkin-button gray-bg" ng-click="changeArrivalTime()" value="Change Arrival Time"/>
+				
+				
+				</form>
+			</div>
+		</div>
+			<!-- checkinbtn section ends here-->
+		</div>
+	</div>
+</div>

@@ -16,6 +16,7 @@
                 	</optgroup>
                 </select>
             </div>
+            <button type="button" class="button red" ng-show="isDeleteAllowed && hasPermisionToDeleteContract()" ng-click="deleteContract()">Delete Contract</button>
         </div>
         <div class="entry" ng-show="contractList.isAddMode">
             <input ng-model="addData.contract_name" placeholder="Contract Name" name="company-contract-new" class="" value="{{addData.contract_name}}" type="text" />
@@ -35,16 +36,6 @@
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="holder left" ng-hide="contractList.isAddMode">
                 <strong class="h3" translate>DETAILS</strong>
-                <!-- <div class="entry margin">
-                    <label for="company-rate" translate>CONTRACTED_RATE</label>
-                    <div class="select">
-		                <select iscroll-stop-propagation name="company-contract" ng-model="contractData.contracted_rate_selected">
-		                    <option value="" class="placeholder" disabled="" translate>SELECT_CONTRACTED_RATE</option>
-		                    <option ng-repeat="rate in contractData.rates"  ng-selected="rate.id==contractData.contracted_rate_selected"  value="{{rate.id}}">{{rate.name}}</option>
-		                </select>
-		            </div>
-
-                </div> -->
                 <span selected-rate-id="contractData.contracted_rate_selected" ng-model="contractData.contractedRate" rate-auto-complete></span>
                 <div class="entry price-adjust no-label">
                      <div class="select">
@@ -108,15 +99,6 @@
             
             <div class="holder left" ng-show="contractList.isAddMode">
                 <strong class="h3" translate>DETAILS</strong>
-              <!--   <div class="entry margin">
-                    <label for="company-rate" translate>CONTRACTED_RATE</label>
-                    <div class="select">
-		                <select iscroll-stop-propagation name="company-contract" ng-model="addData.contracted_rate_selected">
-		                    <option value="" class="placeholder" translate>SELECT_CONTRACTED_RATE</option>
-		                    <option  value="{{rate.id}}" ng-selected="rate.id==addData.contracted_rate_selected" ng-repeat="rate in addData.rates" >{{rate.name}}</option>
-		                </select>
-		            </div>
-                </div> -->
                 <span selected-rate-id="addData.contracted_rate_selected" ng-model="addData.contractedRate" rate-auto-complete></span>
                 <div class="entry price-adjust no-label">
                 	

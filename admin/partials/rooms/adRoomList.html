@@ -8,10 +8,11 @@
 			<span class="count">
 				( {{totalCount}} )
 				<span class="status">
-					{{totalCount}} {{ 'OF' | translate }} {{	}} {{ 'LICENSED_ROOMS_CONFIGURED' | translate }}
+					{{numberOfRoomsConfigured}} {{ 'OF' | translate }} {{totalNumberOfConfigurableRooms}} {{ 'LICENSED_ROOMS_CONFIGURED' | translate }}
 				</span>
 		    </span>
-			<a id="add-rooms" class="action add" ui-sref='admin.roomdetails({})' ng-show="is_add_available === 'yes'">{{ 'ADD_NEW' | translate }}</a>
+
+			<a id="add-rooms" class="action add" ui-sref='admin.roomdetails({})' ng-show="is_add_available">{{ 'ADD_NEW' | translate }}</a>
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -20,7 +21,7 @@
 				<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
 			</div>
 			<span class="count-entries">entries</span>
-				
+
 			<div class="entry table-search">
 				<span class="search-text">Search</span>
 				<span class="icons icon-search" name="submit" type="submit"></span>
@@ -38,7 +39,7 @@
 							{{room.room_type}}
 						</td>
 						<td data-title="'Delete'" ng-click="deleteRoom($index, room.room_id)" header-class="width-15 text-center-important" ng-show="isStandAlone">
-							<a class="icons icon-delete large-icon " ></a>				
+							<a class="icons icon-delete large-icon " ></a>
 						</td>
 					</tr>
 				</tbody>
@@ -54,11 +55,11 @@
 	              	<li ng-repeat="page in pages"
 		                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
 		                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
-	
+
 		                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
 		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
 		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
-		                
+
 		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
 		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
 		                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>

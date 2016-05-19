@@ -145,6 +145,12 @@
     "RESERVATION_CONFIRMATION" : "Reservation Confirmation",
     "RESERVATION_CANCELLED" : "Reservation cancelled",
     "CHANGE_TO_CONTRACT_RATE_FAILED" : "Unable to change to contracted rate, room type not configured",
-    "CORPORATE_LABEL" : "CONTRACT"
+    "CORPORATE_LABEL" : "CONTRACT",
+
+    "GUEST_LANGUAGE" : "Guest Language",
+    "SELECT_LANGUAGE" : "Select Language",
+    "CONF_CUSTOM_TEXT" : "Confirmation Custom Text",
+    "TITLE" : "Title",
+    "TEXT" : "Text"
 
 

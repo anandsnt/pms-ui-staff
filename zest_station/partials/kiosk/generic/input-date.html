@@ -2,11 +2,12 @@
 <section id="main" class="centered" role="main" ng-hide='at !== "find-by-date"' click-touch='resetTime()'>
     <div id="content">
         <h1>{{'FIND_BY_DATE' |translate}}</h1>
-        <h3><strong>{{'CHECK_OUT_WHEN' |translate}}</strong></h3>
+        <h3><strong>{{'FIND_BY_DATE_SUB' |translate}}</strong></h3>
         <form method="post" class="form short">
             <div class="entry input" click-touch="showDatePicker()">
-                <div ng-include="'/assets/css/icons/date.svg'"></div>
-                <input id="datepicker"  placeholder="" class="hasDatepicker" ng-model="input.date" readonly >
+                <!--div ng-include="'/assets/css/icons/date.svg'"></div-->
+                <div ng-include="icons.url.date"></div>
+                <input id="datepicker"  placeholder="" class="hasDatepicker start-focused" ng-model="input.date" readonly >
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="goToNext()" ng-class="{'overlay grey': !input.date}">{{'FIND_BY_DATE_NEXT' |translate}}</button>

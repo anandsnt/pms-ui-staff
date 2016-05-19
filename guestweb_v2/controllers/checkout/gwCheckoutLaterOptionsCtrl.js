@@ -4,7 +4,6 @@
 sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckoutSrv',
 	function($scope, $state, $controller, GwWebSrv, GwCheckoutSrv) {
 
-		//TODO : remove unwanted injections like $timeout
 		$controller('BaseController', {
 			$scope: $scope
 		});
@@ -29,10 +28,13 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 		$scope.gotToNextStep = function(option) {
 			var onSuccess = function(response) {
 				if (!GwWebSrv.zestwebData.isCCOnFile && GwWebSrv.zestwebData.isMLI) {
-					$state.go('ccVerification', {
+					$state.go('ccAddition', {
 						'fee': option.amount,
 						'message': "Late check-out fee",
-						'isFromCheckoutNow': false
+						'isFromCheckoutNow': false,
+						'time': option.time,
+						'ap': option.ap,
+						'amount': option.amount
 					});
 				} else {
 					$state.go('checkOutLaterFinal', {

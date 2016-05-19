@@ -1,0 +1,95 @@
+<span ng-controller="RVAccountsReceivablesController">
+
+    <!-- Search form -->
+    <form method="get" action="" name="accounts-receivables-search-form" id="accounts-receivables-search-form" class="search-form has-options three-options" role="search">
+        <div class="entry search">
+            <button ng-click="clearSearchQuery()" class="clear-query" ng-class="{'visible': filterData.searchQuery!=''}">
+                <span class="icons icon-clear-search" translate>CLAER_QUERY</span>
+            </button>
+            <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
+            <input name="accounts-receivables-query" ng-model="filterData.searchQuery" ng-change="changedSearchQuery()" id="accounts-receivables-query" class="query" placeholder="Search by AR Account Name or Number, IATA Number, Corporate ID or City" type="search" autocomplete="off" >
+        </div>
+        <div class="entry options">
+            <div class="input with-label">
+                <label for="min-amount">{{'MIN_AMOUNT' | translate}}({{currencySymbol}})</label>
+                <input ng-model="filterData.minAmount" ng-change="changedMinAmount()" type="text">
+            </div>
+
+            <div class="select with-label larger-select">
+                <label for="sort-by" translate>SORT_BY</label>
+                <select ng-model="filterData.sortBy" ng-change="changedSortBy()" id="sort-by">
+                    <option ng-repeat="item in filterData.sortList" value="{{item.value}}">{{item.name}}</option>
+                </select>
+            </div>
+
+            <div class="select with-label">
+                <label for="ageing-days" translate>AGING_DAYS</label>
+                <select ng-model="filterData.ageingDays" ng-change="changedAgeingDays()" id="ageing-days">
+                    <option ng-repeat="item in filterData.ageingDaysList" value="{{item.value}}">{{item.value}}</option>
+                </select>
+            </div>
+        </div>
+    </form>
+
+    <!-- Search pagination -->
+    <div class="search-pagination" ng-show="isShowPagination()">
+        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
+        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
+        <p>{{'SHOWING' | translate}} <strong>{{start}}-{{end}}</strong> {{'OF' | translate}} <strong id="total-count">{{arOverviewData.total_result}}</strong> {{'ITEMS' | translate}}</p>
+    </div>
+
+    <!-- Search panel - WITH RESULTS -->
+    <section class="content accounts-ar-content" role="main">
+        <div ng-hide="filterData.hideArHeader" class="accounts-ar-header">
+            <ul class="accounts-ar-totals">
+                <li class="guest-bills">
+                    <span translate>OPEN_GUEST_BILLS</span>
+                    <span class="amount">{{arOverviewData.open_guest_bill}}</span>
+                </li>
+                <li class="unpaid-balance">
+                    <span translate>UNPAID_BALANCE</span>
+                    <span class="amount red">{{currencySymbol}}{{arOverviewData.unpaid_balance | number: precisonTwo }}</span>
+                </li>
+            </ul>
+        </div>
+        <!-- Add Scroll -->
+        <div class="accounts-ar-list scrollable" ng-class="{'no-pagination': !isShowPagination(),'no-accounts-ar-header':filterData.hideArHeader}" ng-iscroll='arOverViewScroll'>
+            <div class="wrapper" >
+                <ul class="search-results">
+                    <li class="account-ar" ng-repeat="account in arOverviewData.accounts" ui-sref="rover.companycarddetails({id:account.id, type: account.type,origin:'AR_OVERVIEW'})">
+                        <a >
+                            <div class="account-image icons" ng-class="{'icon-travel-agent': account.type === 'TRAVELAGENT','icon-company': account.type === 'COMPANY'}"></div>
+                            <div class="data">
+                                <h2>{{account.account_name}}</h2>
+                                <strong class="confirmation">{{account.ar_number}}</strong>
+                                <span class="icons icon-location" ng-hide="escapeNullStr(account.location)==''" >{{escapeNullStr(account.location)}}
+                            </span>
+                                <span ng-if="(account.type === 'COMPANY')" ng-hide="escapeNullStr(account.account_number)==''"  class="icons icon-guest-company">{{account.account_number}}</span>
+                                <span ng-if="(account.type === 'TRAVELAGENT')" ng-hide="escapeNullStr(account.account_number)==''"  class="icons icon-guest-travelagent">{{account.account_number}}</span>
+                                <span ng-hide="escapeNullStr(account.ageing_date)==' '" class="icons icon-time confirmation">{{account.ageing_date}}</span>
+                            </div>
+                            <div class="info-holder">
+                                <div class="info ageing-days">
+                                    <strong>{{account.ageing_days}}</strong>
+                                    <span translate>AGEING_DAYS</span>
+                                </div>
+                                <div class="info open-bills">
+                                    <strong>{{account.open_bill}}</strong>
+                                    <span translate>OPEN_BILLS</span>
+                                </div>
+                                <div class="info balance">
+                                    <strong ng-class="{'red':account.current_balance >= 0, 'green':account.current_balance < 0 }">
+                                        {{currencySymbol}}{{account.current_balance | number: precisonTwo }}
+                                    </strong>
+                                    <span translate>BALANCE</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    
+                </ul>        
+            </div>
+        </div>
+    </section>
+
+</span>

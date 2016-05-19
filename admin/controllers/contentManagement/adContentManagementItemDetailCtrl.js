@@ -5,7 +5,9 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	BaseCtrl.call(this, $scope);
 
 	 $scope.fileName = "Choose file...";
+	 $scope.iconFileName = "Choose file...";
 	 $scope.initialIcon = '';
+	 $scope.initialImage = '';
 	 $scope.addons = [];
      $scope.min_duration_values = [];
      $scope.max_order_values = [];
@@ -45,6 +47,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	            "component_type": "PAGE",
 	            "status": false,
 	            "name": "",
+	            "icon": '',
 	            "image": '',
 	            "address": "",
 	            "phone": "",
@@ -169,7 +172,8 @@ $scope.getSelectedAddonPrice = function(){
 	$scope.fetchItem = function(){
 		var fetchItemSuccessCallback = function(data){
 			$scope.data = data;
-			$scope.initialIcon =  $scope.data.image;
+			$scope.initialIcon =  data.icon;
+			$scope.initialImage = data.image;
 			if(data.page_template === 'ADDON'){
 				$scope.fetchAddons();
 				$scope.data.addon_max_order = $scope.data.addon_max_order === null? "" : $scope.data.addon_max_order;
@@ -221,9 +225,12 @@ $scope.getSelectedAddonPrice = function(){
 			$scope.$emit('hideLoader');
 			$scope.goBack();
 		};
-		var unwantedKeys = ["icon"];
-		if($scope.initialIcon === $scope.data.image) {
-			unwantedKeys = ["icon", "image"];
+		var unwantedKeys = [];
+		if($scope.initialIcon === $scope.data.icon) {
+			unwantedKeys.push('icon');
+		}
+		if($scope.initialImage === $scope.data.image) {
+			unwantedKeys.push('image');
 		}
 		var data = dclone($scope.data, unwantedKeys);
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, data , saveItemSuccessCallback);
@@ -264,6 +271,11 @@ $scope.getSelectedAddonPrice = function(){
       $scope.goBack();
 
    });
+
+	$scope.deleteIcon = function(){
+		$scope.iconFileName = "Choose file...";
+		$scope.data.icon = "";
+	}
 
 }]);
 

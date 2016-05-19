@@ -1,0 +1,58 @@
+<span class="h2 message">New Action</span>
+
+<span auto-complete-reservations ng-model="newAction.reservation"></span>
+
+
+<div class="entry full-width">
+    <label for="department">Assign to Department</label>
+    <div class="select">
+        <select id="department" ng-model="newAction.department"
+                ng-class="{'placeholder': !newAction.department}">
+            <option value="" selected>Select department</option>
+            <option value="{{department.value}}" ng-selected="newAction.department == department.value"
+                    ng-repeat="department in departments">
+                {{department.name}}
+            </option>
+        </select>
+    </div>
+</div>
+<div class="entry date margin">
+    <label for="new-action-due-date">Date Due</label>
+    <button class="clear-query">
+        <span class="icons icon-clear-search" ng-class="{'visble': !!newAction.dueDate}">Clear query</span>
+    </button>
+    <input id="new-action-due-date" class="datepicker" type="text" ui-date="dueDateOptions"
+           readonly
+           ng-model="newAction.dueDate"
+           ng-class="{'not-selected': !newAction.dueDate}"/>
+</div>
+<div class="entry">
+    <label for="due-time">Time Due</label>
+    <div class="select">
+        <select id="due-time" ng-model="newAction.dueTime">
+            <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList"
+                    ng-selected="selectedAction.dueTime === timeSelector.value">
+                {{timeSelector.text}}
+            </option>
+        </select>
+    </div>
+    <!--<input id="due-time" type="time" ng-model="newAction.dueTime" placeholder="HH:mm:ss" required/>-->
+</div>
+<div class="entry full-width">
+    <label for="notes">
+        Notes
+        <span class="char-count" ng-class="{'full': adjustedLength(newAction.note) >= __maxLengthOfNotes}">
+            {{__maxLengthOfNotes - adjustedLength(newAction.note)}}
+        </span>
+    </label>
+    <textarea id="notes" name="notes" placeholder="Enter message..." ng-model="newAction.note"
+              rows="4" maxlength="{{__maxLengthOfNotes}}"></textarea>
+</div>
+<div class="actions">
+    <button type="button" class="button green" ng-click="saveNewAction()"
+            ng-class="{'grey':!newAction.reservation.id || !newAction.note}"
+            ng-disabled="!newAction.reservation.id || !newAction.note">
+        Post Action
+    </button>
+    <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+</div>

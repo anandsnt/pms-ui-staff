@@ -1,62 +1,62 @@
-<div id="summary" class="summary">
-    <!-- div id="newaction" class="add-content scrollable" ng-class="{'action-mgr-screen':isActionManager}"  ng-iscroll="details" ng-iscroll-delay="100" ng-init="setScroll()" -->
-    <div id="newaction" class="add-content" ng-class="{'action-mgr-screen':isActionManager}" >
-        <span class="h2 message">New Action</span>
+<!-- div id="newaction" class="add-content scrollable" ng-class="{'action-mgr-screen':isActionManager}"  ng-iscroll="details" ng-iscroll-delay="100" ng-init="setScroll()" -->
+<div id="newaction" class="add-content" ng-class="{'action-mgr-screen':isActionManager}" >
+    <span class="h2 message">New Action</span>
+    
+   <div class="entry full-width" ng-show="isActionManager">
+        <label for="guest_input">
+            Guest Name or Room No.
+        </label>
+        <input ng-change="initFetchGuestInfo()" id="search-guest-or-room" type="search" class="query" autocomplete="off" ng-model='textInQueryBox' name="guest_input" placeholder="Search by Guest Name or Room No." />
+       
+        <!-- UI Autocomplete output should have this structure like this: -->
+        <ul class="find-guest" ng-show="showAutocompleteResults" >
+            <li ng-click="selectGuestInfo(info)" class="auto-complete-result" ng-show="info.is_row_visible" ng-repeat="info in searchResults">
+                <a>
+                    <figure class="guest-image">
+                        <img src="{{info.images[0].guest_image}}" alt="" />
+                    </figure>
+                    <span class="name">{{info.firstname}} {{info.lastname}} <!--span class="highlight"></span--></span>
+                    <span class="room">Room {{info.room}}</span>
+                </a>
+            </li>
+        </ul>
+
         
-       <div class="entry full-width" ng-show="isActionManager">
-            <label for="guest_input">
-                Guest Name or Room No.
-            </label>
-            <input ng-change="initFetchGuestInfo()" id="search-guest-or-room" type="search" class="query" autocomplete="off" ng-model='textInQueryBox' name="guest_input" placeholder="Search by Guest Name or Room No." />
-           
-            <!-- UI Autocomplete output should have this structure like this: -->
-            <ul class="find-guest" ng-show="showAutocompleteResults" >
-                <li ng-click="selectGuestInfo(info)" class="auto-complete-result" ng-show="info.is_row_visible" ng-repeat="info in searchResults">
-                    <a>
-                        <figure class="guest-image">
-                            <img src="{{info.images[0].guest_image}}" alt="" />
-                        </figure>
-                        <span class="name">{{info.firstname}} {{info.lastname}} <!--span class="highlight"></span--></span>
-                        <span class="room">Room {{info.room}}</span>
-                    </a>
-                </li>
-            </ul>
-   
-            
-       </div>
-        <div class="entry full-width">
-            <label for="department">Assign to Department</label>
-            <div class="select">
-                <select id="department-new-action" class="placeholder" ng-model="newAction.department" ng-options="department.name for department in departments"> 
-                    <option value="" selected>Select department</option>
-                </select>
-            </div>
+   </div>
+    <div class="entry full-width">
+        <label for="department">Assign to Department</label>
+        <div class="select">
+            <select id="department-new-action" class="placeholder" ng-model="newAction.department" ng-options="department.name for department in departments"> 
+                <option value="" selected>Select department</option>
+            </select>
         </div>
-        <div class="entry date margin" ng-click='showNewCalendar()'>
-            <label for="due-date">Date Due</label>
-            <input id="due-date" type="text" class="datepicker" value="{{newAction.date_due}}" readonly />
-        </div>
-        <div ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'"></div>
-        <div class="entry" ng-class="{'overlay': !newAction.hasDate}">
-            <label for="due-time">Time Due</label>
-            <div class="select">
-                <select id="due-time" ng-model="newAction.time_due" ng-options="time.value for time in timeFieldValue" ng-init="newAction.time_due = timeFieldValue[0]">
-                </select>
-            </div>
-        </div>
-        <div class="entry full-width">
-            <label for="notes">
-                Notes
-                <span>
-                    <font ng-if='newAction.notes.length < 255' color=green>  {{255 - newAction.notes.length}}</font> 
-                    <font ng-if='newAction.notes.length >= 255' color=red>  {{255 - newAction.notes.length}}</font>
-                </span>
-            </label>
-            <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea>
-        </div> 
-        <div id="new_action_post">
-            <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes || (!departmentSelected && !isStandAlone)}">Post Action</button> 
-            <button type="button" class="button blank" ng-click='cancelNewAction()'>Cancel</button> 
-        </div> 
+    </div>
+    <div class="entry date margin" ng-click='showNewCalendar()'>
+        <label for="due-date">Date Due</label>
+        <input id="due-date" type="text" class="datepicker" value="{{newAction.date_due}}" readonly />
+    </div>
+    <div ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'"></div>
+    <div class="entry" ng-class="{'overlay': !newAction.hasDate}">
+        <label for="due-time">Time Due</label>
+        <select id="due-time" ng-model="newAction.time_due">
+            <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList"
+                    ng-selected="newAction.time_due === timeSelector.value">
+                {{timeSelector.text}}
+            </option>
+        </select>
+    </div>
+    <div class="entry full-width">
+        <label for="notes">
+            Notes
+            <span>
+                <font ng-if='newAction.notes.length < 255' color=green>  {{255 - newAction.notes.length}}</font> 
+                <font ng-if='newAction.notes.length >= 255' color=red>  {{255 - newAction.notes.length}}</font>
+            </span>
+        </label>
+        <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea>
     </div> 
-</div>
+    <div id="new_action_post" class="actions">
+        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes || (!departmentSelected && !isStandAlone)}">Post Action</button> 
+        <button type="button" class="button blank" ng-click='cancelNewAction()'>Cancel</button> 
+    </div> 
+</div> 

@@ -1,0 +1,19 @@
+<div role="dialog" id="modal" ng-class="{'modal-show': modalOpened}" ng-cloak>
+    <div class="modal-content external-interface-dates">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <fieldset class="from-calendar left grey-texture-bg-color">
+            <div class="center_align grey-texture-bg-color"><em>From</em>&nbsp;
+                <span class="italic_text">{{datepicker.from | date:'MMMM dd, y'}}</span></div>
+            <div ui-date="datepicker.settings.from" ng-model="datepicker.from"></div>
+        </fieldset>
+        <fieldset class="to-calendar right grey-texture-bg-color">
+            <div class="center_align grey-texture-bg-color"><em>To </em>&nbsp;
+                <span class="italic_text">{{datepicker.to | date:'MMMM dd, y'}}</span></div>
+            <div ui-date="datepicker.settings.to" ng-model="datepicker.to"></div>
+        </fieldset>
+        <div class="actions">
+            <button class="button blank add-data-inline" type="button" ng-click="onCancel()">Cancel</button>
+            <button class="button green" ng-click="onRefresh()" type="button">Run Full Refresh</button>
+        </div>
+    </div>
+</div>

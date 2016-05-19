@@ -4,8 +4,9 @@
         <h1>{{headingText |translate}}</h1>
         <h2>{{subHeadingText |translate}}</h2>
         
-        <div id="keys" click-touch="initKeyCreate()">
-                <div ng-include="'/assets/zest_station/css/icons/create-key.svg'" style='fill:green' ng-class="{'green': greenKey == true}"></div>
+        <div id="keys" ng-hide="theme === 'yotel'">
+                <!--div ng-include="'/assets/zest_station/css/icons/create-key.svg'" style='fill:green' ng-class="{'green': greenKey == true}"></div-->
+                <div ng-include="icons.url.createkey"></div>
         </div>
         
     </div>
