@@ -194,6 +194,7 @@ sntZestStation.controller('zsReservationDetailsCtrl', [
                 last_name: last,
                 first_name: first
             });
+            //need to push up guest details to guestcard around this or on Continue action
         };
         
             $scope.clearInputText = function(){
