@@ -76,6 +76,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			};
 			if($scope.zestStationData.kiosk_validate_first_name){
 				params.first_name = $scope.reservationParams.first_name;
+				params.validate_first_name_first_letter = true;
 			}
 			var options = {
 				params: params,
