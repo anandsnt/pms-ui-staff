@@ -1,4 +1,4 @@
-admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADHotelListSrv','ngTableParams', '$filter',  function($scope, $state,$rootScope, $stateParams, ADHotelListSrv, ngTableParams, $filter){
+admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADHotelListSrv','ngTableParams', '$filter', function($scope, $state,$rootScope, $stateParams, ADHotelListSrv, ngTableParams, $filter){
 	BaseCtrl.call(this, $scope);
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 	$scope.$emit("changedSelectedMenu", 0);
@@ -15,7 +15,7 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 			count: $scope.data.hotels.length,
 			sorting: {
 				// initial sorting
-				name: 'asc'
+				hotel_name: 'asc'
 			}
 		}, {
 			// length of data
@@ -26,7 +26,9 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 					params.settings().$scope = $scope;
 				};
 				// use build-in angular filter
-				var orderedData = $scope.data.hotels;
+				var orderedData = params.sorting() ?
+					$filter('orderBy')($scope.data.hotels, params.orderBy()) :
+					$scope.data.hotels;
 				$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 			}
 		});
@@ -36,6 +38,7 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 		$scope.invokeApi(ADHotelListSrv.fetch, {}, fetchSuccess);
 	};
 	$scope.searchHotels = function(){
+		populateHighlightWordArray($scope.searchTerm);
 		var options = {
 				'query': $scope.searchTerm
 		};
@@ -66,8 +69,22 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 		}
 	};
 
+	var populateHighlightWordArray = function(newVal){
+		$scope.searchWords = [];
+		if(newVal.length >= 2) {
+			if (newVal.indexOf(',') != -1) {
+				$scope.searchWords = newVal.split(',');
+			} else if (newVal.indexOf(' ') != -1) {
+				$scope.searchWords = newVal.split(' ');
+			} else {
+				$scope.searchWords.push(newVal);
+			}
+		}
+	};
+
 	var initMe = function(){
 		FetchHotelDetails();
+		$scope.searchWords = [];
 	};
 	initMe();
 
