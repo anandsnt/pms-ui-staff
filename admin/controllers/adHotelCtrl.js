@@ -71,20 +71,13 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 
 	var populateHighlightWordArray = function(newVal){
 		$scope.searchWords = [];
-		if(newVal.length >= 2) {
-			if (newVal.indexOf(',') != -1) {
-				$scope.searchWords = newVal.split(',');
-			} else if (newVal.indexOf(' ') != -1) {
-				$scope.searchWords = newVal.split(' ');
-			} else {
-				$scope.searchWords.push(newVal);
-			}
-		}
+		$scope.searchWords.push(newVal);
+
 	};
 
 	var initMe = function(){
-		FetchHotelDetails();
 		$scope.searchWords = [];
+		FetchHotelDetails();
 	};
 	initMe();
 
