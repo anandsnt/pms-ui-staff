@@ -1,0 +1,49 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <!-- request text -->
+    <div class="row" ng-hide="posted || isCheckoutCompleted || netWorkError || isCheckedout">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed.
+            This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>                   
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>                   
+    </div>
+    <!-- final message -->
+    <div class="row" ng-show="posted && success && isCheckoutCompleted && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="main-text">Thank you for staying with us!</br></p>
+            <p class="sub-main-textS">Remember to avoid paying the $250 lost or replacement key fee, please drop your keys in the checkout box on your way out.</p>
+        </div>
+        <div class="col-md-2">
+        </div>                   
+    </div>
+   <!-- if guest has already checkout -->
+    <div class="row" ng-show="isCheckedout && !success">
+        <div class="col-md-1"></div>
+        <div class="col-md-10 top-spacing">
+            <p class="main-text">It appears you have already completed your check-out.</p>
+            <p class="sub-main-text">For further enquiries please contact the hotel at <a href="tel: {{hotelPhone}}"  class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="sub-main-text">Thank You!</p>
+        </div>
+        <div class="col-md-1">
+        </div>                   
+    </div>
+</div>
