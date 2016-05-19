@@ -217,22 +217,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                     console.info(': fetchEarlyCheckinSettings :')
                     
                      var onSuccessResponse = function (response) {
-                    console.info(': fetchEarlyCheckinSettings => onSuccessResponse :',response)
-                        response.is_early_prepaid = false;
-
-                        if (response.offer_eci_bypass) {//if bypass is true, early checkin may be part of their Rate
-                            response.is_early_prepaid = false;
-                        }
-
-                        if (response.is_early_checkin_purchased || response.is_early_checkin_bundled_by_addon) {//user probably purchased an early checkin from zest web, or through zest station
-                            response.is_early_prepaid = true;                                         //or was bundled in an add-on (the add-on could be paid or free, so show prepaid either way)
-                        }
-                        
-                        $scope.zestStationData.is_early_prepaid = response.is_early_prepaid;
-                        
+                        console.info(': fetchEarlyCheckinSettings => onSuccessResponse :',response)
                         onSuccessCallback(response);
-                        
-                        
                     };
                     
                     

@@ -59,12 +59,14 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 * get paths for theme based Icon files
 		 **/
 		var updateIconPath = function(theme) {
+                        $scope.useNavIcons = true;
 			if (theme === 'yotel') {
+                                $scope.useNavIcons = false;
 				$scope.theme = theme;
 				iconsPath = '/assets/zest_station/css/icons/yotel';
 				setSvgsToBeLoaded();
-			} else {
-				//do nothing
+			} else if (theme === 'fontainebleau') {
+				//nothing else
 			};
 		};
 		var setThemeByName = function(theme) {
