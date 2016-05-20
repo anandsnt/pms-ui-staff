@@ -298,7 +298,6 @@ module.exports = {
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
 										precheckinPartials+'*.html'],
-
 			'guestweb_ponchartrain'	: [ 'guestweb/**/common_templates/partials/checkin/**.html',
 										'guestweb/**/common_templates/partials/checkout/**.html',
 										'guestweb/**/common_templates/partials/gwNoOption.html',
@@ -306,6 +305,5 @@ module.exports = {
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
 										precheckinPartials+'*.html']
-		
 		}
 	}
