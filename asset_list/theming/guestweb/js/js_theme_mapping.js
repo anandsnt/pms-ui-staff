@@ -47,7 +47,7 @@ module.exports = {
 			'guestweb_beacon_hill':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_boston_park':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_valencia':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_valencia_san_antonio ':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }
