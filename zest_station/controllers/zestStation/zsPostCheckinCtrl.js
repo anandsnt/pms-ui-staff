@@ -233,6 +233,13 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             if ($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled){
                 $state.go('zest_station.delivery_options');
             } else {
+                if ($scope.zestStationData.auto_print && !$state.hasAutoPrinted){
+                    $scope.zestStationData.printEnabled = false;
+                    setTimeout(function(){
+                        $state.hasAutoPrinted = true;
+                        $scope.clickedPrint();
+                    },3000);
+                };
                 $state.go('zest_station.last_confirm');
             }
         };
