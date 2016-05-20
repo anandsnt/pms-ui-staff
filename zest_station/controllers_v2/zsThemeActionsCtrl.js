@@ -153,7 +153,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 
 			createStyleNodeWithString(styleString);
 
-		}();
+		};
+		setQRArrowDirection();
 
 
 
