@@ -455,7 +455,7 @@ sntZestStation.controller('zsRootCtrl', [
 			        $state.go('zest_station.admin');
 			    }
 			    else{
-			    	//do nothing
+			    	$state.go('zest_station.outOfService');
 			    }
 			} else {
 				$scope.workstation = {
