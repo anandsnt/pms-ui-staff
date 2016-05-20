@@ -1,11 +1,11 @@
-sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '$stateParams', '$filter', 'RVCommissionsSrv', function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv ) {
+sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '$stateParams', '$filter', 'RVCommissionsSrv','$timeout','$window', function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv,$timeout, $window) {
 
     BaseCtrl.call(this, $scope);
 
     var updateHeader = function(){
         // Setting up the screen heading and browser title.
         $scope.$emit('HeaderChanged', $filter('translate')('MENU_COMMISIONS'));
-        $scope.setTitle($filter('translate')('MENU_ACCOUNTS_RECEIVABLES'));
+        $scope.setTitle($filter('translate')('MENU_COMMISSIONS'));
         $scope.$emit("updateRoverLeftMenu", "commisions");
     };
     /**
@@ -86,6 +86,14 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         }else{
             return false};
     };
+    $scope.printButtonClick = function(){
+        $timeout(function() {
+            $window.print();
+            if ( sntapp.cordovaLoaded ) {
+                cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+            };
+        }, 100);
+    };
     $scope.isPrevButtonDisabled = function(){
         if($scope.filterData.page ==1){
             return true;
@@ -94,6 +102,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
     };
 
     var init = function(){
+        $scope.commissionsData ={};
         updateHeader();
         initSearchParams();
         fetchCommissionsData();
