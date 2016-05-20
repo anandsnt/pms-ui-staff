@@ -1,6 +1,6 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <!-- scanning mode -->
-    <div id="content" ng-hide="qrCodeScanFailed"  touch-press='initChromeAppQRCodeScanner()'>
+    <div id="content" ng-hide="qrCodeScanFailed"  touch-press='scanQRCode()'>
         <h1>{{'QR_LOOKUP_HEADER' |translate}}</h1>
         <h2>{{'QR_LOOKUP_SUB_HEADER' |translate}}</h2>
         <nav id="options" role="nav">
