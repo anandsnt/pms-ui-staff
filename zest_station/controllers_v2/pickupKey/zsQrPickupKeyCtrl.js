@@ -82,7 +82,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 			fetchReservationDetails(data.reservation_id);
 		});
 
-		var initChromeAppQRCodeScanner = function() {
+		$scope.initChromeAppQRCodeScanner = function() {
 			if ($scope.inChromeApp) {
 				$scope.chromeApp.fetchQRCode();
 				console.info("::Starting QR Code Scanner::");
@@ -161,7 +161,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				samsoTechScan();
 			} else {
 				//$scope.zestStationData.qr_scanner_datalogic
-				initChromeAppQRCodeScanner();
+				//initChromeAppQRCodeScanner();
 			}
 		}();
 
@@ -177,7 +177,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 		};
 		$scope.retryQRScan = function() {
 			$scope.qrCodeScanFailed = false;
-			initChromeAppQRCodeScanner();
+			//initChromeAppQRCodeScanner();
 		};
 
 
