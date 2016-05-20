@@ -1,9 +1,9 @@
 sntZestStation.controller('zsRootCtrl', [
-	'$scope',
+	'$scope','$filter',
 	'zsEventConstants',
 	'$state','zsTabletSrv','$rootScope','ngDialog', '$sce',
 	'zsUtilitySrv','$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings','$timeout', 'zsModeConstants',
-	function($scope, 
+	function($scope, $filter,
         zsEventConstants, 
         $state,
         zsTabletSrv, 
@@ -114,7 +114,24 @@ sntZestStation.controller('zsRootCtrl', [
             }
         }
     });
-
+    $scope.isEmpty = function(value){
+        if (!value){
+            return true;
+        }
+        if ($filter('translate')(value) === ''){
+            return true;
+        }
+         return false;
+    };
+    $scope.flexText = function(value){
+        if (!value){
+            return false;
+        }
+        if ($filter('translate')(value).length > 1){
+            return true;
+        }
+        return false;
+    };
     $scope.returnDateObj = function(dateString){
         //utils
         if(typeof dateString !== 'undefined'){

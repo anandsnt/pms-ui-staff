@@ -88,6 +88,18 @@
 
 
    "TO_COMPLETE": "To Complete Check-in...",
+   
+   "RES_AUTH_DEPOSIT": "To Complete Check-in...",
+   "RES_AUTH_DEPOSIT_SUB": "Swipe for Deposit (despoit)",
+   
+   
+   "RES_AUTH_REMAIN": "Please Authorize a Credit Card for Stay Charges ",
+   "RES_AUTH_REMAIN_SUB": "authorize remaining amount due (auth after deposit)...",
+   
+   "RES_AUTH": "Please Complete Check-in (auth no deposit)...",
+   "RES_AUTH_SUB": "Please Swipe",
+   
+   
    "SWIPE_CARD_PLEASE": "Swipe Credit Card",
 
 
@@ -110,11 +122,12 @@
    "CC_SWIPE_TIMEOUT_SWIPE":"Re-Swipe",
 
 
+   "TERMS_CONDITIONS_VIEW_HEADER":"Please Agree to Continue",
    "TERMS_CONDITIONS_HEADER":"Terms & Conditions",
    "TERMS_CONDITIONS_ACCEPT":"I Agree",
    "TERMS_CONDITIONS_CANCEL":"Cancel",
-   "TERMS_CONDITIONS_SUB" : "",
-   "TERMS_CONDITIONS_SUB_ADDITIONAL" : "",
+   "TERMS_CONDITIONS_SUB" : "SUBHEADING",
+   "TERMS_CONDITIONS_SUB_ADDITIONAL" : "LOREM IPSUM DOLOR SIT AMET, CONSECTETUER ADIPISCING ELIT",
 
 
    "TYPE_EMAIL_IN": "Enter your email",
@@ -381,6 +394,7 @@
      "CHECKIN_KEY_FAIL_PRINT_SUCCESS" : "Check-In Key Fail & Print Success",
      
      
+     "RESERVATION_AUTH_REMAIN_SUB" : "Please Swipe to Authorize Remaining Balance",
      "PICKUP_KEY_FAIL" : "Pickup Key Fail",
      "PICKUP_KEY_FAIL_RESERVATION" : "Pickup Key Fail, Reservation Error",
      "SERVICE_FAILURE" : " : Service Failure, Restart Service",

@@ -1,0 +1,32 @@
+<!-- Popup -->
+<div id="popup" class="popup" ng-class="{'open':owsMsgOpenPoup}">
+    <!-- Remove class "open" to hide popup content -->
+    <div class="popup-content message">
+        <!-- Add class "single-message" if there's only 1 message to show. Otherwise add class "message" -->
+        <h2 class="nocaps">{{'OWS_MESSAGE_HEADER' |translate}}</h2>
+        <div id="message-content">
+            <!-- Logo, for print only -->
+            <!-- 
+             <div class="logo">
+                <div ng-include="icons.url.logo"></div>
+            </div> -->
+            <h3> {{currentOwsMessage}}</h3>
+            <button type="button" data-action="print" class="button with-icon" touch-press='printOwsMsg()'>
+                <div ng-include="icons.url.print"></div>
+                <span>{{'PRINT' |translate}}</span>
+            </button>
+            <button type="button" class="button with-icon" touch-press='emailOwsMsg()' ng-show="showEmailButton">
+                <div ng-include="icons.url.email"></div>
+                <span>{{'EMAIL' |translate}}</span>
+            </button>
+        </div>
+        <!-- If multiple messages, show: -->
+        <div id="message-action">
+            <p>Message <strong>{{currentpageNumber}}</strong> of <strong>{{owsMessages.length}}</strong></p>
+            <button ng-show="!isLastOwsMsg" type="button" class="button next" touch-press='loadNextOwsMsg()'>{{'NEXT' |translate}}</button>
+            <button ng-show="isLastOwsMsg" type="button" class="button" touch-press='closePopup()'><span>{{'DONE' |translate}}</span></button>
+        </div>
+    </div>
+</div>
+<div id="popup-overlay" class="" ng-class="{'open':owsMsgOpenPoup}"></div>
+<!-- Remove class "open" to hide popup overlay -->
