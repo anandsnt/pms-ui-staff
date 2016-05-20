@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="entry actions">
-        <button type="button" class="button blue with-icon only-icon">
+        <button type="button" class="button blue with-icon only-icon" ng-click="printButtonClick()">
             <span class="icons icon-print"></span>
         </button>
         <!-- Remove class .hidden when one/more commisions are checked -->
@@ -70,19 +70,19 @@
             </li>
             <li>
                 <span>Total Revenue</span>
-                <span class="amount">{{currencySymbol}}{{commissionsData.total_revenue}}</span>
+                <span class="amount">{{currencySymbol}}{{commissionsData.total_revenue| number: precisonTwo}}</span>
             </li>
             <li>
                 <span>Total to Date</span>
-                <span class="amount">{{currencySymbol}}{{commissionsData.total_commission_to_date}}</span>
+                <span class="amount">{{currencySymbol}}{{commissionsData.total_commission_to_date | number: precisonTwo}}</span>
             </li>
             <li>
                 <span>Total Paid</span>
-                <span class="amount green">{{currencySymbol}}{{commissionsData.total-paid}}</span>
+                <span class="amount green">{{currencySymbol}}{{commissionsData.total_commission_paid | number: precisonTwo}}</span>
             </li>
             <li>
                 <span>Total Owing</span>
-                <span class="amount red">{{currencySymbol}}{{commissionsData.total_commission_owing}}</span>
+                <span class="amount red">{{currencySymbol}}{{commissionsData.total_commission_owing| number: precisonTwo}}</span>
             </li>
         </ul>
     </div>
