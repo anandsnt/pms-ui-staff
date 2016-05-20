@@ -68,7 +68,7 @@
                                     </button>
                                 </li>
                                 <!-- TODO: active class logic -->
-                                <li class="active" ng-repeat="days in billData.days" click-touch="showDayRates($index)">
+                                <li class="active" ng-repeat="days in billData.days" click-touch="clickedSummaryDate(days.date)">
                                     <button class="toggle" type ="button" ng-class="{'active' : dayRates == $index}">
                                         <span class="day">{{days.date | date:'MMM'}} {{days.date | date:'dd'}}</span>
                                         <span class="price">{{currencySymbol}}{{days.total_amount | number: precisonZero}}</span>
@@ -76,7 +76,8 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="summary-expanded" ng-repeat="billItem in billData.days" ng-class="{'hidden': $index != dayRates}"> <!-- Remove class "hidden" when item in summary selected -->
+                        <!--
+                        <div class="summary-expanded" ng-repeat="billItem in billData.days" ng-class="{'hidden': $index != dayRates}"> 
                             <table class="expense-details">
                                 <thead>
                                     <tr>
@@ -94,6 +95,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        -->
                     </div>
 
 
@@ -252,6 +254,8 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        
                     </div>
                 </div>
             </div>

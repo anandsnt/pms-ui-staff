@@ -322,8 +322,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 
-		$scope.showDayRates = function(dayIndex) {
-
+		/*$scope.showDayRates = function(dayIndex) {
+			console.log(dayIndex);
 			if ($scope.dayRates !== dayIndex) {
 				$scope.dayRates = dayIndex;
 			} else {
@@ -331,7 +331,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			}
 			$scope.refreshScroller('registration-content');
 
-		};
+		};*/
 
 		$scope.showActiveBill = function(index) {
 
@@ -862,6 +862,33 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	    		scope: $scope
 	    	});
     	};
+
+    	var onBillTransactionFetchSuccess = function(){
+
+    	};
+
+    	/**
+		 * API calling method to get the bill transaction details
+		 * @return - undefined
+		 */
+		var getBillTransactionDetails = function() {
+			var params = {
+				'bill_id'	: '',
+				'date'		: "2016-01-16",
+				'page'		: 1,
+				'per_page'	: 50
+			};
+			var options = {
+				successCallBack: onBillTransactionFetchSuccess,
+				params: params
+			};
+			$scope.callAPI(rvAccountTransactionsSrv.fetchBillTransactionDetails, options);
+		};
+
+		$scope.clickedSummaryDate = function(date){
+			console.log(date);
+			console.log($scope.currentActiveBill);
+		};
 
 	}
 ]);

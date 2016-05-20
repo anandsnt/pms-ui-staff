@@ -18,6 +18,20 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			return deferred.promise;
 		};
 
+		this.fetchBillTransactionDetails = function(params) {
+			var deferred = $q.defer(),
+			url = '/api/bills/'+params.bill_id+'/transactions';
+
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
 		this.createAnotherBill = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/bills/create_bill';
