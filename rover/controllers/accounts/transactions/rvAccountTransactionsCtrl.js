@@ -42,7 +42,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
   		//only for standalone
 		var setChargeCodesSelectedStatus = function(bool){
 				var billTabsData = $scope.transactionsDetails.bills;
-				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
+				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 				chargeCodesId = [];
 				_.each(chargeCodes, function(chargeCode) {
 				  chargeCode.isSelected = bool;
@@ -60,7 +60,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				isAllChargeCodesSelected = false;
 			}
 			else{
-				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
+				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 		        if (chargeCodes){
 		            if(chargeCodes.length > 0){
 		                _.each(chargeCodes, function(chargeCode) {
@@ -85,7 +85,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var isAnyOneChargeCodeIsExcluded = false;
 			var isAnyOneChargeCodeIsIncluded = false;
 			var billTabsData = $scope.transactionsDetails.bills;
-			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details
+			var chargeCodes = billTabsData[$scope.currentActiveBill].transactions
 			if(chargeCodes.length>0){
 				_.each(chargeCodes, function(chargeCode,index) {
 				  if(!chargeCode.isSelected){
@@ -114,7 +114,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
                 $scope.$emit('hideLoader');
 
 				var billTabsData = $scope.transactionsDetails.bills;
-				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
+				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 				//Data to pass to the popup
 				//1. Selected transaction ids
 				//2. Confirmation number
@@ -181,14 +181,18 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		}();
 
+
 		/**
 		 * Successcallback of transaction list fetch
 		 * @param  {[type]} data [description]
 		 * @return undefined
 		 */
 		var onTransactionFetchSuccess = function(data) {
+
 			$scope.transactionsDetails = data;
-			$scope.refreshScroller('registration-content');
+			loadDefaultBillDateData();
+
+			//$scope.refreshScroller('registration-content');
 			$scope.refreshScroller('bill-tab-scroller');
 			$scope.refreshScroller('billDays');
 			setChargeCodesSelectedStatus(false);
@@ -200,7 +204,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			 * Check in HTML moveToBillAction
 			 */
 			angular.forEach($scope.transactionsDetails.bills, function(value, key) {
-				angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
+				angular.forEach(value.transactions, function(feesValue, feesKey) {
 
 					feesValue.billValue = value.bill_number; //Bill value append with bill details
 					feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
@@ -277,9 +281,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.moveToBillAction = function(oldBillValue, feesIndex) {
 
 			var parseOldBillValue = parseInt(oldBillValue) - 1;
-			var newBillValue = $scope.transactionsDetails.bills[parseOldBillValue].total_fees.fees_details[feesIndex].billValue;
-			var transactionId = $scope.transactionsDetails.bills[parseOldBillValue].total_fees.fees_details[feesIndex].transaction_id;
-			var id = $scope.transactionsDetails.bills[parseOldBillValue].total_fees.fees_details[feesIndex].id;
+			var newBillValue = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex].billValue;
+			var transactionId = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex].transaction_id;
+			var id = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex].id;
 			var dataToMove = {
 				"to_bill": newBillValue,
 				"from_bill": oldBillValue,
@@ -300,8 +304,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			 * Failure Callback of move action
 			 */
 			var moveToBillFailureCallback = function(data) {
-				console.log("@moveToBillFailureCallback");
-				console.log(errorMessage);
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = data.errorMessage;
 			};
@@ -349,16 +351,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 */
 		$scope.setActiveBill = function(billIndex) {
 			$scope.currentActiveBill = billIndex;
-			$scope.refreshScroller('registration-content');
+			loadDefaultBillDateData();
 		};
 
 
-		// Refresh registration-content scroller.
-		$scope.calculateHeightAndRefreshScroll = function() {
-			$timeout(function() {
-				$scope.refreshScroller('registration-content');
-			}, 500);
-		};
+		
 
 		$scope.openPostCharge = function( activeBillNo ) {
         // Show a loading message until promises are not resolved
@@ -863,19 +860,50 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	    	});
     	};
 
-    	var onBillTransactionFetchSuccess = function(){
+    	// CICO-25088 starts here ../
+    	/*
+    	 *	Load default bill (date specific) data.
+    	 */
+    	var loadDefaultBillDateData = function(){
+    		
+			var billTabsData = $scope.transactionsDetails.bills,
+				activeDate 	 = null,
+				dateCount    = 0;
 
+			dateCount  = billTabsData[$scope.currentActiveBill].days.length;
+			activeDate = billTabsData[$scope.currentActiveBill].days[dateCount-1].date;
+			console.log("activeDate = "+activeDate);
+			if(!!activeDate){
+				getBillTransactionDetails( 1, activeDate );
+			}
+    	};
+
+    	// Refresh registration-content scroller.
+		var refreshRegContent = function() {
+			$timeout(function() {
+				$scope.refreshScroller('registration-content');
+			}, 500);
+		};
+
+    	var onBillTransactionFetchSuccess = function(data){
+    		
+    		var billTabsData = $scope.transactionsDetails.bills;
+
+    		billTabsData[$scope.currentActiveBill].transactions = [];
+ 			billTabsData[$scope.currentActiveBill].transactions = data.transactions;
+ 			refreshRegContent();
     	};
 
     	/**
 		 * API calling method to get the bill transaction details
 		 * @return - undefined
 		 */
-		var getBillTransactionDetails = function() {
+		var getBillTransactionDetails = function( page, date ) {
+			var billTabsData = $scope.transactionsDetails.bills;
 			var params = {
-				'bill_id'	: '',
-				'date'		: "2016-01-16",
-				'page'		: 1,
+				'bill_id'	: billTabsData[$scope.currentActiveBill].bill_id,
+				'date'		: date,
+				'page'		: page,
 				'per_page'	: 50
 			};
 			var options = {
@@ -885,9 +913,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI(rvAccountTransactionsSrv.fetchBillTransactionDetails, options);
 		};
 
-		$scope.clickedSummaryDate = function(date){
-			console.log(date);
-			console.log($scope.currentActiveBill);
+		$scope.clickedSummaryDate = function( date ){
+			getBillTransactionDetails( 1, date );
 		};
 
 	}

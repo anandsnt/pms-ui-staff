@@ -20,7 +20,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 
 		this.fetchBillTransactionDetails = function(params) {
 			var deferred = $q.defer(),
-			url = '/api/bills/'+params.bill_id+'/transactions';
+			url = '/api/bills/'+params.bill_id+'/transactions?date='+params.date+'&page='+params.page+'&per_page='+params.per_page;
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {

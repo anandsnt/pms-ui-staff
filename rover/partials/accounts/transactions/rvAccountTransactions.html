@@ -41,7 +41,7 @@
                         <li ng-class="showActiveBill($index)" click-touch="setActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
                             <a class="bill-toggle">
                                 <div class="price"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
-                                    {{currencySymbol}}{{billTab.total_fees.balance_amount | number: precisonZero}}
+                                    {{currencySymbol}}{{billTab.balance_amount | number: precisonZero}}
                                 </div>
                             </a>
                         </li>
@@ -111,7 +111,7 @@
                         <ul class="group-overview">
                             <li>
                                 <span class="title" translate>FEES</span>
-                                <span class="value">{{currencySymbol}}{{billData.total_fees.total_amount | number: precisonTwo}}</span>
+                                <span class="value">{{currencySymbol}}{{billData.total_amount | number: precisonTwo}}</span>
                             </li>
                             <li class="break">
                                 <button type="button" class="button with-icon only-icon blue" click-touch="showFormatBillPopup(billData.bill_number)">
@@ -122,7 +122,7 @@
                             </li>
                             <li>
                                 <span class="title" translate>BALANCE</span>
-                                <span class="value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}">{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</span> <!-- Green when 0, otherwise red -->
+                                <span class="value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}">{{currencySymbol}}{{billData.balance_amount | number: precisonTwo}}</span> <!-- Green when 0, otherwise red -->
                             </li>
                             <li>
                                 <button class="button green with-icon only-icon" click-touch="showPayemntModal()" >
@@ -171,10 +171,10 @@
                                             <span class="icons icon-invoice"></span>
                                             {{'INVOICE' |translate}}
                                             </button>
-                                            {{'STAY_FEES' |translate}} ({{'AS_OF' |translate}}  {{billData.total_fees.fees_date | date:dateFormat}}):
+                                            {{'STAY_FEES' |translate}} ({{'AS_OF' |translate}}  {{billData.fees_date | date:dateFormat}}):
                                         </td>
                                         <td colspan="3" class="total-value">
-                                             <strong>{{currencySymbol}}{{billData.total_fees.total_amount | number: precisonTwo}}</strong>
+                                             <strong>{{currencySymbol}}{{billData.total_amount | number: precisonTwo}}</strong>
                                         </td>
                                         <td>
                                             <!-- <button click-touch="openActionsPopup()" class="button purple with-icon only-icon">
@@ -186,10 +186,10 @@
                                     </tr>
                                     <tr class="active edit">
                                         <td colspan="3" class="total-label">
-                                            {{'BALANCE' |translate}} ({{'AS_OF' |translate}} {{billData.total_fees.fees_date | date:dateFormat}}):
+                                            {{'BALANCE' |translate}} ({{'AS_OF' |translate}} {{billData.fees_date | date:dateFormat}}):
                                         </td>
                                         <td colspan="3" class="total-value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}"> <!-- Green when 0, otherwise red -->
-                                             <strong>{{currencySymbol}}{{billData.total_fees.balance_amount | number: precisonTwo}}</strong>
+                                             <strong>{{currencySymbol}}{{billData.balance_amount | number: precisonTwo}}</strong>
                                         </td>
                                         <td>
                                             <button class="button green with-icon only-icon" click-touch="showPayemntModal()">
@@ -201,17 +201,17 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <tr class="active edit" ng-repeat="feesData in billData.total_fees.fees_details" >
+                                    <tr class="active edit" ng-repeat="feesData in billData.transactions" >
                                         <td>{{feesData.date |date:dateFormat}}</td>
                                         <td>
-                                            <span ng-repeat="description in feesData.description">
-                                                {{description.charge_code}}
+                                            <span>
+                                                {{feesData.charge_code}}
                                                 <br />
                                             </span>
                                         </td>
                                         <td class="description">
-                                            <span ng-repeat="description in feesData.description">
-                                                {{description.fees_desc}}
+                                            <span >
+                                                {{feesData.description}}
                                                 <br />
                                             </span>
                                             <span ng-show="feesData.reference_text != ''" class="reference">
@@ -220,12 +220,12 @@
                                         </td>
                                         <td>
                                             <strong>
-                                                <span ng-repeat="description in feesData.description" ng-show= "description.fees_amount!=NIL">{{currencySymbol}}{{description.fees_amount | number: precisonTwo}}
+                                                <span ng-show= "feesData.fees">{{currencySymbol}}{{feesData.fees | number: precisonTwo}}
                                                 </span>
                                             </strong>
                                         </td>
                                         <td>
-                                            <strong ng-show="feesData.credits!=''">
+                                            <strong ng-show="feesData.credits">
                                                 {{currencySymbol}}{{feesData.credits| number: precisonTwo}}
                                             </strong>
                                         </td>
