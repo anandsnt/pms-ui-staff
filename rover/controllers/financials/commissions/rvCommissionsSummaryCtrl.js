@@ -68,6 +68,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         fetchCommissionsData();
     };
     var initPaginationParams = function() {
+        $scope.showPagination =($scope.commissionsData.total_results <= 50)?false:true;
         $scope.start = ($scope.filterData.page ==1)?1:(($scope.filterData.page-1)*$scope.filterData.perPage)+1 ;
         $scope.end = (($scope.filterData.page *$scope.filterData.perPage )>=$scope.commissionsData.total_results)?$scope.commissionsData.total_results:($scope.filterData.page *$scope.filterData.perPage );
     };
