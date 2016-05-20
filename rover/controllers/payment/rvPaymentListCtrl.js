@@ -46,6 +46,8 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 		var paymentMapSuccess = function(data){
 			
 			$scope.$emit('hideLoader');
+			//Added for CICO-29224
+			$rootScope.$emit('UPDATECCATTACHEDBILLSTATUS', data.has_any_credit_card_attached_bill);
 			ngDialog.close();
 
 			if($scope.dataToPaymentList.currentView === "billCard"){
@@ -71,6 +73,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 				$scope.dataToPaymentList.reservation_card.payment_details.auth_color_code = colorCode;
 				$scope.dataToPaymentList.reservation_card.payment_details.id = data.id;
 			}
+			
 		};
 		$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess, paymentMapFailure);
 	};
