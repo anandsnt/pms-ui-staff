@@ -2,35 +2,27 @@
     <!-- Add .commision-checked when one or more commisions are checked -->
     <div class="entry search">
         <!-- add class .visible when keywords are entered -->
-        <button class="clear-query">
-            <span class="icons icon-clear-search">Clear query</span>
+        <button class="clear-query" ng-class="{'visible' : filterData.searchQuery.length >0 }" ng-click ="clearSearchQuery()">
+            <span class="icons icon-clear-search" >Clear query</span>
         </button>
         <button class="icons icon-search">Search</button>
-        <input name="commisions-query" class="query" placeholder="Search by Agent Name, IATA Number or City" type="search" autocomplete="off">
+        <input name="commisions-query" class="query" placeholder="Search by Agent Name, IATA Number or City" type="search" autocomplete="off" ng-model="filterData.searchQuery" ng-change="searchAccounts()">
     </div>
     <div class="entry options">
         <div class="select with-label">
-            <label for="paid-status">Paid Status</label>
-            <select id="paid-status">
-                <option value="{paid}">PAID</option>
-                <option value="{all}">ALL</option>
-                <option value="{unpaid}">UNPAID</option>
-                <option value="{prepaid}">PREPAID</option>
+            <label for="paid-status" >Paid Status</label>
+            <select ng-init="filterData.paidStatus = filterData.paidStatusOptions[0]" ng-model="filterData.paidStatus" ng-change="searchAccounts()" id="sort-by"  ng-options="option.name for option in filterData.paidStatusOptions">
             </select>
         </div>
 
         <div class="input with-label">
-            <label for="min-amount">Min. Amount ($)</label>
-            <input type="text" value="{value}" id="min-amount">
+            <label for="min-amount">{{'MIN_AMOUNT' | translate}}({{currencySymbol}})</label>
+            <input type="text" ng-model="filterData.minAmount" id="min-amount" ng-change="searchAccounts()">
         </div>
 
         <div class="select with-label larger-select">
             <label for="sort-by">Sort By</label>
-            <select id="sort-by">
-                <option value="{name-asc}">NAME ASC</option>
-                <option value="{name-desc}">NAME DESC</option>
-                <option value="{amount-asc}">AMOUNT ASC</option>
-                <option value="{amount-desc}">AMOUNT DESC</option>
+            <select ng-init="filterData.sort_by = filterData.sortOptions[0]" ng-model="filterData.sort_by" ng-change="searchAccounts()" id="sort-by"  ng-options="option.name for option in filterData.sortOptions">
             </select>
         </div>
     </div>
@@ -50,95 +42,95 @@
 </form>
 
 <!-- Search pagination -->
-{../_shared/pagination.html}
+<div class="search-pagination" ng-show="true">
+    <button type="button" class="button dark-grey next" ng-click="loadNextPage()" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
+    <button type="button" class="button dark-grey prev" ng-click="loadPrevPage()" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
+    <p>{{'SHOWING' | translate}} <strong>{{start}}-{{end}}</strong> {{'OF' | translate}} <strong id="total-count">{{commissionsData.total_results}}</strong> {{'ITEMS' | translate}}</p>
+</div>
 
 <!-- Search panel - WITH RESULTS -->
 <section class="content commisions-content" role="main">
     <div class="commisions-header">
 
         <ul class="commisions-totals">
-            <li class="check">
-                <span>Select</span>
-                <!-- add .checked when checked -->
-                <label class="checkbox inline">
-                    <!-- add .checked when all is checked
-                         add .semi-checked when only part of commissions are checked -->
-                    <span class="icon-form icon-checkbox"></span>
-                    <!-- add attribute checked="checked" when checked -->
-                    <input type="checkbox" value="{value}">
-                </label>
-            </li>
+            <!--<li class="check">-->
+                <!--<span>Select</span>-->
+                <!--&lt;!&ndash; add .checked when checked &ndash;&gt;-->
+                <!--<label class="checkbox inline">-->
+                    <!--&lt;!&ndash; add .checked when all is checked-->
+                         <!--add .semi-checked when only part of commissions are checked &ndash;&gt;-->
+                    <!--<span class="icon-form icon-checkbox"></span>-->
+                    <!--&lt;!&ndash; add attribute checked="checked" when checked &ndash;&gt;-->
+                    <!--<input type="checkbox" value="{value}">-->
+                <!--</label>-->
+            <!--</li>-->
             <li>
                 <span>Open Bills</span>
-                <span class="amount">{open-bills}</span>
+                <span class="amount">{{commissionsData.total_number_of_unpaid_bills}}</span>
             </li>
             <li>
                 <span>Total Revenue</span>
-                <span class="amount">${total-revenue}</span>
+                <span class="amount">{{currencySymbol}}{{commissionsData.total_revenue}}</span>
             </li>
             <li>
                 <span>Total to Date</span>
-                <span class="amount">${total-to-date}</span>
+                <span class="amount">{{currencySymbol}}{{commissionsData.total_commission_to_date}}</span>
             </li>
             <li>
                 <span>Total Paid</span>
-                <span class="amount green">${total-paid}</span>
+                <span class="amount green">{{currencySymbol}}{{commissionsData.total-paid}}</span>
             </li>
             <li>
                 <span>Total Owing</span>
-                <span class="amount red">${total-owing}</span>
+                <span class="amount red">{{currencySymbol}}{{commissionsData.total_commission_owing}}</span>
             </li>
         </ul>
     </div>
     <!-- Add .no-pagination when there is no pagination -->
     <!-- Add .no-commisions-header when there is no header -->
-    <div class="commisions-list scrollable">
+    <div class="commisions-list scrollable" ng-iscroll='commissionOverViewScroll'>
         <div class="wrapper">
             <ul class="search-results">
-                <li class="commision-item">
-                    <div class="check">
-                        <!-- add .checked when checked -->
-                        <label class="checkbox inline">
-                            <!-- add .checked when checked -->
-                            <span class="icon-form icon-checkbox"></span>
-                            <!-- add checked="checked" when checked -->
-                            <input value="{value}" type="checkbox">
-                        </label>
-                    </div>
+                <li class="commision-item" ng-repeat ="account in commissionsData.accounts">
+                    <!--<div class="check">-->
+                        <!--&lt;!&ndash; add .checked when checked &ndash;&gt;-->
+                        <!--<label class="checkbox inline">-->
+                            <!--&lt;!&ndash; add .checked when checked &ndash;&gt;-->
+                            <!--<span class="icon-form icon-checkbox"></span>-->
+                            <!--&lt;!&ndash; add checked="checked" when checked &ndash;&gt;-->
+                            <!--<input value="{value}" type="checkbox">-->
+                        <!--</label>-->
+                    <!--</div>-->
                     <a href="{travel-agent-commision-page">
                         <span class="account-image icons icon-travel-agent"></span>
                         <div class="data">
-                            <h2>{Travel Agent}</h2>
-                            <!-- Show only if on hold
-                            <span class="icons icon-hold red"></span>
-                            -->
+                            <h2>{{account.account_name}}</h2>
                             <div class="meta-data">
-                                <span class="icons icon-location">{location}</span>
-                                <span class="icons icon-guest-travelagent">{iata}</span>
+                                <span class="icons icon-location">{{account.location}}</span>
+                                <span class="icons icon-guest-travelagent">{{account.iata_number}}</span>
                             </div>
                         </div>
                         <div class="info-holder">
                             <div class="info open-bills">
-                                <strong>{open-bills}</strong>
+                                <strong>{{account.number_of_unpaid_bills}}</strong>
                                 <span>Open Bills</span>
                             </div>
                             <div class="info">
-                                <strong>${revenue}</strong>
+                                <strong>{{currencySymbol}}{{account.total_revenue}}</strong>
                                 <span>Revenue</span>
                             </div>
                             <div class="info">
-                                <strong class="green">${to-date}</strong>
+                                <strong class="green">{{currencySymbol}}{{account.commission_to_date}}</strong>
                                 <span>To Date</span>
                             </div>
                             <div class="info">
                                 <!-- add class .red if 'owing' > 0 -->
-                                <strong>${owing}</strong>
+                                <strong ng-class="{'red': account.commission_owing > 0 }">{{currencySymbol}}{{account.commission_owing}}</strong>
                                 <span>Owing</span>
                             </div>
                         </div>
                     </a>
                 </li>
-                ... repeat for each commision
             </ul>
         </div>
     </div>
