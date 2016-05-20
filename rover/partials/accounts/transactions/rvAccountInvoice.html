@@ -39,13 +39,17 @@
             <strong translate>ACCOUNT_NAME:</strong>{{printData.account_name}}<br/>
             <strong ng-if="printData.group_account_contact && printData.is_group">ACCOUNT_CONTACT:</strong>{{printData.account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
             <strong ng-if="printData.company_card_details.payment_due_in_days" translate>PAYMENT_DUE_IN_DAYS:</strong>{{printData.company_card_details.payment_due_in_days}}<br ng-if="printData.company_card_details.payment_due_in_days" />
-            <strong translate>CORP_ID:</strong>{{printData.company_card_details.corporate_id}}
+            <strong translate>CORP_ID:</strong>{{printData.company_card_details.corporate_id}}<br/>
+            <strong translate>TAX_ID:</strong>{{printData.company_card_details.tax_id}}<br ng-if="printData.company_card_details.tax_id" />
+            <strong ng-if="printData.company_card_details.reference_number" translate>REF_NO:</strong>{{printData.company_card_details.reference_number}}
         </div>
         <div class="info-right" ng-if="printData.card_type === 'TRAVELAGENT'">
             <strong translate>ACCOUNT_NAME:</strong>{{printData.account_name}}<br/>
             <strong ng-if="printData.group_account_contact && printData.is_group" translate>ACCOUNT_CONTACT:</strong>{{printData.account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
             <strong ng-if="printData.ta_card_details.payment_due_in_days" translate>PAYMENT_DUE_IN_DAYS:</strong>{{printData.ta_card_details.payment_due_in_days}}<br ng-if="printData.ta_card_details.payment_due_in_days" />
-            <strong translate>IATA_#:</strong>{{printData.ta_card_details.iata_no}}
+            <strong translate>IATA_#:</strong>{{printData.ta_card_details.iata_no}}<br/>
+            <strong translate>TAX_ID:</strong>{{printData.ta_card_details.tax_id}}<br ng-if="printData.ta_card_details.tax_id" />
+            <strong ng-if="printData.ta_card_details.reference_number" translate>REF_NO:</strong>{{printData.ta_card_details.reference_number}}
         </div>
     </div>
 </div>
