@@ -9,119 +9,139 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 	'zsModeConstants',
 	'zsGeneralSrv',
 	function($scope, $stateParams, $state, zsEventConstants,$controller,$timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv) {
-            BaseCtrl.call(this, $scope);
+        BaseCtrl.call(this, $scope);
 
-            /**********************************************************************************************
-            **      Please note that, not all the stateparams passed to this state will not be used in this state, 
-            **      however we will have to pass this so as to pass again to future states which will use these.
-            **       
-            **      Expected state params -----> mode, id, guest_id, swipe, guest_email, guest_email_blacklisted, 
-            **      room_no and room_status           
-            **      Exit function -> goToCardSign                              
-            **                                                                       
-            ***********************************************************************************************/
+        /**********************************************************************************************
+        **      Please note that, not all the stateparams passed to this state will not be used in this state, 
+        **      however we will have to pass this so as to pass again to future states which will use these.
+        **       
+        **      Expected state params -----> mode, id, guest_id, swipe, guest_email, guest_email_blacklisted, 
+        **      room_no and room_status           
+        **      Exit function -> goToCardSign                              
+        **                                                                       
+        ***********************************************************************************************/
 
 
-            /*
-             *  Card Signature View - Used for Credit Card or Deposit via Credit Card
-             *  
-             *  take MLI actions out and place in zsUtils.js, inherit common (swipe/functionality for depoist + cc )
-             *  -> switch from invoke to callAPI
-             *  
-             */
+        /*
+         *  Card Signature View - Used for Credit Card or Deposit via Credit Card
+         *  
+         *  take MLI actions out and place in zsUtils.js, inherit common (swipe/functionality for depoist + cc )
+         *  -> switch from invoke to callAPI
+         *  
+         */
 
-            $scope.continue = function(){
-                var inProduction = $scope.inProd();
-                if (inProduction){return;}
+        $scope.continue = function(){
+            var inProduction = $scope.inProd();
+            if (inProduction){return;}
+            
+            $scope.$emit('hideLoader');
+            if ($scope.showDeposit){
+                $scope.payDeposit();
+            } else {
+                goToCardSign();
+            }
+
+        };
+
+        $scope.swipeData = {};
+
+        // $scope.proceedToDeposit = function(){
+        //     $state.go('zest_station.checkInCardSwipe',{
+        //         'mode': 'DEPOSIT',
+        //         'swipe': 'true',
+        //         'id': $stateParams.reservation_id,
+        //         'room_no':$stateParams.room_no,
+        //         'room_status':$stateParams.room_status,
+        //         'guest_email': $stateParams.guest_email,
+        //         'guest_email_blacklisted': $stateParams.guest_email_blacklisted
+        //     }); 
+        // };
+        
+        $scope.reTryCardSwipe = function(){
+            $scope.resetTime();
+            init();
+        };
+        
+        var onActivityTimeout = function(){
+            if (isCCAuthMode()){
+                swipeTimeoutCC();
+            } else if (isDepositMode()){
+                swipeTimeoutDeposit();
+            } else {
                 
-                $scope.$emit('hideLoader');
-                if ($scope.showDeposit){
-                    $scope.payDeposit();
-                } else {
-                    goToCardSign();
-                }
-
-            };
-
-            $scope.swipeData = {};
-
-
-            // $scope.proceedToDeposit = function(){
-            //     $state.go('zest_station.checkInCardSwipe',{
-            //         'mode': 'DEPOSIT',
-            //         'swipe': 'true',
-            //         'id': $stateParams.reservation_id,
-            //         'room_no':$stateParams.room_no,
-            //         'room_status':$stateParams.room_status,
-            //         'guest_email': $stateParams.guest_email,
-            //         'guest_email_blacklisted': $stateParams.guest_email_blacklisted
-            //     }); 
-            // };
-            
-
-            $scope.$on('USER_ACTIVITY_TIMEOUT',function(){
-                if (isCCAuthMode()){
-                    swipeTimeoutCC();
-                } else if (isDepositMode()){
-                    swipeTimeoutDeposit();
-                } else {
-                    
-                }
-            });
-            
-            $scope.reTryCardSwipe = function(){
-                $scope.resetTime();
-                init();
-            };
-
-            $scope.$on('SWIPE_ACTION',function(evt, swipedCardData){
-                console.info(swipedCardData)
-                    var swipeOperationObj = new SwipeOperation();
-                    $scope.swipeData = swipedCardData;
-
-                    var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
-                    var tokenizeFailed = function(response){
-                        $scope.$emit('hideLoader');
-                        console.warn('failed to get token from MLI');
-                        //need to go to error screen here
-                    };
-                    
-                    var tokenizeSuccessCallback = function(){
-                        $scope.$emit('hideLoader');
-                        $scope.swippedCard = true;
-                        initMLISessionThenSave();//get MLI session and save
-                    };
-
-                    var callback = function(response){
-                        if (response && response.status !== 'failure'){
-                            $scope.$emit('hideLoader');
-                            cardToken = response.data;
-                            $scope.swipeData.token = response.data;
-
-                            tokenizeSuccessCallback();
-                        } else {
-                            tokenizeFailed(response);
-                        }
-                    };
-
-                    $scope.invokeApi(zsGeneralSrv.tokenize, getTokenFrom, callback);
-            });
-            
-            var goToCardSign = function(){
-                console.log('show signature');
-                $state.go('zest_station.checkInSignature',{
-                    'reservation_id':$stateParams.reservation_id,
+            }
+        };
+        
+        var onClickBack = function(event) {
+            if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
+                $state.go('zest_station.checkInReservationDetails');
+            } else {
+                var stateParams = {
                     'guest_id': $stateParams.guest_id,
-                    'mode':'SIGNATURE',
-                    'payment_type_id':$stateParams.payment_type_id,
-                    'room_no':$stateParams.room_no,
-                    'room_status':$stateParams.room_status,
-                    'deposit_amount':$stateParams.deposit_amount,
-                    'email':$stateParams.guest_email,
-                    'guest_email_blacklisted':$stateParams.guest_email_blacklisted
-                    
-                });
-            };
+                    'reservation_id': $stateParams.reservation_id,
+                    'deposit_amount': $stateParams.deposit_amount,
+                    'room_no': $stateParams.room_no,
+                    'room_status': $stateParams.room_status,
+                    'payment_type_id': $stateParams.payment_type_id,
+                    'guest_email': $stateParams.guest_email,
+                    'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
+                    'first_name': $stateParams.first_name
+                };
+                
+                
+                //need to go to [ last viewed ] screen, terms&conditions may be turned off...
+                $state.go('zest_station.checkInTerms', stateParams);
+            }
+        };
+        
+        var onCardSwipeResponse = function(evt, swipedCardData){
+            console.info(swipedCardData)
+                var swipeOperationObj = new SwipeOperation();
+                $scope.swipeData = swipedCardData;
+
+                var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+                var tokenizeFailed = function(response){
+                    $scope.$emit('hideLoader');
+                    console.warn('failed to get token from MLI');
+                    //need to go to error screen here
+                };
+                
+                var tokenizeSuccessCallback = function(){
+                    $scope.$emit('hideLoader');
+                    $scope.swippedCard = true;
+                    initMLISessionThenSave();//get MLI session and save
+                };
+
+                var callback = function(response){
+                    if (response && response.status !== 'failure'){
+                        $scope.$emit('hideLoader');
+                        cardToken = response.data;
+                        $scope.swipeData.token = response.data;
+
+                        tokenizeSuccessCallback();
+                    } else {
+                        tokenizeFailed(response);
+                    }
+                };
+
+                $scope.invokeApi(zsGeneralSrv.tokenize, getTokenFrom, callback);
+        };
+        
+        var goToCardSign = function(){
+            console.log('show signature');
+            $state.go('zest_station.checkInSignature',{
+                'reservation_id':$stateParams.reservation_id,
+                'guest_id': $stateParams.guest_id,
+                'mode':'SIGNATURE',
+                'payment_type_id':$stateParams.payment_type_id,
+                'room_no':$stateParams.room_no,
+                'room_status':$stateParams.room_status,
+                'deposit_amount':$stateParams.deposit_amount,
+                'email':$stateParams.guest_email,
+                'guest_email_blacklisted':$stateParams.guest_email_blacklisted
+                
+            });
+        };
 
         
         var initMLISessionThenSave = function(){
@@ -166,12 +186,12 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 			    $scope.$emit("showLoader");  
 			}
 			catch(err) {
-                            console.warn(err);
+                console.warn(err);
 			};
              
              
         };
-        var  updateSessionCallback = function(response){
+        var updateSessionCallback = function(response){
             console.info(response);
             $scope.$emit("hideLoader");
 
@@ -223,9 +243,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 		};
 
         var setDepositSettings = function(){
-                $scope.currencySymbol = $scope.zestStationData.currencySymbol;
-                $scope.depositAmount = $stateParams.deposit_amount;
-                    $scope.showSwipeNav = true;
+            $scope.currencySymbol = $scope.zestStationData.currencySymbol;
+            $scope.depositAmount = $stateParams.deposit_amount;
+            $scope.showSwipeNav = true;
         };
         var setCCAuthSettings = function(){
             $scope.waitingForSwipe = true;
@@ -237,12 +257,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.waitingForSwipe = false;
             $scope.swipeError = false;
             $scope.swipeTimeout = true;
-        }
+        };
+
         var swipeTimeoutDeposit = function(){
             $scope.waitingForSwipe = false;
             $scope.swipeError = false;
             $scope.swipeTimeout = true;
-        }
+        };
                 
         var listenForSwipe = function(){
             $timeout(function(){
@@ -253,6 +274,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             },1000);
             $scope.socketOperator.observe();
         };
+
+
+        /**
+         * [setup controller]
+         */
 		var init = function() {
             console.log($stateParams)
             //if at the deposit screen, set the currency symbol and amount due, which should be passed from reservation details
@@ -272,26 +298,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
 
         init();
-
-        //back button action
-        $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-            if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
-                $state.go('zest_station.checkInReservationDetails');
-            } else {
-                var stateParams = {
-                    'guest_id': $stateParams.guest_id,
-                    'reservation_id': $stateParams.reservation_id,
-                    'deposit_amount': $stateParams.deposit_amount,
-                    'room_no': $stateParams.room_no,
-                    'room_status': $stateParams.room_status,
-                    'payment_type_id': $stateParams.payment_type_id,
-                    'guest_email': $stateParams.guest_email,
-                    'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
-                    'first_name': $stateParams.first_name
-                }
-                $state.go('zest_station.checkInTerms', stateParams);
-            }
-        });
+        
+        
 		/**
 		 * [initializeMe description]
 		 */
@@ -301,14 +309,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
              $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
                     
 		}();
-
-        /*
-         * Sets variables for Credit Card Screen
-         */
-        var initCCNavScreen = function(){
-            $scope.showDeposit = false;
-            
-        };
+                
+                /**************** Listeners ****************/
+                
+            //back button action
+            $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onClickBack);
+            $scope.$on('SWIPE_ACTION',onCardSwipeResponse);
+            $scope.$on('USER_ACTIVITY_TIMEOUT',onActivityTimeout);
 
 	}
 ]);
