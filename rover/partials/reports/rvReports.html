@@ -1,7 +1,9 @@
 <span class="nested-view view-current" ng-class="{ 'return-back': !showReportDetails }">
+
     <div ng-include="'/assets/partials/common/header.html'"></div>
 
-    <form class="search-form" ng-hide="showReportDetails" style="z-index: 70;">
+    <!-- Search -->
+    <form class="search-form" ng-hide="showReportDetails">
         <div class="entry search">
             <button type="button" class="clear-query" ng-class="{'visible': query.length}" ng-click="clearQuery()"> <!-- Add class "visible" to show -->
                 <span class="icons icon-clear-search">Clear query</span>
@@ -11,29 +13,34 @@
         </div>
     </form>
 
-    <section id="reports" class="content reports-wrapper" ng-class="{'no-search-form': showReportDetails}" ng-hide="showReportDetails" role="main">
-        <div id="reports-menu">
-            <span ng-include="'/assets/partials/reports/shared/rvReportMainMenu.html'"></span>
-        </div>
+    <section id="reports" class="content reports-wrapper" role="main" ng-hide="showReportDetails">
+        
+        <!-- Menu -->
+        <div id="reports-menu" ng-include="'/assets/partials/reports/shared/rvReportMainMenu.html'"></div>
 
         <!-- Content -->
-        <div id="reports-dashboard" class="scrollable {'cols-2', 'cols-3' or 'cols-4'}"
-            ng-class="{'cols-2': viewCol === 2, 'cols-3': viewCol === 3, 'cols-4': viewCol === 4 }">
-            <span ng-controller="RVReportListCrl" ng-include="'/assets/partials/reports/shared/rvViewAllReports.html'"></span>
+        <div id="reports-dashboard" class="scrollable" ng-class="{'cols-2': viewCol === 2, 'cols-3': viewCol === 3, 'cols-4': viewCol === 4 }"> <!-- Classes cols-2,cols-3 and cols-4 are added when showing 2,3 or 4 columns. Add horizontal scroller here -->
+            <div class="wrapper">
+                <div class="cols-wrapper">
+                    <span ng-controller="RVReportListCrl" ng-include="'/assets/partials/reports/shared/rvViewAllReports.html'"></span>
+                    <span ng-if="scheduled-reports"></span>
+                </div>
+            </div>
         </div>
-
-        <!-- If there are no reports, replace L31-L70 with this: -->
-        <div class="no-content" ng-show="error_is">
+        
+        <!-- If there are no reports, replace L31-L70 with this:
+        <div class="no-content">
             <div class="info">
                 <span class="icon-no-content icon-reports"></span>
                 <strong class="h1">Reports unavailable</strong>
                 <span class="h2">You have no report options configured</span>
             </div>
-        </div>
+        </div>-->
+        
     </section>
 
-    <span ng-controller="RVReportDetailsCtrl" class="content reports-wrapper" ng-show="showReportDetails" style="top: 60; height: 100%">
-        <section id="report-details" role="main" ng-click="toggleSidebar()" class="content reports-wrapper" style="top: 0; height: 100%">
+    <section id="report-details" class="content reports-wrapper" role="main" ng-show="showReportDetails">
+        <span ng-controller="RVReportDetailsCtrl">
             <div id="report-update" class="sidebar-left ui-resizable" ng-class="{'open': showSidebar}" ng-click="toggleSidebar($event)" ng-include="'/assets/partials/reports/filters/rvReportDetailsFilters.html'"></div>
 
             <div class="report-header" ng-show="showReportHeader">
@@ -62,6 +69,6 @@
             <div class="report-header" ng-show="errorMessage.length" ng-include="'/assets/partials/common/notification_message.html'"></div>
 
             <span ng-hide="errorMessage.length" ng-include="detailsTemplateUrl"></span>
-        </section>
-    </span>
+        </span>
+    </section>
 </span>
