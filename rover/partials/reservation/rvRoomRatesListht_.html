@@ -1,0 +1,82 @@
+
+<li>
+    <a href="#{room-type-id}" class="has-arrow toggle">
+        <div class="data">
+            <h2>{Room Type Name}</h2>
+            <span class="count {green/red}">{Count} AVL</span> <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
+        </div>
+        <div class="book-rate">
+            <h4>{Rate Name / Corporate Rate}</h4>
+            <div class="price">
+                ${ADR}
+                <span>Avg. Rate per night</span>
+            </div>
+
+            <div class="button-container">
+                <!-- If not bookable (button: grey): Don't show the button -->
+                <button type="button" class="button {button class}">Book</button>
+            </div>
+            <!--
+                Button should have class "green" in stay view, and "white green-text" in day view.
+                If it's booked room, use class "white blue-text", and have text "Booked".
+            -->
+        </div>
+    </a>
+    <ul id="{room-type-id}" class="rates hidden"> <!-- Remove class "hidden" when upper anchor is tapped -->
+        <li> <!-- Add class "closed" if restrictions apply to rate -->
+            <a href="#{rate-details-id}" class="has-arrow toggle">
+                <h3><!-- Add class "restricted" if restriction applies -->
+                    {Rate/Packge Name}
+                </h3>
+                <!-- If corporate rate, show:
+                      -- 'corp-class' can be:
+                                - group
+                                - allotment
+                                - travel-agent
+                                - company
+                    <span class="corporate {corp-class}">Corporate</span>-->
+
+                    <!-- If restriction applies, show:
+                    <span class="restriction-icon {restriction-icon-class} {restriction-bg-class} {restriction-bgcolor}">{Restriction}</span>
+
+                   <!-- 'Restriction' empty if there is no value, if multiple it is 'R' -->
+                   <!-- Restriction BG classes:
+                    bg-red,
+                    bg-green,
+                    bg-blue,
+                    bg-violet,
+                    bg-drk
+                    Some Icons do not need a restriction-bg-class because they are grey
+                 -->
+                 <!-- Restriction-icon-class:
+                    icon-cross
+                    icon-block
+                    Some Icons do not need a restriction-icon becuase they are blank or have values
+                -->
+                <div class="price">
+                    ${ADR}
+                    <span>Avg. Rate per night</span>
+                </div>
+                <div class="button-container">
+                    <!-- Don't show button if it can't be booked -->
+                    <button type="button" class="button {button class}">Book</button>
+                </div>
+                <!--
+                    In stay view, button should have class "grey" if room type is restricted, and "green" when not restricted.
+                    If day view, use "white grey-text" instead of "grey", and "white green-text" instead of "green".
+                    If it's booked room, use class "white blue-text", and have text "Booked".
+                -->
+                <div id="{rate-details-id}" class="rate-details hidden"> <!-- Remove class "hidden" when upper anchor is tapped -->
+                    {same as rate.html, L82-L124}
+                </div>
+            </a>
+        </li>
+        ... repeat for all rates of the room type
+    </ul>
+</li>
+.. repeat for first two room types
+
+<!-- Break after first two rates -->
+<li class="break">
+    <span>See more room types</span>
+</li>
