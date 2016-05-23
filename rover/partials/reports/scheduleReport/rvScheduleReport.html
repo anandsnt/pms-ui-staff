@@ -1,0 +1,177 @@
+<!-- First column - Scheduled reports -->
+<div class="report-col main-col scrfailedollable buttons-1" ng-iscroll="REPORT_SCHEDULES_SCROLL"> <!-- Add vertical scroller here -->
+    <ul class="wrapper">
+        <li class="report-item" ng-repeat="item in reportSchedules" ng-class="{'active': item.active}" ng-click="selectSchedule(item, $index)"> <!-- Add class "active" when selected + load filters in 2nd column -->
+        	<span class="icon-report {report icon class}" ng-class="item.reportIconCls"></span>
+        	<div class="data">
+        	    <h2 ng-bind-html="escapeNull(item.report.description)|highlight:query:false"></h2>
+        	    <em>{{ item.report.description }}</em>
+        	</div>
+        </li>
+    </ul>
+    <div class="main-column-actions" ng-show="NOT_NOW">
+        <button type="button" class="button blue with-icon">
+            <i class="icons icon-pencil"></i>
+            Schedule a Report
+        </button>
+        <!-- When L14 is pressed, replace it with these (+ load all reports in ul on L3(as defined in all-reports.hmtl) and refresh the scroller)
+        <button type="button" class="back-button">
+            Back to Scheduled Reports
+        </button>
+        <strong>Select a Report</strong>
+        -->
+    </div>
+</div>
+
+<!-- Second column - paremeters -->
+<div class="report-col">
+    <div class="scrollable"> <!-- Add vertical scroller here + add class "buttons-3" if it's an existing schedule -->
+        <div class="wrapper">
+            <h3>Schedule Parameters<span>{{ selectedScheduleParams.report.description }}</span></h3>
+            <div class="entry">
+                <label for="time-period">Time Peroiod</label>
+                <div class="select">
+                    <select id="time-period">
+                        <option value="7" selected>Last 7 Days</option>
+                        <option value="14">Last 14 Days</option>
+                        <option value="30">Last 30 Days</option>
+                    </select>
+                </div>
+            </div>
+            {each report has different filter options, see filters-reports-list.html}            
+        </div>
+    </div>
+    <div class="column-actions">
+        <button type="button" class="button white blue-text next-view has-arrow" ng-show="NOT_NOW">
+            Schedule Details
+        </button>
+        <button type="button" class="button red" ng-show="NOT_NOW">
+            Delete Schedule
+        </button>   
+        <button type="button" class="button green">
+            Save Schedule
+        </button>
+        <!-- If new schedule, replace L45-L53 with this:
+        <button type="button" class="button blue next">Next</button> -->
+    </div>
+</div>
+
+<!-- Third column - details -->
+<div class="report-col">
+    <div class="scrollable"> <!-- Add vertical scroller here + add class "buttons-2" if it's an existing schedule -->
+        <div class="wrapper">
+            <h3>Schedule Details<span>{{ selectedScheduleParams.report.description }}</span></h3>
+            <div class="entry">
+                <label for="schedule-date-range">Data Date Range</label>
+                <div class="select">
+                    <select id="schedule-date-range">
+                        <option value="{value}">{Label}</option>
+                        ... repeat
+                    </select>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="schedule-repeats">Repeats</label>
+                <div class="select">
+                    <select id="schedule-repeats">
+                        <option value="{value}">{Label}</option>
+                        ... repeat
+                    </select>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="schedule-repeats-every">Repeats Every</label>
+                <div class="entry-data entry-first">
+                    <input id="schedule-repeats-every" type="number" placeholder="No.">
+                </div>
+                <div class="entry-data entry-second">
+                    <div class="select">
+                        <select id="schedule-repeats-every-label">
+                            <option value="{value}">{Label}</option>
+                        ... repeat
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="schedule-start">
+                   Starts On
+                </label>
+                <div class="has-datepicker">
+                    <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
+                    <input id="schedule-start" class="datepicker" value="" placeholder="MM-DD-YYYY" readonly />
+                </div>
+            </div>
+            <div class="entry">
+                <label>Ends On</label>
+                <div class="entry-data entry-first">
+                    <label for="schedule-ends-on-number" class="radio inline">
+                        <input type="radio" name="ends-on" value="number" checked>
+                        After
+                    </label>
+                </div>
+                <div class="entry-data entry-second with-label">
+                    <input id="schedule-ends-on-number" type="number" placeholder="No.">
+                    <span class="label">Weeks</span>
+                </div>
+                <div class="entry-data entry-first">
+                    <label for="schedule-ends-on-date" class="radio inline">
+                        <input id="schedule-ends-on-date" type="radio" name="ends-on" value="date">
+                        On
+                    </label>
+                </div>
+                <div class="entry-data entry-second">
+                    <div class="has-datepicker">
+                        <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
+                        <input id="schedule-ends-on-datepicker" class="datepicker" value="" placeholder="MM-DD-YYYY" readonly />
+                    </div>
+                </div>
+                <div class="entry-data full-width">
+                    <label for="schedule-ends-on-never" class="radio inline">
+                        <input type="radio" id="schedule-ends-on-never" name="ends-on" value="number">
+                        Never
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column-actions">
+        <button type="button" class="button white blue-text next-view has-arrow" ng-show="NOT_NOW">
+            Distribution List
+        </button>
+        <button type="button" class="button white green-text">Save Details</button>
+        <!-- If new schedule, replace L140-L143 with this:
+        <button type="button" class="button blue next">Next</button> -->
+    </div>
+</div>
+
+<!-- Fourth column - distribution list -->
+<div class="report-col">
+    <div class="scrollable"> <!-- Add vertical scroller here -->
+        <div class="wrapper">
+            <h3>Distribution List<span>{Report Name}</span></h3>
+            <div class="entry search">
+                <label for="distribution-list-add-user">Add Recipient</label>
+                <button class="clear-query">
+                    <span class="icons icon-clear-search">Clear query</span>
+                </button>
+                <input id="distribution-list-add-user" class="icons icon-search" placeholder="Search by User Name" type="search" autocomplete="off" /> <!-- Use our standard user search autocomplete component here -->
+            </div>
+            <!-- Display search results like this -->
+            <ul class="col-list">
+                <li>
+                    {First and Last Name}
+                    <button type="button" class="button only-icon icons icon-remove-10">
+                        Remove from list
+                    </button>
+                </li>
+                ... repeat
+            </ul>
+        </div>
+    </div>
+    <div class="column-actions">
+        <button type="button" class="button white green-text">Save List</button>
+        <!-- If new schedule, replace L174 with this:
+        <button type="button" class="button green">Save Schedule</button> -->
+    </div>
+</div>
