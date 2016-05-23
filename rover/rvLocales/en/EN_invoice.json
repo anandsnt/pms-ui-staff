@@ -15,4 +15,9 @@
 "CORP_ID:" 			: "Corp ID: ",
 "IATA_#:" 			: "IATA #: ",
 
-"ACCOUNT_NAME:" 	: "Account Name: "
+"ACCOUNT_NAME:" 	: "Account Name: ",
+"ACCOUNT_CONTACT:" 	: "Account Contact: ",
+"PAYMENT_DUE_IN_DAYS:" : "Payment Due In (days): ",
+"CREDIT_AMOUNT" 	: "Credit amount",
+"REF_NO:"			: "Reference No.: ",
+"TAX_ID:"			: "Tax ID: "

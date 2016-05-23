@@ -14,6 +14,16 @@
                 </div>
                 <ad-toggle-button is-checked="zestSettings.pickup_qr_scan" label="{{'QR_SCANNER'| translate}}" div-class="full-width"></ad-toggle-button>
                 <ad-toggle-button is-checked="zestSettings.pickup_qr_scan_fail_over" label="{{'QR_FAIL_OVER'| translate}}" div-class="full-width"></ad-toggle-button>
+                <!-- arrow directions -->
+                <div class="entry full-width">
+                    <label>Arrow direction</label>
+                    <div class="select" ng-show="zestSettings.pickup_qr_scan">
+                        <select ng-model="zestSettings.qr_scanner_arrow_direction">
+                            <option value="">Select</option>
+                            <option ng-repeat="arrowDirection  in arrowDirections" value="{{arrowDirection}}" ng-bind="arrowDirection"></option>
+                        </select>
+                    </div>
+                </div>
             </fieldset>
             <fieldset class="holder right">
                 <div class="form-title full-width">
@@ -21,10 +31,7 @@
                 </div>
                 <ad-toggle-button ng-click='zestSettings.qr_scanner_datalogic = false' is-checked="zestSettings.qr_scanner_samsotech" label="{{'QR_SCANNER_TYPE_SAM'| translate}}" div-class="full-width"></ad-toggle-button>
                 <ad-toggle-button ng-click='zestSettings.qr_scanner_samsotech = false' is-checked="zestSettings.qr_scanner_datalogic" label="{{'QR_SCANNER_TYPE_DATA'| translate}}" div-class="full-width"></ad-toggle-button>
-                
             </fieldset>
-            
-            
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL

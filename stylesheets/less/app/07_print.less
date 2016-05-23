@@ -2984,6 +2984,20 @@ table {
                 text-align: right;
                 
             }
+
+            &.account-info {
+                .info-bottom {
+                    .float;
+                    margin: .5cm 0;
+                }
+
+                .info-right,
+                .info-bottom {
+                    strong {
+                        display: inline;
+                    }
+                }
+            }
         }
 
         .guest-info {
@@ -3012,6 +3026,14 @@ table {
             &.top-header {
                 margin-top: 0;
                 height: 1.5cm;
+                
+                img {
+                    position: absolute;
+                    height: 30px;
+                    top: -30px;
+                    right: 0;
+                }
+                
                 h1 {
                     font-size:18pt;
                     font-weight: 600;
