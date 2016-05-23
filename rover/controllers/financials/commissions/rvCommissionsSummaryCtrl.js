@@ -1,4 +1,4 @@
-sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '$stateParams', '$filter', 'RVCommissionsSrv','$timeout','$window', function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv,$timeout, $window) {
+sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '$stateParams', '$filter', 'RVCommissionsSrv','$timeout','$window','$state', function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv,$timeout, $window, $state) {
 
     BaseCtrl.call(this, $scope);
 
@@ -93,6 +93,11 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
                 cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
             };
         }, 100);
+    };
+    $scope.navigateToTA =function(account){
+        if(account.is_commission_on){
+            $state.go('rover.companycarddetails',{id: account.id, type: 'TRAVELAGENT',origin:'COMMISION_SUMMARY'});
+        };
     };
     $scope.isPrevButtonDisabled = function(){
         if($scope.filterData.page ==1){

@@ -101,7 +101,7 @@
                             <!--<input value="{value}" type="checkbox">-->
                         <!--</label>-->
                     <!--</div>-->
-                    <a href="{travel-agent-commision-page">
+                    <a ng-click="navigateToTA(account)">
                         <span class="account-image icons icon-travel-agent"></span>
                         <div class="data">
                             <h2>{{account.account_name}}</h2>
@@ -124,7 +124,6 @@
                                 <span>To Date</span>
                             </div>
                             <div class="info">
-                                <!-- add class .red if 'owing' > 0 -->
                                 <strong ng-class="{'red': account.commission_owing > 0 }">{{currencySymbol}}{{account.commission_owing}}</strong>
                                 <span>Owing</span>
                             </div>
