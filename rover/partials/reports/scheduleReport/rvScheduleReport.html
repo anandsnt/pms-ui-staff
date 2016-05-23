@@ -1,7 +1,7 @@
 <!-- First column - Scheduled reports -->
 <div class="report-col main-col scrfailedollable buttons-1" ng-iscroll="REPORT_SCHEDULES_SCROLL"> <!-- Add vertical scroller here -->
     <ul class="wrapper">
-        <li class="report-item" ng-repeat="item in reportSchedules" ng-class="{'active': item.active}" ng-click="selectSchedule(item, $index)"> <!-- Add class "active" when selected + load filters in 2nd column -->
+        <li class="report-item" ng-repeat="item in schedulesList" ng-class="{'active': item.active}" ng-click="selectSchedule(item, $index)"> <!-- Add class "active" when selected + load filters in 2nd column -->
         	<span class="icon-report {report icon class}" ng-class="item.reportIconCls"></span>
         	<div class="data">
         	    <h2 ng-bind-html="escapeNull(item.report.description)|highlight:query:false"></h2>
@@ -32,9 +32,8 @@
                 <label for="time-period">Time Peroiod</label>
                 <div class="select">
                     <select id="time-period">
-                        <option value="7" selected>Last 7 Days</option>
-                        <option value="14">Last 14 Days</option>
-                        <option value="30">Last 30 Days</option>
+                        <option value="7" selected>Today</option>
+                        <option value="14">Tomorrow</option>
                     </select>
                 </div>
             </div>
@@ -61,7 +60,7 @@
     <div class="scrollable"> <!-- Add vertical scroller here + add class "buttons-2" if it's an existing schedule -->
         <div class="wrapper">
             <h3>Schedule Details<span>{{ selectedScheduleParams.report.description }}</span></h3>
-            <div class="entry">
+            <div class="entry" ng-show="NOT_NOW">
                 <label for="schedule-date-range">Data Date Range</label>
                 <div class="select">
                     <select id="schedule-date-range">
@@ -73,23 +72,21 @@
             <div class="entry">
                 <label for="schedule-repeats">Repeats</label>
                 <div class="select">
-                    <select id="schedule-repeats">
-                        <option value="{value}">{Label}</option>
-                        ... repeat
-                    </select>
+					<select ng-model="saveParams.frequency_id" ng-options="freq.id as freq.description for freq in scheduleFrequency" iscroll-stop-propagation>
+						<option value="">Repeat type</option>
+					</select>
                 </div>
             </div>
             <div class="entry">
                 <label for="schedule-repeats-every">Repeats Every</label>
                 <div class="entry-data entry-first">
-                    <input id="schedule-repeats-every" type="number" placeholder="No.">
+                    <input id="schedule-repeats-every" type="number" placeholder="No." ng-model="saveParams.repeats_every">
                 </div>
                 <div class="entry-data entry-second">
                     <div class="select">
-                        <select id="schedule-repeats-every-label">
-                            <option value="{value}">{Label}</option>
-                        ... repeat
-                        </select>
+                        <select ng-model="saveParams.frequency_id" ng-options="freq.id as freq.value for freq in scheduleFreqType" iscroll-stop-propagation>
+							<option value="">Repeat per</option>
+						</select>
                     </div>
                 </div>
             </div>
@@ -112,7 +109,7 @@
                 </div>
                 <div class="entry-data entry-second with-label">
                     <input id="schedule-ends-on-number" type="number" placeholder="No.">
-                    <span class="label">Weeks</span>
+                    <span class="label" ng-bind="getRepeatPer()"></span>
                 </div>
                 <div class="entry-data entry-first">
                     <label for="schedule-ends-on-date" class="radio inline">
@@ -149,23 +146,22 @@
 <div class="report-col">
     <div class="scrollable"> <!-- Add vertical scroller here -->
         <div class="wrapper">
-            <h3>Distribution List<span>{Report Name}</span></h3>
+            <h3>Distribution List<span>{{ selectedScheduleParams.report.description }}</span></h3>
             <div class="entry search">
                 <label for="distribution-list-add-user">Add Recipient</label>
                 <button class="clear-query">
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
-                <input id="distribution-list-add-user" class="icons icon-search" placeholder="Search by User Name" type="search" autocomplete="off" /> <!-- Use our standard user search autocomplete component here -->
+                <input class="icons icon-search" auto-complete auto-options="userAutoCompleteSimple" type="search" placeholder="Search by User Name" value="" autocomplete="off">
             </div>
             <!-- Display search results like this -->
             <ul class="col-list">
-                <li>
-                    {First and Last Name}
-                    <button type="button" class="button only-icon icons icon-remove-10">
+                <li ng-repeat="email in emailList">
+                    {{ email }}
+                    <button type="button" class="button only-icon icons icon-remove-10" ng-click="removeEmail($index)">
                         Remove from list
                     </button>
                 </li>
-                ... repeat
             </ul>
         </div>
     </div>

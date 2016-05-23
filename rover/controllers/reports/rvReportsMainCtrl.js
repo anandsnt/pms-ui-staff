@@ -78,6 +78,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		};
 
 
+
 		/** Report views managing area */
 		$scope.reportViews = ['ALL_REPORT', 'SCHEDULE_REPORT'];
 		var _selectedReportView = $scope.reportViews[0];
@@ -90,6 +91,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			_selectedReportView = name;
 			$scope.setViewCol( $scope.viewCols[0] );
 		};
+
 
 
 		$scope.uiChosenReport = undefined;

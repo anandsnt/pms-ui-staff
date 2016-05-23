@@ -19,7 +19,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 			service.payloadCache = JSON.parse( service.payloadCache );
 		} else {
 			service.payloadCache = {};
-		};
+		}
 
 		/**
 		 * save the chosen report object in here
@@ -153,21 +153,32 @@ angular.module('sntRover').service('RVreportsSrv', [
 			return hasFilter;
 		};
 
-		service.fetchSchedules = function() {
+		service.reportSchedulesPayload = function() {
 			var deferred = $q.defer(),
-				url = 'admin/export_schedules.json';
+				payload = {};
 
-			var success = function(data) {
-				deferred.resolve(data.results);
+			var shallWeResolve = function() {
+				var payloadCount = _.keys( payload ).length;
+				if ( payloadCount === 2 ) {
+					deferred.resolve( payload );
+				}
 			};
 
-			var failed = function(error) {
-				deferred.reject( error );
+			var success = function(key, data) {
+				payload[key] = angular.copy( data );
+				shallWeResolve();
 			};
 
-			rvBaseWebSrvV2
-				.getJSON( url )
-				.then( success, failed );
+			var failed = function(key, emptyData, data) {
+				payload[key] = emptyData;
+				shallWeResolve();
+			};
+
+			subSrv.fetchSchedules()
+				.then( success.bind(null, 'schedulesList'), failed.bind(null, 'schedulesList', []) );
+
+			subSrv.fetchScheduleFrequency()
+				.then( success.bind(null, 'scheduleFrequency'), failed.bind(null, 'scheduleFrequency', []) );
 
 			return deferred.promise;
 		};
