@@ -96,7 +96,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 	        else if($stateParams.origin === 'AR_OVERVIEW'){
 	        	$scope.searchBackButtonCaption = $filter('translate')('MENU_ACCOUNTS_RECEIVABLES');
 	        }
-	        else{
+	        else if($stateParams.origin === 'COMMISION_SUMMARY'){
+				$scope.searchBackButtonCaption = $filter('translate')('MENU_COMMISIONS');
+			}else {
 	            $scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
 	        }
         };
@@ -325,6 +327,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			//CICO-20567-Select default to AR Transactions Tab
 			if($stateParams.origin === 'AR_OVERVIEW'){
 				$scope.switchTabTo('', 'cc-ar-transactions');
+			}else if($stateParams.origin === 'COMMISION_SUMMARY'){
+				$scope.switchTabTo('', 'cc-commissions');
 			}
 		};
 		/**
