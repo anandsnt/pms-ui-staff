@@ -69,10 +69,19 @@
 "QR_FAIL_OVER":"QR Failover",
 "KEY_CARD_LOOK_UP":"Keycard Lookup",
 "CHROME_APP_ID":"Chrome App ID",
-"STATION_PRINTER_OPTIONS" : "Station Printer Options",
-"OWS_GUEST_MESSAGES" : "OWS Guest Messages",
+"STATION_PRINTER_OPTIONS":"Station Printer Options",
+"OWS_GUEST_MESSAGES":"OWS Guest Messages",
 "BYPASS_CC_FOR_PREPAID_RESERVATIOIN":"Bypass Credit Card for Prepaid Reservations",
-"DISPLAY_TERMS_AND_CONDITIONS" : "Display Terms & Conditions"
+"DISPLAY_TERMS_AND_CONDITIONS":"Display Terms & Conditions",
+"CC_ENTRY_METHOD":"CC entry method",
+"SIX_PAY_CHROME_IPAD":"SixPay - Chrome or iPad - SixPay processor",
+"MLI_DESKTOP_SWIPE_CHROME":"MLI Desktop Swipe - Chrome Only - Merchantlink Processor",
+"INFINEA_INGENICO_CC_IPAD":"Infinea/ Ingenico - ipad Only - Merchantlink Processor",
+"KEY_CREATTION_METHOD":"Key creation method",
+"REMOTE_ENCODING_CHROME_IPAD":"Remote Encoding - Chrome or iPad - Ving, Salto, Saflok",
+"SANKYO_ENCODING":"Sankyo Encoding - Chrome only - Atlas (Saflok) only - Uses websocket",
+"INGENICO_INFINEA_KEY":"Infinea/Ingenico - iPad Only - Ving, Salto, Saflok"
+
 
 
 
