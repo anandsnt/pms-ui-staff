@@ -6,6 +6,21 @@
     <strong class="h2 message">Format Bill</strong>
 
     <div class="entry full-width">
+        <label>Generate Invoice for</label>
+        <div class="switch-button" ng-class="{'on': isCompanyCardInvoice}">
+            <input type="checkbox" checked ng-model="isCompanyCardInvoice" ng-click="changeCompanyCardInvoiceToggle()" />
+            <label class="data-off">
+                <span class="value">Company</span>
+                <span class="switch-icon">Travel Agent</span>
+            </label>
+            <label class="data-on">
+                <span class="switch-icon">Company</span>
+                <span class="value">Travel Agent</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="entry full-width">
         <label for="account-email">Email</label>
         <input type="email" id="account-email" name="email" placeholder="Enter an Email"  ng-model="data.to_address"/>
     </div>

@@ -6,6 +6,11 @@
 				<h2>Hotels</h2>
 				<span class="count">({{data.hotels.length}})</span>
 				<a ui-sref="admin.snthoteldetails({action:'add'})" class="action add" ng-show="isSntAdmin && !isServiceProvider">Add new</a>
+				<div class="entry table-search">
+					<span class="search-text">Search</span>
+					<span class="icons icon-search" name="submit" type="submit"></span>
+					<input placeholder="Search by Hotel Name, Code or Chain Name" autocomplete="off" type="text" ad-delay-textbox="" ng-model="searchTerm" delay="1000" function-to-fire="searchHotels" class="search-hotel">
+				</div>
 			</header>
 			<section class="content-scroll">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -14,13 +19,13 @@
 						<tr data-hotel-id="{{hotel.id}}" ng-repeat="hotel in $data">
 							<td data-title="'Hotel'" sortable="'hotel_name'" header-class="width-40">
 								<a ui-sref="admin.snthoteldetails({action:'edit',id:hotel.id})" class="title">
-									 <strong> {{hotel.hotel_name}} </strong>
+									 <strong ng-bind-html="escapeNull(hotel.hotel_name)| highlightWords:searchWords"> </strong>
 									 <em> {{hotel.city}} , {{hotel.state}} </em>
 								</a>
 							</td>
 							<td data-title="'Room'" sortable="'number_of_rooms'" header-class="width-20"><span class="number"> {{hotel.number_of_rooms}} </span></td>
-							<td data-title="'Chain'" sortable="'chain_name'" header-class="width-20"> {{hotel.chain_name}} </td>
-							<td data-title="'Brand'" sortable="'brand_name'" header-class="width-20"> {{hotel.brand_name}} </td>
+							<td data-title="'Chain'" sortable="'chain_name'" header-class="width-20" ng-bind-html="escapeNull(hotel.chain_name)| highlightWords:searchWords"></td>
+							<td data-title="'Code'" sortable="'hotel_code'" header-class="width-20" ng-bind-html="escapeNull(hotel.hotel_code)| highlightWords:searchWords"></td>
 							<td data-title="'Reservation Import'" class="activate long" header-class="width-40">
 								<div class="entry" ng-show="hotel.is_external_pms_available ==='true'">
 									<label for="reservation-import-1"></label>

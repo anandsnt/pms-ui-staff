@@ -1,7 +1,7 @@
 sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RVBillCardSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillCardSrv, ngDialog){
 
     BaseCtrl.call(this, $scope);
-
+    $scope.isCompanyCardInvoice = true;
     /*
     *  Get the request params for bill settings info
     */
@@ -60,7 +60,7 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
 
         }
         params.bill_number = $scope.billNo;
-
+        params.type = $scope.isCompanyCardInvoice ? 'COMPANY' : 'TRAVELAGENT';
         return params;
     };
 
@@ -90,6 +90,11 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
         $scope.data = {};
         fetchBillSettingsInfo();
     };
+    // Toggle on COMPANY/TA-CARD invoice generation tab.
+    $scope.changeCompanyCardInvoiceToggle = function(){
+        $scope.isCompanyCardInvoice = !$scope.isCompanyCardInvoice;
+    };
+
     init();
 
 }]);
