@@ -509,7 +509,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/intefaceMappingsList'
 		});
 
-		$stateProvider.state('admin.backofficeSetup', {
+		$stateProvider.state('admin.backOfficeSetup', {
 			templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
 			controller: 'ADInterfaceSubMenuCtrl',
 			url : '/backOfficeInterfaces'
