@@ -19,11 +19,11 @@
         <div id="reports-menu" ng-include="'/assets/partials/reports/shared/rvReportMainMenu.html'"></div>
 
         <!-- Content -->
-        <div id="reports-dashboard" class="scrollable" ng-class="{'cols-2': viewCol === 2, 'cols-3': viewCol === 3, 'cols-4': viewCol === 4 }"> <!-- Classes cols-2,cols-3 and cols-4 are added when showing 2,3 or 4 columns. Add horizontal scroller here -->
+        <div id="reports-dashboard" class="scrollable" ng-class="getViewColClass()" ng-iscroll="FULL_REPORT_SCROLL"> <!-- Classes cols-2,cols-3 and cols-4 are added when showing 2,3 or 4 columns. Add horizontal scroller here -->
             <div class="wrapper">
                 <div class="cols-wrapper">
-                    <span ng-controller="RVReportListCrl" ng-include="'/assets/partials/reports/shared/rvViewAllReports.html'"></span>
-                    <span ng-if="scheduled-reports"></span>
+                    <span ng-if="isReportView(reportViews[0])" ng-controller="RVReportListCrl" ng-include="'/assets/partials/reports/shared/rvViewAllReports.html'"></span>
+                    <span ng-if="isReportView(reportViews[1])" ng-controller="RVScheduleReportsCtrl" ng-include="'/assets/partials/reports/scheduleReport/rvScheduleReport.html'"></span>
                 </div>
             </div>
         </div>

@@ -153,6 +153,63 @@ angular.module('sntRover').service('RVreportsSrv', [
 			return hasFilter;
 		};
 
+		service.fetchSchedules = function() {
+			var deferred = $q.defer(),
+				url = 'admin/export_schedules.json';
+
+			var success = function(data) {
+				deferred.resolve(data.results);
+			};
+
+			var failed = function(error) {
+				deferred.reject( error );
+			};
+
+			rvBaseWebSrvV2
+				.getJSON( url )
+				.then( success, failed );
+
+			return deferred.promise;
+		};
+
+		service.fetchOneSchedule = function(params) {
+			var deferred = $q.defer(),
+				url = 'admin/export_schedules/' + params.id;
+
+			var success = function(data) {
+				deferred.resolve(data);
+			};
+
+			var failed = function(error) {
+				deferred.reject( error );
+			};
+
+			rvBaseWebSrvV2
+				.getJSON( url )
+				.then( success, failed );
+
+			return deferred.promise;
+		};
+
+		service.updateSchedule = function(params) {
+			var deferred = $q.defer(),
+				url = 'export_schedules/' + params.id;
+
+			var success = function(data) {
+				deferred.resolve(data);
+			};
+
+			var failed = function(error) {
+				deferred.reject( error );
+			};
+
+			rvBaseWebSrvV2
+				.putJSON( url, params )
+				.then( success, failed );
+
+			return deferred.promise;
+		};
+
 		return service;
 	}
 ]);

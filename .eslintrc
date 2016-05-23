@@ -12,7 +12,6 @@
     "rules": {
     	"eqeqeq": 1,
     	"curly": 2,
-        "semi": 1,
         "no-dupe-keys": 1,
         "no-duplicate-case": 1
     }
