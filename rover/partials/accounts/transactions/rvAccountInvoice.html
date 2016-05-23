@@ -37,7 +37,7 @@
         </div>
         <div class="info-right" ng-if="printData.card_type === 'COMPANY'">
             <strong translate>ACCOUNT_NAME:</strong>{{printData.account_name}}<br/>
-            <strong ng-if="printData.group_account_contact && printData.is_group">ACCOUNT_CONTACT:</strong>{{printData.account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
+            <strong ng-if="printData.group_account_contact && printData.is_group" translate>ACCOUNT_CONTACT:</strong>{{printData.account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
             <strong ng-if="printData.company_card_details.payment_due_in_days" translate>PAYMENT_DUE_IN_DAYS:</strong>{{printData.company_card_details.payment_due_in_days}}<br ng-if="printData.company_card_details.payment_due_in_days" />
             <strong translate>CORP_ID:</strong>{{printData.company_card_details.corporate_id}}<br/>
             <strong translate>TAX_ID:</strong>{{printData.company_card_details.tax_id}}<br ng-if="printData.company_card_details.tax_id" />
