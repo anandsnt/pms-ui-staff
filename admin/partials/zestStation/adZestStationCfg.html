@@ -26,22 +26,8 @@
                 <div class="form-title full-width">
                     <h3><span translate> STATION_LANGUAGE_SUPPORT</span> </h3>
                 </div>
-                
                 <ad-toggle-button is-checked="zestSettings.zest_lang.enabled" label="{{'STATION_LANGUAGE_SUPPORT_SWITCH'| translate}}" div-class=""></ad-toggle-button>
-                
-                
-                <ad-dropdown ng-click="updateDefaultLanguageDropdown()"
-                             label="{{'STATION_LANGUAGE_DEFAULT' | translate}}" 
-                             label-in-drop-down="{{'STATION_LANGUAGE_DEFAULT_PLACEHOLDER' | translate}}" 
-                             list="enabledLangs" 
-                             savemodel="zestSettings.zest_lang.default_language" 
-                             valueproperty="value" property="name"
-                             selected-Id='zestSettings.zest_lang.default_language' 
-                             required='no' 
-                             selbox-class='placeholder' 
-                             div-class="{{defaultLangsDivClass}}"></ad-dropdown>
-
-                
+                <ad-dropdown ng-click="updateDefaultLanguageDropdown()" label="{{'STATION_LANGUAGE_DEFAULT' | translate}}" label-in-drop-down="{{'STATION_LANGUAGE_DEFAULT_PLACEHOLDER' | translate}}" list="enabledLangs" savemodel="zestSettings.zest_lang.default_language" valueproperty="value" property="name" selected-Id='zestSettings.zest_lang.default_language' required='no' selbox-class='placeholder' div-class="{{defaultLangsDivClass}}"></ad-dropdown>
                 <!-- english -->
                 <div class="entry full-width">
                     <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.English" label="{{ 'STATION_LANGUAGE_ENGLISH' | translate}}"></ad-checkbox>
@@ -151,6 +137,46 @@
                     <label class="radio" ng-repeat="printer in zestStationData.printer_options" ng-class="{'checked':zestSettings.zest_printer_option == printer.value}">
                         <span class="icon-form icon-radio " ng-class="{'checked':zestSettings.zest_printer_option == printer.value}"></span>
                         <input type="radio" value="{{printer.value}}" ng-model="zestSettings.zest_printer_option"> {{ printer.description }}
+                    </label>
+                </div>
+            </fieldset>
+            <fieldset class="holder full-width">
+                <div class="form-title full-width">
+                    <h3><span translate>kiosk_cc_entry_method</span> </h3>
+                </div>
+                <div id="options" class="entry" ng-hide="hideAddOption">
+                    <label translate>kiosk_cc_entry_method</label>
+                    <label class="radio" ng-class="{'checked':zestSettings.kiosk_cc_entry_method== 'six_pay'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_cc_entry_method=='six_pay'}"></span>
+                        <input type="radio" value="six_pay" ng-model="zestSettings.kiosk_cc_entry_method"> {{ 'SIX_PAY_CHROME_IPAD' | translate}}
+                    </label>
+                    <label class="radio" ng-class="{'checked':zestSettings.kiosk_cc_entry_method == 'mli_desktop'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_cc_entry_method == 'mli_desktop'}"></span>
+                        <input type="radio" value="mli_desktop" ng-model="zestSettings.kiosk_cc_entry_method">{{ 'MLI_DESKTOP_SWIPE_CHROME' | translate}}
+                    </label>
+                    <label class="radio" ng-class="{'checked':zestSettings.kiosk_cc_entry_method == 'ingenico_infinea'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_cc_entry_method == 'ingenico_infinea'}"></span>
+                        <input type="radio" value="ingenico_infinea" ng-model="zestSettings.kiosk_cc_entry_method">{{ 'INFINEA_INGENICO_CC_IPAD' | translate}}
+                    </label>
+                </div>
+            </fieldset>
+            <fieldset class="holder full-width">
+                <div class="form-title full-width">
+                    <h3><span translate>KEY_CREATTION_METHOD</span> </h3>
+                </div>
+                <div id="options" class="entry" ng-hide="hideAddOption">
+                    <label translate>KEY_CREATTION_METHOD</label>
+                    <label class="radio" ng-class="{'checked':zestSettings.kiosk_key_creation_method== 'remote_encoding'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_key_creation_method=='remote_encoding'}"></span>
+                        <input type="radio" value="remote_encoding" ng-model="zestSettings.kiosk_key_creation_method"> {{ 'REMOTE_ENCODING_CHROME_IPAD' | translate}}
+                    </label>
+                    <label class="radio" ng-class="{'checked':zestSettings.kiosk_key_creation_method == 'sankyo_websocket'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_key_creation_method == 'sankyo_websocket'}"></span>
+                        <input type="radio" value="sankyo_websocket" ng-model="zestSettings.kiosk_key_creation_method">{{ 'SANKYO_ENCODING' | translate}}
+                    </label>
+                    <label class="radio" ng-class="{'checked':zestSettings.kiosk_key_creation_method == 'ingenico_infinea_key'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_key_creation_method == 'ingenico_infinea_key'}"></span>
+                        <input type="radio" value="ingenico_infinea_key" ng-model="zestSettings.kiosk_key_creation_method">{{ 'INGENICO_INFINEA_KEY' | translate}}
                     </label>
                 </div>
             </fieldset>
