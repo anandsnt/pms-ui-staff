@@ -1,0 +1,63 @@
+<!--  Home -->
+<section id="main" class="centered kiosk" role="main">
+    <div id="content">
+        <nav id="options" class="large-icons" role="nav">
+            <ul role="menu">
+                <li ng-if="zestStationData.home_screen.pickup_keys">
+                    <button type="button" class="button option" touch-press='clickedOnPickUpKey()'>
+                        <div ng-include="icons.url.key"></div>
+                    </button>
+                    {{'PICKUP_KEY' |translate}}
+                    <span>
+                    {{'HOME_PUK_SUB' |translate}}
+                    </span>
+                </li>
+                <li ng-if="zestStationData.home_screen.check_in">
+                    <button type="button" class="button option" touch-press='clickedOnCheckinButton()'>
+                        <div ng-include="icons.url.checkin"></div>
+                    </button>
+                    {{'CHECK_IN' |translate}}
+                </li>
+                <li ng-if="zestStationData.home_screen.check_out">
+                    <button type="button" class="button option" touch-press='clickedOnCheckoutButton()'>
+                        <div ng-include="icons.url.checkout"></div>
+                    </button>
+                    {{'CHECK_OUT' |translate}}
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div id="actions" class="align-center">
+        <button type="button" class="button" ng-show="zestStationData.home_screen.booking_pop_up.enable_pop_up" touch-press="openExternalWebPage()">
+            {{zestStationData.home_screen.booking_pop_up.button_label}}
+        </button>
+        <button type="button" class="button with-icon" touch-press="languageSelect()" ng-hide="!zestStationData.zest_lang.enabled">
+            <i class="icons icon-flag {{selectedLanguage.info.flag}}"></i> {{selectedLanguage.info.language}}
+        </button>
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
+</section>
+
+<!--PopUp For External webPage-->
+<div class="popup iframe-popup open" ng-if="showExternalWebPage">
+    <div class="popup-content iframe-content">
+        <i class="close-popup" touch-press="closeExternalWebPage()"></i>
+        <iframe click-touch="showKeyboardOnInput()" id="booking_iframe" src="{{zestStationData.home_screen.booking_pop_up.booking_engine_url| trustAsResourceUrl}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock"></iframe>
+    </div>
+</div>
+<!--PopUp For Translation-->
+<div class="popup open" ng-show="showLanguagePopup" ng-controller ="zsLanguageHandlerCtrl">
+    <div class="popup-content">
+        <i class="close-popup" data-action="popup" touch-press="languageSelect()"></i>
+        <h2 class="nocaps">Select Language</h2>
+        <div id="languages">
+            <button ng-repeat="language in languageList"
+                    touch-press="selectLanguage(language)"
+                    type="button" class="button with-icon"
+                    ng-class="getClassForSelectedLanguage(language)">
+                <i class="icons icon-flag {{language.info.flag}}"></i>
+                {{language.name}}
+            </button>
+        </div>
+    </div>
+</div>
