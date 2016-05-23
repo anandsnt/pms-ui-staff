@@ -58,9 +58,9 @@
                 <div class="boxes">
                     <div class="switch-container">
                         <!-- Add class ".on" when selected Copy From -->
-                        <div class="switch-button with-text">
+                        <div class="switch-button with-text" ng-class="{'on' : rateData.is_based_on}">
                             <!-- Add attribute checked when selected Copy From -->
-                            <input type="checkbox" />
+                            <input id="basedon" name="basedon" type="checkbox" ng-model="rateData.is_based_on" />
                             <label class="data-off">
                                 <span class="value">Based</span>
                                 <span class="button orange">Copy From</span>
@@ -74,30 +74,25 @@
                     <div class="full-width">
                         <div class="entry margin">
                             <div class="select white">
-                                <select class="placeholder">
-                                    <option value="" class="">Select Rate</option>
-                                    <option value="0">ADD ON1</option>
-                                    <option value="1">Anagh Test</option>
-                                    <option value="2">Arun Parent Rate</option>
-                                    ... for each rate
+                                <select class="placeholder" ng-model="rateData.parent_rate.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
+                                    <option value="">Select Rate</option>
                                 </select>
                             </div>
                         </div>
                         <div class="entry">
                             <div class="select white select-col col1-3">
-                                <select class="placeholder">
-                                    <option class="">+ / -</option>
-                                    <option value="+">+</option>
-                                    <option value="-">-</option>
-                                </select>
+                                <select class="placeholder" ng-model="rateData.parent_rate.value_sign">
+                                                <option value="+">+</option>
+                                                <option value="-">-</option>
+                                            </select>
                             </div>
                             <div class="entry col1-3">
-                                <input type="text" value="{value}" placeholder="Value" class="white">
+                                 <input type="text" value="" placeholder="" class="white" ng-model="rateData.parent_rate.value_abs">
+
                             </div>
                             <div class="select white select-col col1-3">
-                                <select class="placeholder">
-                                    <option class="">$ / %</option>
-                                    <option value="amount">€</option>
+                                <select class="placeholder" ng-model="rateData.parent_rate.type">
+                                    <option value="amount">{{currencySymbol}}</option>
                                     <option value="percent">%</option>
                                 </select>
                             </div>

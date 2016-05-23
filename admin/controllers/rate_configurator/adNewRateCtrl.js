@@ -42,7 +42,15 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "end_date": "",
                 "end_date_for_display": "",
                 "commission_details":{},
-                "is_discount_allowed_on": true //CICO-25305 - For new rates we are enabling default
+                "is_discount_allowed_on": true, //CICO-25305 - For new rates we are enabling default,
+                "is_based_on" : true,
+                "is_copy_from" : false,
+                "parent_rate" : {
+                    "id": "",
+                    "type": "",
+                    "value_abs": "",
+                    "value_sign": ""
+                }
             };
             // intialize rateData dictionary - END
 
@@ -142,7 +150,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * Fetch the based on rate retails, if the rate has chosen a based on rate.
          */
         var fetchBasedOnRateDetails = function() {
-            if ($scope.rateData.based_on.id === undefined || $scope.rateData.based_on.id === '') {
+            if ($scope.rateData.parent_rate.id === undefined || $scope.rateData.parent_rate.id === '') {
                 return false;
             }
             var fetchBasedonSuccess = function(data) {
@@ -159,7 +167,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.$emit('hideLoader');
             };
             $scope.invokeApi(ADRatesSrv.fetchDetails, {
-                rateId: $scope.rateData.based_on.id
+                rateId: $scope.rateData.parent_rate.id
             }, fetchBasedonSuccess);
         };
         var manipulateAdditionalDetails = function(data) {
@@ -182,7 +190,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             //CICO-18614
             $scope.rateData.is_pms_only = !!data.is_pms_only;
             $scope.rateData.is_channel_only = !!data.is_channel_only;
-            
+
             $scope.rateData.source_id = data.source_id;
             $scope.rateData.market_segment_id = data.market_segment_id;
             $scope.rateData.end_date = data.end_date;
@@ -267,13 +275,13 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             manipulateAdditionalDetails(data);
 
 
-            if (data.based_on) {
-                $scope.rateData.based_on.id = data.based_on.id;
-                $scope.rateData.based_on.type = data.based_on.type;
-                $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value);
-                $scope.rateData.based_on.value_sign = data.based_on.value > 0 ? "+" : "-";
+            if (data.is_based_on || data.is_copy_from) {
+                $scope.rateData.parent.id = data.parent_rate.id;
+                $scope.rateData.parent_rate.type = data.parent_rate.type;
+                $scope.rateData.parent_rate.value_abs = Math.abs(data.parent_rate.value);
+                $scope.rateData.parent_rate.value_sign = data.parent_rate.value > 0 ? "+" : "-";
             } else {
-                $scope.rateData.based_on = {
+                $scope.rateData.parent_rate = {
                     "id": "",
                     "type": "",
                     "value_abs": "",
@@ -307,7 +315,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         };
 
 
-        var getActiveDateRange = function() {
+        var getActiveDateRange = function(dateRange) {
             var beginDate = '';
             var endDate = '';
             var hotelBusinessDate = new Date($scope.hotel_business_date).getTime();
@@ -325,6 +333,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             });
             return activeDateRange;
         };
+
+
 
         $scope.$on('deletedAllDateRangeSets', function(e, dateRangeId) {
             angular.forEach($scope.rateData.date_ranges, function(dateRange, index) {
