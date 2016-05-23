@@ -46,7 +46,9 @@ module.exports = {
 			'guestweb_crawford':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_beacon_hill':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_boston_park':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_monte_carlo' 	: [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte.js']
+  
 		}
 	}
 }
