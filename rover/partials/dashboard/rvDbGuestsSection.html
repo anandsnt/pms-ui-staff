@@ -53,9 +53,13 @@
     </ul>
     <ul class="data">
         <li>Arrivals <strong class="green" bo-text="statisticsData.guests.checking_in"></strong></li>
-        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true'"> 
-            <span ng-hide="statisticsData.guests.checkin_action === 'auto_checkin'">Pre Check In</span>
-            <span ng-show="statisticsData.guests.checkin_action === 'auto_checkin'">MOBILE CHECK IN</span> <strong class="orange" bo-text="statisticsData.guests.pre_check_in"></strong>
+        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true' && statisticsData.guests.checkin_action === 'auto_checkin'">
+            MOBILE CHECK IN
+            <strong class="orange" bo-text="statisticsData.guests.pre_check_in"></strong>
+        </li>
+        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true' && statisticsData.guests.checkin_action !== 'auto_checkin'">
+            Pre Check In
+            <strong class="orange" bo-text="statisticsData.guests.pre_check_in"></strong>
         </li>
         <li ng-if="isQueuedRoomsTurnedOn && shouldShowLateCheckout">Queued <strong class="green" bo-text="userInfo.queue_rooms_count"></strong></li>
         <li>Departures <strong class="red" bo-text="statisticsData.guests.checking_out"></strong></li>
