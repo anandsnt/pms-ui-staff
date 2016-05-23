@@ -1627,6 +1627,94 @@
                     }
                 }
             }
+
+             /* Commision Item***/
+            &.commision-item {
+                position: relative;
+                a {
+                    padding-left: 50px;
+                    height: 80px;
+                }
+                .check {
+                    top: 0;
+                    bottom: 0;
+                    left: 5px;
+                    margin:  auto;
+                }
+                .data {
+                     
+                    .calc-width(100, 540);
+                    
+                    .meta-data {
+                        display: block;
+                        width: 100%;
+                        clear: both;
+                    }
+                    h2 {
+                        line-height: 24px;
+                        margin-bottom: 6px;
+                        padding-right: 5px;
+                        .nowrap();
+                        .calc-max-width( 100, 40 );
+                        .pull-left();
+                    }
+                    
+                    .icon-hold {
+                        margin-top: 1px;
+                        .pull-left();
+                    }
+                    .icons {
+                        display: inline;
+                        line-height: 20px;
+                        height: 20px;
+                        overflow: hidden;
+                        margin-right: 20px;
+
+                        &:last-child { margin-right: 0; }
+                    }
+
+                    .icon-location {
+                        display: inline-block;
+                        width: 230px;
+                    }
+
+                    .icons {
+                        color: @grey3;
+                        padding-left: 20px;
+                    }
+
+                    .confirmation { color: @textColor; }
+                }
+
+                .info-holder {
+                    float: right;
+                }
+
+                .info {
+                    margin-top: 5px;
+                    text-align: center;
+                    width: 115px;
+                    color: @grey3;
+                    .pull-left;
+
+                    strong {
+                        font-size: 20px;
+                        line-height: 1.25em;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        color: @textColor;
+                        .show;
+
+                        &.green { color: @green; }
+                        &.red { color: @red; }
+                    }
+
+                    span {
+                        font-size: 14px;
+                        text-transform: uppercase;
+                    }
+                }
+            }
         }
     }
 }

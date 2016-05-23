@@ -39,5 +39,9 @@ angular.module('FinancialsModule', [])
         templateUrl: '/assets/partials/financials/accountsReceivables/rvAccountsReceivables.html',
         controller: 'RVAccountsReceivablesController'
     });
-
-});
+    $stateProvider.state('rover.financials.commisions', {
+        url: '/commissionSummary',
+        templateUrl: '/assets/partials/financials/commissions/rvCommissionsSummary.html',
+        controller: 'RVCommissionsSummaryController'
+    });
+    });

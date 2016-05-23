@@ -1,0 +1,145 @@
+<form method="get" action="" name="commisions-search-form" id="commisions-search-form" class="search-form has-options three-options three-actions" role="search">
+    <!-- Add .commision-checked when one or more commisions are checked -->
+    <div class="entry search">
+        <!-- add class .visible when keywords are entered -->
+        <button class="clear-query">
+            <span class="icons icon-clear-search">Clear query</span>
+        </button>
+        <button class="icons icon-search">Search</button>
+        <input name="commisions-query" class="query" placeholder="Search by Agent Name, IATA Number or City" type="search" autocomplete="off">
+    </div>
+    <div class="entry options">
+        <div class="select with-label">
+            <label for="paid-status">Paid Status</label>
+            <select id="paid-status">
+                <option value="{paid}">PAID</option>
+                <option value="{all}">ALL</option>
+                <option value="{unpaid}">UNPAID</option>
+                <option value="{prepaid}">PREPAID</option>
+            </select>
+        </div>
+
+        <div class="input with-label">
+            <label for="min-amount">Min. Amount ($)</label>
+            <input type="text" value="{value}" id="min-amount">
+        </div>
+
+        <div class="select with-label larger-select">
+            <label for="sort-by">Sort By</label>
+            <select id="sort-by">
+                <option value="{name-asc}">NAME ASC</option>
+                <option value="{name-desc}">NAME DESC</option>
+                <option value="{amount-asc}">AMOUNT ASC</option>
+                <option value="{amount-desc}">AMOUNT DESC</option>
+            </select>
+        </div>
+    </div>
+    <div class="entry actions">
+        <button type="button" class="button blue with-icon only-icon">
+            <span class="icons icon-print"></span>
+        </button>
+        <!-- Remove class .hidden when one/more commisions are checked -->
+        <button type="button" class="button red with-icon only-icon hidden">
+            <span class="icons icon-hold"></span>
+        </button>
+        <!-- Remove class .hidden when one/more commisions are checked -->
+        <button type="button" class="button green with-icon only-icon hidden">
+            <span class="icons icon-wallet"></span>
+        </button>
+    </div>
+</form>
+
+<!-- Search pagination -->
+{../_shared/pagination.html}
+
+<!-- Search panel - WITH RESULTS -->
+<section class="content commisions-content" role="main">
+    <div class="commisions-header">
+
+        <ul class="commisions-totals">
+            <li class="check">
+                <span>Select</span>
+                <!-- add .checked when checked -->
+                <label class="checkbox inline">
+                    <!-- add .checked when all is checked
+                         add .semi-checked when only part of commissions are checked -->
+                    <span class="icon-form icon-checkbox"></span>
+                    <!-- add attribute checked="checked" when checked -->
+                    <input type="checkbox" value="{value}">
+                </label>
+            </li>
+            <li>
+                <span>Open Bills</span>
+                <span class="amount">{open-bills}</span>
+            </li>
+            <li>
+                <span>Total Revenue</span>
+                <span class="amount">${total-revenue}</span>
+            </li>
+            <li>
+                <span>Total to Date</span>
+                <span class="amount">${total-to-date}</span>
+            </li>
+            <li>
+                <span>Total Paid</span>
+                <span class="amount green">${total-paid}</span>
+            </li>
+            <li>
+                <span>Total Owing</span>
+                <span class="amount red">${total-owing}</span>
+            </li>
+        </ul>
+    </div>
+    <!-- Add .no-pagination when there is no pagination -->
+    <!-- Add .no-commisions-header when there is no header -->
+    <div class="commisions-list scrollable">
+        <div class="wrapper">
+            <ul class="search-results">
+                <li class="commision-item">
+                    <div class="check">
+                        <!-- add .checked when checked -->
+                        <label class="checkbox inline">
+                            <!-- add .checked when checked -->
+                            <span class="icon-form icon-checkbox"></span>
+                            <!-- add checked="checked" when checked -->
+                            <input value="{value}" type="checkbox">
+                        </label>
+                    </div>
+                    <a href="{travel-agent-commision-page">
+                        <span class="account-image icons icon-travel-agent"></span>
+                        <div class="data">
+                            <h2>{Travel Agent}</h2>
+                            <!-- Show only if on hold
+                            <span class="icons icon-hold red"></span>
+                            -->
+                            <div class="meta-data">
+                                <span class="icons icon-location">{location}</span>
+                                <span class="icons icon-guest-travelagent">{iata}</span>
+                            </div>
+                        </div>
+                        <div class="info-holder">
+                            <div class="info open-bills">
+                                <strong>{open-bills}</strong>
+                                <span>Open Bills</span>
+                            </div>
+                            <div class="info">
+                                <strong>${revenue}</strong>
+                                <span>Revenue</span>
+                            </div>
+                            <div class="info">
+                                <strong class="green">${to-date}</strong>
+                                <span>To Date</span>
+                            </div>
+                            <div class="info">
+                                <!-- add class .red if 'owing' > 0 -->
+                                <strong>${owing}</strong>
+                                <span>Owing</span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                ... repeat for each commision
+            </ul>
+        </div>
+    </div>
+</section>

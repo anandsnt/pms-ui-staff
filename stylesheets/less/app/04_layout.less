@@ -696,6 +696,45 @@ body { overflow: hidden; }
 							width:410px;
 						}
 					}
+
+					&.three-actions {
+	                    .select {
+	                        width: 100px;
+	                        max-width: 100px;
+
+	                        select {
+	                        	height:40px;
+	                        }
+	                    }
+	                    .larger-select {
+	                        width: 120px;
+	                        max-width: 120px;
+	                    }
+	                    .input {
+	                        width: 110px;
+	                        max-width: 110px;
+	                    }
+	                    .entry {
+	                        &.actions {
+	                            width: auto;
+	                            .button {
+	                                margin-left: 10px;
+	                                &:first-child {
+	                                    margin-left: 0;
+	                                }
+	                            }
+	                        }
+	                        &.search {
+	                            .calc-width(100, 440 );
+	                            &.commision-checked {
+	                                .calc-width(100, 530 );
+	                            }
+	                        }
+	                        &.options {
+	                            width:360px;
+	                        }
+	                    }
+	                }
 				}
 			}
 
