@@ -9,8 +9,8 @@
         or 'red' if the Charge Type is 'Deleted Charges' -->
     <td ng-if="each.isReport" class="{{ each.amount_class }}">{{ each.amount | currency:currencySymbol:2 }}</td>
     <td ng-if="each.isReport"><span class="data" ng-repeat="item in each.remarkAry track by $index">{{ item }}<br></span></td>
-    <!--  <td ng-if="each.isReport" class="{{ each.amount_class }}">{{ each.amount | currency:currencySymbol:2 }}</td>
-      <td ng-if="each.isReport" class="{{ each.amount_class }}">{{ each.amount | currency:currencySymbol:2 }}</td> -->
+    <td ng-if="each.isReport">{{ each.guest_name_or_account_name}}</td>
+    <td ng-if="each.isReport">{{ each.room_no}}</td>
     <td ng-if="each.isReport">{{ each.posted_date | date : dateFormat }} {{ each.posted_time }}</td><!-- Format: MM-DD-YYYY H:m AM/PM -->
     <td ng-if="each.isReport">{{ each.modified_date | date : dateFormat }} {{ each.modified_time }}</td><!-- Leave empty if it is not modified -->
     <td ng-if="each.isReport">{{ each.modified_by }}</td><!-- Leave empty if it is not modified -->
