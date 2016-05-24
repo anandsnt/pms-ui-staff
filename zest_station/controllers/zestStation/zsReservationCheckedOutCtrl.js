@@ -364,18 +364,20 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
          */
         $window.print();
         if (sntapp.cordovaLoaded) {
-          var printer = (sntZestStation.selectedPrinter);
-          cordova.exec(function(success) {
-            $scope.clickedNoThanks(true); //now checking for email update / send
-            //checkOutGuest();
-          }, function(error) {
-           // printFailedActions();
-          }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+          setTimeout(function() {
+            var printer = (sntZestStation.selectedPrinter);
+            cordova.exec(function(success) {
+              $scope.clickedNoThanks(true); //now checking for email update / send
+              //checkOutGuest();
+            }, function(error) {
+             // printFailedActions();
+            }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+          }, 800);
         };
         $scope.printOpted = true;
         // provide a delay for preview to appear 
 
-      }, 500);
+      }, 100);
     } catch (e) {
       console.info("something went wrong while attempting to print");
     };
