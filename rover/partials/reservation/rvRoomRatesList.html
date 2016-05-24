@@ -58,7 +58,8 @@
         </div>
     </div>
     <div class="reservation-content rooms-and-rates-content no-content" ng-show="(stateCheck.activeView == 'ROOM_TYPE' && display.roomFirstGrid.length == 0) ||
-        (stateCheck.activeView == 'RATE' && display.rateFirstGrid.length == 0)">
+        (stateCheck.activeView == 'RATE' && display.rateFirstGrid.length == 0) ||
+        (stateCheck.activeView == 'RECOMMENDED' && display.rateFirstGrid.length == 0)">
         <div class="info">
             <span class="icon-no-content icon-room"></span>
             <strong class="h1" translate>NO_AVAILABILITY</strong>
