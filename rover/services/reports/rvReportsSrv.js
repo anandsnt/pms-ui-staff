@@ -215,7 +215,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 			};
 
 			rvBaseWebSrvV2
-				.postJSON( url, params )
+				.putJSON( url, params )
 				.then( success, failed );
 
 			return deferred.promise;
