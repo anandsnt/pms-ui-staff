@@ -375,7 +375,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
         $scope.printOpted = true;
         // provide a delay for preview to appear 
 
-      }, 100);
+      }, 500);
     } catch (e) {
       console.info("something went wrong while attempting to print");
     };
