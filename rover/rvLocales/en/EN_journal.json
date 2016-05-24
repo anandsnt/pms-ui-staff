@@ -50,4 +50,5 @@
 	"DEBIT" : "Debit",
 	"CREDIT" : "Credit",
 	"CLOSING" : "Closing",
-	"CHARGE_DESCRIPTION" : "Charge Description"
+	"CHARGE_DESCRIPTION" : "Charge Description",
+	"DATE_AND_TIME" : "DATE & TIME"
