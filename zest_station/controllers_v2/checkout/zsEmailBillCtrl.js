@@ -60,7 +60,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		 */
 		var checkOutGuest = function() {
 			var params = {
-				"reservation_id": $scope.reservation_id,
+				"reservation_id": $stateParams.reservation_id,
 				"is_kiosk": true
 			};
 			var checkOutSuccess = function() {

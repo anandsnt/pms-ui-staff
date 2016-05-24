@@ -1718,6 +1718,55 @@
                         left: 20px;
                     }
                 }
+
+             .switch-button {
+                    background: @grey2;
+                    #border-radius > .rounded();
+                    .size(40px, 260px);
+                    .show;
+
+                    input { .size(40px, 100%); }
+
+                    .data-off,
+                    .data-on {
+                        font-size: 16px;
+                        line-height: 30px;
+                        text-transform: uppercase;
+                        font-weight: 600;
+                        height: 30px;
+
+                        .switch-icon {
+                            color: @grey3;
+                            text-shadow: none;
+                            .clickable;
+                            background: @white;
+                        }
+
+                        .value {
+                            color: @white;
+                            font-weight: 600;
+                        }
+
+                        &.data-off { 
+                            left: auto;
+                            right: 0;
+
+                            .switch-icon { margin: 0 5px 0 0; }
+                        }
+
+                        &.data-on { 
+                            left: auto;
+                            right: 100%;
+
+                            .switch-icon { margin: 0 0 0 5px; }
+                        }
+                    }
+
+                    &.on {
+                        .data-off { left: auto; right: -100%; }
+                        .data-on { left: auto; right: 0; }
+                    }
+                }
             }
 
             /* Deposits / Balance ***/
