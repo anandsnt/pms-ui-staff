@@ -33,7 +33,7 @@
         <ul ng-hide="borrowForGroups">
             <li ng-class="{active: stateCheck.activeView == 'RECOMMENDED'}" ng-click="setActiveView('RECOMMENDED')"
                 ng-show="otherData.recommendedRateDisplay">
-            ===={{stateCheck.activeView}}-    {{'RESV_RECOMMENDED'|translate}}
+            {{'RESV_RECOMMENDED'|translate}}
             </li>
             <li ng-class="{active: stateCheck.activeView == 'ROOM_TYPE'}" ng-click="setActiveView('ROOM_TYPE')">
                 {{'RESV_ROOM'|translate}}
@@ -64,11 +64,11 @@
             <strong class="h1" translate>NO_AVAILABILITY</strong>
             <span class="h2" translate>NO_ROOM_RATE_MSG</span>
         </div>
-    </div>+++{{display.roomFirstGrid.length}} == {{display.rateFirstGrid.length}}
+    </div>
     <div class="reservation-content rooms-and-rates-content scrollable" ng-class="{'edit-guests': stateCheck.stayDatesMode}" ng-iscroll="room_types" ng-iscroll-delay="500"
     ng-show="display.roomFirstGrid.length > 0 || display.rateFirstGrid.length > 0">
         <div>
-            <ul ng-if="stateCheck.activeView == 'RECOMMENDED'" class="rooms-and-rates wrapper">gghghgh
+            <ul ng-if="stateCheck.activeView == 'RECOMMENDED'" class="rooms-and-rates wrapper">
                 <ng-include src="'/assets/partials/reservation/rvRoomRatesRecommendedView.html'"></ng-include>
 
             </ul>

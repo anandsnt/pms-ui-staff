@@ -1,7 +1,7 @@
 <li ng-repeat="rate in display.rateFirstGrid track by $index">
     <a class="has-arrow toggle" ng-class="{active: !rate.isCollapsed}" ng-click="showRoomsList(rate)">
         <div class="data">
-            <h2>**{{rate.name}}</h2>
+            <h2>{{rate.name}}</h2>
              <span class="corporate" ng-if="rate.isCorporate" translate>CORPORATE_LABEL</span>
              <span class="corporate" ng-if="rate.isPromotion">PROMOTION</span>
              <span class="corporate" ng-if="rate.isMember">MEMBER</span>

@@ -1071,7 +1071,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					children: occupancies[0].children
 				};
 
-			if ($scope.stateCheck.activeView === 'RATE') {
+			if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
 				payLoad.room_type_id = secondary.id;
 				payLoad.rate_id = secondary.forRate;
 			} else if ($scope.stateCheck.activeView === 'ROOM_TYPE') {
@@ -1296,7 +1296,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				roomInfo = roomType;
 				rateInfo = secondary;
 
-			} else if ($scope.stateCheck.activeView === 'RATE') {
+			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
 				var rate = _.find($scope.display.rateFirstGrid, {
 					id: rateId
 				});
@@ -1537,7 +1537,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				secondary = _.find(roomType.ratesArray, {
 					id: rateId
 				});
-			} else if ($scope.stateCheck.activeView === 'RATE') {
+			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
 				var rate = _.find($scope.display.rateFirstGrid, {
 					id: rateId
 				});
