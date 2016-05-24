@@ -60,11 +60,12 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 **/
 		var updateIconPath = function(theme) {
 			if (theme === 'yotel') {
+				$scope.$emit('DONT_USE_NAV_ICONS');
 				$scope.theme = theme;
 				iconsPath = '/assets/zest_station/css/icons/yotel';
-				setSvgsToBeLoaded();
-			} else {
-				//do nothing
+				$scope.setSvgsToBeLoaded(iconsPath);
+			} else if (theme === 'fontainebleau') {
+				//nothing else
 			};
 		};
 		var setThemeByName = function(theme) {
@@ -82,40 +83,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 			// setPrinterOptions(); - to do
 		};
 
-		/**
-		 * SVGs are ng-included inside HTML
-		 **/
-		var setSvgsToBeLoaded = function() {
-			$scope.icons = {};
-			$scope.activeScreenIcon = '';
-			$scope.icons = {
-				url: {
-					active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
-					key: iconsPath + '/key.svg',
-					date: iconsPath+ '/date.svg',
-					checkin: iconsPath + '/checkin.svg',
-					checkout: iconsPath + '/checkout.svg',
-					oos: iconsPath + '/oos.svg',
-					staff: iconsPath + '/staff.svg',
-					email: iconsPath + '/email.svg',
-					pen: iconsPath + '/pen.svg',
-					creditcard: iconsPath + '/creditcard.svg',
-					keyboard: iconsPath + '/keyboard.svg',
-					noprint: iconsPath + '/no-print.svg',
-					print: iconsPath + '/print.svg',
-					confirmation: iconsPath + '/confirmation.svg',
-					moon: iconsPath + '/moon.svg',
-					back: iconsPath + '/back.svg',
-					close: iconsPath + '/close.svg',
-					qr: iconsPath + '/qr-scan.svg',
-					qr_noarrow: iconsPath + '/qr-scan_noarrow.svg',
-					createkey: iconsPath + '/create-key.svg',
-					logo: iconsPath + '/print_logo.svg',
-					watch: iconsPath + '/watch.svg'
-				}
-			};
-		};
-		setSvgsToBeLoaded();
+
+		$scope.setSvgsToBeLoaded(iconsPath);
 
 		var setPrinterOptions = function(theme) {
 			//zsUtils function
@@ -157,6 +126,38 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 				return;
 			};
 		};
+
+
+		var setQRArrowDirection = function() {
+			var scannerArrowDirection = $scope.zestStationData.qr_scanner_arrow_direction;
+			var styleString = "";
+			if (scannerArrowDirection === 'Top') {
+				styleString = ".qr-scan-button{transform:rotate(-90deg);margin-top: 75px !important;}";
+			} else if (scannerArrowDirection === 'Top right') {
+				styleString = ".qr-scan-button{transform:rotate(-45deg);margin-top: 75px !important;}"
+			} else if (scannerArrowDirection === 'Right') {
+				styleString = ".qr-scan-button{transform:rotate(0deg)}"
+			} else if (scannerArrowDirection === 'Bottom right') {
+				styleString = ".qr-scan-button{transform:rotate(45deg);margin-bottom: 75px !important;}"
+			} else if (scannerArrowDirection === 'Bottom') {
+				styleString = ".qr-scan-button{transform:rotate(90deg);margin-bottom: 95px !important;}"
+			} else if (scannerArrowDirection === 'Bottom left') {
+				styleString = ".qr-scan-button{transform:rotate(135deg);margin-bottom: 75px !important;}"
+			} else if (scannerArrowDirection === 'Left') {
+				styleString = ".qr-scan-button{transform:rotate(180deg)}"
+			} else if (scannerArrowDirection === 'Top left') {
+				styleString = ".qr-scan-button{transform:rotate(-135deg);margin-top: 75px !important;}"
+			} else {
+				styleString = ".qr-scan-button{transform:rotate(0deg)}"
+			}
+
+			createStyleNodeWithString(styleString);
+
+		};
+		//setQRArrowDirection();
+
+
+
 		/********************************************************************************
 		 *  Theme based actions ends here
 		 ********************************************************************************/

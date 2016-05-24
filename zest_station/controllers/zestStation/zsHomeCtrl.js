@@ -413,6 +413,7 @@ sntZestStation.controller('zsHomeCtrl', [
         $scope.zestStationData.reservation_in_early_checkin_window = false;
         $state.earlyCheckinPurchased = false;
         $scope.zestStationData.is_early_prepaid = false;
+        $state.paidDeposit = false;
         
         $state.hasAutoPrinted = false;
         

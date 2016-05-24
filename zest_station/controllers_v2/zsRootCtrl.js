@@ -169,6 +169,49 @@ sntZestStation.controller('zsRootCtrl', [
 			};
 			$scope.callAPI(zsGeneralSrv.fetchWorkStations, options);
 		};
+
+
+
+		$scope.useNavIcons = true;
+
+		$scope.$on('DONT_USE_NAV_ICONS', function() {
+			$scope.useNavIcons = false;
+		});
+
+
+		/**
+		 * SVGs are ng-included inside HTML
+		 **/
+		$scope.setSvgsToBeLoaded = function(iconsPath) {
+			$scope.activeScreenIcon = '';
+			$scope.icons = {
+				url: {
+					active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
+					key: iconsPath + '/key.svg',
+					date: iconsPath+ '/date.svg',
+					checkin: iconsPath + '/checkin.svg',
+					checkout: iconsPath + '/checkout.svg',
+					oos: iconsPath + '/oos.svg',
+					staff: iconsPath + '/staff.svg',
+					email: iconsPath + '/email.svg',
+					pen: iconsPath + '/pen.svg',
+					creditcard: iconsPath + '/creditcard.svg',
+					keyboard: iconsPath + '/keyboard.svg',
+					noprint: iconsPath + '/no-print.svg',
+					print: iconsPath + '/print.svg',
+					confirmation: iconsPath + '/confirmation.svg',
+					moon: iconsPath + '/moon.svg',
+					back: iconsPath + '/back.svg',
+					close: iconsPath + '/close.svg',
+					qr: iconsPath + '/qr-scan.svg',
+					qr_noarrow: iconsPath + '/qr-scan_noarrow.svg',
+					createkey: iconsPath + '/create-key.svg',
+					logo: iconsPath + '/print_logo.svg',
+					watch: iconsPath + '/watch.svg'
+				}
+			};
+		};
+
 		/********************************************************************************
 		 *  User activity timer
 		 *  starts here
@@ -412,7 +455,7 @@ sntZestStation.controller('zsRootCtrl', [
 			        $state.go('zest_station.admin');
 			    }
 			    else{
-			    	//do nothing
+			    	$state.go('zest_station.outOfService');
 			    }
 			} else {
 				$scope.workstation = {
