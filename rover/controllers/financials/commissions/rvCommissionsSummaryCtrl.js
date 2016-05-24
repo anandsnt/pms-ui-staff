@@ -33,7 +33,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
             'query'         : $scope.filterData.searchQuery,
             'page'          : $scope.filterData.page,
             'per_page'      : $scope.filterData.perPage,
-            'paid_status'    :$scope.filterData.paidStatus.value,
+            'bill_status'    :$scope.filterData.billStatus.value,
             'sort_by'       : $scope.filterData.sort_by.value,
             'min_commission_amount':$scope.filterData.minAmount
         };
@@ -48,13 +48,12 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
             'perPage': 50,
             'searchQuery': '',
             'minAmount': '',
-            'paidStatus': {'value': 'PAID', 'name': 'PAID'},
+            'billStatus': {'value': 'OPEN', 'name': 'OPEN'},
             'sort_by': {'value': 'NAME_ASC', 'name': 'NAME_ASC'},
             'paidStatusOptions': [
-                {'value': 'PAID', 'name': 'PAID'},
+                {'value': 'OPEN', 'name': 'OPEN'},
                 {'value': 'ALL', 'name': 'ALL'},
-                {'value': 'UNPAID', 'name': 'UNPAID'},
-                {'value': 'PREPAID', 'name': 'PREPAID'}],
+                {'value': 'PAID', 'name': 'PAID'}],
             'sortOptions': [
                 {'value': 'NAME_ASC', 'name': 'NAME ASC'},
                 {'value': 'NAME_DSC', 'name': 'NAME DESC'},
