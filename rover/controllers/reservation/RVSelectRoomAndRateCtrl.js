@@ -313,14 +313,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						payLoad.room_type_id = $scope.stateCheck.preferredType;
 					}
 				}
+				//Add these params to API only in Reccommended tab. CICO-28657
 				if($scope.stateCheck.activeView === 'RECOMMENDED'){
-					payLoad.recommended_rates_only = true;
+
 					payLoad.company_id = $scope.reservationData.company.id;
 					payLoad.travel_agent_id = $scope.reservationData.travelAgent.id;
 					group_id = $scope.reservationData.group.id || $scope.reservationData.allotment.id;
 					promotion_code = $scope.reservationData.searchPromoCode;
-				} else {
-					payLoad.recommended_rates_only = false;
 				}
 
 				$scope.callAPI(RVRoomRatesSrv.fetchRateADRs, {
