@@ -85,6 +85,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				nextPageActions(printopted, emailopted, actionStatus);
 			}
 			var handleBillPrint = function() {
+				 // add the orientation
+                addPrintOrientation();
 				setBeforePrintSetup();
 				try {
 					// this will show the popup with full bill
