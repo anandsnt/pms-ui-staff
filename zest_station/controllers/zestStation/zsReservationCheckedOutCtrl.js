@@ -358,7 +358,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     };
     try {
       // this will show the popup with full bill
-      $timeout(function() {
+      setTimeout(function() {
         /*
          * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
          */
