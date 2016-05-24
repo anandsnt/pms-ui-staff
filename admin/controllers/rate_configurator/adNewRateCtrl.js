@@ -198,6 +198,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }
             $scope.rateData.commission_details = data.commission_details;
             $scope.rateData.task_id = data.task_id;
+            $scope.rateData.booking_origin_id = data.booking_origin_id;
 
 
 
