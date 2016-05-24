@@ -60,44 +60,35 @@
                     <!-- Bill Summary -->
                     <div class="bill-summary-wrapper">
                         <div class="scrollable" ng-iscroll="billDays">
-                            <ul class="wrapper" style="width{Outer lenght of all li items}px">
+                            <ul class="wrapper">
                                 <li class="add-new">
                                     <button type="button" click-touch="openPostCharge(billData.bill_number)" class="button with-icon brand-colors">
                                         <span class="icons icon-charge"></span>
                                         {{'ADD_CHARGE' |translate}}
                                     </button>
                                 </li>
-                                <!-- TODO: active class logic -->
-                                <li class="active" ng-repeat="days in billData.days" click-touch="clickedSummaryDate(days.date)">
-                                    <button class="toggle" type ="button" ng-class="{'active' : dayRates == $index}">
-                                        <span class="day">{{days.date | date:'MMM'}} {{days.date | date:'dd'}}</span>
-                                        <span class="price">{{currencySymbol}}{{days.total_amount | number: precisonZero}}</span>
+
+                                <li class="days">
+                                    <button class="only-icon prev" ng-class="{'disabled': billData.bottom}" ng-show="billData.days" ng-click="dateScroll.prev(billData)">
+                                       <span class="icons icon-double-arrow rotate-left"></span>
+                                    </button>
+                                    <div class="days-wrapper">
+                                        <ul class="wrapper">
+                                            <li class="active" ng-repeat="days in billData.days"  ng-show="days.isShown" click-touch="clickedSummaryDate(days.date)">
+                                                <a class="toggle" type ="button" ng-class="{'active' : (billData.activeDate===days.date)}">
+                                                    <span class="day">{{days.date | date:'MMM'}} {{days.date | date:'dd'}}</span>
+                                                    <span class="price">{{currencySymbol}}{{days.total_amount | number: precisonZero}}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <button class="only-icon next" ng-show="billData.days" ng-class="{'disabled': billData.top}" ng-click="dateScroll.next(billData)">
+                                       <span class="icons icon-double-arrow rotate-right"></span>
                                     </button>
                                 </li>
                             </ul>
                         </div>
-                        <!--
-                        <div class="summary-expanded" ng-repeat="billItem in billData.days" ng-class="{'hidden': $index != dayRates}"> 
-                            <table class="expense-details">
-                                <thead>
-                                    <tr>
-                                        <th class="price" translate>EXPENSE</th>
-                                        <th translate>DETAILS</th>
-                                        <th class="price" translate>CHARGE_TYPE</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="expense in billItem.expense_details">
-                                        <td class="price">{{currencySymbol}}{{expense.amount | number: precisonTwo}}</td>
-                                        <td ng-bind-html="expense.details"></td>
-                                        <td>{{expense.charge_type}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        -->
                     </div>
-
 
                     <!-- Invoice -->
                     <div class="invoice">

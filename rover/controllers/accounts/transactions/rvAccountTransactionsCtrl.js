@@ -872,9 +872,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			dateCount  = billTabsData[$scope.currentActiveBill].days.length;
 			activeDate = billTabsData[$scope.currentActiveBill].days[dateCount-1].date;
-			console.log("activeDate = "+activeDate);
+			
 			if(!!activeDate){
 				getBillTransactionDetails( 1, activeDate );
+				billTabsData[$scope.currentActiveBill].activeDate = activeDate;
 			}
     	};
 
@@ -891,8 +892,65 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
     		billTabsData[$scope.currentActiveBill].transactions = [];
  			billTabsData[$scope.currentActiveBill].transactions = data.transactions;
+
+ 			populateDateScroll(billTabsData);
  			refreshRegContent();
     	};
+
+    	//Date scroll functions
+        $scope.dateScroll = {
+            showCount: 5,
+            next: function(billData) {
+                var length = billData.days.length - 1;
+                if(billData.currentActive < length) {
+                    billData.currentActive++;
+                    billData.days[billData.currentActive].isShown = true;
+                    billData.days[billData.currentActive - this.showCount].isShown = false;
+                    if (billData.currentActive === length) {
+                        billData.top = true;
+                    }
+                    billData.bottom = false;
+                } 
+            },
+            prev: function(billData) {
+                if(billData.currentActive >= this.showCount){
+                    billData.days[billData.currentActive].isShown = false;
+                    billData.days[billData.currentActive-this.showCount].isShown = true;
+                    if (billData.currentActive === this.showCount) {
+                        billData.bottom = true;
+                    }
+                    billData.currentActive--;
+                    billData.top = false;
+                }
+            }
+        };
+
+        /**
+         * Function to populate date isShown data
+         * @param {array} bills array
+         */
+        var populateDateScroll = function(bills) {
+            var showCount = $scope.dateScroll.showCount;
+            angular.forEach(bills, function(bill, key) {
+                var i = 0, length;
+                var length = bill.days.length;
+                if(length > showCount){
+                    bill.bottom = false;                    
+                    while(i < (length - showCount)) {
+                        bill.days[i].isShown = false;
+                        i++;
+                    }
+                } else {
+                    bill.bottom = true;
+                }
+                while(i < length) {
+                    bill.days[i].isShown = true;
+                    i++;
+                }
+                bill.currentActive = (length-1);
+                bill.top = true;
+            });
+        };
 
     	/**
 		 * API calling method to get the bill transaction details
@@ -915,6 +973,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		$scope.clickedSummaryDate = function( date ){
 			getBillTransactionDetails( 1, date );
+			var billTabsData = $scope.transactionsDetails.bills;
+			billTabsData[$scope.currentActiveBill].activeDate = date;
 		};
 
 	}
