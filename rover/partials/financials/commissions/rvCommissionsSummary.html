@@ -10,8 +10,8 @@
     </div>
     <div class="entry options">
         <div class="select with-label">
-            <label for="paid-status" >Paid Status</label>
-            <select ng-init="filterData.paidStatus = filterData.paidStatusOptions[0]" ng-model="filterData.paidStatus" ng-change="searchAccounts()" id="sort-by"  ng-options="option.name for option in filterData.paidStatusOptions">
+            <label for="paid-status" >Bill Status</label>
+            <select ng-init="filterData.billStatus = filterData.billStatusOptions[0]" ng-model="filterData.billStatus" ng-change="searchAccounts()" id="sort-by"  ng-options="option.name for option in filterData.billStatusOptions">
             </select>
         </div>
 
