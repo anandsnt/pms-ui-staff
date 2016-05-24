@@ -204,7 +204,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 		service.updateSchedule = function(params) {
 			var deferred = $q.defer(),
-				url = 'export_schedules/' + params.id;
+				url = 'admin/export_schedules/';
 
 			var success = function(data) {
 				deferred.resolve(data);
@@ -215,7 +215,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 			};
 
 			rvBaseWebSrvV2
-				.putJSON( url, params )
+				.postJSON( url, params )
 				.then( success, failed );
 
 			return deferred.promise;

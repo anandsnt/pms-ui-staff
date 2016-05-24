@@ -27,7 +27,7 @@
 <div class="report-col">
     <div class="scrollable"> <!-- Add vertical scroller here + add class "buttons-3" if it's an existing schedule -->
         <div class="wrapper">
-            <h3>Schedule Parameters<span>{{ selectedScheduleParams.report.description }}</span></h3>
+            <h3>Schedule Parameters<span>{{ selectedScheduleDetails.report.description }}</span></h3>
             <div class="entry">
                 <label for="time-period">Time Peroiod</label>
                 <div class="select">
@@ -37,7 +37,20 @@
                     </select>
                 </div>
             </div>
-            {each report has different filter options, see filters-reports-list.html}            
+
+            <multi-option-selection ng-show="filters.hasGeneralOptions && filters.hasGeneralOptions.data.length"
+                label="Option(s)"
+                data="filters.hasGeneralOptions.data"
+                options="filters.hasGeneralOptions.options"></multi-option-selection>
+
+            <div class="entry" ng-show="selectedScheduleDetails.sort_fields.length">
+                <label>Sort By</label>
+                <div class="select">
+                    <select ng-model="scheduleParams.sort_field" ng-options="sortBy.value as sortBy.description for sortBy in selectedScheduleDetails.sort_fields" iscroll-stop-propagation>
+                        <option value="">Sort By</option>
+                    </select>
+                </div>
+            </div>     
         </div>
     </div>
     <div class="column-actions">
@@ -47,7 +60,7 @@
         <button type="button" class="button red" ng-show="NOT_NOW">
             Delete Schedule
         </button>   
-        <button type="button" class="button green">
+        <button type="button" class="button green" ng-click="saveSchedule()">
             Save Schedule
         </button>
         <!-- If new schedule, replace L45-L53 with this:
@@ -59,7 +72,7 @@
 <div class="report-col">
     <div class="scrollable"> <!-- Add vertical scroller here + add class "buttons-2" if it's an existing schedule -->
         <div class="wrapper">
-            <h3>Schedule Details<span>{{ selectedScheduleParams.report.description }}</span></h3>
+            <h3>Schedule Details<span>{{ selectedScheduleDetails.report.description }}</span></h3>
             <div class="entry" ng-show="NOT_NOW">
                 <label for="schedule-date-range">Data Date Range</label>
                 <div class="select">
@@ -72,7 +85,7 @@
             <div class="entry">
                 <label for="schedule-repeats">Repeats</label>
                 <div class="select">
-					<select ng-model="saveParams.frequency_id" ng-options="freq.id as freq.description for freq in scheduleFrequency" iscroll-stop-propagation>
+					<select ng-model="scheduleParams.frequency_id" ng-options="freq.id as freq.description for freq in scheduleFrequency" iscroll-stop-propagation>
 						<option value="">Repeat type</option>
 					</select>
                 </div>
@@ -80,11 +93,11 @@
             <div class="entry">
                 <label for="schedule-repeats-every">Repeats Every</label>
                 <div class="entry-data entry-first">
-                    <input id="schedule-repeats-every" type="number" placeholder="No." ng-model="saveParams.repeats_every">
+                    <input id="schedule-repeats-every" type="number" placeholder="No." ng-model="scheduleParams.repeats_every">
                 </div>
                 <div class="entry-data entry-second">
                     <div class="select">
-                        <select ng-model="saveParams.frequency_id" ng-options="freq.id as freq.value for freq in scheduleFreqType" iscroll-stop-propagation>
+                        <select ng-model="scheduleParams.frequency_id" ng-options="freq.id as freq.value for freq in scheduleFreqType" iscroll-stop-propagation>
 							<option value="">Repeat per</option>
 						</select>
                     </div>
@@ -96,7 +109,7 @@
                 </label>
                 <div class="has-datepicker">
                     <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
-                    <input type="text" class="datepicker" ui-date="startsOnOptions" ng-model="saveParams.startsOnDate" placeholder="MM-DD-YYYY" readonly>
+                    <input type="text" class="datepicker" ui-date="startsOnOptions" ng-model="scheduleParams.starts_on" placeholder="MM-DD-YYYY" readonly>
                 </div>
             </div>
 
@@ -104,8 +117,8 @@
                 <label>Ends On</label>
                 <div class="entry-data entry-first">
                     <label for="schedule-ends-on-number" class="radio inline">
-                    	<span class="icon-form icon-radio" ng-class="{ 'checked': saveParams.scheduleEndsOn === 'NUMBER' }"></span>
-                        <input type="radio" name="ends-on" checked ng-model="saveParams.scheduleEndsOn" value="NUMBER">
+                    	<span class="icon-form icon-radio" ng-class="{ 'checked': scheduleParams.scheduleEndsOn === 'NUMBER' }"></span>
+                        <input type="radio" name="ends-on" checked ng-model="scheduleParams.scheduleEndsOn" value="NUMBER">
                         After
                     </label>
                 </div>
@@ -116,22 +129,22 @@
                 <!-- next -->
                 <div class="entry-data entry-first">
                     <label for="schedule-ends-on-date" class="radio inline">
-                    	<span class="icon-form icon-radio" ng-class="{ 'checked': saveParams.scheduleEndsOn === 'DATE' }"></span>
-                        <input id="schedule-ends-on-date" type="radio" name="ends-on" ng-model="saveParams.scheduleEndsOn" value="DATE">
+                    	<span class="icon-form icon-radio" ng-class="{ 'checked': scheduleParams.scheduleEndsOn === 'DATE' }"></span>
+                        <input id="schedule-ends-on-date" type="radio" name="ends-on" ng-model="scheduleParams.scheduleEndsOn" value="DATE">
                         On
                     </label>
                 </div>
                 <div class="entry-data entry-second">
                     <div class="has-datepicker">
                         <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
-                        <input type="text" class="datepicker" ui-date="endsOnOptions" ng-model="saveParams.endsOnDate" placeholder="MM-DD-YYYY" readonly>
+                        <input type="text" class="datepicker" ui-date="endsOnOptions" ng-model="scheduleParams.ends_on_date" placeholder="MM-DD-YYYY" readonly>
                     </div>
                 </div>
                 <!-- next -->
                 <div class="entry-data full-width">
                     <label for="schedule-ends-on-never" class="radio inline">
-                    	<span class="icon-form icon-radio" ng-class="{ 'checked': saveParams.scheduleEndsOn === 'NEVER' }"></span>
-                        <input type="radio" id="schedule-ends-on-never" name="ends-on" ng-model="saveParams.scheduleEndsOn" value="NEVER">
+                    	<span class="icon-form icon-radio" ng-class="{ 'checked': scheduleParams.scheduleEndsOn === 'NEVER' }"></span>
+                        <input type="radio" id="schedule-ends-on-never" name="ends-on" ng-model="scheduleParams.scheduleEndsOn" value="NEVER">
                         Never
                     </label>
                 </div>
@@ -152,7 +165,7 @@
 <div class="report-col">
     <div class="scrollable"> <!-- Add vertical scroller here -->
         <div class="wrapper">
-            <h3>Distribution List<span>{{ selectedScheduleParams.report.description }}</span></h3>
+            <h3>Distribution List<span>{{ selectedScheduleDetails.report.description }}</span></h3>
             <div class="entry search">
                 <label for="distribution-list-add-user">Add Recipient</label>
                 <button class="clear-query">
