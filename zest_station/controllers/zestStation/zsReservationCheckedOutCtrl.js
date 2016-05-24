@@ -369,7 +369,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
             $scope.clickedNoThanks(true); //now checking for email update / send
             //checkOutGuest();
           }, function(error) {
-            printFailedActions();
+           // printFailedActions();
           }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
         };
         $scope.printOpted = true;
