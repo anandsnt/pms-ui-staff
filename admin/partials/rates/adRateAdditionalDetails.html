@@ -52,6 +52,14 @@
               		</div>
                 </div>
                 <div class="entry full-width">
+                    <div class="entry" ng-show="isOriginOfBookingEnabled">
+                        <label>Origin</label>
+                        <div class="select">
+                            <select class="placeholder" ng-model="rateData.default_booking_origin_id" ng-options="origin.value as origin.name for origin in originOfBookings">
+                                <option value="" disabled>Select Origin</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="entry">
                         <label>Cleaning Cycle</label>
                         <div class="select">
@@ -61,9 +69,9 @@
                         </div>
                     </div>
                 </div>
-           
+
 	 	</fieldset>
-	 	<fieldset class="holder right">	 		
+	 	<fieldset class="holder right">
 	 		<ad-toggle-button is-checked="rateData.is_discount_allowed_on" label="DISCOUNT ALLOWED"></ad-toggle-button>
 	 		<ad-toggle-button is-checked="rateData.is_suppress_rate_on" label="SUPPRESS RATE"></ad-toggle-button>
             <div ng-hide='isEmpty(rateData.commission_details)'>
@@ -72,11 +80,11 @@
                 <div class="entry full-width" ng-hide="!rateData.commission_details.is_on">
                     <div class=" select-col col1-3 actions_margin_top">
                         <ad-textbox inputtype="text" value="rateData.commission_details.value" styleclass="col1-3" label="" placeholder="" style=" width: 66px;" ng-model="rateData.commission_details.value"></ad-textbox>
-                    </div>                        
-                    <div class="select select-col col1-4">                        
+                    </div>
+                    <div class="select select-col col1-4">
                         <select class="styled" value="rateData.commission_details.type" ng-model="rateData.commission_details.type">
                         <option value="amount">{{currencySymbol}}</option>
-                        <option value="percent">%</option>  
+                        <option value="percent">%</option>
                         </select>
                     </div>
 
@@ -84,7 +92,7 @@
                         <div class="select">
                             <select class="placeholder" value="rateData.commission_details.commission_type" ng-model="rateData.commission_details.commission_type">
                                 <option value="perStay" translate>PER_STAY</option>
-                                <option value="perNight" translate>PER_NIGHT</option> 
+                                <option value="perNight" translate>PER_NIGHT</option>
                             </select>
                         </div>
                     </div>
@@ -93,18 +101,18 @@
                         <label translate>CHARGE_CODES</label>
                         <div id="newspaper-options" class="boxes">
                             <label class="checkbox" ng-repeat="charge_code in rateData.commission_details.charge_codes">
-                                
+
                                 <span class="icon-form icon-checkbox" ng-class="{ checked : charge_code.is_checked }"></span>
                                 <input type="checkbox"  name="newspaper" data-id="1" ng-click="charge_code.is_checked = !charge_code.is_checked ">
                                 <div id="newspaper-name">{{charge_code.code}} {{charge_code.name}}</div>
-                                
+
                             </label>
                         </div>
                     </div>
 
                 </div>
 
-            </div>        
+            </div>
 	 	</fieldset>
 	 <!-- </fieldset> -->
 
