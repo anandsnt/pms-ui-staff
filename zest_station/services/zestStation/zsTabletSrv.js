@@ -346,6 +346,18 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv','zsBaseWebS
 
             return deferred.promise;
         };
+
+        this.fetchRegistrationHotelSetting = function() {
+            var deferred = $q.defer();
+            var url = '/api/hotel_settings/show_hotel_reservation_settings';
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
         this.fetchGuestDetails = function(params) {
             var deferred = $q.defer();
             var url = '/api/reservations/' + params.id + '/reservations_guest_details';
