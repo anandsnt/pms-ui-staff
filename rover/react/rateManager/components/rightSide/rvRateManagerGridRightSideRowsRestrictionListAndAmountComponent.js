@@ -6,23 +6,7 @@ const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ onTdCli
 					{rowData.restrictionList.map((eachDayRestrictionData, colIndex) =>
 						<td key={'key-' + colIndex} onClick={(e) => onTdClick(e, rowIndex, colIndex)} className='cell'>
 							<div className={'cell-container' + (dateList[colIndex].isWeekEnd ? ' weekend_day': '') + (rowData.expanded ? ' expanded-cell' : '')}>
-						 			{rowIndex === 0 ? 
-						 				(
-						 					<div className={'cell-content ' + (dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
-							 					<div className="restriction_holder">
-												   {eachDayRestrictionData.map((restriction, restrictionIndex) => 
-														<RateManagerRestrictionIconComponent
-															key={'key-' + restrictionIndex}
-															className={'right ' + restriction.className}
-															text={restriction.days}/>
-													)}
-												</div>
-							 				</div>
-							 			)
-							 			:
-							 			(
-
-								 			(rowData.expanded) ? 
+							 			{ rowData.expanded ? 
 								 			(
 								 				<div className={'cell-content ' + (dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
 								 					<div className="restriction_holder">
@@ -114,9 +98,7 @@ const RateManagerGridRightSideRowsRestrictionListAndAmountComponent = ({ onTdCli
 													</div>
 								 				</div>					
 								 			)
-								 		)
-					 			}
-								
+								 		}
 							</div>
 						</td>
 					)}

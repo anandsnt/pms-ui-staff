@@ -31,21 +31,22 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	$scope.cardsList       = [];
 	$scope.setScroller('cardsList',{'click':true, 'tap':true});
 	$scope.showCCPage = false;
+	$scope.showWarningMessage = false;
         $scope.swippedCard = false;
         $scope.initCardSwipeRenderData = function(){
             $scope.isNewCardAdded = false;
-            $scope.shouldShowIframe = false; 
-            $scope.addmode = true; 
-            $scope.isGiftCard = false; 
-            $scope.useDepositGiftCard = false; 
-            $scope.hideCancelCard = false; 
+            $scope.shouldShowIframe = false;
+            $scope.addmode = true;
+            $scope.isGiftCard = false;
+            $scope.useDepositGiftCard = false;
+            $scope.hideCancelCard = false;
             $scope.depositWithGiftCard = false;
             setTimeout(function(){
                 $scope.$broadcast('addNewCardClicked');//child element is the rvCardOptions.html
                 $scope.$broadcast('hidePayCardToggles',{'isFromSwipe':true});//child element is the rvCardOptions.html
             },100);
         };
-        
+
 	if(!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)){
 		$scope.showManualEntryDisabledPopup = false;
 		/*$scope.showCCPage = true;
@@ -67,7 +68,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
     refreshCardsList();
 
 	$scope.successRender = function(data){
-		
+
 		$scope.$emit("hideLoader");
 
 		if($scope.passData.isFromGuestCard){
@@ -146,18 +147,18 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.showAddtoGuestCard = true;
 		$scope.isFromGuestCard = true;
         });
-        
+
         $scope.showAddtoGuestCardBox = function(){
-            if (!$scope.showCCPage && 
-                    $scope.dataToSave.paymentType === 'CC' && 
-                    $scope.isNewCardAdded && 
-                    !$scope.isFromGuestCard && 
+            if (!$scope.showCCPage &&
+                    $scope.dataToSave.paymentType === 'CC' &&
+                    $scope.isNewCardAdded &&
+                    !$scope.isFromGuestCard &&
                     !$scope.isFromAccounts
                 ){
                 return true;
             } else return false;
         };
-        
+
 	/*
 	 * change payment type action - initial add payment screen
 	 */
@@ -170,7 +171,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                         } else {
                             $scope.showSelectedCreditCard = false;
                         }
-                        
+
 			$scope.swippedCard = ($scope.dataToSave.paymentType === "CC") ? true: false;
 			$scope.addmode =($scope.dataToSave.paymentType === "CC" &&  $scope.cardsList.length === 0) ? true: false;
 			$scope.showInitialScreen = ($scope.dataToSave.paymentType === "CC") ? false: true;
@@ -292,6 +293,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$rootScope.$emit('UPDATEDPAYMENTLIST', $scope.paymentData.bills[billNumber].credit_card_details );
 		};
 		$rootScope.$broadcast('BALANCECHANGED', dataToUpdate);
+		$scope.$emit('UPDATECCATTACHEDBILLSTATUS', data.has_any_credit_card_attached_bill);
 	};
 
 	/*
@@ -322,7 +324,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 	*/
 
 	var saveNewCardSuccess = function(data){
-		
+
 		// Update reservation type
 		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id, data.id );
 
@@ -330,6 +332,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.paymentData.reservation_card.payment_details.card_type_image ='images/' + creditCardType.toLowerCase()+".png";
 		$scope.paymentData.reservation_card.payment_details.card_number = retrieveCardNumber();
 		$scope.paymentData.reservation_card.payment_details.card_expiry = retrieveExpiryDate();
+		$scope.$emit('UPDATECCATTACHEDBILLSTATUS', data.has_any_credit_card_attached_bill);
 	};
 
 	/*
@@ -340,7 +343,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 		// Update reservation type
 		$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id, data.id );
-
+		$scope.$emit('UPDATECCATTACHEDBILLSTATUS', data.has_any_credit_card_attached_bill);
 		$scope.paymentData.reservation_card.payment_method_used = $scope.dataToSave.paymentType;
 		$scope.paymentData.reservation_card.payment_details.card_type_image = 'images/' + $scope.renderData.creditCardType+".png";
 		$scope.paymentData.reservation_card.payment_details.card_number = $scope.renderData.endingWith;
@@ -416,7 +419,15 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			(typeof $scope.passData.fromBill === "undefined")?existingCardSuccess(data):billScreenExistingCCSucess(data);
 		};
 
-		$scope.closeDialog();
+		// CICO-27644 : Handle warning message
+		// CC AUTH - do not prevent user from changing card on MLI release auth error
+		if(!!data.warnings && data.warnings.length > 0 ){
+			$scope.showWarningMessage = true;
+			$scope.warningMessage = data.warnings[0];
+		}
+		else{
+			$scope.closeDialog();
+		}
 	};
 	var ccSaveFailure = function(errorMessage){
 		$scope.$emit("hideLoader");
@@ -480,7 +491,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			};
 		};
 	};
-        
+
     var savePaymentSuccess = function(data){
     	$scope.$emit("hideLoader");
     	if(typeof $scope.passData.fromBill !== "undefined"){
@@ -492,6 +503,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 
 			// Update reservation type
 			$rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id, data.id);
+			$scope.$emit('UPDATECCATTACHEDBILLSTATUS', data.has_any_credit_card_attached_bill);
 		};
     	$scope.closeDialog();
     };
@@ -601,10 +613,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
 		data.credit_card = $scope.swipedCardDataToSave.cardType;
 		data.card_expiry = "20"+$scope.swipedCardDataToSave.cardExpiryYear+"-"+$scope.swipedCardDataToSave.cardExpiryMonth+"-01";
-        
+
         var unwantedKeys = ["addToGuestCard"];
-  		data = dclone(data, unwantedKeys); 
-        
+  		data = dclone(data, unwantedKeys);
+
         if ($scope.dataToSave.addToGuestCard){
             data.add_to_guest_card = $scope.dataToSave.addToGuestCard;
         };
@@ -719,84 +731,84 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.dataToSave.paymentType = "";
 		$scope.isManual = false;
 	});
-        
-        
-        
-        
-        
+
+
+
+
+
         $scope.checkForGiftCard = function(){
-                     $scope.addmode = false; 
+                     $scope.addmode = false;
                      $scope.isGiftCard = false;
             if (!$rootScope.isStandAlone){//CICO-19009 adding gift card support, used to validate gift card is enabled
                  $scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {} , $scope.cardsListSuccess);
             };
         };
-        
+
         $scope.hideCardToggles = function(){
-            if ($scope.isFromGuestCard  || 
-                    $scope.hasAccompanyguest || 
-                    $scope.cardsList.length === 0 || 
+            if ($scope.isFromGuestCard  ||
+                    $scope.hasAccompanyguest ||
+                    $scope.cardsList.length === 0 ||
                     $scope.initFromCashDeposit){
                 return true;
                     } else return false;
         };
           $scope.clickExistingCard = function(){
                     $scope.isNewCardAdded = false;
-                    $scope.shouldShowIframe = true; 
-                    $scope.addmode = false; 
-                    $scope.isGiftCard = false; 
-                    $scope.useDepositGiftCard = false; 
-                    $scope.hideCancelCard = false; 
+                    $scope.shouldShowIframe = true;
+                    $scope.addmode = false;
+                    $scope.isGiftCard = false;
+                    $scope.useDepositGiftCard = false;
+                    $scope.hideCancelCard = false;
                     $scope.depositWithGiftCard = false;
                 };
-        
+
                 $scope.clickedAddNewCard = function(){
                     $scope.isNewCardAdded = false;
-                    $scope.shouldShowIframe = false; 
-                    $scope.addmode = true; 
-                    $scope.isGiftCard = false; 
-                    $scope.useDepositGiftCard = false; 
-                    $scope.hideCancelCard = false; 
+                    $scope.shouldShowIframe = false;
+                    $scope.addmode = true;
+                    $scope.isGiftCard = false;
+                    $scope.useDepositGiftCard = false;
+                    $scope.hideCancelCard = false;
                     $scope.depositWithGiftCard = false;
                     $scope.$broadcast('addNewCardClicked');//child element is the rvCardOptions.html
                 };
-                
+
                 $scope.showGiftCardToggle = function(){
                     if (!$scope.isStandAlone && $scope.allowPmtWithGiftCard){
                         return true;
                     } else return false;
                 };
-                
-                
+
+
                 $scope.showCreditCardScreen = function(){
                      if  ($scope.showCCPage && $scope.dataToSave.paymentType === 'CC' && $scope.paymentGateway !== 'sixpayments')  {
                         return true;
                     } else return false;
                 };
-                
+
                 $scope.showAddedCard = function(){
                     if ($scope.dataToSave.paymentType === 'CC'){
                           if (!$scope.showCCPage && //showing add new card inputs
                                 ($scope.paymentGateway !== 'sixpayments' || $scope.isManual)){
-                    
+
                             return true;
                         } else {
 
                         return false;}
-                        
+
                     } else return false;
-                    
+
                 };
-        
+
         $scope.hasExistingCard = function(){
-            if ($scope.showSelectedCreditCard && 
-                    !$scope.showCCPage && 
+            if ($scope.showSelectedCreditCard &&
+                    !$scope.showCCPage &&
                     $scope.dataToSave.paymentType === 'CC'
                 ){
                 return true;
             } else return false;
         };
-        
+
 
 
 }]);

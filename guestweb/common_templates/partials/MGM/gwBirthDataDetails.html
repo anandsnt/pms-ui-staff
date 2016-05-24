@@ -1,66 +1,103 @@
 <!-- navbar -->
 <div class="container-fluid padding-0">
     <div class="row header-bar">
-        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
     </div>
 </div>
 <!-- main section starts here -->
 <div class="container">
-     <!-- request text -->
+    <!-- request text -->
     <div class="row" ng-show="isLoading && !netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="request-text">Your request is being processed.
-            This may take a few seconds..... please wait!</p>
+            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
         </div>
         <div class="col-md-2">
-        </div>                   
+        </div>
     </div>
     <!-- error message -->
     <div class="row" ng-show="netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check in at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="error-text">Our apologies, something went wrong, please complete your check in at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-2">
-        </div>                   
+        </div>
     </div>
     <!-- main content -->
     <div class="row" ng-hide="isLoading || netWorkError">
         <div class="col-md-4 top-spacing sm-no-top-spacing section-container float-none">
             <p class="main-text">Enter Your Birthdate</p>
-                <!-- birthday -->
-                <div class="row margin-top-10">
-                    <div class="row">
-                        <div class="eta-container">
-                        	 <span class="sub-text upper-case pull-left">MONTH</span>
-                            <div class="select-style">
-                                <select ng-model="guestDetails.month" ng-options="month as month for month in months">
-                                    <option value="">MM</option>
-                                </select>
-                            </div>
+            <!-- birthday -->
+            <div class="row margin-top-20">
+                <div class="row">
+                    <div class="eta-container">
+                        <span class="sub-text upper-case pull-left">MONTH</span>
+                        <div class="select-style">
+                            <select ng-model="guestDetails.month" ng-options="month.id as month.name for month in months" ng-change="yearOrMonthChanged()">
+                                <option value="">MM</option>
+                            </select>
                         </div>
-                        <div class="eta-container">
-                        	 <span class="sub-text upper-case pull-left">DAY</span>
-                            <div class="select-style">
-                                <select ng-model="guestDetails.day" ng-options="day as day for day in days">
-                                    <option value="">DD</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="eta-container">
+                        <span class="sub-text upper-case pull-left">DAY</span>
+                        <div class="select-style">
+                            <select ng-model="guestDetails.day" ng-options="day as day for day in days">
+                                <option value="">DD</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
+                                <option value="25">25</option>
+                                <option value="26">26</option>
+                                <option value="27">27</option>
+                                <option value="28">28</option>
+                                <option value="29" ng-show="guestDetails.month != 2 || !(guestDetails.year % 4)" )>
+                                    29
+                                </option>
+                                <option value="30" ng-show="guestDetails.month != 2">
+                                    30
+                                </option>
+                                <option value="31" ng-show="guestDetails.month == 1 || guestDetails.month == 3 || guestDetails.month == 5 || guestDetails.month == 7 || 
+                                  guestDetails.month == 8 || guestDetails.month == 10 || guestDetails.month == 12">
+                                    31
+                                </option>
+                            </select>
                         </div>
-                        <div class="eta-container">
-                        	 <span class="sub-text upper-case pull-left">YEAR</span>
-                            <div class="select-style">
-                                <select ng-model="guestDetails.year" ng-options="year as year for year in years">
-                                    <option value="" selected="">YY</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="eta-container">
+                        <span class="sub-text upper-case pull-left">YEAR</span>
+                        <div class="select-style">
+                            <select ng-model="guestDetails.year" ng-options="year as year for year in years" ng-change="yearOrMonthChanged()">
+                                <option value="" selected="">YY</option>
+                            </select>
                         </div>
                     </div>
                 </div>
-             <!-- submit -->
-            <a class="btn btn-template margin-top-10"  ng-click="postGuestDetails()">Continue</a>
+            </div>
+            <!-- submit -->
+            <a class="btn btn-template margin-top-20" ng-click="postGuestDetails()">Continue</a>
             <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-click="skip()" ng-show="!guestBirthdateMandatory"> Skip</a>
-        </div>                 
+        </div>
     </div>
 </div>

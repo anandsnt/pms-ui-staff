@@ -10,7 +10,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 * @return {Boolean} [description]
 		 */
 		var whetherSummaryDataChanged = function() {
-			var currentSummaryData = _.omit($scope.groupConfigData.summary, ['rooms_total']);
+			// Some properties not in original defenition should be left out
+			var currentSummaryData = $scope.groupConfigData.summary;
+			summaryMemento = _.omit(summaryMemento, [
+								'rooms_total',
+								'selected_room_types_and_bookings',
+								'selected_room_types_and_occupanies'
+							]);
 			for (var key in summaryMemento) {
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return false;
@@ -311,6 +317,14 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		};
 
 		/**
+		 * Decide whether we need to disable rate change or not
+		 * @return {Boolean} disalbe or not
+		 */
+		$scope.shouldDisableRateChange = function() {
+			return ($scope.groupConfigData.summary.is_cancelled || $scope.isInStaycardScreen());
+		};
+
+		/**
 		 * Logic to show/hide group actions button
 		 * @return {Boolean} hide or not
 		 */
@@ -378,8 +392,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				refData.release_date = refData.block_from;
 			}
 
-			if ($scope.isInAddMode()){
-				updateRateAndSegment();
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
 			}
 
 			//if it is is Move Date mode
@@ -474,10 +488,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				oldBlockTo	= new tzIndependentDate(summaryMemento.block_to),
 				chActions 	= $scope.changeDatesActions;
 
-			if ($scope.isInAddMode()){
-				updateRateAndSegment();
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
 			}
-
 			// check move validity
 			// departure left date change
 			else if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {

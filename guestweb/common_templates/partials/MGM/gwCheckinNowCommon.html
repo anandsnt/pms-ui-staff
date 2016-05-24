@@ -1,0 +1,21 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <!-- main content -->
+    <div class="row" ng-hide="isPosting || netWorkError">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing section-container">
+            <p class="main-text margin-top-20" ng-bind="screenDetails.title"></p>
+            <p class="sub-main-text" ng-bind="screenDetails.description">
+            </p>
+             <a class="btn btn-template early-checkin-button margin-top-20" ui-sref="checkinArrival">Continue</a>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>

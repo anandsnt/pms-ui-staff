@@ -274,9 +274,9 @@ function getAvatharUrl(title){
     title = $.trim(title).toLowerCase().split('.')[0];
     try{
         if((title == "mr") || (title == "mrs") || (title == "miss")|| (title == "ms"))
-            return (/assets/ + avatharImgs[title]);
+            return ('/assets/images/' + avatharImgs[title]);
         else
-            return (/assets/ + avatharImgs['']);
+            return ('/assets/images/' + avatharImgs['']);
     }
     catch (e) {
         console.log(e.message);

@@ -16,6 +16,9 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
 
+			// CICO-28058 - checking whether AR Number is present or not.
+			var isArNumberAvailable = !!$scope.contactInformation.account_details.accounts_receivable_number;
+
 			if ($scope.currentSelectedTab === 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
 				if ($scope.viewState.isAddNewCard) {
 					$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('COMPANY_SAVE_PROMPT')]);
@@ -37,14 +40,17 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			} else if (tabToSwitch === 'cc-contact-info') {
 				$scope.$broadcast("contactTabActive");
 			}
-			else if (tabToSwitch === 'cc-ar-transactions') {
+			else if (tabToSwitch === 'cc-ar-transactions' && isArNumberAvailable) {
 				$scope.$broadcast("arTransactionTabActive");
 				$scope.isWithFilters = false;
 			}
 			else if (tabToSwitch === 'cc-notes') {
 				$scope.$broadcast("fetchNotes");
 			}
-			if (!$scope.viewState.isAddNewCard) {
+			if(tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable){
+			  	console.warn("Save AR Account and Navigate to AR Transactions");
+			}
+			else if (!$scope.viewState.isAddNewCard) {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
 		};

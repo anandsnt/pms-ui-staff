@@ -1,4 +1,4 @@
-login.service('loginSrv',['$http', '$q', function($http, $q){
+angular.module('login').service('loginSrv',['$http', '$q', function($http, $q){
 	this.login = function(data, successCallback, failureCallBack){
 		var deferred = $q.defer();
 

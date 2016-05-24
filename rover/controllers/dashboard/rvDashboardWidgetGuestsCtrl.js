@@ -12,13 +12,15 @@ sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv',
     * we will call the webservice with given type and
     * will update search results and show search area
     */
-    $scope.clickedOnGuestsToday = function(event, type, numberOfReservation) {
+    $scope.clickedOnGuestsToday = function(event, type, numberOfReservation, isMobileCheckin) {
         event.preventDefault();
         event.stopImmediatePropagation();
         event.stopPropagation();
         //disable reservation search for house keeping
         if(!$scope.disableReservations){
-            var stateParams = {'type': type, 'from_page': 'DASHBOARD'};
+            //as we dont have a status called Mobile checkin, we still need to pass as PRE_CHECKIN
+            //along with that we will pass is mobile checkin variable. This will be null if not send
+            var stateParams = {'type': type, 'from_page': 'DASHBOARD','isMobileCheckin':isMobileCheckin};
             $state.go('rover.search', stateParams);
         }
         else {

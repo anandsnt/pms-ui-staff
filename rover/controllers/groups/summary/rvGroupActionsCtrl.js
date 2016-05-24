@@ -1,5 +1,5 @@
-sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvGroupActionsSrv', 'rvUtilSrv',
-    function($scope, $filter, $rootScope, ngDialog, rvGroupActionsSrv, rvUtilSrv) {
+sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvGroupActionsSrv', 'rvUtilSrv', 'dateFilter',
+    function($scope, $filter, $rootScope, ngDialog, rvGroupActionsSrv, rvUtilSrv, dateFilter) {
 
         /*
          *To save the reservation note and update the ui accordingly
@@ -407,7 +407,13 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         $scope.setFreshDate = function(){
 
             $scope.newAction.hasDate = true;
-            $scope.newAction.dueDateObj = new tzIndependentDate($rootScope.businessDate);
+             // CICO-27905
+            // In the stay card, the date due for a new action should default to the greater of the block's from date / business date
+            var businessDate = new tzIndependentDate($rootScope.businessDate),
+                blockFromDate = new tzIndependentDate($scope.groupConfigData.summary.block_from);
+
+            $scope.newAction.dueDateObj = businessDate > blockFromDate ? businessDate : blockFromDate;
+            
             $scope.newAction.date_due = $filter('date')( $scope.newAction.dueDateObj, $rootScope.dateFormat);
             if (!$scope.newAction.time_due){
                 $scope.newAction.time_due = $filter('date')($scope.hotel_time, "HH:mm");
@@ -860,10 +866,15 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                     list[x].assigned = false;
                 }
 
-                list[x].due_at_time = list[x].time_due ? $filter('date')(list[x].due_at_str, "HH:mm") : "00:00";
+                var splitDueTimeString = list[x].due_at_str.split("T");
+
+                // 24 hr format for the dropdown in the right panel
+                list[x].due_at_time = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm");
+                // 12 hr format for binding in the list
+                list[x].due_at_time_str = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "hh:mm a");
 
                 if (typeof list[x].due_at === typeof 'string'){
-                    list[x].due_at_date = $filter('date')(list[x].due_at_str, $rootScope.dateFormat);
+                    list[x].due_at_date = dateFilter(splitDueTimeString[0], $rootScope.dateFormat);
                     list[x].hasDate = true;
                 } else {
                     list[x].hasDate = false;

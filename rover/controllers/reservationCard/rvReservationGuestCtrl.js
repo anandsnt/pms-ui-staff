@@ -28,6 +28,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		 * @return boolean [description]
 		 */
 		function isOccupancyRateConfigured() {
+
 			if ($scope.reservationData.reservation_card.is_hourly_reservation) {
 				// check if current staydate object has a single rate configured
 				var stayDate = _.findWhere($scope.reservationData.reservation_card.stay_dates, {
@@ -172,7 +173,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			var successCallback = function(data) {
 				saveReservation();
 				$scope.errorMessage = '';
-				$scope.$emit('hideLoader');
+				//$scope.$emit('hideLoader');
 			};
 
 			var errorCallback = function(errorMessage) {
@@ -279,12 +280,24 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		$scope.init = function() {
 
 			var successCallback = function(data) {
+				$scope.maxAdultsForReservation = $scope.otherData.maxAdults;
 				$scope.$emit('hideLoader');
 				$scope.guestData = data;
 				presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to revert in case of exceeding occupancy
 				initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to make API call to update if some change has been made
 				$scope.reservationParentData.rooms[0].accompanying_guest_details = data.accompanying_guests_details;
 				$scope.errorMessage = '';
+
+				if($scope.reservationParentData.group.id){
+					if($scope.otherData.maxAdults > 4){
+						$scope.maxAdultsForReservation = 4;
+					} else {
+						scope.maxAdultsForReservation = $scope.otherData.maxAdults;
+					}
+				}
+
+               // $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
+                // if($scope)
 			};
 
 			var errorCallback = function(errorMessage) {

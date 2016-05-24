@@ -27,8 +27,8 @@
 				<span class="select_amount_diff entry select" ng-class="{'disabled': isPastDate}">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
 					<select ng-model="priceDetails.single_amount_perc_cur_symbol" ng-disabled="isPastDate">
-						<option value="%">%</option>
-						<option value="{{currencySymbol}}">{{currencySymbol}}</option>
+						<option value="{{currencySymbol}}" ng-selected="priceDetails.single_amount_perc_cur_symbol == currencySymbol">{{currencySymbol}}</option>
+						<option value="%" ng-selected="priceDetails.single_amount_perc_cur_symbol == '%'">%</option>
 					</select>
 				</span>
 				<br clear="all">
@@ -59,8 +59,8 @@
 				<span class="select_amount_diff entry select" ng-class="{'disabled': isPastDate}">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
 					<select ng-model="priceDetails.double_amount_perc_cur_symbol" ng-disabled="isPastDate">
-						<option value="%">%</option>
-						<option value="{{currencySymbol}}">{{currencySymbol}}</option>
+						<option value="{{currencySymbol}}" ng-selected="priceDetails.double_amount_perc_cur_symbol == currencySymbol">{{currencySymbol}}</option>
+						<option value="%" ng-selected="priceDetails.double_amount_perc_cur_symbol == '%'">%</option>
 					</select>
 				</span>
 				
@@ -88,8 +88,8 @@
 				<span class="select_amount_diff entry select" ng-class="{'disabled': isPastDate}">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
 					<select ng-model="priceDetails.child_amount_perc_cur_symbol" ng-disabled="isPastDate">
-						<option value="%">%</option>
-						<option value="{{currencySymbol}}">{{currencySymbol}}</option>
+						<option value="{{currencySymbol}}" ng-selected="priceDetails.child_amount_perc_cur_symbol == currencySymbol">{{currencySymbol}}</option>
+						<option value="%" ng-selected="priceDetails.child_amount_perc_cur_symbol == '%'">%</option>
 					</select>
 				</span>
 				<br clear="all">
@@ -114,8 +114,8 @@
 				<span class="select_amount_diff entry select" ng-class="{'disabled': isPastDate}">
 					<!-- if is disabled add attribute 'disabled="disabled"'-->
 					<select ng-model="priceDetails.extra_adult_amount_perc_cur_symbol" ng-disabled="isPastDate">
-						<option value="%">%</option>
-						<option value="{{currencySymbol}}">{{currencySymbol}}</option>
+						<option value="{{currencySymbol}}" ng-selected="priceDetails.extra_adult_amount_perc_cur_symbol == currencySymbol">{{currencySymbol}}</option>
+						<option value="%" ng-selected="priceDetails.extra_adult_amount_perc_cur_symbol == '%'">%</option>
 					</select>
 				</span>
 				<br clear="all">

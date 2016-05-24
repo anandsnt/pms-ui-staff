@@ -285,6 +285,48 @@
             }
         }
 
+        &.find-guest {
+            width: 380px;
+
+            li {
+                a {
+                    font-size: 14px;
+                    line-height: 30px;
+                    font-weight: 400;
+                    padding: 10px;
+                    .float;
+
+                    .guest-image {
+                        margin-right: 20px;
+                        .square(30px);
+
+                        &.accompany {
+                            img { 
+                                width: 20px; 
+
+                                &:nth-child(2) {
+                                    top: 10px;
+                                    left: 10px;
+                                }
+                            }
+                        }
+                    }
+
+                    .name { 
+                        font-size: 18px;
+                        font-weight: 600;
+                        .pull-left; 
+                    }
+
+                    .room { 
+                        text-transform: uppercase;
+                        color: @grey3;
+                        .pull-right; 
+                    }
+                }
+            }
+        }
+
         &.find-rates {
             width: 380px;
 
@@ -319,87 +361,6 @@
         }
 
         &.find-user { width: auto; }
-
-        &.find-cards {
-            width: auto;
-
-            li {
-                a {
-                    position: relative;
-                    padding: 10px 20px 10px 50px;
-                    .show;
-
-                    .icons,
-                    .group-info,
-                    img {
-                        position: absolute;
-                        top: 10px;
-                        left: 10px;
-                        .square(30px);
-                        #border-radius > .rounded();
-                    }
-
-                    .icons {
-                        .hide-text;
-
-                        &.icon-company { 
-                            background-position: 7px -3514px;
-                            background-color: @ccard; 
-                        }
-
-                        &.icon-travel-agent { 
-                            background-position: 6px -3634px;
-                            background-color: @tacard; 
-                        }
-
-                        &.icon-group,
-                        &.icon-group-large { 
-                            background-position: 5px -7774px;
-                            background-color: @groupcard; 
-                        }
-
-                        &.icon-allotment { 
-                            background-position: 5px -8433px;
-                            background-color: @allotmentcard; 
-                        }
-                    }
-
-                    .group-info {
-                        font-size: 18px;
-                        line-height: 30px;
-                        text-transform: uppercase;
-                        font-weight: 600;
-                        text-align: center;
-                        color: @grey3;
-                        width: 30px;
-                        background-color: @grey1;
-                    }
-                }
-            }
-        }
-
-        &.find-user { width: auto; }
-
-        &.find-guest{
-            li{
-              height: 50px;
-            }
-            img {
-                 position: absolute;
-                 .square(30px);
-                 #border-radius > .rounded();
-            }
-            .name{
-              font-size: 18px;
-            }
-            .room{
-                 font-size: 14px;
-                 float: right;
-                 margin-right: 10px;
-                 text-transform: uppercase;
-                 color:@grey3
-            }
-         }
     }
 
     .ui-helper-hidden-accessible { .hide; }
@@ -1460,7 +1421,7 @@
                 }
             }
 
-            /* Card Authorization */
+             /*Manual Authorize*/
             &.card-authorize {
                 .size(580px, 920px);
                 padding:0;
@@ -1557,16 +1518,34 @@
                     line-height: 50px;
                     padding:0 10px;
                     margin-bottom: 10px;
+                    position: relative;
                     .calc-width( 100, 20 );
                     .clickable();
 
                     &.item-active {
                         width:100%;
                         .background(@white);
+
+                        .release-auth {
+                            right: 30px;
+                        }
+                    }
+
+                    &.item-payment {
+                        span {
+                            margin-right: 10px;
+                        }
                     }
 
                     .card-logo {
                         margin-right:10px;
+                        width: 40px;
+                        height: 20px;
+                        margin-top: 15px;
+
+                        img {
+                            display: block;
+                        }
                     }
 
                     .number {
@@ -1576,13 +1555,84 @@
                         width:120px;
                     }
 
-
+                    .release-auth {
+                        position: absolute;
+                        width: 70px;
+                        height: 30px;
+                        right: 10px;
+                        font-size: 12px;
+                        line-height: 20px;
+                        padding: 0;
+                        text-align: center;
+                        top: 10px;
+                    }
                 }
                 .actions {
                     margin-top: 20px;
                     padding-top: 19px;
                     border-top: 1px solid rgba(0,0,0,.1);
                 }
+                
+            }
+
+            /*Release Confirmation for Authorization*/
+            &.card-authorize-confirm {
+                .size(290px, 460px);
+                .block-item {
+                    height:50px;
+                    line-height: 50px;
+                    padding:0 10px;
+                    margin-bottom: 10px;
+                    position: relative;
+                    width: 100%;
+                    .faux-clickable();
+
+                    &.item-payment {
+                        span {
+                            width: auto;
+                            margin-right: 10px;
+                            &:last-child {
+                                margin-right: 0;
+                            }
+                        }
+                    }
+
+                    .card-logo {
+                        margin-right:10px;
+                        width: 40px;
+                        height: 20px;
+                        margin-top: 15px;
+
+                        img {
+                            display: block;
+                        }
+                    }
+
+                    .number {
+                        width:85px;
+                    }
+                    .code {
+                        width:120px;
+                    }
+
+                    .release-auth {
+                        position: absolute;
+                        width: 70px;
+                        height: 30px;
+                        right: 10px;
+                        font-size: 12px;
+                        line-height: 20px;
+                        padding: 0;
+                        text-align: center;
+                        top: 10px;
+                    }
+                }
+                .actions {
+                    margin-top: 20px;
+                    padding-top: 19px;
+                    border-top: 1px solid rgba(0,0,0,.1);
+                }
+                 
             }
 
             /* Advanced bill ***/
@@ -1629,13 +1679,24 @@
             &.format-bill {
                 width: 360px;
 
-                label { margin-bottom: 0; }
+                label { 
+                    margin-bottom: 0;
+                    &.checkbox {
+                        text-transform: uppercase;
+                    } 
+                }
 
                 .actions {
                     margin-top: 20px;
                     padding-top: 19px;
                     border-top: 1px solid rgba(0,0,0,.1);
                     .float;
+                }
+
+                &.rooming-list {
+                    .actions {
+                        margin-top: 10px;
+                    }
                 }
 
                 .button { 
@@ -4361,6 +4422,7 @@
                         &.occupancy { .calc-width(35, 10); }
                         &.date { .calc-width(40, 20); }
                         &.room { width: 20%; }
+                        &.full-width { width: 100%; }
                     }
                 }
 
@@ -4381,6 +4443,179 @@
                             clear: both;
                             .show;
                         }
+                    }
+                }
+            }
+
+            /* Group Rooming List Add Rooms or Edit Rooms from Selected Guest ***/
+            &.group-guest-rooms {
+                padding: 30px 0 0 0;
+                .size( 650px, 950px );
+
+                .h2 { margin: 0; }
+                
+                .rooms-header {
+                    margin: 0;
+                    margin-top: 20px;
+                    padding: 0 20px;
+
+                    li {
+                        float: left;
+                        display: block;
+                        padding: 10px;
+                        font-weight: 600;
+                        font-size: 14px;
+                        text-transform: uppercase;
+                        margin: 0;
+
+                        &.guest-name {
+                            width: 370px;
+                        }
+
+                        &.arrival-departure {
+                            width: 240px;
+                        }
+
+                        &.room-type {
+                            width: 200px;
+                        }
+
+                        &.acc-guests {
+                            width: 100px;
+                        }
+                    }
+                }
+
+                .holder {
+                    padding: 0 20px;
+                    .calc-height(100, 175);
+                    overflow: hidden;
+                    position: relative;
+                     .float;
+
+
+                    .wrapper {
+                        padding-bottom: 10px;
+                    }
+                   
+                    .room-item {
+                        position: relative;
+                        .clickable();
+                        margin-bottom: 10px;
+                        line-height: 40px;
+                        
+                        .faux-anchor {
+                            .float;
+                            background-position: 98.5% 50%;
+                        }
+                        
+                        .guest-time {
+                            float: left;
+                            &.guest-time-arrival {
+                                width: 90px;
+                            }
+                        }
+
+                        .guest-status {
+                            margin-top: 10px;
+                            margin-right: 5px;
+                            .size(20px, 20px);
+                            background-size: 80px;
+                            &.check-in {
+                                background-position: 6px -75px;
+                            }
+                            &.check-out {
+                                background-position: 6px -102px;
+                            }
+                        }
+
+                        input {
+                            background-color: @grey1;
+                        }
+                        .room-item-click {
+                           .pull-left();
+                        }
+                        .guest-name,
+                        .arrival-departure,
+                        .room-type,
+                        .acc-guests,
+                        .acc-guests-form  {
+                            padding:10px;
+                            .pull-left();
+                        }
+                        .guest-name {
+                            width: 370px;
+                            .entry {
+                                margin-bottom: 0;
+                            }
+                        }
+
+                        .arrival-departure {
+                            width: 240px;
+                            font-size: 14px;
+                        }
+
+                        .room-type {
+                            width: 200px;
+                            text-transform: uppercase;
+                            line-height: 1;
+                            font-size: 14px;
+                            
+                            strong {
+                                display: block;
+                                padding-top: 7px;
+                                font-weight: 600;
+                                .nowrap();
+                            }
+                            em {
+                                display: block;
+                                .nowrap();
+                            }
+                        }
+
+                        .acc-guests {
+                            width: 100px;
+                            font-weight: 600;
+                            font-size: 18px;
+                        }
+
+                        .acc-guests-form {
+                            width: 100%;
+                            label {
+                                line-height: 1;
+                                margin-bottom: 10px;
+                            }
+
+                            .last {
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+                    .entry {
+                        .calc-width(50, 10);
+                        label { margin: 0; }
+
+                        &.margin {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+
+                .actions {
+                    text-align: center;
+                    padding: 20px;
+                    background-color: rgba(0,0,0,.05);
+                    .box-shadow(0 -2px 2px rgba(0,0,0,.15));
+                    width: 100%;
+                    position: absolute;
+                    bottom: 0;
+                    z-index: 99;
+
+
+                    .button {
+                        display: inline-block;
+                        width: auto;
+                        margin-right: 10px;
                     }
                 }
             }
@@ -4541,8 +4776,8 @@
             /* StayCard Notes / Actions ***/
             &.staycard-notes,
             &.staycard-actions {
+                font-size: 16px;
                 padding: 0;
-                max-height: 540px;
 
                 .modal-header {
                     padding: 20px;
@@ -4559,9 +4794,15 @@
                     }
 
                     strong { 
+                        font-size: 18px;
                         font-weight: 600;
                         line-height: 20px;
-                        .h4; 
+                        margin-right: 20px; 
+                    }
+
+                    span { 
+                        font-size: 16px;
+                        line-height: 20px;
                     }
 
                     .button {
@@ -4578,10 +4819,6 @@
                     padding: 20px;
                     background-color: rgba(0,0,0,.05);
                     .box-shadow(-2px 0 2px rgba(0,0,0,.3));
-                }
-
-                @media only screen and (min-height: 768px) { 
-                    max-height: 620px;
                 }
             }
 
@@ -4624,19 +4861,19 @@
 
                 .modal-header {
 
-                    h1,
-                    strong {
+                    h1 {
                         .calc-width(100, 420);
                         .nowrap();
                     }
-                    
+
                     .dates {
                         position: absolute;
                         top: 23px;
                         right: 200px;
-                        width: 200px;
+                        width: 240px;
 
                         .date { 
+                            font-size: 16px;
                             line-height: 20px; 
 
                             &:first-child { margin-bottom: 5px; }
@@ -4651,7 +4888,7 @@
 
                 .actions-content {
                     position: relative;
-                    .size(460px, 920px);
+                    .size(480px, 920px);
 
                     .content-left {
                         .scrollable { 
@@ -4696,8 +4933,12 @@
 
                         .add-content {
 
-                            label,
-                            .entry { margin-bottom: 0; }
+                            label {
+                                margin-bottom: 0;
+
+                                [color="green"] { color: @green; }
+                                [color="red"] { color: @red; }
+                            }
 
                             .entry:not(.full-width) {
                                 .calc-width(50, 10);
@@ -4777,7 +5018,7 @@
 
                 @media only screen and (min-height: 768px) { 
                     .actions-content { 
-                        height: 540px; 
+                        height: 550px; 
 
                         .content-right {
                             .add-content {
@@ -4800,11 +5041,13 @@
                 width: 420px;
 
                 label {
-                  margin-bottom: 0;
-                  .char-count{
-                    color: @green;
-                    &.full{ color: @red; }
-                  }
+                    margin-bottom: 0;
+                    
+                    .char-count{
+                        color: @green;
+                        
+                        &.full{ color: @red; }
+                    }
                 }
 
                 .entry:not(.full-width) {
@@ -4813,7 +5056,8 @@
                     &.margin { margin-right: 20px; }
                 }
 
-                .date {
+                .date,
+                .search {
                     position: relative;
 
                     .clear-query {
@@ -4824,46 +5068,6 @@
                         visibility: hidden;
                         background-color: @white;
                         .size(38px, 40px);
-
-                        .icons {
-                            position: absolute;
-                            top: 12.5px;
-                            right: 12.5px;
-                            background-color: @grey2;
-                            .hide-text;
-                            .square(15px);
-                            .opacity(0);
-                            .show;
-                            #fade > .out();
-                            #border-radius > .rounded(15px);
-                        }
-
-                        &.visible { 
-                            visibility: visible;
-
-                            .icons {    
-                                .opacity(100); 
-                                #fade > .in(); 
-                            }
-                        }
-
-                        &:hover,
-                        &.active { 
-                            .icons { background-color: @logoPrimary; }
-                        }
-                    }
-                }
-
-                .search {
-                    position: relative;
-
-                    .clear-query {
-                        position: absolute;
-                        top: 30px;
-                        right: 0;
-                        z-index: 99;
-                        visibility: hidden;
-                        .square(40px);
 
                         .icons {
                             position: absolute;

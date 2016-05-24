@@ -120,17 +120,27 @@ sntZestStation.controller('zsTermsConditionsCtrl', [
 		};
 
 		$scope.init = function() {
-			$scope.at = 'terms-conditions';
 			$scope.hotel_settings = $scope.zestStationData;
-			$scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
-			//fetch the idle timer settings
-			$scope.currencySymbol = $scope.zestStationData.currencySymbol;
+			if($scope.zestStationData.kiosk_display_terms_and_condition){
+				$scope.at = 'terms-conditions';
+				
+				$scope.hotel_terms_and_conditions = $scope.zestStationData.hotel_terms_and_conditions;
+				//fetch the idle timer settings
+				$scope.currencySymbol = $scope.zestStationData.currencySymbol;
 
-			setTermsConditionsHeight();
-			$timeout(function() {
-				refreshScroller();
-			}, 600);
-
+				setTermsConditionsHeight();
+				$timeout(function() {
+					refreshScroller();
+				}, 600);
+			}
+			else{
+				//byepass terms and conditions
+				//this is implemented inside terms & conditions 
+				//so as to avoid duplicate check for deposit collection,
+				//CC bypass etc
+				$scope.agreeTerms();
+			};
+			
 		};
 
 		/**

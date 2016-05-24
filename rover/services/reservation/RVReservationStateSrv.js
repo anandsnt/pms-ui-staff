@@ -8,6 +8,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 
 		self.reservationFlags = {
 			outsideStaydatesForGroup: false,
+			borrowForGroups: false,
 			RATE_CHANGED: false,
 			RATE_CHANGE_FAILED: false
 		};
