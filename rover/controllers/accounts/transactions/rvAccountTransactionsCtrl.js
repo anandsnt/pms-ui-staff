@@ -85,8 +85,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var isAnyOneChargeCodeIsExcluded = false;
 			var isAnyOneChargeCodeIsIncluded = false;
 			var billTabsData = $scope.transactionsDetails.bills;
-			var chargeCodes = billTabsData[$scope.currentActiveBill].transactions
-			if(chargeCodes.length>0){
+			var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
+			if(!!chargeCodes && chargeCodes.length>0){
 				_.each(chargeCodes, function(chargeCode,index) {
 				  if(!chargeCode.isSelected){
 				  	isAnyOneChargeCodeIsExcluded = true;
@@ -869,9 +869,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var billTabsData = $scope.transactionsDetails.bills,
 				activeDate 	 = null,
 				dateCount    = 0;
-
-			dateCount  = billTabsData[$scope.currentActiveBill].days.length;
-			activeDate = billTabsData[$scope.currentActiveBill].days[dateCount-1].date;
+			var currentBillDays = billTabsData[$scope.currentActiveBill].days;
+			dateCount  = currentBillDays.length;
+			activeDate = (dateCount>0) ? currentBillDays[dateCount-1].date : null;
 			
 			if(!!activeDate){
 				getBillTransactionDetails( 1, activeDate );
