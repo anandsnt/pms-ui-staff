@@ -96,14 +96,16 @@
                 </label>
                 <div class="has-datepicker">
                     <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
-                    <input id="schedule-start" class="datepicker" value="" placeholder="MM-DD-YYYY" readonly />
+                    <input type="text" class="datepicker" ui-date="startsOnOptions" ng-model="saveParams.startsOnDate" placeholder="MM-DD-YYYY" readonly>
                 </div>
             </div>
+
             <div class="entry">
                 <label>Ends On</label>
                 <div class="entry-data entry-first">
                     <label for="schedule-ends-on-number" class="radio inline">
-                        <input type="radio" name="ends-on" value="number" checked>
+                    	<span class="icon-form icon-radio" ng-class="{ 'checked': saveParams.scheduleEndsOn === 'NUMBER' }"></span>
+                        <input type="radio" name="ends-on" checked ng-model="saveParams.scheduleEndsOn" value="NUMBER">
                         After
                     </label>
                 </div>
@@ -111,21 +113,25 @@
                     <input id="schedule-ends-on-number" type="number" placeholder="No.">
                     <span class="label" ng-bind="getRepeatPer()"></span>
                 </div>
+                <!-- next -->
                 <div class="entry-data entry-first">
                     <label for="schedule-ends-on-date" class="radio inline">
-                        <input id="schedule-ends-on-date" type="radio" name="ends-on" value="date">
+                    	<span class="icon-form icon-radio" ng-class="{ 'checked': saveParams.scheduleEndsOn === 'DATE' }"></span>
+                        <input id="schedule-ends-on-date" type="radio" name="ends-on" ng-model="saveParams.scheduleEndsOn" value="DATE">
                         On
                     </label>
                 </div>
                 <div class="entry-data entry-second">
                     <div class="has-datepicker">
                         <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
-                        <input id="schedule-ends-on-datepicker" class="datepicker" value="" placeholder="MM-DD-YYYY" readonly />
+                        <input type="text" class="datepicker" ui-date="endsOnOptions" ng-model="saveParams.endsOnDate" placeholder="MM-DD-YYYY" readonly>
                     </div>
                 </div>
+                <!-- next -->
                 <div class="entry-data full-width">
                     <label for="schedule-ends-on-never" class="radio inline">
-                        <input type="radio" id="schedule-ends-on-never" name="ends-on" value="number">
+                    	<span class="icon-form icon-radio" ng-class="{ 'checked': saveParams.scheduleEndsOn === 'NEVER' }"></span>
+                        <input type="radio" id="schedule-ends-on-never" name="ends-on" ng-model="saveParams.scheduleEndsOn" value="NEVER">
                         Never
                     </label>
                 </div>

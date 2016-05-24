@@ -35,13 +35,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				var alreadyPresent = _.find($scope.emailList, function(email) {
 					return email === ui.item.value;
 				});
-
 				if ( ! alreadyPresent ) {
 					$scope.emailList.push( ui.item.value ); 
 				}
-
 				this.value = '';
 
+				runDigestCycle();
 				return false;
 			},
 			focus: function(event, ui) {
@@ -113,6 +112,51 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			} else {
 				$scope.saveParams.repeats_every = undefined;
 			}
+
+			if ( !! $scope.selectedScheduleDetails.ends_on_date && ! $scope.selectedScheduleDetails.ends_on_after ) {
+				$scope.saveParams.scheduleEndsOn = 'DATE';
+			} else if ( ! $scope.selectedScheduleDetails.ends_on_date && !! $scope.selectedScheduleDetails.ends_on_after ) {
+				$scope.saveParams.scheduleEndsOn = 'NUMBER';
+			} else {
+				$scope.saveParams.scheduleEndsOn = 'NEVER';
+			}
+
+			var datePickerCommon = {
+				dateFormat: $rootScope.jqDateFormat,
+				numberOfMonths: 1,
+				changeYear: true,
+				changeMonth: true,
+				beforeShow: function(input, inst) {
+					$('#ui-datepicker-div');
+					$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+				},
+				onClose: function(value) {
+					$('#ui-datepicker-div');
+					$('#ui-datepicker-overlay').remove();
+				}
+			};
+			$scope.saveParams.startsOnDate = undefined;
+			if ( !! $scope.selectedScheduleDetails.starts_on ) {
+				$scope.startsOnOptions = angular.extend({
+					onSelect: function(value) {
+						$scope.endsOnOptions.minDate = value;
+					}
+				}, datePickerCommon);
+				$scope.saveParams.startsOnDate = reportUtils.processDate($scope.selectedScheduleDetails.starts_on).today;
+			}
+			$scope.saveParams.endsOnDate = undefined;
+			if ( !! $scope.selectedScheduleDetails.ends_on_date ) {
+				$scope.endsOnOptions = angular.extend({
+					onSelect: function(value) {
+						$scope.startsOnOptions.maxDate = value;
+					}
+				}, datePickerCommon);
+				$scope.saveParams.endsOnDate = reportUtils.processDate($scope.selectedScheduleDetails.ends_on_date).today;
+			}
+
+			console.log( $scope.startsOnDate, $scope.endsOnDate);
+
+			runDigestCycle();
 		};
 
 		var fetchReportSchedulesFrequency = function() {
@@ -154,6 +198,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				$scope.invokeApi( reportsSrv.reportSchedulesPayload, {}, success, failed );
 			}
 		};
+
+		var runDigestCycle = function() {
+            if (!$scope.$$phase) {
+                $scope.$digest();
+            }
+        };
 
 		var init = function() {
 			$scope.selectedSchedule = undefined;
