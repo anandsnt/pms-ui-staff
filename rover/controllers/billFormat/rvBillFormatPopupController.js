@@ -2,6 +2,9 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
 
     BaseCtrl.call(this, $scope);
     $scope.isCompanyCardInvoice = true;
+    $scope.disableCompanyCardInvoice = false;
+    $scope.hideCompanyCardInvoiceToggle = false;
+
     /*
     *  Get the request params for bill settings info
     */
@@ -16,10 +19,46 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
                 params.is_group = true;
                 params.is_type = "Account";
 
+                var card = $scope.groupConfigData.summary;
+                if(!!card.company.name && !!card.travel_agent.name && card.company.name !== '' && card.travel_agent.name !== ''){
+                    // Both cards are attached.
+                }
+                else if(card.company.name === '' && card.travel_agent.name === ''){
+                    // Both cards are not attached.
+                    $scope.hideCompanyCardInvoiceToggle = true;
+                }
+                else if(card.company.name === '' && card.travel_agent.name !== ''){
+                    // Only TA card is attached.
+                    $scope.isCompanyCardInvoice = false;
+                    $scope.disableCompanyCardInvoice = true;
+                }
+                else{
+                    // Only Company card is attached.
+                    $scope.disableCompanyCardInvoice = true;
+                }
+
             } else {
                 params.id = $scope.accountConfigData.summary.posting_account_id;
                 params.is_group = false;
                 params.is_type = "Account";
+
+                var card = $scope.accountConfigData.summary;
+                if(!!card.company.name && !!card.travel_agent.name && card.company.name !== '' && card.travel_agent.name !== ''){
+                    // Both cards are attached.
+                }
+                else if(card.company.name === '' && card.travel_agent.name === ''){
+                    // Both cards are not attached.
+                    $scope.hideCompanyCardInvoiceToggle = true;
+                }
+                else if(card.company.name === '' && card.travel_agent.name !== ''){
+                    // Only TA card is attached.
+                    $scope.isCompanyCardInvoice = false;
+                    $scope.disableCompanyCardInvoice = true;
+                }
+                else{
+                    // Only Company card is attached.
+                    $scope.disableCompanyCardInvoice = true;
+                }
             }
 
         }
