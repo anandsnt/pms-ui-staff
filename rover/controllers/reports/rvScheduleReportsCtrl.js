@@ -121,17 +121,18 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			/**/
 			if ( !! $scope.scheduleParams.starts_on ) {
 				params.starts_on = $filter('date')($scope.scheduleParams.starts_on, 'yyyy/MM/dd');
+			}
+			if ( !! $scope.scheduleParams.repeats_every ) {
+				params.repeats_every = $scope.scheduleParams.repeats_every;
 			} else {
-				params.starts_on = null;
+				params.repeats_every = 0;
 			}
 			if ( $scope.scheduleParams.scheduleEndsOn === 'NUMBER' ) {
-				params.repeats_every = $scope.scheduleParams.repeats_every;
-				params.ends_on_date = null;
+				params.ends_on_after = $scope.scheduleParams.ends_on_after;
 			} else if ( $scope.scheduleParams.scheduleEndsOn === 'DATE' ) {
 				params.ends_on_date = $filter('date')($scope.scheduleParams.ends_on_date, 'yyyy/MM/dd');
-				params.repeats_every = null;
 			} else {
-				params.repeats_every = null;
+				params.ends_on_after = null;
 				params.ends_on_date = null;
 			}
 
@@ -313,6 +314,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			if ( !! $scope.selectedScheduleDetails.ends_on_date && ! $scope.selectedScheduleDetails.ends_on_after ) {
 				$scope.scheduleParams.scheduleEndsOn = 'DATE';
 			} else if ( ! $scope.selectedScheduleDetails.ends_on_date && !! $scope.selectedScheduleDetails.ends_on_after ) {
+				$scope.scheduleParams.ends_on_after = $scope.selectedScheduleDetails.ends_on_after;
 				$scope.scheduleParams.scheduleEndsOn = 'NUMBER';
 			} else {
 				$scope.scheduleParams.scheduleEndsOn = 'NEVER';
