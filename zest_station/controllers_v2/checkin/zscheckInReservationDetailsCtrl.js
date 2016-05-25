@@ -305,13 +305,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                         beginEarlyCheckin(settings);
 
                     } else {
-			var bypassTerms = !$scope.zestStationData.kiosk_display_terms_and_condition;
-                        console.info('bypassTerms: ',bypassTerms);
-                        if (!bypassTerms) { //add early check-in check here
-                            initTermsPage();
-                        } else {
-                            goToSignaturePage();
-                        } 
+			            // terms and condition skip is done in terms and conditions page
+                       initTermsPage();
                     } 
                 };
                 var routeToNext = function(){
