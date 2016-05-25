@@ -3,7 +3,7 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
     BaseCtrl.call(this, $scope);
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
-    $scope.hideCompanyCardInvoiceToggle = false;
+    $scope.hideCompanyCardInvoiceToggle = true;
 
     /*
     *  Get the request params for bill settings info
@@ -14,6 +14,7 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
             params.id = $scope.reservationBillData.reservation_id;
             params.is_type = "Reservation";
         } else {
+            $scope.hideCompanyCardInvoiceToggle = false;
             if (!!$scope.groupConfigData) {
                 params.id = $scope.groupConfigData.summary.group_id;
                 params.is_group = true;
@@ -96,10 +97,10 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
                 params.account_id = $scope.accountConfigData.summary.posting_account_id;
                 params.is_group = false;
             }
+            params.type = $scope.isCompanyCardInvoice ? 'COMPANY' : 'TRAVELAGENT';
 
         }
         params.bill_number = $scope.billNo;
-        params.type = $scope.isCompanyCardInvoice ? 'COMPANY' : 'TRAVELAGENT';
         return params;
     };
 
