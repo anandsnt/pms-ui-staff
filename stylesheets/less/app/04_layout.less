@@ -702,18 +702,22 @@ body { overflow: hidden; }
 	                        width: 100px;
 	                        max-width: 100px;
 
+	                        &.larger-select {
+	                            width: 125px;
+	                            max-width:125px;
+	                        }
+
 	                        select {
-	                        	height:40px;
+	                            height: 40px;
+	                            font-size:14px;
 	                        }
 	                    }
-	                    .larger-select {
-	                        width: 120px;
-	                        max-width: 120px;
-	                    }
+	                     
 	                    .input {
 	                        width: 110px;
 	                        max-width: 110px;
 	                    }
+
 	                    .entry {
 	                        &.actions {
 	                            width: auto;
@@ -725,13 +729,13 @@ body { overflow: hidden; }
 	                            }
 	                        }
 	                        &.search {
-	                            .calc-width(100, 440 );
+	                            .calc-width(100, 445 );
 	                            &.commision-checked {
-	                                .calc-width(100, 530 );
+	                                .calc-width(100, 535 );
 	                            }
 	                        }
 	                        &.options {
-	                            width:360px;
+	                            width:365px;
 	                        }
 	                    }
 	                }

@@ -59,7 +59,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                         } else {
                             classification = '';
                         }
-                        
+
                         if (classification === 'specials') {
                             ispromo = true;
                         } else {
@@ -124,7 +124,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 } else {
                 	symbol = "%";
                 }
-                
+
                 if (symbol === '%') {
                     cancelationPenalty.displayData = cancelationPenalty.name + "   " + "(" + cancelationPenalty.amount + symbol + ")";
                 } else if (symbol === 'Night(s)') {
@@ -161,7 +161,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 commissionData.selected_commission_charge_code_ids = selectedChargeCodes;
             }
             return commissionData;
-        };        
+        };
         /*
          * Set add on data
          */
@@ -211,7 +211,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'is_pms_only' : $scope.rateData.is_pms_only,
                 'is_channel_only' : $scope.rateData.is_channel_only,
                 'code':$scope.rateData.code,
-                'task_id': $scope.rateData.task_id
+                'task_id': $scope.rateData.task_id,
+                'booking_origin_id' : $scope.rateData.booking_origin_id
             };
 
             // Save Rate Success Callback
@@ -288,7 +289,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
         $scope.isEmpty = function (obj) {
             return _.isEmpty(obj);
-        };        
+        };
 
         $scope.deleteEndDate = function() {
             $scope.rateData.end_date = "";
@@ -316,7 +317,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only){
                 $scope.rateData.is_channel_only = false;
             }
-            
+
         };
 
         $scope.toggleChannelOnly = function(){
@@ -327,7 +328,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
         // CICO-24645 -  Show Tax Incl / Excl indicator on changing Charge code.
         $scope.onChangeChargeCode = function(){
-            
+
             var selectedObj = _.find( $scope.rateTypesDetails.charge_codes, function(obj){
                                     return obj.id === $scope.rateData.charge_code_id;
                                 });

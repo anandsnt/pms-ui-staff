@@ -178,6 +178,7 @@ function BaseCtrl($scope) {
     scrollX: false,
     scrollY: true,
     preventDefault: true,
+    interactiveScrollbars: true,
     preventDefaultException: {tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/}
   };
 

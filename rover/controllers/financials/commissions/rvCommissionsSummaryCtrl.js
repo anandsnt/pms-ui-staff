@@ -52,8 +52,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
             'sort_by': {'value': 'NAME_ASC', 'name': 'NAME_ASC'},
             'billStatusOptions': [
                 {'value': 'OPEN', 'name': 'OPEN'},
-                {'value': 'ALL', 'name': 'ALL'},
-                {'value': 'PAID', 'name': 'PAID'}],
+                {'value': 'PAID', 'name': 'PAID'},
+                {'value': 'ALL', 'name': 'ALL'}],
             'sortOptions': [
                 {'value': 'NAME_ASC', 'name': 'NAME ASC'},
                 {'value': 'NAME_DSC', 'name': 'NAME DESC'},
