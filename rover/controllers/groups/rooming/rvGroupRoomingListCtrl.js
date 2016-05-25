@@ -330,6 +330,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             //adding available room count over the data we got
             $scope.roomTypesAndData = _.map(data.result, function(data) {
                 data.availableRoomCount = toI(data.total_rooms) - toI(data.total_pickedup_rooms);
+                data.availableRoomCount = (data.availableRoomCount < 0) ? 0 : data.availableRoomCount;
                 return data;
             });
             //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
@@ -840,8 +841,29 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             };
             $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
         };
+        
+        $scope.filterReservation = function() {
+            initialisePagination();
+            $timeout( $scope.fetchReservations, 10 );
+        };
+        $scope.fiterByQuery = function() {
+            var query = $scope.query.trim(),
+                params,
+                options;
 
-        $scope.debounceFetchReservations = _.debounce( $scope.fetchReservations, 500 );
+            if ( ! query.length || query.length > 2 ) {
+                initialisePagination();
+
+                params = formFetchReservationsParams();
+                options = {
+                    params: params,
+                    successCallBack: successCallBackOfFetchReservations
+                };
+
+                $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
+            }
+        };
+        $scope.debounceFetchReservations = _.debounce( $scope.fiterByQuery, 500 );
 
         /**
          * Function to clear Dates
@@ -930,11 +952,12 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             //default to date, as per CICO-13900 it will be block_to date
             $scope.toDate = refData.block_to;
 
-            //default block_from date
-            $scope.arrival_date = refData.block_from;
-
-            //default block_to date
-            $scope.dep_date = refData.block_to;
+            // GOD KNOW WHY DEFAULTING THE DATES TO THE GROUP START END DATE IS A PROBLEM!!!!!??
+            // #@$%%$^%$^%$^%$^%$@#$
+            // default block_from date
+            // $scope.arrival_date = refData.block_from;
+            // default block_to date
+            // $scope.dep_date = refData.block_to;
         };
 
         /**
@@ -1728,10 +1751,10 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
         };
         /**
-         * Function to pop up for mail Rooming list.
+         * Function to pop up for print/mail option Rooming list.
          * @return - None
          */
-        $scope.sendRoomingList = function() {
+        $scope.openEmailPrintPopup = function() {
                 // if ($scope.groupConfigData && $scope.groupConfigData.summary && !!$scope.groupConfigData.summary.contact_email) {
                 //     $scope.sendEmail($scope.groupConfigData.summary.contact_email);
                 // } else {
@@ -1767,7 +1790,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             var params = {
                 "to_address": mailTo,
                 "group_id": $scope.groupConfigData.summary.group_id,
-                "is_include_rate": $scope.groupConfigData.summary.hide_rates
+                "is_include_rate": !$scope.groupConfigData.summary.hide_rates
             };
             $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, {
                 successCallBack: mailSent,

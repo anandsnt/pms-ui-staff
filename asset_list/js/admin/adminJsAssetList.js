@@ -49,6 +49,7 @@ module.exports = {
 				adminRoot + 'controllers/**/*.js',
 				adminRoot + 'directives/**/*.js',
 				adminRoot + 'services/**/*.js',
+				adminRoot + 'filters/*.js',
 				sharedRoot + 'directives/uiColorpicker/uiColorpicker.js',
 				sharedRoot + 'directives/onScroll/onScroll.js',
 				sharedRoot + 'directives/limitInputRange/limitInputRange.js'

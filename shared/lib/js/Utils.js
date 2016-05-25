@@ -307,6 +307,7 @@ var sixCreditCardTypes = {
       "JC": 'JCB',
       "MC": 'MC',
       "VS": 'VA',
+      "VX": 'VA',
       "MX": 'DS'//Six iframe reurns MX for discover. not good
 };
 

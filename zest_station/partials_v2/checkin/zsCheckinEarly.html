@@ -1,0 +1,61 @@
+<!-- available -->
+<section id="main" class="centered" role="main" click-touch='resetTime()'>
+    <div id="content">
+        <!-- Early Checkin Purchase Nav -->
+        <h1 translate>EARLY_AVAIL_HEADER</h1>
+        <h3 translate>EARLY_AVAIL_SUB_HEADER {{standardCheckinTime}} EARLY_AVAIL_SUB_HEADER_2 {{selectedReservation.earlyCheckinChargeSymbol}}{{earlyCheckinCharge}} </h3>
+        
+           <!-- Early Checkin Available (pre-paid or free) -->
+        <h3 ng-hide="is_early_prepaid && !reservation_in_early_checkin_window" translate>EARLY_AVAIL_SUB_HEADER {{standardCheckinTime}} </h3>
+        <h3 ng-show="is_early_prepaid && !reservation_in_early_checkin_window" translate>EARLY_AVAIL_PURCHASED_REALLY_EARLY</h3>
+        
+         <!-- Early Checkin Unavailable -->
+        <h1 translate>EARLY_HEADER</h1>
+        
+        <nav id="options" role="nav" ng-if="!is_early_prepaid && reservation_in_early_checkin_window && !bypass">
+            <!-- Early Checkin Purchase Nav -->
+            <ul role="menu">
+                <li translate>
+                    <button type="button" class="button option" click-touch="acceptEarlyCheckinOffer()">
+                        <div ng-include="icons.url.key"></div>
+                    </button>
+                    EARLY_AVAIL_PURCHASE
+                    <span translate>
+                        EARLY_AVAIL_PURCHASE_SUB
+                        {{selectedReservation.earlyCheckinChargeSymbol}}{{selectedReservation.earlyCheckinCharge}} 
+                        EARLY_AVAIL_PURCHASE_SUB_2
+                    </span>
+                </li>
+                <li class="break">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li translate>
+                    <button type="button" class="button option" click-touch='checkinLater()'>
+                        <div ng-include="icons.url.watch"></div>
+                    </button>
+                    EARLY_AVAIL_LATER
+                </li>
+            </ul>
+        </nav>
+        
+            
+        <!-- Early Checkin Available (pre-paid or free) -->
+        <div id="message" ng-if="bypass">
+            <h2 ng-show="is_early_prepaid && reservation_in_early_checkin_window" class="nocaps" translate>EARLY_AVAIL_PURCHASED </h2>
+            <h2 ng-show="!is_early_prepaid && reservation_in_early_checkin_window"  class="nocaps" translate>EARLY_AVAIL_FREE </h2>
+
+            <button ng-show="reservation_in_early_checkin_window" type="button" class="button" touch-press='initTermsPage(true)' translate>CONTINUE_TEXT</button>
+            <button ng-show="!reservation_in_early_checkin_window" type="button" class="button" touch-press='clickedOnCloseButton()' translate>DONE</button>
+        </div>
+
+
+        <!-- Early Checkin Unavailable -->
+        <div id="message" ng-if="unavailable">
+            <h2 class="nocaps" translate>EARLY_SUB_1 {{standardCheckinTime}}</h2>
+            <h3 translate>EARLY_SUB_2<br /> EARLY_SUB_3</h3>
+            <button type="button" class="button" touch-press='clickedOnCloseButton()' translate>DONE</button>
+        </div>
+        
+    </div>
+</section>
+

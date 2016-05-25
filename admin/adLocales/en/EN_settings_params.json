@@ -6,6 +6,8 @@
     "AUTO_SETTLEMENT_BY_EOD" : "Auto-Settlement by EOD",
     "EMAIL_RECIPIENT_FOR_EOD_REPORTS" : "Email Recipient for EOD Reports",
     "OFFER_ROOM_DELIVERY_OPTIONS":"Offer room delivery options",
-    "ROOM_KEY_COMMUNICATIONS":"Room key communications"
+    "ROOM_KEY_COMMUNICATIONS":"Room key communications",
+    "PAYMENT_GATEWAY_SETTINGS":"Payment Gateway Settings",
+    "CHECK_AUTH_INTERFACE":"Check guest authorization for interface postings"
 
 

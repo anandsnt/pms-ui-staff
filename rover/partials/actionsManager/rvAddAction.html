@@ -22,7 +22,8 @@
         <span class="icons icon-clear-search" ng-class="{'visble': !!newAction.dueDate}">Clear query</span>
     </button>
     <input id="new-action-due-date" class="datepicker" type="text" ui-date="dueDateOptions"
-           value="{{newAction.dueDate|date:dateFormat}}" readonly
+           readonly
+           ng-model="newAction.dueDate"
            ng-class="{'not-selected': !newAction.dueDate}"/>
 </div>
 <div class="entry">

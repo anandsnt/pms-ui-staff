@@ -467,7 +467,7 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         }); 
         $scope.$on('SOCKET_FAILED',function(){
             console.info('socket failed...');
-                    $scope.prepForOOS($filter('translate')('SOCKET_FAILED'));
+                    $scope.prepForOOS($filter('translate')('SOCKET_FAILED'), true);
             $scope.initErrorScreen();
        });
     };
@@ -481,9 +481,16 @@ sntZestStation.controller('zsReservationSearchCtrl', [
                  $scope.qrCodeScanFailed = true;
                  console.warn('scan failed..');
                  $scope.$digest();
-             } else if (info.msg.indexOf(' : ') !== -1){
+             } else if (info.msg.indexOf(' : ') !== -1 && info.msg.indexOf('$') === -1){
                  //qr code coming from the samsotech will look like "PR_DF_BC1 : somevalue"
                  var reservationId = info.msg.split(' : ')[1];
+                 if (reservationId){
+                    $state.qr_code = reservationId;
+                     $scope.initQRCodeReservation();
+                }
+             } else if (info.msg.indexOf(' : ') !== -1 && info.msg.indexOf('$') !== -1){
+                 //qr code coming from the samsotech will look like "PR_DF_BC1 : somevalue"
+                 var reservationId = info.msg.split('$')[1];
                  if (reservationId){
                     $state.qr_code = reservationId;
                      $scope.initQRCodeReservation();
@@ -653,6 +660,10 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         $scope.qrCodeScanFailed = false;
         $scope.init();
     };
+    $scope.startScanPressed = function(){
+        console.info(': Start QR Code Scan Button Pressed :');
+        $scope.scanQRCode();//starts the QR Code Scanner
+    };
     $scope.initPuk = function(){
         $scope.setScreenIcon('key');
         console.log(':::: ',$state.current.name,' ::::');
@@ -663,13 +674,13 @@ sntZestStation.controller('zsReservationSearchCtrl', [
         
         $scope.mode = "pickup-mode";
         if ($scope.zestStationData.pickup_qr_scan){
-            console.info('start qr code scan...')
-            console.info('Start QR Code Scan');
             
             $scope.at = 'input-qr-code';
             $scope.headingText = "QR_LOOKUP_HEADER";
             $scope.subHeadingText = "QR_LOOKUP_SUB_HEADER";
-            $scope.scanQRCode();//starts the QR Code Scanner
+            
+            
+            
 
         } else {
             normalPickupKeyActions();

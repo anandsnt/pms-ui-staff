@@ -17,7 +17,7 @@ module.exports = {
 			'guestweb_fulton' 	: [ themeJsRoot + 'app_router_fulton.js'],
 			'guestweb_galleria' 	: [ themeJsRoot + 'app_router_galleria.js'],
 			'guestweb_huntley' 	: [ themeJsRoot + 'app_router_huntley.js'],
-			'guestweb_mgm' 		: [ themeJsRoot + 'app_router_mgm.js'],
+			'guestweb_mgm' 		: [ themeJsRoot + 'app_router_mgm_chain.js' , themeJsRoot + 'app_router_aria.js'],
 			'guestweb_montauk' 	: [ themeJsRoot + 'app_router_montauk.js'],
 			'guestweb_nikko' 	: [ themeJsRoot + 'app_router_niko.js'],
 			'guestweb_palms' 	: [ themeJsRoot + 'app_router_palm_spa.js'],
@@ -52,11 +52,12 @@ module.exports = {
 			'guestweb_paradise_point':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_knickerbocker_yacht_club':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_kingsley':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_beacon_hill':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_boston_park':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_avery':[ themeJsRoot + 'app_router_common.js']
-
+			'guestweb_avery':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_newyork':[ themeJsRoot + 'app_router_mgm_chain.js'],
+			'guestweb_mirage': [ themeJsRoot + 'app_router_mgm_chain.js' , themeJsRoot + 'app_router_mirage.js'],
+			'guestweb_ponchartrain':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_valencia_san_antonio':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_monte_carlo' 	: [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte.js']
 		}
 	}
 }
