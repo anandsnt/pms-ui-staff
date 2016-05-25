@@ -149,5 +149,10 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		$scope.searchByName = function() {
 			$state.go('zest_station.checkOutReservationSearch');
 		};
+		
+		$scope.alreadyCheckedOutActions = function(){
+			$scope.$emit('EJECT_KEYCARD');
+			$state.go('zest_station.home');
+		};
 	}
 ]);
