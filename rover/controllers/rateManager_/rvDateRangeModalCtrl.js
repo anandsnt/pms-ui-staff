@@ -46,7 +46,6 @@ angular.module('sntRover')
                 return '';
             }
             var date = new tzIndependentDate($scope.fromDate);
-
             //year
             if(!_.isUndefined($scope.maxRange.year)){
                 date.setFullYear(date.getFullYear() + $scope.maxRange.year);
@@ -61,6 +60,9 @@ angular.module('sntRover')
             if(!_.isUndefined($scope.maxRange.day)){
                 date.setDate(date.getDate() + $scope.maxRange.day);
             }
+
+            //to adjust the 1+30, or 1+365
+            date.setDate(date.getDate() - 1);
             return date;                  
         };
 
