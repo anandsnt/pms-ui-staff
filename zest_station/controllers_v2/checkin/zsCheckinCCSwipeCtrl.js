@@ -274,12 +274,48 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             },1000);
             $scope.socketOperator.observe();
         };
-
+        
+        var initWsSwipe = function(){
+			setTimeOutFunctionToEnsureSocketIsOpened();
+			console.info("websocket: readyState -> " + $scope.socketOperator.returnWebSocketObject().readyState);
+			//open socket if not in open state
+            
+            var socketReady = $scope.socketOperator.returnWebSocketObject().readyState === 1;
+                !socketReady ? $scope.$emit('CONNECT_WEBSOCKET') : listenForSwipe();
+		
+        };
+        var initiateiPadCardReader = function(){
+            if (readLocally()) {
+                    console.warn('start card reader');
+                    $scope.cardReader.startReader(options);
+                } else {
+                    //If cordova not loaded in server, or page is not yet loaded completely
+                    //One second delay is set so that call will repeat in 1 sec delay
+                    if ($scope.numberOfCordovaCalls < 50) {
+                        setTimeout(function() {
+                            $scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls) + parseInt(1);
+                            $scope.initiateCardReader();
+                        }, 2000);
+                    }
+                }
+        }
+        var isSixpay = function(){
+            if ($scope.zestStationData.paymentGateway === 'sixpayments'){
+                return true;
+            } else {
+                return false;
+            }
+        };
+        
+        var reader = $scope.zestStationData.ccReader, writer = $scope.zestStationData.keyWriter;
+            console.info(':: reader :: ',reader,', :: writer :: ',writer);
 
         /**
          * [setup controller]
          */
 		var init = function() {
+                    
+                    
             console.log($stateParams)
             //if at the deposit screen, set the currency symbol and amount due, which should be passed from reservation details
             if (isDepositMode()){
@@ -288,13 +324,18 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             if (isCCAuthMode()){
                 setCCAuthSettings();
             }
-			setTimeOutFunctionToEnsureSocketIsOpened();
-			console.info("websocket: readyState -> " + $scope.socketOperator.returnWebSocketObject().readyState);
-			//open socket if not in open state
+            if (swipeFromSocket()){
+                initWsSwipe();
+            }
+            if (readLocally()){
+                console.info('reading locally');
+                setTimeout(function() {
+                    initiateiPadCardReader();
+                }, 800);
+            }
             
-            var socketReady = $scope.socketOperator.returnWebSocketObject().readyState === 1;
-                !socketReady ? $scope.$emit('CONNECT_WEBSOCKET') : listenForSwipe();
-		};
+                
+                };
 
 
         init();
