@@ -278,6 +278,11 @@ table {
         &.icon-group { background-position: 0 -120px; }
         &.icon-guest-company { background-position: 0 -140px; }
         &.icon-guest-travelagent { background-position: 0 -160px; }
+        &.icon-hold { background-position: 0 -180px;  
+            &.red {
+                background-position: 0 -180px;
+                }
+        }
     }
 
 /* 5. COMPONENTS
@@ -1764,6 +1769,46 @@ table {
                             &:nth-child(6) { width: 120px; }
                         }
                     }
+                }
+            }
+
+            &.financial-adjustment-reports {
+                text-transform: none;
+                table-layout: fixed;
+                tbody {
+                    tr:last-child td {
+                        border-bottom: 1px solid @grey2;
+                    }
+                }
+
+                thead {
+                    th {
+                        &.modified,
+                        &.posted {
+                            width: 80px;
+                        }
+
+                        &.name,
+                        &.modified-by {
+                            width: 100px;
+                        }
+
+                        &.room {
+                            width: 80px;
+                        }
+
+                        &.code {
+                            width: 70px;
+                        }
+
+                        &.amount {
+                            width: 80px;
+                        }
+                    }
+                }
+
+                td.code {
+                    padding-left: 0;
                 }
             }
 
@@ -3347,6 +3392,115 @@ table {
         }
     }
 
+/* Commisions        =============================*/
+.commisions-content {
+    margin: 0 2cm;
+    .commisions-totals {
+        margin-bottom: .5cm;
+        li {
+            margin:0 10pt;
+
+            span {
+                &.amount {
+                    &.red {
+                        color:@grey3;
+                    }
+                }
+            }
+        }
+        .check {
+            display: none;
+        }
+    }
+
+     /* Commision Item***/
+    .commision-item {
+                position: relative;
+                .float;
+                .data {
+                     
+                    width: 40%;
+                    .pull-left();
+                    .meta-data {
+                        display: block;
+                        width: 100%;
+                        clear: both;
+                    }
+
+                    h2 {
+                        line-height: 1;
+                        white-space: normal;
+                        margin-bottom: 6px;
+                        padding-right: 5px;
+                        display: block;
+                        vertical-align: top;
+                    }
+   
+                    .icons {
+                        display: inline;
+                        line-height: 20px;
+                        height: 20px;
+                        overflow: hidden; 
+                    }
+
+                    .icon-hold {
+                        position: absolute;
+                        left: -40px;
+                        top: 0;
+                        bottom: 0;
+                        margin: auto;
+                    }
+
+                    .icons {
+                        color: @grey3;
+                        padding-left: 20px;
+                    }
+
+                    .icon-location,
+                    .icon-guest-travelagent {
+                        background: none;
+                        padding: 0;
+                        display: block;
+                        .pull-left();
+                    }
+
+                    .icon-location {
+                            width: 70%;
+                    }
+                     .icon-guest-travelagent { 
+                            width: 30%;
+                     }
+                }
+
+                .info-holder {
+                    float: right;
+                    width: 60%;
+                }
+
+                .info {
+                    margin-top: 5px;
+                    text-align: center;
+                    width: 25%;
+                    color: @grey3;
+                    .pull-left;
+
+                    strong {
+                        font-size: 20px;
+                        line-height: 1.25em;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        color: @textColor;
+                        .show;
+                        &.red { color: @grey3; }
+                    }
+
+                    span {
+                        font-size: 14px;
+                        text-transform: uppercase;
+                    }
+                }
+            }
+}
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
