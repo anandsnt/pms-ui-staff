@@ -6,9 +6,11 @@
             <ad-form-title full-width="true" form-title="{{'EXACT_ONLINE_SUB_TITLE'| translate}}"></ad-form-title>
             <fieldset class="holder left">
                 <ad-toggle-button is-checked="exactOnlineSetup.active" label="{{'EXACT_ONLINE_ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
-                <ad-textbox inputtype="text" value="exactOnlineSetup.tracker_access_url" name="access-url" id="hotel-code" label="{{'EXACT_ONLINE_ACCESS_URL'| translate}}" styleclass="full-width" ng-if="exactOnlineSetup.active"></ad-textbox>
-                <ad-textbox inputtype="text" value="exactOnlineSetup.tracker_user_name" label="{{'EXACT_ONLINE_USERNAME'| translate}}" ng-if="exactOnlineSetup.active" styleclass="full-width"></ad-textbox>
-                <ad-textbox inputtype="password" value="exactOnlineSetup.tracker_pass_word" label="{{'EXACT_ONLINE_PASSWORD'| translate}}" styleclass="full-width" ng-if="exactOnlineSetup.active"></ad-textbox>
+            </fieldset>
+            <fieldset class="holder left" ng-if="exactOnlineSetup.active">
+                <a  target="_self" href="{{exactOnlineSetup.oauth_url}}" class="button green">
+                    Login to Exact Online
+                </a>
             </fieldset>
             <ad-save-cancel-area save-action="saveExactOnlineSetup" cancel-action="goBackToPreviousState"></ad-save-cancel-area>
         </form>
