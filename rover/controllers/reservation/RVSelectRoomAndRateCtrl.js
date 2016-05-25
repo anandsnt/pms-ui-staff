@@ -214,11 +214,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				var payLoad = {
 					from_date: ARRIVAL_DATE,
 					to_date: DEPARTURE_DATE,
-					company_id: $scope.reservationData.company.id,
-					travel_agent_id: $scope.reservationData.travelAgent.id,
-					group_id: !$scope.borrowForGroups ? ($scope.reservationData.group.id || $scope.reservationData.allotment.id) : '',
-					promotion_code: $scope.reservationData.searchPromoCode,
-					promotion_id: $scope.reservationData.promotionId,
+					//CICO-28657 Removed all params - company id, grp id, tr ag id, etc
+
 					override_restrictions: $scope.stateCheck.showClosedRates,
 					adults: occupancies[0].adults,
 					children: occupancies[0].children,
@@ -313,13 +310,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						payLoad.room_type_id = $scope.stateCheck.preferredType;
 					}
 				}
-				//Add these params to API only in Reccommended tab. CICO-28657
+				//Add these params to API - only in Reccommended tab. CICO-28657
 				if($scope.stateCheck.activeView === 'RECOMMENDED'){
 
-					payLoad.company_id = $scope.reservationData.company.id;
-					payLoad.travel_agent_id = $scope.reservationData.travelAgent.id;
-					group_id = $scope.reservationData.group.id || $scope.reservationData.allotment.id;
-					promotion_code = $scope.reservationData.searchPromoCode;
+					payLoad.company_id = $stateParams.company_id;
+					payLoad.travel_agent_id = $stateParams.travel_agent_id;
+					payLoad.group_id = $stateParams.group_id || $stateParams.allotment_id;
+					payLoad.promotion_code = $stateParams.promotion_code;
 				}
 
 				$scope.callAPI(RVRoomRatesSrv.fetchRateADRs, {
@@ -896,11 +893,24 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				if ($scope.stateCheck.activeView === "RATE" || $scope.stateCheck.activeView === "RECOMMENDED") {
 					$scope.stateCheck.rateFilterText = "";
-					fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
-						$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
-						generateRatesGrid(response.results);
-						$scope.refreshScroll();
-					});
+					var isReccommendedTabApiRequired = false;
+					if($scope.stateCheck.activeView === "RATE"){
+						isReccommendedTabApiRequired = true;
+					} else if(($scope.stateCheck.activeView === "RECOMMENDED") && ($stateParams.travel_agent_id || $stateParams.company_id
+						 || $stateParams.group_id || $stateParams.allotment_id
+						 || $stateParams.promotion_code)){
+						isReccommendedTabApiRequired = true;
+					}
+					if(isReccommendedTabApiRequired){
+						fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
+							$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
+							generateRatesGrid(response.results);
+							$scope.refreshScroll();
+						});
+					} else {
+						generateRatesGrid([]);
+					}
+
 				} else if ($scope.stateCheck.activeView === "ROOM_TYPE") {
 					fetchRoomTypesList();
 				}
