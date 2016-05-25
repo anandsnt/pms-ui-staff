@@ -243,25 +243,29 @@
                                 font-style: italic;
                           
                                 .no-expense,
-                                .dual-toggle,
-                                .toggle {
+                                .toggle{
                                     border-radius: 0;
-                                    font-weight: normal;                      
+                                    font-weight: normal;
+                      
                                 }
-
                                 &.check-out {
                                     padding-right: 0;
                                 }
 
                                 &.active {
                                     font-style: normal;
+                                    height: 50px;
                                     .price {
                                         font-weight: 600;
                                     }
                                 }
 
-                                &.today .dual-toggle,
                                 &.today .toggle {
+                                    color: @blue;
+                                }
+
+                                .active,
+                                &.today .active, {
                                     .gradient( @orangeEnd, @orangeStart);
                                     color: @white;
                                 }
