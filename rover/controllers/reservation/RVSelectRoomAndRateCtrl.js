@@ -1229,10 +1229,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 						ROOMS[roomIndex].demographics.market = firstRateMetaData.market_segment_id === null ? '' : firstRateMetaData.market_segment_id;
 						ROOMS[roomIndex].demographics.source = firstRateMetaData.source_id === null ? '' : firstRateMetaData.source_id;
+						ROOMS[roomIndex].demographics.origin = firstRateMetaData.booking_origin_id === null ? '' : firstRateMetaData.booking_origin_id;
 
 						if (roomIndex === 0) {
 							$scope.reservationData.demographics.source = ROOMS[roomIndex].demographics.source;
 							$scope.reservationData.demographics.market = ROOMS[roomIndex].demographics.market;
+							$scope.reservationData.demographics.origin = ROOMS[roomIndex].demographics.origin;
 						}
 					}
 
