@@ -69,20 +69,20 @@
                                 </li>
 
                                 <li class="days">
-                                    <button class="only-icon prev" ng-class="{'disabled': billData.bottom}" ng-show="billData.days" ng-click="dateScroll.prev(billData)">
+                                    <button class="only-icon prev" ng-class="{'disabled': billData.disablePrev}" ng-show="billData.days" ng-click="summaryDateBtnGroup.prev(billData)">
                                        <span class="icons icon-double-arrow rotate-left"></span>
                                     </button>
                                     <div class="days-wrapper">
                                         <ul class="wrapper">
-                                            <li class="active" ng-repeat="days in billData.days"  ng-show="days.isShown" click-touch="clickedSummaryDate(days.date)">
-                                                <a class="toggle" type ="button" ng-class="{'active' : (billData.activeDate===days.date)}">
+                                            <li class="active" ng-class="{'today' : (businessDate === days.date)}" ng-repeat="days in billData.days"  ng-show="days.isShown" click-touch="clickedSummaryDate(days.date)">
+                                                <a class="toggle" type ="button" ng-class="{'active' : (billData.activeDate === days.date)}">
                                                     <span class="day">{{days.date | date:'MMM'}} {{days.date | date:'dd'}}</span>
                                                     <span class="price">{{currencySymbol}}{{days.total_amount | number: precisonZero}}</span>
                                                 </a>
                                             </li>
                                         </ul>
                                     </div>
-                                    <button class="only-icon next" ng-show="billData.days" ng-class="{'disabled': billData.top}" ng-click="dateScroll.next(billData)">
+                                    <button class="only-icon next" ng-show="billData.days" ng-class="{'disabled': billData.disableNext}" ng-click="summaryDateBtnGroup.next(billData)">
                                        <span class="icons icon-double-arrow rotate-right"></span>
                                     </button>
                                 </li>
@@ -157,6 +157,15 @@
                                     </tr>
                                 </thead>
                                 <tfoot>
+                                    <tr class="pagination" ng-show="billData.total_count > perPage && billData.transactions.length > 0">
+                                        <td colspan="8">
+                                            <div class="search-pagination">
+                                                <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
+                                                <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
+                                                <p>{{ 'SHOWING' | translate }} <strong>{{ billData.start }}-{{ billData.end }}</strong>  {{ 'OF' | translate }} <strong>{{ billData.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     <tr class="active edit">
                                         <td colspan="3" class="total-label">       <button type="button" class="button with-icon only-icon blue inline" click-touch="showFormatBillPopup(billData.bill_number)">
                                             <span class="icons icon-invoice"></span>

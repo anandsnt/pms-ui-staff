@@ -32,8 +32,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$q,
 		jsMappings) {
 
-
 		BaseCtrl.call(this, $scope);
+		$scope.perPage = 50;
+		$scope.businessDate = $rootScope.businessDate;
 
 		$scope.hasMoveToOtherBillPermission = function() {
         	return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
@@ -190,9 +191,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var onTransactionFetchSuccess = function(data) {
 
 			$scope.transactionsDetails = data;
+			
+			configSummaryDateFlags();
 			loadDefaultBillDateData();
 
-			//$scope.refreshScroller('registration-content');
 			$scope.refreshScroller('bill-tab-scroller');
 			$scope.refreshScroller('billDays');
 			setChargeCodesSelectedStatus(false);
@@ -320,20 +322,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				var width = $('#registration-summary ul li').width() * ($scope.transactionsDetails.bills.length + 1);
 			}
 			return width;
-
 		};
-
-
-		/*$scope.showDayRates = function(dayIndex) {
-			console.log(dayIndex);
-			if ($scope.dayRates !== dayIndex) {
-				$scope.dayRates = dayIndex;
-			} else {
-				$scope.dayRates = -1;
-			}
-			$scope.refreshScroller('registration-content');
-
-		};*/
 
 		$scope.showActiveBill = function(index) {
 
@@ -353,9 +342,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.currentActiveBill = billIndex;
 			loadDefaultBillDateData();
 		};
-
-
-		
 
 		$scope.openPostCharge = function( activeBillNo ) {
         // Show a loading message until promises are not resolved
@@ -860,56 +846,38 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	    	});
     	};
 
-    	// CICO-25088 starts here ../
+    	// CICO-25088 starts here ..//
     	/*
-    	 *	Load default bill (date specific) data.
+    	 *	Load bill data on active bill with default date selected.
     	 */
     	var loadDefaultBillDateData = function(){
-    		
-			var billTabsData = $scope.transactionsDetails.bills,
-				activeDate 	 = null,
-				dateCount    = 0;
-			var currentBillDays = billTabsData[$scope.currentActiveBill].days;
-			dateCount  = currentBillDays.length;
-			activeDate = (dateCount>0) ? currentBillDays[dateCount-1].date : null;
-			
-			if(!!activeDate){
-				getBillTransactionDetails( 1, activeDate );
-				billTabsData[$scope.currentActiveBill].activeDate = activeDate;
+    		var activebillTab 	= $scope.transactionsDetails.bills[$scope.currentActiveBill];
+    		// Load the data only if an active date is present and there is no data already fetched.
+			if(!!activebillTab.activeDate && activebillTab.transactions.length === 0 ){
+				getBillTransactionDetails();
 			}
     	};
 
     	// Refresh registration-content scroller.
-		var refreshRegContent = function() {
+		var refreshRegContentScroller = function() {
 			$timeout(function() {
 				$scope.refreshScroller('registration-content');
 			}, 500);
 		};
-
-    	var onBillTransactionFetchSuccess = function(data){
-    		
-    		var billTabsData = $scope.transactionsDetails.bills;
-
-    		billTabsData[$scope.currentActiveBill].transactions = [];
- 			billTabsData[$scope.currentActiveBill].transactions = data.transactions;
-
- 			populateDateScroll(billTabsData);
- 			refreshRegContent();
-    	};
-
-    	//Date scroll functions
-        $scope.dateScroll = {
+		
+    	// Handle the summary day shift functionality.
+        $scope.summaryDateBtnGroup = {
             showCount: 5,
             next: function(billData) {
                 var length = billData.days.length - 1;
                 if(billData.currentActive < length) {
-                    billData.currentActive++;
+                    billData.currentActive ++;
                     billData.days[billData.currentActive].isShown = true;
                     billData.days[billData.currentActive - this.showCount].isShown = false;
                     if (billData.currentActive === length) {
-                        billData.top = true;
+                        billData.disableNext = true;
                     }
-                    billData.bottom = false;
+                    billData.disablePrev = false;
                 } 
             },
             prev: function(billData) {
@@ -917,10 +885,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
                     billData.days[billData.currentActive].isShown = false;
                     billData.days[billData.currentActive-this.showCount].isShown = true;
                     if (billData.currentActive === this.showCount) {
-                        billData.bottom = true;
+                        billData.disablePrev = true;
                     }
-                    billData.currentActive--;
-                    billData.top = false;
+                    billData.currentActive --;
+                    billData.disableNext = false;
                 }
             }
         };
@@ -929,40 +897,65 @@ sntRover.controller('rvAccountTransactionsCtrl', [
          * Function to populate date isShown data
          * @param {array} bills array
          */
-        var populateDateScroll = function(bills) {
-            var showCount = $scope.dateScroll.showCount;
+        var configSummaryDateFlags = function() {
+            var showCount = $scope.summaryDateBtnGroup.showCount,
+            	bills = $scope.transactionsDetails.bills;
+
             angular.forEach(bills, function(bill, key) {
-                var i = 0, length;
-                var length = bill.days.length;
-                if(length > showCount){
-                    bill.bottom = false;                    
-                    while(i < (length - showCount)) {
+                var i = 0,
+                dateCount = bill.days.length;
+                if(dateCount > showCount){
+                    bill.disablePrev = false;                    
+                    while(i < (dateCount - showCount)) {
                         bill.days[i].isShown = false;
                         i++;
                     }
-                } else {
-                    bill.bottom = true;
                 }
-                while(i < length) {
+                else {
+                    bill.disablePrev = true;
+                }
+                while(i < dateCount) {
                     bill.days[i].isShown = true;
                     i++;
                 }
-                bill.currentActive = (length-1);
-                bill.top = true;
+                bill.currentActive 	= (dateCount-1);
+                bill.disableNext 	= true;
+                bill.activeDate 	= (dateCount>0) ? bill.days[dateCount-1].date : null;
             });
         };
+
+        // Success callback for transaction fetch API.
+    	var onBillTransactionFetchSuccess = function(data){
+    		
+    		var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+
+    		activebillTab.transactions = [];
+ 			activebillTab.transactions = data.transactions;
+ 			activebillTab.total_count  = data.total_count;
+
+ 			// Compute the start, end and total count parameters
+            if(activebillTab.nextAction){
+                activebillTab.start = activebillTab.start + $scope.perPage;
+            }
+            if(activebillTab.prevAction){
+                activebillTab.start = activebillTab.start - $scope.perPage;
+            }
+            activebillTab.end = activebillTab.start + activebillTab.transactions.length - 1;
+
+ 			refreshRegContentScroller();
+    	};
 
     	/**
 		 * API calling method to get the bill transaction details
 		 * @return - undefined
 		 */
-		var getBillTransactionDetails = function( page, date ) {
-			var billTabsData = $scope.transactionsDetails.bills;
+		var getBillTransactionDetails = function() {
+			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
 			var params = {
-				'bill_id'	: billTabsData[$scope.currentActiveBill].bill_id,
-				'date'		: date,
-				'page'		: page,
-				'per_page'	: 50
+				'bill_id'	: activebillTab.bill_id,
+				'date'		: activebillTab.activeDate,
+				'page'		: activebillTab.page_no,
+				'per_page'	: $scope.perPage
 			};
 			var options = {
 				successCallBack: onBillTransactionFetchSuccess,
@@ -971,11 +964,53 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI(rvAccountTransactionsSrv.fetchBillTransactionDetails, options);
 		};
 
+		/*
+		 *	Handle each summary day click - load the day transaction.
+		 *	@param {String} current selected date.
+		 *	@return - undefined
+		 */
 		$scope.clickedSummaryDate = function( date ){
-			getBillTransactionDetails( 1, date );
-			var billTabsData = $scope.transactionsDetails.bills;
-			billTabsData[$scope.currentActiveBill].activeDate = date;
+			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+			activebillTab.activeDate = date;
+			getBillTransactionDetails();
 		};
+
+		// Pagination block starts here ..
+
+	    $scope.loadNextSet = function() {
+	    	var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+	        activebillTab.page_no++;
+	        activebillTab.nextAction = true;
+	        activebillTab.prevAction = false;
+	        getBillTransactionDetails();
+	    };
+
+	    $scope.loadPrevSet = function() {
+	    	var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+	        activebillTab.page_no--;
+	        activebillTab.nextAction = false;
+	        activebillTab.prevAction = true;
+	        getBillTransactionDetails();
+	    };
+
+	    $scope.isNextButtonDisabled = function() {
+	    	var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+	        var isDisabled = false;
+	        if (!!activebillTab && (activebillTab.end >= activebillTab.total_count)) {
+	            isDisabled = true;
+	        }
+	        return isDisabled;
+	    };
+
+	    $scope.isPrevButtonDisabled = function() {
+	    	var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+	        var isDisabled = false;
+	        if (activebillTab.page_no === 1) {
+	            isDisabled = true;
+	        }
+	        return isDisabled;
+	    };
+	    // Pagination block ends here ..
 
 	}
 ]);
