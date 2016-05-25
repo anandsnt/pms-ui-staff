@@ -1,0 +1,37 @@
+<!-- email entry mode -->
+<section id="main" role="main" ng-show=" mode === 'EMAIL_ENTRY_MODE'" class="centered">
+    <div id="content">
+        <h1 translate>TYPE_EMAIL_IN</h1>
+        <h3 translate>TYPE_EMAIL_IN_SUB</h3>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input type="text" id="input_text" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" class="start-focused" ng-keydown="resetTime()" ng-model='email' enter-press="goToNext()" value="" touch-press />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': email.length < 1}" translate>NEXT_BTN</button>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- email invalid mode -->
+<section id="main" role="main" ng-show=" mode === 'EMAIL_INVLAID_MODE'" class="centered">
+    <div id="content">
+        <h1 translate>EMAIL_ERR_HEADER</h1>
+        <h2 translate>EMAIL_ERR_HEADER_SUB</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press="reEnterText()">
+                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    Re-Type
+                    <span>"{{email}}"</span>
+                </li>
+            </ul>
+        </nav>
+        <div id="actions" class="align-right">
+            <button type="button" class="button transparent" click-touch="skipEmail()">Skip This</button>
+        </div>
+    </div>
+</section>

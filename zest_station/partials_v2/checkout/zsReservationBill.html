@@ -1,0 +1,80 @@
+<!-- The bill display section -->
+<section id="main" role="main" class="centered" ng-hide="printOpted" click-touch='resetTime()'>
+    <div id="content">
+        <h1>{{'BILL_REVIEW' |translate}}</h1>
+        <div id="flex-holder">
+            <div id="textual" class="review-bill pull-left scrollable" ng-iscroll="bill-list">
+                <div class="wrapper">
+                    <div id="bill">
+                        <p>
+                            <strong>{{first_name}}&nbsp;{{last_name}}</strong>
+                            <span ng-show="!zestStationData.hotel_settings.is_hourly_rate_on">{{days_of_stay}} nights</span>
+                            <span ng-show="zestStationData.hotel_settings.is_hourly_rate_on">{{hours_of_stay}} hours</span>
+                        </p>
+                        <div id="bill-grid">
+                            <div id="grid-head">
+                                <div class="row">
+                                    <span class="cell date" translate>BILL_DATE</span>
+                                    <span class="cell desc" translate>BILL_DESC</span>
+                                    <span class="cell amount" translate>BILL_AMT</span>
+                                </div>
+                            </div>
+                            <div id="grid-body">
+                                <div class="row" ng-repeat="bill in billData">
+                                    <span class="cell date">{{ bill.date}}</span>
+                                    <span class="cell desc">{{bill.description}}</span>
+                                    <span class="cell amount">{{currency}}{{bill.amount}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul id="rate">
+                        <li class="sub">{{'BILL_SUB' |translate}}<span>{{zestStationData.currency}}{{net_amount}}</span></li>
+                        <li class="sub">{{'BILL_DEP' |translate}}<span>{{zestStationData.currency}}{{deposit}}</span></li>
+                        <li class="total">{{'BILL_BAL' |translate}}<span>{{zestStationData.currency}}{{balance}}</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="actions" class="pull-right">
+                <button type="button" class="button" touch-press='nextClicked()'>{{'BILL_NEXT' |translate}}</button>
+                <p><strong>{{'BILL_QUEST' |translate}}</strong>{{'BILL_SUB_QUESTION' |translate}}</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- print option -->
+<div ng-controller="zsPrintBillCtrl">
+    <section id="main" role="main" class="centered" ng-show="printOpted">
+        <div id="content">
+            <h1>{{'END_THANKS' |translate}}</h1>
+            <!--h3 ng-show="email.length>0">{{'EMAILED_BILL' |translate}}
+        </h3-->
+            <nav id="options" role="nav">
+                <ul role="menu">
+                    <li>
+                        <button type="button" class="button option" touch-press='printBill()'>
+                            <!--div ng-include="'/assets/zest_station/css/icons/print.svg'"></div-->
+                            <div ng-include="icons.url.print"></div>
+                        </button>
+                        {{'PRINT_BILL' |translate}}
+                    </li>
+                    <li class="break">
+                        <span translate>OR_TEXT</span>
+                    </li>
+                    <li>
+                        <button type="button" class="button option" touch-press='clickedNoThanks()'>
+                            <!--div ng-include="'/assets/zest_station/css/icons/no-print.svg'"></div-->
+                            <div ng-include="icons.url.noprint"></div>
+                        </button>
+                        {{'NO_THX' |translate}}
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+    <!-- print starts here -->
+    <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
+    </div>
+    <div ng-include="'/assets/partials_v2/checkout/zsYotelBillPrint.html'" ng-if="zestStationData.theme === 'yotel'">
+    </div>
+</div>

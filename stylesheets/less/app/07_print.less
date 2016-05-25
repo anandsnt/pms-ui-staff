@@ -1772,6 +1772,46 @@ table {
                 }
             }
 
+            &.financial-adjustment-reports {
+                text-transform: none;
+                table-layout: fixed;
+                tbody {
+                    tr:last-child td {
+                        border-bottom: 1px solid @grey2;
+                    }
+                }
+
+                thead {
+                    th {
+                        &.modified,
+                        &.posted {
+                            width: 80px;
+                        }
+
+                        &.name,
+                        &.modified-by {
+                            width: 100px;
+                        }
+
+                        &.room {
+                            width: 80px;
+                        }
+
+                        &.code {
+                            width: 70px;
+                        }
+
+                        &.amount {
+                            width: 80px;
+                        }
+                    }
+                }
+
+                td.code {
+                    padding-left: 0;
+                }
+            }
+
             &.forecast-reports {
                 thead {
                     tr {
@@ -2949,6 +2989,20 @@ table {
                 text-align: right;
                 
             }
+
+            &.account-info {
+                .info-bottom {
+                    .float;
+                    margin: .5cm 0;
+                }
+
+                .info-right,
+                .info-bottom {
+                    strong {
+                        display: inline;
+                    }
+                }
+            }
         }
 
         .guest-info {
@@ -2977,6 +3031,14 @@ table {
             &.top-header {
                 margin-top: 0;
                 height: 1.5cm;
+                
+                img {
+                    position: absolute;
+                    height: 30px;
+                    top: -30px;
+                    right: 0;
+                }
+                
                 h1 {
                     font-size:18pt;
                     font-weight: 600;
