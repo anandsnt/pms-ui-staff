@@ -6,7 +6,7 @@ const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItem
 		        <td>        
 		           <button type="button" 
 		           		className="button blue"
-		           		onClick={(e) => { goToPrevPage(e); }}>
+		           		onTouchEnd={(e) => {e.stopPropagation(); goToPrevPage(e); }} onClick={(e) => {e.stopPropagation(); goToPrevPage(e); }}>
 		               	{topPageButtonText}
 		           </button>
 		        </td>
@@ -34,7 +34,8 @@ const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItem
 		        <td>
 		           <button type="button" 
 		           		className="button blue"
-		           		onClick={(e) => { goToNextPage(e); }}>
+		           		onTouchEnd={(e) => {e.stopPropagation(); goToNextPage(e); }}
+		           		onClick={(e) => { e.stopPropagation(); goToNextPage(e); }}>
 		               	{bottomPageButtonText}
 		           </button>
 		        </td>
