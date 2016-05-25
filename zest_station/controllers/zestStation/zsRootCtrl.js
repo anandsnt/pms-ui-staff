@@ -1316,7 +1316,7 @@ sntZestStation.controller('zsRootCtrl', [
         _.extend(zsHotelDetailsSrv.data, zestStationSettings);
         $scope.settings = zestStationSettings;
         $scope.setupIdleTimer();
-        $scope.zestStationData.guest_bill.print = ($scope.zestStationData.guest_bill.print && $scope.zestStationData.is_standalone) ? true : false;
+        $scope.zestStationData.guest_bill.print = $scope.zestStationData.guest_bill.print ? true : false;
         $scope.fetchHotelSettings();
         $scope.getWorkStation();
         $scope.getHotelStationTheme();
