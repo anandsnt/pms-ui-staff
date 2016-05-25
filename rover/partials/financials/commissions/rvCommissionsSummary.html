@@ -116,15 +116,15 @@
                                 <span>Open Bills</span>
                             </div>
                             <div class="info">
-                                <strong>{{currencySymbol}}{{account.total_revenue}}</strong>
+                                <strong>{{currencySymbol}}{{account.total_revenue | number: precisonTwo}}</strong>
                                 <span>Revenue</span>
                             </div>
                             <div class="info">
-                                <strong class="green">{{currencySymbol}}{{account.commission_to_date}}</strong>
+                                <strong class="green">{{currencySymbol}}{{account.commission_to_date | number: precisonTwo}}</strong>
                                 <span>To Date</span>
                             </div>
                             <div class="info">
-                                <strong ng-class="{'red': account.commission_owing > 0 }">{{currencySymbol}}{{account.commission_owing}}</strong>
+                                <strong ng-class="{'red': account.commission_owing > 0 }">{{currencySymbol}}{{account.commission_owing | number: precisonTwo}}</strong>
                                 <span>Owing</span>
                             </div>
                         </div>
