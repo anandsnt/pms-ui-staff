@@ -482,7 +482,10 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.$on('MAKE_KEY_ERROR',function(evt, response){
             $scope.setLastErrorReceived(response);
             $scope.$emit('hideLoader');
-            $state.go('zest_station.key_error');
+            var current = $state.current.name;
+            if (current !== 'zest_station.card_sign'){
+                $state.go('zest_station.key_error');
+            }
         });
 
 
@@ -1049,6 +1052,13 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.idleTimer = timerInt;
             };
             $scope.handleIdleTimeout = function(){
+                console.info('current: ',$state.current.name);
+                var current = $state.current.name;
+                if (current === 'zest_station.key_error' || current === 'zest_station.check_in_keys'){
+                    $scope.zestStationData.wsIsOos = false;//dont place oos if coming form these screens to home screen
+                    //if the workstation is legitimately oos, the status update will place it oos
+                }
+                
                 if ($state.current.name !== 'zest_station.oos' && 
                         $state.current.name !== 'zest_station.admin-screen' && 
                         $state.current.name !== 'zest_station.admin'){
