@@ -1,0 +1,22 @@
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
+    <div id="selected_hotel" data-view="HotelExternalMappingsView">
+        <section ng-init="fetchExternalMappingItems()">
+            <header class="content-title float">
+                <h2>Back Office Interfaces</h2>
+                <a ui-sref="admin.dashboard({menu:selectedIndex})" class="action back" translate>BACK</a>
+            </header>
+        </section>
+    </div>
+    <section class="content-scroll">
+        <ul class="dashboard-items float">
+            <li ng-repeat="submenu in subComponents">
+                <a data-type="load-listing" class="{{submenu.icon_class}}">
+                    {{submenu.name}}
+                </a>
+                <a ng-controller="ADMappingCtrl" class="text" data-type="load-listing"
+                   ng-click="clickedMenuItem($event, submenu.state); setActiveItem(submenu)">{{submenu.name}}
+                </a>
+            </li>
+        </ul>
+    </section>
+</section>

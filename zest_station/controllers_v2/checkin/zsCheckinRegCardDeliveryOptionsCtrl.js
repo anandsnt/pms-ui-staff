@@ -12,11 +12,11 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 	function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsUtilitySrv, zsGeneralSrv, $filter, $timeout, $window) {
 
 		/**********************************************************************************************
-		**		Expected state params -----> reservation_id, room_no,  first_name, guest_id, key_success
-		*       and email			  
-		**		Exit function ->nextPageActions								
-		**																		 
-		***********************************************************************************************/
+		 **		Expected state params -----> reservation_id, room_no,  first_name, guest_id, key_success
+		 *       and email			  
+		 **		Exit function ->nextPageActions								
+		 **																		 
+		 ***********************************************************************************************/
 
 		BaseCtrl.call(this, $scope);
 
@@ -27,7 +27,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 * 3.DELIVERY_OPTIONS_MODE
 		 * 4.EMAIL_SEND_MODE
 		 */
-		
+
 		/**
 		 * when the back button clicked
 		 * @param  {[type]} event
@@ -85,6 +85,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				nextPageActions(printopted, emailopted, actionStatus);
 			}
 			var handleBillPrint = function() {
+				 // add the orientation
+                addPrintOrientation();
 				setBeforePrintSetup();
 				try {
 					// this will show the popup with full bill
@@ -92,7 +94,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 						/*
 						 * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 						 */
-						$window.print();
+
 						if (sntapp.cordovaLoaded) {
 							var printer = (sntZestStation.selectedPrinter);
 							cordova.exec(function(success) {
@@ -100,6 +102,11 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 							}, function(error) {
 								printFailedActions();
 							}, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+						} else {
+							$window.print();
+							setTimeout(function() {
+								printSuccessActions();
+							}, 100);
 						};
 						// provide a delay for preview to appear 
 
@@ -115,7 +122,6 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 
 					// remove the orientation after similar delay
 					removePrintOrientation();
-					printSuccessActions();
 				}, 100);
 			};
 

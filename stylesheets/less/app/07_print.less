@@ -1772,6 +1772,46 @@ table {
                 }
             }
 
+            &.financial-adjustment-reports {
+                text-transform: none;
+                table-layout: fixed;
+                tbody {
+                    tr:last-child td {
+                        border-bottom: 1px solid @grey2;
+                    }
+                }
+
+                thead {
+                    th {
+                        &.modified,
+                        &.posted {
+                            width: 80px;
+                        }
+
+                        &.name,
+                        &.modified-by {
+                            width: 100px;
+                        }
+
+                        &.room {
+                            width: 80px;
+                        }
+
+                        &.code {
+                            width: 70px;
+                        }
+
+                        &.amount {
+                            width: 80px;
+                        }
+                    }
+                }
+
+                td.code {
+                    padding-left: 0;
+                }
+            }
+
             &.forecast-reports {
                 thead {
                     tr {
