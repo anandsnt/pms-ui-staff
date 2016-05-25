@@ -278,7 +278,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		            menuIndex: "accountsReceivables"
 		        }, {
 		            title: "MENU_COMMISIONS",
-		            action: "",
+		            action: "rover.financials.commisions",
 		            menuIndex: "commisions"
 		        }]
             }, {

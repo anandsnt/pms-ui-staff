@@ -214,11 +214,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				var payLoad = {
 					from_date: ARRIVAL_DATE,
 					to_date: DEPARTURE_DATE,
-					company_id: $scope.reservationData.company.id,
-					travel_agent_id: $scope.reservationData.travelAgent.id,
-					group_id: !$scope.borrowForGroups ? ($scope.reservationData.group.id || $scope.reservationData.allotment.id) : '',
-					promotion_code: $scope.reservationData.searchPromoCode,
-					promotion_id: $scope.reservationData.promotionId,
+					//CICO-28657 Removed all params - company id, grp id, tr ag id, etc
+
 					override_restrictions: $scope.stateCheck.showClosedRates,
 					adults: occupancies[0].adults,
 					children: occupancies[0].children,
@@ -283,12 +280,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					page: page,
 					from_date: ARRIVAL_DATE,
 					to_date: DEPARTURE_DATE,
-					company_id: $scope.reservationData.company.id,
+
 					room_type_id: roomTypeId,
 					rate_id: rateId,
-					travel_agent_id: $scope.reservationData.travelAgent.id,
-					group_id: $scope.reservationData.group.id || $scope.reservationData.allotment.id,
-					promotion_code: $scope.reservationData.searchPromoCode,
+
+
+
 					promotion_id: $scope.reservationData.promotionId,
 					override_restrictions: $scope.stateCheck.showClosedRates,
 					adults: occupancies[0].adults,
@@ -312,6 +309,14 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					if (!!$scope.stateCheck.preferredType && !roomTypeId) {
 						payLoad.room_type_id = $scope.stateCheck.preferredType;
 					}
+				}
+				//Add these params to API - only in Reccommended tab. CICO-28657
+				if($scope.stateCheck.activeView === 'RECOMMENDED'){
+
+					payLoad.company_id = $stateParams.company_id;
+					payLoad.travel_agent_id = $stateParams.travel_agent_id;
+					payLoad.group_id = $stateParams.group_id || $stateParams.allotment_id;
+					payLoad.promotion_code = $stateParams.promotion_code;
 				}
 
 				$scope.callAPI(RVRoomRatesSrv.fetchRateADRs, {
@@ -608,8 +613,14 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				} else if ($scope.otherData.defaultRateDisplayName === 'By Rate') {
 					$scope.stateCheck.activeView = 'RATE';
 				} else {
-					// By default RoomType
-					$scope.stateCheck.activeView = 'ROOM_TYPE';
+					if($stateParams.travel_agent_id || $stateParams.company_id
+						 || $stateParams.group_id || $stateParams.allotment_id
+						 || $stateParams.promotion_code){
+						$scope.stateCheck.activeView = 'RECOMMENDED';
+					} else {
+						// By default RoomType
+						$scope.stateCheck.activeView = 'ROOM_TYPE';
+					}
 				}
 
 				if (!!$scope.reservationData.code && !!$scope.reservationData.code.id) {
@@ -621,7 +632,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if ($scope.stateCheck.activeView === 'ROOM_TYPE') {
 					$scope.stateCheck.baseInfo.roomTypes = rates.results;
 					generateRoomTypeGrid();
-				} else if ($scope.stateCheck.activeView === 'RATE') {
+				} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
 					$scope.stateCheck.baseInfo.rates = rates.results;
 					generateRatesGrid($scope.stateCheck.baseInfo.rates);
 				}
@@ -880,13 +891,26 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.stateCheck.pagination.roomType.page = 1;
 				$scope.stateCheck.pagination.rate.page = 1;
 
-				if ($scope.stateCheck.activeView === "RATE") {
+				if ($scope.stateCheck.activeView === "RATE" || $scope.stateCheck.activeView === "RECOMMENDED") {
 					$scope.stateCheck.rateFilterText = "";
-					fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
-						$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
-						generateRatesGrid(response.results);
-						$scope.refreshScroll();
-					});
+					var isReccommendedTabApiRequired = false;
+					if($scope.stateCheck.activeView === "RATE"){
+						isReccommendedTabApiRequired = true;
+					} else if(($scope.stateCheck.activeView === "RECOMMENDED") && ($stateParams.travel_agent_id || $stateParams.company_id
+						 || $stateParams.group_id || $stateParams.allotment_id
+						 || $stateParams.promotion_code)){
+						isReccommendedTabApiRequired = true;
+					}
+					if(isReccommendedTabApiRequired){
+						fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
+							$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
+							generateRatesGrid(response.results);
+							$scope.refreshScroll();
+						});
+					} else {
+						generateRatesGrid([]);
+					}
+
 				} else if ($scope.stateCheck.activeView === "ROOM_TYPE") {
 					fetchRoomTypesList();
 				}
@@ -952,7 +976,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.stateCheck.pagination.roomType.page = 1;
 			$scope.stateCheck.pagination.rate.page = 1;
 
-			if ($scope.stateCheck.activeView === "RATE") {
+			if ($scope.stateCheck.activeView === "RATE" || $scope.stateCheck.activeView === "RECOMMENDED") {
 				// Reset search
 				$scope.stateCheck.rateFilterText = "";
 				fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
@@ -1056,7 +1080,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					children: occupancies[0].children
 				};
 
-			if ($scope.stateCheck.activeView === 'RATE') {
+			if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
 				payLoad.room_type_id = secondary.id;
 				payLoad.rate_id = secondary.forRate;
 			} else if ($scope.stateCheck.activeView === 'ROOM_TYPE') {
@@ -1283,7 +1307,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				roomInfo = roomType;
 				rateInfo = secondary;
 
-			} else if ($scope.stateCheck.activeView === 'RATE') {
+			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
 				var rate = _.find($scope.display.rateFirstGrid, {
 					id: rateId
 				});
@@ -1527,7 +1551,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				secondary = _.find(roomType.ratesArray, {
 					id: rateId
 				});
-			} else if ($scope.stateCheck.activeView === 'RATE') {
+			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
 				var rate = _.find($scope.display.rateFirstGrid, {
 					id: rateId
 				});
