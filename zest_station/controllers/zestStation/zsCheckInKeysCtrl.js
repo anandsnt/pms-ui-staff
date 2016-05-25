@@ -209,8 +209,10 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
 
         $scope.successMakeKey = function(response){
+            console.info('success make key: ',response);
                 var makeKeySuccess = $scope.successfulKeyEncode(response);
                 if (makeKeySuccess){
+                    $scope.prepForInService();
                     $state.selectedReservation.keySuccess = true;
                     $scope.zestStationData.wsIsOos = false;//after going home, reset this flag on success to overwrite any previous fail
                 
@@ -422,6 +424,10 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.printLocalKey = function(response){
             console.info('print local key success, ',response);
            if ($scope.successfulKeyEncode(response)){//This may need to go away, read response differently than encode success from print_key
+               $scope.prepForInService();
+                $state.selectedReservation.keySuccess = true;
+                $scope.zestStationData.wsIsOos = false;//after going home, reset this flag on success to overwrite any previous fail
+
                 $scope.dispenseKeyData = $scope.getKeyInfoFromResponse(response);
                 //$scope.connectWebSocket();//after the connect delay, will open and connect to the rover windows service, to use the sankyo device
                 setTimeout(function(){//starts the key dispense/write/eject functions in sankyo
