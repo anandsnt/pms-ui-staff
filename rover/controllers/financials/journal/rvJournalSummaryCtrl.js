@@ -94,7 +94,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
     $rootScope.$on('summaryDateChanged',function(){
         initSummaryData();
         // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
-        $rootScope.$broadcast('REFRESH_REVENUE_PAYMENT_DATA', $scope.data.summaryDate);
+        $rootScope.$broadcast('REFRESH_REVENUE_PAYMENT_DATA', {"date":$scope.data.summaryDate, "origin" :"SUMMARY_DATE_CHANGED"});
     });
 
     /* To fetch the details on each balance tab
