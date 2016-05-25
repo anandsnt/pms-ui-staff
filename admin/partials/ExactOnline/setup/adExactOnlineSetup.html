@@ -1,18 +1,40 @@
 <div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
-    <ad-form-header-with-back-button cancel-action="goBackToPreviousState" form-title="{{'EXACT_ONLINE_SETUP_HEADER'|translate}}"></ad-form-header-with-back-button>
+    <ad-form-header-with-back-button cancel-action="goBackToPreviousState"
+                                     form-title="{{'EXACT_ONLINE_SETUP_HEADER'|translate}}"></ad-form-header-with-back-button>
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <form class="form float" >
+        <form class="form float">
             <ad-form-title full-width="true" form-title="{{'EXACT_ONLINE_SUB_TITLE'| translate}}"></ad-form-title>
             <fieldset class="holder left">
-                <ad-toggle-button is-checked="exactOnlineSetup.active" label="{{'EXACT_ONLINE_ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+                <ad-toggle-button is-checked="exactOnlineSetup.active"
+                                  label="{{'EXACT_ONLINE_ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
             </fieldset>
             <fieldset class="holder left" ng-if="exactOnlineSetup.active">
-                <a  target="_self" href="{{exactOnlineSetup.oauth_url}}" class="button green">
-                    Login to Exact Online
-                </a>
+                <div class="entry full-width">
+                    <label>
+                        EXACT ONLINE
+                        <span class="oauth-status success" ng-if="exactOnlineSetup.is_oauth_authorized">
+                            {{'EXACT_ONLINE_AUTHORIZED' | translate}}
+                        </span>
+                        <span class="oauth-status" ng-if="!exactOnlineSetup.is_oauth_authorized">
+                            {{'EXACT_ONLINE_UNAUTHORIZED' | translate}}
+                        </span>
+                    </label>
+                    <a target="_self" href="{{exactOnlineSetup.oauth_url}}" class="button blue">
+                        {{'EXACT_ONLINE_OAUTH' | translate}}
+                    </a>
+                </div>
+                <div class="entry full-width">
+                    <label>
+                        RUN EXPORT
+                    </label>
+                    <button ng-click="runSync()" class="button blue">
+                        {{'RUN' | translate}}
+                    </button>
+                </div>
             </fieldset>
-            <ad-save-cancel-area save-action="saveExactOnlineSetup" cancel-action="goBackToPreviousState"></ad-save-cancel-area>
+            <ad-save-cancel-area save-action="saveExactOnlineSetup"
+                                 cancel-action="goBackToPreviousState"></ad-save-cancel-area>
         </form>
     </section>
 </div>
