@@ -907,6 +907,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							generateRatesGrid(response.results);
 							$scope.refreshScroll();
 						});
+					} else {
+						generateRatesGrid([]);
 					}
 
 				} else if ($scope.stateCheck.activeView === "ROOM_TYPE") {
