@@ -243,17 +243,16 @@
                                 font-style: italic;
                           
                                 .no-expense,
-                                .dual-toggle{
+                                .dual-toggle,
+                                .toggle {
                                     border-radius: 0;
-                                    font-weight: normal;
-                      
+                                    font-weight: normal;                      
                                 }
+
                                 &.check-out {
                                     padding-right: 0;
                                 }
 
-                             
-                                
                                 &.active {
                                     font-style: normal;
                                     .price {
@@ -261,7 +260,8 @@
                                     }
                                 }
 
-                                &.today .dual-toggle {
+                                &.today .dual-toggle,
+                                &.today .toggle {
                                     .gradient( @orangeEnd, @orangeStart);
                                     color: @white;
                                 }
