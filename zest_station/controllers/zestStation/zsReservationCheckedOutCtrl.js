@@ -362,7 +362,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
         /*
          * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
          */
-        $window.print();
+       
         if (sntapp.cordovaLoaded) {
           setTimeout(function() {
             var printer = (sntZestStation.selectedPrinter);
@@ -373,7 +373,12 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
              // printFailedActions();
             }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
           }, 800);
-        };
+        }else{
+           $window.print();
+            setTimeout(function() {
+            $scope.clickedNoThanks(true); //now checking for email update / send
+          }, 100);
+        }
         $scope.printOpted = true;
         // provide a delay for preview to appear 
 
@@ -383,14 +388,11 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     };
     setTimeout(function() {
       $scope.isPrintRegistrationCard = false;
-
       // CICO-9569 to solve the hotel logo issue
       $("header .logo").removeClass('logo-hide');
       $("header .h2").addClass('text-hide');
-
       // remove the orientation after similar delay
       removePrintOrientation();
-      $scope.clickedNoThanks(true); //now checking for email update / send
     }, 100);
   };
 
