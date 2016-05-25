@@ -23,7 +23,7 @@ module.exports = {
 			'guestweb_sanctuary' : [ themeCSSRoot + 'guestweb_sanctuary.css'],	
 			'guestweb_yotel' 	: [ themeCSSRoot + 'guestweb_yotel.css'],
 			'guestweb_zoku' 		: [ themeCSSRoot + 'guestweb_zoku.css'],
-			'guestweb_fontainebleau' 	: [ themeCSSRoot + 'guestweb_fontainebleau.css'],
+			'guestweb_fontainebguestweb_monte_carloleau' 	: [ themeCSSRoot + 'guestweb_fontainebleau.css'],
 			'guestweb_knickerbocker' 	: [ themeCSSRoot + 'guestweb_knickerbocker.css'],		
 			'guestweb_margaritaville' 	: [ themeCSSRoot + 'guestweb_margaritaville.css'],
 			'guestweb' 	: [ themeCSSRoot + 'guestweb.css'],
@@ -54,7 +54,8 @@ module.exports = {
 			'guestweb_newyork':[ themeCSSRoot + 'guestweb_newyork.css'],
 			'guestweb_mirage':[ themeCSSRoot + 'guestweb_mirage.css'],
 			'guestweb_ponchartrain':[ themeCSSRoot + 'guestweb_ponchartrain.css'],
-			'guestweb_valencia_san_antonio':[ themeCSSRoot + 'guestweb_valencia_san_antonio.css']
+			'guestweb_valencia_san_antonio':[ themeCSSRoot + 'guestweb_valencia_san_antonio.css'],
+			'guestweb_monte_carlo' 	: [ themeCSSRoot + 'guestweb_monte_carlo.css']
 		}
 	}
 }
