@@ -55,6 +55,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 				$scope.socketOperator.EjectKeyCard();
 			} 
 			else if(data.is_checked_out){
+				$scope.zestStationData.keyCardInserted = true;
 				$scope.alreadyCheckedOut = true;
 			}else {
 				$scope.zestStationData.keyCardInserted = true;
