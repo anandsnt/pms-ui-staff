@@ -111,7 +111,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 if (response.status !== 'failure'){
                     var remote  = (response.enable_remote_encoding) ? 'enabled'
                                                                     : 'disabled';
+                                                                    console.info('remote: ',remote)
                     $scope.remoteEncoding = response.enable_remote_encoding;
+                    console.info('$scope.remoteEncoding: ',$scope.remoteEncoding);
                     $scope.beginKeyEncode();
                 };
 
@@ -130,9 +132,11 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             /*
              * all the below text and button text needs to be moved out to the locale files
              */
+            
             $scope.at = 'make-keys';
             if ($state.input.makeKeys === 1){
                 $scope.oneKeySetup();
+                
             } else {
                 if ($state.input.madeKey === 0){
                     $scope.keyOneOfTwoSetup();//sets up screen and runs init to make first key
@@ -207,6 +211,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.successMakeKey = function(response){
                 var makeKeySuccess = $scope.successfulKeyEncode(response);
                 if (makeKeySuccess){
+                    $state.selectedReservation.keySuccess = true;
+                    $scope.zestStationData.wsIsOos = false;//after going home, reset this flag on success to overwrite any previous fail
+                
                     if ($scope.makingKey === 1 && $scope.input.makeKeys === 1){
                         $scope.oneKeySuccess();
 
@@ -224,8 +231,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                      * get card data ready to write reservation info
                      */
                    
-
-                    $state.wsOpen = false;//by default dont use websockets, only if local encoding with sankyo device
+                   /*
 
                     if ($scope.successfulKeyEncode(response)){//due to backend sending 200 with status == failure, need to verify..
 
@@ -241,8 +247,10 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         }
 
                     } else {
+                        
                         $scope.emitKeyError(response);
                     }
+                */
                 };
         };
         
@@ -344,7 +352,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     } else {
                         onResponseSuccess = $scope.successMakeKey;
                     }
-                    console.info('options.is_additional: ',options.is_additional)
+                    console.info('options.is_additional: ',options.is_additional);
                         var printAPI = {
                             "is_additional":options.is_additional,
                             //"is_additional":false,
@@ -389,6 +397,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         });
         $scope.DispenseKey = function(){
             //check if socket is open
+            console.info('dispense called :: socketOperator: ',$scope.socketOperator.returnWebSocketObject());
             if($scope.socketOperator.returnWebSocketObject().readyState === 1){
                 dispenseKey();
             }
@@ -413,7 +422,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.printLocalKey = function(response){
             console.info('print local key success, ',response);
            if ($scope.successfulKeyEncode(response)){//This may need to go away, read response differently than encode success from print_key
-                $state.wsOpen = true;
                 $scope.dispenseKeyData = $scope.getKeyInfoFromResponse(response);
                 //$scope.connectWebSocket();//after the connect delay, will open and connect to the rover windows service, to use the sankyo device
                 setTimeout(function(){//starts the key dispense/write/eject functions in sankyo
