@@ -241,6 +241,7 @@
    "RES_SRCH_TALK_SUB":"To a Staff Member ",
 
 
+   "CHECKOUT_BILL_NO_EMAIL":"Thanks for doing Zoku (no email on file)",
    "USER_CHECKED_OUT_ALRDY_HEADER":"Sorry",
    "USER_CHECKED_OUT_ALRDY_SUB":"You have already been checked out.",
    "USER_CHECKED_OUT_ALRDY_RTN":"Return",
