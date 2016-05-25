@@ -8,6 +8,7 @@ const RateManagerGridViewRootComponent = createClass ({
 			scrollX: false,
 			scrollY: true,
 			click: true,
+			preventDefaultException: {tagName: /^(BUTTON)$/},
 			mouseWheel: true,
 			deceleration: 0.0009
 		};

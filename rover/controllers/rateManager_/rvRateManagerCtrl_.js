@@ -1636,7 +1636,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 //calling the api
                 let allRate = {
                     ...lastSelectedFilterValues[activeFilterIndex].allRate,
-                    currentPage:  1
+                    currentPage:  (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter) ? 1 : lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
                 };
 
                 lastSelectedFilterValues[activeFilterIndex].allRate = allRate;
