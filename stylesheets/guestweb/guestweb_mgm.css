@@ -1,4 +1,6 @@
-@import 'guestweb/css/less/snt.less';
+/*@import 'guestweb/css/less/snt.less';
 @import (inline) 'guestweb/css/flags.css';
 @import (inline) 'shared/lib/css/bootstrap.min.css';
-@import 'guestweb/css/less/mgm.less';
+@import 'guestweb/css/less/mgm.less';*/
+@import (inline) 'shared/lib/css/bootstrap.min.css';
+@import 'guestweb/common_css/aria/theme.less';
