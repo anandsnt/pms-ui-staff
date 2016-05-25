@@ -159,7 +159,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			var shallWeResolve = function() {
 				var payloadCount = _.keys( payload ).length;
-				if ( payloadCount === 2 ) {
+				if ( payloadCount === 3 ) {
 					deferred.resolve( payload );
 				}
 			};
@@ -179,6 +179,9 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			subSrv.fetchScheduleFrequency()
 				.then( success.bind(null, 'scheduleFrequency'), failed.bind(null, 'scheduleFrequency', []) );
+
+			subSrv.fetchTimePeriods()
+				.then( success.bind(null, 'scheduleTimePeriods'), failed.bind(null, 'scheduleTimePeriods', []) );
 
 			return deferred.promise;
 		};
@@ -204,7 +207,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 		service.updateSchedule = function(params) {
 			var deferred = $q.defer(),
-				url = 'admin/export_schedules/';
+				url = 'admin/export_schedules/' + params.id;
 
 			var success = function(data) {
 				deferred.resolve(data);

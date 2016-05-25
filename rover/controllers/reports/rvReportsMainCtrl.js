@@ -40,6 +40,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.reportCount = payload.reportsResponse.total_count;
 		$scope.codeSettings   = payload.codeSettings;
 		$scope.activeUserList = payload.activeUserList;
+		$scope.schedulesList = [];
 
 		$scope.showReportDetails = false;
 
@@ -97,30 +98,33 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.uiChosenReport = undefined;
 		$scope.filterByQuery = function() {
 		    var query = $scope.query.toLowerCase().trim(),
+		    	source,
 		        title, i, j;
 
 		    $scope.setViewCol( $scope.viewCols[0] );
+		    source = $scope.isReportView( $scope.reportViews[0] ) ? $scope.reportList : $scope.schedulesList;
 
 		    if ( query.length < 3 ) {
-		        for (i = 0, j = $scope.reportList.length; i < j; i++) {
-		            $scope.reportList[i].filteredOut = false;
-		        };
+		        for (i = 0, j = source.length; i < j; i++) {
+		            source[i].filteredOut = false;
+		        }
+		        console.log( source );
 		        return;
-		    };
+		    }
 		    
-		    for (i = 0, j = $scope.reportList.length; i < j; i++) {
+		    for (i = 0, j = source.length; i < j; i++) {
 				if ( !! $scope.uiChosenReport ) {
 				    $scope.uiChosenReport.uiChosen = false;
 				}
 
-		        title = $scope.reportList[i].title.toLowerCase();
+		        title = source[i].title.toLowerCase();
 
-		        if ( title.indexOf(query) == -1 ) {
-		            $scope.reportList[i].filteredOut = true;
+		        if ( title.indexOf(query) === -1 ) {
+		            source[i].filteredOut = true;
 		        } else {
-		            $scope.reportList[i].filteredOut = false;
+		            source[i].filteredOut = false;
 		        }
-		    };
+		    }
 		};
 		/**/
 		$scope.clearQuery = function() {

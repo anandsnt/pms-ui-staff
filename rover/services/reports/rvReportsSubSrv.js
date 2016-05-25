@@ -282,6 +282,14 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				resKey : 'results'
 			});
 		};
+		service.fetchTimePeriods = function() {
+			return callApi({
+				name   : 'scheduleTimePeriods',
+				method : 'getJSON',
+				url    : 'admin/export_time_periods.json',
+				resKey : 'results'
+			});
+		};
 		service.fetchSchedules = function() {
 			return callApi({
 				name   : 'schedulesList',
