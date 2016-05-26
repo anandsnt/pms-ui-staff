@@ -382,7 +382,17 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.display.rateFirstGrid = [];
 				}
 				_.each(ratesSet, function(rate) {
+					//CICO-28657 - SHOW these rates only in Recommended tab
+					var isGroupRate = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.group.id) ? !!$scope.reservationData.group.id : false;
+					var isAllotmentRate = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.allotment.id) ? !!$scope.reservationData.allotment.id : false;
+					var isCorporate = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.ratesMeta[rate.id].account_id) ? !!$scope.reservationData.ratesMeta[rate.id].account_id : false;
+					var isSuppressed = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on) ? !!$scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on : false;
+					var isMember = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member) ? !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member : false;
+					var isPromotion = ($scope.stateCheck.activeView == 'RECOMMENDED' && _.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1) ? _.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1 : false;
+
 					var proccesedRestrictions = processRestrictions(rate.first_restriction, rate.multiple_restrictions, rate.id),
+
+
 						rateInfo = {
 							isCollapsed: true,
 							name: $scope.reservationData.ratesMeta[rate.id].name,
@@ -392,12 +402,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							rooms: [],
 							hasRoomsList: false,
 							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id, rate.availability),
-							isGroupRate: !!$scope.reservationData.group.id,
-							isAllotmentRate: !!$scope.reservationData.allotment.id,
-							isCorporate: !!$scope.reservationData.ratesMeta[rate.id].account_id,
-							isSuppressed: !!$scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on,
-							isMember: !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member,
-							isPromotion: _.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1
+							isGroupRate: isGroupRate,
+							isAllotmentRate: isAllotmentRate,
+							isCorporate: isCorporate,
+							isSuppressed: isSuppressed,
+							isMember: isMember,
+							isPromotion: isPromotion
 						};
 
 					rateInfo.rooms.push({
@@ -615,7 +625,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				} else {
 					if($stateParams.travel_agent_id || $stateParams.company_id
 						 || $stateParams.group_id || $stateParams.allotment_id
-						 || $stateParams.promotion_code){
+						 || $stateParams.promotion_code || $stateParams.is_member){
 						$scope.stateCheck.activeView = 'RECOMMENDED';
 					} else {
 						// By default RoomType
@@ -898,7 +908,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						isReccommendedTabApiRequired = true;
 					} else if(($scope.stateCheck.activeView === "RECOMMENDED") && ($stateParams.travel_agent_id || $stateParams.company_id
 						 || $stateParams.group_id || $stateParams.allotment_id
-						 || $stateParams.promotion_code)){
+						 || $stateParams.promotion_code || $stateParams.is_member)){
 						isReccommendedTabApiRequired = true;
 					}
 					if(isReccommendedTabApiRequired){
