@@ -32,8 +32,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$q,
 		jsMappings) {
 
-
 		BaseCtrl.call(this, $scope);
+		$scope.perPage = 50;
+		$scope.businessDate = $rootScope.businessDate;
 
 		$scope.hasMoveToOtherBillPermission = function() {
         	return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
@@ -42,7 +43,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
   		//only for standalone
 		var setChargeCodesSelectedStatus = function(bool){
 				var billTabsData = $scope.transactionsDetails.bills;
-				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
+				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 				chargeCodesId = [];
 				_.each(chargeCodes, function(chargeCode) {
 				  chargeCode.isSelected = bool;
@@ -60,7 +61,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				isAllChargeCodesSelected = false;
 			}
 			else{
-				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
+				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 		        if (chargeCodes){
 		            if(chargeCodes.length > 0){
 		                _.each(chargeCodes, function(chargeCode) {
@@ -85,8 +86,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var isAnyOneChargeCodeIsExcluded = false;
 			var isAnyOneChargeCodeIsIncluded = false;
 			var billTabsData = $scope.transactionsDetails.bills;
-			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details
-			if(chargeCodes.length>0){
+			var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
+			if(!!chargeCodes && chargeCodes.length>0){
 				_.each(chargeCodes, function(chargeCode,index) {
 				  if(!chargeCode.isSelected){
 				  	isAnyOneChargeCodeIsExcluded = true;
@@ -114,7 +115,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
                 $scope.$emit('hideLoader');
 
 				var billTabsData = $scope.transactionsDetails.bills;
-				var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees.fees_details;
+				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 				//Data to pass to the popup
 				//1. Selected transaction ids
 				//2. Confirmation number
@@ -181,32 +182,21 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		}();
 
+
 		/**
 		 * Successcallback of transaction list fetch
 		 * @param  {[type]} data [description]
 		 * @return undefined
 		 */
 		var onTransactionFetchSuccess = function(data) {
+
 			$scope.transactionsDetails = data;
-			$scope.refreshScroller('registration-content');
+			
+			configSummaryDateFlags();
+			loadDefaultBillDateData();
+
 			$scope.refreshScroller('bill-tab-scroller');
 			$scope.refreshScroller('billDays');
-			setChargeCodesSelectedStatus(false);
-
-			/*
-			 * Adding billValue and oldBillValue with data. Adding with each bills fees details
-			 * To handle move to bill action
-			 * Added same value to two different key because angular is two way binding
-			 * Check in HTML moveToBillAction
-			 */
-			angular.forEach($scope.transactionsDetails.bills, function(value, key) {
-				angular.forEach(value.total_fees.fees_details, function(feesValue, feesKey) {
-
-					feesValue.billValue = value.bill_number; //Bill value append with bill details
-					feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
-				});
-			});
-
 		};
 
 		$scope.$on('moveChargeSuccsess', function() {
@@ -277,9 +267,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.moveToBillAction = function(oldBillValue, feesIndex) {
 
 			var parseOldBillValue = parseInt(oldBillValue) - 1;
-			var newBillValue = $scope.transactionsDetails.bills[parseOldBillValue].total_fees.fees_details[feesIndex].billValue;
-			var transactionId = $scope.transactionsDetails.bills[parseOldBillValue].total_fees.fees_details[feesIndex].transaction_id;
-			var id = $scope.transactionsDetails.bills[parseOldBillValue].total_fees.fees_details[feesIndex].id;
+			var newBillValue = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex].billValue;
+			var transactionId = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex].id;
 			var dataToMove = {
 				"to_bill": newBillValue,
 				"from_bill": oldBillValue,
@@ -300,8 +289,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			 * Failure Callback of move action
 			 */
 			var moveToBillFailureCallback = function(data) {
-				console.log("@moveToBillFailureCallback");
-				console.log(errorMessage);
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = data.errorMessage;
 			};
@@ -318,19 +305,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				var width = $('#registration-summary ul li').width() * ($scope.transactionsDetails.bills.length + 1);
 			}
 			return width;
-
-		};
-
-
-		$scope.showDayRates = function(dayIndex) {
-
-			if ($scope.dayRates !== dayIndex) {
-				$scope.dayRates = dayIndex;
-			} else {
-				$scope.dayRates = -1;
-			}
-			$scope.refreshScroller('registration-content');
-
 		};
 
 		$scope.showActiveBill = function(index) {
@@ -349,15 +323,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 */
 		$scope.setActiveBill = function(billIndex) {
 			$scope.currentActiveBill = billIndex;
-			$scope.refreshScroller('registration-content');
-		};
-
-
-		// Refresh registration-content scroller.
-		$scope.calculateHeightAndRefreshScroll = function() {
-			$timeout(function() {
-				$scope.refreshScroller('registration-content');
-			}, 500);
+			loadDefaultBillDateData();
 		};
 
 		$scope.openPostCharge = function( activeBillNo ) {
@@ -425,8 +391,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			return passData;
 		};
 
-
-
 		$scope.showPayemntModal = function() {
             $scope.$emit('showLoader');
             jsMappings.fetchAssets(['addBillingInfo', 'directives'])
@@ -444,7 +408,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			});
 		};
 
-
 		$scope.$on("showValidationErrorPopup", function(event, errorMessage) {
 			$scope.status = "error";
 			$scope.popupMessage = errorMessage;
@@ -456,7 +419,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		    	});
 			}, 100);
 		});
-
 
 		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
 			$scope.paymentModalOpened = false;
@@ -862,6 +824,179 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	    		scope: $scope
 	    	});
     	};
+
+    	// CICO-25088 starts here ..//
+    	/*
+    	 *	Load bill data on active bill with default date selected.
+    	 */
+    	var loadDefaultBillDateData = function(){
+    		var activebillTab 	= $scope.transactionsDetails.bills[$scope.currentActiveBill];
+    		// Load the data only if an active date is present and there is no data already fetched.
+			if(!!activebillTab.activeDate && activebillTab.transactions.length === 0 ){
+				getBillTransactionDetails();
+			}
+    	};
+
+    	// Refresh registration-content scroller.
+		var refreshRegContentScroller = function() {
+			$timeout(function() {
+				$scope.refreshScroller('registration-content');
+			}, 500);
+		};
+		
+    	// Handle the summary day shift functionality.
+        $scope.summaryDateBtnGroup = {
+            showCount: 5,
+            next: function(billData) {
+                var length = billData.days.length - 1;
+                if(billData.currentActive < length) {
+                    billData.currentActive ++;
+                    billData.days[billData.currentActive].isShown = true;
+                    billData.days[billData.currentActive - this.showCount].isShown = false;
+                    if (billData.currentActive === length) {
+                        billData.disableNext = true;
+                    }
+                    billData.disablePrev = false;
+                } 
+            },
+            prev: function(billData) {
+                if(billData.currentActive >= this.showCount){
+                    billData.days[billData.currentActive].isShown = false;
+                    billData.days[billData.currentActive-this.showCount].isShown = true;
+                    if (billData.currentActive === this.showCount) {
+                        billData.disablePrev = true;
+                    }
+                    billData.currentActive --;
+                    billData.disableNext = false;
+                }
+            }
+        };
+
+        /**
+         * Function to populate date isShown data
+         * @param {array} bills array
+         */
+        var configSummaryDateFlags = function() {
+            var showCount = $scope.summaryDateBtnGroup.showCount,
+            	bills = $scope.transactionsDetails.bills;
+
+            angular.forEach(bills, function(bill, key) {
+                var i = 0,
+                dateCount = bill.days.length;
+                if(dateCount > showCount){
+                    bill.disablePrev = false;                    
+                    while(i < (dateCount - showCount)) {
+                        bill.days[i].isShown = false;
+                        i++;
+                    }
+                }
+                else {
+                    bill.disablePrev = true;
+                }
+                while(i < dateCount) {
+                    bill.days[i].isShown = true;
+                    i++;
+                }
+                bill.currentActive 	= (dateCount-1);
+                bill.disableNext 	= true;
+                bill.activeDate 	= (dateCount>0) ? bill.days[dateCount-1].date : null;
+            });
+        };
+
+        // Success callback for transaction fetch API.
+    	var onBillTransactionFetchSuccess = function(data){
+    		
+    		var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+
+    		activebillTab.transactions = [];
+ 			activebillTab.transactions = data.transactions;
+ 			activebillTab.total_count  = data.total_count;
+
+ 			// Compute the start, end and total count parameters
+            if(activebillTab.nextAction){
+                activebillTab.start = activebillTab.start + $scope.perPage;
+            }
+            if(activebillTab.prevAction){
+                activebillTab.start = activebillTab.start - $scope.perPage;
+            }
+            activebillTab.end = activebillTab.start + activebillTab.transactions.length - 1;
+
+ 			refreshRegContentScroller();
+
+ 			angular.forEach(activebillTab.transactions, function(feesValue, feesKey) {
+				feesValue.billValue 	= activebillTab.bill_number; //Bill value append with bill details
+				feesValue.oldBillValue 	= activebillTab.bill_number; // oldBillValue used to identify the old billnumber
+			});
+
+			setChargeCodesSelectedStatus(false);
+    	};
+
+    	/**
+		 * API calling method to get the bill transaction details
+		 * @return - undefined
+		 */
+		var getBillTransactionDetails = function() {
+			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+			var params = {
+				'bill_id'	: activebillTab.bill_id,
+				'date'		: activebillTab.activeDate,
+				'page'		: activebillTab.page_no,
+				'per_page'	: $scope.perPage
+			};
+			var options = {
+				successCallBack: onBillTransactionFetchSuccess,
+				params: params
+			};
+			$scope.callAPI(rvAccountTransactionsSrv.fetchBillTransactionDetails, options);
+		};
+
+		/*
+		 *	Handle each summary day click - load the day transaction.
+		 *	@param {String} current selected date.
+		 *	@return - undefined
+		 */
+		$scope.clickedSummaryDate = function( date ){
+			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+			activebillTab.activeDate = date;
+			getBillTransactionDetails();
+		};
+
+		// Pagination block starts here ..
+
+	    $scope.loadNextSet = function() {
+	    	var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+	        activebillTab.page_no++;
+	        activebillTab.nextAction = true;
+	        activebillTab.prevAction = false;
+	        getBillTransactionDetails();
+	    };
+
+	    $scope.loadPrevSet = function() {
+	    	var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+	        activebillTab.page_no--;
+	        activebillTab.nextAction = false;
+	        activebillTab.prevAction = true;
+	        getBillTransactionDetails();
+	    };
+
+	    $scope.isNextButtonDisabled = function() {
+	    	var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+	        var isDisabled = false;
+	        if (!!activebillTab && (activebillTab.end >= activebillTab.total_count)) {
+	            isDisabled = true;
+	        }
+	        return isDisabled;
+	    };
+
+	    $scope.isPrevButtonDisabled = function() {
+	    	var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+	        var isDisabled = false;
+	        if (activebillTab.page_no === 1) {
+	            isDisabled = true;
+	        }
+	        return isDisabled;
+	    };
+	    // Pagination block ends here ..
 
 	}
 ]);
