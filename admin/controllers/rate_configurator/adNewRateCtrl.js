@@ -43,14 +43,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "end_date_for_display": "",
                 "commission_details":{},
                 "is_discount_allowed_on": true, //CICO-25305 - For new rates we are enabling default,
-                "is_based_on" : true,
-                "is_copy_from" : false,
-                "parent_rate" : {
-                    "id": "",
-                    "type": "",
-                    "value_abs": "",
-                    "value_sign": ""
-                }
+                "is_copied" : false
             };
             // intialize rateData dictionary - END
 
@@ -150,7 +143,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * Fetch the based on rate retails, if the rate has chosen a based on rate.
          */
         var fetchBasedOnRateDetails = function() {
-            if ($scope.rateData.parent_rate.id === undefined || $scope.rateData.parent_rate.id === '') {
+            if ($scope.rateData.based_on.id === undefined || $scope.rateData.based_on.id === '') {
                 return false;
             }
             var fetchBasedonSuccess = function(data) {
@@ -167,7 +160,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.$emit('hideLoader');
             };
             $scope.invokeApi(ADRatesSrv.fetchDetails, {
-                rateId: $scope.rateData.parent_rate.id
+                rateId: $scope.rateData.based_on.id
             }, fetchBasedonSuccess);
         };
         var manipulateAdditionalDetails = function(data) {
@@ -275,13 +268,13 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             manipulateAdditionalDetails(data);
 
 
-            if (data.is_based_on || data.is_copy_from) {
-                $scope.rateData.parent.id = data.parent_rate.id;
-                $scope.rateData.parent_rate.type = data.parent_rate.type;
-                $scope.rateData.parent_rate.value_abs = Math.abs(data.parent_rate.value);
-                $scope.rateData.parent_rate.value_sign = data.parent_rate.value > 0 ? "+" : "-";
+            if ($scope.rateData.based_on) {
+                $scope.rateData.based_on.id = data.based_on.id;
+                $scope.rateData.based_on.type = data.based_on.type;
+                $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value);
+                $scope.rateData.based_on.value_sign = data.based_on.value > 0 ? "+" : "-";
             } else {
-                $scope.rateData.parent_rate = {
+                $scope.rateData.based_on = {
                     "id": "",
                     "type": "",
                     "value_abs": "",

@@ -179,16 +179,16 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         };
 
         $scope.startSave = function() {
-            var amount = parseInt($scope.rateData.parent_rate.value_sign + $scope.rateData.parent_rate.value_abs);
+            var amount = parseInt($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
             var addOns = setUpAddOnData();
             var commissions = setupCommissionData();
             var data = {
                 'name': $scope.rateData.name,
                 'description': $scope.rateData.description,
                 'rate_type_id': $scope.rateData.rate_type.id,
-                'parent_rate_id': $scope.rateData.parent_rate.id,
-                'parent_type': $scope.rateData.parent_rate.type,
-                'parent_value': amount,
+                'based_on_rate_id': $scope.rateData.based_on.id,
+                'based_on_type': $scope.rateData.based_on.type,
+                'based_on_value': amount,
                 'promotion_code': $scope.rateData.promotion_code,
                 'addons': addOns,
                 'charge_code_id': $scope.rateData.charge_code_id,
@@ -211,14 +211,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'is_pms_only' : $scope.rateData.is_pms_only,
                 'is_channel_only' : $scope.rateData.is_channel_only,
                 'code':$scope.rateData.code,
-                'task_id': $scope.rateData.task_id
+                'task_id': $scope.rateData.task_id,
+                'is_copied' : $scope.rateData.is_copied
             };
-
-            if($scope.rateData.is_based_on == true) {
-              data.is_based_on = true;
-            } else if($scope.rateData.is_based_on == false) {
-                data.is_copy_from = true;
-            }
 
             // Save Rate Success Callback
             var saveSuccessCallback = function(data) {
