@@ -7,8 +7,8 @@
                 <button type="button" class="button green" ng-click="newKeyInit()">New Key(s)</button>
                 <button type="button" class="button blue" ng-click="duplicateKeyInit()">Duplicate Key(s)</button>
 
-                <div class="notice">
-                    Existing PIN comes here
+                <div class="notice" ng-if="!!reservationData.reservation_card.room_pin">
+                    EXISTING PIN: {{reservationData.reservation_card.room_pin}}
                 </div>
                 
                 <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close</button>
