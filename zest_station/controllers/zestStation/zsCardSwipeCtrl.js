@@ -292,7 +292,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             console.info('onsuccess deposit: ',response);
                 //saving payment success, continue...
                 if ($scope.isSixPayPayment() || $scope.isSimulated){
-                    $scope.needCCAuthForCheckin();
+                    needCCAuthForCheckin();
                 }
         };
         $scope.successDeposit = function(response){
@@ -818,7 +818,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     } else {
                         //this will check if authorization is required and send the amount to terminal
                         //will update this in new codebase
-                        $scope.needCCAuthForCheckin();
+                        needCCAuthForCheckin();
                         return;
                     }
                     
@@ -853,7 +853,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 if ($state.showDeposit){
                     $scope.payDeposit();
                 } else {
-                    $scope.needCCAuthForCheckin();
+                    needCCAuthForCheckin();
                 }
 	};
         

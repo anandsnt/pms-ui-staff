@@ -412,7 +412,11 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
 
     $scope.init = function() {
       $scope.current = $state.current.name;
-
+        if ($scope.zestStationData.reservationData){
+            $scope.email = $scope.zestStationData.reservationData.email;
+        } else {
+            $scope.email = '';
+        }
       if ($state.checkout_finalmode) {
         $scope.initFinalMode();
       } else {
