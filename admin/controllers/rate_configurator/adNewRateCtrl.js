@@ -1,5 +1,5 @@
-admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails', '$filter', '$rootScope',
-    function($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails, $filter, $rootScope) {
+admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails', '$filter', '$rootScope', 'ADOriginsSrv', 'ADRatesAddDetailsSrv',
+    function($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails, $filter, $rootScope, ADOriginsSrv, ADRatesAddDetailsSrv) {
 
         $scope.init = function() {
             BaseCtrl.call(this, $scope);
@@ -45,10 +45,15 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "is_discount_allowed_on": true //CICO-25305 - For new rates we are enabling default
             };
             // intialize rateData dictionary - END
-
+            $scope.originOfBookings = [];
             $scope.allAddOns = [];
             $scope.basedonRateData = {};
             $scope.errorMessage = '';
+            //Added for CICO-24988
+            $scope.isOriginOfBookingEnabled = ADRatesAddDetailsSrv.addRatesDetailsData.hotel_settings.reservation_type.is_origin_of_booking_enabled;
+            if($scope.isOriginOfBookingEnabled) {
+               fetchOriginOfBookings();
+            }
             fetchCommissionDetails();
             setRateAdditionalDetails();
             // webservice call to fetch rate details for edit
@@ -182,7 +187,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             //CICO-18614
             $scope.rateData.is_pms_only = !!data.is_pms_only;
             $scope.rateData.is_channel_only = !!data.is_channel_only;
-            
+
             $scope.rateData.source_id = data.source_id;
             $scope.rateData.market_segment_id = data.market_segment_id;
             $scope.rateData.end_date = data.end_date;
@@ -193,6 +198,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }
             $scope.rateData.commission_details = data.commission_details;
             $scope.rateData.task_id = data.task_id;
+            $scope.rateData.booking_origin_id = data.booking_origin_id;
 
 
 
@@ -367,6 +373,18 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         // on click Cancel button redirect to previous active msetRateDetailsenu
         $scope.cancelMenu = function() {
             $scope.$emit("changeMenu", $scope.prevMenu);
+        };
+
+        /*
+        * Fetches the list of origin of bookings available, sets only the active ones
+        */
+        var fetchOriginOfBookings = function() {
+            var onOriginOfBookingFetchSuccess = function(data){
+                $scope.originOfBookings = _.filter(data.booking_origins, function(origin) {
+                    return origin.is_active;
+                });
+            };
+            $scope.invokeApi(ADOriginsSrv.fetch, {}, onOriginOfBookingFetchSuccess);
         };
 
         /*
