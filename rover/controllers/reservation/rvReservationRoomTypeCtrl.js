@@ -150,12 +150,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						$scope.stateCheck.suppressedRates.push(d.id);
 					}
 				});
-				if (!!$scope.reservationData.group.id) {					
+				if (!!$scope.reservationData.group.id) {
 					 var customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.group.id, $scope.reservationData.group.name, 'GROUP');
 					 rates[customRate.id] = customRate;
 				};
 
-				if (!!$scope.reservationData.allotment.id) {					
+				if (!!$scope.reservationData.allotment.id) {
 					 var customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.allotment.id, $scope.reservationData.allotment.name, 'ALLOTMENT');
 					 rates[customRate.id] = customRate;
 				};
@@ -562,7 +562,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 						});
 						if (currentIndex > -1) { //entry exists already
 							if (exhaustedRateAddons[currentIndex].inventory > addon.inventory) {
-								exhaustedRateAddons[currentIndex].inventory = addon.inventory; //reset to the minimum of the counts	
+								exhaustedRateAddons[currentIndex].inventory = addon.inventory; //reset to the minimum of the counts
 							}
 						} else {
 							exhaustedRateAddons.push(addon);
@@ -583,7 +583,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					updateExhaustedAddonsList(addon);
 				});
 			}
-			
+
 			return exhaustedRateAddons;
 		};
 
@@ -801,16 +801,18 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 					$scope.reservationData.rooms[i].demographics.market = $scope.displayData.allRates[rateId].market_segment.id === null ? "" : $scope.displayData.allRates[rateId].market_segment.id;
 					$scope.reservationData.rooms[i].demographics.source = $scope.displayData.allRates[rateId].source.id === null ? "" : $scope.displayData.allRates[rateId].source.id;
+					$scope.reservationData.rooms[i].demographics.origin = ($scope.displayData.allRates[rateId].origin && $scope.displayData.allRates[rateId].origin.id === null) ? "" : $scope.displayData.allRates[rateId].origin.id;
 
 					if (i === 0) {
 						$scope.reservationData.demographics.source = $scope.reservationData.rooms[i].demographics.source;
 						$scope.reservationData.demographics.market = $scope.reservationData.rooms[i].demographics.market;
+						$scope.reservationData.demographics.origin = $scope.reservationData.rooms[i].demographics.origin;
 					}
 
 					//7641 - Update the rateDetails array in the reservationData
 					$scope.reservationData.rateDetails[i] = $scope.roomAvailability[roomId].ratedetails;
 					// Revisit all occupancyLimit warnings
-					$scope.checkOccupancyLimit(null, false, i);					
+					$scope.checkOccupancyLimit(null, false, i);
 				}
 				$scope.viewState.currentTab = $scope.activeRoom;
 				if ($scope.otherData.showOverbookingAlert) {
@@ -1797,7 +1799,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 					reservationAddonsChanged = false;
 
 				RVReservationStateService.setReservationFlag('RATE_CHANGED', true);
-				
+
 				firstRoom.addons = _.map(newRateAddons, function(addon) {
 					return _.extend(addon, {
 						is_rate_addon: true
