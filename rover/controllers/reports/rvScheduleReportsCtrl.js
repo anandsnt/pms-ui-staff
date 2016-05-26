@@ -21,6 +21,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			$scope.refreshFourthColumnScroll(true);
 		};
 		$scope.userAutoCompleteSimple = {
+			minLength: 3,
 			source: function(request, response) {
 				var mapedUsers, found;
 
@@ -51,6 +52,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				return false;
 			}
 		};
+		$scope.userEmailTyped = function() {
+
+		}
 
 		$scope.selectSchedule = function(item, index) {
 			var success = function(data) {
@@ -59,7 +63,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
 					$scope.selectedSchedule.active = false;
 				}
-				$scope.selectedSchedule = $scope.$parent.schedulesList[index];
+				$scope.selectedSchedule = $scope.$parent.$parent.schedulesList[index];
 				$scope.selectedSchedule.active = true;
 
 				$scope.setViewCol( $scope.viewCols[3] );
@@ -158,6 +162,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
 			var success = function() {
 				$scope.$emit( 'hideLoader' );
+				if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
+					$scope.selectedSchedule.active = false;
+				}
+				$scope.setViewCol( $scope.viewCols[0] );
 			};
 
 			var failed = function(errors) {
@@ -223,6 +231,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			ROOM: 'ROOM',
 			BALANCE: 'BALANCE',
 			ROOM_NO: 'ROOM_NO'
+		};
+
+		var reportIconCls = {
+			'Arriving Guests': 'guest-status check-in',
+			'Departing Guests': 'guest-status check-out',
+			'All In-House Guests': 'guest-status inhouse',
+			'Balance for all Outstanding Accounts': 'icon-report icon-balance'
 		};
 
 		// this is a temporary setup
@@ -305,8 +320,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				$scope.scheduleParams.frequency_id = undefined;
 			}
 
-			if ( !! $scope.selectedScheduleDetails.repeates_every ) {
-				$scope.scheduleParams.repeats_every = $scope.selectedScheduleDetails.repeates_every;
+			if ( !! $scope.selectedScheduleDetails.repeats_every ) {
+				$scope.scheduleParams.repeats_every = $scope.selectedScheduleDetails.repeats_every;
 			} else {
 				$scope.scheduleParams.repeats_every = undefined;
 			}
@@ -364,10 +379,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 		};
 
 		var fetchReportSchedulesFrequencyTimePeriod = function() {
-			console.log($scope);
-
 			var success = function(payload) {
-				$scope.$parent.schedulesList = payload.schedulesList;
+				$scope.$parent.$parent.schedulesList = payload.schedulesList;
 				$scope.scheduleFrequency = payload.scheduleFrequency;
 				$scope.scheduleTimePeriods = payload.scheduleTimePeriods;
 
@@ -392,6 +405,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 					};
 				});
 
+				_.each($scope.$parent.$parent.schedulesList, function(item) {
+					if ( !! reportIconCls[item.report.description] ) {
+						item.reportIconCls = reportIconCls[item.report.description];
+					}
+				});
+
 				$scope.refreshReportSchedulesScroll(true);
 				$scope.$emit( 'hideLoader' );
 			};
@@ -402,7 +421,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				$scope.$emit( 'hideLoader' );
 			};
 
-			if ( ! $scope.$parent.schedulesList.length ) {
+			if ( ! $scope.$parent.$parent.schedulesList.length ) {
 				$scope.invokeApi( reportsSrv.reportSchedulesPayload, {}, success, failed );
 			}
 		};
@@ -417,7 +436,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			$scope.selectedSchedule = undefined;
 			$scope.selectedScheduleDetails = undefined;
 
-			$scope.$parent.schedulesList = [];
+			$scope.$parent.$parent.schedulesList = [];
 			$scope.scheduleTimePeriods =[];
 			$scope.scheduleFrequency = [];
 			$scope.scheduleFreqType = [];

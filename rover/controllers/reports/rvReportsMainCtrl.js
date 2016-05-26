@@ -108,7 +108,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		        for (i = 0, j = source.length; i < j; i++) {
 		            source[i].filteredOut = false;
 		        }
-		        console.log( source );
 		        return;
 		    }
 		    
@@ -117,7 +116,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				    $scope.uiChosenReport.uiChosen = false;
 				}
 
-		        title = source[i].title.toLowerCase();
+		        title = $scope.isReportView( $scope.reportViews[0] ) ? source[i].title.toLowerCase() : source[i].report.description.toLowerCase();
 
 		        if ( title.indexOf(query) === -1 ) {
 		            source[i].filteredOut = true;
