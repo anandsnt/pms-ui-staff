@@ -419,6 +419,10 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                     $scope.selectEmailDelivery();
                 }
         };
+        
+        $scope.skipForLocal = function(){
+            $state.go('zest_station.card_sign'); 
+        };
         $scope.init = function(){
             var current = $state.current.name;
             console.info('post checkin ctrl $scope.init: ',current);

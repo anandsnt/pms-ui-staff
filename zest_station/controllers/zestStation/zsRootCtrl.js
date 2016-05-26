@@ -153,6 +153,7 @@ sntZestStation.controller('zsRootCtrl', [
 	 * @return {[type]} [description]
 	 */
 	$scope.clickedOnCloseButton = function() {
+            console.info('$scope.settings: ',$scope.settings)
             $scope.hideKeyboardIfUp();
         //if key card was inserted we need to eject that
             if($scope.zestStationData.keyCardInserted && !$scope.zestStationData.keyCaptureDone){
@@ -961,20 +962,33 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.showLanguagePopup = false;
             $scope.timeOut = false;
         };
+        $scope.updateSavedIdleTimer = function(settings){
+            console.info('updateSavedIdleTimer :',settings);
+                $scope.settings.idle_timer = settings;
+                $scope.setupIdleTimer();
+        };
         
             $scope.idleTimerSettings = {};
             $scope.$on('UPDATE_IDLE_TIMER',function(evt, params){
+                console.info('UPDATE_IDLE_TIMER called');
                 //updates the idle timer settings here from what was successfully saved in zest station admin
                 $scope.settings.idle_timer = params.kiosk.idle_timer;
                 $scope.setupIdleTimer();
             });
             
             $scope.setupIdleTimer = function(){
+                console.info('setup idle timer: ',$scope.settings);
                 if ($scope.settings){
                     var settings = $scope.settings.idle_timer;
                     if (settings){
                         if (typeof settings.prompt !== typeof undefined && typeof settings.enabled !== typeof undefined) {
                             if (settings.prompt !== null && settings.enabled !== null){
+                                if (settings.enabled === 'true' || settings.enabled === true){
+                                    settings.enabled = 'true';
+                                } else {
+                                    settings.enabled = 'false';
+                                }
+                                
                                 $scope.idle_prompt = settings.prompt;
                                 $scope.idle_timer_enabled = settings.enabled;
                                 $scope.idle_max = settings.max;
@@ -988,10 +1002,10 @@ sntZestStation.controller('zsRootCtrl', [
                                 $scope.settings.adminIdleTimePrompt = settings.prompt;
                                 $scope.settings.adminIdleTimeMax = settings.max;
                             } else {
-                                $scope.idle_timer_enabled = false;
+                                $scope.idle_timer_enabled = 'false';
                             }
                         } else {
-                            $scope.idle_timer_enabled = false;
+                            $scope.idle_timer_enabled = 'false';
                         }
                     }
                 }
@@ -1002,7 +1016,6 @@ sntZestStation.controller('zsRootCtrl', [
             };
             
             $scope.resetTime = function(){
-                ++$scope.adminTimeout;
                 $scope.closePopup();
                 if ($scope.at !== 'home'){ 
                     clearInterval($scope.idleTimer);
@@ -1043,8 +1056,9 @@ sntZestStation.controller('zsRootCtrl', [
                 
                     var timer = time, minutes, seconds;
                     var timerInt = setInterval(function () {
-                        if ($scope.idle_timer_enabled && $scope.at !== 'home'){
-                                
+                        //there appears to have been a change from true to 'true', 
+                        //which caused the idle timer enabled/disabled settings to refresh once saved in admin
+                        if (($scope.idle_timer_enabled === 'true' || $scope.idle_timer_enabled === true) && $scope.at !== 'home'){
                                 minutes = parseInt(timer / 60, 10);
                                 seconds = parseInt(timer % 60, 10);
 
