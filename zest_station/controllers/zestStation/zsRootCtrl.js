@@ -79,15 +79,34 @@ sntZestStation.controller('zsRootCtrl', [
             }
         }
     };
-    $scope.$on(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event, params) {
-        var oosReason = params.reason;
-        var workstationStatus = params.status;
-        
-        $scope.zestStationData.workstationStatus = workstationStatus;
+    var setWorkStationInOrder = function(){
+        console.info(':: setWorkStationInOrder ::');
+        console.info('$scope.zestStationData.set_workstation_id: ',$scope.zestStationData.set_workstation_id);
+        console.info('$scope.zestStationData: ',$scope.zestStationData);
+        if (!$scope.zestStationData.set_workstation_id){
+            //this was causing an error and forcing station out of service, will fix full issue in new codebase
+            console.warn('cant refresh with workstation id: ',$scope.zestStationData.set_workstation_id);
+                //do nothing
+        } else {
+                console.info('putting station back in order');
+                var options = {
+                    params: {
+                        'oo_status': false,
+                        //'oo_reason': oosReason,
+                        'id': $scope.zestStationData.set_workstation_id
+                    }
+                };
+                $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
 
-        updateLocalStorage(oosReason, workstationStatus);
-        if ($scope.zestStationData.workstationStatus === 'out-of-order') {
-            console.info('placing station out of order')
+                try {
+                    storage.setItem(oosStorageKey, "in-order");
+                } catch (err) {
+                    console.warn(err);
+                }
+            }
+    };
+    var setWorkStationOutOfOrder = function(oosReason){
+            console.info('placing station out of order');
             var options = {
                 params: {
                     'oo_status': true,
@@ -96,22 +115,19 @@ sntZestStation.controller('zsRootCtrl', [
                 }
             };
             $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+    }
+    $scope.$on(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event, params) {
+        var oosReason = params.reason;
+        var workstationStatus = params.status;
+        
+        $scope.zestStationData.workstationStatus = workstationStatus;
+        console.info('updateLocalStorage: reason : ',oosReason, ': status :' ,workstationStatus)
+        updateLocalStorage(oosReason, workstationStatus);
+        
+        if ($scope.zestStationData.workstationStatus === 'out-of-order') {
+            setWorkStationOutOfOrder(oosReason);
         } else {
-            console.info('putting station back in order')
-            var options = {
-                params: {
-                    'oo_status': false,
-                    //'oo_reason': oosReason,
-                    'id': $scope.zestStationData.set_workstation_id
-                }
-            };
-            $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
-            
-            try {
-                storage.setItem(oosStorageKey, "in-order");
-            } catch (err) {
-                console.warn(err);
-            }
+            setWorkStationInOrder();
         }
     });
     $scope.isEmpty = function(value){
@@ -651,6 +667,9 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.prepForInService = function(){
             $scope.zestStationData.wsIsOos = false;
             $scope.zestStationData.wsFailedReason =  '';
+            $scope.zestStationData.workstationStatus = 'in-order';
+            setWorkStationInOrder();
+            
         };
         
         

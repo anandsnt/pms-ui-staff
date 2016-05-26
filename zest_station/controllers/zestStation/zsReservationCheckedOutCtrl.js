@@ -159,9 +159,24 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
       $scope.headingText = "SEND_BILL_TO";
       $scope.subHeadingText = $scope.zestStationData.reservationData.email;
     };
-
+    $scope.hasEmailSetting = function(){
+        console.info('theme: ',$scope.zestStationData.theme);
+        var validEmail = false;
+        if (!$scope.email || $scope.email === '' || $scope.email === ' '){
+            
+        } else if($scope.email.length > 1) {
+            validEmail = true;
+        }
+        
+        console.info('has email: "',$scope.email,'" : ',validEmail);
+        $scope.hasEmail = validEmail;
+    };
     $scope.toEditEmail = function() {
       $scope.email = $scope.zestStationData.reservationData.edit_email_ad;
+      if ($scope.email === null){
+          $scope.email = '';
+      }
+      $scope.hasEmailSetting();
       $scope.setEmailMode();
       $scope.emailOpted = $scope.zestStationData.guest_bill.email;
     };
@@ -201,6 +216,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     $scope.resetEmailVars = function() {
       $scope.emailEnabled = false;
       $scope.email = "";
+      $scope.hasEmailSetting();
     };
 
     $scope.setEmailMode = function() {
@@ -277,6 +293,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     };
     var emailSaveSuccess = function() {
       $scope.zestStationData.reservationData.email = $scope.email;
+      $scope.hasEmailSetting();
       //check if admin settings for print bill is set as true
       if ($scope.zestStationData.reservationData.edit_email) {
         $scope.afterEmailSave();
@@ -409,14 +426,28 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
       $scope.fetchBillData();
     };
 
-
     $scope.init = function() {
-      $scope.current = $state.current.name;
-        if ($scope.zestStationData.reservationData){
+        console.info('theme: [ ',$scope.theme,' ]');
+      var current = $state.current.name;
+      console.info('testing:: ',current);
+      if ($scope.zestStationData.reservationData.email === null){
+          $scope.zestStationData.reservationData.email = '';
+      }
+        if ($scope.zestStationData.reservationData && $scope.zestStationData.reservationData.email !== null){
             $scope.email = $scope.zestStationData.reservationData.email;
         } else {
             $scope.email = '';
         }
+        if (!$scope.email){
+            $scope.email = '';
+        }
+              $scope.hasEmailSetting();
+        
+      console.info('$scope.zestStationData:: ',$scope.zestStationData);
+      console.info('$scope.zestStationData.reservationData.email :',$scope.zestStationData.reservationData.email);
+      console.info('email : [ ',$scope.email,' ]');
+      console.info('typeof email : [ ',typeof $scope.email,' ]');
+      console.info(' length of email : [ ',$scope.email.length,' ]');
       if ($state.checkout_finalmode) {
         $scope.initFinalMode();
       } else {
@@ -449,6 +480,10 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
         else if ($scope.zestStationData.guest_bill.print && $scope.current === 'zest_station.reservation_checked_out') {
           $scope.mode = "print-mode";
           $scope.email = $stateParams.email;
+          if ($scope.email === null){
+              $scope.email = '';
+          }
+            $scope.hasEmailSetting();
           if ($state.emailError){
                 $scope.emailError = true;
           } else {
