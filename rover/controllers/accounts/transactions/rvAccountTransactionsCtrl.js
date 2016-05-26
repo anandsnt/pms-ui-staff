@@ -197,22 +197,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.refreshScroller('bill-tab-scroller');
 			$scope.refreshScroller('billDays');
-			setChargeCodesSelectedStatus(false);
-
-			/*
-			 * Adding billValue and oldBillValue with data. Adding with each bills fees details
-			 * To handle move to bill action
-			 * Added same value to two different key because angular is two way binding
-			 * Check in HTML moveToBillAction
-			 */
-			angular.forEach($scope.transactionsDetails.bills, function(value, key) {
-				angular.forEach(value.transactions, function(feesValue, feesKey) {
-
-					feesValue.billValue = value.bill_number; //Bill value append with bill details
-					feesValue.oldBillValue = value.bill_number; // oldBillValue used to identify the old billnumber
-				});
-			});
-
 		};
 
 		$scope.$on('moveChargeSuccsess', function() {
@@ -284,8 +268,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			var parseOldBillValue = parseInt(oldBillValue) - 1;
 			var newBillValue = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex].billValue;
-			var transactionId = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex].transaction_id;
-			var id = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex].id;
+			var transactionId = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex].id;
 			var dataToMove = {
 				"to_bill": newBillValue,
 				"from_bill": oldBillValue,
@@ -408,8 +391,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			return passData;
 		};
 
-
-
 		$scope.showPayemntModal = function() {
             $scope.$emit('showLoader');
             jsMappings.fetchAssets(['addBillingInfo', 'directives'])
@@ -427,7 +408,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			});
 		};
 
-
 		$scope.$on("showValidationErrorPopup", function(event, errorMessage) {
 			$scope.status = "error";
 			$scope.popupMessage = errorMessage;
@@ -439,7 +419,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		    	});
 			}, 100);
 		});
-
 
 		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
 			$scope.paymentModalOpened = false;
@@ -943,6 +922,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
             activebillTab.end = activebillTab.start + activebillTab.transactions.length - 1;
 
  			refreshRegContentScroller();
+
+ 			angular.forEach(activebillTab.transactions, function(feesValue, feesKey) {
+				feesValue.billValue 	= activebillTab.bill_number; //Bill value append with bill details
+				feesValue.oldBillValue 	= activebillTab.bill_number; // oldBillValue used to identify the old billnumber
+			});
+
+			setChargeCodesSelectedStatus(false);
     	};
 
     	/**
