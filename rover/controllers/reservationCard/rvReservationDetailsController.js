@@ -549,6 +549,15 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		/**
+		 * CICO-29324: disable duests button for cancel and no show
+		 * @return {Boolean} disable or not.
+		 */
+		$scope.shouldDisableGuestsButton = function() {
+			var reservationStatus = $scope.reservation.reservation_card.reservation_status;
+			return (reservationStatus === 'CANCELED' || reservationStatus === 'NOSHOW');
+		};
+
+		/**
 		 * we will not show "Nights" button in case of hourly, isNightsEnabled()
 		 * as part of CICO-17712, we are hiding it for now (group rservation)
 		 * @return {Boolean}
@@ -575,21 +584,26 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		$scope.isStayDatesChangeAllowed = function() {
+			var is_hourly_reservation = $scope.reservationData.reservation_card.is_hourly_reservation,
+				reservation_status    = $scope.reservationData.reservation_card.reservation_status,
+				group_id              = $scope.reservationData.reservation_card.group_id;
+
+			var not_hourly_reservation = ! is_hourly_reservation,
+				checking_in_reserved   = {'CHECKING_IN': true, 'RESERVED': true}[reservation_status],
+				group_checked_in       = {'CHECKEDIN': true, 'CHECKING_OUT': true}[reservation_status] && !! group_id;
+
 			isStayDatesChangeAllowed = false;
 
-			if ($rootScope.isStandAlone &&
-				!$scope.reservationData.reservation_card.is_hourly_reservation &&
-				($scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN' ||
-					$scope.reservationData.reservation_card.reservation_status === 'RESERVED')) {
-
+			if (
+				$rootScope.isStandAlone &&
+				not_hourly_reservation &&
+				hasPermissionToChangeStayDates() &&
+				(checking_in_reserved || group_checked_in)
+			) {
 				isStayDatesChangeAllowed = true;
-
-				if (!hasPermissionToChangeStayDates()) {
-					isStayDatesChangeAllowed = false;
-				}
 			}
-			return isStayDatesChangeAllowed;
 
+			return isStayDatesChangeAllowed;
 		};
 
 		/**

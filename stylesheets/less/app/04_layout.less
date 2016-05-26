@@ -696,6 +696,49 @@ body { overflow: hidden; }
 							width:410px;
 						}
 					}
+
+					&.three-actions {
+	                    .select {
+	                        width: 100px;
+	                        max-width: 100px;
+
+	                        &.larger-select {
+	                            width: 125px;
+	                            max-width:125px;
+	                        }
+
+	                        select {
+	                            height: 40px;
+	                            font-size:14px;
+	                        }
+	                    }
+	                     
+	                    .input {
+	                        width: 110px;
+	                        max-width: 110px;
+	                    }
+
+	                    .entry {
+	                        &.actions {
+	                            width: auto;
+	                            .button {
+	                                margin-left: 10px;
+	                                &:first-child {
+	                                    margin-left: 0;
+	                                }
+	                            }
+	                        }
+	                        &.search {
+	                            .calc-width(100, 445 );
+	                            &.commision-checked {
+	                                .calc-width(100, 535 );
+	                            }
+	                        }
+	                        &.options {
+	                            width:365px;
+	                        }
+	                    }
+	                }
 				}
 			}
 
@@ -2042,6 +2085,7 @@ body { overflow: hidden; }
 					width: 235px;
 					padding: 20px;
 					height: auto;
+					float: none;
 
 					label:not(.radio) {
 						font-size: 14px;

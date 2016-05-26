@@ -68,135 +68,11 @@ sntZestStation.controller('zsHomeCtrl', [
 		$scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
 	}();
 
-	/**
-	 * admin popup actions starts here
-	 */
-    // var openAdminPopup = function() {
-    //     $scope.idle_timer_enabled = false;
-    //     $rootScope.$broadcast('STOP_TIMERS');
-    //     $state.go('zest_station.admin-screen');
-    // };
-
-    // ($stateParams.isadmin == "true") ? openAdminPopup() : "";
-    //     if (typeof cordova !== typeof undefined){
-    //         $scope.ipad = true;
-    //     } else {
-    //         $scope.ipad = false;
-    //     }
-
-    // $scope.cancelAdminSettings = function(){
-    //     $state.go('zest_station.home');
-    //     setTimeout(function(){
-    //         $rootScope.$broadcast('REFRESH_SETTINGS',{'restart': true,'from_cancel': true});
-    //     },500);
-    // };
-
-    // //to logout
-    // $scope.logOutApplication = function(){
-    //     if (typeof chrome !== "undefined"){
-    //         var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
-    //         console.info("chrome app id"+chromeAppId);
-    //         //minimize the chrome app on loging out
-    //         (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId,"zest-station-logout"):"";
-    //         console.info("login out from chrome");
-    //     }
-    //     else{
-    //          console.info("login out");
-    //     };
-    //     $window.location.href = '/station_logout'; 
-    // };
 
     $scope.updateSettings = function(value){
     	$scope.zestStationData.idle_timer.enabled = (value === 'true') ? true:false;
     };
     
-
-    // $scope.openPrinterMenu = function(){
-    //     var onSuccess = function(success){
-    //         alert(JSON.stringify(success));
-    //     };
-    //     var onFail = function(err){
-    //         alert(JSON.stringify(err));
-    //     };
-        
-    //     if (typeof cordova !== typeof undefined){
-    //         //cordova.exec(onSuccess, onFail, 'RVCardPlugin', 'selectPrinter', [1024, 50])
-    //     cordova.exec(
-    //             function(success){
-    //                 //sntZestStation.selectedPrinter = JSON.stringify(success);
-    //                 $scope.savedSettings.printer = success;//save to the save params here
-                    
-    //                 $scope.setPrinterLabel($scope.savedSettings.printer);
-    //                 $scope.$digest();
-    //             }, function(error) {
-    //                 alert('printer selection failed');
-    //             }, 'RVCardPlugin', 'selectPrinter'
-    //         );
-    //     } 
-    // };
-    
-    // $scope.selectedWorkstation;
-    // $scope.getCurrentWorkstation = function(){
-    //     for (var i in $scope.zestStationData.workstations){
-    //         if ($scope.zestStationData.workstations[i].id === $scope.set_workstation_id){
-    //             return $scope.zestStationData.workstations[i];
-    //         } 
-    //     }
-    //     return '';
-        
-    // };
-    
-    
-    
-    // $scope.selectWorkStation = function(selected){
-    //     if (selected === null){
-    //         $scope.closeWorkStationList();
-    //     } else {
-    //         $scope.closeWorkStationList();
-    //         if (selected){
-    //             $scope.selectedWorkstationName = selected.name;
-    //             for (var i in $scope.zestStationData.workstations){
-    //                 if ($scope.zestStationData.workstations[i].id === selected.id){
-    //                     $scope.zestStationData.workstations[i].selected = true;
-    //                     $scope.zestStationData.selectedWorkStation = selected.station_identifier;
-    //                 } else {
-    //                     $scope.zestStationData.workstations[i].selected = false;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // };
-    
-    
-    // $scope.onAdminSaveComplete = function(response){
-    //     $scope.$emit('hideLoader');
-    //     $state.go('zest_station.home');
-    //     $rootScope.$broadcast('UPDATE_IDLE_TIMER',$scope.savedSettings);
-    // };
-    // $scope.saveWorkstationInfo = function(id){
-    //     //save workstation to state/cache
-    //     //update workstation with printer info
-    //     if (!id){
-    //         $state.workstation_id = '';
-    //         $scope.selectedWorkstation = '';
-    //     } else {
-    //         $state.workstation_id = id;
-    //         $scope.selectedWorkstation = id;//for the workstation list view to show what is currently selected
-    //     }
-    //     $scope.saveWorkStation(id);
-        
-    // };
-    // $scope.saveAdminSettings = function(){
-    //     var params = $scope.getSettings();
-    //     $scope.saveWorkstationInfo(params.kiosk.workstation.station_identifier);
-    //     delete params.kiosk.workstation;
-    //     var options = {
-    // 		params: 			params,
-    // 		successCallBack: 	$scope.onAdminSaveComplete
-    //     };
-    //     $scope.savedSettings = params;
-    //     $scope.callAPI(zsTabletSrv.saveSettings, options);
-    // };
     $scope.savedSettings = {};
     $scope.browserStorageSupported = false;
     $scope.checkBrowserStorageSupport = function(){
@@ -224,10 +100,9 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.set_workstation_id = $scope.getStationIdFromName(to);
             $scope.initialWorkstation = true;
         }
-       // $scope.setWorkstationPrinter($scope.set_workstation_id);
         
     });
-    
+
     $scope.getSavedWorkStation = function(){
         /*
          * This method will get the device's last saved workstation, and from the last fetched list of workstations
@@ -534,9 +409,13 @@ sntZestStation.controller('zsHomeCtrl', [
     
     $scope.init = function(){
         //reset early check-in flags
+        //$state.selectedReservation.keySuccess = true;
         $scope.zestStationData.reservation_in_early_checkin_window = false;
         $state.earlyCheckinPurchased = false;
         $scope.zestStationData.is_early_prepaid = false;
+        $state.paidDeposit = false;
+        
+        $state.hasAutoPrinted = false;
         
         $state.qr_code = null;
         $state.search = false;

@@ -61,6 +61,7 @@ sntZestStation.controller('zsAdminCtrl', [
         //if workstation changes -> change printer accordingly
         $scope.worksStationChanged = function(){
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
+                setCurrentStation($scope.set_workstation_id);
                 return workstation.id == $scope.workstation.selected;
             });
             setPrinterLabel(selectedWorkStation.printer);
@@ -256,6 +257,7 @@ sntZestStation.controller('zsAdminCtrl', [
                     'emv_terminal_id': station.emv_terminal_id,
                     'id': station.id
                 };
+                saveWorkStation(station.id);
             };
             if (!station.is_out_of_order){
                 $scope.prepForInService();
@@ -271,9 +273,55 @@ sntZestStation.controller('zsAdminCtrl', [
             if (station) {
                 //if no workstation is selected, we dont have an id to update settings for
                 //since the workstation station_id itself is saved in the browser
+                
                 $scope.callAPI(zsTabletSrv.updateWorkStations, options);
             }
         };
+        
+    var setWorkstationInSession = function(){
+            var workstation = $scope.sessionStation;
+            var successCallBack = function(response){
+                $scope.$emit('hideLoader');
+            };
+            var failureCallBack = function(response){
+                $scope.$emit('hideLoader');
+                console.warn('failed to set workstation in session');
+                console.log(response);
+            };
+             var options = {
+    		params: 			workstation,
+                successCallBack:                successCallBack,
+                failureCallBack:                failureCallBack
+            };
+            $scope.callAPI(zsTabletSrv.setSessionWorkstation, options);
+    };
+    
+    
+    var setCurrentStation = function(id){
+        console.info('setting: ',id)
+        $scope.sessionStation;
+        for (var i in $scope.zestStationData.workstations){
+            if ($scope.zestStationData.workstations[i].id === id){
+                $scope.zestStationData.workstations[i].is_workstation_present = true;
+                $scope.sessionStation = $scope.zestStationData.workstations[i];
+            }
+        }
+    }
+        saveWorkStation = function(id){
+            console.info('save workstation')
+            if ($scope.workstation !== ''){
+                for (var i in $scope.zestStationData.workstations){
+                    if ($scope.zestStationData.workstations[i].station_identifier === id){
+                        $scope.zestStationData.selectedWorkStation = $scope.zestStationData.workstations[i].station_identifier;
+                        setWorkstationInSession($scope.zestStationData.selectedWorkStation);
+                    }
+                }
+            } else {
+                $scope.zestStationData.selectedWorkStation = '';
+            }
+
+        };
+        
         var getTheSelectedWorkStation = function() {
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.workstation.selected;

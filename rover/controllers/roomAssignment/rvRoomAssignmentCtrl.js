@@ -230,7 +230,7 @@ sntRover.controller('RVroomAssignmentController',[
 	 */
 	var openWantedToBorrowPopup = function(dataToBorrowRoom) {
 		$scope.passingParams = {
-			"errorMessage": dataToBorrowRoom.errorMessage,
+			"errorMessage": (typeof dataToBorrowRoom.errorMessage === "object")? dataToBorrowRoom.errorMessage[0] : dataToBorrowRoom.errorMessage,
 			"upsell_amount" : dataToBorrowRoom.upsell_amount
 		};
 		ngDialog.open(
@@ -425,21 +425,21 @@ sntRover.controller('RVroomAssignmentController',[
 			switch (error.httpStatus) {
 				case 470:
 						wanted_to_forcefully_assign = true;
-						openWantedToBorrowPopup (error);
+						$timeout(openWantedToBorrowPopup.bind(null, error), 500);
 				 	break;
 				default:
 					break;
 			}
 		}
-		else if(!$scope.isStandAlone) {
+		else {
 				if (!$rootScope.isStandAlone) {
-					openRoomAlreadyChoosedPopup ();
+					$timeout(openRoomAlreadyChoosedPopup, 400);
 				}
 				else {
 					var errorMessagePopup = {
-						errorMessage: error.toString()
+						error: error.toString()
 					};
-					openPopupForErrorMessageShowing(errorMessagePopup);
+					$timeout(openPopupForErrorMessageShowing.bind(null, errorMessagePopup), 500);
 				}
 		}
 

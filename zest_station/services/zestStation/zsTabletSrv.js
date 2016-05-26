@@ -346,6 +346,18 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv','zsBaseWebS
 
             return deferred.promise;
         };
+
+        this.fetchRegistrationHotelSetting = function() {
+            var deferred = $q.defer();
+            var url = '/api/hotel_settings/show_hotel_reservation_settings';
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
         this.fetchGuestDetails = function(params) {
             var deferred = $q.defer();
             var url = '/api/reservations/' + params.id + '/reservations_guest_details';
@@ -419,6 +431,41 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv','zsBaseWebS
             url = 'api/reservation_guest_messages/email_message.json';
         
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        this.setSessionWorkstation = function(params) {
+            /* console.info('expecting',{
+                    "is_workstation_present":true,
+                    "id":296,
+                    "name":"Right",
+                    "station_identifier":"999",
+                    "printer":null,
+                    "key_encoder_id":17,
+                    "emv_terminal_id":5,
+                    "rover_device_id":"DEFAULT"// <-- This is the parameter in the request. You can find it on worstation list api
+                });
+            */
+                
+            var deferred = $q.defer();
+            var url = 'api/workstations/set_workstation';
+        
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        
+        
+        this.updateGuestTabDetails = function(data) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/'+data.reservation_id+'/reservations_guest_details';
+            zsBaseWebSrv2.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

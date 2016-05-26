@@ -211,7 +211,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'is_pms_only' : $scope.rateData.is_pms_only,
                 'is_channel_only' : $scope.rateData.is_channel_only,
                 'code':$scope.rateData.code,
-                'task_id': $scope.rateData.task_id
+                'task_id': $scope.rateData.task_id,
+                'booking_origin_id' : $scope.rateData.booking_origin_id
             };
 
             if($scope.rateData.is_based_on == true) {

@@ -136,7 +136,7 @@
         </div>
         <div class="summary">
             <div id="action-summary">
-                <h3>{{selectedAction.description}}</h3>
+                <h3 class="word_wrap">{{selectedAction.description}}</h3>
                 <div class="info assigned">
                     <span class="label">Assigned To</span>
                     {{selectedAction.assigned_to.name}}
@@ -210,4 +210,4 @@
     <!-- New Action -->
     <button type="button" ng-hide="actions.length === 0" class="button green" ng-click='initNewAction()'>New Action
     </button>
-</form> 
+</form>

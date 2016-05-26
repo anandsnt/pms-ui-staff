@@ -3,17 +3,18 @@ admin.service('ADHotelListSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 	/**
     *   A getter method to return the hotel list
     */
-	this.fetch = function(){
+	this.fetch = function(params){
 		var deferred = $q.defer();
 		var url = '/admin/hotels.json';
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrv.getJSON(url,params).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
 		});
 		return deferred.promise;
 	};
+
 	/**
     *   A post method to update ReservationImport for a hotel
     *   @param {Object} data for the hotel list item details.

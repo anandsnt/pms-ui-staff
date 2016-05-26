@@ -41,6 +41,16 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	});
 
 
+        var hideNavButtons = function(){
+            $scope.$emit (zsEventConstants.HIDE_BACK_BUTTON);
+            $scope.$emit (zsEventConstants.HIDE_CLOSE_BUTTON);
+	};
+        var hideBackButton = function(){
+            $scope.$emit (zsEventConstants.HIDE_BACK_BUTTON);
+	};
+        var showCloseButton = function(){
+            $scope.$emit (zsEventConstants.SHOW_CLOSE_BUTTON);
+        };
 	/**
 	 * [isInCheckinMode description]
 	 * @return {Boolean} [description]
@@ -236,50 +246,63 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 };
         };
         
-        $scope.hopperIsEmpty = function(msg){
-            if (typeof msg === typeof 'str'){
-                if (msg.toLowerCase().indexOf('card from hopper') !== -1){
-                    $scope.prepForOOS($filter('translate')('PICKUP_KEY_FAIL_EMPTY'));
-                        
-                    $scope.emitKeyError(msg);
-                    return;
-                }    
-            }    
-        };
-        
-        
         var setFailureReason = function(response){
             var emptyHopper = 'card from hopper',
-                    failedSocketConnectionText = 'SOCKET_FAILED';
+                    dateInPast = 'date is in the past',//ie. Reservation Check-out date is in the past, not a hardware failure
+                    failedSocketConnectionText = 'SOCKET_FAILED',
+                            hardwareFailure = false;
+                    
+                    var hopperIsEmpty = response.indexOf(emptyHopper) !== -1,
+                            reservationDateInPast = response.indexOf(dateInPast) !== -1,
+                            websocketFailure = response.indexOf(failedSocketConnectionText) !== -1;
+                            
+                    
             
             if($scope.isInCheckinMode()){
                 
-                if (response.indexOf(emptyHopper) !== -1){
-                    $scope.prepForOOS($filter('translate')('CHECKIN_KEY_FAIL_EMPTY'));
+                if ( hopperIsEmpty ){
+                    $scope.prepForOOS($filter('translate')('CHECKIN_KEY_FAIL_EMPTY'), true);
+                    hardwareFailure = true;
+                } else if ( reservationDateInPast ){
+                    $scope.prepForOOS($filter('translate')('CHECKIN_KEY_FAIL_RESERVATION'), false);
+                    hardwareFailure = false;
                 } else {
-                    $scope.prepForOOS($filter('translate')('CHECKIN_KEY_FAIL'));
+                    $scope.prepForOOS($filter('translate')('CHECKIN_KEY_FAIL'), true);
+                    hardwareFailure = true;
                 }
                 
             } else if ($scope.isInPickupKeyMode()){
                  
-                if (response.indexOf(emptyHopper) !== -1){
-                    $scope.prepForOOS($filter('translate')('PICKUP_KEY_FAIL_EMPTY'));
+                if ( hopperIsEmpty ){
+                    $scope.prepForOOS($filter('translate')('PICKUP_KEY_FAIL_EMPTY'), true);
+                    hardwareFailure = true;
+                } else if ( reservationDateInPast ){
+                    $scope.prepForOOS($filter('translate')('PICKUP_KEY_FAIL_RESERVATION'), false);
+                    hardwareFailure = false;
                 } else {
-                    $scope.prepForOOS($filter('translate')('PICKUP_KEY_FAIL'));
+                    $scope.prepForOOS($filter('translate')('PICKUP_KEY_FAIL'), true);
+                    hardwareFailure = true;
                 }
             }
             
             //if related to websocket failure, append info
-            if (response.indexOf(failedSocketConnectionText) !== -1){
-                $scope.prepForOOS($filter('translate')('SERVICE_FAILURE'));
+            if ( websocketFailure ){
+                hardwareFailure = true;
+                $scope.prepForOOS($filter('translate')('SERVICE_FAILURE'), true);
             } 
+            
+            if ( hardwareFailure ){
+                $state.selectedReservation.keySuccess = false;
+                $scope.zestStationData.wsIsOos = true;//after going home, kiosk will be placed oos
+            }
         };
         
         $scope.emitKeyError = function(response){
+            console.info('detected error in make key',response);
             response = !!response ? "" :response;
             setFailureReason(response);
-            
             $scope.$emit('MAKE_KEY_ERROR',response);
+            showCloseButton();
             //$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
         };
 
@@ -321,9 +344,10 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     } else {
                         onResponseSuccess = $scope.successMakeKey;
                     }
-                    
+                    console.info('options.is_additional: ',options.is_additional)
                         var printAPI = {
-                            "is_additional":false,
+                            "is_additional":options.is_additional,
+                            //"is_additional":false,
                             "is_kiosk":true,
                             "key":1,
                             "reservation_id":options.reservation_id
@@ -387,7 +411,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
           
         };
         $scope.printLocalKey = function(response){
-            console.log(response);
+            console.info('print local key success, ',response);
            if ($scope.successfulKeyEncode(response)){//This may need to go away, read response differently than encode success from print_key
                 $state.wsOpen = true;
                 $scope.dispenseKeyData = $scope.getKeyInfoFromResponse(response);
@@ -398,6 +422,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 },2500);
 
             } else {
+                console.info('print local key, actually was a failure...');
                 $scope.emitKeyError(response);
             }
         };
@@ -454,11 +479,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     return;
                     
                 } else if (msg.toLowerCase().indexOf('card from hopper') !== -1){
-                    $scope.zestStationData.wsIsOos = true;
-                    
-                    $scope.zestStationData.wsFailedReason =  $filter('translate')('PICKUP_KEY_FAIL_EMPTY');
-                    
-                    console.info('$scope.zestStationData.wsFailedReason: ',$scope.zestStationData.wsFailedReason)
+                    $scope.prepForOOS($filter('translate')('PICKUP_KEY_FAIL_EMPTY'), true);//root ctrl, hardware failure, put oos
                     console.warn('Setting out of order due to empty key dispenser');
                     $scope.emitKeyError(msg);
                     return;
@@ -514,6 +535,10 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             $scope.selectedReservation = $state.selectedReservation;
             var view = $state.current.name;
             $scope.input = $state.input;
+            
+            //hideNavButtons();
+            hideBackButton();
+            showCloseButton();
 
             if (view === 'zest_station.make_keys'){
                 $scope.at = 'make-keys';
@@ -527,7 +552,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.at = 'select-keys-after-checkin';
                 $scope.isPickupKeys = true;
                 $state.isPickupKeys = true;
-
 
             } else {
                 $scope.at = 'select-keys-after-checkin';
