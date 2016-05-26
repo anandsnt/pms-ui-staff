@@ -534,6 +534,13 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         // check whether date range is past
         $scope.is_date_range_editable = function(date_range_end_date) {
             if ($scope.is_edit) {
+                if($scope.rateData.based_on && $scope.rateData.based_on.is_copied && date_range_end_date && ($scope.businessDate || $scope.hotel_business_date)) {
+                    var businessDate = $scope.hotel_business_date;
+                    if(!businessDate) {
+                      businessDate = $scope.businessDate;
+                    }
+                    return Date.parse(date_range_end_date) > Date.parse(businessDate);
+                }
                 if ($scope.rateData.based_on.id && $scope.rateData.rate_type.name !== 'Specials & Promotions') {
                     return false;
                 }

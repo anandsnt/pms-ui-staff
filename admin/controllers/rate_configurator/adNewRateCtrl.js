@@ -281,7 +281,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             manipulateAdditionalDetails(data);
 
 
-            if ($scope.rateData.based_on) {
+            if (data.based_on) {
                 $scope.rateData.based_on.id = data.based_on.id;
                 $scope.rateData.based_on.type = data.based_on.type;
                 $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value);
@@ -325,7 +325,12 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         var getActiveDateRange = function(dateRange) {
             var beginDate = '';
             var endDate = '';
-            var hotelBusinessDate = new Date($scope.hotel_business_date).getTime();
+            var hotelBusinessDate = null;
+            if ($scope.is_edit) {
+                hotelBusinessDate = new Date($scope.hotel_business_date).getTime();
+            } else {
+                hotelBusinessDate = new Date($scope.businessDate).getTime();
+            }
             var keepGoing = true;
             var activeDateRange = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].id;
             angular.forEach($scope.rateData.date_ranges, function(dateRange, index) {
