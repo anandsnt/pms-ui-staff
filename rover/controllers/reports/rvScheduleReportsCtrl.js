@@ -104,7 +104,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
 				/**/
 				format_id: 1,
-				delivery_method_id: 2
+				delivery_method_id: $scope.selectedScheduleDetails.delivery_method.id
 			};
 
 			var filter_values = {
