@@ -58,9 +58,9 @@
                 <div class="boxes">
                     <div class="switch-container">
                         <!-- Add class ".on" when selected Copy From -->
-                        <div class="switch-button with-text" ng-class="{'on' : !rateData.is_copied}">
+                        <div class="switch-button with-text" ng-class="{'on' : !rateData.based_on.is_copied}">
                             <!-- Add attribute checked when selected Copy From -->
-                            <input id="basedon" name="basedon" type="checkbox" ng-model="rateData.is_copied" />
+                            <input id="basedon" name="basedon" type="checkbox" ng-model="rateData.based_on.is_copied" />
                             <label class="data-off">
                                 <span class="value">Based</span>
                                 <span class="button orange">Copy From</span>
@@ -71,7 +71,7 @@
                             </label>
                         </div>
                     </div>
-                    <div class="full-width">
+                    <div class="full-width" ng-class="{'overlay' : is_edit}">
                         <div class="entry margin">
                             <div class="select white">
                                 <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">

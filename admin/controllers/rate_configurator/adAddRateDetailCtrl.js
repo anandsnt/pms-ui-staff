@@ -212,7 +212,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'is_channel_only' : $scope.rateData.is_channel_only,
                 'code':$scope.rateData.code,
                 'task_id': $scope.rateData.task_id,
-                'is_copied' : $scope.rateData.is_copied,
+                'is_copied' : $scope.rateData.based_on.is_copied,
                 'booking_origin_id' : $scope.rateData.booking_origin_id
             };
 

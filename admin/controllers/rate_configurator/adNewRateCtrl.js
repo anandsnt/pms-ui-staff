@@ -28,7 +28,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     "id": "",
                     "type": "",
                     "value_abs": "",
-                    "value_sign": ""
+                    "value_sign": "",
+                    "is_copied" : false
                 },
                 "rate_type": {
                     "id": "",
@@ -42,8 +43,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "end_date": "",
                 "end_date_for_display": "",
                 "commission_details":{},
-                "is_discount_allowed_on": true, //CICO-25305 - For new rates we are enabling default,
-                "is_copied" : false
+                "is_discount_allowed_on": true //CICO-25305 - For new rates we are enabling default,
+
             };
             // intialize rateData dictionary - END
             $scope.originOfBookings = [];
@@ -279,6 +280,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.rateData.based_on.type = data.based_on.type;
                 $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value);
                 $scope.rateData.based_on.value_sign = data.based_on.value > 0 ? "+" : "-";
+                $scope.rateData.based_on.is_copied = data.based_on.is_copied;
             } else {
                 $scope.rateData.based_on = {
                     "id": "",
