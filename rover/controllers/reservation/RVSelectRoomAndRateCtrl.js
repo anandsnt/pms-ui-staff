@@ -637,7 +637,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				} else {
 					if($stateParams.travel_agent_id || $stateParams.company_id
 						 || $stateParams.group_id || $stateParams.allotment_id
-						 || $stateParams.promotion_code || $stateParams.is_member){
+						 || $stateParams.promotion_code || $stateParams.is_member == true){
 						$scope.stateCheck.activeView = 'RECOMMENDED';
 					} else {
 						// By default RoomType
@@ -920,7 +920,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						isReccommendedTabApiRequired = true;
 					} else if(($scope.stateCheck.activeView === "RECOMMENDED") && ($stateParams.travel_agent_id || $stateParams.company_id
 						 || $stateParams.group_id || $stateParams.allotment_id
-						 || $stateParams.promotion_code || $stateParams.is_member)){
+						 || $stateParams.promotion_code || $stateParams.is_member == true)){
 						isReccommendedTabApiRequired = true;
 					}
 					if(isReccommendedTabApiRequired){
