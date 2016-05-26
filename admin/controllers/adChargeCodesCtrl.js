@@ -109,7 +109,6 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.addIDForPaymentTypes();
 				$scope.isEdit = true;
 				$scope.isAdd = false;
-				$scope.prefetchData.amount = parseFloat($scope.prefetchData.amount).toFixed(2);
 				$scope.prefetchData.symbolList = [{
 					value: "%",
 					name: "percent"
@@ -246,14 +245,14 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					delete item["id"];
 				}
 			});
-                        
+
                         if ($scope.isStandAlone && !$scope.prefetchData.selected_charge_group){
                             $scope.errorMessage = 'Group Charge Code Required';
                             $scope.validForm = false;
                             return;
                         }
-                        
-                        
+
+
 			$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
 		};
 		/*

@@ -1,4 +1,4 @@
-React.initializeTouchEvents(true);
+//React.initializeTouchEvents(true);
 
 var DPthCell = React.createClass({
 	render: function() {
@@ -21,7 +21,7 @@ var DPHeadPanel = React.createClass({
 
 		for(i = 0, j = this.props.headerTop.length; i < j; i++) {
 			topRowCells.push(
-				DPthCell({
+				React.createElement( DPthCell, {
 					'colspan' : this.props.colspanArray && this.props.colspanArray[i] || this.props.colspan,
 					'data'    : this.props.headerTop[i]
 				})
@@ -32,7 +32,7 @@ var DPHeadPanel = React.createClass({
 
 		for(i = 0, j = this.props.headerBot.length; i < j; i++) {
 			botRowCells.push(
-					DPthCell({
+					React.createElement( DPthCell, {
 					'className' : this.props.headerBot[i]['cls'],
 					'data'      : this.props.headerBot[i]['name']
 				})
@@ -76,7 +76,7 @@ var DPBodyRow = React.createClass({
 
 		for(i = 0, j = this.props.rowData.length; i < j; i++) {
 			cells.push(
-				DPtdCell({
+				React.createElement( DPtdCell, {
 					'isLastRow' : this.props.isLastRow,
 					'isAvail'   : this.props.rowData[i]['isAvail'],
 					'isRev'     : this.props.rowData[i]['isRev'],
@@ -99,7 +99,7 @@ var DPBodyPanel = React.createClass({
 
 		for(i = 0, j = this.props.reportData.length; i < j; i++) {
 			rows.push(
-				DPBodyRow({
+				React.createElement( DPBodyRow, {
 					'rowData'   : this.props.reportData[i],
 					'isLastRow' : this.props.isLastRowSum && 1 == j - i
 				})
@@ -115,13 +115,13 @@ var DPContent = React.createClass({
 		return React.DOM.table({
 				'className' : 'statistics-reports',
 			},
-			DPHeadPanel({
+			React.createElement( DPHeadPanel, {
 				'colspan'    	: this.props.colspan,
 				'headerTop'  	: this.props.headerTop,
 				'headerBot'  	: this.props.headerBot,
 				'colspanArray'  : this.props.colspanArray
 			}),
-			DPBodyPanel({
+			React.createElement( DPBodyPanel, {
 				'reportData' : this.props.reportData,
 				'isLastRowSum' : this.props.isLastRowSum
 			})

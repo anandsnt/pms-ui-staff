@@ -14,6 +14,20 @@
                 <label for="lastname">Last Name</label>
                 <input id="lastname" placeholder="Pending" ng-model="ngDialogData.lastname" type="text" ng-disabled="shouldDisableNameField(ngDialogData)" />
             </div>
+            <div class="entry full-width">
+                <label for="first-guest-first-name">Accompanying Guest(s)</label>
+                <div ng-repeat="accompanying_guest in ngDialogData.accompanying_guests_details">
+                    <div class="entry margin" >
+                        <input id="first-guest-first-name" placeholder="First Name" value="{{accompanying_guest.first_name}}" type="text" ng-model="accompanying_guest.first_name" ng-disabled="shouldDisableNameField(ngDialogData)"/>
+                    </div>
+                    <div class="entry">
+                        <input id="first-guest-last-name" placeholder="Last Name"
+                        value="{{accompanying_guest.last_name}}" type="text"
+                        ng-model="accompanying_guest.last_name" ng-disabled="shouldDisableNameField(ngDialogData)"/>
+                    </div>
+                </div>
+
+            </div>
             <div class="entry margin type">
                 <label for="rooming-room-type">{{'GROUP_ROOM_TYPE'|translate}}</label>
                 <div class="select">
@@ -27,7 +41,7 @@
             <div class="entry occupancy">
                 <label for="rooming-occupancy">{{'GROUP_OCCUPANCY'|translate}}</label>
                 <div class="select">
-                    <select id="rooming-occupancy" ng-model="ngDialogData.occupancy" ng-disabled="shouldDisableReservationOccuppancyChange(ngDialogData)">
+                    <select id="rooming-occupancy" ng-model="ngDialogData.occupancy" ng-disabled="shouldDisableReservationOccuppancyChange(ngDialogData)" ng-change="changedReservationOccupancy()">
                         <option value="1" ng-show="shouldShowThisOccupancyAgainstRoomType('single_occupancy')">
                             {{'GROUP_SINGLE'|translate}}
                         </option>
@@ -58,7 +72,8 @@
             <div class="entry room">
                 <label for="room">Room</label>
                 <div class="select">
-                    <select id="room" ng-disabled="shouldDisableChangeRoom(ngDialogData)" ng-model="ngDialogData.room_id" ng-class="{'placeholder': isEmptyRoomNumber(ngDialogData.room_no)}">
+                    <select id="room" ng-disabled="shouldDisableChangeRoom(ngDialogData)" ng-model="ngDialogData.room_id" ng-class="{'placeholder': isEmptyRoomNumber(ngDialogData.room_no)}"
+                    ng-change="changedReservationRoom()">
                         <!-- Add class "placeholder" if "N/A" set as option -->
                         <option value="" ng-selected="isEmptyRoomNumber(ngDialogData.room_no)">N/A</option>
                         <option value="{{roomData.id}}" ng-selected="ngDialogData.room_id===roomData.id" ng-repeat="roomData in ngDialogData.roomsFreeToAssign">{{roomData.room_number}}</option>
@@ -79,16 +94,16 @@
                 ng-click="navigateStayCard(ngDialogData)">
                 Stay Card
             </button>
-            <button type="button" class="button green" 
-                ng-class="{'grey' : shouldDisableCheckinButton(ngDialogData)}" 
+            <button type="button" class="button green"
+                ng-class="{'grey' : shouldDisableCheckinButton(ngDialogData)}"
                 ng-hide="shouldShowCheckinButton(ngDialogData)"
                 ng-click="checkinReservation(ngDialogData);"
                 ng-disabled="shouldDisableCheckinButton(ngDialogData)">
                 Check In
             </button>
-            <button type="button" class="button red" 
-                ng-class="{'grey' : shouldDisableCheckoutButton(ngDialogData)}" 
-                ng-show="shouldShowCheckoutButton(ngDialogData)" 
+            <button type="button" class="button red"
+                ng-class="{'grey' : shouldDisableCheckoutButton(ngDialogData)}"
+                ng-show="shouldShowCheckoutButton(ngDialogData)"
                 ng-disabled="shouldDisableCheckoutButton(ngDialogData)"
                 ng-click="checkoutReservation(ngDialogData);">
                 Check Out

@@ -11,28 +11,17 @@ admin.controller('ADZestStationCheckInCtrl',['$scope','$rootScope', '$state','$s
             };
             $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
         };
+
         $scope.saveSettings = function(){
             var saveSuccess = function(){
                 $scope.successMessage = 'Success';
                 $scope.$emit('hideLoader');
             };
-            var saveFailed = function(response){
-                $scope.errorMessage = 'Failed';
-                $scope.$emit('hideLoader');
-            };
 
-            var dataToSend = {
-                                'kiosk':
-                                        {
-                                            "registration_card":$scope.zestSettings.registration_card,
-                                            "reg_card_text":$scope.zestSettings.reg_card_text,
-                                            "enforce_deposit":$scope.zestSettings.enforce_deposit,
-                                            "check_in_message_texts" : $scope.zestSettings.check_in_message_texts,
-                                            "show_room_number":$scope.zestSettings.show_room_number
-                                        }
-
+            var params = {
+                                'kiosk':$scope.zestSettings
                              };
-            $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
+            $scope.invokeApi(ADZestStationSrv.save, params, saveSuccess);
         };
 
         $scope.init = function(){

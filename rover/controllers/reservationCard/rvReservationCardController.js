@@ -149,13 +149,15 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		$scope.getReservationDetails = function(currentConfirmationNumber, currentId) {
 			// CICO-9709 - Reintiate reservation main data
 			//$scope.initReservationData(); // commenting code as per CICO-10077
+
 			$scope.clearArrivalAndDepartureTime();
                         //set flag to show reservation is being refreshed
                         $scope.$parent.refreshingReservation = true;
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					"id": currentId,
 					"confirmationId": currentConfirmationNumber,
-					"isrefresh": true
+					"isrefresh": true,
+					"isOnlineRoomMove": ""
 			});
 		};
 		/*

@@ -163,6 +163,18 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
     				+ date_picker.selectedDay);
     	};
 
+
+		/**
+		 * @param date {date object}
+		 * @return {dateObject}
+		 */
+		this.getFirstDayOfNextMonth = function(date) {
+			var date = new tzIndependentDate(date),
+				y = date.getFullYear(),
+				m = date.getMonth();
+			return (tzIndependentDate(new Date(y, m + 1, 1)));
+		};
+
 		/**
 		 * to get the list for time selector like 1:00 AM, 1:15 AM, 1:30 AM..
 		 * @param  {Integer} - interval in minutes - default 15 min
@@ -233,4 +245,21 @@ angular.module('sntRover').service('rvUtilSrv', [function(){
         		return navigator.userAgent.match(/Android/i);
     		}
 		};
+
+        /**
+         * This method returns the next time quarter to the input hours and minutes
+         * in hh:mm format
+         * @param hours INTEGER
+         * @param minutes INTEGER
+         * @returns {string}
+         */
+        this.roundToNextQuarter = function(hours,minutes){
+                var roundedHours =  (minutes > 45 ? ++hours % 24 : hours).toString(),
+                    roundedMins = ((((minutes + 14) / 15 | 0) * 15) % 60).toString();
+
+                return (roundedHours.length === 2 ? roundedHours : "0" + roundedHours ) +
+                    ":" +
+                    (roundedMins.length === 2 ? roundedMins : "0" + roundedMins);
+            };
+
 }]);

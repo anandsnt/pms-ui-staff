@@ -1,18 +1,22 @@
-<div id="pricesContainer" ng-iscroll="priceList" ng-iscroll-delay="1500">
+<div id="pricesContainer" >
 	<div class="scrollable">
 		<div class="restriction_text" >
-			<h4>
+			<h3>
 				PRICES
-			</h4>
+			</h3>
+			<em ng-if="ratesRoomsToggle === 'RATES' && !popupData.fromRoomTypeView">Prices for all room types</em>
 		</div>
-
-
-		<div class="price-info" ng-repeat="roomPrice in data.roomPriceData">
-			<div class="price-item">
-				<div>{{roomPrice.name}}</div>
-				<div class="amount">{{roomPrice.rate}}</div>
+ 
+        <div class="prices-container scrollable" ng-iscroll="priceList" ng-iscroll-delay="1500">
+            <div class="wrapper">
+				<div class="price-info" ng-repeat="roomPrice in data.roomPriceData">
+					 
+						<span class='name'>{{roomPrice.name}}</span>
+						<span class="price">{{roomPrice.rate}}</span>
+					 
+				</div>
 			</div>
-		</div>
+        </div>
 	</div>
 </div>
 

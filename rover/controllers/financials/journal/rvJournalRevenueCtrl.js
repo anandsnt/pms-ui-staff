@@ -15,7 +15,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         $scope.invokeApi(RVJournalSrv.fetchDepartments, {}, successCallBackFetchDepartment);
     };
 
-	var initRevenueData = function(){
+	var initRevenueData = function(origin){
 
 		var successCallBackFetchRevenueData = function(data){
 			$scope.data.revenueData = {};
@@ -26,7 +26,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
             $scope.data.activeChargeGroups = data.charge_groups;
             $scope.errorMessage = "";
 			refreshRevenueScroller();
-            $scope.$emit('hideLoader');
+            if(origin !=="SUMMARY_DATE_CHANGED"){
+                $scope.$emit('hideLoader');
+            }
 		};
 
         var postData = {
@@ -38,7 +40,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
     };
 
-	initRevenueData();
+	initRevenueData("");
 
     fetchDepartments();
 
@@ -47,11 +49,19 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
     });
 
     $rootScope.$on('fromDateChanged',function(){
-        initRevenueData();
+        initRevenueData("");
+        $rootScope.$broadcast('REFRESH_SUMMARY_DATA', $scope.data.fromDate);
     });
 
     $rootScope.$on('toDateChanged',function(){
-        initRevenueData();
+        initRevenueData("");
+    });
+    
+    // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
+    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA',function( event, data ){
+        $scope.data.fromDate = data.date;
+        $scope.data.toDate   = data.date;
+        initRevenueData(data.origin);
     });
 
     /** Handle Expand/Collapse on Level1 **/

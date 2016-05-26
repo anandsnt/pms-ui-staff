@@ -3,15 +3,21 @@
     <!-- main content -->
     <div class="row" ng-hide="isLoading">
         <div class="col-md-4 top-spacing sm-no-top-spacing section-container float-none">
-            <p class="main-text">Your Address</p>
-            <p class="sub-main-text">To further expedite your check in, please enter the details below.</p>
+            <!-- default main text -->
+            <p class="main-text" ng-if="!screenCMSDetails.title">Your Address</p>
+            <!-- CMS main text -->
+            <p class="main-text final-text" ng-if="screenCMSDetails.title" ng-bind-html="screenCMSDetails.title"></p>
+             <!-- default sub text -->
+            <p class="sub-main-text" ng-if="!screenCMSDetails.description"> To further expedite your check in, please enter the details below.</p>
+            <!-- CMS sub  text -->
+            <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
             <!-- input fields-->
             <div class="section-container">
                 <!-- country -->
                 <p class="sub-text left-align">COUNTRY</p>
                 <div class="row">
                     <div class="select-style">
-                        <select ng-model="guestDetails.country_id" ng-options="country.id as country.value  for country in countries">
+                        <select ng-model="guestDetails.country" ng-options="country.id as country.value  for country in countries">
                             <option value="">SELECT</option>
                         </select>
                     </div>
@@ -19,7 +25,7 @@
                 <!-- street -->
                 <p class="sub-text left-align margin-top-10">STREET ADDRESS</p>
                 <div class="row">
-                    <input type="text" class="input-field padding-1" ng-model="guestDetails.street1" />
+                    <input type="text" class="input-field padding-1" ng-model="guestDetails.street" />
                     <input type="text" class="input-field padding-1 margin-top-10" ng-model="guestDetails.street2" />
                 </div>
                 <!-- city -->
@@ -46,21 +52,60 @@
                     <div class="row">
                         <div class="eta-container">
                             <div class="select-style">
-                                <select ng-model="guestDetails.month" ng-options="month as month for month in months">
-                                    <option value="">MM</option>
-                                </select>
+                               <select ng-model="guestDetails.month"
+                              ng-options="month.value as month.name for month in months" ng-change="yearOrMonthChanged()">
+                              <option value="">MM</option>
+                           </select>
                             </div>
                         </div>
                         <div class="eta-container">
                             <div class="select-style">
-                                <select ng-model="guestDetails.day" ng-options="day as day for day in days">
-                                    <option value="">DD</option>
-                                </select>
+                            <select ng-model="guestDetails.day">
+                              <option value="">DD</option>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                              <option value="6">6</option>
+                              <option value="7">7</option>
+                              <option value="8">8</option>
+                              <option value="9">9</option>
+                              <option value="10">10</option>
+                              <option value="11">11</option>
+                              <option value="12">12</option>
+                              <option value="13">13</option>
+                              <option value="14">14</option>
+                              <option value="15">15</option>
+                              <option value="16">16</option>
+                              <option value="17">17</option>
+                              <option value="18">18</option>
+                              <option value="19">19</option>
+                              <option value="20">20</option>
+                              <option value="21">21</option>
+                              <option value="22">22</option>
+                              <option value="23">23</option>
+                              <option value="24">24</option>
+                              <option value="25">25</option>
+                              <option value="26">26</option>
+                              <option value="27">27</option>
+                              <option value="28">28</option>
+                              <option  value="29" ng-show="guestDetails.month != 2 || !(guestDetails.year % 4)")>
+                                29
+                              </option>
+                              <option  value="30" ng-show="guestDetails.month != 2">
+                                30
+                              </option>
+                              <option  value="31" ng-show="guestDetails.month == 1 || guestDetails.month == 3 || guestDetails.month == 5 || guestDetails.month == 7 || 
+                                  guestDetails.month == 8 || guestDetails.month == 10 || guestDetails.month == 12">
+                                31
+                              </option>
+                           </select>
                             </div>
                         </div>
                         <div class="eta-container">
                             <div class="select-style">
-                                <select ng-model="guestDetails.year" ng-options="year as year for year in years">
+                                <select ng-model="guestDetails.year" ng-options="year as year for year in years" ng-change="yearOrMonthChanged()">
                                     <option value="" selected="">YY</option>
                                 </select>
                             </div>

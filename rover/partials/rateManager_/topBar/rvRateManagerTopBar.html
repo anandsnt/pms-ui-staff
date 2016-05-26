@@ -1,0 +1,46 @@
+<div class="topbar float" ng-show="showTopBar" >
+    <ul class="info">
+        <!-- show .back if we are looking at a single rate with room rates -->
+        <li class="back" ng-show="showBackButton" ng-click='clickedOnBackButton()'>
+            <a class="back-button">Back</a>
+        </li>
+         
+
+        <li class="dates">
+            <strong>Date Range</strong>
+            <span>{{fromDate}} to {{toDate}}</span>
+        </li>
+        
+        <!-- show .rates if there are any rates selected -->
+        <li class="rates" ng-show="selectedRateNames.length">
+            <strong>Rate</strong>
+            
+            <!-- add ',' for each rate except the last one-->
+            <span>{{selectedRateNames.join()}}</span>
+            
+        </li>
+         
+        <!-- show .card if there are any cards selected -->
+        <li class="card" ng-show="selectedCardNames.length">
+            <strong>Name Card</strong>
+
+            <!-- add ',' for each company card,IATA etc except the last one-->
+            <span>{{selectedCardNames.join()}}</span>
+            
+        </li>
+         
+    </ul>
+    <!-- CICO-27447 Temporarily Hiding Chart View -->
+    <ul class="display-mode" ng-if="false">
+        
+        <!-- remove .active if graph is active and not calendar -->
+        <li ng-class="{'active': viewingScreen === 'RM_Grid_View'}">
+            <span class="icons icon-navbar only-icon icon-grid" title="Show grid"> </span>
+        </li>
+        
+        <!-- add .active if graph is active -->
+        <li ng-class="{'active': viewingScreen === 'RM_Graph_View'}">
+            <span class="icons icon-navbar only-icon icon-graph" title="Show graph"></span>
+        </li>
+    </ul>
+</div>

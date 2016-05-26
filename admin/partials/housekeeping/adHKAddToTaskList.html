@@ -170,10 +170,10 @@
 				<label>Task completion time</label>
 				<div class="entry full-width">
 					<div class="select no-bg select-col col1-3">
-						<input placeholder="hh" ng-model="eachTaskList.hours" limit-input-range="{from: 0, to: 12, callback: 'updateIndividualTimes'}"></input>
+						<input placeholder="hh" ng-model="eachTaskList.hours" limit-input-range="{from: 0, to: 12, zeroPrefix: true, callback: 'updateIndividualTimes'}"></input>
 					</div>
 					<div class="select no-bg select-col col1-3">
-						<input placeholder="mm" ng-model="eachTaskList.mins" limit-input-range="{from: 0, to: 59, callback: 'updateIndividualTimes'}"></input>
+						<input placeholder="mm" ng-model="eachTaskList.mins" limit-input-range="{from: 0, to: 59, zeroPrefix: true, callback: 'updateIndividualTimes'}"></input>
 					</div>
 				</div>
 			</div>
@@ -194,10 +194,10 @@
 							<span>{{room.name}}</span>
 						</div>
 						<div class="select no-bg select-col col1-5">
-							<input placeholder="hh" ng-model="eachTaskList.rooms_task_completion[room.id].hours" limit-input-range="{from: 0, to: 12}"></input>
+							<input placeholder="hh" ng-model="eachTaskList.rooms_task_completion[room.id].hours" limit-input-range="{from: 0, to: 12, zeroPrefix: true}"></input>
 						</div>
 						<div class="select no-bg select-col col1-5">
-							<input placeholder="mm" ng-model="eachTaskList.rooms_task_completion[room.id].mins" limit-input-range="{from: 0, to: 59}"></input>
+							<input placeholder="mm" ng-model="eachTaskList.rooms_task_completion[room.id].mins" limit-input-range="{from: 0, to: 59, zeroPrefix: true}"></input>
 						</div>
 						<div ng-show="checkCopyBtnShow(room.id)">
 							<button type="button" class="button blue with-icon only-icon" ng-click="copyNpaste(room.id)">

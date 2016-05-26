@@ -12,40 +12,23 @@
         <div class="col-md-4 top-spacing sm-no-top-spacing section-container mob-padding-bottom-10">
             <!--  -->
             <div class="section-container mob-padding-bottom-10">
-                <p class="sub-text left-align">ESTIMATED ARRIVAL TIME</span>
-                    <div class="row">
-                        <div class="eta-container">
-                            <div class="select-style">
-                                <select ng-model="stayDetails.hour" ng-options="hour as hour  for hour in hours">
-                                    <option value="">HH</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="eta-container">
-                            <div class="select-style">
-                                <select ng-model="stayDetails.minute" ng-options="minute as minute  for minute in minutes">
-                                    <option value="">MM</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="eta-container">
-                            <div class="select-style">
-                                <select ng-model="stayDetails.primeTime">
-                                    <option value="AM" selected="">AM</option>
-                                    <option value="PM">PM</option>
-                                    <option value="">AM/PM</option>
-                                </select>
-                            </div>
-                        </div>
+                <p class="sub-text left-align">ESTIMATED ARRIVAL TIME</p>
+                <div class="row">
+                    <div class="select-style eta-single">
+                        <select name="timepicker" id="timePicker" ng-model="arrivalTime">
+                            <option value="">select time</option>
+                            <option value="{{time}}" ng-repeat="time in timings">{{time}}</option>
+                        </select>
                     </div>
+                </div>
             </div>
             <p class="sub-text left-align margin-top-20">LET US KNOW ANY REQUESTS OR COMMENTS</p>
             <div class="row">
-                <textarea rows="5" cols="50" ng-model="stayDetails.comment" class="col-xs-12 sub-text no-text-transform" placeholder="Comments here.">
+                <textarea rows="5" cols="50" ng-model="comment" class="col-xs-12 sub-text no-text-transform" placeholder="Comments here.">
                 </textarea>
             </div>
             <!--  submit button-->
-            <a class="btn btn-template margin-top-10" ng-click="postStayDetails()">Continue</a>
+            <a class="btn btn-template margin-top-10" ng-click="updateTimeOfArrival()">Continue</a>
         </div>
         <div class="col-md-1">
         </div>

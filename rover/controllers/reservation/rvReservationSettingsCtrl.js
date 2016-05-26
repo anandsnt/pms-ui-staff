@@ -204,8 +204,8 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             if (!$scope.reservationData.tabs[$scope.reservationData.tabs.length - 1].roomTypeId) {
                 return false; // Need to select room type before adding another row
             }
-            $scope.reservationData.tabs = $scope.reservationData.tabs.concat(RVReservationTabService.newTab());
-            $scope.reservationData.rooms = $scope.reservationData.rooms.concat(RVReservationTabService.newRoom());
+            $scope.reservationData.tabs.push(RVReservationTabService.newTab()[0]);
+            $scope.reservationData.rooms.push(RVReservationTabService.newRoom()[0]);
             // init stay dates on the last of the rooms -- the most recent one added!
             initStayDates($scope.reservationData.rooms.length - 1);
             $scope.refreshScroll();

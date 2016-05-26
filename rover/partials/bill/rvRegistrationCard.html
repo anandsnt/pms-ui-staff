@@ -23,7 +23,7 @@
                                 <label>{{ printRegCardData.guest_details.state }} {{ printRegCardData.guest_details.postal_code }}</label>
                             </strong>
                         </td>
-                        <td>
+                        <td ng-hide="!isStandAlone">
                             <span>BILL TO:</span>
                             <strong>{{ printRegCardData.bill_to.name }}</strong>
                             <strong ng-if="printRegCardData.bill_to.street1 || printRegCardData.bill_to.street2">{{ printRegCardData.bill_to.street1 }} {{ printRegCardData.bill_to.street2 }}</strong>
@@ -67,7 +67,7 @@
                         	<span>&nbsp;</span>
                         </td>
                     </tr>
-                    <tr>
+                    <tr ng-hide="!isStandAlone">
                         <td>
                             <span>AMOUNT PAID:</span>
                             <strong>{{ printRegCardData.amount_paid | currency:currencySymbol:2 }}</strong>
@@ -82,7 +82,7 @@
                         </td>
                     </tr>
                 </table>
-                <table class="rate-initial">
+                <table ng-hide="!isStandAlone" class="rate-initial">
                     <tr>
                         <td ng-hide="printRegCardData.hide_rates">
                             <span>AVERAGE DAILY RATE:</span>
@@ -98,7 +98,7 @@
     </tbody>
 </table>
 
-<table class="bill-details">
+<table ng-hide="!isStandAlone" class="bill-details">
     <thead>
         <tr>
             <th>DATE</th>
@@ -145,7 +145,7 @@
 
 <table class="terms-signature">
     <tr>
-        <td colspan="2" class="terms" ng-bind-html="printRegCardData.terms_conditions"></td>
+        <td colspan="2" class="terms" data-ng-bind-html="trustAsHtml(printRegCardData.terms_conditions)"></td>
     </tr>
     <tr>
         <td ng-if="reservationBillData.signature_details.is_signed === 'true'" style="text-align: left;">

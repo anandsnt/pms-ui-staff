@@ -7,5 +7,6 @@ sntZestStation.constant('zsEventConstants', {
 	'HIDE_CLOSE_BUTTON' 	: 'Hide_close_button',
 	'CLICKED_ON_BACK_BUTTON': 'Clicked_on_back_button',
 	'SHOW_LOADER'			: 'showLoader',
-	'HIDE_LOADER'			: 'hideLoader'
+	'HIDE_LOADER'			: 'hideLoader',
+	'UPDATE_LOCAL_STORAGE_FOR_WS' : 'local_storage_update_for_ws'
 });

@@ -166,6 +166,12 @@
     "TA_NAME" : "Travel Agent Name",
     "C_ID_OR_IATA" : "Corp ID / IATA number",
     "CORP_ID" : "Corp ID",
-    "IATA_NO" : "IATA number"
+    "IATA_NO" : "IATA number",
+
+    "TAX_DESCRIPTION" : "Tax description",
+    "GROSS" : "Gross",
+    "NET" : "Net",
+    "TAX" : "Tax",
+    "TOTAL" : "Total"
 
 

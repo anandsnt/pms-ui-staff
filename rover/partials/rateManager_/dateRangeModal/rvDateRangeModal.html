@@ -1,0 +1,27 @@
+<div id="modal" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+    <form ng-cloak method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form date-range-update">
+        <button id="modal-close" class="modal-close" type="button" ng-click="closeDialog()">
+            <span class="icons icon-close invert"></span>
+        </button>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <span class="message h2">Date Range Update</span>
+
+        <fieldset id="fromDatePicker" class="holder left">
+            <strong class="h3">From <span>{{fromDate| date:dateFormat}}</span></strong>
+            <div ui-date="fromDateOptions" ng-model="fromDate"></div>
+        </fieldset>
+        <fieldset id="toDatePicker" class="holder right">
+            <strong class="h3">To <span>{{toDate | date:dateFormat}}</span></strong>
+            <div ui-date="toDateOptions" ng-model="toDate"></div>
+        </fieldset>
+        <div class="actions">
+            <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+            <button class="button green"
+                    ng-click="updateClicked()"
+                    type="button"
+                    disabled="disabled"
+                    ng-disabled="toggleUpdate()"
+                    ng-class="{ grey : toggleUpdate() }">Set Range</button>
+        </div>
+    </form>
+</div>

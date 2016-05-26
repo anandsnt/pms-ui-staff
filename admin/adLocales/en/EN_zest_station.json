@@ -1,6 +1,4 @@
-
-
-"ZESTSTATION_TITLE" : "Zest Station Settings",
+"ZESTSTATION_TITLE":"Zest Station Settings",
 "ZESTSTATION_TITLE_CHECKIN":"Zest Station Check In",
 "ZESTSTATION_TITLE_CHECKOUT":"Zest Station Check Out",
 "ZESTSTATION_COLORS_AND_GRAPHICS":"Colors And Graphics",
@@ -20,19 +18,26 @@
 "GUEST_BILL_DELIVERY":"Guest bill delivery options",
 "EMAIL_UPDATE_ZS":"Update Email",
 "PRINT":"Print",
+"AUTO_PRINT":"Auto Print",
 
 
 
 "STATION_LANGUAGE_SUPPORT":"Language Support",
 "STATION_LANGUAGE_SUPPORT_SWITCH":"Multi-Language Support",
+"STATION_LANGUAGE_DEFAULT":"Default Language",
+"STATION_LANGUAGE_DEFAULT_PLACEHOLDER":"Select Language",
+
+
 "STATION_LANGUAGE_ENGLISH":"English",
 "STATION_LANGUAGE_FRENCH":"Français",
 "STATION_LANGUAGE_SPANISH":"Español",
 "STATION_LANGUAGE_GERMAN":"Deutsch",
 "STATION_LANGUAGE_ITALIAN":"Italiano",
+"STATION_LANGUAGE_CASTELLANO":"Castellano",
 
-
-
+"ACTIVATE_BOOKING_ENGINE_POPUP" :"Activate Booking Engine Popup",
+"BOOKING_URL":"Booking Engine URL",
+"BUTTON_LABEL":"Button Label",
 "HOME_SCREEN_OPTIONS":"Home screen options",
 "PICKUP_KEYS":"Pickup Keys",
 "CHECKOUT":"Check Out",
@@ -41,19 +46,42 @@
 "REG_CARD":"Registration Card",
 "ON_SCREEN_ROOM_NUMBER":"On-Screen Room Number",
 "ENFORCE_DEPOSIT":"Enforce Deposit",
+"OFFER_EARLY_CHECKIN":"Offer Early Check-In",
 "QR_SCANNER":"QR Scanner",
+"QR_SCANNER_TYPE_SAM":"Samsotech",
+"QR_SCANNER_TYPE_DATA":"Datalogic",
 "PUK_AUTH":"Authentication",
+"PUK_QR":"QR Code Scanner",
 "REG_CARD_DELIVERY":"Registration card delivery options",
-
-
-
+"SECOND_AUTHENTICATION":"Second Authentication",
+"DEPARTURE_DATE":"Departure Date",
+"EMAIL":"Email",
+"CONFIRMATION":"Confirmation",
+"AUTH_NO_OF_NIGHTS":"Number of Nights",
 
 "NO_AVAIL_ROOM_MSG":"No Available Rooms Message",
 "KEY_PRINT_SUCCESS_MSG":"Key and Print Success Message",
 "KEY_SUCCESS_PRINT_FAIL_MSG":"Key Success / Print Fail Message",
 "KEY_FAIL_PRINT_SUCCESS":"Key Fail / Print Success Message",
 "KEY_AND_PRINT_FAIL_MSG":"Keys and Print Fail Message",
-"CHECKIN_WAIT_MSG":"Check In Wait Message"
+"CHECKIN_WAIT_MSG":"Check In Wait Message",
+"COLLECT_USER_NATIONALITY":"Collect Guest Nationality",
+"QR_FAIL_OVER":"QR Failover",
+"KEY_CARD_LOOK_UP":"Keycard Lookup",
+"CHROME_APP_ID":"Chrome App ID",
+"STATION_PRINTER_OPTIONS":"Station Printer Options",
+"OWS_GUEST_MESSAGES":"OWS Guest Messages",
+"BYPASS_CC_FOR_PREPAID_RESERVATIOIN":"Bypass Credit Card for Prepaid Reservations",
+"DISPLAY_TERMS_AND_CONDITIONS":"Display Terms & Conditions",
+"CC_ENTRY_METHOD":"CC entry method",
+"SIX_PAY_CHROME_IPAD":"SixPay - Chrome or iPad - SixPay processor",
+"MLI_DESKTOP_SWIPE_CHROME":"MLI Desktop Swipe - Chrome Only - Merchantlink Processor",
+"INFINEA_INGENICO_CC_IPAD":"Infinea/ Ingenico - ipad Only - Merchantlink Processor",
+"KEY_CREATION_METHOD":"Key creation method",
+"REMOTE_ENCODING_CHROME_IPAD":"Remote Encoding - Chrome or iPad - Ving, Salto, Saflok",
+"SANKYO_ENCODING":"Sankyo Encoding - Chrome only - Atlas (Saflok) only - Uses websocket",
+"INGENICO_INFINEA_KEY":"Infinea/Ingenico - iPad Only - Ving, Salto, Saflok"
+
 
 
 

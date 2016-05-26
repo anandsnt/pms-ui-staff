@@ -3,52 +3,55 @@
 @import "../style.less";
 
 body{
-    background-color:@black;
+    background-color:@white;
 }
 a,a:hover{
-    color:#fff !important;
+  color:#fff !important;
 }
-.main-text{
-    color:@white;
+
+.main-text,
+.res-date,
+.footer-sub-text,.footer-sub-text:hover,.phone-label{
+    color:#000;
 }
 .sub-main-text{
-    color:@white;
+    color:@black;
 }
 .template-text,.footer-text,
 .balance-amount,.phone-text,
 .phone-text:hover,.request-text,
 .error-text {
-    color: @white !important;
+    color: @black !important;
 }
 .view-bill{
-    color:#A9862F;
+    color:#ffce33;
 }
 .sub-text,.sub-text:hover,.query-text,.query-text:hover{
-    color: #8c8c8c !important;
+    color: @black !important;
 }
 .light-text{
     color:@grey !important;
 }
 .btn,.btn:hover{
-    background:#a9862f;
+    background:#ffce33;
 }
 .dark-button,.dark-button:hover{
-    background: #A9862F !important;
+    background: #E8B109 !important;
 }
 .light-button,.light-button:hover{
-    background: #C5A349 !important;
+    background: #FFCE33 !important;
 }
 .checkouttime1,.checkouttime1:hover{
-    background: #C5A349;
+    background: #FFCF34;
 }
 .checkouttime2,.checkouttime2:hover{
-    background: #A9862F;
+    background: #E9B306;
 }
 .checkouttime3,.checkouttime3:hover{
-    background: #8E6D1B;
+    background: #D19F00;
 }
 .no-thanks,.no-thanks:hover{
-    color:white !important;
+    color:black !important;
     text-decoration: underline;
     text-transform:none;
 }
@@ -61,7 +64,7 @@ a,a:hover{
 }
 
 .upgrade-details .upgrades-btn {
-    background: #A9862F;
+    background: #ffce33;
 }
 
 .proceed-to-checkin {
@@ -70,28 +73,36 @@ a,a:hover{
 .upgrades-label,.phone-label{
     color:#a88629;
 }
-
+.res-date{
+  color:#000 !important;
+}
+.footer-sub-text, .footer-sub-text:hover{
+  color:#000 !important;
+}
+.res-details-heading, .res-details-heading:hover{
+  color:#000;
+}
 
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
-  color: #363634;
+  color: #D3D3D3;
   color: transparent;
 }
 
 .pickadate-cell .pickadate-active {
-  background-color: #A9862F !important;
+  background-color: #ffce33 !important;
   color:#FFFFFF;
 }
 
 .pickadate-cell .pickadate-enabled ,.pickadate-centered-heading{
-  color: #fff !important;
+  color: black !important;
 }
 .pickadate-head{
     color:#696969;
 }
 .calendar-selection {
-    color: #8C7232;
+    color: #fff;
 }
 .pickadate-cell li:nth-child(1),
 .pickadate-cell li:nth-child(8),
@@ -105,14 +116,8 @@ a,a:hover{
 .pickadate-cell .pickadate-disabled,
 .pickadate-cell .pickadate-enabled,
 .pickadate-cell .pickadate-outofrange-disabled {
-  background-color: #363634;
+  background-color: #D3D3D3;
 }
-
-.pickadate-cell .pickadate-disabled,
-.pickadate-cell .pickadate-disabled a {
-  color: #ac9557;
-}
-
 
 .pickadate-cell li {
   border: 1px solid #fff;
@@ -121,7 +126,7 @@ a,a:hover{
   color: #666666;
 }
 .date-picker-header{
-  background-color: #3D3D3B;
+  background-color:#ffce33;
 }
 .calendar-back {
   background-image: url('/assets/guestweb/common_images/gold/back_icon.png');
@@ -133,11 +138,11 @@ a,a:hover{
 }
 
 .pickadate-prev,.pickadate-next,.pickadate-prev:hover,.pickadate-next:hover{
-  color:#fff !important;
+  color:#000 !important;
 }
 
 .date-picker-wrap {
-  background-color: #3D3D3B !important;
+  background-color: @white !important;
 }
 .date-picker-bg {
   background: rgba(0,0,0,0.5);

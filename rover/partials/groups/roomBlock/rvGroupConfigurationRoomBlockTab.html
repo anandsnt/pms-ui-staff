@@ -1,71 +1,75 @@
 <form id="group-room-block" name="group-room-block" class="form card-tab inner-header rooms" ng-controller="rvGroupRoomBlockCtrl">
-    
+
     <div id="group-room-block-header" class="tab-header with-filters">
         <div class="entry date-range">
             <div class="has-datepicker">
-                <label for="room-block-start" 
+                <label for="room-block-start"
                     translate>
                     START_DATE
                 </label>
-                <input id="room-block-start" class="range-datepicker" 
-                    placeholder="{{'SELECT_START_DATE'|translate}}" 
-                    readonly 
-                    ui-date="startDateOptions" 
+                <input tabindex="-1" id="room-block-start" class="range-datepicker"
+                    placeholder="{{'SELECT_START_DATE'|translate}}"
+                    readonly
+                    ui-date="startDateOptions"
                     rv-set-textbox-value listen-this="groupConfigData.summary.block_from|date:dateFormat"
                     ng-disabled="shouldDisableStartDate()" />
             </div>
             <div class="has-datepicker">
-                <label for="room-block-end" 
+                <label for="room-block-end"
                     translate>
                     END_DATE
                 </label>
-                <input id="room-block-end" class="range-datepicker" 
-                    placeholder="{{'SELECT_END_DATE'|translate}}" 
-                    readonly 
-                    ui-date="endDateOptions" 
+                <input tabindex="-1" id="room-block-end" class="range-datepicker"
+                    placeholder="{{'SELECT_END_DATE'|translate}}"
+                    readonly
+                    ui-date="endDateOptions"
                     rv-set-textbox-value listen-this="groupConfigData.summary.block_to|date:dateFormat"
                     ng-disabled="shouldDisableEndDate()" />
             </div>
         </div>
         <div class="actions" ng-hide="!!groupConfigData.summary.is_cancelled" ng-class="{'move-group' : !shouldDisableCreateBlockButton()}"> <!-- When block is created, add class "move-group" -->
             <!-- If block not created:  -->
-            <button type="button" class="button" 
-                ng-disabled="shouldDisableCreateBlockButton()" 
-                ng-hide="shouldHideCreateBlockButton()" 
-                ng-click="clickedOnCreateButton()" 
-                ng-class="{'grey' : shouldDisableCreateBlockButton(), 
-                           'green': !shouldDisableCreateBlockButton()}" 
+            <button type="button" class="button"
+                tabindex="-1"
+                ng-disabled="shouldDisableCreateBlockButton()"
+                ng-hide="shouldHideCreateBlockButton()"
+                ng-click="clickedOnCreateButton()"
+                ng-class="{'grey' : shouldDisableCreateBlockButton(),
+                           'green': !shouldDisableCreateBlockButton()}"
                 translate>
                 CREATE_BLOCK
             </button>
             <!-- If block created -->
             <button type="button" class="button blue"
+                tabindex="-1"
                 ng-show="changeDatesActions.shouldShowMoveButton()"
                 ng-click="clickedOnMoveButton()">
                 Move Group
             </button>
-            <!-- When button pressed, disable due date input and replace "Move Group" button with: -->
+            <!-- When button pressed, disable due date input tabindex="-1" and replace "Move Group" button with: -->
             <button type="button" class="button blank"
+                tabindex="-1"
                 ng-click="clickedOnCancelMoveButton()"
                 ng-show="changeDatesActions.isInCompleteMoveMode()">
                 Cancel
             </button>
             <button type="button" class="button green"
+                tabindex="-1"
                 ng-click="clickedOnSaveMoveButton()"
                 ng-show="changeDatesActions.isInCompleteMoveMode()">
                 Save
             </button>
-        </div> 
+        </div>
         <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}">
             <!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
             <label for="group-total-rooms" translate>TOTAL_ROOMS</label>
-            <input id="group-total-rooms" value="{{getMaxOfBookedRooms()}}"  
+            <input tabindex="-1" id="group-total-rooms" ng-model="totalBlockedCount"
                     ng-readonly="shouldChangeTotalRoomsToReadOnly()" />
         </div>
         <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}">
             <!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
             <label for="group-total-rooms" translate>TOTAL_PICK_UP</label>
-            <input id="group-total-rooms"  ng-model="totalPickups" 
+            <input tabindex="-1" id="group-total-rooms"  ng-model="totalPickups"
                 ng-readonly="shouldChangeTotalPickUpToReadOnly()" />
         </div>
         <div class="entry status" ng-class="{'hidden': shouldHideHoldStatus()}">
@@ -88,85 +92,89 @@
         <!-- If new group and/or room block have not been set: -->
         <div class="no-content" ng-hide="shouldHideAddRoomsButton()">
             <div class="info">
-                <a ng-click="clickedOnAddRoomsAndRatesButton()" class="button" 
-                    ng-disabled="shouldDisableAddRoomsAndRate()" 
-                    ng-class="{	'green': !shouldDisableAddRoomsAndRate(), 
-	            				'grey': shouldDisableAddRoomsAndRate()}" 
-                    translate>	
+                <a ng-click="clickedOnAddRoomsAndRatesButton()" class="button"
+                    ng-disabled="shouldDisableAddRoomsAndRate()"
+                    ng-class="{	'green': !shouldDisableAddRoomsAndRate(),
+	            				'grey': shouldDisableAddRoomsAndRate()}"
+                    translate>
 	            	ADD_ROOMS_AND_RATE
 	            </a>
                 <!-- // Button should have class "hidden" until block is created -->
             </div>
         </div>
         <!-- Room block actions -->
-        <div class="room-block-actions" ng-show="shouldHideAddRoomsButton()">
-            <button type="button" class="button green" 
+        <div class="room-block-actions" ng-show="shouldShowRoomsRates()">
+            <button type="button" class="button green"
+                tabindex="-1"
                 ng-click = "clickedOnSaveButton()"
                 ng-class="{'hidden': !shouldShowSaveButton()}"
                 translate>
                 SAVE
             </button>
             <!-- Hidden until change is made in the grid -->
-            <button type="button" class="button red hidden" 
+            <button type="button" class="button red hidden"
+                tabindex="-1"
                 ng-click = "clickedOnDiscardButton()"
                 ng-class="{'hidden': !shouldShowDiscardButton()}"
                 translate>
                 DISCARD
             </button>
             <!-- Hidden until change is made in the grid -->
-            <button type="butotn" class="button blue" 
-                ng-click="clickedOnAddRoomsAndRatesButton()" 
+            <button type="butotn" class="button blue"
+                tabindex="-1"
+                ng-click="clickedOnAddRoomsAndRatesButton()"
                 translate>
                 ROOMS_AND_RATES
             </button>
         </div>
         <!-- Room block room types -->
-        <div class="room-block-sidebar scrollable" ng-show="shouldHideAddRoomsButton()"
+        <div class="room-block-sidebar scrollable" ng-show="shouldShowRoomsRates()"
             ng-iscroll="room_block_scroller">
             <div class="wrapper">
                 <!-- Toggle class "open" when .line-toggle is clicked/tapped -->
-                <div ng-class="{'open' : roomtype_rate.isCollapsed}" 
-                    class="row" 
-                    ng-repeat="roomtype_rate in groupConfigData.summary.selected_room_types_and_bookings" 
-                    ui-jq="accordion" 
-                    ui-options="accordionInitiallyNotCollapsedOptions" 
+                <div ng-class="{'open' : roomtype_rate.isCollapsed}"
+                    class="row"
+                    ng-repeat="roomtype_rate in groupConfigData.summary.selected_room_types_and_bookings"
+                    ui-jq="accordion"
+                    ui-options="accordionInitiallyNotCollapsedOptions"
                     ng-init="roomtype_rate.isCollapsed = true">
-                    
+
                     <!-- Toggle class "active" when clicked/tapped -->
-                    <p class="line line-toggle" 
-                        ng-class="{'active' : roomtype_rate.isCollapsed}" 
+                    <p class="line line-toggle"
+                        ng-class="{'active' : roomtype_rate.isCollapsed}"
                         ng-click="roomtype_rate.isCollapsed = !roomtype_rate.isCollapsed">
                         {{roomtype_rate.room_type_name}}
                     </p>
                     <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
                     <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}">
-                        <li class="line" translate ng-hide="groupConfigData.summary.rate != -1 && roomtype_rate.rate_config.single_rate == null">SINGLE</li>
-                        <li class="line" translate ng-hide="groupConfigData.summary.rate != -1 && roomtype_rate.rate_config.double_rate == null">DOUBLE</li>
-                        <li class="line small add" 
-                            ng-if="!shouldShowTripleEntryRow(roomtype_rate) && groupConfigData.summary.rate == -1"
-                            ng-click="addTripleEntryRow(roomtype_rate)" 
+                        <!-- CICO-26729: Show for borrowed room type -->
+                        <li class="line" translate ng-hide="(roomtype_rate.can_edit) && !groupConfigData.summary.rate != -1 && roomtype_rate.rate_config.single_rate == null">SINGLE</li>
+                        <li class="line" translate ng-hide="(roomtype_rate.can_edit) && groupConfigData.summary.rate != -1 && roomtype_rate.rate_config.double_rate == null">DOUBLE</li>
+                        <li class="line small add"
+                            ng-if="roomtype_rate.can_edit && !shouldShowTripleEntryRow(roomtype_rate) && groupConfigData.summary.rate == -1"
+                            ng-click="addTripleEntryRow(roomtype_rate)"
                             ng-class="{'add': !shouldDisableAddTripleButton(roomtype_rate)}"
                             translate>
                             ADD_TRIPLE
                         </li>
-                        <li class="line" 
+                        <li class="line"
                             ng-if="shouldShowTripleEntryRow(roomtype_rate)"
                             translate>
                             TRIPLE
                         </li>
-                        <li class="line" 
-                            ng-if="shouldShowQuadrupleEntryRow(roomtype_rate)" 
+                        <li class="line"
+                            ng-if="shouldShowQuadrupleEntryRow(roomtype_rate)"
                             translate>
                             QUADRUPLE
                         </li>
-                        <li class="line small" 
-                            ng-if="!shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate) && groupConfigData.summary.rate == -1" 
+                        <li class="line small"
+                            ng-if="roomtype_rate.can_edit && !shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate) && groupConfigData.summary.rate == -1"
 
                             ng-click="addQuadrupleEntryRow(roomtype_rate)"
                             ng-class="{'add': !shouldDisableAddQuadrupleButton(roomtype_rate)}"
                             translate>
                             ADD_QUADRUPLE
-                        </li>                            
+                        </li>
                         <!-- When clicked, add L110-113 -->
                         <!-- When + Add Triple is clicked, show option to add quadruple:
 	                    <li  translate></li> // When clicked, add L115-118 -->
@@ -176,9 +184,9 @@
             </div>
         </div>
         <!-- Room block days -->
-        <div class="room-block-timeline scrollable" 
-            ng-iscroll="room_rates_timeline_scroller" 
-            ng-show="shouldHideAddRoomsButton()">
+        <div class="room-block-timeline scrollable"
+            ng-iscroll="room_rates_timeline_scroller"
+            ng-show="shouldShowRoomsRates()">
 
             <ul style="width:{{getWidthForRoomBlockTimeLine()}};" class="wrapper">
                 <li ng-repeat="occupancy in groupConfigData.summary.selected_room_types_and_occupanies">
@@ -186,15 +194,26 @@
                         {{formatDateForUI(occupancy.date, monthAndDate)}}
                         <em>{{occupancy.occupancy}}% Occupancy</em>
                     </div>
+                    <div class="column">
+                        <div class="line small">
+                            <em class="cell">Total</em>
+                            <em class="cell">Pick-up</em>
+                        </div>
+                        <div class="line">
+                            <input type="number" value="{{occupancy.totalRoomsBlockedCountPerDay}}" class="cell" disabled>
+                            <input type="number" value="{{occupancy.totalRoomsPickedCountPerDay}}" class="cell" disabled />
+
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>
         <!-- Room block grid -->
-        <div class="room-block-grid scrollable" ng-iscroll="room_rates_grid_scroller" 
-            ng-show="shouldHideAddRoomsButton()">
+        <div class="room-block-grid scrollable" ng-iscroll="room_rates_grid_scroller"
+            ng-show="shouldShowRoomsRates()">
             <div class="wrapper" style="width:{{getWidthForRoomBlockTimeLine()}};">
                 <!-- REPEAT ROW FOR ALL ROOM TYPES SELECTED -->
-                <div class="row" ng-repeat="roomType in groupConfigData.summary.selected_room_types_and_bookings">
+                <div class="row" ng-repeat="roomType in groupConfigData.summary.selected_room_types_and_bookings" emit-when="{event: 'ALL_RENDERED', condition: $last}">
                     <!-- REPEAT COLUMN FOR ALL DAYS IN THE BLOCK -->
                     <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                     <div class="column" ng-repeat="dateData in roomType.dates">
@@ -204,59 +223,61 @@
                         </div>
                         <!-- Room Type -->
                         <div class="line">
-                            <input type="text" 
+                            <input tabindex="-1" type="text"
                                 value="{{getTotalBookedOfIndividualRoomType(dateData)}}"
-                                class="cell" disabled />                                
-                            <input type="text" 
+                                class="cell" disabled />
+                            <input tabindex="-1" type="text"
                                 value="{{getTotalPickedUpOfIndividualRoomType(dateData)}}" class="cell" disabled />
                         </div>
                         <!-- Single -->
                         <!-- <div class="line hidden"> -->
-                        <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="groupConfigData.summary.rate != -1 && roomType.rate_config.single_rate == null">
+                        <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="(roomtype_rate.can_edit) && groupConfigData.summary.rate != -1 && roomType.rate_config.single_rate == null">
                             <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                             <!-- we are not going behind ng-change, it will trigger everytime there is acharctr chnge, so we ae using our delay text box -->
-                            <input type="text" 
-                                rv-delay-textbox 
-                                delay="100" 
-                                function-to-fire="bookingDataChanging" 
+                            <input tabindex="-1" type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
                                 ng-disabled="shouldDisableSingleEntryBox(dateData, roomType)"
-                                ng-model="dateData.single" class="cell" />                              
-                            <input type="text" 
-                                rv-delay-textbox 
-                                delay="100" 
-                                function-to-fire="bookingDataChanging" 
-                                ng-model="dateData.single_pickup" 
+                                ng-model="dateData.single" class="cell" />
+                            <input tabindex="-1" type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.single_pickup"
                                 class="cell" disabled />
                             <!-- we will show this quick arrow only in first column -->
                             <button ng-if="!$index"
-                                ng-click="copySingleValueToOtherBlocks(dateData, roomType)" 
-                                type="button" 
+                                tabindex="-1"
+                                ng-click="copySingleValueToOtherBlocks(dateData, roomType)"
+                                type="button"
                                 class="admin-icons icon-mover-right">
                                 Copy to all days
                             </button>
                         </div>
                         <!-- Double -->
                         <!-- <div class="line hidden"> -->
-                        <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="groupConfigData.summary.rate != -1 && roomType.rate_config.double_rate == null">
+                        <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="(roomtype_rate.can_edit) && groupConfigData.summary.rate != -1 && roomType.rate_config.double_rate == null">
                             <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
-                            <input type="text" 
-                                rv-delay-textbox 
-                                delay="100" 
+                            <input tabindex="-1" type="text"
+                                rv-delay-textbox
+                                delay="100"
                                 ng-disabled="shouldDisableDoubleEntryBox(dateData, roomType)"
-                                function-to-fire="bookingDataChanging" 
+                                function-to-fire="bookingDataChanging"
                                 ng-model="dateData.double" class="cell" />
 
-                            <input type="text" 
-                                rv-delay-textbox 
-                                delay="100" 
-                                function-to-fire="bookingDataChanging" 
-                                ng-model="dateData.double_pickup" 
+                            <input tabindex="-1" type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.double_pickup"
                                 class="cell" disabled />
 
                             <!-- we will show this quick arrow only in first column -->
                             <button ng-if="!$index"
-                                ng-click="copyDoubleValueToOtherBlocks(dateData, roomType)" 
-                                type="button" 
+                                tabindex="-1"
+                                ng-click="copyDoubleValueToOtherBlocks(dateData, roomType)"
+                                type="button"
                                 class="admin-icons icon-mover-right">
                                 Copy to all days
                             </button>
@@ -264,25 +285,26 @@
                         <!-- If L63 is clicked, generate option to add triple: -->
                         <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                         <div class="line" ng-if="shouldShowTripleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
-                            <input type="text" 
-                                rv-delay-textbox 
-                                delay="100" 
+                            <input tabindex="-1" type="text"
+                                rv-delay-textbox
+                                delay="100"
                                 ng-disabled="shouldDisableTripleEntryBox(dateData, roomType)"
-                                function-to-fire="bookingDataChanging" 
-                                ng-model="dateData.triple" 
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.triple"
                                 class="cell"  />
 
-                            <input type="text" 
-                                rv-delay-textbox 
-                                delay="100" 
-                                function-to-fire="bookingDataChanging"                                 
-                                ng-model="dateData.triple_pickup" 
+                            <input tabindex="-1" type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.triple_pickup"
                                 class="cell" disabled />
 
                             <!-- we will show this quick arrow only in first column -->
                             <button ng-if="!$index"
-                                ng-click="copyTripleValueToOtherBlocks(dateData, roomType)" 
-                                type="button" 
+                                tabindex="-1"
+                                ng-click="copyTripleValueToOtherBlocks(dateData, roomType)"
+                                type="button"
                                 class="admin-icons icon-mover-right">
                                 Copy to all days
                             </button>
@@ -290,33 +312,34 @@
                         <!-- If L65 is clicked, generate option to add quadruple: -->
                         <!-- // Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                         <div class="line" ng-if="shouldShowQuadrupleEntryRow(roomType)" ng-class="{'hidden' : !roomType.isCollapsed}">
-                            <input type="text" 
-                                rv-delay-textbox 
-                                delay="100" 
-                                function-to-fire="bookingDataChanging" 
+                            <input tabindex="-1" type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
                                 ng-disabled="shouldDisableQuadrupleEntryBox(dateData, roomType)"
                                 ng-model="dateData.quadruple" class="cell" />
 
-                            <input type="text" 
-                                rv-delay-textbox 
-                                delay="100" 
-                                function-to-fire="bookingDataChanging" 
-                                ng-model="dateData.quadruple_pickup" 
+                            <input tabindex="-1" type="text"
+                                rv-delay-textbox
+                                delay="100"
+                                function-to-fire="bookingDataChanging"
+                                ng-model="dateData.quadruple_pickup"
                                 class="cell" disabled />
                             <!-- we will show this quick arrow only in first column -->
                             <button ng-if="!$index"
-                                ng-click="copyQuadrupleValueToOtherBlocks(dateData, roomType)" 
-                                type="button" 
+                                tabindex="-1"
+                                ng-click="copyQuadrupleValueToOtherBlocks(dateData, roomType)"
+                                type="button"
                                 class="admin-icons icon-mover-right">
                                 Copy to all days
-                            </button>                              
+                            </button>
                         </div>
                         <!-- <div class="line small cellspan hidden"> -->
                         <div class="line small cellspan" ng-class="{'hidden' : !roomType.isCollapsed}">
                             <em class="cellspan">
                                 {{'AVAILABILITY_GROUP'|translate}}
-                                    <span 
-                                    ng-class="{'green': (dateData.availability>0), 
+                                    <span
+                                    ng-class="{'green': (dateData.availability>0),
                                     'red': (dateData.availability==0) }">
                                         {{dateData.availability}}
                                     </span>

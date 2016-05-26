@@ -10,7 +10,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 * @return {Boolean} [description]
 		 */
 		var whetherSummaryDataChanged = function() {
-			var currentSummaryData = _.omit($scope.groupConfigData.summary, ['rooms_total']);
+			// Some properties not in original defenition should be left out
+			var currentSummaryData = $scope.groupConfigData.summary;
+			summaryMemento = _.omit(summaryMemento, [
+								'rooms_total',
+								'selected_room_types_and_bookings',
+								'selected_room_types_and_occupanies'
+							]);
 			for (var key in summaryMemento) {
 				if (!_.isEqual(currentSummaryData[key], summaryMemento[key])) {
 					return false;
@@ -311,6 +317,14 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		};
 
 		/**
+		 * Decide whether we need to disable rate change or not
+		 * @return {Boolean} disalbe or not
+		 */
+		$scope.shouldDisableRateChange = function() {
+			return ($scope.groupConfigData.summary.is_cancelled || $scope.isInStaycardScreen());
+		};
+
+		/**
 		 * Logic to show/hide group actions button
 		 * @return {Boolean} hide or not
 		 */
@@ -378,8 +392,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				refData.release_date = refData.block_from;
 			}
 
-			if ($scope.isInAddMode()){
-				updateRateAndSegment();
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
 			}
 
 			//if it is is Move Date mode
@@ -474,10 +488,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				oldBlockTo	= new tzIndependentDate(summaryMemento.block_to),
 				chActions 	= $scope.changeDatesActions;
 
-			if ($scope.isInAddMode()){
-				updateRateAndSegment();
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				fetchApplicableRates();
 			}
-
 			// check move validity
 			// departure left date change
 			else if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
@@ -642,10 +655,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				scope: $scope,
 				closeByDocument: false,
 				closeByEscape: false,
-				data: JSON.stringify(data),
-				preCloseCallback: function () {
-					$scope.$emit("FETCH_SUMMARY");
-				}
+				data: JSON.stringify(data)
 			});
 		};
 
@@ -757,6 +767,55 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			        scope: $scope
 			    });
 			});
+		};
+
+		/*
+		 * Send Confirmation popup handler
+		 * @return undefined 
+		 */
+		$scope.openSendConfirmationPopup = function () {
+
+			if ($scope.isInAddMode()) {
+				// If the group has not been saved yet, prompt user for the same
+				$scope.errorMessage = ["Please save the group first"];
+				return;
+			}
+			$scope.ngData = {};
+			$scope.groupConfirmationData  = {
+				contact_email: $scope.groupConfigData.summary.contact_email,
+				is_salutation_enabled: false,
+				is_include_rooming_list: false,
+				personal_salutation: ""
+			};
+			ngDialog.open({
+				template: '/assets/partials/groups/summary/groupSendConfirmationPopup.html',
+				className: '',
+				scope: $scope,
+			});
+		};
+
+		/*
+		 * Send Confirmation email API call
+		 * @return undefined 
+		 */
+		$scope.sendGroupConfirmation = function() {
+
+			var succesfullEmailCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.ngData.successMessage = data.message;
+				$scope.ngData.failureMessage = '';
+			};
+
+			var failureEmailCallback = function(error) {
+				$scope.$emit('hideLoader');
+				$scope.ngData.failureMessage = error[0];
+				$scope.ngData.successMessage = '';
+			};
+			var data = {
+				postData: $scope.groupConfirmationData,
+				groupId: $scope.groupSummaryMemento.group_id
+			};
+			$scope.invokeApi(rvGroupConfigurationSrv.sendGroupConfirmationEmail, data, succesfullEmailCallback, failureEmailCallback);
 		};
 
 		$scope.$on("BILLINGINFOADDED", function() {
@@ -1192,14 +1251,25 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 		var fetchApplicableRates = function() {
 			var onFetchRatesSuccess = function(data) {
-					// split result to contracted vs others for enabling grouping on the dropdown
-					$scope.groupSummaryData.rates = _.where(data.results, {
-						is_contracted: false
+					var sumData = $scope.groupSummaryData;
+						sumData.rateSelectDataObject = [];
+
+					// add custom rate obect
+					sumData.rateSelectDataObject.push({
+						id: -1,
+						name: "Custom Rate"
+					});
+					// group rates by contracted and group rates.
+					_.each(data.results, function(rate) {
+						if (rate.is_contracted) {
+							rate.groupName = "Company/ Travel Agent Contract";
+						}
+						else {
+							rate.groupName = "Group Rates";
+						}
+						sumData.rateSelectDataObject.push(rate)
 					});
 
-					$scope.groupSummaryData.contractedRates = _.where(data.results, {
-						is_contracted: true
-					});
 				},
 				onFetchRatesFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
@@ -1286,7 +1356,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				existingHoldStatus: parseInt($scope.groupConfigData.summary.hold_status),
 				computedSegment: false,
 				rates: [],
-				contractedRates: []
+				contractedRates: [],
+				rateSelectDataObject: []
 			};
 
 			$scope.changeDatesActions = {};

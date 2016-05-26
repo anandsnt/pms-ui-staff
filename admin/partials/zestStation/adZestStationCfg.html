@@ -1,50 +1,185 @@
 <div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
     <header class="content-title float">
         <h2 translate>ZESTSTATION_TITLE</h2>
-        <a ng-click ="goBackToPreviousState()" class="action back" translate>STATION_BACK</a>
-
+        <a ng-click="goBackToPreviousState()" class="action back" translate>STATION_BACK</a>
     </header>
     <section class="content-scroll">
-        <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-        <form class="form float" >
-
-
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <form class="form float">
             <!-- Home screen options -->
             <fieldset class="holder left">
                 <div class="form-title full-width">
-                 <h3><span translate> HOME_SCREEN_OPTIONS </span> </h3>
+                    <h3><span translate> HOME_SCREEN_OPTIONS </span> </h3>
                 </div>
                 <ad-checkbox is-checked="zestSettings.home_screen.pickup_keys" label="{{ 'PICKUP_KEYS' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.home_screen.check_out" label="{{ 'CHECKOUT' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.home_screen.check_in" label="{{ 'CHECKIN' | translate}}"></ad-checkbox>
             </fieldset>
-            
-            
             <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate> Speak To Staff Message</span> </h3>
                 </div>
-                <ad-textbox value="zestSettings.zest_station_message_texts.speak_to_crew_mod_message2"  name = "zest-web" id = "zest-web" label = "" placeholder = "{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width" ></ad-textbox>
+                <ad-textbox value="zestSettings.zest_station_message_texts.speak_to_crew_mod_message2" name="zest-web" id="zest-web" label="" placeholder="{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width"></ad-textbox>
             </fieldset>
-            
-            
             <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate> STATION_LANGUAGE_SUPPORT</span> </h3>
                 </div>
-                <ad-toggle-button is-checked="zestSettings.zest_lang.enabled" label="{{'STATION_LANGUAGE_SUPPORT_SWITCH'| translate}}" div-class="full-width"></ad-toggle-button>
-                <ad-checkbox is-checked="zestSettings.zest_lang.English" label="{{ 'STATION_LANGUAGE_ENGLISH' | translate}}"></ad-checkbox>
-
-                <ad-checkbox is-checked="zestSettings.zest_lang.French" label="{{ 'STATION_LANGUAGE_FRENCH' | translate}}"></ad-checkbox>
-
-                <ad-checkbox is-checked="zestSettings.zest_lang.Spanish" label="{{ 'STATION_LANGUAGE_SPANISH' | translate}}"></ad-checkbox>
-
-                <ad-checkbox is-checked="zestSettings.zest_lang.German" label="{{ 'STATION_LANGUAGE_GERMAN' | translate}}"></ad-checkbox>
-
-                <ad-checkbox is-checked="zestSettings.zest_lang.Italian" label="{{ 'STATION_LANGUAGE_ITALIAN' | translate}}"></ad-checkbox>
+                <ad-toggle-button is-checked="zestSettings.zest_lang.enabled" label="{{'STATION_LANGUAGE_SUPPORT_SWITCH'| translate}}" div-class=""></ad-toggle-button>
+                <ad-dropdown ng-click="updateDefaultLanguageDropdown()" label="{{'STATION_LANGUAGE_DEFAULT' | translate}}" label-in-drop-down="{{'STATION_LANGUAGE_DEFAULT_PLACEHOLDER' | translate}}" list="enabledLangs" savemodel="zestSettings.zest_lang.default_language" valueproperty="value" property="name" selected-Id='zestSettings.zest_lang.default_language' required='no' selbox-class='placeholder' div-class="{{defaultLangsDivClass}}"></ad-dropdown>
+                <!-- english -->
+                <div class="entry full-width">
+                    <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.English" label="{{ 'STATION_LANGUAGE_ENGLISH' | translate}}"></ad-checkbox>
+                    <div class="entry">
+                        <div class="file-upload">
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('english')">File Attached</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('english')">Choose file..</span>
+                            <input type="file" ng-model="zestSettings.zest_lang.english_translations_file" accept="*" app-filereader emit-data="english_translations_file" />
+                            <button type="button" class="button brand-colors">
+                                Attach file
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- french -->
+                <div class="entry full-width">
+                    <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.French" label="{{ 'STATION_LANGUAGE_FRENCH' | translate}}"></ad-checkbox>
+                    <div class="entry">
+                        <div class="file-upload">
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('french')">File Attached</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('french')">Choose file..</span>
+                            <input type="file" ng-model="zestSettings.zest_lang.french_translations_file" accept="*" app-filereader emit-data="french_translations_file" />
+                            <button type="button" class="button brand-colors">
+                                Attach file
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- spanish -->
+                <div class="entry full-width">
+                    <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.Spanish" label="{{ 'STATION_LANGUAGE_SPANISH' | translate}}"></ad-checkbox>
+                    <div class="entry">
+                        <div class="file-upload">
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('spanish')">File Attached</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('spanish')">Choose file..</span>
+                            <input type="file" ng-model="zestSettings.zest_lang.spanish_translations_file" accept="*" app-filereader emit-data="spanish_translations_file" />
+                            <button type="button" class="button brand-colors">
+                                Attach file
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- german -->
+                <div class="entry full-width">
+                    <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.German" label="{{ 'STATION_LANGUAGE_GERMAN' | translate}}"></ad-checkbox>
+                    <div class="entry">
+                        <div class="file-upload">
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('german')">File Attached</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('german')">Choose file..</span>
+                            <input type="file" ng-model="zestSettings.zest_lang.german_translations_file" accept="*" app-filereader emit-data="german_translations_file" />
+                            <button type="button" class="button brand-colors">
+                                Attach file
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- italian -->
+                <div class="entry full-width">
+                    <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.Italian" label="{{ 'STATION_LANGUAGE_ITALIAN' | translate}}"></ad-checkbox>
+                    <div class="entry">
+                        <div class="file-upload">
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('italian')">File Attached</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('italian')">Choose file..</span>
+                            <input type="file" ng-model="zestSettings.zest_lang.italian_translations_file" accept="*" app-filereader emit-data="italian_translations_file" />
+                            <button type="button" class="button brand-colors">
+                                Attach file
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- castelleno -->
+                <div class="entry full-width">
+                    <ad-checkbox ng-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.Castellano" label="{{ 'STATION_LANGUAGE_CASTELLANO' | translate}}"></ad-checkbox>
+                    <div class="entry">
+                        <div class="file-upload">
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('castellano')">File Attached</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('castellano')">Choose file..</span>
+                            <input type="file" ng-model="zestSettings.zest_lang.castellano_translations_file" accept="*" app-filereader emit-data="italian_translations_file" />
+                            <button type="button" class="button brand-colors">
+                                Attach file
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </fieldset>
-
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                    <h3><span translate>ACTIVATE_BOOKING_ENGINE_POPUP</span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.home_screen.booking_pop_up.enable_pop_up" label="{{'ACTIVATE_BOOKING_ENGINE_POPUP'| translate}}" div-class="full-width"></ad-toggle-button>
+                <ad-textbox value="zestSettings.home_screen.booking_pop_up.booking_engine_url" name="zest-web" id="zest-web" label="{{'BOOKING_URL'| translate}}" placeholder="" styleclass="full-width" ng-hide="!zestSettings.home_screen.booking_pop_up.enable_pop_up"></ad-textbox>
+                <ad-textbox value="zestSettings.home_screen.booking_pop_up.button_label" name="zest-web" id="zest-web" label="{{'BUTTON_LABEL'| translate}}" placeholder="" styleclass="full-width" ng-hide="!zestSettings.home_screen.booking_pop_up.enable_pop_up"></ad-textbox>
+            </fieldset>
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                    <h3><span translate>CHROME_APP_ID</span> </h3>
+                </div>
+                <ad-textbox value="zestSettings.chrome_app_id" name="zest-web" id="zest-web" label="{{'CHROME_APP_ID'| translate}}" placeholder="" styleclass="full-width"></ad-textbox>
+            </fieldset>
+            <!-- printer options -->
+            <fieldset class="holder left holder_margin">
+                <div class="form-title full-width">
+                    <h3><span translate>STATION_PRINTER_OPTIONS</span> </h3>
+                </div>
+                <div id="options" class="entry">
+                    <label translate>STATION_PRINTER_OPTIONS </label>
+                    <label class="radio" ng-repeat="printer in zestStationData.printer_options" ng-class="{'checked':zestSettings.zest_printer_option == printer.value}">
+                        <span class="icon-form icon-radio " ng-class="{'checked':zestSettings.zest_printer_option == printer.value}"></span>
+                        <input type="radio" value="{{printer.value}}" ng-model="zestSettings.zest_printer_option"> {{ printer.description }}
+                    </label>
+                </div>
+            </fieldset>
+            <fieldset class="holder full-width">
+                <div class="form-title full-width">
+                    <h3><span translate>CC_ENTRY_METHOD</span> </h3>
+                </div>
+                <div id="options" class="entry" ng-hide="hideAddOption">
+                    <label translate>CC_ENTRY_METHOD</label>
+                    <label class="radio" ng-class="{'checked':zestSettings.kiosk_cc_entry_method== 'six_pay'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_cc_entry_method=='six_pay'}"></span>
+                        <input type="radio" value="six_pay" ng-model="zestSettings.kiosk_cc_entry_method"> {{ 'SIX_PAY_CHROME_IPAD' | translate}}
+                    </label>
+                    <label class="radio" ng-class="{'checked':zestSettings.kiosk_cc_entry_method == 'mli_desktop'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_cc_entry_method == 'mli_desktop'}"></span>
+                        <input type="radio" value="mli_desktop" ng-model="zestSettings.kiosk_cc_entry_method">{{ 'MLI_DESKTOP_SWIPE_CHROME' | translate}}
+                    </label>
+                    <label class="radio" ng-class="{'checked':zestSettings.kiosk_cc_entry_method == 'ingenico_infinea'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_cc_entry_method == 'ingenico_infinea'}"></span>
+                        <input type="radio" value="ingenico_infinea" ng-model="zestSettings.kiosk_cc_entry_method">{{ 'INFINEA_INGENICO_CC_IPAD' | translate}}
+                    </label>
+                </div>
+            </fieldset>
+            <fieldset class="holder full-width">
+                <div class="form-title full-width">
+                    <h3><span translate>KEY_CREATION_METHOD</span> </h3>
+                </div>
+                <div id="options" class="entry" ng-hide="hideAddOption">
+                    <label translate>KEY_CREATION_METHOD</label>
+                    <label class="radio" ng-class="{'checked':zestSettings.kiosk_key_creation_method== 'remote_encoding'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_key_creation_method=='remote_encoding'}"></span>
+                        <input type="radio" value="remote_encoding" ng-model="zestSettings.kiosk_key_creation_method"> {{ 'REMOTE_ENCODING_CHROME_IPAD' | translate}}
+                    </label>
+                    <label class="radio" ng-class="{'checked':zestSettings.kiosk_key_creation_method == 'sankyo_websocket'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_key_creation_method == 'sankyo_websocket'}"></span>
+                        <input type="radio" value="sankyo_websocket" ng-model="zestSettings.kiosk_key_creation_method">{{ 'SANKYO_ENCODING' | translate}}
+                    </label>
+                    <label class="radio" ng-class="{'checked':zestSettings.kiosk_key_creation_method == 'ingenico_infinea_key'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_key_creation_method == 'ingenico_infinea_key'}"></span>
+                        <input type="radio" value="ingenico_infinea_key" ng-model="zestSettings.kiosk_key_creation_method">{{ 'INGENICO_INFINEA_KEY' | translate}}
+                    </label>
+                </div>
+            </fieldset>
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL
@@ -53,7 +188,6 @@
                     SAVE_CHANGES
                 </button>
             </div>
-
         </form>
     </section>
 </div>

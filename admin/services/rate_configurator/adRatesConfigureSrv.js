@@ -4,8 +4,14 @@ admin.service('ADRatesConfigureSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$rootSco
 
         this.fetchSetsInDateRange = function (data) {
             var deferred = $q.defer();
-            var url = "/api/rate_date_ranges/" + data.id;
-            ADBaseWebSrvV2.getJSON(url).then(function (data) {
+            var url = "/api/rate_date_ranges/" + data.id,
+                params = {};
+
+            if(!!data.child_rate_id) {
+                params.child_rate_id =  data.child_rate_id;
+            }
+
+            ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);

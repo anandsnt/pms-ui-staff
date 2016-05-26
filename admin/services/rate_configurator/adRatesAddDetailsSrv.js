@@ -163,9 +163,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                     'per_page': '10000',
                     'query': '',
                     'sort_dir': 'asc',
-                    'sort_field': '',
-                    'is_parent': true,
-                    'is_fully_configured': true
+                    'sort_field': ''
                 };
                 ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                     that.addRatesDetailsData.based_on = data;

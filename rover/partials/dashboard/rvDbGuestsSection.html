@@ -1,60 +1,65 @@
 <div bindonce="statisticsData" id="dashboard-guests" class="dashboard-block buttons" ng-controller="rvDashboardGuestWidgetController">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <h3>Guests</h3> 
+    <h3>Guests</h3>
     <!-- <button ui-sref="rover.reservation.staycard.mainCard.summaryAndConfirmFromOutide({'room_id':['180','181'],'arrival_date':'2014-07-15','departure_date':'2014-07-16', 'arrival_time': '04:30', 'departure_time': '09:15'})">GO TO CONFIRMATION RESERVATION SCREEN</button>    -->
-     <!-- <button ng-click="setReservationDataFromDiaryScreen()">GO TO CONFIRMATION RESERVATION SCREEN</button> -->
-
-
+    <!-- <button ng-click="setReservationDataFromDiaryScreen()">GO TO CONFIRMATION RESERVATION SCREEN</button> -->
     <ul class="actions two-rows">
-        
         <li>
-            <a class="button green" ng-click="clickedOnGuestsToday($event, 'DUEIN', statisticsData.guests.checking_in)" >
-                <strong bo-text="statisticsData.guests.checking_in"></strong> 
-                Arrivals
+            <a class="button green" ng-click="clickedOnGuestsToday($event, 'DUEIN', statisticsData.guests.checking_in)">
+                <strong bo-text="statisticsData.guests.checking_in"></strong> Arrivals
             </a>
         </li>
-        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true'">
+        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true' && statisticsData.guests.checkin_action !== 'auto_checkin'">
             <a ng-click="clickedOnGuestsToday($event, 'PRE_CHECKIN', statisticsData.guests.pre_check_in)" class="button orange">
-            <strong bo-text="statisticsData.guests.pre_check_in"></strong>Pre Check In</a>
+                <strong bo-text="statisticsData.guests.pre_check_in"></strong>
+                <span>Pre Check In</span>
+            </a>
+        </li>
+        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true' && statisticsData.guests.checkin_action === 'auto_checkin'">
+            <a ng-click="clickedOnGuestsToday($event, 'PRE_CHECKIN', statisticsData.guests.pre_check_in,'MOBILE_CHECKIN')" class="button orange">
+                <strong bo-text="statisticsData.guests.pre_check_in"></strong>
+                <span translate>MOBILE_CHECKIN</span>
+            </a>
         </li>
         <li ng-if="isQueuedRoomsTurnedOn && shouldShowLateCheckout">
-            <a  class="button white red-text" ng-click = "clickedOnQueuedRoomsIcon()">
-            <strong bo-text="statisticsData.guests.queued"></strong>Queued</a>
+            <a class="button white red-text" ng-click="clickedOnQueuedRoomsIcon()">
+                <strong bo-text="statisticsData.guests.queued"></strong>Queued</a>
         </li>
         <li>
             <a class="button blue" ng-click="clickedOnGuestsToday($event, 'INHOUSE', statisticsData.guests.in_house)">
-                <strong bo-text="statisticsData.guests.in_house"></strong> 
-                Stayovers
+                <strong bo-text="statisticsData.guests.in_house"></strong> Stayovers
             </a>
         </li>
         <li>
             <a class="button red" ng-click="clickedOnGuestsToday($event, 'DUEOUT', statisticsData.guests.checking_out)">
-                <strong bo-text="statisticsData.guests.checking_out"></strong>
-                Departures
+                <strong bo-text="statisticsData.guests.checking_out"></strong> Departures
             </a>
-        </li> 
+        </li>
         <li ng-if="statisticsData.guests.open_bill_checkout > 0 ">
             <a class="button red" ng-click="clickedOnGuestsToday($event, 'OPEN_BILL_CHECKOUT', statisticsData.guests.open_bill_checkout)">
-                <strong bo-text="statisticsData.guests.open_bill_checkout"></strong>
-                Checked Out<span>(with balance)</span>
+                <strong bo-text="statisticsData.guests.open_bill_checkout"></strong> Checked Out<span>(with balance)</span>
             </a>
-        </li> 
+        </li>
         <li ng-if="isLateCheckoutTurnedOn && shouldShowLateCheckout">
             <a class="button red" ng-click="clickedOnHeaderLateCheckoutIcon($event)">
-                <strong bo-text="statisticsData.guests.late_checkout"></strong>
-                Late check out
+                <strong bo-text="statisticsData.guests.late_checkout"></strong> Late check out
             </a>
-        </li>           
+        </li>
         <li>
             <a class="button yellow" ng-click="clickedOnGuestsToday($event, 'VIP', statisticsData.guests.vip)">
-                <strong bo-text="statisticsData.guests.vip"></strong> 
-                VIPs
+                <strong bo-text="statisticsData.guests.vip"></strong> VIPs
             </a>
         </li>
     </ul>
     <ul class="data">
         <li>Arrivals <strong class="green" bo-text="statisticsData.guests.checking_in"></strong></li>
-        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true'">Pre Check In <strong class="orange" bo-text="statisticsData.guests.pre_check_in"></strong>
+        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true' && statisticsData.guests.checkin_action === 'auto_checkin'">
+            MOBILE CHECK IN
+            <strong class="orange" bo-text="statisticsData.guests.pre_check_in"></strong>
+        </li>
+        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true' && statisticsData.guests.checkin_action !== 'auto_checkin'">
+            Pre Check In
+            <strong class="orange" bo-text="statisticsData.guests.pre_check_in"></strong>
         </li>
         <li ng-if="isQueuedRoomsTurnedOn && shouldShowLateCheckout">Queued <strong class="green" bo-text="userInfo.queue_rooms_count"></strong></li>
         <li>Departures <strong class="red" bo-text="statisticsData.guests.checking_out"></strong></li>

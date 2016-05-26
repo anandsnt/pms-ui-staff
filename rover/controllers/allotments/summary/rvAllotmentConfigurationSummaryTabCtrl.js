@@ -466,8 +466,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			};
 
 			var options = {
-				successCallBack: onReleaseRoomsSuccess,
-				failureCallBack: onReleaseRoomsFailure,
+				successCallBack: onRateChangeSuccess,
+				failureCallBack: onRateChangeFailure,
 				params: params
 			};
 			$scope.callAPI(rvAllotmentConfigurationSrv.updateRate, options);

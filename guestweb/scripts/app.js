@@ -111,8 +111,12 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		//$rootscope.keyDeliveryByText  = true;
 
 		$rootScope.offerRoomDeliveryOptions = (reservationAndhotelData.offer_room_delivery_options === "true") ? true : false;
+		$rootScope.enforceDeposit = !!reservationAndhotelData.zestweb_enforce_deposit ? true : false;
+		$rootScope.isExternalCheckin = (reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin !== "false");
+		$rootScope.skipDeposit = false;
 
-		//Params for zest mobile and desktop screens
+		$rootScope.enforceCountrySort = !!reservationAndhotelData.enforce_country_sort ? true : false;
+			//Params for zest mobile and desktop screens
 		if (reservationAndhotelData.hasOwnProperty('is_password_reset')) {
 			$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset;
 			$rootScope.isTokenExpired = reservationAndhotelData.is_token_expired === "true";
@@ -136,9 +140,9 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		$rootScope.is_checkin_now_on = checkinNowisAvailable();
 		$rootScope.checkin_now_text = 
-		(reservationAndhotelData.zest_checkin_now_text !== null && reservationAndhotelData.zest_checkin_now_text.length>0) ? reservationAndhotelData.zest_checkin_now_text : "I'm Already Here";
+		(reservationAndhotelData.zest_checkin_now_text !== null && typeof reservationAndhotelData.zest_checkin_now_text !== "undefined" && reservationAndhotelData.zest_checkin_now_text.length>0) ? reservationAndhotelData.zest_checkin_now_text : "I'm Already Here";
 		$rootScope.checkin_later_text = 
-		(reservationAndhotelData.zest_checkin_later_text !== null && reservationAndhotelData.zest_checkin_later_text.length>0) ? reservationAndhotelData.zest_checkin_later_text :"Arriving Later";
+		(reservationAndhotelData.zest_checkin_later_text !== null && typeof reservationAndhotelData.zest_checkin_later_text !== "undefined" && reservationAndhotelData.zest_checkin_later_text.length>0) ? reservationAndhotelData.zest_checkin_later_text :"Arriving Later";
 
 		if (typeof reservationAndhotelData.accessToken !== "undefined") {
 			$rootScope.accessToken = reservationAndhotelData.accessToken;

@@ -8,6 +8,7 @@ module.exports = {
 				jsLibRoot + 'jquery.min.js',
 				jsLibRoot + 'jquery-ui.min.js',
 				jsLibRoot + 'jquery.ui.touch-punch.min.js',
+				jsLibRoot + 'jquery.qtip.min.js',
 				jsLibRoot + 'angular.min.js',
 				jsLibRoot + 'angular-route.min.js', 
 				jsLibRoot + 'angular-ui-router.min.js', 
@@ -48,6 +49,7 @@ module.exports = {
 				adminRoot + 'controllers/**/*.js',
 				adminRoot + 'directives/**/*.js',
 				adminRoot + 'services/**/*.js',
+				adminRoot + 'filters/*.js',
 				sharedRoot + 'directives/uiColorpicker/uiColorpicker.js',
 				sharedRoot + 'directives/onScroll/onScroll.js',
 				sharedRoot + 'directives/limitInputRange/limitInputRange.js'

@@ -91,6 +91,44 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	title: 'CC verification'
 	 });
 
+
+	 $stateProvider.state('externalVerification', {
+	 	url: '/externalVerification',
+	 	templateUrl: '/assets/checkoutnow/partials/Nikko/externalVerification.html',
+	 	controller : 'externalVerificationViewController',
+	 	title: 'External verification'
+	 }).state('externalVerificationError', {
+	 	url: '/verificationError',
+	 	templateUrl: '/assets/checkoutnow/partials/Nikko/externalVerificationError.html',
+	 	controller:'verificationErrorController',
+	 	title: 'External verification Error'
+	 });
+
+
+      //Early checkin options
+
+	 $stateProvider.state('earlyCheckinOptions', {
+	 	url: '/earlyCheckinOptions/:time/:charge/:id',
+	 	templateUrl: '/assets/checkin/partials/Nikko/earlyCheckinOptions.html',
+	 	controller : 'earlyCheckinOptionsController',
+	 	title: 'Early Check-in'
+	 }).state('earlyCheckinFinal', {
+	 	url: '/earlyCheckinFinal/:time/:charge/:id',
+	 	templateUrl: '/assets/checkin/partials/Nikko/earlyCheckinFinal.html',
+	 	controller : 'earlyCheckinFinalController',
+	 	title: 'Early Check-in'
+	 }).state('laterArrival', {
+	 	url: '/laterArrival/:time/:isearlycheckin',
+	 	templateUrl: '/assets/checkin/partials/Nikko/lateArrivalTime.html',
+	 	controller : 'checkinArrivalDetailsController',
+	    title: 'Early Check-in'
+	 }).state('guestDetails', {
+	 	url: '/guestDetails',
+	 	templateUrl: '/assets/checkin/partials/Nikko/guestDetails.html',
+	 	controller : 'guestDetailsController',
+	    title: 'Guest Details'
+	 });
+
 	 	  // pre checkin states
 
     $stateProvider.state('preCheckinStatus', {

@@ -2,7 +2,8 @@
 (function() {
     
     var highlightFilter_ = null,
-        autocompleteEl = null;
+        autocompleteEl = null,
+        ulElement = null;
 
     /**
      * default process function for each item
@@ -28,6 +29,12 @@
         $(el).autocomplete( scope.autoOptions )
         .data('ui-autocomplete')
         ._renderItem = function(ul, item) {
+            //CICO-26513
+            ulElement = ul;
+            ulElement.off('touchmove').on('touchmove', function(e) {
+                e.stopPropagation();
+            });
+
             var htmlForItem = '';
             
             ul.addClass(scope.ulClass);
@@ -43,7 +50,18 @@
             return $('<li></li>').append(htmlForItem).appendTo(ul);
         };
 
-        autocompleteEl = $(el);      
+        /**
+         * we've to unbind something while removing the node from dom
+         */
+        scope.$on('$destroy', function(){
+            autocompleteEl = $(el);
+            autocompleteEl.autocomplete( "destroy" );
+            
+            //unbinding the touch move
+            if(ulElement instanceof HTMLElement) {
+                ulElement.off('touchmove')
+            }
+        });    
     };
 
     /**

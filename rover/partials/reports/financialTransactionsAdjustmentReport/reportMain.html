@@ -1,0 +1,36 @@
+<!-- Report content -->
+<div ng-show="hasNoResults" class="report-content no-content">
+    <div class="info">
+        <span class="icon-no-content icon-reports"></span>
+        <strong class="h1">No reports found</strong>
+        <span class="h2">Try changing search criteria or modify dates</span>
+    </div>
+</div>
+
+<!-- Report content -->
+<div id="report-content" class="report-content scrollable" ng-hide="hasNoResults" ng-iscroll="report-details-scroll">
+    <div class="wrapper">
+        <table class="financial-adjustment-reports">
+            <thead>
+                <tr class="bottom-row">
+                    <th><span>Charge Type</span></th> 
+                    <th><span class="sort" ng-class="{'sorting-asc': isAsc(1), 'sorting-desc': isDesc(1)}" ng-click="sortResultBy(chosenReport.sortByOptions[1], chosenReport)">Code</span></th>
+                    <th><span>Description</span></th>
+                    <th width="85" ><span>Amount</span></th>
+                    <th width="150"><span>Remark</span></th>
+                    <th><span>Guest/ Account Name</span></th>
+                    <th><span>Room #</span></th>
+                    <th><span class="sort" ng-class="{'sorting-asc': isAsc(5), 'sorting-desc': isDesc(5)}" ng-click="sortResultBy(chosenReport.sortByOptions[5], chosenReport)">Date &amp; Time Posted</span></th>
+                    <th><span>Date &amp; Time Modified</span></th>
+                    <th><span>Modified By</span></th>
+                </tr>
+            </thead>
+            
+            <!-- Reports table footer -->
+            <tfoot ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot>
+
+            <!-- Reports table content -->
+            <tbody ng-include="parsedApiTemplate()"></tbody>
+        </table>
+    </div>
+</div>

@@ -42,6 +42,25 @@
 		return deferred.promise;
 	};
 
+
+	var fetchSortedCountryList = function(data){
+		var deferred = $q.defer();
+		var url = '/api/countries/sorted_list.json';
+		$http.get(url,{params: data}).success(function(response) {
+			if(response.status === "success"){
+				deferred.resolve(response.data);
+			}
+			else{
+				deferred.reject();
+			};
+			
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
+	};
+
 	var postGuestBirthDate = function(data) {
 		var deferred = $q.defer();
 		var url = ' /api/guest_details/'+$rootScope.primaryGuestId+'.json';
@@ -82,16 +101,44 @@
 		return deferred.promise;
 		
 	};
+
+	var fetchDepositDetails = function(){
+		var deferred = $q.defer();
+		var url = '/guest_web/reservations/'+$rootScope.reservationID+'/deposit_details';
+		$http.get(url).success(function(response) {
+			deferred.resolve(response);
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
+	};
+
+	var submitPayment = function(data){
+		var deferred = $q.defer();
+		var url = '/guest_web/reservations/'+$rootScope.reservationID+'/submit_payment';
+		$http.post(url,data).success(function(response) {
+			this.responseData = response;
+			deferred.resolve(this.responseData);
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
+	};
 	
 
 	return {
-	responseData: responseData,
-	postGuestDetails : postGuestDetails,
-	getGuestDetails:getGuestDetails,
-	fetchCountryList:fetchCountryList,
-	postGuestBirthDate:postGuestBirthDate,
-	fetchCountryCode:fetchCountryCode,
-	fetchHotelTime:fetchHotelTime
+	responseData		: responseData,
+	postGuestDetails 	: postGuestDetails,
+	getGuestDetails		: getGuestDetails,
+	fetchCountryList	: fetchCountryList,
+	postGuestBirthDate	: postGuestBirthDate,
+	fetchCountryCode	: fetchCountryCode,
+	fetchHotelTime 		: fetchHotelTime,
+	fetchDepositDetails	: fetchDepositDetails,
+	submitPayment 		: submitPayment,
+	fetchSortedCountryList : fetchSortedCountryList
 	}
 };
 

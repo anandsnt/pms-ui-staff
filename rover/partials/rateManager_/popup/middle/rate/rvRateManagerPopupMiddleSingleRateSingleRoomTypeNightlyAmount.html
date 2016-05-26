@@ -1,0 +1,183 @@
+<div id="restrictionPriceContainer" class="price-div">
+	<div class="restriction_text" >
+		<h3>Adjust Price </h3>
+		<em>Adjust price for this room type</em>
+	</div>
+	<section class="price-field-container scrollable" ng-iscroll="room-type-price-editing">
+		<div class="wrapper">
+			<div class="price-fields">
+				<!-- Add class .has-override if has override -->
+				<label ng-class="{'has-override': priceDetails.single_overridden}">
+					SINGLE
+					<!-- Display if has override-->
+					<span class="icon-report icon-upsell" ng-show="priceDetails.single_overridden"></span>
+				</label>
+				
+				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
+				<span class="price entry" 
+					ng-class="{'has-override': !!priceDetails.single_changing_value, 'is-overriden': (priceDetails.single_overridden && !priceDetails.single_changing_value)}">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<input type="text" ng-model="priceDetails.single" ng-disabled="isPastDate || !!priceDetails.single_changing_value">
+				</span>
+				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
+				<span class="or-class"> OR</span>
+				
+				
+				
+				<span class="entry select" ng-class="{'disabled': isPastDate}">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<select ng-model="priceDetails.single_amount_operator" ng-disabled="isPastDate">
+						<option value="+">+</option>
+						<option value="-">-</option>
+					</select>
+				</span>
+				<span class="extra_amount entry">
+					<!-- if is disable ng-change="refreshScrollers()"d add attribute 'disabled="disabled"'-->
+					<input type="text" ng-change="priceStartedToCustomize('single')" ng-model="priceDetails.single_changing_value"
+						ng-disabled="isPastDate">
+				</span>
+				
+				<!-- add class .disabled if is disabled -->
+				<span class="select_amount_diff entry select" ng-class="{'disabled':isPastDate}">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<select ng-model="priceDetails.single_amount_perc_cur_symbol" ng-disabled="isPastDate">
+						<option value="{{currencySymbol}}" ng-selected="priceDetails.single_amount_perc_cur_symbol == currencySymbol">{{currencySymbol}}</option>
+						<option value="%" ng-selected="priceDetails.single_amount_perc_cur_symbol == '%'">%</option>
+					</select>
+				</span>
+				<br clear="all">
+				<!-- remove class .hidden if price has changed-->
+				<div class="apply-all-div">
+					<button ng-click="clickedOnApplyToAllOccupancies('single')" class="button blue apply-all-button" 
+						ng-disabled="isPastDate" ng-class="{'grey': isPastDate}">
+						Apply to all occupancies
+					</button>
+				</div>
+			</div>
+			<div class="price-fields">
+				<!-- Add class .has-override if has override -->
+				<label ng-class="{'has-override': priceDetails.double_overridden}">
+					DOUBLE
+					<!-- Display if has override-->
+					<span class="icon-report icon-upsell" ng-show="priceDetails.double_overridden"></span>
+				</label>
+				
+				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
+				<span class="price entry" 
+					ng-class="{'has-override': !!priceDetails.double_changing_value, 'is-overriden': priceDetails.double_overridden && !priceDetails.double_changing_value}">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<input type="text"  ng-model="priceDetails.double" ng-disabled="isPastDate || !!priceDetails.double_changing_value">
+				</span>
+				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
+				<span class="or-class"> OR</span>
+				
+				<span class="entry select" ng-class="{'disabled': isPastDate}">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<select ng-model="priceDetails.double_amount_operator" ng-disabled="isPastDate">
+						<option value="+">+</option>
+						<option value="-">-</option>
+					</select>
+				</span>
+				<span class="extra_amount entry">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<input type="text" ng-change="priceStartedToCustomize('double')" ng-model="priceDetails.double_changing_value"
+						ng-disabled="isPastDate">
+				</span>
+				<!-- add class .disabled if is disabled -->
+				<span class="select_amount_diff entry select" ng-class="{'disabled': isPastDate}">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<select ng-model="priceDetails.double_amount_perc_cur_symbol" ng-disabled="isPastDate">
+						<option value="{{currencySymbol}}" ng-selected="priceDetails.double_amount_perc_cur_symbol == currencySymbol">{{currencySymbol}}</option>
+						<option value="%" ng-selected="priceDetails.double_amount_perc_cur_symbol == '%'">%</option>
+					</select>
+				</span>				
+				<br clear="all">
+			</div>
+			<div class="price-fields">
+				<!-- Add class .has-override if has override -->
+				<label ng-class="{'has-override': priceDetails.child_overridden}">
+					CHILD
+					<!-- Display if has override-->
+					<span class="icon-report icon-upsell" ng-show="priceDetails.child_overridden"></span>
+				</label>
+				
+				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
+				<span class="price entry" 
+					ng-class="{'has-override': !!priceDetails.child_changing_value, 'is-overriden': priceDetails.child_overridden && !priceDetails.child_changing_value}">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<input type="text" ng-disabled="isPastDate || !!priceDetails.child_changing_value" ng-model="priceDetails.child">
+				</span>
+				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
+				<span class="or-class"> OR</span>
+				
+				
+				
+				<span class="entry select" ng-class="{'disabled': isPastDate}">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<select ng-model="priceDetails.child_amount_operator" ng-disabled="isPastDate">
+						<option value="+">+</option>
+						<option value="-">-</option>
+					</select>
+				</span>
+				<span class="extra_amount entry">
+					<!-- if is disable d add attribute 'disabled="disabled"'-->
+					<input type="text" ng-change="priceStartedToCustomize('child')" ng-model="priceDetails.child_changing_value"
+						ng-disabled="isPastDate">
+				</span>
+				
+				<!-- add class .disabled if is disabled -->
+				<span class="select_amount_diff entry select" ng-class="{'disabled': isPastDate}">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<select ng-model="priceDetails.child_amount_perc_cur_symbol" ng-disabled="isPastDate">
+						<option value="{{currencySymbol}}" ng-selected="priceDetails.child_amount_perc_cur_symbol == currencySymbol">{{currencySymbol}}</option>
+						<option value="%" ng-selected="priceDetails.child_amount_perc_cur_symbol == '%'">%</option>
+					</select>
+				</span>
+				<br clear="all">
+			</div>
+			<div class="price-fields">
+				<!-- Add class .has-override if has override -->
+				<label ng-class="{'has-override': priceDetails.extra_adult_overridden}">
+					EXTRA ADULT
+					<!-- Display if has override-->
+					<span class="icon-report icon-upsell" ng-show="priceDetails.extra_adult_overridden"></span>
+				</label>
+				
+				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
+				<span class="price entry" 
+					ng-class="{'has-override': !!priceDetails.extra_adult_changing_value, 'is-overriden': priceDetails.extra_adult_overridden && !priceDetails.extra_adult_changing_value}">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<input type="text" ng-disabled="isPastDate || !!priceDetails.extra_adult_changing_value" ng-model="priceDetails.extra_adult">
+				</span>
+				<!-- Hide if All Data is selected (All Rooms/All Rates)-->
+				<span class="or-class"> OR</span>
+				
+				
+				
+				<span class="entry select" ng-class="{'disabled': isPastDate}">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<select ng-model="priceDetails.extra_adult_amount_operator" ng-disabled="isPastDate">
+						<option value="+">+</option>
+						<option value="-">-</option>
+					</select>
+				</span>
+				<span class="extra_amount entry">
+					<!-- if is disable d add attribute 'disabled="disabled"'-->
+					<input type="text" ng-change="priceStartedToCustomize('extra_adult')" ng-model="priceDetails.extra_adult_changing_value"
+						ng-disabled="isPastDate">
+				</span>
+				
+				<!-- add class .disabled if is disabled -->
+				<span class="select_amount_diff entry select" ng-class="{'disabled': isPastDate}">
+					<!-- if is disabled add attribute 'disabled="disabled"'-->
+					<select ng-model="priceDetails.extra_adult_amount_perc_cur_symbol" ng-disabled="isPastDate">
+						<option value="{{currencySymbol}}" ng-selected="priceDetails.extra_adult_amount_perc_cur_symbol == currencySymbol">{{currencySymbol}}</option>
+						<option value="%" ng-selected="priceDetails.extra_adult_amount_perc_cur_symbol == '%'">%</option>
+					</select>
+				</span>
+				<br clear="all">
+			</div>
+		</div>
+	</section>
+	
+</div>

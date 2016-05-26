@@ -129,6 +129,11 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/common_templates/partials/checkin/gwLateArrivalTime.html',
 	 	controller : 'checkinArrivalDetailsController',
 	    title: 'Early Check-in'
+	 }).state('depositPayment', {
+	 	url: '/depositPayment',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwDepositPayment.html',
+	 	controller : 'checkinDepositPaymentController',
+	    title: 'Pay Deposit'
 	 });
 
 	 $stateProvider.state('noOptionAvailable', {
@@ -137,4 +142,23 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	title: 'Feature not available'
 	});
 
+	$stateProvider.state('externalCheckinVerification', {
+		url: '/externalCheckinVerification',
+		templateUrl: '/assets/common_templates/partials/checkin/gwExternalCheckin.html',
+		controller: 'externalCheckinVerificationViewController',
+		title: 'External Check in verification'
+	}).state('guestCheckinTurnedOff',{
+	 	url: '/guestCheckinTurnedOff',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwExternalCheckInTurnedOff.html',
+	 	title: 'Check-in'
+	 }).state('guestCheckinEarly', {
+		url: '/guestCheckinEarly/:date',
+		templateUrl: '/assets/common_templates/partials/checkin/gwEarlyToCheckin.html',
+		controller: 'earlyToCheckinCtrl',
+		title: 'Check-in'
+	}).state('guestCheckinLate', {
+		url: '/guestCheckinLate',
+		templateUrl: '/assets/common_templates/partials/checkin/gwLateToCheckin.html',
+		title: 'Check-in'
+	});
 }]);

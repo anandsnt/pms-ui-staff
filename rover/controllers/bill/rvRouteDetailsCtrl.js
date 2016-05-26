@@ -1036,13 +1036,13 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
 
             $scope.routingDateFromOptions = {
-                dateFormat: 'dd-mm-yy',
+                dateFormat: $rootScope.jqDateFormat,
                 minDate : tzIndependentDate($scope.groupConfigData.summary.block_from),
                 maxDate : tzIndependentDate($scope.groupConfigData.summary.block_to)
             };
 
             $scope.routingDateToOptions = {
-                dateFormat: 'dd-mm-yy',
+                dateFormat: $rootScope.jqDateFormat,
                 minDate : tzIndependentDate($scope.groupConfigData.summary.block_from),
                 maxDate : tzIndependentDate($scope.groupConfigData.summary.block_to)
             };

@@ -40,15 +40,22 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
          * The data required to show these sections are catered through different APIs.
          */
 
-        $scope.toggleOccupancy = function(){
-			$scope.toggleStatusOf['occupancy'] = !$scope.toggleStatusOf['occupancy'];
+		$scope.toggleOccupancy = function() {
+
 			// This detailed view needs ONLY additionalData.bestAvailabilityRate
-			if(!!$scope.toggleStatusOf['occupancy'] &&
-                !$rootScope.hideRateOfDay &&
-                (!$scope.data.additionalData || !$scope.data.additionalData.bestAvailabilityRate)){
-				$scope.$parent.fetchAdditionalData();
-			};
-			$scope.refreshScroller('room_availability_scroller');
+			if (!$scope.toggleStatusOf['occupancy'] &&
+				(!$scope.data.additionalData || !$scope.data.additionalData.bestAvailabilityRate)) {
+				$scope.callAPI(rvAvailabilitySrv.fetchBARs, {
+					params: $scope.getDateParams(),
+					successCallBack: function() {
+						handleDataChange();
+						$scope.toggleStatusOf['occupancy'] = true;
+					}
+				});
+			} else {
+				$scope.toggleStatusOf['occupancy'] = !$scope.toggleStatusOf['occupancy'];
+				$scope.refreshScroller('room_availability_scroller');
+			}
 		};
 
         $scope.toggleAvailableRooms = function(){

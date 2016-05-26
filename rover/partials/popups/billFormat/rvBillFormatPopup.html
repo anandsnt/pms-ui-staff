@@ -1,0 +1,62 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak ng-click="clearErrorMessage();">
+
+<div class="modal-content form format-bill">
+    <button id="modal-close" type="button"><span class="icons icon-close invert" ng-click="closeDialog()"></button>
+
+    <strong class="h2 message">Format Bill</strong>
+
+    <div class="entry full-width" ng-hide="hideCompanyCardInvoiceToggle">
+        <label>Generate Invoice for</label>
+        <div class="switch-button" ng-class="{'on': isCompanyCardInvoice, 'overlay': disableCompanyCardInvoice }">
+            <input type="checkbox" checked ng-model="isCompanyCardInvoice" ng-click="changeCompanyCardInvoiceToggle()" />
+            <label class="data-off">
+                <span class="value">Company</span>
+                <span class="switch-icon">Travel Agent</span>
+            </label>
+            <label class="data-on">
+                <span class="switch-icon">Company</span>
+                <span class="value">Travel Agent</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="entry full-width">
+        <label for="account-email">Email</label>
+        <input type="email" id="account-email" name="email" placeholder="Enter an Email"  ng-model="data.to_address"/>
+    </div>
+
+    <!-- Show this part when languages are available  -->
+    <div class="entry full-width" ng-hide="true">
+        <label for="language">Language</label>
+        <div class="select">
+            <select name="language" id="language">
+                 <option value="{lang}">{Language}</option>
+                 ... repeat for every language
+            </select>
+        </div>
+    </div>
+
+
+    <div class="entry full-width">
+        <label for="bill-layout">Bill Layout</label>
+        <div class="select">
+            <select id="bill-layout" ng-model="data.default_bill_settings">
+                <option ng-repeat="item in data.bill_settings_options" value="{{item.value}}" ng-selected="item.value == data.default_bill_settings">{{item.name}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="actions">
+        <!-- Remove class .blue and add class .grey if there is no email, also add attribute 'disabled' if there is no email -->
+        <button type="button" class="button with-icon" ng-click="emailBill()" ng-class="{'grey' : !data.to_address, 'blue' : 'data.to_address'}" ng-disabled="!data.to_address">
+            <span class="icons icon-email" ></span>
+             Email
+        </button>
+        <button type="button" class="button with-icon blue" ng-click="printBill()">
+            <span class="icons icon-print"></span>
+            Print
+        </button>
+        <button type="button" class="button blank inline" ng-click="closeDialog()">Cancel</button>
+    </div>
+</div>
+</div>

@@ -136,13 +136,13 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
     * @param {num} current index
     */
 	$scope.activateInactivate = function(loyaltyId, currentStatus, index){
-		var nextStatus = (currentStatus === "true" ? "false" : "true");
+		var nextStatus = !currentStatus;
 		var data = {
-			"set_active": nextStatus,
+			"set_active": nextStatus? "true" : "false",
 			"value": loyaltyId
 		};
 		var successCallbackActivateInactivate = function(data){
-			$scope.data.hotel_loyalty_program[index].is_active = (currentStatus === "true" ? false : true);
+			$scope.data.hotel_loyalty_program[index].is_active = nextStatus;
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADHotelLoyaltySrv.activateInactivate, data , successCallbackActivateInactivate);

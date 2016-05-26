@@ -135,4 +135,16 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/serviceproviderdetails/:action/:id'
 		});
 
+		$stateProvider.state('admin.autoSyncInventory', {
+			templateUrl: '/assets/partials/tools/adTools.html',
+			controller: 'ADToolsCtrl',
+			url : '/adTools'
+		});
+
+		$stateProvider.state('admin.zestSortedCountryList', {
+			templateUrl: '/assets/partials/zestSetup/adCountrySorting.html',
+			controller: 'ADCountrySortCtrl',
+			url : '/countrySort'
+		});
+
 });

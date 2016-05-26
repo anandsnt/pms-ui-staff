@@ -205,6 +205,7 @@ admin.controller('ADHotelDetailsCtrl', [
 
 
 			var data = dclone($scope.data, unwantedKeys);
+			data.interface_type_ids = getSelectedInterfaceTypes(data);
 			if($scope.hotelLogoPrefetched === data.hotel_logo){
 				data.hotel_logo = "";
 			}

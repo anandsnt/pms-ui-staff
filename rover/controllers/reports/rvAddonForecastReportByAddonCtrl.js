@@ -10,7 +10,8 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 	'$filter',
 	'$timeout',
 	'ngDialog',
-	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, ngDialog) {
+	'$interval',
+	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, ngDialog, $interval) {
 		
 		BaseCtrl.call(this, $scope);
 
@@ -19,7 +20,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 		var detailsCtrlScope = $scope.$parent,
 			mainCtrlScope    = detailsCtrlScope.$parent,
 			chosenReport     = detailsCtrlScope.chosenReport,
-			results          = mainCtrlScope.results,
+			results          = [],
 			addonGrpHash = {},
 			addonHash    = {},
 			addonGroups,
@@ -27,16 +28,48 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 
 
 
-		var SCROLL_NAME = 'addon-forecast-report-scroll';
+		var SCROLL_NAME  = 'addon-forecast-report-scroll',
+			timer;
+
 		var refreshScroll = function(scrollUp) {
-			if ( !! mainCtrlScope.myScroll.hasOwnProperty(SCROLL_NAME) ) {
-				$scope.refreshScroller( SCROLL_NAME );
-				if ( !!scrollUp ) {
-					mainCtrlScope.myScroll[SCROLL_NAME].scrollTo(0, 0, 100);
-				};
+			$scope.refreshScroller(SCROLL_NAME);
+			if ( !!scrollUp && $scope.$parent.myScroll.hasOwnProperty(SCROLL_NAME) ) {
+				$scope.$parent.myScroll[SCROLL_NAME].scrollTo(0, 0, 100);
 			};
 		};
-		$scope.setScroller( SCROLL_NAME, { preventDefault: false } );
+
+		var setScroller = function() {
+			$scope.setScroller(SCROLL_NAME, {
+				probeType: 3,
+				tap: true,
+				preventDefault: false,
+				scrollX: false,
+				scrollY: true
+			});
+		};
+
+		var clearTimer = function() {
+			if ( !! timer ) {
+				$interval.cancel(timer);
+				timer = undefined;
+			}
+		}
+
+		var setScrollListner = function() {
+			if ( $scope.$parent.myScroll.hasOwnProperty(SCROLL_NAME) ) {
+				refreshScroll();
+
+				if ( ! timer ) {
+					timer = $interval(refreshScroll, 1000);
+				}
+
+				$scope.$parent.myScroll[SCROLL_NAME].on('scroll', function() {
+					clearTimer();
+				});
+			} else {
+				$timeout(setScrollListner, 1000);
+			}
+		}
 
 	
 
@@ -68,13 +101,14 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 				item.hidden = !item.hidden;
 			};
 
-			$scope.refreshScroller( 'addon-forecast-report-scroll' );
+			refreshScroll();
 		};
 
 		var resClassNames = {
 			'DUE IN'    : 'check-in',
 			'INHOUSE'   : 'inhouse',
 			'DUE OUT'   : 'check-out',
+			'CHECKEDOUT' : 'check-out',
 			'CANCELLED' : 'cancel',
 			'NOSHOW'    : 'no-show'
 		}
@@ -164,10 +198,12 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			var success = function (data) {
 				$scope.$emit( 'hideLoader' );
 				eachDate.reservations = data;
+				refreshScroll();
  			};
 
  			var error = function (data) {
 				$scope.$emit( 'hideLoader' );
+				refreshScroll();
  			};
 
  			_.extend(params, {
@@ -192,9 +228,10 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			$scope.invokeApi(reportsSubSrv.fetchAddonReservations, params, success, error);
  		};
 
- 		function init () {
- 			addonGroups  = mainCtrlScope.addonGroups || $scope.chosenReport.hasAddonGroups.data;
- 			addons       = mainCtrlScope.addons ||  $scope.chosenReport.hasAddons.data;
+ 		function setup () {
+ 			addonGroups  = $scope.chosenReport.hasAddonGroups.data || [];
+ 			addons       = $scope.chosenReport.hasAddons.data || [];
+ 			results      = mainCtrlScope.results;
 			addonGrpHash = {};
 			addonHash    = {};
 
@@ -203,9 +240,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			});
 
  			_.each(addons, function(item) {
- 				_.each(item['list_of_addons'], function(entry) {
- 					addonHash[entry.addon_id] = entry.addon_name;
- 				});
+ 				addonHash[item.addon_id] = item.addon_name;
  			});	
 
  			$scope.modifiedResults = {};
@@ -275,25 +310,43 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			$scope.modifiedResults = angular.copy( results );
 
  			$scope.hasResults = !!( _.find($scope.modifiedResults, function(data) { return data.hasData; }) );
-
- 			// refresh scroll
- 			$timeout( refreshScroll.bind(null, 'scrollUp'), 300 );
  		};
 
- 		init();
+ 		var init = function() {
+ 			setup();
+ 			setScroller();
+ 			/**/
+ 			$timeout(function() {
+ 				refreshScroll('scrollUp');
+ 			});
+ 		}
+
+ 		init();	
+
+ 		var reInit = function() {
+ 			setup();
+ 			/**/
+ 			$timeout(function() {
+ 				refreshScroll('scrollUp');
+ 			});
+ 		}
 
 
- 		// re-render must be initiated before for taks like printing.
+		// re-render must be initiated before for taks like printing.
 		// thats why timeout time is set to min value 50ms
-		var reportSubmited    = $scope.$on( reportMsgs['REPORT_SUBMITED'], init );
-		var reportPrinting    = $scope.$on( reportMsgs['REPORT_PRINTING'], init );
-		var reportUpdated     = $scope.$on( reportMsgs['REPORT_UPDATED'], init );
-		var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], init );
+		var reportSubmited    = $scope.$on( reportMsgs['REPORT_SUBMITED'], reInit );
+		var reportPrinting    = $scope.$on( reportMsgs['REPORT_PRINTING'], reInit );
+		var reportUpdated     = $scope.$on( reportMsgs['REPORT_UPDATED'], reInit );
+		var reportPageChanged = $scope.$on( reportMsgs['REPORT_PAGE_CHANGED'], reInit );
+		var allRendered       = $scope.$on( 'ALL_RENDERED', setScrollListner );
 
 		$scope.$on( '$destroy', reportSubmited );
 		$scope.$on( '$destroy', reportUpdated );
 		$scope.$on( '$destroy', reportPrinting );
 		$scope.$on( '$destroy', reportPageChanged );
+
+		$scope.$on( '$destroy', allRendered );
+		$scope.$on( '$destroy', clearTimer );
 
 
 

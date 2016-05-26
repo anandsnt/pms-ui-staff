@@ -9,42 +9,25 @@
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- card swipe -->
-                <li ng-show='show.swipecardScreen && at === "card-swipe"' touch-press='simulateSixPay()'>
-                    <!--button type="button" class="button option" touch-press='goToCardSign()' -->
-                    <button type="button" class="button option">
-                        <!--div ng-include="'/assets/zest_station/css/icons/creditcard.svg'"></div-->
+                <li ng-show='at === "card-swipe"'>
+                    <button type="button" class="button option" touch-press='simulateSixPay()'>
                         <div ng-include="icons.url.creditcard"></div>
-                        
                     </button>
                     <span translate>SWIPE_CARD_PLEASE</span>
-                    <!--div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div-->
-                    <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
-                </li>
-                <li ng-show='show.swipecardScreen && at === "card-swipe" && debugSixpay' touch-press='debugSixpayInit()'>
-                    <!--button type="button" class="button option" touch-press='goToCardSign()' -->
-                    <button type="button" class="button option">
-                        <!--div ng-include="'/assets/zest_station/css/icons/creditcard.svg'"></div-->
-                        <div ng-include="icons.url.creditcard"></div>
-                    </button>
-                    <span translate>Debug SixPay</span>
-                    <!--div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div-->
-                    <!--div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div-->
                 </li>
                 
                 <!-- deliver-registration -->
-                <li ng-show='at === "deliver-registration" && printEnabled'> 
+                <li ng-show='at === "deliver-registration" && printEnabled && !zestStationData.auto_print'> 
                     <button type="button" class="button option" touch-press='clickedPrint()'>
-                        <!--div ng-include="'/assets/zest_station/css/icons/print.svg'"></div-->
                         <div ng-include="icons.url.print"></div>
                     </button>
                     <span translate>PRINT_TEXT</span>
                 </li>
-                <li class="break" ng-show='at === "deliver-registration" && printEnabled && emailEnabled'>
+                <li class="break" ng-show='at === "deliver-registration" && printEnabled && emailEnabled && !zestStationData.auto_print'>
                     <span translate>OR_TEXT</span>
                 </li>
                 <li ng-show='at === "deliver-registration" && emailEnabled'> 
                     <button type="button" class="button option" touch-press='selectEmailDelivery()'>
-                        <!--div ng-include="'/assets/zest_station/css/icons/email.svg'"></div-->
                         <div ng-include="icons.url.email"></div>
                     </button>
                     <span translate>EMAIL_TEXT</span>
@@ -52,7 +35,6 @@
                 <!-- invalid-email -->
                 <li ng-show='at === "invalid-email"'> 
                     <button type="button" class="button option" touch-press='navToPrev()'>
-                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                         
                     </button>
@@ -63,7 +45,6 @@
                 
                 <li ng-show='at === "swipe-pay-error"'>
                     <button type="button" class="button option" touch-press='reTryCardSwipe()'>
-                        <!--div ng-include="'/assets/zest_station/css/icons/creditcard.svg'"></div-->
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <h1>{{'TRY_AGAIN' |translate}}</h1>
@@ -78,7 +59,6 @@
                 <!-- retry-key -->
                 <li ng-show='at === "key-error"'> 
                     <button type="button" class="button option" touch-press='reEncodeKey()'>
-                        <!--div ng-include="'/assets/zest_station/css/icons/key.svg'"></div-->
                         <div ng-include="icons.url.key"></div>
                     </button>
                     <h1>{{'TRY_AGAIN' |translate}}</h1>
@@ -92,7 +72,6 @@
                 </li>
                 <li ng-show='at === "key-error" && !pickupkeys'> 
                     <button type="button" class="button option" touch-press='skipKeys()'>
-                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
                     <h1>{{'CONTINUE_TEXT' |translate}}</h1>
@@ -100,7 +79,6 @@
 
                 <li ng-show='at === "deposit-agree"'> 
                     <button type="button" class="button option" touch-press='depositProceed()'>
-                        <!--div ng-include="'/assets/zest_station/css/icons/creditcard.svg'"></div-->
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <h1>{{'DEPOSIT_NEXT_BUTTON' |translate}}</h1>
@@ -108,7 +86,6 @@
                 <!--email-delivery -->
                 <li ng-show='at === "email-delivery"'> 
                     <button type="button" class="button option" touch-press='editEmailAddress()'>
-                        <!--div ng-include="'/assets/zest_station/css/icons/pen.svg'"></div-->
                         <div ng-include="icons.url.pen"></div>
                     </button>
                     <span translate>EDIT_EMAIL</span>
@@ -118,14 +95,12 @@
                 </li>
                 <li ng-show='at === "email-delivery"'> 
                     <button type="button" class="button option" touch-press='send()'>
-                        <!--div ng-include="'/assets/zest_station/css/icons/email.svg'"></div-->
                         <div ng-include="icons.url.email"></div>
                     </button>
                     <span translate>SEND_EMAIL</span>
                 </li>
                 <li ng-show='at === "key-error" || at === "swipe-pay-error"  || at === "deposit-agree"'> 
                     <button type="button" class="button option" touch-press='initStaff()'>
-                        <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
                         <div ng-include="icons.url.staff"></div>
                     </button>
                     <h1>{{'SPEAK' |translate}}</h1>
@@ -135,10 +110,11 @@
             </ul>
         </nav>
     </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'" click-touch='resetTime()' ></span>
 </section>
 
 <!-- hidden view for print action -->
-<section id="registration-card" class="page-print">
+<section id="registration-card" class="page-print"  ng-hide="theme === 'yotel'">
      <!-- Hotel logo  !this needs to be swappable between hotels-->
      <div id="logo">
        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="logo" id="zoku-print-logo" x="0px" y="0px" width="937.2px" height="146.3px" viewBox="0 0 937.2 146.3" enable-background="new 0 0 937.2 146.3" xml:space="preserve">
@@ -153,14 +129,50 @@
         </svg>
     </div>
 
-    <div class="room">
+    <div class="room" ng-hide="theme === 'yotel'">
         <span translate>IN_ROOM</span>
         <strong>{{printRegCardData.room_number}}</strong>
     </div>
+    
 
     <!-- If text outputs multiple <p> tags then wrap it with <div class="terms"> instead of <p id="terms"> -->
     <p class="terms">{{printRegCardData.reg_card_text}}</p>
 
 </section>
+
+
+<div class="room page-print" ng-show="theme === 'yotel'">
+        <section id="registration-card" class="page-print">
+        
+            <div class="logo">
+                <div ng-include="icons.url.logo"></div>
+            </div>
+            
+            <div class="content">
+                <!-- business date/time -->
+                <span>{{'REGISTRATION_READY_PRINT_BUSINESS_DATE_LABEL' | translate}} {{currentDateTime | date:'dd-MMM yyyy HH:mm'}}</span>
+                <br><br><br>
+                
+                <span>{{'REGISTRATION_READY_PRINT_ROOM_NO' | translate}}</span>
+                <br><br><br>
+                    <strong class="large_txt">{{printRegCardData.room_number}}</strong>
+                <br><br><br>
+
+                <span>
+                    {{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}}
+                <br>    
+                    {{'REGISTRATION_READY_PRINT_STD_CHECKOUT' | translate}} {{zestStationData.check_out_time.hour}}:{{zestStationData.check_out_time.minute}} {{zestStationData.check_out_time.primetime|lowercase}}
+                </span>
+                <br><br><br>
+
+                <span class="reg_text">{{printRegCardData.reg_card_text}}</span>
+                <br><br><br>
+
+                <strong class='footer large_txt'>{{'REGISTRATION_READY_PRINT_FOOTER' | translate}}</strong>
+                <br><br>
+            </div>
+        </section>
+    </div>
+     
 
 

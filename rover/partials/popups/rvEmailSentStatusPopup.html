@@ -1,0 +1,9 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak ng-click="clearErrorMessage();">
+
+<div class="modal-content form alert">
+    <button id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></button >
+    <span class="icons icon-popup-{{status}}"></span>
+    <strong class="h2 message">{{statusMsg}}</strong>
+    <button type="button" class="button blank" ng-click="closeDialog()">Close</button>
+</div>
+</div>

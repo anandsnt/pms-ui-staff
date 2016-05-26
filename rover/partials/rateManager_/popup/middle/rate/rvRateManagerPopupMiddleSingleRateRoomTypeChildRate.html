@@ -1,0 +1,18 @@
+<div id="restrictionPriceContainer" class="price-div">
+    <div class="restriction_text" >
+        <h3>Adjust Price </h3>
+    </div>
+	<div class="no-content">
+		<div class="info">
+			<span class="icon-no-content icon-rates"></span>
+			<strong class="h1">Can't adjust price for child rate</strong>
+			<span class="h2">
+				You can however adjust the price on it's parent rate
+				<strong>{{parentRateName}}</strong>
+			</span>
+			<button class="button purple" type="button" ng-hide="true" ng-disabled="isPastDate" ng-class="{'grey': isPastDate}">
+			Adjust Parent Rate
+			</button>
+		</div>
+	</div>
+</div>

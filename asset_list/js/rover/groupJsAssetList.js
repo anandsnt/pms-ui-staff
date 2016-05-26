@@ -1,13 +1,14 @@
-module.exports = {	
+module.exports = {
 	getList : function() {
 		var roverRoot 		= 'rover/',
 			servicesRoot 	= 'rover/services/',
 		groupJsAssets = {
 			minifiedFiles: [
 			],
-			nonMinifiedFiles: [						
+			nonMinifiedFiles: [
 				roverRoot + "controllers/groups/**/*.js",
 				roverRoot + "controllers/accounts/**/*.js",
+				roverRoot + "controllers/billFormat/rvBillFormatPopupController.js",
 				servicesRoot + "group/**/*.js",
 				servicesRoot + "reservation/rvReservationSummarySrv.js",
 				servicesRoot + "reservation/RVReservationAddonsSrv.js",

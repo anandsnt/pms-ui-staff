@@ -7,7 +7,7 @@
 			</header>
 			<section class="content-scroll">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-				<form name="icare-services" method="post" class="form float" action="">
+				<div name="icare-services" method="post" class="form float" action="">
 
 					<fieldset class="holder left">
 						<ad-toggle-button is-checked="icare.icare_enabled" label="{{'iCARE_ON_OFF' | translate}}" div-class="full-width"></ad-toggle-button>
@@ -20,9 +20,9 @@
 					<fieldset class="holder left">
 						<ad-textbox value="icare.icare_url" name = "access-url" label = "{{'ICARE_ACCESS_URL'| translate}}" placeholder = "{{'ENTER_ICARE_ACCESS_URL'| translate}}" required = "yes" styleclass="full-width"></ad-textbox>
 			
-						<ad-textbox value="icare.icare_username" name = "icare-username" label = "{{'iCARE_USERNAME'| translate}}" placeholder = "{{'ENTER_iCARE_USERNAME'| translate}}" required = "yes" styleclass="full-width"></ad-textbox>
+						<ad-textbox value="icare.icare_username" label = "{{'iCARE_USERNAME'| translate}}" placeholder = "{{'ENTER_iCARE_USERNAME'| translate}}" required = "yes" styleclass="full-width"></ad-textbox>
 			
-						<ad-textbox value="icare.icare_password" name = "icare-password" label = "{{'iCARE_PASSWORD'| translate}}" placeholder = "{{'ENTER_iCARE_PASSWORD'| translate}}" required = "yes" styleclass="full-width" inputtype="password"></ad-textbox>
+						<ad-textbox value="icare.icare_password" label = "{{'iCARE_PASSWORD'| translate}}" placeholder = "{{'ENTER_iCARE_PASSWORD'| translate}}" required = "yes" styleclass="full-width" inputtype="password"></ad-textbox>
 			
 						<ad-textbox value="icare.icare_account_preamble" name = "account-prefix" label = "{{'iCARE_ACCOUNT_PRE_FIX'| translate}}" placeholder = "{{'ENTER_iCARE_ACCOUNT_PRE_FIX'| translate}}" styleclass="full-width"></ad-textbox>
 			
@@ -44,7 +44,7 @@
 							SAVE_CHANGES
 						</button>
 					</div>
-				</form>
+				</div>
 			</services>
 		</section>
 	</div>

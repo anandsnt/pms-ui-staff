@@ -136,7 +136,6 @@ angular.module('sntRover').service('rvMenuSrv',
 			isMenuItemVisible		= true,
             menuList = []; //storing the menu list, will process on this and return
 
-
 		menuList = [{
 		        title: "MENU_DASHBOARD",
 		        action: defaultDashboardState,
@@ -226,8 +225,8 @@ angular.module('sntRover').service('rvMenuSrv',
 		        iconClass: "icon-revenue",
 		        menuIndex: "revenue-manager",
 		        submenu: [{
-		            title: "MENU_RATE_MANAGER",
-		            action: "rover.ratemanager",
+ 		            title: "MENU_RATE_MANAGER",
+		            action: "rover.rateManager",
 		            menuIndex: "rateManager"
 		        }, {
 		            title: "MENU_TA_CARDS",
@@ -274,12 +273,12 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: "rover.financials.ccTransactions({ id : 'REVENUE'})",
 		            menuIndex: "ccTransactions"
 		        }, {
-		            title: "MENU_ACCOUNTING",
-		            action: "",
-		            menuIndex: "accounting"
+		            title: "MENU_ACCOUNTS_RECEIVABLES",
+		            action: "rover.financials.accountsReceivables",
+		            menuIndex: "accountsReceivables"
 		        }, {
 		            title: "MENU_COMMISIONS",
-		            action: "",
+		            action: "rover.financials.commisions",
 		            menuIndex: "commisions"
 		        }]
             }, {
@@ -307,29 +306,34 @@ angular.module('sntRover').service('rvMenuSrv',
 	this.getMainMenuForConnectedRover = function() {
 		var defaultDashboardState 	= getDefaultDashboardState ();
 
-		var menu = [{
+		var menu = [
+			{
 				title: "MENU_DASHBOARD",
 				action: defaultDashboardState,
 				menuIndex: "dashboard",
 				submenu: [],
 				iconClass: "icon-dashboard"
-			}, {
+			},
+			{
 				title: "MENU_HOUSEKEEPING",
-				//hidden: true,
 				action: "",
 				iconClass: "icon-housekeeping",
-				submenu: [{
-					title: "MENU_ROOM_STATUS",
-					action: "rover.housekeeping.roomStatus",
-					menuIndex: "roomStatus"
-				}]
-			}, {
+				submenu: [
+					{
+						title: "MENU_ROOM_STATUS",
+						action: "rover.housekeeping.roomStatus",
+						menuIndex: "roomStatus"
+					}
+				]
+			},
+			{
 				title: "MENU_REPORTS",
 				action: "rover.reports",
 				menuIndex: "reports",
 				iconClass: "icon-reports",
 				submenu: []
-		}];
+			}
+		];
 
 		return processMenuList (menu);
 	};
@@ -342,17 +346,19 @@ angular.module('sntRover').service('rvMenuSrv',
 		var defaultDashboardState 	= getDefaultDashboardState ();
 
 	    // menu for mobile views
-	    var menu = [{
-			        title: "MENU_DASHBOARD",
-			        action: defaultDashboardState,
-			        menuIndex: "dashboard",
-			        iconClass: "icon-dashboard"
-			    },{
-			        title: "MENU_ROOM_STATUS",
-			        action: "rover.housekeeping.roomStatus",
-			        menuIndex: "roomStatus",
-			        iconClass: "icon-housekeeping"
-			    }
+	    var menu = [
+			{
+				title: "MENU_DASHBOARD",
+				action: defaultDashboardState,
+				menuIndex: "dashboard",
+				iconClass: "icon-dashboard"
+			},
+			{
+				title: "MENU_ROOM_STATUS",
+				action: "rover.housekeeping.roomStatus",
+				menuIndex: "roomStatus",
+				iconClass: "icon-housekeeping"
+			}
 		];
 
 		return processMenuList (menu);
@@ -366,17 +372,19 @@ angular.module('sntRover').service('rvMenuSrv',
 		var defaultDashboardState 	= getDefaultDashboardState ();
 
 	    // menu for mobile views
-	    var menu = [{
-			        title: "MENU_DASHBOARD",
-			        action: defaultDashboardState,
-			        menuIndex: "dashboard",
-			        iconClass: "icon-dashboard"
-			    },{
-			        title: "MENU_ROOM_STATUS",
-			        action: "rover.housekeeping.roomStatus",
-			        menuIndex: "roomStatus",
-			        iconClass: "icon-housekeeping"
-			    }
+	    var menu = [
+			{
+				title: "MENU_DASHBOARD",
+				action: defaultDashboardState,
+				menuIndex: "dashboard",
+				iconClass: "icon-dashboard"
+			},
+			{
+				title: "MENU_ROOM_STATUS",
+				action: "rover.housekeeping.roomStatus",
+				menuIndex: "roomStatus",
+				iconClass: "icon-housekeeping"
+			}
 		];
 
 		return processMenuList (menu);
@@ -390,21 +398,25 @@ angular.module('sntRover').service('rvMenuSrv',
 	this.getSettingsSubmenu = function() {
 		var defaultDashboardState 	= getDefaultDashboardState ();
 
-		var menu = [{
+		var menu = [
+			{
 				title: "SETTINGS",
 		        menuIndex: "settings",
 		        action: "",
-		        submenu: [{
-		            title: "CAHNGE_PASSWORD",
-		            action: "",
-		            menuIndex: "changePassword",
-		            actionPopup: true
-		        }, {
-		            title: "SETTINGS",
-		            action: "",
-		            menuIndex: "adminSettings",
-		            actionPopup: true
-		        }]
+		        submenu: [
+					{
+						title: "CAHNGE_PASSWORD",
+						action: "",
+						menuIndex: "changePassword",
+						actionPopup: true
+		        	},
+					{
+						title: "SETTINGS",
+						action: "",
+						menuIndex: "adminSettings",
+						actionPopup: true
+		        	}
+				]
 		    }];
 		return processMenuList (menu);
 	};
@@ -436,6 +448,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			'journals': 			['ACCESS_JOURNAL'],
 			'ccTransactions':   	['VIEW_CC_TRANSACTIONS'],
 
+			'accountsReceivables': 	['ACCESS_ACCOUNTING_INTERFACE'],
 			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],
 			'commisions': 			['ACCESS_COMMISSIONS'],
 			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],

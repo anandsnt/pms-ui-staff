@@ -31,6 +31,7 @@ angular.module('reportsModule')
         'GROUP_BY_USER'       : 'group_by_user',
         'GROUP_BY_GROUP_NAME' : 'group_by_group_name',
         'ADDON_GROUP_BY'      : 'group_field',
+        'CHARGE_TYPE'         : 'group_by_charge_type',
 
         'USER_IDS'               : 'user_ids',
         'MARKET_IDS'             : 'market_ids',
@@ -48,5 +49,7 @@ angular.module('reportsModule')
         'RATE_TYPE_IDS'          : 'rate_type_ids',
         'RESTRICTION_IDS'        : 'restriction_ids',
         'ROOM_TYPE_IDS'          : 'room_type_ids',
-        'RATE_ID'                : 'rate_id'
+        'RATE_ID'                : 'rate_id',
+        'ORIGIN_VALUES'          : 'origin',
+        'ORIGIN_URLS'            : 'urls'
     });

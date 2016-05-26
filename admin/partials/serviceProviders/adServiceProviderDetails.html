@@ -18,9 +18,9 @@
             <ad-textbox value="data.address" name = "address" id = "address" label = "Address" placeholder = "Enter address" ></ad-textbox>
 
             <ad-textbox label="Phone" value="data.phone"  placeholder="Enter phone number" name="phone" id="phone"></ad-textbox>
-			
+
 			<ad-textbox label="City" value="data.city"  placeholder="Enter city" name="city" id="city"></ad-textbox>
-			
+
             <div class="entry">
                 <label for="hotel-country"> Country <strong>*</strong> </label>
                 <div class="select">
@@ -44,6 +44,14 @@
             <ad-textbox value="data.last_name" label = "Last Name" placeholder = "Enter last name" required = "yes"></ad-textbox>
 
             <ad-textbox value="data.email" label = "Email" placeholder = "Enter email" required = "yes"></ad-textbox>
+            <div class="entry">
+                    <label for="password"> Password <strong>*</strong></label>
+                    <input type="password" ng-model="data.password" value="{{data.password}}" required="yes" placeholder="Enter password" name="password">
+            </div>
+            <div class="entry">
+                    <label for="password_confirmation"> Confirm Password <strong>*</strong> </label>
+                    <input type="password" ng-model="data.password_confirmation" value="{{data.password_confirmation}}" required="yes" placeholder="Enter confirm password" name="password_confirmation">
+            </div>
 
         </fieldset>
 

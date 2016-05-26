@@ -959,6 +959,9 @@
             /* Rooms & Rates ***/
             &.rooms-and-rates-content {
                 .calc-height(100, 150);
+                &.edit-guests{
+                    .calc-height(100, 220);
+                }
 
                 /* List ***/
                 .rooms-and-rates {
@@ -1216,6 +1219,11 @@
 
                                 &:hover,
                                 &:active { color: @logoPrimary; }
+
+                                &.thin{
+                                    height: 30px;
+                                    line-height: 30px;
+                                }
                             }
 
                             &:after,
@@ -1508,7 +1516,7 @@
             .box-shadow(inset 0 1px 2px rgba(0,0,0,.15));
             #pixel-to-percent > .width(980, 2038);
 
-            > .wrapper { padding: 40px; }
+            > .wrapper { padding: 40px 40px 20px; }
             > .iScrollVerticalScrollbar { 
                 right: 10px;
 
@@ -1853,7 +1861,7 @@
             .float;
             #pixel-to-percent > .width(1058, 2038);
 
-            > .wrapper { padding: 20px; }
+            > .wrapper { padding: 40px 40px 20px; }
             > .iScrollVerticalScrollbar { right: 5px; }
 
             .reservation-completed {
@@ -1864,7 +1872,7 @@
                     font-weight: 600;
                     text-transform: uppercase;
                     text-align: center;
-                    margin: 40px 0 20px;
+                    margin: 0;
                 }
 
                 p { 
@@ -1882,10 +1890,26 @@
                     }
                 }
 
-                .actions {
-                    padding-top: 20px;
-                    border-top: 1px solid rgba(0,0,0,.1);
+                .entry {
+                    &.radio-check { margin-bottom: 0; }
 
+                    &.break-top {
+                        margin-top: 20px;
+                        padding-top: 10px;
+                        border-top: 1px solid rgba(0,0,0,.1);
+                    }
+
+                    &.break-bottom {
+                        margin-bottom: 20px;
+                        padding-bottom: 10px;
+                        border-bottom: 1px solid rgba(0,0,0,.1);
+                    }
+                }
+
+                .actions {
+                    margin-top: 10px;
+                    padding-top: 10px;
+                    
                     .button {
                         font-size: 18px;
                         line-height: 24px;

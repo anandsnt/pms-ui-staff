@@ -1,5 +1,5 @@
-sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvGroupActionsSrv', 'rvUtilSrv',
-    function($scope, $filter, $rootScope, ngDialog, rvGroupActionsSrv, rvUtilSrv) {
+sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvGroupActionsSrv', 'rvUtilSrv', 'dateFilter',
+    function($scope, $filter, $rootScope, ngDialog, rvGroupActionsSrv, rvUtilSrv, dateFilter) {
 
         /*
          *To save the reservation note and update the ui accordingly
@@ -33,6 +33,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         $scope.departmentSelect = {};
         $scope.departmentSelect.selected;
 
+        $scope.timeSelectorList = rvUtilSrv.getListForTimeSelector (15, 12);
 
         $scope.selectedActionMessage = '';
         $scope.selectedDepartment = '';
@@ -406,10 +407,18 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         $scope.setFreshDate = function(){
 
             $scope.newAction.hasDate = true;
-            $scope.newAction.dueDateObj = new tzIndependentDate($rootScope.businessDate);
+             // CICO-27905
+            // In the stay card, the date due for a new action should default to the greater of the block's from date / business date
+            var businessDate = new tzIndependentDate($rootScope.businessDate),
+                blockFromDate = new tzIndependentDate($scope.groupConfigData.summary.block_from);
+
+            $scope.newAction.dueDateObj = businessDate > blockFromDate ? businessDate : blockFromDate;
+            
             $scope.newAction.date_due = $filter('date')( $scope.newAction.dueDateObj, $rootScope.dateFormat);
             if (!$scope.newAction.time_due){
-                $scope.newAction.time_due = $scope.timeFieldValue[0];
+                $scope.newAction.time_due = $filter('date')($scope.hotel_time, "HH:mm");
+                $scope.newAction.time_due = rvUtilSrv.roundToNextQuarter(parseInt($filter('date')($scope.hotel_time, "HH"),10),
+                    parseInt($filter('date')($scope.hotel_time, "mm"),10));
             }
         };
 
@@ -653,7 +662,9 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         $scope.refreshActionList = function(del, selected){
             $scope.fetchDepartments();//store this to use in assignments of department
             var onSuccess = function(data){
-                $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
+                var splitTimeString = data.business_date_time.split("T");
+                $scope.hotel_time = splitTimeString[0] + "T" +  splitTimeString[1].split(/[+-]/)[0];
+
                 var list = data.data;
                 //if doing a refresh, dont replace the actions array, since it will cause the UI to flash
                 //and look like a bug, instead go through the objects and update them
@@ -804,13 +815,6 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             } return false;
         };
 
-        $scope.convertMilTime = function(milStr){
-            //converts "16:10:00" into "04:10 PM"
-            var str = milStr.split(' ');
-            var strArray = str[1].split(':');
-            var hour = strArray[0], min = strArray[1];
-            return getFormattedTime(hour+''+min);
-        };
         $scope.capped = function(str){
             if (str){
                 var s = str.toLowerCase();
@@ -853,7 +857,8 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
 
         var fetchActionListSuccessCallBack = function (data) {
-            $scope.hotel_time = $scope.convertMilTime(data.business_date_time);
+            var splitTimeString = data.business_date_time.split("T");
+            $scope.hotel_time = splitTimeString[0] + "T" +  splitTimeString[1].split(/[+-]/)[0];
 
             var list = data.data;
             var matchObj;
@@ -864,10 +869,17 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                     list[x].assigned = false;
                 }
 
-                list[x].due_at_time = list[x].time_due ? $filter('date')(list[x].due_at_str, "HH:mm") : "00:00";
+
 
                 if (typeof list[x].due_at === typeof 'string'){
-                    list[x].due_at_date = $filter('date')(list[x].due_at_str, $rootScope.dateFormat);
+                    var splitDueTimeString = list[x].due_at_str.split("T");
+
+                    // 24 hr format for the dropdown in the right panel
+                    list[x].due_at_time = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm");
+                    // 12 hr format for binding in the list
+                    list[x].due_at_time_str = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "hh:mm a");
+
+                    list[x].due_at_date = dateFilter(splitDueTimeString[0], $rootScope.dateFormat);
                     list[x].hasDate = true;
                 } else {
                     list[x].hasDate = false;
@@ -880,8 +892,8 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 }
 
                 if (list[x].created_at){
-                    list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
-                    list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
+                    list[x].created_at_time = $filter('date')(list[x].created_at, "hh:mm a");
+                    list[x].created_at_date = $filter('date')(list[x].created_at, $rootScope.dateFormat);
                 }
 
             }
@@ -892,6 +904,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             }
             $scope.setActionsHeaderInfo();
 
+            setTimeout(refreshScroller, 300);
             setTimeout(function(){
                 if ($scope.actions[0]){
                     $scope.selectAction($scope.actions[0]);
@@ -1179,7 +1192,9 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             $scope.initRefresh(del);
 
             var onSuccess = function(){
-                $scope.actions.totalCount--;
+                if (del === 'delete') {
+                    $scope.actions.totalCount--;
+                }
                 $scope.lastSelectedItemId = params.action_task.id;
                 $scope.refreshActionList(del, selected);
 
@@ -1207,6 +1222,9 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
 
         $scope.reassignAction = function(){
+            var assignedTo = $scope.selectedAction.assigned_to.id + '',
+                department = _.findWhere($scope.departments, { value: assignedTo });
+            $scope.departmentSelect.selected = department;
             $scope.actionSelected = 'assign';
         };
 

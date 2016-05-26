@@ -6,8 +6,8 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
         $scope.init = function(){
         $scope.showActivityLog = false;
         $scope.activityLogData = {};
-        $scope.fromDate ='';
-        $scope.toDate ='';
+        $scope.fromDate = $rootScope.businessDate;
+        $scope.toDate = $rootScope.businessDate;
         $scope.user_id = 0;
         $scope.getRateLog = function(){
             $scope.showActivityLog = true;
@@ -52,7 +52,6 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
             numberOfMonths: 1,
             changeYear: true,
             changeMonth: true,
-
             yearRange: "-50:+50",
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div');

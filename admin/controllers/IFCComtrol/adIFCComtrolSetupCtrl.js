@@ -4,7 +4,7 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 	BaseCtrl.call (this, $scope);
 	
 	/**
-	 * when clicked on check box to enable/diable pabx 
+	 * when clicked on check box to enable/diable
 	 * @return {undefiend}
 	 */
 	$scope.toggleIFCComtrolEnabled = function() {
@@ -25,8 +25,17 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 	});
 
 	var clearConfigValues = function() {
-    $scope.ifc_comtrol.api_url = '';
+    $scope.ifc_comtrol.url = '';
     $scope.ifc_comtrol.authentication_token = '';
+    $scope.ifc_comtrol.cas_enabled = false;
+    $scope.ifc_comtrol.energy_management_enabled = false;
+    $scope.ifc_comtrol.internet_enabled = false;
+    $scope.ifc_comtrol.keys_enabled = false;
+    $scope.ifc_comtrol.minibar_enabled = false;
+    $scope.ifc_comtrol.movies_enabled = false;
+    $scope.ifc_comtrol.pbx_enabled = false;
+    $scope.ifc_comtrol.pos_enabled = false;
+    $scope.ifc_comtrol.voice_mail_enabled = false;
 	};
 
 	/**
@@ -55,6 +64,5 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 	 */
 	var initializeMe = function() {
 		$scope.ifc_comtrol = ifcComtrolSetupValues;
-    console.log($scope.ifc_comtrol);
 	}();
 }])

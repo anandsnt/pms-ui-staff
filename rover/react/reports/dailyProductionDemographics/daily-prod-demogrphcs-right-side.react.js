@@ -28,6 +28,6 @@ var DailyProductionRightSide = React.createClass({
     },
   React.DOM.div({
       className: 'wrapper'
-  }, DailyProductionByDemographicsTable({data: this.props.data, header: this.props.header})));
+  }, React.createElement( DailyProductionByDemographicsTable, {data: this.props.data, header: this.props.header})));
   }
 });

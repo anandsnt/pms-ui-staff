@@ -1,19 +1,17 @@
-<div class="summary">
-    <div class="add-content">
-        <span class="h2 message" ng-show="!selectedAction.assigned" ng-hide="selectedAction.assigned">Assign</span>
-        <span class="h2 message" ng-show="selectedAction.assigned" ng-hide="!selectedAction.assigned">Re-Assign</span>
-        <div class="entry full-width">
-            <label for="department">Department</label>
-            <div class="select">
-                <select id="department-assign-action" ng-class="{'placeholder': departmentsCount > 0}" ng-model="departmentSelect.selected" ng-options="department.name for department in departments"> 
-                    <option value="">Select department</option>
-                </select>
-            </div>
+<div class="add-content">
+    <span class="h2 message" ng-show="!selectedAction.assigned" ng-hide="selectedAction.assigned">Assign</span>
+    <span class="h2 message" ng-show="selectedAction.assigned" ng-hide="!selectedAction.assigned">Re-Assign</span>
+    <div class="entry full-width">
+        <label for="department">Department</label>
+        <div class="select">
+            <select id="department-assign-action" ng-class="{'placeholder': departmentsCount > 0}" ng-model="departmentSelect.selected" ng-options="department.name for department in departments"> 
+                <option value="">Select department</option>
+            </select>
         </div>
-        <div class="actions">
-            <button type="button" class="button brand-colors" ng-class="{'overlay': !departmentSelect.selected.value}" ng-click="assignDepartment()" ng-show="!selectedAction.assigned">Assign</button> 
-            <button type="button" class="button brand-colors" ng-class="{'overlay': !departmentSelect.selected.value}" ng-click="assignDepartment()" ng-show="selectedAction.assigned">Re-Assign</button> 
-            <button type="button" class="button blank" ng-click="cancelAssign()">Cancel</button> 
-        </div> 
     </div>
+    <div class="actions">
+        <button type="button" class="button brand-colors" ng-class="{'overlay': !departmentSelect.selected.value}" ng-click="assignDepartment()" ng-show="!selectedAction.assigned">Assign</button> 
+        <button type="button" class="button brand-colors" ng-class="{'overlay': !departmentSelect.selected.value}" ng-click="assignDepartment()" ng-show="selectedAction.assigned">Re-Assign</button>
+        <button type="button" class="button blank" ng-click="cancelAssign()">Cancel</button> 
+    </div> 
 </div>

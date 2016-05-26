@@ -33,6 +33,8 @@
     "MENU_MAINTAENANCE":"Maintenance",
     "MENU_FINANCIALS":"Financials",
     "MENU_ACCOUNTING":"Accounting Interface",
+    "MENU_ACCOUNTS_RECEIVABLES":"Accounts Receivables",
+    "MENU_COMMISSIONS":"Commissions",
     "MENU_JOURNAL":"Journal",
     "MENU_CC_TRANSACTIONS":"CC Transactions",
     "MENU_COMMISIONS":"Commissions",

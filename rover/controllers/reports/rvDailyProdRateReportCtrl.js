@@ -308,8 +308,8 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 					'isLastRowSum': false
 				});
 
-			React.renderComponent(
-				DPContent(props),
+			ReactDOM.render(
+				React.createElement(DPContent, props),
 				document.getElementById('daily-production-render')
 			);
 		};

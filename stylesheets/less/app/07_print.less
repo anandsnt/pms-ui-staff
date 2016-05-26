@@ -15,7 +15,7 @@ html {
     background: transparent;
 }
 
-body { overflow: visible; }
+body { overflow: visible; height:auto; }
 
 #main-menu,
 #availability,
@@ -70,8 +70,8 @@ table {
             page-break-inside: avoid;
         }
 
-        th { 
-            padding: 4pt 4pt 4pt 0; 
+        th {
+            padding: 4pt 4pt 4pt 0;
 
             &:first-child { padding-left: 4pt; }
             &:last-child { padding-right: 0; }
@@ -79,10 +79,10 @@ table {
 
         td {
             padding: 4pt 8pt 4pt 0;
-            border-bottom: 1px solid @grey2; 
+            border-bottom: 1px solid @grey2;
 
             /* Fix for line break as first child ***/
-            br { 
+            br {
                 content: "" !important;
                 display: block !important;
             }
@@ -91,7 +91,7 @@ table {
             &:last-child { padding-right: 0; }
         }
 
-        &:last-child { 
+        &:last-child {
             td { border-bottom: 0; }
         }
     }
@@ -245,7 +245,7 @@ table {
 
         &.small-icon {
             background-size: 20px;
-            .square(20px); 
+            .square(20px);
 
             &.pre-check-in,
             &.check-in { background-position: -1px -1px; }
@@ -257,7 +257,7 @@ table {
 
         &.arrival,
         &.departed { background-color: @grey1; }
-        
+
         &.no-show,
         &.cancel { border-color: @grey2; }
 
@@ -278,6 +278,11 @@ table {
         &.icon-group { background-position: 0 -120px; }
         &.icon-guest-company { background-position: 0 -140px; }
         &.icon-guest-travelagent { background-position: 0 -160px; }
+        &.icon-hold { background-position: 0 -180px;  
+            &.red {
+                background-position: 0 -180px;
+                }
+        }
     }
 
 /* 5. COMPONENTS
@@ -285,52 +290,93 @@ table {
 
 /* Search                   ==============================*/
     .search-results {
-        li {
+        padding: 0;
+
+        li:not(.no-content) {
             font-size: 8pt;
             line-height: 10px;
             margin: 0;
             padding: 4pt 0;
             text-transform: uppercase;
-            border-bottom: 1px solid @grey2;
             page-break-inside: avoid;
             page-break-after: auto;
 
             a,
-            .faux-anchor { 
+            .faux-anchor {
                 color: @textColor;
+                padding: 0;
                 .show;
                 .float;
             }
+
+            .has-arrow { background: transparent; }
 
             h2 {
                 font-size: 10pt;
                 line-height: 10px;
                 font-weight: 600;
+                margin: 0;
                 .nowrap();
             }
 
             .guest-image,
             &.mobile-pagination { .hide; }
-            
-            &:last-child { border-bottom: 0; }
+
+            &:not(last-child) { border-bottom: 1px solid @grey2; }
 
             /* AR Transactions ***/
             &.transaction {
-                
+
+                img {
+                    -webkit-filter: grayscale(100%);
+                    filter: grayscale(100%);
+                    .size(20px, auto);
+                }
+
                 .data {
                     position: relative;
-                    padding-right: 240px;
-                    .calc-width(100, 200);
+                    width: -webkit-calc(~"100% - 7cm");
+                    width: -moz-calc(~"100% - 7cm");
+                    width: calc(~"100% - 7cm");
                     .pull-left;
 
-                    h2 { .pull-left; }
+                    h2 {
+                        .calc-width(100, 540);
+                    }
+
+                    .confirmation,
+                    .icon-time {
+                        line-height: 10px;
+                        .nowrap();
+                        .show;
+                        .pull-left;
+                    }
 
                     .confirmation {
-                        line-height: 10px;
+                        
                         color: @grey3;
-                        clear: both;
-                        .pull-left;
-                        .show;
+                        margin-right: 8pt;
+
+                        .value { color: @textColor; }
+                    }
+
+                    .icon-time {
+                        background: transparent;
+
+                        &:last-child:not(:nth-child(2)) {
+                            position: relative;
+                            padding-left: 8pt;
+
+                            &:after {
+                                content: '•';
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                color: @grey3;
+                                .show();
+                                .size(10px, 2px);
+                            }
+                        }
                     }
 
                     .arrival,
@@ -350,18 +396,9 @@ table {
                     }
 
                     .arrival { right: 280px; }
-                    .departure { right: 40px; }
+                    .departure { right: 80px; }
 
-                    &.no-image {
-                        h2 { float: none; }
-
-                        .confirmation,
-                        .icon-time {
-                            .show;
-                            .pull-left;
-
-                            &:not(:last-child) { margin-right: 8pt; }
-                        }
+                    .card-data {
 
                     }
                 }
@@ -370,7 +407,7 @@ table {
                     font-size: 12pt;
                     font-weight: 300;
                     line-height: 20px;
-                    width: 140px;
+                    width: 3cm;
                     .pull-left;
 
                     &.paid { color: @grey3; }
@@ -379,7 +416,7 @@ table {
                 .switch-button { 
                     line-height: 20px;
                     text-align: right;
-                    .size(20px, 60px);
+                    .size(20px, 4cm);
                     .pull-left;
 
                     input { .hide; }
@@ -410,12 +447,57 @@ table {
                     }
                 }
 
+                .employee {
+                    line-height: 20px;
+                    text-align: right;
+                    width: 4cm;
+                    .nowrap();
+                    .pull-left;
+                }
+
+                .card-data {
+
+                    .card-logo {
+                        clear: both;
+                        .show();
+                    }
+
+                    .number,
+                    .date {
+                        position: relative;
+                        display: inline-block;
+                        padding-right: 8pt;
+                        line-height: 10px;
+                        color: @grey3;
+                        .pull-left;
+
+                        .value {
+                            color: @textColor;
+                        }
+
+                        &:after {
+                            content: '•';
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            color: @grey3;
+                            .show();
+                            .size(10px, 2px);
+                        }
+                    }
+
+                    .date {
+                        margin: 0 8pt;
+                    }
+                }
+
                 &:last-child { border-bottom: 0; }
+
+                .grid-items { .hide(); }
             }
 
             /* Rooming List ***/
             &.rooming-list {
-                line-height: 10px;
 
                 .check { .hide; }
 
@@ -424,11 +506,11 @@ table {
                     width: 30%;
                     .pull-left;
 
-                    .room { 
-                        font-weight: 600; 
+                    .room {
+                        font-weight: 600;
 
-                        &.unassigned { 
-                            color: @grey3; 
+                        &.unassigned {
+                            color: @grey3;
                             font-weight: 400;
                         }
                     }
@@ -454,10 +536,10 @@ table {
                     width: 25%;
                     .pull-left;
 
-                    .room-type { 
+                    .room-type {
                         font-weight: 600;
                         .nowrap();
-                        .show; 
+                        .show;
                     }
                 }
 
@@ -476,22 +558,19 @@ table {
                     .guest-status {
                         float: right;
                     }
-                }              
+                }
             }
-                     
+
             /* Rooms ***/
             &.room {
-                position: relative;
-                line-height: 10px;
-                border-bottom: 1px solid @grey2;
-
                 .check { .hide; }
 
-                .data {
+                .room-info {
                     width: 20%;
                     .pull-left;
 
-                    h2 { 
+                    h2 {
+                        margin: 0;
                         &.out { color: @grey3; }
                     }
 
@@ -509,11 +588,11 @@ table {
                         line-height: 20px;
                         .pull-left;
                         .size(20px, 50%);
-                    } 
+                    }
                 }
 
                 .additional-info {
-                    line-height: 20px; 
+                    line-height: 20px;
                     width: 30%;
                     .pull-left;
 
@@ -529,15 +608,21 @@ table {
                     .service-status {  color: @grey3; }
                 }
 
-                .show-vacant { 
-                    text-align: right;
-                    line-height: 20px; 
-                    width: 10%;
-                    .pull-right;
+                .guest-image,
+                .icon-queued,
+                .show-vacant { .pull-right; }
+
+                .guest-image {
+                    .show;
+                    .square(20px);
                 }
 
-                .icon-queued { .pull-right; }
-            } 
+                .show-vacant {
+                    text-align: right;
+                    line-height: 20px;
+                    width: 10%;
+                }
+            }
 
             /* Commisions ***/
             &.commision {
@@ -562,7 +647,7 @@ table {
                         line-height: 1;
                         color: @grey3;
                         padding: 0 16pt;
-                        .pull-left; 
+                        .pull-left;
 
                         strong {
                             color: @textColor;
@@ -595,7 +680,7 @@ table {
 
                     .prepaid { color: @grey3; }
 
-                    .switch-button { 
+                    .switch-button {
                         input { .hide; }
 
                         .data-on,
@@ -603,16 +688,16 @@ table {
                             .switch-icon { .hide; }
                         }
 
-                        .data-on { 
-                            .hide; 
+                        .data-on {
+                            .hide;
 
                             .value { color: @grey3; }
                         }
 
-                        .data-off { 
-                            .show; 
+                        .data-off {
+                            .show;
 
-                            .value { 
+                            .value {
                                 color: @textColor;
                                 font-weight: 600;
                             }
@@ -638,14 +723,14 @@ table {
         z-index: 9999;
         .hide;
 
-        .cards-wrapper { 
+        .cards-wrapper {
 
             /* Card headers ***/
             .cards-header {
                 height: 14pt;
 
                 .card-header {
-                    
+
                     form,
                     .card-search-form {
                         float: none;
@@ -683,11 +768,11 @@ table {
 
             /* Card content with tabs ***/
             .cards-content {
-                .card-content { 
+                .card-content {
 
-                    .card-tabs-nav { 
+                    .card-tabs-nav {
                         margin-bottom: 12pt;
-                        
+
                         li {
                             text-align: center;
                             font-size: 10pt;
@@ -741,7 +826,7 @@ table {
                         &.transactions {
                             .tab-header {
                                 .totals {
-                                    li { 
+                                    li {
                                         margin-right: 8pt;
                                         padding-right: 8pt;
                                         border-right: 1px solid @grey2;
@@ -759,7 +844,7 @@ table {
 
                         /* Rooming List ***/
                         &.rooming-list {
-                            .tab-details {    
+                            .tab-details {
                                 .rooming-list-header {
                                     margin: 0;
                                     .float;
@@ -775,7 +860,7 @@ table {
                                         .pull-left;
 
                                         &.check { .hide; }
-                                        
+
                                         &.status,
                                         &.room { width: 5%; }
                                         &.rate { width: 10%; }
@@ -783,8 +868,8 @@ table {
                                         &.name,
                                         &.type { width: 25%; }
                                     }
-                                }       
-                            }              
+                                }
+                            }
                         }
 
                         /* Commisions ***/
@@ -835,6 +920,227 @@ table {
 
         &.open,
         &.fullscreen { .show; }
+        .ar-statement {
+            display:none;
+        }
+        /* AR Statement ***/
+        &.print-statement {
+            .cards-header,
+            .card-tabs-nav { .hide; }
+
+            .transactions {
+                .tab-header,
+                .search-results { .hide; }
+
+                .ar-statement {
+                    display: block;
+
+                    .statement-header-text,
+                    .invoice-footer {
+                        text-align: justify;
+                    }
+                    
+                    img {
+                        -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+                        filter: grayscale(100%);
+                    }
+
+                    .invoice-body .invoice-details tr:last-child td {
+                        margin-bottom: 12pt;
+                    }
+
+                    .invoice-footer {
+                        margin-bottom: 12pt;
+                    }
+
+                    thead th {
+                        text-transform: uppercase;
+                        background-color: @grey2;
+                        padding:4pt 0;
+                        font-size: 5pt;
+                        
+                        &:last-child {
+                            padding-right: 4pt;
+                        }
+                        
+                        
+                        &.charge-date,
+                        &.charge-code,
+                        &.charge-amount {
+                            width: 45pt !important;
+                        }
+
+                        /*Add space to Charge Amount and Amount Due*/
+                        &:nth-child(5),
+                        &:nth-child(6){
+                            padding-right: 4pt;
+                        }
+                    }
+
+                    .invoice-details {
+                        > tbody > tr > td {
+                            border-bottom:2px solid @grey2;
+                        }
+                    }
+
+                    tbody {
+
+                        tr:not(.person) td {
+                            padding-top:4pt;
+                        }
+
+                        tr {
+                            td {
+                                border-bottom:1px solid @grey2;
+                                padding: 4pt 4pt 4pt 0;
+
+                                &.charge-description {
+                                    padding-right:8pt;
+                                }
+
+                                &:last-child {
+                                    padding-right: 4pt;
+                                }
+                            }
+                        }
+
+                        .charges-table-container {
+                            padding-right: 0;
+                        }
+                        .charges-table {
+                            tr td {
+                                &.charge-date,
+                                &.charge-code,
+                                &.charge-amount {
+                                    width: 45pt !important;
+                                }
+                            }
+                            tr:last-child td {
+                                border-bottom: none;
+                            }
+                            tr:first-child td {
+                                padding-top: 0;
+                            }
+                        }
+                    }
+
+                    .statement-header {
+                        &:after {
+                            display: table;
+                            clear: both;
+                            content: '';
+                        }
+                    }
+
+                    .statement-header-text {
+                        text-align:left;
+                    }
+
+                    .invoice-header {
+                        margin-top: 1.5cm;
+                        position: relative;
+
+                        img {
+                            position: absolute;
+                            height: 30px;
+                            top: -30px;
+                            right: 0;
+                        }
+                        h1 {
+                            font-size:18pt;
+                            font-weight: 600;
+                        }
+
+                        .statement-company-address {
+                            font-size:10pt;
+                            font-style: italic;
+                        }
+                    }
+
+                    .guest-info {
+                        font-size: 9pt;
+                        width:50%;
+                        float:left;
+
+                        img {
+                            .size(40px, auto);
+                        }
+                    }
+
+                    .person td,
+                    .payment td {
+                        vertical-align: top;
+                        &.person-info {
+                            width: 3.5cm;
+                        }
+                        .name {
+                            font-size:11pt;
+                        }
+
+                        .person-meta {
+                            margin-top:0.05cm;
+                            display: block;
+                            strong {
+                                display: block;
+                            }
+                        }
+                    }
+
+                    .tax-breakdown {
+                        td,th {
+                            padding: 4pt;
+                            text-align: right;
+
+                            &:first-child {
+                                text-align: left;
+                                padding-left: 4pt;
+                            }
+                        }
+                        
+                        tfoot td {
+                            background-color: @grey2;
+                            font-weight: bold;
+                        }
+
+                        .tax-description {
+                            width: 50%;
+
+                        }
+                    }
+
+                    .statement-info {
+                        width:50%;
+                        float:right;
+                        margin-bottom:0.5cm;
+
+                        &:after {
+                            display: table;
+                            content: '';
+                            clear: both;
+                        }
+                    }
+
+                    .statement-meta {
+                        width:50%;
+                        float:left;
+                        font-size:9pt;
+                        margin-bottom:0.1cm;
+
+                        strong { display:block; }
+                        
+
+                        &:nth-child(3) {
+                            clear: both;
+                        }
+
+                        &:nth-child(3),
+                        &:first-child{
+                            padding-right: 1em;
+                        }
+                    }
+                }
+            }
+        }
     }
 
 /* Reports                  ==============================*/
@@ -872,10 +1178,11 @@ table {
 
                     &.green,
                     &.red,
+                    &.purple,
                     &.brand-colors { font-weight: 600; }
                 }
 
-                &.sub { 
+                &.sub {
                     color: @grey3;
                     border-right: 0;
                 }
@@ -893,13 +1200,40 @@ table {
 
     .report-content {
         padding: 0;
-        
+
         h2 {
             font-size: 10pt;
             line-height: 1;
             font-weight: 600;
             text-transform: uppercase;
             margin: 18pt 0 4pt;
+
+            &:first-child { margin-top: 0; }
+        }
+
+        .card-meta {
+            margin: 18pt 0 4pt;
+            .float;
+
+            li {
+                font-size: 10pt;
+                font-weight: 600;
+                text-transform: uppercase;
+                margin: 0 8pt 0 0;
+                .nowrap();
+                .pull-left;
+                .show();
+
+                &.guest {
+                    min-width: 4cm;
+                }
+
+                &.balance {
+                    width: 3cm;
+                    margin-right: 0;
+                    .pull-right;
+                }
+            }
 
             &:first-child { margin-top: 0; }
         }
@@ -946,9 +1280,9 @@ table {
 
             &.condensed-print {
                 th,
-                td { 
+                td {
                     font-size: 6pt;
-                    padding: 2pt 2pt 2pt 0; 
+                    padding: 2pt 2pt 2pt 0;
 
                     &:first-child { padding-left: 2pt; }
                 }
@@ -1065,8 +1399,8 @@ table {
                                 .pull-left;
                             }
 
-                            &.payment { 
-                                line-height: 10px; 
+                            &.payment {
+                                line-height: 10px;
                                 color: @textColor;
 
                                 span { color: @grey3; }
@@ -1191,7 +1525,7 @@ table {
                             th {
                                 text-transform: none;
                                 font-style: italic;
-                                font-weight: 400; 
+                                font-weight: 400;
                                 background: @grey1;
                                 border-bottom: 0;
 
@@ -1240,7 +1574,7 @@ table {
                     tr {
                         td {
                             border-bottom-color: @grey1;
-                            
+
                             &.group { font-weight: 600; }
 
                             &:first-child { padding-left: 0; }
@@ -1269,8 +1603,8 @@ table {
                                 height: auto;
                                 padding-bottom: 8pt;
 
-                                > div { 
-                                    .float; 
+                                > div {
+                                    .float;
 
                                     &:not(:last-child) { margin-bottom: 5px; }
                                 }
@@ -1278,7 +1612,7 @@ table {
                                 .info {
                                     strong { line-height: 20px; }
 
-                                    em { 
+                                    em {
                                         color: @grey3;
                                         .pull-right;
                                     }
@@ -1311,7 +1645,7 @@ table {
 
                                     &:not(:last-child) { margin-bottom: 5px; }
 
-                                    &.time { 
+                                    &.time {
                                         padding: 0;
                                         margin-bottom: 0;
                                         background-size: 16px;
@@ -1354,7 +1688,7 @@ table {
                 &.condensed-print {
                     tbody {
                         tr {
-                            td { 
+                            td {
                                 height: auto;
 
                                 &[rowspan] { padding-right: 4pt; }
@@ -1366,8 +1700,8 @@ table {
 
             &.balance-reports {
                 thead {
-                    th { 
-                        padding: 4pt 12pt 4pt; 
+                    th {
+                        padding: 4pt 8pt 4pt 4pt; 
 
                         &:last-child { padding-right: 0; }
                     }
@@ -1375,8 +1709,7 @@ table {
 
                 tbody {
                     td {
-                        padding: 4pt 12pt 4pt;
-                        line-height: 20px;
+                        padding: 4pt 8pt 4pt 4pt;
                         .float;
 
                         strong { font-weight: 600; }
@@ -1388,13 +1721,13 @@ table {
                             &:not(:last-child) { margin-right: 8pt; }
                         }
 
-                        .guest-status { 
+                        .guest-status {
                             float: none;
-                            .square(20px); 
+                            .square(20px);
                         }
 
                         .icons.time {
-                            margin: 3pt 4pt 0 0;
+                            margin-right: 4pt;
                             background-size: 16px;
                             .opacity(50);
                             .size(8pt, 12px);
@@ -1405,9 +1738,9 @@ table {
                         }
 
                         &.name {
-                            em { 
-                                color: @grey3; 
-                                .pull-right; 
+                            em {
+                                color: @grey3;
+                                .pull-right;
                             }
                         }
 
@@ -1415,21 +1748,76 @@ table {
                         &.status { width: 2cm; }
 
                         &.balance {
-                            width: 3cm;
+                            min-width: 3cm;
                             padding-right: 0;
                             .nowrap();
                         }
                     }
+                }
+
+                &.deposit-balance-summary {
+                    table-layout: fixed;
+                    margin-bottom: 16pt;
+
+                    thead {
+                        th {
+                            &:nth-child(1) { .calc-width(75, 255);  }
+                            &:nth-child(2) { width: 100px; }
+                            &:nth-child(3) { width: 170px; }
+                            &:nth-child(4) { .calc-width(25, 255); }
+                            &:nth-child(5),
+                            &:nth-child(6) { width: 120px; }
+                        }
+                    }
+                }
+            }
+
+            &.financial-adjustment-reports {
+                text-transform: none;
+                tbody {
+                    tr:last-child td {
+                        border-bottom: 1px solid @grey2;
+                    }
+                }
+
+                thead {
+                    th {
+                        &.modified,
+                        &.posted {
+                            width: 80px;
+                        }
+
+                        &.name,
+                        &.modified-by {
+                            width: 100px;
+                        }
+
+                        &.room {
+                            width: 80px;
+                        }
+
+                        &.code {
+                            width: 70px;
+                        }
+
+                        &.amount {
+                            width: 80px;
+                        }
+                    }
+                }
+
+                td.code {
+                    padding-left: 0;
                 }
             }
 
             &.forecast-reports {
                 thead {
                     tr {
-                        th { 
+                        th {
                             &.date { background-color: transparent; }
 
-                            &.break { 
+                            &.break {
                                 position: relative;
                                 padding-right: 16pt;
 
@@ -1452,21 +1840,21 @@ table {
 
                 tbody {
                     tr {
-                        td { 
+                        td {
                             &.date {
                                 span { .show; }
                             }
                         }
-                        
+
                         &.weekend {
-                            td { 
+                            td {
                                 color: @grey4;
                                 font-style: italic;
                             }
                         }
 
                         &.total {
-                            td { 
+                            td {
                                 font-size: 8pt;
                                 font-weight: 600;
                                 border: 0;
@@ -1482,10 +1870,10 @@ table {
                             th {
                                 text-align: center;
 
-                                &.break { 
+                                &.break {
                                     position: static;
                                     padding-right: 0;
-                                    border-right: 1px solid @grey2; 
+                                    border-right: 1px solid @grey2;
 
                                     &:after { .hide; }
                                 }
@@ -1494,7 +1882,7 @@ table {
                             }
 
                             &.bottom-row {
-                                th { 
+                                th {
                                     border-right: 1px solid @grey2;
                                     border-bottom: 1px solid @grey2;
 
@@ -1508,8 +1896,8 @@ table {
 
                     tbody {
                         tr {
-                            td { 
-                                text-align: center; 
+                            td {
+                                text-align: center;
                                 border-right: 1px solid @grey2;
 
                                 &.date,
@@ -1558,8 +1946,8 @@ table {
                     tbody {
                         tr {
                             td {
-                                &.vertical { 
-                                    text-align: left; 
+                                &.vertical {
+                                    text-align: left;
                                     padding: 0;
 
                                     .row {
@@ -1569,11 +1957,11 @@ table {
 
                                         strong {
                                             font-weight: 400;
-                                            
-                                            em { 
+
+                                            em {
                                                 font-size: 8pt;
                                                 padding-left: 4pt;
-                                                color: @grey3; 
+                                                color: @grey3;
                                             }
                                         }
 
@@ -1582,17 +1970,17 @@ table {
                                             display: -webkit-flex;
                                             display: flex;
 
-                                            strong { 
+                                            strong {
                                                 width: 50%;
                                                 overflow: hidden;
                                                 .pull-left;
 
-                                                &:first-child { 
+                                                &:first-child {
                                                     text-align: left;
                                                     border-right: 1px solid rgba(0,0,0,.1);
-                                                } 
+                                                }
 
-                                                &:last-child { 
+                                                &:last-child {
                                                     text-align: right;
                                                     padding-left: 1pt;
                                                 }
@@ -1718,7 +2106,7 @@ table {
                 margin: 0;
                 .pull-left;
                 .size(100%, 160px);
-                .show; 
+                .show;
 
                 > .iScrollVerticalScrollbar { .hide; }
                 > .wrapper { width: 100% !important; }
@@ -1746,7 +2134,7 @@ table {
 
                         .data-off,
                         .data-on { margin: 0; }
-                        
+
                         input,
                         .data-on { .hide; }
 
@@ -1760,9 +2148,9 @@ table {
                         }
                     }
 
-                    &.action-row { 
+                    &.action-row {
                         padding: 4px 4pt 4px 8pt;
-                        height: 36px; 
+                        height: 36px;
                     }
 
                     &.double-row {
@@ -1808,8 +2196,8 @@ table {
                 }
 
                 &.dates { font-weight: 600; }
-                &.addons { 
-                    color: @grey3; 
+                &.addons {
+                    color: @grey3;
                     margin-top: 4pt;
                 }
             }
@@ -1838,12 +2226,12 @@ table {
                 .float;
 
                 strong,
-                span { 
+                span {
                     .nowrap();
                     .pull-left;
                 }
 
-                strong { 
+                strong {
                     font-weight: 600;
                     .calc-width(100, 120);
 
@@ -1855,8 +2243,8 @@ table {
                 /* Title Levels ***/
                 &.title-1 { border-bottom: 2px solid @grey3; }
 
-                &.title-2 { 
-                    border-bottom: 1px solid @grey3; 
+                &.title-2 {
+                    border-bottom: 1px solid @grey3;
 
                     &:first-child { margin-top: 4pt; }
                 }
@@ -1886,11 +2274,15 @@ table {
                             max-width: 3cm;
                             .nowrap();
 
-                            span { 
-                                margin: 0 5px; 
+                            span {
+                                margin: 0 5px;
 
                                 &:first-child { margin-left: 0; }
                                 &:last-child { margin-right: 0; }
+                            }
+
+                            &.accompany {
+                                white-space: normal;
                             }
                         }
                     }
@@ -1901,13 +2293,21 @@ table {
         }
 
         &.occupancy-footer { display: table; }
+
+        &.card-authorization-check { 
+            .grid-footer {
+                li {
+                    .pull-right;
+                }
+            }
+        }
     }
 
 /* Housekeeping             ==============================*/
     #rooms.hidden { display: block !important; }
     .worksheet-options { .hide; }
-    
-    .worksheet-summary { 
+
+    .worksheet-summary {
         text-align: center;
         margin-bottom: 12pt;
         .show;
@@ -1925,11 +2325,11 @@ table {
                 .show;
             }
 
-            span { 
+            span {
                 display: inline-block;
                 font-size: 12pt;
                 font-weight: 300;
-                
+
                 &.delimiter {
                     padding: 0 2pt;
                     text-align: center;
@@ -1973,7 +2373,7 @@ table {
                     margin: 0 auto;
                 }
 
-                li { 
+                li {
                     font-size: 14pt;
                     line-height: 1.2;
                     width: 2cm;
@@ -1987,7 +2387,7 @@ table {
                     .show;
 
                     &.value { border-bottom: 1px solid @grey2; }
-                    
+
                     &.total { color: @grey3; }
                 }
             }
@@ -2021,7 +2421,7 @@ table {
 
             h3 {
                 order: 1;
-                color: @textColor; 
+                color: @textColor;
                 font-size: 16pt;
                 line-height: 1;
                 font-weight: 600;
@@ -2103,7 +2503,7 @@ table {
     .journal-print,
     .journal-groups { .hide; }
     .grid-footer { .hide; }
-    
+
     /* Header / Footer ***/
     .journal-header-print,
     .journal-footer-print {
@@ -2204,7 +2604,7 @@ table {
                     width: -moz-calc(~'25% - 1cm');
                     width: calc(~'25% - 1cm');
                     .pull-left;
-                    
+
                     span {
                         font-size: 14pt;
                         font-weight: 300;
@@ -2216,7 +2616,7 @@ table {
                 }
             }
 
-            &.first { 
+            &.first {
                 h3 { padding-top: 10pt; }
             }
 
@@ -2224,8 +2624,8 @@ table {
                 padding-bottom: 0;
                 border-bottom: 0;
 
-                h3 { 
-                    color: @textColor; 
+                h3 {
+                    color: @textColor;
                     font-weight: 400;
                 }
 
@@ -2237,7 +2637,7 @@ table {
 
         /* Revenue / Payment ***/
         .journal-grid {
-            
+
             .grid-header {
                 padding: 0 4pt;
                 background: @grey1;
@@ -2313,9 +2713,9 @@ table {
                         .name { .calc-width(40, 30); }
                         .code { .calc-width(30, 30); }
                         .number { .calc-width(30, 30); }
-                    }                      
+                    }
                 }
-            }   
+            }
 
             /* 2nd level ***/
             .grid-charge {
@@ -2327,14 +2727,14 @@ table {
                     .code { width: 80px; }
                     .name { .calc-width(100, 160); }
                 }
-            } 
+            }
 
             /* 3rd level **/
             .grid-items {
                 .hide;
 
                 thead {
-                    th { 
+                    th {
                         background: transparent;
                         font-weight: 400;
                         color: @grey3;
@@ -2371,14 +2771,14 @@ table {
                     }
                 }
 
-                .grid-charge { 
-                    display: block !important; 
+                .grid-charge {
+                    display: block !important;
 
                     &.hidden { display: block !important; }
                 }
 
-                .grid-items { 
-                    display: table !important; 
+                .grid-items {
+                    display: table !important;
 
                     &.hidden { display: table !important; }
                 }
@@ -2402,9 +2802,9 @@ table {
                     th,
                     td { border-bottom: 1px solid @grey3; }
 
-                    th { 
+                    th {
                         line-height: 10pt;
-                        width: 80%; 
+                        width: 80%;
                     }
 
                     td {
@@ -2413,7 +2813,7 @@ table {
                         font-weight: 600;
                         text-align: right;
 
-                        &.entry { 
+                        &.entry {
                             font-size: 8pt;
                             font-weight: 400;
                             text-align: left;
@@ -2450,7 +2850,7 @@ table {
             .shift-history {
                 border-right: 1px solid @grey2;
 
-                li { 
+                li {
                     color: @grey3;
                     background: transparent;
                     padding: 4pt;
@@ -2518,145 +2918,20 @@ table {
             .bill-summary-wrapper,
             .total-stay-fees,
             .incoming-billing { .hide; }
-
-            .registration-card {
-                margin: 1cm 2cm 0;
-
-                table {
-                    tr {
-                        page-break-after: avoid;
-
-                        th,
-                        td {
-                            font-size: 9pt;
-                            padding: 0 4pt 0 0;
-                            page-break-after: avoid;
-                        }
-
-                        th { font-weight: 600; }
-                        td {
-                            border-bottom: 0;
-                            padding-bottom: 10pt;
-                        }
-                    }
-                }
-
-                .hotel-guest-info {
-                    margin-bottom: 10pt;
-
-                    .hotel-info {
-                        width: 25%;
-                        text-transform: none;
-                        padding-right: 10pt;
-                    }
-
-                    .guest-info {
-                        background: #ebebeb;
-                        padding: 10pt;
-
-                        td strong {
-                            display: block;
-                            padding-top: 2pt;
-                        }
-
-                        .name-addr {
-                            margin-bottom: 15pt;
-                            td {
-                                padding-bottom: 10pt;
-                                border-bottom: 2pt solid #fff;
-                            }
-                        }
-
-                        .rate-initial {
-                            td {
-                                padding: 10pt;
-                                background: #fff;
-                            }
-                        }
-                    }
-                }
-
-                .bill-details {
-                    margin-bottom: 10pt;
-
-                    td, th {
-                        padding: 5px 10pt;
-                    }
-
-                    th {
-                        background: #fff;
-                    }
-
-                    tr td {
-                        font-weight: bold;
-                        background: #ebebeb;
-                        border-bottom: 2pt solid #fff;
-                    }
-
-                    .addon-price {
-                        text-align: center;
-                    }
-
-                    .addons {
-                        padding: 0;
-                        td {
-                            border-bottom: none;
-                            text-transform: none;
-                        }
-                    }
-                }
-
-                .guest-data-enter {
-                    margin-bottom: 10pt;
-
-                    td {
-                        padding: 10pt;
-                        border: 2pt solid #ebebeb;
-                        height: 50pt;
-                        font-weight: bold;
-                        text-transform: none;
-                    }
-
-                    .details {
-                        border: 0;
-                        padding: 0 0 0 10pt;
-                    }
-                }
-
-                .terms-signature {
-                    td {
-                        text-transform: none;
-                        padding: 0;
-                    }
-
-                    .terms {
-                        padding-bottom: 50pt;
-                    }
-
-                    .signature {
-                        padding: 5pt;
-                        border-top: 1pt solid #000;
-                        display: block;
-                        width: 50%;
-                    }
-                }
-            }
         }
 
-        &.print-registration-card {
-            .registration-summary .invoice {
-                display: none;
-            }
+        /* Printables ***/
+        .invoice { .show(); }
+        .registration-card { .hide(); }
 
-            .registration-summary .registration-card {
-                display: block;
-            }
+        &.print-registration-card {
+            .invoice { .hide(); }
+            .registration-card { .show(); }
         }
     }
 
     .invoice {
         margin: 1cm 2cm 0;
-        .show;
 
         table {
             th,
@@ -2669,6 +2944,10 @@ table {
         .invoice-logo {
             height: 2cm;
             position: relative;
+
+            &.envelope {
+                height: 3cm;
+            }
 
             h1 {
                 position: absolute;
@@ -2684,6 +2963,44 @@ table {
                 top: 0;
                 right: 0;
                 .size(40px, auto);
+            }
+        }
+
+        .info-container {
+            .info-left,
+            .info-right {
+                .pull-left;
+                width: 50%;
+            }
+
+            .info-left {
+                margin-bottom: 1cm;
+            }
+
+            .info-bottom {
+                clear: both;
+                width: 100%;
+                display: block;
+                margin-top: 0.25cm;
+            }
+            
+            .info-right {
+                text-align: right;
+                
+            }
+
+            &.account-info {
+                .info-bottom {
+                    .float;
+                    margin: .5cm 0;
+                }
+
+                .info-right,
+                .info-bottom {
+                    strong {
+                        display: inline;
+                    }
+                }
             }
         }
 
@@ -2708,6 +3025,29 @@ table {
             line-height: 1;
             text-align: center;
             margin-top: 1cm;
+            clear: both;
+            
+            &.top-header {
+                margin-top: 0;
+                height: 1.5cm;
+                
+                img {
+                    position: absolute;
+                    height: 30px;
+                    top: -30px;
+                    right: 0;
+                }
+                
+                h1 {
+                    font-size:18pt;
+                    font-weight: 600;
+                }
+
+                .invoice-header-address {
+                    font-size:10pt;
+                    font-style: italic;
+                }
+            }
         }
 
         .invoice-body {
@@ -2748,7 +3088,8 @@ table {
 
                         &.align-right { text-align: right; }
 
-                        &.description {
+                        &.description,
+                        &.charge-description {
                             span {
                                 .show;
 
@@ -2791,6 +3132,133 @@ table {
         .invoice-footer {
             font-size: 8pt;
             padding-top: 16pt;
+
+            &.text-center {
+                text-align: center;
+            }
+        }
+    }
+
+    .registration-card {
+        margin: 1cm 2cm 0;
+
+        table {
+            tr {
+                page-break-after: avoid;
+
+                th,
+                td {
+                    font-size: 9pt;
+                    padding: 0 4pt 0 0;
+                    page-break-after: avoid;
+                }
+
+                th { font-weight: 600; }
+                td {
+                    border-bottom: 0;
+                    padding-bottom: 10pt;
+                }
+            }
+        }
+
+        .hotel-guest-info {
+            margin-bottom: 10pt;
+
+            .hotel-info {
+                width: 25%;
+                text-transform: none;
+                padding-right: 10pt;
+            }
+
+            .guest-info {
+                background: #ebebeb;
+                padding: 10pt;
+
+                td strong {
+                    display: block;
+                    padding-top: 2pt;
+                }
+
+                .name-addr {
+                    margin-bottom: 15pt;
+                    td {
+                        padding-bottom: 10pt;
+                        border-bottom: 2pt solid #fff;
+                    }
+                }
+
+                .rate-initial {
+                    td {
+                        padding: 10pt;
+                        background: #fff;
+                    }
+                }
+            }
+        }
+
+        .bill-details {
+            margin-bottom: 10pt;
+
+            td, th {
+                padding: 5px 10pt;
+            }
+
+            th {
+                background: #fff;
+            }
+
+            tr td {
+                font-weight: bold;
+                background: #ebebeb;
+                border-bottom: 2pt solid #fff;
+            }
+
+            .addon-price {
+                text-align: center;
+            }
+
+            .addons {
+                padding: 0;
+                td {
+                    border-bottom: none;
+                    text-transform: none;
+                }
+            }
+        }
+
+        .guest-data-enter {
+            margin-bottom: 10pt;
+
+            td {
+                padding: 10pt;
+                border: 2pt solid #ebebeb;
+                height: 50pt;
+                font-weight: bold;
+                text-transform: none;
+            }
+
+            .details {
+                border: 0;
+                padding: 0 0 0 10pt;
+            }
+        }
+
+        .terms-signature {
+            td {
+                text-transform: none;
+                padding: 0;
+            }
+
+            .terms {
+                padding-bottom: 50pt;
+            }
+
+            .signature {
+                padding: 5pt;
+                border-top: 1pt solid #000;
+                display: block;
+                width: 50%;
+            }
         }
     }
 
@@ -2923,6 +3391,115 @@ table {
         }
     }
 
+/* Commisions        =============================*/
+.commisions-content {
+    margin: 0 2cm;
+    .commisions-totals {
+        margin-bottom: .5cm;
+        li {
+            margin:0 10pt;
+
+            span {
+                &.amount {
+                    &.red {
+                        color:@grey3;
+                    }
+                }
+            }
+        }
+        .check {
+            display: none;
+        }
+    }
+
+     /* Commision Item***/
+    .commision-item {
+                position: relative;
+                .float;
+                .data {
+                     
+                    width: 40%;
+                    .pull-left();
+                    .meta-data {
+                        display: block;
+                        width: 100%;
+                        clear: both;
+                    }
+
+                    h2 {
+                        line-height: 1;
+                        white-space: normal;
+                        margin-bottom: 6px;
+                        padding-right: 5px;
+                        display: block;
+                        vertical-align: top;
+                    }
+   
+                    .icons {
+                        display: inline;
+                        line-height: 20px;
+                        height: 20px;
+                        overflow: hidden; 
+                    }
+
+                    .icon-hold {
+                        position: absolute;
+                        left: -40px;
+                        top: 0;
+                        bottom: 0;
+                        margin: auto;
+                    }
+
+                    .icons {
+                        color: @grey3;
+                        padding-left: 20px;
+                    }
+
+                    .icon-location,
+                    .icon-guest-travelagent {
+                        background: none;
+                        padding: 0;
+                        display: block;
+                        .pull-left();
+                    }
+
+                    .icon-location {
+                            width: 70%;
+                    }
+                     .icon-guest-travelagent { 
+                            width: 30%;
+                     }
+                }
+
+                .info-holder {
+                    float: right;
+                    width: 60%;
+                }
+
+                .info {
+                    margin-top: 5px;
+                    text-align: center;
+                    width: 25%;
+                    color: @grey3;
+                    .pull-left;
+
+                    strong {
+                        font-size: 20px;
+                        line-height: 1.25em;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        color: @textColor;
+                        .show;
+                        &.red { color: @grey3; }
+                    }
+
+                    span {
+                        font-size: 14px;
+                        text-transform: uppercase;
+                    }
+                }
+            }
+}
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE

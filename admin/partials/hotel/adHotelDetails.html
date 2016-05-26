@@ -305,7 +305,7 @@
 						<span class="switch-icon"></span>
 					</div>
 				</div>
-				<div class="entry is-pms-tokenized">
+				<div class="entry is-pms-tokenized" ng-hide="isStandAlone">
 					<label>Enable Room Type by room class</label>
 					<div class="switch-button single" ng-class="{ on : data.enable_room_type_by_class == true }" ng-click="data.enable_room_type_by_class = !data.enable_room_type_by_class">
 						<input type="checkbox" value="{{data.enable_room_type_by_class}}">
@@ -344,6 +344,23 @@
 						<span class="switch-icon"></span>
 					</div>
 				</div>
+
+				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
+					<label>Override OWS Channel Validation</label>
+					<div class="switch-button single" ng-class="{ on : data.is_override_ows_channel_validation == true }" ng-click="data.is_override_ows_channel_validation = !data.is_override_ows_channel_validation">
+						<input type="checkbox" value="{{data.is_override_ows_channel_validation}}">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+
+				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
+					<label>Privacy Check</label>
+					<div class="switch-button single" ng-class="{ on : data.is_email_privacy_check == true }" ng-click="data.is_email_privacy_check = !data.is_email_privacy_check">
+						<input type="checkbox" value="{{data.is_email_privacy_check}}">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+
 				<!-- <div class="entry">
 					<label for="hotel_from_address"> LANGUAGE <strong>*</strong></label>
 					<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
@@ -470,8 +487,46 @@
 							<input type="radio" ng-model="data.payment_gateway" value="SAFERPAY" class="change-data">
 							Saferpay
 					</label>
+                    <label class="radio" ng-class="{checked:data.payment_gateway == 'CBA'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'CBA'}"></span>
+                        <input type="radio" ng-model="data.payment_gateway" value="CBA" class="change-data">
+                        Commonwealth Bank Australia (CBA)
+                    </label>
 				</div>
 				<div class="entry full-width"></div>
+                <!--CBA starts-->
+                <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
+                    <label>
+                        Merchant Index
+                    </label>
+                    <input type="text" ng-model="data.cba_merchant">
+                </div>
+                <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
+                    <label>
+                        Card Acceptor Terminal ID
+                    </label>
+                    <input type="text" ng-model="data.cba_catid">
+                </div>
+                <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
+                    <label>
+                        Card Acceptor ID (Merchant ID)
+                    </label>
+                    <input type="text" ng-model="data.cba_caid">
+                </div>
+                <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
+                    <label>
+                        Acquiring Institution Id Code
+                    </label>
+                    <input type="text" ng-model="data.cba_aiic">
+                </div>
+                <div class="entry" ng-if="data.payment_gateway === 'CBA'" >
+                    <label>
+                        Network International Identifier
+                    </label>
+                    <input type="text" ng-model="data.cba_nii">
+                </div>
+                <!-- CBA ENDS -->
+
 				<div class="entry" ng-if="data.payment_gateway === 'SAFERPAY'" >
 					<label>
 						Saferpay ACCOUNT ID

@@ -64,7 +64,10 @@ angular.module('sntRover').service('rvBaseWebSrvV2',['$http', '$q', '$window', f
 				errors.errorMessage = errors;
 				deferred.reject (errors);
 			}
-
+			// CICO-26779 : Handling 404 - Not found.
+			else if(status === 404){
+				console.warn("Found 404 Error : " + url );
+			}
 			else{
 				deferred.reject(errors);
 			}

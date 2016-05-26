@@ -1,4 +1,4 @@
-React.initializeTouchEvents(true);
+//React.initializeTouchEvents(true);
 
 var DiaryContent = React.createClass({
 	_recalculateGridSize: function() {
@@ -284,13 +284,13 @@ var DiaryContent = React.createClass({
 			props = this.props,
 			state = this.state;
 
-		return this.transferPropsTo(React.DOM.div({
+		return React.DOM.div({
 			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + /*(props.currentResizeItem*/ (state.edit.active ? ' editing' : '')
 		},
-		TogglePanel({
+		React.createElement( TogglePanel, {
 			__toggleRows:  		self.__toggleRows
 		}),
-		RoomPanel({
+		React.createElement( RoomPanel, {
 			refs: 				'rooms',
 			viewport: 			state.viewport,
 			display: 			state.display,
@@ -302,7 +302,7 @@ var DiaryContent = React.createClass({
 			__onGridScroll: 	self.__onGridScroll,
 			__onGridScrollEnd: 	self.__onGridScrollEnd
 		}),
-		TimelinePanel({
+		React.createElement( TimelinePanel, {
 			refs: 				'timeline',
 			viewport: 			state.viewport,
 			display: 			state.display,
@@ -320,7 +320,7 @@ var DiaryContent = React.createClass({
 			__onGridScroll: 	self.__onGridScroll,
 			__onGridScrollEnd: 	self.__onGridScrollEnd
 		}),
-		GridPanel({
+		React.createElement( GridPanel, {
 			refs: 					'grid',
 			viewport: 				state.viewport,
 			display: 				state.display,
@@ -337,6 +337,6 @@ var DiaryContent = React.createClass({
 			__onGridScrollEnd: 		self.__onGridScrollEnd,
 			__onDragStart: 			self.__onDragStart,
 			__onDragStop: 			self.__onDragStop
-		})), this.props.children);
+		}));
 	}
 });

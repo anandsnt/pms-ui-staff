@@ -43,6 +43,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                         $scope.$emit('hideLoader');
             },200);
             }
+
         };
 
         $scope.$parent.myScrollOptions = {

@@ -1,11 +1,11 @@
 /**
  *	This Controller is to list checkout options
  */
-sntGuestWeb.controller('GwCheckOutOptionsController', ['$scope', '$state', '$controller', 'GwWebSrv', '$timeout',
-	function($scope, $state, $controller, GwWebSrv, $timeout) {
+sntGuestWeb.controller('GwCheckOutOptionsController', ['$scope', '$state', '$controller', 'GwWebSrv',
+	function($scope, $state, $controller, GwWebSrv) {
 
 		$scope.checkout_time = GwWebSrv.zestwebData.checkoutTime;
-		//TODO : remove unwanted injections like $timeout
+
 		$controller('BaseController', {
 			$scope: $scope
 		});

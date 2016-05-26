@@ -1,7 +1,9 @@
 
 
-	"STATIONARY":"Stationary",
+	"STATIONERY":"Stationery",
 	"CUSTOMIZE":"Customize",
+	"CONFIRMATION": "Confirmation",
+	"GUEST": "Guest" ,
 	"GUEST_BILL_TITLE": "Guest Bill",
 	"GUEST_BILL_TEMPLATE":"Guest Bill Template",
 	"HOTEL_LOGO":"Hotel Logo",
@@ -51,6 +53,7 @@
 	"PRINT_CANCELLATION_LETTER": "Print Cancellation Letter",
 	"PRINT_CONFIRMATION_LETTER": "Print Confirmation Letter",
 	"SEND_CONFIRMATION_LETTER": "Send Confirmation Letter",
+	"CUSTOM_TEXT_PER_RESERVATION" : "Custom Text per Reservation",
 
 	"CANCELLATION_EMAIL_SUBJECT": "Cancellation Email Subject",
 	"CONFIRMATION_EMAIL_SUBJECT": "Confirmation Email Subject",
@@ -71,7 +74,37 @@
 	"BY_FIRST_LAST_NAME" : "By First and Last name",
 	"BY_CUSTOM_TEXT" : "Custom Text",
 	"CUSTOM_SALUTATION" : "Custom Salutation",
-	"INCLUDE_TITLE" : "Include Title"
+	"INCLUDE_TITLE" : "Include Title",
+	"TRANSLATIONS_SAVED_SUCCESSFULLY" : "Translations saved successfully",
+	"MENU_OPTION" : "Menu Option",
+	"ITEM" : "Item",
+	"DEFAULT_GUEST_BILL" : "Default Guest Bill",
+	"DEFAULT_ACCOUNT_BILL" : "Default Account Bill",
+	"SELECT_ACCOUNT_BILL" : "Select Account Bill",
+	"SHOW_REGISTRATION_CARD_PRINT" : "Show Registration Card Print",
+	"EXT_TAX_BREAKDOWN" : "Extended Tax breakdown",
+
+	"SELECT LANGUAGE": "Select Language",
+	"GROUP_CONFIRMATION": "Group Confirmation",
+	"HOLD_STATUS": "Hold Status",
+	"SELECT_HOLD_STATUS": "Select Hold Status",
+	"GROUP_CONFIRMATION_EMAIL_SUBJECT": "Confirmation Email Subject",
+	"CONFIRMATION_HEADER_TEXT": "Confirmation Header Text",
+	"CONFIRMATION_HEADER_TEXT_PLACE_HOLDER": "Enter Confirmation Header Text",
+	"CONFIRMATION_FOOTER_TEXT": "Confirmation Footer Text",
+	"CONFIRMATION_FOOTER_TEXT_PLACE_HOLDER": "Enter Confirmation Footer Text",
+	"LOCATION_URL_PLACE_HOLDER": "Enter Location URL",
+	"LOCATION_URL_LABEL_PLACE_HOLDER": "Enter Location URL Label",
+
+	"GROUP": "Group",
+	"AR_STATEMNT" : "AR Statement",
+	"AR_STATEMNT_EMAIL_SUBJECT" : "AR Statement Email Subject",
+	"AR_STATEMNT_EMAIL_BODY" : "AR Statement Email Body",
+	"CUSTOM_TEXT_HEADER" : "Custom Text Header",
+	"CUSTOM_TEXT_FOOTER" : "Custom Text Footer",
+	"CUSTOM_TEXT_HEADER_PLACE_HOLDER" : "Enter Custom Text Header",
+	"CUSTOM_TEXT_FOOTER_PLACE_HOLDER" : "Enter Custom Text Footer"
+
 
 
 

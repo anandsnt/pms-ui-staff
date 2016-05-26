@@ -21,6 +21,8 @@
 	if($scope.pageValid){
 		
 		$scope.countries 	= [];
+		$scope.sortedCountries = [];
+		$scope.unSortedCountries = [];
 		$scope.years     	= [];
 		$scope.months   	= [];
 		$scope.days      	= [];
@@ -53,11 +55,13 @@
 		var fetchGuestDetails = function(){
 			$scope.isLoading = true;
 			guestDetailsService.getGuestDetails().then(function(response) {
-				$scope.isLoading          = false;
-				$scope.guestDetails       = response;
-				$scope.guestDetails.day   = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)): "";
-				$scope.guestDetails.month = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(5, 7)) : "";
-				$scope.guestDetails.year  = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(0, 4)): "";
+				$scope.isLoading         	 = false;
+				$scope.guestDetails       	 = response;
+				$scope.guestDetails.street   = response.street1;
+				$scope.guestDetails.country	 = response.country_id;
+				$scope.guestDetails.day   	 = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)): "";
+				$scope.guestDetails.month 	 = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(5, 7)) : "";
+				$scope.guestDetails.year  	 = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(0, 4)): "";
 			},function(){
 				$rootScope.netWorkError   = true;
 				$scope.isLoading          = false;
@@ -66,14 +70,29 @@
 
 		//fetch country list
 		$scope.isLoading = true;
-		guestDetailsService.fetchCountryList().then(function(response) {
-			$scope.countries = response;
-			$scope.isLoading = false;
-			fetchGuestDetails();
-		},function(){
-			$rootScope.netWorkError = true;
-			$scope.isLoading = false;
-		});
+		if($rootScope.enforceCountrySort){
+			var data = {'reservation_id': $rootScope.reservationID}
+			guestDetailsService.fetchSortedCountryList(data).then(function(response) {
+				$scope.sortedCountries = response.sorted;
+				$scope.unSortedCountries = response.unsorted;
+				$scope.isLoading = false;
+				fetchGuestDetails();
+			},function(){
+				$rootScope.netWorkError = true;
+				$scope.isLoading = false;
+			});
+		}
+		else{
+			guestDetailsService.fetchCountryList().then(function(response) {
+				$scope.countries = response;
+				$scope.isLoading = false;
+				fetchGuestDetails();
+			},function(){
+				$rootScope.netWorkError = true;
+				$scope.isLoading = false;
+			});
+		}
+	
 
 
 		$scope.yearOrMonthChanged = function(){
