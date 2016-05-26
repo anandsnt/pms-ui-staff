@@ -9,6 +9,7 @@
 
 
    "TYPE_LAST": "Enter Your Last Name",
+   "TYPE_FIRST_NAME": "Enter Your First Name",
 
 
    "CHECK_IN_SELECT_HEADER": "Next, type in one of the following",
@@ -122,11 +123,12 @@
    "CC_SWIPE_TIMEOUT_SWIPE":"Re-Swipe",
 
 
+   "TERMS_CONDITIONS_VIEW_HEADER":"Please Agree to Continue",
    "TERMS_CONDITIONS_HEADER":"Terms & Conditions",
    "TERMS_CONDITIONS_ACCEPT":"I Agree",
    "TERMS_CONDITIONS_CANCEL":"Cancel",
-   "TERMS_CONDITIONS_SUB" : "",
-   "TERMS_CONDITIONS_SUB_ADDITIONAL" : "",
+   "TERMS_CONDITIONS_SUB" : "SUBHEADING",
+   "TERMS_CONDITIONS_SUB_ADDITIONAL" : "LOREM IPSUM DOLOR SIT AMET, CONSECTETUER ADIPISCING ELIT",
 
 
    "TYPE_EMAIL_IN": "Enter your email",

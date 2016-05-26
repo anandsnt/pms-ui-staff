@@ -902,7 +902,7 @@
                 line-height: 1em;
                 color: @grey3;
                 text-transform: uppercase;
-                margin: 0 10px 0 0;
+                margin: 0 10px 0 8px;
                 padding-right: 10px;
                 border-right: 1px solid rgba(0,0,0,.1);
                 
@@ -1494,6 +1494,30 @@
             &.financial-adjustment-reports {
                 text-transform: none;
 
+                thead {
+                    th {
+                        &.modified,
+                        &.posted {
+                            width: 80px;
+                        }
+
+                        &.name,
+                        &.modified-by {
+                            width: 100px;
+                        }
+
+                        &.room {
+                            width: 80px;
+                        }
+
+                        &.code {
+                            width: 90px;
+                        }
+                        &.amount {
+                                width: 100px;
+                        }
+                    }
+                }
                 tbody {
                     tr {
                         td {

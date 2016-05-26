@@ -233,7 +233,17 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             if ($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled){
                 $state.go('zest_station.delivery_options');
             } else {
-                $state.go('zest_station.last_confirm');
+                //debugging
+                //CICO-29686-hotfix
+                if ($scope.zestStationData.auto_print && !$state.hasAutoPrinted){
+                    $scope.skipKeyPrint = true;
+                    $scope.zestStationData.printEnabled = false;
+                    $state.hasAutoPrinted = true;
+                    $scope.clickedPrint();
+                } else {
+                    $scope.skipKeyPrint = false;
+                    $state.go('zest_station.last_confirm');
+                }
             }
         };
         
@@ -595,7 +605,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
 	};
 
         $scope.onPrintError = function(error){
-            if (!$scope.zestStationData.auto_print){
+            if (!$scope.zestStationData.auto_print || $scope.skipKeyPrint){
                 $state.go('zest_station.error');
             } else {
                 $state.selectedReservation.printSuccess = false;
@@ -605,7 +615,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             //$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
         };
         $scope.onPrintSuccess = function(success){
-            if (!$scope.zestStationData.auto_print){//when auto-printing do nothing, email success will take guest to next screen
+            if (!$scope.zestStationData.auto_print || $scope.skipKeyPrint){//when auto-printing do nothing, email success will take guest to next screen
                 $state.fromPrintSuccess = true;
                 $state.selectedReservation.printSuccess = true;
                 $state.go('zest_station.last_confirm');
@@ -696,7 +706,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.setupPrintView();
                 $scope.initPrintRegistration();
             };
-            var id = $scope.selectedReservation.id; 
+            var id = $state.selectedReservation.id; 
             $scope.invokeApi(zsTabletSrv.fetchRegistrationCardPrintData, {'id':id}, fetchPrintViewCompleted, $scope.generalError);  
         };
         $scope.clickedPrint = function(){
