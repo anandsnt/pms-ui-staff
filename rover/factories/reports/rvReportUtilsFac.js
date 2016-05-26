@@ -1609,6 +1609,7 @@ angular.module('reportsModule')
 
             var returnObj = {
                 'businessDate' : new Date(_year, _month, _date),
+                'today'        : new Date(_year, _month, _date),
                 'yesterday'    : new Date(_year, _month, _date - 1),
                 'tomorrow'     : new Date(_year, _month, _date + 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
@@ -1617,7 +1618,6 @@ angular.module('reportsModule')
                 'monthStart'   : new Date(_year, _month, 1),
                 'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
                 'twentyEightDaysAfter' : new Date(_year, _month, _date + 28),
-                'aMonthAfter'  : new Date(_year, _month, _date + 30),
                 'aYearAfter'   : new Date(_year + 1, _month, _date - 1)
             };
 

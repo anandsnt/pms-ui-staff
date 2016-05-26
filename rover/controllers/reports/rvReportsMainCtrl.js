@@ -38,45 +38,92 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		$scope.reportList  = payload.reportsResponse.results;
 		$scope.reportCount = payload.reportsResponse.total_count;
-
 		$scope.codeSettings   = payload.codeSettings;
-
 		$scope.activeUserList = payload.activeUserList;
+		$scope.schedulesList = [];
 
 		$scope.showReportDetails = false;
 
-		$scope.viewCol = 0;
+
+
+
+		var FULL_REPORT_SCROLL = 'FULL_REPORT_SCROLL';
+		/**/
+		var setupScroll = (function() {
+			$scope.setScroller(FULL_REPORT_SCROLL, {
+			    tap: true,
+			    preventDefault: false,
+			    scrollX: true,
+			    scrollY: false
+			});
+		})();
+		/**/
+		var refreshScroll = function() {
+			$scope.refreshScroller(FULL_REPORT_SCROLL);
+			if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
+			    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo(0, 0, 100);
+			}
+		};
+		/**/
+		$scope.viewCols = [1, 2, 3, 4];
+		var _currentViewCol = $scope.viewCols[0];
+		$scope.getViewColClass = function() {
+			return 'cols-' + _currentViewCol;
+		};
+		$scope.isViewCol = function(value) {
+			return value === _currentViewCol;
+		};
 		$scope.setViewCol = function(value) {
-			$scope.viewCol = value || 0;
-		}
+			_currentViewCol = value;
+			refreshScroll();
+		};
+
+
+
+		/** Report views managing area */
+		$scope.reportViews = ['ALL_REPORT', 'SCHEDULE_REPORT'];
+		var _selectedReportView = $scope.reportViews[0];
+		/**/
+		$scope.isReportView = function(name) {
+			return name === _selectedReportView;
+		};
+		/**/
+		$scope.switchReportView = function(name) {
+			_selectedReportView = name;
+			$scope.setViewCol( $scope.viewCols[0] );
+		};
+
+
 
 		$scope.uiChosenReport = undefined;
 		$scope.filterByQuery = function() {
 		    var query = $scope.query.toLowerCase().trim(),
+		    	source,
 		        title, i, j;
 
-		    $scope.setViewCol(0);
+		    $scope.setViewCol( $scope.viewCols[0] );
+		    source = $scope.isReportView( $scope.reportViews[0] ) ? $scope.reportList : $scope.schedulesList;
 
 		    if ( query.length < 3 ) {
-		        for (i = 0, j = $scope.reportList.length; i < j; i++) {
-		            $scope.reportList[i].filteredOut = false;
-		        };
+		        for (i = 0, j = source.length; i < j; i++) {
+		            source[i].filteredOut = false;
+		        }
 		        return;
-		    };
+		    }
 		    
-		    for (i = 0, j = $scope.reportList.length; i < j; i++) {
+		    for (i = 0, j = source.length; i < j; i++) {
 				if ( !! $scope.uiChosenReport ) {
 				    $scope.uiChosenReport.uiChosen = false;
 				}
 
-		        title = $scope.reportList[i].title.toLowerCase();
+		        title = $scope.isReportView( $scope.reportViews[0] ) ? source[i].title.toLowerCase() : source[i].report.description.toLowerCase();
 
-		        if ( title.indexOf(query) == -1 ) {
-		            $scope.reportList[i].filteredOut = true;
+		        if ( title.indexOf(query) === -1 ) {
+		            source[i].filteredOut = true;
 		        } else {
-		            $scope.reportList[i].filteredOut = false;
+		            source[i].filteredOut = false;
 		        }
-		    };
+		    }
 		};
 		/**/
 		$scope.clearQuery = function() {

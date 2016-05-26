@@ -19,7 +19,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 			service.payloadCache = JSON.parse( service.payloadCache );
 		} else {
 			service.payloadCache = {};
-		};
+		}
 
 		/**
 		 * save the chosen report object in here
@@ -151,6 +151,77 @@ angular.module('sntRover').service('RVreportsSrv', [
 			});
 
 			return hasFilter;
+		};
+
+		service.reportSchedulesPayload = function() {
+			var deferred = $q.defer(),
+				payload = {};
+
+			var shallWeResolve = function() {
+				var payloadCount = _.keys( payload ).length;
+				if ( payloadCount === 3 ) {
+					deferred.resolve( payload );
+				}
+			};
+
+			var success = function(key, data) {
+				payload[key] = angular.copy( data );
+				shallWeResolve();
+			};
+
+			var failed = function(key, emptyData, data) {
+				payload[key] = emptyData;
+				shallWeResolve();
+			};
+
+			subSrv.fetchSchedules()
+				.then( success.bind(null, 'schedulesList'), failed.bind(null, 'schedulesList', []) );
+
+			subSrv.fetchScheduleFrequency()
+				.then( success.bind(null, 'scheduleFrequency'), failed.bind(null, 'scheduleFrequency', []) );
+
+			subSrv.fetchTimePeriods()
+				.then( success.bind(null, 'scheduleTimePeriods'), failed.bind(null, 'scheduleTimePeriods', []) );
+
+			return deferred.promise;
+		};
+
+		service.fetchOneSchedule = function(params) {
+			var deferred = $q.defer(),
+				url = 'admin/export_schedules/' + params.id;
+
+			var success = function(data) {
+				deferred.resolve(data);
+			};
+
+			var failed = function(error) {
+				deferred.reject( error );
+			};
+
+			rvBaseWebSrvV2
+				.getJSON( url )
+				.then( success, failed );
+
+			return deferred.promise;
+		};
+
+		service.updateSchedule = function(params) {
+			var deferred = $q.defer(),
+				url = 'admin/export_schedules/' + params.id;
+
+			var success = function(data) {
+				deferred.resolve(data);
+			};
+
+			var failed = function(error) {
+				deferred.reject( error );
+			};
+
+			rvBaseWebSrvV2
+				.putJSON( url, params )
+				.then( success, failed );
+
+			return deferred.promise;
 		};
 
 		return service;
