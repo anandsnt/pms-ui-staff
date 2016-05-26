@@ -10,9 +10,9 @@ const rateManagerRootReducer = (state, action) => (
 		restrictionTypes: rateManagerRestrictionTypesReducer(state.restrictionTypes, action),
 		loader: rateManagerLoaderReducer(state.loader, action),
 		callBacksFromAngular: rateManagerCallbacksFromAngularReducer(state.callBacksFromAngular, action),
-		scrollTo: rateManagerScrollToReducer(state.scrollTo, action)
+		scrollTo: rateManagerScrollToReducer(state.scrollTo, action),
+		paginationState: rateManagerPaginationStateDataReducer(state.paginationState, action)
 	}
 );
-
 
 //callBacksFromAngular: rateManagerCallbacksFromAngularReducer(state.callBacksFromAngular, action)
