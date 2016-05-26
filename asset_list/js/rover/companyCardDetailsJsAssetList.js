@@ -17,7 +17,8 @@ module.exports = {
 				'rover/controllers/contractEndCalendarCtrl.js',
 				'rover/controllers/cardsOutside/rvArTransactionsPayCreditsController.js',
 				'rover/controllers/cardsOutside/rvArTransactionsDatePickerController.js',
-				'rover/controllers/contractedNightsCtrl.js'
+				'rover/controllers/contractedNightsCtrl.js',
+				'rover/controllers/rvCommissionsDatePickerController.js'
 			]
 		};
 		return comapnycardDetailsJsAssets;

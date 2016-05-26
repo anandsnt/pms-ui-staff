@@ -449,6 +449,152 @@
             overflow: hidden;
             .square(100%);
         }
+
+        .calendar-wraper {
+            
+            /** Loading Navigation message with spinner */
+            .loading-message {
+                position: absolute;
+                text-transform: uppercase;
+                font-size: 12px;
+                line-height: 18px;
+                color: @grey3;
+                font-style: italic;
+                text-align: center;
+                z-index: 80;
+
+                #loading-spinner {
+                    .hide();
+                    .size(48px, 48px);
+                    margin: -24px 0 0 -24px;
+                    padding-top: 48px;
+                    &:after {
+                        .size(32px, 32px);
+                        top: 8px;
+                        left: 8px;
+                    }
+                }
+            }
+            /* Adding background to hide spinner behide tables */
+            .calendar-rate-table {
+                .rate-calendar {
+                    background:  @background;
+                }
+            }
+            
+            /* Horizontal Loading Classes*/
+            &.load-right,
+            &.load-left {
+                .loading-message {
+                    width: 100px;
+                    height: 100%;
+                    #loading-spinner {
+                        .show();
+                    }
+                }
+            }
+
+            &.load-right {
+                .loading-message {
+                    right: 0;
+                }
+                .calendar-rate-table {
+                    .wrapper {
+                        padding-right: 100px;
+                    }
+                }
+            }
+
+            &.load-left {
+                .loading-message {
+                    left: 180px;
+                }
+
+                 .calendar-rate-table {
+                    .wrapper {
+                        padding-left: 100px;
+                    }
+                }
+            }
+            /* Vertical Loading Classes*/
+            &.load-top,
+            &.load-bottom {
+                &.loading-bottom,
+                &.loading-top {
+                    #loading-spinner {
+                        .show();
+                    }
+                }
+                .loading-message {
+                    width: 100%;
+                    height: 100px;
+                }
+                 
+                .loading-message {
+                    left: 100px;
+                }
+
+                &.loading-bottom {
+                    .loading-message {
+                        bottom: 35px;
+                    }
+                }
+
+                &.loading-top {
+                    .loading-message {
+                        top: 100px;
+                    }
+                }
+              
+            }
+
+            &.load-bottom {
+                
+                .calendar-rate-table-grid {
+                    .wrapper {
+                        padding-bottom: 70px;
+                    }
+                }
+
+
+                .pinnedLeft-list {
+                     .wrapper {
+                        padding-bottom: 55px;
+                    }
+
+                    .rate-calendar {
+                        tr.loader:last-child {
+                            display: block;
+                        }
+                    }
+                }
+            }
+
+            &.load-top {
+                
+                .calendar-rate-table-grid {
+                    .wrapper {
+                        padding-top: 70px;
+                    }
+ 
+                    tr:first-child {
+                        .cell-container { 
+                            padding-top: 5px;
+                        }
+                    }
+                    
+                }
+
+                .pinnedLeft-list {
+                    .rate-calendar {
+                        tr.loader:first-child {
+                            display: block;
+                        }
+                    }
+                }
+            }
+
+        }
     }
 
     /* Table - Global Settings ***/
@@ -533,6 +679,30 @@
         .rate-calendar { 
             width: 100%; 
 
+            tr {
+                &.loader {
+                    display: none;
+                    height: 70px;
+                    td {
+                        height: 70px;
+                        text-align: center;
+                        padding: 10px;
+                        width: 175px;
+                    }
+
+                    button {
+                        font-size: 12px;
+                    }
+                }
+
+                &.loader:last-child {
+                    td {
+                        .box-shadow(none);
+                    }
+                }
+ 
+            }
+
             td { 
                 position: relative;
                 padding: 5px 0;
@@ -609,6 +779,7 @@
             }
         }
     }
+    
 
     /* Right Side - Calendar Grid ***/
     .calendar-rate-table {
@@ -664,7 +835,12 @@
 
         tr:last-child {
             .cell-container { 
-                padding-bottom: 5px; 
+                padding-bottom: 5px;
+
+                &:not(.expanded-cell) {
+                     height: 65px; 
+                }
+               
             }
         }
 

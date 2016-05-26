@@ -25,6 +25,17 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return that.selectedCheckInReservation;
         };
 
+        this.authorizeCC = function(postData){
+            //send is_emv_request = true, to init sixpay device and capture card
+             var deferred = $q.defer();
+                var url = '/api/cc/authorize';
+                zsBaseWebSrv.postJSON(url, postData).then(function(data) {
+                        deferred.resolve(data);
+                }, function(data) {
+                        deferred.reject(data);
+                });
+                return deferred.promise;
+        };
         this.fetchReservations = function(params) {
             var deferred = $q.defer(),
                 url = '/api/reservations';

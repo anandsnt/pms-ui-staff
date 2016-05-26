@@ -98,7 +98,7 @@ angular.module('stayCardModule', [])
                 if (!$stateParams.group_id) {
                     $stateParams.group_id = null;
                 }
-                if ( ! $stateParams.borrow_for_groups ) {
+                if ( !$stateParams.borrow_for_groups ) {
                     $stateParams.borrow_for_groups = false;
                 }
                 if (!$stateParams.allotment_id) {
