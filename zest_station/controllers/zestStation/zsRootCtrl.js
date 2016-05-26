@@ -625,8 +625,19 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.stopLanguageCounter = function(){
             $timeout.cancel($scope.languageCounter);
         };
+        $scope.inLocalMode = false;
+        var url = true ? document.location : window.location;
+            if (url.hostname){
+                if (typeof url.hostname === typeof 'str'){
+                    if (url.hostname.indexOf('localhost') !==-1){
+                        $scope.inLocalMode = true;
+                    }
+                }
+            }
+        
         $scope.prepForOOS = function(reason, hardwareFailure){
-            //this will get the kiosk ready to go into oos, 
+            console.warn('prepForOOS: :reason: ',reason,',  :: hardware failure :: ',hardwareFailure)
+             //this will get the kiosk ready to go into oos, 
             //once the home page initializes next,  the wsIsOos will be checked and go into OOS,
             //the reason will be used by the admin setting when going to place back in service.
             if (hardwareFailure){
@@ -829,6 +840,7 @@ sntZestStation.controller('zsRootCtrl', [
         };
         $scope.idlePopup = function() {
             var current = $state.current.name;
+            console.info(': idlePopup : ',current);
             if (current === 'zest_station.admin-screen' || current === 'zest_station.oos' || current === 'zest_station.card_swipe'){//card swipe will go to separate re-try
                 $scope.resetTime();
                 return;
@@ -837,7 +849,11 @@ sntZestStation.controller('zsRootCtrl', [
             if (current === 'zest_station.card_sign'){
                 $state.go('zest_station.tab-kiosk-reservation-signature-time-out');
             } else {
-                if (current !== 'zest_station.home' && current !== 'zest_station.oos' && current !== 'zest_station.admin' && current !== 'zest_station.card_sign' && current !== 'zest_station.tab-kiosk-reservation-signature-time-out'){
+                if (current !== 'zest_station.home' && 
+                    current !== 'zest_station.oos' && 
+                    current !== 'zest_station.admin' && 
+                    current !== 'zest_station.card_sign' && 
+                    current !== 'zest_station.tab-kiosk-reservation-signature-time-out'){
                     /*
                      * this is a workaround for the ipad popups, the css is not allowing left; 50% to work properly, and is pushed too far to the right (not an issue in desktop browsers)
                      */

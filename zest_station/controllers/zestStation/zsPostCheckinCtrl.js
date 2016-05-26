@@ -421,6 +421,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         };
         $scope.init = function(){
             var current = $state.current.name;
+            console.info('post checkin ctrl $scope.init: ',current);
             $scope.theme = $state.theme;
             $scope.emailEnabled = $scope.zestStationData.emailEnabled;
             $scope.printEnabled = $scope.zestStationData.printEnabled;

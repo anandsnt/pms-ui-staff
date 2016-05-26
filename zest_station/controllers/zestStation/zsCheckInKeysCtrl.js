@@ -35,6 +35,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             }
             
             if (current === 'zest_station.check_in_keys'){
+                console.info('back called: go to card sign--> from: ',$state.current.name);
                 $state.go ('zest_station.card_sign');
             }
             //$state.go ('zest_station.home');//go back to reservation search results

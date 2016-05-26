@@ -243,11 +243,15 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 };
             
         $scope.afterGuestCheckinCallback = function(response){
-            console.info('response from guest check-in',response)
+            console.info('response from guest check-in : response :',response)
                 $scope.$emit('hideLoader');       
                 var haveValidGuestEmail = $scope.guestEmailOnFile();//also sets the email to use for delivery
                 
                 var successfulCheckIn;
+//                var debugCheckinResponse = JSON.parse('{"status":"success","data":{"check_in_status":"Success","cc_auth_amount":"0.00","cc_auth_code":null},"errors":[],"is_eod_in_progress":false,"is_eod_manual_started":false}');
+  //              console.info('debugCheckinResponse: ',debugCheckinResponse);
+                
+                console.info('check-in failure test: response.status :',response.status);
                 if (response.status === "success"){
                     successfulCheckIn = true;
                 } else {
@@ -258,15 +262,20 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 //detect if coming from email input
                 
                 if (haveValidGuestEmail && successfulCheckIn){
+                    console.info('haveValidGuestEmail && successfulCheckIn: ');
                         $state.go('zest_station.check_in_keys',{'mode':zsModeConstants.CHECKIN_MODE});
                     return;
                     
                 } else if (!successfulCheckIn) {
+                    
+                    console.info('!successfulCheckIn: ');
                     console.warn(response);
                     $scope.$emit('hideLoader');
                     $state.go('zest_station.error');
                     
                 } else {//successful check-in but missing email on reservation
+                    
+                    console.info('input_reservation_email_after_swipe: ');
                     $state.go('zest_station.input_reservation_email_after_swipe');
                 }
                 
@@ -279,7 +288,6 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         };
         var onSuccessDeposit = function(response){
             console.info('onsuccess deposit: ',response);
-                console.info('')
                 //saving payment success, continue...
                 if ($scope.isSixPayPayment() || $scope.isSimulated){
                     $scope.needCCAuthForCheckin();
@@ -334,6 +342,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         };
         $scope.depositProceed = function(){
             $state.go('zest_station.card_swipe'); 
+        };
+        $scope.skipForLocal = function(){
+            $state.go('zest_station.card_sign'); 
         };
         
         
