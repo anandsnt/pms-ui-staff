@@ -59,7 +59,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                         } else {
                             classification = '';
                         }
-                        
+
                         if (classification === 'specials') {
                             ispromo = true;
                         } else {
@@ -124,7 +124,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 } else {
                 	symbol = "%";
                 }
-                
+
                 if (symbol === '%') {
                     cancelationPenalty.displayData = cancelationPenalty.name + "   " + "(" + cancelationPenalty.amount + symbol + ")";
                 } else if (symbol === 'Night(s)') {
@@ -161,7 +161,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 commissionData.selected_commission_charge_code_ids = selectedChargeCodes;
             }
             return commissionData;
-        };        
+        };
         /*
          * Set add on data
          */
@@ -179,16 +179,16 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         };
 
         $scope.startSave = function() {
-            var amount = parseInt($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
+            var amount = parseInt($scope.rateData.parent_rate.value_sign + $scope.rateData.parent_rate.value_abs);
             var addOns = setUpAddOnData();
             var commissions = setupCommissionData();
             var data = {
                 'name': $scope.rateData.name,
                 'description': $scope.rateData.description,
                 'rate_type_id': $scope.rateData.rate_type.id,
-                'based_on_rate_id': $scope.rateData.based_on.id,
-                'based_on_type': $scope.rateData.based_on.type,
-                'based_on_value': amount,
+                'parent_rate_id': $scope.rateData.parent_rate.id,
+                'parent_type': $scope.rateData.parent_rate.type,
+                'parent_value': amount,
                 'promotion_code': $scope.rateData.promotion_code,
                 'addons': addOns,
                 'charge_code_id': $scope.rateData.charge_code_id,
@@ -213,6 +213,12 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'code':$scope.rateData.code,
                 'task_id': $scope.rateData.task_id
             };
+
+            if($scope.rateData.is_based_on == true) {
+              data.is_based_on = true;
+            } else if($scope.rateData.is_based_on == false) {
+                data.is_copy_from = true;
+            }
 
             // Save Rate Success Callback
             var saveSuccessCallback = function(data) {
@@ -288,7 +294,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
         $scope.isEmpty = function (obj) {
             return _.isEmpty(obj);
-        };        
+        };
 
         $scope.deleteEndDate = function() {
             $scope.rateData.end_date = "";
@@ -316,7 +322,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             if(!!$scope.rateData.is_channel_only && !!$scope.rateData.is_pms_only){
                 $scope.rateData.is_channel_only = false;
             }
-            
+
         };
 
         $scope.toggleChannelOnly = function(){
@@ -327,7 +333,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
         // CICO-24645 -  Show Tax Incl / Excl indicator on changing Charge code.
         $scope.onChangeChargeCode = function(){
-            
+
             var selectedObj = _.find( $scope.rateTypesDetails.charge_codes, function(obj){
                                     return obj.id === $scope.rateData.charge_code_id;
                                 });
