@@ -7,7 +7,7 @@
 			<li class="category" ng-repeat="component in assocatedChildComponents">
 				<div class="sort">
 					<strong class="cms-name" ng-bind="component.component_name"></strong>
-					<span class="cms-type" ng-bind="component.component_type"></span>
+					<span class="cms-type" ng-bind="getComponentType(component)"></span>
 				</div>
 			</li>
 		</ul>

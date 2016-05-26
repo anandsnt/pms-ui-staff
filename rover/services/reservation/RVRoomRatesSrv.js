@@ -102,9 +102,25 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                     data = response;
                 }));
             } else {
-                promises.push(getInitialRoomTypeWithUpSell(params, true).then(function(response) {
-                    data = response;
-                }));
+                if(params.travel_agent_id || params.company_id
+                         || params.group_id || params.allotment_id
+                         || params.promotion_code || params.is_member == true){
+
+
+                    promises.push(service.fetchRateADRs(params, true).then(function(response) {
+                        data = response;
+                    }));
+
+                } else {
+                    promises.push(getInitialRoomTypeWithUpSell(params, true).then(function(response) {
+                        data = response;
+                    }));
+
+                }
+
+
+
+
             }
 
             $q.all(promises).then(function() {

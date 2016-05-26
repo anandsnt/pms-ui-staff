@@ -8,7 +8,8 @@
         <button type="button" class="button blue modal-close" ng-click="sendEmail(mailInvoiceTo)" translate>SEND</a>
     </div> -->
     <div class="modal-content form format-bill rooming-list" ng-init="mailInvoiceTo = ''">
-        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialogBox()"><span class="icons icon-close invert"></button>
 
         <strong class="h2 message">Rooming List</strong>
 
@@ -35,7 +36,7 @@
                 <span class="icons icon-print"></span>
                 Print
             </button>
-            <button type="button" class="button blank inline" ng-click="closeDialog()">Cancel</button>
+            <button type="button" class="button blank inline" ng-click="closeDialogBox()">Cancel</button>
         </div>
     </div>
 </div>

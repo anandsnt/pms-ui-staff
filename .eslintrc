@@ -1,0 +1,19 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 5,
+        "sourceType": "script",
+    },
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true,
+        "jquery": true
+    },
+    "rules": {
+    	"eqeqeq": 1,
+    	"curly": 2,
+        "semi": 1,
+        "no-dupe-keys": 1,
+        "no-duplicate-case": 1
+    }
+}

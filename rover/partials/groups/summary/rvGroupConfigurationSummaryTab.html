@@ -119,17 +119,12 @@
             <div class="entry full-width with-button">
                 <label for="group-rate" translate>RATE</label>
                 <div class="select">
-                    <select id="group-rate" ng-model="groupConfigData.summary.rate" iscroll-stop-propagation ng-change="onRateChange()" ng-disabled="groupConfigData.summary.is_cancelled || isInStaycardScreen()">
-                        <optgroup>Group Rates</optgroup>
-                        <option value="" ng-if="!groupConfigData.summary.rate" selected>Select Rate</option>
-                        <option value="-1" ng-selected="groupConfigData.summary.rate == -1">Custom Rate</option>
-                        <optgroup ng-show="!!groupSummaryData.rates.length" label="Group Rates">
-                            <!-- ... repeat for all rates -->
-                            <option ng-repeat="rate in groupSummaryData.rates" ng-selected="groupConfigData.summary.rate == rate.id" value="{{rate.id}}">{{rate.name}}</option>
-                        </optgroup>
-                        <optgroup ng-show="!!groupSummaryData.contractedRates.length" label="Company/ Travel Agent Contract">
-                            <option ng-repeat="rate in groupSummaryData.contractedRates" ng-selected="groupConfigData.summary.rate == rate.id" value="{{rate.id}}">{{rate.name}}</option>
-                        </optgroup>
+                    <select id="group-rate" iscroll-stop-propagation
+                            ng-model="groupConfigData.summary.rate"
+                            ng-change="onRateChange()"
+                            ng-disabled="shouldDisableRateChange()"
+                            ng-options="rate.id as rate.name group by rate.groupName for rate in groupSummaryData.rateSelectDataObject">
+                        <option value="" selected disabled>Select Rate</option>
                     </select>
                 </div>
                 <a ng-click="!groupConfigData.summary.is_cancelled ? (isInAddMode() ? manageAddons() : viewAddons()) : false" class="button with-icon" ng-class="{'brand-colors' : !isInAddMode() && !groupConfigData.summary.is_cancelled, 'grey' : isInAddMode() || !!groupConfigData.summary.is_cancelled}">

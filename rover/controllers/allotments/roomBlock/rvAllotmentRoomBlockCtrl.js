@@ -42,6 +42,15 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldHideAddRoomsButton = function() {
+			return ($scope.allotmentConfigData.summary.is_cancelled ||
+					$scope.allotmentConfigData.roomblock.selected_room_types_and_bookings.length > 0);
+		};
+
+		/**
+		 * Function to decide whether to hide 'Rooms and Rates Button'
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowRoomsRates = function() {
 			return ($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings.length > 0);
 		};
 

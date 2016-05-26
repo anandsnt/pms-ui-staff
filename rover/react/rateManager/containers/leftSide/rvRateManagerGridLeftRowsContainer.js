@@ -26,6 +26,35 @@ let convertRatesDataForLeftListing = (rates) => {
 	return ratesToReturn;
 };
 
+let getPreviousPageButtonText = (mode, paginationStateData) => {
+	let previousPageButtonText = "PREVIOUS"
+	switch(mode) {
+        case RM_RX_CONST.RATE_VIEW_MODE:
+				previousPageButtonText += " " + paginationStateData.perPage + " RATES";
+            break;                           
+        default:
+            break;
+    };
+    return previousPageButtonText;
+};
+
+let getNextPageButtonText = (mode, paginationStateData) => {
+	let nextPageButtonText = "NEXT"
+	switch(mode) {
+        case RM_RX_CONST.RATE_VIEW_MODE:
+        	if (Math.ceil(paginationStateData.totalRows / paginationStateData.perPage) === paginationStateData.page + 1) {
+				// In case of navigation to last page; show remaining 
+				nextPageButtonText += " " + paginationStateData.totalRows % paginationStateData.perPage + " RATES";
+			} else {
+           		nextPageButtonText += " " + paginationStateData.perPage + " RATES";
+           	}
+            break;                           
+        default:
+            break;
+    };
+    return nextPageButtonText;
+};
+
 /**
  * to convert the room type data coming from reducers to props
  * @param  {array} room types
@@ -80,25 +109,25 @@ let convertSingleRateRoomTypesDataForLeftListing = (roomTypes, expandedRows) => 
 
 const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 	if(state.mode === RM_RX_CONST.RATE_VIEW_MODE) {
-		let actualRateList = state.list.slice(1, state.list.length); //first index contains all restrcition for all rates
 		return {
-			leftListingData: convertRatesDataForLeftListing(actualRateList),
+			leftListingData: convertRatesDataForLeftListing(state.list),
 			mode: state.mode,
 			fromDate: state.dates[0],
 			toDate: state.dates[state.dates.length-1],
-			callBackForSingleRateFetch: state.callBacksFromAngular.singleRateViewCallback
+			callBackForSingleRateFetch: state.callBacksFromAngular.singleRateViewCallback,
+			goToPrevPage: state.callBacksFromAngular.goToPrevPage,
+			goToNextPage: state.callBacksFromAngular.goToNextPage,
+			paginationStateData: state.paginationState
 		};
 	}
 	else if(state.mode === RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
-		let actualRoomTypeList = state.list.slice(1, state.list.length); //first index contains all restrcition for all room types
 		return {
-			leftListingData: convertRoomTypesDataForLeftListing(actualRoomTypeList)
+			leftListingData: convertRoomTypesDataForLeftListing(state.list)
 		};
 	}
 	else if(state.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
-		let actualRoomTypeList = state.list.slice(1, state.list.length); //first index contains all restrcition for all room types
 		return {
-			leftListingData: convertSingleRateRoomTypesDataForLeftListing(actualRoomTypeList, state.expandedRows),
+			leftListingData: convertSingleRateRoomTypesDataForLeftListing(state.list, state.expandedRows),
 			mode: state.mode
 		};
 	}	
@@ -125,7 +154,14 @@ const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatch
 				})
 			}				
 		},
-		leftListingData: stateProps.leftListingData
+		leftListingData: stateProps.leftListingData,
+		goToPrevPage: stateProps.goToPrevPage,
+		goToNextPage: stateProps.goToNextPage,
+		isFirstPage: stateProps.mode != RM_RX_CONST.RATE_VIEW_MODE || stateProps.paginationStateData.page === 1,
+		isLastPage: stateProps.mode != RM_RX_CONST.RATE_VIEW_MODE ||
+			Math.ceil(stateProps.paginationStateData.totalRows / stateProps.paginationStateData.perPage) ===  stateProps.paginationStateData.page,
+		topPageButtonText: getPreviousPageButtonText(stateProps.mode, stateProps.paginationStateData),
+		bottomPageButtonText: getNextPageButtonText(stateProps.mode, stateProps.paginationStateData)
 	}
 };
 

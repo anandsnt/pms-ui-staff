@@ -515,10 +515,10 @@
     /* Scrollable Container ***/
     .scrollable {
         position: relative;
-        .calc-height(100, 60);
+        .calc-height(100, 0);
 
         .wrapper { 
-            padding: 20px 0 45px; 
+            padding: 20px 0 60px; 
 
             .entry { 
                 padding: 0 20px;
@@ -902,7 +902,7 @@
                 line-height: 1em;
                 color: @grey3;
                 text-transform: uppercase;
-                margin: 0 10px 0 0;
+                margin: 0 10px 0 8px;
                 padding-right: 10px;
                 border-right: 1px solid rgba(0,0,0,.1);
                 
@@ -967,7 +967,7 @@
     .report-content {
         position: relative;
         padding: 0 20px;
-        .calc-height(100, 50);
+        .calc-height(100, 100);
 
         > .wrapper { padding: 20px 0; }
 
@@ -1494,6 +1494,30 @@
             &.financial-adjustment-reports {
                 text-transform: none;
 
+                thead {
+                    th {
+                        &.modified,
+                        &.posted {
+                            width: 80px;
+                        }
+
+                        &.name,
+                        &.modified-by {
+                            width: 100px;
+                        }
+
+                        &.room {
+                            width: 80px;
+                        }
+
+                        &.code {
+                            width: 90px;
+                        }
+                        &.amount {
+                                width: 100px;
+                        }
+                    }
+                }
                 tbody {
                     tr {
                         td {
@@ -1663,6 +1687,22 @@
                                 min-width: 120px;
                                 .nowrap();
                             }
+                        }
+                    }
+                }
+
+                &.deposit-balance-summary {
+                    table-layout: fixed;
+                    margin-bottom: 20px;
+
+                    thead {
+                        th {
+                            &:nth-child(1) { .calc-width(75, 255);  }
+                            &:nth-child(2) { width: 100px; }
+                            &:nth-child(3) { width: 170px; }
+                            &:nth-child(4) { .calc-width(25, 255); }
+                            &:nth-child(5),
+                            &:nth-child(6) { width: 120px; }
                         }
                     }
                 }
@@ -2139,7 +2179,7 @@
             }
         }
 
-        &.with-pagination { .calc-height(100, 110); }
+        &.with-pagination { .calc-height(100, 160); }
 
         &.with-graphs {
 

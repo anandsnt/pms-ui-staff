@@ -294,6 +294,19 @@
     data="uiChosenReport.hasHoldStatus.data"
     options="uiChosenReport.hasHoldStatus.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasOriginFilter && uiChosenReport.hasOriginFilter.data.length"
+    label="Origin(s)"
+    on-update="refreshFilterScroll"
+    report="uiChosenReport"
+    data="uiChosenReport.hasOriginFilter.data"
+    options="uiChosenReport.hasOriginFilter.options"
+    affects-filter="uiChosenReport.hasOriginFilter.affectsFilter"></multi-option-selection>
+<!-- related options -->
+<multi-option-selection ng-show="uiChosenReport.hasOriginFilter && uiChosenReport.hasURLsList.data.length"
+    label="URL(s)"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasURLsList.data"
+    options="uiChosenReport.hasURLsList.options"></multi-option-selection>
 
 <multi-option-selection ng-show="uiChosenReport.hasAddonGroups && uiChosenReport.hasAddonGroups.data.length"
     label="Add-On Group(s)"
@@ -377,7 +390,7 @@
     options="uiChosenReport.hasShow.options"></multi-option-selection>
 
 <multi-option-selection ng-show="uiChosenReport.hasChargeTypes && uiChosenReport.hasChargeTypes.data.length"
-    label="Show"
+    label="Charge Types(s)"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasChargeTypes.data"
     options="uiChosenReport.hasChargeTypes.options"></multi-option-selection>
