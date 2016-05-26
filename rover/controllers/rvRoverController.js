@@ -113,7 +113,7 @@ sntRover.controller('roverController',
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
     $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
-    $rootScope.sendConfirmationLetter = hotelDetails.send_cancellation_letter;
+    $rootScope.sendCancellationLetter = hotelDetails.send_cancellation_letter;
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
     $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
