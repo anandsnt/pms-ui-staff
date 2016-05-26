@@ -171,7 +171,7 @@
                                             <span class="icons icon-invoice"></span>
                                             {{'INVOICE' |translate}}
                                             </button>
-                                            {{'STAY_FEES' |translate}} ({{'AS_OF' |translate}}  {{billData.fees_date | date:dateFormat}}):
+                                            {{'STAY_FEES' |translate}} ({{'AS_OF' |translate}}  {{ businessDate | date:dateFormat }}):
                                         </td>
                                         <td colspan="3" class="total-value">
                                              <strong>{{currencySymbol}}{{billData.total_amount | number: precisonTwo}}</strong>
@@ -186,7 +186,7 @@
                                     </tr>
                                     <tr class="active edit">
                                         <td colspan="3" class="total-label">
-                                            {{'BALANCE' |translate}} ({{'AS_OF' |translate}} {{billData.fees_date | date:dateFormat}}):
+                                            {{'BALANCE' |translate}} ({{'AS_OF' |translate}} {{ businessDate | date:dateFormat }}):
                                         </td>
                                         <td colspan="3" class="total-value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}"> <!-- Green when 0, otherwise red -->
                                              <strong>{{currencySymbol}}{{billData.balance_amount | number: precisonTwo}}</strong>
