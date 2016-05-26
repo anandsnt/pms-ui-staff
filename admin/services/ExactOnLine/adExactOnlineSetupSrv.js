@@ -31,4 +31,20 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
         });
         return deferred.promise;
     };
+
+    /**
+     * to run Exact Online Export
+     * @return {undefined}
+     */
+    this.runExactOnlineExport = function(params) {
+        var deferred = $q.defer();
+        var url = 'admin/save_ota_connection_config.json?interface=EXACTONLINE';
+
+        ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 }]);

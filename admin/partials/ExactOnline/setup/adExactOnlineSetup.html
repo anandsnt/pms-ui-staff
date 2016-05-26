@@ -7,9 +7,10 @@
             <ad-form-title full-width="true" form-title="{{'EXACT_ONLINE_SUB_TITLE'| translate}}"></ad-form-title>
             <fieldset class="holder left">
                 <ad-toggle-button is-checked="exactOnlineSetup.active"
+                                  is-disabled="!exactOnlineSetup.is_oauth_authorized"
                                   label="{{'EXACT_ONLINE_ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
             </fieldset>
-            <fieldset class="holder left" ng-if="exactOnlineSetup.active">
+            <fieldset class="holder left">
                 <div class="entry full-width">
                     <label>
                         EXACT ONLINE
@@ -24,13 +25,22 @@
                         {{'EXACT_ONLINE_OAUTH' | translate}}
                     </a>
                 </div>
-                <div class="entry full-width">
+                <div class="entry full-width has-datepicker" ng-if="exactOnlineSetup.is_oauth_authorized">
                     <label>
                         RUN EXPORT
                     </label>
-                    <button ng-click="runSync()" class="button blue">
-                        {{'RUN' | translate}}
-                    </button>
+                    <fieldset class="holder left">
+                        <div class="entry">
+                            <input type="text" ui-date="datePickerOptions"
+                                   ng-model="exportOptions.date"
+                                   readonly>
+                        </div>
+                        <div class="entry">
+                            <button ng-click="runExport()" class="button blue">
+                                {{'RUN' | translate}}
+                            </button>
+                        </div>
+                    </fieldset>
                 </div>
             </fieldset>
             <ad-save-cancel-area save-action="saveExactOnlineSetup"
