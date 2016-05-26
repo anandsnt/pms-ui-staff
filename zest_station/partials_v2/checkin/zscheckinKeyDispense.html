@@ -1,0 +1,98 @@
+<!--------------------- select no of keys mode ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_MODE'">
+   <div id="content">
+        <h2 class="no-margin">{{'CHKED_IN_SUCCESS_HEADER' |translate}} {{selectedReservation.guest_details[0].first_name}}.</h2>
+        <h1>{{'CHKED_IN_SUCCESS_MSG' |translate}}</h1>
+        <div id="room" ng-show="zestStationData.show_room_number">
+            <span class="number">{{selectedReservation.room}}</span>
+        </div>
+        <div id="keys">
+            <h2>{{'HOW_MANY_KEYS' |translate}}</h2>
+            <div id="key-options">
+                <button type="button" class="button" touch-press="makeKeys(1)">{{'UNO_KEY' |translate}}</button>
+                <button type="button" class="button" touch-press="makeKeys(2)">{{'DOS_KEY' |translate}}</button>
+            </div>
+        </div>
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
+</section>
+
+<!---------------------solo key one in progres ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'SOLO_KEY_CREATION_IN_PROGRESS_MODE'">
+    <div id="content">
+        <h1 translate>MAKE_KEY</h1>
+        <h2 translate>MAKE_KEY_MSG</h2>
+         <div id="keys" ng-hide="remoteEncoding">
+            <div ng-include="icons.url.createkey"></div>
+        </div>
+    </div>
+</section>
+
+<!--------------------- key one in progres ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_CREATION_IN_PROGRESS_MODE'">
+    <div id="content">
+        <h1 translate>MAKE_FIRST_KEY</h1>
+        <h2 translate>MAKE_FIRST_KEY_SUB</h2>
+        <div id="keys" ng-hide="remoteEncoding">
+            <div ng-include="icons.url.createkey"></div>
+        </div>
+    </div>
+</section>
+
+<!--------------------- key one in success ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_CREATION_SUCCESS_MODE'">
+    <div id="content">
+        <h1 translate>MADE_FIRST_KEY_MSG</h1>
+        <h2 translate>MADE_FIRST_KEY_MSG_SUB</h2>
+         <div id="keys" ng-hide="remoteEncoding">
+            <div ng-include="icons.url.createkey"></div>
+        </div>
+    </div>
+</section>
+
+<!--------------------- key creation over ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_CREATION_SUCCESS_MODE'">
+    <div id="content">
+        <h1 translate>SUCCESS_HDR</h1>
+        <h2 translate>GRAB_KEYS</h2>
+        <button type="button" class="button" click-touch="goToNextScreen('success')" translate>DONE</button>
+    </div>
+</section>   
+
+<!--------------------- failure ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_FAILRURE_MODE'">
+    <div id="content">
+        <h1 translate>NO_KEYS_MADE</h1>
+        <h2 translate>NO_KEYS_MADE_SUB</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <!-- retry-key -->
+                <li> 
+                    <button type="button" class="button option" touch-press='reEncodeKey()'>
+                        <div ng-include="icons.url.key"></div>
+                    </button>
+                    <h1 translate>TRY_AGAIN</h1>
+                </li>
+                <li class="break">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li> 
+                    <button type="button" class="button option" click-touch="goToNextScreen('failed')">
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    <h1 translate>CONTINUE</h1>
+                </li>
+                <li class="break">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li> 
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    <h1 translate>SPEAK</h1>
+                    <h4 translate>SPEAK_SUB</h4>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>

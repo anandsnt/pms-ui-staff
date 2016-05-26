@@ -33,7 +33,7 @@
         <ul ng-hide="borrowForGroups">
             <li ng-class="{active: stateCheck.activeView == 'RECOMMENDED'}" ng-click="setActiveView('RECOMMENDED')"
                 ng-show="otherData.recommendedRateDisplay">
-                {{'RESV_RECOMMENDED'|translate}}
+            {{'RESV_RECOMMENDED'|translate}}
             </li>
             <li ng-class="{active: stateCheck.activeView == 'ROOM_TYPE'}" ng-click="setActiveView('ROOM_TYPE')">
                 {{'RESV_ROOM'|translate}}
@@ -58,7 +58,9 @@
         </div>
     </div>
     <div class="reservation-content rooms-and-rates-content no-content" ng-show="(stateCheck.activeView == 'ROOM_TYPE' && display.roomFirstGrid.length == 0) ||
-        (stateCheck.activeView == 'RATE' && display.rateFirstGrid.length == 0)">
+        (stateCheck.activeView == 'RATE' && display.rateFirstGrid.length == 0) ||
+        (stateCheck.activeView == 'RECOMMENDED' && display.rateFirstGrid.length == 0)">
+
         <div class="info">
             <span class="icon-no-content icon-room"></span>
             <strong class="h1" translate>NO_AVAILABILITY</strong>
@@ -68,7 +70,10 @@
     <div class="reservation-content rooms-and-rates-content scrollable" ng-class="{'edit-guests': stateCheck.stayDatesMode}" ng-iscroll="room_types" ng-iscroll-delay="500"
     ng-show="display.roomFirstGrid.length > 0 || display.rateFirstGrid.length > 0">
         <div>
-            <ul ng-if="stateCheck.activeView == 'RECOMMENDED'" class="rooms-and-rates wrapper"></ul>
+            <ul ng-if="stateCheck.activeView == 'RECOMMENDED'" class="rooms-and-rates wrapper">
+                <ng-include src="'/assets/partials/reservation/rvRoomRatesRecommendedView.html'"></ng-include>
+
+            </ul>
             <ul class="rooms-and-rates wrapper" ng-if="stateCheck.activeView == 'ROOM_TYPE'">
                 <li ng-repeat="room in display.roomFirstGrid track by $index">
                     <a class="has-arrow toggle" ng-class="{active: !room.isCollapsed, disabled: borrowForGroups}" ng-click="showRatesList(room)">

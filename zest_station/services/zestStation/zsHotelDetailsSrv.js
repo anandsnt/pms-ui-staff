@@ -73,7 +73,7 @@ sntZestStation.service('zsHotelDetailsSrv', ['zsBaseWebSrv2','zsBaseWebSrv','$q'
 	};
 
 
-	this.fetchSortedCountryList = function(lang_code){
+	this.fetchSortedCountryList = function(){
 		var deferred = $q.defer();
 		var url = '/api/countries/sorted_list.json';
 		ZSBaseWebSrvV2.getJSON(url).then(function(data) {
