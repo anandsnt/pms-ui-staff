@@ -123,14 +123,20 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * toogle different rate view
          */
         $scope.$on("changeMenu", function(e, value) {
+            $scope.changeMenu(value);
+        });
+
+        /*
+        * Function to change the menu on the rate setup screen
+        */
+        $scope.changeMenu = function(value) {
             // keep track of previous menu for switching - on Cancel button click
             $scope.prevMenu = $scope.rateMenu;
             if (!isNaN(parseInt(value))) {
                 value = "dateRange." + value;
             }
             $scope.rateMenu = value;
-
-        });
+        };
 
         $scope.$on("errorReceived", function(e, value) {
             $scope.errorMessage = value;
@@ -379,6 +385,16 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.cancelMenu = function() {
             $scope.$emit("changeMenu", $scope.prevMenu);
         };
+
+        /*
+        * Listener to activate the set tab while selecting the copy from option
+        */
+        $scope.$on("activateSetTab", function(e, value) {
+            if ($scope.rateData.date_ranges.length > 0) {
+                var dateRange = getActiveDateRange();
+                $scope.changeMenu(dateRange);
+            }
+        });
 
         /*
         * Fetches the list of origin of bookings available, sets only the active ones

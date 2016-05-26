@@ -222,7 +222,11 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 $scope.detailsMenu = "";
                 $('#activityLogArea').scope().detailsMenu = '';
                 $scope.$emit('hideLoader');
-                $scope.$emit("changeMenu", 'Room types');
+                if($scope.rateData.based_on && $scope.rateData.based_on.is_copied == true) {
+                    $scope.$emit("activateSetTab");
+                } else {
+                    $scope.$emit("changeMenu", 'Room types');
+                }
                 $scope.$emit("rateChangedFromDetails");
 
             };

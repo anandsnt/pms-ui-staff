@@ -53,7 +53,7 @@
             </div>
             <!-- CICO-9289 Hourly Rates Hiding the Based On thing until implementation is completed -->
             <!-- TODO : Once thebased on rates is handled for hourly, do away with the ng-show conditon -->
-            <div class="entry entry-no-bottom full-width">
+            <div class="entry entry-no-bottom full-width" ng-class="{'overlay' : is_edit}">
                 <label>Based On / Copy From</label>
                 <div class="boxes">
                     <div class="switch-container">
@@ -71,7 +71,7 @@
                             </label>
                         </div>
                     </div>
-                    <div class="full-width" ng-class="{'overlay' : is_edit}">
+                    <div class="full-width">
                         <div class="entry margin">
                             <div class="select white">
                                 <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
