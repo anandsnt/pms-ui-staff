@@ -79,30 +79,32 @@
                     <a class="has-arrow toggle" ng-class="{active: !room.isCollapsed, disabled: borrowForGroups}" ng-click="showRatesList(room)">
                         <div class="data">
                             <h2>{{room.name}}</h2>
+
                             <!-- <span class="recommended" ng-show="!borrowForGroups && display.roomFirstGrid.length > 0 && $index > 0 && (room.defaultRate.adr - display.roomFirstGrid[0].defaultRate.adr) > 0">
                                 {{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{(room.defaultRate.adr - display.roomFirstGrid[0].defaultRate.adr) | number}}&nbsp;{{'RESV_MORE'|translate}}
                             </span> -->
                             <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
                             <span class="count red" ng-show="stateCheck.stayDatesMode && room.defaultRate.dates[stateCheck.dateModeActiveDate].availability < 5">
-                                {{room.defaultRate.dates[stateCheck.dateModeActiveDate].availability}} room(s) left
+                                {{room.defaultRate.dates[stateCheck.dateModeActiveDate].availability}} AVL
                                 <label ng-if="!borrowForGroups && room.defaultRate.isGroupRate"> in Group Block</label>
                                 <label ng-if="!borrowForGroups && room.defaultRate.isAllotmentRate"> in Allotment</label>
                             </span>
                             <span class="count red" ng-show="!stateCheck.stayDatesMode && room.availability < 5">
-                                {{room.availability}} room(s) left
+                                {{room.availability}} AVL
                                 <label ng-if="!borrowForGroups && room.defaultRate.isGroupRate"> in Group Block</label>
                                 <label ng-if="!borrowForGroups && room.defaultRate.isAllotmentRate"> in Allotment</label>
                             </span>
                             <span class="count green" ng-show="stateCheck.stayDatesMode && room.defaultRate.dates[stateCheck.dateModeActiveDate].availability > 4">
-                                {{room.defaultRate.dates[stateCheck.dateModeActiveDate].availability}} room(s) left
+                                {{room.defaultRate.dates[stateCheck.dateModeActiveDate].availability}} AVL
                                 <label ng-if="!borrowForGroups && room.defaultRate.isGroupRate"> in Group Block</label>
                                 <label ng-if="!borrowForGroups && room.defaultRate.isAllotmentRate"> in Allotment</label>
                             </span>
                             <span class="count green" ng-show="!stateCheck.stayDatesMode && room.availability > 4">
-                                {{room.availability}} room(s) left
+                                {{room.availability}} AVL
                                 <label ng-if="!borrowForGroups && room.defaultRate.isGroupRate"> in Group Block</label>
                                 <label ng-if="!borrowForGroups && room.defaultRate.isAllotmentRate"> in Allotment</label>
                             </span>
+                             <span class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgColor}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in rate.restriction"></span>
                         </div>
                         <div class="book-rate" ng-if="room.isCollapsed">
                             <h4 ng-hide="borrowForGroups || room.defaultRate.isCorporate" translate>RESV_BEST_RATE</h4>
@@ -131,10 +133,11 @@
                         </div>
                     </a>
                     <!-- Rates list -->
+
                     <ul class="rates" ng-class="{active: !room.isCollapsed}" ng-if="!room.isCollapsed">
                         <li ng-repeat="rate in room.ratesArray" ng-class="{'closed': rate.numRestrictions > 0}">
                             <a class="has-arrow toggle" ng-class="{active: rate.showDays}" ng-click="viewRateBreakUp(rate);">
-                                <h3>
+                                <h3 ng-class="{'restricted': rate.numRestrictions > 0}">
                                     {{rate.name}}
                                 </h3>
                                     <span class="corporate" ng-if="rate.isCorporate" translate>CORPORATE_LABEL</span>
@@ -142,14 +145,22 @@
                                     <span class="corporate" ng-if="rate.isMember">MEMBER</span>
                                     <span class="corporate" ng-if="rate.isGroupRate">GROUP</span>
                                     <span class="corporate" ng-if="rate.isAllotmentRate">ALLOTMENT</span>
+
+                                    <span class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgColor}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in rate.restriction"></span>
+
+                                    <!-- <span class="restriction-icon" ng-if="rate.numRestrictions > 1">R</span> -->
+
+                                  <!--   <span class="restricted" ng-if="rate.numRestrictions > 1">
+                                       === MULTIPLE RESTRICTIONS APPLY
+                                    </span> -->
                                     <!-- <span class="restricted" ng-if="rate.numRestrictions > 1">
                                         MULTIPLE RESTRICTIONS APPLY
                                     </span>
                                     <span class="restricted {{restrictionColorClass[restrictionsMapping[rate.restriction.restriction_type_id].key]}}" ng-if="rate.numRestrictions == 1">
                                          {{restrictionsMapping[rate.restriction.restriction_type_id].value}}{{rate.restriction.days || rate.restriction.days == 0? rate.restriction.days +' DAYS' : ''}}
                                     </span> -->
-                                    <span class="restriction-icon" ng-if="rate.numRestrictions > 1">R</span>
-                                    <span class="restriction-icon {restriction-icon-class} {restriction-bg-class} {restriction-bgcolor}">{Restriction}</span>
+                                 <!--    <span class="restriction-icon" ng-if="rate.numRestrictions > 1">R</span>
+                                    <span class="restriction-icon {restriction-icon-class} {restriction-bg-class} {restriction-bgcolor}">{Restriction}</span> -->
 
                                 <div class="price" ng-if="!rate.isSuppressed">
                                     {{currencySymbol}}{{rate.adr | number: 2}}
