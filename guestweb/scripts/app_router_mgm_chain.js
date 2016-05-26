@@ -124,12 +124,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 });
 
 	$stateProvider.state('earlyCheckinOptions', {
-	 	url: '/earlyCheckinOptions/:time/:charge/:id',
+	 	url: '/earlyCheckinOptions/:time/:charge/:id/:isFromCheckinNow/:roomAssignedFromZestWeb',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwEarlyCheckinOptions.html',
 	 	controller : 'earlyCheckinOptionsController',
 	 	title: 'Early Check-in'
 	 }).state('earlyCheckinFinal', {
-	 	url: '/earlyCheckinFinal/:time/:charge/:id',
+	 	url: '/earlyCheckinFinal/:time/:charge/:id/:isFromCheckinNow',
 	 	templateUrl: '/assets/common_templates/partials/MGM/gwEarlyCheckinFinal.html',
 	 	controller : 'earlyCheckinFinalController',
 	 	title: 'Early Check-in'
