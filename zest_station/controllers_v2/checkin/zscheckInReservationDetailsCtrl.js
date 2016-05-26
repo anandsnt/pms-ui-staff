@@ -256,7 +256,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 				'payment_type_id': $scope.selectedReservation.reservation_details.payment_type,
 				'guest_email': $scope.selectedReservation.guest_details[0].email,
 				'guest_email_blacklisted': $scope.selectedReservation.guest_details[0].is_email_blacklisted,
-				'first_name': $scope.selectedReservation.guest_details[0].first_name
+				'first_name': $scope.selectedReservation.guest_details[0].first_name,
+				'balance_amount' : $scope.selectedReservation.reservation_details.balance_amount
 			}
 			$state.go('zest_station.checkInTerms', stateParams);
 		};

@@ -31,7 +31,8 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 				'room_no': $stateParams.room_no,
 				'room_status': $stateParams.room_status,
 				'guest_email': $stateParams.guest_email,
-				'guest_email_blacklisted': $stateParams.guest_email_blacklisted
+				'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
+				'balance_amount': $stateParams.balance_amount
 			}
 			$state.go('zest_station.checkInCardSwipe', stateParams);
 		};
@@ -65,7 +66,8 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 						'payment_type_id': $stateParams.payment_type_id,
 						'guest_email': $stateParams.guest_email,
 						'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
-						'first_name': $stateParams.first_name
+						'first_name': $stateParams.first_name,
+						'balance_amount': $stateParams.balance_amount
 					}
 					$state.go('zest_station.checkInTerms', stateParams);
 				}
