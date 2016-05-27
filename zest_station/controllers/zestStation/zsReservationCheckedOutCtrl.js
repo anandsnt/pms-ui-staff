@@ -172,7 +172,9 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
         $scope.hasEmail = validEmail;
     };
     $scope.toEditEmail = function() {
-      $scope.email = $scope.zestStationData.reservationData.edit_email_ad;
+        if ($scope.zestStationData.reservationData.edit_email_ad){
+            $scope.email = $scope.zestStationData.reservationData.edit_email_ad;
+        }
       if ($scope.email === null){
           $scope.email = '';
       }
@@ -196,9 +198,9 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
       return ($scope.zestStationData.reservationData.edit_email && $scope.zestStationData.guest_bill.email);
     };
 
-    $scope.emailOnly = function() {
+    $scope.emailOnly = function(current) {
       return ($scope.zestStationData.guest_bill.email &&
-        $scope.current === 'zest_station.bill_delivery_options' &&
+        current === 'zest_station.bill_delivery_options' &&
         !$scope.zestStationData.guest_bill.print);
     };
 
@@ -214,8 +216,11 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
       $scope.directToEditIfNoEmail();
     };
     $scope.resetEmailVars = function() {
+        
       $scope.emailEnabled = false;
-      $scope.email = "";
+      if (!$scope.email){
+          $scope.email = "";
+        }
       $scope.hasEmailSetting();
     };
 
@@ -425,14 +430,10 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     $scope.printBill = function() {
       $scope.fetchBillData();
     };
-
-    $scope.init = function() {
-        console.info('theme: [ ',$scope.theme,' ]');
-      var current = $state.current.name;
-      console.info('testing:: ',current);
-      if ($scope.zestStationData.reservationData.email === null){
-          $scope.zestStationData.reservationData.email = '';
-      }
+    var setEmailParams = function(){
+        if ($scope.zestStationData.reservationData.email === null){
+            $scope.zestStationData.reservationData.email = '';
+        }
         if ($scope.zestStationData.reservationData && $scope.zestStationData.reservationData.email !== null){
             $scope.email = $scope.zestStationData.reservationData.email;
         } else {
@@ -441,24 +442,45 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
         if (!$scope.email){
             $scope.email = '';
         }
-              $scope.hasEmailSetting();
+    };
+    $scope.init = function() {
+        console.info('theme: [ ',$scope.theme,' ]');
+      var current = $state.current.name;
+      console.info('init ::current:: ',current);//reservation_checked_out
+      
+        setEmailParams();
         
       console.info('$scope.zestStationData:: ',$scope.zestStationData);
       console.info('$scope.zestStationData.reservationData.email :',$scope.zestStationData.reservationData.email);
       console.info('email : [ ',$scope.email,' ]');
       console.info('typeof email : [ ',typeof $scope.email,' ]');
       console.info(' length of email : [ ',$scope.email.length,' ]');
+      
+      console.info('')
+      console.info('$state.checkout_finalmode: ',$state.checkout_finalmode);
+      console.info('')
+      
+        $scope.hasEmailSetting();
       if ($state.checkout_finalmode) {
         $scope.initFinalMode();
       } else {
-
+          
         $scope.resetEmailVars();
 
         //first check if we are editing the email address, then test the other stuff as usual
+        console.info('')
+        console.info('$scope.editEmailRequested(): ',$scope.editEmailRequested())
+        console.info('')
+        console.info('')
+        console.info('$scope.emailOnly(current): ',$scope.emailOnly(current));
+        console.info('')
+        console.info('')
+        console.info('$scope.zestStationData.guest_bill.print && current === zest_station.reservation_checked_out: ',$scope.zestStationData.guest_bill.print && current === 'zest_station.reservation_checked_out');
+        console.info('')
         if ($scope.editEmailRequested()) {
           $scope.toEditEmail();
           return;
-        } else if ($scope.emailOnly()) {
+        } else if ($scope.emailOnly(current)) {
 
           if ($scope.emailEnabledAndNeeded()) {
             $scope.goEditEmail();
@@ -467,7 +489,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
             $scope.toBillDelivery();
           }
           return;
-        } else if ($scope.zestStationData.guest_bill.email && $scope.current === 'zest_station.bill_delivery_options') {
+        } else if ($scope.zestStationData.guest_bill.email && current === 'zest_station.bill_delivery_options') {
           $scope.toBillDelivery();
           return;
         }
@@ -477,13 +499,21 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
           $scope.setEmailMode();
         }
         //else we check if admin settings for print bill is set as true
-        else if ($scope.zestStationData.guest_bill.print && $scope.current === 'zest_station.reservation_checked_out') {
+        else if ($scope.zestStationData.guest_bill.print && current === 'zest_station.reservation_checked_out') {
           $scope.mode = "print-mode";
-          $scope.email = $stateParams.email;
+          console.log('$stateParams: ',$stateParams)
+          console.info('$stateParams.email: ',$stateParams.email)
+          if ($stateParams.email){
+              $scope.email = $stateParams.email;
+            }
+          
           if ($scope.email === null){
               $scope.email = '';
           }
+          console.info('$scope.hasEmailSetting();: ',$scope.hasEmailSetting())
             $scope.hasEmailSetting();
+            
+            
           if ($state.emailError){
                 $scope.emailError = true;
           } else {
