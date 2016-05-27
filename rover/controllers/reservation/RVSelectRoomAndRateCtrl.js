@@ -1702,6 +1702,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					rate.totalRoomsCount = response.total_count;
 					rate.hasRoomsList = true;
 					_.each(response.results, function(room) {
+						_.each(room.restrictions, function(restrictionObject) {
+						   var restrictionKey = restrictionObject.restriction_type_id;
+						   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
+						   restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
+						   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
+						})
 						var proccesedRestrictions = processRestrictions( room.multiple_restrictions, rate.id),
 							roomInfo = {
 								id: room.id,
@@ -1711,7 +1717,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								adr: room.adr,
 								forRate: rate.id,
 								numRestrictions: proccesedRestrictions.restrictionCount || 0,
-								restriction: response.restrictions,
+								restriction: room.restrictions,
 								buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id, room.availability)
 							};
 						rate.rooms.push(roomInfo);
