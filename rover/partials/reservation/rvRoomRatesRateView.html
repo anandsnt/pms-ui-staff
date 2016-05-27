@@ -36,7 +36,6 @@
         </div>
     </a>
     <!-- Rates list -->
-    =={{rate.rooms}}
     <ul class="rates" ng-class="{active: !rate.isCollapsed}" ng-if="!rate.isCollapsed">
         <li ng-repeat="room in rate.rooms" ng-class="{'closed': room.numRestrictions > 0}">
             <a class="has-arrow toggle" ng-class="{active: rate.showDays}" ng-click="viewRateBreakUp(room)">
