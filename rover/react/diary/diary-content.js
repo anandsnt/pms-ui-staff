@@ -160,7 +160,6 @@ var DiaryContent = React.createClass({
             self.state.angular_evt.onScrollEnd(Math.abs(self.state.iscroll.grid.x) / self.state.display.px_per_ms + self.state.display.x_n);
             self.state.angular_evt.completedRendering.apply(self, Array.prototype.slice.call(arguments));
         }, 1000);
-
   	},
   	componentWillUnmount: function() {
   		$(window).off('resize');
@@ -287,6 +286,7 @@ var DiaryContent = React.createClass({
 		return React.DOM.div({
 			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + /*(props.currentResizeItem*/ (state.edit.active ? ' editing' : '')
 		},
+		React.createElement( UnassignedRoomPanel, {}),
 		React.createElement( TogglePanel, {
 			__toggleRows:  		self.__toggleRows
 		}),

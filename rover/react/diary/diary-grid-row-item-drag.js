@@ -319,7 +319,6 @@ var GridRowItemDrag = React.createClass({
 				style:       style,
 				className:   props.className + className,
 				children:    props.children
-
 			}
 		));
 	}
