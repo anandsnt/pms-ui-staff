@@ -2015,6 +2015,28 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.errorMessage = data;
 		});
 
+		var restrictionsArray = [
+			{"key": "CLOSED", "name": "CLOSED" },
+			{"key": "CLOSED_ARRIVAL", "name": "CLOSED TO ARRIVAL"},
+			{"key": "CLOSED_DEPARTURE", "name": "CLOSED TO DEPARTURE"},
+			{"key": "MIN_STAY_LENGTH", "name": "MIN LENGTH OF STAY"},
+			{"key": "MAX_STAY_LENGTH", "name": "MAX LENGTH OF STAY"},
+			{"key": "MIN_STAY_THROUGH", "name": "MIN STAY THROUGH"},
+			{"key": "MIN_ADV_BOOKING", "name": "MAX ADVANCED BOOKING"},
+			{"key": "MAX_ADV_BOOKING", "name": "MIN ADVANCED BOOKING"}
+
+		];
+
+
+
+
+		_.each(restrictionsArray, function(restrictionObject) {
+		   var restrictionKey = restrictionObject.key;
+		   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(restrictionKey);
+		   restrictionObject.restrictionBgColor = getRestrictionClass(restrictionKey);
+		   restrictionObject.restrictionIcon = getRestrictionIcon(restrictionKey);
+		});
+		$scope.legendRestrictionsArray = restrictionsArray;
 		initialize();
 
 	}
