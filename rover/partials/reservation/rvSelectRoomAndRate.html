@@ -58,4 +58,33 @@
     <div ng-if="stateCheck.activeMode=='ROOM_RATE'" ng-include src="'/assets/partials/reservation/rvRoomRatesList.html'"></div>
     <!-- <div ng-if="stateCheck.activeMode=='CALENDAR'" ng-include src="'assets/partials/reservation/rvStayDatesCalendar.html'"></div> -->
     <div ng-if="stateCheck.activeMode=='CALENDAR'" ng-include src="'/assets/partials/reservation/rvRoomRatesCalendar.html'"></div>
+
+     <ul class="restriction-legends" >
+
+            <!-- Restriction BG classes:
+                bg-red,
+                bg-green,
+                bg-blue,
+                bg-violet
+                Some Icons do not need a restriction-bg-class because they are grey
+             -->
+             <!-- Restriction Icons:
+                icon-cross
+                icon-block
+                Some Icons do not need a restriction-icon becuase they are blank or have values
+            -->
+
+              <li   ng-repeat="eachRestriction in legendRestrictionsArray">
+
+                  <span class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgColor}} {{eachRestriction.restrictionBgClass}}"></span>
+                  <span>{{eachRestriction.name}}</span>
+              </li>
+
+            <!-- Icon not retrieved by API in Old Rate Manager -->
+            <li>
+                <span class="restriction-icon  bg-drk">R</span>
+                <span>Multiple Restrictions</span>
+            </li>
+
+        </ul>
 </section>

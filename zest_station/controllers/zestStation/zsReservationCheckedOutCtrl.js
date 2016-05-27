@@ -358,20 +358,27 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     };
     try {
       // this will show the popup with full bill
-      $timeout(function() {
+      setTimeout(function() {
         /*
          * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
          */
-        $window.print();
+       
         if (sntapp.cordovaLoaded) {
-          var printer = (sntZestStation.selectedPrinter);
-          cordova.exec(function(success) {
+          setTimeout(function() {
+            var printer = (sntZestStation.selectedPrinter);
+            cordova.exec(function(success) {
+              $scope.clickedNoThanks(true); //now checking for email update / send
+              //checkOutGuest();
+            }, function(error) {
+             // printFailedActions();
+            }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+          }, 800);
+        }else{
+           $window.print();
+            setTimeout(function() {
             $scope.clickedNoThanks(true); //now checking for email update / send
-            //checkOutGuest();
-          }, function(error) {
-            printFailedActions();
-          }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
-        };
+          }, 100);
+        }
         $scope.printOpted = true;
         // provide a delay for preview to appear 
 
@@ -381,14 +388,11 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     };
     setTimeout(function() {
       $scope.isPrintRegistrationCard = false;
-
       // CICO-9569 to solve the hotel logo issue
       $("header .logo").removeClass('logo-hide');
       $("header .h2").addClass('text-hide');
-
       // remove the orientation after similar delay
       removePrintOrientation();
-      $scope.clickedNoThanks(true); //now checking for email update / send
     }, 100);
   };
 
