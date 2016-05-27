@@ -55,11 +55,11 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
             var options = {
                 params: {
                     data: {
-                        "export_date": dateFilter($scope.exportOptions.date, $rootScope.dateFormatForAPI)
+                        "date": dateFilter($scope.exportOptions.date, $rootScope.dateFormatForAPI)
                     }
                 },
                 successCallBack: function () {
-                    $scope.successMessage = 'Exact Online Export Success!';
+                    $scope.successMessage = 'Exact Online Export Started!';
                 }
             };
             $scope.callAPI(adExactOnlineSetupSrv.runExactOnlineExport, options);

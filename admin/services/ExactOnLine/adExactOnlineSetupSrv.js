@@ -38,9 +38,9 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
      */
     this.runExactOnlineExport = function(params) {
         var deferred = $q.defer();
-        var url = 'admin/save_ota_connection_config.json?interface=EXACTONLINE';
+        var url = 'api/hotel_settings/exactonline/run_process';
 
-        ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+        ADBaseWebSrvV2.putJSON(url, params).then(function(data) {
             deferred.resolve(data);
         },function(data){
             deferred.reject(data);
