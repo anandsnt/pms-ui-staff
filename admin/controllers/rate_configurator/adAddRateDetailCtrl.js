@@ -364,8 +364,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
                 if (!!selectedTask) {
                     $scope.rateData.tasks.push({
-                        id: selectedTask.id,
-                        name: selectedTask.name
+                        task_id: selectedTask.id
                     });
                 }
             });
