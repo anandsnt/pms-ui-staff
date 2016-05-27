@@ -7,6 +7,28 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var deferred = $q.defer(),
 			url = '/api/posting_accounts/' + params.account_id + '/bill_card';
 
+			rvBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					angular.forEach(data.bills,function(bill, index2) {
+		            	bill.page_no = 1;
+		            	bill.start = 1;
+		            	bill.end = 1;
+		            	bill.nextAction = false;
+		        		bill.prevAction = false;
+		        		bill.transactions = [];
+		        		bill.activeDate = null;
+		            });
+					deferred.resolve(data);
+				}.bind(this), function(data) {
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		this.fetchBillTransactionDetails = function(params) {
+			var deferred = $q.defer(),
+			url = '/api/bills/'+params.bill_id+'/transactions?date='+params.date+'&page='+params.page+'&per_page='+params.per_page;
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
