@@ -273,6 +273,37 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				resKey : 'data'
 			});
 		};
+
+		service.fetchScheduleFrequency = function() {
+			return callApi({
+				name   : 'scheduleFrequency',
+				method : 'getJSON',
+				url    : 'admin/export_frequencies.json',
+				resKey : 'results'
+			});
+		};
+		service.fetchTimePeriods = function() {
+			return callApi({
+				name   : 'scheduleTimePeriods',
+				method : 'getJSON',
+				url    : 'admin/export_time_periods.json',
+				resKey : 'results'
+			});
+		};
+		service.fetchSchedules = function() {
+			return callApi({
+				name   : 'schedulesList',
+				method : 'getJSON',
+				url    : 'admin/export_schedules.json',
+				resKey : 'results'
+			});
+		};
+		service.fetchOneSchedule = function(params) {
+			return callApi({
+				method : 'getJSON',
+				url    : 'admin/export_schedules/' + params.id
+			});
+		};
 		return service;
 	}
 ]);
