@@ -25,9 +25,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                         return item.is_default == true;
                     }
                     );
-                    // $scope.defaultTaskSubtask = _.filter(data.results,function(item)
-                    //     return item.tasks.is_default == true;
-                    // );
+                    
 
                     if ($scope.defaultTaskdefaultTask) {
                         $scope.rateData.task_id = $scope.defaultTask.id;
