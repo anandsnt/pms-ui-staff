@@ -75,11 +75,11 @@
 
             </ul>
             <ul class="rooms-and-rates wrapper" ng-if="stateCheck.activeView == 'ROOM_TYPE'">
+
                 <li ng-repeat="room in display.roomFirstGrid track by $index">
                     <a class="has-arrow toggle" ng-class="{active: !room.isCollapsed, disabled: borrowForGroups}" ng-click="showRatesList(room)">
                         <div class="data">
                             <h2>{{room.name}}</h2>
-
                             <!-- <span class="recommended" ng-show="!borrowForGroups && display.roomFirstGrid.length > 0 && $index > 0 && (room.defaultRate.adr - display.roomFirstGrid[0].defaultRate.adr) > 0">
                                 {{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{(room.defaultRate.adr - display.roomFirstGrid[0].defaultRate.adr) | number}}&nbsp;{{'RESV_MORE'|translate}}
                             </span> -->
@@ -104,7 +104,10 @@
                                 <label ng-if="!borrowForGroups && room.defaultRate.isGroupRate"> in Group Block</label>
                                 <label ng-if="!borrowForGroups && room.defaultRate.isAllotmentRate"> in Allotment</label>
                             </span>
-                             <span class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgColor}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in rate.restriction"></span>
+                            <span ng-repeat="roomRates in room.ratesArray">
+                              <span class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgColor}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in roomRates.restriction"></span>
+                            </span>
+
                         </div>
                         <div class="book-rate" ng-if="room.isCollapsed">
                             <h4 ng-hide="borrowForGroups || room.defaultRate.isCorporate" translate>RESV_BEST_RATE</h4>
