@@ -10,20 +10,32 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.detailsMenu = '';
             $scope.isStandAlone = $rootScope.isStandAlone;
         };
-
+        $scope.getSubtask = function(task){
+            var subtask = [];
+            subtask = _.filter(task,function(item){
+                        return item.is_default == true;
+                    });
+          return subtask;
+        }
         var getTasksForDefaultWorkType = function() {
             var succesCallBack = function(data) {
                 $scope.defaultWorkTypeTasks = data.results;
                 if (!$scope.rateData.task_id){
-                    var defaultTask = _.findWhere(data.results, {
-                        is_default: true
-                    });
-
-                    if (defaultTask) {
-                        $scope.rateData.task_id = defaultTask.id;
+                    $scope.defaultTask = _.filter(data.results,function(item){
+                        return item.is_default == true;
                     }
+                    );
+                    // $scope.defaultTaskSubtask = _.filter(data.results,function(item)
+                    //     return item.tasks.is_default == true;
+                    // );
+
+                    if ($scope.defaultTaskdefaultTask) {
+                        $scope.rateData.task_id = $scope.defaultTask.id;
+                    }
+                     console.log($scope.defaultTask.value);
                 }
-            };
+               
+           };
             var failureCallBack = function(error) {
                 $scope.errorMessage = error;
             };
@@ -31,7 +43,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 work_type_id: $scope.rateTypesDetails.hotel_settings.default_work_type.id
             };
 
-            $scope.invokeApi(ADRatesAddDetailsSrv.fetTasksForDefaultWorkType, params, succesCallBack, failureCallBack);
+            //$scope.invokeApi(ADRatesAddDetailsSrv.fetTasksForDefaultWorkType, params, succesCallBack, failureCallBack);
+            
+            $scope.invokeApi(ADRatesAddDetailsSrv.fetchWorkTypesValues, params, succesCallBack, failureCallBack);
         };
 
         /*

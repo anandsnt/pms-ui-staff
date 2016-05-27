@@ -60,10 +60,18 @@
                             </select>
                         </div>
                     </div>
-                    <div class="entry">
+                   <!--  <div class="entry">
                         <label>Cleaning Cycle</label>
                         <div class="select">
                             <select class="placeholder" ng-model="rateData.task_id" ng-options="task.id as task.name for task in defaultWorkTypeTasks">
+                                <option value="" disabled>Select Task</option>
+                            </select>
+                        </div>
+                    </div> -->
+                    <div class="entry" ng-repeat="taskname in defaultTask">
+                        <label>{{taskname.value}}</label>
+                        <div class="select">
+                            <select class="placeholder" ng-model="rateData.task_id" ng-options="task.id as task.name for task in taskname.tasks">
                                 <option value="" disabled>Select Task</option>
                             </select>
                         </div>
