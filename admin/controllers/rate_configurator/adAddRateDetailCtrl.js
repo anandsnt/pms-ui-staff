@@ -20,19 +20,24 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         var getTasksForDefaultWorkType = function() {
             var succesCallBack = function(data) {
                 $scope.defaultWorkTypeTasks = data.results;
-                if (!$scope.rateData.task_id){
-                    $scope.defaultTask = _.filter(data.results,function(item){
-                        return item.is_default == true;
-                    }
-                    );
-                    
+                $scope.selectedWorkTypeTask = {};
+                _.each(data.results, function(workType){
+                    var selectedTaskIds = _.pluck($scope.rateData.tasks, "id"),
+                        currentSelection = _.find(workType.tasks, function(task){
+                        return _.indexOf(selectedTaskIds, task.id) > -1;
+                    });
 
-                    if ($scope.defaultTaskdefaultTask) {
-                        $scope.rateData.task_id = $scope.defaultTask.id;
+                    if(!currentSelection){
+                        var defaultTask = _.find(workType.tasks,{
+                            is_default : true
+                        });
                     }
-                     console.log($scope.defaultTask.value);
-                }
-               
+
+                    $scope.selectedWorkTypeTask[workType.value] = (currentSelection && currentSelection.id) ||
+                        (defaultTask && defaultTask.id) || "";
+                });
+
+                $scope.updateSelectedTaskslist();
            };
             var failureCallBack = function(error) {
                 $scope.errorMessage = error;
@@ -224,7 +229,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'is_channel_only' : $scope.rateData.is_channel_only,
                 'code':$scope.rateData.code,
                 'task_id': $scope.rateData.task_id,
-                'booking_origin_id' : $scope.rateData.booking_origin_id
+                'booking_origin_id' : $scope.rateData.booking_origin_id,
+                'tasks' : $scope.rateData.tasks
             };
 
             // Save Rate Success Callback
@@ -345,6 +351,25 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                                     return obj.id === $scope.rateData.charge_code_id;
                                 });
             $scope.rateData.tax_inclusive_or_exclusive = selectedObj.tax_inclusive_or_exclusive;
+        };
+
+        $scope.updateSelectedTaskslist = function () {
+            $scope.rateData.tasks = [];
+            _.each($scope.selectedWorkTypeTask, function (value, taskType) {
+                var taskType = _.find($scope.defaultWorkTypeTasks, {
+                    value: taskType
+                });
+
+                var selectedTask = _.find(taskType.tasks, {id: parseInt(value)});
+
+                if (!!selectedTask) {
+                    $scope.rateData.tasks.push({
+                        id: selectedTask.id,
+                        name: selectedTask.name
+                    });
+                }
+            });
+            console.log("$scope.rateData.tasks", $scope.rateData.tasks);
         };
 
         $scope.init();
