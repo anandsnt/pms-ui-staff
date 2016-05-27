@@ -42,20 +42,9 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
          * @return {undefined}
          */
         $scope.saveExactOnlineSetup = function () {
-            var params = {};
-
-            if (!$scope.exactOnlineSetup.active) {
-                params = _.pick($scope.exactOnlineSetup, 'active');
-            } else {
-                params = _.extendOwn({}, $scope.exactOnlineSetup);
-            }
-
             var options = {
                 params: {
-                    data: {
-                        "product_cross_customer": params
-                    },
-                    interface: "EXACTONLINE"
+                    enabled: $scope.exactOnlineSetup.enabled
                 },
                 successCallBack: successCallBackOfExactOnlineSetup
             };
@@ -63,24 +52,14 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
         };
 
         $scope.runExport = function () {
-            console.log(dateFilter($scope.exportOptions.date, $rootScope.dateFormatForAPI));
-            var params = {};
-
-            if (!$scope.exactOnlineSetup.active) {
-                params = _.pick($scope.exactOnlineSetup, 'active');
-            } else {
-                params = _.extendOwn({}, $scope.exactOnlineSetup);
-            }
-
             var options = {
                 params: {
                     data: {
-                        "product_cross_customer": params
-                    },
-                    interface: "EXACTONLINE"
+                        "export_date": dateFilter($scope.exportOptions.date, $rootScope.dateFormatForAPI)
+                    }
                 },
-                successCallBack: function(){
-
+                successCallBack: function () {
+                    $scope.successMessage = 'Exact Online Export Success!';
                 }
             };
             $scope.callAPI(adExactOnlineSetupSrv.runExactOnlineExport, options);
@@ -91,7 +70,6 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
          * @return {undefined}
          */
         var initializeMe = function () {
-            $scope.exactOnlineSetup = exactOnlineSetupValues.data.product_cross_customer;
-            $scope.exactOnlineSetup.is_oauth_authorized = true;
+            $scope.exactOnlineSetup = exactOnlineSetupValues;
         }();
     }]);

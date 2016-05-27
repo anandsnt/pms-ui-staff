@@ -3,21 +3,22 @@
                                      form-title="{{'EXACT_ONLINE_SETUP_HEADER'|translate}}"></ad-form-header-with-back-button>
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <form class="form float">
             <ad-form-title full-width="true" form-title="{{'EXACT_ONLINE_SUB_TITLE'| translate}}"></ad-form-title>
             <fieldset class="holder left">
-                <ad-toggle-button is-checked="exactOnlineSetup.active"
-                                  is-disabled="!exactOnlineSetup.is_oauth_authorized"
+                <ad-toggle-button is-checked="exactOnlineSetup.enabled"
+                                  is-disabled="!exactOnlineSetup.authorized"
                                   label="{{'EXACT_ONLINE_ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
             </fieldset>
             <fieldset class="holder left">
                 <div class="entry full-width">
                     <label>
                         EXACT ONLINE
-                        <span class="oauth-status success" ng-if="exactOnlineSetup.is_oauth_authorized">
+                        <span class="oauth-status success" ng-if="exactOnlineSetup.authorized">
                             {{'EXACT_ONLINE_AUTHORIZED' | translate}}
                         </span>
-                        <span class="oauth-status" ng-if="!exactOnlineSetup.is_oauth_authorized">
+                        <span class="oauth-status" ng-if="!exactOnlineSetup.authorized">
                             {{'EXACT_ONLINE_UNAUTHORIZED' | translate}}
                         </span>
                     </label>
@@ -25,7 +26,7 @@
                         {{'EXACT_ONLINE_OAUTH' | translate}}
                     </a>
                 </div>
-                <div class="entry full-width has-datepicker" ng-if="exactOnlineSetup.is_oauth_authorized">
+                <div class="entry full-width has-datepicker" ng-if="exactOnlineSetup.authorized">
                     <label>
                         RUN EXPORT
                     </label>
