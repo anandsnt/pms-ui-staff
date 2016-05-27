@@ -355,6 +355,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								_.indexOf($scope.reservationData.ratesMeta[roomType.rate_id].linked_promotion_ids, $scope.reservationData.code
 									.id) > -1: false;
 
+
 					_.each(roomType.restrictions, function(restrictionObject) {
 					   var restrictionKey = restrictionObject.restriction_type_id;
 					   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
@@ -368,12 +369,14 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							ratesArray: [],
 							availability: roomType.availability
 						},
+					//Assigning 'restriction' to new param 'bestAvailableRateRestrictions' - since issue when colapse each room type
+					//CICO-29156
 						rateInfo = {
 							id: roomType.rate_id,
 							name: $scope.reservationData.ratesMeta[roomType.rate_id].name,
 							adr: roomType.adr,
 							dates: angular.copy(datesInitial),
-							restriction: roomType.restrictions,
+							bestAvailableRateRestrictions: roomType.restrictions,
 							numRestrictions: roomType.restrictions.length,
 							forRoomType: roomType.id,
 							buttonClass: getBookButtonStyle(roomType.restrictions.length || 0, roomType.rate_id, roomType.availability),
@@ -409,7 +412,14 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					var isMember = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member) ? !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member : false;
 					var isPromotion = ($scope.stateCheck.activeView == 'RECOMMENDED' && _.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1) ? _.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1 : false;
 
-					var proccesedRestrictions = processRestrictions(rate.first_restriction, rate.multiple_restrictions, rate.id),
+					_.each(rate.restrictions, function(restrictionObject) {
+					   var restrictionKey = restrictionObject.restriction_type_id;
+					   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
+					   restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
+					   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
+					});
+
+					var proccesedRestrictions = processRestrictions(rate.multiple_restrictions, rate.id),
 
 
 						rateInfo = {
@@ -419,6 +429,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							defaultRoomTypeId: rate.room_type_id,
 							defaultADR: rate.adr,
 							rooms: [],
+							restriction : rate.restrictions,
 							hasRoomsList: false,
 							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id, rate.availability),
 							isGroupRate: isGroupRate,
@@ -1691,7 +1702,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					rate.totalRoomsCount = response.total_count;
 					rate.hasRoomsList = true;
 					_.each(response.results, function(room) {
-						var proccesedRestrictions = processRestrictions(room.first_restriction, room.multiple_restrictions, rate.id),
+						var proccesedRestrictions = processRestrictions( room.multiple_restrictions, rate.id),
 							roomInfo = {
 								id: room.id,
 								name: $scope.reservationData.roomsMeta[room.id].name,
@@ -1700,7 +1711,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								adr: room.adr,
 								forRate: rate.id,
 								numRestrictions: proccesedRestrictions.restrictionCount || 0,
-								restriction: proccesedRestrictions.firstRestriction,
+								restriction: response.restrictions,
 								buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id, room.availability)
 							};
 						rate.rooms.push(roomInfo);
@@ -1724,6 +1735,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				room.isCollapsed = !room.isCollapsed;
 				$scope.refreshScroll();
 			};
+			//Only one best available rate for a room type
+			//CICO-29156
+			var bestAvailableRateOfSelectedRoom = room.ratesArray[0].id;
 			if (!room.totalRatesCount || showMoreRates) {
 				// Need to get the rates list before making it visible
 				var pageToFetch = 1;
@@ -1777,6 +1791,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isMember: isMember,
 							isPromotion: isPromotion
 						};
+						if(bestAvailableRateOfSelectedRoom === rate.id){
+							rateInfo.bestAvailableRateRestrictions = rate.restrictions
+						}
+
 						_.extend(rateInfo.dates[$scope.reservationData.arrivalDate], {
 							availability: rate.availability
 						});

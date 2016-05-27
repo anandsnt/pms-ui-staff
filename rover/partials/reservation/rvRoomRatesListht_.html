@@ -1,42 +1,10 @@
-
-<li>
-    <a href="#{room-type-id}" class="has-arrow toggle">
+<!-- Add class "closed" if restrictions apply to rate -->
+<li class="is-rate">
+    <a href="#{rate-id}" class="has-arrow toggle">
         <div class="data">
-            <h2>{Room Type Name}</h2>
-            <span class="count {green/red}">{Count} AVL</span> <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
-        </div>
-        <div class="book-rate">
-            <h4>{Rate Name / Corporate Rate}</h4>
-            <div class="price">
-                ${ADR}
-                <span>Avg. Rate per night</span>
-            </div>
+            <h2>{Rate/Package Name}</h2>
 
-            <div class="button-container">
-                <!-- If not bookable (button: grey): Don't show the button -->
-                <button type="button" class="button {button class}">Book</button>
-            </div>
-            <!--
-                Button should have class "green" in stay view, and "white green-text" in day view.
-                If it's booked room, use class "white blue-text", and have text "Booked".
-            -->
-        </div>
-    </a>
-    <ul id="{room-type-id}" class="rates hidden"> <!-- Remove class "hidden" when upper anchor is tapped -->
-        <li> <!-- Add class "closed" if restrictions apply to rate -->
-            <a href="#{rate-details-id}" class="has-arrow toggle">
-                <h3><!-- Add class "restricted" if restriction applies -->
-                    {Rate/Packge Name} ==
-                </h3>
-                <!-- If corporate rate, show:
-                      -- 'corp-class' can be:
-                                - group
-                                - allotment
-                                - travel-agent
-                                - company
-                    <span class="corporate {corp-class}">Corporate</span>-->
-
-                    <!-- If restriction applies, show:
+                <!-- If restriction applies, show:
                     <span class="restriction-icon {restriction-icon-class} {restriction-bg-class} {restriction-bgcolor}">{Restriction}</span>
 
                    <!-- 'Restriction' empty if there is no value, if multiple it is 'R' -->
@@ -53,30 +21,111 @@
                     icon-block
                     Some Icons do not need a restriction-icon becuase they are blank or have values
                 -->
+
+                 <!-- If corporate rate, show:
+                      -- 'corp-class' can be:
+                                - group
+                                - allotment
+                                - travel-agent
+                                - company
+                    <span class="corporate {corp-class}">Corporate</span>-->
+
+        </div>
+        <div class="book-rate">
+            <div class="price">
+                ${ADR}
+                <span>Avg. Rate per night</span>
+            </div>
+            <div class="button-container">
+                <!-- Don't show button if it can't be booked -->
+                <button type="button" class="button {button class}">Book</button>
+                <!--
+                    In stay view, button should have class "grey" if room type is restricted, and "green" when not restricted.
+                    If day view, use "white grey-text" instead of "grey", and "white green-text" instead of "green".
+                    If it's booked room, use class "white blue-text", and have text "Booked".
+                    If it's closed but can be overriden add .red
+                -->
+            </div>
+        </div>
+    </a>
+    <!-- Remove .hidden if toggled-->
+    <ul id="{rate-id}" class="rates hidden">
+        <li class="is-room">
+            <a href="#{room-id}" class="has-arrow toggle">
+                <div class="data">
+                    <h3>{Room Name}</h3>
+                    <span class="count {green/red}">{Count} AVL</span> <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
+                </div>
+                <!-- Show if there is a rate name or price info -->
+                <h4>
+                    {Rate Name}
+                    <!-- Show if any -->
+                    <span>{Price-info | ex. + $10 per night}</span>
+                </h4>
                 <div class="price">
                     ${ADR}
                     <span>Avg. Rate per night</span>
                 </div>
                 <div class="button-container">
-                    <!-- Don't show button if it can't be booked -->
+                    <!-- If not bookable (button: grey): Don't show the button -->
                     <button type="button" class="button {button class}">Book</button>
                 </div>
                 <!--
-                    In stay view, button should have class "grey" if room type is restricted, and "green" when not restricted.
-                    If day view, use "white grey-text" instead of "grey", and "white green-text" instead of "green".
+                    Button should have class "green" in stay view, and "white green-text" in day view.
                     If it's booked room, use class "white blue-text", and have text "Booked".
                 -->
-                <div id="{rate-details-id}" class="rate-details hidden"> <!-- Remove class "hidden" when upper anchor is tapped -->
-                    {same as rate.html, L82-L124}
-                </div>
             </a>
+            <!-- remove .hidden if toggled -->
+            <div id="{room-id}" class="rate-details hidden">
+                <ul class="info">
+                    <li>
+                        {Room Details}
+                    </li>
+                    ... repeat for each detail
+                </ul>
+                <table class="room-cost">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Rate</th>
+                            <th>Add on</th>
+                            <th>TAXES(INCL)</th>
+                            <th>TAXES(EXCL)</th>
+                            <th>Total</th>
+                            <th class="edit"></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="total-label">Total Room Cost</td>
+                            <td colspan="2" class="total-value">${total value}</td>
+                            <td class="edit">
+                                <a href="{discount popup}" class="button with-icon only-icon purple edit">
+                                    <span class="icons icon-pencil"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td>{Date | Tuesday, 05-10-2016}</td>
+                            <td>${rate}</td>
+                            <td>${add-on}</td>
+                            <td>${taxes incl}</td>
+                            <td>${taxes excl}</td>
+                            <td>${total}</td>
+                            <td class="edit"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </li>
-        ... repeat for all rates of the room type
+        ... repeat for each room
     </ul>
 </li>
-.. repeat for first two room types
+.. repeat for first two rates
 
 <!-- Break after first two rates -->
 <li class="break">
-    <span>See more room types</span>
+    <span>See more rates</span>
 </li>
