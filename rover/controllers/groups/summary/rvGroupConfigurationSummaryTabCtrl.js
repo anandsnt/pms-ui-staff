@@ -1256,7 +1256,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 					// add custom rate obect
 					sumData.rateSelectDataObject.push({
-						id: -1,
+						id: "-1",
 						name: "Custom Rate"
 					});
 					// group rates by contracted and group rates.
