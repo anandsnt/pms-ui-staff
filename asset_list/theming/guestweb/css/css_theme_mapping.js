@@ -51,7 +51,8 @@ module.exports = {
 			'guestweb_avery':[ themeCSSRoot + 'guestweb_avery.css'],
 			'guestweb_knickerbocker_yacht_club':[ themeCSSRoot + 'guestweb_knickerbocker_yacht_club.css'],
 			'guestweb_paradise_point':[ themeCSSRoot + 'guestweb_paradise_point.css'],
-			'guestweb_valencia_santana_row':[ themeCSSRoot + 'guestweb_valencia_santana_row.css']
+			'guestweb_valencia_santana_row':[ themeCSSRoot + 'guestweb_valencia_santana_row.css'],
+			'guestweb_sorella_kansas_city':[ themeCSSRoot + 'guestweb_sorella_kansas_city.css']
 
 		}
 	}

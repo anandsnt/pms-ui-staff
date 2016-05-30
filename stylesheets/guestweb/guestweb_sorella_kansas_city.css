@@ -1,0 +1,3 @@
+@import 'guestweb/css/less/snt.less';
+@import (inline) 'shared/lib/css/bootstrap.min.css';
+@import 'guestweb/common_css/sorella_kansas_city/theme.less';
