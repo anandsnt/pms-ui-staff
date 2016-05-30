@@ -835,6 +835,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			if(!!activebillTab.activeDate && activebillTab.transactions.length === 0 ){
 				getBillTransactionDetails();
 			}
+			else{
+				refreshRegContentScroller();
+			}
     	};
 
     	// Refresh registration-content scroller.
