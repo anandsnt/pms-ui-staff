@@ -50,6 +50,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     }
   });
 
+  $stateProvider.state('admin.ideasSetup',{
+    templateUrl: '/assets/partials/interfaces/ideas/adIdeasSetup.html',
+    controller: 'adIdeasSetupCtrl',
+    url : '/ideas/setup',
+    resolve: {
+      ideaSetup : ['adIdeasSetupSrv', function(adIdeasSetupSrv){
+        return adIdeasSetupSrv.getIdeaSetup();
+      }]
+    }
+  });
+
   $stateProvider.state('admin.ifcComtrolSetup', {
     templateUrl: '/assets/partials/IFCComtrol/adIFCComtrolSetup.html',
     controller: 'adIFCComtrolSetupCtrl',

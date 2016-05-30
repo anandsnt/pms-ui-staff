@@ -99,6 +99,6 @@
     "HOUSE_OVERBOOK": "Room Block Allocation exceeds House Availability.",
     "HOUSE_AND_ROOMTYPE_OVERBOOK": "Room Block Allocation exceeds Room Type availability and House availability.",
     "INSUFFICIENT_INV_GROUP_REVIEW_ROOM_BLOCK":"Insufficient Inventory on Group, please review Group Room Block",
-    "ROOM_TYPE_NOT_CONFIGURED_IN_GROUP":"Room type is not configured in Group, please review"
-
-
+    "ROOM_TYPE_NOT_CONFIGURED_IN_GROUP":"Room type is not configured in Group, please review",
+    "EXCLUDE_CANCELLED": "Exclude Cancelled",
+    "PENDING_ONLY": "Pending Only"

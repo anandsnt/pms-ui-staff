@@ -24,12 +24,17 @@
 
 "STATION_LANGUAGE_SUPPORT":"Language Support",
 "STATION_LANGUAGE_SUPPORT_SWITCH":"Multi-Language Support",
+"STATION_LANGUAGE_DEFAULT":"Default Language",
+"STATION_LANGUAGE_DEFAULT_PLACEHOLDER":"Select Language",
+
+
 "STATION_LANGUAGE_ENGLISH":"English",
 "STATION_LANGUAGE_FRENCH":"Français",
 "STATION_LANGUAGE_SPANISH":"Español",
 "STATION_LANGUAGE_GERMAN":"Deutsch",
 "STATION_LANGUAGE_ITALIAN":"Italiano",
-"STATION_LANGUAGE_CASTELLONA":"Castellano",
+"STATION_LANGUAGE_CASTELLANO":"Castellano",
+
 "ACTIVATE_BOOKING_ENGINE_POPUP" :"Activate Booking Engine Popup",
 "BOOKING_URL":"Booking Engine URL",
 "BUTTON_LABEL":"Button Label",
@@ -43,7 +48,10 @@
 "ENFORCE_DEPOSIT":"Enforce Deposit",
 "OFFER_EARLY_CHECKIN":"Offer Early Check-In",
 "QR_SCANNER":"QR Scanner",
+"QR_SCANNER_TYPE_SAM":"Samsotech",
+"QR_SCANNER_TYPE_DATA":"Datalogic",
 "PUK_AUTH":"Authentication",
+"PUK_QR":"QR Code Scanner",
 "REG_CARD_DELIVERY":"Registration card delivery options",
 "SECOND_AUTHENTICATION":"Second Authentication",
 "DEPARTURE_DATE":"Departure Date",
@@ -63,7 +71,8 @@
 "CHROME_APP_ID":"Chrome App ID",
 "STATION_PRINTER_OPTIONS" : "Station Printer Options",
 "OWS_GUEST_MESSAGES" : "OWS Guest Messages",
-"BYPASS_CC_FOR_PREPAID_RESERVATIOIN":"Bypass Credit Card for Prepaid Reservations"
+"BYPASS_CC_FOR_PREPAID_RESERVATIOIN":"Bypass Credit Card for Prepaid Reservations",
+"DISPLAY_TERMS_AND_CONDITIONS" : "Display Terms & Conditions"
 
 
 

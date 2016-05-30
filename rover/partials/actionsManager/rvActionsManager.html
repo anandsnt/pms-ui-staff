@@ -10,9 +10,9 @@
         <form method="post" action="" id="actions-search"
               ng-class="{'action_filters_visible open':filterOptions.showFilters}" class="search-form actions-form"
               role="search"> <!-- Add class "open" when filters are opened -->
-            <button ng-click="toggleExtraFilters()" type="button" class="button with-icon only-icon"
+            <button ng-click="toggleExtraFilters()" type="button" class="button white with-icon only-icon"
                     ng-class="{'active open':filterOptions.showFilters}">
-                <span class="icons icon-filter"></span>
+                <span class="icons icon-filter" ng-class="{'active':filterOptions.showFilters}"></span>
             </button>
 
             <div class="entry dates">
@@ -116,7 +116,7 @@
             </figure>
             <div class="data">
                 <h1>{{selectedAction.guest_name}}</h1>
-                <strong class="h2" ng-if="selectedAction.room_no">Room {{selectedAction.room_no}}</strong>
+                <strong ng-if="selectedAction.room_no">Room {{selectedAction.room_no}}</strong>
             </div>
             <div class="dates">
                 <div class="date">
@@ -136,7 +136,7 @@
         </div>
         <div class="summary">
             <div id="action-summary">
-                <h3>{{selectedAction.description}}</h3>
+                <h3 class="word_wrap">{{selectedAction.description}}</h3>
                 <div class="info assigned">
                     <span class="label">Assigned To</span>
                     {{selectedAction.assigned_to.name}}
@@ -210,4 +210,4 @@
     <!-- New Action -->
     <button type="button" ng-hide="actions.length === 0" class="button green" ng-click='initNewAction()'>New Action
     </button>
-</form> 
+</form>

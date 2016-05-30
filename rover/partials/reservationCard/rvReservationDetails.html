@@ -44,10 +44,14 @@
             </a>
 
 
-            <a class="button toggle has-arrow" ng-class="{'active': shouldShowGuestDetails }" ng-click="toggleGuests()">
+            <a class="button toggle has-arrow" ng-class="{'active': shouldShowGuestDetails }" ng-click="toggleGuests()" ng-hide="shouldDisableGuestsButton()">
 
                 <span class="label">Guests</span> {{ reservationParentData.rooms[0].numInfants + reservationParentData.rooms[0].numChildren + reservationParentData.rooms[0].numAdults }}
             </a>
+            <div class="inactive-nights" ng-show="shouldDisableGuestsButton()">
+                <span class="label">Guests</span> {{ reservationParentData.rooms[0].numInfants + reservationParentData.rooms[0].numChildren + reservationParentData.rooms[0].numAdults }}
+            </div>
+
             <!-- nights button is clickable only for the below status -->
             <a class="button next-view" ng-show="shouldShowChangeStayDatesButton()" ng-click="extendNights()" ng-class="{'has-arrow' : !shouldDisableExtendNightsButton()}">
                 <span class="label">
@@ -183,8 +187,8 @@
                     <label class="label" for="adults-count">Adults</label>
                     <!-- <input name="adults-count" id="adults-count" type="text" ng-model="guestData.adult_count" value="{{guestData.adult_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
                     <div class="select">
-                        <select ng-readonly="!isStandAlone" name="adults-count" id="adults-count" ng-model="guestData.adult_count" ng-change="onStayCardOccupancyChange()" ng-disabled="!!reservationData.reservation_card.group_id">
-                            <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==guestData.adult_count">{{i}}</option>
+                        <select ng-readonly="!isStandAlone" name="adults-count" id="adults-count" ng-model="guestData.adult_count" ng-change="onStayCardOccupancyChange()" >
+                            <option ng-repeat="i in [1, maxAdultsForReservation] | makeRange" value="{{i}}" ng-selected="i==guestData.adult_count">{{i}}</option>
                         </select>
                     </div>
                 </li>

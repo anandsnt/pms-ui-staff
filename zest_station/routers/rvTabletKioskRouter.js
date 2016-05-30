@@ -66,6 +66,9 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             resolve: {
                 countryList: function(zsHotelDetailsSrv){
                     return zsHotelDetailsSrv.fetchCountryList();
+                },
+                sortedCountryList: function(zsHotelDetailsSrv){
+                     return zsHotelDetailsSrv.fetchSortedCountryList();
                 }
             }
         });
@@ -135,7 +138,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          
          // //check-in [ reservation-details ]
          $stateProvider.state('zest_station.early_checkin_upsell', {
-            url        : '/reservation_details/:mode',
+            url        : '/reservation_details/:mode/:early_checkin_offer_id',
             templateUrl: '/assets/partials/kiosk/specific/reservation-details.html',
             controller: 'zsEarlyCheckinCtrl'
          });
@@ -143,21 +146,22 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          
         // //early-check-in unavailable [ reservation-details ]
          $stateProvider.state('zest_station.early_checkin_unavailable', {
-            url        : '/reservation_details/:mode',
+            url        : '/reservation_details/:mode/:early_checkin_offer_id',
             templateUrl: '/assets/partials/kiosk/specific/early-unavailable.html',
             controller: 'zsEarlyCheckinCtrl'
+            
          });
         // //early-check-in unavailable [ reservation-details ]
          $stateProvider.state('zest_station.early_checkin_prepaid', {
-            url        : '/reservation_details/:mode',
+            url        : '/reservation_details/:mode/:early_checkin_offer_id',
             templateUrl: '/assets/partials/kiosk/specific/early-prepaid.html',
             controller: 'zsEarlyCheckinCtrl'
          });
         // //early-check-in selection nav [ reservation-details ]
          $stateProvider.state('zest_station.early_checkin_nav', {
-            url        : '/reservation_details/:mode',
+            url        : '/reservation_details/:mode/:early_checkin_offer_id',
             templateUrl: '/assets/partials/kiosk/specific/early-available.html',
-            controller: 'zsEarlyCheckinCtrl' 
+            controller: 'zsEarlyCheckinCtrl'
          });
          
          
@@ -281,7 +285,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          $stateProvider.state('zest_station.find_reservation', {
              url: '/find_reservation', 
              controller: 'zsFindReservationCtrl',
-             templateUrl: '/assets/partials/kiosk/specific/zsFindReservation.html',
+             templateUrl: '/assets/partials/kiosk/specific/zsFindReservation.html'
          });
          
          
@@ -362,7 +366,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
          $stateProvider.state('zest_station.admin', {
              url: '/find_reservation', 
              controller: 'zsAdminCtrl',
-             templateUrl: '/assets/partials/kiosk/admin.html',
+             templateUrl: '/assets/partials/kiosk/specific/zsAdminSettings.html',
          });
 
          

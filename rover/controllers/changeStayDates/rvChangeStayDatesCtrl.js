@@ -311,6 +311,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				}
 
 			});
+			var firstDateInAvailableDate = $scope.stayDetails.calendarDetails.available_dates[0].date;
+			var indexOfFirstAvailableDateInStayDates = _.findIndex($scope.stayDetails.calendarDetails.stay_dates, {"date": firstDateInAvailableDate})
+			var remainingStayDatesArray = _.first($scope.stayDetails.calendarDetails.stay_dates, parseInt(indexOfFirstAvailableDateInStayDates));
+			$(remainingStayDatesArray).each(function(index) {
+				$scope.totRate += escapeNull(this.rate) === "" ? 0 : parseInt(this.rate);
+			});
 
 			if (!$scope.isStayRatesSuppressed) {
 				//calculating the avg. rate
@@ -629,7 +635,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			 * Three new params added to the API:
 			 * 			is_house_available: true/false
 			 *  		is_room_type_available: true/false
-			 *  		is_restricted: true/false 
+			 *  		is_restricted: true/false
 			 */
 
 			var events = [],
@@ -737,7 +743,14 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				fromState: 'STAY_CARD',
 				company_id: $scope.reservationData.company.id,
 				travel_agent_id: $scope.reservationData.travelAgent.id,
-				group_id: $scope.reservationData.group.id,
+				//Related to CICO-27413 & CICO-17973
+				//group_id passing as '' => for normal reservation and group reservation
+				//rooms and rates screen - No need of group id - for both normal grp res
+				//If it is coming thru 'Find Rooms and Rates' button in change staydates screen
+				//borrow_for_groups - this stateParam is used in rooms and rates screen to show/hide ceratin fields
+				//borrow_for_groups - from this screen - if grp id present then this flag will be false
+				group_id: '',
+				borrow_for_groups: ($scope.reservationData.group.id) ? 'true': 'false',
                 room_type_id: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
                 adults: $scope.reservationData.tabs[$scope.viewState.currentTab].numAdults,
                 children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren

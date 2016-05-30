@@ -6,8 +6,8 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
   'zsEventConstants',
   '$stateParams',
   'zsModeConstants',
-  '$window', '$timeout',
-  function($scope, $state, zsUtilitySrv, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout) {
+  '$window', '$timeout','$filter',
+  function($scope, $state, zsUtilitySrv, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout,$filter) {
 
     BaseCtrl.call(this, $scope);
 
@@ -351,22 +351,34 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     $('.popup').hide(); //hide timeout elements
     $('.invis').hide(); //hide timeout elements
     $('#popup-overlay').hide(); //hide timeout elements
+    var printFailedActions = function(){
+       $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKOUT_PRINT_FAILED');
+       $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':'out-of-order','reason':$scope.zestStationData.workstationOooReason});
+       $state.go('zest_station.error');
+    };
     try {
       // this will show the popup with full bill
-      $timeout(function() {
+      setTimeout(function() {
         /*
          * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
          */
-        $window.print();
+       
         if (sntapp.cordovaLoaded) {
-          var printer = (sntZestStation.selectedPrinter);
-          cordova.exec(function(success) {
+          setTimeout(function() {
+            var printer = (sntZestStation.selectedPrinter);
+            cordova.exec(function(success) {
+              $scope.clickedNoThanks(true); //now checking for email update / send
+              //checkOutGuest();
+            }, function(error) {
+             // printFailedActions();
+            }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+          }, 800);
+        }else{
+           $window.print();
+            setTimeout(function() {
             $scope.clickedNoThanks(true); //now checking for email update / send
-            //checkOutGuest();
-          }, function(error) {
-            $state.go('zest_station.error');
-          }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
-        };
+          }, 100);
+        }
         $scope.printOpted = true;
         // provide a delay for preview to appear 
 
@@ -376,14 +388,11 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     };
     setTimeout(function() {
       $scope.isPrintRegistrationCard = false;
-
       // CICO-9569 to solve the hotel logo issue
       $("header .logo").removeClass('logo-hide');
       $("header .h2").addClass('text-hide');
-
       // remove the orientation after similar delay
       removePrintOrientation();
-      $scope.clickedNoThanks(true); //now checking for email update / send
     }, 100);
   };
 

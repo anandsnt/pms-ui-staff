@@ -14,7 +14,11 @@
             <!-- Scenario 1: Room, Room Type, Rate & House is available  -->
             <section ng-if="ngDialogData.is_house_available && ngDialogData.is_rate_available && ngDialogData.is_assigned_room_available">
                 <strong class="h2 message">Stay Dates change possible</strong>
-                <span class="notice" ng-if="ngDialogData.is_outside_group_stay_dates">Reservation belongs to Group {{ngDialogData.group_name}}. Changing the dates to outside the Group's arrival & departure dates will detach the reservation from the Group & Group Billing</span>
+
+                <!-- This senario is currently discharged for now, may be in future -->
+                <!-- 'is_outside_group_stay_dates' will always be sent as 'false' from server -->
+                <!-- <span class="notice" ng-if="ngDialogData.is_outside_group_stay_dates">Reservation belongs to Group {{ngDialogData.group_name}}. Changing the dates to outside the Group's arrival & departure dates will detach the reservation from the Group & Group Billing</span> -->
+
                 <span class="notice" ng-if="ngDialogData.is_stay_cost_changed && !ngDialogData.is_outside_group_stay_dates">Total Stay Cost will change, please review rate</span>
                 <!-- // Display this only if stay costs change, otherview don't. -->
                 <div class="dates-update old">

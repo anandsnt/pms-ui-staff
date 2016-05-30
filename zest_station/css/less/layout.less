@@ -381,7 +381,8 @@
          &.align-center {
             #flexbox > .parent('', center, '', '');
             
-            .button:nth-child(2) { margin-left: 40px; }
+            .button:nth-child(2),
+            .button:nth-child(3) { margin-left: 40px; }
         }
 
         &.small-text {
@@ -625,6 +626,9 @@
             .size(80px, 90px);
 
             &:last-child { margin-left: 20px; }
+        }
+        .flex{
+            width: initial !important;
         }
     }
 
@@ -1079,4 +1083,15 @@
 .ows-msg-number{
     margin-top:33%;
     color:red !important;
+}
+
+/* Admin Screen */
+.admin-screen {
+    &#main {
+        padding-top: 60px;
+    }
+
+    #textual {
+        #calc  > #height > .remove( 100%, 120px ); 
+    }
 }

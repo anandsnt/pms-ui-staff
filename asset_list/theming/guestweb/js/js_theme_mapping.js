@@ -44,19 +44,18 @@ module.exports = {
 			'guestweb_porto_vista':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_chalet_view':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_crawford':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_beacon_hill':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_boston_park':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_dutch':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_beau_mont':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_hotel_ivrine':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_boston_park':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_beacon_hill':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_paradise_point':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_knickerbocker_yacht_club':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_kingsley':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_avery':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_knickerbocker_yacht_club':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_paradise_point':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_valencia_santana_row':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_sorella_kansas_city':[ themeJsRoot + 'app_router_common.js']
-
-
+			'guestweb_sorella_kansas_city':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_newyork':[ themeJsRoot + 'app_router_mgm_chain.js']
 		}
 	}
 }

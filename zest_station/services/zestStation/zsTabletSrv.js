@@ -259,6 +259,17 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv','zsBaseWebS
             return deferred.promise;
         };
 
+        this.updateWorkStationOos = function(params){
+            var deferred = $q.defer(),
+                url = 'api/workstations/'+ params.id+'/set_out_or_order.json';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
         this.checkInGuest = function(params) {
             var deferred = $q.defer(),
@@ -327,6 +338,18 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv','zsBaseWebS
         this.fetchRegistrationCardPrintData = function(params) {
             var deferred = $q.defer();
             var url = '/api/reservations/' + params.id + '/print_registration_card';
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        this.fetchRegistrationHotelSetting = function() {
+            var deferred = $q.defer();
+            var url = '/api/hotel_settings/show_hotel_reservation_settings';
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -431,6 +454,18 @@ sntZestStation.service('zsTabletSrv', ['$http', '$q', 'zsBaseWebSrv','zsBaseWebS
             var url = 'api/workstations/set_workstation';
         
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        
+        
+        this.updateGuestTabDetails = function(data) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/'+data.reservation_id+'/reservations_guest_details';
+            zsBaseWebSrv2.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
