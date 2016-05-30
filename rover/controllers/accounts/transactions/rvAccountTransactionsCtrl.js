@@ -957,6 +957,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 */
 		$scope.clickedSummaryDate = function( date ){
 			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+			activebillTab.page_no = 1;
 			activebillTab.activeDate = date;
 			getBillTransactionDetails();
 		};
