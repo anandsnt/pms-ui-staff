@@ -57,7 +57,8 @@ module.exports = {
 			'guestweb_mirage': [ themeJsRoot + 'app_router_mgm_chain.js' , themeJsRoot + 'app_router_mirage.js'],
 			'guestweb_ponchartrain':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_valencia_san_antonio':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_monte_carlo' 	: [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte.js']
+			'guestweb_monte_carlo' 	: [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte.js'],
+			'guestweb_sorella_houston':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }
