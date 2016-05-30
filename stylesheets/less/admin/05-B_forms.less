@@ -89,6 +89,13 @@
             #pixel-to-percent > .width(280, 580);
             .pull-left;
 
+            &.col1-3 { 
+                width: 30%; 
+                margin-right: 3.3333% !important;
+
+                &:last-child { margin-right: 0 !important; }
+            }
+
             &.rel {
                 position: relative;
 
@@ -171,6 +178,36 @@
                 .show;
 
                 input { background: @white; }
+                .select {
+                    &.white {
+
+                        select {
+                            background-color: @white;
+                        }
+                        &:after {
+                            background-color: @white;
+                        }
+
+                    }
+                }
+
+                .switch-container {
+                    width: 100%;
+                    margin-bottom: 20px;
+                    .switch-button {
+                        background-color: white;
+                        width: 50%;
+                        display: block;
+                        margin: 0 auto;
+                        height: 40px;
+
+                        label {
+                            span {
+                                line-height: 30px;
+                            }
+                        }
+                    }
+                }
 
                 .radio,
                 .checkbox {
@@ -266,6 +303,12 @@
                     margin-bottom: 10px; 
 
                     &:nth-of-type(even):not(.full-width) { margin-right: 0; }
+                }
+
+                &.entry-no-bottom {
+                    .entry {
+                        margin-bottom: 0;
+                    }
                 }
             }
 
@@ -628,26 +671,76 @@
         .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
         #border-radius > .rounded(20px);
         
-        .switch-icon {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            z-index: 9;
-            .gradient-with-image(@onOffLines, @grey1, @white);
-            background-position: 50% 50%, 0 0;
-            background-repeat: no-repeat, repeat;
-            background-size: 6px 7px, auto;
-            .hide-text;
-            .show;
-            .square(22px);
-            .transition;
-            #border-radius > .rounded(22px);
+        &.with-text {
+            overflow: hidden;
+            #border-radius > .rounded();
+            input[type="checkbox"] {
+                height: 100%;
+            }
+            
+            label {
+                width: 100%;
+                height: 100%;
+                padding: 5px;
+                position: absolute;
+                span {
+                    float: left;
+                    width: 50%;
+                    height: 100%;
+                    text-align: center;
 
-            @media @highdpi {
-                .gradient-with-image(@onOffLines2x, @grey1, @white);
+                    &.button {
+                        color: @white;
+                    }
+                }
+                &.data-off {
+                    left: 0;
+                }
+                &.data-on {
+                    left: 100%;
+                }
+                .transition(left);
+            }
+           
+            &.on {
+                label {
+                    &.data-off {
+                    left: -100%;
+                    }
+                    &.data-on {
+                        left: 0;
+                    }
+                }
+            }
+        }
+        
+        &:not(.with-text){
+            .switch-icon {
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                z-index: 9;
+                .gradient-with-image(@onOffLines, @grey1, @white);
                 background-position: 50% 50%, 0 0;
                 background-repeat: no-repeat, repeat;
                 background-size: 6px 7px, auto;
+                .hide-text;
+                .show;
+                .square(22px);
+                .transition;
+                #border-radius > .rounded(22px);
+
+                @media @highdpi {
+                    .gradient-with-image(@onOffLines2x, @grey1, @white);
+                    background-position: 50% 50%, 0 0;
+                    background-repeat: no-repeat, repeat;
+                    background-size: 6px 7px, auto;
+                }
+            }
+
+            &.on {
+                .gradient(@greenEnd, @greenStart);
+                .switch-icon { left: 34px; }
             }
         }
 
@@ -663,11 +756,6 @@
             .opacity(0);
             .show;
         }   
-
-        &.on {
-            .gradient(@greenEnd, @greenStart);
-            .switch-icon { left: 34px; }
-        }
 
         &.single { margin-top: 5px; }
 

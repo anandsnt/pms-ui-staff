@@ -28,7 +28,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     "id": "",
                     "type": "",
                     "value_abs": "",
-                    "value_sign": ""
+                    "value_sign": "",
+                    "is_copied" : false
                 },
                 "rate_type": {
                     "id": "",
@@ -42,7 +43,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "end_date": "",
                 "end_date_for_display": "",
                 "commission_details":{},
-                "is_discount_allowed_on": true //CICO-25305 - For new rates we are enabling default
+                "is_discount_allowed_on": true //CICO-25305 - For new rates we are enabling default,
+
             };
             // intialize rateData dictionary - END
             $scope.originOfBookings = [];
@@ -121,14 +123,20 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * toogle different rate view
          */
         $scope.$on("changeMenu", function(e, value) {
+            $scope.changeMenu(value);
+        });
+
+        /*
+        * Function to change the menu on the rate setup screen
+        */
+        $scope.changeMenu = function(value) {
             // keep track of previous menu for switching - on Cancel button click
             $scope.prevMenu = $scope.rateMenu;
             if (!isNaN(parseInt(value))) {
                 value = "dateRange." + value;
             }
             $scope.rateMenu = value;
-
-        });
+        };
 
         $scope.$on("errorReceived", function(e, value) {
             $scope.errorMessage = value;
@@ -278,6 +286,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.rateData.based_on.type = data.based_on.type;
                 $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value);
                 $scope.rateData.based_on.value_sign = data.based_on.value > 0 ? "+" : "-";
+                $scope.rateData.based_on.is_copied = data.based_on.is_copied;
             } else {
                 $scope.rateData.based_on = {
                     "id": "",
@@ -313,10 +322,15 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         };
 
 
-        var getActiveDateRange = function() {
+        var getActiveDateRange = function(dateRange) {
             var beginDate = '';
             var endDate = '';
-            var hotelBusinessDate = new Date($scope.hotel_business_date).getTime();
+            var hotelBusinessDate = null;
+            if ($scope.is_edit) {
+                hotelBusinessDate = new Date($scope.hotel_business_date).getTime();
+            } else {
+                hotelBusinessDate = new Date($scope.businessDate).getTime();
+            }
             var keepGoing = true;
             var activeDateRange = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].id;
             angular.forEach($scope.rateData.date_ranges, function(dateRange, index) {
@@ -331,6 +345,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             });
             return activeDateRange;
         };
+
+
 
         $scope.$on('deletedAllDateRangeSets', function(e, dateRangeId) {
             angular.forEach($scope.rateData.date_ranges, function(dateRange, index) {
@@ -374,6 +390,16 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.cancelMenu = function() {
             $scope.$emit("changeMenu", $scope.prevMenu);
         };
+
+        /*
+        * Listener to activate the set tab while selecting the copy from option
+        */
+        $scope.$on("activateSetTab", function(e, value) {
+            if ($scope.rateData.date_ranges.length > 0) {
+                var dateRange = getActiveDateRange();
+                $scope.changeMenu(dateRange);
+            }
+        });
 
         /*
         * Fetches the list of origin of bookings available, sets only the active ones

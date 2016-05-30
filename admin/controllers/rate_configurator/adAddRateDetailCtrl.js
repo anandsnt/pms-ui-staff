@@ -47,7 +47,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             };
 
             //$scope.invokeApi(ADRatesAddDetailsSrv.fetTasksForDefaultWorkType, params, succesCallBack, failureCallBack);
-            
+
             $scope.invokeApi(ADRatesAddDetailsSrv.fetchWorkTypesValues, params, succesCallBack, failureCallBack);
         };
 
@@ -229,6 +229,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'is_channel_only' : $scope.rateData.is_channel_only,
                 'code':$scope.rateData.code,
                 'task_id': $scope.rateData.task_id,
+                'is_copied' : $scope.rateData.based_on.is_copied,
                 'booking_origin_id' : $scope.rateData.booking_origin_id,
                 'tasks' : $scope.rateData.tasks
             };
@@ -239,7 +240,11 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 $scope.detailsMenu = "";
                 $('#activityLogArea').scope().detailsMenu = '';
                 $scope.$emit('hideLoader');
-                $scope.$emit("changeMenu", 'Room types');
+                if($scope.rateData.based_on && $scope.rateData.based_on.is_copied == true) {
+                    $scope.$emit("activateSetTab");
+                } else {
+                    $scope.$emit("changeMenu", 'Room types');
+                }
                 $scope.$emit("rateChangedFromDetails");
 
             };
