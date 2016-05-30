@@ -10,7 +10,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 	'zsGeneralSrv',
 	function($scope, $stateParams, $state, zsEventConstants,$controller,$timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv) {
         BaseCtrl.call(this, $scope);
-
         /**********************************************************************************************
         **      Please note that, not all the stateparams passed to this state will not be used in this state, 
         **      however we will have to pass this so as to pass again to future states which will use these.
@@ -85,7 +84,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     'payment_type_id': $stateParams.payment_type_id,
                     'guest_email': $stateParams.guest_email,
                     'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
-                    'first_name': $stateParams.first_name
+                    'first_name': $stateParams.first_name,
+                    'balance_amount': $stateParams.balance_amount
                 };
                 
                 
@@ -384,7 +384,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 } else {
                     data.amount = "1.00";
                 }
-                data.reservation_id = $state.selectedReservation.id;
+                data.reservation_id = $stateParams.reservation_id;
                 data.is_emv_request = isEmv;
                 console.info('sending: ',data);
             var onSuccess = function(){
@@ -436,7 +436,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     }
             */
                     
-                    data.reservation_id = $state.selectedReservation.id;
+                    data.reservation_id = $stateParams.reservation_id;
                     data.is_emv_request = true;
                     console.log('listening for C&P or swipe...');
                 

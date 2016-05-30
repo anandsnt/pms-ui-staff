@@ -1055,42 +1055,42 @@
                 }
             }
         }
+    }  
+}
+
+/* Bottom - Legend ***/
+.restriction-legends {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: @white;
+    z-index: 300;
+    padding: 10px 20px;
+    text-align: center;
+    .size(50px, 100%);
+
+    li {
+        position: relative;
+        padding-left: 25px;
+        font-size: 10px;
+        line-height: 1;
+        text-transform: uppercase;
+        height: 20px;
+        display: inline-block;
+        width: 10.8%;
+        vertical-align: middle;
+        text-align: left;
+        margin: 0;
+        &:last-child {
+            margin: 0;
+        }
     }
 
-    /* Bottom - Legend ***/
-    .restriction-legends {
+    .restriction-icon {
         position: absolute;
-        bottom: 0;
+        top: 0;
         left: 0;
-        background: @white;
-        z-index: 300;
-        padding: 10px 20px;
-        text-align: center;
-        .size(50px, 100%);
-
-        li {
-            position: relative;
-            padding-left: 25px;
-            font-size: 10px;
-            line-height: 1;
-            text-transform: uppercase;
-            height: 20px;
-            display: inline-block;
-            width: 10.8%;
-            vertical-align: middle;
-            text-align: left;
-            margin: 0;
-            &:last-child {
-                margin: 0;
-            }
-        }
-
-        .restriction-icon {
-            position: absolute;
-            top: 0;
-            left: 0;
-            line-height: 20px;
-            .show();
-        }
-    }   
-}
+        line-height: 20px;
+        .show();
+    }
+}  

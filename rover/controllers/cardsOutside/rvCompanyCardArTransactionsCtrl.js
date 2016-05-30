@@ -665,7 +665,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 						$scope.$emit('hideLoader');
 						$scope.errorMessage = '';
 						transaction.active = ! transaction.active;
-						transaction.details = data;
+						transaction.details = data.transactions;
 						refreshArTabScroller();
 					},
 					transactionFetchFailure = function(errorMessage){

@@ -527,6 +527,19 @@
             }
 
             &:last-child { margin-bottom: 0; }
+
+            span.oauth-status{
+                display: inline-block;
+                background: @red;
+                padding: 2px 4px;
+                border-radius: 3px;
+                color: white;
+                font-size: smaller;
+                font-weight: bolder;
+                &.success{
+                    background-color: @green;
+                }
+            }
         }
 
         .actions {
