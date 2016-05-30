@@ -243,5 +243,16 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
             });
             return deferred.promise;
         };
+
+        this.fetchWorkTypesValues = function(params) {
+            var deferred = $q.defer();
+            var url = "/api/work_types?is_default=true";
+            ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);

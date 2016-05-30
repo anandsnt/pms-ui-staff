@@ -835,6 +835,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			if(!!activebillTab.activeDate && activebillTab.transactions.length === 0 ){
 				getBillTransactionDetails();
 			}
+			else{
+				refreshRegContentScroller();
+			}
     	};
 
     	// Refresh registration-content scroller.
@@ -957,6 +960,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 */
 		$scope.clickedSummaryDate = function( date ){
 			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+			activebillTab.page_no = 1;
 			activebillTab.activeDate = date;
 			getBillTransactionDetails();
 		};
