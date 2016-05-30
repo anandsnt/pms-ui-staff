@@ -4,7 +4,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 	'zsEventConstants',
 	'$stateParams',
 	'$sce', 'countryList','sortedCountryList', 'zsTabletSrv',
-	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList,sortedCountryList, zsTabletSrv) {
+	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, sortedCountryList, zsTabletSrv) {
 
 		BaseCtrl.call(this, $scope);
 		sntZestStation.filter('unsafe', function($sce) {

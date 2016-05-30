@@ -45,7 +45,7 @@
                                     <th scope="col" translate>RESERVATION_NUMBER</th>
                                     <th scope="col" translate>TYPE</th>
                                     <th scope="col" translate>DETAILS</th>
-                                    <th scope="col" translate>TIME</th>
+                                    <th scope="col" translate>DATE_AND_TIME</th>
                                     <th scope="col" translate>DEBIT</th>
                                 </tr>
                             </thead>
@@ -56,7 +56,7 @@
                                     <td>{{level3.reservation_number}}</td>
                                     <td>{{level3.type}}</td>
                                     <td ng-bind-html="level3.details"></td>
-                                    <td>{{getTimeString(level3.date, level3.time)}}</td>
+                                    <td>{{level3.time}}</td>
                                     <td>{{currencySymbol}}{{level3.debit | number: precisonTwo}}</td>
                                 </tr>
 
