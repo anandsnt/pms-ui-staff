@@ -68,19 +68,23 @@
                             </select>
                         </div>
                     </div> -->
-                    <div class="entry" ng-repeat="workType in defaultWorkTypeTasks">
-                        <label>{{workType.name}}</label>
-                        <div class="select">
-                            <!--class = "placeholder"-->
-                            <select ng-model="selectedWorkTypeTask[workType.value]"
-                                    ng-class="{'placeholder' : !selectedWorkTypeTask[workType.value]}"
-                                    ng-change="updateSelectedTaskslist()">
-                                <option value="" ng-if="!selectedWorkTypeTask[workType.value]">Select Task</option>
-                                <option value="{{task.id}}" ng-selected="selectedWorkTypeTask[workType.value] == task.id" ng-repeat="task in workType.tasks" >{{task.name}}</option>
-                            </select>
+                    <div class="entry full-width">
+                        <label class="bold">Cleaning Cycle</label>
+                        <div class="entry" ng-repeat="workType in defaultWorkTypeTasks">
+                            <label>{{workType.name}}</label>
+                                <div class="select">
+                                <!--class = "placeholder"-->
+                                <select ng-model="selectedWorkTypeTask[workType.value]"
+                                        ng-class="{'placeholder' : !selectedWorkTypeTask[workType.value]}"
+                                        ng-change="updateSelectedTaskslist()">
+                                    <option value="" ng-if="!selectedWorkTypeTask[workType.value]">Select Task</option>
+                                    <option value="{{task.id}}" ng-selected="selectedWorkTypeTask[workType.value] == task.id" ng-repeat="task in workType.tasks" >{{task.name}}</option>
+                                </select>
                         </div>
                     </div>
                 </div>
+            </div>
+
 
 	 	</fieldset>
 	 	<fieldset class="holder right">
