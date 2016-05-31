@@ -430,7 +430,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 if ($scope.checkOccupancyLimit()) {
 
                     var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-                    
+
 
                     $state.go(roomAndRatesState, {
                         'from_date': $scope.reservationData.arrivalDate,
@@ -526,7 +526,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
             });
-            // 
+            //
         };
 
 
@@ -651,6 +651,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     $scope.codeSearchText = "";
                     $scope.companySearchText = "";
                 }
+
+                $scope.reservationData.company.id = "";
+                $scope.reservationData.company.name = "";
+                $scope.reservationData.company.corporateid = "";
+                $scope.reservationData.travelAgent.id = "";
+                $scope.reservationData.travelAgent.name = "";
+                $scope.reservationData.travelAgent.corporateid = "";
+
 
 
             } else if (request.term.length > 2) {

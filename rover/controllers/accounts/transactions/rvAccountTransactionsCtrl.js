@@ -197,7 +197,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.refreshScroller('bill-tab-scroller');
 			$scope.refreshScroller('billDays');
-			$scope.$emit('showLoader');
 		};
 
 		$scope.$on('moveChargeSuccsess', function() {
@@ -719,7 +718,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}      [description]
 		 */
 		var successFetchOfAllReqdForTransactionDetails = function(data){
-			$scope.$emit('hideLoader');
+			//$scope.$emit('hideLoader');
 		};
 
 		/**
@@ -837,6 +836,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				getBillTransactionDetails();
 			}
 			else{
+				console.log("here");
 				$scope.$emit('hideLoader');
 				refreshRegContentScroller();
 			}

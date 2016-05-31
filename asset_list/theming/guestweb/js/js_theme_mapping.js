@@ -59,7 +59,8 @@ module.exports = {
 			'guestweb_valencia_san_antonio':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_monte_carlo' 	: [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte.js'],
 			'guestweb_sorella_houston':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_valencia_santana_row':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_valencia_santana_row':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_lonestar_court_austin':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }
