@@ -719,7 +719,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}      [description]
 		 */
 		var successFetchOfAllReqdForTransactionDetails = function(data){
-			$scope.$emit('hideLoader');
+			//$scope.$emit('hideLoader');
 		};
 
 		/**
