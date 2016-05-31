@@ -2023,8 +2023,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			{"key": "MIN_STAY_LENGTH", "name": "MIN LENGTH OF STAY"},
 			{"key": "MAX_STAY_LENGTH", "name": "MAX LENGTH OF STAY"},
 			{"key": "MIN_STAY_THROUGH", "name": "MIN STAY THROUGH"},
-			{"key": "MIN_ADV_BOOKING", "name": "MAX ADVANCED BOOKING"},
-			{"key": "MAX_ADV_BOOKING", "name": "MIN ADVANCED BOOKING"}
+			{"key": "MAX_ADV_BOOKING", "name": "MIN ADVANCED BOOKING"},
+			{"key": "MIN_ADV_BOOKING", "name": "MAX ADVANCED BOOKING"}
 
 		];
 
