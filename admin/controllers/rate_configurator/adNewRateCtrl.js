@@ -377,6 +377,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if ($scope.rateMenu === 'ADD_NEW_DATE_RANGE') {
                 return false;
             }
+            if ($scope.rateData.based_on.is_copied) {
+                return true;
+            }
             if ($scope.rateData.based_on.id > 1 && $scope.rateData.rate_type.name !== 'Specials & Promotions') {
                 return false;
             }
