@@ -1,6 +1,6 @@
 #rate-manager{
     .calc-height(100, 60);
-    overflow: auto;/*vertical try */
+    
     /* Sidebar - TODO: merge with global sidebar styles ***/
     .filter-options{
         position: absolute;
@@ -441,12 +441,11 @@
     /* Grid Containers ***/
     .rate-manager-content {
         .calc-height(100, 50);
-        position: relative; /*vertical try*/
+     
         .calendar,
         .calendar-wraper,
         .graph {
             position: relative;
-            /*overflow: hidden; vertical try*/
             .square(100%);
         }
 
@@ -559,12 +558,12 @@
 
                 .pinnedLeft-list {
                      .wrapper {
-                        padding-bottom: 55px;
+                        /*padding-bottom: 55px; vertical try*/
                     }
 
                     .rate-calendar {
                         tr.loader:last-child {
-                            display: block;
+                            display: table-row;
                         }
                     }
                 }
@@ -588,7 +587,7 @@
                 .pinnedLeft-list {
                     .rate-calendar {
                         tr.loader:first-child {
-                            display: block;
+                            display: table-row;
                         }
                     }
                 }
@@ -634,7 +633,6 @@
         top: 0;
         left: 0;
         padding-left: 5px;
-        /*overflow: hidden; vertical try*/
         width: 180px;
         z-index: 200;
         background-color: @grey1;
@@ -671,9 +669,13 @@
 
         .pinnedLeft-list { 
             margin-top: 5px;
-            /*overflow: hidden; vertical try*/
+            position: relative;
             width: 100%;
-            .calc-height(100, 65);
+            .calc-height(100, 110);
+            overflow: hidden;
+            .wrapper {
+                padding-bottom:5px;
+            }
         }
 
         .rate-calendar { 
