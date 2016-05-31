@@ -4,8 +4,8 @@
         <li class="report-item" ng-repeat="item in schedulesList" ng-class="{'active': item.active}" ng-click="selectSchedule(item, $index)" ng-hide="item.filteredOut"> <!-- Add class "active" when selected + load filters in 2nd column -->
         	<span ng-class="item.reportIconCls"></span>
         	<div class="data">
-        	    <h2 ng-bind-html="escapeNull(item.report.description)|highlight:query:false"></h2>
-        	    <em>{{ item.report.description }}</em>
+        	    <h2 ng-bind-html="escapeNull(item.report.tilte)|highlight:query:false"></h2>
+        	    <em>{{ item.report.tilte }}</em>
         	</div>
         </li>
     </ul>
