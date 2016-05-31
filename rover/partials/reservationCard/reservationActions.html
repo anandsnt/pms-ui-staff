@@ -59,6 +59,9 @@
         <a ng-if="(isStandAlone &&(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate))))" class="button white red-text bottom-button" ng-click="toggleCancellation()" translate>
 			{{'CANCEL_RESERVATION' | translate}}
 		</a>
+        <a ng-if="shouldShowResendCancellation(reservationData.reservation_card.reservation_status)" class="button staycard-button icon-confirmation" ng-click="onResendCancellationClicked()" translate>
+            {{'RESEND_CANCELLATION' | translate}}
+        </a>
         <a class="button staycard-button icon-confirmation" ng-click="popupForConfirmation()" ng-show="showConfirmation(reservationData.reservation_card.reservation_status)"> 				{{'CONFIRMATION' | translate}}
         </a>
         <a ng-if="isReinstateVisible()" ng-click="checkReinstationAvailbility()" class="button white green-text bottom-button">

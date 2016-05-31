@@ -3,7 +3,7 @@
         <div class="data">
             <h2>{{rate.name}}</h2>
 
-            <span ng-show="rate.restriction.length < 3" class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgColor}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in rate.restriction">{{eachRestriction.days}}</span>
+            <span ng-show="rate.restriction.length < 3" class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in rate.restriction">{{eachRestriction.days}}</span>
             <span ng-show="rate.restriction.length >= 3" class="restriction-icon bg-drk" >R</span>
              <span class="corporate" ng-if="rate.isCorporate" translate>CORPORATE_LABEL</span>
              <span class="corporate" ng-if="rate.isPromotion">PROMOTION</span>
@@ -42,8 +42,12 @@
 
                 <div class="data">
                     <h3>{{room.name}}</h3>
-                    <span class="count {green/red}">{{room.availability}} AVL</span> <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
-                     <span  ng-show="room.restriction.length < 3" class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgColor}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in room.restriction">{{eachRestriction.days}}</span>
+                    <span class="count" ng-class="room.availability > 4 ? 'green' : 'red'">
+                        {{room.availability}} AVL
+                        <label ng-if="rate.isGroupRate"> in Group Block</label>
+                        <label ng-if="rate.isAllotmentRate"> in Allotment</label>
+                    </span> <!-- Use class red when number of available rooms is less than e.g. 5 (not sure how this number should be defined and should it be 0 or some other number). Otherwise use class "green". -->
+                     <span  ng-show="room.restriction.length < 3" class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in room.restriction">{{eachRestriction.days}}</span>
                      <span ng-show="room.restriction.length >= 3" class="restriction-icon bg-drk" >R</span>
                 </div>
                 <!-- <h3>
