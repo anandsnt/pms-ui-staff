@@ -375,7 +375,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				$scope.emailList = [];
 			}
 
-			$scope.timeSlots = reportUtils.createTimeSlots();
+			$scope.timeSlots = reportUtils.createTimeSlots(30);
 		};
 
 		var fetchReportSchedulesFrequencyTimePeriod = function() {
