@@ -57,7 +57,8 @@ module.exports = {
 			'guestweb_valencia_san_antonio':[ themeCSSRoot + 'guestweb_valencia_san_antonio.css'],
 			'guestweb_monte_carlo' 	: [ themeCSSRoot + 'guestweb_monte_carlo.css'],
 			'guestweb_sorella_houston':[ themeCSSRoot + 'guestweb_sorella_houston.css'],
-			'guestweb_valencia_santana_row':[ themeCSSRoot + 'guestweb_valencia_santana_row.css']
+			'guestweb_valencia_santana_row':[ themeCSSRoot + 'guestweb_valencia_santana_row.css'],
+			'guestweb_lonestar_court_austin':[ themeCSSRoot + 'guestweb_lonestar_court_austin.css']
 		}
 	}
 }
