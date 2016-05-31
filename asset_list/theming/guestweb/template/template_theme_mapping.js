@@ -337,7 +337,6 @@ module.exports = {
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
 										precheckinPartials+'*.html']
-
 		}
 	}
 }
