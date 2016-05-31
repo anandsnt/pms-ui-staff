@@ -315,6 +315,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.totalTaxAmount = 0.0;
             $scope.reservationData.totalTax = 0.0;
 
+            var processedChargeCodes = {};
+            var taxToBeRemoved = 0.0;
+
             // For every Room
             angular.forEach($scope.reservationData.rooms, function(currentRoom, roomIndex) {
                 currentRoom.rateTotal = 0.0; // -- RESET
@@ -446,6 +449,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 angular.forEach($scope.reservationData.taxDetails.excl, function(tax, code) {
                     roomMetaData.totalTaxes = parseFloat(roomMetaData.totalTaxes) + Number(parseFloat(tax.amount).toFixed(2)); // add only exclusive taxes here
                     roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + Number(parseFloat(tax.amount).toFixed(2));
+
+                    if(processedChargeCodes[code]) {
+                        var currentTaxAmt = processedChargeCodes[code];
+                        taxToBeRemoved = taxToBeRemoved + currentTaxAmt;
+                    }
+                    processedChargeCodes[code] = Number(parseFloat(tax.amount).toFixed(2));
+
                     if (typeof $scope.reservationData.taxInformation[code] === 'undefined') {
                         $scope.reservationData.taxInformation[code] = tax;
                     } else {
@@ -454,9 +464,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 });
 
                 //cumulative total of all stay costs
-                $scope.reservationData.totalTaxAmount = parseFloat($scope.reservationData.totalTaxAmount) + parseFloat(roomMetaData.totalTaxes);
-                $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(currentRoom.rateTotal) + parseFloat(roomMetaData.addOnCumulative) + parseFloat(roomMetaData.totalTaxes);
-                $scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(roomMetaData.taxesInclusiveExclusive);
+                $scope.reservationData.totalTaxAmount = parseFloat($scope.reservationData.totalTaxAmount) + parseFloat(roomMetaData.totalTaxes) - taxToBeRemoved;
+                $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(currentRoom.rateTotal) + parseFloat(roomMetaData.addOnCumulative) + parseFloat(roomMetaData.totalTaxes) - taxToBeRemoved;
+                $scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(roomMetaData.taxesInclusiveExclusive) - taxToBeRemoved;
             });
         };
 
@@ -818,12 +828,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     addonsForRoomType = [];
                 if (!!RVReservationStateService.getReservationFlag('RATE_CHANGED') ||
                     !$scope.reservationData.rooms[firstIndex].is_package_exist || //is_package_exist flag is set only while editing a reservation! -- Changes for CICO-17173
-                    ($scope.reservationData.rooms[firstIndex].is_package_exist && $scope.reservationData.rooms[firstIndex].addons.length === parseInt($scope.reservationData.rooms[firstIndex].package_count))) { //-- Changes for CICO-17173                    
+                    ($scope.reservationData.rooms[firstIndex].is_package_exist && $scope.reservationData.rooms[firstIndex].addons.length === parseInt($scope.reservationData.rooms[firstIndex].package_count))) { //-- Changes for CICO-17173
                     if (tabIndex === $scope.reservationData.tabs.length - 1) {
                         RVReservationStateService.setReservationFlag('RATE_CHANGED', false);
                     }
                     _.each($scope.reservationData.rooms[firstIndex].addons, function(addon) {
-                        //skip rate associated addons on create/update calls --> they will be taken care off by API 
+                        //skip rate associated addons on create/update calls --> they will be taken care off by API
                         if (!addon.is_rate_addon) {
                             addonsForRoomType.push({
                                 id: addon.id,
@@ -849,7 +859,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             // This senario is currently discharged for now, may be in future
             // 'is_outside_group_stay_dates' will always be sent as 'false' from server
             // data.outside_group_stay_dates = RVReservationStateService.getReservationFlag('outsideStaydatesForGroup');
-            
+
             data.borrow_for_groups = RVReservationStateService.getReservationFlag('borrowForGroups');
 
             //to delete ends here
@@ -1364,6 +1374,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             $scope.reservationData.totalTax = 0.0;
             $scope.reservationData.totalTaxAmount = 0.0;
 
+            var processedChargeCodes = {};
+            var taxToBeRemoved = 0.0;
+
             _.each($scope.reservationData.rooms, function(room, roomNumber) {
                 var taxes = $scope.otherData.hourlyTaxInfo[0];
                 room.rateTotal = 0.0; // -- RESET
@@ -1453,6 +1466,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 angular.forEach($scope.reservationData.taxDetails.excl, function(tax, code) {
                     roomMetaData.totalTaxes = parseFloat(roomMetaData.totalTaxes) + parseFloat(tax.amount); // add only exclusive taxes here
                     roomMetaData.taxesInclusiveExclusive = parseFloat(roomMetaData.taxesInclusiveExclusive) + parseFloat(tax.amount);
+                    if(processedChargeCodes[code]) {
+                        var currentTaxAmt = processedChargeCodes[code];
+                        taxToBeRemoved = taxToBeRemoved + currentTaxAmt;
+                    }
+                    processedChargeCodes[code] = Number(parseFloat(tax.amount).toFixed(2));
+
                     if (typeof $scope.reservationData.taxInformation[code] === 'undefined') {
                         $scope.reservationData.taxInformation[code] = tax;
                     } else {
@@ -1461,9 +1480,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                 });
 
                 //cumulative total of all stay costs
-                $scope.reservationData.totalTaxAmount = parseFloat($scope.reservationData.totalTaxAmount) + parseFloat(roomMetaData.totalTaxes);
-                $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(room.rateTotal) + parseFloat(addOnCumulative);
-                $scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(roomMetaData.taxesInclusiveExclusive);
+                $scope.reservationData.totalTaxAmount = parseFloat($scope.reservationData.totalTaxAmount) + parseFloat(roomMetaData.totalTaxes) - taxToBeRemoved;
+                $scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(room.rateTotal) + parseFloat(addOnCumulative) - taxToBeRemoved;
+                $scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(roomMetaData.taxesInclusiveExclusive) - taxToBeRemoved;
             });
         };
 
