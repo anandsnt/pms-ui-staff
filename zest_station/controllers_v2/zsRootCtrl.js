@@ -107,7 +107,11 @@ sntZestStation.controller('zsRootCtrl', [
 		 * Other events
 		 */
 		$scope.$on(zsEventConstants.PUT_OOS, function(event) {
-			$state.go('zest_station.outOfService');
+			if($state.current.name !== 'zest_station.admin'){
+				$state.go('zest_station.outOfService');
+			}else{
+				//do nothing
+			}
 		});
 		$scope.goToAdmin = function() {
 			$state.go('zest_station.admin');
@@ -487,7 +491,11 @@ sntZestStation.controller('zsRootCtrl', [
 			        $state.go('zest_station.admin');
 			    }
 			    else{
-			    	$state.go('zest_station.outOfService');
+			    	if($state.current.name !== 'zest_station.admin'){
+					  $state.go('zest_station.outOfService');
+					}else{
+						//do nothing
+					}
 			    }
 			} else {
 				$scope.workstation = {
@@ -626,7 +634,11 @@ sntZestStation.controller('zsRootCtrl', [
 						'id': $scope.zestStationData.set_workstation_id
 					}
 				};
-				$state.go('zest_station.outOfService');
+				if($state.current.name !== 'zest_station.admin'){
+				  $state.go('zest_station.outOfService');
+				}else{
+					//do nothing
+				}
 				$scope.callAPI(zsGeneralSrv.updateWorkStationOos, options);
 			} else {
 				//Make work stataion back to in order
