@@ -182,7 +182,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     };
 
     var checkOutGuest = function() {
-        var debugging = true;
+        var debugging = false;
         if (debugging){
             onCheckoutSuccess();
         } else {
