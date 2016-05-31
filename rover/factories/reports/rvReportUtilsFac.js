@@ -1634,23 +1634,34 @@ angular.module('reportsModule')
 
 
         // HELPER: create time slots
-        factory.createTimeSlots = function () {
+        factory.createTimeSlots = function (step) {
             var _ret  = [],
                 _hh   = '',
                 _mm   = '',
+                _step,
+                _parts,
+                _total;
+
+            if ( step === 30 ) {
+                _step = step;
+                _parts = 2;
+            } else {
                 _step = 15;
+                _parts = 4;
+            };
+
+            _total = _parts * 24;
 
             var i = 0,
                 m = 0,
                 h = -1;
 
-            // 4 parts in each of 24 hours (00 -> 23)
-            // 4 * 24 = 96
-            for (i = 0; i < 96; i++) {
+            // 4/2 parts in each of 24 hours (00 -> 23)
+            for (i = 0; i < _total; i++) {
 
                 // each hour is split into 4 parts
                 // x:00, x:15, x:30, x:45
-                if (i % 4 === 0) {
+                if (i % _parts === 0) {
                     h++;
                     m = 0;
                 } else {
