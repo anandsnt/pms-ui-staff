@@ -718,7 +718,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}      [description]
 		 */
 		var successFetchOfAllReqdForTransactionDetails = function(data){
-			$scope.$emit('hideLoader');
+			//$scope.$emit('hideLoader');
 		};
 
 		/**
@@ -835,6 +835,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			if(!!activebillTab.activeDate && activebillTab.transactions.length === 0 ){
 				getBillTransactionDetails();
 			}
+			else{
+				console.log("here");
+				$scope.$emit('hideLoader');
+				refreshRegContentScroller();
+			}
     	};
 
     	// Refresh registration-content scroller.
@@ -929,6 +934,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			});
 
 			setChargeCodesSelectedStatus(false);
+			$scope.$emit('hideLoader');
+    	};
+
+    	// Failure callback for transaction fetch API.
+    	var onBillTransactionFetchFailure = function(errorMessage){
+    		$scope.$emit('hideLoader');
+    		$scope.errorMessage = errorMessage;
     	};
 
     	/**
@@ -945,9 +957,19 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			};
 			var options = {
 				successCallBack: onBillTransactionFetchSuccess,
+				failureCallBack: onBillTransactionFetchFailure,
 				params: params
 			};
 			$scope.callAPI(rvAccountTransactionsSrv.fetchBillTransactionDetails, options);
+		};
+
+		// Reset the pagination params.
+		var resetPagination = function(activebillTab){
+			activebillTab.page_no 	 = 1;
+			activebillTab.start 	 = 1;
+			activebillTab.end 		 = 1;
+			activebillTab.nextAction = false;
+			activebillTab.prevAction = false;
 		};
 
 		/*
@@ -958,6 +980,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.clickedSummaryDate = function( date ){
 			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
 			activebillTab.activeDate = date;
+			resetPagination(activebillTab);
 			getBillTransactionDetails();
 		};
 

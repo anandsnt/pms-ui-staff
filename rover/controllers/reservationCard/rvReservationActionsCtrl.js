@@ -822,6 +822,14 @@ sntRover.controller('reservationActionsController', [
 			return showResendConfirmationFlag;
 		};
 
+		$scope.shouldShowResendCancellation = function(reservationStatus) {
+			var isCancelled  = reservationStatus === 'CANCELED',
+				isStandAlone = $rootScope.isStandAlone,
+				sendCancel 	 = $rootScope.sendCancellationLetter;
+
+			return (isStandAlone && isCancelled && sendCancel);
+		};
+
 		var succesfullEmailCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.ngData.successMessage = data.message;
@@ -1009,6 +1017,32 @@ sntRover.controller('reservationActionsController', [
 				"reservationId": $scope.reservationData.reservation_card.reservation_id
 			};
 			$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureCallbackForEmailCancellation);
+		};
+
+		$scope.onResendCancellationClicked = function() {
+			$scope.DailogeState = {};
+			$scope.DailogeState.isCancelled = true;
+			$scope.DailogeState.failureMessage = '';
+			$scope.DailogeState.successMessage = '';
+
+			var passData = {
+				"reservationId": $scope.reservationData.reservation_card.reservation_id,
+				"details": {
+					"firstName": $scope.guestCardData.contactInfo.first_name,
+					"lastName": $scope.guestCardData.contactInfo.last_name,
+					"creditCardTypes": $scope.creditCardTypes,
+					"paymentTypes": $scope.paymentTypes
+				},
+				"isCancelled": true
+			};
+			$scope.passData = passData;
+
+			ngDialog.open({
+				template: '/assets/partials/reservationCard/rvCancelReservation.html',
+				controller: 'RVCancelReservation',
+				scope: $scope,
+				data: JSON.stringify({ state: 'CANCELED' })
+			});
 		};
 
 		//Action against print button in staycard.
