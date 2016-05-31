@@ -1251,14 +1251,25 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 		var fetchApplicableRates = function() {
 			var onFetchRatesSuccess = function(data) {
-					// split result to contracted vs others for enabling grouping on the dropdown
-					$scope.groupSummaryData.rates = _.where(data.results, {
-						is_contracted: false
+					var sumData = $scope.groupSummaryData;
+						sumData.rateSelectDataObject = [];
+
+					// add custom rate obect
+					sumData.rateSelectDataObject.push({
+						id: -1,
+						name: "Custom Rate"
+					});
+					// group rates by contracted and group rates.
+					_.each(data.results, function(rate) {
+						if (rate.is_contracted) {
+							rate.groupName = "Company/ Travel Agent Contract";
+						}
+						else {
+							rate.groupName = "Group Rates";
+						}
+						sumData.rateSelectDataObject.push(rate)
 					});
 
-					$scope.groupSummaryData.contractedRates = _.where(data.results, {
-						is_contracted: true
-					});
 				},
 				onFetchRatesFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
@@ -1346,6 +1357,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				computedSegment: false,
 				rates: [],
 				contractedRates: [],
+				rateSelectDataObject: []
 			};
 
 			$scope.changeDatesActions = {};
