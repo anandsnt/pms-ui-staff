@@ -257,7 +257,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
                 $scope.$emit(zsEventConstants.HIDE_LOADER);
 
-                $scope.setOOSInBrowser(true);
+                $scope.putOutOfOrderInCache(true);
                 $state.is_oos = true;
                 $state.go('zest_station.oos');
             }
@@ -269,31 +269,40 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
                 $scope.$emit(zsEventConstants.HIDE_LOADER);
 
-                $scope.setOOSInBrowser(false);
+                $scope.putOutOfOrderInCache(false);
                 //only if coming out of OOS, take to home page, otherwise on-refresh, this will interrupt workflow
                 $state.go('zest_station.home');
             }
 	});
 
-        $scope.setOOSInBrowser = function(t){
+        $scope.putOutOfOrderInCache = function(t){
              var storageKey = $scope.oosKey,
                     storage = localStorage;
+            
+            var goingOutOfOrder, puttingInService;
+            
             try {
                 if (t === 'in-order' || t === true){
-                    t = 'in-order';
+                    puttingInService = true;
+                    goingOutOfOrder = false;
                 } else if (t === 'out-of-order' || t === false){
                     t = 'out-of-order';
+                    puttingInService = false;
+                    goingOutOfOrder = true;
                 }
                 
-                
-               storage.setItem(storageKey, t);
+                if (goingOutOfOrder){
+                    storage.setItem(storageKey, 'out-of-order');
+                    $state.is_oos = true;
+                    
+                } else if (puttingInService){
+                    storage.setItem(storageKey, 'in-order');
+                    $state.is_oos = false;
+                    
+                }
+               
             } catch(err){
                 console.warn(err);
-            }
-            if (storage.getItem(storageKey) !== 'in-order'){
-                $state.is_oos = true;
-            } else {
-                $state.is_oos = false;
             }
             
         };
@@ -669,7 +678,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.wsFailedReason =  '';
             $scope.zestStationData.workstationStatus = 'in-order';
             setWorkStationInOrder();
-            
+            $scope.putOutOfOrderInCache(true);
         };
         
         
@@ -729,9 +738,9 @@ sntZestStation.controller('zsRootCtrl', [
         
         
         var callSetSessionStation = function(station){
-            var workstation = $scope.sessionStation;
+            //var workstation = $scope.sessionStation;
             var successCallBack = function(response){
-                console.info('set to session');
+                //console.info('set to session');
                 $scope.$emit('hideLoader');
             };
             var failureCallBack = function(response){
@@ -1077,6 +1086,7 @@ sntZestStation.controller('zsRootCtrl', [
                     var timerInt = setInterval(function () {
                         //there appears to have been a change from true to 'true', 
                         //which caused the idle timer enabled/disabled settings to refresh once saved in admin
+                        //console.info('$scope.idle_timer_enabled: ',$scope.idle_timer_enabled)
                         if (($scope.idle_timer_enabled === 'true' || $scope.idle_timer_enabled === true) && $scope.at !== 'home'){
                                 minutes = parseInt(timer / 60, 10);
                                 seconds = parseInt(timer % 60, 10);
@@ -1167,7 +1177,7 @@ sntZestStation.controller('zsRootCtrl', [
                 return $state.current.name;
             }, function(){
                 var current = $state.current.name;
-                
+                //console.info('watching...',current);
                 $scope.hideKeyboardIfUp();
                 if ($scope.theme === 'yotel'){
                     $scope.setScreenIconByState(current);
@@ -1176,10 +1186,14 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.resetCounter();
                     $scope.idle_timer_enabled = false;
                 } else {
-                    if ($scope.adminIdleTimeEnabled){
+                        //console.info('$scope.adminIdleTimeEnabled : ',$scope.adminIdleTimeEnabled);
+                    if ($scope.adminIdleTimeEnabled === true || $scope.adminIdleTimeEnabled === 'true'){
                         $scope.resetCounter();
                         $scope.idle_timer_enabled = true;
                         $scope.startIdleCounter();
+                    } else {
+                        //console.info('making sure idle timer disabled...');
+                        $scope.idle_timer_enabled = false;
                     }
                 }
             });

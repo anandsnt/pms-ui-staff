@@ -2,8 +2,8 @@
 <section id="main" role="main" class="centered" ng-show="mode === 'print-mode'">
     <div id="content">
         <!--h1>{{'END_THANKS' |translate}}</h1-->
-        <h3 ng-show="hasEmail">{{'EMAILED_BILL' |translate}}</h3>
-        <h3 ng-show="!hasEmail && zestStationData.theme == 'zoku'">{{'CHECKOUT_BILL_NO_EMAIL' |translate}}</h3>
+        <h3 ng-show="hasEmail && emailOpted">{{'EMAILED_BILL' |translate}}</h3>
+        <h3 ng-show="(!emailOpted && !hasEmail) && zestStationData.theme == 'zoku'">{{'CHECKOUT_BILL_NO_EMAIL' |translate}}</h3>
         
         <nav id="options" role="nav">
             <ul role="menu">

@@ -510,7 +510,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                     //if check-in without hardware failure, this should be set back to admin reason,
                     //if station is placed out of service without hardare failure, its due to admin manually placing oos or network failure
                     $scope.zestStationData.wsFailedReason =  $filter('translate')('ADMIN_OR_NETWORK_OOS');
-                    
+                    failure = false;
                     
             } else if(keySuccess && !printSuccess){//success + fail = :/
                     msg = keyPrintFailMsg;

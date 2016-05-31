@@ -204,7 +204,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
         $scope.makingKey = 1;
         $scope.successfulKeyEncode = function(response){
+            console.info('$scope.successfulKeyEncode::response:: ',response);
             var success = (response.status === "success")? true : false;
+            console.info('-->success? :: ',success);
             return success;
         };
 
@@ -226,34 +228,8 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     } else if($scope.makingKey === 2 && $scope.input.makeKeys === 2) {
                         $scope.keyTwoOfTwoSuccess();
                     }
-                    $state.selectedReservation.keySuccess = true;
                 } else {
                     $scope.emitKeyError(response);
-                    /*
-                     * when using websockets / sankyo to dispense keys, we can the print_key first to
-                     * get card data ready to write reservation info
-                     */
-                   
-                   /*
-
-                    if ($scope.successfulKeyEncode(response)){//due to backend sending 200 with status == failure, need to verify..
-
-                        if ($scope.makingKey === 1 && $state.input.nextKey === 1){
-
-                            $scope.oneKeySuccess();
-
-                        } else if($scope.makingKey === 1 && $state.input.nextKey === 2) {
-                            $scope.keyOneOfTwoSuccess();
-
-                        } else if($scope.makingKey === 2 && $state.input.nextKey === 2) {
-                            $scope.keyTwoOfTwoSuccess();
-                        }
-
-                    } else {
-                        
-                        $scope.emitKeyError(response);
-                    }
-                */
                 };
         };
         
