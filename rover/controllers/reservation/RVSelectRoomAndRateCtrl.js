@@ -2023,8 +2023,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			{"key": "MIN_STAY_LENGTH", "name": "MIN LENGTH OF STAY"},
 			{"key": "MAX_STAY_LENGTH", "name": "MAX LENGTH OF STAY"},
 			{"key": "MIN_STAY_THROUGH", "name": "MIN STAY THROUGH"},
-			{"key": "MAX_ADV_BOOKING", "name": "MIN ADVANCED BOOKING"},
-			{"key": "MIN_ADV_BOOKING", "name": "MAX ADVANCED BOOKING"}
+			{"key": "MIN_ADV_BOOKING", "name": "MIN ADVANCED BOOKING"},
+			{"key": "MAX_ADV_BOOKING", "name": "MAX ADVANCED BOOKING"}
 
 		];
 
@@ -2034,7 +2034,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		_.each(restrictionsArray, function(restrictionObject) {
 		   var restrictionKey = restrictionObject.key;
 		   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(restrictionKey);
-		   restrictionObject.restrictionBgColor = getRestrictionClass(restrictionKey);
+		   //restrictionObject.restrictionBgColor = getRestrictionClass(restrictionKey);
 		   restrictionObject.restrictionIcon = getRestrictionIcon(restrictionKey);
 		});
 		$scope.legendRestrictionsArray = restrictionsArray;
