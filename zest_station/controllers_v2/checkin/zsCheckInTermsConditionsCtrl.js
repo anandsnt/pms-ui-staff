@@ -35,7 +35,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			$scope.mode = "TERMS_CONDITIONS";
 
 		};
-		init();
+		
 
 		var goToDepositScreen = function() {
 			$state.go('zest_station.checkInDeposit', {
@@ -163,6 +163,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
 			$scope.agreeTerms();
 		} else {
+			init();
 			initiateTermsAndConditions();
 		}
 	}

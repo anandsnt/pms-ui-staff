@@ -95,6 +95,10 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 "is_kiosk": true
             };
             var checkOutSuccess = function() {
+                if($scope.zestStationData.keyCardInserted){
+                    $scope.zestStationData.keyCaptureDone = true;
+                    $scope.socketOperator.CaptureKeyCard();
+                };
                 $state.go('zest_station.reservationCheckedOut');
             };
             var options = {

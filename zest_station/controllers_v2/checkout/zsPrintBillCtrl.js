@@ -56,6 +56,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                     } else {
                         $window.print();
                         setTimeout(function() {
+                            var printopted = 'true';
                             nextPageActions(printopted);
                         }, 100);
                     };

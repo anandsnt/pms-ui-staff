@@ -64,6 +64,10 @@ sntZestStation.controller('zsEmailBillCtrl', [
 				"is_kiosk": true
 			};
 			var checkOutSuccess = function() {
+				if($scope.zestStationData.keyCardInserted){
+                    $scope.zestStationData.keyCaptureDone = true;
+                    $scope.socketOperator.CaptureKeyCard();
+                };
 				$scope.mode = 'GUEST_BILL_EMAIL_SENT';
 			};
 			var options = {
