@@ -198,7 +198,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
                                     }
 
 				} else {
-					$scope.data.charge_codes.push(data);
+					$scope.data.push(data);
 					$scope.tableParams.reload();
 				}
 
@@ -209,6 +209,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				if ($scope.isEdit) {
 					$scope.isEdit = false;
 				}
+				$scope.successMessage = 'Success!';
 			};
 			// To create Charge code Link with list frm scope.
 			var selected_link_with = [];
