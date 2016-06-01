@@ -51,7 +51,8 @@ module.exports = {
 			'guestweb_knickerbocker_yacht_club':[ themeCSSRoot + 'guestweb_knickerbocker_yacht_club.css'],
 			'guestweb_kingsley':[ themeCSSRoot + 'guestweb_kingsley.css'],
 			'guestweb_avery':[ themeCSSRoot + 'guestweb_avery.css'],
-			'guestweb_newyork':[ themeCSSRoot + 'guestweb_newyork.css']
+			'guestweb_newyork':[ themeCSSRoot + 'guestweb_newyork.css'],
+			'guestweb_ponchartrain':[ themeCSSRoot + 'guestweb_ponchartrain.css']
 		}
 	}
 }
