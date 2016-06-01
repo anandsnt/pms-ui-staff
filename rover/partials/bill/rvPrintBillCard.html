@@ -54,7 +54,7 @@
         <strong translate>DEPARTURE_DATE:</strong>{{printData.departure_date | date:dateFormat}}<br/>
         <strong translate>ROOM_NO:</strong>{{printData.room_number}}<br/> 
         <strong translate>CONFIRMATION_NO:</strong>{{printData.confirmation_number}}<br/>
-        <strong translate>NO_OF_GUESTS:</strong>{{printData.no_of_guests}}<br/>
+        <strong translate>NO_OF_GUESTS:</strong>{{printData.no_of_guests}}<br/><br/>
         <strong ng-if="printData.card_details.type ==='COMPANY'" translate>CORP_ID:</strong>{{printData.card_details.corporate_id}}<br ng-if="printData.card_details.type ==='COMPANY'"/>
         <strong ng-if="printData.card_details.type ==='TRAVELAGENT'" translate>IATA_#:</strong>{{printData.card_details.iata_no}}<br ng-if="printData.card_details.type ==='TRAVELAGENT'"/>
         <strong ng-if="printData.card_details.tax_number" translate>TAX_ID:</strong>{{printData.card_details.tax_number}}<br ng-if="printData.card_details.tax_number"/>
