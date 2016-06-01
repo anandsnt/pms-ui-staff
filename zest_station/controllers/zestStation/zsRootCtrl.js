@@ -1087,12 +1087,10 @@ sntZestStation.controller('zsRootCtrl', [
                //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
                 var isTouchDevice = 'ontouchstart' in document.documentElement,
                     agentString = window.navigator.userAgent;
-            console.log('theme: ',$scope.theme);
             var themeUsesKeyboard = false;
             if ($scope.theme === 'yotel' || !$scope.theme){
                 themeUsesKeyboard = true;
             }
-            console.info('themeUsesKeyboard: ',themeUsesKeyboard)
                 var shouldShowKeyboard = (typeof chrome) && 
                         (agentString.toLowerCase().indexOf('window')!==-1) && 
                         isTouchDevice && 
@@ -1277,6 +1275,36 @@ sntZestStation.controller('zsRootCtrl', [
         console.info("Websocket:-> socket connected");
         $scope.$broadcast('SOCKET_CONNECTED');
     };
+    var setReaderWriter = function(){
+        //(remote, websocket, local)
+        //
+        //local:  Infinea/Ingenico
+        //remote:  Ving, Salto, Saflok
+        //websocket:  Atlas / Sankyo
+        
+        $scope.zestStationData.ccReader = 'local';//default to local
+        $scope.zestStationData.keyWriter = 'local';
+        
+        var key_method = $scope.zestStationData.kiosk_key_creation_method;
+        if (key_method === 'ingenico_infinea_key'){
+            $scope.zestStationData.keyWriter = 'local';
+            
+        } else if (key_method === 'remote_encoding'){
+            $scope.zestStationData.keyWriter = 'remote';
+            
+        } else {//sankyo_websocket
+            $scope.zestStationData.keyWriter = 'websocket';
+        }
+        
+        var ccReader = $scope.zestStationData.kiosk_cc_entry_method;
+        if (ccReader === 'six_pay'){
+            $scope.zestStationData.ccReader = 'six_pay';
+        } else if (ccReader === 'ingenico_infinea'){
+            $scope.zestStationData.ccReader = 'local';//mli + local - ingenico/infinea
+        } else {//sankyo_websocket
+            $scope.zestStationData.ccReader = 'websocket';
+        }
+    };
 
     $scope.$on('CONNECT_WEBSOCKET',function(){
         $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
@@ -1327,32 +1355,8 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
         $scope.setScreenIcon('bed');
         
-        //(remote, websocket, local)
-        //
-        //local:  Infinea/Ingenico
-        //remote:  Ving, Salto, Saflok
-        //websocket:  Atlas / Sankyo
-        
-        $scope.zestStationData.ccReader = 'local';//default to local
-        $scope.zestStationData.keyWriter = 'local';
-        
-        var key_method = $scope.zestStationData.kiosk_key_creation_method;
-        if (key_method === 'ingenico_infinea_key'){
-            $scope.zestStationData.keyWriter = 'local';
-        } else if (key_method === 'remote_encoding'){
-            $scope.zestStationData.keyWriter = 'remote';
-        } else {//sankyo_websocket
-            $scope.zestStationData.keyWriter = 'websocket';
-        }
-        
-        var ccReader = $scope.zestStationData.kiosk_cc_entry_method;
-        if (ccReader === 'six_pay'){
-            $scope.zestStationData.ccReader = 'six_pay';
-        } else if (ccReader === 'ingenico_infinea'){
-            $scope.zestStationData.ccReader = 'local';//mli + local - ingenico/infinea
-        } else {//sankyo_websocket
-            $scope.zestStationData.ccReader = 'websocket';
-        }
+        //set CC card reader and room key writer to local references
+        setReaderWriter();
         console.warn(':: Key Writer + CC Reader = [',$scope.zestStationData.keyWriter, ' + ',$scope.zestStationData.ccReader,']');
         
 	}();
