@@ -1,12 +1,12 @@
-admin.controller('ADM3BackOfficeCtrl', ['$scope', 'afasSetupValues', 'ADM3SetupSrv', function($scope, afasSetupValues, adAfasSetupSrv){
+admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'ADM3SetupSrv', function($scope, m3AccountingSetupValues, ADM3SetupSrv){
 	BaseCtrl.call (this, $scope);
 
 	/**
-	 * when clicked on check box to enable/diable letshare 
+	 * when clicked on check box to enable/diable letshare
 	 * @return {undefiend}
 	 */
-	$scope.toggleAfasEnabled = function() {
-		$scope.afas.enabled = !$scope.afas.enabled;
+	$scope.toggleActivation = function() {
+		$scope.m3Accounting.enabled = !$scope.m3Accounting.enabled;
 	};
 
 	/**
@@ -20,15 +20,15 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'afasSetupValues', 'ADM3SetupS
 	 * when we clicked on save button
 	 * @return {undefiend}
 	 */
-	$scope.saveAfasSetup = function() {
-		var params 	= {
-			afas: $scope.afas
-		};
+	$scope.saveSetup = function() {
         var options = {
-            params 			: params,
-            successCallBack : successCallBackOfSaveAfasSetup
+            params: {
+                enabled: $scope.m3Accounting.enabled,
+                emails: $scope.m3Accounting.emails
+            },
+            successCallBack: successCallBackOfSaveAfasSetup
         };
-        $scope.callAPI(adAfasSetupSrv.saveConfig, options);
+        $scope.callAPI(ADM3SetupSrv.saveConfig, options);
 	};
 
 	/**
@@ -36,8 +36,9 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'afasSetupValues', 'ADM3SetupS
 	 * @return {undefiend}
 	 */
 	var initializeMe = function() {
-		$scope.afas = {};
-		$scope.afas.enabled = afasSetupValues.enabled;
-		$scope.afas.emails = afasSetupValues.emails;
+		$scope.m3Accounting = {
+			enabled : m3AccountingSetupValues.enabled,
+		    emails : m3AccountingSetupValues.emails
+		};
 	}();
 }])
