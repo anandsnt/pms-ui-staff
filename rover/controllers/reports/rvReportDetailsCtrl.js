@@ -9,7 +9,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 	'RVReportMsgsConst',
 	'RVReportNamesConst',
 	'ngDialog',
-	function($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser, reportMsgs, reportNames, ngDialog) {
+	'$state',
+	function($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser, reportMsgs, reportNames, ngDialog, $state) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -1058,6 +1059,20 @@ sntRover.controller('RVReportDetailsCtrl', [
 	        return class_;
 	    };
 
+	    /**
+         * to goto staycard
+         * @param {Object} reservation
+         * @return {undefined}
+        */
+	    $scope.gotoStayCard = function (reservation) {
+			$timeout(function() {
+	            $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+	              'id': 1343210,
+	              'confirmationId': reservation.confirm_no,
+	              'isrefresh': false
+	            });
+			}, 750);
+	    };
 
 		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() {
 			$_pageNo = 1;
