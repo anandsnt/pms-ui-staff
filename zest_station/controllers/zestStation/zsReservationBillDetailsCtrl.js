@@ -105,32 +105,74 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
      *  If so we redirect to the staff
      */
     
-    $scope.cashReservationBalanceDue = function(){
+    cashReservationBalanceDue = function(){
         return (!$scope.zestStationData.reservationData.has_cc && $scope.zestStationData.reservationData.balance >0);
     };
-    $scope.nextClicked = function(){
-        
-      $scope.zestStationData.reservationData.edit_email = false;
-      
-        if($scope.cashReservationBalanceDue()){
-            console.warn("reservation has balance due");
-            $state.go('zest_station.speak_to_staff');
+    var goToReservationCheckedOut = function(checkoutGuestThenProceed){
+        if (checkoutGuestThenProceed){
+            $state.go('zest_station.reservation_checked_out',{
+                'checkout_first': true
+            });
         } else {
+            $state.go('zest_station.reservation_checked_out');
+        }
+        
+    };
+    var goToDeliveryOptions = function(){
+        $state.go('zest_station.bill_delivery_options');  
+    };
+    var talkToStaff = function(){
+        $state.go('zest_station.speak_to_staff');
+    };
+
+    
+    $scope.nextClicked = function(){
+        console.info('next clicked');
+        $state.justCheckout = false;
+        $scope.zestStationData.reservationData.edit_email = false;
+        console.log('cashReservationBalanceDue(): ',cashReservationBalanceDue());
+        if(cashReservationBalanceDue()){
+            console.warn("reservation has balance due");
+            talkToStaff();
+            
+            
+        } else {
+            
+            var checkoutGuestThenProceed = true;
+            
             var guest_bill = $scope.zestStationData.guest_bill;
             
-            if (!guest_bill.email && !guest_bill.print){//just_checkout
-                $state.go('zest_station.reservation_checked_out');
+            var emailEnabled  = guest_bill.email ? true : false;
+            var printEnabled  = guest_bill.print ? true : false;
+            
+            console.info('Update Email setting: ',(emailEnabled ? 'on': 'off'));
+            
+            if (!emailEnabled && !printEnabled){//no email, no print, just_checkout  |  off / off
+                console.info('dont email, dont print.. ~just checkout');
+                $state.justCheckout = true;
+                goToReservationCheckedOut(checkoutGuestThenProceed);
                 
-            } else if (guest_bill.email && !guest_bill.print){//email_only
-                $state.go('zest_station.bill_delivery_options');
+            } else if (emailEnabled && !printEnabled){//email_only, not print        |  on  /  off
+                 console.info('email then print, then checkout');
+                $state.at = 'edit-email';
+                $scope.zestStationData.reservationData.edit_email = true;
+                goToReservationCheckedOut(checkoutGuestThenProceed);
                 
-            } else if ( guest_bill.print ){//go to print nav
+            } else if ( !emailEnabled && printEnabled ){//go to print nav               | off  /  on 
+                console.info('print bill, then checkout');
+                
                 $state.at = 'print-nav';
                 $state.from = 'print-nav';
-                $state.go('zest_station.reservation_checked_out');
                 
+                goToReservationCheckedOut(checkoutGuestThenProceed);
+            } else if ( emailEnabled && printEnabled ){//go to print nav                              | on  /  on 
+                console.info('email then print, then checkout');
+                $state.at = 'edit-email';
+                $scope.zestStationData.reservationData.edit_email = true;
+                goToReservationCheckedOut(checkoutGuestThenProceed);
+                //goToDeliveryOptions();
             }
-        
+            
         };
     };
 
