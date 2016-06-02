@@ -108,8 +108,15 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
     cashReservationBalanceDue = function(){
         return (!$scope.zestStationData.reservationData.has_cc && $scope.zestStationData.reservationData.balance >0);
     };
-    var goToReservationCheckedOut = function(){
-        $state.go('zest_station.reservation_checked_out');
+    var goToReservationCheckedOut = function(checkoutGuestThenProceed){
+        if (checkoutGuestThenProceed){
+            $state.go('zest_station.reservation_checked_out',{
+                'checkout_first': true
+            });
+        } else {
+            $state.go('zest_station.reservation_checked_out');
+        }
+        
     };
     var goToDeliveryOptions = function(){
         $state.go('zest_station.bill_delivery_options');  
@@ -127,7 +134,11 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         if(cashReservationBalanceDue()){
             console.warn("reservation has balance due");
             talkToStaff();
+            
+            
         } else {
+            
+            var checkoutGuestThenProceed = true;
             
             var guest_bill = $scope.zestStationData.guest_bill;
             
@@ -139,13 +150,13 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             if (!emailEnabled && !printEnabled){//no email, no print, just_checkout  |  off / off
                 console.info('dont email, dont print.. ~just checkout');
                 $state.justCheckout = true;
-                goToReservationCheckedOut();
+                goToReservationCheckedOut(checkoutGuestThenProceed);
                 
             } else if (emailEnabled && !printEnabled){//email_only, not print        |  on  /  off
                  console.info('email then print, then checkout');
                 $state.at = 'edit-email';
                 $scope.zestStationData.reservationData.edit_email = true;
-                goToReservationCheckedOut();
+                goToReservationCheckedOut(checkoutGuestThenProceed);
                 
             } else if ( !emailEnabled && printEnabled ){//go to print nav               | off  /  on 
                 console.info('print bill, then checkout');
@@ -153,12 +164,12 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $state.at = 'print-nav';
                 $state.from = 'print-nav';
                 
-                goToReservationCheckedOut();
+                goToReservationCheckedOut(checkoutGuestThenProceed);
             } else if ( emailEnabled && printEnabled ){//go to print nav                              | on  /  on 
                 console.info('email then print, then checkout');
                 $state.at = 'edit-email';
                 $scope.zestStationData.reservationData.edit_email = true;
-                goToReservationCheckedOut();
+                goToReservationCheckedOut(checkoutGuestThenProceed);
                 //goToDeliveryOptions();
             }
             
