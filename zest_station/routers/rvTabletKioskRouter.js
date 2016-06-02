@@ -123,7 +123,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 
          // //check-out [ review_bill ]
          $stateProvider.state('zest_station.reservation_checked_out', {
-            url        : '/reservation_checked_out',
+            url        : '/reservation_checked_out/:checkout_first',
             templateUrl: '/assets/partials/kiosk/specific/reservation-checked-out.html',
             controller: 'zsReservationCheckedOutCtrl'
          });
