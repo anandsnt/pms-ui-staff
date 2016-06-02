@@ -56,7 +56,7 @@
         <div class="info-left">
             <strong translate>INVOICE_DATE:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <strong translate>INVOICE_NO:</strong>{{printData.invoice_number}}<br/>
-            <strong ng-if="printData.card_details.reference_number" translate>REF_NO:</strong>{{printData.card_details.reference_number}}<br ng-if="printData.card_details.reference_number" />
+            <strong ng-if="printData.reference_number" translate>REF_NO:</strong>{{printData.reference_number}}<br ng-if="printData.reference_number" />
             <strong ng-if="printData.payment_due_in_days" translate>PAYMENT_DUE_DAYS:</strong>{{printData.payment_due_in_days}}<br/>
         </div>
         <div class="info-right">
