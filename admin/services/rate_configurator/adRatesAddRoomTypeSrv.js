@@ -7,7 +7,7 @@ function($q, ADBaseWebSrvV2) {
     */
 	this.fetchRoomTypes = function() {
 		var deferred = $q.defer();
-		var url = "/api/room_types?exclude_pseudo=true&exclude_suite=true";
+		var url = "/api/room_types?exclude_pseudo=true";
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
