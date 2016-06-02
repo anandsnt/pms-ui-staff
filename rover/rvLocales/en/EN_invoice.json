@@ -20,4 +20,5 @@
 "PAYMENT_DUE_IN_DAYS:" : "Payment Due In (days): ",
 "CREDIT_AMOUNT" 	: "Credit amount",
 "REF_NO:"			: "Reference No.: ",
-"TAX_ID:"			: "Tax ID: "
+"TAX_ID:"			: "Tax ID: ",
+"AR_NUMBER:"		: "AR No.: "
