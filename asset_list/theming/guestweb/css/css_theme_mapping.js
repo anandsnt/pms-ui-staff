@@ -52,9 +52,9 @@ module.exports = {
 			'guestweb_kingsley':[ themeCSSRoot + 'guestweb_kingsley.css'],
 			'guestweb_avery':[ themeCSSRoot + 'guestweb_avery.css'],
 			'guestweb_newyork':[ themeCSSRoot + 'guestweb_newyork.css'],
-			'guestweb_sorella_houston':[ themeCSSRoot + 'guestweb_sorella_houston.css']
-
-			
+			'guestweb_sorella_houston':[ themeCSSRoot + 'guestweb_sorella_houston.css'],
+			'guestweb_Pasea':[ themeCSSRoot + 'guestweb_Pasea.css']
+		
 		}
 	}
 }
