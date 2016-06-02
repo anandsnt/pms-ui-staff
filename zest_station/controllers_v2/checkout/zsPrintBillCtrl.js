@@ -45,8 +45,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                     /*
                      * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                      */
-                    $window.print();
-                    if (sntapp.cordovaLoaded) {
+                     if (sntapp.cordovaLoaded) {
                         var printer = (sntZestStation.selectedPrinter);
                         cordova.exec(function(success) {
                             var printopted = 'true';
@@ -54,6 +53,12 @@ sntZestStation.controller('zsPrintBillCtrl', [
                         }, function(error) {
                             printFailedActions();
                         }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+                    } else {
+                        $window.print();
+                        setTimeout(function() {
+                            var printopted = 'true';
+                            nextPageActions(printopted);
+                        }, 100);
                     };
                     // provide a delay for preview to appear 
 
@@ -70,7 +75,6 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 // remove the orientation after similar delay
                 removePrintOrientation();
                 var printopted = 'true';
-                nextPageActions(printopted);
             }, 100);
         };
 

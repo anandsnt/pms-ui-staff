@@ -107,7 +107,11 @@ sntZestStation.controller('zsRootCtrl', [
 		 * Other events
 		 */
 		$scope.$on(zsEventConstants.PUT_OOS, function(event) {
-			$state.go('zest_station.outOfService');
+			if($state.current.name !== 'zest_station.admin'){
+				$state.go('zest_station.outOfService');
+			}else{
+				//do nothing
+			}
 		});
 		$scope.goToAdmin = function() {
 			$state.go('zest_station.admin');
@@ -136,6 +140,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.zestStationData.paymentGateway = data.payment_gateway;
 				$scope.zestStationData.hotelDateFormat = !!data.date_format ? data.date_format.value : "DD-MM-YYYY";
 				$scope.zestStationData.mliMerchantId = data.mli_merchant_id;
+                        configureSwipeSettings();
 			};
 			var options = {
 				params: {},
@@ -143,6 +148,37 @@ sntZestStation.controller('zsRootCtrl', [
 			};
 			$scope.callAPI(zsGeneralSrv.fetchHotelSettings, options);
 		};
+                var configureSwipeSettings = function(){
+                    console.info('::configuring swipe settings::');
+                    //(remote, websocket, local)
+                    //
+                    //local:  Infinea/Ingenico
+                    //remote:  Ving, Salto, Saflok
+                    //websocket:  Atlas / Sankyo
+
+                    $scope.zestStationData.ccReader = 'local';//default to local
+                    $scope.zestStationData.keyWriter = 'local';
+
+                    var key_method = $scope.zestStationData.kiosk_key_creation_method;
+                    if (key_method === 'ingenico_infinea_key'){
+                        $scope.zestStationData.keyWriter = 'local';
+                    } else if (key_method === 'remote_encoding'){
+                        $scope.zestStationData.keyWriter = 'remote';
+                    } else {//sankyo_websocket
+                        $scope.zestStationData.keyWriter = 'websocket';
+                    }
+
+                    var ccReader = $scope.zestStationData.kiosk_cc_entry_method;
+                    if (ccReader === 'six_pay'){
+                        $scope.zestStationData.ccReader = 'six_pay';
+                    } else if (ccReader === 'ingenico_infinea'){
+                        $scope.zestStationData.ccReader = 'local';//mli + local - ingenico/infinea
+                    } else {//sankyo_websocket
+                        $scope.zestStationData.ccReader = 'websocket';
+                    }
+                    console.warn(':: Key Writer + CC Reader = [',$scope.zestStationData.keyWriter, ' + ',$scope.zestStationData.ccReader,']');
+
+                }
 		/**
 		 * This fetches hotel admin workstation settings
 		 * */
@@ -455,7 +491,11 @@ sntZestStation.controller('zsRootCtrl', [
 			        $state.go('zest_station.admin');
 			    }
 			    else{
-			    	$state.go('zest_station.outOfService');
+			    	if($state.current.name !== 'zest_station.admin'){
+					  $state.go('zest_station.outOfService');
+					}else{
+						//do nothing
+					}
 			    }
 			} else {
 				$scope.workstation = {
@@ -594,7 +634,11 @@ sntZestStation.controller('zsRootCtrl', [
 						'id': $scope.zestStationData.set_workstation_id
 					}
 				};
-				$state.go('zest_station.outOfService');
+				if($state.current.name !== 'zest_station.admin'){
+				  $state.go('zest_station.outOfService');
+				}else{
+					//do nothing
+				}
 				$scope.callAPI(zsGeneralSrv.updateWorkStationOos, options);
 			} else {
 				//Make work stataion back to in order

@@ -37,7 +37,7 @@
         </div>
         <div class="info-right" ng-if="printData.card_type === 'COMPANY'">
             <strong translate>ACCOUNT_NAME:</strong>{{printData.account_name}}<br/>
-            <strong ng-if="printData.group_account_contact && printData.is_group">ACCOUNT_CONTACT:</strong>{{printData.account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
+            <strong ng-if="printData.group_account_contact && printData.is_group" translate>ACCOUNT_CONTACT:</strong>{{printData.group_account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
             <strong ng-if="printData.company_card_details.payment_due_in_days" translate>PAYMENT_DUE_IN_DAYS:</strong>{{printData.company_card_details.payment_due_in_days}}<br ng-if="printData.company_card_details.payment_due_in_days" />
             <strong translate>CORP_ID:</strong>{{printData.company_card_details.corporate_id}}<br/>
             <strong translate>TAX_ID:</strong>{{printData.company_card_details.tax_id}}<br ng-if="printData.company_card_details.tax_id" />
@@ -45,7 +45,7 @@
         </div>
         <div class="info-right" ng-if="printData.card_type === 'TRAVELAGENT'">
             <strong translate>ACCOUNT_NAME:</strong>{{printData.account_name}}<br/>
-            <strong ng-if="printData.group_account_contact && printData.is_group" translate>ACCOUNT_CONTACT:</strong>{{printData.account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
+            <strong ng-if="printData.group_account_contact && printData.is_group" translate>ACCOUNT_CONTACT:</strong>{{printData.group_account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
             <strong ng-if="printData.ta_card_details.payment_due_in_days" translate>PAYMENT_DUE_IN_DAYS:</strong>{{printData.ta_card_details.payment_due_in_days}}<br ng-if="printData.ta_card_details.payment_due_in_days" />
             <strong translate>IATA_#:</strong>{{printData.ta_card_details.iata_no}}<br/>
             <strong translate>TAX_ID:</strong>{{printData.ta_card_details.tax_id}}<br ng-if="printData.ta_card_details.tax_id" />
@@ -88,7 +88,7 @@
                 <td>{{currencySymbol}}{{printData.bill_transactions_info.net_amount | number:2}}</td>
             </tr>
             <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.bill_transactions_info.tax_info">
-                <td colspan="4">{{tax.location}}</td>
+                <td colspan="4">{{tax.tax_charge_code_desc}}</td>
                 <td>{{currencySymbol}}{{tax.amount | number : 2}}</td>
             </tr>
             <tr>

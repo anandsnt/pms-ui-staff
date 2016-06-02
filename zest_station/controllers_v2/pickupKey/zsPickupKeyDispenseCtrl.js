@@ -136,7 +136,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 * @return {[type]}          [description]
 		 */
 		var localEncodingSuccsess = function(response) {
-			if (response.key_info && response.key_info[0]) {
+			if (response !== null && response.key_info && response.key_info[0]) {
 				if (response.key_info[0].base64) {
 					$scope.dispenseKeyData = response.key_info[0].base64;
 					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';

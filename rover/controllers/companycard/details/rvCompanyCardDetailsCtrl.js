@@ -36,55 +36,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.dataIdHeader = "travel-agent-card-header";
 		}
 
-		/**
-		 * function to switch to new tab, will set $scope.currentSelectedTab to param variable
-		 * @param{string} is the value of that tab
-		 */
-		$scope.switchTabTo = function($event, tabToSwitch) {
-
-			if ($event !== undefined && $event !== "") {
-				$event.stopPropagation();
-				$event.stopImmediatePropagation();
-			}
-
-			if ($scope.currentSelectedTab === 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
-
-				if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
-					$scope.errorMessage = ["Please save " + $scope.cardTypeText + " card first"];
-					if ($stateParams.type === "COMPANY") {
-						$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('COMPANY_SAVE_PROMPT')]);
-					} else {
-						$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('TA_SAVE_PROMPT')]);
-					}
-					return;
-				} else {
-					saveContactInformation($scope.contactInformation);
-					$scope.$broadcast("ContactTabActivated");
-				}
-
-			}
-			if ($scope.currentSelectedTab === 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
-				$scope.$broadcast("saveContract");
-			} else if ($scope.currentSelectedTab === 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts') {
-				$scope.$broadcast("saveArAccount");
-			}
-			if (tabToSwitch === 'cc-ar-accounts') {
-				$scope.$broadcast("arAccountTabActive");
-				$scope.$broadcast("refreshAccountsScroll");
-			}
-			if (tabToSwitch === 'cc-contracts') {
-				$scope.$broadcast("refreshContractsScroll");
-			}
-			if (tabToSwitch === 'cc-commissions') {
-				$scope.$broadcast("refreshComissionsScroll");
-			}
-			if (tabToSwitch === 'cc-notes') {
-				$scope.$broadcast("fetchNotes");
-			}
-
-			$scope.currentSelectedTab = tabToSwitch;
-		};
-
 		$scope.$on('ARTransactionSearchFilter', function(e, data) {
 			$scope.isWithFilters = data;
 		});
@@ -96,7 +47,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 	        else if($stateParams.origin === 'AR_OVERVIEW'){
 	        	$scope.searchBackButtonCaption = $filter('translate')('MENU_ACCOUNTS_RECEIVABLES');
 	        }
-	        else{
+	        else if($stateParams.origin === 'COMMISION_SUMMARY'){
+				$scope.searchBackButtonCaption = $filter('translate')('MENU_COMMISIONS');
+			}else {
 	            $scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
 	        }
         };
@@ -325,6 +278,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			//CICO-20567-Select default to AR Transactions Tab
 			if($stateParams.origin === 'AR_OVERVIEW'){
 				$scope.switchTabTo('', 'cc-ar-transactions');
+			}else if($stateParams.origin === 'COMMISION_SUMMARY'){
+				$scope.switchTabTo('', 'cc-commissions');
 			}
 		};
 		/**

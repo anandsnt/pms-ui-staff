@@ -55,6 +55,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 				$scope.socketOperator.EjectKeyCard();
 			} 
 			else if(data.is_checked_out){
+				$scope.zestStationData.keyCardInserted = true;
 				$scope.alreadyCheckedOut = true;
 			}else {
 				$scope.zestStationData.keyCardInserted = true;
@@ -147,6 +148,11 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 
 		$scope.searchByName = function() {
 			$state.go('zest_station.checkOutReservationSearch');
+		};
+		
+		$scope.alreadyCheckedOutActions = function(){
+			$scope.$emit('EJECT_KEYCARD');
+			$state.go('zest_station.home');
 		};
 	}
 ]);

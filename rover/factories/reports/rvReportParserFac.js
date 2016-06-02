@@ -471,8 +471,6 @@ sntRover.factory('RVReportParserFac', [
                         customData.push( guestData );
                     };
 
-
-
                     if ( checkCancel(makeCopy) ) {
                         cancelData = {
                             isCancelData : true,

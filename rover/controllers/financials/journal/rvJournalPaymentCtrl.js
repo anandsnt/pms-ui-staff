@@ -11,7 +11,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         refreshPaymentScroll();
     });
 
-	var initPaymentData = function(){
+	var initPaymentData = function(origin){
 		var successCallBackFetchPaymentData = function(data){
 			$scope.data.paymentData = {};
             $scope.data.selectedPaymentType = '';
@@ -20,7 +20,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
             $scope.errorMessage = "";
 			refreshPaymentScroll();
-            $scope.$emit('hideLoader');
+            if(origin !=="SUMMARY_DATE_CHANGED"){
+                $scope.$emit('hideLoader');
+            }
 		};
 
         var postData = {
@@ -33,22 +35,22 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
 	};
 
-	initPaymentData();
+	initPaymentData("");
 
     $rootScope.$on('fromDateChanged',function(){
-        initPaymentData();
+        initPaymentData("");
         $rootScope.$broadcast('REFRESH_SUMMARY_DATA', $scope.data.fromDate);
     });
 
     $rootScope.$on('toDateChanged',function(){
-        initPaymentData();
+        initPaymentData("");
     });
 
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
-    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA',function( event, date ){
-        $scope.data.fromDate = date;
-        $scope.data.toDate   = date;
-        initPaymentData();
+    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA',function( event, data ){
+        $scope.data.fromDate = data.date;
+        $scope.data.toDate   = data.date;
+        initPaymentData(data.origin);
     });
 
     // Load the transaction details
@@ -217,7 +219,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     // Hanlde payment group active toggle
     $scope.clickedPaymentGroup = function( activePaymentTab ){
         $scope.data.activePaymentTab = activePaymentTab;
-        initPaymentData();
+        initPaymentData("");
     };
 
 }]);
