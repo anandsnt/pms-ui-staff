@@ -24,7 +24,7 @@
             <!--  OPT-IN  -->
             <div class="form-title">
                 <h3><span></span>
-                            Opt-In
+                            {{'OPT_IN' | translate}}
                         </h3></div>
             <fieldset style="margin-top:10px;" class="holder right float">
                 <!-- Help Keywords + response-->
@@ -38,10 +38,10 @@
                         <input type="radio" value="true" ng-model="editData.sms_double_opt_in"> {{ 'DOUBLE' | translate}}
                     </label>
                 </div>
-                <ad-textbox value="editData.sms_optin_keywords" label="Opt In Keywords" placeholder="Enter Keywords" required="yes" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="editData.sms_optin_keywords" label="{{'OPT_IN_KEYWORDS' | translate}}" placeholder="Enter Keywords" required="yes" styleclass="full-width"></ad-textbox>
                 <div class="entry full-width">
                     <label for="sms_help_response">
-                        Opt In Response (
+                        {{'OPT_IN_RESPONSE'  | translate}} (
                         <span ng-class='{"green-color-force":editData.sms_optin_response.length <= charLimitPerText, "snt-color-force":editData.sms_optin_response.length > charLimitPerText}'>
                                                 {{charLimitPerText-editData.sms_optin_response.length}}
                                             </span>)
@@ -51,10 +51,10 @@
                     <textarea value="" type="" required="" placeholder="Enter Opt-In Response" name="sms_optin_response" ng-model="editData.sms_optin_response" class="full-width" maxlength="{{charMaxLimit}}"></textarea>
                 </div>
                 <!-- double opt in -->
-                <ad-textbox value="editData.sms_double_optin_keywords" label="Double Opt In Keywords" placeholder="Enter Keywords" required="yes" styleclass="full-width" ng-show="editData.sms_double_opt_in == 'true'"></ad-textbox>
+                <ad-textbox value="editData.sms_double_optin_keywords" label="{{'DOUBLE_OPT_IN_KEYWORDS' | translate}}" placeholder="Enter Keywords" required="yes" styleclass="full-width" ng-show="editData.sms_double_opt_in == 'true'"></ad-textbox>
                 <div class="entry full-width" ng-show="editData.sms_double_opt_in == 'true'">
                     <label for="sms_help_response">
-                        Double Opt In Response (
+                        {{'DOUBLE_OPT_IN_RESPONSE'  | translate}} (
                         <span ng-class='{"green-color-force":editData.sms_double_optin_response.length <= charLimitPerText, "snt-color-force":editData.sms_double_optin_response.length > charLimitPerText}'>
                                                 {{charLimitPerText-editData.sms_double_optin_response.length}}
                                             </span>)
