@@ -96,8 +96,14 @@
 "ENFORCE_COUNTRY_SORT" : "Enforce country sort order",
 "ADDRESS_COUNTRY_LIST" : "Address country list",
 "VALIDATE_FIRST_NAME" : "Validate First Name",
-"SINGLE" : "Single",
-"DOUBLE" : "DOUBLE"
+"SINGLE" : "SINGLE",
+"DOUBLE" : "DOUBLE",
+"OPT_IN" : "Opt In",
+"OPT_IN_RESPONSE" : "Opt In Response",
+"OPT_IN_KEYWORDS" : "Opt In Keywords",
+"DOUBLE_OPT_IN_KEYWORDS" : "Double Opt In Keywords",
+"DOUBLE_OPT_IN_RESPONSE" : "Double Opt In Response"
+
 
 
 
