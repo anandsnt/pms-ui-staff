@@ -23,27 +23,8 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 			}
 		};
 
-		$scope.arrowDirection = "right";//default
-		var scannerArrowDirection = $scope.zestStationData.qr_scanner_arrow_direction;
-		var scannerArrowDirection = function(){
-			if (scannerArrowDirection === 'Top') {
-				$scope.arrowDirection = "top";
-			} else if (scannerArrowDirection === 'Top right') {
-				$scope.arrowDirection = "top-right"
-			} else if (scannerArrowDirection === 'Bottom right') {
-				$scope.arrowDirection = "bottom-right"
-			} else if (scannerArrowDirection === 'Bottom') {
-				$scope.arrowDirection = "bottom"
-			} else if (scannerArrowDirection === 'Bottom left') {
-				$scope.arrowDirection = "bottom-left"
-			} else if (scannerArrowDirection === 'Left') {
-				$scope.arrowDirection = "left"
-			} else if (scannerArrowDirection === 'Top left') {
-				$scope.arrowDirection = "top-left"
-			} else {
-				$scope.arrowDirection = "right"
-			}
-		}();
+		//qr scan arrow
+		$scope.arrowDirection  = !!$scope.zestStationData.qr_scanner_arrow_direction ? $scope.zestStationData.qr_scanner_arrow_direction : "right";
 
 		var fetchReservationDetails = function(reservation_id) {
 			/*
