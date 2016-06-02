@@ -29,6 +29,12 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <ad-textbox inputtype="text" value="m3Accounting.hotelCode"
+                            label="{{'M3_FACILITY_ID'| translate}}"
+                            styleclass="full-width"
+                            ng-if="m3Accounting.enabled"></ad-textbox>
+
             </fieldset>
 
             <fieldset class="holder right" ng-if="m3Accounting.enabled">

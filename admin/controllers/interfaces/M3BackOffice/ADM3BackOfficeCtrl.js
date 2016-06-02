@@ -24,7 +24,8 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
         var options = {
             params: {
                 enabled: $scope.m3Accounting.enabled,
-                emails: $scope.m3Accounting.emails
+                emails: $scope.m3Accounting.emails,
+				facility_id: $scope.m3Accounting.hotelCode
             },
             successCallBack: successCallBackOfSaveAfasSetup
         };
@@ -38,7 +39,8 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
 	var initializeMe = function() {
 		$scope.m3Accounting = {
 			enabled : m3AccountingSetupValues.enabled,
-		    emails : m3AccountingSetupValues.emails
+		    emails : m3AccountingSetupValues.emails,
+			hotelCode: m3AccountingSetupValues.facility_id
 		};
 	}();
 }])
