@@ -30,7 +30,7 @@
                 <!-- Help Keywords + response-->
                 <div id="options" class="entry" ng-hide="hideAddOption">
                     <label class="radio" ng-class="{'checked':editData.sms_double_opt_in == 'false'}">
-                        <span class="icon-form icon-radio " ng-class="{checked:editData.sms_double_opt_in=='false'}"></span>
+                        <span class="icon-form icon-radio " ng-class="{checked:editData.sms_double_opt_in != 'true'}"></span>
                         <input type="radio" value="false" ng-model="editData.sms_double_opt_in"> {{ 'SINGLE' | translate}}
                     </label>
                     <label class="radio" ng-class="{'checked':editData.sms_double_opt_in == 'true'}">
