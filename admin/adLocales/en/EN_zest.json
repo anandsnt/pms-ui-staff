@@ -95,7 +95,9 @@
 "COUNTRY_SORT" : "Country sort",
 "ENFORCE_COUNTRY_SORT" : "Enforce country sort order",
 "ADDRESS_COUNTRY_LIST" : "Address country list",
-"VALIDATE_FIRST_NAME" : "Validate First Name"
+"VALIDATE_FIRST_NAME" : "Validate First Name",
+"SINGLE" : "Single",
+"DOUBLE" : "DOUBLE"
 
 
 
