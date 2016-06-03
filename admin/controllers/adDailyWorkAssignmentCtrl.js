@@ -6,8 +6,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 	function($scope, $rootScope, ADDailyWorkAssignmentSrv, $anchorScroll, $timeout, $location) {
 
 		BaseCtrl.call(this, $scope);
-
-
 		// clicked element type indicators
 		$scope.workTypeClickedElement = -1;
 		$scope.taskListClickedElement = -1;
