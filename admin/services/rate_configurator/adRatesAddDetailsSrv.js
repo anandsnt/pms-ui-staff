@@ -157,14 +157,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
              * @return {object} rates
              */
             that.fetchBasedOnTypes = function (data) {
-                var url = "/api/rates";
-                var data = {
-                    'page': '1',
-                    'per_page': '10000',
-                    'query': '',
-                    'sort_dir': 'asc',
-                    'sort_field': ''
-                };
+                var url = "/api/rates/minimal?exclude_expired=true";
                 ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                     that.addRatesDetailsData.based_on = data;
                     that.fetchHotelSettings();
