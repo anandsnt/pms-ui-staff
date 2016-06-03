@@ -14,7 +14,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.defaultData = {};
 		$scope.defaultData.defaultTask = 0;
 
-
 		// Task management
 
 		$scope.setTaskManagementShowInHKMenu = function () {
