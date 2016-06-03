@@ -10,9 +10,6 @@ admin.service('adGoMomentIvySetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
 		//var url = "ui/show?json_input=Gusto/settings.json&format=json";
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-			data.goMomentIvy = {
-				enabled: false
-			}
 			deferred.resolve(data.goMomentIvy);
 		},function(data){
 			deferred.reject(data);
