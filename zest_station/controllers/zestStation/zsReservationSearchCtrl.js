@@ -389,6 +389,10 @@ sntZestStation.controller('zsReservationSearchCtrl', [
             successCallBack:    pickupSuccess,
             failureCallBack:    pickupFail
         };
+        
+        if ($scope.isInPickupKeyMode()){
+            options.params.checked_in = 'true';
+        }
         return options;
     };
     $scope.pickupKeyNoMatch = function(){
