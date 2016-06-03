@@ -318,8 +318,21 @@ var GridRowItemDrag = React.createClass({
 		return (React.DOM.div({
 				style:       style,
 				className:   props.className + className,
-				children:    props.children
+				children:    props.children,
+				onDrop: this.__onDrop,
+				onDragOver: this.__onDragOver,
+				onDragLeave: this.__onDragLeave
 			}
 		));
+	},
+
+	__onDrop: function() {
+		console.log( arguments );
+	},
+	__onDragOver: function() {
+		this.props.__setDragOver(true);
+	},
+	__onDragLeave: function() {
+		this.props.__setDragOver(false);
 	}
 });

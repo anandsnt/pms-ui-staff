@@ -63,6 +63,34 @@ var UnassignedRoomPanel = React.createClass({
                                 "time | exp. 23:15"
                             )
                         )
+                    ),
+                    React.createElement(
+                        "div",
+                        { draggable: "true", className: "occupancy-block" },
+                        React.createElement(
+                            "span",
+                            { className: "occupancy-status occupied check-in" },
+                            React.createElement(
+                                "span",
+                                { className: "guest-name" },
+                                "Guest"
+                            ),
+                            React.createElement(
+                                "span",
+                                { className: "room-type" },
+                                "Room Type"
+                            )
+                        ),
+                        React.createElement(
+                            "span",
+                            { className: "occupancy-time" },
+                            "hours | exp. 2h",
+                            React.createElement(
+                                "span",
+                                { className: "eta" },
+                                "time | exp. 23:15"
+                            )
+                        )
                     )
                 )
             )

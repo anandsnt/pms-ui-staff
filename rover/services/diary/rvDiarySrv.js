@@ -1014,5 +1014,16 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     }
                 };
 
+                this.fetchUnassignedRoomList = function() {
+                    var deferred = $q.defer();
+                    var url = '/api/hourly_occupancy/unassigned_list';
+                    rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                        deferred.resolve(data.reservations);
+                    },function(error){
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+
             }]);
                 //------------------------------------------------------------------

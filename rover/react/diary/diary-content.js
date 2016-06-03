@@ -286,7 +286,9 @@ var DiaryContent = React.createClass({
 		return React.DOM.div({
 			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + /*(props.currentResizeItem*/ (state.edit.active ? ' editing' : '')
 		},
-		React.createElement( UnassignedRoomPanel, {}),
+		React.createElement( UnassignedRoomPanel, {
+			unassignedRoomList: props.unassignedRoomList
+		}),
 		React.createElement( TogglePanel, {
 			__toggleRows:  		self.__toggleRows
 		}),

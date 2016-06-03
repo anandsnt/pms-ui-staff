@@ -62,9 +62,7 @@ var GridRow = React.createClass({
 		/*Create grid row and insert each occupany item as child into that row*/
 		return React.DOM.li({
 			key: 		props.key,
-			className: 	'grid-row',
-			onDrop: this._onDrop,
-			onDragOver: this._onDragOver
+			className: 	'grid-row'
 		},
 		hourly_divs,
 		room_inactives,
@@ -88,12 +86,5 @@ var GridRow = React.createClass({
 				currentResizeItemRow: props.currentResizeItemRow
 			});
 		}));
-	},
-
-	_onDrop: function() {
-		console.log( arguments );
-	},
-	_onDragOver: function() {
-		console.log( arguments );
 	}
 });

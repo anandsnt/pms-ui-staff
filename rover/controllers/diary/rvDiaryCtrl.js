@@ -171,9 +171,7 @@ angular.module('sntRover')
 
 
 
-
-
-
+		
 
 	//adjuested property date time (rounded to next 15min slot time)
 	$scope.adj_property_date_time 	= util.correctTime(propertyTime.hotel_time.date, propertyTime);
@@ -480,6 +478,51 @@ angular.module('sntRover')
 				$scope.gridProps.display.px_per_ms 			= $scope.gridProps.display.px_per_int / $scope.gridProps.display.ms_15;
 
 				$scope.renderGrid();
+			}
+		},
+
+		unassignedRoomList: {
+			data: [],
+			open: false,
+			toggle: function(bool) {
+				this.open = typeof bool === typeof true ? bool : false;
+			},
+			fetchList: function() {
+				var _sucess = function(data) {
+					this.data = data;
+					if ( ! this.open ) {
+						this.toggle(true);
+					}
+					$scope.renderGrid();
+
+					$scope.$emit('hideLoader');
+				}.bind(this);
+
+				var _failed = function() {
+					this.data = [];
+					if ( ! this.open ) {
+						this.toggle(true);
+					}
+					$scope.renderGrid();
+
+					$scope.$emit('hideLoader');
+				}.bind(this);
+
+				$scope.invokeApi(rvDiarySrv.fetchUnassignedRoomList, {}, _sucess, _failed);
+			},
+			dropReservation: function() {
+				var _sucess = function(data) {
+					$scope.$emit('hideLoader');
+					this.fetchList();l
+				}.bind(this);
+
+				var _failed = function() {
+					$scope.$emit('hideLoader');
+				}.bind(this);
+
+				$scope.invokeApi(rvDiarySrv.dwad, {}, _sucess, _failed);
+
+				
 			}
 		}
 	};
@@ -2128,6 +2171,7 @@ angular.module('sntRover')
 
 	};
 	currentTimeLineChanger();
+
 	/**
 	* Destroy event of scope, , we have to wipe out some events, data..
 	*/
