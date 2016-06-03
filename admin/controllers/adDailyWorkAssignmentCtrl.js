@@ -27,7 +27,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		};
 
-
 		var SCROLL_POS_KEY = 'rooms_task_management_scroll';
 		/**/
 		var $dailyWorkAssign = document.getElementById( 'daily-work-assignment' );
