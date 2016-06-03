@@ -34,8 +34,10 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
     };
 
     $scope.saveClicked = function(){
-        console.info('saving',$scope.editData);
-        var params = $scope.editData;
+        
+        var params = angular.copy($scope.editData);
+        params.sms_double_opt_in = (params.sms_double_opt_in === 'true') ? true : false;
+        console.info('saving',params);
         //params.id = $scope.editData.hotel_id;
         var options = {
             params 			: params,
@@ -60,7 +62,7 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
             console.info('fetch: ',response)
             if (response.status === 'success'){
                 $scope.editData = response.data;
-                $scope.editData.sms_double_opt_in = $scope.editData.sms_double_opt_in !== 'true' ? 'false' : 'true';
+                $scope.editData.sms_double_opt_in = (!!$scope.editData.sms_double_opt_in && $scope.editData.sms_double_opt_in) ? 'true' : 'false';
                 console.info('$scope.editData: ',$scope.editData)
             }
         };
