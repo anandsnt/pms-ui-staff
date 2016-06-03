@@ -406,7 +406,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['UPSELL']:
 					$scope.$parent.summaryCounts = {
 						'rooms_upsold'   : totals[0]['value'],
-						'upsell_revenue' : totals[1]['value']
+						'upsell_revenue' : totals[1]['value'],
+						'rover_revenue' : totals[2]['value'],
+						'zest_revenue' : totals[3]['value'],
+						'zest_station_revenue' : totals[4]['value'],
+						'zest_web_revenue' : totals[5]['value']
 					};
 					break;
 
