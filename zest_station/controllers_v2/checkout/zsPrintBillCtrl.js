@@ -5,12 +5,12 @@ sntZestStation.controller('zsPrintBillCtrl', [
     function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout) {
 
         /********************************************************************************
-        **      This is not a sperate state. It's an ng-included ctrl inside 
-        **      zsReservationBill.html
-        **      Expected state params -----> nothing              
-        **      Exit function -> nextPageActions                             
-        **                                                                       
-        *********************************************************************************/
+         **      This is not a sperate state. It's an ng-included ctrl inside 
+         **      zsReservationBill.html
+         **      Expected state params -----> nothing              
+         **      Exit function -> nextPageActions                             
+         **                                                                       
+         *********************************************************************************/
 
         BaseCtrl.call(this, $scope);
         /**
@@ -23,9 +23,16 @@ sntZestStation.controller('zsPrintBillCtrl', [
         };
         var nextPageActions = function(printopted) {
             if ($scope.zestStationData.guest_bill.email) {
+                $scope.stateParamsForNextState.printopted = printopted;
                 $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
             } else {
-                $scope.checkOutGuest(printopted);
+                var stateParams = {
+                    'printopted': printopted,
+                    'email_sent': $scope.stateParamsForNextState.email_sent,
+                    'email_failed': $scope.stateParamsForNextState.email_failed
+                };
+
+                $state.go('zest_station.reservationCheckedOut', stateParams);
             }
         };
         var handleBillPrint = function() {
@@ -45,7 +52,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                     /*
                      * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                      */
-                     if (sntapp.cordovaLoaded) {
+                    if (sntapp.cordovaLoaded) {
                         var printer = (sntZestStation.selectedPrinter);
                         cordova.exec(function(success) {
                             var printopted = 'true';
@@ -56,6 +63,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                     } else {
                         $window.print();
                         setTimeout(function() {
+                            var printopted = 'true';
                             nextPageActions(printopted);
                         }, 100);
                     };

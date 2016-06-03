@@ -105,7 +105,8 @@
                                 <label ng-if="!borrowForGroups && room.defaultRate.isAllotmentRate"> in Allotment</label>
                             </span>
                             <span ng-repeat="roomRates in room.ratesArray">
-                              <span class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgColor}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in roomRates.bestAvailableRateRestrictions"></span>
+                              <span ng-show="roomRates.bestAvailableRateRestrictions.length < 3" class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in roomRates.bestAvailableRateRestrictions">{{eachRestriction.days}}</span>
+                               <span ng-show="roomRates.bestAvailableRateRestrictions.length >= 3" class="restriction-icon bg-drk"  >R</span>
                             </span>
 
                         </div>
@@ -149,8 +150,8 @@
                                     <span class="corporate" ng-if="rate.isGroupRate">GROUP</span>
                                     <span class="corporate" ng-if="rate.isAllotmentRate">ALLOTMENT</span>
 
-                                    <span class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgColor}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in rate.restriction"></span>
-
+                                    <span ng-show="rate.restriction.length < 3" class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in rate.restriction">{{eachRestriction.days}}</span>
+                                    <span ng-show="rate.restriction.length >= 3" class="restriction-icon bg-drk"  >R</span>
                                     <!-- <span class="restriction-icon" ng-if="rate.numRestrictions > 1">R</span> -->
 
                                   <!--   <span class="restricted" ng-if="rate.numRestrictions > 1">

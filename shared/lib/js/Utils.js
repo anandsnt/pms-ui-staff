@@ -268,7 +268,7 @@ var restrictionCssClasses = {
     "MAX_STAY_LENGTH" : "",//no need of colors for some restriction -CICO-28657 - check HTML
     "MIN_STAY_THROUGH" : "violet",
     "MIN_ADV_BOOKING" : "green",
-    "MAX_ADV_BOOKING" : "",
+    "MAX_ADV_BOOKING" : "grey",
     "DEPOSIT_REQUESTED" : "",
     "CANCEL_PENALTIES" : "",
     "LEVELS" : "",

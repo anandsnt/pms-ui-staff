@@ -5,14 +5,14 @@ admin.controller('ADZestStationPickUpKeysCtrl', ['$scope', '$rootScope', '$state
     $scope.data = {};
 
     $scope.arrowDirections =
-        [   'Top',
-            'Top right',
-            'Right',
-            'Bottom right',
-            'Bottom',
-            'Bottom left',
-            'Left',
-            'Top left'
+        [   'top',
+            'top-right',
+            'right',
+            'bottom-right',
+            'bottom',
+            'bottom-left',
+            'left',
+            'top-left'
         ];
 
     $scope.fetchSettings = function() {

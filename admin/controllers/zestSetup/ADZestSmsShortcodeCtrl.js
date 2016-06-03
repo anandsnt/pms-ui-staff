@@ -60,6 +60,7 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
             console.info('fetch: ',response)
             if (response.status === 'success'){
                 $scope.editData = response.data;
+                $scope.editData.sms_double_opt_in = $scope.editData.sms_double_opt_in !== 'true' ? 'false' : 'true';
                 console.info('$scope.editData: ',$scope.editData)
             }
         };

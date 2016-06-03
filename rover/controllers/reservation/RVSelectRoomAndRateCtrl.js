@@ -154,21 +154,22 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					occupancies.splice(-1, 1);
 				}
 
+
 				var payLoad = {
 					from_date: ARRIVAL_DATE,
 					to_date: DEPARTURE_DATE,
-					company_id: $scope.reservationData.company.id,
-					travel_agent_id: $scope.reservationData.travelAgent.id,
-					group_id: $scope.reservationData.group.id || $scope.reservationData.allotment.id,
-					promotion_code: $scope.reservationData.searchPromoCode,
-					promotion_id: $scope.reservationData.promotionId,
+					company_id: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.company.id: "",
+					travel_agent_id: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.travelAgent.id : "",
+					group_id: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.group.id || $scope.reservationData.allotment.id : "",
+					promotion_code: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.searchPromoCode : "",
+					promotion_id: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.promotionId : "",
 					override_restrictions: $scope.stateCheck.showClosedRates,
 					adults: occupancies[0].adults,
 					children: occupancies[0].children,
 					include_expired_promotions: !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates,
 					per_page: $scope.stateCheck.pagination.rate.roomsList.perPage,
 					page: page,
-					is_member: !!$scope.reservationData.member.isSelected
+					is_member: ($scope.stateCheck.activeView == 'RECOMMENDED') ? !!$scope.reservationData.member.isSelected: ""
 				};
 
 				if ($scope.stateCheck.stayDatesMode) {
@@ -359,7 +360,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					_.each(roomType.restrictions, function(restrictionObject) {
 					   var restrictionKey = restrictionObject.restriction_type_id;
 					   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
-					   restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
+					 //  restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 					   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
 					})
 					var roomTypeInfo = {
@@ -415,7 +416,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					_.each(rate.restrictions, function(restrictionObject) {
 					   var restrictionKey = restrictionObject.restriction_type_id;
 					   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
-					   restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
+					  // restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 					   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
 					});
 
@@ -655,7 +656,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				} else {
 					if($stateParams.travel_agent_id || $stateParams.company_id
 						 || $stateParams.group_id || $stateParams.allotment_id
-						 || $stateParams.promotion_code || $stateParams.is_member == true){
+						 || $stateParams.promotion_code || $stateParams.is_member == "true"){
 						$scope.stateCheck.activeView = 'RECOMMENDED';
 					} else {
 						// By default RoomType
@@ -938,7 +939,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						isReccommendedTabApiRequired = true;
 					} else if(($scope.stateCheck.activeView === "RECOMMENDED") && ($stateParams.travel_agent_id || $stateParams.company_id
 						 || $stateParams.group_id || $stateParams.allotment_id
-						 || $stateParams.promotion_code || $stateParams.is_member == true)){
+						 || $stateParams.promotion_code || $stateParams.is_member == "true")){
 						isReccommendedTabApiRequired = true;
 					}
 					if(isReccommendedTabApiRequired){
@@ -1705,7 +1706,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						_.each(room.restrictions, function(restrictionObject) {
 						   var restrictionKey = restrictionObject.restriction_type_id;
 						   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
-						   restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
+						   //restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
 						})
 						var proccesedRestrictions = processRestrictions( room.multiple_restrictions, rate.id),
@@ -1766,7 +1767,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						_.each(rate.restrictions, function(restrictionObject) {
 						   var restrictionKey = restrictionObject.restriction_type_id;
 						   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
-						   restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
+						  // restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
 						})
 
@@ -2022,8 +2023,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			{"key": "MIN_STAY_LENGTH", "name": "MIN LENGTH OF STAY"},
 			{"key": "MAX_STAY_LENGTH", "name": "MAX LENGTH OF STAY"},
 			{"key": "MIN_STAY_THROUGH", "name": "MIN STAY THROUGH"},
-			{"key": "MIN_ADV_BOOKING", "name": "MAX ADVANCED BOOKING"},
-			{"key": "MAX_ADV_BOOKING", "name": "MIN ADVANCED BOOKING"}
+			{"key": "MIN_ADV_BOOKING", "name": "MIN ADVANCED BOOKING"},
+			{"key": "MAX_ADV_BOOKING", "name": "MAX ADVANCED BOOKING"}
 
 		];
 
@@ -2033,7 +2034,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		_.each(restrictionsArray, function(restrictionObject) {
 		   var restrictionKey = restrictionObject.key;
 		   restrictionObject.restrictionBgClass = "bg-"+getRestrictionClass(restrictionKey);
-		   restrictionObject.restrictionBgColor = getRestrictionClass(restrictionKey);
+		   //restrictionObject.restrictionBgColor = getRestrictionClass(restrictionKey);
 		   restrictionObject.restrictionIcon = getRestrictionIcon(restrictionKey);
 		});
 		$scope.legendRestrictionsArray = restrictionsArray;
