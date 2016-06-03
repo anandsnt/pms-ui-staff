@@ -346,6 +346,7 @@ sntZestStation.controller('zsAdminCtrl', [
             delete params.kiosk.workstation;
             delete params.printer;
             var successCallBack = function(response) {
+                $scope.updateSavedIdleTimer($scope.savedSettings.kiosk.idle_timer)
                 saveStation();
             };
             var failureCallBack = function(response) {
