@@ -240,8 +240,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['UPSELL']:
-					$scope.leftColSpan = 5;
-					$scope.rightColSpan = 5;
+					$scope.leftColSpan = 6;
+					$scope.rightColSpan = 6;
 					break;
 
 				case reportNames['LOGIN_AND_OUT_ACTIVITY']:
