@@ -23,6 +23,9 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 			}
 		};
 
+		//qr scan arrow
+		$scope.arrowDirection  = !!$scope.zestStationData.qr_scanner_arrow_direction ? $scope.zestStationData.qr_scanner_arrow_direction : "right";
+
 		var fetchReservationDetails = function(reservation_id) {
 			/*
 			 * The Scanned QR-code returns the Reservation_id
