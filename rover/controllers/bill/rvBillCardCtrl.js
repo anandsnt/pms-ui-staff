@@ -41,7 +41,7 @@ sntRover.controller('RVbillCardController',
 		scope: $scope
 	};
 	$scope.encoderTypes = [];
-
+console.log("sample commit by siyana");
 	// Flag for CC auth permission
     $scope.hasCCAuthPermission = function() {
         return rvPermissionSrv.getPermissionValue ('OVERRIDE_CC_AUTHORIZATION');
