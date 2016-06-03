@@ -112,7 +112,7 @@ sntRover.controller('reservationDetailsController',
 				name: 'rover.reports',
 				param: {
 					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
-					activeTab: "RESERVATIONS"
+					activeTab: "REPORTS"
 				}
 			};
 		} else {

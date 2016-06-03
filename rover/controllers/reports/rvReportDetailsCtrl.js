@@ -1069,10 +1069,9 @@ sntRover.controller('RVReportDetailsCtrl', [
          * @return {undefined}
         */
 	    $scope.gotoStayCard = function (reservation) {
-	    	console.log(reservation);
 			$timeout(function() {
 	            $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-	              'id': 1343210,
+	              'id': reservation.reservation_id,
 	              'confirmationId': reservation.confirm_no,
 	              'isrefresh': false
 	            });
