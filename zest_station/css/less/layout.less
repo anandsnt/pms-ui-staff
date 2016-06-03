@@ -1096,7 +1096,6 @@
     }
 }
 
-
 /* QR Code ***/
     #qr-code {
         font-size: 28px;
@@ -1107,7 +1106,7 @@
         #flexbox > .parent(column wrap, center, center, '');
 
         .icon-qr-code {
-            .size(auto, 260px);
+            .size(160px, auto);
         }
 
         .icon-qr-arrow {
@@ -1120,36 +1119,42 @@
             background: transparent;
             border: 0;
             padding: 0;
-            margin-bottom: 60px;
+            margin-bottom: 20px;
             box-shadow: none !important;
-            .size(380px, auto);
+            .size(160px, auto);
 
             /* Directions ***/
             &.arrow-top {
+                margin-top: 80px;
+
                 .icon-qr-arrow {
-                    top: -70px;
+                    top: -100px;
                     left: 50%;
                     margin-left: -55px;
                     -webkit-transform: rotate(-90deg);
-                    -transform: rotate(-90deg);
+                    transform: rotate(-90deg);
                 }
             }
 
             &.arrow-top-left {
+                margin-top: 60px;
+
                 .icon-qr-arrow {
-                    top: -30px;
-                    left: -10px;
+                    top: -80px;
+                    left: -40px;
                     -webkit-transform: rotate(-120deg);
-                    -transform: rotate(-120deg);
+                    transform: rotate(-120deg);
                 }
             }
     
             &.arrow-top-right {
+                margin-top: 60px;
+
                 .icon-qr-arrow {
-                    top: -25px;
-                    right: -20px;
+                    top: -80px;
+                    right: -40px;
                     -webkit-transform: rotate(-60deg);
-                    -transform: rotate(-60deg);
+                    transform: rotate(-60deg);
                 }
             }
 
@@ -1159,7 +1164,7 @@
                     left: -100px;
                     margin-top: -60px;
                     -webkit-transform: rotate(-180deg);
-                    -transform: rotate(-180deg);
+                    transform: rotate(-180deg);
                 }
             }
 
@@ -1172,30 +1177,36 @@
             }
 
             &.arrow-bottom {
+                margin-bottom: 100px;
+
                 .icon-qr-arrow {
-                    bottom: -60px;
+                    bottom: -100px;
                     left: 50%;
                     margin-left: -55px;
                     -webkit-transform: rotate(90deg);
-                    -transform: rotate(90deg);
+                    transform: rotate(90deg);
                 }
             }
 
             &.arrow-bottom-left {
+                margin-bottom: 80px;
+
                 .icon-qr-arrow {
-                    bottom: -10px;
-                    left: -20px;
+                    bottom: -80px;
+                    left: -40px;
                     -webkit-transform: rotate(120deg);
-                    -transform: rotate(120deg);
+                    transform: rotate(120deg);
                 }
             }
     
             &.arrow-bottom-right {
+                margin-bottom: 80px;
+
                 .icon-qr-arrow {
-                    bottom: -10px;
-                    right: -20px;
+                    bottom: -80px;
+                    right: -40px;
                     -webkit-transform: rotate(60deg);
-                    -transform: rotate(60deg);
+                    transform: rotate(60deg);
                 }
             }
         }
