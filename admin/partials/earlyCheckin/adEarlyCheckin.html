@@ -15,7 +15,7 @@
 						<h3><span translate>EARLY_CHECKIN_GENERAL</span> </h3>
 					</div>
 					<fieldset class="holder left">
-						<div></div>
+						
 
 						<!-- Switch -->
 						<div class="entry">
@@ -26,6 +26,10 @@
 
 							</div>
 						</div>
+						<div ng-show = "!upsellData.is_zest_app_provided">
+								<ad-toggle-button  is-checked="upsellData.is_allow_early_checkin_from_zest" label="{{ 'ZEST_ALLOW_EARLY_CHECKIN' | translate}}"></ad-toggle-button>
+						</div>
+
 					</fieldset>
 					<fieldset class="holder right">
 						<!-- Search available charge codes -->
