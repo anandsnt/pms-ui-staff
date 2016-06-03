@@ -306,7 +306,7 @@ sntRover.run([
 			// FOR DEV WORK
 			// PLEASE DO NO REMOVE THIS LINE, U CAN COMMENT IT OUT
 			// PLEASE DO NO REMOVE THIS LINE, U CAN COMMENT IT OUT
-			// console.debug( '[%s %O] >>> [%s %O]', fromState.name, fromParams, toState.name, toParams );
+			console.debug( '[%s %O] >>> [%s %O]', fromState.name, fromParams, toState.name, toParams );
 			/**
 			 * I don't know who you are. I don't know what you want.
 			 * If you are looking for ransom I can tell you I don't have money, but what I do have are a very particular set of skills.
