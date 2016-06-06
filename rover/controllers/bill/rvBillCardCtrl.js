@@ -1395,6 +1395,13 @@ sntRover.controller('RVbillCardController',
 
 	// CICO-17266 Considering Billing info details before Auth..
 	var showPreAuthPopupWithBillingInfo = function(data){
+		
+		$scope.clickedIncidentalsOnly = function(){
+			// @params : data , isCheckinWithoutAuth: false
+			data.is_cc_authorize_for_incidentals = true;
+			performCCAuthAndCheckinProcess(data,false);
+			ngDialog.close();
+		};
 
  		$scope.clickedFullAuth = function(){
  			// @params : data , isCheckinWithoutAuth: false
