@@ -662,6 +662,12 @@
 						HTTPS
 					</label>
 				</div>
+				<div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
+					<label for="six-server-port">
+						EMV TIMEOUT
+					</label>
+					<input type="text" ng-model="data.six_pay_emv_timeout">
+				</div>
 				<div class="entry full-width">
 					<label>Allow CC processors per payment methods</label>
 					<div class="switch-button single" ng-class="{ on : data.allow_cc_processors_per_payment_methods == true }" ng-click="data.allow_cc_processors_per_payment_methods = !data.allow_cc_processors_per_payment_methods">
