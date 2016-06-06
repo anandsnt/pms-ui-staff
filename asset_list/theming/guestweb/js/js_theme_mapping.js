@@ -54,7 +54,7 @@ module.exports = {
 			'guestweb_kingsley':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_avery':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_newyork':[ themeJsRoot + 'app_router_mgm_chain.js'],
-			'guestweb_ponchartrain':[ themeJsRoot + 'app_router_common.js', themeJsRoot + 'app_router_ponchartrain.js']
+			'guestweb_ponchartrain':[themeJsRoot + 'app_router_ponchartrain.js']
 		}
 	}
 }
