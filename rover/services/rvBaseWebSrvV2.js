@@ -13,7 +13,7 @@ sntRover.config(function($httpProvider) {
 
 angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', function($http, $q, $window) {
 
-	var webserviceErrorActions = function(url,deferred,errors, status) {
+	var webserviceErrorActions = function(url, deferred, errors, status) {
 		var urlStart = url.split('?')[0];
 		// please note the type of error expecting is array
 		// so form error as array if you modifying it
@@ -69,7 +69,7 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
 		$http(httpDict).success(function(response, status) {
 			deferred.resolve(response);
 		}).error(function(errors, status) {
-			webserviceErrorActions(url,deferred, errors, status);
+			webserviceErrorActions(url, deferred, errors, status);
 		});
 		return deferred.promise;
 	};
@@ -91,7 +91,7 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
 	};
 
 
-	
+
 	/**************************************************************************************/
 
 	/**
@@ -118,17 +118,17 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
 		};
 
 		$http(httpDict).success(function(response, status, headers) {
-				if (status === 202 || status === 102) {
-					var response = {
-						'status': 'processing_not_completed',
-						'location_header': headers('Location')
-					};
-					deferred.resolve(response);
-				} else {
-					deferred.resolve(response);
-				}
+			if (status === 202 || status === 102) {
+				var response = {
+					'status': 'processing_not_completed',
+					'location_header': headers('Location')
+				};
+				deferred.resolve(response);
+			} else {
+				deferred.resolve(response);
+			}
 		}).error(function(errors, status) {
-			webserviceErrorActions(url,deferred, errors, status);
+			webserviceErrorActions(url, deferred, errors, status);
 		});
 		return deferred.promise;
 	};
