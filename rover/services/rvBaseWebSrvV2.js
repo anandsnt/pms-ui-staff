@@ -118,6 +118,8 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
 		};
 
 		$http(httpDict).success(function(response, status, headers) {
+			//202 ---> The request has been accepted for processing, but the processing has not been completed.
+			//102 ---> This code indicates that the server has received and is processing the request, but no response is available yet
 			if (status === 202 || status === 102) {
 				var response = {
 					'status': 'processing_not_completed',
