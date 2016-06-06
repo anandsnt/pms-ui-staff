@@ -389,7 +389,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             
             lastSelectedFilterValues[activeFilterIndex].allRate.currentPage--;
 
-            if(lastSelectedFilterValues[activeFilterIndex].allRate.currentPage === 0) {
+            if(lastSelectedFilterValues[activeFilterIndex].allRate.currentPage <= 0) {
                 lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = 1;
             }
         }
@@ -582,7 +582,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         lastSelectedFilterValues[activeFilterIndex].scrollDirection = rvRateManagerPaginationConstants.scroll.UP;
 
         lastSelectedFilterValues[activeFilterIndex].allRate.currentPage--;
-        if(lastSelectedFilterValues[activeFilterIndex].allRate.currentPage === 0){
+        if(lastSelectedFilterValues[activeFilterIndex].allRate.currentPage <= 0){
            lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = 1;
            return;
         }
@@ -816,7 +816,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 {
                     fromDate    : formatDateForAPI(filterValues.fromDate),
                     toDate      : formatDateForAPI(filterValues.toDate),
-                    page        : (filterValues.allRate.currentPage - 1)
+                    page        : filterValues.allRate.currentPage > 1 ? filterValues.allRate.currentPage - 1 : 1
                 });
 
         //we will modify this with new response's rates
@@ -1655,7 +1655,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             if (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter) {
                 let allRate = {
                     ...lastSelectedFilterValues[activeFilterIndex].allRate,
-                    currentPage: (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter) ? 1 : lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
+                    currentPage: 1
                 };
 
                 lastSelectedFilterValues[activeFilterIndex].allRate = allRate;
@@ -1696,13 +1696,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 //calling the api
                 let allRate = {
                     ...lastSelectedFilterValues[activeFilterIndex].allRate,
-                    currentPage:  1
+                    currentPage:  (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter) ? 1 : lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
                 };
 
                 lastSelectedFilterValues[activeFilterIndex].allRate = allRate;
                 newFilterValues.allRate = allRate;
 
-                cachedRateAndRestrictionResponseData = [];
                 totalRatesCountForPagination = 0;
                 fetchDailyRates(newFilterValues);
             }
