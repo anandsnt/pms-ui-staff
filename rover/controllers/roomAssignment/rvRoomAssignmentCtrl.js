@@ -163,8 +163,11 @@ sntRover.controller('RVroomAssignmentController',[
 
 	$scope.checkRoomTypeAvailability = function(roomObject){
 
-		var isAvailablityExist = false;
+		var availabilityCount = _.findWhere($scope.roomTypes, {"id": roomObject.room_type_id}).availability;
+
+		var isAvailablityExist = (availabilityCount > 0) ? true : false;
 		var isOverBookPermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+		$scope.currentRoomObject = roomObject;
 
 		if(!isAvailablityExist){
 			if(isOverBookPermission){
@@ -182,6 +185,8 @@ sntRover.controller('RVroomAssignmentController',[
                   scope: $scope
                 });
 			}
+		} else {
+			$scope.showMaximumOccupancyDialog(roomObject);
 		}
 		////showMaximumOccupancyDialog()
 	};

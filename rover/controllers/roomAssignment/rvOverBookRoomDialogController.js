@@ -6,6 +6,11 @@ sntRover.controller('RVOverBookRoomDialogController',['$scope','$rootScope', 'ng
 		ngDialog.close();
 	};
 
+	$scope.clickedYesInOverBook = function(){
+		$scope.closeDialog();
+		$scope.showMaximumOccupancyDialog($scope.currentRoomObject);
+	};
+
 
 
 }]);
