@@ -1,24 +1,24 @@
 <div class="block-item item-rate " ng-class="{'has-button':isStandAlone && otherData.isAddonEnabled && reservationData.reservation_card.reservation_status != 'CANCELED'}" >
 	<h3 class="block-title"> Rates &amp; Add Ons</h3>
-	<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" id="stay-card-total-stay-cost" class="has-arrow next-view hover-hand" ng-click="showEditReservationPrompt()"> 
-		<span class="number" ng-show="reservationData.reservation_card.is_rates_suppressed">
+	<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" id="stay-card-total-stay-cost" class="has-arrow next-view hover-hand" ng-click="showEditReservationPrompt()">
+		<span class="number" ng-show="reservationData.reservation_card.is_rates_suppressed && !isSRViewRateBtnClicked">
 			{{reservationData.reservation_card.text_rates_suppressed}}
-		</span> 
-		<span class="number" ng-hide="reservationData.reservation_card.is_rates_suppressed">
-			{{currencySymbol}}{{reservationData.reservation_card.avg_daily_rate}}	
-		</span> 
+		</span>
+		<span class="number" ng-hide="reservationData.reservation_card.is_rates_suppressed && !isSRViewRateBtnClicked">
+			{{currencySymbol}}{{reservationData.reservation_card.avg_daily_rate}}
+		</span>
 		<span ng-hide="reservationParentData.is_modified == true && isStandAlone" class="rate">
-			{{reservationData.reservation_card.is_multiple_rates == true ? 'Multiple' :reservationData.reservation_card.rate_name}} 
+			{{reservationData.reservation_card.is_multiple_rates == true ? 'Multiple' :reservationData.reservation_card.rate_name}}
 	    </span>
 		<!-- If reservation was edited, output this instead:-->
         <span class="rate custom" ng-show="reservationParentData.is_modified == true && isStandAlone">
         	<span>
         		Edited
-        	</span> 
-        	{{reservationData.reservation_card.is_multiple_rates == true ? 'Multiple' :reservationData.reservation_card.rate_name}} 
-        </span> 
+        	</span>
+        	{{reservationData.reservation_card.is_multiple_rates == true ? 'Multiple' :reservationData.reservation_card.rate_name}}
+        </span>
 
-	
+
 	</a>
 
     <div class="actions" ng-if="isStandAlone && otherData.isAddonEnabled && reservationData.reservation_card.reservation_status != 'CANCELED'">
@@ -27,8 +27,8 @@
             <span class="icons icon-addons"></span>
             Add-Ons
         </a>
-    </div> 
-	<!-- If reservation is not editable 
+    </div>
+	<!-- If reservation is not editable
     <div class="no-view">
         <span class="number">${Daily Rate} / <strong>${Total Fees}</strong></span>
         {Rate and Packages}

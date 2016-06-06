@@ -13,19 +13,26 @@
             Unavailable
     </a>
     <!-- Show balance -->
-    <div class="balance break">
+    <div class="balance break" ng-hide="hasShownSRViewBtn()">
         <span class="label">Balance</span>
         <!-- According to CICO-15833, we need SR in both connected & stanalone -->
         <span>
-				<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)" ng-if ="!reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates">
+				<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)" ng-if ="hasShownBalanceAmount()">
 					{{currencySymbol}}
 					{{ reservationData.reservation_card.balance_amount | number:2 }}
 				</span>
-        <span class="h1" ng-if="reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates">
-					SR
-				</span>
+        <span class="h1" ng-if="reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates && !isSRViewRateBtnClicked">
+                            SR
+                        </span>
         </span>
     </div>
+
+    <button type="button" class="button staycard-button icon-text" ng-show="hasShownSRViewBtn()" ng-click="onSRViewRateBtnClick()">
+        <span class="text">SR</span>
+        View Rate
+    </button>
+
+
     <button type="button"
             ng-click="putInQueue(reservationData.reservation_card.reservation_id)"
             class="button staycard-button icon-queue"
