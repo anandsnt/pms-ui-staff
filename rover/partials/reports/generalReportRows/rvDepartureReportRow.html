@@ -4,7 +4,7 @@
 		<span class="status">{{ each.status }}</span>
 	</td>
 	<td ng-if="each.isReport">
-		<strong class="title">{{ each.name }}</strong>
+		<strong class="title"><a href="" ng-click="gotoStayCard(each)">{{ each.name }}</a></strong>
 		<span class="confirmation">{{ each.confirm_no }}</span>
 		<span ng-if="each.is_vip">&#8226; <span class="vip">VIP</span></span>
 		<span ng-if="each.addtional_guest_counts">&#8226; <span class="guests">{{ each.addtional_guest_counts }} guest(s)</span></span>
