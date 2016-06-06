@@ -526,7 +526,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             $scope.isAddingMode = true;
 
             //default sorting fields & directions
-            $scope.sorting_field = 'room_no';
+            $scope.sort_field = 'room_no';
             $scope.sort_dir = 'ASC';
 
             //selected reservation list
@@ -650,7 +650,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 $scope.selected_reservations.push(reservation);
                 //We have to show in the same order - in popup
                 $scope.selected_reservations = _.sortBy($scope.selected_reservations, "confirm_no")
-                $scope.selected_reservations = _.sortBy($scope.selected_reservations, $scope.sorting_field);
+                $scope.selected_reservations = _.sortBy($scope.selected_reservations, $scope.sort_field);
                 if($scope.sort_dir === 'DESC'){
                     $scope.selected_reservations = $scope.selected_reservations.reverse();
                 }
@@ -703,14 +703,14 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
         /**
          * to sort by a field
-         * @param  {String} sorting_field [description]
+         * @param  {String} sort_field [description]
          */
-        $scope.sortBy = function(sorting_field) {
+        $scope.sortBy = function(sort_field) {
             //if we are trying from the same tab, we have to switch between Asc/Desc
-            if ($scope.sorting_field === sorting_field) {
+            if ($scope.sort_field === sort_field) {
                 $scope.sort_dir = ($scope.sort_dir === 'ASC') ? 'DESC' : 'ASC';
             } else {
-                $scope.sorting_field = sorting_field;
+                $scope.sort_field = sort_field;
                 $scope.sort_dir = 'ASC';
             }
 
@@ -720,13 +720,13 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
         /**
          * to get the sorting field class
-         * @param  {String} sorting_field
+         * @param  {String} sort_field
          * @return {[type]}               [description]
          */
-        $scope.getSortClass = function(sorting_field) {
+        $scope.getSortClass = function(sort_field) {
             var classes = '';
             //if we are trying from the same tab, we have to switch between Asc/Desc
-            if ($scope.sorting_field === sorting_field) {
+            if ($scope.sort_field === sort_field) {
                 classes = ($scope.sort_dir === 'ASC') ? 'sorting-asc' : 'sorting-desc';
             }
             return classes;
@@ -811,7 +811,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 group_id: $scope.groupConfigData.summary.group_id,
                 per_page: $scope.perPage,
                 page: $scope.page,
-                sorting_field: $scope.sorting_field,
+                sort_field: $scope.sort_field,
                 sort_dir: $scope.sort_dir,
                 arrival_date: formatDateForAPI($scope.arrival_date),
                 dep_date: formatDateForAPI($scope.dep_date),
