@@ -463,6 +463,14 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		// CICO-17266 Considering Billing info details before Auth..
 		var showPreAuthPopupWithBillingInfo = function(data) {
 
+			$scope.clickedIncidentalsOnly = function(){
+				// @params : data , isCheckinWithoutAuth: false
+				data.is_cc_authorize_for_incidentals = true;
+				$scope.requireAuthorization = true;
+				performCCAuthAndconfirmUpdatesProcess(data);
+				ngDialog.close();
+			};
+			
 			$scope.clickedFullAuth = function() {
 				// @params : data , isCheckinWithoutAuth: false
 				$scope.requireAuthorization = true;
