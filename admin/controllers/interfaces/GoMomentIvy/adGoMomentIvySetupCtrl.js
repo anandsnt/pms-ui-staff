@@ -23,7 +23,7 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 
 	 */
 	$scope.saveGoMomentIvySetup = function() {
 		var params 	= {
-			goMomentIvy: $scope.goMomentIvy.enabled ? $scope.goMomentIvy : _.pick($scope.goMomentIvy, 'enabled')
+			gomomentivy: $scope.goMomentIvy.enabled ? $scope.goMomentIvy : _.pick($scope.goMomentIvy, 'enabled')
 		};
         var options = {
             params 			: params,
@@ -37,7 +37,7 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 
 	 * @return {undefiend}
 	 */
 	var initializeMe = function() {
-		$scope.goMomentIvy = {};
-		$scope.goMomentIvy.enabled = goMomentIvySetupValues.enabled;
+		$scope.goMomentIvy = goMomentIvySetupValues;
+		console.log($scope.goMomentIvy )
 	}();
 }])

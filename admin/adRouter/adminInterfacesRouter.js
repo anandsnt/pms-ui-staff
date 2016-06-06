@@ -44,8 +44,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     controller: 'adGoMomentIvySetupCtrl',
     url : '/gomomentivy/setup',
     resolve: {
-      goMomentIvySetupValues: ['adLetShareSetupSrv', function(adLetShareSetupSrv) {
-        return adLetShareSetupSrv.fetchLetShareConfiguration();
+      goMomentIvySetupValues: ['adGoMomentIvySetupSrv', function(adGoMomentIvySetupSrv) {
+        return adGoMomentIvySetupSrv.fetchGoMomentIvyConfiguration();
       }]
     }
   });
