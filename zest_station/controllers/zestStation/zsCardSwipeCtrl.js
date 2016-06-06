@@ -31,8 +31,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 }
             } else if(current === 'zest_station.card_swipe'){
                 $state.go ('zest_station.terms_conditions');
+                
             } else if(current === 'zest_station.deposit_agree'){
                 $state.go ('zest_station.terms_conditions');
+                
             }
             
             
@@ -162,7 +164,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         };
         $scope.simulateSixPay = function(){
             var inProduction = $scope.inProd();
+            console.info('inProduction: ',inProduction);
             if (inProduction){
+                $scope.isSimulated = false;
                 return;
             }
             $scope.$emit('showLoader');
@@ -242,21 +246,39 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 };
             
         $scope.afterGuestCheckinCallback = function(response){
-            console.info('response from guest check-in',response)
+            console.info('response from guest check-in : response :',response)
                 $scope.$emit('hideLoader');       
                 var haveValidGuestEmail = $scope.guestEmailOnFile();//also sets the email to use for delivery
-                var successfulCheckIn = (response.status === "success")? true : false;
+                
+                var successfulCheckIn;
+//                var debugCheckinResponse = JSON.parse('{"status":"success","data":{"check_in_status":"Success","cc_auth_amount":"0.00","cc_auth_code":null},"errors":[],"is_eod_in_progress":false,"is_eod_manual_started":false}');
+  //              console.info('debugCheckinResponse: ',debugCheckinResponse);
+                
+                console.info('check-in failure test: response.status :',response.status);
+                if (response.status === "success"){
+                    successfulCheckIn = true;
+                } else {
+                    successfulCheckIn = false;
+                }
                 console.info('successfulCheckIn: ',successfulCheckIn);
+                
                 //detect if coming from email input
+                
                 if (haveValidGuestEmail && successfulCheckIn){
+                    console.info('haveValidGuestEmail && successfulCheckIn: ');
                         $state.go('zest_station.check_in_keys',{'mode':zsModeConstants.CHECKIN_MODE});
                     return;
+                    
                 } else if (!successfulCheckIn) {
+                    
+                    console.info('!successfulCheckIn: ');
                     console.warn(response);
                     $scope.$emit('hideLoader');
                     $state.go('zest_station.error');
                     
                 } else {//successful check-in but missing email on reservation
+                    
+                    console.info('input_reservation_email_after_swipe: ');
                     $state.go('zest_station.input_reservation_email_after_swipe');
                 }
                 
@@ -267,38 +289,23 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             $state.go('zest_station.error');
             $scope.$emit('hideLoader');
         };
-        $scope.successDeposit = function(response){
-            $state.paidDeposit = true;
-            console.info(response);
-            var postData = getCardSaveData(response);
-            console.info("saving payment",postData);
-            $scope.invokeApi(zsPaymentSrv.savePayment, postData, function(){
+        var onSuccessDeposit = function(response){
+            console.info('onsuccess deposit: ',response);
                 //saving payment success, continue...
                 if ($scope.isSixPayPayment() || $scope.isSimulated){
-                    $scope.initSixPaySuccess(response);
+                    needCCAuthForCheckin();
                 }
-            }, $scope.failSavePayment, "NONE"); 
+        };
+        $scope.successDeposit = function(response){
             
+            $state.paidDeposit = true;
+            console.info('success deposit (payment): ',response);
+            var postData = getCardSaveData(response);
+            console.info("saving payment",postData);
+            
+            $scope.invokeApi(zsPaymentSrv.savePayment, postData, onSuccessDeposit, $scope.failSavePayment, "NONE"); 
             $scope.$emit('hideLoader');
         };
-        var getDebugDepositData = function(){
-            var debugData = {authorization_code :"930984",
-                        bill_balance: "-13.9",
-                        is_eod_in_progress:false,
-                        is_eod_manual_started: false,
-                        payment_method: {id: 29167, token: "4807612087704130088", expiry_date: "12/18", card_type: "VA", ending_with: "0088"},
-                        card_type : "VA",
-                        ending_with : "0088",
-                        expiry_date:"12/18",
-                        id :29167,
-                        token :"4807612087704130088",
-                        reservation_balance :"125.10",
-                        reservation_id:1343204,
-                reservation_type_id:5};
-            console.info('using debug deposit swipe',debugData);
-            return debugData;
-        }
-                           //$scope.initSixPaySuccess();
         $scope.payDeposit = function(){
             console.info('$state.paidDeposit: ',$state.paidDeposit)
             if ($state.paidDeposit){
@@ -306,6 +313,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             } else {
                 console.info("paying deposit");
                 $scope.$emit('hideLoader');
+                
                  var reservation_id = $scope.selectedReservation.id,
                         //payment_type = $scope.selectedReservation.payment_type,
                         depositAmount = $scope.selectedReservation.reservation_details.data.reservation_card.deposit_amount;
@@ -320,9 +328,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                         'payment_type_id': $scope.selectedReservation.reservation_details.data.reservation_card.payment_type
                      };
                      console.info(params);
-                     //debug card deposit
-                   //  var debugDepositData = getDebugDepositData();
-                    //$scope.successDeposit(debugDepositData);
+                     
                     setTimeout(function(){
                         $scope.invokeApi(zsPaymentSrv.submitDeposit, params, $scope.successDeposit, reTryCardSwipe, "NONE"); //dont show loader using "NONE"
                     },500);
@@ -331,12 +337,20 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         
         var reTryCardSwipe = function(response){
-            console.warn('submit payment failed: ',response);
+            var current = $state.current.name;
             $scope.$emit('hideLoader');
-            $state.go('zest_station.swipe_pay_error');
+            if (current !== 'zest_station.card_sign'){
+                console.warn('submit payment failed: ',response);
+                
+                $state.go('zest_station.swipe_pay_error');
+            }
         };
         $scope.depositProceed = function(){
+            console.info('clicked deposit proceed, go to card swipe');
             $state.go('zest_station.card_swipe'); 
+        };
+        $scope.skipForLocal = function(){
+            $state.go('zest_station.card_sign'); 
         };
         
         
@@ -345,27 +359,12 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             $state.go('zest_station.speak_to_staff');
         };
         $scope.depositAmountValue = '';
-        $scope.init = function(r){ 
-           $scope.selectedReservation = $state.selectedReservation;
-           
-            var current=$state.current.name;
-            console.log('current: ',current)
-            if (current === 'zest_station.card_sign'){
-                
-                $scope.$emit('hideLoader');
-                 $scope.signaturePluginOptions = {
-                    height : 230,
-                    width : $(window).width() - 120,
-                    lineWidth : 1
-                };
-                $scope.at = 'cc-sign';
-            } else if (current === 'zest_station.deposit_agree'){
-                $scope.at = 'deposit-agree';
-                $scope.headingText = 'DEPOSIT_REMAIN';
-                $scope.subHeadingText = 'DEPOSIT_REMAIN_SUB ';
-                $scope.depositAmountValue = $scope.zestStationData.currencySymbol+$state.selectedReservation.reservation_details.data.reservation_card.deposit_amount;
-                $scope.subsubheadingText = 'DEPOSIT_REMAIN_SUB_SUB';
-            } else if(current==='zest_station.card_swipe') {
+        
+        
+        
+            
+            
+        var initCardSwipeScreen = function(){
                 $scope.at = 'card-swipe';
                 //debugging
                 //$scope.zestStationData.payment_gateway = 'mli';
@@ -373,14 +372,62 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 $scope.setInitSwipeSettings();
                 $scope.initCardReaders();
                 digest();
+                setTimeout(function(){
+                    try{
+                        $scope.$digest();
+                    }catch(er){
+                        
+                    }
+                },200);
+        };
+        var initDepositScreen = function(){
+            console.info('init deposit screen');
+                $scope.at = 'deposit-agree';
+                $scope.headingText = 'DEPOSIT_REMAIN';
+                $scope.subHeadingText = 'DEPOSIT_REMAIN_SUB ';
+                $scope.depositAmountValue = $scope.zestStationData.currencySymbol+$state.selectedReservation.reservation_details.data.reservation_card.deposit_amount;
+                $scope.subsubheadingText = 'DEPOSIT_REMAIN_SUB_SUB';
+        }
+        var initCardSignScreen = function(){
+                $scope.$emit('hideLoader');
+                 $scope.signaturePluginOptions = {
+                    height : 230,
+                    width : $(window).width() - 120,
+                    lineWidth : 1
+                };
+                $scope.at = 'cc-sign';
+        }
+        var resetSignature = function(){
+            $scope.signatureData = "";
+        }
+        
+        
+        
+        $scope.init = function(r){
+            var debugging = false;
+            $scope.selectedReservation = $state.selectedReservation;
+            var current=$state.current.name;
+            console.log('current: ',current)
+            if (current === 'zest_station.card_sign'){
+                initCardSignScreen();
+            } else if (current === 'zest_station.deposit_agree'){
+                initDepositScreen();
+            } else {
+                if (debugging){
+                    initCardSignScreen();
+                } else {
+                    initCardSwipeScreen();
+                }
+                
             }
             $state.from = $scope.at;
-            
             if (current !== 'zest_station.deposit_agree'){
+                console.info('current: ',current);
                 $scope.headingText = 'RES_AUTH_DEPOSIT';
                 $scope.subHeadingText = 'RES_AUTH_DEPOSIT_SUB';
             }
             $scope.signatureData = "";
+            resetSignature();
         };
         
         $scope.initCardReaders = function(){
@@ -689,7 +736,12 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     $scope.goToCardSign();
                 } else {
                     $scope.$emit('hideLoader');
-                    $state.go('zest_station.swipe_pay_error');
+                    
+            var current = $state.current.name;
+            $scope.$emit('hideLoader');
+                if (current !== 'zest_station.card_sign'){
+                        $state.go('zest_station.swipe_pay_error');
+                }
                 }
             };
 
@@ -809,13 +861,17 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         
 	 $scope.sixPaymentSwipe = function(){
+             var debugging = false;
+             if (debugging){
+                 continueToSign();
+             } else {
 		var data = {};
                     if ($state.showDeposit && !$state.paidDeposit){
                         data.amount = $scope.selectedReservation.reservation_details.data.reservation_card.deposit_amount;
                     } else {
                         //this will check if authorization is required and send the amount to terminal
                         //will update this in new codebase
-                        $scope.initSixPaySuccess();
+                        needCCAuthForCheckin();
                         return;
                     }
                     
@@ -823,28 +879,35 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     data.is_emv_request = true;
                     console.log('listening for C&P or swipe...');
                 
-                var successGetToken = function(response){
+                var successAuthorizeCC = function(response){
                         $scope.$emit('hideLoader');
                         console.info(response)
                         console.info('success: ',response);
+                        console.info('successAuthorizeCC response: ',response);
 			successSixSwipe(response);
 		};
-                var onFailure = function(error){
-                        console.info('FAILED: ',error);
+                var onFailureAuthorizeCC = function(error){
+                        console.warn('FAILED authorize cc: ',error);
                         $scope.$emit('hideLoader');
 			$scope.errorMessage = error;
                         $state.swipe_error_msg = error;
-                        $state.go('zest_station.swipe_pay_error');
+                        
+                        var current = $state.current.name;
+                        if (current !== 'zest_station.card_sign'){
+                                $state.go('zest_station.swipe_pay_error');
+                        }
+                
 		};
-                console.log('$scope: ',$scope)
-                $scope.invokeApi(zsPaymentSrv.authorizeCC, data, successGetToken, onFailure, "NONE"); 
+                console.log('authorizeCC @ sixPaymentSwipe: ',$scope, ' :: data, ',data);
+                $scope.invokeApi(zsPaymentSrv.authorizeCC, data, successAuthorizeCC, onFailureAuthorizeCC, "NONE"); 
+            };
 	};
         
 	var successSixSwipe = function(response){
                 if ($state.showDeposit){
-                    $scope.payDeposit(response);
+                    $scope.payDeposit();
                 } else {
-                    $scope.initSixPaySuccess(response);
+                    needCCAuthForCheckin();
                 }
 	};
         
@@ -861,7 +924,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 data.reservation_id = $state.selectedReservation.id;
                 data.is_emv_request = isEmv;
                 console.info('sending: ',data);
-            var onSuccess = function(){
+                
+            var onSuccessCaptureAuth = function(response){
+                console.info('onSuccessCaptureAuth @ captureAuthorization',response)
                     continueToSign();
             }
             
@@ -874,8 +939,16 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             }
             
             
-           digest();
-            $scope.invokeApi(zsPaymentSrv.authorizeCC, data, onSuccess, onSwipeError, "NONE"); 
+            setTimeout(function(){
+                    try{
+                        $scope.$digest();
+                    }catch(er){
+                        
+                    }
+                },200);
+                
+            console.log('authorizeCC @ captureAuthorization: ',$scope, ' :: data, ',data)
+            $scope.invokeApi(zsPaymentSrv.authorizeCC, data, onSuccessCaptureAuth, onSwipeError, "NONE"); 
         };
         
         var onSwipeError = function(error){
@@ -883,7 +956,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = error;
                 $state.swipe_error_msg = error;
-                $state.go('zest_station.swipe_pay_error');
+                var current = $state.current.name;
+                if (current !== 'zest_station.card_sign'){
+                    $state.go('zest_station.swipe_pay_error');
+                }
         };
         
         var fetchAuthorizationAmountDue = function(){
@@ -892,7 +968,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 'id':$scope.selectedReservation.id,
                 'by_reservation_id': true
             };
-            var onSuccess = function(response){
+            var onSuccessFetchAuthorizationAmountDue = function(response){
                 console.info('refetched details: ',response);
                digest();
                 var amount = response.data.reservation_card.pre_auth_amount_at_checkin,
@@ -906,7 +982,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 }
                 
             }
-            $scope.invokeApi(zsTabletSrv.fetchReservationDetails, params, onSuccess, onSwipeError, "NONE");
+            $scope.invokeApi(zsTabletSrv.fetchReservationDetails, params, onSuccessFetchAuthorizationAmountDue, onSwipeError, "NONE");
             //captureAuthorization
         };
         var digest = function(){
@@ -966,11 +1042,11 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             $scope.goToCardSign();
         };
         
-        $scope.initSixPaySuccess = function(response){
+       // $scope.initSixPaySuccess = function(){
             //check if the reservation needs to authorize card at checkin
             //and send the amount to the emv terminal for the amount if needed
-            needCCAuthForCheckin();
-        };
+          //  needCCAuthForCheckin();
+       // };
         
 	/**
 	 * [initializeMe description]

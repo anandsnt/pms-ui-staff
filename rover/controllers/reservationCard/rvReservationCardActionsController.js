@@ -289,6 +289,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     }
                     $scope.recountAfterDelete = false;
                 }
+
+                RVReservationCardSrv.lastFetchData.data = data.data;
+                RVReservationCardSrv.lastFetchData.data = data.data;
             };
             var onFailure = function(data){
                 $scope.$parent.$emit('hideLoader');
