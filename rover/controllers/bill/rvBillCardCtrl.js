@@ -1381,6 +1381,7 @@ sntRover.controller('RVbillCardController',
 	    $scope.message_incoming_from_room = false;
 	    $scope.message_out_going_to_room = false;
 	    $scope.message_out_going_to_comp_tra = false;
+	    $scope.enableIncedentalOnlyOption = false;
 
 	    if($scope.reservationBillData.routing_info.incoming_from_room){
 	    	$scope.message_incoming_from_room = true;
@@ -1390,6 +1391,9 @@ sntRover.controller('RVbillCardController',
 	    }
 	    else if($scope.reservationBillData.routing_info.out_going_to_comp_tra){
 	    	$scope.message_out_going_to_comp_tra = true;
+	    }
+	    if($scope.reservationBillData.is_cc_authorize_for_incidentals_enabled){
+	    	$scope.enableIncedentalOnlyOption = true;
 	    }
 	};
 

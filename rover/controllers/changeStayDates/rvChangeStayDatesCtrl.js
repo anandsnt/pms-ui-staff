@@ -448,6 +448,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.message_incoming_from_room = false;
 			$scope.message_out_going_to_room = false;
 			$scope.message_out_going_to_comp_tra = false;
+			$scope.enableIncedentalOnlyOption = false;
 
 			if ($scope.availabilityDetails.routing_info !== undefined) {
 				if ($scope.availabilityDetails.routing_info.incoming_from_room) {
@@ -457,6 +458,9 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				} else if ($scope.availabilityDetails.routing_info.out_going_to_comp_tra) {
 					$scope.message_out_going_to_comp_tra = true;
 				}
+			}
+			if($scope.availabilityDetails.is_cc_authorize_for_incidentals_enabled){
+				$scope.enableIncedentalOnlyOption = true;
 			}
 		};
 
@@ -470,7 +474,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				performCCAuthAndconfirmUpdatesProcess(data);
 				ngDialog.close();
 			};
-			
+
 			$scope.clickedFullAuth = function() {
 				// @params : data , isCheckinWithoutAuth: false
 				$scope.requireAuthorization = true;
