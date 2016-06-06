@@ -1,44 +1,10 @@
 var CardOperation = function(){
+    console.info('card operation started');
 	// class for handling operations with payment device
 
 	var that = this;
 	// function for start reading from device
 	// Note down: Currently it is recursive
-
-	this.startReaderDebug = function(options){
-	//Simulating the card reader function for easy testing. May be removed in production.
-
-		coinstance = this; // Global instance to test from console.
-		that.callSuccess = function(data)
-		{
-			var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
-			var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
-			var carddata= { 'RVCardReadCardType': 'AX',
-							'RVCardReadTrack2': '4788250000028291=17121015432112345601',
-          					'RVCardReadTrack2KSN': '950067000000062002AF',
-          					'RVCardReadMaskedPAN': '5405220008002226',
-          					'RVCardReadCardName': 'Sample Name',
-          					'RVCardReadExpDate':"17012",
-          					'RVCardReadCardIIN': "002226",
-          					'RVCardReadIsEncrypted': 0
-						  };
-
-			if (typeof data !== 'undefined'){ carddata = data;}
-			successCallBack(carddata, successCallBackParameters);
-		};
-
-	};
-	this.writeKeyDataDebug = function(options){
-		//Simulating the write function for easy testing. May be removed in production.
-		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
-		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
-		var mechineResponse= { };
-
-		setTimeout(function(){
-			successCallBack(mechineResponse, successCallBackParameters);
-		}, 1000);
-
-	};
 
 
 	this.startReader = function(options){
@@ -75,6 +41,7 @@ var CardOperation = function(){
 			return false;
 		}
 		else{
+                    if (cordova){
 			//calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
@@ -111,6 +78,7 @@ var CardOperation = function(){
 
 
 		}
+            }
 	};
 
 	this.callRecursively = function(options){
@@ -207,17 +175,6 @@ var CardOperation = function(){
 		options['action'] = "getCLCardUID";
 		that.callCordovaService(options);
 	};
-	// debug mode of retrieving the Unique id
-	// please check above method (retrieveUserID) for further description
-	this.retrieveUserIDDebug = function(options){
-		var retUserID = "CB94C49T"; //Sample ID
-		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
-		// we are simulating the process by calling the success call back after some time period
-		setTimeout(function(){
-			successCallBack(retUserID);
-		}, 1000);
-	};
-
 
 	/**
 	* method for retrieving the UID (User ID) from Card for Safe lock
@@ -228,22 +185,6 @@ var CardOperation = function(){
 		options['service'] = "RVCardPlugin";
 		options['action'] = "getCLCardInfo";
 		that.callCordovaService(options);
-	};
-
-	// debug mode of retrieving the card info
-	this.retrieveCardInfoDebug = function(options){
-		//TODO: replace with sample hash
-		var retCardInfo = {
-							"card_uid" : "E3C33C7E",
-							"card_type" : "3",
-							"card_size" : "1024",
-							"cs" : "912D8F4A79C1"
-							}; //Sample card info
-		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
-		// we are simulating the process by calling the success call back after some time period
-		setTimeout(function(){
-			successCallBack(retCardInfo);
-		}, 1000);
 	};
 
 
