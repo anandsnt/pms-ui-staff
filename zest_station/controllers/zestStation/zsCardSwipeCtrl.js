@@ -127,9 +127,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         $scope.getMLISession = function(){
                // alert('saving swipped card');
-                this.MLIOperator = new MLIOperation();
+                //this.MLIOperator = new MLIOperation();
                 $scope.saveSwipedCardMLI($scope.swipeData);
-        }
+        };
         
         $scope.successSavePayment = function(response){
             if (response.status === 'success'){
@@ -369,8 +369,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 //debugging
                 //$scope.zestStationData.payment_gateway = 'mli';
                 //done
+                
                 $scope.setInitSwipeSettings();
-                $scope.initCardReaders();
+                initCardReaders();
+                
                 digest();
                 setTimeout(function(){
                     try{
@@ -430,7 +432,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             resetSignature();
         };
         
-        $scope.initCardReaders = function(){
+        initCardReaders = function(){
             if ($state.current.name==='zest_station.card_swipe'){
                 console.log('$scope.zestStationData.payment_gateway: ',$scope.zestStationData.payment_gateway);
                 if ($scope.zestStationData.payment_gateway === "sixpayments") {
@@ -441,10 +443,13 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             }
         };
         
+        var debugSwipeData = {"RVCardReadCardIIN":"541300","RVCardReadCardName":" PPC MCD 01","RVCardReadCardType":"MC","RVCardReadETB":"","RVCardReadETBKSN":"","RVCardReadExpDate":"2512","RVCardReadIsEncrypted":"1","RVCardReadMaskedPAN":"5413000040000010","RVCardReadPAN":"5413000040000010","RVCardReadTrack1":"4D3BCB8ABE04C61B7F42A2CCAFF7A7DD89EE7B7C655C9030194CF5A55C3B85DB12EF454586FB172CAEDA58C222B19C5B5735CDA7B03F97B5","RVCardReadTrack1KSN":"9012080B2ACA76000370","RVCardReadTrack2":"535F8CCA3F29F0DC896D063A897DA78FBA0504237B65713BA4367D9B366973B59667D7B12637D863","RVCardReadTrack2KSN":"9012080B2ACA76000370","RVCardReadTrack3":"","RVCardReadTrack3KSN":"9012080B2ACA76000370"};
+        
         $scope.token = '';
         $scope.swipeData;
         var processWebsocketSwipe = function(swipedCardData){
                 var swipeOperationObj = new SwipeOperation();
+                
                 if (typeof swipedCardData === typeof 'str'){
                  //   alert('object converted from string');
                     $scope.swipeData = JSON.parse(swipedCardData);
@@ -456,10 +461,13 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 }
               //  alert('doing tokenize...')
                     var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
-                    
+                    console.warn('getTokenFrom: '+JSON.stringify(getTokenFrom));
                     var cb = function(response){
                        // alert('tokenize response: '+JSON.stringify(response));
                         //response.status = 'success';//debugging
+                        //response.data = 'awesometoken123123121231231';//debugging
+                        //response.status = 'success';//debugging
+                        
                         if (response && response.status !== 'failure'){
                             $scope.$emit('hideLoader');
                             console.info('general callback');
@@ -486,10 +494,13 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                         console.warn('failed to get token from MLI');
                     };
                     
-                    
+                    console.info('fetching token...from tokenize...');
                 $scope.invokeApi(zsPaymentSrv.tokenize, getTokenFrom, cb);
         };
         $scope.$on('SWIPE_ACTION',function(evt, swipedCardData){
+            console.info('swipe action response: ',swipedCardData);
+            console.info('other',arguments);
+            
             if (readLocally()){
                 //swipedCardData = evt;
                 //('processing local read from ingenico: '+JSON.stringify(swipedCardData));
@@ -639,7 +650,6 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 };
 
                try {
-                   console.info('trying updatesession')
                    //debugging
                   // callback();
                    HostedForm.updateSession(sessionDetails, callback);
@@ -818,11 +828,18 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             }
         }
          $scope.setInitSwipeSettings = function(){
+             var debugging = false;
              if ($state.current.name==='zest_station.card_swipe'){
                 console.info('Attempting to connect to Card Readers');
                 
                 //$scope.zestStationData.payment_gateway = 'mli';//debugging
                 if ($scope.zestStationData.payment_gateway !== "sixpayments") {
+                    if (debugging){
+                    setTimeout(function(){
+                        console.info('emitting debug data...');
+                        $scope.$emit('SWIPE_ACTION',JSON.stringify(debugSwipeData));
+                    },5000);
+                }
                 /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
                  * desktopSwipeEnabled flag is true
                  */
