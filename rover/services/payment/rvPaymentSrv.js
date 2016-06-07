@@ -115,7 +115,10 @@ angular.module('sntRover').service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv'
 					//if the request is still not proccesed
 					if ((!!data.status && data.status === 'processing_not_completed') || data === "null") {
 						//is this same URL ?
-						pollToTerminal(async_callback_url);
+						setTimeout(function(){
+							console.info("POLLING::-> for emv terminal response");
+				            pollToTerminal(async_callback_url);
+				        },5000)
 					} else {
 						deferred.resolve(data);
 					}
