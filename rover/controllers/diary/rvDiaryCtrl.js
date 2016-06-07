@@ -707,6 +707,9 @@ angular.module('sntRover')
 
 			var success = function() {
 				$scope.$emit('hideLoader');
+				if ( $scope.gridProps.unassignedRoomList.open ) {
+					$scope.gridProps.unassignedRoomList.fetchList();
+				};
 				$scope.resetEverything();
 			};
 
