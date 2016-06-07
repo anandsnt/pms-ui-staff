@@ -1390,6 +1390,29 @@
                 }
             }
 
+            &.complimentary-report {
+                table-layout: fixed;
+
+                th {
+                    &.room,
+                    &.guests {
+                        width:80px;
+                    }
+
+                    &.total-nights {
+                        width:75px;
+                    }
+
+                    &.total-comps {
+                        width:105px;
+                    }
+
+                    &:nth-child(4n) {
+                        width:120px;
+                    }
+                }
+            }
+
             &.card-authorization-check-reports {
                 margin-bottom: 2em;
 
