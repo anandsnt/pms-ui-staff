@@ -53,7 +53,8 @@ module.exports = {
 			'guestweb_knickerbocker_yacht_club':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_kingsley':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_avery':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_newyork':[ themeJsRoot + 'app_router_mgm_chain.js']
+			'guestweb_newyork':[ themeJsRoot + 'app_router_mgm_chain.js'],
+			'guestweb_monte_carlo' 	: [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte_carlo.js']
 		}
 	}
 }
