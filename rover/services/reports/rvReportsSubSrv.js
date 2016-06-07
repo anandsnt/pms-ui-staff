@@ -310,7 +310,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			return callApi({
 				name   : 'campaign_types',
 				method : 'getJSON',
-				url    : 'api/reports/campaign_types',
+				url    : 'api/campaigns/campaign_types',
 				resKey : 'campaign_types'
 			});
 		};
