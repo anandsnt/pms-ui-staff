@@ -53,7 +53,8 @@ module.exports = {
 			'guestweb_avery':[ themeCSSRoot + 'guestweb_avery.css'],
 			'guestweb_newyork':[ themeCSSRoot + 'guestweb_newyork.css'],
 			'guestweb_ponchartrain':[ themeCSSRoot + 'guestweb_ponchartrain.css'],
-			'guestweb_valencia_santana_row':[ themeCSSRoot + 'guestweb_valencia_santana_row.css']
+			'guestweb_valencia_santana_row':[ themeCSSRoot + 'guestweb_valencia_santana_row.css'],
+			'guestweb_sorella_houston':[ themeCSSRoot + 'guestweb_sorella_houston.css']
 		}
 	}
 }
