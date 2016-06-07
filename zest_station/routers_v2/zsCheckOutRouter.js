@@ -32,7 +32,7 @@ sntZestStation.config(['$stateProvider',
 		});
 		//checkout final
 		$stateProvider.state('zest_station.reservationCheckedOut', {
-			url: '/reservationCheckedOut/:printopted',
+			url: '/reservationCheckedOut/:printopted/:email_sent/:email_failed',
 			templateUrl: '/assets/partials_v2/checkout/zsCheckoutFinal.html',
 			controller: 'zsCheckoutFinalCtrl'
 		});

@@ -9,7 +9,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 	'RVReportMsgsConst',
 	'RVReportNamesConst',
 	'ngDialog',
-	function($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser, reportMsgs, reportNames, ngDialog) {
+	'$state',
+	function($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser, reportMsgs, reportNames, ngDialog, $state) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -240,8 +241,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['UPSELL']:
-					$scope.leftColSpan = 5;
-					$scope.rightColSpan = 5;
+					$scope.leftColSpan = 6;
+					$scope.rightColSpan = 6;
 					break;
 
 				case reportNames['LOGIN_AND_OUT_ACTIVITY']:
@@ -406,7 +407,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['UPSELL']:
 					$scope.$parent.summaryCounts = {
 						'rooms_upsold'   : totals[0]['value'],
-						'upsell_revenue' : totals[1]['value']
+						'upsell_revenue' : totals[1]['value'],
+						'rover_revenue' : totals[2]['value'],
+						'zest_revenue' : totals[3]['value'],
+						'zest_station_revenue' : totals[4]['value'],
+						'zest_web_revenue' : totals[5]['value']
 					};
 					break;
 
@@ -1058,6 +1063,20 @@ sntRover.controller('RVReportDetailsCtrl', [
 	        return class_;
 	    };
 
+	    /**
+         * to goto staycard
+         * @param {Object} reservation
+         * @return {undefined}
+        */
+	    $scope.gotoStayCard = function (reservation) {
+			$timeout(function() {
+	            $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+	              'id': reservation.reservation_id,
+	              'confirmationId': reservation.confirm_no,
+	              'isrefresh': false
+	            });
+			}, 750);
+	    };
 
 		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function() {
 			$_pageNo = 1;

@@ -378,6 +378,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             $state.go('zest_station.talk_to_staff');
         };
         $scope.reSignCC = function(){
+            console.info('re sign called');
             $state.go('zest_station.card_sign');
         };
         $scope.setDeliveryParams = function(){
@@ -391,53 +392,8 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         $scope.reTryCardSwipe = function(){
             $state.go('zest_station.card_swipe');
         };
-        
-        $scope.$on('SIXPAY_DEBUG',function(){
-            $state.go('zest_station.card_sign');
-        });
-
-        $scope.init = function(){
-            var current = $state.current.name;
-            $scope.theme = $state.theme;
-            $scope.emailEnabled = $scope.zestStationData.emailEnabled;
-            $scope.printEnabled = $scope.zestStationData.printEnabled;
-            if ($scope.zestStationData.auto_print && !$state.hasAutoPrinted){
-                $scope.printEnabled = false;
-            }
-            
-            if (!$scope.input){
-                $scope.input = $state.input;
-            }
-            
-            
-            if (current === 'zest_station.delivery_options'){
-                console.log('$scope.zestStationData.auto_print: ',$scope.zestStationData.auto_print);
-                if ($scope.zestStationData.auto_print && !$state.hasAutoPrinted){
-                    $scope.zestStationData.printEnabled = false;
-                    setTimeout(function(){
-                        $state.hasAutoPrinted = true;
-                        $scope.clickedPrint();
-                    },3000);
-                };
-                $scope.setDeliveryParams();
-                if ($state.updatedEmail){
-                    showNavButtons();
-                    $scope.selectEmailDelivery();
-                }
-            } else if (current === 'zest_station.swipe_pay_error'){
-                $scope.at = 'swipe-pay-error';
-                $scope.headingText = 'SWIPE_ERR_HEADER';
-                
-                $scope.subHeadingText = '';
-            } else if (current === 'zest_station.tab-kiosk-reservation-signature-time-out'){
-                $scope.at = 'cc-sign-time-out';
-                
-            } else if (current === 'zest_station.room_error'){
-                $scope.initRoomErrorScreen();
-               // $scope.initRoomErrorScreen();
-                
-            } else if (current === 'zest_station.last_confirm'){
-                //As part of CICO-24944 ,Customized subheading text for yotel
+        var setupLastConfirmScreen = function(){
+            //As part of CICO-24944 ,Customized subheading text for yotel
                 $scope.updateSubHeadingTextForLastConfirmPage();
                 if (($scope.zestStationData.emailEnabled || $scope.zestStationData.printEnabled) && !$state.fromPrintSuccess){
                     $scope.headingText = "EMAIL_SENT_MSG";
@@ -457,6 +413,57 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                 $scope.modalBtn1 = '';
                 $scope.modalBtn2 = 'Exit';
                 hideNavButtons();
+        };
+        var setupDeliveryOptionsScreen = function(){
+            console.log('$scope.zestStationData.auto_print: ',$scope.zestStationData.auto_print);
+                if ($scope.zestStationData.auto_print && !$state.hasAutoPrinted){
+                    $scope.zestStationData.printEnabled = false;
+                    setTimeout(function(){
+                        $state.hasAutoPrinted = true;
+                        $scope.clickedPrint();
+                    },3000);
+                };
+                $scope.setDeliveryParams();
+                if ($state.updatedEmail){
+                    showNavButtons();
+                    $scope.selectEmailDelivery();
+                }
+        };
+        
+        $scope.skipForLocal = function(){
+            $state.go('zest_station.card_sign'); 
+        };
+        $scope.init = function(){
+            var current = $state.current.name;
+            console.info('post checkin ctrl $scope.init: ',current);
+            $scope.theme = $state.theme;
+            $scope.emailEnabled = $scope.zestStationData.emailEnabled;
+            $scope.printEnabled = $scope.zestStationData.printEnabled;
+            if ($scope.zestStationData.auto_print && !$state.hasAutoPrinted){
+                $scope.printEnabled = false;
+            }
+            
+            if (!$scope.input){
+                $scope.input = $state.input;
+            }
+            
+            if (current === 'zest_station.delivery_options'){
+                setupDeliveryOptionsScreen();
+                
+            } else if (current === 'zest_station.swipe_pay_error'){
+                $scope.at = 'swipe-pay-error';
+                $scope.headingText = 'SWIPE_ERR_HEADER';
+                
+                $scope.subHeadingText = '';
+            } else if (current === 'zest_station.tab-kiosk-reservation-signature-time-out'){
+                $scope.at = 'cc-sign-time-out';
+                
+            } else if (current === 'zest_station.room_error'){
+                $scope.initRoomErrorScreen();
+               // $scope.initRoomErrorScreen();
+                
+            } else if (current === 'zest_station.last_confirm'){
+                setupLastConfirmScreen();
                 
             } else if (current === 'zest_station.error'){
                 $scope.initErrorScreen();
@@ -513,7 +520,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
                     //if check-in without hardware failure, this should be set back to admin reason,
                     //if station is placed out of service without hardare failure, its due to admin manually placing oos or network failure
                     $scope.zestStationData.wsFailedReason =  $filter('translate')('ADMIN_OR_NETWORK_OOS');
-                    
+                    failure = false;
                     
             } else if(keySuccess && !printSuccess){//success + fail = :/
                     msg = keyPrintFailMsg;
@@ -543,52 +550,6 @@ sntZestStation.controller('zsPostCheckinCtrl', [
             console.info(msg);
             $scope.subHeadingText = msg;
         };
-        /*
-         * placeholder for updating these values, need to add two scenarios, where print is not selected
-         * just show something like => key_success_no_print, or key_failure_no_print
-         * 
-         *  $scope.updateSubHeadingTextForLastConfirmPage = function(){
-            
-            if($state.selectedReservation.printSuccess === true && $state.selectedReservation.printed){
-                if($state.selectedReservation.keySuccess)
-                {
-                    if ($state.selectedReservation.printed){
-                        $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_success_print_success_message;
-                    } else {
-                        $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_success_message;
-                    }
-                    
-                }else{
-                    $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_fail_print_success_message;
-                }
-            }else{
-                if($state.selectedReservation.keySuccess)
-                {
-                    if ($state.selectedReservation.printed){
-                        $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_success_print_fail_message;
-                    } else {
-                        $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_success_message;
-                    }
-                    
-                }else{
-                    // $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_AND_PRINT_FAIL');
-                     $scope.zestStationData.wsIsOos = true;
-                     $scope.zestStationData.wsFailedReason =  $filter('translate')('CHECKIN_KEY_AND_PRINT_FAIL');
-                    // $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
-                    if ($state.selectedReservation.printed){
-                        $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_fail_print_fail_message;
-                    } else {
-                        $scope.subHeadingText=$scope.zestStationData.check_in_message_texts.key_fail_message;
-                    }
-                    
-                }
-            };
-        };
-         * 
-         */
-        
-        
-        
         
         $scope.initPrintRegistration = function(){
             $scope.printRegistrationCard();
