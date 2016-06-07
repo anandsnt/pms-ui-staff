@@ -1,7 +1,6 @@
 var UnassignedRoomPanel = React.createClass({
     __onToggle: function() {
         this.props.unassignedRoomList.fetchList();
-
         this.setState({
             selectedIndex: null
         });
@@ -13,11 +12,18 @@ var UnassignedRoomPanel = React.createClass({
         });
 
         var item = this.props.unassignedRoomList.data[index];
-        var arrivalTime = item.arrival_time,
-            arrivalDate = item.arrival_date,
-            roomTypeId = item.room_type_id;
-
-        this.props.unassignedRoomList.selectAnUnassigned(arrivalTime, arrivalDate, roomTypeId);
+        this.props.unassignedRoomList.selectAnUnassigned({
+            arrival_date: item.arrival_date, 
+            arrival_time: item.arrival_time,
+            departure_date: item.departure_date, 
+            departure_time: item.departure_time,
+            reservationId: item.reservation_id,
+            adults: item.adults,
+            children: item.children,
+            infants: item.infants,
+            rate_id: item.rate_id,
+            room_type_id: item.room_type_id
+        });
     },
 
     getInitialState: function() {
@@ -28,23 +34,13 @@ var UnassignedRoomPanel = React.createClass({
 
     componentDidMount: function() {
         var self = this,
-            rootEl = angular.element( this.getDOMNode() ),
-            dragEl;
+            rootEl = angular.element( this.getDOMNode() );
 
         var dragstart = function(e) {
-            var event = e.originalEvent;
-
-            dragEl = angular.element( event.target );
-
             event.dataTransfer.effectAllowed = 'move';
-            event.dataTransfer.setData('text/html', dragEl.innerHTML);
         };
 
         var dragend = function(e) {
-            var event = e.originalEvent;
-
-            dragEl = angular.element( event.target );
-
             self.setState({
                 selectedIndex: null
             });
@@ -52,6 +48,13 @@ var UnassignedRoomPanel = React.createClass({
 
         rootEl.on('dragstart', '.occupancy-block', dragstart);
         rootEl.on('dragend', '.occupancy-block', dragend);
+    },
+
+    componentWillUnmount: function() {
+        var rootEl = angular.element( this.getDOMNode() );
+
+        rootEl.off('dragstart');
+        rootEl.off('dragend');
     },
 
     render: function() {

@@ -234,7 +234,9 @@ var GridRowItem = React.createClass({
 			className: this.__get_class_for_reservation_span(),
 			style: {
 				width: reservation_time_span + 'px'
-			}
+			},
+			onDrop: function(e){ this.__onDrop(e) }.bind(this),
+			onDragOver: function(e){ this.__onDragOver(e) }.bind(this)
 		},
 		React.DOM.span({
 			className: show_outstanding_indicator ? 'deposit-icon' : '',
@@ -245,5 +247,23 @@ var GridRowItem = React.createClass({
 			className: 'maintenance',
 			style: houseKeepingTaskStyle
 		}, ' '));
-	}
+	},
+
+	__onDrop: function(e) {
+		var data = this.props.data;
+		var status = this.props.meta.occupancy.status;
+
+		if ( data[status] === 'available' ) {
+			e.preventDefault();
+			this.props.unassignedRoomList.dropReservation( data['room_id'] );
+		}
+	},
+	__onDragOver: function(e) {
+		var data = this.props.data;
+		var status = this.props.meta.occupancy.status;
+
+		if ( data[status] === 'available' ) {
+			e.preventDefault();
+		}
+	},
 });

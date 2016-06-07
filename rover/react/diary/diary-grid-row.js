@@ -84,7 +84,8 @@ var GridRow = React.createClass({
 				__onDragStop: 	props.__onDragStop,
 				__onResizeCommand: 	props.__onResizeCommand,
 				currentResizeItem: props.currentResizeItem,
-				currentResizeItemRow: props.currentResizeItemRow
+				currentResizeItemRow: props.currentResizeItemRow,
+				unassignedRoomList: props.unassignedRoomList
 			});
 		}));
 	},

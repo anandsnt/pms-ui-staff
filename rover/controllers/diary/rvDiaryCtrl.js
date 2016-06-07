@@ -274,7 +274,6 @@ angular.module('sntRover')
 	    };
 
 	    _.extend($scope, payload);
-	    console.log( payload );
 
 	    $scope.data 	= $scope.room;
 	    $scope.stats 	= $scope.availability_count;
@@ -485,6 +484,7 @@ angular.module('sntRover')
 		unassignedRoomList: {
 			open: false,
 			data: [],
+			dragData: {},
 			fetchList: function() {
 				var _sucess = function(data) {
 					this.data = data;
@@ -505,34 +505,29 @@ angular.module('sntRover')
 				if ( this.open ) {
 					this.data = [];
 					this.open = false;
+					this.dragData = {};
 				} else {
 					this.data = [];
+					this.dragData = {};
 					$scope.invokeApi(rvDiarySrv.fetchUnassignedRoomList, {}, _sucess, _failed);
 				}
 			},
-			selectAnUnassigned: function(arrivalTime, arrivalDate, roomTypeId) {
-				var params = getCustomAvailabilityCallingParams(arrivalTime, arrivalDate, roomTypeId);
+			selectAnUnassigned: function(options) {
+				var params = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.room_type_id);
 
-				var options = {
+				var apiOptions = {
 					params: 			params,
 					successCallBack: 	successCallBackOfAvailabilityFetching,
 					failureCallBack: 	failureCallBackOfAvailabilityFetching,
 					successCallBackParameters:  params
 				};
 
-				$scope.callAPI(rvDiarySrv.Availability, options);
+				$scope.callAPI(rvDiarySrv.Availability, apiOptions);
+
+				this.dragData = options;
 			},
-			dropReservation: function() {
-				var _sucess = function(data) {
-					$scope.$emit('hideLoader');
-					this.fetchList();
-				}.bind(this);
-
-				var _failed = function() {
-					$scope.$emit('hideLoader');
-				}.bind(this);
-
-				$scope.invokeApi(rvDiarySrv.dwad, {}, _sucess, _failed);
+			dropReservation: function(roomId) {
+				$scope.saveReservationOnDrop(this.dragData, roomId);
 			}
 		}
 	};
@@ -709,7 +704,7 @@ angular.module('sntRover')
 				$scope.$emit('hideLoader');
 				if ( $scope.gridProps.unassignedRoomList.open ) {
 					$scope.gridProps.unassignedRoomList.fetchList();
-				};
+				}
 				$scope.resetEverything();
 			};
 
@@ -1901,16 +1896,13 @@ angular.module('sntRover')
 			$scope.renderGrid();
 
 	    	$scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, _sucessCallback);
-    	};
+    	}
     };
 
     /**
 	* utility function to form reservation params for save API
 	*/
     var formReservationParams = function(reservation, roomDetails, isMoveWithoutRateChange) {
-    	console.log( reservation );
-    	console.log( roomDetails );
-
     	var arrDate 	= roomDetails.arrivalDate,
     		depDate   	= roomDetails.departureDate,
     		arrTime 	= roomDetails.arrivalTime.split(":"),
@@ -1969,20 +1961,40 @@ angular.module('sntRover')
 	    $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
 	};
 
-	$scope.saveReservationOnDrop = function(reservation, roomDetails, isMoveWithoutRateChange){
+	$scope.saveReservationOnDrop = function(data, roomId){
+		var params = {
+			arrival_date: data.arrival_date,
+			arrival_time: data.arrival_time,
+			departure_date: data.departure_date,
+			departure_time: data.departure_time,
+			reservationId: data.reservationId,
 
-		// first determine if possible
-		// determineAvailability(allResInRow, thisRes)
-
-		console.log( arguments );
-		return;
-
-		var params = formReservationParams(reservation, roomDetails, isMoveWithoutRateChange);
+			room_id: [roomId],
+			stay_dates: [
+				[
+					{
+						adults_count: data.adults,
+						children_count: data.children,
+						date: data.arrival_date,
+						infants_count: data.infants,
+						rate_id: data.rate_id,
+						room_id: roomId,
+						room_type_id: data.room_type_id,
+					}
+				]
+			],
+			is_move_without_rate_change: true
+		};
 
 		var options = {
-    		params: 			params,
-    		successCallBack: 	$scope.resetEverything,
-    		failureCallBack: 	failureCallBackOfSaveReservation
+    		params: params,
+    		successCallBack: function() {
+    			if ( $scope.gridProps.unassignedRoomList.open ) {
+					$scope.gridProps.unassignedRoomList.fetchList();
+				}
+				$scope.resetEverything();
+    		},
+    		failureCallBack: failureCallBackOfSaveReservation
 	    };
 	    $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
 	};
@@ -2065,7 +2077,6 @@ angular.module('sntRover')
 		to a certain location.  Check to see if occupancy is there, etc.
 	*/
 	function determineAvailability(reservations, orig_reservation) {
-		console.log(arguments);
 		var range_validated = true,
 			current_room_type = $scope.gridProps.filter.room_type,
 			conflicting_reservation,

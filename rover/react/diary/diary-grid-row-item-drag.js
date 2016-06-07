@@ -288,10 +288,6 @@ var GridRowItemDrag = React.createClass({
 		this.mouseMovingEvent 	= this.isTouchEnabled ? 'touchmove' : 'mousemove';
 		this.mouseLeavingEvent 	= this.isTouchEnabled ? 'touchend'	: 'mouseup';
 		this.getDOMNode().addEventListener(this.mouseStartingEvent, this.__onMouseDown);
-
-		this.getDOMNode().addEventListener('dragstart', this.__onDragstart);
-		this.getDOMNode().addEventListener('dragend', this.__onDragend);
-		this.getDOMNode().addEventListener('drop', this.__onDrop);
 	},
 	getInitialState: function() {
 		return {
@@ -323,16 +319,12 @@ var GridRowItemDrag = React.createClass({
 				style:       style,
 				className:   props.className + className,
 				children:    props.children,
-				onDrop: this.__onDrop,
 				onDragOver: this.__onDragOver,
 				onDragLeave: this.__onDragLeave
 			}
 		));
 	},
 
-	__onDrop: function(e) {
-		console.log( arguments );
-	},
 	__onDragOver: function(e) {
 		this.props.__setDragOver(true);
 	},

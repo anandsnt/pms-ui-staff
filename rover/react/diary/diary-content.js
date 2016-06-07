@@ -334,6 +334,7 @@ var DiaryContent = React.createClass({
 			data: 					state.data,
 			currentResizeItem: 		props.currentResizeItem,
 			currentResizeItemRow: 	props.currentResizeItemRow,
+			unassignedRoomList:        props.unassignedRoomList,
 			angular_evt: 			state.angular_evt,
 			__onResizeCommand: 		self.__onResizeCommand,
 			__onGridScroll: 		self.__onGridScroll,
