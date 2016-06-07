@@ -125,6 +125,7 @@ module.exports = {
 			'guestweb_zoku' 		: [ 'guestweb/**/common_templates/partials/checkin/**.html',
 										'guestweb/**/common_templates/partials/checkout/**.html',
 										'guestweb/**/common_templates/partials/gwNoOption.html',
+										'guestweb/**/common_templates/partials/zoku/gwCheckout.html',
 										'guestweb/**/zest/partials/**/*.html',
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
