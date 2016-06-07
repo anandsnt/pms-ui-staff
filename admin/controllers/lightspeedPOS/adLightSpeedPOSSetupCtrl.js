@@ -29,13 +29,18 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
         $scope.lightspeed.charge_code_name 	= '';
 	};
 
+	var clearPaymentChargeCodeValues = function(){
+		$scope.lightspeed.payment_charge_code_id 	= '';
+		$scope.lightspeed.payment_charge_code_name 	= '';
+	};
+
 	/**
 	 * when we clicked on save button
 	 * @return {undefiend}
 	 */
 	$scope.saveLightSpeedPOSSetup = function() {
 		var params 	= {
-			lightspeed: _.omit( dclone($scope.lightspeed), 'charge_code_name' )
+			lightspeed: _.omit( dclone($scope.lightspeed), 'charge_code_name' , 'payment_charge_code_name')
 		};
 
 		if (!$scope.lightspeed.enabled) {
@@ -44,8 +49,16 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 
 		if (params.lightspeed.charge_code_id === '') {
 			$timeout(function() {
-				$scope.errorMessage = ['Please search a charge code, pick from the list and proceed'];
+				$scope.errorMessage = ['Please search a default charge code, pick from the list and proceed'];
 				clearConfigValues();
+			}, 20);
+			return;
+		}
+
+		if (!params.lightspeed.payment_charge_code_id) {
+			$timeout(function() {
+				$scope.errorMessage = ['Please search a default payment code, pick from the list and proceed'];
+				clearPaymentChargeCodeValues();
 			}, 20);
 			return;
 		}
