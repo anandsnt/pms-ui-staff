@@ -133,7 +133,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 		* @return {object} defer promise
 		*/
 
-		this.submitPaymentOnBill = function(data) {
+		this.submitPaymentOnBill = function(postData) {
 			// var deferred = $q.defer();
 			// var url = '/api/bills/'+data.bill_id+'/submit_payment';
 			// rvBaseWebSrvV2.postJSON(url, data.data_to_pass).then(function(data) {
@@ -151,7 +151,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 
 
 			var deferred = $q.defer();
-			var url = '/api/bills/'+data.bill_id+'/submit_payment';
+			var url = '/api/bills/'+postData.bill_id+'/submit_payment';
 
 			var pollToTerminal = function(async_callback_url) {
 				//we will continously communicate with the terminal till 
@@ -183,11 +183,11 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 				};
 			};
 
-			rvBaseWebSrvV2.postJSONWithSpecialStatusHandling(url,data.data_to_pass).then(function(data) {
+			rvBaseWebSrvV2.postJSONWithSpecialStatusHandling(url,postData.data_to_pass).then(function(data) {
 				//if connect to emv terminal is neeeded
 				// need to poll oftently to avoid
 				// timeout issues
-				if (data.data_to_pass.is_emv_request) {
+				if (postData.data_to_pass.is_emv_request) {
 					if (!!data.status && data.status === 'processing_not_completed') {
 						pollToTerminal(data.location_header);
 					} else {
