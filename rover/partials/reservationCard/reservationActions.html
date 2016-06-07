@@ -12,23 +12,23 @@
     <a class="button purple" ng-click = "unAvailablePopup()" ng-show = "(reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT') && (reservationData.reservation_card.is_exclude_from_manual_checkin)&&(!isStandAlone)">
             Unavailable
     </a>
-    <!-- Show balance -->
-    <div class="balance break" ng-hide="hasShownSRViewBtn()">
+    <!-- Show balance -->    
+    <div class="balance break" ng-hide="isSRViewRateBtnShown()">
         <span class="label">Balance</span>
         <!-- According to CICO-15833, we need SR in both connected & stanalone -->
         <span>
-				<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)" ng-if ="hasShownBalanceAmount()">
+				<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)" ng-if ="isBalanceAmountShown()">
 					{{currencySymbol}}
 					{{ reservationData.reservation_card.balance_amount | number:2 }}
 				</span>
-        <span class="h1" ng-if="reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates && !isSRViewRateBtnClicked">
-                            SR
+        <span class="h1" ng-if="!isBalanceAmountShown()">
+                            {{'SUPPRESSED_RATES_TEXT' | translate}}
                         </span>
         </span>
     </div>
 
-    <button type="button" class="button staycard-button icon-text" ng-show="hasShownSRViewBtn()" ng-click="onSRViewRateBtnClick()">
-        <span class="text">SR</span>
+    <button type="button" class="button staycard-button icon-text" ng-show="isSRViewRateBtnShown()" ng-click="onSRViewRateBtnClick()">
+        <span class="text">{{'SUPPRESSED_RATES_TEXT' | translate}}</span>
         View Rate
     </button>
 

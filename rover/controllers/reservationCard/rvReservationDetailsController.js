@@ -47,7 +47,8 @@ sntRover.controller('reservationDetailsController',
 			};
 		};
 
-		$scope.isSRViewRateBtnClicked = false;
+		//CICO-29343 - Set the flag to false initially
+		RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", false);
 
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
@@ -1371,22 +1372,31 @@ sntRover.controller('reservationDetailsController',
      * Function which get invoked while clicking the SR  View Rate btn
      */
      $scope.onSRViewRateBtnClick = function() {
-     	$scope.isSRViewRateBtnClicked = true;
+     	RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", true);     	
      };
 
      /*
      * Checks whether the balance amount section needs to show or not
      */
-     $scope.hasShownBalanceAmount = function() {
-     	return (!$scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates || $scope.isSRViewRateBtnClicked);
+     $scope.isBalanceAmountShown = function() {
+     	return (!$scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates || RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked"));
      };
 
      /*
      * Checks whether the SR View Rate btn needs to show or not
      */
-     $scope.hasShownSRViewBtn = function() {
-     	return $scope.hasSRViewPermission && $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates && !$scope.isSRViewRateBtnClicked;
+     $scope.isSRViewRateBtnShown = function() {
+     	return $scope.hasSRViewPermission && $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates && !RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked");
      };
+
+
+      /*
+     * Checks whether the rate amount needs to show or not
+     */
+     $scope.isRateAmountShown = function() {
+     	return (!$scope.reservationData.reservation_card.is_rates_suppressed || RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked"));
+     };
+
 
      //TODO-Implement the actual permission
      $scope.hasSRViewPermission = true;
