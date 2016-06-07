@@ -872,6 +872,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         $scope.clearDate = function(date) {
             $scope[date] = '';
             runDigestCycle();
+            $timeout( $scope.fetchReservations, 500 );
         };
 
 
