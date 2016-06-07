@@ -439,7 +439,7 @@ angular.module('reportsModule')
                     report['hasURLsList'] = filter;
                 };
 
-                if(filter.value === 'CAMPAIGN_TYPE') {
+                if(filter.value === 'CAMPAIGN_TYPES') {
                     report['hasCampaignTypes'] = filter;
                 };
 
