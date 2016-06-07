@@ -38,7 +38,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/common_templates/partials/checkout/gwCheckoutfinal.html',
+       	templateUrl: '/assets/common_templates/partials/zoku/gwCheckoutfinal.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
