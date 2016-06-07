@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2',
-	function($q, rvBaseWebSrvV2) {
+angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2','$rootScope',
+	function($q, rvBaseWebSrvV2,$rootScope) {
 
 		var self = this;
 
