@@ -117,6 +117,9 @@ sntRover.controller('roverController',
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
     $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
+    //need to set some default timeout
+    //discuss with Mubarak
+    $rootScope.emvTimeout = !!hotelDetails.emv_timeout ? hotelDetails.emv_timeout : 60;
 
       //CICO-25728
       //TEMPORARY FLAG TO SKIP BAR AREAS
