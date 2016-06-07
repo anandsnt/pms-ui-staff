@@ -459,7 +459,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     
                     var cb = function(response){
                        // alert('tokenize response: '+JSON.stringify(response));
-                        response.status = 'success';
+                        //response.status = 'success';//debugging
                         if (response && response.status !== 'failure'){
                             $scope.$emit('hideLoader');
                             console.info('general callback');
