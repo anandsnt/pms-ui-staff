@@ -881,14 +881,15 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].assigned = false;
                     }
 
-                    var splitDueTimeString = list[x].due_at_str.split("T");
-
-                    // 24 hr format for the dropdown in the right panel
-                    list[x].due_at_time_str = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "hh:mm a");
-                    // 12 hr format for binding in the list
-                    list[x].due_at_time = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm");
 
                     if (typeof list[x].due_at === typeof 'string'){
+                        var splitDueTimeString = list[x].due_at_str.split("T");
+
+                        // 24 hr format for the dropdown in the right panel
+                        list[x].due_at_time_str = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "hh:mm a");
+                        // 12 hr format for binding in the list
+
+                        list[x].due_at_time = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm");
                         list[x].due_at_date = dateFilter(splitDueTimeString[0], $rootScope.dateFormat);
                         list[x].hasDate = true;
                     } else {
@@ -902,8 +903,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     }
 
                     if (list[x].created_at){
-                        list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
-                        list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
+                        list[x].created_at_time = $filter('date')(list[x].created_at, "hh:mm a");
+                        list[x].created_at_date = $filter('date')(list[x].created_at, $rootScope.dateFormat);
                     }
                     
                 }
