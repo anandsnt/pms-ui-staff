@@ -1381,6 +1381,7 @@ sntRover.controller('RVbillCardController',
 	    $scope.message_incoming_from_room = false;
 	    $scope.message_out_going_to_room = false;
 	    $scope.message_out_going_to_comp_tra = false;
+	    $scope.enableIncedentalOnlyOption = false;
 
 	    if($scope.reservationBillData.routing_info.incoming_from_room){
 	    	$scope.message_incoming_from_room = true;
@@ -1391,10 +1392,20 @@ sntRover.controller('RVbillCardController',
 	    else if($scope.reservationBillData.routing_info.out_going_to_comp_tra){
 	    	$scope.message_out_going_to_comp_tra = true;
 	    }
+	    if($scope.reservationBillData.is_cc_authorize_for_incidentals_active){
+	    	$scope.enableIncedentalOnlyOption = true;
+	    }
 	};
 
 	// CICO-17266 Considering Billing info details before Auth..
 	var showPreAuthPopupWithBillingInfo = function(data){
+		
+		$scope.clickedIncidentalsOnly = function(){
+			// @params : data , isCheckinWithoutAuth: false
+			data.is_cc_authorize_for_incidentals = true;
+			performCCAuthAndCheckinProcess(data,false);
+			ngDialog.close();
+		};
 
  		$scope.clickedFullAuth = function(){
  			// @params : data , isCheckinWithoutAuth: false

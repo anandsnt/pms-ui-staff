@@ -420,7 +420,6 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 		// Handle confirmUpdates process with Autherization..
 		var performCCAuthAndconfirmUpdatesProcess = function(postParams) {
-
 			// CICO-7306 authorization for CC.
 			if ($scope.requireAuthorization && $scope.isStandAlone) {
 				// Start authorization process...
@@ -448,6 +447,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.message_incoming_from_room = false;
 			$scope.message_out_going_to_room = false;
 			$scope.message_out_going_to_comp_tra = false;
+			$scope.enableIncedentalOnlyOption = false;
 
 			if ($scope.availabilityDetails.routing_info !== undefined) {
 				if ($scope.availabilityDetails.routing_info.incoming_from_room) {
@@ -458,10 +458,21 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					$scope.message_out_going_to_comp_tra = true;
 				}
 			}
+			if($scope.availabilityDetails.is_cc_authorize_for_incidentals_active){
+				$scope.enableIncedentalOnlyOption = true;
+			}
 		};
 
 		// CICO-17266 Considering Billing info details before Auth..
 		var showPreAuthPopupWithBillingInfo = function(data) {
+
+			$scope.clickedIncidentalsOnly = function(){
+				// @params : data , isCheckinWithoutAuth: false
+				data.is_cc_authorize_for_incidentals = true;
+				$scope.requireAuthorization = true;
+				performCCAuthAndconfirmUpdatesProcess(data);
+				ngDialog.close();
+			};
 
 			$scope.clickedFullAuth = function() {
 				// @params : data , isCheckinWithoutAuth: false
