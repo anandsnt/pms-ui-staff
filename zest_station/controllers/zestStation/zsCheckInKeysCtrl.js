@@ -35,6 +35,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             }
             
             if (current === 'zest_station.check_in_keys'){
+                console.info('back called: go to card sign--> from: ',$state.current.name);
                 $state.go ('zest_station.card_sign');
             }
             //$state.go ('zest_station.home');//go back to reservation search results
@@ -51,6 +52,22 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         var showCloseButton = function(){
             $scope.$emit (zsEventConstants.SHOW_CLOSE_BUTTON);
         };
+        
+        var keyFromSocket = function(){
+            if ($scope.zestStationData.keyWriter === 'websocket'){
+                return true;
+            } else {
+                return false;
+            }
+        };
+        var writeLocally = function(){
+            if ($scope.zestStationData.keyWriter === 'local'){
+                return true;
+            } else {
+                return false;
+            }
+        };
+        
 	/**
 	 * [isInCheckinMode description]
 	 * @return {Boolean} [description]
@@ -111,7 +128,9 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 if (response.status !== 'failure'){
                     var remote  = (response.enable_remote_encoding) ? 'enabled'
                                                                     : 'disabled';
+                                                                    console.info('remote: ',remote)
                     $scope.remoteEncoding = response.enable_remote_encoding;
+                    console.info('$scope.remoteEncoding: ',$scope.remoteEncoding);
                     $scope.beginKeyEncode();
                 };
 
@@ -130,9 +149,11 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             /*
              * all the below text and button text needs to be moved out to the locale files
              */
+            
             $scope.at = 'make-keys';
             if ($state.input.makeKeys === 1){
                 $scope.oneKeySetup();
+                
             } else {
                 if ($state.input.madeKey === 0){
                     $scope.keyOneOfTwoSetup();//sets up screen and runs init to make first key
@@ -199,14 +220,21 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
         $scope.makingKey = 1;
         $scope.successfulKeyEncode = function(response){
+            console.info('$scope.successfulKeyEncode::response:: ',response);
             var success = (response.status === "success")? true : false;
+            console.info('-->success? :: ',success);
             return success;
         };
 
 
         $scope.successMakeKey = function(response){
+            console.info('success make key: ',response);
                 var makeKeySuccess = $scope.successfulKeyEncode(response);
                 if (makeKeySuccess){
+                    $scope.prepForInService();
+                    $state.selectedReservation.keySuccess = true;
+                    $scope.zestStationData.wsIsOos = false;//after going home, reset this flag on success to overwrite any previous fail
+                
                     if ($scope.makingKey === 1 && $scope.input.makeKeys === 1){
                         $scope.oneKeySuccess();
 
@@ -216,33 +244,8 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     } else if($scope.makingKey === 2 && $scope.input.makeKeys === 2) {
                         $scope.keyTwoOfTwoSuccess();
                     }
-                    $state.selectedReservation.keySuccess = true;
                 } else {
                     $scope.emitKeyError(response);
-                    /*
-                     * when using websockets / sankyo to dispense keys, we can the print_key first to
-                     * get card data ready to write reservation info
-                     */
-                   
-
-                    $state.wsOpen = false;//by default dont use websockets, only if local encoding with sankyo device
-
-                    if ($scope.successfulKeyEncode(response)){//due to backend sending 200 with status == failure, need to verify..
-
-                        if ($scope.makingKey === 1 && $state.input.nextKey === 1){
-
-                            $scope.oneKeySuccess();
-
-                        } else if($scope.makingKey === 1 && $state.input.nextKey === 2) {
-                            $scope.keyOneOfTwoSuccess();
-
-                        } else if($scope.makingKey === 2 && $state.input.nextKey === 2) {
-                            $scope.keyTwoOfTwoSuccess();
-                        }
-
-                    } else {
-                        $scope.emitKeyError(response);
-                    }
                 };
         };
         
@@ -298,6 +301,8 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
         
         $scope.emitKeyError = function(response){
+           // alert('failed to key write'+JSON.stringify(response));
+            //alert(response);
             console.info('detected error in make key',response);
             response = !!response ? "" :response;
             setFailureReason(response);
@@ -327,11 +332,34 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
             return options;
         };
+        
+        var options = {};
+        options["successCallBack"] = $scope.successCallBackSwipe;
+        options["failureCallBack"] = $scope.failureCallBackSwipe;
 
+        $scope.numberOfCordovaCalls = 0;
+        
+        $scope.cardwriter = new CardOperation();
+        var initCardWrite = function(data){
+                var isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
+                if (writeLocally() && isIpad) {
+                    $scope.cardwriter.retrieveCardInfo({'successCallBack':onSuccessLocalKeyWrite,'failureCallBack': $scope.emitKeyError});
+                } else if (isIpad) {
+                    //If cordova not loaded in server, or page is not yet loaded completely
+                    //One second delay is set so that call will repeat in 1 sec delay
+                    if ($scope.numberOfCordovaCalls < 50) {
+                        setTimeout(function() {
+                            $scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls) + parseInt(1);
+                            initCardWrite(data);
+                        }, 2000);
+                    }
+        };
+        };
         $scope.initMakeKey = function(n){
             $scope.makingKey = n;
             $state.nextKey = n+1;
             var options = $scope.getKeyOpts();
+            
                 setTimeout(function(){
                     $state.keyDispenseUID = '';//used if
 
@@ -340,11 +368,20 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         
                     if (!$scope.remoteEncoding){
                         options.uid = null;//for sankyo key card encoding
-                        onResponseSuccess = $scope.printLocalKey;
+                        
+                        //local encoding + sankyo
+                        if (keyFromSocket()){
+                            onResponseSuccess = $scope.printLocalKey;
+                        } else if (writeLocally()){
+                            //local encoding + infinea
+                            $scope.printLocalKeyCordova();
+                            return;
+                        }
                     } else {
+                        //remote + remote
                         onResponseSuccess = $scope.successMakeKey;
                     }
-                    console.info('options.is_additional: ',options.is_additional)
+                    console.info('options.is_additional: ',options.is_additional);
                         var printAPI = {
                             "is_additional":options.is_additional,
                             //"is_additional":false,
@@ -358,7 +395,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         } else {
                             printAPI.key_encoder_id = $state.encoder;
                         }
-
+                    
 
                         $scope.callAPI(zsTabletSrv.encodeKey, {
                             params: printAPI,
@@ -368,8 +405,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         
                       
                 },2000);
-
-
         };
        
         $scope.$on('DISPENSE_SUCCESS',function(event, data) {
@@ -389,6 +424,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         });
         $scope.DispenseKey = function(){
             //check if socket is open
+            console.info('dispense called :: socketOperator: ',$scope.socketOperator.returnWebSocketObject());
             if($scope.socketOperator.returnWebSocketObject().readyState === 1){
                 dispenseKey();
             }
@@ -413,7 +449,10 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.printLocalKey = function(response){
             console.info('print local key success, ',response);
            if ($scope.successfulKeyEncode(response)){//This may need to go away, read response differently than encode success from print_key
-                $state.wsOpen = true;
+               $scope.prepForInService();
+                $state.selectedReservation.keySuccess = true;
+                $scope.zestStationData.wsIsOos = false;//after going home, reset this flag on success to overwrite any previous fail
+
                 $scope.dispenseKeyData = $scope.getKeyInfoFromResponse(response);
                 //$scope.connectWebSocket();//after the connect delay, will open and connect to the rover windows service, to use the sankyo device
                 setTimeout(function(){//starts the key dispense/write/eject functions in sankyo
@@ -426,9 +465,95 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.emitKeyError(response);
             }
         };
+        
+        
+        
+        var callKeyFetchAPI = function(cardInfo){
+            var reservationId = $scope.selectedReservation.reservation_id;
 
+	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": true};
+            if ($scope.makingKey === 1){
+                postParams.is_additional = false;
+            } else {
+                postParams.is_additional = true;
+            }
+            
+	    if(typeof cardInfo !== 'undefined'){
+	    	postParams.card_info = cardInfo;
+	    } else {
+	    	postParams.card_info = "";
+	    }
+            $scope.callAPI(zsTabletSrv.encodeKey, {
+                params: postParams,
+                'successCallBack':keyFetchSuccess,
+                'failureCallBack':$scope.emitKeyError
+            });
+	};
+        
+        var keyFetchSuccess = function(response){
+            $scope.keyData = response.data;
+            printKeys();
+            
+        };
+        
+        /*
+	* Calculate the keyWrite data from the API response and call the write key method for key writing.
+	*/
+	var printKeys = function(){
+	    writeKey($scope.keyData, $scope.makingKey);
+	};
+        
+	/*
+	* Calls the cordova service to write the keys
+	*/
+       var onSuccessWriteKeyDataLocal = function(response){
+           //alert('onsuccess write key data local: '+JSON.stringify(response));
+            //if the setting of smart band create along with key creation enabled, we will create a smartband with open room charge
+            continueFromCordovaKeyWrite(response);
+       };
+       
+	var writeKey = function(keyWriteData, index){
+		var keyData = [];
+		keyData.push(JSON.stringify(keyWriteData));
 
+		var options = {
+			//Cordova write success callback. If all the keys were written sucessfully, show key success message
+			//If keys left to print, call the cordova write key function to write the pending key
+			'successCallBack': onSuccessWriteKeyDataLocal,
+			'failureCallBack': $scope.emitKeyError,
+			'arguments': keyData
+		};
+                $scope.cardwriter.writeKeyData(options);
+	};
+        
+        
+        var continueFromCordovaKeyWrite = function(response){
+            switch ($scope.makeKeyParam()){
+                case 'one':
+                $scope.input.madeKey = 1;
+                
+                $scope.goToKeySuccess();
+                break;
 
+                case 'first':
+                $scope.keyOneOfTwoSuccess();
+                break;
+
+                case 'second':
+                $scope.keyTwoOfTwoSuccess();
+                break;
+
+                case 'done':
+                break;
+            };
+        };
+        var onSuccessLocalKeyWrite = function(card_info){
+            callKeyFetchAPI(card_info);
+            //then, continueFromCordovaKeyWrite();
+        };
+        $scope.printLocalKeyCordova = function(response){
+            initCardWrite(response);
+        };
 
         $scope.makeKeyParam = function(){
             if ($state.input.makeKeys === 1){

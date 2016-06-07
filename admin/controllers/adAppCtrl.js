@@ -16,6 +16,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$scope.errorMessage = '';
 
 		BaseCtrl.call(this, $scope);
+		var title ="Showing Settings";
+		$scope.setTitle(title);
 		$scope.menuOpen = false;
 		$scope.hotelListOpen = '';
 		$scope.isStandAlone = false;

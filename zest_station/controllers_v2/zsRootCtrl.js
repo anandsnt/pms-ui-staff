@@ -243,7 +243,8 @@ sntZestStation.controller('zsRootCtrl', [
 					qr_noarrow: iconsPath + '/qr-scan_noarrow.svg',
 					createkey: iconsPath + '/create-key.svg',
 					logo: iconsPath + '/print_logo.svg',
-					watch: iconsPath + '/watch.svg'
+					watch: iconsPath + '/watch.svg',
+					qr_arrow: iconsPath + '/qr-arrow.svg'
 				}
 			};
 		};
