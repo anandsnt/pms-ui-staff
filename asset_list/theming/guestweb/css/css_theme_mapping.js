@@ -23,7 +23,7 @@ module.exports = {
 			'guestweb_sanctuary' : [ themeCSSRoot + 'guestweb_sanctuary.css'],	
 			'guestweb_yotel' 	: [ themeCSSRoot + 'guestweb_yotel.css'],
 			'guestweb_zoku' 		: [ themeCSSRoot + 'guestweb_zoku.css'],
-			'guestweb_fontainebguestweb_monte_carloleau' 	: [ themeCSSRoot + 'guestweb_fontainebleau.css'],
+			'guestweb_fontainebleau' 	: [ themeCSSRoot + 'guestweb_fontainebleau.css'],
 			'guestweb_knickerbocker' 	: [ themeCSSRoot + 'guestweb_knickerbocker.css'],		
 			'guestweb_margaritaville' 	: [ themeCSSRoot + 'guestweb_margaritaville.css'],
 			'guestweb' 	: [ themeCSSRoot + 'guestweb.css'],
