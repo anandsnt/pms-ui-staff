@@ -634,6 +634,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                        }
                        else{
                            console.warn('there was a problem with the card');
+                           $scope.failSavePayment('there was a problem with the card');
                        }
                 };
 
