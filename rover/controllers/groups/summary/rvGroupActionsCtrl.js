@@ -662,7 +662,9 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         $scope.refreshActionList = function(del, selected){
             $scope.fetchDepartments();//store this to use in assignments of department
             var onSuccess = function(data){
-                $scope.hotel_time = data.business_date_time;
+                var splitTimeString = data.business_date_time.split("T");
+                $scope.hotel_time = splitTimeString[0] + "T" +  splitTimeString[1].split(/[+-]/)[0];
+
                 var list = data.data;
                 //if doing a refresh, dont replace the actions array, since it will cause the UI to flash
                 //and look like a bug, instead go through the objects and update them
@@ -855,7 +857,8 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
 
         var fetchActionListSuccessCallBack = function (data) {
-            $scope.hotel_time = data.business_date_time;
+            var splitTimeString = data.business_date_time.split("T");
+            $scope.hotel_time = splitTimeString[0] + "T" +  splitTimeString[1].split(/[+-]/)[0];
 
             var list = data.data;
             var matchObj;
@@ -866,14 +869,16 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                     list[x].assigned = false;
                 }
 
-                var splitDueTimeString = list[x].due_at_str.split("T");
 
-                // 24 hr format for the dropdown in the right panel
-                list[x].due_at_time = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm");
-                // 12 hr format for binding in the list
-                list[x].due_at_time_str = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "hh:mm a");
 
                 if (typeof list[x].due_at === typeof 'string'){
+                    var splitDueTimeString = list[x].due_at_str.split("T");
+
+                    // 24 hr format for the dropdown in the right panel
+                    list[x].due_at_time = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm");
+                    // 12 hr format for binding in the list
+                    list[x].due_at_time_str = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "hh:mm a");
+
                     list[x].due_at_date = dateFilter(splitDueTimeString[0], $rootScope.dateFormat);
                     list[x].hasDate = true;
                 } else {
@@ -887,8 +892,8 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 }
 
                 if (list[x].created_at){
-                    list[x].created_at_time = getTimeFromDateStr(list[x].created_at, 'created_at_time');
-                    list[x].created_at_date = getStrParsedFormattedDate(list[x].created_at);
+                    list[x].created_at_time = $filter('date')(list[x].created_at, "hh:mm a");
+                    list[x].created_at_date = $filter('date')(list[x].created_at, $rootScope.dateFormat);
                 }
 
             }
