@@ -420,7 +420,6 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 		// Handle confirmUpdates process with Autherization..
 		var performCCAuthAndconfirmUpdatesProcess = function(postParams) {
-
 			// CICO-7306 authorization for CC.
 			if ($scope.requireAuthorization && $scope.isStandAlone) {
 				// Start authorization process...
@@ -459,7 +458,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					$scope.message_out_going_to_comp_tra = true;
 				}
 			}
-			if($scope.availabilityDetails.is_cc_authorize_for_incidentals_enabled){
+			if($scope.availabilityDetails.is_cc_authorize_for_incidentals_active){
 				$scope.enableIncedentalOnlyOption = true;
 			}
 		};

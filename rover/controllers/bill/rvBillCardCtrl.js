@@ -1392,7 +1392,7 @@ sntRover.controller('RVbillCardController',
 	    else if($scope.reservationBillData.routing_info.out_going_to_comp_tra){
 	    	$scope.message_out_going_to_comp_tra = true;
 	    }
-	    if($scope.reservationBillData.is_cc_authorize_for_incidentals_enabled){
+	    if($scope.reservationBillData.is_cc_authorize_for_incidentals_active){
 	    	$scope.enableIncedentalOnlyOption = true;
 	    }
 	};
