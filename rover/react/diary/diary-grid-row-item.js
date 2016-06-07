@@ -227,7 +227,6 @@ var GridRowItem = React.createClass({
 			style: 			   {
 				display: 'block',
 				left: left,
-				border: "1px solid green"
 			},
 			__setDragOver: function(bool){ this.__setDragOver(bool) }.bind(this)
 		},

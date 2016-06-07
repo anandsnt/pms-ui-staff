@@ -246,7 +246,8 @@ var DiaryContent = React.createClass({
 								onScrollEnd:                scope.onScrollEnd,
 								onScrollLoadTriggerRight: 	scope.onScrollLoadTriggerRight,
 								onScrollLoadTriggerLeft: 	scope.onScrollLoadTriggerLeft,
-								completedRendering:         scope.eventAfterRendering
+								completedRendering:         scope.eventAfterRendering,
+								saveReservationOnDrop:      scope.saveReservationOnDrop
 							},
 							currentDragItem: props.currentDragItem,
 							currentResizeItem: props.currentResizeItem,

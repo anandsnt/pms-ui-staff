@@ -199,7 +199,7 @@
                         text-transform: uppercase;
                         font-weight: 600;
                         color: @white;
-                        .calc-width(100, 380);
+                        .calc-width(100, 500);
                         .pull-left;
 
                         h1 {
@@ -212,7 +212,7 @@
                     }
 
                     .actions {
-                        width: 380px;
+                        width: 500px;
                         .pull-left;
 
                         .button {
@@ -1001,6 +1001,10 @@
                         .pull-left;
 
                         &:nth-child(odd) { background-color: rgba(0,0,0,.05); }
+
+                        &.drag-over {
+                            border: 2px dotted #417A0E;
+                        }
                     }
 
                     &.occupied { background-color: @grey2; }

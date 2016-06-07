@@ -1,97 +1,157 @@
 var UnassignedRoomPanel = React.createClass({
     __onToggle: function() {
+        this.props.unassignedRoomList.fetchList();
+
         this.setState({
-            open: ! this.state.open,
-            panelClassName: 'sidebar-right ' + (this.state.open ? '' : 'open')
+            selectedIndex: null
         });
     },
+
+    __onListSelect: function(index) {
+        this.setState({
+            selectedIndex: index
+        });
+
+        var item = this.props.unassignedRoomList.data[index];
+        var arrivalTime = item.arrival_time,
+            arrivalDate = item.arrival_date,
+            roomTypeId = item.room_type_id;
+
+        this.props.unassignedRoomList.selectAnUnassigned(arrivalTime, arrivalDate, roomTypeId);
+    },
+
     getInitialState: function() {
         return {
-            open: false,
-            panelClassName: 'sidebar-right'
+            selectedIndex: null
         };
     },
+
+    componentDidMount: function() {
+        var self = this,
+            rootEl = angular.element( this.getDOMNode() ),
+            dragEl;
+
+        var dragstart = function(e) {
+            var event = e.originalEvent;
+
+            dragEl = angular.element( event.target );
+
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('text/html', dragEl.innerHTML);
+        };
+
+        var dragend = function(e) {
+            var event = e.originalEvent;
+
+            dragEl = angular.element( event.target );
+
+            self.setState({
+                selectedIndex: null
+            });
+        };
+
+        rootEl.on('dragstart', '.occupancy-block', dragstart);
+        rootEl.on('dragend', '.occupancy-block', dragend);
+    },
+
     render: function() {
-    	return React.createElement(
-            "div",
-            { id: "room-diary-rooms", className: this.state.panelClassName, role: "complementary" },
-            React.createElement("a", { className: "rightMenuHandle", onClick: this.__onToggle }),
-            React.createElement(
-                "div",
-                { className: "sidebar-header" },
-                React.createElement(
-                    "h2",
-                    null,
-                    "Unassigned Rooms"
-                ),
-                React.createElement(
-                    "p",
-                    null,
-                    "Drag & Drop To Assign or Unassign a Room"
-                )
-            ),
-            React.createElement(
-                "div",
-                { className: "scrollable" },
-                React.createElement(
-                    "div",
-                    { className: "wrapper" },
-                    React.createElement(
-                        "div",
-                        { draggable: "true", className: "occupancy-block" },
-                        React.createElement(
-                            "span",
-                            { className: "occupancy-status occupied check-in" },
-                            React.createElement(
-                                "span",
-                                { className: "guest-name" },
-                                "Guest"
-                            ),
-                            React.createElement(
-                                "span",
-                                { className: "room-type" },
-                                "Room Type"
-                            )
-                        ),
-                        React.createElement(
-                            "span",
-                            { className: "occupancy-time" },
-                            "hours | exp. 2h",
-                            React.createElement(
-                                "span",
-                                { className: "eta" },
-                                "time | exp. 23:15"
-                            )
-                        )
-                    ),
-                    React.createElement(
-                        "div",
-                        { draggable: "true", className: "occupancy-block" },
-                        React.createElement(
-                            "span",
-                            { className: "occupancy-status occupied check-in" },
-                            React.createElement(
-                                "span",
-                                { className: "guest-name" },
-                                "Guest"
-                            ),
-                            React.createElement(
-                                "span",
-                                { className: "room-type" },
-                                "Room Type"
-                            )
-                        ),
-                        React.createElement(
-                            "span",
-                            { className: "occupancy-time" },
-                            "hours | exp. 2h",
-                            React.createElement(
-                                "span",
-                                { className: "eta" },
-                                "time | exp. 23:15"
+        var self = this;
+
+        var __getHours = function(arrival, departure) {
+            var arrival_hour,
+                arrival_min,
+                departure_hour,
+                departure_min,
+                hour_diff,
+                min_diff;
+
+            if ( ! arrival || ! departure ) {
+                return 'NAN';
+            }
+
+            arrival_hour = parseInt( arrival.split(':')[0] );
+            arrival_min = parseInt( arrival.split(':')[1] );
+            departure_hour = parseInt( departure.split(':')[0] );
+            departure_min = parseInt( departure.split(':')[1] );
+
+            hour_diff = departure_hour - arrival_hour;
+            min_diff = departure_min - arrival_min;
+
+            if ( hour_diff > 0 ) {
+                return hour_diff + 'h';
+            } else {
+                return min_diff + 'm';
+            }
+        };
+
+        var panelClassName = 'sidebar-right';
+        if ( this.props.unassignedRoomList ) {
+           panelClassName = this.props.unassignedRoomList.open ? 'sidebar-right open' : 'sidebar-right';
+        }
+
+        var __getItemClassName = function(index) {
+            return index === self.state.selectedIndex ? 'occupancy-status editing occupied check-in' : 'occupancy-status occupied check-in'
+        };
+
+        var unassignedList;
+        if ( this.props.unassignedRoomList ) {
+            unassignedList = this.props.unassignedRoomList.data.map(function(room, i) {
+                return (
+                    React.DOM.div({
+                            key: i,
+                            id: 'ob-' + i,
+                            className: 'occupancy-block',
+                            draggable: !! self.state.selectedIndex,
+                            onClick: function () { self.__onListSelect(i); }
+                        },
+                        React.DOM.span({
+                                className: __getItemClassName(i)
+                            },
+                            React.DOM.span({
+                                className: 'guest-name'
+                            }, room.primary_guest),
+                            React.DOM.span({
+                                className: 'room-type'
+                            }, room.room_type_name),
+                            React.DOM.span({
+                                    className: 'occupancy-time'
+                                },
+                                __getHours(room.arrival_time, room.departure_time),
+                                React.DOM.span({
+                                    className: 'eta'
+                                }, room.arrival_time)
                             )
                         )
                     )
+                );
+            });
+        }
+
+        return (
+            React.DOM.div({
+                    id: 'room-diary-rooms',
+                    className: panelClassName,
+                },
+                React.DOM.a({
+                    className: 'rightMenuHandle',
+                    onClick: this.__onToggle
+                }),
+                React.DOM.div({
+                        className: 'sidebar-header'
+                    },
+                    React.DOM.h2({
+                        className: 'sidebar-header'
+                    }, 'Unassigned Rooms'),
+                    React.DOM.p({
+                        className: 'sidebar-header'
+                    }, 'Drag & Drop To Assign or Unassign a Room')   
+                ),
+                React.DOM.div({
+                        className: 'scrollable'
+                    },
+                    React.DOM.div({
+                        className: 'wrapper'
+                    }, unassignedList)
                 )
             )
         );

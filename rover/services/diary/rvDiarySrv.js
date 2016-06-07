@@ -1025,5 +1025,16 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     return deferred.promise;
                 };
 
+                this.unassignRoom = function(params) {
+                    var deferred = $q.defer();
+                    var url = 'api/reservations/' + params.id + '/unassign_room/';
+                    rvBaseWebSrvV2.postJSON(url).then(function(data) {
+                        deferred.resolve(data.reservations);
+                    },function(error){
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                }
+
             }]);
                 //------------------------------------------------------------------

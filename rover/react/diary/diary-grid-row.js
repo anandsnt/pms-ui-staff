@@ -39,6 +39,7 @@ var GridRow = React.createClass({
 			room_inactives		= [],
 			self 				= this;
 
+		// drag-over
 		/*Create hourly spans across each grid row*/
 		for(var i = 0, len = display.hours; i < len; i++) {
 			hourly_divs.push(React.DOM.span({
@@ -86,5 +87,25 @@ var GridRow = React.createClass({
 				currentResizeItemRow: props.currentResizeItemRow
 			});
 		}));
+	},
+
+	__onDrop: function(e, id) {
+		var el = this.getDOMNode().querySelectorAll("[data-reactid='" + id + "']");
+		el[0].className = 'hour';
+		console.log(this.getDOMNode());
+
+		var isMoveWithoutRateChange = true;
+
+		this.props.angular_evt.saveReservationOnDrop(reservation, roomDetails, isMoveWithoutRateChange);
+	},
+	__onDragOver: function(e, id) {
+		e.preventDefault();
+		var el = this.getDOMNode().querySelectorAll("[data-reactid='" + id + "']");
+		el[0].className = 'hour drag-over';
+	},
+	__onDragLeave: function(e, id) {
+		e.preventDefault();
+		var el = this.getDOMNode().querySelectorAll("[data-reactid='" + id + "']");
+		el[0].className = 'hour';
 	}
 });

@@ -274,6 +274,7 @@ angular.module('sntRover')
 	    };
 
 	    _.extend($scope, payload);
+	    console.log( payload );
 
 	    $scope.data 	= $scope.room;
 	    $scope.stats 	= $scope.availability_count;
@@ -482,38 +483,49 @@ angular.module('sntRover')
 		},
 
 		unassignedRoomList: {
-			data: [],
 			open: false,
-			toggle: function(bool) {
-				this.open = typeof bool === typeof true ? bool : false;
-			},
+			data: [],
 			fetchList: function() {
 				var _sucess = function(data) {
 					this.data = data;
-					if ( ! this.open ) {
-						this.toggle(true);
-					}
+					this.open = true;
 					$scope.renderGrid();
 
 					$scope.$emit('hideLoader');
 				}.bind(this);
 
-				var _failed = function() {
+				var _failed = function(error) {
 					this.data = [];
-					if ( ! this.open ) {
-						this.toggle(true);
-					}
+					$scope.errorMessage = error;
 					$scope.renderGrid();
 
 					$scope.$emit('hideLoader');
 				}.bind(this);
 
-				$scope.invokeApi(rvDiarySrv.fetchUnassignedRoomList, {}, _sucess, _failed);
+				if ( this.open ) {
+					this.data = [];
+					this.open = false;
+				} else {
+					this.data = [];
+					$scope.invokeApi(rvDiarySrv.fetchUnassignedRoomList, {}, _sucess, _failed);
+				}
+			},
+			selectAnUnassigned: function(arrivalTime, arrivalDate, roomTypeId) {
+				var params = getCustomAvailabilityCallingParams(arrivalTime, arrivalDate, roomTypeId);
+
+				var options = {
+					params: 			params,
+					successCallBack: 	successCallBackOfAvailabilityFetching,
+					failureCallBack: 	failureCallBackOfAvailabilityFetching,
+					successCallBackParameters:  params
+				};
+
+				$scope.callAPI(rvDiarySrv.Availability, options);
 			},
 			dropReservation: function() {
 				var _sucess = function(data) {
 					$scope.$emit('hideLoader');
-					this.fetchList();l
+					this.fetchList();
 				}.bind(this);
 
 				var _failed = function() {
@@ -521,8 +533,6 @@ angular.module('sntRover')
 				}.bind(this);
 
 				$scope.invokeApi(rvDiarySrv.dwad, {}, _sucess, _failed);
-
-				
 			}
 		}
 	};
@@ -690,6 +700,24 @@ angular.module('sntRover')
 			});
 	    }.bind($scope.gridProps);
 
+	    $scope.unassignRoom = function() {
+			var params = {
+				id: this.currentResizeItem.reservation_id
+			};
+
+			var success = function() {
+				$scope.$emit('hideLoader');
+				$scope.resetEverything();
+			};
+
+			var error = function(msg) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = msg;
+			};
+
+			$scope.invokeApi(rvDiarySrv.unassignRoom, params, success, error);
+	    }.bind($scope.gridProps);
+
 	    var openMessageShowingPopup = function(){
 			ngDialog.open({
 				template: '/assets/partials/diary/rvDiaryMessages.html',
@@ -851,22 +879,21 @@ angular.module('sntRover')
 
 		    $scope.onDragEnd = function(nextRoom, reservation) {
 		    	var availability;
+
 		    	if($scope.gridProps.edit.active) {
 			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
-			    		if(prevRoom.id !== nextRoom.id){
-				    		util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);
-							$scope.renderGrid();
-						}
-						$scope.gridProps.currentResizeItemRow = util.copyRoom(nextRoom);
+		    		if(prevRoom.id !== nextRoom.id){
+			    		util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);
+						$scope.renderGrid();
+					}
+					$scope.gridProps.currentResizeItemRow = util.copyRoom(nextRoom);
 
 
-						resizeEndForExistingReservation (nextRoom, reservation);
-						prevRoom = '';
-						prevTime = '';
-
-
+					resizeEndForExistingReservation (nextRoom, reservation);
+					prevRoom = '';
+					prevTime = '';
 				}
-		};
+			};
 		})();
 
 
@@ -1343,7 +1370,6 @@ angular.module('sntRover')
 			start_date 	= new Date(this.display.x_n);
 			start_date.setHours(0, 0, 0);
 
-
 		var	getIndex    = filter.arrival_times.indexOf(filter.arrival_time),
 			start_time 	= new Date((getIndex * 900000) + start_date.getTime()).toComponents().time,
 
@@ -1391,6 +1417,108 @@ angular.module('sntRover')
 			paramsToReturn.account_id = account_id;
 		}
 		return paramsToReturn;
+	}.bind($scope.gridProps);
+
+	var getCustomAvailabilityCallingParams = function(arrivalTime, arrivalDate, roomTypeId) {
+		function processTime(time) {
+			var time = time || '00:00';
+			var at = time.split(':');
+			var hh = parseInt( at[0] );
+			var mm = parseInt( at[1] );
+			var hhs = '00';
+			var mms = '00';
+			/**/
+			hh = isNaN(hh) ? 0 : hh;
+			mm = isNaN(mm) ? 0 : mm;
+			/**/
+			if ( mm > 0 && mm <= 15 ) {
+				mm = 15;
+			} else if ( mm > 15 && mm <= 30 ) {
+				mm = 30;
+			} else if ( mm > 30 && mm <= 45 ) {
+				mm = 45;
+			} else {
+				mm = 0;
+				hh += hh;
+				// TODO: if this is gonna move the arrival date, update the provide arrival date
+			}
+			/**/
+			if ( hh < 10 ) {
+				hhs = '0' + hh;
+			} else {
+				hhs = hh.toString();
+			}
+			if ( mm < 10 ) {
+				mms = '0' + hh;
+			} else {
+				mms = mm.toString();
+			}
+
+			return {
+				hh: hh,
+				mm: mm,
+				hhmm: hhs + ':' + mms
+			};
+		}
+
+		function processDate(date) {
+			var ad = date.split('-');
+			var mm = parseInt( ad[1] );
+			var dd = parseInt( ad[2] );
+			/**/
+			mm = isNaN(mm) ? 1 : mm;
+			dd = isNaN(dd) ? 0 : dd;
+
+			return {
+				mm: mm - 1,
+				dd: dd
+			};
+		}
+
+		var processedAt = processTime(arrivalTime);
+		var processedAd = processDate(arrivalDate);
+
+		var filter = _.extend({}, this.filter);
+		var time_span = Time({ hours: this.display.min_hours });
+
+		var start_date = new Date(this.display.x_n);
+		start_date.setHours(0, 0, 0);
+
+		var	getIndex = filter.arrival_times.indexOf( processedAt.hhmm );
+		var start_time = new Date((getIndex * 900000) + start_date.getTime()).toComponents().time;
+		/**/
+		var start = new Date(
+			start_date.getFullYear(),
+			start_date.getMonth(),
+			start_date.getDate(),
+			start_time.hours,
+			start_time.minutes,
+			0,
+			0
+		);
+		start.setHours(
+			processedAt.hh,
+			processedAt.mm
+		);
+		/**/
+		var end = new Date(
+			start.getFullYear(),
+			start.getMonth(),
+			start.getDate(),
+			start.getHours()  + time_span.hours,
+			start.getMinutes() + time_span.minutes,
+			0,
+			0
+		);
+
+		var GUID = "avl-101";
+
+	    return{
+	        start_date: start,
+			end_date: end,
+			room_type_id: roomTypeId,
+			GUID: GUID
+		};
 	}.bind($scope.gridProps);
 
 	/*
@@ -1777,6 +1905,8 @@ angular.module('sntRover')
 	* utility function to form reservation params for save API
 	*/
     var formReservationParams = function(reservation, roomDetails, isMoveWithoutRateChange) {
+    	console.log( reservation );
+    	console.log( roomDetails );
 
     	var arrDate 	= roomDetails.arrivalDate,
     		depDate   	= roomDetails.departureDate,
@@ -1831,6 +1961,24 @@ angular.module('sntRover')
 		var options = {
     		params: 			params,
     		successCallBack: 	successCallBackOfSaveReservation,
+    		failureCallBack: 	failureCallBackOfSaveReservation
+	    };
+	    $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
+	};
+
+	$scope.saveReservationOnDrop = function(reservation, roomDetails, isMoveWithoutRateChange){
+
+		// first determine if possible
+		// determineAvailability(allResInRow, thisRes)
+
+		console.log( arguments );
+		return;
+
+		var params = formReservationParams(reservation, roomDetails, isMoveWithoutRateChange);
+
+		var options = {
+    		params: 			params,
+    		successCallBack: 	$scope.resetEverything,
     		failureCallBack: 	failureCallBackOfSaveReservation
 	    };
 	    $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
@@ -1914,6 +2062,7 @@ angular.module('sntRover')
 		to a certain location.  Check to see if occupancy is there, etc.
 	*/
 	function determineAvailability(reservations, orig_reservation) {
+		console.log(arguments);
 		var range_validated = true,
 			current_room_type = $scope.gridProps.filter.room_type,
 			conflicting_reservation,
