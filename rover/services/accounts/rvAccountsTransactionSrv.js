@@ -133,16 +133,78 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 		* @return {object} defer promise
 		*/
 
-		this.submitPaymentOnBill = function(data){
+		this.submitPaymentOnBill = function(data) {
+			// var deferred = $q.defer();
+			// var url = '/api/bills/'+data.bill_id+'/submit_payment';
+			// rvBaseWebSrvV2.postJSON(url, data.data_to_pass).then(function(data) {
+			// 	    deferred.resolve(data);
+			// 	},function(data){
+			// 	    deferred.reject(data);
+			// 	});
+			// return deferred.promise;
+			// 
+			var timeStampInSeconds = 0;
+			var incrementTimer = function() {
+				timeStampInSeconds++;
+			};
+			var refreshIntervalId = setInterval(incrementTimer, 1000);
+
+
 			var deferred = $q.defer();
 			var url = '/api/bills/'+data.bill_id+'/submit_payment';
-			rvBaseWebSrvV2.postJSON(url, data.data_to_pass).then(function(data) {
-				    deferred.resolve(data);
-				},function(data){
-				    deferred.reject(data);
-				});
+
+			var pollToTerminal = function(async_callback_url) {
+				//we will continously communicate with the terminal till 
+				//the timeout set for the hotel
+				if (timeStampInSeconds >= $rootScope.emvTimeout) {
+					var errors = ["Request timed out. Unable to process the transaction"];
+					deferred.reject(errors);
+				} else {
+					rvBaseWebSrvV2.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {
+						//if the request is still not proccesed
+						if ((!!data.status && data.status === 'processing_not_completed') || data === "null") {
+							//is this same URL ?
+							setTimeout(function() {
+								console.info("POLLING::-> for emv terminal response");
+								pollToTerminal(async_callback_url);
+							}, 5000)
+						} else {
+							clearInterval(refreshIntervalId);
+							deferred.resolve(data);
+						}
+					}, function(data) {
+						if (typeof data === 'undefined') {
+							pollToTerminal(async_callback_url);
+						} else {
+							clearInterval(refreshIntervalId);
+							deferred.reject(data);
+						}
+					});
+				};
+			};
+
+			rvBaseWebSrvV2.postJSONWithSpecialStatusHandling(url,data.data_to_pass).then(function(data) {
+				//if connect to emv terminal is neeeded
+				// need to poll oftently to avoid
+				// timeout issues
+				if (data.data_to_pass.is_emv_request) {
+					if (!!data.status && data.status === 'processing_not_completed') {
+						pollToTerminal(data.location_header);
+					} else {
+						clearInterval(refreshIntervalId);
+						deferred.resolve(data);
+					}
+				} else {
+					clearInterval(refreshIntervalId);
+					deferred.resolve(data);
+				}
+			}, function(data) {
+				clearInterval(refreshIntervalId);
+				deferred.reject(data);
+			});
 			return deferred.promise;
 		};
+
 
 
 	  /*
