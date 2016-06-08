@@ -650,6 +650,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             }
             catch(err) {
                 console.warn(err);
+                $scope.failSavePayment('there was a problem with the MLI Session');
             };
              
         };
