@@ -447,27 +447,20 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         $scope.token = '';
         $scope.swipeData;
+        var swipeOperationObj = new SwipeOperation();
         var processWebsocketSwipe = function(swipedCardData){
-                var swipeOperationObj = new SwipeOperation();
+                
                 
                 if (typeof swipedCardData === typeof 'str'){
-                 //   alert('object converted from string');
                     $scope.swipeData = JSON.parse(swipedCardData);
                 } else if (typeof swipedCardData === typeof {'object':true}){
-                //    alert('is object');
                     $scope.swipeData = swipedCardData;
                 } else {
                     $scope.swipeData = {};
                 }
-              //  alert('doing tokenize...')
                     var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
                     console.warn('getTokenFrom: '+JSON.stringify(getTokenFrom));
                     var cb = function(response){
-                       // alert('tokenize response: '+JSON.stringify(response));
-                        //response.status = 'success';//debugging
-                        //response.data = 'awesometoken123123121231231';//debugging
-                        //response.status = 'success';//debugging
-                        
                         if (response && response.status !== 'failure'){
                             $scope.$emit('hideLoader');
                             console.info('general callback');
@@ -481,17 +474,13 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     };
                     
                     var tokenizeSuccessCallback = function(){
-                       // alert('token success')
                         $scope.$emit('hideLoader');
                         $scope.swippedCard = true;
-                        
                         $scope.getMLISession();
                     };
                     var failcb = function(response){
-                       // alert('token fail..')
                         $scope.$emit('hideLoader');
                         $state.go('zest_station.swipe_pay_error');
-                        console.warn('failed to get token from MLI');
                     };
                     
                     console.info('fetching token...from tokenize...');
@@ -548,7 +537,6 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         }
         
         $scope.createSWipedDataToRender = function(swipedCardData){
-           // alert('create swipe data to render: '+JSON.stringify(swipedCardData));
 		var swipedCardDataToRender = {
 			"cardType": swipedCardData.RVCardReadCardType,
 			"cardNumber": "xxxx-xxxx-xxxx-" + swipedCardData.token.slice(-4),
@@ -596,21 +584,25 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         
         $scope.saveSwipedCardMLI = function(data){
-           // alert('callled :::: save swiped card MLI ::: '+JSON.stringify(data))
-            if (!data){
+            //$scope.saveCardDataFromSwipe();
+            var token;
+            if (data){
+                if (data.token){
+                    data.data.token = data.token;
+                }
                 if (data.evt === null && data.data){
+                    token = data.token;
                     data = data.data;
                 } else {
                     data = $scope.swipeData;
                 }
-                console.log(data)
             }
-            var cardCode = data.RVCardReadCardType;
+            //var cardCode = data.RVCardReadCardType;
             //save the payment to guest card/reservation
             var reservationId = $scope.selectedReservation.id;
             var expirYear = '20'+data.RVCardReadExpDate.substring(0, 2);
             var expirMonth = data.RVCardReadExpDate.substring(2, 4);
-            
+            /*
             var postData = {
                  add_to_guest_card: true,
                  card_code: cardCode,
@@ -625,40 +617,40 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                  token: data.token
              };
              
-             
-             
-                var sessionDetails = {};
-                sessionDetails.cardNumber = postData.card_number;
-                //sessionDetails.cardSecurityCode = $scope.postData.cvv;
-                sessionDetails.cardExpiryMonth = $scope.expirMonth;
-                sessionDetails.cardExpiryYear = $scope.expirYear;
-                var callback = function(response){
-                    //alert('mli session callback debugging')
-                    console.info(response);
-                       $scope.$emit("hideLoader");
-                     //  response.status = 'ok';//debugging
-                       if(response.status ==="ok"){
-                           MLISessionId = response.session;
-                           postData.session_id = MLISessionId;
-                           console.info('sessionId: ',postData);
-                           $scope.invokeApi(zsPaymentSrv.savePayment, postData, $scope.successSavePayment, $scope.failSavePayment); 
-                       }
-                       else{
-                           console.warn('there was a problem with the card');
-                           $scope.failSavePayment('there was a problem with the card');
-                       }
-                };
+             */
+            
+            var postData = swipeOperationObj.createSWipedDataToSave(data);
+            postData.reservation_id = reservationId;
+            //upon successful session update
+            var sessionDetails = {};
+            sessionDetails.cardNumber = postData.token;
+            sessionDetails.cardExpiryMonth = expirMonth;
+            sessionDetails.cardExpiryYear = expirYear;
 
-               try {
-                   //debugging
-                  // callback();
-                   HostedForm.updateSession(sessionDetails, callback);
-                   $scope.$emit("showLoader");  
-               }
-               catch(err) {
-                   console.warn(err);
-               };
-             
+            var callback = function(response){
+                   $scope.$emit("hideLoader");
+                   
+                    if(response.status ==="ok"){
+                        MLISessionId = response.session;
+                        postData.session_id = MLISessionId;
+                        try {
+                            $scope.invokeApi(zsPaymentSrv.savePayment, postData, $scope.successSavePayment, $scope.failSavePayment); 
+                        } catch(err){
+                            $state.go('zest_station.swipe_pay_error');
+                        }
+                   } else {
+                        console.warn('there was a problem with the card');
+                        $scope.failSavePayment('there was a problem with the card');
+                   }
+            };
+                
+            try {
+                HostedForm.updateSession(sessionDetails, callback);
+                $scope.$emit("showLoader");  
+            }
+            catch(err) {
+                console.warn(err);
+            };
              
         };
         
@@ -1152,15 +1144,21 @@ var SwipeOperation = function(){
 	 */
 	this.createSWipedDataToSave = function(swipedCardData){
 		var swipedCardDataToSave = {
-			"cardType": swipedCardData.cardType,
-			"et2": swipedCardData.et2,
-			"ksn": swipedCardData.ksn,
-			"pan": swipedCardData.pan,
+			"cardType": swipedCardData.RVCardReadCardType,
+                        "et2": swipedCardData.RVCardReadTrack2,
+                        'ksn': swipedCardData.RVCardReadTrack2KSN,
+			'pan': swipedCardData.RVCardReadMaskedPAN,
 			"mli_token": swipedCardData.token,
 			"payment_type": "CC",
-			"cardExpiryMonth": swipedCardData.cardExpiryMonth,
-			"cardExpiryYear": swipedCardData.cardExpiryYear,
-			"cardNumber": swipedCardData.cardNumber
+                        "cardExpiryMonth": swipedCardData.cardExpiryMonth,
+                        "cardExpiryYear": swipedCardData.cardExpiryYear,//2-digit
+                        "cardNumber": "xxxx-xxxx-xxxx-" + swipedCardData.token.slice(-4),//xxxx-xxxx-xxxx-0123
+                        "addToGuestCard":false,
+			"card_name": swipedCardData.RVCardReadCardName,
+                        "payment_credit_type":swipedCardData.RVCardReadCardType,
+			"credit_card":swipedCardData.RVCardReadCardType,//VA / AX
+			"card_expiry": '20'+swipedCardData.RVCardReadExpDate.substring(0, 2)+'-01-'+swipedCardData.RVCardReadExpDate.slice(-2),//2017-12-01
+                        "add_to_guest_card":false
 		};
 		return swipedCardDataToSave;
 	};
