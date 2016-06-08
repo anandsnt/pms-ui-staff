@@ -4,7 +4,8 @@ This is why: http://stackoverflow.com/questions/17441254/why-angularjs-currency-
 <tr ng-repeat="each in results track by $index" class="{{ each.className }}" ngrepeatend>
     <td ng-if="each.isReport" class="name short" rowspan="{{ each.rowspan }}"> <!-- Set rowspan as {no. of nights + 1} E.g. if there are 5 nights for reservation, rowspan should be set to 6. That means we'll show 5 nights + 1 totals row -->
         <div class="info">
-            <strong>{{ each.guest_name }}</strong>
+            <strong><a ng-click="gotoStayCard(each)">{{ each.guest_name }}</a></strong>
+            <strong ng-if="!each.guest_name"><a ng-click="gotoStayCard(each)">Pending</a></strong>
             <em>{{ each.confirmation_no }}</em>
         </div>
         <div class="dates">
