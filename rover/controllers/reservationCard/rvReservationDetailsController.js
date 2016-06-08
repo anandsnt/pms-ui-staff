@@ -47,7 +47,8 @@ sntRover.controller('reservationDetailsController',
 			};
 		};
 
-		//CICO-29343 - Set the flag to false initially
+		//CICO-29343 - Set the flag to false initially and checking the View SR permission
+		$scope.hasSRViewPermission = rvPermissionSrv.getPermissionValue('VIEW_SUPPRESSED_RATE');
 		RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", false);
 
 		if (!$rootScope.stayCardStateBookMark) {
@@ -1372,7 +1373,7 @@ sntRover.controller('reservationDetailsController',
      * Function which get invoked while clicking the SR  View Rate btn
      */
      $scope.onSRViewRateBtnClick = function() {
-     	RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", true);     	
+     	RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", true);
      };
 
      /*
@@ -1397,8 +1398,5 @@ sntRover.controller('reservationDetailsController',
      	return (!$scope.reservationData.reservation_card.is_rates_suppressed || RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked"));
      };
 
-
-     //TODO-Implement the actual permission
-     $scope.hasSRViewPermission = true;
 
 }]);
