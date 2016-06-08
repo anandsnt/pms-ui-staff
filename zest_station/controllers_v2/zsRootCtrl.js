@@ -139,7 +139,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
 				$scope.zestStationData.paymentGateway = data.payment_gateway;
 				$scope.zestStationData.hotelDateFormat = !!data.date_format ? data.date_format.value : "DD-MM-YYYY";
-				$rootScope.emvTimeout = !!$scope.zestStationData.hotel_settings.emv_timeout ? $scope.zestStationData.hotel_settings.emv_timeout : 60;
+				$rootScope.emvTimeout = !!$scope.zestStationData.hotelSettings.emv_timeout ? $scope.zestStationData.hotelSettings.emv_timeout : 60;
 				$scope.zestStationData.mliMerchantId = data.mli_merchant_id;
                         configureSwipeSettings();
 			};
