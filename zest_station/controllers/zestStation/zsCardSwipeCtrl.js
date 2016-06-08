@@ -622,11 +622,12 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             var postData = swipeOperationObj.createSWipedDataToSave(data);
             postData.reservation_id = reservationId;
             //upon successful session update
-            var sessionDetails = {};
+          /*  var sessionDetails = {};
             sessionDetails.cardNumber = postData.token;
             sessionDetails.cardExpiryMonth = expirMonth;
             sessionDetails.cardExpiryYear = expirYear;
-
+            */
+/*
             var callback = function(response){
                    $scope.$emit("hideLoader");
                    
@@ -643,7 +644,13 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                         $scope.failSavePayment('there was a problem with the card');
                    }
             };
-                
+            */
+                try {
+                    $scope.invokeApi(zsPaymentSrv.savePayment, postData, $scope.successSavePayment, $scope.failSavePayment); 
+                } catch(err){
+                    $state.go('zest_station.swipe_pay_error');
+                }
+            /*    
             try {
                 HostedForm.updateSession(sessionDetails, callback);
                 $scope.$emit("showLoader");  
@@ -652,6 +659,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 console.warn(err);
                 $scope.failSavePayment('there was a problem with the MLI Session');
             };
+            */
+            
              
         };
         
