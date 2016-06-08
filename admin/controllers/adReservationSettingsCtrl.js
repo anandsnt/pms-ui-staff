@@ -53,8 +53,8 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
     
     $scope.incidentalObj = {
       'values' : [{
-        "value" : "$",
-        "name"  : "$"
+        "value" : "amount",
+        "name"  : $rootScope.currencySymbol
       }],
       'types' : [{
         "value" : "perStay",
