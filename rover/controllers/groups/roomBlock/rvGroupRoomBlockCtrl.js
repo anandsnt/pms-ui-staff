@@ -273,7 +273,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 				return (list_of_triples.length > 0);
 			} else {
-				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
+				return (typeof roomType.rate_config.extra_adult_rate === "number" &&
+						typeof roomType.rate_config.double_rate === "number");
 			}
 		};
 
@@ -298,7 +299,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 				return (list_of_quadruples.length > 0);
 			} else {
-				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
+				return (typeof roomType.rate_config.extra_adult_rate === "number" &&
+						typeof roomType.rate_config.double_rate === "number");
 			}
 		};
 

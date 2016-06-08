@@ -265,6 +265,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				resKey : 'origins'
 			});
 		};
+
 		service.fetchURLs = function() {
 			return callApi({
 				name   : 'URLs',
@@ -304,6 +305,16 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				url    : 'admin/export_schedules/' + params.id
 			});
 		};
+
+		service.fetchCampaignTypes = function() {
+			return callApi({
+				name   : 'campaign_types',
+				method : 'getJSON',
+				url    : 'api/campaigns/campaign_types',
+				resKey : 'campaign_types'
+			});
+		};
+
 		return service;
 	}
 ]);

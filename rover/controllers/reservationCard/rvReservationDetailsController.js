@@ -47,6 +47,10 @@ sntRover.controller('reservationDetailsController',
 			};
 		};
 
+		//CICO-29343 - Set the flag to false initially and checking the View SR permission
+		$scope.hasSRViewPermission = rvPermissionSrv.getPermissionValue('VIEW_SUPPRESSED_RATE');
+		RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", false);
+
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
 		}
@@ -1376,5 +1380,35 @@ sntRover.controller('reservationDetailsController',
 			};
 			$scope.invokeApi(RVCCAuthorizationSrv.releaseAuthorization, postData, onReleaseAuthorizationSuccess, onReleaseAuthorizationFaliure);
      };
+
+     /*
+     * Function which get invoked while clicking the SR  View Rate btn
+     */
+     $scope.onSRViewRateBtnClick = function() {
+     	RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", true);
+     };
+
+     /*
+     * Checks whether the balance amount section needs to show or not
+     */
+     $scope.isBalanceAmountShown = function() {
+     	return (!$scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates || RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked"));
+     };
+
+     /*
+     * Checks whether the SR View Rate btn needs to show or not
+     */
+     $scope.isSRViewRateBtnShown = function() {
+     	return $scope.isStandAlone && $scope.hasSRViewPermission && $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates && !RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked");
+     };
+
+
+      /*
+     * Checks whether the rate amount needs to show or not
+     */
+     $scope.isRateAmountShown = function() {
+     	return (!$scope.reservationData.reservation_card.is_rates_suppressed || RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked"));
+     };
+
 
 }]);
