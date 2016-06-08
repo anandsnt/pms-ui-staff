@@ -29,6 +29,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 					onAccountUpdateFailure = function(errorMessage) {
 						//client controllers should get an infromation whether updation was a failure
 						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
+						$scope.$emit('showErrorMessage', errorMessage);
 						$scope.$emit('hideloader');
 					};
 
