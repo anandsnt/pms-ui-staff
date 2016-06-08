@@ -1156,10 +1156,11 @@
                                     .calc-width(100, 95 );
                                 }
                                .room-type {
-                                .pull-right();
-                                font-size: 11px;
-                                text-align: right;
-                                width: 90px;
+                                    padding-right: 5px;
+                                    .pull-right();
+                                    font-size: 11px;
+                                    text-align: right;
+                                    width: 90px;
                                }
                                &:before {
                                     background-size: 20px 20px !important;
@@ -1167,14 +1168,19 @@
                             }
 
                             .occupancy-time { 
+                                width: 60px;
                                 line-height: 24px;
                                 padding: 0px 5px;
                                 font-size: 12px;
                                 font-weight: normal;
                                 text-align: left;
+                                .duration {
+                                    .pull-left();
+                                }
                                 .eta {
                                     font-size: 12px;
                                     .pull-right();
+                                    padding-top: 1px;
                                 }
                             }
                         

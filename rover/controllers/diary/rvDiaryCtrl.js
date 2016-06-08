@@ -515,9 +515,14 @@ angular.module('sntRover')
 			selectAnUnassigned: function(options) {
 				var params = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.room_type_id);
 
+				var keepOpen = true;
+				var success = function(data, successParams) {
+					successCallBackOfAvailabilityFetching(data, successParams, keepOpen);
+				};
+
 				var apiOptions = {
 					params: 			params,
-					successCallBack: 	successCallBackOfAvailabilityFetching,
+					successCallBack: 	success,
 					failureCallBack: 	failureCallBackOfAvailabilityFetching,
 					successCallBackParameters:  params
 				};
@@ -528,6 +533,11 @@ angular.module('sntRover')
 			},
 			dropReservation: function(roomId) {
 				$scope.saveReservationOnDrop(this.dragData, roomId);
+			},
+			dragEnded: function() {
+				$scope.clearAvailability();
+				$scope.resetEdit();
+				$scope.renderGrid();
 			}
 		}
 	};
@@ -654,6 +664,8 @@ angular.module('sntRover')
 		    	$scope.renderGrid();
 
 		    	if($scope.isSelected(row_data, copy)) {
+		    		console.log(row_data, copy)
+		    		$scope.message	= ['Sorry, There are no more physical rooms of this room type.'];
 		    		$scope.selectedReservations.push({ room: row_data, occupancy: copy });
 		    	} else {
 		    		(function() {
@@ -705,7 +717,7 @@ angular.module('sntRover')
 				if ( $scope.gridProps.unassignedRoomList.open ) {
 					$scope.gridProps.unassignedRoomList.fetchList();
 				}
-				$scope.resetEverything();
+				successCallBackOfSaveReservation();
 			};
 
 			var error = function(msg) {
@@ -1247,12 +1259,12 @@ angular.module('sntRover')
 
 		for(var i = 0, len = rooms.length; i < len; i++) {
 			room 			= rooms[i];
-		room.occupancy 	= _.reject(room.occupancy, reject);
+		    room.occupancy 	= _.reject(room.occupancy, reject);
 			room 			= util.deepCopy(room);
 		}
 	};
 
-	var successCallBackOfAvailabilityFetching = function(data, successParams){
+	var successCallBackOfAvailabilityFetching = function(data, successParams, keepOpen){
 		var row_item_data;
 
 		if(data.length) {
@@ -1278,6 +1290,13 @@ angular.module('sntRover')
 			openMessageShowingPopup();
 			return;
 		}
+
+		if ( ! keepOpen && $scope.gridProps.unassignedRoomList.open ) {
+			if ( $scope.gridProps.unassignedRoomList.open ) {
+				$scope.gridProps.unassignedRoomList.fetchList();
+			}
+		}
+
 		$scope.renderGrid();
 
 	}.bind($scope.gridProps);
@@ -1992,7 +2011,7 @@ angular.module('sntRover')
     			if ( $scope.gridProps.unassignedRoomList.open ) {
 					$scope.gridProps.unassignedRoomList.fetchList();
 				}
-				$scope.resetEverything();
+				successCallBackOfSaveReservation();
     		},
     		failureCallBack: failureCallBackOfSaveReservation
 	    };
