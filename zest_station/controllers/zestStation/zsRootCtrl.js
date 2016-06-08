@@ -31,7 +31,7 @@ sntZestStation.controller('zsRootCtrl', [
          $scope.inChromeApp = $("#hideFromChromeApp").css("visibility") === 'hidden' ;
          console.info(":: is in chrome app ->"+$scope.inChromeApp);
     }();
-
+    
     /**
      * to run angular digest loop,
      * will check if it is not running
@@ -306,7 +306,17 @@ sntZestStation.controller('zsRootCtrl', [
             }
             
         };
-           
+        $scope.setMLISettings = function(){
+         //set MLI Merchant Id
+         try {
+             if (!MLIOperation.setMerChantID){
+                 MLIOperation = new MLIOperation();
+             }
+             console.warn('MLIOperator: ',MLIOperation);
+             console.info('$rootScope.MLImerchantId: ',$scope.zestStationData.MLImerchantId)
+             MLIOperation.setMerChantID($scope.zestStationData.MLImerchantId);
+         } catch (err) {};
+        }
         $scope.hotelThemeCB = function(response){
             //call Zest station settings API
             var options = {
@@ -314,6 +324,7 @@ sntZestStation.controller('zsRootCtrl', [
                 successCallBack: 	function(response){
                     $scope.zestStationData.mli_merchant_id = response.mli_merchant_id;
                     $scope.zestStationData.MLImerchantId = response.mli_merchant_id;
+                    $scope.setMLISettings();
                 }
             };
             $scope.callAPI(zsHotelDetailsSrv.fetchHotelSettings, options);
