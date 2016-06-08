@@ -283,6 +283,16 @@ sntRover.controller('reservationDetailsController',
 				$scope.$broadcast("UPDATEGUESTDEATAILS");
 			}
 		};
+		$scope.saveAccGuestDetails = function(){
+			setTimeout(function(){
+
+				if(document.activeElement.getAttribute("type") != "text"){
+					$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": false});
+				}
+
+
+			}, 800)
+		};
 
 		$scope.$on("OPENGUESTTAB", function(e) {
 			$scope.toggleGuests();
