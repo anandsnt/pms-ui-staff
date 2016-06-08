@@ -4,7 +4,7 @@
 <td ng-if="each.isReport" class="name">
     <strong class="title"><a ng-click="gotoStayCard(each)">{{ each.guest_name }}</a></strong>
     <strong class="title" ng-if="!each.guest_name"><a ng-click="gotoStayCard(each)">Pending</a></strong>
-    <span class="data">{{ each.reservation_no }}</span>
+    <span class="data">{{ each.confirm_no }}</span>
     <span ng-if="each.no_of_nights">&#8226; <span class="data">{{ each.no_of_nights }} nights</span></span>
     <span ng-if="each.is_vip">&#8226; <span class="data vip">VIP</span></span>
 </td>
