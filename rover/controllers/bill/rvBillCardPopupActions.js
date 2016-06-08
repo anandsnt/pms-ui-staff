@@ -51,7 +51,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 			$scope.displayFirstValue = $scope.selectedTransaction.amount - $scope.splitValue;
 			$scope.displaySecondValue = $scope.splitValue;
 		}else{
-			$scope.displaySecondValue = $scope.selectedTransaction.amount* $scope.splitValue /100;
+			$scope.displaySecondValue = parseFloat($scope.selectedTransaction.amount* $scope.splitValue /100).toFixed(2);
 			$scope.displayFirstValue = $scope.selectedTransaction.amount - $scope.displaySecondValue;
 		};
 	};
