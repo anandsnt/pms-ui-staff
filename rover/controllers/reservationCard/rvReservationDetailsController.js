@@ -1387,7 +1387,7 @@ sntRover.controller('reservationDetailsController',
      * Checks whether the SR View Rate btn needs to show or not
      */
      $scope.isSRViewRateBtnShown = function() {
-     	return $scope.hasSRViewPermission && $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates && !RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked");
+     	return $scope.isStandAlone && $scope.hasSRViewPermission && $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates && !RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked");
      };
 
 
