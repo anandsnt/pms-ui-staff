@@ -35,10 +35,30 @@ sntZestStation.controller('zsHomeCtrl', [
 
 		$scope.language = {};
 
-		$scope.translateTo = function(lang_code,language){
-			$translate.use(lang_code);
-			$scope.selectedLanguage = language;
-		};
+		/**************************************************************************************/
+
+		var setHomeScreenTimer = function() {
+			var userInActivityTimeInHomeScreenInSeconds = 0;
+
+			$scope.resetHomeScreenTimer = function() {
+				userInActivityTimeInHomeScreenInSeconds = 0;
+			};
+
+			var  incrementHomeScreenTimer = function() {
+				userInActivityTimeInHomeScreenInSeconds++;
+				//when user activity is not recorded for more than 120 secs
+				//translating to default lanaguage
+				if (userInActivityTimeInHomeScreenInSeconds >= 120) {
+					console.info("translating to default lanaguage");
+					$rootScope.$broadcast('RESET_LANGUAGE');
+				} else {
+					//do nothing;
+				}
+			}
+			setInterval(incrementHomeScreenTimer, 1000);
+		}();
+
+		/**************************************************************************************/
 
 
 		/**
@@ -77,6 +97,7 @@ sntZestStation.controller('zsHomeCtrl', [
 			//set this to false always on entering home screen
 			$scope.zestStationData.keyCardInserted = false;
 			initiateLanguagePopUpSetting();
+			$scope.resetHomeScreenTimer();
             if($scope.zestStationData.workstationStatus === 'out-of-order'){
             	var params = {};
             	params.reason = $scope.zestStationData.wsFailedReason;

@@ -34,4 +34,6 @@
 "SHOW_OVERBOOKING_ALERT" : "SHOW OVERBOOKING ALERT",
 "CC_TOPUP_AUTHORIZATION_RULE" : "CC Top Up Authorization Rule",
 "MAX_NUMBER_OF_NIGHTS" : "Max Number of Nights",
-"PLACEHOLDER_MAX_NUMBER_OF_NIGHTS" : "Enter Max Number of Nights"
+"PLACEHOLDER_MAX_NUMBER_OF_NIGHTS" : "Enter Max Number of Nights",
+
+"CC_AUTHORIZATION_FOR_INCIDENTALS_ONLY" : "CC Authorization for Incidentals Only"

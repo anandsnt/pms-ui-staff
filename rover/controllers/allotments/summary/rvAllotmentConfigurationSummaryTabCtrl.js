@@ -826,19 +826,24 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 		var fetchApplicableRates = function() {
 			var summaryData = $scope.allotmentConfigData.summary;
-			var params = {
-				from_date: $filter('date')(tzIndependentDate(summaryData.block_from), 'yyyy-MM-dd'),
-				to_date: $filter('date')(tzIndependentDate(summaryData.block_to), 'yyyy-MM-dd'),
-				company_id: (summaryData.company && summaryData.company.id) || null,
-				travel_agent_id: (summaryData.travel_agent && summaryData.travel_agent.id) || null
-			};
-			var options = {
-				successCallBack: onFetchRatesSuccess,
-				failureCallBack: onFetchRatesFailure,
-				params: params
-			};
+			if (!!summaryData.block_from && !!summaryData.block_to) {
+				var params = {
+					from_date: $filter('date')(tzIndependentDate(summaryData.block_from), 'yyyy-MM-dd'),
+					to_date: $filter('date')(tzIndependentDate(summaryData.block_to), 'yyyy-MM-dd'),
+					company_id: (summaryData.company && summaryData.company.id) || null,
+					travel_agent_id: (summaryData.travel_agent && summaryData.travel_agent.id) || null
+				};
+				var options = {
+					successCallBack: onFetchRatesSuccess,
+					failureCallBack: onFetchRatesFailure,
+					params: params
+				};
 
-			$scope.callAPI(rvAllotmentConfigurationSrv.getRates, options);
+				$scope.callAPI(rvAllotmentConfigurationSrv.getRates, options);
+				return true;
+			} else {
+				return false;
+			}
 		};
 
 		/**
