@@ -509,7 +509,9 @@ angular.module('sntRover')
 				} else {
 					this.data = [];
 					this.dragData = {};
-					$scope.invokeApi(rvDiarySrv.fetchUnassignedRoomList, {}, _sucess, _failed);
+					$scope.invokeApi(rvDiarySrv.fetchUnassignedRoomList, {
+						date: $filter('date')($scope.gridProps.filter.arrival_date, $rootScope.dateFormatForAPI)
+					}, _sucess, _failed);
 				}
 			},
 			selectAnUnassigned: function(options) {
