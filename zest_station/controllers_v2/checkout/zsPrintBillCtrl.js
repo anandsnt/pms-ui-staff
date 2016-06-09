@@ -1,8 +1,8 @@
 sntZestStation.controller('zsPrintBillCtrl', [
     '$scope',
     '$state',
-    'zsCheckoutSrv', '$stateParams', '$window', '$timeout',
-    function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout) {
+    'zsCheckoutSrv', '$stateParams', '$window', '$timeout','$filter',
+    function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout,$filter) {
 
         /********************************************************************************
          **      This is not a sperate state. It's an ng-included ctrl inside 
