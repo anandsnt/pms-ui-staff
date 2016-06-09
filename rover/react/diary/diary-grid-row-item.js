@@ -4,8 +4,15 @@ var GridRowItem = React.createClass({
 			editing: this.props.edit.active,
 			resizing: this.props.resizing,
 			currentResizeItem: this.props.currentResizeItem,
-			currentResizeItemRow: this.props.currentResizeItemRow
+			currentResizeItemRow: this.props.currentResizeItemRow,
+			isDragOver: false
 		};
+	},
+
+	__setDragOver: function(bool) {
+		this.setState({
+			isDragOver: typeof bool === typeof true ? bool : false
+		});
 	},
 
 	componentWillReceiveProps: function(nextProps) {
@@ -109,7 +116,7 @@ var GridRowItem = React.createClass({
 			className += (state.editing ? ' editing' : '');
 
 			//we have to show striped reservation when we select a availability check reservation
-			className += (is_temp_reservation && data.selected ? ' reserved' : '');
+			className += ((is_temp_reservation && data.selected) || (is_temp_reservation && this.state.isDragOver) ? ' reserved' : '');
 
 		//guest status mapping
 		switch (data[m.status]) {
@@ -219,14 +226,17 @@ var GridRowItem = React.createClass({
 			currentDragItem:    props.currentResizeItem,
 			style: 			   {
 				display: 'block',
-				left: left
-			}
+				left: left,
+			},
+			__setDragOver: function(bool){ this.__setDragOver(bool) }.bind(this)
 		},
 		React.DOM.span({
 			className: this.__get_class_for_reservation_span(),
 			style: {
 				width: reservation_time_span + 'px'
-			}
+			},
+			onDrop: function(e){ this.__onDrop(e) }.bind(this),
+			onDragOver: function(e){ this.__onDragOver(e) }.bind(this)
 		},
 		React.DOM.span({
 			className: show_outstanding_indicator ? 'deposit-icon' : '',
@@ -237,5 +247,23 @@ var GridRowItem = React.createClass({
 			className: 'maintenance',
 			style: houseKeepingTaskStyle
 		}, ' '));
-	}
+	},
+
+	__onDrop: function(e) {
+		var data = this.props.data;
+		var status = this.props.meta.occupancy.status;
+
+		if ( data[status] === 'available' ) {
+			e.preventDefault();
+			this.props.unassignedRoomList.dropReservation( data['room_id'] );
+		}
+	},
+	__onDragOver: function(e) {
+		var data = this.props.data;
+		var status = this.props.meta.occupancy.status;
+
+		if ( data[status] === 'available' ) {
+			e.preventDefault();
+		}
+	},
 });
