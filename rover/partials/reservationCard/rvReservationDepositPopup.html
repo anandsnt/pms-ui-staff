@@ -33,10 +33,11 @@
                     <label ng-show="depositData.paymentType === 'GIFT_CARD' && giftCardAmountAvailable" ng-hide="depositData.paymentType !== 'GIFT_CARD' || !giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
                     <input ng-show="depositData.paymentType === 'GIFT_CARD' && giftCardAmountAvailable" ng-hide="depositData.paymentType !== 'GIFT_CARD' || !giftCardAmountAvailable"  name="giftCardAmount" id="amount" ng-readonly="true" ng-model="giftCardAvailableBalance" type="text" class="amount" value="{{ giftCardAvailableBalance }}"/>
                     <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
-                    
-                    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="reservationData.depositAmount" type="text" ng-disabled="!isDepositEditable"  class="amount"/>
 
-                    <span ng-show="isShowFees()" class="delimiter">+</span> 
+                    <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="reservationData.depositAmount" type="text" ng-disabled="!isDepositEditable"  class="amount" ng-if="!isReservationRateSuppressed"/>
+                    <input name="amount" id="amount"  type="text" ng-disabled="!isDepositEditable"  class="amount" ng-if="isReservationRateSuppressed" value="{{'SUPPRESSED_RATES_TEXT' | translate}}"/>
+
+                    <span ng-show="isShowFees()" class="delimiter">+</span>
                     <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(reservationData.depositAmount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
                     <span ng-show="isShowFees()" class="delimiter">fee</span>
 
@@ -68,19 +69,19 @@
                     </li>
                     <li ng-if="isShowFees()">
                         Amount paid: <span class="value"> {{currencySymbol}}{{reservationData.depositAmount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
-                        </span> 
+                        </span>
                     </li>
                     <li ng-if="!isShowFees()">
                         Amount paid: <span class="value"> {{currencySymbol}}{{reservationData.depositAmount}}
-                        </span> 
+                        </span>
                     </li>
                 </ul>
-            </div> 
+            </div>
 
             <!-- Fail feedback -->
             <div class="feedback" ng-show="errorOccured">
                 <div class="notice error">{{paymentErrorMessage}}</div>
-            </div> 
+            </div>
 
              <div class="entry full-width" ng-show="showAddtoGuestCardBox()">
                 <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': depositData.addToGuestCard}">
@@ -88,7 +89,7 @@
                     <input ng-model="depositData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
                     {{'ADD_TO_GUEST_CARD' | translate}}
                 </label>
-            </div> 
+            </div>
 
 
             <!-- Buttons -->
@@ -101,7 +102,7 @@
     </form>
     <div ng-show="shouldShowWaiting && pageloadingOver && !depositPaidSuccesFully" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
 		<div class="centeralign alert-box">
-			WAITING FOR PAYMENT COMPLETION 
+			WAITING FOR PAYMENT COMPLETION
 		</div>
 		<div class="waiting-payment">&nbsp;</div>
 	</div>
