@@ -745,6 +745,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                     Occupancy.read(dateRange(start_date, end_date))
                     .then(function(data) {
+                        console.log(data);
                         Occupancy.resolve(data);
 
                         q.resolve(Occupancy.store.data);
