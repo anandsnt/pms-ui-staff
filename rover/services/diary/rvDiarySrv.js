@@ -745,6 +745,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                     Occupancy.read(dateRange(start_date, end_date))
                     .then(function(data) {
+                        console.log(data);
                         Occupancy.resolve(data);
 
                         q.resolve(Occupancy.store.data);
@@ -1013,6 +1014,28 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         return t_a + t_b + ms;
                     }
                 };
+
+                this.fetchUnassignedRoomList = function() {
+                    var deferred = $q.defer();
+                    var url = '/api/hourly_occupancy/unassigned_list';
+                    rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                        deferred.resolve(data.reservations);
+                    },function(error){
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+
+                this.unassignRoom = function(params) {
+                    var deferred = $q.defer();
+                    var url = 'api/reservations/' + params.id + '/unassign_room/';
+                    rvBaseWebSrvV2.postJSON(url).then(function(data) {
+                        deferred.resolve(data.reservations);
+                    },function(error){
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                }
 
             }]);
                 //------------------------------------------------------------------

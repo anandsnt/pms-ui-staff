@@ -51,5 +51,6 @@ angular.module('reportsModule')
         'ROOM_TYPE_IDS'          : 'room_type_ids',
         'RATE_ID'                : 'rate_id',
         'ORIGIN_VALUES'          : 'origin',
-        'ORIGIN_URLS'            : 'urls'
+        'ORIGIN_URLS'            : 'urls',
+        'CAMPAIGN_TYPES'         : 'campaign_types'
     });

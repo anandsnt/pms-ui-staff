@@ -107,6 +107,18 @@ sntRover.controller('reservationDetailsController',
 			$rootScope.setPrevState = {
 				title: 'Room Diary'
 			};
+		} else if ($scope.previousState.name === "rover.reports" || $rootScope.stayCardStateBookMark.previousState === 'rover.reports') {
+			if ($scope.previousState.name === "rover.reports") {
+				setNavigationBookMark();
+			}
+			$rootScope.setPrevState = {
+				title: 'REPORTS',
+				name: 'rover.reports',
+				param: {
+					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
+					activeTab: "REPORTS"
+				}
+			};
 		} else {
 			setNavigationBookMark();
 			// if we just created a reservation and came straight to staycard

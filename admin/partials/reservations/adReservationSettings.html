@@ -167,6 +167,32 @@
 					</div>
 				</fieldset>
 
+				<fieldset class="holder right" ng-if="isStandAlone">
+					<div class="entry" >
+						<label translate>CC_AUTHORIZATION_FOR_INCIDENTALS_ONLY</label>
+						<div class="select select-col width80-percent" >
+							<select ng-model="reservationSettingsData.cc_authorization_for_incidental_name" class="styled">
+		                        	<option ng-selected="item.value==reservationSettingsData.cc_authorization_for_incidental_name" ng-repeat="item in reservationSettingsData.cc_authorization_for_incidentals" value="{{item.value}}">{{item.value}}</option>
+		                    </select>
+	                    </div>
+	                </div>
+					<div class="entry full-width" >
+						<div class=" select-col col1-4 " >
+							<ad-textbox value="reservationSettingsData.cc_authorization_for_incidental_per_value" inputtype="text" value="" styleclass = "col1-3" label = "" placeholder = "" style="margin-top: 0; width: 100px;"></ad-textbox>
+						</div>
+						<div class="select select-col col1-4">
+							<select class="styled">
+	                            <option ng-repeat="value in incidentalObj.values"  ng-selected="true">{{value.name}}</option>
+	                        </select>
+						</div>
+						<div class="select select-col col1-4">
+							<select ng-model="reservationSettingsData.cc_authorization_for_incidental_type" class="styled">
+	                            <option ng-repeat="type in incidentalObj.types"  value="{{type.value}}" ng-selected="type.value ===reservationSettingsData.cc_authorization_for_incidental_type">{{type.name}}</option>
+	                        </select>
+						</div>
+					</div>
+				</fieldset>
+
 				<fieldset class="holder left" ng-if="isStandAlone">
 					<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on" ></ad-toggle-button>
 					<ad-toggle-button label="{{'ADDONS_FOR_RESERVATIONS' | translate}}" is-checked="reservationSettingsData.is_addon_on" ></ad-toggle-button>

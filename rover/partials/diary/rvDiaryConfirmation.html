@@ -3,7 +3,11 @@
     <!--<form method="post" action="" id="confirm-diary-reservation" name="confirm-diary-reservation" class="modal-content diary-confirmation">-->
         <button id="modal-close" class="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
 
-        <span id="diary-modal-title" class="h2 message">
+        <span ng-if="message.length" class="h2 message">
+            <span class="red" ng-repeat="msg in message">{{msg}}</span>
+        </span>
+
+        <span ng-if="!message.length" id="diary-modal-title" class="h2 message">
             Reserve <span>{{title}}</span>?
         </span>
 

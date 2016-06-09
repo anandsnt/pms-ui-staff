@@ -139,6 +139,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
 				$scope.zestStationData.paymentGateway = data.payment_gateway;
 				$scope.zestStationData.hotelDateFormat = !!data.date_format ? data.date_format.value : "DD-MM-YYYY";
+				$rootScope.emvTimeout = !!$scope.zestStationData.hotelSettings.emv_timeout ? $scope.zestStationData.hotelSettings.emv_timeout : 60;
 				$scope.zestStationData.mliMerchantId = data.mli_merchant_id;
                         configureSwipeSettings();
 			};
@@ -243,7 +244,8 @@ sntZestStation.controller('zsRootCtrl', [
 					qr_noarrow: iconsPath + '/qr-scan_noarrow.svg',
 					createkey: iconsPath + '/create-key.svg',
 					logo: iconsPath + '/print_logo.svg',
-					watch: iconsPath + '/watch.svg'
+					watch: iconsPath + '/watch.svg',
+					qr_arrow: iconsPath + '/qr-arrow.svg'
 				}
 			};
 		};
