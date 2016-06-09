@@ -216,8 +216,8 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
 
             _.extend(reservation, {
               group_id: $scope.groupConfigData.summary.group_id,
-              arrival_date: $scope.roomingListState.editedReservationStart,
-              departure_date: $scope.roomingListState.editedReservationEnd,
+              arrival_date: getFormattedDateForAPI($scope.roomingListState.editedReservationStart),
+              departure_date: getFormattedDateForAPI($scope.roomingListState.editedReservationEnd),
               room_type_id: parseInt(reservation.room_type_id),
               room_id: parseInt(reservation.room_id)
             });
