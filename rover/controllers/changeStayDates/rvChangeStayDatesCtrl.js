@@ -544,6 +544,11 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				// reverting back to it's original position
 				return false;
 			}
+			//CICO-30310
+			if(event.id === 'check-in' && $scope.stayDetails.details.reservation_status === 'CHECKEDIN') {
+				revertFunc();
+				return false;
+			}
 			//Events other than check-in and checkout should not be drag and droped
 			if (event.id !== 'check-in' && event.id !== 'check-out') {
 				revertFunc();
