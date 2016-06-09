@@ -4,7 +4,7 @@ admin.service('ADRateTypeSrv', ['$http', '$q', 'ADBaseWebSrvV2',
 		this.fetch = function() {
 			var deferred = $q.defer();
 
-			var url = "/api/rate_types.json";
+			var url = "/api/rate_types.json?sort_field=is_active&sort_dir=false";
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data.results);
 			}, function(data) {

@@ -1011,7 +1011,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'reservationStatus' : [],
 					'guestOrAccount': [],
 					'chargeTypes': [],
-					'users': []
+					'users': [],
+					'campaign_types': []
 				};
 			};
 
@@ -1693,6 +1694,28 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					// in case if all sources are selected
 					if ( changeAppliedFilter && report['hasURLsList']['data'].length === selected.length ) {
 						$scope.appliedFilter.origin_urls = ['All URLs'];
+					};
+				};
+			};
+			// selected Campaign types
+			if ( report.hasOwnProperty('hasCampaignTypes') ) {
+				selected = _.where( report['hasCampaignTypes']['data'], { selected: true } );
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['CAMPAIGN_TYPES'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(source) {
+						params[key].push( source.value );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.campaign_types.push( source.name );
+						};
+					});
+
+					// in case if all sources are selected
+					if ( changeAppliedFilter && report['hasCampaignTypes']['data'].length === selected.length ) {
+						$scope.appliedFilter.campaign_types = ['All Campaigns'];
 					};
 				};
 			};

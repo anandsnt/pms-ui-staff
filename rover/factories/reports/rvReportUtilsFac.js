@@ -439,6 +439,10 @@ angular.module('reportsModule')
                     report['hasURLsList'] = filter;
                 };
 
+                if(filter.value === 'CAMPAIGN_TYPES') {
+                    report['hasCampaignTypes'] = filter;
+                };
+
                 // check for time filter and keep a ref to that item
                 // create std 15min stepped time slots
                 if ( filter.value === 'TIME_RANGE' ) {
@@ -657,6 +661,12 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchOrigins()
                         .then( fillOrigins );
+                }
+
+                else if ( 'CAMPAIGN_TYPES' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchCampaignTypes()
+                        .then( fillCampaignTypes );
                 }
 
                 else {
@@ -934,6 +944,31 @@ angular.module('reportsModule')
                                 selectAll: true,
                                 key: 'name',
                                 defaultValue: 'Select URL(s)'
+                            },
+                            updateData: function(shouldHide) {
+                                this.data = shouldHide ? [] : this.originalData;
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            };
+
+            function fillCampaignTypes (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'CAMPAIGN_TYPES'});
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasCampaignTypes = {
+                            data: angular.copy( data ),
+                            originalData: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'name',
+                                defaultValue: 'Select Campaign Type(s)'
                             },
                             updateData: function(shouldHide) {
                                 this.data = shouldHide ? [] : this.originalData;

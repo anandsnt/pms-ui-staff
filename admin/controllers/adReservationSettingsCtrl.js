@@ -50,6 +50,20 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       "value": "perNight",
       "name": "Per Night"
     }];
+    
+    $scope.incidentalObj = {
+      'values' : [{
+        "value" : "amount",
+        "name"  : $rootScope.currencySymbol
+      }],
+      'types' : [{
+        "value" : "perStay",
+        "name"  : "Per Stay"
+        }, {
+        "value": "perNight",
+        "name": "Per Night"
+      }]
+    };
    
    _.each(reservationSettingsData.prepaid_commission_charge_codes, function(chargeCode, index){     
       chargeCode.name = chargeCode.code +" "+chargeCode.name;

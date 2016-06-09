@@ -308,6 +308,17 @@
     data="uiChosenReport.hasURLsList.data"
     options="uiChosenReport.hasURLsList.options"></multi-option-selection>
 
+<!-- campaign options -->
+<multi-option-selection ng-show="uiChosenReport.hasCampaignTypes && uiChosenReport.hasCampaignTypes.data.length"
+    label="Campaign Type(s)"
+    on-update="refreshFilterScroll"
+    report="uiChosenReport"
+    data="uiChosenReport.hasCampaignTypes.data"
+    options="uiChosenReport.hasCampaignTypes.options"></multi-option-selection>
+
+<!-- campaign options ends -->
+
+
 <multi-option-selection ng-show="uiChosenReport.hasAddonGroups && uiChosenReport.hasAddonGroups.data.length"
     label="Add-On Group(s)"
     on-update="refreshFilterScroll"
