@@ -44,7 +44,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                     'status': 'out-of-order',
                     'reason': $scope.zestStationData.workstationOooReason
                 });
-                $state.go('zest_station.speakToStaff');
+                //$state.go('zest_station.speakToStaff');
             };
             try {
                 // this will show the popup with full bill
