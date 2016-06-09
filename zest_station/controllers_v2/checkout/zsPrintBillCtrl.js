@@ -40,11 +40,8 @@ sntZestStation.controller('zsPrintBillCtrl', [
             setBeforePrintSetup();
             var printFailedActions = function() {
                 $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKOUT_PRINT_FAILED');
-                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, {
-                    'status': 'out-of-order',
-                    'reason': $scope.zestStationData.workstationOooReason
-                });
-                //$state.go('zest_station.speakToStaff');
+                $scope.zestStationData.workstationStatus = 'out-of-order';
+                $state.go('zest_station.speakToStaff');
             };
             try {
                 // this will show the popup with full bill
