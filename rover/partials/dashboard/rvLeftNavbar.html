@@ -14,7 +14,7 @@
 	<!-- If only 1 hotel available don't show the switch, just show this: -->
 	<h5 ng-hide="shouldShowMultiPropertySwitch()">Menu</h5>
 
-	<div class="menu-scroll scrollable" ng-iscroll="MENU_SCROLLER">
+	<div class="menu-scroll scrollable" ng-iscroll="MENU_SCROLLER" ng-isroll-delay="300">
 		<div class="wrapper">
 			<ul id="large-menu" class="main">
 				<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="updateSubMenu($index,menuItem)">

@@ -837,11 +837,13 @@ sntRover.controller('roverController',
     var setupScrolls = function() {
       var scrollerOptions = {
         tap: true,
-        preventDefault: false
+        preventDefault: false,
+        showScrollbar: true
       };
 
       $scope.setScroller(MENU_SCROLLER, scrollerOptions);
     };
+    setupScrolls();
     var refreshScroll = function(name, reset) {
       $scope.refreshScroller(name);
       /**/
