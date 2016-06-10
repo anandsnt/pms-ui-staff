@@ -124,6 +124,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		            source[i].filteredOut = false;
 		        }
 		    }
+
+			refreshScroller();
 		};
 		/**/
 		$scope.clearQuery = function() {
