@@ -8,7 +8,8 @@ sntRover.directive('autoComplete', ['highlightFilter',
             scope: {
                 autoOptions: '=autoOptions',
                 ngModel: '=',
-                ulClass: '@ulClass'
+                ulClass: '@ulClass',
+                insertEmail: '=insertEmail'
             },
             link: function(scope, el, attrs) {
                 //CICO-26513
@@ -73,14 +74,41 @@ sntRover.directive('autoComplete', ['highlightFilter',
                     if(($(el).offset().top - $(document).scrollTop() - this.menu.element.outerHeight()) <= 0) {
                         this.menu.element.outerHeight($(el).offset().top - $(document).scrollTop() - 10);
                     }
-                    
                 };
+                
+
+
+                var isEmail = function(email) {
+                    var regex = /\S+@\S+\.\S+/;
+                    return regex.test(email);
+                };
+                var inst;
+                if ( scope.insertEmail ) {
+                    $(el).on('keypress', function(e) {
+                        inst = $(el).autocomplete("instance");
+                        if ( e.which === 13 ) {
+                            if ( isEmail(inst.term) ) {
+                                inst.options
+                                    .select(e, {
+                                        item: {
+                                            label: inst.term,
+                                            value: inst.term
+                                        }
+                                    });
+                                inst.element.val('');
+                            } else {
+                                inst.element.val('');
+                            }
+                        }
+                    });
+                }
+                
 
                 scope.$on('$destroy', function(){
                     $(el).autocomplete( "destroy" );
                     //unbinding the touch move
                     if(ulElement instanceof HTMLElement) {
-                        ulElement.off('touchmove')
+                        ulElement.off('touchmove');
                     }                    
                 });                    
             }
