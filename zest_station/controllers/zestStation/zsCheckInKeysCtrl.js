@@ -372,7 +372,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                             onResponseSuccess = $scope.printLocalKey;
                         } else if (writeLocally()){
                             //local encoding + infinea
-                            onResponseSuccess = $scope.printLocalKeyCordova;
+                            $scope.printLocalKeyCordova();
                             return;
                         }
                     } else {
