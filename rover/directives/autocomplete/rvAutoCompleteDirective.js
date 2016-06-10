@@ -106,6 +106,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
 
                 scope.$on('$destroy', function(){
                     $(el).autocomplete( "destroy" );
+                    scope.insertEmail && $(el).off('keypress');
                     //unbinding the touch move
                     if(ulElement instanceof HTMLElement) {
                         ulElement.off('touchmove');
