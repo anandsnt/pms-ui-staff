@@ -311,8 +311,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
         
         $scope.emitKeyError = function(response){
-           // alert('failed to key write'+JSON.stringify(response));
-            //alert(response);
             console.info('detected error in make key',response);
             response = !!response ? "" :response;
             setFailureReason(response);
@@ -384,7 +382,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                             onResponseSuccess = $scope.printLocalKey;
                         } else if (writeLocally()){
                             //local encoding + infinea
-                            $scope.printLocalKeyCordova();
+                            onResponseSuccess = $scope.printLocalKeyCordova;
                             return;
                         }
                     } else {
@@ -517,7 +515,6 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 	* Calls the cordova service to write the keys
 	*/
        var onSuccessWriteKeyDataLocal = function(response){
-           //alert('onsuccess write key data local: '+JSON.stringify(response));
             //if the setting of smart band create along with key creation enabled, we will create a smartband with open room charge
             continueFromCordovaKeyWrite(response);
        };
@@ -538,6 +535,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         
         
         var continueFromCordovaKeyWrite = function(response){
+            $scope.prepForInService();
             switch ($scope.makeKeyParam()){
                 case 'one':
                 $scope.input.madeKey = 1;
