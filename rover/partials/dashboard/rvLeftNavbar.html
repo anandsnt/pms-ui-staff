@@ -14,39 +14,43 @@
 	<!-- If only 1 hotel available don't show the switch, just show this: -->
 	<h5 ng-hide="shouldShowMultiPropertySwitch()">Menu</h5>
 
-	<ul id="large-menu" class="main">
-		<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="updateSubMenu($index,menuItem)">
-			<!--ng-repeat="menuItem in menu | filter:{hidden:'!'+true}"  -->
-			<!--ng-hide="(isHotelAdmin || isHotelStaff) && menuItem.standAlone && !isStandAlone" -->
-			<a class="icon-menu {{menuItem.iconClass}}" 
-				ng-class="{'open':menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu, 
-				'active':selectedMenuIndex!='' && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" 
-				translate="{{menuItem.title}}" ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}">
-			</a>
+	<div class="menu-scroll scrollable" ng-iscroll="MENU_SCROLLER">
+		<div class="wrapper">
+			<ul id="large-menu" class="main">
+				<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="updateSubMenu($index,menuItem)">
+					<!--ng-repeat="menuItem in menu | filter:{hidden:'!'+true}"  -->
+					<!--ng-hide="(isHotelAdmin || isHotelStaff) && menuItem.standAlone && !isStandAlone" -->
+					<a class="icon-menu {{menuItem.iconClass}}" 
+						ng-class="{'open':menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu, 
+						'active':selectedMenuIndex!='' && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" 
+						translate="{{menuItem.title}}" ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}">
+					</a>
 
-			<a class="icon-menu {{menuItem.iconClass}}" 
-				ng-class="{'open':menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu, 
-				'active':selectedMenuIndex!='' && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{menuItem.title}}" ng-if="menuItem.action == ''">
-			</a>
+					<a class="icon-menu {{menuItem.iconClass}}" 
+						ng-class="{'open':menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu, 
+						'active':selectedMenuIndex!='' && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{menuItem.title}}" ng-if="menuItem.action == ''">
+					</a>
 
-		</li>
-		<li id="settings">
-			<a ng-click="$emit('updateSettingsSubMenu', settingsSubmenu[0])" class="icon-menu icon-settings" ng-class="{'open':isSettingSubMenuActive}">Settings</a>
-		</li>
-		<li id="sign-out">
-			<a href="/logout" ng-click="toggleDrawerMenu()" class="icon-menu icon-sign-out">Sign Out</a>
-		</li>
-	</ul>
+				</li>
+				<li id="settings">
+					<a ng-click="$emit('updateSettingsSubMenu', settingsSubmenu[0])" class="icon-menu icon-settings" ng-class="{'open':isSettingSubMenuActive}">Settings</a>
+				</li>
+				<li id="sign-out">
+					<a href="/logout" ng-click="toggleDrawerMenu()" class="icon-menu icon-sign-out">Sign Out</a>
+				</li>
+			</ul>
 
-	<ul id="mobile-menu" class="main">
-		<li ng-repeat="mobileMenuItem in mobileMenu" ng-click="$emit('updateSubMenu', [$index, mobileMenuItem])" ng-hide="mobileMenuItem.hidden">
-			<a class="icon-menu {{mobileMenuItem.iconClass}}" ng-class="{'active':selectedMenuIndex!='' && (selectedMenuIndex == mobileMenuItem.menuIndex || (mobileMenuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{mobileMenuItem.title}}" ng-if="mobileMenuItem.action != ''" ui-sref="{{mobileMenuItem.action}}"></a>
-			<a class="icon-menu {{mobileMenuItem.iconClass}}" ng-class="{'active':selectedMenuIndex!='' && (selectedMenuIndex == mobileMenuItem.menuIndex || (mobileMenuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{mobileMenuItem.title}}" ng-if="mobileMenuItem.action == ''"></a>
-		</li>
-		<li id="sign-out">
-			<a href="/logout" ng-click="toggleDrawerMenu()" class="icon-menu icon-sign-out">Sign Out</a>
-		</li>
-	</ul>
+			<ul id="mobile-menu" class="main">
+				<li ng-repeat="mobileMenuItem in mobileMenu" ng-click="$emit('updateSubMenu', [$index, mobileMenuItem])" ng-hide="mobileMenuItem.hidden">
+					<a class="icon-menu {{mobileMenuItem.iconClass}}" ng-class="{'active':selectedMenuIndex!='' && (selectedMenuIndex == mobileMenuItem.menuIndex || (mobileMenuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{mobileMenuItem.title}}" ng-if="mobileMenuItem.action != ''" ui-sref="{{mobileMenuItem.action}}"></a>
+					<a class="icon-menu {{mobileMenuItem.iconClass}}" ng-class="{'active':selectedMenuIndex!='' && (selectedMenuIndex == mobileMenuItem.menuIndex || (mobileMenuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{mobileMenuItem.title}}" ng-if="mobileMenuItem.action == ''"></a>
+				</li>
+				<li id="sign-out">
+					<a href="/logout" ng-click="toggleDrawerMenu()" class="icon-menu icon-sign-out">Sign Out</a>
+				</li>
+			</ul>
+		</div>
+	</div>
 </div>
 
 <ul id="submenu" class="submenu" ng-class="{'active':menuOpen && showSubMenu && activeSubMenu.length > 0}">

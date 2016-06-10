@@ -832,4 +832,25 @@ sntRover.controller('roverController',
         return $sce.trustAsHtml(string);
     };
 
+
+    var MENU_SCROLLER = 'MENU_SCROLLER';
+    var setupScrolls = function() {
+      var scrollerOptions = {
+        tap: true,
+        preventDefault: false
+      };
+
+      $scope.setScroller(MENU_SCROLLER, scrollerOptions);
+    };
+    var refreshScroll = function(name, reset) {
+      $scope.refreshScroller(name);
+      /**/
+      if ( !! reset && $scope.myScroll.hasOwnProperty(name) ) {
+          $scope.myScroll[name].scrollTo(0, 0, 100);
+      }
+    };
+    $scope.refreshMenuScroll = function(reset) {
+      refreshScroll(MENU_SCROLLER, reset);
+    };
+
 }]);
