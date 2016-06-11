@@ -11,7 +11,7 @@ sntZestStation.config(function($httpProvider) {
 });
 
 
-sntZestStation.service('zsBaseWebSrv2',['$http', '$q', '$window', function($http, $q, $window,$rootScope){
+sntZestStation.service('zsBaseWebSrv2',['$http', '$q', '$window','$rootScope', function($http, $q, $window,$rootScope){
 
     /**
     *   A http requester method for calling webservice
