@@ -11,7 +11,7 @@ sntRover.config(function($httpProvider) {
 });
 
 
-angular.module('sntRover').service('BaseWebSrvV2',['$http', '$q', '$window', function($http, $q, $window){
+angular.module('sntRover').service('BaseWebSrvV2',['$http', '$q', '$window', function($http, $q, $window, $rootScope){
 
     /**
     *   A http requester method for calling webservice
@@ -35,6 +35,9 @@ angular.module('sntRover').service('BaseWebSrvV2',['$http', '$q', '$window', fun
  		}
  		else if(httpMethod === 'POST' || httpMethod === 'PUT'){
  			httpDict.data = params;
+ 			if(typeof $rootScope.workstation_id !== 'undefined') {
+				httpDict.data.workstation_id = $rootScope.workstation_id;
+			}
   		};
 
 		$http(httpDict).success(function(response, status) {
