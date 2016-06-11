@@ -496,7 +496,7 @@ sntRover.controller('RVReservationDepositController',
 				},function(error){
 
 					$scope.shouldShowWaiting = false;
-					paymentFailed();
+					paymentFailed(error);
 				});
 
 			} else {
