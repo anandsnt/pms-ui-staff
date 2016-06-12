@@ -318,7 +318,7 @@ sntRover.controller('RVReservationDepositController',
 				setReservationCreditCard($scope.depositDetails.attached_card.value);
 		};
 
-		var savePayment = function() {
+		var savePayment = function(attach_to_reservation) {
 
 			var expiryMonth = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) :$scope.newPaymentInfo.cardDetails.expiryMonth;
 			var expiryYear  = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) :$scope.newPaymentInfo.cardDetails.expiryYear;
@@ -340,15 +340,25 @@ sntRover.controller('RVReservationDepositController',
 					$scope.setupFeeData();
 				}
 				$scope.newCardAdded = true;
+				if(typeof attach_to_reservation !== "undefined"){
+					//set data in the staycard
+					$scope.$parent.reservationData.reservation_card.payment_method_used = 'CC';
+					$scope.$parent.reservationData.reservation_card.payment_details.card_number = angular.copy($scope.depositData.cardNumber);
+					$scope.$parent.reservationData.reservation_card.payment_details.card_expiry = angular.copy($scope.depositData.expiry_date);
+					$scope.$parent.reservationData.reservation_card.payment_details.card_type_image = 'images/'+angular.copy($scope.depositData.card_type.toLowerCase())+'.png';
+				}
 			};
 
 			var paymentData = {
 				add_to_guest_card: $scope.newPaymentInfo.cardDetails.addToGuestCard,
 				name_on_card: retrieveName(),
 				payment_type: "CC",
-				reservation_id: $scope.passData.reservationId,
 				token: cardToken
 			};
+			//if new card is added and payment is success, add the card to reservation
+			if(typeof attach_to_reservation !== "undefined"){
+				paymentData.reservation_id = $scope.passData.reservationId
+			}
 			paymentData.card_code = $scope.newPaymentInfo.tokenDetails.isSixPayment?
 									getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase():
 									$scope.newPaymentInfo.cardDetails.cardType;
@@ -396,7 +406,9 @@ sntRover.controller('RVReservationDepositController',
 		$scope.depositPaidSuccesFully = true;
 		$scope.isLoading =  false;
 		$scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.$parent.depositDetails.deposit_amount);
-		$scope.$apply();
+		 if (!$scope.$$phase) {
+	     	$scope.$digest();
+		 }
 		var cardName = "";
 
 
@@ -425,6 +437,13 @@ sntRover.controller('RVReservationDepositController',
 				$scope.cardsList.push(dataToGuestList);
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		};
+	
+		if($scope.newCardAdded && $scope.$parent.reservationData.reservation_card.payment_method_used !== 'CC'){
+			//if new card is added and payment is success, add the card to reservation
+			var addPaymentTypeToReservation = true;
+			savePayment(addPaymentTypeToReservation);
+		};
+
 
 		$rootScope.$broadcast("UPDATE_DEPOSIT_BALANCE", data);
 		// Update reservation type
@@ -627,7 +646,9 @@ sntRover.controller('RVReservationDepositController',
 		$scope.addmode = true;
 		$scope.depositData.paymentType  = "CC";
 		$scope.swipedCardHolderName = swipedCardDataToRender.nameOnCard;
-                $scope.$apply();
+        if (!$scope.$$phase) {
+    		 $scope.$digest();
+   		}
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});
 	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
