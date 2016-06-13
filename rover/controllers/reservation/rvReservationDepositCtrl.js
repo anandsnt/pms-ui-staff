@@ -469,9 +469,6 @@ sntRover.controller('RVReservationDepositController',
 				linkPaymentData.reservation_id = parseInt($stateParams.id);
 				$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, linkPaymentData, onLinkPaymentSuccess);
 			}
-			else{
-				//do nothing
-			}
 		}
 		
 
