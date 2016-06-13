@@ -609,6 +609,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
             console.log('onSendBillSuccessGoToPrintMode')
             //go to print mode
             $scope.mode = "print-mode";
+            $state.lastSentBillSuccess = true;
             $scope.emailError = false;
             $state.emailError = false;
         };
