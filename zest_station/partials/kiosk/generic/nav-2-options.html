@@ -10,9 +10,13 @@
             <ul role="menu">
                 <!-- card swipe -->
                 <li ng-show='at === "card-swipe"'>
-                    <button type="button" class="button option" touch-press='simulateSixPay()'>
+                    <button ng-hide="theme==='snt'" type="button" class="button option" touch-press='simulateSixPay()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
+                    <div ng-show="theme==='snt'" class="margin-adj">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </div>
+                    
                     <span translate>SWIPE_CARD_PLEASE</span>
                 </li>
                 
