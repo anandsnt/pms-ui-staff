@@ -22,18 +22,21 @@
                 </div>
                 <fieldset class="holder left">
                     <ad-textbox inputtype="text" value="lightspeed.rover_unique_id" name="rover-unique-id" id="rover-unique-id" label="{{'LIGHT_SPEED_POS_ROVER_UNIQUE_ID'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>
-                    <ad-charge-code-auto-complete ng-model="lightspeed.charge_code_name" selected-charge-code-id="lightspeed.charge_code_id" ng-if="lightspeed.enabled" label="Charge Code" entry-div-class="full-width"></ad-charge-code-auto-complete>                    
+                    <ad-charge-code-auto-complete exclude-payments="true" ng-model="lightspeed.charge_code_name" selected-charge-code-id="lightspeed.charge_code_id" ng-if="lightspeed.enabled" label="Default Charge Code" entry-div-class="full-width"></ad-charge-code-auto-complete>
                 </fieldset>
                 <fieldset class="holder right">
                     <ad-textbox value="lightspeed.username" label="{{'LIGHT_SPEED_POS_USERNAME'| translate}}" ng-if="lightspeed.enabled" styleclass="full-width"></ad-textbox>
                     <ad-textbox inputtype="password" value="lightspeed.password" label="{{'LIGHT_SPEED_POS_PASSWORD'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>
                </fieldset>
                 <fieldset class="holder left">
-                    <ad-textbox inputtype="text" value="lightspeed.account_number" name="account-number" id="account-number" label="{{'LIGHT_SPEED_POS_ACCOUNT_NUMBER'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>                  
+                    <ad-charge-code-auto-complete ng-model="lightspeed.payment_charge_code_name" only-payments="true" selected-charge-code-id="lightspeed.payment_charge_code_id" ng-if="lightspeed.enabled" label="Default Payment Code" entry-div-class="full-width"></ad-charge-code-auto-complete>
                 </fieldset>
                  <fieldset class="holder right">
                    <ad-textbox inputtype="uri" value="lightspeed.uri" name="uri" id="uri" label="{{'URI'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>  
                </fieldset>
+                <fieldset class="holder left">
+                    <ad-textbox inputtype="text" value="lightspeed.account_number" name="account-number" id="account-number" label="{{'LIGHT_SPEED_POS_ACCOUNT_NUMBER'| translate}}" styleclass="full-width" ng-if="lightspeed.enabled"></ad-textbox>
+                </fieldset>
             </fieldset>
 
             <div class="actions float">
