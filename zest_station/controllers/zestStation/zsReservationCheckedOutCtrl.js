@@ -74,7 +74,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     
     
     var sendBillSuccess = function(response) {
-        $scope.lastSentBillSuccess = true;
+        $state.lastSentBillSuccess = true;
         console.info('sendBillSuccess: ',response);
         $scope.emailOpted = emailBillEnabled();
 
@@ -87,7 +87,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
         $scope.toCheckoutFinal(true);
     };
     var sendBillFailure = function(response) {
-        $scope.lastSentBillSuccess = false;
+        $state.lastSentBillSuccess = false;
         console.info('sendBillFailure: ',response);
         $state.emailError = true;
         $scope.emailError = true;
@@ -102,7 +102,6 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
         };
     };
     $scope.billSent = 0;
-    $scope.lastSentBillSuccess = false;
     var sendBill = function(successFn, failureFn, goToPrint) {
         ++$scope.billSent;
         console.info('send bill...',$scope.billSent, ' times');
@@ -125,7 +124,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
             if (goToPrint === true){
                 successFn();
             } else {
-                if ($scope.lastSentBillSuccess){
+                if ($state.lastSentBillSuccess){
                     sendBillSuccess();
                 } else {
                     sendBillFailure();
