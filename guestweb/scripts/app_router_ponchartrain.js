@@ -60,7 +60,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/common_templates/partials/checkout/gwLateCheckoutfinal.html',
+		templateUrl: '/assets/common_templates/partials/ponchartrain/gwLateCheckoutfinal.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
