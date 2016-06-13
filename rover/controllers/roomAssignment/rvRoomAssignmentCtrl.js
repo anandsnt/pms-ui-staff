@@ -162,13 +162,15 @@ sntRover.controller('RVroomAssignmentController',[
 
 
 	$scope.checkRoomTypeAvailability = function(roomObject){
-
 		var availabilityCount = _.findWhere($scope.roomTypes, {"id": roomObject.room_type_id}).availability;
-
+		var currentRoomType = $scope.getCurrentRoomType();
 		var isAvailablityExist = (availabilityCount > 0) ? true : false;
 		var isOverBookPermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
 		$scope.currentRoomObject = roomObject;
-
+		if(currentRoomType.type == oldRoomType || isAvailablityExist){
+			$scope.showMaximumOccupancyDialog(roomObject);
+			return;
+		}
 		if(!isAvailablityExist){
 			if(isOverBookPermission){
 				ngDialog.open({
@@ -856,7 +858,6 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.applyFilterToRooms();
 		$scope.clickedButton = $stateParams.clickedButton;
 		$scope.assignedRoom = "";
-
 		oldRoomType = $scope.roomType = $stateParams.room_type;
 		$scope.isStandAlone = $rootScope.isStandAlone;
 		$scope.isFiltersVisible = false;
