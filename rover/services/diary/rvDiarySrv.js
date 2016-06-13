@@ -797,11 +797,24 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     Availability.read(params)
                     .then(function(data) {
                         if(data && data.results) {
+                            var availability = data.results[0].availability;
+                            var roomTypes = data.results[0].room_types;
+                            var match;
+                            _.each(availability, function(avail) {
+                                match = _.find(roomTypes, { id: avail.room_type_id });
+
+                                if ( !! match ) {
+                                    avail.physical_count = match.available_count;
+                                }
+                            });
+
                             var existing_data   = JSON.parse(JSON.stringify(Availability.store.data)),
                                 existing_ids    = _.pluck(existing_data, "id"),
                                 new_coming_data = JSON.parse(JSON.stringify(data.results[0].availability)),
                                 new_coming_ids  = _.pluck(new_coming_data, "id"),
                                 id_difference   = undefined;
+
+
                                 if(existing_ids.length > 0){
                                     id_difference = _.difference(existing_ids, new_coming_ids);
 

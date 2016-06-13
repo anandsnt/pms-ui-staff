@@ -19,24 +19,27 @@ angular.module('sntRover')
 		'$timeout',
 		'RVReservationSummarySrv',
 		'baseSearchData',
-	function($scope,
-			 $rootScope,
-			 $state,
-			 $stateParams,
-			 $filter,
-			 $window,
-			 ngDialog,
-			 RMFilterOptionsSrv,
-			 RVGuestCardSrv,
-			 rvDiarySrv,
-			 meta,
-			 util,
-			 payload,
-			 propertyTime,
-			 $vault,
-			 RVReservationBaseSearchSrv,
-			 $timeout,
-			 RVReservationSummarySrv, baseSearchData) {
+		function(
+			$scope,
+			$rootScope,
+			$state,
+			$stateParams,
+			$filter,
+			$window,
+			ngDialog,
+			RMFilterOptionsSrv,
+			RVGuestCardSrv,
+			rvDiarySrv,
+			meta,
+			util,
+			payload,
+			propertyTime,
+			$vault,
+			RVReservationBaseSearchSrv,
+			$timeout,
+			RVReservationSummarySrv,
+			baseSearchData
+		) {
 
 		$scope.$emit('showLoader');
 
@@ -485,6 +488,13 @@ angular.module('sntRover')
 			open: false,
 			data: [],
 			dragData: {},
+			reset: function() {
+				if ( this.open ) {
+					this.data = [];
+					this.open = false;
+					this.dragData = {};
+				}
+			},
 			fetchList: function() {
 				var _sucess = function(data) {
 					this.data = data;
@@ -503,9 +513,7 @@ angular.module('sntRover')
 				}.bind(this);
 
 				if ( this.open ) {
-					this.data = [];
-					this.open = false;
-					this.dragData = {};
+					this.reset();
 				} else {
 					this.data = [];
 					this.dragData = {};
@@ -610,10 +618,8 @@ angular.module('sntRover')
 	    	var copy,
 	    		selection,
 	    		props = $scope.gridProps,
-	    		edit  = props.edit;
-
-	    	console.log(arguments);
-	    	console.log($scope.gridProps);
+	    		edit  = props.edit,
+	    		selectedTypeCount;
 
 	    	if(!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch(command_message) {
@@ -671,9 +677,26 @@ angular.module('sntRover')
 		    	$scope.renderGrid();
 
 		    	if($scope.isSelected(row_data, copy)) {
-		    		console.log(row_data, copy)
-		    		$scope.message	= ['Sorry, There are no more physical rooms of this room type.'];
-		    		$scope.selectedReservations.push({ room: row_data, occupancy: copy });
+		    		selectedTypeCount = 0;
+		    		_.each($scope.selectedReservations, function(res) {
+		    			if ( res.occupancy.room_type_id === copy.room_type_id ) {
+		    				selectedTypeCount += 1;
+		    			}
+		    		});
+
+		    		if ( copy.physical_count === 0 || (copy.physical_count - selectedTypeCount === 0 ) ) {
+		    			copy.selected = false;
+
+		    			$scope.message = ['Sorry, There are no more physical rooms of "' + copy.room_type + '" available.'];
+		    			ngDialog.open({
+		    				template: '/assets/partials/diary/rvDiaryConfirmation.html',
+		    				controller: 'RVDiaryConfirmationCtrl',
+		    				scope: $scope
+		    			});
+		    		} else {
+		    			$scope.message = [];
+		    			$scope.selectedReservations.push({ room: row_data, occupancy: copy });
+		    		}
 		    	} else {
 		    		(function() {
 		    			var i = 0, len = $scope.selectedReservations.length;
@@ -721,9 +744,7 @@ angular.module('sntRover')
 
 			var success = function() {
 				$scope.$emit('hideLoader');
-				if ( $scope.gridProps.unassignedRoomList.open ) {
-					$scope.gridProps.unassignedRoomList.fetchList();
-				}
+				$scope.gridProps.unassignedRoomList.reset();
 				successCallBackOfSaveReservation();
 			};
 
@@ -1298,10 +1319,8 @@ angular.module('sntRover')
 			return;
 		}
 
-		if ( ! keepOpen && $scope.gridProps.unassignedRoomList.open ) {
-			if ( $scope.gridProps.unassignedRoomList.open ) {
-				$scope.gridProps.unassignedRoomList.fetchList();
-			}
+		if ( ! keepOpen ) {
+			$scope.gridProps.unassignedRoomList.reset();
 		}
 
 		$scope.renderGrid();
@@ -1869,6 +1888,8 @@ angular.module('sntRover')
             time_set = util.gridTimeComponents(arrival_ms, 48, util.deepCopy($scope.gridProps.display));
             $scope.gridProps.display = util.deepCopy(time_set.display);
 			callDiaryAPIsAgainstNewDate(time_set.toStartDate(), time_set.toEndDate());
+
+			$scope.gridProps.unassignedRoomList.reset();
 		}
 	};
 
@@ -2016,9 +2037,7 @@ angular.module('sntRover')
 		var options = {
     		params: params,
     		successCallBack: function() {
-    			if ( $scope.gridProps.unassignedRoomList.open ) {
-					$scope.gridProps.unassignedRoomList.fetchList();
-				}
+				$scope.gridProps.unassignedRoomList.reset();
 				successCallBackOfSaveReservation();
     		},
     		failureCallBack: failureCallBackOfSaveReservation
