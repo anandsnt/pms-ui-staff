@@ -116,16 +116,20 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
             };
 
             if (goToPrint === true){
+                console.warn('send bill with other success/fail handlers');
                 options.successCallBack = successFn;
                 options.failureCallBack = failureFn;
             }
             setTimeout(function(){
+                console.info('calling send bill : now :');
                 $scope.callAPI(zsCheckoutSrv.sendBill, options);
             },2000);
         } else {
             if (goToPrint === true){
+                console.log('goToPrint: true, ',$scope.emailError, $state.emailError);
                 successFn();
             } else {
+                console.log('$state.lastSentBillSuccess ',$state.lastSentBillSuccess, '$scope.emailError: ',$scope.emailError, $state.emailError);
                 if ($state.lastSentBillSuccess){
                     sendBillSuccess();
                 } else {
@@ -150,7 +154,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
                 //$scope.emailOpted = false;
             }
         } else {
-            console.info('emailOpted && emailSkipped && emailError: ',$scope.emailOpted, $scope.emailSkipped, $scope.emailError);
+            console.info('emailOpted && emailSkipped && emailError: ',$scope.emailOpted, $scope.emailSkipped, $scope.emailError, $state.emailError);
             $scope.emailSkipped = false;
         }
       
@@ -602,13 +606,16 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
     
     var handlePrintBillScreen = function(){
         var onSendBillSuccessGoToPrintMode = function(){
+            console.log('onSendBillSuccessGoToPrintMode')
             //go to print mode
             $scope.mode = "print-mode";
             $scope.emailError = false;
             $state.emailError = false;
         };
         var onSendBillFailureGoToFailure = function(){
+            console.log('onSendBillFailureGoToFailure')
             $scope.emailError = true;
+            $state.emailError = true;
             $scope.mode = "print-mode";//we'll only get here when printBillEnabled() === true
         };
 
