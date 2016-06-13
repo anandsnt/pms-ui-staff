@@ -603,6 +603,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
             //go to print mode
             $scope.mode = "print-mode";
             $scope.emailError = false;
+            $state.emailError = false;
         };
         var onSendBillFailureGoToFailure = function(){
             $scope.emailError = true;
