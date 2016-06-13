@@ -806,6 +806,7 @@ sntZestStation.controller('zsRootCtrl', [
                         $state.workstation_id = station.id;
                         $state.emv_terminal_id = station.emv_terminal_id;
                         $state.is_oos = station.is_out_of_order;
+                        $rootScope.workstation_id = station.id;
                     }
 
                     $scope.hasWorkstationAssigned = hasWorkstation;

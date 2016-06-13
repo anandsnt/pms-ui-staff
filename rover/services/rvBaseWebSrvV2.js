@@ -11,7 +11,7 @@ sntRover.config(function($httpProvider) {
 });
 
 
-angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window','$rootScope', function($http, $q, $window,$rootScope) {
+angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', '$rootScope', function($http, $q, $window, $rootScope) {
 
 	var webserviceErrorActions = function(url, deferred, errors, status) {
 		var urlStart = url.split('?')[0];
@@ -58,13 +58,17 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window','
 
 		//Sample params {params:{fname: "fname", lname: "lname"}}
 		var httpDict = {};
-		httpDict.url = url;
-		httpDict.method = httpMethod;
-		if (httpMethod === 'GET' || httpMethod === 'DELETE') {
-			httpDict.params = params;
-		} else if (httpMethod === 'POST' || httpMethod === 'PUT') {
-			httpDict.data = params;
-		};
+ 		httpDict.url = url;
+ 		httpDict.method = httpMethod;
+ 		if(httpMethod === 'GET' || httpMethod === 'DELETE'){
+ 			httpDict.params = params;
+ 		}
+ 		else if(httpMethod === 'POST' || httpMethod === 'PUT'){
+ 			httpDict.data = params;
+ 			if(typeof $rootScope.workstation_id !== 'undefined') {
+				httpDict.data.workstation_id = $rootScope.workstation_id;
+			}
+  		};
 
 		$http(httpDict).success(function(response, status) {
 			deferred.resolve(response);
