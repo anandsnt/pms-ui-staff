@@ -11,8 +11,7 @@ sntRover.config(function($httpProvider) {
 });
 
 
-angular.module('sntRover').service('rvBaseWebSrvV2',['$http', '$q', '$window', '$rootScope', function($http, $q, $window, $rootScope){
-
+angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', '$rootScope', function($http, $q, $window, $rootScope) {
 
 	var webserviceErrorActions = function(url, deferred, errors, status) {
 		var urlStart = url.split('?')[0];

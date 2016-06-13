@@ -11,7 +11,7 @@ sntZestStation.config(function($httpProvider) {
 	}
 });
 
-sntZestStation.service('zsBaseWebSrv',['$http', '$q', '$window', '$rootScope', function($http, $q, $window, $rootScope){
+sntZestStation.service('zsBaseWebSrv', ['$http', '$q', '$window', '$rootScope', function($http, $q, $window, $rootScope) {
 
 	var webserviceErrorActions = function(url, deferred, errors, status) {
 		var urlStart = url.split('?')[0];
