@@ -404,7 +404,7 @@ sntRover.controller('RVReservationDepositController',
 	var reservationId = $stateParams.id;
 	$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);
 
-	var successPayment = function(data){
+	var successPayment = function(data,cardAddedBySixPaySWipe){
 		$scope.$emit('hideLoader');
 		$scope.successMessage = "Deposit paid";
 		$scope.authorizedCode = data.authorization_code;
@@ -443,11 +443,26 @@ sntRover.controller('RVReservationDepositController',
 				$scope.cardsList.push(dataToGuestList);
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		};
+
+		if(typeof cardAddedBySixPaySWipe !== "undefined"){
+			var paymentDetails = data.payment_method;
+			$scope.newPaymentInfo = { 
+										"tokenDetails":{
+															"isSixPayment":true
+														}
+									};
+			$scope.depositData.cardNumber = paymentDetails.ending_with;
+			$scope.depositData.expiry_date = paymentDetails.expiry_date;
+			$scope.newPaymentInfo.tokenDetails.session = paymentDetails.session;
+			$scope.depositData.selectedCard = paymentDetails.id;
+			$scope.depositData.card_type = paymentDetails.card_type;
+		}
 		
 		//if the rservation payment methode is Cash and deposit is 
 		//paid by CC, add that CC as payment method to the reservation
-		if($scope.$parent.reservationData.reservation_card.payment_method_used === 'CA' && $scope.depositData.paymentType === 'CC'){
-			if($scope.newCardAdded)
+		if($scope.$parent.reservationData.reservation_card.payment_method_used === 'CA' &&
+		   $scope.depositData.paymentType === 'CC'){
+			if($scope.newCardAdded && typeof cardAddedBySixPaySWipe === "undefined")
 			{
 				//if new card is added and payment is success, add the card to reservation
 				var addPaymentTypeToReservation = true;
@@ -537,9 +552,18 @@ sntRover.controller('RVReservationDepositController',
 			if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.depositData.paymentType === 'CC'){
 				dataToSrv.postData.is_emv_request = true;
 				$scope.shouldShowWaiting = true;
+				//the card will be added to reservation if existing payment methid is cash
+					//and six pay is succes by passing reservation_id
+				if($scope.$parent.reservationData.reservation_card.payment_method_used === 'CA'){
+					dataToSrv.postData.reservation_id = $stateParams.id;
+				}
 				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
 					$scope.shouldShowWaiting = false;
-					successPayment(response);
+					var cardAddedBySixPaySWipe = true;
+					//the card will be added to reservation if existing payment methid is cash
+					//and six pay is succes by passing reservation_id
+					$scope.newCardAdded = true;
+					successPayment(response,cardAddedBySixPaySWipe);
 				},function(error){
 
 					$scope.shouldShowWaiting = false;
