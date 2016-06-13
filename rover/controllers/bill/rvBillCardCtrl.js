@@ -19,6 +19,7 @@ sntRover.controller('RVbillCardController',
 	'rvPermissionSrv',
 	'jsMappings',
 	'$q',
+	'RVReservationStateService',
 	function($scope, $rootScope,
 			$state, $stateParams,
 			RVBillCardSrv, reservationBillData,
@@ -30,7 +31,7 @@ sntRover.controller('RVbillCardController',
 			chargeCodeData, $sce,
 
 			RVKeyPopupSrv,RVPaymentSrv,
-			RVSearchSrv, rvPermissionSrv, jsMappings, $q){
+			RVSearchSrv, rvPermissionSrv, jsMappings, $q, RVReservationStateService){
 
 
 	BaseCtrl.call(this, $scope);
@@ -41,6 +42,8 @@ sntRover.controller('RVbillCardController',
 		scope: $scope
 	};
 	$scope.encoderTypes = [];
+
+	$scope.isSRViewRateBtnClicked = RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked");
 
 	// Flag for CC auth permission
     $scope.hasCCAuthPermission = function() {
@@ -1392,7 +1395,7 @@ sntRover.controller('RVbillCardController',
 	    else if($scope.reservationBillData.routing_info.out_going_to_comp_tra){
 	    	$scope.message_out_going_to_comp_tra = true;
 	    }
-	    if($scope.reservationBillData.is_cc_authorize_for_incidentals_active){
+	    if($scope.reservationBillData.is_cc_authorize_for_incidentals_active && ($scope.message_out_going_to_room || $scope.message_out_going_to_comp_tra)){
 	    	$scope.enableIncedentalOnlyOption = true;
 	    }
 	};
@@ -2504,6 +2507,13 @@ sntRover.controller('RVbillCardController',
 
     $scope.closeDialog = function() {
         ngDialog.close();
+    };
+
+    /*
+    * Checks whether the amount needs to show or not
+    */
+    $scope.isBalanceShown = function(is_rate_suppressed) {
+    	return (!is_rate_suppressed || $scope.isSRViewRateBtnClicked); 
     };
 
 

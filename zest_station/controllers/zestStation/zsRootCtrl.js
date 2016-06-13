@@ -806,6 +806,7 @@ sntZestStation.controller('zsRootCtrl', [
                         $state.workstation_id = station.id;
                         $state.emv_terminal_id = station.emv_terminal_id;
                         $state.is_oos = station.is_out_of_order;
+                        $rootScope.workstation_id = station.id;
                     }
 
                     $scope.hasWorkstationAssigned = hasWorkstation;
@@ -855,6 +856,7 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
                     $scope.zestStationData.payment_gateway = $scope.zestStationData.hotel_settings.payment_gateway;
                     $scope.zestStationData.hotelDateFormat = !!data.date_format ? data.date_format.value : "DD-MM-YYYY" ;
+                    $rootScope.emvTimeout = !!$scope.zestStationData.hotelSettings.emv_timeout ? $scope.zestStationData.hotelSettings.emv_timeout : 60;
                     console.info("::Hotel date format ->"+$scope.zestStationData.hotelDateFormat);
                     $scope.$emit('hideLoader');
             };

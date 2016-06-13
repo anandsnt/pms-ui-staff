@@ -872,6 +872,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         $scope.clearDate = function(date) {
             $scope[date] = '';
             runDigestCycle();
+            $timeout( $scope.fetchReservations, 500 );
         };
 
 
@@ -1556,8 +1557,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 }
 
                 _.extend(reservationData, {
-                    arrival_date: new tzIndependentDate(reservationData.arrival_date),
-                    departure_date: new tzIndependentDate(reservationData.departure_date),
+                    arrival_date: tzIndependentDate(reservationData.arrival_date),
+                    departure_date: tzIndependentDate(reservationData.departure_date),
                     //Pls note, roomsFreeToAssign include already assigned room of that particular reservation
                     roomsFreeToAssign: selectedReservation.roomsAvailableToAssign,
                     allowedRoomTypes: allowedRoomTypes

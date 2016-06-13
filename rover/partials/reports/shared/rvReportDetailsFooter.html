@@ -215,6 +215,10 @@
 			Guest/Account: <span>{{ appliedFilter.guestOrAccount.join(', ') }}</span>
 		</div>
 
+		<div ng-if="appliedFilter.campaign_types.length">
+			Campaign Types: <span>{{ appliedFilter.campaign_types.join(', ') }}</span>
+		</div>
+
 
 		<!-- Never REMOVE this span -->
 		<span> &nbsp; </span>

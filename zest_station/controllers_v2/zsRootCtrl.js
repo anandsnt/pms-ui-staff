@@ -139,6 +139,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
 				$scope.zestStationData.paymentGateway = data.payment_gateway;
 				$scope.zestStationData.hotelDateFormat = !!data.date_format ? data.date_format.value : "DD-MM-YYYY";
+				$rootScope.emvTimeout = !!$scope.zestStationData.hotelSettings.emv_timeout ? $scope.zestStationData.hotelSettings.emv_timeout : 60;
 				$scope.zestStationData.mliMerchantId = data.mli_merchant_id;
                         configureSwipeSettings();
 			};
@@ -504,6 +505,7 @@ sntZestStation.controller('zsRootCtrl', [
 				};
 				// set work station id and status
 				$scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
+				$rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
 				$scope.zestStationData.key_encoder_id =  $scope.getStationIdFromName(station.name).key_encoder_id;
 				var previousWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
 				$scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';

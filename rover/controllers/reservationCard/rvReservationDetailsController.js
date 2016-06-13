@@ -47,6 +47,10 @@ sntRover.controller('reservationDetailsController',
 			};
 		};
 
+		//CICO-29343 - Set the flag to false initially and checking the View SR permission
+		$scope.hasSRViewPermission = rvPermissionSrv.getPermissionValue('VIEW_SUPPRESSED_RATE');
+		RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", false);
+
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
 		}
@@ -156,6 +160,7 @@ sntRover.controller('reservationDetailsController',
 
 		var datePickerCommon = {
 			dateFormat: $rootScope.jqDateFormat,
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
 			numberOfMonths: 1,
 			changeYear: true,
 			changeMonth: true,
@@ -221,25 +226,19 @@ sntRover.controller('reservationDetailsController',
 			departure: $scope.reservationData.reservation_card.departure_date
 		};
 
-		$scope.arrivalDateOptions = angular.extend({
-			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-			onSelect: function(dateText, inst) {
-				// Handle onSelect
-			}
-		}, datePickerCommon);
-
-		$scope.departureDateOptions = angular.extend({
-			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-			onSelect: function(dateText, inst) {
-				//
-			}
-		}, datePickerCommon);
-
 		// for groups this date picker must not allow user to pick
 		// a date that is after the group end date.
+		// and before the group start date
 		if ( !! $scope.reservationData.reservation_card.group_id ) {
-			$scope.departureDateOptions.maxDate = $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat);
+			datePickerCommon = angular.extend(datePickerCommon, {
+				minDate: $filter('date')($scope.reservationData.reservation_card.group_block_from, $rootScope.dateFormat),
+				maxDate: $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat)
+			});
+
 		}
+
+		$scope.arrivalDateOptions = angular.copy(datePickerCommon);
+		$scope.departureDateOptions = angular.copy(datePickerCommon);
 
 		$scope.reservationData.paymentTypes = paymentTypes;
 		$scope.reservationData.reseravationDepositData = reseravationDepositData;
@@ -292,8 +291,18 @@ sntRover.controller('reservationDetailsController',
 
 			// CICO-12454: Upon close the guest tab - save api call for guest details for standalone
 			if (!$scope.shouldShowGuestDetails && $scope.isStandAlone) {
-				$scope.$broadcast("UPDATEGUESTDEATAILS");
+				$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": true});
 			}
+		};
+		$scope.saveAccGuestDetails = function(){
+			setTimeout(function(){
+
+				if(document.activeElement.getAttribute("type") != "text"){
+					$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": false});
+				}
+
+
+			}, 800)
 		};
 
 		$scope.$on("OPENGUESTTAB", function(e) {
@@ -1376,5 +1385,35 @@ sntRover.controller('reservationDetailsController',
 			};
 			$scope.invokeApi(RVCCAuthorizationSrv.releaseAuthorization, postData, onReleaseAuthorizationSuccess, onReleaseAuthorizationFaliure);
      };
+
+     /*
+     * Function which get invoked while clicking the SR  View Rate btn
+     */
+     $scope.onSRViewRateBtnClick = function() {
+     	RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", true);
+     };
+
+     /*
+     * Checks whether the balance amount section needs to show or not
+     */
+     $scope.isBalanceAmountShown = function() {
+     	return (!$scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates || RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked"));
+     };
+
+     /*
+     * Checks whether the SR View Rate btn needs to show or not
+     */
+     $scope.isSRViewRateBtnShown = function() {
+     	return $scope.isStandAlone && $scope.hasSRViewPermission && $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates && !RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked");
+     };
+
+
+      /*
+     * Checks whether the rate amount needs to show or not
+     */
+     $scope.isRateAmountShown = function() {
+     	return (!$scope.reservationData.reservation_card.is_rates_suppressed || RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked"));
+     };
+
 
 }]);

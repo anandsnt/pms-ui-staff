@@ -8,7 +8,9 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 			label: '@label',
 			entryDivClass: '@entryDivClass',
 			delay: '@delay',
-			minLengthToTrigger: '@minLengthToTrigger'
+			minLengthToTrigger: '@minLengthToTrigger',
+			excludePayments : '@',
+			onlyPayments: '@'
 		},
 		controller : function($scope) {
 			BaseCtrl.call(this, $scope);
@@ -32,6 +34,15 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 				var params = {
 		            query: $scope.charge_code_name
 		        };
+
+				if(!!$scope.excludePayments){
+					params.exclude_payments = true;
+				}
+
+				if(!!$scope.onlyPayments){
+					params.only_payments = true;
+				}
+
 		        var options = {
 		            params 			: params,
 		            successCallBack : successCallBackOfFetchChargeCodes,

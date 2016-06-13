@@ -345,7 +345,8 @@ var sixCreditCardTypes = {
       "MC": 'MC',
       "VS": 'VA',
       "VX": 'VA',
-      "MX": 'DS'//Six iframe reurns MX for discover. not good
+      "MX": 'DS',//Six iframe reurns MX for discover. not good,
+      "MV": 'MC'
 };
 
 function getSixCreditCardType(cardCode){

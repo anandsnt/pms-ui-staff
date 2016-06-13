@@ -1,8 +1,8 @@
 sntZestStation.controller('zsPrintBillCtrl', [
     '$scope',
     '$state',
-    'zsCheckoutSrv', '$stateParams', '$window', '$timeout',
-    function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout) {
+    'zsCheckoutSrv', '$stateParams', '$window', '$timeout','$filter',
+    function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout,$filter) {
 
         /********************************************************************************
          **      This is not a sperate state. It's an ng-included ctrl inside 
@@ -40,10 +40,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             setBeforePrintSetup();
             var printFailedActions = function() {
                 $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKOUT_PRINT_FAILED');
-                $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, {
-                    'status': 'out-of-order',
-                    'reason': $scope.zestStationData.workstationOooReason
-                });
+                $scope.zestStationData.workstationStatus = 'out-of-order';
                 $state.go('zest_station.speakToStaff');
             };
             try {
