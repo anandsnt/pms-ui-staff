@@ -68,6 +68,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
                 $scope.emailError = true;
             } else {
                 $scope.emailError = false;
+                $state.emailError = false;
             }
         }
     });
@@ -78,6 +79,7 @@ sntZestStation.controller('zsReservationCheckedOutCtrl', [
         console.info('sendBillSuccess: ',response);
         $scope.emailOpted = emailBillEnabled();
 
+        $scope.emailError = false;
         $state.emailError = false;
         if ($state.printOpted) {
             $scope.printOpted = true;
