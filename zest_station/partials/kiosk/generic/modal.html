@@ -13,6 +13,11 @@
         <!-- talk to staff-->
         <button ng-show="at === 'talk-to-staff'" type="button" class="button" touch-press="navToHome()">{{modalBtn1 |translate}}</button>
         <!--key success screens -->
+        <div>
+            <div id="room" ng-show="showRoomNumberOnKeySuccess">
+                <span class="number">{{selectedReservation.room}}</span>
+            </div>
+        </div>
         <button ng-show="at === 'key-success' && modalBtn1 !== '' && input.madeKey === 1 && input.makeKeys === 1" type="button" class="button" touch-press="deliverRegistration()">{{modalBtn1 |translate}}</button>
         <button ng-show="at === 'key-success' && modalBtn1 !== '' && input.madeKey === 1 && input.makeKeys === 2" type="button" class="button" touch-press="makeKeyTwo()">{{modalBtn1 |translate}}</button>
         <button ng-show="at === 'key-success' && modalBtn1 !== '' && input.madeKey === 2 && input.makeKeys === 2" type="button" class="button" touch-press="deliverRegistration()">{{modalBtn1 |translate}}</button>

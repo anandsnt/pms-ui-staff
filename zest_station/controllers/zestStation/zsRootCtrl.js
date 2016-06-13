@@ -31,7 +31,30 @@ sntZestStation.controller('zsRootCtrl', [
          $scope.inChromeApp = $("#hideFromChromeApp").css("visibility") === 'hidden' ;
          console.info(":: is in chrome app ->"+$scope.inChromeApp);
     }();
-
+    //
+    //for hi-tech demo we want to show some specific icons in the credit card swipe screen and key encoding screen
+    //since this will be in production, we just want a way to detect if this is for the demo or not
+    //for now, lets just check the workstation name text for "hitech" if its detected, 
+    //then we'll consider the workstation in (hi-tech demo mode)
+    //
+    var forDemo = function(){
+        console.info('readLocally() : ',readLocally() )
+        console.info('$scope.theme : ',$state.theme )
+        if(readLocally() && $state.theme === 'snt'){
+            console.info('forDemo: !!!');
+            return true;
+        } else {
+            console.info('not forDemo: ');
+            return false;
+        }
+    }
+    var readLocally = function(){
+        if ($scope.zestStationData.ccReader === 'local'){
+            return true;
+        } else {
+            return false;
+        }
+    };
     /**
      * to run angular digest loop,
      * will check if it is not running
@@ -306,7 +329,24 @@ sntZestStation.controller('zsRootCtrl', [
             }
             
         };
-           
+        var changeIconsIfDemo = function(){
+            if (forDemo()){//if we are reading locally, we'll show the ICMP icons for our SNT 
+                $scope.icons.url.creditcard = $scope.iconsPath+'/demo_swiper.svg';
+                $scope.icons.url.createkey = $scope.iconsPath+'/demo_keyencoder.svg';
+                console.warn('using demo icons for create key and credit card reading');
+            } 
+        }
+        $scope.setMLISettings = function(){
+         //set MLI Merchant Id
+         try {
+             if (!MLIOperation.setMerChantID){
+                 MLIOperation = new MLIOperation();
+             }
+             console.warn('MLIOperator: ',MLIOperation);
+             console.info('$rootScope.MLImerchantId: ',$scope.zestStationData.MLImerchantId)
+             MLIOperation.setMerChantID($scope.zestStationData.MLImerchantId);
+         } catch (err) {};
+        }
         $scope.hotelThemeCB = function(response){
             //call Zest station settings API
             var options = {
@@ -314,6 +354,7 @@ sntZestStation.controller('zsRootCtrl', [
                 successCallBack: 	function(response){
                     $scope.zestStationData.mli_merchant_id = response.mli_merchant_id;
                     $scope.zestStationData.MLImerchantId = response.mli_merchant_id;
+                    $scope.setMLISettings();
                 }
             };
             $scope.callAPI(zsHotelDetailsSrv.fetchHotelSettings, options);
@@ -330,6 +371,8 @@ sntZestStation.controller('zsRootCtrl', [
             }
             theme = $scope.getThemeName(theme);//from here we can change the default theme(to stayntouch, or other hotel)
             $state.theme = theme;
+            $scope.theme = theme;
+            changeIconsIfDemo();
             if (theme !== null){
                 var loadStyleSheets = function(filename){
                     var fileref = document.createElement("link");

@@ -56,12 +56,19 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         };
         $scope.removeGuest = function(index){
             $scope.selectedReservation.guest_details.splice(index, 1);
+            
+            var guestDetails = {'accompanying_guests_details':$scope.selectedReservation.guest_details, 'reservation_id':$scope.selectedReservation.id};
+            zsCheckinSrv.updateGuestTabDetails(guestDetails);
         };
         var updateGuestDetails = function(){
+            //push changes up to the reservation immediately
             $scope.selectedReservation.guest_details.push({
                 last_name: $scope.guest.lastName,
                 first_name: $scope.guest.firstName
             });
+            
+            var guestDetails = {'accompanying_guests_details':$scope.selectedReservation.guest_details, 'reservation_id':$scope.selectedReservation.id};
+            zsCheckinSrv.updateGuestTabDetails(guestDetails);
         };
 
         $scope.goToNext = function(){

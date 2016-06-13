@@ -24,6 +24,17 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.getSelectedCheckInReservation = function() {
             return that.selectedCheckInReservation;
         };
+        //add / remove additional guests from reservation
+        this.updateGuestTabDetails = function(data) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/'+data.reservation_id+'/reservations_guest_details';
+            zsBaseWebSrv.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
         this.authorizeCC = function(postData){
             //send is_emv_request = true, to init sixpay device and capture card
