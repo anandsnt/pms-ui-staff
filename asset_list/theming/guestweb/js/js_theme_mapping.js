@@ -56,11 +56,12 @@ module.exports = {
 			'guestweb_newyork':[ themeJsRoot + 'app_router_mgm_chain.js'],
 			'guestweb_mirage': [ themeJsRoot + 'app_router_mgm_chain.js' , themeJsRoot + 'app_router_mirage.js'],
 			'guestweb_valencia_san_antonio':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_monte_carlo' 	: [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte.js'],
-			'guestweb_sorella_houston':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_valencia_santana_row':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_lonestar_court_austin':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_ponchartrain':[ themeJsRoot + 'app_router_common.js', themeJsRoot + 'app_router_ponchartrain.js']
+			'guestweb_ponchartrain':[themeJsRoot + 'app_router_ponchartrain.js'],
+			'guestweb_valencia_santana_row':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_sorella_houston':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_monte_carlo' 	: [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte_carlo.js'],
+			'guestweb_sorella_kansas_city':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }

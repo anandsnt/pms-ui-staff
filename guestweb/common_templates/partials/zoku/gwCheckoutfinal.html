@@ -20,26 +20,26 @@
     <div class="row" ng-show="netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-2">
         </div>                   
     </div>
     <!-- final message -->
     <div class="row" ng-show="posted && success && isCheckoutCompleted && !netWorkError">
-        <div class="col-md-1"></div>
-        <div class="col-md-10 top-spacing">
-            <p class="main-text">We hope to welcome you back to Vdara soon.</p>
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="main-text">Thank you for living @ Zoku. We have sent your bill to the e-mail address on file.</p>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
         </div>                   
     </div>
    <!-- if guest has already checkout -->
     <div class="row" ng-show="isCheckedout && !success">
         <div class="col-md-1"></div>
         <div class="col-md-10 top-spacing">
-            <p class="main-text">It appears you have already completed your check out.</p>
-            <p class="sub-main-text">For further enquiries please contact the hotel at <a href="tel: {{hotelPhone}}"  class="phone-text">{{hotelPhone}}</a> <br>Please retain your room key to exit the Self-Parking Garage should you be departing by vehicle</p>
+            <p class="main-text">It appears you have already completed your check-out.</p>
+            <p class="sub-main-text">For further enquiries please contact the hotel at <a href="tel: {{hotelPhone}}"  class="phone-text">{{hotelPhone}}.</a></p>
             <p class="sub-main-text">Thank You!</p>
         </div>
         <div class="col-md-1">

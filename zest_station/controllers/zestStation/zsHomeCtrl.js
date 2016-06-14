@@ -247,6 +247,7 @@ sntZestStation.controller('zsHomeCtrl', [
         $state.checkout_finalmode = false;
         $state.emailEdited = false;
         $state.emailError = false;
+        $state.lastSentBillSuccess = false;
     };
     
     // $scope.currentPrinter = '';
