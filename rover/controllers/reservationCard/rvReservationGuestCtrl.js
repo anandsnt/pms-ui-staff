@@ -216,7 +216,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		}
 
 		$scope.applyCurrentRate = function() {
-			saveChanges(true); //override
+			saveChanges(true, undefined, {"isBackToStayCard": true}); //override
 			closeDialog();
 		};
 
