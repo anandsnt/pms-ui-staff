@@ -228,6 +228,7 @@ sntZestStation.controller('zsAdminCtrl', [
                     id: station.station_identifier
                 });  
                 $scope.zestStationData.set_workstation_id = station.id;
+                $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 
                 var reason;
                 if ($scope.inServiceAtStart && station.is_out_of_order){

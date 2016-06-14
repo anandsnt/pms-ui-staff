@@ -34,6 +34,25 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		zsCheckinSrv.setSelectedCheckInReservation([]);
 		zsCheckinSrv.setCheckInReservations([]);
 
+		var setupSeperatorBetweenOptions = function() {
+			
+			//show/hide seperator between departure date and no of nights
+			$scope.showOrBetweenDateAndNoOfNights = $scope.zestStationData.checkin_screen.authentication_settings.departure_date &&
+				($scope.zestStationData.checkin_screen.authentication_settings.number_of_nights ||
+					$scope.zestStationData.checkin_screen.authentication_settings.email ||
+					$scope.zestStationData.checkin_screen.authentication_settings.confirmation);
+
+			//show/hide seperator between  no of nights and email
+			$scope.showOrBetweenNoOfNightsAndEmail = $scope.zestStationData.checkin_screen.authentication_settings.number_of_nights &&
+				($scope.zestStationData.checkin_screen.authentication_settings.email ||
+					$scope.zestStationData.checkin_screen.authentication_settings.confirmation);
+
+			//show/hide seperator between email and conf no
+			$scope.showOrBetweenEmailAndConfirmNo = $scope.zestStationData.checkin_screen.authentication_settings.email &&
+				$scope.zestStationData.checkin_screen.authentication_settings.confirmation;
+		}();
+
+
 		$scope.findByDate = function() {
 			$scope.mode = 'FIND_BY_DATE';
 		};
@@ -49,7 +68,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 		$scope.showDatePicker = function() {
 			$scope.showDatePick = !$scope.showDatePick;
-		}
+		};
 
 		var searchReservation = function(params) {
 			var checkinVerificationSuccess = function(data) {

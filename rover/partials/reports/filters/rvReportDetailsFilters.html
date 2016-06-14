@@ -628,6 +628,22 @@
                 options="chosenReport.hasChargeTypes.options"></multi-option-selection>
         </div>
 
+        <!-- campaign options -->
+
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasCampaignTypes && chosenReport.hasCampaignTypes.data.length" ng-class="{ 'active': filterItemsToggle.item_38 }" ng-click="toggleFilterItems('item_39')">
+            <span class="title">Campaign Type(s)</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasCampaignTypes && chosenReport.hasCampaignTypes.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_39 }">
+            <multi-option-selection 
+            label="Campaign Type(s)"
+            on-update="refreshFilterScroll"
+            report="chosenReport"
+            data="chosenReport.hasCampaignTypes.data"
+            options="chosenReport.hasCampaignTypes.options"></multi-option-selection>
+        </div>        
+
+        <!-- campaign options ends -->
+
     </div>
 
     <div class="actions">

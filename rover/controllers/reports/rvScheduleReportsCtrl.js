@@ -39,7 +39,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 					return email === ui.item.value;
 				});
 				if ( ! alreadyPresent ) {
-					$scope.emailList.push( ui.item.value ); 
+					$scope.emailList.push( ui.item.value );
 				}
 				this.value = '';
 

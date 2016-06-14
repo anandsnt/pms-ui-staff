@@ -11,7 +11,7 @@
             Reserve <span>{{title}}</span>?
         </span>
 
-        <div class="diary-reserved">
+        <div class="diary-reserved" ng-show="selection.rooms.length">
             <ul class="details">
                 <li class="arrival">
                     <span>{{selection.arrival_time}}</span>
@@ -22,7 +22,7 @@
                     {{selection.departure_date}}
                 </li>
             </ul>
-            <div id="rooms-reserved" class="rooms scrollable">
+            <div id="rooms-reserved" class="rooms scrollable" ng-show="selection.rooms.length">
                 <ul class="wrapper">
                     <li ng-repeat="room in selection.rooms track by $index"> 
                         <span class="type">{{room.room_type}}</span>
@@ -35,7 +35,7 @@
         </div>
         <div class="actions">
             <button class="button orange" type="button" ng-click="selectAdditional()">Select Additional Cabin</button>
-            <button class="button green" type="button" ng-click="routeToSummary()">Reserve {{title}}</button>
+            <button class="button green" type="button" ng-click="routeToSummary()" ng-class="{overlay: !selection.rooms.length}" ng-disabled="!selection.rooms.length">Reserve {{title}}</button>
             <button class="button blank" type="button" ng-click="cancelSelection()">Cancel</button>
         </div>
     </div>  
