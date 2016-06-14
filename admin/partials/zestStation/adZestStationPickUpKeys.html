@@ -15,9 +15,9 @@
                 <ad-toggle-button is-checked="zestSettings.pickup_qr_scan" label="{{'QR_SCANNER'| translate}}" div-class="full-width"></ad-toggle-button>
                 <ad-toggle-button is-checked="zestSettings.pickup_qr_scan_fail_over" label="{{'QR_FAIL_OVER'| translate}}" div-class="full-width"></ad-toggle-button>
                 <!-- arrow directions -->
-                <div class="entry full-width">
+                <div class="entry full-width" ng-show="zestSettings.pickup_qr_scan">
                     <label>Arrow direction</label>
-                    <div class="select" ng-show="zestSettings.pickup_qr_scan">
+                    <div class="select">
                         <select ng-model="zestSettings.qr_scanner_arrow_direction">
                             <option value="">Select</option>
                             <option ng-repeat="arrowDirection  in arrowDirections" value="{{arrowDirection}}" ng-bind="arrowDirection"></option>
