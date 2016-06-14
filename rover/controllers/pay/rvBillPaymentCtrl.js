@@ -1016,7 +1016,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		else{
 			//set data for existing card
 			data.user_payment_type_id  = $scope.saveData.payment_type_id;
-			$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess,paymentMapError);
+			if(!($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.saveData.paymentType === "CC")){
+				$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess,paymentMapError);
+			};
 		};
     };
 

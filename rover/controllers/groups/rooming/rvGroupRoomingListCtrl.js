@@ -1557,8 +1557,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 }
 
                 _.extend(reservationData, {
-                    arrival_date: formatDateForAPI(reservationData.arrival_date),
-                    departure_date: formatDateForAPI(reservationData.departure_date),
+                    arrival_date: tzIndependentDate(reservationData.arrival_date),
+                    departure_date: tzIndependentDate(reservationData.departure_date),
                     //Pls note, roomsFreeToAssign include already assigned room of that particular reservation
                     roomsFreeToAssign: selectedReservation.roomsAvailableToAssign,
                     allowedRoomTypes: allowedRoomTypes

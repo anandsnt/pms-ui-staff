@@ -160,6 +160,7 @@ sntRover.controller('reservationDetailsController',
 
 		var datePickerCommon = {
 			dateFormat: $rootScope.jqDateFormat,
+			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
 			numberOfMonths: 1,
 			changeYear: true,
 			changeMonth: true,
@@ -225,25 +226,19 @@ sntRover.controller('reservationDetailsController',
 			departure: $scope.reservationData.reservation_card.departure_date
 		};
 
-		$scope.arrivalDateOptions = angular.extend({
-			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-			onSelect: function(dateText, inst) {
-				// Handle onSelect
-			}
-		}, datePickerCommon);
-
-		$scope.departureDateOptions = angular.extend({
-			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
-			onSelect: function(dateText, inst) {
-				//
-			}
-		}, datePickerCommon);
-
 		// for groups this date picker must not allow user to pick
 		// a date that is after the group end date.
+		// and before the group start date
 		if ( !! $scope.reservationData.reservation_card.group_id ) {
-			$scope.departureDateOptions.maxDate = $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat);
+			datePickerCommon = angular.extend(datePickerCommon, {
+				minDate: $filter('date')($scope.reservationData.reservation_card.group_block_from, $rootScope.dateFormat),
+				maxDate: $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat)
+			});
+
 		}
+
+		$scope.arrivalDateOptions = angular.copy(datePickerCommon);
+		$scope.departureDateOptions = angular.copy(datePickerCommon);
 
 		$scope.reservationData.paymentTypes = paymentTypes;
 		$scope.reservationData.reseravationDepositData = reseravationDepositData;
@@ -298,6 +293,16 @@ sntRover.controller('reservationDetailsController',
 			if (!$scope.shouldShowGuestDetails && $scope.isStandAlone) {
 				$scope.$broadcast("UPDATEGUESTDEATAILS");
 			}
+		};
+		$scope.saveAccGuestDetails = function(){
+			setTimeout(function(){
+
+				if(document.activeElement.getAttribute("type") != "text"){
+					$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": false});
+				}
+
+
+			}, 800)
 		};
 
 		$scope.$on("OPENGUESTTAB", function(e) {

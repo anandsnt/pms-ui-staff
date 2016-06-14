@@ -165,15 +165,27 @@
                                         <label for="amount">Amount to pay (<span>{{currencySymbol}})</span> </label>
 
                                         <!-- CICO-12408 : Use only when fee exsists -->
-                                        <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" type="text" class="amount" ng-class="{'red-text': depositWithGiftCard && !validPayment}" value="{{ depositBalanceMakePaymentData.amount | number:2 }}" ng-change="updatedAmountToPay(depositBalanceMakePaymentData.amount)"/>
+                                        <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" type="text" class="amount" ng-class="{'red-text': depositWithGiftCard && !validPayment}" value="{{ depositBalanceMakePaymentData.amount | number:2 }}" ng-change="updatedAmountToPay(depositBalanceMakePaymentData.amount)" ng-if="isBalanceAmountShown()"/>
+
+                                         <input name="amount" id="amount" type="text" class="amount" ng-class="{'red-text': depositWithGiftCard && !validPayment}" value="{{'SUPPRESSED_RATES_TEXT' | translate}}" ng-if="!isBalanceAmountShown()"/>
+
+
                                         <span ng-show="isShowFees()" class="delimiter">+</span>
-                                        <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(depositBalanceMakePaymentData.amount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
+                                        <input ng-show="isShowFees() && isBalanceAmountShown()" name="fee" id="fee" ng-keyup="calculateTotalAmount(depositBalanceMakePaymentData.amount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" ng-if="isBalanceAmountShown()"/>
+
+                                        <input ng-show="isShowFees() && !isBalanceAmountShown()" name="fee" id="fee"  value="{{'SUPPRESSED_RATES_TEXT' | translate}}" type="text" class="fee" />
                                         <span ng-show="isShowFees()" class="delimiter">fee</span>
 
-                                        <span ng-show="isShowFees()" class="total">
+                                        <span ng-show="isShowFees() && isBalanceAmountShown()" class="total">
                                             Total:
                                             <strong id="total-deposit-amount">
                                                     {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+                                            </strong>
+                                        </span>
+                                        <span ng-show="isShowFees() && !isBalanceAmountShown()" class="total" >
+                                            Total:
+                                            <strong id="total-deposit-amount">
+                                                    {{'SUPPRESSED_RATES_TEXT' | translate}}
                                             </strong>
                                         </span>
                                     </div>
