@@ -665,7 +665,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Success call back of success payment
 	*/
 	var successPayment = function(data){
-
+		$scope.errorMessage ="";
 		//$scope.$emit("hideLoader");
 		$scope.authorizedCode = data.authorization_code;
 		// A temperory fix, This part (payment screens) of App seems broken in many ways
@@ -675,7 +675,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			mapNonCCToBillAndStaycard();
 		}else{
 			// attach CC payment type to bill and to staycard if bill is bill-1 (done in backend)
-			mapCCPayMentToBillAndStaycard();
+			if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.saveData.paymentType === "CC"){
+				mapCCPayMentToBillAndStaycard();
+			};
+			processeRestOfPaymentOperations();
 		};
 		paymentFinalDetails =  data;
 
