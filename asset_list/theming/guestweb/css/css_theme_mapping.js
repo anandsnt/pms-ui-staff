@@ -55,7 +55,8 @@ module.exports = {
 			'guestweb_ponchartrain':[ themeCSSRoot + 'guestweb_ponchartrain.css'],
 			'guestweb_valencia_santana_row':[ themeCSSRoot + 'guestweb_valencia_santana_row.css'],
 			'guestweb_sorella_houston':[ themeCSSRoot + 'guestweb_sorella_houston.css'],
-			'guestweb_monte_carlo' 	: [ themeCSSRoot + 'guestweb_monte_carlo.css']
+			'guestweb_monte_carlo' 	: [ themeCSSRoot + 'guestweb_monte_carlo.css'],
+			'guestweb_sorella_kansas_city':[ themeCSSRoot + 'guestweb_sorella_kansas_city.css']
 		}
 	}
 }
