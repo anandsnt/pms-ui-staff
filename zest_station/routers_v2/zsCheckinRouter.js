@@ -41,9 +41,9 @@ sntZestStation.config(['$stateProvider',
 		});
 		//checkin key dispense
 		$stateProvider.state('zest_station.checkInKeyDispense', {
-			url: '/checkInKeyDispense/:guest_id',
+			url: '/checkInKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinKey.html',
-			controller: 'zsCheckinKeyDispensCtrl'
+			controller: 'zsCheckinKeyDispenseCtrl'
 		});
                 
 		//checking credit card swipe                 

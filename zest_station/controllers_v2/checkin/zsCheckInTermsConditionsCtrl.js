@@ -52,6 +52,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			});
 		};
 		var goToSignaturePage = function() {
+                    console.warn('current state params: @ ',$state.current.name,$stateParams);
 			var stateParams = {
 				'email': $stateParams.guest_email,
 				'reservation_id': $stateParams.reservation_id,

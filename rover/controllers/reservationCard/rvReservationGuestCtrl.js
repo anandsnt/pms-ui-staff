@@ -103,13 +103,13 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 		$scope.keepCurrentRate = function() {
 			//Save data variables keeping the Current Rate .
-			saveChanges(false, true);
+			saveChanges(false, true, {"isBackToStayCard": true});
 			closeDialog();
 		};
 
 		$scope.ChangeToNewRate = function() {
 			//Save data variables taking the New Rate .
-			saveChanges();
+			saveChanges(undefined, undefined, {"isBackToStayCard": true});
 			closeDialog();
 		};
 
@@ -171,11 +171,13 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
 
 			var successCallback = function(data) {
+				$scope.errorMessage = '';
 				if(params.isBackToStayCard){
 					saveReservation();
 				}
-				$scope.errorMessage = '';
-				//$scope.$emit('hideLoader');
+				else {
+					$scope.$emit('hideLoader');
+				}
 			};
 
 			var errorCallback = function(errorMessage) {
@@ -214,7 +216,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		}
 
 		$scope.applyCurrentRate = function() {
-			saveChanges(true); //override
+			saveChanges(true, undefined, {"isBackToStayCard": true}); //override
 			closeDialog();
 		};
 

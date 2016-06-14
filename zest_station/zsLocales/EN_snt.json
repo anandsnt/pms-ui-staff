@@ -66,6 +66,7 @@
    "RES_NEXT":"Next",
    "RES_Q":"Questions?",
    "RES_Q_SUB":"Tap “X” and see a Staff Member.",
+   "RES_Q_SUB_TWO":"Otherwise..just wait a minute for the screen to reset :D",
    "INCLUDED": "INCLUDED",
    "HOURLY_RATE":"Hourly Rate",
    "HOURS":"Hours",
@@ -149,7 +150,7 @@
    "IN_ROOM": "You are in room",
    "HOW_MANY_KEYS": "How many keys do you need?",
    "UNO_KEY": "1",
-   "DOS_KEY": "2",
+   "DOS_KEY": "",
 
 
    "MAKE_KEY": "Just one moment as we make keys…",
@@ -263,6 +264,7 @@
    "BILL_BAL":"Balance due",
    "BILL_QUEST":"Questions?",
    "BILL_SUB_QUESTION":"Tap “X” and see a Staff Member.",
+   "BILL_SUB_QUESTION_TWO":"Example Text..",
    "BILL_NEXT":"Next",
 
 
