@@ -41,12 +41,12 @@
                         <div class="arrival-departure">
                             <span class="guest-status check-in">check-in</span>
                             <time class="guest-time guest-time-arrival" datetime="{check-in-time | format: Month-Day-Year}">
-                                {{selectedReservations.arrival_date}}
+                                {{selectedReservations.arrival_date|date:dateFormat}}
                             </time>
 
                             <span class="guest-status check-out">check-out</span>
                             <time class="guest-time guest-time-departure" datetime="{check-out-time  | format: Month-Day-Year}">
-                              {{selectedReservations.departure_date}}
+                              {{selectedReservations.departure_date|date:dateFormat}}
                             </time>
 
                         </div>
