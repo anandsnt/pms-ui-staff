@@ -265,6 +265,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if (!!$scope.reservationData.group.id) {
 					customRate = RVReservationStateService.getCustomRateModel($scope.reservationData.group.id, $scope.reservationData
 						.group.name, 'GROUP');
+					if(!!ratesMeta.customRates.custom_group_taxes) {
+						customRate.taxes = ratesMeta.customRates.custom_group_taxes;
+					}
 					$scope.reservationData.ratesMeta[customRate.id] = customRate;
 				};
 
