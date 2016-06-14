@@ -9,7 +9,7 @@ sntZestStation.controller('zsRootCtrl', [
 	'$scope',
 	'zsEventConstants',
 	'$state', 'zsGeneralSrv', '$rootScope', 'ngDialog', '$sce',
-	'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings', '$timeout', 'zsModeConstants','hotelTimeData',
+	'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'zestStationSettings', '$timeout', 'zsModeConstants','hotelTimeData', '$filter',
 	function($scope,
 		zsEventConstants,
 		$state,
@@ -24,7 +24,8 @@ sntZestStation.controller('zsRootCtrl', [
 		zestStationSettings,
 		$timeout,
 		zsModeConstants,
-		hotelTimeData) {
+		hotelTimeData,
+                $filter) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -118,7 +119,17 @@ sntZestStation.controller('zsRootCtrl', [
 		};
 
 		// check if navigator is iPad
-		$scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
+                var ipadOrIphone = function(){
+                    if ((navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) !== true){
+                        return false;
+                    } else if (navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i)){
+                        return true;
+                    }
+                };
+                
+                var iphoneOrIpad = ipadOrIphone();
+		//$scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
+		$scope.isIpad = (zestSntApp.cordovaLoaded && iphoneOrIpad);
 		/**
 		 * This is workaround till we find how to detect if app
 		 *  is invoked from chrome app, we will be hidding this tag from chrome app and
@@ -139,6 +150,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
 				$scope.zestStationData.paymentGateway = data.payment_gateway;
 				$scope.zestStationData.hotelDateFormat = !!data.date_format ? data.date_format.value : "DD-MM-YYYY";
+				$rootScope.emvTimeout = !!$scope.zestStationData.hotelSettings.emv_timeout ? $scope.zestStationData.hotelSettings.emv_timeout : 60;
 				$scope.zestStationData.mliMerchantId = data.mli_merchant_id;
                         configureSwipeSettings();
 			};
@@ -243,7 +255,8 @@ sntZestStation.controller('zsRootCtrl', [
 					qr_noarrow: iconsPath + '/qr-scan_noarrow.svg',
 					createkey: iconsPath + '/create-key.svg',
 					logo: iconsPath + '/print_logo.svg',
-					watch: iconsPath + '/watch.svg'
+					watch: iconsPath + '/watch.svg',
+					qr_arrow: iconsPath + '/qr-arrow.svg'
 				}
 			};
 		};
@@ -503,6 +516,7 @@ sntZestStation.controller('zsRootCtrl', [
 				};
 				// set work station id and status
 				$scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
+				$rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
 				$scope.zestStationData.key_encoder_id =  $scope.getStationIdFromName(station.name).key_encoder_id;
 				var previousWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
 				$scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
@@ -685,7 +699,7 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.zestStationData = zestStationSettings;
 			$scope.zestStationData.isAdminFirstLogin = true;
 			CheckForWorkStationStatusContinously();
-			$scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;
+			//$scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
 			setAUpIdleTimer();
 			$scope.zestStationData.workstationOooReason = "";
 			$scope.zestStationData.workstationStatus = "";
@@ -697,6 +711,17 @@ sntZestStation.controller('zsRootCtrl', [
 			fetchHotelSettings();
 			getAdminWorkStations();
 			$scope.zestStationData.bussinessDate = hotelTimeData.hotel_time.date;
+                        //used for making keys, checking if there is text in the locale, to hide/show the key #, 
+                        //can be moved to other controllers if this doesnt make sense here, just see there are 3x views with the UNO_ and DOS_KEY tags
+                        $scope.isEmpty = function(value){
+                            if (!value){
+                                return true;
+                            }
+                            if ($filter('translate')(value) === ''){
+                                return true;
+                            }
+                             return false;
+                        };
 		}();
 	}
 ]);

@@ -10,9 +10,13 @@
             <ul role="menu">
                 <!-- card swipe -->
                 <li ng-show='at === "card-swipe"'>
-                    <button type="button" class="button option" touch-press='simulateSixPay()'>
+                    <button ng-hide="theme==='snt'" type="button" class="button option" touch-press='simulateSixPay()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
+                    <div ng-show="theme==='snt'" class="margin-adj">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </div>
+                    
                     <span translate>SWIPE_CARD_PLEASE</span>
                 </li>
                 
@@ -50,6 +54,12 @@
                     <h1>{{'TRY_AGAIN' |translate}}</h1>
                 </li>
                 
+                <li ng-show='at === "swipe-pay-error" && inLocalMode'>
+                    <button type="button" class="button option" touch-press='skipForLocal()'>
+                        <div ng-include="icons.url.key"></div>
+                    </button>
+                    <h1>Skip</h1>
+                </li>
                 
                 <li class="break" ng-show='at === "swipe-pay-error"'>
                     <span translate>OR_TEXT</span>
@@ -82,6 +92,13 @@
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <h1>{{'DEPOSIT_NEXT_BUTTON' |translate}}</h1>
+                </li>
+                
+                <li ng-show='at === "deposit-agree" && inLocalMode'>
+                    <button type="button" class="button option" touch-press='skipForLocal()'>
+                        <div ng-include="icons.url.key"></div>
+                    </button>
+                    <h1>Skip</h1>
                 </li>
                 <!--email-delivery -->
                 <li ng-show='at === "email-delivery"'> 

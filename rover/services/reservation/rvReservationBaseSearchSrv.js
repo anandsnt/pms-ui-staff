@@ -18,7 +18,8 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                 restrictionTypes: null,
                 rateDetails: null,
                 sortOrder: null,
-                taxMeta: null
+                taxMeta: null,
+                customMeta: null
             }
         }
 
@@ -390,6 +391,26 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             return deferred.promise;
         };
 
+        this.fetchCustomRateConfig = function() {
+            var deferred = $q.defer(),
+                url = 'api/rates/custom_group_rate_taxes';
+            if (that.cache.responses['customMeta'] === null || Date.now() > that.cache.responses['customMeta']['expiryDate']) {
+                RVBaseWebSrvV2.getJSON(url).then(function(response) {
+                    var customMeta = response;
+                    that.cache.responses['customMeta'] = {
+                        data: customMeta,
+                        expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000)
+                    };
+                    deferred.resolve(customMeta);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            } else {
+                deferred.resolve(that.cache.responses['customMeta']['data']);
+            }
+            return deferred.promise;
+        };
+
         this.fetchRatesMeta = function(params) {
             var deferred = $q.defer(),
                 promises = [];
@@ -402,6 +423,10 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
             promises.push(that.fetchRestricitonTypes(params).then(function(response) {
                 that['rates-restrictions']['restrictions'] = response;
+            }));
+
+            promises.push(that.fetchCustomRateConfig().then(function(response) {
+                that['rates-restrictions']['customRates'] = response;
             }));
 
             $q.all(promises).then(function() {

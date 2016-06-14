@@ -60,6 +60,7 @@ var Grid = React.createClass({
 						angular_evt: 		props.angular_evt,
 						currentResizeItem:  props.currentResizeItem,
 						currentResizeItemRow: props.currentResizeItemRow,
+						unassignedRoomList: props.unassignedRoomList,
 						__onResizeCommand: 	props.__onResizeCommand,
 						__onDragStart: 		props.__onDragStart,
 						__onDragStop: 		props.__onDragStop

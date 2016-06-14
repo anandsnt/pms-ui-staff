@@ -37,9 +37,11 @@ sntZestStation.controller('zsAdminCtrl', [
              var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.zestStationData.set_workstation_id;
             });
-            $scope.workstation = { 'selected' :  selectedWorkStation.id};
-            $scope.workstation.printer = selectedWorkStation.printer;
-            setPrinterLabel(selectedWorkStation.printer);
+            if (selectedWorkStation){
+                $scope.workstation = { 'selected' :  selectedWorkStation.id};
+                $scope.workstation.printer = selectedWorkStation.printer;
+                setPrinterLabel(selectedWorkStation.printer);
+            }
           
         }else{
             //do nothing;
@@ -64,7 +66,9 @@ sntZestStation.controller('zsAdminCtrl', [
                 setCurrentStation($scope.set_workstation_id);
                 return workstation.id == $scope.workstation.selected;
             });
-            setPrinterLabel(selectedWorkStation.printer);
+            if (selectedWorkStation){
+                setPrinterLabel(selectedWorkStation.printer);
+            }
         };
 
         /*
@@ -224,6 +228,7 @@ sntZestStation.controller('zsAdminCtrl', [
                     id: station.station_identifier
                 });  
                 $scope.zestStationData.set_workstation_id = station.id;
+                $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 
                 var reason;
                 if ($scope.inServiceAtStart && station.is_out_of_order){
@@ -346,6 +351,7 @@ sntZestStation.controller('zsAdminCtrl', [
             delete params.kiosk.workstation;
             delete params.printer;
             var successCallBack = function(response) {
+                $scope.updateSavedIdleTimer($scope.savedSettings.kiosk.idle_timer)
                 saveStation();
             };
             var failureCallBack = function(response) {

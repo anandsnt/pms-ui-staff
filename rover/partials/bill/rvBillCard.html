@@ -93,13 +93,13 @@
                 		<ul class="wrapper" style="width:{{getWidthForBillTabsScroll()}}px">
                 			<li click-touch="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
 								<div class="bill-toggle" ng-class="{'error': billTab.has_crossed_credit_limit}">
-									<div class="price" ng-hide="billTab.total_amount=='SR'">
-										<span translate>BILL #{{billTab.bill_number}}</span>
+									<div class="price" ng-show="isBalanceShown(billTab.is_rate_suppressed)">
+										<span translate>BILL #{{billTab.bill_numberbillTab.}}</span>
 										{{currencySymbol}}{{billTab.total_amount | number: precisonZero}}
 									</div>
-									<div class="price" ng-show="billTab.total_amount=='SR'">
+									<div class="price" ng-show="!isBalanceShown(billTab.is_rate_suppressed)">
 										<span translate>BILL #{{billTab.bill_number}}</span>
-										{{billTab.total_amount}}
+										{{'SUPPRESSED_RATES_TEXT' | translate}}
 									</div>
 									<div class="payment" ng-show="billTab.credit_card_details.payment_type !== 'CC'">
 										{{billTab.credit_card_details.payment_type_description}}
@@ -141,8 +141,8 @@
 											<span class="day"> {{days.date | date:'EEE'}} </span> 
 											<span class="date"> {{days.date | date:'dd'}} </span> 
 											<span class="guest-status check-in small-icon" ng-show="days.date == reservationBillData.checkin_date" translate>CHECK_IN</span> 
-											<span class="price" ng-show="days.amount == 'SR'">SR</span>
-											<span class="price" ng-hide="days.amount == 'SR'">{{currencySymbol}}{{days.amount | number: precisonZero}}</span>  
+											<span class="price" ng-show="!isBalanceShown(days.is_rate_suppressed)">{{'SUPPRESSED_RATES_TEXT' | translate}}</span>
+											<span class="price" ng-show="isBalanceShown(days.is_rate_suppressed)">{{currencySymbol}}{{days.amount | number: precisonZero}}</span>  
 										</div>
 									</li>
 
@@ -179,11 +179,11 @@
 							<!-- Bill Summary Details - Stay Dates -->
 							<div class="summary-expanded" ng-class="{'hidden': $index != dayRates}" ng-repeat="billItem in billData.days">
 								<a class="toggle has-arrow" ng-click="showRoomDetails($index)" ng-class="{'active': $index == showRoomDetailsIndex}">
-									<div class="price" ng-show="reservationBillData.is_rate_suppressed_present_in_stay_dates">
+									<div class="price" ng-show="!isBalanceShown(reservationBillData.is_rate_suppressed_present_in_stay_dates)">
 										{{'SUPPRESSED_RATES_TEXT' | translate}}
 										<span translate>+ FEES</span>
 									</div>
-									<div class="price" ng-hide="reservationBillData.is_rate_suppressed_present_in_stay_dates">
+									<div class="price" ng-show="isBalanceShown(reservationBillData.is_rate_suppressed_present_in_stay_dates)">
 										{{currencySymbol}}{{billItem.amount | number: precisonTwo}}
 										<span translate>+ <span translate>FEES</span>
 									</div>

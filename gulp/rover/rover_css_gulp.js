@@ -44,7 +44,7 @@ module.exports = function(gulp, $, options) {
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
 	        .pipe($.rev.manifest(ROVER_CSS_MANIFEST_FILE))
 	        .pipe(gulp.dest(MANIFEST_DIR))
-	        .pipe(gulp.dest(DEST_ROOT_PATH + '/manifest/'));
+	        .pipe(gulp.dest(DEST_ROOT_PATH + '/manifests/'));
 	});
 
 	gulp.task('rover-less-dev', ['rover-copy-less-files'], function () {

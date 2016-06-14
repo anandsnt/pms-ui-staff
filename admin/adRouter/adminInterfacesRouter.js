@@ -128,6 +128,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     }
   });
 
+  $stateProvider.state('admin.m3BackOfficeExport', {
+    templateUrl: '/assets/partials/interfaces/M3BackOffice/ADM3Configuration.html',
+    controller: 'ADM3BackOfficeCtrl',
+    url : '/backoffice/m3/setup',
+    resolve: {
+      m3AccountingSetupValues: ['ADM3SetupSrv', function(ADM3SetupSrv) {
+        return ADM3SetupSrv.getConfig();
+      }]
+    }
+  });
+
   $stateProvider.state('admin.mapping', {
     templateUrl: '/assets/partials/mapping/adExternalMapping.html',
     controller: 'ADMappingCtrl',
