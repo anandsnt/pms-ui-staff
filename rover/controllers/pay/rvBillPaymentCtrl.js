@@ -675,7 +675,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			mapNonCCToBillAndStaycard();
 		}else{
 			// attach CC payment type to bill and to staycard if bill is bill-1 (done in backend)
-			if($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.saveData.paymentType === "CC"){
+			if(!($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.saveData.paymentType === "CC")){
 				mapCCPayMentToBillAndStaycard();
 			};
 			processeRestOfPaymentOperations();
