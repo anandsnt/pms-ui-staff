@@ -167,7 +167,7 @@ sntRover.controller('RVroomAssignmentController',[
 		var isAvailablityExist = (availabilityCount > 0) ? true : false;
 		var isOverBookPermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
 		$scope.currentRoomObject = roomObject;
-		if (currentRoomType.type == oldRoomType || isAvailablityExist) {
+		if (currentRoomType.type == oldRoomType) {
    			$scope.showMaximumOccupancyDialog(roomObject);
 		} else {
 		    if (!isAvailablityExist) {
