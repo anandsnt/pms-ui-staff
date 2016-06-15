@@ -306,8 +306,11 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 var postData = getCardSaveData(response);
                 console.info("saving payment",postData);
             
-                $scope.invokeApi(zsPaymentSrv.savePayment, postData, onSuccessDeposit, $scope.failSavePayment, "NONE"); 
-            }
+            //$scope.invokeApi(zsPaymentSrv.savePayment, postData, onSuccessDeposit, $scope.failSavePayment, "NONE"); 
+        
+            //we need not save the payment once submit payment is called
+        
+            onSuccessDeposit(response);
             $scope.$emit('hideLoader');
         };
         $scope.payDeposit = function(){
