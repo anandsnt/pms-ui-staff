@@ -310,8 +310,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
             //we need not save the payment once submit payment is called
         
-            onSuccessDeposit(response);
-            $scope.$emit('hideLoader');
+            	onSuccessDeposit(response);
+            }
+            
+        	$scope.$emit('hideLoader');
         };
         $scope.payDeposit = function(){
             console.info('$state.paidDeposit: ',$state.paidDeposit)
