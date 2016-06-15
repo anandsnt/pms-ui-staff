@@ -46,10 +46,18 @@ sntRover.controller('rvBillCardPopupCtrl',
 		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback,failureCallBack);
 	};
 
-   /*
-	 * API call split transaction
-	 */
-
+	$scope.showSpiltValues = function(){
+		if($scope.splitTypeisAmount){
+			$scope.displayFirstValue = $scope.selectedTransaction.amount - $scope.splitValue;
+			$scope.displaySecondValue = $scope.splitValue;
+		}else{
+			$scope.displaySecondValue = parseFloat($scope.selectedTransaction.amount* $scope.splitValue /100).toFixed(2);
+			$scope.displayFirstValue = $scope.selectedTransaction.amount - $scope.displaySecondValue;
+		};
+	};
+	/*
+	* API call split transaction
+	*/
 	$scope.splitCharge = function(qty,isAmountType){
 
 		var split_type = isAmountType ? $rootScope.currencySymbol:'%';

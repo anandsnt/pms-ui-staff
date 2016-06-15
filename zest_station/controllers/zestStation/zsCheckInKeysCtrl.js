@@ -103,8 +103,18 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             } else {
                 $scope.modalBtn1 = 'NEXT_BTN';//otherwise keep goin!
             }
-
+            if (!$scope.selectedReservation){
+                if ($state.selectedReservation.room){
+                    $scope.selectedReservation = $state.selectedReservation;
+                }
+            }
+            if ($scope.zestStationData.show_room_number && $scope.selectedReservation.room){
+                $scope.showRoomNumberOnKeySuccess = true;
+            } else {
+                $scope.showRoomNumberOnKeySuccess = false;
+            }
         };
+        $scope.showRoomNumberOnKeySuccess = false;
 
         $scope.fetchDoorLockSettings = function(){
 

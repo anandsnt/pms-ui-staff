@@ -95,7 +95,8 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
                 createWorkstationForNonAdminUsers();
               }
             } else {
-              $scope.$emit('hideLoader');
+            	$rootScope.workstation_id = data.id;
+          		$scope.$emit('hideLoader');
             }
         },
         onSetWorkstationFailure = function(failure) {
