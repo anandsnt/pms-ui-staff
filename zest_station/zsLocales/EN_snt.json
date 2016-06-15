@@ -379,6 +379,7 @@
      "ADMIN_TIME_POP": "Idle Screen Prompt After (Seconds)",
      "ADMIN_WORKSTATION": "Work Station",
      "ADMIN_STATION_PRINTER": "Select Printer",
+     "ADMIN_STATION_DEMOMODE": "Demo Mode",
 
 
      "CHECKIN_KEY_FAIL" : "Check-In Key Fail",
