@@ -826,6 +826,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         $scope.clearQuery = function() {
             $scope.query = '';
             runDigestCycle();
+            initialisePagination();
             $timeout( $scope.fetchReservations, 500 );
         }
 
@@ -844,7 +845,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         
         $scope.filterReservation = function() {
             initialisePagination();
-            $timeout( $scope.fetchReservations, 10 );
+            $timeout( $scope.fetchReservations, 500 );
         };
         $scope.fiterByQuery = function() {
             var query = $scope.query.trim(),
@@ -872,6 +873,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         $scope.clearDate = function(date) {
             $scope[date] = '';
             runDigestCycle();
+            initialisePagination();
             $timeout( $scope.fetchReservations, 500 );
         };
 
