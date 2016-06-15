@@ -670,7 +670,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.authorizedCode = data.authorization_code;
 		// A temperory fix, This part (payment screens) of App seems broken in many ways
 		// Will need to refractor as soon as possible
-		if($scope.saveData.paymentType !== "CC"){
+		if($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type === "CC"){
+			processeRestOfPaymentOperations();
+		}
+		else if($scope.saveData.paymentType !== "CC"){
 			// attach non CC payment type to bill and to staycard if bill is bill-1 (done in backend)
 			mapNonCCToBillAndStaycard();
 		}else{
