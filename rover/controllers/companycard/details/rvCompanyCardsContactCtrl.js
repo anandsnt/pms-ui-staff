@@ -45,13 +45,25 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 	    	$scope.$emit('showLoader'); 
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
-            	$scope.$emit('hideLoader'); 
-			    ngDialog.open({
-			        template: '/assets/partials/billingInformation/cards/rvBillingInfoCardsMain.html',
-			        controller: 'rvBillingInfoCardsMainCtrl',
-			        className: '',
-			        scope: $scope
-			    });
+            	$scope.$emit('hideLoader');
+            	if($rootScope.billingInfoRefactoringCodeEnabled){
+            		console.log("##Billing-info updated version");
+				    ngDialog.open({
+				        template: '/assets/partials/billingInformation/cards/rvBillingInfoCardsMain.html',
+				        controller: 'rvBillingInfoCardsMainCtrl',
+				        className: '',
+				        scope: $scope
+				    });
+				}
+			    else{
+			    	console.log("##Billing-info old version");
+				    ngDialog.open({
+				        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+				        controller: 'rvBillingInformationPopupCtrl',
+				        className: '',
+				        scope: $scope
+				    });
+				}
 			});
 	    };
 

@@ -545,12 +545,24 @@ sntRover.controller('RVReservationConfirmCtrl', [
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
             	$scope.$emit('hideLoader'); 
-			    ngDialog.open({
-			        template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
-		        	controller: 'rvBillingInfoReservationMainCtrl',
-		        	className: '',
-		        	scope: $scope
-			    });
+            	if($rootScope.billingInfoRefactoringCodeEnabled){
+            		console.log("##Billing-info updated version");
+				    ngDialog.open({
+				        template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
+				        controller: 'rvBillingInfoReservationMainCtrl',
+				        className: '',
+				        scope: $scope
+				    });
+				}
+				else{
+					console.log("##Billing-info old version");
+					ngDialog.open({
+				        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+				        controller: 'rvBillingInformationPopupCtrl',
+				        className: '',
+				        scope: $scope
+				    });
+				}
 			});
 		};
 

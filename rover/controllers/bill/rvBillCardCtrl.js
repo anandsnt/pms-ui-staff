@@ -1945,6 +1945,7 @@ sntRover.controller('RVbillCardController',
         .then(function(){
         	$scope.$emit('hideLoader');
         	if($rootScope.billingInfoRefactoringCodeEnabled){
+        		console.log("##Billing-info updated version");
 			    ngDialog.open({
 			        template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
 			        controller: 'rvBillingInfoReservationMainCtrl',
@@ -1953,6 +1954,7 @@ sntRover.controller('RVbillCardController',
 			    });
 			}
 			else{
+				console.log("##Billing-info old version");
 				ngDialog.open({
 			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
 			        controller: 'rvBillingInformationPopupCtrl',
