@@ -301,6 +301,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
         
         $scope.emitKeyError = function(response){
+            $scope.setReadyToMakeKey = false;
             console.info('detected error in make key',response);
             response = !!response ? "" :response;
             setFailureReason(response);
@@ -353,23 +354,17 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                     }
         };
         };
-        $scope.initMakeKey = function(n){
-            $scope.makingKey = n;
-            $state.nextKey = n+1;
-            var options = $scope.getKeyOpts();
+        
+        $scope.onReadyToPrintKey = function(){
+            var response = $scope.printKeyResponse;
             
-                setTimeout(function(){
-                    $state.keyDispenseUID = '';//used if
-
-                    var onResponseSuccess;
-                        options.is_kiosk = true;
-                        
                     if (!$scope.remoteEncoding){
-                        options.uid = null;//for sankyo key card encoding
                         
                         //local encoding + sankyo
                         if (keyFromSocket()){
-                            onResponseSuccess = $scope.printLocalKey;
+                            $scope.printLocalKey(response);
+                            
+                            
                         } else if (writeLocally()){
                             //local encoding + infinea
                             $scope.printLocalKeyCordova();
@@ -377,9 +372,46 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         }
                     } else {
                         //remote + remote
-                        onResponseSuccess = $scope.successMakeKey;
+                        $scope.successMakeKey(response);
                     }
-                    console.info('options.is_additional: ',options.is_additional);
+        };
+        var savePrintKeyResponse = function(response){
+            $scope.printKeyResponse = response;
+            setReadyToMakeKey();
+        };
+        $scope.makingKey = 0;
+        $scope.makeKeyReady = false;
+        var setReadyToMakeKey = function(){
+            $scope.makeKeyReady = true;
+            try {
+                $scope.$apply();
+            } catch(err){
+                $scope.$digest();
+            }
+            
+           console.log(':: ready to make key ::');
+        };
+        
+        $scope.initMakeKey = function(n){
+            $scope.makingKey = n;
+            $state.nextKey = n+1;
+            var options = $scope.getKeyOpts();
+            
+                setTimeout(function(){
+                    $state.keyDispenseUID = '';//used if
+                    options.is_kiosk = true;
+                        
+                    if (!$scope.remoteEncoding){
+                        options.uid = null;//for sankyo key card encoding
+                        
+                         if (writeLocally()){
+                            console.info('writing locally, dont need to call print key api')
+                            //local encoding + infinea
+                            setReadyToMakeKey();
+                            //$scope.printLocalKeyCordova();
+                            return;
+                        }
+                    }
                         var printAPI = {
                             "is_additional":options.is_additional,
                             //"is_additional":false,
@@ -397,7 +429,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
 
                         $scope.callAPI(zsTabletSrv.encodeKey, {
                             params: printAPI,
-                            'successCallBack':onResponseSuccess,
+                            'successCallBack':savePrintKeyResponse,
                             'failureCallBack':$scope.emitKeyError
                         });
                         

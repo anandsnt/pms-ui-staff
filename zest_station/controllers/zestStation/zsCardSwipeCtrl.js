@@ -374,13 +374,6 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 initCardReaders();
                 
                 digest();
-                setTimeout(function(){
-                    try{
-                        $scope.$digest();
-                    }catch(er){
-                        
-                    }
-                },200);
         };
         var initDepositScreen = function(){
             console.info('init deposit screen');
