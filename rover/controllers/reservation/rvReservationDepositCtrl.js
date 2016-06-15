@@ -10,6 +10,12 @@ sntRover.controller('RVReservationDepositController',
 		$timeout(function() {
 			$scope.pageloadingOver = true;
 		}, 3000);
+
+		var runDigestCycle = function() {
+   	        if (!$scope.$$phase) {
+   	            $scope.$digest();
+        	}
+    	};
 		$scope.errorMessage = '';
 		$scope.showCancelCardSelection =true;
 		$scope.addmode = false;
@@ -396,7 +402,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.depositPaidSuccesFully = true;
 		$scope.isLoading =  false;
 		$scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.$parent.depositDetails.deposit_amount);
-		$scope.$apply();
+		runDigestCycle();
 		var cardName = "";
 
 
@@ -627,7 +633,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.addmode = true;
 		$scope.depositData.paymentType  = "CC";
 		$scope.swipedCardHolderName = swipedCardDataToRender.nameOnCard;
-                $scope.$apply();
+                runDigestCycle();
 		$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 	});
 	$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave){
