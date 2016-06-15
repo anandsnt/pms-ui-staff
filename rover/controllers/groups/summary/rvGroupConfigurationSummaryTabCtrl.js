@@ -1251,29 +1251,42 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 		var fetchApplicableRates = function() {
 			var onFetchRatesSuccess = function(data) {
-					// split result to contracted vs others for enabling grouping on the dropdown
-					$scope.groupSummaryData.rates = _.where(data.results, {
-						is_contracted: false
+					var sumData = $scope.groupSummaryData;
+						sumData.rateSelectDataObject = [];
+
+					// add custom rate obect
+					sumData.rateSelectDataObject.push({
+						id: "-1",
+						name: "Custom Rate"
+					});
+					// group rates by contracted and group rates.
+					_.each(data.results, function(rate) {
+						if (rate.is_contracted) {
+							rate.groupName = "Company/ Travel Agent Contract";
+						}
+						else {
+							rate.groupName = "Group Rates";
+						}
+						sumData.rateSelectDataObject.push(rate)
 					});
 
-					$scope.groupSummaryData.contractedRates = _.where(data.results, {
-						is_contracted: true
-					});
 				},
 				onFetchRatesFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 				};
 
-			$scope.callAPI(rvGroupConfigurationSrv.getRates, {
-				successCallBack: onFetchRatesSuccess,
-				failureCallBack: onFetchRatesFailure,
-				params: {
-					from_date: $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_from), 'yyyy-MM-dd'),
-					to_date: $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_to), 'yyyy-MM-dd'),
-					company_id: ($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.id) || null,
-					travel_agent_id: ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.id) || null
-				}
-			});
+			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
+				$scope.callAPI(rvGroupConfigurationSrv.getRates, {
+					successCallBack: onFetchRatesSuccess,
+					failureCallBack: onFetchRatesFailure,
+					params: {
+						from_date: $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_from), 'yyyy-MM-dd'),
+						to_date: $filter('date')(tzIndependentDate($scope.groupConfigData.summary.block_to), 'yyyy-MM-dd'),
+						company_id: ($scope.groupConfigData.summary.company && $scope.groupConfigData.summary.company.id) || null,
+						travel_agent_id: ($scope.groupConfigData.summary.travel_agent && $scope.groupConfigData.summary.travel_agent.id) || null
+					}
+				});
+			}
 		};
 
 		/**
@@ -1346,6 +1359,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				computedSegment: false,
 				rates: [],
 				contractedRates: [],
+				rateSelectDataObject: []
 			};
 
 			$scope.changeDatesActions = {};

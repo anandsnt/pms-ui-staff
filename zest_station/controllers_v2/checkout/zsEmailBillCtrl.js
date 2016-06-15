@@ -32,7 +32,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.email = $stateParams.email;
 			//check if print was done
-			$scope.printOpted = $stateParams.printopted;
+			$scope.printOpted = $stateParams.printopted === 'true';
 			//if user already has email provide two options
 			//else prompt for email entry
 			$scope.mode = !!$scope.email ? "EMAIL_BILL_GUEST_OPTIONS" : "EMAIL_BILL_EDIT_MODE";
@@ -55,39 +55,22 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			$scope.$emit('EJECT_KEYCARD');
 			$state.go('zest_station.speakToStaff');
 		};
-		/**
-		 *  Checkout the Guest
-		 */
-		var checkOutGuest = function() {
-			var params = {
-				"reservation_id": $scope.reservation_id,
-				"is_kiosk": true
-			};
-			var checkOutSuccess = function() {
-				$scope.mode = 'GUEST_BILL_EMAIL_SENT';
-			};
-			var options = {
-				params: params,
-				successCallBack: checkOutSuccess,
-				failureCallBack: failureCallBack
-			};
-			$scope.callAPI(zsCheckoutSrv.checkoutGuest, options);
-		};
-
+	
 
 		$scope.goToNextScreen = function() {
-			checkOutGuest();
+			$scope.emailSendingFailed = true;
+			$scope.mode = 'GUEST_BILL_EMAIL_SENT';
 		};
 
 		$scope.sendEmail = function() {
 			
 			var sendBillSuccess = function(response) {
 				$scope.emailSent = true;
-				checkOutGuest();
+				$scope.mode = 'GUEST_BILL_EMAIL_SENT';
 			};
 			var sendBillFailure = function(response) {
 				$scope.emailSendingFailed = true;
-				checkOutGuest();
+				$scope.mode = 'GUEST_BILL_EMAIL_SENT';
 			};
 			var params = {
 				reservation_id: $stateParams.reservation_id,

@@ -5,9 +5,9 @@
 
     <strong class="h2 message">Format Bill</strong>
 
-    <div class="entry full-width">
+    <div class="entry full-width" ng-hide="hideCompanyCardInvoiceToggle">
         <label>Generate Invoice for</label>
-        <div class="switch-button" ng-class="{'on': isCompanyCardInvoice}">
+        <div class="switch-button" ng-class="{'on': isCompanyCardInvoice, 'overlay': disableCompanyCardInvoice }">
             <input type="checkbox" checked ng-model="isCompanyCardInvoice" ng-click="changeCompanyCardInvoiceToggle()" />
             <label class="data-off">
                 <span class="value">Company</span>

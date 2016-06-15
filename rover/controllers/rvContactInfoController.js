@@ -23,6 +23,15 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
       presentContactInfo.last_name = data.last_name;
     });
 
+    /**
+     * when guest card creation failed
+     * @param  {array} errorMessage
+     */
+    var failureOfCreateGuestCard = function(errorMessage) {
+      $scope.$emit('hideLoader');
+      $scope.saveGuestCardInfoInProgress = false;
+    };
+
     $scope.saveContactInfo = function(newGuest) {
       var saveUserInfoSuccessCallback = function(data) {
         /**
@@ -97,6 +106,10 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         //TODO : Reduce all these places where guestId is kept and used to just ONE
         $scope.guestCardData.contactInfo.user_id = data.id;
         $scope.reservationDetails.guestCard.id = data.id;
+        
+        //dirty fix for handling multiple api call being made
+        $scope.saveGuestCardInfoInProgress = false;
+
         $scope.reservationDetails.guestCard.futureReservations = 0;
         if ($scope.reservationData && $scope.reservationData.guest) {
           $scope.reservationData.guest.id = data.id;
@@ -143,7 +156,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         if (typeof data.data.is_opted_promotion_email === 'undefined') {
           data.data.is_opted_promotion_email = false;
         }
-        $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback);
+        $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, failureOfCreateGuestCard);
       }
     };
 
@@ -158,8 +171,13 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
      */
     $scope.$on('saveContactInfo', function() {
       $scope.errorMessage = "";
-      if ((!$scope.reservationData.guest.id && !$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) || $scope.viewState.isAddNewCard) {
-        $scope.saveContactInfo(true);
+      if ((!$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) || $scope.viewState.isAddNewCard) {
+        //dirty fix until we refactor the whole staycard/card
+        if(!$scope.saveGuestCardInfoInProgress) {
+            $scope.saveGuestCardInfoInProgress = true;
+            $scope.saveContactInfo(true);
+        }
+        
       } else {
         $scope.saveContactInfo();
       }
@@ -207,6 +225,8 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
     var init = function() {
       // Fetch languages
       fetchGuestLanguages();
+
+      this.timeoutForSaveInfo = null;
     };
 
     init();

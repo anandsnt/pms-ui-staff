@@ -11,7 +11,7 @@ sntZestStation.config(function($httpProvider) {
 });
 
 
-sntZestStation.service('zsBaseWebSrv2',['$http', '$q', '$window', function($http, $q, $window){
+sntZestStation.service('zsBaseWebSrv2',['$http', '$q', '$window','$rootScope', function($http, $q, $window,$rootScope){
 
     /**
     *   A http requester method for calling webservice
@@ -35,6 +35,9 @@ sntZestStation.service('zsBaseWebSrv2',['$http', '$q', '$window', function($http
  		}
  		else if(httpMethod === 'POST' || httpMethod === 'PUT'){
  			httpDict.data = params;
+ 			if(typeof $rootScope.workstation_id !== 'undefined') {
+				httpDict.data.workstation_id = $rootScope.workstation_id;
+			}
   		};
 
 		//Sample params {params:{fname: "fname", lname: "lname"}}

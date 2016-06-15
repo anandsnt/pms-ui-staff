@@ -60,7 +60,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 **/
 		var updateIconPath = function(theme) {
 			if (theme === 'yotel') {
-                $scope.$emit('DONT_USE_NAV_ICONS');
+				$scope.$emit('DONT_USE_NAV_ICONS');
 				$scope.theme = theme;
 				iconsPath = '/assets/zest_station/css/icons/yotel';
 				$scope.setSvgsToBeLoaded(iconsPath);
@@ -83,7 +83,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 			// setPrinterOptions(); - to do
 		};
 
-		
+
 		$scope.setSvgsToBeLoaded(iconsPath);
 
 		var setPrinterOptions = function(theme) {
@@ -126,6 +126,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 				return;
 			};
 		};
+
+
 		/********************************************************************************
 		 *  Theme based actions ends here
 		 ********************************************************************************/

@@ -20,7 +20,7 @@
             <div class="entry margin">
                 <label>Type <strong>*</strong> </label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types"> 
+                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
                         <option value="" ng-selected="rateData.rate_type.id==''">Select Rate Type</option>
                     </select>
                 </div>
@@ -53,42 +53,62 @@
             </div>
             <!-- CICO-9289 Hourly Rates Hiding the Based On thing until implementation is completed -->
             <!-- TODO : Once thebased on rates is handled for hourly, do away with the ng-show conditon -->
-            <div class="entry margin" ng-show="!rateData.is_hourly_rate">
-                <label ng-hide="isPromotional()">Based On</label>
-                <label ng-show="isPromotional()">Copy From</label>
-                <div class="select">
-                    <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
-                        <option value="">Select Rate</option>
-                    </select>
+            <div class="entry entry-no-bottom full-width" ng-class="{'overlay' : is_edit}">
+                <label>Based On / Copy From</label>
+                <div class="boxes">
+                    <div class="switch-container">
+                        <!-- Add class ".on" when selected Copy From -->
+                        <div class="switch-button with-text" ng-class="{'on' : !rateData.based_on.is_copied}">
+                            <!-- Add attribute checked when selected Copy From -->
+                            <input id="basedon" name="basedon" type="checkbox" ng-model="rateData.based_on.is_copied" />
+                            <label class="data-off">
+                                <span class="value">Based</span>
+                                <span class="button orange">Copy From</span>
+                            </label>
+                            <label class="data-on">
+                                <span class="button orange">Based</span>
+                                <span class="value">Copy From</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="full-width">
+                        <div class="entry margin">
+                            <div class="select white">
+                                <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
+                                    <option value="">Select Rate</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="entry">
+                            <div class="select white select-col col1-3">
+                                <select class="placeholder" ng-model="rateData.based_on.value_sign">
+                                                <option value="+">+</option>
+                                                <option value="-">-</option>
+                                            </select>
+                            </div>
+                            <div class="entry col1-3">
+                                 <input type="text" value="" placeholder="" class="white" ng-model="rateData.based_on.value_abs">
+
+                            </div>
+                            <div class="select white select-col col1-3">
+                                <select class="placeholder" ng-model="rateData.based_on.type">
+                                    <option value="amount">{{currencySymbol}}</option>
+                                    <option value="percent">%</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- CICO-9289 Hourly Rates Hiding the Based On thing until implementation is completed -->
-            <!-- TODO : Once thebased on rates is handled for hourly, do away with the rateData.is_hourly_rate in ng-hide conditon -->
-            <div class="entry" ng-hide="rateData.is_hourly_rate">
-                <div class="select select-col col1-3 actions_margin_top">
-                    <select class="styled" ng-model="rateData.based_on.value_sign">
-                        <option value="+">+</option>
-                        <option value="-">-</option>
-                    </select>
-                </div>
-                <div class=" select-col col1-3 actions_margin_top">
-                    <ad-textbox inputtype="text" value="rateData.based_on.value_abs" styleclass="col1-3" label="" placeholder="" style=" width: 66px;"></ad-textbox>
-                </div>
-                <div class="select select-col col1-3">
-                    <select class="styled" ng-model="rateData.based_on.type">
-                        <option value="amount">{{currencySymbol}}</option>
-                        <option value="percent">%</option>
-                    </select>
-                </div>
-            </div>
+
         </fieldset>
         <fieldset class="holder right">
             <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label="Description " placeholder="Enter Rate Description" required="true"></ad-textarea>
             <div class="entry" ng-show="!isHourlyRatesEnabled() && isStandAlone" ng-hide="!isStandAlone || isHourlyRatesEnabled()">
-                <ad-toggle-button is-checked="rateData.is_pms_only" ng-click="togglePMSOnly()" label="PMS ONLY"></ad-toggle-button>            
+                <ad-toggle-button is-checked="rateData.is_pms_only" ng-click="togglePMSOnly()" label="PMS ONLY"></ad-toggle-button>
                 <ad-toggle-button is-checked="rateData.is_channel_only" ng-click="toggleChannelOnly()" label="CHANNEL ONLY"></ad-toggle-button>
-            </div> 
-            <div class="entry full-width">           
+            </div>
+            <div class="entry full-width">
                 <section ng-show="shouldShowMemberRates()">
                     <ad-toggle-button is-checked="rateData.is_member_rate" label="MEMBER RATE"></ad-toggle-button>
                 </section>

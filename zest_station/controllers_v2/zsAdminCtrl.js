@@ -202,6 +202,7 @@ sntZestStation.controller('zsAdminCtrl', [
                     id: station.station_identifier
                 });
                 $scope.zestStationData.set_workstation_id = station.id;
+                $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 $scope.zestStationData.key_encoder_id =  station.key_encoder_id;
                 $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, {
                     'status': $scope.zestStationData.workstationStatus,
@@ -314,9 +315,17 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.passWord = "";
             hideNavButtons();
             $scope.setScroller('admin-screen');
+            
+            
+            var localDebugging = false;//change this if testing locally, be sure to make false if going up to dev/release/prod
+            if (localDebugging && !($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad))){
+                $scope.isIpad = true;
+                $scope.zestStationData.isAdminFirstLogin = true;
+            }
+            
             //if invoked from chrome app or ipad
             //show direct admin without login
-            if ($scope.zestStationData.isAdminFirstLogin) {
+            if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)) {
                 $scope.mode = "admin-screen-active";
                 $scope.zestStationData.isAdminFirstLogin = false;
             } else {

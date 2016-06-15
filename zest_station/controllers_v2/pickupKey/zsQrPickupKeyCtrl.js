@@ -13,7 +13,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 		 **																		 
 		 ***********************************************************************************************/
 
-		var qrScanFailed = function() {
+		var onQRScanFail = function() {
 			$scope.$emit('hideLoader');
 			if ($scope.zestStationData.pickup_qr_scan_fail_over) {
 				//provide small time out, so as to let user know what is happening
@@ -23,20 +23,17 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 			}
 		};
 
-
+		//qr scan arrow
+		$scope.arrowDirection  = !!$scope.zestStationData.qr_scanner_arrow_direction ? $scope.zestStationData.qr_scanner_arrow_direction : "right";
 
 		var fetchReservationDetails = function(reservation_id) {
 			/*
 			 * The Scanned QR-code returns the Reservation_id
 			 *  to lookup the reservation, we need to get the Room No. + Last name
 			 */
-			var room_no, last_name;
-
-			var reservation_id = reservation_id;
-
 			var onFailureFetchReservation = function(response) {
 				console.warn(response);
-				qrScanFailed();
+				onQRScanFail();
 			};
 			var onSuccessFetchReservation = function(response) {
 				var room_no = response.reservation_card.room_number;
@@ -73,37 +70,35 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
 		};
 
-		/**************** datalogic *****************/
+		/**************** DATALOGIC *****************/
 		/**
 		 *  Call back action broadcasted from root ctrl
 		 **/
-		$scope.$on('QR_SCAN_SUCCESS', function(event, data) {
+		var onDatalogicQRScanSuccess = function(event, data) {
 			console.info("QR scanned reservation_id:------>" + data.reservation_id);
 			fetchReservationDetails(data.reservation_id);
-		});
-
-		var initChromeAppQRCodeScanner = function() {
-			if ($scope.inChromeApp) {
-				$scope.chromeApp.fetchQRCode();
-				console.info("::Starting QR Code Scanner::");
-			} else {
-				$scope.$emit('showLoader');
-				$timeout(function() {
-					qrScanFailed();
-				}, 1000);
-			}
 		};
 
-		/**************** datalogic ************************/
+		/**************** /DATALOGIC ************************/
+                
+        $scope.scanQRCode = function(){
+            if ($scope.zestStationData.qr_scanner_samsotech) {
+                console.info('scan samsotech');
+				samsoTechScan();
+			} else {
+                console.info('scan datalogic');
+				//$scope.zestStationData.qr_scanner_datalogic
+				initChromeAppQRCodeScanner();
+			}
+        };
 
 		/******************* SAMSOTECH ********************/
-
-		$scope.$on('QR_PASSPORT_SCAN_MSG', function(evt, info) {
+		var receiveSamsoTechMsg = function(evt, info){
 			console.log(arguments);
 			if (typeof info.msg === typeof 'str') {
 				if (info.msg.indexOf('Invalid') !== -1) {
 					$scope.at = 'input-qr-code';
-					qrScanFailed();
+					onQRScanFail();
 					console.warn('scan failed..');
 					$scope.runDigestCycle();
 				} else if (info.msg.indexOf(' : ') !== -1) {
@@ -113,13 +108,13 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 						fetchReservationDetails(reservationId);
 					}
 					else {
-						qrScanFailed();
+						onQRScanFail();
 					}
 				}
 			}
-		});
-
-
+		};
+		//should only be listening for websocket activity 
+		//		if chromeapp + samsotech is the selected reader
 		var listenForWebsocketActivity = function() {
 			$scope.$on('SOCKET_CONNECTED', function() {
 				console.info('socket connected, start capture');
@@ -127,7 +122,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 			});
 			$scope.$on('SOCKET_FAILED', function() {
 				console.info('socket failed...');
-				qrScanFailed();
+				onQRScanFail();
 			});
 		};
 
@@ -138,11 +133,23 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				listenForWebsocketActivity();
 				$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
 			}
-		}
+		};
+                
+        var initChromeAppQRCodeScanner = function() {
+			if ($scope.inChromeApp) {
+				$scope.chromeApp.fetchQRCode();
+				console.info("::Starting QR Code Scanner::");
+			} else {
+				$scope.$emit('showLoader');
+				$timeout(function() {
+					onQRScanFail();
+				}, 1000);
+			}
+		};
 
-		/******************* SAMSOTECH ********************/
+		/******************* /SAMSOTECH ********************/
 
-
+                
 		/**
 		 * [initializeMe description]
 		 */
@@ -157,14 +164,15 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				$state.go('zest_station.home');
 			});
 			$scope.qrCodeScanFailed = false;
-			if ($scope.zestStationData.qr_scanner_samsotech) {
-				samsoTechScan();
-			} else {
-				//$scope.zestStationData.qr_scanner_datalogic
-				initChromeAppQRCodeScanner();
-			}
+			
 		}();
 
+		/******************** LISTENERS ***********************/
+
+		$scope.$on('QR_SCAN_SUCCESS', onDatalogicQRScanSuccess);
+		$scope.$on('QR_PASSPORT_SCAN_MSG', receiveSamsoTechMsg);
+
+		/******************** /LISTENERS ***********************/
 		/**
 		 * QR scan failure actions
 		 **/
@@ -175,9 +183,10 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				'mode': 'PICKUP_KEY'
 			});
 		};
+
 		$scope.retryQRScan = function() {
 			$scope.qrCodeScanFailed = false;
-			initChromeAppQRCodeScanner();
+			//initChromeAppQRCodeScanner();
 		};
 
 

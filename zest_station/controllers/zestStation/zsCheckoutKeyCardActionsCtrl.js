@@ -83,6 +83,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 
 
 		$scope.$on('UID_FETCH_SUCCESS', function(event, data) {
+                    console.info(':: UID_FETCH_SUCCESS :: ');
 			findReservation(data.uid)
 		});
 

@@ -51,6 +51,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				$scope.$emit('hideLoader');
 					$scope.data.check_in_primetime ="AM";
 					$scope.data.check_out_primetime = "AM";
+				$scope.data.hotel_pms_type = "";
 			};
 
 			$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);

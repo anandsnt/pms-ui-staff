@@ -251,12 +251,13 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 				'guest_id': $scope.selectedReservation.guest_details[0].id,
 				'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
 				'deposit_amount': $scope.selectedReservation.reservation_details.deposit_amount,
-				'room_no': $scope.selectedReservation.reservation_details.room_no,
+				'room_no': $scope.selectedReservation.reservation_details.room_number,//this changed from room_no, to room_number
 				'room_status': $scope.selectedReservation.reservation_details.room_status,
 				'payment_type_id': $scope.selectedReservation.reservation_details.payment_type,
 				'guest_email': $scope.selectedReservation.guest_details[0].email,
 				'guest_email_blacklisted': $scope.selectedReservation.guest_details[0].is_email_blacklisted,
-				'first_name': $scope.selectedReservation.guest_details[0].first_name
+				'first_name': $scope.selectedReservation.guest_details[0].first_name,
+				'balance_amount' : $scope.selectedReservation.reservation_details.balance_amount
 			}
 			$state.go('zest_station.checkInTerms', stateParams);
 		};
@@ -305,17 +306,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                         beginEarlyCheckin(settings);
 
                     } else {
-			var bypassTerms = !$scope.zestStationData.kiosk_display_terms_and_condition;
-                        console.info('bypassTerms: ',bypassTerms);
-                        if (!bypassTerms) { //add early check-in check here
-                            initTermsPage();
-                        } else {
-                            goToSignaturePage();
-                        } 
+			            // terms and condition skip is done in terms and conditions page
+                       initTermsPage();
                     } 
                 };
                 var routeToNext = function(){
-                    console.info(': routeToNext :')
+                    console.info(': routeToNext :');
                     //in order to route to the next screen, check if we should go through early checkin,
                     //also check terms and conditions (bypass) setting,
                     //first fetch fresh early checkin settings, and continue from there
@@ -351,12 +347,15 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 			console.info('roomAssigned: ', roomAssigned, ', roomReady: ', roomReady);
                         
 			if (!roomIsAssigned()) {
+                                console.info('assigning room');
 				assignRoomToReseravtion(); //assigns room, if success- goes to terms
 
 			} else if (roomIsAssigned() && roomIsReady()) {
+                                console.info('room is assigned and ready, continuing');
 				routeToNext();
 
 			} else if (roomIsAssigned() && !roomIsReady()) {
+                                console.info('room assigned but not ready, show room error');
 				initRoomError();
 
 			}

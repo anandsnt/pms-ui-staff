@@ -1,0 +1,53 @@
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2 translate>M3_HEADER</h2>
+        <a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
+
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
+        <form class="form float" >
+            <fieldset class="holder left">
+                <div class="form-title full-width">
+                    <h3><span translate>M3_SUB_TITLE</span> </h3>
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>
+                                <label><span translate>AFAS_ACTIVATE_INACTIVATE</span></label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: m3Accounting.enabled }" ng-click="toggleActivation()">
+                                    <input type="checkbox">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <ad-textbox inputtype="text" value="m3Accounting.hotelCode"
+                            label="{{'M3_FACILITY_ID'| translate}}"
+                            styleclass="full-width"
+                            ng-if="m3Accounting.enabled"></ad-textbox>
+
+            </fieldset>
+
+            <fieldset class="holder right" ng-if="m3Accounting.enabled">
+                <div class="form-title full-width">
+                    <h3><span translate>EMAIL_RECIPIENT_FOR_EOD_EXPORTS</span> </h3>
+                </div>
+                <div class="entry full-width">
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="m3Accounting.emails" label = "{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" placeholder = ""></ad-textarea>
+                </div>
+            </fieldset>
+
+            <ad-save-cancel-area save-action="saveSetup" cancel-action="goBackToPreviousState"></ad-save-cancel-area>
+
+        </form>
+    </section>
+</div>

@@ -254,11 +254,11 @@
                         <div class="reservation-info">
                             <div class="arrival-departure">
                                 <span class="guest-status check-in">{{'GROUP_CHECK-IN'|translate}}</span>
-                                <time datetime="{arrival timestamp}">{{formatDateForUI(reservation.arrival_date)}}</time>
+                                <time datetime="{arrival timestamp}">{{reservation.arrival_date|date:dateFormat}}</time>
                             </div>
                             <div class="departing">
                                 <span class="guest-status check-out">{{'GROUP_CHECK-OUT'|translate}}</span>
-                                <time datetime="{departure timestamp}">{{formatDateForUI(reservation.departure_date)}}</time>
+                                <time datetime="{departure timestamp}">{{reservation.departure_date|date:dateFormat}}</time>
                             </div>
                         </div>
                         <div class="room-info">

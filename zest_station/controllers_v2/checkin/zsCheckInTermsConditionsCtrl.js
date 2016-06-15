@@ -35,7 +35,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			$scope.mode = "TERMS_CONDITIONS";
 
 		};
-		init();
+		
 
 		var goToDepositScreen = function() {
 			$state.go('zest_station.checkInDeposit', {
@@ -47,10 +47,12 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'room_status': $stateParams.room_status,
 				'reservation_id': $stateParams.reservation_id,
 				'guest_id': $stateParams.guest_id,
-				'mode': 'DEPOSIT'
+				'mode': 'DEPOSIT',
+				'balance_amount': $stateParams.balance_amount
 			});
 		};
 		var goToSignaturePage = function() {
+                    console.warn('current state params: @ ',$state.current.name,$stateParams);
 			var stateParams = {
 				'email': $stateParams.guest_email,
 				'reservation_id': $stateParams.reservation_id,
@@ -84,7 +86,8 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'room_status': $stateParams.room_status,
 				'id': $stateParams.reservation_id,
 				'guest_id': $stateParams.guest_id,
-				'mode': 'CREDIT_CARD_AUTH'
+				'mode': 'CREDIT_CARD_AUTH',
+				'balance_amount': $stateParams.balance_amount
 			};
 			$state.go('zest_station.checkInCardSwipe', stateParams);
 		};
@@ -105,13 +108,13 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 
 			var checkIfCCToBeBypassed = function(response) {
 				//1. If Routing is setup, bypass the credit card collection screen.
-				//2. If guest has $0 balance on Window 1 AND there are no other Bill Windows present, 
+				//2. If guest has $0 balance  AND there are no other Bill Windows present, 
 				//bypass the credit card collection screen
 				//3. If guest payment type is PP - Pre Payment or DB - Direct Bill, 
 				//bypass the credit card collection screen
 				//4. if No Routing and balance > 0, credit card prompt like normal.
 				return response.routing_setup_present ||
-					(parseInt(response.balance_in_window1) === 0 && response.no_of_bill_windows === 1) ||
+					(parseInt($stateParams.balance_amount) === 0 && response.no_of_bill_windows === 1) ||
 					(response.paymenet_type === "PP" || response.paymenet_type === "DB");
 			};
 			var onSuccess = function(response) {
@@ -161,6 +164,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
 			$scope.agreeTerms();
 		} else {
+			init();
 			initiateTermsAndConditions();
 		}
 	}

@@ -10,7 +10,7 @@
             <div class="entry full-width with-switch">
                 <label for="split-value" translate>SPLITTING_FOR</label>
                 <div class="switch-button" ng-class="{'on':splitTypeisAmount}">
-                    <input name="split-type" id="split-type" value="" type="checkbox" ng-model="splitTypeisAmount"/>
+                    <input name="split-type" id="split-type" value="" ng-change="showSpiltValues()" type="checkbox" ng-model="splitTypeisAmount"/>
                     <label class="data-off">
                         <span class="switch-icon">%</span>
                         <span class="value">{{currencySymbol}}</span>
@@ -20,7 +20,7 @@
                         <span class="switch-icon">{{currencySymbol}}</span>
                     </label>
                 </div>
-                <input name="split-value" id="split-value" placeholder="{{'ENTER_SPLIT_VALUE_PLACEHOLDER' | translate}}" ng-model="splitValue" type="text" />
+                <input name="split-value" id="split-value" ng-change="showSpiltValues()"placeholder="{{'ENTER_SPLIT_VALUE_PLACEHOLDER' | translate}}" ng-model="splitValue" type="text" />
             </div>
             <!-- Preview, hidden until split value is defined -->
             <div id="split-preview" class="entry full-width notice" ng-hide="splitValue.length === 0 || !splitValue">
@@ -28,16 +28,12 @@
                 <ul>
                     <li>
                         {{selectedTransaction.desc}}
-                        <span class="value" ng-hide="splitTypeisAmount">
-                            {{(selectedTransaction.amount*splitValue/100) | number:2}}</span>
-                            <span class="value" ng-show="splitTypeisAmount">{{(selectedTransaction.amount -splitValue) | number:2}} </span>
-
-                        </li>
-                        <li>
-                            {{selectedTransaction.desc}}
-                            <span class="value" ng-hide="splitTypeisAmount">{{(selectedTransaction.amount -(selectedTransaction.amount*splitValue/100)) | number:2}}</span>
-                            <span class="value" ng-show="splitTypeisAmount">{{splitValue | number:2}}</span>
-                        </li>
+                        <span class="value">{{displayFirstValue | number:2}} </span>
+                    </li>
+                    <li>
+                        {{selectedTransaction.desc}}
+                        <span class="value">{{displaySecondValue | number:2}}</span>
+                    </li>
                     </ul>
                 </div>
                 <div class="actions">

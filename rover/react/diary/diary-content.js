@@ -160,7 +160,6 @@ var DiaryContent = React.createClass({
             self.state.angular_evt.onScrollEnd(Math.abs(self.state.iscroll.grid.x) / self.state.display.px_per_ms + self.state.display.x_n);
             self.state.angular_evt.completedRendering.apply(self, Array.prototype.slice.call(arguments));
         }, 1000);
-
   	},
   	componentWillUnmount: function() {
   		$(window).off('resize');
@@ -247,7 +246,8 @@ var DiaryContent = React.createClass({
 								onScrollEnd:                scope.onScrollEnd,
 								onScrollLoadTriggerRight: 	scope.onScrollLoadTriggerRight,
 								onScrollLoadTriggerLeft: 	scope.onScrollLoadTriggerLeft,
-								completedRendering:         scope.eventAfterRendering
+								completedRendering:         scope.eventAfterRendering,
+								saveReservationOnDrop:      scope.saveReservationOnDrop
 							},
 							currentDragItem: props.currentDragItem,
 							currentResizeItem: props.currentResizeItem,
@@ -260,7 +260,8 @@ var DiaryContent = React.createClass({
 							iscroll: {
 				  				timeline: undefined,
 				  				rooms: undefined,
-				  				grid: undefined
+				  				grid: undefined,
+				  				unassignedList: undefined
 				  			},
 				  			stats: props.stats,
 				  			data : props.data
@@ -287,6 +288,10 @@ var DiaryContent = React.createClass({
 		return React.DOM.div({
 			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + /*(props.currentResizeItem*/ (state.edit.active ? ' editing' : '')
 		},
+		React.createElement( UnassignedRoomPanel, {
+			unassignedRoomList: props.unassignedRoomList,
+			iscroll: 			state.iscroll,
+		}),
 		React.createElement( TogglePanel, {
 			__toggleRows:  		self.__toggleRows
 		}),
@@ -331,6 +336,7 @@ var DiaryContent = React.createClass({
 			data: 					state.data,
 			currentResizeItem: 		props.currentResizeItem,
 			currentResizeItemRow: 	props.currentResizeItemRow,
+			unassignedRoomList:        props.unassignedRoomList,
 			angular_evt: 			state.angular_evt,
 			__onResizeCommand: 		self.__onResizeCommand,
 			__onGridScroll: 		self.__onGridScroll,

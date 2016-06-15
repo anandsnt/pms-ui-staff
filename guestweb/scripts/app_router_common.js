@@ -34,8 +34,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
         controller: 'checkOutBalanceController',
        	templateUrl: '/assets/common_templates/partials/checkout/gwBill.html',
 	    title: 'Balance - Check-out Now'
-    })
-    .state('checkOutStatus', {
+    }).state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
        	templateUrl: '/assets/common_templates/partials/checkout/gwCheckoutfinal.html',
@@ -151,6 +150,14 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	url: '/guestCheckinTurnedOff',
 	 	templateUrl: '/assets/common_templates/partials/checkin/gwExternalCheckInTurnedOff.html',
 	 	title: 'Check-in'
-	 });
-
+	 }).state('guestCheckinEarly', {
+		url: '/guestCheckinEarly/:date',
+		templateUrl: '/assets/common_templates/partials/checkin/gwEarlyToCheckin.html',
+		controller: 'earlyToCheckinCtrl',
+		title: 'Check-in'
+	}).state('guestCheckinLate', {
+		url: '/guestCheckinLate',
+		templateUrl: '/assets/common_templates/partials/checkin/gwLateToCheckin.html',
+		title: 'Check-in'
+	});
 }]);

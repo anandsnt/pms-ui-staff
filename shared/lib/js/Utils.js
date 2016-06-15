@@ -13,7 +13,7 @@ var dclone = function(object, unwanted_keys){
                 delete newObject[unwanted_keys[i]];
             }
     }
-  
+
     return newObject;
 };
 
@@ -115,7 +115,7 @@ var isAnyMatch = function(val, arr){
         }
     }
     return ret;
-};  
+};
 
 var getCurrencySign = function(currencyCode) {
     return CurrencyInfoMappings[currencyCode][1];
@@ -155,12 +155,12 @@ function getParentWithSelector($event, selector) {
         $event.target = selector;
     }
     return matched;
-    
+
 };
 
 
 /**
-* utils function to remove null & empty value keys from a dictionary, 
+* utils function to remove null & empty value keys from a dictionary,
 * please use deepcopy of that object as parameter to function
 */
 
@@ -178,9 +178,9 @@ function removeNullKeys(dict){
 function getDateString(dateObj){
     var yr = dateObj.getFullYear();
     var month = dateObj.getMonth() + 1;
-    var monthFormatted = (month < 10) ? ("0"+ month) : month; 
+    var monthFormatted = (month < 10) ? ("0"+ month) : month;
     var date = dateObj.getDate();
-    var dateFormatted = (date < 10) ? ("0"+ date) : date; 
+    var dateFormatted = (date < 10) ? ("0"+ date) : date;
 
     var dateString = yr + '-' + monthFormatted + '-' + dateFormatted;
 
@@ -191,7 +191,7 @@ function getTimeFormated(hours, minutes, ampm) {
     var time = "";
     hours = parseInt(hours);
     minutes = parseInt(minutes);
-    
+
     if(ampm == "PM" && hours < 12) hours = hours + 12;
     if(ampm == "AM" && hours == 12) hours = hours - 12;
     var sHours = hours.toString();
@@ -225,7 +225,7 @@ var getMappedRoomStatusColor = function(reservationStatus, roomReadyStatus, foSt
 
     var reservationRoomStatusClass = "";
     if(reservationStatus == 'CHECKING_IN' && roomReadyStatus!=''){
-        
+
         if(foStatus == 'VACANT'){
             switch(roomReadyStatus) {
                 case "INSPECTED":
@@ -243,7 +243,7 @@ var getMappedRoomStatusColor = function(reservationStatus, roomReadyStatus, foSt
                 case "PICKUP":
                     reservationRoomStatusClass = " room-orange";
                     break;
-    
+
                 case "DIRTY":
                     reservationRoomStatusClass = " room-red";
                     break;
@@ -251,13 +251,50 @@ var getMappedRoomStatusColor = function(reservationStatus, roomReadyStatus, foSt
                     reservationRoomStatusClass = " ";
                     break;
             }
-        
+
         } else {
             reservationRoomStatusClass = "room-red";
         }
-            
-    } 
+
+    }
     return reservationRoomStatusClass;
+};
+
+var restrictionCssClasses = {
+    "CLOSED" : "red",
+    "CLOSED_ARRIVAL" : "red",
+    "CLOSED_DEPARTURE" : "red",
+    "MIN_STAY_LENGTH" : "blue",
+    "MAX_STAY_LENGTH" : "",//no need of colors for some restriction -CICO-28657 - check HTML
+    "MIN_STAY_THROUGH" : "violet",
+    "MIN_ADV_BOOKING" : "green",
+    "MAX_ADV_BOOKING" : "grey",
+    "DEPOSIT_REQUESTED" : "",
+    "CANCEL_PENALTIES" : "",
+    "LEVELS" : "",
+    "INVALID_PROMO" : "",
+    "HOUSE_FULL" : ""
+    };
+function getRestrictionClass(restriction){
+    return restrictionCssClasses[restriction];
+};
+var restrictionIcons = {
+    "CLOSED" : "icon-cross",
+    "CLOSED_ARRIVAL" : "icon-block",
+    "CLOSED_DEPARTURE" : "",
+    "MIN_STAY_LENGTH" : "",
+    "MAX_STAY_LENGTH" : "",
+    "MIN_STAY_THROUGH" : "",
+    "MIN_ADV_BOOKING" : "",
+    "MAX_ADV_BOOKING" : "",
+    "DEPOSIT_REQUESTED" : "",
+    "CANCEL_PENALTIES" : "",
+    "LEVELS" : "",
+    "INVALID_PROMO" : "",
+    "HOUSE_FULL" : ""
+    };
+function getRestrictionIcon(restriction){
+    return restrictionIcons[restriction];
 };
 
 
@@ -308,7 +345,8 @@ var sixCreditCardTypes = {
       "MC": 'MC',
       "VS": 'VA',
       "VX": 'VA',
-      "MX": 'DS'//Six iframe reurns MX for discover. not good
+      "MX": 'DS',//Six iframe reurns MX for discover. not good,
+      "MV": 'MC'
 };
 
 function getSixCreditCardType(cardCode){
@@ -371,8 +409,8 @@ function isEmptyObject(obj) {
 }
 
 /** Returns a deep copy of the date object**/
-Date.prototype.clone = function() { 
-    return new Date(this.getTime()); 
+Date.prototype.clone = function() {
+    return new Date(this.getTime());
 };
 
 /**
@@ -413,7 +451,7 @@ function getWeekDayName(dayIndexInWeek, minLetterCount){
 
 
 function getTextWidth(text){
-        // create a dummy span, we'll use this to measure text.          
+        // create a dummy span, we'll use this to measure text.
         var tester = $('<span>'),
 
           // get the computed style of the input
@@ -460,16 +498,16 @@ var escapeNull = function(value, replaceWith){
 };
 
 var DateFormatInfoMappings = {
-    
+
     'MM-DD-YYYY': ['MM-dd-yyyy','mm-dd-yy'],
     'MM/DD/YYYY': ['MM/dd/yyyy','mm/dd/yy'],
     'DD-MM-YYYY': ['dd-MM-yyyy','dd-mm-yy'],
     'DD/MM/YYYY': ['dd/MM/yyyy','dd/mm/yy']
-    
+
 };
 
 var getDateFormat = function(dateFormat) {
-    
+
     if(typeof dateFormat === 'undefined'){
         return DateFormatInfoMappings['MM-DD-YYYY'][0];
     }
@@ -504,7 +542,7 @@ var tConvert = function(time){
 var tConvertToAPIFormat = function(hh, mm, ampm){
 	var time = "";
 	if(parseInt(mm) < 10){
-		mm = '0' + parseInt(mm); 
+		mm = '0' + parseInt(mm);
 	}
 	if(ampm == "PM"){
 		time = ( parseInt(hh) + 12) + ":" + mm;
@@ -560,8 +598,8 @@ var checkIfReferencetextAvailableForCC = function(paymentTypes,selectedPaymentTy
             angular.forEach(paymentType.values, function(value, key) {
                 if(selectedPaymentTypeCard.toUpperCase() === value.cardcode){
                     displayReferance = (value.is_display_reference)? true:false;
-                };                  
-            });             
+                };
+            });
         }
     });
     return displayReferance;

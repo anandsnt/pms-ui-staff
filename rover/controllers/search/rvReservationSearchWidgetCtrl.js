@@ -1016,6 +1016,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				}
 			}
 		});
+		$scope.showStatus = function(reservation){
+			if(reservation.room_ready_status =='CLEAN' ||reservation.room_ready_status== 'INSPECTED'){
+				return false;
+			}else{
+				return reservation.reservation_status === 'CHECKING_IN'&& (!!reservation.is_room_due_out || !!reservation.fostatus);
+			};
+		};
 
 		/**
 		 * Get the room status to show the reservation search screen

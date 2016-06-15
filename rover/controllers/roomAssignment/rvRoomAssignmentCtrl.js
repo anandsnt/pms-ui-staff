@@ -13,7 +13,8 @@ sntRover.controller('RVroomAssignmentController',[
 	'$timeout',
 	'ngDialog',
 	'RVSearchSrv',
-	function($scope, $rootScope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv, roomsList, roomPreferences, roomUpgrades, $timeout, ngDialog, RVSearchSrv){
+	'rvPermissionSrv',
+	function($scope, $rootScope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv, roomsList, roomPreferences, roomUpgrades, $timeout, ngDialog, RVSearchSrv, rvPermissionSrv){
 
 	// set a back button on header
 	$rootScope.setPrevState = {
@@ -157,6 +158,40 @@ sntRover.controller('RVroomAssignmentController',[
 		params.room_number = $scope.roomTransfer.newRoomNumber;
 		$scope.invokeApi(RVRoomAssignmentSrv.moveInHouseRooms, params, successCallbackMoveInHouseRooms, errorCallbackMoveInHouseRooms);
 
+	};
+
+
+	$scope.checkRoomTypeAvailability = function(roomObject){
+		var availabilityCount = _.findWhere($scope.roomTypes, {"id": roomObject.room_type_id}).availability;
+		var currentRoomType = $scope.getCurrentRoomType();
+		var isAvailablityExist = (availabilityCount > 0) ? true : false;
+		var isOverBookPermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+		$scope.currentRoomObject = roomObject;
+		if (currentRoomType.type == oldRoomType) {
+   			$scope.showMaximumOccupancyDialog(roomObject);
+		} else {
+		    if (!isAvailablityExist) {
+		        if (isOverBookPermission) {
+		            ngDialog.open({
+		                template: '/assets/partials/roomAssignment/rvOverBookRoom.html',
+		                controller: 'RVOverBookRoomDialogController',
+		                className: 'ngdialog-theme-default',
+		                scope: $scope
+		            });
+
+		        } else {
+		            ngDialog.open({
+		                template: '/assets/partials/roomAssignment/rvRoomTypeNotAvailable.html',
+		                className: 'ngdialog-theme-default',
+		                scope: $scope
+		            });
+		        }
+		    } else {
+		        $scope.showMaximumOccupancyDialog(roomObject);
+		    }
+
+		}
+		////showMaximumOccupancyDialog()
 	};
 
 	/**
@@ -824,7 +859,6 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.applyFilterToRooms();
 		$scope.clickedButton = $stateParams.clickedButton;
 		$scope.assignedRoom = "";
-
 		oldRoomType = $scope.roomType = $stateParams.room_type;
 		$scope.isStandAlone = $rootScope.isStandAlone;
 		$scope.isFiltersVisible = false;
