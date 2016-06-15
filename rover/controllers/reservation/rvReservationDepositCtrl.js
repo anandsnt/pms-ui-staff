@@ -462,35 +462,47 @@ sntRover.controller('RVReservationDepositController',
 			$scope.depositData.card_type = paymentDetails.card_type;
 		}
 		
+
+		//the below code is commented as the payment linkage is now done i backend
+		
 		//if the rservation payment methode is Cash and deposit is 
 		//paid by CC, add that CC as payment method to the reservation
-		if($scope.$parent.reservationData.reservation_card.payment_method_used === 'CA' &&
-		   $scope.depositData.paymentType === 'CC'){
-			if($scope.newCardAdded && typeof cardAddedBySixPaySWipe === "undefined")
-			{
-				//if new card is added and payment is success, add the card to reservation
-				var addPaymentTypeToReservation = true;
-				savePayment(addPaymentTypeToReservation);
-			}
-			//if old card is used for payment
-			else {
-				var onLinkPaymentSuccess = function(data) {
-					$scope.$emit('hideLoader');
-					//set data in the staycard
-					$scope.$parent.reservationData.reservation_card.payment_method_used = 'CC';
-					$scope.$parent.reservationData.reservation_card.payment_details.card_number = angular.copy($scope.depositData.cardNumber);
-					$scope.$parent.reservationData.reservation_card.payment_details.card_expiry = angular.copy($scope.depositData.expiry_date);
-					$scope.$parent.reservationData.reservation_card.payment_details.card_type_image = 'images/'+angular.copy($scope.depositData.card_type.toLowerCase())+'.png';
-				};
-				var linkPaymentData = {};
-				linkPaymentData.payment_type = "CC";
-				linkPaymentData.user_payment_type_id = ($scope.depositData.paymentType === 'CC' && $scope.depositData.selectedCard !== -1) ? $scope.depositData.selectedCard :null;
-				linkPaymentData.reservation_id = parseInt($stateParams.id);
-				$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, linkPaymentData, onLinkPaymentSuccess);
-			}
-		}
+		// if($scope.$parent.reservationData.reservation_card.payment_method_used === 'CA' &&
+		//    $scope.depositData.paymentType === 'CC'){
+		// 	if($scope.newCardAdded && typeof cardAddedBySixPaySWipe === "undefined")
+		// 	{
+		// 		//if new card is added and payment is success, add the card to reservation
+		// 		var addPaymentTypeToReservation = true;
+		// 		savePayment(addPaymentTypeToReservation);
+		// 	}
+		// 	//if old card is used for payment
+		// 	else {
+		// 		var onLinkPaymentSuccess = function(data) {
+		// 			$scope.$emit('hideLoader');
+		// 			//set data in the staycard
+		// 			$scope.$parent.reservationData.reservation_card.payment_method_used = 'CC';
+		// 			$scope.$parent.reservationData.reservation_card.payment_details.card_number = angular.copy($scope.depositData.cardNumber);
+		// 			$scope.$parent.reservationData.reservation_card.payment_details.card_expiry = angular.copy($scope.depositData.expiry_date);
+		// 			$scope.$parent.reservationData.reservation_card.payment_details.card_type_image = 'images/'+angular.copy($scope.depositData.card_type.toLowerCase())+'.png';
+		// 		};
+		// 		var linkPaymentData = {};
+		// 		linkPaymentData.payment_type = "CC";
+		// 		linkPaymentData.user_payment_type_id = ($scope.depositData.paymentType === 'CC' && $scope.depositData.selectedCard !== -1) ? $scope.depositData.selectedCard :null;
+		// 		linkPaymentData.reservation_id = parseInt($stateParams.id);
+		// 		$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, linkPaymentData, onLinkPaymentSuccess);
+		// 	}
+		// }
 		
-
+		//if the existing payment method is not CC or Direct BIll and the selected payment method is CC
+		//The submit payment will update the payment type for the bill
+		if($scope.$parent.reservationData.reservation_card.payment_method_used !== 'CC'
+		   && $scope.$parent.reservationData.reservation_card.payment_method_used !== 'DB'
+		   && $scope.depositData.paymentType === 'CC'){
+			$scope.$parent.reservationData.reservation_card.payment_method_used = 'CC';
+			$scope.$parent.reservationData.reservation_card.payment_details.card_number = angular.copy($scope.depositData.cardNumber);
+			$scope.$parent.reservationData.reservation_card.payment_details.card_expiry = angular.copy($scope.depositData.expiry_date);
+			$scope.$parent.reservationData.reservation_card.payment_details.card_type_image = 'images/'+angular.copy($scope.depositData.card_type.toLowerCase())+'.png';
+		}
 
 		$rootScope.$broadcast("UPDATE_DEPOSIT_BALANCE", data);
 		// Update reservation type
@@ -558,9 +570,10 @@ sntRover.controller('RVReservationDepositController',
 				$scope.shouldShowWaiting = true;
 				//the card will be added to reservation if existing payment methid is cash
 					//and six pay is succes by passing reservation_id
-				if($scope.$parent.reservationData.reservation_card.payment_method_used === 'CA'){
+				// if($scope.$parent.reservationData.reservation_card.payment_method_used !== 'CC' &&
+				//    $scope.$parent.reservationData.reservation_card.payment_method_used !== 'DB'){
 					dataToSrv.postData.reservation_id = $stateParams.id;
-				}
+				// }
 				RVPaymentSrv.submitPaymentOnBill(dataToSrv).then(function(response) {
 					$scope.shouldShowWaiting = false;
 					var cardAddedBySixPaySWipe = true;
