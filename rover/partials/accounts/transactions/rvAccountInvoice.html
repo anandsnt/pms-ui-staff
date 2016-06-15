@@ -88,7 +88,7 @@
                 <td>{{currencySymbol}}{{printData.bill_transactions_info.net_amount | number:2}}</td>
             </tr>
             <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.bill_transactions_info.tax_info">
-                <td colspan="4">{{tax.location}}</td>
+                <td colspan="4">{{tax.tax_charge_code_desc}}</td>
                 <td>{{currencySymbol}}{{tax.amount | number : 2}}</td>
             </tr>
             <tr>

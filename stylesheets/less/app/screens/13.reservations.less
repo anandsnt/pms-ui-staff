@@ -948,6 +948,14 @@
         .float;
         .square(100%);
 
+        .restriction-legends { 
+            bottom: 50px;
+            li {
+                width: 10%;
+                font-size: 11px;
+            }
+        }
+
         /* Steps ***/
         .reservation-content {
             position: absolute;
@@ -958,7 +966,7 @@
 
             /* Rooms & Rates ***/
             &.rooms-and-rates-content {
-                .calc-height(100, 150);
+                .calc-height(100, 200);
                 &.edit-guests{
                     .calc-height(100, 220);
                 }
@@ -993,7 +1001,19 @@
                             .corporate { line-height: 20px; }
                         }
 
-                        .corporate {
+                        .button-container {
+                            width: 100px;
+                            display: inline-block;
+                            height: 40px;
+                            vertical-align: middle;
+
+                            .button {
+                                width: 100%;
+                            }
+                        }
+
+                        .corporate,
+                        .recommended {
                             font-size: 10px;
                             text-transform: uppercase;
                             text-align: center;
@@ -1002,7 +1022,35 @@
                             color: @grey3;
                             vertical-align: top;
                             background: rgba(0,0,0,.1);
+                            height: 20px;
+                            font-weight: 600;
+                            line-height: 10px;
+                            margin-top: 10px;
                             #border-radius > .rounded();
+                            .pull-left;
+
+                            &.company{
+                                color: @ccard;
+                                background-color:fade(@ccard, 10);
+                            }
+                            &.group {
+                                color: @groupcard;
+                                background-color:fade(@groupcard, 10);
+                            }
+                            &.allotment{
+                                color: @allotmentcard;
+                                background-color:fade(@allotmentcard, 10);
+                            }
+                            &.travel-agent{
+                                color: @tacard;
+                                background-color:fade(@tacard, 10);
+                            }
+                           
+                        }
+
+                        .recommended {
+                            color: @logoPrimary;
+                            background-color:fade(@logoPrimary, 10);
                         }
 
                         span {
@@ -1016,6 +1064,17 @@
                             &.recommended { color: @logoPrimary; }
                         }
 
+                        .restriction-icon {
+                            .size(20px,20px);
+                            color: @white;
+                            display: inline-block;
+                            margin-top: 10px;
+                            line-height: 21px;
+                            font-size: 12px;
+                            margin-left: 10px;
+                            .pull-left;
+                        }
+
                         .data {
                             #pixel-to-percent > .width(950, 1968);
                             .float;
@@ -1023,7 +1082,7 @@
                             .pull-left;
 
                             h2 {
-                                max-width: 100%;
+                                max-width: 295px;
                                 .nowrap();
                                 .pull-left;
                             }
@@ -1034,9 +1093,12 @@
                                 .pull-left; 
                             }
 
+                            .restriction-icon {
+                                .pull-left;
+                            }
+
                             .count,
-                            .restricted,
-                            .recommended {
+                            .restricted {
                                 font-size: 16px;
                                 line-height: 40px;
                                 text-transform: uppercase;
@@ -1045,11 +1107,24 @@
                                 .pull-left;                                
                             }
                         }
-
+                        
+                        h4 {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            line-height: 14px;
+                            vertical-align: middle;
+                            span {
+                                color: @orange;
+                                display: block;
+                            }
+                        }
+                            
                         .book-rate {
                             text-align: right;
                             #pixel-to-percent > .width(1018, 1968);
                             .pull-left;
+
+                            
 
                             .select {
                                 width: 240px;
@@ -1112,10 +1187,15 @@
                                     h3 { 
                                         text-align: left;
                                         .pull-left; 
+                                        .nowrap();
+                                        max-width: 350px;
+                                        line-height: 40px;
+                                        &.restricted {
+                                            max-width: 300px;
+                                        }
 
                                         .restricted {
                                             font-size: 14px;
-                                            line-height: 1em;
                                             text-transform: uppercase;
                                             .show;                          
                                         }
@@ -1141,31 +1221,22 @@
                         }
 
                         &.is-rate {
-                            .data,
-                            .book-rate { 
-                                width: 100%;
-                                float: none;
-                                clear: both;
+                            h2 {
+                                max-width: 350px;
                             }
-
-                            .data {
-                                .restricted,
-                                .recommended { .pull-right; }
-                            }
-
-                            .book-rate {
-                                .float;
-
-                                .select {
-                                    clear: none;
-                                    .pull-left;
+                            
+                            &.is-recommended {
+                                h2.restricted {
+                                      max-width: 250px;
                                 }
                             }
 
-                            .toggle {
-                                &.active {
-                                    .book-rate { .show; }
-                                }
+                            > a > .data {
+                                width: 60%;
+                            }
+
+                            > a >  .book-rate {
+                                width: 40%;
                             }
                         }
 
@@ -1219,11 +1290,6 @@
 
                                 &:hover,
                                 &:active { color: @logoPrimary; }
-
-                                &.thin{
-                                    height: 30px;
-                                    line-height: 30px;
-                                }
                             }
 
                             &:after,
@@ -1370,7 +1436,7 @@
                     }
                 }
 
-                &.with-stay-days { .calc-height(100, 220); }
+                &.with-stay-days { .calc-height(100, 270); }
             }
 
             /* Change Dates ***/

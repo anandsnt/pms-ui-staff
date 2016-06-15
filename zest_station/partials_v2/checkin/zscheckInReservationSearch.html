@@ -4,10 +4,10 @@
         <h1 translate>TYPE_LAST</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered()" />
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered(); resetTime();" />
             </div>
             <div class="entry action">
-                <button type="button" class="button" click-touch="lastNameEntered()">Next</button>
+                <button type="button" class="button" click-touch="lastNameEntered(); resetTime();">Next</button>
             </div>
         </form>
     </div>
@@ -16,10 +16,10 @@
         <h1 translate>TYPE_FIRST_NAME</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.first_name" enter-press="firstNameEntered()" />
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.first_name" enter-press="firstNameEntered(); resetTime();" />
             </div>
             <div class="entry action">
-                <button type="button" class="button" click-touch="firstNameEntered()">Next</button>
+                <button type="button" class="button" click-touch="firstNameEntered(); resetTime();">Next</button>
             </div>
         </form>
     </div>
@@ -28,25 +28,25 @@
         <h1>{{'CHECK_IN_SELECT_HEADER' |translate}}</h1>
         <nav id="options" role="nav">
             <ul role="menu">
-                <li ng-show="zestStationData.checkin_screen.authentication_settings.departure_date && !zestStationData.isHourlyRateOn">
+                <li ng-show="zestStationData.checkin_screen.authentication_settings.departure_date">
                     <button type="button" class="button option" touch-press='findByDate(); resetTime();'>
                         <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
                         <div ng-include="icons.url.moon"></div>
                     </button>
                     {{'CHECK_IN_SELECT_DATE' |translate}}
                 </li>
-                <li class="break" ng-show="zestStationData.checkin_screen.authentication_settings.departure_date && !zestStationData.isHourlyRateOn">
+                <li class="break" ng-show="showOrBetweenDateAndNoOfNights">
                     <span translate>OR_TEXT</span>
                 </li>
-                <li ng-show="zestStationData.checkin_screen.authentication_settings.number_of_nights && !zestStationData.isHourlyRateOn">
-                    <button type="button" class="button option" touch-press='findByNoOfNights()'>
+                <li ng-show="zestStationData.checkin_screen.authentication_settings.number_of_nights">
+                    <button type="button" class="button option" touch-press='findByNoOfNights(); resetTime();'>
                         <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
                         <div ng-include="icons.url.moon"></div>
                     </button>
                     {{'CHECK_IN_NO_OF_NIGHTS' |translate}}
                     <span translate>CHECK_IN_NO_OF_NIGHTS_SUB</span>
                 </li>
-                <li class="break" ng-show="zestStationData.checkin_screen.authentication_settings.number_of_nights && !zestStationData.isHourlyRateOn">
+                <li class="break" ng-show="showOrBetweenNoOfNightsAndEmail">
                     <span translate>OR_TEXT</span>
                 </li>
                 <li ng-show="zestStationData.checkin_screen.authentication_settings.email">
@@ -57,7 +57,7 @@
                     {{'CHECK_IN_SELECT_EMAIL' |translate}}
                     <span translate>CHECK_IN_SELECT_EMAIL_SUB</span>
                 </li>
-                <li class="break" ng-show="zestStationData.checkin_screen.authentication_settings.email">
+                <li class="break" ng-show="showOrBetweenEmailAndConfirmNo">
                     <span translate>OR_TEXT</span>
                 </li>
                 <li ng-show="zestStationData.checkin_screen.authentication_settings.confirmation">
@@ -75,13 +75,13 @@
     <div id="content" ng-show="mode === 'FIND_BY_DATE'">
         <h1 translate>FIND_BY_DATE</h1>
         <form method="post" class="form short">
-            <div class="entry input" click-touch="showDatePicker()">
+            <div class="entry input" click-touch="showDatePicker(); resetTime();">
                 <!--div ng-include="'/assets/css/icons/date.svg'"></div-->
                 <div ng-include="icons.url.date"></div>
                 <input id="datepicker" placeholder="" class="hasDatepicker start-focused" ng-model="reservationParams.date" readonly>
             </div>
             <div class="entry action">
-                <button type="button" class="button" click-touch="dateEntered()">Next</button>
+                <button type="button" class="button" click-touch="dateEntered(); resetTime();">Next</button>
             </div>
         </form>
     </div>
@@ -90,10 +90,10 @@
         <h1 translate>TYPE_CONF</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.alt_confirmation_number" enter-press="confNumberEntered()" />
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.alt_confirmation_number" enter-press="confNumberEntered(); resetTime();" />
             </div>
             <div class="entry action">
-                <button type="button" class="button" click-touch="confNumberEntered()">Next</button>
+                <button type="button" class="button" click-touch="confNumberEntered(); resetTime();">Next</button>
             </div>
         </form>
     </div>
@@ -102,10 +102,10 @@
         <h1 translate>FIND_BY_DATE_SUB</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.no_of_nights" enter-press="noOfNightsEntered()" />
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.no_of_nights" enter-press="noOfNightsEntered(); resetTime();" />
             </div>
             <div class="entry action">
-                <button type="button" class="button" click-touch="noOfNightsEntered()">Next</button>
+                <button type="button" class="button" click-touch="noOfNightsEntered(); resetTime();">Next</button>
             </div>
         </form>
     </div>
@@ -114,10 +114,10 @@
         <h1 translate>TYPE_EMAIL</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.email" enter-press="emailEntered()" />
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.email" enter-press="emailEntered(); resetTime();" />
             </div>
             <div class="entry action">
-                <button type="button" class="button" click-touch="emailEntered()">Next</button>
+                <button type="button" class="button" click-touch="emailEntered(); resetTime();">Next</button>
             </div>
         </form>
     </div>
@@ -128,7 +128,7 @@
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
-                    <button type="button" class="button option" touch-press="reEnterText('name')">
+                    <button type="button" class="button option" touch-press="reEnterText('name'); resetTime();">
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
@@ -139,7 +139,7 @@
                     <span>Or</span>
                 </li>
                 <li>
-                    <button type="button" class="button option" touch-press="reEnterText('')">
+                    <button type="button" class="button option" touch-press="reEnterText(''); resetTime();">
                         <!-- no of nights or departure date selected -->
                         <div ng-include="icons.url.moon" ng-show="reservationParams.no_of_nights.length>0 ||reservationParams.date.length >0"></div>
                         <!-- email selected -->
@@ -154,7 +154,7 @@
                     <span>Or</span>
                 </li>
                 <li>
-                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                    <button type="button" class="button option" touch-press='talkToStaff(); resetTime();'>
                         <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
                         <div ng-include="icons.url.staff"></div>
                     </button>

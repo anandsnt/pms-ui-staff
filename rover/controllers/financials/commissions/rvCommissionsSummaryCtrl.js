@@ -23,7 +23,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
     var fetchCommissionsData = function(){
         var successCallBack = function(data){
             $scope.commissionsData = data;
-            initPaginationParams();
+            updatePaginationParams();
             $scope.errorMessage = "";
             $scope.$emit('hideLoader');
             refreshArOverviewScroll();
@@ -40,12 +40,13 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         $scope.invokeApi(RVCommissionsSrv.fetchCommissions, params, successCallBack );
     };
     $scope.searchAccounts = function(){
+        initPaginationParams();
         fetchCommissionsData();
     };
     var initSearchParams =function() {
         $scope.filterData = {
-            'page': 1,
-            'perPage': 50,
+            'page':1,
+            'perPage':50,
             'searchQuery': '',
             'minAmount': '',
             'billStatus': {'value': 'OPEN', 'name': 'OPEN'},
@@ -64,12 +65,18 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
 
     $scope.clearSearchQuery = function(){
         $scope.filterData.searchQuery = '';
+        initPaginationParams();
         fetchCommissionsData();
     };
-    var initPaginationParams = function() {
+    var updatePaginationParams = function(){
         $scope.showPagination =($scope.commissionsData.total_results <= 50)?false:true;
         $scope.start = ($scope.filterData.page ==1)?1:(($scope.filterData.page-1)*$scope.filterData.perPage)+1 ;
         $scope.end = (($scope.filterData.page *$scope.filterData.perPage )>=$scope.commissionsData.total_results)?$scope.commissionsData.total_results:($scope.filterData.page *$scope.filterData.perPage );
+
+    }
+    var initPaginationParams = function() {
+        $scope.filterData.page= 1,
+        $scope.filterData.perPage= 50
     };
     $scope.loadNextPage = function(){
         $scope.filterData.page++;
@@ -107,6 +114,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
 
     var init = function(){
         $scope.commissionsData ={};
+        $scope.filterData={};
         updateHeader();
         initSearchParams();
         fetchCommissionsData();

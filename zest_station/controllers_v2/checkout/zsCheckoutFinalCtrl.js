@@ -16,7 +16,9 @@ sntZestStation.controller('zsCheckoutFinalCtrl', [
 		 */
 		var initializeMe = function() {
 
-			$scope.printOpted = $stateParams.printOpted === "true";
+			$scope.printOpted = $stateParams.printopted === "true";
+			$scope.emailSent = $stateParams.email_sent === "true";
+			$scope.emailSendingFailed = $stateParams.email_failed === "true";
 			//hide back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			//hide close button

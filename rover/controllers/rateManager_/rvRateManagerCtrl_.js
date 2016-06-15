@@ -389,7 +389,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             
             lastSelectedFilterValues[activeFilterIndex].allRate.currentPage--;
 
-            if(lastSelectedFilterValues[activeFilterIndex].allRate.currentPage === 0) {
+            if(lastSelectedFilterValues[activeFilterIndex].allRate.currentPage <= 0) {
                 lastSelectedFilterValues[activeFilterIndex].allRate.currentPage = 1;
             }
         }
@@ -567,7 +567,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         };
     };
 
-    /**
+     /**
      * handle method to porcess the response for 'All Rates mode'
      * @param  {Object} response
      */
@@ -765,7 +765,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 {
                     fromDate    : formatDateForAPI(filterValues.fromDate),
                     toDate      : formatDateForAPI(filterValues.toDate),
-                    page        : (filterValues.allRate.currentPage - 1)
+                    page        : filterValues.allRate.currentPage > 1 ? filterValues.allRate.currentPage - 1 : 1
                 });
 
         //we will modify this with new response's rates
@@ -1642,7 +1642,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 lastSelectedFilterValues[activeFilterIndex].allRate = allRate;
                 newFilterValues.allRate = allRate;
 
-                cachedRateAndRestrictionResponseData = [];
                 totalRatesCountForPagination = 0;
                 fetchDailyRates(newFilterValues);
             }

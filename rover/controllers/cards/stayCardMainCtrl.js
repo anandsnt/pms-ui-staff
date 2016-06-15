@@ -15,7 +15,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-		
+
 
 
 		$scope.setHeadingTitle = function(heading) {
@@ -702,8 +702,8 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					$scope.cardRemoved(card);
 					$scope.cardReplaced(card, cardData);
 
-					//CICO-21205 
-					// Fix for Replace card was called even if lastCardSlot.cardType was an empty string		
+					//CICO-21205
+					// Fix for Replace card was called even if lastCardSlot.cardType was an empty string
 					if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType && card !== $scope.viewState.lastCardSlot.cardType) {
 						$scope.removeCard($scope.viewState.lastCardSlot.cardType, $scope.viewState.lastCardSlot.cardId, true);
 					}
@@ -715,13 +715,13 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					ngDialog.close();
 				},
 				onReplaceFailure = function(error) {
-					
+
 					$scope.cardRemoved();
 					//480 is reserved for cases where trial to use the card fails fails
 					if (error.httpStatus === 480) {
 	  					$scope.cardReplaced(card, cardData);
-	  					//CICO-21205 
-						// Fix for Replace card was called even if lastCardSlot.cardType was an empty string		
+	  					//CICO-21205
+						// Fix for Replace card was called even if lastCardSlot.cardType was an empty string
 						if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType) {
 							$scope.removeCard($scope.viewState.lastCardSlot);
 							$scope.viewState.lastCardSlot = "";
@@ -1112,6 +1112,10 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					if (!$scope.reservationData.demographics.source) {
 						$scope.reservationData.demographics.source = !data.source_id ? '' : data.source_id;
 					}
+					if (!$scope.reservationData.demographics.origin) {
+						$scope.reservationData.demographics.origin = !data.booking_origin_id ? '' : data.booking_origin_id;
+					}
+
 
 					angular.forEach($scope.reservationData.rooms, function(room, index) {
 						if (!room.demographics.market) {
@@ -1119,6 +1123,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 						}
 						if (!room.demographics.source) {
 							room.demographics.source = !data.source_id ? '' : data.source_id;
+						}
+						if (!room.demographics.origin) {
+							room.demographics.origin = !data.booking_origin_id ? '' : data.booking_origin_id;
 						}
 
 					});

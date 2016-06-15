@@ -79,6 +79,15 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 			onGeneralFailureCase();
 		};
 
+		/**
+		 * [resetFailureReason description]
+		 * we need to set the oos reason message in admin
+		 */
+		var revertFailureReason = function(response) {
+			$scope.zestStationData.workstationOooReason = "";
+			$scope.zestStationData.workstationStatus = 'in-order';
+		};
+
 		var noOfKeysCreated = 0;
 		/**
 		 * [saveUIDToReservation description]
@@ -92,9 +101,11 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				if ($scope.noOfKeysSelected === noOfKeysCreated) {
 					//all keys are made
 					$scope.mode = "KEY_CREATION_SUCCESS_MODE";
+					revertFailureReason();
 				} else if ($scope.noOfKeysSelected > noOfKeysCreated) {
 					//if more key is needed
 					$scope.mode = "KEY_ONE_CREATION_SUCCESS_MODE";
+					revertFailureReason();
 					//provide some timeout for user to grab keys
 					$timeout(dispenseKey, 6000);
 				}
@@ -136,7 +147,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 * @return {[type]}          [description]
 		 */
 		var localEncodingSuccsess = function(response) {
-			if (response.key_info && response.key_info[0]) {
+			if (response !== null && response.key_info && response.key_info[0]) {
 				if (response.key_info[0].base64) {
 					$scope.dispenseKeyData = response.key_info[0].base64;
 					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
@@ -188,9 +199,11 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 			if ($scope.noOfKeysSelected === noOfKeysCreated) {
 				//all keys are made
 				$scope.mode = "KEY_CREATION_SUCCESS_MODE";
+				revertFailureReason();
 			} else if ($scope.noOfKeysSelected > noOfKeysCreated) {
 				//one key has been made out of total 2
 				$scope.mode = "KEY_ONE_CREATION_SUCCESS_MODE";
+				revertFailureReason();
 				//provide some timeout for user to grab keys
 				$timeout(initMakeKey, 6000);
 			}

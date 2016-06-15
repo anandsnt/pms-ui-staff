@@ -54,6 +54,7 @@ module.exports = {
 				'rover/rvSntApp.js',
 				zestRoot + 'zsApp.js',
 				zestRoot + 'zsUtils.js',
+				zestRoot + 'zsCardOperations.js',
 				zestRoot + 'rvMLIOperations.js',
 				zestRoot + 'zsWebSocketActions.js',
 				zestRoot + 'zsChromeAppActions.js',

@@ -10,39 +10,48 @@
 			<ul id="expenses" class="expenses">
 				<li>
 					Room Cost
-					<span> {{currencySymbol}}{{depositBalanceData.data.room_cost}} </span>
+					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.room_cost}} </span>
+                    <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li>
 					Packages
-					<span> {{currencySymbol}}{{depositBalanceData.data.packages}} </span>
+					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.packages}} </span>
+                    <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li class="total">
 					Sub Total
-					<span> {{currencySymbol}}{{depositBalanceData.data.sub_total}} </span>
+					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.sub_total}} </span>
+                    <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li>
 					Fees
-					<span> {{currencySymbol}}{{depositBalanceData.data.fees}} </span>
+					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.fees}} </span>
+                    <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li class="total">
 					Stay Total
-					<span> {{currencySymbol}}{{depositBalanceData.data.stay_total}} </span>
+					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.stay_total}} </span>
+                    <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li>
 					Nightly Charge
-					<span> {{currencySymbol}}{{depositBalanceData.data.nightly_charges}} </span>
+					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.nightly_charges}} </span>
+                    <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li class="total final">
 					Total Cost of Stay
-					<span> {{currencySymbol}}{{depositBalanceData.data.total_cost_of_stay}} </span>
+					<span ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.total_cost_of_stay}} </span>
+                    <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li class="deposit">
 					Deposit Paid
-					<span class="green"> {{currencySymbol}}{{depositBalanceData.data.deposit_paid}} </span>
+					<span class="green" ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.deposit_paid}} </span>
+                    <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 				</li>
 				<li class="balance">
 					Outstanding Stay Total
-					<span class="red"> {{currencySymbol}}{{depositBalanceData.data.outstanding_stay_total}} </span>
+					<span class="red" ng-if="isBalanceAmountShown()"> {{currencySymbol}}{{depositBalanceData.data.outstanding_stay_total}} </span>
+                    <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
 
 				</li>
 			</ul>
@@ -91,7 +100,8 @@
                             <ul class="wrapper ">
                             <li ng-repeat="depositDue in depositBalanceData.data.deposit_dues" ng-class="{'paid': depositDue.paid, 'due': !depositDue.paid}">
                             {{depositDue.due_date | date : dateFormat}}
-                            <span>{{currencySymbol}}{{depositDue.due_amount}}</span>
+                            <span ng-if="isBalanceAmountShown()">{{currencySymbol}}{{depositDue.due_amount}}</span>
+                            <span ng-if="!isBalanceAmountShown()">{{'SUPPRESSED_RATES_TEXT' | translate}}</span>
                             </li>
                             </ul>
                     </div>
@@ -155,15 +165,27 @@
                                         <label for="amount">Amount to pay (<span>{{currencySymbol}})</span> </label>
 
                                         <!-- CICO-12408 : Use only when fee exsists -->
-                                        <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" type="text" class="amount" ng-class="{'red-text': depositWithGiftCard && !validPayment}" value="{{ depositBalanceMakePaymentData.amount | number:2 }}" ng-change="updatedAmountToPay(depositBalanceMakePaymentData.amount)"/>
+                                        <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" type="text" class="amount" ng-class="{'red-text': depositWithGiftCard && !validPayment}" value="{{ depositBalanceMakePaymentData.amount | number:2 }}" ng-change="updatedAmountToPay(depositBalanceMakePaymentData.amount)" ng-if="isBalanceAmountShown()"/>
+
+                                         <input name="amount" id="amount" type="text" class="amount" ng-class="{'red-text': depositWithGiftCard && !validPayment}" value="{{'SUPPRESSED_RATES_TEXT' | translate}}" ng-if="!isBalanceAmountShown()"/>
+
+
                                         <span ng-show="isShowFees()" class="delimiter">+</span>
-                                        <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(depositBalanceMakePaymentData.amount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
+                                        <input ng-show="isShowFees() && isBalanceAmountShown()" name="fee" id="fee" ng-keyup="calculateTotalAmount(depositBalanceMakePaymentData.amount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" ng-if="isBalanceAmountShown()"/>
+
+                                        <input ng-show="isShowFees() && !isBalanceAmountShown()" name="fee" id="fee"  value="{{'SUPPRESSED_RATES_TEXT' | translate}}" type="text" class="fee" />
                                         <span ng-show="isShowFees()" class="delimiter">fee</span>
 
-                                        <span ng-show="isShowFees()" class="total">
+                                        <span ng-show="isShowFees() && isBalanceAmountShown()" class="total">
                                             Total:
                                             <strong id="total-deposit-amount">
                                                     {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+                                            </strong>
+                                        </span>
+                                        <span ng-show="isShowFees() && !isBalanceAmountShown()" class="total" >
+                                            Total:
+                                            <strong id="total-deposit-amount">
+                                                    {{'SUPPRESSED_RATES_TEXT' | translate}}
                                             </strong>
                                         </span>
                                     </div>
@@ -171,15 +193,20 @@
                                         <label for="amount">Amount to pay (<span>{{currencySymbol}})</span> </label>
 
                                         <!-- CICO-12408 : Use only when fee exsists -->
-                                        <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" type="text" class="amount" ng-class="{'red-text': depositWithGiftCard && !validPayment}" value="{{ depositBalanceMakePaymentData.amount | number:2 }}" ng-change="updatedAmountToPay(depositBalanceMakePaymentData.amount)"/>
+                                        <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="depositBalanceMakePaymentData.amount" type="text" class="amount" ng-class="{'red-text': depositWithGiftCard && !validPayment}" value="{{ depositBalanceMakePaymentData.amount | number:2 }}" ng-change="updatedAmountToPay(depositBalanceMakePaymentData.amount)" ng-if="isBalanceAmountShown()"/>
+                                        <input ng-keyup="calculateFee()" name="amount" id="amount"  type="text" class="amount" ng-class="{'red-text': depositWithGiftCard && !validPayment}" value="{{'SUPPRESSED_RATES_TEXT' | translate}}" ng-if="!isBalanceAmountShown()"/>
                                         <span ng-show="isShowFees()" class="delimiter">+</span>
-                                        <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(depositBalanceMakePaymentData.amount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
+                                        <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(depositBalanceMakePaymentData.amount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" ng-if="isBalanceAmountShown()"/>
+                                        <input ng-show="isShowFees()" name="fee" id="fee"  value="{{'SUPPRESSED_RATES_TEXT' | translate}}" type="text" class="fee" ng-if="!isBalanceAmountShown()"/>
                                         <span ng-show="isShowFees()" class="delimiter">fee</span>
 
                                         <span ng-show="isShowFees()" class="total">
                                             Total:
-                                            <strong id="total-deposit-amount">
+                                            <strong id="total-deposit-amount" ng-if="isBalanceAmountShown()">
                                                     {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+                                            </strong>
+                                            <strong id="total-deposit-amount" ng-if="!isBalanceAmountShown()">
+                                                    {{'SUPPRESSED_RATES_TEXT' | translate}}
                                             </strong>
                                         </span>
                                     </div>

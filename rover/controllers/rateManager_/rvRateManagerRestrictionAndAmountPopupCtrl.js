@@ -7,13 +7,15 @@ angular.module('sntRover')
         '$filter',
         'rvRateManagerCoreSrv',
         'rvRateManagerEventConstants',
+        'ngDialog',
         function($scope,
             $rootScope,
             rvRateManagerPopUpConstants,
             util,
             $filter,
             rvRateManagerCoreSrv,
-            rvRateManagerEventConstants) {
+            rvRateManagerEventConstants,
+            ngDialog) {
 
         BaseCtrl.call(this, $scope);
 
@@ -327,6 +329,23 @@ angular.module('sntRover')
             $scope.callAPI(rvRateManagerCoreSrv.removeCustomRate, options);
         };
 
+        /*
+         * To close dialog box
+         */
+        $scope.closeDialog = function() {
+          document.activeElement.blur();
+          $scope.$emit('hideLoader');
+
+          $rootScope.modalClosing = true;
+          setTimeout(function() {
+            ngDialog.close();
+            $rootScope.modalClosing = false;
+            window.scrollTo(0, 0);
+            document.getElementsByClassName("pinnedLeft-list")[0].scrollTop = 0;
+            $scope.$apply();
+          }, 700);
+        };
+
         /**
          * [description]
          * @return {[type]} [description]
@@ -399,17 +418,16 @@ angular.module('sntRover')
          */
         const formDayAmountParamsForAPI = (params) => {
             var dialogData = $scope.ngDialogData;
-            
-            if(_.isEqual($scope.priceDetails, $scope.priceDetailsCopy)) {
-                return;
+
+            if(!_.isEqual($scope.priceDetails, $scope.priceDetailsCopy)) {
+                params.details.push({
+                    from_date: formatDateForAPI(dialogData.date),
+                    to_date: formatDateForAPI(dialogData.date)
+                });
+                const index = params.details.length - 1;
+                priceKeys.map( key => addAmountParamForAPI(key, params.details[index]));
             }
 
-            params.details.push({
-                from_date: formatDateForAPI(dialogData.date),
-                to_date: formatDateForAPI(dialogData.date)
-            });
-            const index = params.details.length - 1;
-            priceKeys.map( key => addAmountParamForAPI(key, params.details[index]));
         };
 
         /**
@@ -445,21 +463,19 @@ angular.module('sntRover')
          * @param  {Object} params
          */
         const addAmountParamForAPI = (key, paramDetail) => {
-            if($scope.priceDetails[key] !== $scope.priceDetailsCopy[key]) {
+            if(util.isNumeric($scope.priceDetails[key + '_changing_value'])) {
+                paramDetail[key] = {
+                    type: $scope.priceDetails[key + '_amount_perc_cur_symbol'] === '%' ? 'percent_diff' : 'amount_diff',
+                    value: parseFloat($scope.priceDetails[key + '_amount_operator'] + $scope.priceDetails[key + '_changing_value'])
+                }
+            } else{
                 paramDetail[key] = {
                     type: 'amount_new',
                     value: parseFloat($scope.priceDetails[key])
                 };
             }
-            else {
-                if(util.isNumeric($scope.priceDetails[key + '_changing_value'])) {
-                    paramDetail[key] = {
-                        type: $scope.priceDetails[key + '_amount_perc_cur_symbol'] === '%' ? 'percent_diff' : 'amount_diff',
-                        value: parseFloat($scope.priceDetails[key + '_amount_operator'] + $scope.priceDetails[key + '_changing_value'])
-                    };
-                }                     
-            }
         };
+
         /**
          * to update restriction rate
          */

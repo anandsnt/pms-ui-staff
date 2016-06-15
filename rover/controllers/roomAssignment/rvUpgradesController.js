@@ -18,21 +18,47 @@ angular.module('sntRover').controller('RVUpgradesCtrl',['$scope','$state', '$sta
 	// CICO-17082, do we need to call the the room assigning API with forcefully assign to true
 	// currently used for group reservation
 	var wanted_to_forcefully_assign = false;
+
 	/**
-	* Listener to set the room upgrades when loaded
-	*/
+	 * Utility function to check if a room can be assigned
+	 * @params {Object} room
+	 * @returns {Boolean} flag
+	 */
+	var isRoomReadyToAssign = function(room) {
+		if(room.room_status === "READY" && room.fo_status === "VACANT" && !room.is_preassigned){
+			if(room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED"){
+				return true;
+			}
+			else if(room.checkin_inspected_only === "false"){
+				return true;
+			}
+		}
+		return false;
+	};
+
+	/**
+	 * Listener to set the room upgrades when loaded. maps room number to room type.
+	 * @params {Object} event
+	 * @params {Object} data api response
+	 * @return {undefined}
+	 */
 	$scope.$on('roomUpgradesLoaded', function(event, data){
-			$scope.upgradesList = data.upsell_mapping;
-			_.each($scope.upgradesList, function(upgradesList){
-				upgradesList.upgrade_room_number = (_.findWhere($scope.allRooms, {"room_type_id": upgradesList.upgrade_room_type_id_int})).room_number;
-			});
-			// $scope.headerData = data.header_details;
-			$scope.reservation_occupancy = $scope.reservation_occupancy;
-			$scope.setUpgradesDescriptionInitialStatuses();
-			setTimeout(function(){
-				$scope.refreshScroller('upgradesView');
-				},
-			1000);
+
+		$scope.upgradesList = [];
+
+		/* Map room number to each upgradable room type.
+		   CICO-29824: only READY rooms should be shown that are VACANT/NOT RESERVED
+		 */
+		_.each(data.upsell_mapping, function(roomType){
+			var roomsInRoomType  = _.where($scope.allRooms, {"room_type_id": roomType.upgrade_room_type_id_int});
+				roomToUpgrade	 = _.filter(roomsInRoomType, isRoomReadyToAssign)[0];
+
+			roomType.upgrade_room_number = roomToUpgrade.room_number;
+			$scope.upgradesList.push(roomType)
+		});
+
+		$scope.setUpgradesDescriptionInitialStatuses();
+		setTimeout($scope.refreshScroller.bind(null, 'upgradesView'), 1000);
 	});
 	$scope.imageLoaded = function(){
 		$scope.refreshScroller('upgradesView');

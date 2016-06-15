@@ -41,26 +41,26 @@ sntZestStation.config(['$stateProvider',
 		});
 		//checkin key dispense
 		$stateProvider.state('zest_station.checkInKeyDispense', {
-			url: '/checkInKeyDispense/:guest_id',
+			url: '/checkInKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinKey.html',
-			controller: 'zsCheckinKeyDispensCtrl'
+			controller: 'zsCheckinKeyDispenseCtrl'
 		});
                 
 		//checking credit card swipe                 
       	$stateProvider.state('zest_station.checkInCardSwipe', {
-			url: '/checkInReservationCard/:mode/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:payment_type_id/:deposit_amount',
+			url: '/checkInReservationCard/:mode/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:payment_type_id/:deposit_amount/:balance_amount',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinCCSwipe.html',
 			controller: 'zsCheckinCCSwipeCtrl'
 		});
 		//terms and conditions                
       	$stateProvider.state('zest_station.checkInTerms', {
-			url: '/checkInTermsAndConditions/:guest_id/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name',
+			url: '/checkInTermsAndConditions/:guest_id/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name/:balance_amount',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinTermsConditions.html',
 			controller: 'zsCheckInTermsConditionsCtrl'
 		});
 		//reservation deposit                
       	$stateProvider.state('zest_station.checkInDeposit', {
-			url: '/checkInReservationDeposit/:reservation_id/:mode/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:guest_id',
+			url: '/checkInReservationDeposit/:reservation_id/:mode/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:guest_id/:balance_amount',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinDeposit.html',
 			controller: 'zsCheckinDepositCtrl'
 		});

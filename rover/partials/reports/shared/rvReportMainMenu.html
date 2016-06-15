@@ -1,13 +1,13 @@
 <ul id="report-main-menu">
-    <li class="active" ng-class="{'active': selected}"> <!-- Selected by default -->
+    <li ng-class="{'active': isReportView(reportViews[0])}" ng-click="switchReportView(reportViews[0])"> <!-- Selected by default -->
         <i class="icon-report icon-all-reports"></i>
         <span class="title has-arrow next-view">View All Reports</span>
     </li>
-    <!-- <li ng-class="{'active': selected}">
+    <li ng-class="{'active': isReportView(reportViews[1])}" ng-click="switchReportView(reportViews[1])">
         <i class="icon-report icon-schedule"></i>
         <span class="title has-arrow next-view">Scheduled Reports</span>
     </li>
-     <li ng-class="{'active': selected}">
+    <!-- <li ng-class="{'active': selected}">
         <i class="icon-report icon-category"></i>
         <span class="title has-arrow next-view">Add a Category</span>
     </li ng-class="{'active': selected}">

@@ -439,6 +439,10 @@ angular.module('reportsModule')
                     report['hasURLsList'] = filter;
                 };
 
+                if(filter.value === 'CAMPAIGN_TYPES') {
+                    report['hasCampaignTypes'] = filter;
+                };
+
                 // check for time filter and keep a ref to that item
                 // create std 15min stepped time slots
                 if ( filter.value === 'TIME_RANGE' ) {
@@ -657,6 +661,12 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchOrigins()
                         .then( fillOrigins );
+                }
+
+                else if ( 'CAMPAIGN_TYPES' == filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchCampaignTypes()
+                        .then( fillCampaignTypes );
                 }
 
                 else {
@@ -934,6 +944,31 @@ angular.module('reportsModule')
                                 selectAll: true,
                                 key: 'name',
                                 defaultValue: 'Select URL(s)'
+                            },
+                            updateData: function(shouldHide) {
+                                this.data = shouldHide ? [] : this.originalData;
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            };
+
+            function fillCampaignTypes (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'CAMPAIGN_TYPES'});
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasCampaignTypes = {
+                            data: angular.copy( data ),
+                            originalData: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'name',
+                                defaultValue: 'Select Campaign Type(s)'
                             },
                             updateData: function(shouldHide) {
                                 this.data = shouldHide ? [] : this.originalData;
@@ -1609,6 +1644,7 @@ angular.module('reportsModule')
 
             var returnObj = {
                 'businessDate' : new Date(_year, _month, _date),
+                'today'        : new Date(_year, _month, _date),
                 'yesterday'    : new Date(_year, _month, _date - 1),
                 'tomorrow'     : new Date(_year, _month, _date + 1),
                 'aWeekAgo'     : new Date(_year, _month, _date - 7),
@@ -1617,7 +1653,6 @@ angular.module('reportsModule')
                 'monthStart'   : new Date(_year, _month, 1),
                 'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
                 'twentyEightDaysAfter' : new Date(_year, _month, _date + 28),
-                'aMonthAfter'  : new Date(_year, _month, _date + 30),
                 'aYearAfter'   : new Date(_year + 1, _month, _date - 1)
             };
 
@@ -1634,23 +1669,34 @@ angular.module('reportsModule')
 
 
         // HELPER: create time slots
-        factory.createTimeSlots = function () {
+        factory.createTimeSlots = function (step) {
             var _ret  = [],
                 _hh   = '',
                 _mm   = '',
+                _step,
+                _parts,
+                _total;
+
+            if ( step === 30 ) {
+                _step = step;
+                _parts = 2;
+            } else {
                 _step = 15;
+                _parts = 4;
+            };
+
+            _total = _parts * 24;
 
             var i = 0,
                 m = 0,
                 h = -1;
 
-            // 4 parts in each of 24 hours (00 -> 23)
-            // 4 * 24 = 96
-            for (i = 0; i < 96; i++) {
+            // 4/2 parts in each of 24 hours (00 -> 23)
+            for (i = 0; i < _total; i++) {
 
                 // each hour is split into 4 parts
                 // x:00, x:15, x:30, x:45
-                if (i % 4 === 0) {
+                if (i % _parts === 0) {
                     h++;
                     m = 0;
                 } else {

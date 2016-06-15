@@ -1,7 +1,7 @@
 "EXACT_ONLINE_SETUP_HEADER": "Exact Online Setup",
 "EXACT_ONLINE_ACTIVATE_INACTIVATE": "Activate / Inactivate",
 "EXACT_ONLINE_SUB_TITLE": "API Access Configuration",
-"EXACT_ONLINE_ACCESS_URL": "Access Url",
-"EXACT_ONLINE_USERNAME": "Username",
-"EXACT_ONLINE_PASSWORD": "Password",
-"EXACT_ONLINE_HOTEL_CODE": "Hotel Code"
+"EXACT_ONLINE_OAUTH": "Authorize",
+"EXACT_ONLINE_RUN": "Run",
+"EXACT_ONLINE_AUTHORIZED": "Authorized",
+"EXACT_ONLINE_UNAUTHORIZED": "Unauthorized"

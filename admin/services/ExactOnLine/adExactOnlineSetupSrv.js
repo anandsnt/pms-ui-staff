@@ -6,7 +6,7 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
      */
     this.fetchExactOnLineConfiguration = function() {
         var deferred = $q.defer();
-        var url = 'admin/get_ota_connection_config.json?interface=EXACTONLINE';
+        var url = 'api/hotel_settings/exactonline';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
@@ -22,9 +22,25 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
      */
     this.saveExactOnLineConfiguration = function(params) {
         var deferred = $q.defer();
-        var url = 'admin/save_ota_connection_config.json?interface=EXACTONLINE';
+        var url = 'api/hotel_settings/exactonline';
 
         ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    /**
+     * to run Exact Online Export
+     * @return {undefined}
+     */
+    this.runExactOnlineExport = function(params) {
+        var deferred = $q.defer();
+        var url = 'api/hotel_settings/exactonline/run_process';
+
+        ADBaseWebSrvV2.putJSON(url, params).then(function(data) {
             deferred.resolve(data);
         },function(data){
             deferred.reject(data);

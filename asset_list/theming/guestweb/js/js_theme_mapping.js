@@ -21,12 +21,12 @@ module.exports = {
 			'guestweb_montauk' 	: [ themeJsRoot + 'app_router_montauk.js'],
 			'guestweb_nikko' 	: [ themeJsRoot + 'app_router_niko.js'],
 			'guestweb_palms' 	: [ themeJsRoot + 'app_router_palm_spa.js'],
-			'guestweb_sanctuary' : [ themeJsRoot + 'guestweb_router_santuary.js'],		
+			'guestweb_sanctuary' : [ themeJsRoot + 'guestweb_router_santuary.js'],
 			'guestweb_yotel' 	: [ themeJsRoot + 'app_router_yotel.js',zestRootJS],
 			'guestweb_zoku' 		: [ themeJsRoot + 'app_router_zoku.js',zestRootJS],
 			'guestweb_fontainebleau' 	: [ themeJsRoot + 'app_router_fontainebleau.js'],
 			'guestweb_great_wolf' 		: [ themeJsRoot + 'app_router_common.js'],
-			'guestweb_knickerbocker' 	: [ themeJsRoot + 'app_router_knickerbocker.js'],		
+			'guestweb_knickerbocker' 	: [ themeJsRoot + 'app_router_knickerbocker.js'],
 			'guestweb_margaritaville' 	: [ themeJsRoot + 'app_router_margaritaville.js'],
 			'guestweb' 	: [ themeJsRoot + 'app_router_carlyle.js'],
 			'guestweb_galleria' 	: [ themeJsRoot + 'app_router_galleria.js'],
@@ -55,9 +55,13 @@ module.exports = {
 			'guestweb_avery':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_newyork':[ themeJsRoot + 'app_router_mgm_chain.js'],
 			'guestweb_mirage': [ themeJsRoot + 'app_router_mgm_chain.js' , themeJsRoot + 'app_router_mirage.js'],
-			'guestweb_ponchartrain':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_valencia_san_antonio':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_monte_carlo' 	: [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte.js']
+			'guestweb_lonestar_court_austin':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_ponchartrain':[themeJsRoot + 'app_router_ponchartrain.js'],
+			'guestweb_valencia_santana_row':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_sorella_houston':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_monte_carlo' 	: [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte_carlo.js'],
+			'guestweb_sorella_kansas_city':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }
