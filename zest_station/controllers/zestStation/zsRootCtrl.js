@@ -1355,7 +1355,15 @@ sntZestStation.controller('zsRootCtrl', [
     $scope.$on('CONNECT_WEBSOCKET',function(){
         $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
     });
-
+    $scope.inDemoMode = function(){
+        if ($scope.zestStationData.demoModeEnabled === 'true'){
+            console.warn('in demo mode');
+            return true;
+        } else {
+            console.warn('not in demo mode');
+            return false;
+        }
+    };
     /***
 	 * [initializeMe description]
 	 * @return {[type]} [description]
@@ -1373,6 +1381,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        $scope.zestStationData.demoModeEnabled = 'false';//demo mode for hitech, only used in snt-theme
         $scope.zestStationData.workstationOooReason = "";
         $scope.zestStationData.workstationStatus = "";
         $scope.zestStationData.isAdminFirstLogin = true;
