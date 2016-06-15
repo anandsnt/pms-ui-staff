@@ -379,7 +379,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 //done
                 
                 $scope.setInitSwipeSettings();
-                $scope.initCardReaders();
+                initCardReaders();
                 if ($scope.inDemoMode()){
                     setTimeout(function(){
                         $scope.goToCardSign();    
