@@ -356,12 +356,15 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                             printAPI.key_encoder_id = $state.encoder;
                         }
 
-
-                        $scope.callAPI(zsTabletSrv.encodeKey, {
-                            params: printAPI,
-                            'successCallBack':onResponseSuccess,
-                            'failureCallBack':$scope.emitKeyError
-                        });
+                        if ($scope.inDemoMode()){
+                            onResponseSuccess({'status':'success'});
+                        } else {
+                            $scope.callAPI(zsTabletSrv.encodeKey, {
+                                params: printAPI,
+                                'successCallBack':onResponseSuccess,
+                                'failureCallBack':$scope.emitKeyError
+                            });
+                        }
                         
                       
                 },2000);
@@ -414,14 +417,20 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                $scope.prepForInService();
                 $state.selectedReservation.keySuccess = true;
                 $scope.zestStationData.wsIsOos = false;//after going home, reset this flag on success to overwrite any previous fail
-
-                $scope.dispenseKeyData = $scope.getKeyInfoFromResponse(response);
-                //$scope.connectWebSocket();//after the connect delay, will open and connect to the rover windows service, to use the sankyo device
-                setTimeout(function(){//starts the key dispense/write/eject functions in sankyo
-                    //$scope.UUIDforDevice();
-                        $scope.DispenseKey();
-                },2500);
-
+                
+                if ($scope.inDemoMode()){
+                    setTimeout(function(){
+                        initKeySuccessFlowForLocal();
+                    },1200)//add some delay for demo purposes
+                    
+                } else {
+                    $scope.dispenseKeyData = $scope.getKeyInfoFromResponse(response);
+                    //$scope.connectWebSocket();//after the connect delay, will open and connect to the rover windows service, to use the sankyo device
+                    setTimeout(function(){//starts the key dispense/write/eject functions in sankyo
+                        //$scope.UUIDforDevice();
+                            $scope.DispenseKey();
+                    },2500);
+                }
             } else {
                 console.info('print local key, actually was a failure...');
                 $scope.emitKeyError(response);
@@ -491,7 +500,12 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
             if (cmd === 'cmd_dispense_key_card'){
                 $scope.saveUIDToReservation(msg);//msg is the uid of the card, which needs to be saved to the reservation
             };
+            initKeySuccessFlowForLocal();
 
+        };
+
+
+        var initKeySuccessFlowForLocal = function(){
             switch ($scope.makeKeyParam()){
                 case 'one':
                 $scope.input.madeKey = 1;
@@ -510,11 +524,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 case 'done':
                 break;
             };
-
-        };
-
-
-
+        }
 
 
 
