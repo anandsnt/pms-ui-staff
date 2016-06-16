@@ -11,7 +11,7 @@ var UnassignedRoomPanel = React.createClass({
     __onListSelect: function(index) {
         this.props.iscroll.unassignedList.disable();
         this.setState({
-            selectedIndex: index
+            selectedIndex: index.toString()
         });
 
         var item = this.props.unassignedRoomList.data[index];
@@ -119,7 +119,7 @@ var UnassignedRoomPanel = React.createClass({
         }
 
         var __getItemClassName = function(index) {
-            return index === self.state.selectedIndex ? 'occupancy-status editing occupied check-in' : 'occupancy-status occupied check-in';
+            return index.toString() === self.state.selectedIndex ? 'occupancy-status editing occupied check-in' : 'occupancy-status occupied check-in';
         };
 
         var unassignedList;
