@@ -1412,7 +1412,7 @@ sntRover.controller('reservationDetailsController',
      * Checks whether the rate amount needs to show or not
      */
      $scope.isRateAmountShown = function() {
-     	return (!$scope.reservationData.reservation_card.is_rates_suppressed || RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked"));
+     	return ($scope.reservationData.reservation_card.is_rates_suppressed == 'false' || RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked"));
      };
 
 
