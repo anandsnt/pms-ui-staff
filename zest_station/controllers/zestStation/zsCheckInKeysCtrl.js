@@ -372,13 +372,28 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         
                         //local encoding + sankyo
                         if (keyFromSocket()){
-                            $scope.printLocalKey(response);
                             
+                            if ($scope.inDemoMode()){
+                                setTimeout(function(){
+                                    initKeySuccessFlowForLocal();
+                                },1200)//add some delay for demo purposes
+
+                            } else {
+                                $scope.printLocalKey(response);
+                                
+                            }
                             
                         } else if (writeLocally()){
                             //local encoding + infinea
-                            $scope.printLocalKeyCordova();
-                            return;
+                             if ($scope.inDemoMode()){
+                                setTimeout(function(){
+                                    onSuccessWriteKeyDataLocal();
+                                },1200)//add some delay for demo purposes
+                            } else {
+                            
+                                $scope.printLocalKeyCordova();
+                                return;
+                            }
                         }
                     } else {
                         //remote + remote
@@ -437,11 +452,11 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                         }
 
                         if ($scope.inDemoMode()){
-                            onResponseSuccess({'status':'success'});
+                            savePrintKeyResponse({'status':'success'});
                         } else {
                             $scope.callAPI(zsTabletSrv.encodeKey, {
                                 params: printAPI,
-                                'successCallBack':savePrintKeyResponse,
+                                'successCallBack':savePrintKeyResponse,//if remote, response not saved, only for local, need to cleanup for refactored code
                                 'failureCallBack':$scope.emitKeyError
                             });
                         }
