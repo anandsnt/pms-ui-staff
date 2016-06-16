@@ -1577,8 +1577,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Object} newFilterValues)
      */
     $scope.$on(rvRateManagerEventConstants.UPDATE_RESULTS, (event, newFilterValues) => {
+        var initiatedFromLeftFilter = (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter) 
         //Storing for further reference
-        if (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter) {
+        if (initiatedFromLeftFilter) {
             
             //setting the current scroll position as STILL
             newFilterValues.scrollDirection = rvRateManagerPaginationConstants.scroll.STILL;
@@ -1592,7 +1593,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         }
 
         if (newFilterValues.showAllRates) {
-            if (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter) {
+            if (initiatedFromLeftFilter) {
                 let allRate = {
                     ...lastSelectedFilterValues[activeFilterIndex].allRate,
                     currentPage: 1
@@ -1636,13 +1637,17 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 //calling the api
                 let allRate = {
                     ...lastSelectedFilterValues[activeFilterIndex].allRate,
-                    currentPage:  (_.has(newFilterValues, 'fromLeftFilter') && newFilterValues.fromLeftFilter) ? 1 : lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
+                    currentPage: initiatedFromLeftFilter ? 1 : lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
                 };
 
                 lastSelectedFilterValues[activeFilterIndex].allRate = allRate;
                 newFilterValues.allRate = allRate;
 
                 totalRatesCountForPagination = 0;
+
+                if( initiatedFromLeftFilter ) {
+                    cachedRateAndRestrictionResponseData = [];
+                }
                 fetchDailyRates(newFilterValues);
             }
         }
