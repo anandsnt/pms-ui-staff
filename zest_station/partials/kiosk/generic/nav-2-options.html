@@ -10,10 +10,10 @@
             <ul role="menu">
                 <!-- card swipe -->
                 <li ng-show='at === "card-swipe"'>
-                    <button ng-hide="zestStationData.theme === 'snt'" type="button" class="button option" touch-press='simulateSixPay()'>
+                    <button ng-hide="zestStationData.theme === 'snt' && zestStationData.ccReader !== 'local'" type="button" class="button option" touch-press='simulateSixPay()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
-                    <div ng-show="zestStationData.theme === 'snt'" class="margin-adj">
+                    <div ng-show="zestStationData.theme === 'snt' && zestStationData.ccReader === 'local'" class="margin-adj">
                         <div ng-include="icons.url.creditcard"></div>
                     </div>
                     
