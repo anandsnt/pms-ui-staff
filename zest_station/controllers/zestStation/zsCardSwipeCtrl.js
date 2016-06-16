@@ -338,7 +338,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                      };
                      console.info(params);
                      if ($scope.inDemoMode()){
-                        $scope.successDeposit();
+                         setTimeout(function(){
+                             $scope.successDeposit();
+                         },2000);
                         
                     } else {
                         setTimeout(function(){
@@ -890,9 +892,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         
         var captureAuthorization = function(amount, isEmv){
-            if ($scope.inDemoMode()){
-                continueToSign();
-            } else {
+            
             console.info(': captureAuthorization : ',amount)
             var data = {};
                 if (amount > 0){
@@ -924,11 +924,14 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                         
                     }
                 },200);
-                
+                if ($scope.inDemoMode()){
+                continueToSign();
+            } else {
                 console.log('authorizeCC @ captureAuthorization: ',$scope, ' :: data, ',data);
             $scope.invokeApi(zsPaymentSrv.authorizeCC, data, onSuccessCaptureAuth, onSwipeError, "NONE"); 
         }
         }
+        
         
         var onSwipeError = function(error){
                 console.info('FAILED: ',error);
@@ -999,6 +1002,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 } 
                 //true + false
                 else if($state.showDeposit && !needToAuthorizeAtCheckin) {
+                    $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
                     continueToSign();
                 }
                 //false + true

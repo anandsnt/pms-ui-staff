@@ -39,7 +39,8 @@ sntZestStation.controller('zsRootCtrl', [
     //
     var forDemo = function(){
         console.info('readLocally() : ',readLocally() )
-        console.info('$scope.theme : ',$state.theme )
+        console.info('$scope.theme : ',$state.theme );
+        $scope.zestStationData.theme = $state.theme;
         if(readLocally() && $state.theme === 'snt'){
             console.info('forDemo: !!!');
             return true;
@@ -331,6 +332,7 @@ sntZestStation.controller('zsRootCtrl', [
         };
         var changeIconsIfDemo = function(){
             if (forDemo()){//if we are reading locally, we'll show the ICMP icons for our SNT 
+                $scope.icons.url.creditcard_default = $scope.icons.url.creditcard;
                 $scope.icons.url.creditcard = $scope.iconsPath+'/demo_swiper.svg';
                 $scope.icons.url.createkey = $scope.iconsPath+'/demo_keyencoder.svg';
                 console.warn('using demo icons for create key and credit card reading');
