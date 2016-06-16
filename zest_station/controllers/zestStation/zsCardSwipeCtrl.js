@@ -333,7 +333,9 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                      };
                      console.info(params);
                      if ($scope.inDemoMode()){
-                        $scope.successDeposit();
+                         setTimeout(function(){
+                             $scope.successDeposit();
+                         },2000);
                         
                     } else {
                         setTimeout(function(){
@@ -1056,6 +1058,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 } 
                 //true + false
                 else if($state.showDeposit && !needToAuthorizeAtCheckin) {
+                    $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
                     continueToSign();
                 }
                 //false + true
