@@ -124,7 +124,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			return isRateChangeOcuured;
 		};
 
-		function saveChanges(override, keepCurrentRate) {
+		function saveChanges(override, keepCurrentRate, params) {
 
 			$scope.$emit('showLoader');
 			angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
@@ -175,15 +175,19 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
 
 			var successCallback = function(data) {
-				saveReservation();
+				if(params.isBackToStayCard){
+					saveReservation();
+				}
 				$scope.errorMessage = '';
 				//$scope.$emit('hideLoader');
 			};
 
 			var errorCallback = function(errorMessage) {
 				$scope.$emit('hideLoader');
-				$scope.$emit("OPENGUESTTAB");
 				$scope.errorMessage = errorMessage;
+				if(params.isBackToStayCard){
+					$scope.$emit("OPENGUESTTAB");
+				}
 			};
 
 			var dataToSend = dclone($scope.guestData, ["primary_guest_details", "accompanying_guests_details"]);
@@ -195,8 +199,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				delete guest.image;
 
 				if (!guest.first_name && !guest.last_name) {
-					guest.first_name = null;
-					guest.last_name = null;
+					guest.first_name = "";
+					guest.last_name = "";
 				}
 
 				dataToSend.accompanying_guests_details.push({
@@ -226,7 +230,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		};
 
 		/* To save guest details */
-		$scope.saveGuestDetails = function() {
+		$scope.saveGuestDetails = function(params) {
 			var data = JSON.parse(JSON.stringify($scope.guestData));
 			if (!angular.equals(data, initialGuestInfo)) {
 				$scope.$emit('showLoader');
@@ -239,7 +243,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 						calculateRateForCurrentGuest();
 						confirmForRateChange();
 					} else {
-						saveChanges();
+						saveChanges('', '', params);
 					}
 					$scope.$emit('hideLoader');
 				} else {
@@ -335,8 +339,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 		$scope.init();
 
-		$scope.$on("UPDATEGUESTDEATAILS", function(e) {
-			$scope.saveGuestDetails();
+		$scope.$on("UPDATEGUESTDEATAILS", function(e, params) {
+			$scope.saveGuestDetails(params);
 		});
 
 		$scope.$on("FAILURE_UPDATE_RESERVATION", function(e, data) {
