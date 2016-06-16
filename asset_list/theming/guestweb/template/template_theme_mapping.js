@@ -298,7 +298,7 @@ module.exports = {
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
 										precheckinPartials+'*.html'],
-			'guestweb_monte_carlo' 		:[ 'guestweb/**/common_templates/partials/MGM/**/*.html',
+			'guestweb_monte_carlo'  	:[ 'guestweb/**/common_templates/partials/MGM/**/*.html',
 										'guestweb/**/common_templates/partials/gwNoOption.html',
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
