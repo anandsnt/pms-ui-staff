@@ -49,7 +49,7 @@
                 
                 <li ng-show='at === "swipe-pay-error"'>
                     <button ng-hide="zestStationData.theme === 'snt'" type="button" class="button option" touch-press='reTryCardSwipe()'>
-                        <div ng-include="icons.url.creditcard_default"></div>
+                        <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <button ng-hide="zestStationData.theme !== 'snt'" type="button" class="button option" touch-press='reTryCardSwipe()'>
                         <div ng-include="icons.url.creditcard"></div>
@@ -92,7 +92,7 @@
 
                 <li ng-show='at === "deposit-agree"'> 
                     <button ng-hide="zestStationData.theme === 'snt'" type="button" class="button option" touch-press='depositProceed()'>
-                        <div ng-include="icons.url.creditcard_default"></div>
+                        <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <button ng-hide="zestStationData.theme !== 'snt'" type="button" class="button option" touch-press='depositProceed()'>
                         <div ng-include="icons.url.creditcard"></div>
