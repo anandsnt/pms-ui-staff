@@ -16,12 +16,10 @@
 
                     <span class="base" ng-hide="existingPackages.is_rate_addon">
                         at {{currencySymbol}}{{existingPackages.amount | number : 2}} / {{existingPackages.amount_type.description}}
-                        <span ng-show="existingPackages.post_type.value ==='NIGHT'">
-                            per stay
+                        <span>
+                            {{existingPackages.post_type.description}}
                         </span>
-                        <span ng-show="existingPackages.post_type.value ==='STAY'">
-                            per night
-                        </span>
+
                     </span>
 
                     <!-- if addon type is adult /child type multiplification factor will be (addon_count*number of days*(adult_count or child_count)) -->
