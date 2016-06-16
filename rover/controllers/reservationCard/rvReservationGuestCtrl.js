@@ -103,13 +103,13 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 		$scope.keepCurrentRate = function() {
 			//Save data variables keeping the Current Rate .
-			saveChanges(false, true);
+			saveChanges(false, true, {"isBackToStayCard": true});
 			closeDialog();
 		};
 
 		$scope.ChangeToNewRate = function() {
 			//Save data variables taking the New Rate .
-			saveChanges();
+			saveChanges(undefined, undefined, {"isBackToStayCard": true});
 			closeDialog();
 		};
 
@@ -124,7 +124,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			return isRateChangeOcuured;
 		};
 
-		function saveChanges(override, keepCurrentRate) {
+		function saveChanges(override, keepCurrentRate, params) {
 
 			$scope.$emit('showLoader');
 			angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
@@ -139,10 +139,14 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 						infants: parseInt($scope.guestData.infants_count || 0)
 					};
 					if (!$scope.reservationData.reservation_card.is_hourly_reservation) {
+						// CICO-30358: clicked on apply current rate button if custom rate is set keep it else keep actual rate.
 						if (override) {
-							var actual_amount = $scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount;
-							if (parseFloat(actual_amount) > 0.00) {
-								$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.modified_amount = actual_amount;
+							var rateForDay = $scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails,
+								actual_amount = parseFloat(rateForDay.actual_amount),
+								modified_amount = parseFloat(rateForDay.modified_amount);
+
+							if (actual_amount > 0.00 && !(modified_amount > 0.00)) {
+								rateDetails.modified_amount = actual_amount;
 							}
 							$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = 0;
 						} else if (keepCurrentRate) {
@@ -171,15 +175,21 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData));
 
 			var successCallback = function(data) {
-				saveReservation();
 				$scope.errorMessage = '';
-				//$scope.$emit('hideLoader');
+				if(params.isBackToStayCard){
+					saveReservation();
+				}
+				else {
+					$scope.$emit('hideLoader');
+				}
 			};
 
 			var errorCallback = function(errorMessage) {
 				$scope.$emit('hideLoader');
-				$scope.$emit("OPENGUESTTAB");
 				$scope.errorMessage = errorMessage;
+				if(params.isBackToStayCard){
+					$scope.$emit("OPENGUESTTAB");
+				}
 			};
 
 			var dataToSend = dclone($scope.guestData, ["primary_guest_details", "accompanying_guests_details"]);
@@ -191,8 +201,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				delete guest.image;
 
 				if (!guest.first_name && !guest.last_name) {
-					guest.first_name = null;
-					guest.last_name = null;
+					guest.first_name = "";
+					guest.last_name = "";
 				}
 
 				dataToSend.accompanying_guests_details.push({
@@ -210,7 +220,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		}
 
 		$scope.applyCurrentRate = function() {
-			saveChanges(true); //override
+			saveChanges(true, undefined, {"isBackToStayCard": true}); //override
 			closeDialog();
 		};
 
@@ -222,7 +232,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		};
 
 		/* To save guest details */
-		$scope.saveGuestDetails = function() {
+		$scope.saveGuestDetails = function(params) {
 			var data = JSON.parse(JSON.stringify($scope.guestData));
 			if (!angular.equals(data, initialGuestInfo)) {
 				$scope.$emit('showLoader');
@@ -235,7 +245,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 						calculateRateForCurrentGuest();
 						confirmForRateChange();
 					} else {
-						saveChanges();
+						saveChanges('', '', params);
 					}
 					$scope.$emit('hideLoader');
 				} else {
@@ -331,8 +341,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 		$scope.init();
 
-		$scope.$on("UPDATEGUESTDEATAILS", function(e) {
-			$scope.saveGuestDetails();
+		$scope.$on("UPDATEGUESTDEATAILS", function(e, params) {
+			$scope.saveGuestDetails(params);
 		});
 
 		$scope.$on("FAILURE_UPDATE_RESERVATION", function(e, data) {

@@ -275,8 +275,18 @@ sntRover.controller('reservationDetailsController',
 
 			// CICO-12454: Upon close the guest tab - save api call for guest details for standalone
 			if (!$scope.shouldShowGuestDetails && $scope.isStandAlone) {
-				$scope.$broadcast("UPDATEGUESTDEATAILS");
+				$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": true});
 			}
+		};
+		$scope.saveAccGuestDetails = function(){
+			setTimeout(function(){
+
+				if(document.activeElement.getAttribute("type") != "text"){
+					$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": false});
+				}
+
+
+			}, 800)
 		};
 
 		$scope.$on("OPENGUESTTAB", function(e) {

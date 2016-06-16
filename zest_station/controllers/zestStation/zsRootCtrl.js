@@ -31,7 +31,31 @@ sntZestStation.controller('zsRootCtrl', [
          $scope.inChromeApp = $("#hideFromChromeApp").css("visibility") === 'hidden' ;
          console.info(":: is in chrome app ->"+$scope.inChromeApp);
     }();
-
+    //
+    //for hi-tech demo we want to show some specific icons in the credit card swipe screen and key encoding screen
+    //since this will be in production, we just want a way to detect if this is for the demo or not
+    //for now, lets just check the workstation name text for "hitech" if its detected, 
+    //then we'll consider the workstation in (hi-tech demo mode)
+    //
+    var forDemo = function(){
+        console.info('readLocally() : ',readLocally() )
+        console.info('$scope.theme : ',$state.theme );
+        $scope.zestStationData.theme = $state.theme;
+        if(readLocally() && $state.theme === 'snt'){
+            console.info('forDemo: !!!');
+            return true;
+        } else {
+            console.info('not forDemo: ');
+            return false;
+        }
+    }
+    var readLocally = function(){
+        if ($scope.zestStationData.ccReader === 'local'){
+            return true;
+        } else {
+            return false;
+        }
+    };
     /**
      * to run angular digest loop,
      * will check if it is not running
@@ -306,7 +330,25 @@ sntZestStation.controller('zsRootCtrl', [
             }
             
         };
-           
+        var changeIconsIfDemo = function(){
+            if (forDemo()){//if we are reading locally, we'll show the ICMP icons for our SNT 
+                $scope.icons.url.creditcard_default = $scope.icons.url.creditcard;
+                $scope.icons.url.creditcard = $scope.iconsPath+'/demo_swiper.svg';
+                $scope.icons.url.createkey = $scope.iconsPath+'/demo_keyencoder.svg';
+                console.warn('using demo icons for create key and credit card reading');
+            } 
+        }
+        $scope.setMLISettings = function(){
+         //set MLI Merchant Id
+         try {
+             if (!MLIOperation.setMerChantID){
+                 MLIOperation = new MLIOperation();
+             }
+             console.warn('MLIOperator: ',MLIOperation);
+             console.info('$rootScope.MLImerchantId: ',$scope.zestStationData.MLImerchantId)
+             MLIOperation.setMerChantID($scope.zestStationData.MLImerchantId);
+         } catch (err) {};
+        }
         $scope.hotelThemeCB = function(response){
             //call Zest station settings API
             var options = {
@@ -314,6 +356,7 @@ sntZestStation.controller('zsRootCtrl', [
                 successCallBack: 	function(response){
                     $scope.zestStationData.mli_merchant_id = response.mli_merchant_id;
                     $scope.zestStationData.MLImerchantId = response.mli_merchant_id;
+                    $scope.setMLISettings();
                 }
             };
             $scope.callAPI(zsHotelDetailsSrv.fetchHotelSettings, options);
@@ -330,6 +373,8 @@ sntZestStation.controller('zsRootCtrl', [
             }
             theme = $scope.getThemeName(theme);//from here we can change the default theme(to stayntouch, or other hotel)
             $state.theme = theme;
+            $scope.theme = theme;
+            changeIconsIfDemo();
             if (theme !== null){
                 var loadStyleSheets = function(filename){
                     var fileref = document.createElement("link");
@@ -677,8 +722,8 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.wsIsOos = false;
             $scope.zestStationData.wsFailedReason =  '';
             $scope.zestStationData.workstationStatus = 'in-order';
-            setWorkStationInOrder();
             $scope.putOutOfOrderInCache(true);
+            setWorkStationInOrder();
         };
         
         
@@ -856,6 +901,7 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
                     $scope.zestStationData.payment_gateway = $scope.zestStationData.hotel_settings.payment_gateway;
                     $scope.zestStationData.hotelDateFormat = !!data.date_format ? data.date_format.value : "DD-MM-YYYY" ;
+                    $rootScope.emvTimeout = !!$scope.zestStationData.hotel_settings.emv_timeout ? $scope.zestStationData.hotel_settings.emv_timeout : 60;
                     console.info("::Hotel date format ->"+$scope.zestStationData.hotelDateFormat);
                     $scope.$emit('hideLoader');
             };
@@ -1351,11 +1397,49 @@ sntZestStation.controller('zsRootCtrl', [
         console.info("Websocket:-> socket connected");
         $scope.$broadcast('SOCKET_CONNECTED');
     };
+    var setReaderWriter = function(){
+        //(remote, websocket, local)
+        //
+        //local:  Infinea/Ingenico
+        //remote:  Ving, Salto, Saflok
+        //websocket:  Atlas / Sankyo
+        
+        $scope.zestStationData.ccReader = 'local';//default to local
+        $scope.zestStationData.keyWriter = 'local';
+        
+        var key_method = $scope.zestStationData.kiosk_key_creation_method;
+        if (key_method === 'ingenico_infinea_key'){
+            $scope.zestStationData.keyWriter = 'local';
+            
+        } else if (key_method === 'remote_encoding'){
+            $scope.zestStationData.keyWriter = 'remote';
+            
+        } else {//sankyo_websocket
+            $scope.zestStationData.keyWriter = 'websocket';
+        }
+        
+        var ccReader = $scope.zestStationData.kiosk_cc_entry_method;
+        if (ccReader === 'six_pay'){
+            $scope.zestStationData.ccReader = 'six_pay';
+        } else if (ccReader === 'ingenico_infinea'){
+            $scope.zestStationData.ccReader = 'local';//mli + local - ingenico/infinea
+        } else {//sankyo_websocket
+            $scope.zestStationData.ccReader = 'websocket';
+        }
+    };
 
     $scope.$on('CONNECT_WEBSOCKET',function(){
         $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
     });
-
+    $scope.inDemoMode = function(){
+        if ($scope.zestStationData.demoModeEnabled === 'true'){
+            console.warn('in demo mode');
+            return true;
+        } else {
+            console.warn('not in demo mode');
+            return false;
+        }
+    };
     /***
 	 * [initializeMe description]
 	 * @return {[type]} [description]
@@ -1373,6 +1457,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        $scope.zestStationData.demoModeEnabled = 'false';//demo mode for hitech, only used in snt-theme
         $scope.zestStationData.workstationOooReason = "";
         $scope.zestStationData.workstationStatus = "";
         $scope.zestStationData.isAdminFirstLogin = true;
@@ -1400,6 +1485,10 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.zestStationData.auto_print = $scope.zestStationData.registration_card.auto_print;
         $scope.zestStationData.emailEnabled = $scope.zestStationData.registration_card.email;
         $scope.setScreenIcon('bed');
+        
+        //set CC card reader and room key writer to local references
+        setReaderWriter();
+        console.warn(':: Key Writer + CC Reader = [',$scope.zestStationData.keyWriter, ' + ',$scope.zestStationData.ccReader,']');
         
 	}();
         
