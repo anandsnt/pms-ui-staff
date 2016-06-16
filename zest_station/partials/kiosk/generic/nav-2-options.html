@@ -10,10 +10,10 @@
             <ul role="menu">
                 <!-- card swipe -->
                 <li ng-show='at === "card-swipe"'>
-                    <button ng-hide="theme==='snt'" type="button" class="button option" touch-press='simulateSixPay()'>
+                    <button ng-hide="zestStationData.theme === 'snt'" type="button" class="button option" touch-press='simulateSixPay()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
-                    <div ng-show="theme==='snt'" class="margin-adj">
+                    <div ng-show="zestStationData.theme === 'snt'" class="margin-adj">
                         <div ng-include="icons.url.creditcard"></div>
                     </div>
                     
@@ -48,7 +48,10 @@
                 
                 
                 <li ng-show='at === "swipe-pay-error"'>
-                    <button type="button" class="button option" touch-press='reTryCardSwipe()'>
+                    <button ng-hide="zestStationData.theme === 'snt'" type="button" class="button option" touch-press='reTryCardSwipe()'>
+                        <div ng-include="icons.url.creditcard_default"></div>
+                    </button>
+                    <button ng-hide="zestStationData.theme !== 'snt'" type="button" class="button option" touch-press='reTryCardSwipe()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <h1>{{'TRY_AGAIN' |translate}}</h1>
@@ -88,7 +91,10 @@
                 </li>
 
                 <li ng-show='at === "deposit-agree"'> 
-                    <button type="button" class="button option" touch-press='depositProceed()'>
+                    <button ng-hide="zestStationData.theme === 'snt'" type="button" class="button option" touch-press='depositProceed()'>
+                        <div ng-include="icons.url.creditcard_default"></div>
+                    </button>
+                    <button ng-hide="zestStationData.theme !== 'snt'" type="button" class="button option" touch-press='depositProceed()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <h1>{{'DEPOSIT_NEXT_BUTTON' |translate}}</h1>
