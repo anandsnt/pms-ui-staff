@@ -138,9 +138,14 @@ sntZestStation.controller('zsRootCtrl', [
                     'id': $scope.zestStationData.set_workstation_id
                 }
             };
-            $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+            if (!$scope.inDemoMode()){
+                $scope.callAPI(zsTabletSrv.updateWorkStationOos, options);
+            } else {
+                console.info('In Demo Mode :: Not going to OOS')
+            }
     }
     $scope.$on(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, function(event, params) {
+        
         var oosReason = params.reason;
         var workstationStatus = params.status;
         
@@ -332,12 +337,14 @@ sntZestStation.controller('zsRootCtrl', [
         };
         var changeIconsIfDemo = function(){
             if (forDemo()){//if we are reading locally, we'll show the ICMP icons for our SNT 
-                $scope.icons.url.creditcard_default = $scope.icons.url.creditcard;
-                $scope.icons.url.creditcard = $scope.iconsPath+'/demo_swiper.svg';
-                $scope.icons.url.createkey = $scope.iconsPath+'/demo_keyencoder.svg';
+                $scope.icons.url.creditcard_icmp = $scope.iconsPath+'/demo_swiper.svg';
+                $scope.icons.url.createkey_icmp = $scope.iconsPath+'/demo_keyencoder.svg';
                 console.warn('using demo icons for create key and credit card reading');
-            } 
-        }
+                $scope.zestStationData.icmpdemo = true;
+            } else {
+                $scope.zestStationData.icmpdemo = false;
+            }
+        };
         $scope.setMLISettings = function(){
          //set MLI Merchant Id
          try {
@@ -707,6 +714,9 @@ sntZestStation.controller('zsRootCtrl', [
             }
         
         $scope.prepForOOS = function(reason, hardwareFailure){
+            if ($scope.inDemoMode()){
+                return;
+            }
             console.warn('prepForOOS: :reason: ',reason,',  :: hardware failure :: ',hardwareFailure)
              //this will get the kiosk ready to go into oos, 
             //once the home page initializes next,  the wsIsOos will be checked and go into OOS,
@@ -1457,6 +1467,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//call Zest station settings API
         $scope.zestStationData = zestStationSettings;
+        $scope.zestStationData.icmpdemo = false;
         $scope.zestStationData.demoModeEnabled = 'false';//demo mode for hitech, only used in snt-theme
         $scope.zestStationData.workstationOooReason = "";
         $scope.zestStationData.workstationStatus = "";

@@ -397,7 +397,7 @@ sntZestStation.controller('zsHomeCtrl', [
     
     
     var checkForOOS = function(){
-        if($scope.zestStationData.wsIsOos){
+        if($scope.zestStationData.wsIsOos && !$scope.inDemoMode()){
                 //update work station status
                 $scope.zestStationData.workstationOooReason = angular.copy($scope.zestStationData.wsFailedReason);
                 $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{
