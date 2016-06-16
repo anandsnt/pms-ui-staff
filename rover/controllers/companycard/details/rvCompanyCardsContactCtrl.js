@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', '$q', 'jsMappings', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog',
-	function($scope, $q, jsMappings, RVCompanyCardSrv, $state, $stateParams, ngDialog) {
+angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', '$q', 'jsMappings', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog', '$rootScope',
+	function($scope, $q, jsMappings, RVCompanyCardSrv, $state, $stateParams, ngDialog, $rootScope) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller('companyCardDetailsContactCtrl');

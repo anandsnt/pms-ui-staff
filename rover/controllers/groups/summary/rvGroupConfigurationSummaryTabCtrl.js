@@ -760,6 +760,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
             	$scope.$emit('hideLoader');
+            	console.log("##Billing-info old version");
 			    ngDialog.open({
 			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
 			        controller: 'rvBillingInformationPopupCtrl',
