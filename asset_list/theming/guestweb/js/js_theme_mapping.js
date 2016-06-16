@@ -60,7 +60,7 @@ module.exports = {
 			'guestweb_ponchartrain':[themeJsRoot + 'app_router_ponchartrain.js'],
 			'guestweb_valencia_santana_row':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_sorella_houston':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_monte_carlo' 	: [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte_carlo.js'],
+			'guestweb_monte_carlo': [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte_carlo.js'],
 			'guestweb_sorella_kansas_city':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
