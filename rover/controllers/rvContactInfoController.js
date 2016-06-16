@@ -155,18 +155,14 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
 
       if (newGuest) {
         dataToUpdate.avatar = "";
-        if (!angular.equals(dataToUpdate, initialGuestCardData) && !dataUpdated) {
           if (typeof data.data.is_opted_promotion_email === 'undefined') {
             data.data.is_opted_promotion_email = false;
           }
           $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, failureOfCreateGuestCard);
-        } else {
-          $scope.errorMessage = "Last name can't be blank";
-        }
       } else if(!dataUpdated){
-        $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
-      } else {
-        $scope.saveGuestCardInfoInProgress = false;
+          if (!angular.equals(dataToUpdate, initialGuestCardData)) {
+              $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+          }
       }
     };
 
