@@ -271,7 +271,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 		
         };
         var atCardSwipeScreen = function(){
-            if ($state.current.name==='zest_station.checkInCardSwipe'){//unless there's a better way..
+            if ($state.current.name==='zest_station.checkInCardSwipe'){//using for debugging & demo mode, 
+                // please leave this here until next release as it wont hurt any functionality currently
                 return true;
             } else {
                 return false;
@@ -342,8 +343,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
          var getCCAuthorization = function(needToAuthorizeAtCheckin, amount, isEmv){
             console.info('getCCAuthorization: ',arguments);
             console.warn('::nned to check if deposit paid on reservation @ getCCAuthorization call :: ')
-            if ($state.paidDeposit){
-                console.info('$state.paidDeposit: ',$state.paidDeposit)
+            if (isDepositMode()){//paid deposit successful
                 fetchAuthorizationAmountDue();
             } else {
                 //if deposit was captured, we have the card on file,
@@ -355,19 +355,19 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 //then we still need to capture the card, sending a $1.00 amount to the emv terminal
 
                 //true + true
-                if($state.showDeposit && needToAuthorizeAtCheckin) {
+                if(isDepositMode() && needToAuthorizeAtCheckin) {
                     captureAuthorization(amount, isEmv);
                 }
                 //true + false
-                else if($state.showDeposit && !needToAuthorizeAtCheckin) {
+                else if(isDepositMode() && !needToAuthorizeAtCheckin) {
                     continueToSign();
                 }
                 //false + true
-                else if (!$state.showDeposit && needToAuthorizeAtCheckin){
+                else if (!isDepositMode() && needToAuthorizeAtCheckin){
                     captureAuthorization(amount, isEmv);
                 }
                 //false + false
-                else if (!$state.showDeposit && !needToAuthorizeAtCheckin){
+                else if (!isDepositMode() && !needToAuthorizeAtCheckin){
                     amount = 0;
                     captureAuthorization(amount, isEmv);
                 }
@@ -393,7 +393,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     }
             };
             
-            if ($state.paidDeposit){
+            if (isDepositMode()){
                 $scope.headingText = 'RES_AUTH_REMAIN';
                 $scope.subHeadingText = 'RES_AUTH_REMAIN_SUB ';
             } else {
@@ -479,11 +479,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
         
 	var successSixSwipe = function(response){
-            //    if ($state.showDeposit){
-            //        $scope.payDeposit(response);
-             //   } else {
-                    initSixPaySuccess(response);
-             //   }
+                initSixPaySuccess(response);
 	};
         
         /**

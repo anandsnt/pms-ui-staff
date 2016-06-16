@@ -39,6 +39,18 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     }
   });
 
+  $stateProvider.state('admin.goMomentIvySetup', {
+    templateUrl: '/assets/partials/interfaces/GoMomentIvy/goMomentIvySetup.html',
+    controller: 'adGoMomentIvySetupCtrl',
+    url : '/gomomentivy/setup',
+    resolve: {
+      goMomentIvySetupValues: ['adGoMomentIvySetupSrv', function(adGoMomentIvySetupSrv) {
+        return adGoMomentIvySetupSrv.fetchGoMomentIvyConfiguration();
+      }]
+    }
+  });
+
+
   $stateProvider.state('admin.lightspeedPosSetup', {
     templateUrl: '/assets/partials/lightspeedPOS/adLightspeedPOSSetup.html',
     controller: 'adLightSpeedPOSSetupCtrl',

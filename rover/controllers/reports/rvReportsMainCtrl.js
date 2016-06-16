@@ -11,7 +11,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 	'$filter',
 	'$timeout',
 	'rvUtilSrv',
-	function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util) {
+	'rvPermissionSrv',
+	function($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, rvPermissionSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -93,7 +94,22 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			$scope.setViewCol( $scope.viewCols[0] );
 		};
 
+		/**
+		 * function to check whether the user has permission
+		 * to view schedule report menu
+		 * @return {Boolean}
+		 */
+		$scope.hasPermissionToViewScheduleReport = function() {
+			return rvPermissionSrv.getPermissionValue('ADD_EDIT_DELETE_REPORT_SCHEDULE');
+		};
 
+		/**
+		* should show schedule report menu
+		* @return {Boolean}
+		*/
+		$scope.shouldShowScheduleReport = function(){
+			return ($scope.hasPermissionToViewScheduleReport());
+		};
 
 		$scope.uiChosenReport = undefined;
 		$scope.filterByQuery = function() {

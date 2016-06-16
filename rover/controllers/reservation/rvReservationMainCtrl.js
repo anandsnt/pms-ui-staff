@@ -1447,6 +1447,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                     }
                     addOnCumulative += parseInt(finalRate);
                     addon.effectivePrice = finalRate;
+                    processTaxInfo(RVReservationStateService.calculateTax(finalRate, addon.taxes, roomNumber, room.numAdults, room.numChildren, true), roomNumber, $scope.reservationData.arrivalDate);
                 });
 
                 $scope.reservationData.taxInformation = {};

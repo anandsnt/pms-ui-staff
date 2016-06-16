@@ -826,6 +826,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         $scope.clearQuery = function() {
             $scope.query = '';
             runDigestCycle();
+            initialisePagination();
             $timeout( $scope.fetchReservations, 500 );
         }
 
@@ -872,6 +873,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         $scope.clearDate = function(date) {
             $scope[date] = '';
             runDigestCycle();
+            initialisePagination();
             $timeout( $scope.fetchReservations, 500 );
         };
 
@@ -942,10 +944,16 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 onSelect: fromDateChoosed
             }, commonDateOptions);
 
-            //date picker options - Departute
+            //date picker options - Arrival
+            $scope.arrivalDateOptions = _.extend({}, commonDateOptions);
+
+            //date picker options - To
             $scope.toDateOptions = _.extend({
                 onSelect: toDateChoosed
             }, commonDateOptions);
+
+            //date picker options - Departure
+            $scope.departureDateOptions = _.extend({}, commonDateOptions);
 
             //default from date, as per CICO-13900 it will be block_from date
             $scope.fromDate = refData.block_from;
