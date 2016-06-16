@@ -1,4 +1,4 @@
-<div id="dashboard-rooms" class="dashboard-block buttons">
+<div id="dashboard-rooms" class="dashboard-block with-action">
     <h3>Rooms</h3>
     <ul class="actions">
         <li><a class="button blue" ng-click="clickedOnRoomButton($event, 'INHOUSE_DIRTY')"><strong>{{statisticsData.rooms.stays_dirty}}</strong> Stays <span>(Dirty)</span></a></li>        
@@ -7,9 +7,9 @@
         <li><a class="button red" ng-click="clickedOnRoomButton($event, 'DEPARTURES_CLEAN')"><strong>{{statisticsData.rooms.departure_clean}}</strong> Departures <span>(Clean)</span></a></li>        
     </ul>
     <ul class="data">
-        <li click-touch="clickedOnRoomButton($event, 'INHOUSE_DIRTY')">Stays (Dirty) <strong class="blue">{{statisticsData.rooms.stays_dirty}}</strong></li>
-        <li click-touch="clickedOnRoomButton($event, 'INHOUSE_CLEAN')">Stays (Clean) <strong class="blue">{{statisticsData.rooms.stays_clean}}</strong></li>
-        <li click-touch="clickedOnRoomButton($event, 'DEPARTURES_DIRTY')">Departures (Dirty) <strong class="red">{{statisticsData.rooms.departure_dirty}}</strong></li>
-        <li click-touch="clickedOnRoomButton($event, 'DEPARTURES_CLEAN')">Departures (Clean) <strong class="red">{{statisticsData.rooms.departure_clean}}</strong></li>    
+        <li click-touch="clickedOnRoomButton($event, 'INHOUSE_DIRTY')">Stays (Dirty) <strong class="value blue">{{statisticsData.rooms.stays_dirty}}</strong></li>
+        <li click-touch="clickedOnRoomButton($event, 'INHOUSE_CLEAN')">Stays (Clean) <strong class="value blue">{{statisticsData.rooms.stays_clean}}</strong></li>
+        <li click-touch="clickedOnRoomButton($event, 'DEPARTURES_DIRTY')">Departures (Dirty) <strong class="value red">{{statisticsData.rooms.departure_dirty}}</strong></li>
+        <li click-touch="clickedOnRoomButton($event, 'DEPARTURES_CLEAN')">Departures (Clean) <strong class="value red">{{statisticsData.rooms.departure_clean}}</strong></li>    
     </ul>
 </div>
