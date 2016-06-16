@@ -1770,6 +1770,31 @@ table {
                         }
                     }
                 }
+
+                &.complimentary-report {
+                    table-layout: fixed;
+                    margin-bottom: 16pt;
+
+                    thead {
+                        th {
+                            &:nth-child(1) { width:150px; }
+                            &.confirmation {
+                                width: 100px;
+                            }
+
+                            &.room,
+                            &.guests,
+                            &.total-nights,
+                            &.comp-nights {
+                                width:80px;
+                            }
+
+                            &.arrival {
+                                width: 200px;
+                            }
+                        }
+                    }
+                }
             }
 
             &.financial-adjustment-reports {
