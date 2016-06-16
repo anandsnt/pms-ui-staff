@@ -29,9 +29,11 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
      */
     var failureOfCreateGuestCard = function(errorMessage) {
       $scope.$emit('hideLoader');
+      $scope.errorMessage = errorMessage;
       $scope.saveGuestCardInfoInProgress = false;
     };
 
+    // This method needs a refactor:|
     $scope.saveContactInfo = function(newGuest) {
       var saveUserInfoSuccessCallback = function(data) {
         /**
@@ -149,14 +151,22 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
       var data = {
         'data': dataToUpdate,
         'userId': $scope.guestCardData.contactInfo.user_id
-      };
-      if (!dataUpdated && !newGuest) {
-        $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
-      } else if (newGuest) {
-        if (typeof data.data.is_opted_promotion_email === 'undefined') {
-          data.data.is_opted_promotion_email = false;
+      }
+
+      if (newGuest) {
+        dataToUpdate.avatar = "";
+        if (!angular.equals(dataToUpdate, initialGuestCardData) && !dataUpdated) {
+          if (typeof data.data.is_opted_promotion_email === 'undefined') {
+            data.data.is_opted_promotion_email = false;
+          }
+          $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, failureOfCreateGuestCard);
+        } else {
+          $scope.errorMessage = "Last name can't be blank";
         }
-        $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, failureOfCreateGuestCard);
+      } else if(!dataUpdated){
+        $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+      } else {
+        $scope.saveGuestCardInfoInProgress = false;
       }
     };
 
@@ -225,6 +235,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
     var init = function() {
       // Fetch languages
       fetchGuestLanguages();
+      initialGuestCardData = angular.copy($scope.guestCardData.contactInfo);
 
       this.timeoutForSaveInfo = null;
     };
