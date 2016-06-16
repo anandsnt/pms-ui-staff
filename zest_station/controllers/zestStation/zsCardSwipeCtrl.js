@@ -948,9 +948,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         
         var captureAuthorization = function(amount, isEmv){
-            if ($scope.inDemoMode()){
-                continueToSign();
-            } else {
+            
             console.info(': captureAuthorization : ',amount)
             var data = {};
                 if (amount > 0){
@@ -983,11 +981,14 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                         
                     }
                 },200);
-                
+                if ($scope.inDemoMode()){
+                continueToSign();
+            } else {
                 console.log('authorizeCC @ captureAuthorization: ',$scope, ' :: data, ',data);
             $scope.invokeApi(zsPaymentSrv.authorizeCC, data, onSuccessCaptureAuth, onSwipeError, "NONE"); 
         }
         }
+        
         
         var onSwipeError = function(error){
                 console.info('FAILED: ',error);
