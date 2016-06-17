@@ -23,10 +23,10 @@
                     <span ng-show="addon.post_type.description ==='First Night'">per stay</span>
                     <span ng-show="addon.post_type.description ==='Entire Stay'"> per night</span>
                 </span>
-
+                <!-- price updated as per QA comment 30593 -->
                  <span>
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type ==='Entire Stay'">{{currencySymbol}}{{addon.amount | number : 2}}</span>
-                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type !=='Entire Stay'">{{currencySymbol}}{{addon.amount | number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type ==='Entire Stay'">{{currencySymbol}}{{addon.amount * addon.addon_count | number : 2}}</span>
+                        <span class="price" ng-hide="addon.is_inclusive || addon.post_type !=='Entire Stay'">{{currencySymbol}}{{addon.amount * addon.addon_count | number : 2}}</span>
                 </span>
                      
                
