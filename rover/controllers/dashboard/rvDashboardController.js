@@ -14,6 +14,8 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     $scope.shouldShowQueuedRooms  = true;
     BaseCtrl.call(this, $scope);
 
+    $scope.isStatisticsOpened = false;
+
     var init =  function(){
 
 
@@ -24,6 +26,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         $scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
         $rootScope.adminRole = $scope.userDetails.user_role;
         $scope.isIpad = navigator.userAgent.match(/iPad/i) !== null;
+        $scope.statistics = {};
 
 
         //update left nav bar
@@ -241,6 +244,34 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     */
    $scope.headerBackButtonClicked = function(){
         $scope.$broadcast("HeaderBackButtonClicked");
+   };
+
+   /**
+   * Function which checks whether ADR data is shown in statistic section or not
+   */
+   $scope.isADRShown = function() {
+      return ($scope.isStandAlone && !$scope.isHourlyRateOn && $scope.isStatisticsOpened);
+   };
+
+   /**
+   * Function which handles the click of the statistic btn in dashboard
+   */
+   $scope.toggleStatistics = function() {
+    $scope.isStatisticsOpened = !$scope.isStatisticsOpened;
+    var onStatisticsFetchSuccess = function(data) {
+          $scope.$emit('hideLoader');
+          $scope.statistics = data;
+          $scope.refreshScroller('dashboard_scroller');
+        }, 
+        onStatisticsFetchFailure = function(error) {
+          $scope.$emit('hideLoader');
+
+        };
+    //Invoke the api only when the statistic block is opened
+    if($scope.isStatisticsOpened) {
+      $scope.invokeApi(RVDashboardSrv.fetchStatisticData,{},onStatisticsFetchSuccess,onStatisticsFetchFailure);
+    }    
+
    };
 
 
