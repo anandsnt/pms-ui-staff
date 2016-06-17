@@ -798,6 +798,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
             }
             var saveSuccess = function(data) {
+                console.log(data);
+                console.log($scope.reservationData)
                 //CICO-18699 credit card not saving to guest card when selecting Deposit later option.
                 if ($scope.addToGuestCard) {
                     addToGuestCard(data);
