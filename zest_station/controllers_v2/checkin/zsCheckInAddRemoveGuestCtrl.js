@@ -52,11 +52,13 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 $scope.guest.Name ="";
                 updateGuestDetails();
                 $scope.AddGuestMode = false;
+                //this needs to reset..the above code needs to be changed in future
+                //seems confusing
+                $scope.guest.firstNameEntered = false;
             };
         };
         $scope.removeGuest = function(index){
             $scope.selectedReservation.guest_details.splice(index, 1);
-            
             var guestDetails = {'accompanying_guests_details':$scope.selectedReservation.guest_details, 'reservation_id':$scope.selectedReservation.id};
             zsCheckinSrv.updateGuestTabDetails(guestDetails);
         };
@@ -66,8 +68,11 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 last_name: $scope.guest.lastName,
                 first_name: $scope.guest.firstName
             });
-            
-            var guestDetails = {'accompanying_guests_details':$scope.selectedReservation.guest_details, 'reservation_id':$scope.selectedReservation.id};
+            var accompanyingGuestData = angular.copy($scope.selectedReservation.guest_details);
+            accompanyingGuestData = _.without(accompanyingGuestData, _.findWhere(accompanyingGuestData, _.find(accompanyingGuestData, function(guest) {
+                return guest.is_primary === true;
+            })));
+            var guestDetails = {'accompanying_guests_details':accompanyingGuestData, 'reservation_id':$scope.selectedReservation.id};
             zsCheckinSrv.updateGuestTabDetails(guestDetails);
         };
 
