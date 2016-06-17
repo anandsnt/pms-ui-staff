@@ -259,7 +259,7 @@ sntZestStation.controller('zsPostCheckinCtrl', [
         $scope.navToHome = function(){
            //update workstation station. I cant find anyother suitable place
             //the above codes needs to refactored
-            if($scope.zestStationData.wsIsOos){
+            if($scope.zestStationData.wsIsOos && !$scope.inDemoMode()){
                 //update work station status
                goToOOSWithReason();
             } else{
