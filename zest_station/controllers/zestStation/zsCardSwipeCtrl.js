@@ -423,13 +423,16 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             var current=$state.current.name;
             console.log('current: ',current)
             if (current === 'zest_station.card_sign'){
+                console.info('just card sign...')
                 initCardSignScreen();
             } else if (current === 'zest_station.deposit_agree'){
+                console.info('now go to card deposit ...')
                 initDepositScreen();
             } else {
                 if (debugging){
                     initCardSignScreen();
                 } else {
+                    console.info('now go to card swipe...')
                     initCardSwipeScreen();
                 }
                 
@@ -986,13 +989,17 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                         
                     }
                 },200);
-                if ($scope.inDemoMode()){
-                continueToSign();
+                
+            if ($scope.inDemoMode()){
+                setTimeout(function(){
+                    continueToSign();
+                },3500);
+                    
             } else {
                 console.log('authorizeCC @ captureAuthorization: ',$scope, ' :: data, ',data);
-            $scope.invokeApi(zsPaymentSrv.authorizeCC, data, onSuccessCaptureAuth, onSwipeError, "NONE"); 
-        }
-        }
+                $scope.invokeApi(zsPaymentSrv.authorizeCC, data, onSuccessCaptureAuth, onSwipeError, "NONE"); 
+            }
+        };
         
         
         var onSwipeError = function(error){
@@ -1060,19 +1067,23 @@ sntZestStation.controller('zsCardSwipeCtrl', [
 
                 //true + true
                 if($state.showDeposit && needToAuthorizeAtCheckin) {
+                    console.log('true + true')
                     captureAuthorization(amount, isEmv);
                 } 
                 //true + false
                 else if($state.showDeposit && !needToAuthorizeAtCheckin) {
+                    console.log('true + false')
                     $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
                     continueToSign();
                 }
                 //false + true
                 else if (!$state.showDeposit && needToAuthorizeAtCheckin){
+                    console.log('false + true')
                     captureAuthorization(amount, isEmv);
                 }
                 //false + false
                 else if (!$state.showDeposit && !needToAuthorizeAtCheckin){
+                    console.log('false + false')
                     amount = 0;
                     captureAuthorization(amount, isEmv);
                 } 

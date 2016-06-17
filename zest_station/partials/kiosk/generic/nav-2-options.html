@@ -94,11 +94,8 @@
                 </li>
 
                 <li ng-show='at === "deposit-agree"'> 
-                    <button ng-hide="zestStationData.icmpdemo" type="button" class="button option" touch-press='depositProceed()'>
+                    <button type="button" class="button option" touch-press='depositProceed()'>
                         <div ng-include="icons.url.creditcard"></div>
-                    </button>
-                    <button ng-hide="!zestStationData.icmpdemo" type="button" class="button option" touch-press='depositProceed()'>
-                        <div ng-include="icons.url.creditcard_icmp"></div>
                     </button>
                     <h1>{{'DEPOSIT_NEXT_BUTTON' |translate}}</h1>
                 </li>

@@ -381,7 +381,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                             if ($scope.inDemoMode()){
                                 setTimeout(function(){
                                     initKeySuccessFlowForLocal();
-                                },1200)//add some delay for demo purposes
+                                },2800)//add some delay for demo purposes
 
                             } else {
                                 $scope.printLocalKey(response);
@@ -393,7 +393,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                              if ($scope.inDemoMode()){
                                 setTimeout(function(){
                                     onSuccessWriteKeyDataLocal();
-                                },1200)//add some delay for demo purposes
+                                },2800)//add some delay for demo purposes
                             } else {
                             
                                 $scope.printLocalKeyCordova();
