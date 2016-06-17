@@ -169,7 +169,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			};
 
 			var failed = function(errors) {
-				$scope.errors = errors;
+				$scope.errorMessage = errors;
 				$scope.$emit( 'hideLoader' );
 			};
 
