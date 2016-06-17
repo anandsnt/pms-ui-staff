@@ -1643,9 +1643,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 lastSelectedFilterValues[activeFilterIndex].allRate = allRate;
                 newFilterValues.allRate = allRate;
 
-                totalRatesCountForPagination = 0;
-
                 if( initiatedFromLeftFilter ) {
+                    totalRatesCountForPagination = 0;
                     cachedRateAndRestrictionResponseData = [];
                 }
                 fetchDailyRates(newFilterValues);
