@@ -20,19 +20,19 @@
                     <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
                 </li>
                 
-                <li ng-show='swipeTimeout'>
+                <li ng-show='swipeTimeout || swipeError'>
                     <button type="button" class="button option" touch-press='reTryCardSwipe()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <h1 translate>TRY_AGAIN</h1>
                 </li>
                 
-                <li class="break" ng-show='swipeTimeout'>
+                <li class="break" ng-show='swipeTimeout || swipeError'>
                     <span translate>OR_TEXT</span>
                 </li>
                 
 
-                <li ng-show='swipeTimeout'> 
+                <li ng-show='swipeTimeout || swipeError'>
                     <button type="button" class="button option" touch-press='initStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
