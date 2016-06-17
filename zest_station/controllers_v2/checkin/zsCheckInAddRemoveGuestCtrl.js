@@ -42,7 +42,10 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             $scope.headingText = 'ENTER_FIRST';
         };
         $scope.NameEntered = function(){
-            if(!$scope.guest.firstNameEntered){
+            if($scope.guest.Name === ""){
+                return;
+            }
+            else if(!$scope.guest.firstNameEntered){
                 $scope.guest.firstNameEntered = true;
                 $scope.guest.firstName =$scope.guest.Name;
                 $scope.guest.Name ="";
