@@ -9,8 +9,8 @@
                 <div ng-include="icons.url.createkey"></div>
         </div>
         
-        <button ng-hide="makingKey >= 2" ng-class="{'overlay disabled':(makingKey != 1 || makeKeyReady != true)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT' |translate}} </button>
-        <button ng-hide="makingKey != 2" ng-class="{'overlay disabled':(makingKey != 2 || makeKeyReady != true)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT' |translate}} </button>
+        <button ng-hide="makingKey >= 2" ng-class="{'overlay disabled':(makingKey != 1 || makeKeyReady != true)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_ONE' |translate}} </button>
+        <button ng-hide="makingKey != 2" ng-class="{'overlay disabled':(makingKey != 2 || makeKeyReady != true)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_TWO' |translate}} </button>
             
     </div>
     <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
