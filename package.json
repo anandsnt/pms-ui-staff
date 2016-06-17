@@ -21,6 +21,7 @@
     "gulp-concat-util": "^0.5.4",
     "gulp-cssnano": "^2.0.0",
     "gulp-debug": "^2.1.2",
+    "gulp-header": "1.8.2",
     "gulp-imagemin": "^2.4.0",
     "gulp-inject": "^3.0.0",
     "gulp-json-editor": "^2.2.1",
