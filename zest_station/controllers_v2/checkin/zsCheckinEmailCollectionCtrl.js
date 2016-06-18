@@ -55,7 +55,8 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                         "reservation_id": $stateParams.reservation_id,
                         "guest_id" : $stateParams.reservation_id,
                         "room": $stateParams.room_no,
-                        "first_name": $stateParams.first_name
+                        "first_name": $stateParams.first_name,
+                        "email":$scope.email
                     }
                     $state.go('zest_station.checkinKeyDispense', stateParams);
             };
