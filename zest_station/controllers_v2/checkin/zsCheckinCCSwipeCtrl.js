@@ -396,14 +396,17 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
                 //true + true || false + true
                 if(needToAuthorizeAtCheckin) {
+                    console.log('needToAuthorizeAtCheckin')
                     captureAuthorization(amount, isEmv);
                 }
                 //true + false
                 else if($scope.paidDeposit && !needToAuthorizeAtCheckin) {
+                    console.log('$scope.paidDeposit && !needToAuthorizeAtCheckin')
                     goToCardSign();
                 }
                 //false + false
                 else if (!$scope.paidDeposit && !needToAuthorizeAtCheckin){
+                    console.log('!$scope.paidDeposit && !needToAuthorizeAtCheckin')
                     amount = 0;
                     captureAuthorization(amount, isEmv);
                 }
@@ -461,13 +464,15 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
         
         var sixPaymentSwipe = function(){
+            console.log('sixPaymentSwipe');
             console.info('is deposit mode: ',$scope.paidDeposit);
+            console.log('isDepositMode(): ',isDepositMode())
             if (isDepositMode()){
                 console.info('submit payment');
                 payDeposit();
                 
             } else {
-                console.info('authorize');
+                console.info('doing authorize');
 		var data = {};
                     data.reservation_id = $stateParams.reservation_id;
                     data.is_emv_request = true;
@@ -548,6 +553,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     }, 800);
                 }
             } else {//sixpay
+                console.info('sixpay payment');
                 sixPaymentSwipe();
                 
             }
