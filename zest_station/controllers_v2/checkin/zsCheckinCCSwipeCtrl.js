@@ -127,7 +127,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                        'amount': $stateParams.deposit_amount,
                        'bill_number': 1,
                        'payment_type': "CC",
-                       'payment_type_id': $stateParams.payment_type_id
+                       'payment_type_id': $stateParams.payment_type_id,
+                       'reservation_id': $stateParams.reservation_id
                     };
                     console.info(params);
                     if ($scope.inDemoMode()){
