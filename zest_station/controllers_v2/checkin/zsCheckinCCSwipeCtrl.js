@@ -432,9 +432,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
             
             
-           onSuccess({'status':'success'});
+           //onSuccess({'status':'success'});
            //onSwipeError({'status':'failure'});
-           // $scope.invokeApi(zsCheckinSrv.authorizeCC, data, onSuccess, onSwipeError, "NONE"); 
+            $scope.invokeApi(zsCheckinSrv.authorizeCC, data, onSuccess, onSwipeError, "NONE"); 
         };
         
         var initSixPaySuccess = function(response){
@@ -474,9 +474,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 		};
                 
                 
-                successGetToken({'status':'success'});
+                //successGetToken({'status':'success'});
                 //onSwipeError({'status':'failure'});
-                //$scope.invokeApi(zsCheckinSrv.authorizeCC, data, successGetToken, onSwipeError, "NONE"); 
+                $scope.invokeApi(zsCheckinSrv.authorizeCC, data, successGetToken, onSwipeError, "NONE"); 
             };
 	};
         
