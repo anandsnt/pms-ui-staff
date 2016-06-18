@@ -4,9 +4,9 @@
         <h1 ng-show='waitingForSwipe' translate>TO_COMPLETE</h1>
         <h2 ng-show='waitingForSwipe' translate>SWIPE_CARD_PLEASE</h2>
         
-        <h1 ng-show='swipeError' translate>SWIPE_ERR_HEADER</h1>
-        <h1 ng-show='swipeTimeout' translate>CC_SIGN_TIMEOUT</h1>
-        <h2 ng-show='swipeTimeout' translate>CC_SIGN_TIMEOUT_SUB</h2>
+        <h1 ng-show='swipeError && !waitingForSwipe' translate>SWIPE_ERR_HEADER</h1>
+        <h1 ng-show='swipeTimeout && !waitingForSwipe' translate>CC_SIGN_TIMEOUT</h1>
+        <h2 ng-show='swipeTimeout && !waitingForSwipe' translate>CC_SIGN_TIMEOUT_SUB</h2>
         
         <nav id="options" role="nav">
             <ul role="menu">
@@ -27,19 +27,19 @@
                     <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
                 </li>
                 
-                <li ng-show='swipeTimeout || swipeError'>
+                <li ng-show='(swipeTimeout || swipeError) && !waitingForSwipe'>
                     <button type="button" class="button option" touch-press='reTryCardSwipe()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <h1 translate>TRY_AGAIN</h1>
                 </li>
                 
-                <li class="break" ng-show='swipeTimeout || swipeError'>
+                <li class="break" ng-show='(swipeTimeout || swipeError) && !waitingForSwipe'>
                     <span translate>OR_TEXT</span>
                 </li>
                 
 
-                <li ng-show='swipeTimeout || swipeError'>
+                <li ng-show='(swipeTimeout || swipeError) && !waitingForSwipe'>
                     <button type="button" class="button option" touch-press='initStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
