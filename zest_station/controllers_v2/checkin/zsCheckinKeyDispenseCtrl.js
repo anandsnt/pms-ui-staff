@@ -43,6 +43,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			//hide close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.mode = "DISPENSE_KEY_MODE";
+                        console.info('station settings;',$scope.zestStationData)
 		}();
 
 		var stateParams = {
@@ -52,8 +53,9 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			'room_no': $stateParams.room_no,
 			'first_name': $stateParams.first_name
 		};
+                $scope.first_name = $stateParams.first_name;
                 $scope.room = $stateParams.room_no;
-
+                console.info('room number is: ',$scope.room);
 
 		$scope.reEncodeKey = function() {
 			$scope.mode = "DISPENSE_KEY_MODE";
@@ -232,7 +234,9 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 
 		$scope.goToNextScreen = function(status) {
+                    
 			stateParams.key_success = status ==='success'; 
+                        console.warn('goToNextScreen: ',stateParams);
 			$state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);
 		};
 

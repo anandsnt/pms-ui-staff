@@ -43,6 +43,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
 				'payment_type_id': $stateParams.payment_type_id,
 				'deposit_amount': $stateParams.deposit_amount,
+				'first_name': $stateParams.first_name,
 				'room_no': $stateParams.room_no,
 				'room_status': $stateParams.room_status,
 				'reservation_id': $stateParams.reservation_id,
@@ -90,6 +91,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'id': $stateParams.reservation_id,
 				'confirmation_number': $stateParams.confirmation_number,
 				'guest_id': $stateParams.guest_id,
+				'first_name': $stateParams.first_name,
 				'mode': 'CREDIT_CARD_AUTH',
 				'balance_amount': $stateParams.balance_amount,
 				'pre_auth_amount_at_checkin' : $stateParams.pre_auth_amount_at_checkin,
@@ -127,7 +129,6 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				var byPassCC = (checkIfCCToBeBypassed(response)) ? true : false;
 				nextPageActions(byPassCC);
 			};
-			var selectedReservation = $state.selectedReservation; //this was set somewhere else.this needs to be changed
 			//states are not to store varaiable, use service
 			var options = {
 				params: {
