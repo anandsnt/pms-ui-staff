@@ -395,19 +395,19 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 //then we still need to capture the card, sending a $1.00 amount to the emv terminal
 
                 //true + true
-                if(isDepositMode() && needToAuthorizeAtCheckin) {
+                if($scope.paidDeposit && needToAuthorizeAtCheckin) {
                     captureAuthorization(amount, isEmv);
                 }
                 //true + false
-                else if(isDepositMode() && !needToAuthorizeAtCheckin) {
+                else if($scope.paidDeposit && !needToAuthorizeAtCheckin) {
                     goToCardSign();
                 }
                 //false + true
-                else if (!isDepositMode() && needToAuthorizeAtCheckin){
+                else if (!$scope.paidDeposit && needToAuthorizeAtCheckin){
                     captureAuthorization(amount, isEmv);
                 }
                 //false + false
-                else if (!isDepositMode() && !needToAuthorizeAtCheckin){
+                else if (!$scope.paidDeposit && !needToAuthorizeAtCheckin){
                     amount = 0;
                     captureAuthorization(amount, isEmv);
                 }
@@ -433,7 +433,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     }
             };
             
-            if (isDepositMode()){
+            if ($scope.paidDeposit){
                 $scope.headingText = 'RES_AUTH_REMAIN';
                 $scope.subHeadingText = 'RES_AUTH_REMAIN_SUB ';
             } else {
@@ -466,7 +466,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
         
         var sixPaymentSwipe = function(){
-            console.info('is deposit mode: ',isDepositMode());
+            console.info('is deposit mode: ',$scope.paidDeposit);
             if (isDepositMode()){
                 console.info('submit payment');
                 payDeposit();
