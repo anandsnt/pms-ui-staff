@@ -172,7 +172,6 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.callAPI(zsGeneralSrv.fetchHotelSettings, options);
 		};
                 var configureSwipeSettings = function(){
-                    console.info('::configuring swipe settings::');
                     //(remote, websocket, local)
                     //
                     //local:  Infinea/Ingenico
@@ -199,9 +198,50 @@ sntZestStation.controller('zsRootCtrl', [
                     } else {//sankyo_websocket
                         $scope.zestStationData.ccReader = 'websocket';
                     }
-                    console.warn(':: Key Writer + CC Reader = [',$scope.zestStationData.keyWriter, ' + ',$scope.zestStationData.ccReader,']');
+                    changeIconsIfDemo();
+                };
+                
+                var changeIconsIfDemo = function(){
+                    if (forDemo()){//if we are reading locally, we'll show the ICMP icons for our SNT 
+                        $scope.icons.url.creditcard_icmp = $scope.iconsPath+'/demo_swiper.svg';
+                        $scope.icons.url.createkey_icmp = $scope.iconsPath+'/demo_keyencoder.svg';
+                        console.warn('using demo icons for create key and credit card reading');
+                        $scope.icmp = true;
+                    } else {
+                        $scope.icmp = false;
+                    }
+                };
 
-                }
+                var forDemo = function(){
+                    console.info('readLocally() : ',readLocally() )
+                    if(readLocally() && $state.theme === 'snt'){
+                        console.info('forDemo: !!!');
+                        return true;
+                    } else {
+                        console.info('not forDemo: ');
+                        return false;
+                    }
+                };
+                
+                
+                $scope.zestStationData.demoModeEnabled = 'false';//demo mode for hitech, only used in snt-theme
+                $scope.inDemoMode = function(){
+                    if ($scope.zestStationData.demoModeEnabled === 'true'){
+                        console.warn('in demo mode');
+                        return true;
+                    } else {
+                        console.warn('not in demo mode');
+                        return false;
+                    }
+                };
+                
+                var readLocally = function(){
+                    if ($scope.zestStationData.ccReader === 'local'){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                };
 		/**
 		 * This fetches hotel admin workstation settings
 		 * */
