@@ -200,6 +200,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			delete params.no_of_nights;
 			delete params.alt_confirmation_number;
 			delete params.email;
+			params.departure_date = angular.copy(params.date);
+			delete params.date;
 			searchReservation(params);
 		};
 
@@ -228,8 +230,11 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			$state.go('zest_station.speakToStaff');
 		};
 
+
+
 		var setDateOptions = function() {
 			$scope.dateOptions = {
+				dateFormat: 'MM-dd-yy',
 				dateFormat: $scope.zestStationData.hotelDateFormat,
 				yearRange: "0:+10",
 				minDate: new Date($scope.zestStationData.bussinessDate),
