@@ -353,7 +353,8 @@ sntZestStation.controller('zsRootCtrl', [
 					}
 					//when user activity is not recorded for more than idle_timer.max
 					//time set in admin, got to home page
-					if (userInActivityTimeInSeconds >= $scope.zestStationData.idle_timer.max) {
+					if (userInActivityTimeInSeconds >= $scope.zestStationData.idle_timer.max
+					    && currentState ==='zest_station.checkInSignature' && currentState ==='zest_station.checkInCardSwipe') {
 						$state.go('zest_station.home');
 						$scope.runDigestCycle();
 					} else {
