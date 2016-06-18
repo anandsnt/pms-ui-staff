@@ -47,7 +47,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
         var afterGuestCheckinCallback = function(response) {
             //if email is valid and is not blacklisted
             var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid();
-            console.info('current state params: ',$stateParams)
+            console.warn('afterGuestCheckinCallback :: current state params: ',$stateParams)
             var stateParams = {
                     'guest_id': $stateParams.guest_id,
                     'reservation_id': $stateParams.reservation_id,
@@ -55,11 +55,12 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                     'first_name': $stateParams.first_name
             };
 
-
+                console.info('haveValidGuestEmail: ',haveValidGuestEmail);
             if (haveValidGuestEmail) {
                 stateParams.email = $stateParams.email;
                 $state.go('zest_station.checkinKeyDispense', stateParams);
             } else {
+                console.warn('to email collection: ',stateParams)
                 $state.go('zest_station.checkInEmailCollection', stateParams);
             }
 
