@@ -82,8 +82,18 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 		};
 
 		$scope.isRateSuppressed = function() {
-			if ($scope.selectedReservation.reservation_details.is_rates_suppressed === 'true') {
-				return true;
+			//need to wait for api to update
+			//this is used in HTML to hide things
+			if( typeof $scope.selectedReservation.reservation_details !== 'undefined'){
+				if ($scope.selectedReservation.reservation_details.is_rates_suppressed === 'true') {
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				return false;
 			}
 		};
 
