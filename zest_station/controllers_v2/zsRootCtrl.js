@@ -224,8 +224,9 @@ sntZestStation.controller('zsRootCtrl', [
                 };
                 
                 
-                $scope.zestStationData.demoModeEnabled = 'false';//demo mode for hitech, only used in snt-theme
+                
                 $scope.inDemoMode = function(){
+                    $scope.zestStationData.demoModeEnabled = 'false';//demo mode for hitech, only used in snt-theme
                     if ($scope.zestStationData.demoModeEnabled === 'true'){
                         console.warn('in demo mode');
                         return true;
