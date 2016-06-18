@@ -49,6 +49,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'guest_id': $stateParams.guest_id,
 				'mode': 'DEPOSIT',
 				'balance_amount': $stateParams.balance_amount,
+				'confirmation_number': $stateParams.confirmation_number,
 				'pre_auth_amount_at_checkin' : $stateParams.pre_auth_amount_at_checkin,
 				'authorize_cc_at_checkin' : $stateParams.authorize_cc_at_checkin
 			});
@@ -87,6 +88,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'room_no': $stateParams.room_no,
 				'room_status': $stateParams.room_status,
 				'id': $stateParams.reservation_id,
+				'confirmation_number': $stateParams.confirmation_number,
 				'guest_id': $stateParams.guest_id,
 				'mode': 'CREDIT_CARD_AUTH',
 				'balance_amount': $stateParams.balance_amount,
