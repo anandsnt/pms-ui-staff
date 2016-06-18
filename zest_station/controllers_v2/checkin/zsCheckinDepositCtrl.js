@@ -35,7 +35,8 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 				'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
 				'balance_amount': $stateParams.balance_amount,
 				'pre_auth_amount_at_checkin' : $stateParams.pre_auth_amount_at_checkin,
-				'authorize_cc_at_checkin' : $stateParams.authorize_cc_at_checkin
+				'authorize_cc_at_checkin' : $stateParams.authorize_cc_at_checkin,
+				'deposit_amount': $stateParams.deposit_amount
 			};
 			$state.go('zest_station.checkInCardSwipe', stateParams);
 		};
