@@ -51,20 +51,23 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          */
         var updateGuestEmail = function() {
             var updateComplete = function(response) {
+                console.info('updateGuestEmail :: updateComplete: ',response);
                     var stateParams = {
                         "reservation_id": $stateParams.reservation_id,
                         "guest_id" : $stateParams.reservation_id,
+                        "room_no": $stateParams.room_no,
                         "room": $stateParams.room_no,
                         "first_name": $stateParams.first_name,
                         "email":$scope.email
-                    }
+                    };
                     $state.go('zest_station.checkinKeyDispense', stateParams);
             };
             /**
              * [updateGuestEmailFailed description]
              * @return {[type]} [description]
              */
-            var updateGuestEmailFailed = function() {
+            var updateGuestEmailFailed = function(response) {
+                console.warn('updateGuestEmailFailed: ',response);//if this fails would help give clues as to why
                 var stateParams = {};
                 if ($scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 !== '') {
                     stateParams.message = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
@@ -72,7 +75,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                     //do nothing
                 };
                 $state.go('zest_station.speakToStaff', stateParams);
-            }
+            };
 
             var options = {
                 params: {
@@ -81,7 +84,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                 },
                 successCallBack: updateComplete,
                 failureCallBack: updateGuestEmailFailed
-            }
+            };
             $scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
         };
         /**
@@ -102,10 +105,14 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          */
         $scope.skipEmail = function() {
             var stateParams = {
-                "reservationId": $stateParams.reservation_id,
-                "room": $stateParams.room_no,
+                "reservation_id": $stateParams.reservation_id,
+                "room": $stateParams.room,
+                "room_no": $stateParams.room_no,
+                "guest_id": $stateParams.guest_id,
+                "email": $stateParams.email,
                 "first_name": $stateParams.first_name
-            }
+            };
+            console.info(' :: skipEmail :: ', stateParams);
             $state.go('zest_station.checkinKeyDispense', stateParams);
         };
     }

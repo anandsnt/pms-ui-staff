@@ -188,6 +188,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 'mode':'SIGNATURE',
                 'payment_type_id':$stateParams.payment_type_id,
                 'room_no':$stateParams.room_no,
+                'first_name':$stateParams.first_name,
                 'room_status':$stateParams.room_status,
                 'deposit_amount':$stateParams.deposit_amount,
                 'email':$stateParams.guest_email,

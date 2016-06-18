@@ -1,7 +1,7 @@
 <!--------------------- select no of keys mode ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_MODE'">
    <div id="content">
-        <h2 class="no-margin">{{'CHKED_IN_SUCCESS_HEADER' |translate}} {{selectedReservation.guest_details[0].first_name}}.</h2>
+        <h2 class="no-margin">{{'CHKED_IN_SUCCESS_HEADER' |translate}} {{first_name}}.</h2>
         <h1>{{'CHKED_IN_SUCCESS_MSG' |translate}}</h1>
         <div id="room" ng-show="zestStationData.show_room_number">
             <span class="number">{{room}}</span>
