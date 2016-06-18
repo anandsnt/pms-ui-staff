@@ -247,6 +247,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                         
 		var initTermsPage = function() {
 			console.log($scope.zestStationData);
+                        console.info('$scope.selectedReservation: ',$scope.selectedReservation)
 			var stateParams = {
 				'guest_id': $scope.selectedReservation.guest_details[0].id,
 				'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
@@ -257,7 +258,9 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 				'guest_email': $scope.selectedReservation.guest_details[0].email,
 				'guest_email_blacklisted': $scope.selectedReservation.guest_details[0].is_email_blacklisted,
 				'first_name': $scope.selectedReservation.guest_details[0].first_name,
-				'balance_amount' : $scope.selectedReservation.reservation_details.balance_amount
+				'balance_amount' : $scope.selectedReservation.reservation_details.balance_amount,
+				'pre_auth_amount_at_checkin' : $scope.selectedReservation.reservation_details.pre_auth_amount_at_checkin,
+				'authorize_cc_at_checkin' : $scope.selectedReservation.reservation_details.authorize_cc_at_checkin
 			}
 			$state.go('zest_station.checkInTerms', stateParams);
 		};

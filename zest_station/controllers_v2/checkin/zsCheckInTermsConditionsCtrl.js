@@ -48,7 +48,9 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'reservation_id': $stateParams.reservation_id,
 				'guest_id': $stateParams.guest_id,
 				'mode': 'DEPOSIT',
-				'balance_amount': $stateParams.balance_amount
+				'balance_amount': $stateParams.balance_amount,
+				'pre_auth_amount_at_checkin' : $stateParams.pre_auth_amount_at_checkin,
+				'authorize_cc_at_checkin' : $stateParams.authorize_cc_at_checkin
 			});
 		};
 		var goToSignaturePage = function() {
@@ -87,7 +89,9 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'id': $stateParams.reservation_id,
 				'guest_id': $stateParams.guest_id,
 				'mode': 'CREDIT_CARD_AUTH',
-				'balance_amount': $stateParams.balance_amount
+				'balance_amount': $stateParams.balance_amount,
+				'pre_auth_amount_at_checkin' : $stateParams.pre_auth_amount_at_checkin,
+				'authorize_cc_at_checkin' : $stateParams.authorize_cc_at_checkin
 			};
 			$state.go('zest_station.checkInCardSwipe', stateParams);
 		};
