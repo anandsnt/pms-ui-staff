@@ -45,7 +45,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 		var fetchReservationDetails = function() {
 			var onSuccessFetchReservationDetails = function(data) {
 				$scope.selectedReservation.reservation_details = data.data.reservation_card;
-				if (isRateSuppressed()) {
+				if ($scope.isRateSuppressed()) {
 					$scope.selectedReservation.reservation_details.balance = 0;
 				}
 				fetchAddons();
@@ -81,7 +81,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                         });
 		};
 
-		var isRateSuppressed = function() {
+		$scope.isRateSuppressed = function() {
 			if ($scope.selectedReservation.reservation_details.is_rates_suppressed === 'true') {
 				return true;
 			}
