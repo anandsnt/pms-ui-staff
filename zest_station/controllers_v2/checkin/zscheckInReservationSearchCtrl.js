@@ -130,6 +130,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			} else if ($scope.reservationParams.date.length > 0) {
 				delete params.alt_confirmation_number;
 				delete params.email;
+				params.departure_date = angular.copy(params.date);
+				delete params.date;
 				delete params.no_of_nights;
 			} else {
 				params = params;
