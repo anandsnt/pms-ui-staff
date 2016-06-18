@@ -67,8 +67,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 		var fetchAddons = function() {
 			var fetchCompleted = function(data) {
 				$scope.selectedReservation.addons = data.existing_packages;
-				//refreshScroller();
 				setDisplayContentHeight();
+				refreshScroller();
 			};
                         
                         
