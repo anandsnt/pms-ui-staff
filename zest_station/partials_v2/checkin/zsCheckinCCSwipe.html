@@ -11,11 +11,18 @@
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- card swipe -->
-                <li ng-show='waitingForSwipe' touch-press='continue()'>
+                <li ng-show='waitingForSwipe && !icmp' touch-press='continue()'>
                     <button type="button" class="button option">
                         <div ng-include="icons.url.creditcard"></div>
                         
                     </button>
+                    <span translate>SWIPE_CARD_PLEASE</span>
+                    <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
+                </li>
+                <li ng-show='waitingForSwipe && icmp' touch-press='continue()'>
+                   <div class="margin-adj">
+                        <div ng-include="icons.url.creditcard_icmp"></div>
+                    </div>
                     <span translate>SWIPE_CARD_PLEASE</span>
                     <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
                 </li>

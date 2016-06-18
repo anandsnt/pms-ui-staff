@@ -86,7 +86,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     'guest_email': $stateParams.guest_email,
                     'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
                     'first_name': $stateParams.first_name,
-                    'balance_amount': $stateParams.balance_amount
+                    'balance_amount': $stateParams.balance_amount,
+                    'pre_auth_amount_at_checkin' : $stateParams.pre_auth_amount_at_checkin,
+                    'authorize_cc_at_checkin' : $stateParams.authorize_cc_at_checkin
                 };
                 
                 
@@ -341,8 +343,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             
         
         var needCCAuthForCheckin = function(){
-            var needToAuthorizeAtCheckin = $scope.selectedReservation.reservation_details.data.reservation_card.authorize_cc_at_checkin,
-                    authCCAmount = $scope.selectedReservation.reservation_details.data.reservation_card.pre_auth_amount_at_checkin;
+            var needToAuthorizeAtCheckin = $stateParams.authorize_cc_at_checkin,
+                    authCCAmount = $stateParams.pre_auth_amount_at_checkin;
             
                 getCCAuthorization(needToAuthorizeAtCheckin, authCCAmount, true);
         };
@@ -432,7 +434,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
             
             
-           digest();
+           //onSuccess({'status':'success'});
+           //onSwipeError({'status':'failure'});
             $scope.invokeApi(zsCheckinSrv.authorizeCC, data, onSuccess, onSwipeError, "NONE"); 
         };
         
@@ -471,6 +474,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                         console.info('success: ',response);
 			successSixSwipe(response);
 		};
+                
+                
+                //successGetToken({'status':'success'});
+                //onSwipeError({'status':'failure'});
                 $scope.invokeApi(zsCheckinSrv.authorizeCC, data, successGetToken, onSwipeError, "NONE"); 
             };
 	};
