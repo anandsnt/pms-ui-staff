@@ -394,17 +394,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 //if no deposit was captured, and we do not need to authorize at checkin,
                 //then we still need to capture the card, sending a $1.00 amount to the emv terminal
 
-                //true + true
-                if($scope.paidDeposit && needToAuthorizeAtCheckin) {
+                //true + true || false + true
+                if(needToAuthorizeAtCheckin) {
                     captureAuthorization(amount, isEmv);
                 }
                 //true + false
                 else if($scope.paidDeposit && !needToAuthorizeAtCheckin) {
                     goToCardSign();
-                }
-                //false + true
-                else if (!$scope.paidDeposit && needToAuthorizeAtCheckin){
-                    captureAuthorization(amount, isEmv);
                 }
                 //false + false
                 else if (!$scope.paidDeposit && !needToAuthorizeAtCheckin){
@@ -427,7 +423,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 data.is_emv_request = isEmv;
                 console.info('sending: ',data);
             var onSuccess = function(){
-                    //goToCardSign();
                     if ($state.current.name==='zest_station.checkInCardSwipe'){
                         goToCardSign();
                     }
