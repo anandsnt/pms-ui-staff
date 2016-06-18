@@ -265,6 +265,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.currencySymbol = $scope.zestStationData.currencySymbol;
             $scope.depositAmount = $stateParams.deposit_amount;
             $scope.showSwipeNav = true;
+            $scope.waitingForSwipe = true;
         };
         var setCCAuthSettings = function(){
             $scope.waitingForSwipe = true;
