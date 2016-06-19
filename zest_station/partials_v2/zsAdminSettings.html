@@ -109,6 +109,15 @@
                            </select>
                         </div>
                 </div>
+                <div class="entry with-label"  ng-if="zestStationData.theme === 'snt'">
+                    <label>{{'ADMIN_STATION_DEMOMODE' |translate}}</label>
+                     <div class="entry select">
+                        <select ng-model="zestStationData.demoModeEnabled">
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="actions" class="align-center">
