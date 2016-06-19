@@ -167,7 +167,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             console.log('early checkin active : ', $scope.zestStationData.offer_early_checkin);
             console.log('---------');
             console.log('--RESERVATION--');
-            console.log('early Checkin Purchased: ', $state.earlyCheckinPurchased);
+            //console.log('early Checkin Purchased: ', $state.earlyCheckinPurchased);
             console.log('in early window: ', data.reservation_in_early_checkin_window);
             console.log('has free early chkin   : ', early_checkin_free);
             console.log('---------');

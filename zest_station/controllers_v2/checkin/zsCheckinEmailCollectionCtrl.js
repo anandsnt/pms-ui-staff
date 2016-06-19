@@ -54,7 +54,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                 console.info('updateGuestEmail :: updateComplete: ',response);
                     var stateParams = {
                         "reservation_id": $stateParams.reservation_id,
-                        "guest_id" : $stateParams.reservation_id,
+                        "guest_id" : $stateParams.guest_id,
                         "room_no": $stateParams.room_no,
                         "room": $stateParams.room_no,
                         "first_name": $stateParams.first_name,

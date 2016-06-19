@@ -31,6 +31,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 				'room_no': $stateParams.room_no,
 				'first_name': $stateParams.first_name,
 				'room_status': $stateParams.room_status,
+				'guest_id': $stateParams.guest_id,
 				'guest_email': $stateParams.guest_email,
 				'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
 				'balance_amount': $stateParams.balance_amount,
