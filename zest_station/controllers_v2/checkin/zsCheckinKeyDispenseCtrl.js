@@ -186,44 +186,55 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		/**
 		 * [initMakeKey description]
 		 * @return {[type]} [description]
-		 */
-		var initMakeKey = function() {
-			var onResponseSuccess;
-			var params = {
-				"is_additional": false,
-				"is_kiosk": true,
-				"key": 1,
-				"reservation_id": $scope.selectedReservation.reservationId
-			};
+		 */ 
+                var startMakingKey = function(){
+                    var onResponseSuccess;
+                    var params = {
+                            "is_additional": false,
+                            "is_kiosk": true,
+                            "key": 1,
+                            "reservation_id": $scope.selectedReservation.reservationId
+                    };
 
-			if (!$scope.remoteEncoding) {
-				params.uid = null;
-				onResponseSuccess = localEncodingSuccsess;
-			} else {
-				if ($scope.noOfKeysSelected === 1) {
-					$scope.mode = 'SOLO_KEY_CREATION_IN_PROGRESS_MODE';
-				} else if (noOfKeysCreated === 0) {
-					//one key has been made out of total 2
-					$scope.mode = 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
-				} else {
-					//do nothing
-				}
-				params.key_encoder_id = $scope.zestStationData.key_encoder_id;
-				onResponseSuccess = remoteEncodingSuccsess;
-			};
+                    if (!$scope.remoteEncoding) {
+                            params.uid = null;
+                            onResponseSuccess = localEncodingSuccsess;
+                    } else {
+                            params.key_encoder_id = $scope.zestStationData.key_encoder_id;
+                            onResponseSuccess = remoteEncodingSuccsess;
+                    };
+
+
+                    if ($scope.inDemoMode()){
+                        onResponseSuccess({'status':'success'});
+                    } else {
+                        $scope.callAPI(zsGeneralSrv.encodeKey, {
+                                params: params,
+                                "loader": "none", //to hide loader
+                                'successCallBack': onResponseSuccess,
+                                'failureCallBack': onGeneralFailureCase
+                        });
+                    }
+                };
+                $scope.readyForUserToPressMakeKey = true;
+		var initMakeKey = function() {
+                    console.info('waiting on user to press make key, which will start key create')
+                    
+                    if ($scope.noOfKeysSelected === 1) {
+                            $scope.mode = 'SOLO_KEY_CREATION_IN_PROGRESS_MODE';
+                    } else if (noOfKeysCreated === 0) {
+                            //one key has been made out of total 2
+                            $scope.mode = 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
+                    } else {
+                            //do nothing
+                    }
+                    $scope.readyForUserToPressMakeKey = true;
                         
-                        if ($scope.inDemoMode()){
-                            onResponseSuccess({'status':'success'});
-                            
-                        } else {
-                            $scope.callAPI(zsGeneralSrv.encodeKey, {
-                                    params: params,
-                                    "loader": "none", //to hide loader
-                                    'successCallBack': onResponseSuccess,
-                                    'failureCallBack': onGeneralFailureCase
-                            });
-                        }
 		};
+                $scope.onReadyToPrintKey = function(){
+                    $scope.readyForUserToPressMakeKey = false;
+                    startMakingKey();
+                };
 
 		function remoteEncodingSuccsess(response) {
 			noOfKeysCreated++;
