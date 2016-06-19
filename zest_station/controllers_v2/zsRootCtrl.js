@@ -214,7 +214,7 @@ sntZestStation.controller('zsRootCtrl', [
 
                 var forDemo = function(){
                     console.info('readLocally() : ',readLocally() )
-                    if(readLocally() && $state.theme === 'snt'){
+                    if(readLocally() && $scope.zestStationData.theme === 'snt'){
                         console.info('forDemo: !!!');
                         return true;
                     } else {
@@ -226,7 +226,6 @@ sntZestStation.controller('zsRootCtrl', [
                 
                 
                 $scope.inDemoMode = function(){
-                    $scope.zestStationData.demoModeEnabled = 'false';//demo mode for hitech, only used in snt-theme
                     if ($scope.zestStationData.demoModeEnabled === 'true'){
                         console.warn('in demo mode');
                         return true;
@@ -799,6 +798,7 @@ sntZestStation.controller('zsRootCtrl', [
 			$('body').css('display', 'none'); //this will hide contents until svg logos are loaded
 			//call Zest station settings API
 			$scope.zestStationData = zestStationSettings;
+                        $scope.zestStationData.demoModeEnabled = 'false';//demo mode for hitech, only used in snt-theme
 			$scope.zestStationData.isAdminFirstLogin = true;
 			CheckForWorkStationStatusContinously();
 			//$scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
