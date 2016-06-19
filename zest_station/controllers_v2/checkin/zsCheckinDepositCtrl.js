@@ -39,6 +39,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 				'deposit_amount': $stateParams.deposit_amount,
 				'confirmation_number': $stateParams.confirmation_number
 			};
+                        console.info('to card swipe ctrl params: ',stateParams)
 			$state.go('zest_station.checkInCardSwipe', stateParams);
 		};
 
@@ -60,7 +61,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 			//back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 				if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
-					$state.go('zest_station.checkInReservationDetails');
+					$state.go('zest_station.checkInReservationDetails',$stateParams);
 				} else {
 					var stateParams = {
 						'guest_id': $stateParams.guest_id,

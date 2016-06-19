@@ -68,7 +68,9 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
              */
             var updateGuestEmailFailed = function(response) {
                 console.warn('updateGuestEmailFailed: ',response);//if this fails would help give clues as to why
-                var stateParams = {};
+                var stateParams = {
+                        "first_name": $stateParams.first_name,
+                };
                 if ($scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 !== '') {
                     stateParams.message = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
                 } else {

@@ -97,7 +97,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 							'guestId': primaryGuest.id
 						});
 					} else {
-						$state.go('zest_station.checkInReservationDetails');
+						$state.go('zest_station.checkInReservationDetails',$stateParams);
 					}
 				} else {
 					zsCheckinSrv.setCheckInReservations(data.results);

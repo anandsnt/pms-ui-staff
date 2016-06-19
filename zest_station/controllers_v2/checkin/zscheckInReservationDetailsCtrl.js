@@ -107,7 +107,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 				var reservations = zsCheckinSrv.getCheckInReservations();
 				if($scope.zestStationData.check_in_collect_nationality){
-					$state.go('zest_station.collectNationality',{'guestId':$scope.selectedReservation.guest_details[0].id});
+					$state.go('zest_station.collectNationality',{'guestId':$scope.selectedReservation.guest_details[0].id, 'first_name':$scope.selectedReservation.guest_details[0].first_name});
 				}else if(reservations.length > 0){
 					$state.go('zest_station.selectReservationForCheckIn');
 				}
@@ -272,7 +272,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 				'confirmation_number' : $scope.selectedReservation.confirmation_number,
 				'pre_auth_amount_at_checkin' : $scope.selectedReservation.reservation_details.pre_auth_amount_at_checkin,
 				'authorize_cc_at_checkin' : $scope.selectedReservation.reservation_details.authorize_cc_at_checkin
-			}
+			};
+                        console.warn('to checkin terms: ',stateParams);
 			$state.go('zest_station.checkInTerms', stateParams);
 		};
 
