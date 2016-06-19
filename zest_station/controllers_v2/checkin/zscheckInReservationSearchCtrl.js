@@ -4,7 +4,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 	'$state',
 	'zsEventConstants',
 	'zsCheckinSrv',
-	function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv) {
+	'$timeout',
+	function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv,$timeout) {
 
 		/**********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -34,6 +35,14 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		zsCheckinSrv.setSelectedCheckInReservation([]);
 		zsCheckinSrv.setCheckInReservations([]);
 
+
+		var focuInputField = function(elementId){
+			$timeout(function(){
+				document.getElementById(elementId).focus();
+			}, 300); 
+			
+		};
+		
 		var setupSeperatorBetweenOptions = function() {
 			
 			//show/hide seperator between departure date and no of nights
@@ -55,15 +64,19 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 		$scope.findByDate = function() {
 			$scope.mode = 'FIND_BY_DATE';
+			focuInputField("departure-date");
 		};
 		$scope.findByNoOfNights = function() {
 			$scope.mode = 'NO_OF_NIGHTS_MODE';
+			focuInputField("no-of-nights");
 		};
 		$scope.findByEmail = function() {
 			$scope.mode = "EMAIL_ENTRY_MODE";
+			focuInputField("guest-email");
 		};
 		$scope.findByConfirmation = function() {
 			$scope.mode = 'CONFIRM_NO_MODE';
+			focuInputField("conf-number");
 		};
 
 		$scope.showDatePicker = function() {
@@ -146,6 +159,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			) {
 				if ($scope.zestStationData.kiosk_validate_first_name) {
 					$scope.mode = 'FIRST_NAME_ENTRY_MODE';
+					focuInputField("first-name");
 				} else {
 
 					searchReservation(SetUpSearchParams());
@@ -153,6 +167,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			} else {
 				if ($scope.zestStationData.kiosk_validate_first_name) {
 					$scope.mode = 'FIRST_NAME_ENTRY_MODE';
+					focuInputField("first-name");
 				} else {
 					$scope.mode = $scope.reservationParams.last_name.length > 0 ? "CHOOSE_OPTIONS" : $scope.mode;
 				}
@@ -210,15 +225,19 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		$scope.reEnterText = function(type) {
 			if (type === 'name') {
 				$scope.mode = "LAST_NAME_ENTRY";
-				console.log("Name");
+				focuInputField("last-name");
 			} else if ($scope.reservationParams.no_of_nights.length > 0) {
 				$scope.mode = 'NO_OF_NIGHTS_MODE';
+				focuInputField("no-of-nights");
 			} else if ($scope.reservationParams.alt_confirmation_number.length > 0) {
 				$scope.mode = 'CONFIRM_NO_MODE';
+				focuInputField("conf-number");
 			} else if ($scope.reservationParams.email.length > 0) {
 				$scope.mode = "EMAIL_ENTRY_MODE";
+				focuInputField("guest-email");
 			} else if ($scope.reservationParams.date.length > 0) {
 				$scope.mode = "FIND_BY_DATE";
+				focuInputField("departure-date");
 			} else {
 				return;
 			};
@@ -263,6 +282,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 					$state.go('zest_station.home');
 				} else {
 					$scope.mode = "LAST_NAME_ENTRY";
+					focuInputField("last-name");
 				};
 
 			});
@@ -271,6 +291,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			setDateOptions();
 			setReservationParams();
 			$scope.mode = "LAST_NAME_ENTRY";
+			focuInputField("last-name");
 		};
 		init();
 	}

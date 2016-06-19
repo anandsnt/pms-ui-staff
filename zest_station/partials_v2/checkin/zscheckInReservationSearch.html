@@ -4,7 +4,7 @@
         <h1 translate>TYPE_LAST</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered(); resetTime();" />
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered(); resetTime();" id="last-name"/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="lastNameEntered(); resetTime();">Next</button>
@@ -16,7 +16,7 @@
         <h1 translate>TYPE_FIRST_NAME</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.first_name" enter-press="firstNameEntered(); resetTime();" />
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.first_name" enter-press="firstNameEntered(); resetTime();" id="first-name"/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="firstNameEntered(); resetTime();">Next</button>
@@ -78,7 +78,7 @@
             <div class="entry input" click-touch="showDatePicker(); resetTime();">
                 <!--div ng-include="'/assets/css/icons/date.svg'"></div-->
                 <div ng-include="icons.url.date"></div>
-                <input id="datepicker" placeholder="" class="hasDatepicker start-focused" ng-model="reservationParams.date" readonly>
+                <input id="datepicker" placeholder="" class="hasDatepicker start-focused" ng-model="reservationParams.date" id="departure-date" readonly>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="dateEntered(); resetTime();">Next</button>
@@ -90,7 +90,7 @@
         <h1 translate>TYPE_CONF</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.alt_confirmation_number" enter-press="confNumberEntered(); resetTime();" />
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.alt_confirmation_number" enter-press="confNumberEntered(); resetTime();" id="conf-number"/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="confNumberEntered(); resetTime();">Next</button>
@@ -102,7 +102,7 @@
         <h1 translate>FIND_BY_DATE_SUB</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.no_of_nights" enter-press="noOfNightsEntered(); resetTime();" />
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.no_of_nights" enter-press="noOfNightsEntered(); resetTime();" id="no-of-nights"/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="noOfNightsEntered(); resetTime();">Next</button>
@@ -114,7 +114,7 @@
         <h1 translate>TYPE_EMAIL</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.email" enter-press="emailEntered(); resetTime();" />
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.email" enter-press="emailEntered(); resetTime();"  id="guest-email" />
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="emailEntered(); resetTime();">Next</button>
