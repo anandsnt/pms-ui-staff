@@ -175,8 +175,10 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 * [initMakeKey description]
 		 * @return {[type]} [description]
 		 */
-		var initMakeKey = function() {
-			var onResponseSuccess;
+                
+                
+                var startMakingKey = function(){
+                    var onResponseSuccess;
 			var params = {
 				"is_additional": false,
 				"is_kiosk": true,
@@ -188,14 +190,6 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				params.uid = null;
 				onResponseSuccess = localEncodingSuccsess;
 			} else {
-				if ($scope.noOfKeysSelected === 1) {
-					$scope.mode = 'SOLO_KEY_CREATION_IN_PROGRESS_MODE';
-				} else if (noOfKeysCreated === 0) {
-					//one key has been made out of total 2
-					$scope.mode = 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
-				} else {
-					//do nothing
-				}
 				params.key_encoder_id = $scope.zestStationData.key_encoder_id;
 				onResponseSuccess = remoteEncodingSuccsess;
 			};
@@ -211,7 +205,26 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
                                     'failureCallBack': setFailureReason
                             });
                         }
+                };
+                $scope.readyForUserToPressMakeKey = true;
+		var initMakeKey = function() {
+                    console.info('waiting on user to press make key, which will start key create')
+                    
+                    if ($scope.noOfKeysSelected === 1) {
+                            $scope.mode = 'SOLO_KEY_CREATION_IN_PROGRESS_MODE';
+                    } else if (noOfKeysCreated === 0) {
+                            //one key has been made out of total 2
+                            $scope.mode = 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
+                    } else {
+                            //do nothing
+                    }
+                    $scope.readyForUserToPressMakeKey = true;
+                        
 		};
+                $scope.onReadyToPrintKey = function(){
+                    $scope.readyForUserToPressMakeKey = false;
+                    startMakingKey();
+                };
 
 		function remoteEncodingSuccsess(response) {
 			noOfKeysCreated++;

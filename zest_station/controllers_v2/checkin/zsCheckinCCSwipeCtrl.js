@@ -129,7 +129,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         var payDeposit = function(debugging){
             $scope.payingDeposit = true;
                 console.info("paying deposit");
-               // $scope.$emit('hideLoader');
                    var params = {
                        'is_emv_request': true,//the current session workstation emv terminal (from setWorkstation) will be used
                        'reservation_id':$stateParams.reservation_id, 
@@ -139,15 +138,22 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                        'payment_type': "CC",
                        'payment_type_id': $stateParams.payment_type_id
                     };
-                    console.info(params);
+                    console.info('paying deposit params: ',params);
                     if ($scope.inDemoMode() || debugging){
                         setTimeout(function(){
-                            successSixSwipe();
+                            successSixPayDeposit();
                         },3500);
 
                    } else {
                        setTimeout(function(){
-                           $scope.invokeApi(zsPaymentSrv.submitDeposit, params, successSixSwipe, onSwipeError, "NONE"); //dont show loader using "NONE"
+                            $scope.callAPI(zsPaymentSrv.submitDeposit, {
+                                params: params,
+                                'successCallBack': successSixPayDeposit,
+                                'failureCallBack': onSwipeError,
+                                'loader': 'none'
+                            });   
+                               //$scope.invokeApi(zsPaymentSrv.submitDeposit, params, successSixPayDeposit, onSwipeError, "NONE"); //dont show loader using "NONE"
+                           
                        },500);
                    }
         };
@@ -370,94 +376,108 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             console.info(':: reader :: ',reader,', :: writer :: ',writer);
             
         
+        var fetchNonDepositAuthorizationForCheckin = function(){
+            var authAtCheckinRequired = $stateParams.authorize_cc_at_checkin,
+                    authCCAmount = $stateParams.pre_auth_amount_at_checkin;
+            
+                getCCAuthorization(authAtCheckinRequired, authCCAmount, true);
+        };
+        
+        
         var needCCAuthForCheckin = function(){
             var needToAuthorizeAtCheckin = $stateParams.authorize_cc_at_checkin,
                     authCCAmount = $stateParams.pre_auth_amount_at_checkin;
             
                 getCCAuthorization(needToAuthorizeAtCheckin, authCCAmount, true);
         };
+        var fetchRemainingAuthForCheckinAfterDeposit = function(){
+            var needToAuthorizeAtCheckin = $stateParams.authorize_cc_at_checkin,
+                    authCCAmount = $stateParams.pre_auth_amount_at_checkin;
+                    console.log(' :: fetchRemainingAuthForCheckinAfterDeposit ::',needToAuthorizeAtCheckin,authCCAmount);
+                getCCAuthAfterDeposit(needToAuthorizeAtCheckin, authCCAmount, true);
+        };
         
-        var fetchAuthorizationAmountDue = function(){//remaining authorization required for reservation
-            var onSuccess = function(response){
-                console.log('on success fetch auth amount due: ',response);
-                if (response.status !== 'success'){
-                    onSwipeError(response);
-                } else {
-                    console.info(':: fetchAuthorizationAmountDue :: ');
-                    console.info('response :-> ',response);
-                    
-                    var amount, needToAuthorizeAtCheckin;
-                    if ($scope.inDemoMode()){
-                        amount = 95.00;
-                        needToAuthorizeAtCheckin = true;
-                    } else {
-                        amount = response.data.reservation_card.pre_auth_amount_at_checkin;
-                        needToAuthorizeAtCheckin = response.data.reservation_card.authorize_cc_at_checkin;
-                    }
-                    console.info('amount :-> ',amount);
-                    console.info('needToAuthorizeAtCheckin :-> ',needToAuthorizeAtCheckin);
+        var onSuccessFetchRemainingAuth = function(response){
+            console.log(':: onSuccessFetchRemainingAuth :: ',response);
+            if (response.status !== 'success'){
+                onSwipeError(response);
+                
+            } else {
+                
+                var amount, needToAuthorizeAtCheckin;
+                if ($scope.inDemoMode()){
+                    amount = 35.00;
+                    needToAuthorizeAtCheckin = true;
 
-                    if (needToAuthorizeAtCheckin){
-                            captureAuthorization(amount, true);
-                    } else {
-                        goToCardSign();
-                    }
+                } else {
+                    amount = response.data.reservation_card.pre_auth_amount_at_checkin;
+                    needToAuthorizeAtCheckin = response.data.reservation_card.authorize_cc_at_checkin;
+
                 }
-            };
-            
-            console.log('$stateParams: ',$stateParams);
+                console.info('amount :-> ',amount);
+                console.info('needToAuthorizeAtCheckin :-> ',needToAuthorizeAtCheckin);
+
+                if (needToAuthorizeAtCheckin){
+                    captureAuthorization(amount, true, true);
+
+                } else {
+                    goToCardSign();
+                }
+            }
+        };
+        var fetchRemainingAuthAmountDue = function(){//remaining authorization required for reservation
+            console.log(':: fetchRemainingAuthAmountDue :: $stateParams: ',$stateParams);
             
             if ($scope.inDemoMode()){
-                    onSuccess({'status':'success'});
+                    onSuccessFetchRemainingAuth({'status':'success'});
+                    
             } else {
                 $scope.callAPI(zsCheckinSrv.fetchReservationDetails, {
                     params: {
                         'id': $stateParams.confirmation_number
                     },
-                    'successCallBack': onSuccess,
+                    'successCallBack': onSuccessFetchRemainingAuth,
                     'failureCallBack': onSwipeError
                 });   
             }
         };
-         var getCCAuthorization = function(needToAuthorizeAtCheckin, amount, isEmv){
+        
+        
+        
+         var getCCAuthAfterDeposit = function(){
+             //will check for further auth amount needed & if required during checkin, 
+             // then go to capture auth or card sign
+            console.log('successful deposit paid, :: fetch auth amount due ::');
+            fetchRemainingAuthAmountDue();
+         };
+         
+         var getCCAuthorization = function(authAtCheckinRequired, amount, isEmv){
             console.info('getCCAuthorization: ',arguments);
-            console.warn('::need to check if deposit paid on reservation @ getCCAuthorization call :: ');
-            
-            if ($scope.paidDeposit){//paid deposit successful
-                console.log('successful deposit paid, :: fetch auth amount due ::');
-                fetchAuthorizationAmountDue();
+            if(!authAtCheckinRequired) {
+                console.log('!authAtCheckinRequired, to signature');
+                goToCardSign();
             } else {
-                //if deposit was captured, we have the card on file,
-                //if authorization is required still (due to settings), 
-                //we will again prompt for the card, but for the authorization amount
-
-
-                //if no deposit was captured, and we do not need to authorize at checkin,
-                //then we still need to capture the card, sending a $1.00 amount to the emv terminal
-
-                //true + true || false + true
-                if(needToAuthorizeAtCheckin) {
-                    console.log('needToAuthorizeAtCheckin')
-                    captureAuthorization(amount, isEmv);
-                }
-                //true + false
-                else if($scope.paidDeposit && !needToAuthorizeAtCheckin) {
-                    console.log('$scope.paidDeposit && !needToAuthorizeAtCheckin')
-                    goToCardSign();
-                }
-                //false + false
-                else if (!$scope.paidDeposit && !needToAuthorizeAtCheckin){
-                    console.log('!$scope.paidDeposit && !needToAuthorizeAtCheckin')
-                    amount = 0;
-                    captureAuthorization(amount, isEmv);
-                }
-            } 
-            
+                amount = 0;
+                captureAuthorization(amount, isEmv, false);
+            }
         };
+        
+        
+        
+        
+        
         $scope.capturingAuth = false;
         $scope.authAfterDeposit = false;
-        var captureAuthorization = function(amount, isEmv){
-            console.info(': captureAuthorization : ',amount)
+        
+        var onSuccessCaptureAuth = function(){
+            if ($state.current.name==='zest_station.checkInCardSwipe'){
+                goToCardSign();
+            }
+        };
+        var captureAuthorization = function(amount, isEmv, afterSuccessfulDeposit){
+            console.log(':: captureAuthorization :: ',arguments);
+            $scope.capturingAuth = true;
+            
             var data = {};
                 if (amount > 0){
                     data.amount = amount;
@@ -466,47 +486,42 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 }
                 data.reservation_id = $stateParams.reservation_id;
                 data.is_emv_request = isEmv;
-                console.info('sending: ',data);
-            var onSuccess = function(){
-                    if ($state.current.name==='zest_station.checkInCardSwipe'){
-                        goToCardSign();
-                    }
-            };
-            $scope.capturingAuth = true;
-            if ($scope.paidDeposit){
+                console.info('authorizing with: ',data);
+            
+            if (afterSuccessfulDeposit){
                 $scope.authAfterDeposit = true;
-                //$scope.headingText = 'RES_AUTH_REMAIN';
-                //$scope.subHeadingText = 'RES_AUTH_REMAIN_SUB ';
-                //$scope.capturingAuth = false;
             } else {
                 $scope.authAfterDeposit = false;
-                //$scope.capturingAuth = true;
-                //$scope.headingText = 'RES_AUTH';
-                //$scope.subHeadingText = 'RES_AUTH_SUB ';
             }
             
-            
-           //onSwipeError({'status':'failure'});
-           if ($scope.inDemoMode() && atCardSwipeScreen()){
-               onSuccess({'status':'success'});
-           } else {
-               $scope.invokeApi(zsCheckinSrv.authorizeCC, data, onSuccess, onSwipeError, "NONE"); 
-           }
+            if ($scope.inDemoMode() && atCardSwipeScreen()){
+                onSuccess({'status':'success'});
+                
+            } else {
+                
+                $scope.callAPI(zsCheckinSrv.authorizeCC, {
+                    params: data,
+                    'successCallBack': onSuccessCaptureAuth,
+                    'failureCallBack': onSwipeError,
+                    'loader': 'none'
+                });   
+//                $scope.invokeApi(zsCheckinSrv.authorizeCC, data, onSuccessCaptureAuth, onSwipeError, "NONE"); 
+            }
             
         };
         
-        var initSixPaySuccess = function(response){
+        var successSixPayDeposit = function(response){
+            console.log(':: successSixPayDeposit :: ',response);
             $scope.payingDeposit = false;
             $scope.paidDeposit = true;
             //check if the reservation needs to authorize card at checkin
             //and send the amount to the emv terminal for the amount if needed
-            needCCAuthForCheckin();
+            fetchRemainingAuthForCheckinAfterDeposit();
         };
         var onSwipeError = function(error){
             console.info('FAILED: ',error);
             $scope.$emit('hideLoader');
             $scope.errorMessage = error;
-            
             
             if ($state.current.name==='zest_station.checkInCardSwipe'){
                 goToSwipeError();
@@ -514,38 +529,16 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             
         };
         
-        var sixPaymentSwipe = function(){
-            console.log('sixPaymentSwipe');
-            console.info('is deposit mode: ',$scope.paidDeposit);
-            console.log('isDepositMode(): ',isDepositMode())
+        var startSixPayPayment = function(){
+            console.log(':: starting six pay payment ::');
+            console.log('isDepositMode(): ',isDepositMode());
             if (isDepositMode()){
-                console.info('submit payment');
+                console.info('payDeposit()');
                 payDeposit();
                 
             } else {
-                console.info('doing authorize');
-		var data = {};
-                    data.reservation_id = $stateParams.reservation_id;
-                    data.is_emv_request = true;
-                    console.log('listening for C&P or swipe...');
-                
-                var successGetToken = function(response){
-                        $scope.$emit('hideLoader');
-                        console.info('success: ',response);
-			successSixSwipe(response);
-		};
-                
-                
-                //
-                //onSwipeError({'status':'failure'});
-                if ($scope.inDemoMode() && atCardSwipeScreen()){
-                    console.info('demo mode, going through success get token')
-                    setTimeout(function(){
-                        successGetToken({'status':'success'});
-                    },3500);
-                } else {
-                    $scope.invokeApi(zsCheckinSrv.authorizeCC, data, successGetToken, onSwipeError, "NONE"); 
-                }
+                console.info('fetchNonDepositAuthorizationForCheckin()');
+                fetchNonDepositAuthorizationForCheckin();
             };
 	};
         
@@ -578,9 +571,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             initiateiPadCardReader();
         };
         
-	var successSixSwipe = function(response){
-                initSixPaySuccess(response);
-	};
         
         /**
          * [setup controller]
@@ -612,7 +602,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 }
             } else {//sixpay
                 console.info('sixpay payment');
-                sixPaymentSwipe();
+                startSixPayPayment();
                 
             }
             
