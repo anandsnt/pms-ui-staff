@@ -5,7 +5,8 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 	'zsEventConstants',
 	'zsCheckoutSrv',
 	'$stateParams',
-	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams) {
+	'$timeout',
+	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams,$timeout) {
 
 
 		//This controller is used for searching reservation using last name
@@ -18,6 +19,13 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		 **/
 
 		BaseCtrl.call(this, $scope);
+
+		var focuInputField = function(elementId){
+			$timeout(function(){
+				document.getElementById(elementId).focus();
+			}, 300); 
+			
+		};
 
 		var init = function() {
 			//show back button
@@ -94,7 +102,13 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			if ($scope.reservationParams.room_no.length > 0 && roomNumberEntered) {
 				searchReservation();
 			} else {
-				$scope.mode = $scope.reservationParams.last_name.length > 0 ? $scope.mode = "ROOM_NUMBER_ENTRY" : $scope.mode;
+				if($scope.reservationParams.last_name.length > 0){
+					$scope.mode = "ROOM_NUMBER_ENTRY";
+					focuInputField("room-number");
+				}
+				else{
+					return;
+				} ;
 			};
 		};
 
@@ -104,7 +118,14 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		};
 
 		$scope.reEnterText = function(type) {
-			$scope.mode = (type === "room") ? "ROOM_NUMBER_ENTRY" : "LAST_NAME_ENTRY";
+			if(type === "room"){
+				$scope.mode = "ROOM_NUMBER_ENTRY";
+				focuInputField("room-number");
+			}
+			else{
+				$scope.mode = "LAST_NAME_ENTRY";
+				focuInputField("last-name");
+			}
 		};
 
 		$scope.talkToStaff = function() {

@@ -4,7 +4,7 @@
         <h1 translate>TYPE_LAST</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered()"/>
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered()" id="last-name"/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="lastNameEntered()">Next</button>
@@ -23,7 +23,7 @@
         </form>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.room_no" enter-press="roomNumberEntered()"/>
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.room_no" enter-press="roomNumberEntered()" id="room-number"/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="roomNumberEntered()">Next</button>
