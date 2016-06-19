@@ -61,12 +61,20 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 *  if webscoket ready state is not ready
 		 */
 		var dispenseKey = function() {
+                    if ($scope.inDemoMode()){
+                            setTimeout(function(){
+                                saveUIDToReservationSuccsess();
+                                $scope.runDigestCycle();
+                            },3500);
+                            
+                    } else {
 			//check if socket is open
 			if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
 				$scope.socketOperator.DispenseKey($scope.dispenseKeyData);
 			} else {
 				$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
 			}
+                    }
 		};
 
 		/**
@@ -94,22 +102,22 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 * @param  {[type]} uid [description]
 		 * @return {[type]}     [description]
 		 */
-		var saveUIDToReservation = function(uid) {
-			var saveUIDToReservationSuccsess = function() {
-				noOfKeysCreated++;
+                var saveUIDToReservationSuccsess = function() {
+                        noOfKeysCreated++;
 
-				if ($scope.noOfKeysSelected === noOfKeysCreated) {
-					//all keys are made
-					$scope.mode = "KEY_CREATION_SUCCESS_MODE";
-					revertFailureReason();
-				} else if ($scope.noOfKeysSelected > noOfKeysCreated) {
-					//if more key is needed
-					$scope.mode = "KEY_ONE_CREATION_SUCCESS_MODE";
-					revertFailureReason();
-					//provide some timeout for user to grab keys
-					$timeout(dispenseKey, 6000);
-				}
-			};
+                        if ($scope.noOfKeysSelected === noOfKeysCreated) {
+                                //all keys are made
+                                $scope.mode = "KEY_CREATION_SUCCESS_MODE";
+                                revertFailureReason();
+                        } else if ($scope.noOfKeysSelected > noOfKeysCreated) {
+                                //if more key is needed
+                                $scope.mode = "KEY_ONE_CREATION_SUCCESS_MODE";
+                                revertFailureReason();
+                                //provide some timeout for user to grab keys
+                                $timeout(dispenseKey, 6000);
+                        }
+                };
+		var saveUIDToReservation = function(uid) {
 			$scope.callAPI(zsGeneralSrv.saveUIDtoRes, {
 				params: {
 					reservation_id: $scope.selectedReservation.reservationId,
@@ -147,6 +155,11 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 * @return {[type]}          [description]
 		 */
 		var localEncodingSuccsess = function(response) {
+                    if ($scope.inDemoMode()){
+                        $scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
+                        dispenseKey();
+                        
+                    } else {
 			if (response !== null && response.key_info && response.key_info[0]) {
 				if (response.key_info[0].base64) {
 					$scope.dispenseKeyData = response.key_info[0].base64;
@@ -156,6 +169,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 			} else {
 				setFailureReason();
 			}
+                    }
 		};
 		/**
 		 * [initMakeKey description]
@@ -186,12 +200,17 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				onResponseSuccess = remoteEncodingSuccsess;
 			};
 
-			$scope.callAPI(zsGeneralSrv.encodeKey, {
-				params: params,
-				"loader": "none", //to hide loader
-				'successCallBack': onResponseSuccess,
-				'failureCallBack': setFailureReason
-			});
+
+                        if ($scope.inDemoMode()){
+                            onResponseSuccess({'status':'success'});
+                        } else {
+                            $scope.callAPI(zsGeneralSrv.encodeKey, {
+                                    params: params,
+                                    "loader": "none", //to hide loader
+                                    'successCallBack': onResponseSuccess,
+                                    'failureCallBack': setFailureReason
+                            });
+                        }
 		};
 
 		function remoteEncodingSuccsess(response) {

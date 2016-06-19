@@ -92,7 +92,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                     if ($scope.inDemoMode()){
                             setTimeout(function(){
                                 saveUIDToReservationSuccsess();
-                            },1500);
+                                $scope.runDigestCycle();
+                            },3500);
                             
                     } else {
 			//check if socket is open
