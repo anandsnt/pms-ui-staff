@@ -29,7 +29,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			//back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-				 $state.go('zest_station.checkInReservationDetails');
+				 $state.go('zest_station.checkInReservationDetails',$stateParams);
 			});
 			//starting mode
 			$scope.mode = "TERMS_CONDITIONS";
@@ -38,6 +38,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		
 
 		var goToDepositScreen = function() {
+                    console.warn('to deposit screen: ',$stateParams.first_name);
 			$state.go('zest_station.checkInDeposit', {
 				'guest_email': $stateParams.guest_email,
 				'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
