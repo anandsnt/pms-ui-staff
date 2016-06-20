@@ -60,8 +60,6 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		};
 		
 		var setupSeperatorBetweenOptions = function() {
-			$scope.zestStationData.checkin_screen.authentication_settings.email = true;
-			$scope.zestStationData.checkin_screen.authentication_settings.number_of_nights = true;
 			//show/hide seperator between departure date and no of nights
 			$scope.showOrBetweenDateAndNoOfNights = $scope.zestStationData.checkin_screen.authentication_settings.departure_date &&
 				($scope.zestStationData.checkin_screen.authentication_settings.number_of_nights ||
