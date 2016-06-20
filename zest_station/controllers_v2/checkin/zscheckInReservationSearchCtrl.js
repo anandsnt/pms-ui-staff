@@ -38,7 +38,12 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 		var focuInputField = function(elementId){
 			$timeout(function(){
-				document.getElementById(elementId).focus();
+				if(!$scope.isIpad){
+					document.getElementById(elementId).focus();
+				}
+				else{
+					//do something to focus in iPad
+				}
 			}, 300); 
 			
 		};
