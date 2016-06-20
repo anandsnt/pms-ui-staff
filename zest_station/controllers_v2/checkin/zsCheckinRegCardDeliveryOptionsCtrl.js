@@ -209,6 +209,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		var updateGuestEmail = function() {
 			var updateComplete = function(response) {
 				$scope.mode = "EMAIL_SEND_MODE";
+				$scope.callBlurEventForIpad();
 				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			};
 			/**
@@ -245,6 +246,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				updateGuestEmail();
 			} else {
 				$scope.mode = "EMAIL_INVLAID_MODE";
+				$scope.callBlurEventForIpad();
 			};
 		};
 

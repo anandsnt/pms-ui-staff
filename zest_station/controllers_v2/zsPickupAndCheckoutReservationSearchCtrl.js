@@ -20,26 +20,13 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-
-		var callBlurEventForIpad = function(){
-			//need to check if its ipad here too as it 
-			//will be called from multiple areas
-			if($scope.isIpad){
-				document.activeElement.blur();
-    			$("input").blur();
-			}
-			else{
-				//do nothing
-			};
-		};
-
 		var focuInputField = function(elementId){
 			$timeout(function(){
 				if(!$scope.isIpad){
 					document.getElementById(elementId).focus();
 				}
 				else{
-					callBlurEventForIpad();
+					$scope.callBlurEventForIpad();
 				}
 			}, 300); 
 			
@@ -101,7 +88,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			};
 			var checkoutVerificationCallBack = function() {
 				$scope.mode = 'NO_MATCH';
-				callBlurEventForIpad();
+				$scope.callBlurEventForIpad();
 			};
 			var params = {
 				"last_name": $scope.reservationParams.last_name,

@@ -76,6 +76,18 @@ sntZestStation.controller('zsRootCtrl', [
 		});
 
 
+
+		$scope.callBlurEventForIpad = function(){
+			//need to check if its ipad here too as it 
+			//will be called from multiple areas
+			if($scope.isIpad){
+				document.activeElement.blur();
+    			$("input").blur();
+			}
+			else{
+				//do nothing
+			};
+		};
 		/**
 		 * to run angular digest loop,
 		 * will check if it is not running
