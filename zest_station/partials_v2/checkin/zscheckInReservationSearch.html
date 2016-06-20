@@ -90,6 +90,7 @@
         <h1 translate>TYPE_CONF</h1>
         <form method="post" class="form">
             <div class="entry input">
+                <div ng-include="icons.url.confirmation"></div>
                 <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.alt_confirmation_number" enter-press="confNumberEntered()" id="conf-number" touch-press/>
             </div>
             <div class="entry action">
@@ -102,6 +103,7 @@
         <h1 translate>FIND_BY_DATE_SUB</h1>
         <form method="post" class="form">
             <div class="entry input">
+                <div ng-include="icons.url.moon"></div>
                 <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.no_of_nights" enter-press="noOfNightsEntered()" id="no-of-nights" touch-press/>
             </div>
             <div class="entry action">
@@ -114,6 +116,7 @@
         <h1 translate>TYPE_EMAIL</h1>
         <form method="post" class="form">
             <div class="entry input">
+                <div ng-include="icons.url.email"></div>
                 <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.email" enter-press="emailEntered()"  id="guest-email" touch-press/>
             </div>
             <div class="entry action">
