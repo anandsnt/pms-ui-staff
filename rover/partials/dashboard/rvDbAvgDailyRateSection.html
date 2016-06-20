@@ -1,29 +1,29 @@
-<div id="dashboard-adr" class="dashboard-block data">
+<div id="dashboard-adr" class="dashboard-block">
     <h3>ADR</h3>
-    <ul>
+    <ul class="data">
         <li>Today
-        	<span ng-show="escapeNull(statisticsData.adr.today)!==''">
-        		{{currencySymbol}}{{statisticsData.adr.today | round}}
+        	<span class="value" ng-show="escapeNull(statistics.adr.today)!==''">
+        		{{currencySymbol}}{{statistics.adr.today | round}}
         	</span>       	
         </li>
         <li>{{tomorrow|date:monthAndDate}}
-        	<span ng-show="escapeNull(statisticsData.adr.tomorrow)!==''">
-        		{{currencySymbol}}{{statisticsData.adr.tomorrow | round}}
+        	<span class="value" ng-show="escapeNull(statistics.adr.tomorrow)!==''">
+        		{{currencySymbol}}{{statistics.adr.tomorrow | round}}
         	</span>        	
         </li>
         <li>{{dayAfterTomorrow|date:monthAndDate}}
-        	<span ng-show="escapeNull(statisticsData.adr.day_after_tomorrow)!==''">
-        		{{currencySymbol}}{{statisticsData.adr.day_after_tomorrow | round}}
+        	<span class="value" ng-show="escapeNull(statistics.adr.day_after_tomorrow)!==''">
+        		{{currencySymbol}}{{statistics.adr.day_after_tomorrow | round}}
         	</span>      	
         </li>
         <li>{{userInfo.business_date|date:fullMonth}}
-        	<span ng-show="escapeNull(statisticsData.adr.current_month)!==''">
-        		{{currencySymbol}}{{statisticsData.adr.current_month | round}}
+        	<span class="value" ng-show="escapeNull(statistics.adr.current_month)!==''">
+        		{{currencySymbol}}{{statistics.adr.current_month | round}}
         	</span>       	
         </li>
         <li>{{userInfo.business_date|date:fullYear}}
-        	<span ng-show="escapeNull(statisticsData.adr.current_year)!==''">
-        		{{currencySymbol}}{{statisticsData.adr.current_year | round}}
+        	<span class="value" ng-show="escapeNull(statisticsData.adr.current_year)!==''">
+        		{{currencySymbol}}{{statistics.adr.current_year | round}}
         	</span>         	
         </li>
     </ul>

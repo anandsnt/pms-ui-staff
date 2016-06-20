@@ -14,6 +14,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     $scope.shouldShowQueuedRooms  = true;
     BaseCtrl.call(this, $scope);
 
+
     var init =  function(){
 
 
@@ -24,7 +25,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         $scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
         $rootScope.adminRole = $scope.userDetails.user_role;
         $scope.isIpad = navigator.userAgent.match(/iPad/i) !== null;
-
 
         //update left nav bar
         $scope.$emit("updateRoverLeftMenu","dashboard");
@@ -242,7 +242,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    $scope.headerBackButtonClicked = function(){
         $scope.$broadcast("HeaderBackButtonClicked");
    };
-
 
 
 }]);
