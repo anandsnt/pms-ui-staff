@@ -38,7 +38,12 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 		var focuInputField = function(elementId){
 			$timeout(function(){
-				document.getElementById(elementId).focus();
+				if(!$scope.isIpad){
+					document.getElementById(elementId).focus();
+				}
+				else{
+					//do something to focus in iPad
+				}
 			}, 300); 
 			
 		};
@@ -149,6 +154,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				delete params.alt_confirmation_number;
 				delete params.email;
 				delete params.no_of_nights;
+				params.dep_date = angular.copy(params.date);
+				delete params.date;
 			} else {
 				params = params;
 			}
@@ -225,6 +232,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			delete params.no_of_nights;
 			delete params.alt_confirmation_number;
 			delete params.email;
+			params.dep_date = angular.copy(params.date);
+			delete params.date;
 			searchReservation(params);
 			$scope.resetTime();
 		};
