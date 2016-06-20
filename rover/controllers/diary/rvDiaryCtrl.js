@@ -493,6 +493,10 @@ angular.module('sntRover')
 					this.data = [];
 					this.open = false;
 					this.dragData = {};
+
+					$scope.clearAvailability();
+					$scope.resetEdit();
+					$scope.renderGrid();
 				}
 			},
 			fetchList: function() {
@@ -746,6 +750,10 @@ angular.module('sntRover')
 				$scope.$emit('hideLoader');
 				$scope.gridProps.unassignedRoomList.reset();
 				successCallBackOfSaveReservation();
+
+				$scope.clearAvailability();
+				$scope.resetEdit();
+				$scope.renderGrid();
 			};
 
 			var error = function(msg) {
