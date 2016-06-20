@@ -35,6 +35,17 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		zsCheckinSrv.setSelectedCheckInReservation([]);
 		zsCheckinSrv.setCheckInReservations([]);
 
+		var callBlurEventForIpad = function(){
+			//need to check if its ipad here too as it 
+			//will be called from multiple areas
+			if($scope.isIpad){
+				document.activeElement.blur();
+    			$("input").blur();
+			}
+			else{
+				//do nothing
+			};
+		};
 
 		var focuInputField = function(elementId){
 			$timeout(function(){
@@ -42,14 +53,15 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 					document.getElementById(elementId).focus();
 				}
 				else{
-					//do something to focus in iPad
+					callBlurEventForIpad();
 				}
 			}, 300); 
 			
 		};
 		
 		var setupSeperatorBetweenOptions = function() {
-			
+			$scope.zestStationData.checkin_screen.authentication_settings.email = true;
+			$scope.zestStationData.checkin_screen.authentication_settings.number_of_nights = true;
 			//show/hide seperator between departure date and no of nights
 			$scope.showOrBetweenDateAndNoOfNights = $scope.zestStationData.checkin_screen.authentication_settings.departure_date &&
 				($scope.zestStationData.checkin_screen.authentication_settings.number_of_nights ||
@@ -97,6 +109,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			var checkinVerificationSuccess = function(data) {
 				if (data.results.length == 0) {
 					$scope.mode = 'NO_MATCH';
+					callBlurEventForIpad();
 				} else if (data.results.length == 1) {
 					zsCheckinSrv.setSelectedCheckInReservation(data.results);
 					var primaryGuest = _.find(data.results[0].guest_details, function(guest_detail) {
@@ -116,6 +129,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			};
 			var checkinVerificationCallBack = function() {
 				$scope.mode = 'NO_MATCH';
+				callBlurEventForIpad();
 			};
 			if ($scope.zestStationData.kiosk_validate_first_name) {
 				params.first_name = $scope.reservationParams.first_name;
@@ -182,6 +196,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 					focuInputField("first-name");
 				} else {
 					$scope.mode = $scope.reservationParams.last_name.length > 0 ? "CHOOSE_OPTIONS" : $scope.mode;
+					callBlurEventForIpad();
 				}
 			};
 			$scope.resetTime();
@@ -197,6 +212,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				searchReservation(SetUpSearchParams());
 			} else {
 				$scope.mode = $scope.reservationParams.first_name.length > 0 ? "CHOOSE_OPTIONS" : $scope.mode;
+				callBlurEventForIpad();
 			};
 			$scope.resetTime();
 		};
