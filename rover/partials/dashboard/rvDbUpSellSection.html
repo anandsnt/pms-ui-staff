@@ -1,13 +1,13 @@
-<div bindonce="statisticsData" id="dashboard-upsell" class="dashboard-block data" ng-show= "hotelDetails.upsell_settings.is_upsell_settings_on">
+<div  id="dashboard-upsell" class="dashboard-block data" ng-show= "hotelDetails.upsell_settings.is_upsell_settings_on">
     <h3>Upsell</h3>
     <ul class="data">
         <li>
         	Target
-        	<span class="value" ng-show="escapeNull(statisticsData.upsell.target)!==''" bo-text="'{{currencySymbol}}{{statisticsData.upsell.target | number : 0}}'"></span>
+        	<span class="value" ng-show="escapeNull(statistics.upsell.target)!==''">{{currencySymbol}}{{statistics.upsell.target | number : 0}}</span>
         </li>
         <li>
             Actual
-            <span class="value" ng-show="escapeNull(statisticsData.upsell.amount)!==''" bo-text="'{{currencySymbol}}{{statisticsData.upsell.amount | number : 0}}'"></span>
+            <span class="value" ng-show="escapeNull(statistics.upsell.amount)!==''">{{currencySymbol}}{{statistics.upsell.amount | number : 0}}</span>
         </li>
     </ul>
 </div>

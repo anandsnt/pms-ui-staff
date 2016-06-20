@@ -1,23 +1,22 @@
-<div ng-include="'/assets/partials/search/rvManagerDashboardSearchReservations.html'"></div>	
+<div ng-include="'/assets/partials/search/rvManagerDashboardSearchReservations.html'"></div>
 
-<section id="dashboard" class="content scrollable" role = "main" 
-ng-iscroll='dashboard_scroller' ng-iscroll-delay="100" 
+<section id="dashboard" class="content scrollable" role = "main"
+ng-iscroll='dashboard_scroller' ng-iscroll-delay="100"
 ng-show="showDashboard" ng-click="clearErrorMessage()">
 	<div class="wrapper" data-ng-init="pageLoaded()">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbGreetingMessageSection.html'"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbGuestsSection.html'"></div>
-		<div ng-hide="!isStandAlone" ng-include="'/assets/partials/dashboard/rvDbOccupancySection.html'"></div>		
+		<div ng-hide="!isStandAlone" ng-include="'/assets/partials/dashboard/rvDbOccupancySection.html'"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbRoomSection.html'"></div>
-		<div class="dashboard-statistics" ng-class="{'active' : isStatisticsOpened}"> <!-- Add class "active" when L45 clicked to expand, remove to collapse -->
-            <button type="button" class="button white has-arrow" ng-class="{'active' : isStatisticsOpened}" ng-click="toggleStatistics()">Statistics</button> <!-- Add class "active" when expanded, remove when collapsed -->
+		<div class="dashboard-statistics" ng-class="{'active' : isStatisticsOpened}">
+            <button type="button" class="button white has-arrow" ng-class="{'active' : isStatisticsOpened}" ng-click="toggleStatistics()">Statistics</button>
 
-            <!-- ADR -->
-            <div  ng-include="'/assets/partials/dashboard/rvDbAvgDailyRateSection.html'"  ng-show="isADRShown()"></div>
-            <div ng-include="'/assets/partials/dashboard/rvDbUpSellSection.html'" ng-show="isStatisticsOpened"></div>
-			<div ng-include="'/assets/partials/dashboard/rvDbRateOfTheDaySection.html'" ng-show="isStatisticsOpened"></div>
+            <div  ng-include="'/assets/partials/dashboard/rvDbAvgDailyRateSection.html'"  ng-if="isADRShown()"></div>
+            <div ng-include="'/assets/partials/dashboard/rvDbUpSellSection.html'" ng-if="isStatisticsOpened"></div>
+			<div ng-include="'/assets/partials/dashboard/rvDbRateOfTheDaySection.html'" ng-if="isStatisticsOpened"></div>
         </div>
-		
+
 	</div>
 </section>
 
