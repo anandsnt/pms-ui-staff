@@ -99,6 +99,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                 updateGuestEmail();
             } else {
                 $scope.mode = "EMAIL_INVLAID_MODE";
+                $scope.callBlurEventForIpad();
             };
         };
         /**
