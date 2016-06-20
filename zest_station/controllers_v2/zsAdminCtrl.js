@@ -136,7 +136,7 @@ sntZestStation.controller('zsAdminCtrl', [
          **/
         $scope.loginAdmin = function() {
             $scope.mode = "admin-name-mode";
-            $scope.headingText = 'Admin Username';
+            $scope.headingText = 'Admin Username';//TODO: need to move this out to a tag.
             $scope.passwordField = false;
             showNavButtons();
         };
@@ -151,7 +151,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.userName = angular.copy($scope.input.inputTextValue);
                 $scope.input.inputTextValue = "";
                 $scope.mode = "admin-password-mode";
-                $scope.headingText = 'Admin Password';
+                $scope.headingText = 'Admin Password';//TODO: need to move this out to a tag.
                 $scope.passwordField = true;
             } else {
                 //user has entered password
@@ -338,6 +338,9 @@ sntZestStation.controller('zsAdminCtrl', [
             } else {
                 $scope.mode = 'login-mode';
             };
+            setTimeout(function(){
+                refreshScroller();//maybe need to update layout, but this works to fix scroll issue on admin after page load
+            },1000);
 
         }();
     }
