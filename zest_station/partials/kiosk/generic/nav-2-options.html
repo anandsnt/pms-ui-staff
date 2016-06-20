@@ -9,16 +9,22 @@
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- card swipe -->
-                <li ng-show='at === "card-swipe"'>
-                    <button ng-hide="zestStationData.theme === 'snt' && zestStationData.ccReader !== 'local'" type="button" class="button option" touch-press='simulateSixPay()'>
+                <li ng-show='at === "card-swipe" && !zestStationData.icmpdemo'>
+                    <button type="button" class="button option" touch-press='simulateSixPay()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
-                    <div ng-show="zestStationData.theme === 'snt' && zestStationData.ccReader === 'local'" class="margin-adj">
-                        <div ng-include="icons.url.creditcard"></div>
+                    
+                    <span translate>SWIPE_CARD_PLEASE</span>
+                </li>
+                <li ng-show='at === "card-swipe" && zestStationData.icmpdemo'>
+                    <div class="margin-adj">
+                        <div ng-include="icons.url.creditcard_icmp"></div>
                     </div>
                     
                     <span translate>SWIPE_CARD_PLEASE</span>
                 </li>
+                
+                
                 
                 <!-- deliver-registration -->
                 <li ng-show='at === "deliver-registration" && printEnabled && !zestStationData.auto_print'> 
@@ -48,10 +54,7 @@
                 
                 
                 <li ng-show='at === "swipe-pay-error"'>
-                    <button ng-hide="zestStationData.theme === 'snt'" type="button" class="button option" touch-press='reTryCardSwipe()'>
-                        <div ng-include="icons.url.creditcard"></div>
-                    </button>
-                    <button ng-hide="zestStationData.theme !== 'snt'" type="button" class="button option" touch-press='reTryCardSwipe()'>
+                    <button type="button" class="button option" touch-press='reTryCardSwipe()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <h1>{{'TRY_AGAIN' |translate}}</h1>
@@ -91,10 +94,7 @@
                 </li>
 
                 <li ng-show='at === "deposit-agree"'> 
-                    <button ng-hide="zestStationData.theme === 'snt'" type="button" class="button option" touch-press='depositProceed()'>
-                        <div ng-include="icons.url.creditcard"></div>
-                    </button>
-                    <button ng-hide="zestStationData.theme !== 'snt'" type="button" class="button option" touch-press='depositProceed()'>
+                    <button type="button" class="button option" touch-press='depositProceed()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <h1>{{'DEPOSIT_NEXT_BUTTON' |translate}}</h1>

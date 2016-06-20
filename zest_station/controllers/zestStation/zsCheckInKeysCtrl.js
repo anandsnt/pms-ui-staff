@@ -304,20 +304,24 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                 $scope.prepForOOS($filter('translate')('SERVICE_FAILURE'), true);
             } 
             
-            if ( hardwareFailure ){
+            if ( hardwareFailure && !$scope.inDemoMode()){
                 $state.selectedReservation.keySuccess = false;
                 $scope.zestStationData.wsIsOos = true;//after going home, kiosk will be placed oos
             }
         };
         
         $scope.emitKeyError = function(response){
-            $scope.setReadyToMakeKey = false;
-            console.info('detected error in make key',response);
-            response = !!response ? "" :response;
-            setFailureReason(response);
-            $scope.$emit('MAKE_KEY_ERROR',response);
-            showCloseButton();
-            //$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
+            if ($scope.inDemoMode()){
+                return;
+            } else {
+                $scope.setReadyToMakeKey = false;
+                console.info('detected error in make key',response);
+                response = !!response ? "" :response;
+                setFailureReason(response);
+                $scope.$emit('MAKE_KEY_ERROR',response);
+                showCloseButton();
+                //$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':false,'reason':$scope.zestStationData.workstationOooReason});
+            }
         };
 
 
@@ -366,6 +370,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         };
         
         $scope.onReadyToPrintKey = function(){
+            $scope.$emit('showLoader');
             var response = $scope.printKeyResponse;
             
                     if (!$scope.remoteEncoding){
@@ -376,7 +381,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                             if ($scope.inDemoMode()){
                                 setTimeout(function(){
                                     initKeySuccessFlowForLocal();
-                                },1200)//add some delay for demo purposes
+                                },2800)//add some delay for demo purposes
 
                             } else {
                                 $scope.printLocalKey(response);
@@ -388,7 +393,7 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
                              if ($scope.inDemoMode()){
                                 setTimeout(function(){
                                     onSuccessWriteKeyDataLocal();
-                                },1200)//add some delay for demo purposes
+                                },2800)//add some delay for demo purposes
                             } else {
                             
                                 $scope.printLocalKeyCordova();
@@ -408,13 +413,15 @@ sntZestStation.controller('zsCheckInKeysCtrl', [
         $scope.makeKeyReady = false;
         var setReadyToMakeKey = function(){
             $scope.makeKeyReady = true;
+            
+           console.log(':: ready to make key ::');
+           $scope.$emit('hideLoader');
             try {
                 $scope.$apply();
             } catch(err){
                 $scope.$digest();
             }
             
-           console.log(':: ready to make key ::');
         };
         
         $scope.initMakeKey = function(n){
