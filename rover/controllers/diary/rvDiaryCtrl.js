@@ -1532,9 +1532,6 @@ angular.module('sntRover')
 		var filter = _.extend({}, this.filter);
 		var time_span = Time({ hours: staySpan.hh });
 
-		//console.log( time_span );
-		console.log( time_span );
-
 		var start_date = new Date(this.display.x_n);
 		start_date.setHours(0, 0, 0);
 
