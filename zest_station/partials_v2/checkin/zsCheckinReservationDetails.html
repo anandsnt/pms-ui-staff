@@ -28,21 +28,21 @@
                         </li>
                         <li ng-hide="isRateSuppressed()">
                             <!-- handling some logics in HTML. Forced to use coz of bad handling in ctrlr -->
-                            {{zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.avg_daily_rate}}</span>
+                            {{zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.avg_daily_rate | number :2}}</span>
                         </li>
                         <li ng-hide="isRateSuppressed()" ng-repeat="addon in selectedReservation.addons">
                             {{addon.name}} ({{addon.addon_count}})
-                            <span ng-show='{{!addon.is_inclusive}}'>{{zestStationData.currencySymbol}}{{addon.amount}}</span>
+                            <span ng-show='{{!addon.is_inclusive}}'>{{zestStationData.currencySymbol}}{{addon.amount | number :2}}</span>
                             <span ng-show='{{addon.is_inclusive}}'>{{'INCLUDED' |translate}}</span>
                         </li>
                         
                         <li class="break"></li>
                         
-                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_TAX_FEES' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.fees}}</span></li>
-                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_SUB' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.sub_total}}</span></li>
-                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_DEPOSITS' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.deposit_paid}}</span></li>
-                        <li ng-if="isRateSuppressed()"class="total">{{'RES_BAL_DUE' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.balance}}</span></li>
-                        <li ng-if="!isRateSuppressed()"class="total">{{'RES_BAL_DUE' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.outstanding_stay_total}}</span></li>
+                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_TAX_FEES' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.fees | number :2}}</span></li>
+                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_SUB' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.sub_total | number :2}}</span></li>
+                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_DEPOSITS' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.deposit_paid | number :2}}</span></li>
+                        <li ng-if="isRateSuppressed()"class="total">{{'RES_BAL_DUE' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.balance | number :2}}</span></li>
+                        <li ng-if="!isRateSuppressed()"class="total">{{'RES_BAL_DUE' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.outstanding_stay_total | number :2}}</span></li>
                     </ul>
                 </div>
             </div>
@@ -56,7 +56,7 @@
     
     
     
-<span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
+<span ng-include="'/assets/partials_v2/zsTabletFooter.html'" ></span>
 </section>
 
 

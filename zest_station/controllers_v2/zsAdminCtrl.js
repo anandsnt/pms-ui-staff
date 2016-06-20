@@ -27,7 +27,7 @@ sntZestStation.controller('zsAdminCtrl', [
         var refreshScroller = function() {
             $scope.refreshScroller('admin-screen');
         };
-
+        
         /**
          * printer name convention has something like IPP://somename..
          * so lets pull out that IPP:// from the display to user, so they will see its
@@ -84,6 +84,7 @@ sntZestStation.controller('zsAdminCtrl', [
          */
         var submitLogin = function() {
             $scope.hasLoader = true;
+            $scope.callBlurEventForIpad();
             var onSuccess = function(response) {
                 if (response.admin) {
                     $scope.mode = "admin-screen-active";
@@ -116,7 +117,12 @@ sntZestStation.controller('zsAdminCtrl', [
         /**
          * Go to home page
          **/
-        $scope.cancelAdminSettings = function() {
+        var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled;
+        $scope.cancelAdminSettings = function(a) {
+            if (!a){
+                console.info('setting demo mode back to: ',lastDemoModeSetting);
+                $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
+            }
             $state.go('zest_station.home');
             setTimeout(function() {
                 $rootScope.$broadcast('REFRESH_SETTINGS', {
@@ -131,7 +137,7 @@ sntZestStation.controller('zsAdminCtrl', [
          **/
         $scope.loginAdmin = function() {
             $scope.mode = "admin-name-mode";
-            $scope.headingText = 'Admin Username';
+            $scope.headingText = 'Admin Username';//TODO: need to move this out to a tag.
             $scope.passwordField = false;
             showNavButtons();
         };
@@ -146,8 +152,9 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.userName = angular.copy($scope.input.inputTextValue);
                 $scope.input.inputTextValue = "";
                 $scope.mode = "admin-password-mode";
-                $scope.headingText = 'Admin Password';
+                $scope.headingText = 'Admin Password';//TODO: need to move this out to a tag.
                 $scope.passwordField = true;
+                $scope.callBlurEventForIpad();
             } else {
                 //user has entered password
                 $scope.adminLoginError = false;
@@ -210,7 +217,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 });
                 var workStationstorageKey = 'snt_zs_workstation';
                 localStorage.setItem(workStationstorageKey, $scope.savedSettings.kiosk.workstation.station_identifier);
-                $scope.zestStationData.workstationStatus === 'out-of-order' ? $state.go('zest_station.outOfService') : $scope.cancelAdminSettings(); //navigate to home screen
+                $scope.zestStationData.workstationStatus === 'out-of-order' ? $state.go('zest_station.outOfService') : $scope.cancelAdminSettings(true); //navigate to home screen
             };
             var failureCallBack = function(response) {
                 console.warn('unable to save workstation settings');
@@ -272,6 +279,8 @@ sntZestStation.controller('zsAdminCtrl', [
             var failureCallBack = function(response) {
                 console.warn('failed to save settings');
                 console.log(response);
+                console.info('save setting failed, set demo mode to last setting');
+                $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
             };
             var options = {
                 params: params,
@@ -305,7 +314,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 );
             }
         };
-
+        var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled;
         var initialize = function() {
             $scope.adminLoginError = false;
             $scope.input = {
@@ -331,6 +340,9 @@ sntZestStation.controller('zsAdminCtrl', [
             } else {
                 $scope.mode = 'login-mode';
             };
+            setTimeout(function(){
+                refreshScroller();//maybe need to update layout, but this works to fix scroll issue on admin after page load
+            },1000);
 
         }();
     }

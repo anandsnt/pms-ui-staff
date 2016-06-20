@@ -45,7 +45,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 		var fetchReservationDetails = function() {
 			var onSuccessFetchReservationDetails = function(data) {
 				$scope.selectedReservation.reservation_details = data.data.reservation_card;
-				if (isRateSuppressed()) {
+				if ($scope.isRateSuppressed()) {
 					$scope.selectedReservation.reservation_details.balance = 0;
 				}
 				fetchAddons();
@@ -67,8 +67,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 		var fetchAddons = function() {
 			var fetchCompleted = function(data) {
 				$scope.selectedReservation.addons = data.existing_packages;
-				//refreshScroller();
 				setDisplayContentHeight();
+				refreshScroller();
 			};
                         
                         
@@ -81,9 +81,19 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                         });
 		};
 
-		var isRateSuppressed = function() {
-			if ($scope.selectedReservation.reservation_details.is_rates_suppressed === 'true') {
-				return true;
+		$scope.isRateSuppressed = function() {
+			//need to wait for api to update
+			//this is used in HTML to hide things
+			if( typeof $scope.selectedReservation.reservation_details !== 'undefined'){
+				if ($scope.selectedReservation.reservation_details.is_rates_suppressed === 'true') {
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				return false;
 			}
 		};
 
@@ -97,7 +107,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 				var reservations = zsCheckinSrv.getCheckInReservations();
 				if($scope.zestStationData.check_in_collect_nationality){
-					$state.go('zest_station.collectNationality',{'guestId':$scope.selectedReservation.guest_details[0].id});
+					$state.go('zest_station.collectNationality',{'guestId':$scope.selectedReservation.guest_details[0].id, 'first_name':$scope.selectedReservation.guest_details[0].first_name});
 				}else if(reservations.length > 0){
 					$state.go('zest_station.selectReservationForCheckIn');
 				}
@@ -157,7 +167,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             console.log('early checkin active : ', $scope.zestStationData.offer_early_checkin);
             console.log('---------');
             console.log('--RESERVATION--');
-            console.log('early Checkin Purchased: ', $state.earlyCheckinPurchased);
+            //console.log('early Checkin Purchased: ', $state.earlyCheckinPurchased);
             console.log('in early window: ', data.reservation_in_early_checkin_window);
             console.log('has free early chkin   : ', early_checkin_free);
             console.log('---------');
@@ -247,6 +257,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                         
 		var initTermsPage = function() {
 			console.log($scope.zestStationData);
+                        console.info('$scope.selectedReservation: ',$scope.selectedReservation)
 			var stateParams = {
 				'guest_id': $scope.selectedReservation.guest_details[0].id,
 				'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
@@ -257,8 +268,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 				'guest_email': $scope.selectedReservation.guest_details[0].email,
 				'guest_email_blacklisted': $scope.selectedReservation.guest_details[0].is_email_blacklisted,
 				'first_name': $scope.selectedReservation.guest_details[0].first_name,
-				'balance_amount' : $scope.selectedReservation.reservation_details.balance_amount
-			}
+				'balance_amount' : $scope.selectedReservation.reservation_details.balance_amount,
+				'confirmation_number' : $scope.selectedReservation.confirmation_number,
+				'pre_auth_amount_at_checkin' : $scope.selectedReservation.reservation_details.pre_auth_amount_at_checkin,
+				'authorize_cc_at_checkin' : $scope.selectedReservation.reservation_details.authorize_cc_at_checkin
+			};
+                        console.warn('to checkin terms: ',stateParams);
 			$state.go('zest_station.checkInTerms', stateParams);
 		};
 

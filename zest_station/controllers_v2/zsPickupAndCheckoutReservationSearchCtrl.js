@@ -5,7 +5,8 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 	'zsEventConstants',
 	'zsCheckoutSrv',
 	'$stateParams',
-	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams) {
+	'$timeout',
+	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams,$timeout) {
 
 
 		//This controller is used for searching reservation using last name
@@ -18,6 +19,18 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		 **/
 
 		BaseCtrl.call(this, $scope);
+
+		var focuInputField = function(elementId){
+			$timeout(function(){
+				if(!$scope.isIpad){
+					document.getElementById(elementId).focus();
+				}
+				else{
+					$scope.callBlurEventForIpad();
+				}
+			}, 300); 
+			
+		};
 
 		var init = function() {
 			//show back button
@@ -75,6 +88,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			};
 			var checkoutVerificationCallBack = function() {
 				$scope.mode = 'NO_MATCH';
+				$scope.callBlurEventForIpad();
 			};
 			var params = {
 				"last_name": $scope.reservationParams.last_name,
@@ -90,21 +104,37 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
 		var roomNumberEntered = false;
 		$scope.lastNameEntered = function() {
+
 			//if room is already entered, no need to enter again
 			if ($scope.reservationParams.room_no.length > 0 && roomNumberEntered) {
 				searchReservation();
 			} else {
-				$scope.mode = $scope.reservationParams.last_name.length > 0 ? $scope.mode = "ROOM_NUMBER_ENTRY" : $scope.mode;
+				if($scope.reservationParams.last_name.length > 0){
+					$scope.mode = "ROOM_NUMBER_ENTRY";
+					focuInputField("room-number");
+				}
+				else{
+					return;
+				} ;
 			};
+			$scope.resetTime();
 		};
 
 		$scope.roomNumberEntered = function() {
 			roomNumberEntered = true;
 			($scope.reservationParams.room_no.length > 0) ? searchReservation(): "";
+			$scope.resetTime();
 		};
 
 		$scope.reEnterText = function(type) {
-			$scope.mode = (type === "room") ? "ROOM_NUMBER_ENTRY" : "LAST_NAME_ENTRY";
+			if(type === "room"){
+				$scope.mode = "ROOM_NUMBER_ENTRY";
+				focuInputField("room-number");
+			}
+			else{
+				$scope.mode = "LAST_NAME_ENTRY";
+				focuInputField("last-name");
+			}
 		};
 
 		$scope.talkToStaff = function() {

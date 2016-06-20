@@ -4,7 +4,7 @@
         <h1 translate>TYPE_LAST</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered()"/>
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered()" id="last-name" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="lastNameEntered()">Next</button>
@@ -23,7 +23,7 @@
         </form>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.room_no" enter-press="roomNumberEntered()"/>
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.room_no" enter-press="roomNumberEntered()" id="room-number" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="roomNumberEntered()">Next</button>
@@ -78,5 +78,5 @@
         <h2 class="nocaps">{{'USER_CHECKED_OUT_ALRDY_SUB' |translate}}</h2>
         <button type="button" class="button" click-touch="alreadyCheckedOutActions()">{{'USER_CHECKED_OUT_ALRDY_RTN' |translate}}</button>
     </div>
-    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
