@@ -84,6 +84,7 @@ sntZestStation.controller('zsAdminCtrl', [
          */
         var submitLogin = function() {
             $scope.hasLoader = true;
+            $scope.callBlurEventForIpad();
             var onSuccess = function(response) {
                 if (response.admin) {
                     $scope.mode = "admin-screen-active";
@@ -153,6 +154,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.mode = "admin-password-mode";
                 $scope.headingText = 'Admin Password';//TODO: need to move this out to a tag.
                 $scope.passwordField = true;
+                $scope.callBlurEventForIpad();
             } else {
                 //user has entered password
                 $scope.adminLoginError = false;
