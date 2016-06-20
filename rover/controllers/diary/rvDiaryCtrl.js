@@ -543,6 +543,10 @@ angular.module('sntRover')
 					successCallBackParameters:  params
 				};
 
+				$scope.clearAvailability();
+				$scope.resetEdit();
+				$scope.renderGrid();
+
 				$scope.callAPI(rvDiarySrv.Availability, apiOptions);
 
 				this.dragData = options;
