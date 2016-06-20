@@ -114,7 +114,7 @@ sntZestStation.controller('zsHomeCtrl', [
 			$scope.resetHomeScreenTimer();
             if($scope.zestStationData.workstationStatus === 'out-of-order'){
             	var params = {};
-            	params.reason = $scope.zestStationData.wsFailedReason;
+            	params.reason = $scope.zestStationData.workstationOooReason;
 				params.status = 'out-of-order';
             	$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,params);
 				$state.go('zest_station.outOfService');

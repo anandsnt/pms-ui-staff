@@ -9,16 +9,22 @@
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- card swipe -->
-                <li ng-show='at === "card-swipe"'>
-                    <button ng-hide="theme==='snt'" type="button" class="button option" touch-press='simulateSixPay()'>
+                <li ng-show='at === "card-swipe" && !zestStationData.icmpdemo'>
+                    <button type="button" class="button option" touch-press='simulateSixPay()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
-                    <div ng-show="theme==='snt'" class="margin-adj">
-                        <div ng-include="icons.url.creditcard"></div>
+                    
+                    <span translate>SWIPE_CARD_PLEASE</span>
+                </li>
+                <li ng-show='at === "card-swipe" && zestStationData.icmpdemo'>
+                    <div class="margin-adj">
+                        <div ng-include="icons.url.creditcard_icmp"></div>
                     </div>
                     
                     <span translate>SWIPE_CARD_PLEASE</span>
                 </li>
+                
+                
                 
                 <!-- deliver-registration -->
                 <li ng-show='at === "deliver-registration" && printEnabled && !zestStationData.auto_print'> 

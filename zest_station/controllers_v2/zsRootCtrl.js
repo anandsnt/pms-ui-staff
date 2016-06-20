@@ -88,7 +88,17 @@ sntZestStation.controller('zsRootCtrl', [
 				return;
 			}
 		};
-
+                //used for making keys, checking if there is text in the locale, to hide/show the key #, 
+                //can be moved to other controllers if this doesnt make sense here, just see there are 3x views with the UNO_ and DOS_KEY tags
+                $scope.isEmpty = function(value){
+                    if (!value){
+                        return true;
+                    }
+                    if ($filter('translate')(value) === ''){
+                        return true;
+                    }
+                     return false;
+                };
 
 		/**
 		 * [navToPrev and close button description]
@@ -153,6 +163,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$rootScope.emvTimeout = !!$scope.zestStationData.hotelSettings.emv_timeout ? $scope.zestStationData.hotelSettings.emv_timeout : 60;
 				$scope.zestStationData.mliMerchantId = data.mli_merchant_id;
                         configureSwipeSettings();
+                        logStationSettings();
 			};
 			var options = {
 				params: {},
@@ -161,7 +172,6 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.callAPI(zsGeneralSrv.fetchHotelSettings, options);
 		};
                 var configureSwipeSettings = function(){
-                    console.info('::configuring swipe settings::');
                     //(remote, websocket, local)
                     //
                     //local:  Infinea/Ingenico
@@ -188,9 +198,50 @@ sntZestStation.controller('zsRootCtrl', [
                     } else {//sankyo_websocket
                         $scope.zestStationData.ccReader = 'websocket';
                     }
-                    console.warn(':: Key Writer + CC Reader = [',$scope.zestStationData.keyWriter, ' + ',$scope.zestStationData.ccReader,']');
+                    changeIconsIfDemo();
+                };
+                
+                var changeIconsIfDemo = function(){
+                    if (forDemo()){//if we are reading locally, we'll show the ICMP icons for our SNT 
+                        $scope.icons.url.creditcard_icmp = $scope.iconsPath+'/demo_swiper.svg';
+                        $scope.icons.url.createkey_icmp = $scope.iconsPath+'/demo_keyencoder.svg';
+                        console.warn('using demo icons for create key and credit card reading');
+                        $scope.icmp = true;
+                    } else {
+                        $scope.icmp = false;
+                    }
+                };
 
-                }
+                var forDemo = function(){
+                    console.info('readLocally() : ',readLocally() )
+                    if(readLocally() && $scope.zestStationData.theme === 'snt'){
+                        console.info('forDemo: !!!');
+                        return true;
+                    } else {
+                        console.info('not forDemo: ');
+                        return false;
+                    }
+                };
+                
+                
+                
+                $scope.inDemoMode = function(){
+                    if ($scope.zestStationData.demoModeEnabled === 'true'){
+                        console.warn('in demo mode');
+                        return true;
+                    } else {
+                        console.warn('not in demo mode');
+                        return false;
+                    }
+                };
+                
+                var readLocally = function(){
+                    if ($scope.zestStationData.ccReader === 'local'){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                };
 		/**
 		 * This fetches hotel admin workstation settings
 		 * */
@@ -301,7 +352,8 @@ sntZestStation.controller('zsRootCtrl', [
 					}
 					//when user activity is not recorded for more than idle_timer.max
 					//time set in admin, got to home page
-					if (userInActivityTimeInSeconds >= $scope.zestStationData.idle_timer.max) {
+					if (userInActivityTimeInSeconds >= $scope.zestStationData.idle_timer.max
+					    && currentState !=='zest_station.checkInSignature' && currentState !=='zest_station.checkInCardSwipe') {
 						$state.go('zest_station.home');
 						$scope.runDigestCycle();
 					} else {
@@ -689,6 +741,55 @@ sntZestStation.controller('zsRootCtrl', [
 			//maximize the chrome app in the starting
 			(chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, "zest-station-login"): "";
 		};
+                /*
+                 * Take a quick look at hotel + zest station settings, 
+                 *  -helpful for debugging and making sure settings are what we expect
+                 */
+                var logStationSettings = function(){
+                    var setting = $scope.zestStationData;
+                        console.log('');
+                        console.log('-');
+                        console.log('-:-');
+                        console.log('-:- Station Settings -:- ');
+                        console.log('');
+                        console.log('  - Payment Gateway    :  ', setting);
+                        console.log('  - Key Writer         :  ', setting.keyWriter);
+                        console.log('  - CC Reader          :  ', setting.ccReader);
+                        console.log('  - Idle Timer         :  ', (setting.idle_timer.enabled)? 'Enabled':'Disabled','*');
+                        console.log('    -> Prompt  : ', (setting.idle_timer.prompt),'sec ');
+                        console.log('    -> Home    : ', (setting.idle_timer.max),'sec ');
+                        
+                        console.log('  - Chrome App ID      :  ', setting.chrome_app_id);
+                        console.log('  - Bussiness Date     :  ', setting.bussinessDate);
+                        console.log('  - ByPassCCForPrepaid :  ', (setting.bypass_cc_for_prepaid_reservation)? 'On':'Off');
+                        console.log('  - Collect Nationality:  ', (setting.check_in_collect_nationality)? 'On':'Off');
+                        console.log('  - Check-in Time      :  ', setting.check_in_time.hour+':'+setting.check_in_time.minute+' - '+setting.check_in_time.primetime);
+                        console.log('  - Check-out Time     :  ', setting.check_out_time.hour+':'+setting.check_out_time.minute+' - '+setting.check_out_time.primetime);
+                        console.log('');
+                        console.log('  - Check-In Settings - ');
+                        console.log('');
+                        console.log('  - *Confirmation      :  ', (setting.checkin_screen.authentication_settings.confirmation)? 'On':'Off');
+                        console.log('  - *Departure Date    :  ', (setting.checkin_screen.authentication_settings.departure_date)? 'On':'Off');
+                        console.log('  - *Email             :  ', (setting.checkin_screen.authentication_settings.email)? 'On':'Off');
+                        console.log('  - *No. Nights        :  ', (setting.checkin_screen.authentication_settings.number_of_nights)? 'On':'Off');
+                        console.log('  -  Enforce Deposit   :  ', (setting.enforce_deposit)? 'On':'Off');
+                        console.log('');
+                        console.log('  - Check-Out Settings - ');
+                        console.log('');
+                        console.log('  - By Key Card        :  ', (setting.checkout_keycard_lookup)? 'On':'Off');
+                        console.log('  - Guest Bill Delivery:  ');
+                        console.log('    -> Print   : ', (setting.guest_bill.print)? 'On':'Off');
+                        console.log('    -> Email   : ', (setting.guest_bill.email)? 'On':'Off');
+                        
+                        //add others here
+                    
+                    
+                        console.log('');
+                        console.log(' -:-- - - - - - - - --:- ');
+                        console.log('-');
+                        console.log('');
+                        
+                };
 		/***
 		 * [initializeMe description]
 		 * @return {[type]} [description]
@@ -697,6 +798,7 @@ sntZestStation.controller('zsRootCtrl', [
 			$('body').css('display', 'none'); //this will hide contents until svg logos are loaded
 			//call Zest station settings API
 			$scope.zestStationData = zestStationSettings;
+                        $scope.zestStationData.demoModeEnabled = 'false';//demo mode for hitech, only used in snt-theme
 			$scope.zestStationData.isAdminFirstLogin = true;
 			CheckForWorkStationStatusContinously();
 			//$scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
@@ -711,17 +813,7 @@ sntZestStation.controller('zsRootCtrl', [
 			fetchHotelSettings();
 			getAdminWorkStations();
 			$scope.zestStationData.bussinessDate = hotelTimeData.hotel_time.date;
-                        //used for making keys, checking if there is text in the locale, to hide/show the key #, 
-                        //can be moved to other controllers if this doesnt make sense here, just see there are 3x views with the UNO_ and DOS_KEY tags
-                        $scope.isEmpty = function(value){
-                            if (!value){
-                                return true;
-                            }
-                            if ($filter('translate')(value) === ''){
-                                return true;
-                            }
-                             return false;
-                        };
+                        
 		}();
 	}
 ]);

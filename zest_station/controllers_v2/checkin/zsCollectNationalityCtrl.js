@@ -61,7 +61,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 
 		$scope.saveNationality = function() {
 			var successCallBack = function() {
-				$state.go('zest_station.checkInReservationDetails');
+				$state.go('zest_station.checkInReservationDetails',$stateParams);
 			};
 			var options = {
 				params: {

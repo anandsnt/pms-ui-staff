@@ -511,20 +511,9 @@ angular.module('sntRover').controller('guestCardController', [
 			$scope.handleDrawClosing();
 			$scope.cardVisible = false;
 			$scope.guestCardVisible = false;
-			// $timeout(function () {
-			// 	$scope.$emit('hideLoader');
-			// },2000);
 		};
 
 		$scope.handleDrawClosing = function() {
-			if ($scope.viewState.isAddNewCard) {
-				var cards = {
-					'guest-card': 'guest',
-					'company-card': 'company',
-					'travel-agent-card': 'travel_agent'
-				};
-				discardCard(cards[$scope.UICards[0]]);
-			}
 			if ($scope.viewState.pendingRemoval.status) {
 				$scope.removeCard($scope.viewState.pendingRemoval.cardType);
 			}

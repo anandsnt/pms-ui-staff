@@ -1,7 +1,7 @@
 
 <!-- Content -->
 <section id="main" class="centered test" role="main" click-touch='resetTime()' >
-    <div id="content" style='height: 80%' ng-show="!AddGuestMode">
+    <div id="content" style='height: 75%;margin-top:50px;' ng-show="!AddGuestMode">
         <h1>{{addGuestsHeading |translate}}</h1>
         <ul id="selection" class="editable">
 
@@ -26,7 +26,7 @@
             </div>
         </form>
     </div>
-    <span ng-include="'/assets/partials/rvTabletFooter.html'" click-touch='resetTime()' ></span>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
     <div>
         <div id="actions" class="add-guests-footer" >
             <button type="button" class="button prev" click-touch="addAGuest(); resetTime();" ng-class='{"overlay grey": selectedReservation.guest_details.length >= maxAddGuests}'>{{'ADD_BTN' |translate}}</button>
