@@ -216,6 +216,9 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 		$scope.$on('report.updated', function() {
 			init();
 		});
+		$scope.$on('report.submited', function() {
+			$scope.sources && init();
+		});
 
 		init();
 
