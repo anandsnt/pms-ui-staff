@@ -222,15 +222,8 @@
 											<td class="price" ng-show="!expense.is_inclusive"> {{currencySymbol}}{{expense.price | number: precisonTwo}} </td>
 											<td> {{expense.package}} </td>
 											<td> {{expense.quantity}} </td>
-											<td ng-show="expense.post_type=='Entire Stay'&&expense.amount_type=='Adult'">PER ADULT/{{expense.post_type}}</td>
-											<td ng-show="expense.post_type=='Entire Stay'&&expense.amount_type=='Child'">PER CHILD/{{expense.post_type}}</td>
-											<td ng-show="expense.post_type=='First Night'&&expense.amount_type=='Child'">PER CHILD/{{expense.post_type}}</td>
-											<td ng-show="expense.post_type=='First Night'&&expense.amount_type=='Adult'">PER ADULT/{{expense.post_type}}</td>
-											<td ng-show="(expense.post_type=='Every Week' && expense.amount_type=='Adult')">PER ADULT/{{expense.post_type}}</td>
-											<td ng-show="(expense.post_type=='Every Week' && expense.amount_type=='Child')">PER CHILD/{{expense.post_type}}</td>
-											<td ng-show="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='First Night'">{{expense.post_type}}</td>
-											<td ng-show="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='Entire Stay'">{{expense.post_type}}</td>
-											<td ng-show="(expense.post_type=='' && expense.amount_type=='')"></td>
+											<!--CICO-29775-->
+											<td > {{expense.amount_type}} {{expense.post_type}}</td>
 											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>
 											<td class="price" ng-show="!expense.is_inclusive"> {{currencySymbol}}{{expense.effective_quantity*expense.price  | number: precisonTwo}} </td>
 										</tr>
