@@ -110,11 +110,13 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 					return;
 				} ;
 			};
+			$scope.resetTime();
 		};
 
 		$scope.roomNumberEntered = function() {
 			roomNumberEntered = true;
 			($scope.reservationParams.room_no.length > 0) ? searchReservation(): "";
+			$scope.resetTime();
 		};
 
 		$scope.reEnterText = function(type) {
