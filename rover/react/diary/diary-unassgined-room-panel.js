@@ -8,33 +8,46 @@ var UnassignedRoomPanel = React.createClass({
         });
     },
 
-    __getTimeDiff: function(arrival, departure) {
-        var arrival_hour,
-            arrival_min,
-            departure_hour,
-            departure_min,
-            hour_diff,
-            min_diff;
+    __getTimeDiff: function(arrivalDate, arrivalTime, departureDate, departureTime, name) {
+        var arrival = {},
+            departure = {},
+            dateParts,
+            timeParts,
+            fullArrivalDate,
+            fullDepartureDate,
+            difference,
+            fraction;
 
-        if ( ! arrival || ! departure ) {
-            return {
-                hh: 'N/A',
-                mm: 'N/A'
-            }
-        }
+        dateParts = arrivalDate.split('-');
+        arrival.year = parseInt( dateParts[0] );
+        arrival.month = parseInt( dateParts[1] ) - 1;
+        arrival.date = parseInt( dateParts[2] );
+        /**/
+        timeParts = arrivalTime.split(':');
+        arrival.hour = parseInt( timeParts[0]);
+        arrival.mins = parseInt( timeParts[1]);
 
-        arrival_hour = parseInt( arrival.split(':')[0] );
-        arrival_min = parseInt( arrival.split(':')[1] );
-        departure_hour = parseInt( departure.split(':')[0] );
-        departure_min = parseInt( departure.split(':')[1] );
+        dateParts = departureDate.split('-');
+        departure.year = parseInt( dateParts[0] );
+        departure.month = parseInt( dateParts[1] ) - 1;
+        departure.date = parseInt( dateParts[2] );
+        /**/
+        timeParts = departureTime.split(':');
+        departure.hour = parseInt( timeParts[0] );
+        departure.mins = parseInt( timeParts[1] );
 
-        hour_diff = departure_hour - arrival_hour;
-        min_diff = departure_min - arrival_min;
+        fullArrivalDate = new Date(arrival.year, arrival.month, arrival.date, arrival.hour, arrival.mins);
+        fullDepartureDate = new Date(departure.year, departure.month, departure.date, departure.hour, departure.mins);
+
+        difference = Math.abs( fullDepartureDate - fullArrivalDate ) / 36e5;
+        fraction = Math.ceil( ((difference < 1.0) ? difference : (difference % Math.floor(difference))) * 10 );
+
+        difference = Math.floor(difference);
 
         return {
-            hh: hour_diff,
-            mm: min_diff,
-            hhs: hour_diff + 'h'
+            hh: difference,
+            mm: fraction,
+            hhs: difference + 'h'
         }
     },
 
@@ -48,13 +61,17 @@ var UnassignedRoomPanel = React.createClass({
         this.props.unassignedRoomList.selectAnUnassigned({
             arrival_date: item.arrival_date, 
             arrival_time: item.arrival_time,
-            stay_span: this.__getTimeDiff(item.arrival_time, item.departure_time),
+            departure_date: item.departure_date,
+            departure_time: item.departure_time,
+            
             reservationId: item.reservation_id,
             adults: item.adults,
             children: item.children,
             infants: item.infants,
             rate_id: item.rate_id,
-            room_type_id: item.room_type_id
+            room_type_id: item.room_type_id,
+
+            stay_span: this.__getTimeDiff(item.arrival_date, item.arrival_time, item.departure_date, item.departure_time)
         });
     },
 
@@ -149,7 +166,7 @@ var UnassignedRoomPanel = React.createClass({
                                 },
                                 React.DOM.span({
                                     className: 'duration'
-                                }, self.__getTimeDiff(room.arrival_time, room.departure_time).hhs ),
+                                }, self.__getTimeDiff(room.arrival_date, room.arrival_time, room.departure_date, room.departure_time, room.primary_guest).hhs ),
                                 React.DOM.span({
                                     className: 'eta'
                                 }, room.arrival_time)

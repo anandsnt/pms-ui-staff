@@ -527,16 +527,16 @@ angular.module('sntRover')
 				}
 			},
 			selectAnUnassigned: function(options) {
-				var includeUnassigned = true;
-				var params = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.stay_span, options.room_type_id);
+				var params   = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.stay_span, options.room_type_id),
+					keepOpen = true,
+					success,
+					apiOptions;
 
-				var keepOpen = true;
-				var success = function(data, successParams) {
+				success = function(data, successParams) {
 					successCallBackOfAvailabilityFetching(data, successParams, keepOpen);
 				};
 
-				include_unassiged=true
-				var apiOptions = {
+				apiOptions = {
 					params: 			params,
 					successCallBack: 	success,
 					failureCallBack: 	failureCallBackOfAvailabilityFetching,
@@ -1530,7 +1530,7 @@ angular.module('sntRover')
 		var processedAd = processDate(arrivalDate);
 
 		var filter = _.extend({}, this.filter);
-		var time_span = Time({ hours: staySpan.hh });
+		var time_span = Time({ hours: staySpan.hh, minutes: staySpan.mm });
 
 		var start_date = new Date(this.display.x_n);
 		start_date.setHours(0, 0, 0);
@@ -1569,7 +1569,7 @@ angular.module('sntRover')
 			end_date: end,
 			room_type_id: roomTypeId,
 			GUID: GUID,
-			include_unassigned: true
+			is_unassigned_room: true
 		};
 	}.bind($scope.gridProps);
 
