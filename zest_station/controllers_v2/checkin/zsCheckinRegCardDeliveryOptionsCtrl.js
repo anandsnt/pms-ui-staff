@@ -256,7 +256,12 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON); //hide back buttons in 2 options page
 			//show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			$scope.email = $stateParams.email.length > 0 ? $stateParams.email : "";
+                        if ($stateParams.email){
+                            $scope.email = $stateParams.email.length > 0 ? $stateParams.email : "";
+                        } else {
+                            $scope.email = "";
+                        }
+                        
 			$scope.from = $stateParams.from;
 			if ($scope.zestStationData.registration_card.auto_print) {
 				$scope.clickedPrint();

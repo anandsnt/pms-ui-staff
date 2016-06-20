@@ -4,7 +4,7 @@
 	<div class="no-print" ng-include="'/assets/partials/common/header.html'"></div>
 
 	<section role="complementary" id="registration-details" class="content stay-card-inner check-in">
-		
+
 		<!-- Reservation Header -->
 		<div class="reservation-header">
 			<div class="actions">
@@ -13,27 +13,27 @@
 
 				<!-- Billing Information Toggle -->
 				<button type="button" class="toggle has-arrow" ng-show="routingArrayCount>0 && !isStandAlone" ng-class="{'active':showBillingInfo}" ng-click="showBillingInfoHandle()" translate>BILLING_INFO</button>
-							
+
 				<!-- Billing Information Popup -->
 				<button type="button" class="button blue" ng-click="openBillingInformation()" ng-show="isStandAlone" translate>{{billingData.billingInfoTitle}}</button>
 			</div>
-						
+
 			<!-- Other header details -->
 			<div class="data">
-				<span class="room" ng-show="reservationBillData.room_number != ''"> 
+				<span class="room" ng-show="reservationBillData.room_number != ''">
 					<span class="guest-status room" translate>ROOM</span>
-					<strong id="header-room-num" class="room-number" ng-class="getRoomClass(reservationBillData.reservation_status, reservationBillData.room_status, reservationBillData.fo_status, reservationBillData.room_ready_status, reservationBillData.checkin_inspected_only)"> {{reservationBillData.room_number}} </strong> 
-					<span id="room-type" class="room-type"> {{reservationBillData.room_type_name}} </span> 
+					<strong id="header-room-num" class="room-number" ng-class="getRoomClass(reservationBillData.reservation_status, reservationBillData.room_status, reservationBillData.fo_status, reservationBillData.room_ready_status, reservationBillData.checkin_inspected_only)"> {{reservationBillData.room_number}} </strong>
+					<span id="room-type" class="room-type"> {{reservationBillData.room_type_name}} </span>
 				</span>
-				<span class="nights"> 
+				<span class="nights">
 					<span class="guest-status nights"></span> {{reservationBillData.number_of_nights}}
-					{{setNightsString()}} 
+					{{setNightsString()}}
 				</span>
-				<span class="date"> <span class="guest-status small-icon check-in" translate>CHECK_IN</span> 
+				<span class="date"> <span class="guest-status small-icon check-in" translate>CHECK_IN</span>
 				 {{reservationBillData.checkin_date | date:dayInWeek}}
 				 {{reservationBillData.checkin_date | date:dateFormat}} </span>
 				<span class="date"> <span class="guest-status small-icon check-out" translate>CHECK_OUT</span>
-				{{reservationBillData.checkout_date | date:dayInWeek}} 
+				{{reservationBillData.checkout_date | date:dayInWeek}}
 				{{reservationBillData.checkout_date | date:dateFormat}} </span>
 			</div>
 		</div>
@@ -43,7 +43,7 @@
 			<div class="wrapper">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-				<!-- Billing Information -->				
+				<!-- Billing Information -->
 				<div id="billing-information" class="billing-information notice" ng-show="showBillingInfo && !isStandAlone">
 					<table>
 						<thead>
@@ -120,10 +120,10 @@
 
                 	<!-- Incoming Billing Information Toggle -->
 					<button type="button" class="incoming-billing toggle has-arrow" ng-show="incomingRoutingArrayCount>0" ng-class="{'active':showIncomingBillingInfo}" ng-click="showIncomingBillingInfoHandle()" translate>INCOMING_BILLING_INFO</button>
-				
+
 					<!-- Bill -->
 					<div ng-class="{'hidden': $index!=currentActiveBill}" class="bill-summary" ng-repeat="billData in reservationBillData.bills">
-						
+
 						<!-- Bill Summary -->
 						<div class="bill-summary-wrapper">
 							<div id="bill-days-new" class="scrollable" ng-iscroll="billDays" ng-iscroll-delay="50">
@@ -137,23 +137,23 @@
 
 									<!-- For checkin date -->
 									<li click-touch="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, reservationBillData.checkin_date, reservationBillData.checkout_date, businessDate)">
-										<div class="toggle" ng-class="{'active': $index == dayRates}" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'others')"> 
-											<span class="day"> {{days.date | date:'EEE'}} </span> 
-											<span class="date"> {{days.date | date:'dd'}} </span> 
-											<span class="guest-status check-in small-icon" ng-show="days.date == reservationBillData.checkin_date" translate>CHECK_IN</span> 
+										<div class="toggle" ng-class="{'active': $index == dayRates}" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'others')">
+											<span class="day"> {{days.date | date:'EEE'}} </span>
+											<span class="date"> {{days.date | date:'dd'}} </span>
+											<span class="guest-status check-in small-icon" ng-show="days.date == reservationBillData.checkin_date" translate>CHECK_IN</span>
 											<span class="price" ng-show="!isBalanceShown(days.is_rate_suppressed)">{{'SUPPRESSED_RATES_TEXT' | translate}}</span>
-											<span class="price" ng-show="isBalanceShown(days.is_rate_suppressed)">{{currencySymbol}}{{days.amount | number: precisonZero}}</span>  
+											<span class="price" ng-show="isBalanceShown(days.is_rate_suppressed)">{{currencySymbol}}{{days.amount | number: precisonZero}}</span>
 										</div>
 									</li>
 
 									<!-- packages -->
 									<li class="package active" click-touch="showAddons($index)" ng-repeat="addons in billData.addons">
-										<div class="toggle" ng-class="{'active': $index == showAddonIndex}"> 
-											<span class="expense"> {{addons.title}}</span> 
-											<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span> 
-											<span class="price" ng-show="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'">{{currencySymbol}}{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span> 
-											<span class="price" ng-hide="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'">{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span> 
-											<span class="price" ng-hide="addons.package_type == 'PACKAGES'">{{addons.amount | number: precisonZero}}</span> 
+										<div class="toggle" ng-class="{'active': $index == showAddonIndex}">
+											<span class="expense"> {{addons.title}}</span>
+											<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span>
+											<span class="price" ng-show="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'">{{currencySymbol}}{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span>
+											<span class="price" ng-hide="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'">{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span>
+											<span class="price" ng-hide="addons.package_type == 'PACKAGES'">{{addons.amount | number: precisonZero}}</span>
 										</div>
 									</li>
 
@@ -168,8 +168,8 @@
 
 									<!-- Group items tab -->
 									<li class="package active" click-touch="showGroupItems($index)" ng-repeat="groupItems in billData.group_items">
-										<div class="toggle" ng-class="{'active': $index == showGroupItemIndex}"> 
-											<span class="expense"> {{groupItems.title}} </span> 
+										<div class="toggle" ng-class="{'active': $index == showGroupItemIndex}">
+											<span class="expense"> {{groupItems.title}} </span>
 											<span class="price" >{{currencySymbol}}{{groupItems.amount | number: precisonZero}}</span>
 										</div>
 									</li>
@@ -194,7 +194,7 @@
 									<div class="room">
 										<span translate> GUEST_ROOM_TYPE </span>
 										{{billItem.room_type_name}}
-									</div> 
+									</div>
 								</a>
 								<div class="stay-details" ng-class="{'hidden': $index != showRoomDetailsIndex}">
 									<div class="rate-details">
@@ -218,19 +218,12 @@
 									</thead>
 									<tbody>
 										<tr ng-repeat="expense in billAddons.expense_details">
-											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>								
+											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>
 											<td class="price" ng-show="!expense.is_inclusive"> {{currencySymbol}}{{expense.price | number: precisonTwo}} </td>
 											<td> {{expense.package}} </td>
 											<td> {{expense.quantity}} </td>
-											<td ng-show="expense.post_type=='Entire Stay'&&expense.amount_type=='Adult'">PER ADULT/PER NIGHT</td>
-											<td ng-show="expense.post_type=='Entire Stay'&&expense.amount_type=='Child'">PER CHILD/PER NIGHT</td>
-											<td ng-show="expense.post_type=='First Night'&&expense.amount_type=='Child'">PER CHILD/FIRST NIGHT</td>
-											<td ng-show="expense.post_type=='First Night'&&expense.amount_type=='Adult'">PER ADULT/FIRST NIGHT</td>
-											<td ng-show="(expense.post_type=='Every Week' && expense.amount_type=='Adult')">PER ADULT/EVERY WEEK</td>
-											<td ng-show="(expense.post_type=='Every Week' && expense.amount_type=='Child')">PER CHILD/EVERY WEEK</td>
-											<td ng-show="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='First Night'">FIRST NIGHT</td>
-											<td ng-show="(expense.amount_type=='Flat'||expense.amount_type=='Person')&&expense.post_type=='Entire Stay'">PER NIGHT</td>
-											<td ng-show="(expense.post_type=='' && expense.amount_type=='')"></td>
+											<!--CICO-29775-->
+											<td > {{expense.amount_type}} {{expense.post_type}}</td>
 											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>
 											<td class="price" ng-show="!expense.is_inclusive"> {{currencySymbol}}{{expense.effective_quantity*expense.price  | number: precisonTwo}} </td>
 										</tr>
@@ -263,7 +256,7 @@
 						<div id="invoiceDiv" class="invoice" ng-include="'/assets/partials/bill/rvPrintBillCard.html'"></div>
 
 						<!-- Balance / Signature / Card -->
-						<div class="total-stay-fees" ng-include="'/assets/partials/bill/rvTotalStayFees.html'" ></div>  
+						<div class="total-stay-fees" ng-include="'/assets/partials/bill/rvTotalStayFees.html'" ></div>
 
 						<!-- Signature -->
 						<div ng-include="'/assets/partials/bill/rvSignature.html'"></div>
@@ -275,5 +268,5 @@
 			</div>
 		</div>
 	</section>
-	
+
 </div>

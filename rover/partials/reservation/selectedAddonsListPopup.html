@@ -15,7 +15,7 @@
                     <span class="count"> ({{getAddonCount(addon.amount_type, addon.post_type, addon.posting_frequency,reservationData.number_of_adults, reservationData.number_of_children, duration_of_stay, addon.charge_full_weeks_only)}})</span>
                 </span>
 
-                <span class="base" ng-hide="addon.is_rate_addon">at {{currencySymbol}}{{addon.price_per_piece | number : 2}} / {{addon.amount_type}} <span ng-show="addon.post_type ==='First Night'">per stay</span><span ng-show="addon.post_type ==='Entire Stay'"> per night</span></span>
+                <span class="base" ng-hide="addon.is_rate_addon">at {{currencySymbol}}{{addon.price_per_piece | number : 2}} / {{addon.amount_type}} <span>{{addon.post_type}}</span></span>
 
                 <!-- if addon type is adult /child type multiplification factor will be (addon_count*number of days*(adult_count or child_count)) -->
                 <!-- if addon type is person multiplification factor will be (addon_count*number of days*(adult_count+child_count))-->

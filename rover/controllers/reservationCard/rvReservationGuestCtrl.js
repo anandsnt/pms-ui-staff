@@ -139,10 +139,14 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 						infants: parseInt($scope.guestData.infants_count || 0)
 					};
 					if (!$scope.reservationData.reservation_card.is_hourly_reservation) {
+						// CICO-30358: clicked on apply current rate button if custom rate is set keep it else keep actual rate.
 						if (override) {
-							var actual_amount = $scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount;
-							if (parseFloat(actual_amount) > 0.00) {
-								$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.modified_amount = actual_amount;
+							var rateForDay = $scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails,
+								actual_amount = parseFloat(rateForDay.actual_amount),
+								modified_amount = parseFloat(rateForDay.modified_amount);
+
+							if (actual_amount > 0.00 && !(modified_amount > 0.00)) {
+								rateDetails.modified_amount = actual_amount;
 							}
 							$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = 0;
 						} else if (keepCurrentRate) {

@@ -8,6 +8,7 @@ module.exports = {
 			nonMinifiedFiles: [
 				roverRoot + "controllers/groups/**/*.js",
 				roverRoot + "controllers/accounts/**/*.js",
+				roverRoot + "filters/rangeFilter.js",
 				roverRoot + "controllers/billFormat/rvBillFormatPopupController.js",
 				servicesRoot + "group/**/*.js",
 				servicesRoot + "reservation/rvReservationSummarySrv.js",

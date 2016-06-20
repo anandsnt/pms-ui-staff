@@ -6,7 +6,7 @@
         <button  type="button" class="button" touch-press="loginAdmin()">LOGIN</button>
         <button  type="button" class="button transparent" touch-press="navToPrev()">Exit</button>
     </div>
-    <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" ></span>
 </section>
 <!-- credentials entry page -->
 <section id="main" class="centered test" role="main" ng-show=" mode ===  'admin-name-mode' || mode === 'admin-password-mode'">
@@ -46,7 +46,7 @@
                 <button type="button" class="button centered-exit" touch-press='clickedOnCloseButton(); resetTime()'>{{'EXIT_BTN' |translate}}</button>
             </div>
     </div>
-<span ng-include="'/assets/partials/rvTabletFooter.html'" click-touch='resetTime()' ></span>
+<span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
 </section>
 
 <!-- Content -->
@@ -108,6 +108,15 @@
                                <option value="">{{printerLabel}}</option>
                            </select>
                         </div>
+                </div>
+                <div class="entry with-label"  ng-if="zestStationData.theme === 'snt'">
+                    <label>{{'ADMIN_STATION_DEMOMODE' |translate}}</label>
+                     <div class="entry select">
+                        <select ng-model="zestStationData.demoModeEnabled">
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

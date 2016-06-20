@@ -59,7 +59,9 @@ module.exports = {
 			'guestweb_valencia_santana_row':[ themeCSSRoot + 'guestweb_valencia_santana_row.css'],
 			'guestweb_sorella_houston':[ themeCSSRoot + 'guestweb_sorella_houston.css'],
 			'guestweb_monte_carlo' 	: [ themeCSSRoot + 'guestweb_monte_carlo.css'],
-			'guestweb_sorella_kansas_city':[ themeCSSRoot + 'guestweb_sorella_kansas_city.css']
+			'guestweb_sorella_kansas_city':[ themeCSSRoot + 'guestweb_sorella_kansas_city.css'],
+			'guestweb_Pasea':[ themeCSSRoot + 'guestweb_Pasea.css'],
+			'guestweb_sobro':[ themeCSSRoot + 'guestweb_sobro.css']
 		}
 	}
 }

@@ -138,7 +138,7 @@
                 <button class="clear-query" ng-class="{'visible': !isEmpty(arrival_date.toString())}" ng-click="clearDate('arrival_date')">
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
-                <input id="group-filter-arrival-form-id" type="text" class="range-datepicker" readonly rv-clear-text-box listen-this="arrival_date" ui-date="fromDateOptions" ng-model="arrival_date" value="{{arrival_date|date:dateFormat}}" ng-change="filterReservation()" />
+                <input id="group-filter-arrival-form-id" type="text" class="range-datepicker" readonly rv-clear-text-box listen-this="arrival_date" ui-date="arrivalDateOptions" ng-model="arrival_date" value="{{arrival_date|date:dateFormat}}" ng-change="filterReservation()" />
             </div>
             <div class="has-datepicker">
                 <label for="group-filter-departure-form-id">
@@ -148,7 +148,7 @@
                 <button class="clear-query" ng-class="{'visible': !isEmpty(dep_date.toString())}" ng-click="clearDate('dep_date')">
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
-                <input id="group-filter-departure-form-id" type="text" class="range-datepicker" readonly rv-clear-text-box listen-this="dep_date" ui-date="toDateOptions" ng-model="dep_date" value="{{dep_date|date:dateFormat}}" ng-change="filterReservation()" />
+                <input id="group-filter-departure-form-id" type="text" class="range-datepicker" readonly rv-clear-text-box listen-this="dep_date" ui-date="departureDateOptions" ng-model="dep_date" value="{{dep_date|date:dateFormat}}" ng-change="filterReservation()" />
             </div>
         </div>
         <div class="entry has-checkboxes">

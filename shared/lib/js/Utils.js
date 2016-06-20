@@ -260,15 +260,16 @@ var getMappedRoomStatusColor = function(reservationStatus, roomReadyStatus, foSt
     return reservationRoomStatusClass;
 };
 
+
 var restrictionCssClasses = {
     "CLOSED" : "red",
     "CLOSED_ARRIVAL" : "red",
     "CLOSED_DEPARTURE" : "red",
     "MIN_STAY_LENGTH" : "blue",
-    "MAX_STAY_LENGTH" : "",//no need of colors for some restriction -CICO-28657 - check HTML
+    "MAX_STAY_LENGTH" : "blue-dark",//no need of colors for some restriction -CICO-28657 - check HTML
     "MIN_STAY_THROUGH" : "violet",
     "MIN_ADV_BOOKING" : "green",
-    "MAX_ADV_BOOKING" : "grey",
+    "MAX_ADV_BOOKING" : "orange",
     "DEPOSIT_REQUESTED" : "",
     "CANCEL_PENALTIES" : "",
     "LEVELS" : "",

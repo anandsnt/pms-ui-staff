@@ -493,6 +493,10 @@ angular.module('sntRover')
 					this.data = [];
 					this.open = false;
 					this.dragData = {};
+
+					$scope.clearAvailability();
+					$scope.resetEdit();
+					$scope.renderGrid();
 				}
 			},
 			fetchList: function() {
@@ -523,16 +527,16 @@ angular.module('sntRover')
 				}
 			},
 			selectAnUnassigned: function(options) {
-				var includeUnassigned = true;
-				var params = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.room_type_id);
+				var params   = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.stay_span, options.room_type_id),
+					keepOpen = true,
+					success,
+					apiOptions;
 
-				var keepOpen = true;
-				var success = function(data, successParams) {
+				success = function(data, successParams) {
 					successCallBackOfAvailabilityFetching(data, successParams, keepOpen);
 				};
 
-				include_unassiged=true
-				var apiOptions = {
+				apiOptions = {
 					params: 			params,
 					successCallBack: 	success,
 					failureCallBack: 	failureCallBackOfAvailabilityFetching,
@@ -746,6 +750,10 @@ angular.module('sntRover')
 				$scope.$emit('hideLoader');
 				$scope.gridProps.unassignedRoomList.reset();
 				successCallBackOfSaveReservation();
+
+				$scope.clearAvailability();
+				$scope.resetEdit();
+				$scope.renderGrid();
 			};
 
 			var error = function(msg) {
@@ -1462,7 +1470,7 @@ angular.module('sntRover')
 		return paramsToReturn;
 	}.bind($scope.gridProps);
 
-	var getCustomAvailabilityCallingParams = function(arrivalTime, arrivalDate, roomTypeId) {
+	var getCustomAvailabilityCallingParams = function(arrivalTime, arrivalDate, staySpan, roomTypeId) {
 		function processTime(time) {
 			var time = time || '00:00';
 			var at = time.split(':');
@@ -1522,7 +1530,7 @@ angular.module('sntRover')
 		var processedAd = processDate(arrivalDate);
 
 		var filter = _.extend({}, this.filter);
-		var time_span = Time({ hours: this.display.min_hours });
+		var time_span = Time({ hours: staySpan.hh, minutes: staySpan.mm });
 
 		var start_date = new Date(this.display.x_n);
 		start_date.setHours(0, 0, 0);
@@ -1561,7 +1569,7 @@ angular.module('sntRover')
 			end_date: end,
 			room_type_id: roomTypeId,
 			GUID: GUID,
-			include_unassigned: true
+			is_unassigned_room: true
 		};
 	}.bind($scope.gridProps);
 
