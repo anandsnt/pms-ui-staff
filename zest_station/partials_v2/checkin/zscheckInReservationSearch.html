@@ -4,7 +4,7 @@
         <h1 translate>TYPE_LAST</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered();" id="last-name"/>
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered();" id="last-name" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="lastNameEntered();">Next</button>
@@ -16,7 +16,7 @@
         <h1 translate>TYPE_FIRST_NAME</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.first_name" enter-press="firstNameEntered();" id="first-name"/>
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.first_name" enter-press="firstNameEntered();" id="first-name" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="firstNameEntered();">Next</button>
@@ -90,7 +90,7 @@
         <h1 translate>TYPE_CONF</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.alt_confirmation_number" enter-press="confNumberEntered();" id="conf-number"/>
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.alt_confirmation_number" enter-press="confNumberEntered();" id="conf-number" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="confNumberEntered();">Next</button>
@@ -102,7 +102,7 @@
         <h1 translate>FIND_BY_DATE_SUB</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.no_of_nights" enter-press="noOfNightsEntered();" id="no-of-nights"/>
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.no_of_nights" enter-press="noOfNightsEntered();" id="no-of-nights" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="noOfNightsEntered();">Next</button>
@@ -114,7 +114,7 @@
         <h1 translate>TYPE_EMAIL</h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.email" enter-press="emailEntered();"  id="guest-email" />
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text'); resetTime();" ng-model="reservationParams.email" enter-press="emailEntered();"  id="guest-email" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="emailEntered();">Next</button>
