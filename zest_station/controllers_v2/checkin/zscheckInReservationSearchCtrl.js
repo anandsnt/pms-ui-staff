@@ -149,7 +149,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				delete params.alt_confirmation_number;
 				delete params.email;
 				delete params.no_of_nights;
-				params.departure_date = angular.copy(params.date);
+				params.dep_date = angular.copy(params.date);
 				delete params.date;
 			} else {
 				params = params;
@@ -227,7 +227,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			delete params.no_of_nights;
 			delete params.alt_confirmation_number;
 			delete params.email;
-			params.departure_date = angular.copy(params.date);
+			params.dep_date = angular.copy(params.date);
 			delete params.date;
 			searchReservation(params);
 			$scope.resetTime();
