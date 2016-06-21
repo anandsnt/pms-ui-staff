@@ -29,7 +29,7 @@
     <div class="scrollable" ng-iscroll="SECOND_COLUMN_SCROLL"> <!-- Add vertical scroller here + add class "buttons-3" if it's an existing schedule -->
         <div class="wrapper">
             <h3>Schedule Parameters<span>{{ selectedScheduleDetails.report.title }}</span></h3>
-            <div class="entry">
+            <div class="entry" ng-hide="IsGuestBalanceReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
                     <select ng-model="scheduleParams.time_period_id" ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods" iscroll-stop-propagation>
@@ -41,10 +41,10 @@
             <multi-option-selection ng-show="IsGuestBalanceReport"
                 label="Guest/Account"
                 on-update="refreshSecondColumnScroll"
-                data="selectedScheduleDetails.filters"
+                data="filters.hasGeneralOptions.data"
                 options="filters.hasGeneralOptions.options"></multi-option-selection>
 
-            <multi-option-selection ng-show="filters.hasGeneralOptions && filters.hasGeneralOptions.data.length"
+            <multi-option-selection ng-show="filters.hasGeneralOptions && filters.hasGeneralOptions.data.length && !IsGuestBalanceReport"
                 label="Option(s)"
                 data="filters.hasGeneralOptions.data"
                 on-update="refreshSecondColumnScroll"
