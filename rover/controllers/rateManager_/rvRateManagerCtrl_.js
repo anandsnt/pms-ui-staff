@@ -1027,7 +1027,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var onFetchMultipleRateRestrictionDetailsForRateCell = (response, successCallBackParameters) => {
         var restrictionData = response.dailyRateAndRestrictions,
             commonRestrictions = response.commonRestrictions[0].restrictions,
-            rates = !cachedRateList.length ? response.rates : cachedRateList;
+            rates = !cachedRateList.length ? response.rates : cachedRateList,
+            rateTypes = [];
 
         //caching the rate list
         cachedRateList = [...rates];
@@ -1036,8 +1037,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         
         rates = rates.filter(rate => (rateIDs.indexOf(rate.id) > -1 ? rate : false))
 
+        //if there is no rate selected we need to check the rate type list
+        if(!rates.length && lastSelectedFilterValues[activeFilterIndex].selectedRateTypes.length) {
+            rateTypes = lastSelectedFilterValues[activeFilterIndex].selectedRateTypes;
+        }
         var data = {
             rates,
+            rateTypes,
             mode: rvRateManagerPopUpConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE,
             restrictionData,
             restrictionTypes,
@@ -1050,13 +1056,15 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     /**
      * [description]
      * @param  {[type]} rateIDs [description]
+     * @param  {[type]} rateIDs [description]
      * @param  {[type]} date    [description]
      * @return {[type]}         [description]
      */
-    var fetchMultipleRateRestrictionsDetailsForPopup = (rateIDs, date) => {
+    var fetchMultipleRateRestrictionsDetailsForPopup = (rateTypeIDs, rateIDs, date) => {
         //calling the API to get the details
         var params = {
             'rate_ids[]': rateIDs,
+            'rate_type_ids[]': rateTypeIDs,
             from_date: date,
             to_date: date,
             fetchCommonRestrictions: true,
@@ -1067,7 +1075,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             onSuccess: onFetchMultipleRateRestrictionDetailsForRateCell,
             successCallBackParameters: {
                 rateIDs,
-                date
+                date,
+                rateTypeIDs
             }
         };
         $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);
@@ -1135,6 +1144,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * callback from react when clicked on a cell in rate view
      */
     var clickedOnRateViewCell = ({ rateIDs, date }) => {
+        var rateTypeIDs = [];
         // This method is invoked with rateIDs as an empty array IFF the ALL RATES / ALL ROOM TYPES row's cell is clicked
         if(rateIDs.length === 0) {
             //in pagination context we've to fetch all the visible/invisible rate's details
@@ -1147,7 +1157,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 rateIDs = _.pluck(leftSideFilterSelectedRates, "id");
             }
             
-            fetchMultipleRateRestrictionsDetailsForPopup(rateIDs, date);  
+            //if there is no rate selected
+            if(rateIDs.length === 0) {
+                rateTypeIDs = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRateTypes, "id");
+            }
+
+            fetchMultipleRateRestrictionsDetailsForPopup(rateTypeIDs, rateIDs, date);  
         }
         else {
             fetchSingleRateRestrictionModeDetailsForPopup(rateIDs[0], date);
