@@ -75,6 +75,62 @@
 		}
 	}
 
+	#flexbox {  
+        .display() {
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;          
+        }
+
+		.parent(@flexFlow, @justifyContent, @alignItems, @alignContent) {
+            #flexbox > .display();
+            .test-args();
+
+			.test-args() when not(@flexFlow = '') {
+		       	-webkit-flex-flow: @flexFlow;
+	        	flex-flow: @flexFlow;
+		    }
+
+		    .test-args() when not(@justifyContent = '') {
+		       	-webkit-justify-content: @justifyContent;
+	        	justify-content: @justifyContent;
+		    }
+
+			 .test-args() when not(@alignItems = '') {
+		       	-webkit-align-items: @alignItems;
+	        	align-items: @alignItems;
+		    }
+
+		    .test-args() when not(@alignContent = '') {
+		       	-webkit-align-content: @alignContent;
+	        	align-content: @alignContent;
+		    }        
+		}
+
+		.item(@order, @flex, @alignSelf) {
+            #flexbox > .display();
+			.test-args();
+
+			.test-args() when not(@order = '') {
+		       	-webkit-order: @order;
+				order: @order;
+		    }
+			
+		    .test-args() when not(@flex = '') {
+		       	-webkit-flex: @flex;
+				-ms-flex: @flex;
+				flex: @flex;
+		    }
+
+			.test-args() when not(@alignSelf = '') {
+		       	-webkit-align-self: @alignSelf;
+				align-self: @alignSelf;
+		    }			
+		}
+	}
+
 /* 2. TYPOGRAPHY
 ==========================================================*/
 	#font {
