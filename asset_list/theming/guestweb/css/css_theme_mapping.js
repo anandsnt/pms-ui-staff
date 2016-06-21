@@ -52,7 +52,8 @@ module.exports = {
 			'guestweb_kingsley':[ themeCSSRoot + 'guestweb_kingsley.css'],
 			'guestweb_avery':[ themeCSSRoot + 'guestweb_avery.css'],
 			'guestweb_newyork':[ themeCSSRoot + 'guestweb_newyork.css'],
-			'guestweb_ponchartrain':[ themeCSSRoot + 'guestweb_ponchartrain.css']
+			'guestweb_ponchartrain':[ themeCSSRoot + 'guestweb_ponchartrain.css'],
+			'guestweb_sobro':[ themeCSSRoot + 'guestweb_sobro.css']
 		}
 	}
 }
