@@ -54,7 +54,8 @@ module.exports = {
 			'guestweb_kingsley':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_avery':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_newyork':[ themeJsRoot + 'app_router_mgm_chain.js'],
-			'guestweb_sorella_kansas_city':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_sorella_kansas_city':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_valencia_santana_row':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }

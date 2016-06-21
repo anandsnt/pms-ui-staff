@@ -52,7 +52,8 @@ module.exports = {
 			'guestweb_kingsley':[ themeCSSRoot + 'guestweb_kingsley.css'],
 			'guestweb_avery':[ themeCSSRoot + 'guestweb_avery.css'],
 			'guestweb_newyork':[ themeCSSRoot + 'guestweb_newyork.css'],
-			'guestweb_sorella_kansas_city':[ themeCSSRoot + 'guestweb_sorella_kansas_city.css']
+			'guestweb_sorella_kansas_city':[ themeCSSRoot + 'guestweb_sorella_kansas_city.css'],
+			'guestweb_valencia_santana_row':[ themeCSSRoot + 'guestweb_valencia_santana_row.css']
 		}
 	}
 }
