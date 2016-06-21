@@ -1,9 +1,9 @@
-<div bindonce="statisticsData" id="dashboard-guests" class="dashboard-block buttons" ng-controller="rvDashboardGuestWidgetController">
+<div bindonce="statisticsData" id="dashboard-guests" class="dashboard-block with-actions" ng-controller="rvDashboardGuestWidgetController">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <h3>Guests</h3>
     <!-- <button ui-sref="rover.reservation.staycard.mainCard.summaryAndConfirmFromOutide({'room_id':['180','181'],'arrival_date':'2014-07-15','departure_date':'2014-07-16', 'arrival_time': '04:30', 'departure_time': '09:15'})">GO TO CONFIRMATION RESERVATION SCREEN</button>    -->
     <!-- <button ng-click="setReservationDataFromDiaryScreen()">GO TO CONFIRMATION RESERVATION SCREEN</button> -->
-    <ul class="actions two-rows">
+    <ul class="actions">
         <li>
             <a class="button green" ng-click="clickedOnGuestsToday($event, 'DUEIN', statisticsData.guests.checking_in)">
                 <strong bo-text="statisticsData.guests.checking_in"></strong> Arrivals
@@ -52,16 +52,40 @@
         </li>
     </ul>
     <ul class="data">
-        <li>Arrivals <strong class="green" bo-text="statisticsData.guests.checking_in"></strong></li>
-        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true'"> 
-            <span ng-hide="statisticsData.guests.checkin_action === 'auto_checkin'">Pre Check In</span>
-            <span ng-show="statisticsData.guests.checkin_action === 'auto_checkin'">MOBILE CHECK IN</span> <strong class="orange" bo-text="statisticsData.guests.pre_check_in"></strong>
+        <li>
+            Arrivals 
+            <strong class="value green" bo-text="statisticsData.guests.checking_in"></strong>
         </li>
-        <li ng-if="isQueuedRoomsTurnedOn && shouldShowLateCheckout">Queued <strong class="green" bo-text="userInfo.queue_rooms_count"></strong></li>
-        <li>Departures <strong class="red" bo-text="statisticsData.guests.checking_out"></strong></li>
-        <li ng-if="statisticsData.guests.open_bill_checkout > 0 ">Checked Out (With Balance) <strong class="red" bo-text="statisticsData.guests.open_bill_checkout"></strong></li>
-        <li ng-if="isLateCheckoutTurnedOn && shouldShowLateCheckout">Late Check Out <strong class="red" bo-text="userInfo.late_checkout_count"></strong></li>
-        <li>In-house <strong class="blue" bo-text="statisticsData.guests.in_house"></strong></li>
-        <li>VIPs <strong class="yellow" bo-text="statisticsData.guests.vip"></strong></li>
+        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true' && statisticsData.guests.checkin_action === 'auto_checkin'">
+            Mobile Check In
+            <strong class="value orange" bo-text="statisticsData.guests.pre_check_in"></strong>
+        </li>
+        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true' && statisticsData.guests.checkin_action !== 'auto_checkin'">
+            Pre Check In
+            <strong class="value orange" bo-text="statisticsData.guests.pre_check_in"></strong>
+        </li>
+        <li ng-if="isQueuedRoomsTurnedOn && shouldShowLateCheckout">
+            Queued
+            <strong class="value green" bo-text="userInfo.queue_rooms_count"></strong></li>
+        <li>
+            Departures
+            <strong class="value red" bo-text="statisticsData.guests.checking_out"></strong>
+        </li>
+        <li ng-if="statisticsData.guests.open_bill_checkout > 0 ">
+            Checked Out (With Balance)
+            <strong class="value red" bo-text="statisticsData.guests.open_bill_checkout"></strong>
+        </li>
+        <li ng-if="isLateCheckoutTurnedOn && shouldShowLateCheckout">
+            Late Check Out
+            <strong class="value red" bo-text="userInfo.late_checkout_count"></strong>
+        </li>
+        <li>
+            In-house
+            <strong class="value blue" bo-text="statisticsData.guests.in_house"></strong>
+        </li>
+        <li>
+            VIPs
+            <strong class="value yellow" bo-text="statisticsData.guests.vip"></strong>
+        </li>
     </ul>
 </div>

@@ -325,6 +325,13 @@
 
 			&.icon-invoice { background-position: 2px -9160px; }
 
+			&.icon-hold { 
+                background-position: 0px -9220px; 
+                &.red {
+                    background-position: 0px -9340px; 
+                }
+            }
+
 		/* Credit Cards ***/
 			&.icon-swiped,
 			&.icon-authenticated,
@@ -880,6 +887,21 @@
 		&.icon-notes { background-position: 0 -450px; }
 		&.icon-no-notes { background-position: 0 -500px; }
 
+		/* Text ***/
+        &.icon-text {
+            position: relative;
+            background-image: none;
+
+            .text {
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 0 10px;
+                font-size: 24px;
+                font-weight: 600;
+            }
+        }
+
 		@media @highdpi {
 			background-image: @iconStayCard2x;
 			background-size: 40px;
@@ -900,6 +922,9 @@
 		&.bg-violet { background-color: @purpleStart; } 
 		&.bg-green { background-color: @green; }
 		&.bg-drk { background-color: @black; }
+		&.bg-blue-dark { background-color: @darkBlue;}
+        &.bg-orange { background-color: @orangeStart;}
+
 
 		/* With image ***/
         &.closed,

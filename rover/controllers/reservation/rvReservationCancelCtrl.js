@@ -480,6 +480,7 @@
 			$scope.DailogeState = {};
 			$scope.DailogeState.successMessage = '';
 			$scope.DailogeState.failureMessage = '';
+			$scope.DailogeState.isCancelled = $scope.passData.isCancelled || false;
 
 			//Checking whether email is attached with guest card or not
 			$scope.isEmailAttached = function() {
@@ -555,6 +556,11 @@
 			};
 
 			// -- CICO-17706 --//
+
+			// CICO-29711 resend cancellation. reusing same popup
+			if ($scope.DailogeState.isCancelled && $scope.isEmailAttached()) {
+				$scope.sendReservationCancellation();
+			}
 		}
 	]);
 

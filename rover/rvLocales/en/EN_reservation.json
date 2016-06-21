@@ -24,6 +24,7 @@
     "RETURN_TO_DASHBOARD": "return to dashboard",
     "CREATE_NEW_FOR_GUEST": "create new for this guest",
     "CANCEL_RESERVATION": "Cancel Reservation",
+    "RESEND_CANCELLATION": "Cancellation",
     "STAY_CARD_TITLE" : "Stay Card",
     "CODE": "Code",
     "TYPE" : "Type",

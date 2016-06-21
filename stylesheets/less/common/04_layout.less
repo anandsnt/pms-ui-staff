@@ -144,6 +144,20 @@ body {
 			}
 		}
 
+		.menu-scroll {
+			position: relative;
+			.calc-height(100, 60);
+			transition: none;
+
+			.wrapper {
+				min-height: 100%;
+			}
+
+			.iScrollVerticalScrollbar .iScrollIndicator {
+				background: rgba(0,0,0,.1);
+			}
+		}
+
 		.main {
 			li {
 				span {
@@ -181,7 +195,8 @@ body {
 				&#sign-out {
 					position: absolute;
 					bottom: 10px;
-					left: 50px;
+					left: 0;
+					width: 100%;
 					border-bottom: 0;
 				}
 			}
@@ -270,8 +285,8 @@ body {
 					&#settings,
 					&#sign-out{
 						position: absolute;
-						left: 50px;
-						.calc-width(100, 70);
+						left: 0;
+						width: 100%;
 					}
 
 					&#settings { bottom: 60px; }
@@ -318,6 +333,25 @@ body {
 			&.subnav-closing {
 				.submenu {
 					&.active { #menu > .close(); }
+				}
+			}
+		}
+	}
+	@media only screen and (max-height: 600px) {
+		#main-menu {
+			.menu-scroll {
+				.main {
+					li {
+						&#settings,
+						&#sign-out{
+							position: static;
+							left: inital;
+							width: auto;
+						}
+
+						&#settings { bottom: inital; }
+						&#sign-out{ bottom: inital; }
+					}
 				}
 			}
 		}

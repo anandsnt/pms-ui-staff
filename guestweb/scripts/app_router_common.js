@@ -34,8 +34,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
         controller: 'checkOutBalanceController',
        	templateUrl: '/assets/common_templates/partials/checkout/gwBill.html',
 	    title: 'Balance - Check-out Now'
-    })
-    .state('checkOutStatus', {
+    }).state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
        	templateUrl: '/assets/common_templates/partials/checkout/gwCheckoutfinal.html',

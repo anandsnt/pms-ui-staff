@@ -1,0 +1,129 @@
+<!-- login an cancel mode -->
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'login-mode'">
+    <div id="content">
+        <h1>Administrator</h1>
+        <!-- Admin -->
+        <button  type="button" class="button" touch-press="loginAdmin()">LOGIN</button>
+        <button  type="button" class="button transparent" touch-press="navToPrev()">Exit</button>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" ></span>
+</section>
+<!-- credentials entry page -->
+<section id="main" class="centered test" role="main" ng-show=" mode ===  'admin-name-mode' || mode === 'admin-password-mode'">
+    <div id="content">
+        <h1>{{headingText |translate}}</h1>
+        <h3>{{subHeadingText |translate}}</h3>
+        <form method="post" class="form" click-touch='resetTime()'>
+            <div class="entry input">
+                <input type="{{inputType}}" 
+                    id="input_text"
+                    ng-focus="showOnScreenKeyboard('input_text')" 
+                    click-touch="showOnScreenKeyboard('input_text')"
+                    ng-hide='passwordField' 
+                    class="start-focused" 
+                    ng-keydown="resetTime()" 
+                    ng-model='input.inputTextValue' 
+                    placeholder="{{inputTextPlaceholder}}" 
+                    enter-press="goToNext()" 
+                    value="" touch-press />
+                <input type="password"      
+                    id="password_text"
+                    ng-focus="showOnScreenKeyboard('password_text')" 
+                    click-touch="showOnScreenKeyboard('password_text')"
+                    ng-show='passwordField' 
+                    class="start-focused" 
+                    ng-keydown="resetTime()" 
+                    ng-model='input.inputTextValue'
+                    placeholder="{{inputTextPlaceholder}}" 
+                    enter-press="goToNext()" 
+                    value="" touch-press />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">{{'NEXT_BTN' |translate}}</button>
+            </div>
+        </form>
+            <div class="entry action" ng-show='adminLoginError'>
+                <button type="button" class="button centered-exit" touch-press='clickedOnCloseButton(); resetTime()'>{{'EXIT_BTN' |translate}}</button>
+            </div>
+    </div>
+<span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+</section>
+
+<!-- Content -->
+<section id="main" class="admin-screen" role="main" ng-show="mode === 'admin-screen-active'">
+    <div id="content">
+        <div id="textual" class="tabled-options" style="max-height: 559px;" ng-iscroll="admin-screen" ng-iscroll-delay="100" ng-init="setScroll()">
+            <div class="wrapper">
+                <div class="entry with-label">
+                    <label>{{'ADMIN_WORKSTATION' |translate}}</label>
+                    <div class="entry select">
+                         <select ng-options="workstation.id as workstation.name for workstation in zestStationData.workstations" ng-model="workstation.selected" ng-change="worksStationChanged()">
+                    <option style="display:none" value="" class="">Select</option>
+                </select>
+                    </div>
+                </div>
+                <div class="entry with-label">
+                    <label>Status</label>
+                    <div class="entry select">
+                        <select id="order-status" ng-model="zestStationData.workstationStatus">
+                            <option value="">SELECT</option>
+                            <option value="in-order">In Order</option>
+                            <option selected="selected" value="out-of-order">Out of Order</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="order-reason" class="entry with-label" ng-show="zestStationData.workstationStatus === 'out-of-order'">
+                    <label>Out of Order Reason</label>
+                    <input readonly="" class="read-only" ng-model="zestStationData.workstationOooReason">
+                </div>
+                <div class="entry with-label">
+                    <label class='admin-item-label'>{{'ADMIN_TIMER_ENABLED_BTN' |translate}}</label>
+                    <div class="entry select">
+                        <select ng-model="zestStationData.idle_timer.enabled">
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="entry with-label">
+                    <label translate>ADMIN_TIME_OUT</label>
+                    <input touch-press 
+                           id="timeout_text"
+                           ng-focus="showOnScreenKeyboard('timeout_text')" click-touch="showOnScreenKeyboard('timeout_text')"
+                           type="number"
+                           min='1' 
+                           max='9999' 
+                           ng-model='zestStationData.idle_timer.max' 
+                           class='admin-input admin-input' />
+                </div>
+                <div class="entry with-label">
+                    <label>{{'ADMIN_TIME_POP' |translate}}</label>
+                    <input touch-press id="prompt_text" ng-focus="showOnScreenKeyboard('prompt_text')" click-touch="showOnScreenKeyboard('prompt_text')" type="number" min='1' max='9999' ng-model='zestStationData.idle_timer.prompt'/>
+                </div>
+                <div class="entry with-label">
+                    <label>{{'ADMIN_STATION_PRINTER' |translate}}</label>
+                    <!-- <input touch-press id="prompt_text" disabled="true" ng-model='zestStationData.printerLabel' click-touch='openPrinterMenu()'/> -->
+                     <div class="entry select " ng-class="{'disabled':!isIpad}" touch-press='openPrinterMenu()'>
+                           <select disabled="true" ng-model="zestStationData.printer_selected">
+                               <option value="">{{printerLabel}}</option>
+                           </select>
+                        </div>
+                </div>
+                <div class="entry with-label"  ng-if="zestStationData.theme === 'snt'">
+                    <label>{{'ADMIN_STATION_DEMOMODE' |translate}}</label>
+                     <div class="entry select">
+                        <select ng-model="zestStationData.demoModeEnabled">
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="actions" class="align-center">
+            <button type="button" class="button" touch-press='cancelAdminSettings()'>Cancel</button>
+            <button type="button" class="button" touch-press='saveSettings()'>Save</button>
+            <button type="button" class="button" touch-press='logOutApplication()'>{{'LOGOUT' |translate}}</button>
+        </div>
+    </div>
+</section>

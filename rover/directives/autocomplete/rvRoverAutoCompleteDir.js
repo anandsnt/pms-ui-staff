@@ -50,12 +50,11 @@
             return $('<li></li>').append(htmlForItem).appendTo(ul);
         };
 
-        autocompleteEl = $(el);
-
         /**
          * we've to unbind something while removing the node from dom
          */
         scope.$on('$destroy', function(){
+            autocompleteEl = $(el);
             autocompleteEl.autocomplete( "destroy" );
             
             //unbinding the touch move

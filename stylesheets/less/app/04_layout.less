@@ -696,6 +696,49 @@ body { overflow: hidden; }
 							width:410px;
 						}
 					}
+
+					&.three-actions {
+	                    .select {
+	                        width: 100px;
+	                        max-width: 100px;
+
+	                        &.larger-select {
+	                            width: 125px;
+	                            max-width:125px;
+	                        }
+
+	                        select {
+	                            height: 40px;
+	                            font-size:14px;
+	                        }
+	                    }
+	                     
+	                    .input {
+	                        width: 110px;
+	                        max-width: 110px;
+	                    }
+
+	                    .entry {
+	                        &.actions {
+	                            width: auto;
+	                            .button {
+	                                margin-left: 10px;
+	                                &:first-child {
+	                                    margin-left: 0;
+	                                }
+	                            }
+	                        }
+	                        &.search {
+	                            .calc-width(100, 445 );
+	                            &.commision-checked {
+	                                .calc-width(100, 535 );
+	                            }
+	                        }
+	                        &.options {
+	                            width:365px;
+	                        }
+	                    }
+	                }
 				}
 			}
 
@@ -1989,11 +2032,10 @@ body { overflow: hidden; }
 
 /* Left sidebar			 	==============================*/
 	@media not print {
-		.sidebar-left {
+		.sidebar-left,
+    	.sidebar-right  {
 			position: absolute;
 			top: 150px;
-			left: 0;
-			padding-right: 25px;
 			z-index: 1040;
 			width: 30px;
 			.calc-height(100, 150);
@@ -2089,131 +2131,150 @@ body { overflow: hidden; }
 				}
 			}
 		}
-	}
 
-/* Dashboard block			==============================*/	
-	.dashboard-block {
-		padding-bottom: 20px;
-	    margin-bottom: 20px;
-
-	    ul {
-	        li {
-	            margin-bottom: 10px;
-	            .show;
-	        }
-
-	        &:not(.actions) { width: 100%; }
+		.sidebar-left {
+	        left: 0;
+	        padding-right: 25px;
 	    }
 
-		.data,
-		&.data {
-            li {
-                line-height: 36px;
-                vertical-align: middle;
-                padding-bottom: 5px;
-                margin-bottom: 5px;
-                text-transform: uppercase;
-                width: 100%;
-                border-bottom: 1px solid rgba(0,0,0,.1);
+	    .sidebar-right {
+	        right: 0;
+	        padding-left: 25px;
 
-                strong,
-                span {
-                    line-height: 1em;
-                    color: @textColor;
-                    .show;
-                    .pull-right;
+	        .sidebar-header {
+	            background-color: @grey1;
+	            text-align: center;
+	            padding: 20px 15px 15px 15px;
+	            height: 80px;
+	        }
 
-                    &.green { color: @green; }
-                    &.red { color: @red; }
-                    &.blue { color: @blue; }
-                    &.yellow { color: @yellow; }
-                    &.orange { color: @logoPrimary; }
-                    &.grey { color: @grey3; }
+	        .rightMenuHandle {
+	            position: absolute;
+	            top: 20px;
+	            left: 0;
+	            cursor: e-resize !important;
+	            z-index: 90;
+	            background-color: @grey1;
+	            background-image: @icons;
+	            background-repeat: no-repeat, repeat;
+	            background-position: 5px -3807px, 0 0;
+	            .size(50px, 25px);
+	            #border-radius > .left(5px);
 
-                    &.no-data {
-                        font-size: 1em;
-                        line-height: 30px;
-                        color: @grey4;
-                        text-transform: none;
-                        font-weight: 400;
-                        font-style: italic;
-                    }
-                }
+	            @media @highdpi {
+	                background-image: @icons2x;
+	                background-size: 120px, 40px;
+	            }
+	        }
 
-                strong { font-size: 36px; }
+	        &#room-diary-rooms {
+	            top: 0px;
+	            width: 295px;
+	            height: 100%;
+	            z-index: 99999;
+	            right: -270px;
 
-                span {
-                    font-size: 30px;
-                    font-weight: 300;                                
-                }
+	            .transition(right, .2s, cubic-bezier(.10, .10, .25, .90));
+	            .scrollable {
+	               background-color: @grey1;
+	               background-image: none;
+	               padding: 10px 5px 10px 5px;   
+	               .calc-height(100, 80);
 
-                &:last-child {
-                    padding-bottom: 0;
-                    margin-bottom: 0;
-                    border-bottom: 0;
-                }
-            }
-        }
+	               .wrapper {
+	                padding-bottom: 20px;
+	               }
+
+	               .iScrollVerticalScrollbar {
+	                    right: 8px;
+	                    .iScrollIndicator {
+	                        background: rgba(0,0,0,0.1);
+	                    }
+	               }
+	           }
+
+
+	           .occupancy-block {
+
+	               .diary-content > .diary-container > .diary-grid > .occupancy-block;
+
+	               span { float: none;}
+	               position: relative;
+	               margin-bottom: 5px;
+	               height: 60px;
+
+	               .occupancy-status,
+	               .occupancy-time {
+	                    height: 100%;
+	                } 
+	                .occupancy-status{
+	                    .box-shadow(inset 0px 1px 1px 1px rgba(0,0,0,.2));
+	                    width: 100%;
+	                    line-height: 1;
+	                    padding: 15px 60px 15px 10px;
+	                    .guest-name {
+	                        .nowrap();
+	                    }
+	                    .room-type {
+	                        .nowrap();
+	                        font-weight: normal;
+	                    }
+	                    &:before {
+	                        background-size: 40px 40px !important;
+	                    }
+	                }
+	                .occupancy-time {
+	                    width: 55px;
+	                    position: absolute;
+	                    top: 0;
+	                    right: 0;
+	                    background-color: rgba(0,0,0,0.1);
+	                    text-align: center;
+	                    padding: 15px 10px;
+	                    font-size: 18px;
+	                    text-transform: none;
+	                    line-height: 1;
+	                    color: white;
+	                    font-weight: 600;
+	                    z-index: 99;
+	                    .eta {
+	                        font-size: 14px;
+	                        font-weight: normal;
+	                    }
+	                }
+
+	                &.deposit-required {
+	                    .occupancy-time {
+	                        .box-shadow(inset -1px 2px 1px 0px rgba(0, 0, 0, 0.2));
+	                        background: @yellow;
+	                        color: @red;
+	                    }
+	                }
+	            }
+	            p,h2 {
+	                text-transform: uppercase;
+	            }
+
+	            h2 {
+	                color: @black;
+	                font-size: 21px;
+	                font-weight: 600;
+	            }
+
+	            p {
+	                line-height: 14px;
+	                color: @grey3;
+	                font-size: 14px;    
+	            }
+	         }
+
+	        &.open {
+	            &#room-diary-rooms { 
+	                right: 0;
+	            }
+	        }
+	    }
 	}
-
-	/* 768px+               ==============================*/
-    @media only screen and (min-width: 768px) {
-        .dashboard-block {
-            margin-bottom: 40px;
-            border-bottom: 1px solid rgba(0,0,0,.1);
-            .flex(center);
-            .float;
-
-            ul {
-                li {
-                    margin-bottom: 0;
-                    .pull-left;
-                }
-            }
-
-           	.data,
-           	&.data {
-                li {
-                    text-align: center;
-                    line-height: 1em;
-                    margin: 0 40px 0 0;
-                    border-bottom: 0;
-                    padding-bottom: 0;
-                    color: @grey3;
-                    .calc-width(20, 32);
-
-                    strong,
-                    span {
-                        font-size: 48px;
-                        font-weight: 300;
-                        float: none;
-
-                        &.no-data {
-                            font-size: 16px;
-                            line-height: 1em;
-                            padding: 16px 0;
-                        }
-                    }
-
-                    i { .show; }
-
-                    &:last-child { margin-right: 0; }
-                }
-            }
-        }
-    }
-
-    /* 1360px+               ==============================*/
-    @media only screen and (min-width: 1360px) {
-    	.dashboard-block {
-           	.data,
-           	&.data {
-                li {
-                    i { display: inline; }
-                }
-            }
-        }
-    }
 
 /* Notes					==============================*/
 	@media not print {

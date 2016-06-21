@@ -188,11 +188,133 @@
                 #border-radius > .rounded();
 
                 .iScrollHorizontalScrollbar { .hide; }
+                
+                .days {
+                    > button,
+                    .days-wrapper {
+                        .pull-left();
+                    }
+
+                    > button {
+                        .size( 50px, 30px );
+                        overflow: hidden;
+                        background-color: @grey1;
+                     
+                        .icons {
+                            width: 100%;
+                        }
+
+                        .icon-double-arrow {
+                            background-position: 7px -1587px;
+                        }
+                        
+                        &.next {
+                            margin-left: 1px;
+                            .box-shadow();
+                        }
+
+                        &.prev {
+                             .box-shadow(0px 1px 0 rgba(0, 0, 0, 0.15));
+                        }
+
+                        &.disabled {
+                            cursor: initial;
+                            .icon-double-arrow {
+                                 background-position: 7px -1527px;
+                                 opacity: 0.2;
+                            }
+
+                        }    
+                    }
+
+                    .days-wrapper {
+                        width: auto;
+                        max-width: 310px;
+                        overflow: hidden;
+                        max-height: 60px;
+
+                        .wrapper {
+                            li {
+                                margin: 0 0 0 1px;
+                                width: 60px;
+                                min-width: 60px;
+                                max-width: 60px;
+                                font-weight: normal;
+                                font-style: italic;
+                          
+                                .no-expense,
+                                .toggle{
+                                    border-radius: 0;
+                                    font-weight: normal;
+                      
+                                }
+                                &.check-out {
+                                    padding-right: 0;
+                                }
+
+                                &.active {
+                                    font-style: normal;
+                                    height: 50px;
+                                    .price {
+                                        font-weight: 600;
+                                    }
+                                }
+
+                                &.today .toggle {
+                                    color: @blue;
+                                }
+
+                                .active,
+                                &.today .active, {
+                                    .gradient( @orangeEnd, @orangeStart);
+                                    color: @white;
+                                }
+                            }
+                            width: auto;
+                            min-width: 60px;
+                        }
+                    }
+                }
+
+                .scrollable {
+                    .float;
+                    /* Container of the days carousel */
+                     > .with-days {
+                        width: 530px;
+                        .pull-left();
+                        position: relative;
+                        
+                        &:not(.no-border) {
+                            &:after {
+                                content: "";
+                                position: absolute;
+                                top: 0;
+                                right: 2px;
+                                height: 50px;
+                                border-right: 1px solid rgba(0,0,0,.1);
+                            }
+                        }
+                     }
+                    
+                    /* Package/Charges List Scroller */
+                     > .package-list {
+                        .pull-right();
+                        .calc-width(100, 540);
+                        min-height: 59px;
+                        position: relative;
+                        z-index: 2;
+                        .iScrollHorizontalScrollbar {
+                            .show();
+                            top: 55px;
+                            z-index: -1;
+                        }
+                     }
+                }
 
                 .wrapper {
                     padding: 0;
                     margin: 0;
-                    height: 52px;
+                    min-height: 52px;
                     min-width: 100%;
 
                     li {
@@ -763,6 +885,32 @@
                         padding: 0 10px;
                         font-weight: 600;
 
+                        .sort {
+                            position: relative;
+                            cursor: pointer;
+                            padding-left: 20px;
+                            .show;
+
+                            &:after {
+                                content: "";
+                                position: absolute;
+                                top: 2px;
+                                left: 0;
+                                background: @arrowSort no-repeat;
+                                background-size: 14px;
+                                .square(14px);
+                                .show();
+
+                                @media @highdpi {
+                                    background-image: @arrowSort2x;
+                                }
+                            }
+
+                            &.sorting-desc {
+                                &:after { .rotate(180deg); }
+                            }
+                        }
+
                         &.form,
                         &.action { 
                             padding: 0;
@@ -831,6 +979,26 @@
                                 .square(40px); 
 
                                 &:not(.inline) { .show; }
+                            }
+                        }
+                    }
+
+                    &.pagination {
+                        td {
+                            
+                            .search-pagination {
+                                position: static;
+                                left: auto;
+                                bottom: auto;
+                                padding: 0;
+                                height: 40px;
+                                background-color: transparent;
+                                .box-shadow(none);
+
+                                .button { font-size: 14px; }
+
+                                &:before,
+                                &:after { .hide; }
                             }
                         }
                     }

@@ -1,0 +1,106 @@
+<!--------------------- select no of keys mode ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_MODE'">
+    <div id="content">
+        <h1 class="no-margin">{{selectedReservation.first_name}}</h2>
+            <h1 translate>PUK_CHKED_IN_MSG</h1>
+        <div id="room" ng-show="zestStationData.show_room_number">
+            <span class="number">{{selectedReservation.room}}</span>
+        </div>
+        <div id="keys">
+            <h2 translate>HOW_MANY_KEYS</h2>
+            <div id="key-options">
+                <button ng-hide="isEmpty('UNO_KEY')" type="button" class="button" touch-press="makeKeys(1)" translate>UNO_KEY</button>
+                <button ng-hide="isEmpty('DOS_KEY')" type="button" class="button" touch-press="makeKeys(2)" translate>DOS_KEY</button>
+            </div>
+        </div>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+</section>
+
+<!---------------------solo key one in progres ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'SOLO_KEY_CREATION_IN_PROGRESS_MODE'">
+    <div id="content">
+        <h1 translate>MAKE_KEY</h1>
+        <h2 translate>MAKE_KEY_MSG</h2>
+        <div id="keys" ng-hide="!remoteEncoding || icmp">
+            <div ng-include="icons.url.createkey"></div>
+        </div>
+        <div id="keys" ng-show="icmp">
+            <div ng-include="icons.url.createkey_icmp"></div>
+        </div>
+        <button ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_ONE' |translate}} </button>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+</section>
+
+<!--------------------- key one in progres ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_CREATION_IN_PROGRESS_MODE'">
+    <div id="content">
+        <h1 translate>MAKE_FIRST_KEY</h1>
+        <h2 translate>MAKE_FIRST_KEY_SUB</h2>
+        <div id="keys" ng-hide="!remoteEncoding || icmp">
+            <div ng-include="icons.url.createkey"></div>
+        </div>
+        <div id="keys" ng-show="icmp">
+            <div ng-include="icons.url.createkey_icmp"></div>
+        </div>
+          <button ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_ONE' |translate}} </button>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+</section>
+
+<!--------------------- key one in success ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_CREATION_SUCCESS_MODE'">
+    <div id="content">
+        <h1 translate>MADE_FIRST_KEY_MSG</h1>
+        <h2 translate>MADE_FIRST_KEY_MSG_SUB</h2>
+         <div id="keys" ng-hide="!remoteEncoding || icmp">
+            <div ng-include="icons.url.createkey"></div>
+        </div>
+        <div id="keys" ng-show="icmp">
+            <div ng-include="icons.url.createkey_icmp"></div>
+        </div>
+        <button ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_TWO' |translate}} </button>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+</section>
+
+<!--------------------- key creation over ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_CREATION_SUCCESS_MODE'">
+    <div id="content">
+        <h1 translate>SUCCESS_HDR</h1>
+        <h2 translate>GRAB_KEYS</h2>
+        <button type="button" class="button" click-touch="clickedOnCloseButton()" translate>DONE</button>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+</section>   
+
+<!--------------------- failure ------------------------>
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_FAILRURE_MODE'">
+    <div id="content">
+        <h1 translate>NO_KEYS_MADE</h1>
+        <h2 translate>NO_KEYS_MADE_SUB</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <!-- retry-key -->
+                <li> 
+                    <button type="button" class="button option" touch-press='reEncodeKey()'>
+                        <div ng-include="icons.url.key"></div>
+                    </button>
+                    <h1 translate>TRY_AGAIN</h1>
+                </li>
+                <li class="break">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li> 
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    <h1 translate>SPEAK</h1>
+                    <h4 translate>SPEAK_SUB</h4>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+</section>

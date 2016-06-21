@@ -1,0 +1,31 @@
+<section id="main" class="centered" role="main" click-touch='resetTime()'>
+    <div id="content">
+        <h1>{{'DEPOSIT_REMAIN' |translate}}</h1>
+        <h2>{{'DEPOSIT_REMAIN_SUB' |translate}} {{currencySymbol}}{{depositAmount}}</h2>
+        <h2>{{'DEPOSIT_REMAIN_SUB_SUB' |translate}}</h2>
+        
+        <h1 ng-if='swipeError'>{{'SWIPE_ERR_HEADER' |translate}}</h1>
+        
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li> 
+                    <button type="button" class="button option" touch-press='proceedToDeposit()'>
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    <h1>{{'DEPOSIT_NEXT_BUTTON' |translate}}</h1>
+                </li>
+                <li class="break">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li> 
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    <h1>{{'SPEAK' |translate}}</h1>
+                    <h4>{{'SPEAK_SUB' |translate}}</h4>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+</section>

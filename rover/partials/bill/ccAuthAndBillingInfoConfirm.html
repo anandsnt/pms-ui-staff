@@ -14,6 +14,7 @@
         <span ng-if="message_out_going_to_comp_tra" class="notice">Some charges for this reservation are being routed <strong>to Company / Travel Agent / Account</strong>.</span>
         
         <div class="actions">
+            <button ng-if="enableIncedentalOnlyOption" ng-click="clickedIncidentalsOnly()" class="button orange" type="button">Incidentals Only</button>
             <button ng-click="clickedFullAuth()" class="button green modal-close" type="button">Full Auth as per set rule</button>
             <button ng-click="clickedManualAuth()" class="button blue modal-close" type="button">Manual CC Auth</button>
         </div>

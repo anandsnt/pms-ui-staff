@@ -374,11 +374,6 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             $state.go('zest_station.speak_to_staff');
         };
         $scope.depositAmountValue = '';
-        
-        
-        
-            
-            
         var initCardSwipeScreen = function(){
                 $scope.at = 'card-swipe';
                 //debugging
@@ -599,7 +594,6 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         
         
         $scope.saveSwipedCardMLI = function(data){
-            //$scope.saveCardDataFromSwipe();
             var token;
             if (data){
                 if (data.token){
@@ -612,70 +606,15 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                     data = $scope.swipeData;
                 }
             }
-            //var cardCode = data.RVCardReadCardType;
             //save the payment to guest card/reservation
             var reservationId = $scope.selectedReservation.id;
-            var expirYear = '20'+data.RVCardReadExpDate.substring(0, 2);
-            var expirMonth = data.RVCardReadExpDate.substring(2, 4);
-            /*
-            var postData = {
-                 add_to_guest_card: true,
-                 card_code: cardCode,
-                 card_type: cardCode,
-                 card_expiry: expirYear+'-01-'+expirMonth,
-                 card_name: data.RVCardReadCardName,
-                 payment_type: "CC",
-                 reservation_id: reservationId,
-                 expirMonth: expirMonth,
-                 expirYear: expirYear,
-                 card_number: "xxxx-xxxx-xxxx-" + data.token.slice(-4),
-                 token: data.token
-             };
-             
-             */
-            
             var postData = swipeOperationObj.createSWipedDataToSave(data);
             postData.reservation_id = reservationId;
-            //upon successful session update
-          /*  var sessionDetails = {};
-            sessionDetails.cardNumber = postData.token;
-            sessionDetails.cardExpiryMonth = expirMonth;
-            sessionDetails.cardExpiryYear = expirYear;
-            */
-/*
-            var callback = function(response){
-                   $scope.$emit("hideLoader");
-                   
-                    if(response.status ==="ok"){
-                        MLISessionId = response.session;
-                        postData.session_id = MLISessionId;
-                        try {
-                            $scope.invokeApi(zsPaymentSrv.savePayment, postData, $scope.successSavePayment, $scope.failSavePayment); 
-                        } catch(err){
-                            $state.go('zest_station.swipe_pay_error');
-                        }
-                   } else {
-                        console.warn('there was a problem with the card');
-                        $scope.failSavePayment('there was a problem with the card');
-                   }
-            };
-            */
                 try {
                     $scope.invokeApi(zsPaymentSrv.savePayment, postData, $scope.successSavePayment, $scope.failSavePayment); 
                 } catch(err){
                     $state.go('zest_station.swipe_pay_error');
                 }
-            /*    
-            try {
-                HostedForm.updateSession(sessionDetails, callback);
-                $scope.$emit("showLoader");  
-            }
-            catch(err) {
-                console.warn(err);
-                $scope.failSavePayment('there was a problem with the MLI Session');
-            };
-            */
-            
              
         };
         
@@ -865,8 +804,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                  */
                     if (swipeFromSocket()){
                         $scope.initWsSwipe();
-                    }
-                    if (readLocally()){
+                        
+                    } else if (readLocally()){
                         console.info('reading locally');
                         setTimeout(function() {
                             $scope.initiateCardReader();
@@ -980,7 +919,6 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 $scope.headingText = 'RES_AUTH';
                 $scope.subHeadingText = 'RES_AUTH_SUB ';
             }
-            
             
             setTimeout(function(){
                     try{
@@ -1122,13 +1060,8 @@ sntZestStation.controller('zsCardSwipeCtrl', [
                 $scope.init();
 	}();
         
-        
 
 }]);
-
-
-
-
 
 
 var SwipeOperation = function(){

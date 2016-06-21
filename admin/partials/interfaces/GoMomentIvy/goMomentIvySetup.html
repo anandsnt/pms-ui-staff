@@ -1,0 +1,18 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveGoMomentIvySetup" header-caption="{{'GO_MOMENT_IVY_SETUP_HEADER'|translate}}">
+    <div class="form-title full-width">
+        <h3><span translate>GO_MOMENT_IVY_SUB_TITLE</span> </h3>
+    </div>
+    <div class="entry full-width">
+        <label><span translate>GO_MOMENT_IVY_ACTIVATE_INACTIVATE</span></label>
+        <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: goMomentIvy.enabled }" ng-click="toggleGoMomentIvyEnabled()">
+            <input type="checkbox" name="brite-pabx-setup-active" id="brite-pabx-setup-active">
+            <span class="switch-icon"></span>
+        </div>
+    </div>
+    <fieldset class="holder left">
+        <ad-textbox inputtype="text" value="goMomentIvy.url" name="account-number" id="account-number" label="{{'GO_MOMENT_IVY_URL'| translate}}" styleclass="full-width" ng-if="goMomentIvy.enabled"></ad-textbox>                    
+    </fieldset>
+    <fieldset class="holder right">
+        <ad-textbox inputtype="text" value="goMomentIvy.access_token" name="account-number" id="account-number" label="{{'GO_MOMENT_IVY_ACCESS_TOKEN'| translate}}" styleclass="full-width" ng-if="goMomentIvy.enabled"></ad-textbox>
+    </fieldset>
+</ad-common-parts-in-form-dir>

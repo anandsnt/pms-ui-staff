@@ -29,7 +29,6 @@ sntZestStation.service('zsBaseWebSrv', ['$http', '$q', '$window', '$rootScope', 
 			// so lets redirect to login page
 			$window.location.href = '/logout';
 		}
-
 		//set of custom error emssage range http status
 		else if (status >= 470 && status <= 490) {
 			errors.httpStatus = status;

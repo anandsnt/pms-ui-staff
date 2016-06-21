@@ -7,13 +7,15 @@ angular.module('sntRover')
         '$filter',
         'rvRateManagerCoreSrv',
         'rvRateManagerEventConstants',
+        'ngDialog',
         function($scope,
             $rootScope,
             rvRateManagerPopUpConstants,
             util,
             $filter,
             rvRateManagerCoreSrv,
-            rvRateManagerEventConstants) {
+            rvRateManagerEventConstants,
+            ngDialog) {
 
         BaseCtrl.call(this, $scope);
 
@@ -325,6 +327,23 @@ angular.module('sntRover')
                 onSuccess: onSuccessOfClickedOnClearOverrideButtonAPICall
             }
             $scope.callAPI(rvRateManagerCoreSrv.removeCustomRate, options);
+        };
+
+        /*
+         * To close dialog box
+         */
+        $scope.closeDialog = function() {
+          document.activeElement.blur();
+          $scope.$emit('hideLoader');
+
+          $rootScope.modalClosing = true;
+          setTimeout(function() {
+            ngDialog.close();
+            $rootScope.modalClosing = false;
+            window.scrollTo(0, 0);
+            document.getElementsByClassName("pinnedLeft-list")[0].scrollTop = 0;
+            $scope.$apply();
+          }, 700);
         };
 
         /**

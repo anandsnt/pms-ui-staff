@@ -51,6 +51,8 @@ sntRover.controller('RVReservationDepositController',
 			addToGuestCard: false
 		};
 
+		//CICO-30207
+		$scope.isReservationRateSuppressed = $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates;
 		$scope.depositData.paymentType = ($scope.reservationData.reservation_card.payment_method_used) ? $scope.reservationData.reservation_card.payment_method_used : "";
 
 		$scope.reservationData = {};
@@ -277,9 +279,9 @@ sntRover.controller('RVReservationDepositController',
                 $scope.isReservationDeposit = true;
                 $scope.renderData = {};
                 $scope.renderData.paymentTypes = $scope.passData.details.paymentTypes;
-                
+
 		$scope.checkReferencetextAvailable = function(){
-                    
+
 			angular.forEach($scope.passData.details.paymentTypes, function(value, key) {
 				if(value.name === $scope.depositData.paymentType){
 					if($scope.depositData.paymentType !== "CC"){
@@ -552,7 +554,7 @@ sntRover.controller('RVReservationDepositController',
                             delete dataToSrv.postData.payment_type_id;
                             dataToSrv.postData.card_number = $scope.cardData.cardNumber;
                         };
-                        
+
 			if($scope.isShowFees()){
 				if($scope.feeData.calculatedFee) {
 					dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
@@ -606,23 +608,23 @@ sntRover.controller('RVReservationDepositController',
 		$scope.addmode = $scope.cardsList.length>0 ?false:true;
 		refreshCardsList();
 	};
-        
-        
-        
+
+
+
         $scope.showAddtoGuestCardBox = function(){
-            if ($scope.cardSelected && 
-                    !$scope.showCCPage && 
-                    $scope.depositData.paymentType === 'CC' && 
+            if ($scope.cardSelected &&
+                    !$scope.showCCPage &&
+                    $scope.depositData.paymentType === 'CC' &&
                         (
                             $scope.paymentGateway !== 'sixpayments' || $scope.isManual
-                        ) && 
-                    !$scope.depositPaidSuccesFully && 
+                        ) &&
+                    !$scope.depositPaidSuccesFully &&
                     !$scope.errorOccured && $scope.newCardAdded
                 ) {
                     return true;
                 } else return false;
         };
-        
+
         $scope.isNewCard = function(){
             var newCard = true;
             for (var i in $scope.cardsList){
@@ -632,20 +634,20 @@ sntRover.controller('RVReservationDepositController',
             }
             return newCard;
         };
-        
+
         $scope.showSelectedCard = function(){
             var showingSelectedCardScreen = false;
             if (
-                    $scope.cardSelected && 
-                    !$scope.showCCPage && 
-                    $scope.depositData.paymentType === 'CC' && 
+                    $scope.cardSelected &&
+                    !$scope.showCCPage &&
+                    $scope.depositData.paymentType === 'CC' &&
                         ($scope.paymentGateway !== 'sixpayments' || $scope.isManual)
                 ){
                 showingSelectedCardScreen = true;
             } else {
                 showingSelectedCardScreen = false;
             }
-            
+
             if (showingSelectedCardScreen){
                 if ($scope.showCCPage || $scope.depositData.paymentType !== 'CC' || !$scope.newCardAdded){
                     $scope.showAddtoGuestCard = false;
@@ -658,13 +660,13 @@ sntRover.controller('RVReservationDepositController',
                 }
             }
             return showingSelectedCardScreen;
-            
+
         };
-        
-        
-        
-        
-        
+
+
+
+
+
 
 	var setCreditCardFromList = function(index){
 		$scope.depositData.selectedCard = $scope.cardsList[index].value;
@@ -757,9 +759,9 @@ sntRover.controller('RVReservationDepositController',
               }
               return true;
           } else return false;
-            
+
         };
-        
+
 
 
 

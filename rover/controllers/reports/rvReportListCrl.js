@@ -133,7 +133,7 @@ sntRover.controller('RVReportListCrl', [
                 report.uiChosen = true;
                 $scope.$parent.uiChosenReport = report;
 
-                $scope.setViewCol(2);
+                $scope.setViewCol( $scope.viewCols[1] );
 
                 $timeout(function() {
                     $scope.refreshFilterScroll('scrollUp');

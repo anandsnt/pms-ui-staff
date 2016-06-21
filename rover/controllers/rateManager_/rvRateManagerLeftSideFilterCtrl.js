@@ -270,7 +270,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.showCalendar = () => {
         var maxRangeBetweenFromAndToDate = {
-          year: 1
+          month: 3
         };
 
         var dataForCalendar = {

@@ -113,6 +113,7 @@ sntRover.controller('roverController',
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
     $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
+    $rootScope.sendCancellationLetter = hotelDetails.send_cancellation_letter;
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
     $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
@@ -829,6 +830,29 @@ sntRover.controller('roverController',
      */
     $rootScope.trustAsHtml = function(string) {
         return $sce.trustAsHtml(string);
+    };
+
+
+    var MENU_SCROLLER = 'MENU_SCROLLER';
+    var setupScrolls = function() {
+      var scrollerOptions = {
+        tap: true,
+        preventDefault: false,
+        showScrollbar: true
+      };
+
+      $scope.setScroller(MENU_SCROLLER, scrollerOptions);
+    };
+    setupScrolls();
+    var refreshScroll = function(name, reset) {
+      $scope.refreshScroller(name);
+      /**/
+      if ( !! reset && $scope.myScroll.hasOwnProperty(name) ) {
+          $scope.myScroll[name].scrollTo(0, 0, 100);
+      }
+    };
+    $scope.refreshMenuScroll = function(reset) {
+      refreshScroll(MENU_SCROLLER, reset);
     };
 
 }]);
