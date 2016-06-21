@@ -216,7 +216,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					from_date: ARRIVAL_DATE,
 					to_date: DEPARTURE_DATE,
 					//CICO-28657 Removed all params - company id, grp id, tr ag id, etc
-
+					group_id: $scope.reservationData.group.id || $scope.reservationData.allotment.id,
 					override_restrictions: $scope.stateCheck.showClosedRates,
 					adults: occupancies[0].adults,
 					children: occupancies[0].children,
@@ -284,13 +284,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					page: page,
 					from_date: ARRIVAL_DATE,
 					to_date: DEPARTURE_DATE,
-
 					room_type_id: roomTypeId,
 					rate_id: rateId,
-
-
-
-
+					group_id: $scope.reservationData.group.id || $scope.reservationData.allotment.id,
 					override_restrictions: $scope.stateCheck.showClosedRates,
 					adults: occupancies[0].adults,
 					children: occupancies[0].children,
