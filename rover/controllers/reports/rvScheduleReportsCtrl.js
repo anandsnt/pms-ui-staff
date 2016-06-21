@@ -59,6 +59,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 		$scope.selectSchedule = function(item, index) {
 			var success = function(data) {
 				$scope.selectedScheduleDetails = data;
+				$scope.IsGuestBalanceReport = false;
+
 
 				if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
 					$scope.selectedSchedule.active = false;
@@ -245,7 +247,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 		// rvReportUtilsFac.js in future
 		var setupFilters = function() {
 			$scope.filters = {};
-
 			$scope.filters.hasGeneralOptions = {
 				data: [],
 				options: {
@@ -258,8 +259,16 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			_.each($scope.selectedScheduleDetails.filters, function(filter) {
 				var selected = false,
 					mustSend = false;
-
+				if(filter.value == 'ACCOUNT'|| filter.value == 'GUEST'){
+					$scope.IsGuestBalanceReport = true;
+				}
 				if ( matchGeneralOptions[filter.value] ) {
+					if($scope.selectedScheduleDetails.filters.value == 'ACCOUNT'){
+						selected = true;
+					}
+					if($scope.selectedScheduleDetails.filters.value  == 'GUEST'){
+					selected = true;
+				}
 					if ( $scope.selectedScheduleDetails.report.description === 'Arriving Guests' && filter.value === 'DUE_IN_ARRIVALS' ) {
 						selected = true;
 					}
@@ -274,6 +283,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 						selected    : selected,
 						mustSend    : mustSend
 					});
+
 				}
 			});
 

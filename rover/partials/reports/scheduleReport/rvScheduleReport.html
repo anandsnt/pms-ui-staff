@@ -37,6 +37,12 @@
                     </select>
                 </div>
             </div>
+           
+            <multi-option-selection ng-show="IsGuestBalanceReport"
+                label="Guest/Account"
+                on-update="refreshSecondColumnScroll"
+                data="selectedScheduleDetails.filters"
+                options="filters.hasGeneralOptions.options"></multi-option-selection>
 
             <multi-option-selection ng-show="filters.hasGeneralOptions && filters.hasGeneralOptions.data.length"
                 label="Option(s)"
