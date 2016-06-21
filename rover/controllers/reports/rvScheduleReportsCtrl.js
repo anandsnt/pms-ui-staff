@@ -161,6 +161,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			params.filter_values = filter_values;
 
 			var success = function() {
+				$scope.errorMessage = "";
 				$scope.$emit( 'hideLoader' );
 				if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
 					$scope.selectedSchedule.active = false;
