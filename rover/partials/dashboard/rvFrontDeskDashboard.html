@@ -1,14 +1,13 @@
-<div ng-include="'/assets/partials/search/rvFrontDeskDashboardSearchReservations.html'"></div>	
+<div ng-include="'/assets/partials/search/rvFrontDeskDashboardSearchReservations.html'"></div>
 
-<section id="dashboard" class="content scrollable" role = "main" 
-ng-iscroll='dashboard_scroller' ng-iscroll-delay="100" 
+<section id="dashboard" class="content scrollable" role = "main"
+ng-iscroll='dashboard_scroller' ng-iscroll-delay="100"
 ng-show="showDashboard">
 	<div class="wrapper">
 		<div ng-include="'/assets/partials/dashboard/rvDbGreetingMessageSection.html'"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbGuestsSection.html'"></div>
 		<div ng-hide="!isStandAlone" ng-include="'/assets/partials/dashboard/rvDbOccupancySection.html'"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbUpSellSection.html'"></div>
-		<div ng-hide="!isStandAlone" ng-include="'/assets/partials/dashboard/rvDbRateOfTheDaySection.html'"></div>
 	</div>
 </section>
 
