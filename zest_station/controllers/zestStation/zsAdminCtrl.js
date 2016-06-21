@@ -37,9 +37,11 @@ sntZestStation.controller('zsAdminCtrl', [
              var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.zestStationData.set_workstation_id;
             });
-            $scope.workstation = { 'selected' :  selectedWorkStation.id};
-            $scope.workstation.printer = selectedWorkStation.printer;
-            setPrinterLabel(selectedWorkStation.printer);
+            if (selectedWorkStation){
+                $scope.workstation = { 'selected' :  selectedWorkStation.id};
+                $scope.workstation.printer = selectedWorkStation.printer;
+                setPrinterLabel(selectedWorkStation.printer);
+            }
           
         }else{
             //do nothing;
@@ -64,7 +66,9 @@ sntZestStation.controller('zsAdminCtrl', [
                 setCurrentStation($scope.set_workstation_id);
                 return workstation.id == $scope.workstation.selected;
             });
-            setPrinterLabel(selectedWorkStation.printer);
+            if (selectedWorkStation){
+                setPrinterLabel(selectedWorkStation.printer);
+            }
         };
 
         /*
@@ -124,9 +128,9 @@ sntZestStation.controller('zsAdminCtrl', [
             };
             $scope.callAPI(zsTabletSrv.fetchWorkStations, options);
         };
-        
-
+        var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled;
         var initialize = function() {
+            
             if ($scope.zestStationData.workstationStatus === 'in-order'){
                 $scope.inServiceAtStart = true;
             } else {
@@ -143,6 +147,7 @@ sntZestStation.controller('zsAdminCtrl', [
             getWorkStationList();
             $scope.setScroller('admin-screen');
             //mode
+            //$scope.zestStationData.isAdminFirstLogin = true;//debugging, remove/comment out before pushing up
             if ($scope.zestStationData.isAdminFirstLogin) {
                 $scope.mode = "admin-screen-active";
                 $scope.zestStationData.isAdminFirstLogin = false;
@@ -188,7 +193,11 @@ sntZestStation.controller('zsAdminCtrl', [
         };
 
 
-        $scope.cancelAdminSettings = function() {
+        $scope.cancelAdminSettings = function(a) {
+            if (!a){
+                console.info('setting demo mode back to: ',lastDemoModeSetting);
+                $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
+            }
             $state.go('zest_station.home');
             setTimeout(function() {
                 $rootScope.$broadcast('REFRESH_SETTINGS', {
@@ -236,7 +245,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,{'status':$scope.zestStationData.workstationStatus,'reason':reason});
                 
                 setTimeout(function(){
-                    $scope.cancelAdminSettings();    
+                    $scope.cancelAdminSettings(true);    
                 },2000);
                 
             };
@@ -342,6 +351,7 @@ sntZestStation.controller('zsAdminCtrl', [
 
 
         $scope.saveSettings = function() {
+            console.info('saving: demo mdoe: ',$scope.zestStationData.demoModeEnabled);
             var params = getSettings();
             $scope.savedSettings = angular.copy(params);
             delete params.kiosk.workstation;

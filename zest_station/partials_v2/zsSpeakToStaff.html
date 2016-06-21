@@ -1,0 +1,10 @@
+<!-- speak to staff -->
+<section id="main" class="centered" role="main" click-touch='resetTime()'>
+    <div id="content">
+        <h1 ng-hide="customMessagePresent" translate>SPEAK_TO_STAFF</h1>
+        <h1 ng-show="customMessagePresent" ng-bind="customMessage"></h1>
+        <h2 class="nocaps" translate>SPEAK_TO_STAFF_SUB</h2>
+        <button type="button" class="button" click-touch="navToHome()" translate>SPEAK_TO_STAFF_RETURN</button>
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
+</section>

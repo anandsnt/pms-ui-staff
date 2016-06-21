@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q', 'paymentMethods',
-    function($rootScope, jsMappings, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q, paymentMethods) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog', 'RVPaymentSrv', 'RVReservationCardSrv', 'RVGuestCardSrv', 'rvPermissionSrv', 'RVReservationGuestSrv', '$q', 'paymentMethods', 'RVReservationPackageSrv',
+    function($rootScope, jsMappings, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog, RVPaymentSrv, RVReservationCardSrv, RVGuestCardSrv, rvPermissionSrv, RVReservationGuestSrv, $q, paymentMethods, RVReservationPackageSrv) {
 
 
         BaseCtrl.call(this, $scope);
@@ -649,10 +649,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                                     }
                                     $scope.showSelectedCreditCard = true;
                                 }
+                                //CICO-29487 -> Before proceeding to this; need to fetch the addons details
+                                $scope.invokeApi(RVReservationPackageSrv.getReservationPackages, room.reservation_id, function(response){
+                                    temporaryReservationDataFromDiaryScreen.addons =  response.existing_packages;
+                                    $scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen, true);
+                                    createReservation();
+                                    refreshScrolls();
+                                });
+                            }else{
+                                //CICO-29487 -> In case of creation; The addons are not part of the flow; So whilst creation; an hourly reservation cannot have addons
+                                $scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen, true);
+                                createReservation();
+                                refreshScrolls();
                             }
-                            $scope.populateDatafromDiary(roomsArray, temporaryReservationDataFromDiaryScreen, true);
-                            createReservation();
-                            refreshScrolls();
+
                         };
                         $scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
                     }
@@ -788,6 +798,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
             }
             var saveSuccess = function(data) {
+                console.log(data);
+                console.log($scope.reservationData)
                 //CICO-18699 credit card not saving to guest card when selecting Deposit later option.
                 if ($scope.addToGuestCard) {
                     addToGuestCard(data);

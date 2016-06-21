@@ -3,11 +3,15 @@
     <!--<form method="post" action="" id="confirm-diary-reservation" name="confirm-diary-reservation" class="modal-content diary-confirmation">-->
         <button id="modal-close" class="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
 
-        <span id="diary-modal-title" class="h2 message">
+        <span ng-if="message.length" class="h2 message">
+            <span class="red" ng-repeat="msg in message">{{msg}}</span>
+        </span>
+
+        <span ng-if="!message.length" id="diary-modal-title" class="h2 message">
             Reserve <span>{{title}}</span>?
         </span>
 
-        <div class="diary-reserved">
+        <div class="diary-reserved" ng-show="selection.rooms.length">
             <ul class="details">
                 <li class="arrival">
                     <span>{{selection.arrival_time}}</span>
@@ -18,7 +22,7 @@
                     {{selection.departure_date}}
                 </li>
             </ul>
-            <div id="rooms-reserved" class="rooms scrollable">
+            <div id="rooms-reserved" class="rooms scrollable" ng-show="selection.rooms.length">
                 <ul class="wrapper">
                     <li ng-repeat="room in selection.rooms track by $index"> 
                         <span class="type">{{room.room_type}}</span>
@@ -31,7 +35,7 @@
         </div>
         <div class="actions">
             <button class="button orange" type="button" ng-click="selectAdditional()">Select Additional Cabin</button>
-            <button class="button green" type="button" ng-click="routeToSummary()">Reserve {{title}}</button>
+            <button class="button green" type="button" ng-click="routeToSummary()" ng-class="{overlay: !selection.rooms.length}" ng-disabled="!selection.rooms.length">Reserve {{title}}</button>
             <button class="button blank" type="button" ng-click="cancelSelection()">Cancel</button>
         </div>
     </div>  

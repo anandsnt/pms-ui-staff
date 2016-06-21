@@ -1,0 +1,55 @@
+<section id="main" class="centered" role="main" click-touch='resetTime()'>
+    <!-- scanning mode -->
+    <div id="content" ng-hide="qrCodeScanFailed"  touch-press='scanQRCode()'>
+        <h1>{{'QR_LOOKUP_HEADER' |translate}}</h1>
+        <h3>{{'QR_LOOKUP_SUB_HEADER' |translate}}</h3>
+        <div id="qr-code">
+                      <button type="button" class="button arrow-{{arrowDirection}}">
+                        <span ng-include="icons.url.qr_noarrow"></span>
+                        <span ng-include="icons.url.qr_arrow"></span>
+                    </button>
+
+                </li>
+            </ul>
+            <h1>{{'QR_LOOKUP_BUTTON_TEXT' |translate}}</h1>
+        </div>
+    </div>
+    <!-- failure mode -->
+    <div id="content" ng-show="qrCodeScanFailed">
+        <h1>{{'QR_SCAN_FAILED_HEADING' |translate}}</h1>
+        <h2>{{'QR_SCAN_FAILED_SUB_TEXT' |translate}}</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='retryQRScan()'>
+                        <div ng-include="icons.url.qr_noarrow"></div>
+                    </button>
+                    {{'QR_SCAN_RETRY' |translate}}
+                </li>
+                <li class="break" ng-show="zestStationData.pickup_qr_scan_fail_over">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li ng-show="zestStationData.pickup_qr_scan_fail_over">
+                    <button type="button" class="button option" touch-press='quitQRScanMode()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    {{'QR_SCAN_FAILED_SEARCH' |translate}}
+                    <span>{{'QR_SCAN_FAILED_BY_NAME' |translate}}</span>
+                </li>
+                <li class="break">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    {{'RES_SRCH_TALK' |translate}}
+                    <span>{{'RES_SRCH_TALK_SUB' |translate}}</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
+</section>

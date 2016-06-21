@@ -1,5 +1,16 @@
 angular.module('adminInterfacesRouter', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 
+  $stateProvider.state('admin.exactOnlineSetup', {
+    templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
+    controller: 'adExactOnlineSetupCtrl',
+    url : '/exactonline/setup',
+    resolve: {
+      exactOnlineSetupValues: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
+        return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
+      }]
+    }
+  });
+
   $stateProvider.state('admin.zestWebGlobalSetup', {
     templateUrl: '/assets/partials/zestwebGlobalSettings/adZestWebGlobalSettings.html',
     controller: 'ADzestWebGlobalSettingsCtrl',
@@ -27,6 +38,18 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
       }]
     }
   });
+
+  $stateProvider.state('admin.goMomentIvySetup', {
+    templateUrl: '/assets/partials/interfaces/GoMomentIvy/goMomentIvySetup.html',
+    controller: 'adGoMomentIvySetupCtrl',
+    url : '/gomomentivy/setup',
+    resolve: {
+      goMomentIvySetupValues: ['adGoMomentIvySetupSrv', function(adGoMomentIvySetupSrv) {
+        return adGoMomentIvySetupSrv.fetchGoMomentIvyConfiguration();
+      }]
+    }
+  });
+
 
   $stateProvider.state('admin.lightspeedPosSetup', {
     templateUrl: '/assets/partials/lightspeedPOS/adLightspeedPOSSetup.html',
@@ -101,6 +124,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     resolve: {
       afasSetupValues: ['adAfasSetupSrv', function(adAfasSetupSrv) {
         return adAfasSetupSrv.fetchAfasConfiguration();
+      }]
+    }
+  });
+
+  $stateProvider.state('admin.m3BackOfficeExport', {
+    templateUrl: '/assets/partials/interfaces/M3BackOffice/ADM3Configuration.html',
+    controller: 'ADM3BackOfficeCtrl',
+    url : '/backoffice/m3/setup',
+    resolve: {
+      m3AccountingSetupValues: ['ADM3SetupSrv', function(ADM3SetupSrv) {
+        return ADM3SetupSrv.getConfig();
       }]
     }
   });

@@ -51,7 +51,16 @@ module.exports = {
 			'guestweb_knickerbocker_yacht_club':[ themeCSSRoot + 'guestweb_knickerbocker_yacht_club.css'],
 			'guestweb_kingsley':[ themeCSSRoot + 'guestweb_kingsley.css'],
 			'guestweb_avery':[ themeCSSRoot + 'guestweb_avery.css'],
-			'guestweb_newyork':[ themeCSSRoot + 'guestweb_newyork.css']
+			'guestweb_newyork':[ themeCSSRoot + 'guestweb_newyork.css'],
+			'guestweb_mirage':[ themeCSSRoot + 'guestweb_mirage.css'],
+			'guestweb_valencia_san_antonio':[ themeCSSRoot + 'guestweb_valencia_san_antonio.css'],
+			'guestweb_lonestar_court_austin':[ themeCSSRoot + 'guestweb_lonestar_court_austin.css'],
+			'guestweb_ponchartrain':[ themeCSSRoot + 'guestweb_ponchartrain.css'],
+			'guestweb_valencia_santana_row':[ themeCSSRoot + 'guestweb_valencia_santana_row.css'],
+			'guestweb_sorella_houston':[ themeCSSRoot + 'guestweb_sorella_houston.css'],
+			'guestweb_monte_carlo' 	: [ themeCSSRoot + 'guestweb_monte_carlo.css'],
+			'guestweb_sorella_kansas_city':[ themeCSSRoot + 'guestweb_sorella_kansas_city.css'],
+			'guestweb_Pasea':[ themeCSSRoot + 'guestweb_Pasea.css']
 		}
 	}
 }

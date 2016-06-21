@@ -15,7 +15,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-		
+
 
 
 		$scope.setHeadingTitle = function(heading) {
@@ -702,8 +702,8 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					$scope.cardRemoved(card);
 					$scope.cardReplaced(card, cardData);
 
-					//CICO-21205 
-					// Fix for Replace card was called even if lastCardSlot.cardType was an empty string		
+					//CICO-21205
+					// Fix for Replace card was called even if lastCardSlot.cardType was an empty string
 					if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType && card !== $scope.viewState.lastCardSlot.cardType) {
 						$scope.removeCard($scope.viewState.lastCardSlot.cardType, $scope.viewState.lastCardSlot.cardId, true);
 					}
@@ -715,13 +715,13 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					ngDialog.close();
 				},
 				onReplaceFailure = function(error) {
-					
+
 					$scope.cardRemoved();
 					//480 is reserved for cases where trial to use the card fails fails
 					if (error.httpStatus === 480) {
 	  					$scope.cardReplaced(card, cardData);
-	  					//CICO-21205 
-						// Fix for Replace card was called even if lastCardSlot.cardType was an empty string		
+	  					//CICO-21205
+						// Fix for Replace card was called even if lastCardSlot.cardType was an empty string
 						if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType) {
 							$scope.removeCard($scope.viewState.lastCardSlot);
 							$scope.viewState.lastCardSlot = "";
@@ -944,7 +944,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				value['roomTypeId'] = parseInt(roomsArray[value.room_id].room_type_id, 10);
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
 				value['roomNumber'] = roomsArray[value.room_id].room_no;
-				roomTypes.push(parseInt(value.roomTypeId, 10))
+				roomTypes.push(parseInt(value.roomTypeId, 10));
 			});
 			roomTypes = _.uniq(roomTypes);
 			$scope.reservationData.tabs = RVReservationDataService.getTabDataModel(roomTypes.length, roomTypes);
@@ -1061,6 +1061,25 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				room.room_no = refData.room_no;
 				room.room_type = refData.room_type;
 
+				// tData will have addons IFF the hourly reservation is being edited; while creation tData.addons will be undefined
+				if(tData.addons){
+					room.addons = [];
+					angular.forEach(tData.addons, function(item) {
+						room.addons.push({
+							quantity: item.addon_count,
+							id: item.id,
+							price: parseFloat(item.amount),
+							amountType: item.amount_type,
+							postType: item.post_type,
+							title: item.name,
+							totalAmount: item.addon_count * parseFloat(item.amount),
+							is_inclusive: item.is_inclusive,
+							taxes: item.taxes,
+							is_rate_addon: item.is_rate_addon
+						});
+					});
+				}
+
 				room.rateId = refData.rateId;
 				room.roomAmount = refData.amount;
 				// CICO-16850
@@ -1093,6 +1112,10 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					if (!$scope.reservationData.demographics.source) {
 						$scope.reservationData.demographics.source = !data.source_id ? '' : data.source_id;
 					}
+					if (!$scope.reservationData.demographics.origin) {
+						$scope.reservationData.demographics.origin = !data.booking_origin_id ? '' : data.booking_origin_id;
+					}
+
 
 					angular.forEach($scope.reservationData.rooms, function(room, index) {
 						if (!room.demographics.market) {
@@ -1100,6 +1123,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 						}
 						if (!room.demographics.source) {
 							room.demographics.source = !data.source_id ? '' : data.source_id;
+						}
+						if (!room.demographics.origin) {
+							room.demographics.origin = !data.booking_origin_id ? '' : data.booking_origin_id;
 						}
 
 					});

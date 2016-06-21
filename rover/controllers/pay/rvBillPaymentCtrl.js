@@ -665,18 +665,31 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	* Success call back of success payment
 	*/
 	var successPayment = function(data){
-
+		$scope.errorMessage ="";
 		//$scope.$emit("hideLoader");
 		$scope.authorizedCode = data.authorization_code;
+
+		//the below code is commented as the payment linkage is now done i backend
+
 		// A temperory fix, This part (payment screens) of App seems broken in many ways
 		// Will need to refractor as soon as possible
-		if($scope.saveData.paymentType !== "CC"){
-			// attach non CC payment type to bill and to staycard if bill is bill-1 (done in backend)
-			mapNonCCToBillAndStaycard();
-		}else{
-			// attach CC payment type to bill and to staycard if bill is bill-1 (done in backend)
-			mapCCPayMentToBillAndStaycard();
-		};
+		// if($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type === "CC" &&
+		//    $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type === "DB"){
+		//processeRestOfPaymentOperations();
+		// }
+		// else if($scope.saveData.paymentType !== "CC"){
+		// 	// attach non CC payment type to bill and to staycard if bill is bill-1 (done in backend)
+		// 	mapNonCCToBillAndStaycard();
+		// }else{
+		// 	// attach CC payment type to bill and to staycard if bill is bill-1 (done in backend)
+		// 	mapCCPayMentToBillAndStaycard();
+		// };
+		// 
+		
+
+		//if the existing payment method is not CC or Direct BIll and the selected payment method is CC
+		//The submit payment will update the payment type for the bill
+		processeRestOfPaymentOperations();
 		paymentFinalDetails =  data;
 
 		$timeout(function() {
@@ -1016,7 +1029,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		else{
 			//set data for existing card
 			data.user_payment_type_id  = $scope.saveData.payment_type_id;
-			$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess,paymentMapError);
+			if(!($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.saveData.paymentType === "CC")){
+				$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess,paymentMapError);
+			};
 		};
     };
 

@@ -22,7 +22,6 @@
                 </div>
                 <ad-toggle-button is-checked="zestSettings.offer_early_checkin" label="{{'OFFER_EARLY_CHECKIN'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
-            
             <fieldset class="holder left ">
                 <div class="form-title full-width">
                     <h3><span translate>REG_CARD</span> </h3>
@@ -40,7 +39,6 @@
                 </div>
                 <ad-toggle-button is-checked="zestSettings.enforce_deposit" label="{{'ENFORCE_DEPOSIT'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
-            
             <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>ON_SCREEN_ROOM_NUMBER </span> </h3>
@@ -62,12 +60,12 @@
                 <ad-checkbox is-checked="zestSettings.checkin_screen.authentication_settings.confirmation" label="{{ 'CONFIRMATION' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.checkin_screen.authentication_settings.number_of_nights" label="{{ 'AUTH_NO_OF_NIGHTS' | translate}}"></ad-checkbox>
             </fieldset>
-             <fieldset class="holder right">
+            <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3><span translate>OWS_GUEST_MESSAGES </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.is_kiosk_ows_messages_active" label="{{'OWS_GUEST_MESSAGES'| translate}}" div-class="full-width"></ad-toggle-button>
-             </fieldset>  
+            </fieldset>
             <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>BYPASS_CC_FOR_PREPAID_RESERVATIOIN </span> </h3>
@@ -118,11 +116,17 @@
                 <ad-textbox value="zestSettings.check_in_message_texts.not_available_message" name="zest-web" id="zest-web" label="" placeholder="{{'ZEST_CHECK_IN_MESSAGE' | translate }}" styleclass="full-width"></ad-textbox>
             </fieldset>
             <fieldset class="holder left">
-                    <div class="form-title half-width-title">
-                        <h3><span translate>ADDRESS_COUNTRY_LIST </span> </h3>
-                    </div>
-                    <ad-toggle-button is-checked="zestSettings.kiosk_enforce_country_sort" label="{{'ENFORCE_COUNTRY_SORT'| translate}}" div-class="full-width"></ad-toggle-button>
-                </fieldset>
+                <div class="form-title half-width-title">
+                    <h3><span translate>ADDRESS_COUNTRY_LIST </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.kiosk_enforce_country_sort" label="{{'ENFORCE_COUNTRY_SORT'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
+            <fieldset class="holder right">
+                <div class="form-title half-width-title">
+                    <h3><span translate>VALIDATE_FIRST_NAME </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.kiosk_validate_first_name" label="{{'VALIDATE_FIRST_NAME'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL

@@ -185,14 +185,13 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
         };
 
         $scope.cancelSelection = function() {
-
             var removed = $scope.selectedReservations.pop();
 
-            removed.occupancy.selected = false;
+            if ( !! removed ) {
+                removed.occupancy.selected = false;
+            }
 
-
-            $scope.closeWithAnimation ();
-
+            $scope.closeWithAnimation();
             $scope.renderGrid();
         };
 

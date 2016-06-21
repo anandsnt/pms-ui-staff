@@ -1,0 +1,78 @@
+<!-- Content -->
+<section id="main" class="centered" role="main" click-touch='resetTime()'>
+    
+    
+    <div id="content" ng-hide="isPageLoading">
+        <h1>{{'RES_DETAIL_HEADER' |translate}}</h1>
+        <div id="flex-holder">
+            <!-- Calculate {maxheight} with this formula: window.height - combined heights of <h1>, <h2> and <h3> elements + 8
+                - if some <h> elements are missing just exclude them or use 0. 
+                - 8 is added to make sure bottom rounded corner is set off screen
+            -->
+            <div id="textual" class="reservation-details pull-left scrollable fill-height" ng-iscroll="res-details" ng-iscroll-delay="100" ng-init="setScroll()"> <!-- Add ng-scroll here style="max-height:{maxheight}px;" -->
+                <div class="wrapper">
+                    <div id="guests">
+                        <p class="px-space">
+                            <strong>{{selectedReservation.guest_details[0].last_name}}, {{selectedReservation.guest_details[0].first_name}} </strong>                          
+                            <span>{{selectedReservation.guest_details.length}} {{'RESIDENTS' |translate}} </span>
+                            {{selectedReservation.stay_dates[0].room_type}}
+                        </p>
+                        <p ng-hide="{{selectedReservation.guest_details.length == 1}}">{{'ADDTL_RESIDENTS' |translate}} ({{selectedReservation.guest_details.length-1}})</p>
+                        <button type="button" class="button" touch-press="addRemove()" >{{'ADD_REMOVE_GUESTS' |translate}} </button>
+                    </div>
+                    <ul id="rate" class="reservation-details">
+                        <li >
+                            <!-- handling some logics in HTML. Forced to use coz of bad handling in ctrlr -->
+                            {{zestStationData.isHourlyRateOn ? 'HOURS' :'DAY_NIGHTS'|translate}}<span>{{zestStationData.isHourlyRateOn ? selectedReservation.reservation_details.total_hours :
+                            selectedReservation.reservation_details.total_nights}}</span>
+                        </li>
+                        <li ng-hide="isRateSuppressed()">
+                            <!-- handling some logics in HTML. Forced to use coz of bad handling in ctrlr -->
+                            {{zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.avg_daily_rate}}</span>
+                        </li>
+                        <li ng-hide="isRateSuppressed()" ng-repeat="addon in selectedReservation.addons">
+                            {{addon.name}} ({{addon.addon_count}})
+                            <span ng-show='{{!addon.is_inclusive}}'>{{zestStationData.currencySymbol}}{{addon.amount}}</span>
+                            <span ng-show='{{addon.is_inclusive}}'>{{'INCLUDED' |translate}}</span>
+                        </li>
+                        
+                        <li class="break"></li>
+                        
+                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_TAX_FEES' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.fees}}</span></li>
+                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_SUB' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.sub_total}}</span></li>
+                        <li ng-hide="isRateSuppressed()" class="sub">{{'RES_DEPOSITS' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.deposit_paid}}</span></li>
+                        <li ng-if="isRateSuppressed()"class="total">{{'RES_BAL_DUE' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.balance}}</span></li>
+                        <li ng-if="!isRateSuppressed()"class="total">{{'RES_BAL_DUE' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.outstanding_stay_total}}</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="actions" class="pull-right">
+                <!-- button type="button" class="button" touch-press="goToScreen(null, 'cc-sign', true, 'reservation-details')">Next</button -->
+                <button type="button" class="button" touch-press="onNextFromDetails()">{{'RES_NEXT' |translate}}</button>
+                <p><strong>{{'RES_Q' |translate}}</strong>{{'RES_Q_SUB' |translate}}</p>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+<span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
+</section>
+
+
+<!-- neeed to change this to requires html -->
+<div ng-include="'/assets/partials/zsOwsMsgListing.html'" ng-controller="zsOwsMsgListingCtrl" ng-if="zestStationData.is_kiosk_ows_messages_active && !zestStationData.is_standalone"></div>
+
+<div class="page-print">
+    <section id="registration-card" class="page-print">
+        <div class="logo centered-logo">
+            <div ng-include="icons.url.logo"></div>
+        </div>
+        <div class="content ows-content">
+            <span class="reg_text">{{currentOwsMessage}}</span>
+            <br><br>
+            <!-- to add some space in bottom of the page. else the page will be cut once the message is over -->
+            <span class="ows-footer">&nbsp;.</span>
+        </div>
+    </section>
+</div>

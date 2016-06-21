@@ -6,8 +6,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 	function($scope, $rootScope, ADDailyWorkAssignmentSrv, $anchorScroll, $timeout, $location) {
 
 		BaseCtrl.call(this, $scope);
-
-
 		// clicked element type indicators
 		$scope.workTypeClickedElement = -1;
 		$scope.taskListClickedElement = -1;
@@ -15,7 +13,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		//Have to change when default task is assigned for all work types.
 		$scope.defaultData = {};
 		$scope.defaultData.defaultTask = 0;
-
 
 		// Task management
 
@@ -29,7 +26,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.setTaskManagementShowInHK,param,callback);
 
 		};
-
 
 		var SCROLL_POS_KEY = 'rooms_task_management_scroll';
 		/**/

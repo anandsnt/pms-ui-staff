@@ -123,7 +123,6 @@
   // render React component, with scope[attrs.props] being passed in as the component props
   function renderComponent(component, props, scope, elem) {
     scope.$evalAsync(function() {
-    	console.log(props);
       ReactDOM.render(React.createElement(component, props), elem[0]);
     });
   }

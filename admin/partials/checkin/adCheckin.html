@@ -9,10 +9,10 @@
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <form style="overflow-y:auto;" class="form float">
                 <fieldset class="holder left">
-                    <ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="{{ 'SEND_CHECKIN_ALERT' | translate}}" is-disabled="checkinData.is_precheckin_only"></ad-toggle-button>
+                    <ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="{{ 'SEND_CHECKIN_ALERT' | translate}}"></ad-toggle-button>
                     <ad-toggle-button is-checked="checkinData.is_precheckin_only" label="{{ 'PRE_CHECK_IN_ONLY' | translate}}"></ad-toggle-button>
                     <ad-toggle-button is-checked="checkinData.is_send_zest_alert_flag" label="{{ 'SEND_ZEST_CHECKIN_ALERT' | translate}}"></ad-toggle-button>
-                    <ad-toggle-button is-checked="checkinData.is_allow_early_checkin_from_zest" label="{{ 'ZEST_ALLOW_EARLY_CHECKIN' | translate}}"></ad-toggle-button>
+                    
                     <ad-checkbox is-checked="checkinData.is_notify_on_room_not_assigned_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_NOT_ASSIGNED_TITLE' | translate}}" div-class="full-width"></ad-checkbox>
                     <ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only" ng-show="!checkinData.is_precheckin_only"></ad-checkbox>
                     <ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width"></ad-checkbox>

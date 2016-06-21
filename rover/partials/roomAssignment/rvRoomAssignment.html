@@ -46,7 +46,7 @@
 					<!-- Rooms list -->
 					<div id="roomlist" ng-iscroll='roomlist' ng-iscroll-delay='50' class="rooms scrollable" ng-class="{'roomListAnimation': isFiltersVisible, 'no-content':isRoomListEmpty()}">
 						<ul class="wrapper"  ng-show = "!isRoomListEmpty()">
-							<li ng-repeat="room in filteredRooms | limitTo: 25" ng-click="showMaximumOccupancyDialog(room)">
+							<li ng-repeat="room in filteredRooms | limitTo: 25" ng-click="checkRoomTypeAvailability(room)">
 								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="{{room.room_number}}" class="room-number" ng-class="getRoomStatusClassForRoom(room)">{{room.room_number}}</span>
 									<span data-value="{{room.room_number}}" class="room-status" ng-class="getRoomStatusClassForRoom(room)" ng-show="room.room_status == 'NOTREADY'">{{getNotReadyRoomTag(room)}}</span>
 									<span class="room-preassignment" ng-show="room.is_preassigned">{{room.last_name + " "+ room.guarantee_type}}</span></a>
