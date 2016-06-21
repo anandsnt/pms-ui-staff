@@ -247,6 +247,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 		// rvReportUtilsFac.js in future
 		var setupFilters = function() {
 			$scope.filters = {};
+
 			$scope.filters.hasGeneralOptions = {
 				data: [],
 				options: {
@@ -259,14 +260,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			_.each($scope.selectedScheduleDetails.filters, function(filter) {
 				var selected = false,
 					mustSend = false;
-				if(filter.value == 'ACCOUNT'|| filter.value == 'GUEST'){
+
+					if(filter.value == 'ACCOUNT'|| filter.value == 'GUEST') {
 					$scope.IsGuestBalanceReport = true;
-					if(filter.value == 'ACCOUNT'){
-						selected = true;
-					}
-					if(filter.value == 'GUEST'){
 					selected = true;
-					}
 					$scope.filters.hasGeneralOptions.data.push({
 						paramKey    : filter.value.toLowerCase(),
 						description : filter.description,
@@ -274,7 +271,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 						mustSend    : mustSend
 					});
 				}
-				var selected = false;
+				selected = false;
 				if ( matchGeneralOptions[filter.value] ) {
 					
 					if ( $scope.selectedScheduleDetails.report.description === 'Arriving Guests' && filter.value === 'DUE_IN_ARRIVALS' ) {
@@ -291,9 +288,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 						selected    : selected,
 						mustSend    : mustSend
 					});
-
 				}
-
 			});
 
 			runDigestCycle();
