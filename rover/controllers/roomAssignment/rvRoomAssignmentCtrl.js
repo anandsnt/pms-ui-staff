@@ -712,6 +712,12 @@ sntRover.controller('RVroomAssignmentController',[
 					isRoomIncluded = true;
 				};
 			};
+
+			// CICO-9063, CICO-30640 show rooms regardless of hk status (excluded ooo) for future reservations.
+			if($scope.reservationData.reservation_card.reservation_status === 'RESERVED' && !room.is_preassigned){
+				isRoomIncluded = true;
+			}
+
 			// Checking whether any of  predefined Filter condition satisfies
 			selectedPredefinedFiltersList.forEach(function(filter){
 				if(room.room_features.indexOf(filter)!== -1){
