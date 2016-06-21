@@ -160,7 +160,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					to_date: DEPARTURE_DATE,
 					company_id: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.company.id: "",
 					travel_agent_id: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.travelAgent.id : "",
-					group_id: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.group.id || $scope.reservationData.allotment.id : "",
+					group_id: $scope.reservationData.group.id || $scope.reservationData.allotment.id,
 					promotion_code: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.searchPromoCode : "",
 					promotion_id: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.promotionId : "",
 					override_restrictions: $scope.stateCheck.showClosedRates,
@@ -216,7 +216,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					from_date: ARRIVAL_DATE,
 					to_date: DEPARTURE_DATE,
 					//CICO-28657 Removed all params - company id, grp id, tr ag id, etc
-
+					group_id: $scope.reservationData.group.id || $scope.reservationData.allotment.id,
 					override_restrictions: $scope.stateCheck.showClosedRates,
 					adults: occupancies[0].adults,
 					children: occupancies[0].children,
@@ -284,13 +284,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					page: page,
 					from_date: ARRIVAL_DATE,
 					to_date: DEPARTURE_DATE,
-
 					room_type_id: roomTypeId,
 					rate_id: rateId,
-
-
-
-
+					group_id: $scope.reservationData.group.id || $scope.reservationData.allotment.id,
 					override_restrictions: $scope.stateCheck.showClosedRates,
 					adults: occupancies[0].adults,
 					children: occupancies[0].children,
@@ -366,6 +362,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					 //  restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 					   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
 					})
+					var restrictionsLength = (typeof roomType.restrictions!=="undefined") ? roomType.restrictions.length : 0;
 					var roomTypeInfo = {
 							isCollapsed: $scope.stateCheck.selectedRoomType != roomType.id,
 							name: $scope.reservationData.roomsMeta[roomType.id].name,
@@ -375,15 +372,16 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						},
 					//Assigning 'restriction' to new param 'bestAvailableRateRestrictions' - since issue when colapse each room type
 					//CICO-29156
+
 						rateInfo = {
 							id: roomType.rate_id,
 							name: $scope.reservationData.ratesMeta[roomType.rate_id].name,
 							adr: roomType.adr,
 							dates: angular.copy(datesInitial),
 							bestAvailableRateRestrictions: roomType.restrictions,
-							numRestrictions: roomType.restrictions.length,
+							numRestrictions: restrictionsLength,
 							forRoomType: roomType.id,
-							buttonClass: getBookButtonStyle(roomType.restrictions.length || 0, roomType.rate_id, roomType.availability),
+							buttonClass: getBookButtonStyle(restrictionsLength, roomType.rate_id, roomType.availability),
 							showDays: false,
 							totalAmount: 0.0,
 							isCorporate: isCorporate,
