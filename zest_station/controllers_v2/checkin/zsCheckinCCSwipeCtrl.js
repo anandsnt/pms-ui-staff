@@ -212,7 +212,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 'room_no':$stateParams.room_no,
                 'first_name':$stateParams.first_name,
                 'room_status':$stateParams.room_status,
-                'deposit_amount':$stateParams.deposit_amount,
+                'deposit_amount':$stateParams.deposit_amount,//dont think we need this here
                 'email':$stateParams.guest_email,
                 'guest_email_blacklisted':$stateParams.guest_email_blacklisted
                 
@@ -274,6 +274,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
                 
         var isDepositMode = function(){
+            //check if the reservation needs to authorize card at checkin
+            //and send the amount to the emv terminal for the amount if needed
             if ($stateParams.mode === 'DEPOSIT' && !$scope.paidDeposit) {
                 return true;
             } else return false;
@@ -384,21 +386,24 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
         
         
-        var needCCAuthForCheckin = function(){
-            var needToAuthorizeAtCheckin = $stateParams.authorize_cc_at_checkin,
-                    authCCAmount = $stateParams.pre_auth_amount_at_checkin;
-            
-                getCCAuthorization(needToAuthorizeAtCheckin, authCCAmount, true);
-        };
         var fetchRemainingAuthForCheckinAfterDeposit = function(){
+            /*
+             * we'll refer to the initial settings from $stateParams if CC auth is required at checkin, 
+             * and the remaining auth amount will be fetched to ensure the card is not authorize for greater 
+             * than the required amount.
+             * 
+             * we'll log the auth amount from when the deposit started so we can compare the two values
+             */
             var needToAuthorizeAtCheckin = $stateParams.authorize_cc_at_checkin,
                     authCCAmount = $stateParams.pre_auth_amount_at_checkin;
-                    console.log(' :: fetchRemainingAuthForCheckinAfterDeposit ::',needToAuthorizeAtCheckin,authCCAmount);
+                    console.log(' :: fetchRemainingAuthForCheckinAfterDeposit ::',needToAuthorizeAtCheckin);
+                    console.log(' :: last auth amount :: ',authCCAmount);
                 getCCAuthAfterDeposit(needToAuthorizeAtCheckin, authCCAmount, true);
         };
         
         var onSuccessFetchRemainingAuth = function(response){
             console.log(':: onSuccessFetchRemainingAuth :: ',response);
+            //we get a 200 - status with failed if unsuccessful...
             if (response.status !== 'success'){
                 onSwipeError(response);
                 
@@ -406,6 +411,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 
                 var amount, needToAuthorizeAtCheckin;
                 if ($scope.inDemoMode()){
+                    console.log('demo mode :: auth amount hardcoded to 35');
                     amount = 35.00;
                     needToAuthorizeAtCheckin = true;
 
@@ -418,9 +424,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 console.info('needToAuthorizeAtCheckin :-> ',needToAuthorizeAtCheckin);
 
                 if (needToAuthorizeAtCheckin){
+                    //calls the device with the required amount to authorize for
                     captureAuthorization(amount, true, true);
 
                 } else {
+                    //completes deposit/auth, take user to signature
                     goToCardSign();
                 }
             }
@@ -429,9 +437,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             console.log(':: fetchRemainingAuthAmountDue :: $stateParams: ',$stateParams);
             
             if ($scope.inDemoMode()){
+                    console.info('in demo mode, not going to fetch remaining auth');
                     onSuccessFetchRemainingAuth({'status':'success'});
                     
             } else {
+                //fetches reservation details, which holds the updated auth amount
                 $scope.callAPI(zsCheckinSrv.fetchReservationDetails, {
                     params: {
                         'id': $stateParams.confirmation_number
@@ -447,7 +457,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
          var getCCAuthAfterDeposit = function(){
              //will check for further auth amount needed & if required during checkin, 
              // then go to capture auth or card sign
-            console.log('successful deposit paid, :: fetch auth amount due ::');
+            console.log('successful deposit paid, :: fetching auth amount due ::');
             fetchRemainingAuthAmountDue();
          };
          
@@ -514,8 +524,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             console.log(':: successSixPayDeposit :: ',response);
             $scope.payingDeposit = false;
             $scope.paidDeposit = true;
-            //check if the reservation needs to authorize card at checkin
-            //and send the amount to the emv terminal for the amount if needed
+            
+            //typically after making a payment, we need to check for the remaining balance due,
+            //since the guest has made a payment, the authorization amount will be less,
+            //so we fetch the remaining authorization for checkin
             fetchRemainingAuthForCheckinAfterDeposit();
         };
         var onSwipeError = function(error){
@@ -532,11 +544,15 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         var startSixPayPayment = function(){
             console.log(':: starting six pay payment ::');
             console.log('isDepositMode(): ',isDepositMode());
+            //If starting from deposit mode, we will be taking a (payment) which is different than an auth
+            //payment will be paid but not saved to the reservation staycard,
+            //only a call at cc/authorize will attach the card to the staycard
             if (isDepositMode()){
                 console.info('payDeposit()');
                 payDeposit();
                 
             } else {
+                
                 console.info('fetchNonDepositAuthorizationForCheckin()');
                 fetchNonDepositAuthorizationForCheckin();
             };
@@ -580,23 +596,38 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     
             console.warn('$stateParams: ',$stateParams)
             //if at the deposit screen, set the currency symbol and amount due, which should be passed from reservation details
+            
+            /*
+             * 
+             * on Init, we need to check if we are making a deposit, or just authorizing a card for the reservation
+             * 
+             */
             if (isDepositMode()){
+                //set deposit amount and go to screen where we'll tell user to start deposit process
+                //at this screen the user will be prompted at the terminal for a swipe
                 setDepositSettings();
             }
             if (isCCAuthMode()){
+                //If authorizing CC, we will just be doing an auth for the stay, cc/authorize will also attach
+                //the card to the staycard
                 setCCAuthSettings();
             }
             var sixPay = isSixpay();
             console.log('sixPay: '+sixPay);
+            //check if a Sixpay hotel or MLI
+            //then depending on the swipe configuration, initialize the device
             if (!sixPay){//mli
+                //socket = Sankyo
                 if (swipeFromSocket()){
                     console.log('init websocket swipe');
                     initWsSwipe();
                 }
+                //ingenico / infinea
                 if (readLocally()){
                     console.log('init local (ingenico/infinea) swipe');
                     console.info('reading locally');
                     setTimeout(function() {
+                        //starts the Ipad Cordova Ingenico/Infinea Reader
                         startLocalCardReader();
                     }, 800);
                 }

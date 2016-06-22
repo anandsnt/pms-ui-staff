@@ -50,6 +50,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 $scope.guest.firstName =$scope.guest.Name;
                 $scope.guest.Name ="";
                 $scope.headingText = 'ENTER_LAST';
+                $scope.callBlurEventForIpad();
             }else{
                 $scope.guest.lastName =$scope.guest.Name;
                 $scope.guest.Name ="";
@@ -58,6 +59,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 //this needs to reset..the above code needs to be changed in future
                 //seems confusing
                 $scope.guest.firstNameEntered = false;
+                $scope.callBlurEventForIpad();
             };
         };
         $scope.removeGuest = function(index){
