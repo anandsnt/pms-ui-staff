@@ -138,6 +138,14 @@ var UnassignedRoomPanel = React.createClass({
         this.props.iscroll.unassignedList = null;
     },
 
+    componentWillReceiveProps: function(nextProps) {
+        if ( nextProps.edit.active || (nextProps.edit.passive && nextProps.unassignedRoomList.selectedReservations.length) ) {
+            this.setState({
+                selectedIndex: null
+            });
+        }
+    },
+
     render: function() {
         var self = this;
 
