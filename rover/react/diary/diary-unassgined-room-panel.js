@@ -8,7 +8,7 @@ var UnassignedRoomPanel = React.createClass({
         });
     },
 
-    __getTimeDiff: function(arrivalDate, arrivalTime, departureDate, departureTime, name) {
+    __getTimeDiff: function(arrivalDate, arrivalTime, departureDate, departureTime) {
         var arrival = {},
             departure = {},
             dateParts,
@@ -18,12 +18,21 @@ var UnassignedRoomPanel = React.createClass({
             difference,
             fraction;
 
+        var arrivalTimeFix, departureTimeFix;
+        if ( ! arrivalTime || ! departureTime ) {
+            arrivalTimeFix = "00:00";
+            departureTimeFix = "04:00";
+        } else {
+            arrivalTimeFix = arrivalTime;
+            departureTimeFix = departureTime;
+        }
+
         dateParts = arrivalDate.split('-');
         arrival.year = parseInt( dateParts[0] );
         arrival.month = parseInt( dateParts[1] ) - 1;
         arrival.date = parseInt( dateParts[2] );
         /**/
-        timeParts = arrivalTime.split(':');
+        timeParts = arrivalTimeFix.split(':');
         arrival.hour = parseInt( timeParts[0]);
         arrival.mins = parseInt( timeParts[1]);
 
@@ -32,7 +41,7 @@ var UnassignedRoomPanel = React.createClass({
         departure.month = parseInt( dateParts[1] ) - 1;
         departure.date = parseInt( dateParts[2] );
         /**/
-        timeParts = departureTime.split(':');
+        timeParts = departureTimeFix.split(':');
         departure.hour = parseInt( timeParts[0] );
         departure.mins = parseInt( timeParts[1] );
 
@@ -129,6 +138,14 @@ var UnassignedRoomPanel = React.createClass({
         this.props.iscroll.unassignedList = null;
     },
 
+    componentWillReceiveProps: function(nextProps) {
+        if ( nextProps.edit.active || (nextProps.edit.passive && nextProps.unassignedRoomList.selectedReservations.length) ) {
+            this.setState({
+                selectedIndex: null
+            });
+        }
+    },
+
     render: function() {
         var self = this;
 
@@ -166,7 +183,7 @@ var UnassignedRoomPanel = React.createClass({
                                 },
                                 React.DOM.span({
                                     className: 'duration'
-                                }, self.__getTimeDiff(room.arrival_date, room.arrival_time, room.departure_date, room.departure_time, room.primary_guest).hhs ),
+                                }, self.__getTimeDiff(room.arrival_date, room.arrival_time, room.departure_date, room.departure_time).hhs ),
                                 React.DOM.span({
                                     className: 'eta'
                                 }, room.arrival_time)
