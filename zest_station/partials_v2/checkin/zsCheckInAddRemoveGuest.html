@@ -17,9 +17,9 @@
         <h3>{{subHeadingText |translate}}</h3>
         <form class="form" click-touch='resetTime()'>
             <div class="entry input">
-                <input type="{{inputType}}" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')"
+                <input type="{{inputType}}" ng-focus="showOnScreenKeyboard('add-guest-name')" click-touch="showOnScreenKeyboard('add-guest-name')"
                        class="start-focused" ng-keydown="resetTime()" ng-model='guest.Name' placeholder="{{inputTextPlaceholder}}"
-                       enter-press="firstNameEntered()" value="" touch-press />
+                       enter-press="firstNameEntered()" value="" id="add-guest-name" touch-press />
             </div>
             <div class="entry action">
                 <button type="button" class="button" touch-press='NameEntered()' ng-class="{'overlay': input.inputTextValue.length < 1}">{{'NEXT_BTN' |translate}}</button>
