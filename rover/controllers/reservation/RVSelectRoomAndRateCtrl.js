@@ -193,9 +193,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if (!!$scope.stateCheck.preferredType) {
 					payLoad['room_type_id'] = $scope.stateCheck.preferredType;
 				}
-				if (forRate) {
-					payLoad['rate_id'] = forRate;
-				}
+				//CICO-30723 - no need to pass rate id
+				//payLoad['rate_id'] = forRate;
 
 				$scope.callAPI(RVRoomRatesSrv.fetchRoomTypeADRs, {
 					params: payLoad,
@@ -1780,6 +1779,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						var isMember = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member) ? !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member : false;
 						var isPromotion = ($scope.stateCheck.activeView == 'RECOMMENDED' && !proccesedRestrictions.isPromoInvalid && _.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1) ? !proccesedRestrictions.isPromoInvalid && _.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1 : false;
 
+						var restrictionsLength = (typeof rate.restrictions!=="undefined") ? rate.restrictions.length : 0;
 
 						var rateInfo = {
 							id: rate.id,
@@ -1788,7 +1788,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							dates: angular.copy(datesInitial),
 							totalAmount: 0.0,
 							restriction: rate.restrictions,
-							numRestrictions: rate.restrictions.length,
+							numRestrictions: restrictionsLength,
 							forRoomType: rate.room_type_id,
 							buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id, room.availability),
 							showDays: false,
