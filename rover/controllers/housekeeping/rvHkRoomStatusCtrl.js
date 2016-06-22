@@ -1286,7 +1286,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					$rooms.style.WebkitTransition = addTransition;
 					$rooms.style.webkitTransform  = translateZero;
 
-					$rooms.removeEventListener(touchMoveHandler);
+					$rooms.removeEventListener('touchmove', touchMoveHandler);
 				};
 
 				var resetIndicators = function() {
@@ -1299,7 +1299,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					$load.style.WebkitTransition = addTransition;
 					$load.style.webkitTransform  = translateZero;
 
-					$rooms.removeEventListener(touchMoveHandler);
+					$rooms.removeEventListener('touchmove', touchMoveHandler);
 
 					$timeout(function() {
 						$refresh.classList.remove('show');
@@ -1381,9 +1381,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			// remove the DOM binds when this scope is distroyed
 			ngScope.$on('$destroy', function() {
-				!!$rooms.length && $rooms.removeEventListener('touchstart');
-				!!$rooms.length && $rooms.removeEventListener('touchend');
-				!!$rooms.length && $rooms.removeEventListener('touchcancel');
+				!!$rooms.length && $rooms.removeEventListener('touchstart', touchStartHandler);
+				!!$rooms.length && $rooms.removeEventListener('touchend', touchEndHandler);
+				!!$rooms.length && $rooms.removeEventListener('touchcancel', touchEndHandler);
 			});
 		};
 
