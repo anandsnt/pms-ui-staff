@@ -942,6 +942,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }
             check();
 
+            // THE BELOW CODE IS SHIT!
             // if (typeof index === 'undefined') {
             //     // TO HANDLE OVERRIDE ALL SCENARIO
             //     _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
