@@ -404,7 +404,18 @@
      "PICKUP_KEY_FAIL_RESERVATION" : "Pickup Key Fail, Reservation Error",
      "SERVICE_FAILURE" : " : Service Failure, Restart Service",
      "PICKUP_KEY_FAIL_EMPTY" : "Pickup Key Fail, Empty Key Dispenser",
-     "CHECKOUT_PRINT_FAILED" : "Check-Out Print Fail"
+     "CHECKOUT_PRINT_FAILED" : "Check-Out Print Fail",
+
+    "CHECKIN_COMPLETED_HEADER" : "Thanks for living @ Zoku",
+    "CHECKIN_DONE_BTN" :  "Done",
+    "PRINT_SUCCESS_AND_KEY_SUCCESS" :"Your registration has been printed below.",
+    "PRINT_FAILED_AND_KEY_SUCCESS" : "",
+    "PRINT_SUCCESS_AND_KEY_FAILED" :"",
+    "PRINT_FAILED_AND_KEY_FAILED" : "",
+    "EMAIL_SUCCESS_AND_KEY_SUCCESS" : "",
+    "EMAIL_FAILED_AND_KEY_SUCCESS" : "",
+    "EMAIL_SUCCESS_AND_KEY_FAILED" : "",
+    "EMAIL_FAILED_AND_KEY_FAILED" : ""
 
 
 }
