@@ -193,7 +193,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if (!!$scope.stateCheck.preferredType) {
 					payLoad['room_type_id'] = $scope.stateCheck.preferredType;
 				}
-
+				//CICO-30723 - no need to pass rate id
 				//payLoad['rate_id'] = forRate;
 
 				$scope.callAPI(RVRoomRatesSrv.fetchRoomTypeADRs, {
