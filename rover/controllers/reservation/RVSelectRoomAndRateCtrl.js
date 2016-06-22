@@ -193,16 +193,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if (!!$scope.stateCheck.preferredType) {
 					payLoad['room_type_id'] = $scope.stateCheck.preferredType;
 				}
-				// if (forRate) {
-				// 	//To fix issue when clicks on each rate in recommended or rate tab - issue only for custom group
-				// 	//No need to pass these values along with rate id
-				// 	//CICO-30723
-				// 	// if(typeof forRate !== "string"){
-				// 	// 	payLoad['rate_id'] = forRate;
-				// 	// }
 
-
-				// }
+				//payLoad['rate_id'] = forRate;
 
 				$scope.callAPI(RVRoomRatesSrv.fetchRoomTypeADRs, {
 					params: payLoad,
