@@ -488,6 +488,7 @@ angular.module('sntRover')
 			open: false,
 			data: [],
 			dragData: {},
+			selectedReservations: $scope.selectedReservations,
 			reset: function() {
 				if ( this.open ) {
 					this.data = [];
