@@ -129,7 +129,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	title: 'External verification'
 	 }).state('externalVerificationError', {
 	 	url: '/verificationError',
-	 	templateUrl: '/assets/checkin/partials/Row_nyc/externalVerificationError.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/externalVerificationError.html',
 	 	controller:'verificationErrorController',
 	 	title: 'External verification Error'
 	 });
