@@ -927,17 +927,32 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             $scope.errorMessage = [];
 
-            if (typeof index === 'undefined') {
-                // TO HANDLE OVERRIDE ALL SCENARIO
-                _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
-                    postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
-                    promises.push(RVReservationSummarySrv.updateReservation(postData));
-                });
-            } else {
-                postData.reservationId = reservationId;
-                promises.push(RVReservationSummarySrv.updateReservation(postData));
+            console.log( $scope.reservationData.reservationId );
+            var check = function() {
+                if ( ! $scope.reservationData.reservationId ) {
+                    setTimeout(check, 100);
+                } else {
+                    _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                        postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
+                        promises.push(RVReservationSummarySrv.updateReservation(postData));
+                    });
+
+                    $q.all(promises).then(updateSuccess, updateFailure);
+                }
             }
-            $q.all(promises).then(updateSuccess, updateFailure);
+            check();
+
+            // if (typeof index === 'undefined') {
+            //     // TO HANDLE OVERRIDE ALL SCENARIO
+            //     _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+            //         postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
+            //         promises.push(RVReservationSummarySrv.updateReservation(postData));
+            //     });
+            // } else {
+            //     postData.reservationId = reservationId;
+            //     promises.push(RVReservationSummarySrv.updateReservation(postData));
+            // }
+            // $q.all(promises).then(updateSuccess, updateFailure);
         };
 
         $scope.onPayDepositLater = function(){
