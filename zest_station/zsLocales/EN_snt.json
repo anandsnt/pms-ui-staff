@@ -417,7 +417,7 @@
     "EMAIL_SUCCESS_AND_KEY_FAILED" : "",
     "EMAIL_FAILED_AND_KEY_FAILED" : "",
 
-   "MAKE_KEY_TEXT_TWO": "Make Key",
-   "MAKE_KEY_TEXT_ONE": "Make Key 2"
+   "MAKE_KEY_TEXT_TWO": "Make Key 2",
+   "MAKE_KEY_TEXT_ONE": "Make Key"
 
 }
