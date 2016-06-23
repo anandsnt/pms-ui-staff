@@ -4,27 +4,27 @@
         <li>Today
         	<span class="value" ng-show="escapeNull(statistics.adr.today)!==''">
         		{{currencySymbol}}{{statistics.adr.today | round}}
-        	</span>       	
+        	</span>
         </li>
         <li>{{tomorrow|date:monthAndDate}}
         	<span class="value" ng-show="escapeNull(statistics.adr.tomorrow)!==''">
         		{{currencySymbol}}{{statistics.adr.tomorrow | round}}
-        	</span>        	
+        	</span>
         </li>
         <li>{{dayAfterTomorrow|date:monthAndDate}}
         	<span class="value" ng-show="escapeNull(statistics.adr.day_after_tomorrow)!==''">
         		{{currencySymbol}}{{statistics.adr.day_after_tomorrow | round}}
-        	</span>      	
+        	</span>
         </li>
         <li>{{userInfo.business_date|date:fullMonth}}
         	<span class="value" ng-show="escapeNull(statistics.adr.current_month)!==''">
         		{{currencySymbol}}{{statistics.adr.current_month | round}}
-        	</span>       	
+        	</span>
         </li>
         <li>{{userInfo.business_date|date:fullYear}}
-        	<span class="value" ng-show="escapeNull(statisticsData.adr.current_year)!==''">
+        	<span class="value" ng-show="escapeNull(statistics.adr.current_year)!==''">
         		{{currencySymbol}}{{statistics.adr.current_year | round}}
-        	</span>         	
+        	</span>
         </li>
     </ul>
 </div>
