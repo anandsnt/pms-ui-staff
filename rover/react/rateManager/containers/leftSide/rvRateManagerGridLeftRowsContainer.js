@@ -44,7 +44,7 @@ let getNextPageButtonText = (mode, paginationStateData) => {
         case RM_RX_CONST.RATE_VIEW_MODE:
         	if (Math.ceil(paginationStateData.totalRows / paginationStateData.perPage) === paginationStateData.page + 1) {
 				// In case of navigation to last page; show remaining 
-				nextPageButtonText += " " + paginationStateData.totalRows % paginationStateData.perPage + " RATES";
+                nextPageButtonText += " " + paginationStateData.totalRows - (paginationStateData.perPage * paginationStateData.page) + " RATES";
 			} else {
            		nextPageButtonText += " " + paginationStateData.perPage + " RATES";
            	}
