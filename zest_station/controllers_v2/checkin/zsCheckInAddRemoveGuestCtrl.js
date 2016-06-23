@@ -62,23 +62,64 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 $scope.callBlurEventForIpad();
             };
         };
-        $scope.removeGuest = function(index){
-            $scope.selectedReservation.guest_details.splice(index, 1);
-            var guestDetails = {'accompanying_guests_details':$scope.selectedReservation.guest_details, 'reservation_id':$scope.selectedReservation.id};
-            zsCheckinSrv.updateGuestTabDetails(guestDetails);
+        $scope.removeGuest = function(toDeleteId){
+            //for API
+            var accompanyingGuestData = angular.copy($scope.selectedReservation.guest_details);
+            accompanyingGuestData = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
+                return guest.is_primary === true;
+            })));
+
+            var toDeleteItem = _.find(accompanyingGuestData, function(guest) {
+                return guest.id === toDeleteId;
+            });
+            toDeleteItem.last_name = null;
+            toDeleteItem.first_name = null;
+
+            // accompanyingGuestData[index].last_name = null;
+            // accompanyingGuestData[index].first_name = null;
+            var guestDetails = {'accompanying_guests_details':accompanyingGuestData, 'reservation_id':$scope.selectedReservation.id};
+
+            var onSuccessResponse = function(response){
+                $scope.selectedReservation.guest_details = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
+                     return guest.id === toDeleteId;
+                })));
+            };
+            var onFailureResponse = function(response){
+                //do nothing for now..i don't know what to be done in that case
+            };
+            $scope.callAPI(zsCheckinSrv.updateGuestTabDetails, {
+                params: guestDetails,
+                'successCallBack': onSuccessResponse,
+                'failureCallBack': onFailureResponse
+            });
         };
         var updateGuestDetails = function(){
-            //push changes up to the reservation immediately
-            $scope.selectedReservation.guest_details.push({
+          
+            var accompanyingGuestData = angular.copy($scope.selectedReservation.guest_details);
+            accompanyingGuestData = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
+                return guest.is_primary === true;
+            })));
+            accompanyingGuestData.push({
                 last_name: $scope.guest.lastName,
                 first_name: $scope.guest.firstName
             });
-            var accompanyingGuestData = angular.copy($scope.selectedReservation.guest_details);
-            accompanyingGuestData = _.without(accompanyingGuestData, _.findWhere(accompanyingGuestData, _.find(accompanyingGuestData, function(guest) {
-                return guest.is_primary === true;
-            })));
             var guestDetails = {'accompanying_guests_details':accompanyingGuestData, 'reservation_id':$scope.selectedReservation.id};
-            zsCheckinSrv.updateGuestTabDetails(guestDetails);
+            var onSuccessResponse = function(response){
+                  //push changes up to the reservation immediately
+                $scope.selectedReservation.guest_details.push({
+                    last_name: $scope.guest.lastName,
+                    first_name: $scope.guest.firstName,
+                    id:response[response.length-1]
+                });
+            };
+            var onFailureResponse = function(response){
+                //do nothing for now..i don't know what to be done in that case
+            };
+            $scope.callAPI(zsCheckinSrv.updateGuestTabDetails, {
+                params: guestDetails,
+                'successCallBack': onSuccessResponse,
+                'failureCallBack': onFailureResponse
+            });
         };
 
         $scope.goToNext = function(){
