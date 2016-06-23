@@ -160,8 +160,13 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
 
         };
     //Invoke the api only when the statistic block is opened
+    var requestParams = {
+      'show_adr' : true,
+      'show_upsell' : true,
+      'show_rate_of_day' : true
+    };
     if($scope.isStatisticsOpened) {
-      $scope.invokeApi(RVDashboardSrv.fetchStatisticData,{},onStatisticsFetchSuccess,onStatisticsFetchFailure);
+      $scope.invokeApi(RVDashboardSrv.fetchStatisticData,requestParams,onStatisticsFetchSuccess,onStatisticsFetchFailure);
     } else {
       $timeout(function() {
         $scope.refreshScroller('dashboard_scroller');

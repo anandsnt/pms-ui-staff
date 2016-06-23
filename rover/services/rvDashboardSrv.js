@@ -63,11 +63,11 @@ angular.module('sntRover').service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBa
 		return deferred.promise;
 	};
 
-	this.fetchStatisticData = function(){
+	this.fetchStatisticData = function(params){
 	    var deferred = $q.defer();
 
 		var url = '/api/dashboards/statistics';
-		rvBaseWebSrvV2.getJSON(url).then(function(data) {
+		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
