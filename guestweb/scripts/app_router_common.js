@@ -34,8 +34,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
         controller: 'checkOutBalanceController',
        	templateUrl: '/assets/common_templates/partials/checkout/gwBill.html',
 	    title: 'Balance - Check-out Now'
-    })
-    .state('checkOutStatus', {
+    }).state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
        	templateUrl: '/assets/common_templates/partials/checkout/gwCheckoutfinal.html',
@@ -112,7 +111,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/common_templates/partials/checkin/gwPreCheckinFinal.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
-	 });
+	 }).state('checkinCcVerification', {
+		url: '/checkinCcVerification',
+		templateUrl: '/assets/common_templates/partials/checkin/gwCheckinCCAddition.html',
+		controller: 'checkinCcVerificationController',
+		title: 'CC verification'
+	});
 
 	$stateProvider.state('earlyCheckinOptions', {
 	 	url: '/earlyCheckinOptions/:time/:charge/:id',
