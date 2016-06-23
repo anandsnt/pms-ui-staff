@@ -104,7 +104,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             } else {
                 if(params.travel_agent_id || params.company_id
                          || params.group_id || params.allotment_id
-                         || params.promotion_code || params.is_member == "true"){
+                         || params.promotion_code || params.is_member == "true" || defaultView === "RECOMMENDED"){
 
 
                     promises.push(service.fetchRateADRs(params, true).then(function(response) {
