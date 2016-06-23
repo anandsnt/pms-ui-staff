@@ -178,6 +178,9 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
 					dispenseKey();
 				}
+				else{
+					onGeneralFailureCase();
+				}
 			} else {
 				onGeneralFailureCase();
 			}
