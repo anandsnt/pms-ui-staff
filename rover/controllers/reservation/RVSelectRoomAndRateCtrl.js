@@ -1599,7 +1599,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		$scope.getLeastAvailability = function(roomId, rateId) {
 			var secondary;
-
+			var availabilityCount = 0;
 			if ($scope.stateCheck.activeView === 'ROOM_TYPE') {
 				var roomType = _.find($scope.display.roomFirstGrid, {
 					id: roomId
@@ -1620,8 +1620,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 			//CICO-30938 - fixing undefined issue in console
 			if(secondary !== undefined)
-				return _.min(_.pluck(_.toArray(secondary.dates), 'availability'));
-
+				availabilityCount = _.min(_.pluck(_.toArray(secondary.dates), 'availability'));
+			return availabilityCount;
 
 		};
 
