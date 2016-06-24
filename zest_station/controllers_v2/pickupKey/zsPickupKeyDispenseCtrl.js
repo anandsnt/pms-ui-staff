@@ -166,6 +166,9 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
 					dispenseKey();
 				}
+				else{
+					setFailureReason();
+				}
 			} else {
 				setFailureReason();
 			}
@@ -218,7 +221,13 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
                     } else {
                             //do nothing
                     }
-                    $scope.readyForUserToPressMakeKey = true;
+                    if($scope.remoteEncoding){
+                    	$scope.readyForUserToPressMakeKey = true;
+                    }
+                    else{
+                    	startMakingKey();
+                    }
+                    
                         
 		};
                 $scope.onReadyToPrintKey = function(){

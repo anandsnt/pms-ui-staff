@@ -231,7 +231,14 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                     } else {
                             //do nothing
                     }
-                    $scope.readyForUserToPressMakeKey = true;
+                    if($scope.remoteEncoding){
+                    	$scope.readyForUserToPressMakeKey = true;
+                    }
+                    else{
+                    	startMakingKey();
+                    }
+                    
+
                         
 		};
                 $scope.onReadyToPrintKey = function(){
