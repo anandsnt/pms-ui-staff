@@ -68,7 +68,12 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             controller: 'RVfrontDeskDashboardController',
             resolve : {
                 statistics : function(RVDashboardSrv) {
-                    return RVDashboardSrv.fetchStatisticData();
+                    var requestParams = {
+                        'show_adr' : false,
+                        'show_upsell' : true,
+                        'show_rate_of_day' : false
+                    };
+                    return RVDashboardSrv.fetchStatisticData(requestParams);
                 }
             }
         });

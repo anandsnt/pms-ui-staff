@@ -1,4 +1,4 @@
-<div id="dashboard-rate-of-day" class="dashboard-block" ng-if="isStandAlone && !!statistics.rate_of_day">
+<div id="dashboard-rate-of-day" class="dashboard-block last" ng-if="isStandAlone && !!statistics.rate_of_day" >
     <h3>Rate of the Day</h3>
     <ul class="data">
         <li>
@@ -10,7 +10,7 @@
                 CLOSED
             </span>
             <!-- API response would have  statisticsData.rate_of_day.today as NULL if not configured -->
-            <span class="rate">{{(statisticsData.rate_of_day.today && statisticsData.rate_of_day.today.name) || '&#160;'}}</span>
+            <span class="rate">{{(statistics.rate_of_day.today && statistics.rate_of_day.today.name) || '&#160;'}}</span>
         </li>
         <li>
             <!-- API response would have  statisticsData.rate_of_day.tomorrow as NULL if not configured -->
