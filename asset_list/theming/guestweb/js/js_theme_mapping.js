@@ -63,7 +63,8 @@ module.exports = {
 			'guestweb_monte_carlo': [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte_carlo.js'],
 			'guestweb_sorella_kansas_city':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_Pasea':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_sobro':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_sobro':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_covington':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }
