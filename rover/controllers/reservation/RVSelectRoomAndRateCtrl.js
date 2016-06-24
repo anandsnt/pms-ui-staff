@@ -401,14 +401,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						},
 						rates = {};
 
-
-					// _.extend(roomTypeInfo.ratesArray[0].dates[$scope.reservationData.arrivalDate], {
-					// 	availability: roomType.availability
-					// });
-					_.extend(rateInfo.dates[$scope.reservationData.arrivalDate], {
+					roomTypeInfo.ratesArray.push(rateInfo);
+					_.extend(roomTypeInfo.ratesArray[0].dates[$scope.reservationData.arrivalDate], {
 						availability: roomType.availability
 					});
-					roomTypeInfo.ratesArray.push(rateInfo);
 					roomTypeInfo.defaultRate = roomTypeInfo.ratesArray[0];
 					$scope.display.roomFirstGrid.push(roomTypeInfo);
 				});
@@ -1731,7 +1727,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						   //restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
 						})
-						var datesInitial = RVReservationDataService.getDatesModel(ARRIVAL_DATE, DEPARTURE_DATE);
+
 						var proccesedRestrictions = processRestrictions( room.multiple_restrictions, rate.id),
 							roomInfo = {
 								id: room.id,
@@ -1739,15 +1735,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								availability: room.availability,
 								showDays: false,
 								adr: room.adr,
-								dates: angular.copy(datesInitial),
 								forRate: rate.id,
 								numRestrictions: proccesedRestrictions.restrictionCount || 0,
 								restriction: room.restrictions,
 								buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id, room.availability)
 							};
-						_.extend(roomInfo.dates[$scope.reservationData.arrivalDate], {
-							availability: room.availability
-						});
 						rate.rooms.push(roomInfo);
 						$timeout(function() {
 							if (!append) {
