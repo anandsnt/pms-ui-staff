@@ -1595,6 +1595,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		$scope.getLeastAvailability = function(roomId, rateId) {
 			var secondary;
+			var availabilityCount = 0;
 			if ($scope.stateCheck.activeView === 'ROOM_TYPE') {
 				var roomType = _.find($scope.display.roomFirstGrid, {
 					id: roomId
@@ -1603,14 +1604,21 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					id: rateId
 				});
 			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
+
 				var rate = _.find($scope.display.rateFirstGrid, {
 					id: rateId
 				});
+
 				secondary = _.find(rate.rooms, {
 					id: roomId
 				});
+
 			}
-			return _.min(_.pluck(_.toArray(secondary.dates), 'availability'));
+			//CICO-30938 - fixing undefined issue in console
+			if(secondary !== undefined)
+				availabilityCount = _.min(_.pluck(_.toArray(secondary.dates), 'availability'));
+			return availabilityCount;
+
 		};
 
 		$scope.getLeastHouseAvailability = function() {
@@ -1719,6 +1727,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						   //restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
 						})
+
 						var proccesedRestrictions = processRestrictions( room.multiple_restrictions, rate.id),
 							roomInfo = {
 								id: room.id,
