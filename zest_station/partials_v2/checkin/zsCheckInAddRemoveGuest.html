@@ -5,9 +5,9 @@
         <h1>{{addGuestsHeading |translate}}</h1>
         <ul id="selection" class="editable">
 
-            <li ng-repeat='guest in selectedReservation.guest_details track by $index' ng-hide='$index === 0'>
+            <li ng-repeat='guest in selectedReservation.guest_details track by $index' ng-hide='guest.is_primary'>
                 <span class="details">{{guest.last_name}}, {{guest.first_name}}</span>
-                <button type="button" class="button" click-touch='removeGuest($index)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>{{'REMOVE_BTN' |translate}}</button>
+                <button type="button" class="button" click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>{{'REMOVE_BTN' |translate}}</button>
             </li>
 
         </ul>
@@ -17,9 +17,9 @@
         <h3>{{subHeadingText |translate}}</h3>
         <form class="form" click-touch='resetTime()'>
             <div class="entry input">
-                <input type="{{inputType}}" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')"
+                <input type="{{inputType}}" ng-focus="showOnScreenKeyboard('add-guest-name')" click-touch="showOnScreenKeyboard('add-guest-name')"
                        class="start-focused" ng-keydown="resetTime()" ng-model='guest.Name' placeholder="{{inputTextPlaceholder}}"
-                       enter-press="firstNameEntered()" value="" touch-press />
+                       enter-press="firstNameEntered()" value="" id="add-guest-name" touch-press />
             </div>
             <div class="entry action">
                 <button type="button" class="button" touch-press='NameEntered()' ng-class="{'overlay': input.inputTextValue.length < 1}">{{'NEXT_BTN' |translate}}</button>

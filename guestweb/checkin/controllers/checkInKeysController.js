@@ -9,6 +9,11 @@
 
 	$scope.pageValid = false;
 	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" :$rootScope.userEmail;
+	//CICO-30872 ..this need to be done in a better way when doing octopus
+	//now the variable names are confusing
+	//this has to be set to false as the CC page is expecting that variable to do
+	//checkin now or later
+	$rootScope.isAutoCheckinOn = false;
 	// if prompt for cc is turned on
 	// we will always ask for CC addition in case of MLI
 	if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb ){

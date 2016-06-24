@@ -38,13 +38,17 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 		var focuInputField = function(elementId){
 			$timeout(function(){
-				document.getElementById(elementId).focus();
+				if(!$scope.isIpad){
+					document.getElementById(elementId).focus();
+				}
+				else{
+					$scope.callBlurEventForIpad();
+				}
 			}, 300); 
 			
 		};
 		
 		var setupSeperatorBetweenOptions = function() {
-			
 			//show/hide seperator between departure date and no of nights
 			$scope.showOrBetweenDateAndNoOfNights = $scope.zestStationData.checkin_screen.authentication_settings.departure_date &&
 				($scope.zestStationData.checkin_screen.authentication_settings.number_of_nights ||
@@ -65,28 +69,34 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		$scope.findByDate = function() {
 			$scope.mode = 'FIND_BY_DATE';
 			focuInputField("departure-date");
+			$scope.resetTime();
 		};
 		$scope.findByNoOfNights = function() {
 			$scope.mode = 'NO_OF_NIGHTS_MODE';
 			focuInputField("no-of-nights");
+			$scope.resetTime();
 		};
 		$scope.findByEmail = function() {
 			$scope.mode = "EMAIL_ENTRY_MODE";
 			focuInputField("guest-email");
+			$scope.resetTime();
 		};
 		$scope.findByConfirmation = function() {
 			$scope.mode = 'CONFIRM_NO_MODE';
 			focuInputField("conf-number");
+			$scope.resetTime();
 		};
 
 		$scope.showDatePicker = function() {
 			$scope.showDatePick = !$scope.showDatePick;
+			$scope.resetTime();
 		};
 
 		var searchReservation = function(params) {
 			var checkinVerificationSuccess = function(data) {
 				if (data.results.length == 0) {
 					$scope.mode = 'NO_MATCH';
+					$scope.callBlurEventForIpad();
 				} else if (data.results.length == 1) {
 					zsCheckinSrv.setSelectedCheckInReservation(data.results);
 					var primaryGuest = _.find(data.results[0].guest_details, function(guest_detail) {
@@ -106,6 +116,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			};
 			var checkinVerificationCallBack = function() {
 				$scope.mode = 'NO_MATCH';
+				$scope.callBlurEventForIpad();
 			};
 			if ($scope.zestStationData.kiosk_validate_first_name) {
 				params.first_name = $scope.reservationParams.first_name;
@@ -144,6 +155,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				delete params.alt_confirmation_number;
 				delete params.email;
 				delete params.no_of_nights;
+				params.dep_date = angular.copy(params.date);
+				delete params.date;
 			} else {
 				params = params;
 			}
@@ -170,8 +183,10 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 					focuInputField("first-name");
 				} else {
 					$scope.mode = $scope.reservationParams.last_name.length > 0 ? "CHOOSE_OPTIONS" : $scope.mode;
+					$scope.callBlurEventForIpad();
 				}
 			};
+			$scope.resetTime();
 		};
 
 		$scope.firstNameEntered = function() {
@@ -184,7 +199,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				searchReservation(SetUpSearchParams());
 			} else {
 				$scope.mode = $scope.reservationParams.first_name.length > 0 ? "CHOOSE_OPTIONS" : $scope.mode;
+				$scope.callBlurEventForIpad();
 			};
+			$scope.resetTime();
 		};
 
 		$scope.noOfNightsEntered = function() {
@@ -193,6 +210,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			delete params.email;
 			delete params.date;
 			searchReservation(params);
+			$scope.resetTime();
 		};
 
 		$scope.confNumberEntered = function() {
@@ -201,6 +219,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			delete params.email;
 			delete params.date;
 			searchReservation(params);
+			$scope.resetTime();
 		};
 		$scope.emailEntered = function() {
 			var params = angular.copy($scope.reservationParams);
@@ -208,6 +227,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			delete params.alt_confirmation_number;
 			delete params.date;
 			searchReservation(params);
+			$scope.resetTime();
 		};
 
 		$scope.dateEntered = function() {
@@ -215,7 +235,10 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			delete params.no_of_nights;
 			delete params.alt_confirmation_number;
 			delete params.email;
+			params.dep_date = angular.copy(params.date);
+			delete params.date;
 			searchReservation(params);
+			$scope.resetTime();
 		};
 
 		$scope.showDatePicker = function() {

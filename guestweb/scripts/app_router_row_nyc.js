@@ -4,6 +4,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $urlRouterProvider.otherwise("/noOptionAvailable");
 
+
     // checkout now states
 
 	$stateProvider.state('checkoutBalance', {
@@ -114,6 +115,11 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/checkin/partials/Row_nyc/lateArrivalDetails.html',
 	 	controller : 'checkinArrivalDetailsController',
 	    title: 'Early Check-in'
+	 }).state('depositPayment', {
+	 	url: '/depositPayment',
+	 	templateUrl: '/assets/checkin/partials/Row_nyc/gwDepositPayment.html',
+	 	controller : 'checkinDepositPaymentController',
+	    title: 'Pay Deposit'
 	 });
 
 	 $stateProvider.state('externalVerification', {
@@ -134,5 +140,17 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Feature not available'
 	});
+
+ 	$stateProvider.state('externalCheckinVerification', {
+		url: '/externalCheckinVerification',
+		templateUrl: '/assets/checkin/partials/Row_nyc/gwExternalCheckin.html',
+		controller: 'externalCheckinVerificationViewController',
+		title: 'External Check in verification'
+	}).state('guestCheckinTurnedOff',{
+	 	url: '/guestCheckinTurnedOff',
+	 	templateUrl: '/assets/checkin/partials/Row_nyc/gwExternalCheckInTurnedOff.html',
+	 	title: 'Check-in'
+	 });
+
 	 
 }]);

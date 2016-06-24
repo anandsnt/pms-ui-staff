@@ -22,7 +22,12 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
 		var focuInputField = function(elementId){
 			$timeout(function(){
-				document.getElementById(elementId).focus();
+				if(!$scope.isIpad){
+					document.getElementById(elementId).focus();
+				}
+				else{
+					$scope.callBlurEventForIpad();
+				}
 			}, 300); 
 			
 		};
@@ -83,6 +88,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			};
 			var checkoutVerificationCallBack = function() {
 				$scope.mode = 'NO_MATCH';
+				$scope.callBlurEventForIpad();
 			};
 			var params = {
 				"last_name": $scope.reservationParams.last_name,
@@ -98,6 +104,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
 		var roomNumberEntered = false;
 		$scope.lastNameEntered = function() {
+
 			//if room is already entered, no need to enter again
 			if ($scope.reservationParams.room_no.length > 0 && roomNumberEntered) {
 				searchReservation();
@@ -110,11 +117,13 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 					return;
 				} ;
 			};
+			$scope.resetTime();
 		};
 
 		$scope.roomNumberEntered = function() {
 			roomNumberEntered = true;
 			($scope.reservationParams.room_no.length > 0) ? searchReservation(): "";
+			$scope.resetTime();
 		};
 
 		$scope.reEnterText = function(type) {

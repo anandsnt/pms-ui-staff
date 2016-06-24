@@ -1,4 +1,4 @@
-<div id="dashboard-rooms" class="dashboard-block buttons" ng-controller="rvDashboardRoomsWidgetController">
+<div id="dashboard-rooms" class="dashboard-block with-actions" ng-controller="rvDashboardRoomsWidgetController">
     <h3>Rooms</h3>
     <ul class="actions">
         <li><a class="button blue" ng-click="clickedOnRoomButton($event, 'OCCUPIED')"><strong>{{statisticsData.rooms.occupied}}</strong> Occupied Rooms</a></li>
@@ -7,9 +7,9 @@
         <li><a class="button grey" ng-click="clickedOnRoomButton($event, 'OUTOFORDER_OR_SERVICE')"><strong>{{statisticsData.rooms.out_of_order}}</strong> Out of Order/Service</a></li>
     </ul>
     <ul class="data">
-        <li click-touch="clickedOnRoomButton($event, 'OCCUPIED')">Occupied Rooms <strong class="blue">{{statisticsData.rooms.occupied}}</strong></li>
-        <li click-touch="clickedOnRoomButton($event, 'VACANT_READY')">Vacant (Ready) <strong class="green">{{statisticsData.rooms.vacant_ready}}</strong></li>
-        <li click-touch="clickedOnRoomButton($event, 'VACANT_NOT_READY')">Vacant (Not Ready) <strong class="red">{{statisticsData.rooms.vacant_not_ready}}</strong></li>
-        <li click-touch="clickedOnRoomButton($event, 'OUTOFORDER_OR_SERVICE')">Out of Order/Service <strong class="grey">{{statisticsData.rooms.out_of_order}}</strong></li>
+        <li click-touch="clickedOnRoomButton($event, 'OCCUPIED')">Occupied Rooms <strong class="value blue">{{statisticsData.rooms.occupied}}</strong></li>
+        <li click-touch="clickedOnRoomButton($event, 'VACANT_READY')">Vacant (Ready) <strong class="value green">{{statisticsData.rooms.vacant_ready}}</strong></li>
+        <li click-touch="clickedOnRoomButton($event, 'VACANT_NOT_READY')">Vacant (Not Ready) <strong class="value red">{{statisticsData.rooms.vacant_not_ready}}</strong></li>
+        <li click-touch="clickedOnRoomButton($event, 'OUTOFORDER_OR_SERVICE')">Out of Order/Service <strong class="value grey">{{statisticsData.rooms.out_of_order}}</strong></li>
     </ul>
 </div>

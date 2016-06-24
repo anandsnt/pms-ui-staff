@@ -71,7 +71,12 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			};
 
 			var printFailedActions = function() {
-				$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_PRINT_FAIL');
+				if($stateParams.key_success === "true"){
+					$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_PRINT_FAIL');
+				}
+				else{
+					$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL_PRINT_FAIL');
+				};
 				$scope.zestStationData.workstationStatus = 'out-of-order';
 				var printopted = true;
 				var emailopted = false;
@@ -209,6 +214,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		var updateGuestEmail = function() {
 			var updateComplete = function(response) {
 				$scope.mode = "EMAIL_SEND_MODE";
+				$scope.callBlurEventForIpad();
 				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			};
 			/**
@@ -245,6 +251,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				updateGuestEmail();
 			} else {
 				$scope.mode = "EMAIL_INVLAID_MODE";
+				$scope.callBlurEventForIpad();
 			};
 		};
 

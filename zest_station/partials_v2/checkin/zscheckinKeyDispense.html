@@ -22,13 +22,13 @@
     <div id="content">
         <h1 translate>MAKE_KEY</h1>
         <h2 translate>MAKE_KEY_MSG</h2>
-         <div id="keys" ng-hide="!remoteEncoding || icmp">
+         <div id="keys" ng-hide="remoteEncoding || icmp">
             <div ng-include="icons.url.createkey"></div>
         </div>
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
-        <button ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_ONE' |translate}} </button>
+        <button ng-show="remoteEncoding" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_ONE' |translate}} </button>
     </div>
 </section>
 
@@ -37,13 +37,13 @@
     <div id="content">
         <h1 translate>MAKE_FIRST_KEY</h1>
         <h2 translate>MAKE_FIRST_KEY_SUB</h2>
-        <div id="keys" ng-hide="!remoteEncoding || icmp">
+        <div id="keys" ng-hide="remoteEncoding || icmp">
             <div ng-include="icons.url.createkey"></div>
         </div>
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
-        <button ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_ONE' |translate}} </button>
+        <button  ng-show="remoteEncoding" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_ONE' |translate}} </button>
     </div>
 </section>
 
@@ -58,7 +58,7 @@
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
-        <button ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_TWO' |translate}} </button>
+        <button ng-show="remoteEncoding" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_TWO' |translate}} </button>
     </div>
 </section>
 

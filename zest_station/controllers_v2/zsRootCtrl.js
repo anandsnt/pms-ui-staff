@@ -76,6 +76,18 @@ sntZestStation.controller('zsRootCtrl', [
 		});
 
 
+
+		$scope.callBlurEventForIpad = function(){
+			//need to check if its ipad here too as it 
+			//will be called from multiple areas
+			if($scope.isIpad){
+				document.activeElement.blur();
+    			$("input").blur();
+			}
+			else{
+				//do nothing
+			};
+		};
 		/**
 		 * to run angular digest loop,
 		 * will check if it is not running
@@ -278,6 +290,42 @@ sntZestStation.controller('zsRootCtrl', [
 		});
 
 
+                $scope.showKeyboardOnInput = function(){
+                    var frameBody = $("#booking_iframe").contents().find("body");
+                        frameBody.focus(function(){ 
+                            console.log('iframe focus')
+                        });
+                };
+                $scope.hideKeyboardIfUp = function(){
+                    var focused = $('#'+$scope.lastKeyboardId);
+                    if ($(focused)){
+                        if ($(focused).getkeyboard()){
+                            $(focused).getkeyboard().accept(true);
+                        }
+                    }
+                };
+                $scope.showOnScreenKeyboard = function(id) {
+                    $scope.lastKeyboardId = id;
+                   //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
+                    var isTouchDevice = 'ontouchstart' in document.documentElement,
+                        agentString = window.navigator.userAgent;
+                //console.log('theme: ',$scope.theme);
+                var themeUsesKeyboard = false;
+                if ($scope.theme === 'yotel' || !$scope.theme){
+                    themeUsesKeyboard = true;
+                }
+                //console.info('themeUsesKeyboard: ',themeUsesKeyboard)
+                    var shouldShowKeyboard = (typeof chrome) && 
+                            (agentString.toLowerCase().indexOf('window')!==-1) && 
+                            isTouchDevice && 
+                            $scope.inChromeApp && themeUsesKeyboard;
+                    console.info('shouldShowKeyboard: ',shouldShowKeyboard);
+                    if (shouldShowKeyboard){
+                         if (id){
+                             new initScreenKeyboardListener('station', id, true);
+                          }
+                     } 
+                };
 		/**
 		 * SVGs are ng-included inside HTML
 		 **/

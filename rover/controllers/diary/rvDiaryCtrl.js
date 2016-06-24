@@ -488,6 +488,7 @@ angular.module('sntRover')
 			open: false,
 			data: [],
 			dragData: {},
+			selectedReservations: $scope.selectedReservations,
 			reset: function() {
 				if ( this.open ) {
 					this.data = [];
@@ -542,6 +543,10 @@ angular.module('sntRover')
 					failureCallBack: 	failureCallBackOfAvailabilityFetching,
 					successCallBackParameters:  params
 				};
+
+				$scope.clearAvailability();
+				$scope.resetEdit();
+				$scope.renderGrid();
 
 				$scope.callAPI(rvDiarySrv.Availability, apiOptions);
 
