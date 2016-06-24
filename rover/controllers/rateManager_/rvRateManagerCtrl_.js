@@ -449,6 +449,12 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             'rate_ids[]': [rateID]
         };
 
+        //if they selected rate type from left filter
+        var rateTypeIDs = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRateTypes, "id");
+        if(rateTypeIDs.length) {
+            params['rate_type_ids[]'] = rateTypeIDs;
+        }
+
         var options = {
             params: params,
             onSuccess: onFetchGetSingleRateRowDetailsAndUpdateCachedDataModel,
