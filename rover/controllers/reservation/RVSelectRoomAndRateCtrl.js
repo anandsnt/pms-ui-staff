@@ -401,10 +401,14 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						},
 						rates = {};
 
-					roomTypeInfo.ratesArray.push(rateInfo);
-					_.extend(roomTypeInfo.ratesArray[0].dates[$scope.reservationData.arrivalDate], {
+
+					// _.extend(roomTypeInfo.ratesArray[0].dates[$scope.reservationData.arrivalDate], {
+					// 	availability: roomType.availability
+					// });
+					_.extend(rateInfo.dates[$scope.reservationData.arrivalDate], {
 						availability: roomType.availability
 					});
+					roomTypeInfo.ratesArray.push(rateInfo);
 					roomTypeInfo.defaultRate = roomTypeInfo.ratesArray[0];
 					$scope.display.roomFirstGrid.push(roomTypeInfo);
 				});
@@ -1595,6 +1599,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		$scope.getLeastAvailability = function(roomId, rateId) {
 			var secondary;
+
 			if ($scope.stateCheck.activeView === 'ROOM_TYPE') {
 				var roomType = _.find($scope.display.roomFirstGrid, {
 					id: roomId
@@ -1603,14 +1608,21 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					id: rateId
 				});
 			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
+
 				var rate = _.find($scope.display.rateFirstGrid, {
 					id: rateId
 				});
+
 				secondary = _.find(rate.rooms, {
 					id: roomId
 				});
+
 			}
-			return _.min(_.pluck(_.toArray(secondary.dates), 'availability'));
+			//CICO-30938 - fixing undefined issue in console
+			if(secondary !== undefined)
+				return _.min(_.pluck(_.toArray(secondary.dates), 'availability'));
+
+
 		};
 
 		$scope.getLeastHouseAvailability = function() {
@@ -1719,6 +1731,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						   //restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
 						})
+						var datesInitial = RVReservationDataService.getDatesModel(ARRIVAL_DATE, DEPARTURE_DATE);
 						var proccesedRestrictions = processRestrictions( room.multiple_restrictions, rate.id),
 							roomInfo = {
 								id: room.id,
@@ -1726,11 +1739,15 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								availability: room.availability,
 								showDays: false,
 								adr: room.adr,
+								dates: angular.copy(datesInitial),
 								forRate: rate.id,
 								numRestrictions: proccesedRestrictions.restrictionCount || 0,
 								restriction: room.restrictions,
 								buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id, room.availability)
 							};
+						_.extend(roomInfo.dates[$scope.reservationData.arrivalDate], {
+							availability: room.availability
+						});
 						rate.rooms.push(roomInfo);
 						$timeout(function() {
 							if (!append) {
