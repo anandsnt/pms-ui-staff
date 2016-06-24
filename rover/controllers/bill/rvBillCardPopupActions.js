@@ -178,4 +178,20 @@ sntRover.controller('rvBillCardPopupCtrl',
 	    $scope.chargecodeData.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
     };
 
+    // To show or hide charge code list
+    $scope.isShowChargeCodeList = function(){
+    	var isShowChargeCodeList = false,
+    		length = $scope.availableChargeCodes.length;
+
+    	if(length !== 0){
+			for(var i = 0; i < length; i++){
+			 	if($scope.availableChargeCodes[i].is_row_visible){
+			 		isShowChargeCodeList = true;
+			 		break;
+			 	}
+			}
+		}
+		return isShowChargeCodeList;
+	};
+
 }]);
