@@ -94,7 +94,7 @@
                 			<li click-touch="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
 								<div class="bill-toggle" ng-class="{'error': billTab.has_crossed_credit_limit}">
 									<div class="price" ng-show="isBalanceShown(billTab.is_rate_suppressed)">
-										<span translate>BILL #{{billTab.bill_numberbillTab.}}</span>
+										<span translate>BILL #{{billTab.bill_number}}</span>
 										{{currencySymbol}}{{billTab.total_amount | number: precisonZero}}
 									</div>
 									<div class="price" ng-show="!isBalanceShown(billTab.is_rate_suppressed)">
