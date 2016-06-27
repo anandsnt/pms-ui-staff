@@ -90,7 +90,12 @@ sntRover.controller('roverController',
     $rootScope.timeWithAMPM = "hh:mm a"; //01:00 AM
 
     // CICO-25098 - Flag to enable/disable the billing info code refactoring.
-    $rootScope.billingInfoRefactoringCodeEnabled = false;
+    $rootScope.UPDATED_BI_ENABLED_ON = {
+      'RESERVATION' : false,
+      'CARDS'       : false,
+      'ACCOUNTS'    : false,
+      'ALLOTMENT'   : false
+    };
 
     $rootScope.isCurrentUserChangingBussinessDate = false;
     $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;

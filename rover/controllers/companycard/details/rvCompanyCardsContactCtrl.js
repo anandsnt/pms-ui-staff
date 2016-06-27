@@ -46,7 +46,7 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
             	$scope.$emit('hideLoader');
-            	if($rootScope.billingInfoRefactoringCodeEnabled){
+            	if($rootScope.UPDATED_BI_ENABLED_ON['CARDS']){
             		console.log("##Billing-info updated version");
 				    ngDialog.open({
 				        template: '/assets/partials/billingInformation/cards/rvBillingInfoCardsMain.html',

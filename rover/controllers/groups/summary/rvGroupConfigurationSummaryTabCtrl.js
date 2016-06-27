@@ -760,13 +760,24 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
             	$scope.$emit('hideLoader');
-            	console.log("##Billing-info old version");
-			    ngDialog.open({
-			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
-			        controller: 'rvBillingInformationPopupCtrl',
-			        className: '',
-			        scope: $scope
-			    });
+            	if($rootScope.UPDATED_BI_ENABLED_ON['ACCOUNTS']){
+            		console.log("##Billing-info updated version");
+            		ngDialog.open({
+				        template: '/assets/partials/billingInformation/accounts/rvBillingInfoAccountsMain.html',
+						controller: 'rvBillingInfoAccountsMainCtrl',
+				        className: '',
+				        scope: $scope
+				    });
+            	}
+            	else{
+            		console.log("##Billing-info old version");
+				    ngDialog.open({
+				        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+				        controller: 'rvBillingInformationPopupCtrl',
+				        className: '',
+				        scope: $scope
+				    });
+				}
 			});
 		};
 

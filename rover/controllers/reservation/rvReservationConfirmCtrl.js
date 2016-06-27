@@ -545,7 +545,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
             	$scope.$emit('hideLoader'); 
-            	if($rootScope.billingInfoRefactoringCodeEnabled){
+            	if($rootScope.UPDATED_BI_ENABLED_ON['RESERVATION']){
             		console.log("##Billing-info updated version");
 				    ngDialog.open({
 				        template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
