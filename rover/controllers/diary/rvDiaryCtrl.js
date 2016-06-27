@@ -534,6 +534,14 @@ angular.module('sntRover')
 					apiOptions;
 
 				success = function(data, successParams) {
+					// CICO-24243: Set top filter values to selected reservation attributes
+					if (data.length) {
+						var rawData = data[0],
+							filters = $scope.gridProps.filter;
+
+            			filters.arrival_time = new Date(rawData.arrival).toTimeString().substring(0, 5);
+            			filters.room_type = _.findWhere(filters.room_types, { id: rawData.room_type_id });
+					}
 					successCallBackOfAvailabilityFetching(data, successParams, keepOpen);
 				};
 
