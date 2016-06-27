@@ -8,9 +8,9 @@ sntZestStation.controller('zsRoomErrorCtrl', [
 		BaseCtrl.call(this, $scope);
 		/**
 		 * when checking-in if room is not assigned or dirty, should show room error page
-                 * in future we may want to provide more options for room not available (ie. upgrade,etc.)
-                 * 
-                 * placeholder {first_name} in stateParams
+		 * in future we may want to provide more options for room not available (ie. upgrade,etc.)
+		 * 
+		 * placeholder {first_name} in stateParams
 		 */
 
 

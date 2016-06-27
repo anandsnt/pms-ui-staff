@@ -1,19 +1,19 @@
 sntZestStation.controller('zsReservationBillDetailsCtrl', [
     '$scope',
     '$state',
-    'zsCheckoutSrv', 'zsEventConstants', '$stateParams', 'zsModeConstants', '$window', '$timeout','zsUtilitySrv',
-    function($scope, $state, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout,zsUtilitySrv) {
+    'zsCheckoutSrv', 'zsEventConstants', '$stateParams', 'zsModeConstants', '$window', '$timeout', 'zsUtilitySrv',
+    function($scope, $state, zsCheckoutSrv, zsEventConstants, $stateParams, zsModeConstants, $window, $timeout, zsUtilitySrv) {
 
 
         /***********************************************************************************************
-        **      Please note that, not all the stateparams passed to this state will not be used in this state, 
-        **      however we will have to pass this so as to pass again to future states which will use these.
-        **
-        **      Expected state params -----> from, reservation_id,email, guest_detail_id, 
-        **      has_cc, first_name, last_name, days_of_stay, is_checked_out and hours_of_stay          
-        **      Exit functions -> checkOutSuccess                           
-        **                                                                       
-        ************************************************************************************************/
+         **      Please note that, not all the stateparams passed to this state will not be used in this state, 
+         **      however we will have to pass this so as to pass again to future states which will use these.
+         **
+         **      Expected state params -----> from, reservation_id,email, guest_detail_id, 
+         **      has_cc, first_name, last_name, days_of_stay, is_checked_out and hours_of_stay          
+         **      Exit functions -> checkOutSuccess                           
+         **                                                                       
+         ************************************************************************************************/
 
         /**
          * This controller is used to View bill
@@ -71,7 +71,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             });
 
             //scroller setup
-            setDisplayContentHeight();//utils function
+            setDisplayContentHeight(); //utils function
             refreshScroller();
         };
 
@@ -87,24 +87,28 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         };
 
 
-        var sendEmail = function(printopted,printYetToDone) {
-            
+        var sendEmail = function(printopted, printYetToDone) {
+
             var emailSendingSuccess = function(response) {
-                if(printYetToDone){
+                if (printYetToDone) {
                     $scope.stateParamsForNextState.email_sent = 'true';
-                    $scope.printOpted = true;//print mode
-                }
-                else{
-                    $state.go('zest_station.reservationCheckedOut',{'printopted':printopted,'email_sent':'true'});
+                    $scope.printOpted = true; //print mode
+                } else {
+                    $state.go('zest_station.reservationCheckedOut', {
+                        'printopted': printopted,
+                        'email_sent': 'true'
+                    });
                 }
             };
-            var emailSendingFailed = function(){
-                if(printYetToDone){
+            var emailSendingFailed = function() {
+                if (printYetToDone) {
                     $scope.stateParamsForNextState.email_failed = 'true';
-                    $scope.printOpted = true;//print mode
-                }
-                else{
-                    $state.go('zest_station.reservationCheckedOut',{'printopted':printopted,'email_failed':'true'});
+                    $scope.printOpted = true; //print mode
+                } else {
+                    $state.go('zest_station.reservationCheckedOut', {
+                        'printopted': printopted,
+                        'email_failed': 'true'
+                    });
                 }
             }
             var params = {
@@ -118,18 +122,18 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             };
             //check if email is valid
             //if invalid dont send mail
-            if(zsUtilitySrv.isValidEmail($stateParams.email)){
+            if (zsUtilitySrv.isValidEmail($stateParams.email)) {
                 $scope.callAPI(zsCheckoutSrv.sendBill, options);
-            }
-            else{
-                if(printYetToDone){
+            } else {
+                if (printYetToDone) {
                     $scope.printOpted = true;
-                }
-                else{
-                    $state.go('zest_station.reservationCheckedOut',{'printopted':printopted});
+                } else {
+                    $state.go('zest_station.reservationCheckedOut', {
+                        'printopted': printopted
+                    });
                 }
             };
-            
+
         };
 
 
@@ -142,7 +146,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 "is_kiosk": true
             };
             var checkOutSuccess = function() {
-                if($scope.zestStationData.keyCardInserted){
+                if ($scope.zestStationData.keyCardInserted) {
                     $scope.zestStationData.keyCaptureDone = true;
                     $scope.socketOperator.CaptureKeyCard();
                 };
@@ -158,22 +162,21 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     printopted = 'false';
                     printYetToDone = false;
                     //send mail and don't print
-                    sendEmail(printopted,printYetToDone);
+                    sendEmail(printopted, printYetToDone);
                 } else if (guest_bill.email && !guest_bill.print) {
                     //updat email turned on and print is off
                     $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
                 } else if (guest_bill.print) { //go to print nav
-                    if(!guest_bill.email){
+                    if (!guest_bill.email) {
                         //send mail and then print
                         printYetToDone = true;
-                        sendEmail(printopted,printYetToDone);
-                    }
-                    else{
+                        sendEmail(printopted, printYetToDone);
+                    } else {
                         //print first and then email
                         $scope.printOpted = true;
                     }
                 }
-                
+
             };
             var options = {
                 params: params,
@@ -238,10 +241,9 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
             //back button action
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-                 if($stateParams.from === 'searchByName'){
+                if ($stateParams.from === 'searchByName') {
                     $state.go('zest_station.checkOutReservationSearch');
-                 }
-                 else{
+                } else {
                     $state.go('zest_station.checkoutKeyCardLookUp');
                 };
             });

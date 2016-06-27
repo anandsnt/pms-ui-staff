@@ -9,10 +9,10 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 	function($scope, $state, zsEventConstants, zsModeConstants, $stateParams, $sce, zsCheckoutSrv, $timeout) {
 
 		/********************************************************************************
-		**		Expected state params -----> nothing			  
-		**		Exit function -> findReservationSuccess								
-		**																		 
-		*********************************************************************************/
+		 **		Expected state params -----> nothing			  
+		 **		Exit function -> findReservationSuccess								
+		 **																		 
+		 *********************************************************************************/
 
 
 		var init = function() {
@@ -53,11 +53,10 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		var findReservationSuccess = function(data) {
 			if (data.reservation_id === null) {
 				$scope.socketOperator.EjectKeyCard();
-			} 
-			else if(data.is_checked_out){
+			} else if (data.is_checked_out) {
 				$scope.zestStationData.keyCardInserted = true;
 				$scope.alreadyCheckedOut = true;
-			}else {
+			} else {
 				$scope.zestStationData.keyCardInserted = true;
 				var stateParams = {
 					"from": "keycard",
@@ -149,8 +148,8 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 		$scope.searchByName = function() {
 			$state.go('zest_station.checkOutReservationSearch');
 		};
-		
-		$scope.alreadyCheckedOutActions = function(){
+
+		$scope.alreadyCheckedOutActions = function() {
 			$scope.$emit('EJECT_KEYCARD');
 			$state.go('zest_station.home');
 		};

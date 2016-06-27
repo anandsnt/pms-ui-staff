@@ -6,7 +6,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 	'zsCheckoutSrv',
 	'$stateParams',
 	'$timeout',
-	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams,$timeout) {
+	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams, $timeout) {
 
 
 		//This controller is used for searching reservation using last name
@@ -20,16 +20,15 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		var focuInputField = function(elementId){
-			$timeout(function(){
-				if(!$scope.isIpad){
+		var focuInputField = function(elementId) {
+			$timeout(function() {
+				if (!$scope.isIpad) {
 					document.getElementById(elementId).focus();
-				}
-				else{
+				} else {
 					$scope.callBlurEventForIpad();
 				}
-			}, 300); 
-			
+			}, 300);
+
 		};
 
 		var init = function() {
@@ -54,17 +53,16 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		};
 		init();
 
-		$scope.alreadyCheckedOutActions = function(){
+		$scope.alreadyCheckedOutActions = function() {
 			$scope.$emit('EJECT_KEYCARD');
 			$state.go('zest_station.home');
 		};
 
 		var searchReservation = function() {
 			var checkoutVerificationSuccess = function(data) {
-				if(data.is_checked_out){
+				if (data.is_checked_out) {
 					$scope.alreadyCheckedOut = true;
-				}
-				else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY') {
+				} else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY') {
 					var stateParams = {
 						'reservation_id': data.reservation_id,
 						'room_no': $scope.reservationParams.room_no,
@@ -109,13 +107,12 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			if ($scope.reservationParams.room_no.length > 0 && roomNumberEntered) {
 				searchReservation();
 			} else {
-				if($scope.reservationParams.last_name.length > 0){
+				if ($scope.reservationParams.last_name.length > 0) {
 					$scope.mode = "ROOM_NUMBER_ENTRY";
 					focuInputField("room-number");
-				}
-				else{
+				} else {
 					return;
-				} ;
+				};
 			};
 			$scope.resetTime();
 		};
@@ -127,11 +124,10 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		};
 
 		$scope.reEnterText = function(type) {
-			if(type === "room"){
+			if (type === "room") {
 				$scope.mode = "ROOM_NUMBER_ENTRY";
 				focuInputField("room-number");
-			}
-			else{
+			} else {
 				$scope.mode = "LAST_NAME_ENTRY";
 				focuInputField("last-name");
 			}
@@ -142,7 +138,9 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		};
 		/************* Fontainbleu specific ******************/
 
-		$scope.tower = {'selected' : ''};
+		$scope.tower = {
+			'selected': ''
+		};
 		$scope.changedTheSelectedTower = function() {
 			$scope.reservationParams.room_no = $scope.tower.selected;
 		};

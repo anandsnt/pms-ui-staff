@@ -5,7 +5,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 	'zsEventConstants',
 	'zsCheckinSrv',
 	'$timeout',
-	function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv,$timeout) {
+	function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $timeout) {
 
 		/**********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -36,18 +36,17 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		zsCheckinSrv.setCheckInReservations([]);
 
 
-		var focuInputField = function(elementId){
-			$timeout(function(){
-				if(!$scope.isIpad){
+		var focuInputField = function(elementId) {
+			$timeout(function() {
+				if (!$scope.isIpad) {
 					document.getElementById(elementId).focus();
-				}
-				else{
+				} else {
 					$scope.callBlurEventForIpad();
 				}
-			}, 300); 
-			
+			}, 300);
+
 		};
-		
+
 		var setupSeperatorBetweenOptions = function() {
 			//show/hide seperator between departure date and no of nights
 			$scope.showOrBetweenDateAndNoOfNights = $scope.zestStationData.checkin_screen.authentication_settings.departure_date &&
