@@ -145,6 +145,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 
                 
         var shouldGoToEarlyCheckInFlow = function (response) {
+            console.log('early checkin on reservation response: ',response)
             if (!response.reservation_in_early_checkin_window) {
                 return false;
             }
@@ -175,7 +176,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             if (!data.early_checkin_available && //if no early checkin is available but early checkin flow is On, go to unavailable screen
                     $scope.zestStationData.offer_early_checkin &&
                     data.early_checkin_on) {
-                $state.go('zest_station.early_checkin_unavailable');
+                $state.go('zest_station.earlyCheckin');
                 return false;
             }
 
@@ -243,6 +244,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 
                 
                 var beginEarlyCheckin = function(response){
+                    console.info(':: begin early checkin ::  ');
                     var params = {
                         'early_checkin_data':''
                     };
@@ -305,8 +307,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 		};
                 
                 var fetchedEarlyCheckinSettingsCallback = function(response){
-                    console.info(': fetchedEarlyCheckinSettingsCallback :',response)
-                    if (!$stateParams.earlyCheckinPurchased && // if they purchased it through zest station a minute ago...dont re-prompt the user
+                    console.info(': fetchedEarlyCheckinSettingsCallback :',response);
+                    var earlyCheckinWasPurchasedAtStation = $stateParams.earlyCheckinPurchased;
+                    
+                    if (!earlyCheckinWasPurchasedAtStation && // if they purchased it through zest station a minute ago...dont re-prompt the user
                             shouldGoToEarlyCheckInFlow(response)) {
                         //fetch reservation info with upsell data from /guest_web/reservations/{res_id}.json
                         return true;
@@ -314,12 +318,21 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 };
                 
                 var continueRouting = function(settings){
-                    console.info(': continueRouting :',settings)
+                    console.info(': continueRouting :',settings);
                     var goToEarlyCheckin = fetchedEarlyCheckinSettingsCallback(settings);
-                    console.info('*goToCheckin: ',goToEarlyCheckin)
+                    console.info('*goToCheckin: ',goToEarlyCheckin);
+                    var tooEarlyForCheckin = !shouldGoToEarlyCheckInFlow(settings);//debugging
+                    
                     if (goToEarlyCheckin){
                         beginEarlyCheckin(settings);
 
+                    } if(tooEarlyForCheckin){
+                        console.warn(':: tooEarlyForCheckin ::');
+                        console.warn(':: tooEarlyForCheckin ::');
+                        console.warn(':: tooEarlyForCheckin ::');
+                        
+                        beginEarlyCheckin(settings);
+                        
                     } else {
 			            // terms and condition skip is done in terms and conditions page
                        initTermsPage();

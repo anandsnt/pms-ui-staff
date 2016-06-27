@@ -40,9 +40,13 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
                     
                 };
                 var earlyCheckinUnavailable = function(data){
-                     if (!data.early_checkin_available && //if no early checkin is available but early checkin flow is On, go to unavailable screen
+                    var reservationNotReady = (!data.early_checkin_available && //if no early checkin is available but early checkin flow is On, go to unavailable screen
                             $scope.zestStationData.offer_early_checkin &&
-                            data.early_checkin_on) {
+                            data.early_checkin_on);
+                    //if early checkin is off in settings, and its too early, let user know that...
+                    var justTooEarly = (!data.early_checkin_available);
+                    
+                     if (reservationNotReady || justTooEarly) {
                             return true;
                         } else return false;
                 };
@@ -65,7 +69,16 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
                     
                     $scope.standardCheckinTime = response.checkin_time;
                     $scope.unavailable = earlyCheckinUnavailable(response);
-                    //$scope.early_checkin_charge
+                    console.info('$scope.unavailable: ',$scope.unavailable);
+                    
+                    if ($scope.unavailable){
+                        $scope.bypass = false;
+                        $scope.is_early_prepaid = false;
+                        $scope.reservation_in_early_checkin_window = false;
+                    }
+                    
+                    $scope.ableToPurchaseEarly = (!$scope.unavailable && !$scope.is_early_prepaid && $scope.reservation_in_early_checkin_window && !$scope.bypass);
+                    $scope.early_checkin_charge = response.early_checkin_charge;
                 };
 
 		/**

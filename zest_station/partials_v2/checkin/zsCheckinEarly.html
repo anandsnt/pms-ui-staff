@@ -2,17 +2,17 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content">
         <!-- Early Checkin Purchase Nav -->
-        <h1 translate>EARLY_AVAIL_HEADER</h1>
-        <h3 translate>EARLY_AVAIL_SUB_HEADER {{standardCheckinTime}} EARLY_AVAIL_SUB_HEADER_2 {{selectedReservation.earlyCheckinChargeSymbol}}{{earlyCheckinCharge}} </h3>
+        <h1 ng-if="ableToPurchaseEarly" translate>EARLY_AVAIL_HEADER</h1>
+        <h3 ng-if="ableToPurchaseEarly" translate>EARLY_AVAIL_SUB_HEADER {{standardCheckinTime}} EARLY_AVAIL_SUB_HEADER_2 {{early_charge_symbol}}{{early_checkin_charge}} </h3>
         
            <!-- Early Checkin Available (pre-paid or free) -->
-        <h3 ng-hide="is_early_prepaid && !reservation_in_early_checkin_window" translate>EARLY_AVAIL_SUB_HEADER {{standardCheckinTime}} </h3>
-        <h3 ng-show="is_early_prepaid && !reservation_in_early_checkin_window" translate>EARLY_AVAIL_PURCHASED_REALLY_EARLY</h3>
+        <h3 ng-hide="unavailable || (is_early_prepaid && !reservation_in_early_checkin_window)" translate>EARLY_AVAIL_SUB_HEADER {{standardCheckinTime}} </h3>
+        <h3 ng-show="!unavailable && is_early_prepaid && !reservation_in_early_checkin_window" translate>EARLY_AVAIL_PURCHASED_REALLY_EARLY</h3>
         
          <!-- Early Checkin Unavailable -->
-        <h1 translate>EARLY_HEADER</h1>
+        <h1  ng-if="unavailable" translate>EARLY_HEADER</h1>
         
-        <nav id="options" role="nav" ng-if="!is_early_prepaid && reservation_in_early_checkin_window && !bypass">
+        <nav id="options" role="nav" ng-if="ableToPurchaseEarly">
             <!-- Early Checkin Purchase Nav -->
             <ul role="menu">
                 <li translate>
@@ -22,7 +22,7 @@
                     EARLY_AVAIL_PURCHASE
                     <span translate>
                         EARLY_AVAIL_PURCHASE_SUB
-                        {{selectedReservation.earlyCheckinChargeSymbol}}{{selectedReservation.earlyCheckinCharge}} 
+                        {{early_charge_symbol}}{{early_checkin_charge}} 
                         EARLY_AVAIL_PURCHASE_SUB_2
                     </span>
                 </li>
