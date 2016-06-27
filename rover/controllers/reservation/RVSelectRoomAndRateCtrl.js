@@ -82,6 +82,19 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 				return scrollerObject;
 			},
+			shouldRecommend = function () {
+				//This method checks if there are groups or cards attached
+				return $stateParams.travel_agent_id ||
+					$scope.reservationData.travelAgent.id ||
+					$stateParams.company_id ||
+					$scope.reservationData.company.id ||
+					$stateParams.group_id ||
+					$scope.reservationData.group.id ||
+					$stateParams.allotment_id ||
+					$scope.reservationData.allotment.id ||
+					$stateParams.promotion_code ||
+					$stateParams.is_member == "true"
+			},
 			isMembershipValid = function() {
 				var membership = $scope.reservationData.guestMemberships,
 					selectedMembership = $scope.reservationData.member.value,
@@ -322,9 +335,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				//Add these params to API - only in Reccommended tab. CICO-28657
 				if($scope.stateCheck.activeView === 'RECOMMENDED'){
 
-					payLoad.company_id = $stateParams.company_id;
-					payLoad.travel_agent_id = $stateParams.travel_agent_id;
-					payLoad.group_id = $stateParams.group_id || $stateParams.allotment_id;
+					payLoad.company_id = $scope.reservationData.company.id;
+					payLoad.travel_agent_id = $scope.reservationData.travelAgent.id;
+					payLoad.group_id = $scope.reservationData.group.id || $scope.reservationData.allotment.id;
 					payLoad.promotion_code = $stateParams.promotion_code;
 					payLoad.is_member = !!$scope.reservationData.member.isSelected;
 					payLoad.promotion_id = $scope.reservationData.promotionId;
@@ -947,9 +960,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					var isReccommendedTabApiRequired = false;
 					if($scope.stateCheck.activeView === "RATE"){
 						isReccommendedTabApiRequired = true;
-					} else if(($scope.stateCheck.activeView === "RECOMMENDED") && ($stateParams.travel_agent_id || $stateParams.company_id
-						 || $stateParams.group_id || $stateParams.allotment_id
-						 || $stateParams.promotion_code || $stateParams.is_member == "true")){
+					} else if(($scope.stateCheck.activeView === "RECOMMENDED") && shouldRecommend()) {
 						isReccommendedTabApiRequired = true;
 					}
 					if(isReccommendedTabApiRequired){
