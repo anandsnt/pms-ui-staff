@@ -53,7 +53,6 @@ angular.module('sntRover').controller('RVUpgradesController',
 
 		$scope.reservationData = $scope.$parent.reservation;
 		$scope.upgradesList = [];
-		$scope.headerData = {};
 		$scope.upgradesDescriptionStatusArray = [];
 		$scope.clickedButton = $stateParams.clickedButton;
 		$scope.selectedUpgradeIndex = "";
@@ -72,7 +71,6 @@ angular.module('sntRover').controller('RVUpgradesController',
 				_.each($scope.upgradesList, function(upgradesList){
 					upgradesList.upgrade_room_number = (_.findWhere(roomsList.rooms, {"room_type_id": upgradesList.upgrade_room_type_id_int})).room_number;
 				});
-				// $scope.headerData = data.header_details;
 				$scope.reservation_occupancy = $scope.reservation_occupancy;
 				$scope.setUpgradesDescriptionInitialStatuses();
 				$scope.$emit('hideLoader');
