@@ -326,7 +326,11 @@ sntRover.controller('reservationActionsController', [
 
 
                         }
-                        if ($scope.roomAssignmentNeeded()) {
+
+                        if (shouldRedirectToDiary()) {
+							gotoDiaryInEditMode();
+						}
+                        else if ($scope.roomAssignmentNeeded()) {
                                $scope.goToRoomAssignment();
 
                         } else if ($scope.upsellNeeded()) {
@@ -372,7 +376,6 @@ sntRover.controller('reservationActionsController', [
 			// NOTE: room_id is provided as string and number >.<, that why checking length/existance
 			var hasRoom = typeof $scope.reservationData.reservation_card.room_id === 'string' ? $scope.reservationData.reservation_card.room_id.length : $scope.reservationData.reservation_card.room_id;
 
-
                         if (!hasRoom && $scope.putInQueueClicked){
                             if ($scope.reservationMissingPhone()) {
                                     $scope.$emit('showLoader');
@@ -397,7 +400,6 @@ sntRover.controller('reservationActionsController', [
 						$scope.reservationData.reservation_card.room_status = data.is_ready === "true" ? 'READY' : 'NOTREADY';
 						$scope.reservationData.reservation_card.fo_status = data.is_occupied === "true" ? 'OCCUPIED' : 'VACANT';
 						//CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
-
 
 
 						if (shouldRedirectToDiary()) {
