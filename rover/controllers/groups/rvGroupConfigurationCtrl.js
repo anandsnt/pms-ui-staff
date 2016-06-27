@@ -1099,6 +1099,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          */
         $scope.discardNewGroup = function() {
             $scope.groupConfigData.summary = angular.copy(rvGroupConfigurationSrv.baseConfigurationSummary);
+            $scope.groupConfigData.summary.selected_room_types_and_bookings = [];
+            $scope.groupConfigData.summary.selected_room_types_and_rates = [];
+            $scope.groupConfigData.summary.selected_room_types_and_occupanies = [];
+            $scope.groupConfigData.summary.release_date = '';
         }
 
         $scope.onCompanyCardChange = function() {
