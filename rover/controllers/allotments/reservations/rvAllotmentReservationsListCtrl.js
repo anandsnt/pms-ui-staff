@@ -590,8 +590,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         scope             : $scope,
         closeByDocument   : false,
         closeByEscape     : false,
-        data              : JSON.stringify(data),
-        controller        : 'rvGroupRoomingAutoRoomAssignPopUpCtrl'
+        data              : JSON.stringify(data)
       });
     };
 
