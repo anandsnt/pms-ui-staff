@@ -543,7 +543,6 @@ angular.module('sntRover')
 					failureCallBack: 	failureCallBackOfAvailabilityFetching,
 					successCallBackParameters:  params
 				};
-
 				$scope.clearAvailability();
 				$scope.resetEdit();
 				$scope.renderGrid();
@@ -1495,7 +1494,7 @@ angular.module('sntRover')
 				mm = 45;
 			} else {
 				mm = 0;
-				hh += hh;
+				//hh += hh;
 				// TODO: if this is gonna move the arrival date, update the provide arrival date
 			}
 			/**/
@@ -1526,13 +1525,12 @@ angular.module('sntRover')
 			dd = isNaN(dd) ? 0 : dd;
 
 			return {
-				mm: mm - 1,
+				mm: mm,
 				dd: dd
 			};
 		}
 
 		var processedAt = processTime(arrivalTime);
-		var processedAd = processDate(arrivalDate);
 
 		var filter = _.extend({}, this.filter);
 		var time_span = Time({ hours: staySpan.hh, minutes: staySpan.mm });
