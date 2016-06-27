@@ -3,7 +3,9 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
   BaseCtrl.call(this, $scope);
   var that = this;
   //scroller related settings
-  var scrollerOptions = {    
+  var scrollerOptions = {
+    click: true,
+    preventDefault: false    
   };
 
   $scope.isStatisticsOpened = false;
