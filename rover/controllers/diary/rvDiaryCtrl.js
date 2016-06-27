@@ -1966,10 +1966,14 @@ angular.module('sntRover')
 
     	// making sure no previous reset in progress
     	if ( ! $scope.gridProps.edit.reset_scroll ) {
-	    	$scope.clearAvailability();
-			$scope.resetEdit();
-			$scope.renderGrid();
-
+    		// CICO-24243 - need to call this anyway, and it calls others below
+    		if ($scope.gridProps.unassignedRoomList.open) {
+				$scope.gridProps.unassignedRoomList.reset();
+			} else {
+		    	$scope.clearAvailability();
+				$scope.resetEdit();
+				$scope.renderGrid();
+			}
 	    	$scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, _sucessCallback);
     	}
     };
