@@ -550,6 +550,14 @@ angular.module('sntRover')
 					apiOptions;
 
 				success = function(data, successParams) {
+					// CICO-24243: Set top filter values to selected reservation attributes
+					if (data.length) {
+						var rawData = data[0],
+							filters = $scope.gridProps.filter;
+
+            			filters.arrival_time = new Date(rawData.arrival).toTimeString().substring(0, 5);
+            			filters.room_type = _.findWhere(filters.room_types, { id: rawData.room_type_id });
+					}
 					successCallBackOfAvailabilityFetching(data, successParams, keepOpen);
 				};
 
@@ -1363,6 +1371,12 @@ angular.module('sntRover')
 		$scope.openRateTypeChoosingBox = true;
 	};
 
+	var successCallBackOfAvailabilityAPI = function(data, successParams) {
+		// Setting the keep open flag to true to avoid clearing avail data.
+		// this will keep unassigned box open.
+		successCallBackOfAvailabilityFetching(data, successParams, true);
+	};
+
 	var callAvailabilityAPI = function(){
 		var params = getAvailabilityCallingParams(),
 			filter = $scope.gridProps.filter;
@@ -1381,7 +1395,7 @@ angular.module('sntRover')
 		}
 		var options = {
     		params: 			params,
-    		successCallBack: 	successCallBackOfAvailabilityFetching,
+    		successCallBack: 	successCallBackOfAvailabilityAPI,
     		failureCallBack: 	failureCallBackOfAvailabilityFetching,
     		successCallBackParameters:  params
     	};
@@ -1966,10 +1980,14 @@ angular.module('sntRover')
 
     	// making sure no previous reset in progress
     	if ( ! $scope.gridProps.edit.reset_scroll ) {
-	    	$scope.clearAvailability();
-			$scope.resetEdit();
-			$scope.renderGrid();
-
+    		// CICO-24243 - need to call this anyway, and it calls others below
+    		if ($scope.gridProps.unassignedRoomList.open) {
+				$scope.gridProps.unassignedRoomList.reset();
+			} else {
+		    	$scope.clearAvailability();
+				$scope.resetEdit();
+				$scope.renderGrid();
+			}
 	    	$scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, _sucessCallback);
     	}
     };
