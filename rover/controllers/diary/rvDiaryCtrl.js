@@ -502,6 +502,22 @@ angular.module('sntRover')
 			},
 			fetchList: function() {
 				var _sucess = function(data) {
+					data.forEach(function(reservation, idx) {
+						var guests = reservation.primary_guest;
+
+						//if there is any accomoanying guests
+						if(!_.isEmpty(reservation.accompanying_guests)) {
+							guests = guests + "  |  ";
+							_.each(reservation.accompanying_guests, function(element, index, list){
+								guests += (element.guest_name);
+								if(index !== (list.length - 1)){
+									guests += ", ";
+								}
+							});
+						}
+						reservation.guests = guests;
+					});
+
 					this.data = data;
 					this.open = true;
 					$scope.renderGrid();

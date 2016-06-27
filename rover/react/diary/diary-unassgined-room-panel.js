@@ -174,7 +174,7 @@ var UnassignedRoomPanel = React.createClass({
                             },
                             React.DOM.span({
                                 className: 'guest-name'
-                            }, room.primary_guest),
+                            }, room.guests),
                             React.DOM.span({
                                 className: 'room-type'
                             }, room.room_type_name),
