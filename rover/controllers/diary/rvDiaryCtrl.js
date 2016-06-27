@@ -1356,6 +1356,12 @@ angular.module('sntRover')
 		$scope.openRateTypeChoosingBox = true;
 	};
 
+	var successCallBackOfAvailabilityAPI = function(data, successParams) {
+		// Setting the keep open flag to true to avoid clearing avail data.
+		// this will keep unassigned box open.
+		successCallBackOfAvailabilityFetching(data, successParams, true);
+	};
+
 	var callAvailabilityAPI = function(){
 		var params = getAvailabilityCallingParams(),
 			filter = $scope.gridProps.filter;
@@ -1374,7 +1380,7 @@ angular.module('sntRover')
 		}
 		var options = {
     		params: 			params,
-    		successCallBack: 	successCallBackOfAvailabilityFetching,
+    		successCallBack: 	successCallBackOfAvailabilityAPI,
     		failureCallBack: 	failureCallBackOfAvailabilityFetching,
     		successCallBackParameters:  params
     	};
