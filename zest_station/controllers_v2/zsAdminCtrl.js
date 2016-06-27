@@ -20,14 +20,14 @@ sntZestStation.controller('zsAdminCtrl', [
             $state.go('zest_station.home');
         });
 
-        $scope.navToPrev = function(){
+        $scope.navToPrev = function() {
             $state.go('zest_station.home');
         };
 
         var refreshScroller = function() {
             $scope.refreshScroller('admin-screen');
         };
-        
+
         /**
          * printer name convention has something like IPP://somename..
          * so lets pull out that IPP:// from the display to user, so they will see its
@@ -57,11 +57,10 @@ sntZestStation.controller('zsAdminCtrl', [
                 return workstation.id == $scope.zestStationData.set_workstation_id;
             });
             $scope.workstation = {}
-            if(typeof selectedWorkStation !== 'undefined'){
+            if (typeof selectedWorkStation !== 'undefined') {
                 $scope.workstation.selected = parseInt(selectedWorkStation.id);
                 $scope.workstation.printer = selectedWorkStation.printer;
-            }
-            else{
+            } else {
                 $scope.workstation.selected = "";
                 $scope.workstation.printer = ""
             }
@@ -119,8 +118,8 @@ sntZestStation.controller('zsAdminCtrl', [
          **/
         var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled;
         $scope.cancelAdminSettings = function(a) {
-            if (!a){
-                console.info('setting demo mode back to: ',lastDemoModeSetting);
+            if (!a) {
+                console.info('setting demo mode back to: ', lastDemoModeSetting);
                 $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
             }
             $state.go('zest_station.home');
@@ -137,7 +136,7 @@ sntZestStation.controller('zsAdminCtrl', [
          **/
         $scope.loginAdmin = function() {
             $scope.mode = "admin-name-mode";
-            $scope.headingText = 'Admin Username';//TODO: need to move this out to a tag.
+            $scope.headingText = 'Admin Username'; //TODO: need to move this out to a tag.
             $scope.passwordField = false;
             showNavButtons();
         };
@@ -152,7 +151,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.userName = angular.copy($scope.input.inputTextValue);
                 $scope.input.inputTextValue = "";
                 $scope.mode = "admin-password-mode";
-                $scope.headingText = 'Admin Password';//TODO: need to move this out to a tag.
+                $scope.headingText = 'Admin Password'; //TODO: need to move this out to a tag.
                 $scope.passwordField = true;
                 $scope.callBlurEventForIpad();
             } else {
@@ -210,7 +209,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 });
                 $scope.zestStationData.set_workstation_id = station.id;
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
-                $scope.zestStationData.key_encoder_id =  station.key_encoder_id;
+                $scope.zestStationData.key_encoder_id = station.key_encoder_id;
                 $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, {
                     'status': $scope.zestStationData.workstationStatus,
                     'reason': $scope.zestStationData.workstationOooReason
@@ -324,14 +323,14 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.passWord = "";
             hideNavButtons();
             $scope.setScroller('admin-screen');
-            
-            
-            var localDebugging = false;//change this if testing locally, be sure to make false if going up to dev/release/prod
-            if (localDebugging && !($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad))){
+
+
+            var localDebugging = false; //change this if testing locally, be sure to make false if going up to dev/release/prod
+            if (localDebugging && !($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad))) {
                 $scope.isIpad = true;
                 $scope.zestStationData.isAdminFirstLogin = true;
             }
-            
+
             //if invoked from chrome app or ipad
             //show direct admin without login
             if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)) {
@@ -340,9 +339,9 @@ sntZestStation.controller('zsAdminCtrl', [
             } else {
                 $scope.mode = 'login-mode';
             };
-            setTimeout(function(){
-                refreshScroller();//maybe need to update layout, but this works to fix scroll issue on admin after page load
-            },1000);
+            setTimeout(function() {
+                refreshScroller(); //maybe need to update layout, but this works to fix scroll issue on admin after page load
+            }, 1000);
 
         }();
     }

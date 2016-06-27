@@ -6,10 +6,10 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
     function($scope, $state, zsEventConstants, zsCheckinSrv) {
 
         /**********************************************************************************************
-        **      Expected state params -----> none           
-        **      Exit function -> $scope.goToNext                              
-        **                                                                       
-        ***********************************************************************************************/
+         **      Expected state params -----> none           
+         **      Exit function -> $scope.goToNext                              
+         **                                                                       
+         ***********************************************************************************************/
 
         BaseCtrl.call(this, $scope);
         /**
@@ -33,27 +33,26 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
 
         $scope.init = function() {
             $scope.addGuestsHeading = 'ADDTL_RESIDENTS';
-            $scope.guest={};
+            $scope.guest = {};
             $scope.guest.firstNameEntered = false;
             getSelectedReservations();
         };
-        $scope.addAGuest = function(){
+        $scope.addAGuest = function() {
             $scope.AddGuestMode = true;
             $scope.headingText = 'ENTER_FIRST';
         };
-        $scope.NameEntered = function(){
-            if($scope.guest.Name === ""){
+        $scope.NameEntered = function() {
+            if ($scope.guest.Name === "") {
                 return;
-            }
-            else if(!$scope.guest.firstNameEntered){
+            } else if (!$scope.guest.firstNameEntered) {
                 $scope.guest.firstNameEntered = true;
-                $scope.guest.firstName =$scope.guest.Name;
-                $scope.guest.Name ="";
+                $scope.guest.firstName = $scope.guest.Name;
+                $scope.guest.Name = "";
                 $scope.headingText = 'ENTER_LAST';
                 $scope.callBlurEventForIpad();
-            }else{
-                $scope.guest.lastName =$scope.guest.Name;
-                $scope.guest.Name ="";
+            } else {
+                $scope.guest.lastName = $scope.guest.Name;
+                $scope.guest.Name = "";
                 updateGuestDetails();
                 $scope.AddGuestMode = false;
                 //this needs to reset..the above code needs to be changed in future
@@ -62,7 +61,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 $scope.callBlurEventForIpad();
             };
         };
-        $scope.removeGuest = function(toDeleteId){
+        $scope.removeGuest = function(toDeleteId) {
             //for API
             var accompanyingGuestData = angular.copy($scope.selectedReservation.guest_details);
             accompanyingGuestData = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
@@ -77,14 +76,17 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
 
             // accompanyingGuestData[index].last_name = null;
             // accompanyingGuestData[index].first_name = null;
-            var guestDetails = {'accompanying_guests_details':accompanyingGuestData, 'reservation_id':$scope.selectedReservation.id};
+            var guestDetails = {
+                'accompanying_guests_details': accompanyingGuestData,
+                'reservation_id': $scope.selectedReservation.id
+            };
 
-            var onSuccessResponse = function(response){
+            var onSuccessResponse = function(response) {
                 $scope.selectedReservation.guest_details = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
-                     return guest.id === toDeleteId;
+                    return guest.id === toDeleteId;
                 })));
             };
-            var onFailureResponse = function(response){
+            var onFailureResponse = function(response) {
                 //do nothing for now..i don't know what to be done in that case
             };
             $scope.callAPI(zsCheckinSrv.updateGuestTabDetails, {
@@ -93,8 +95,8 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 'failureCallBack': onFailureResponse
             });
         };
-        var updateGuestDetails = function(){
-          
+        var updateGuestDetails = function() {
+
             var accompanyingGuestData = angular.copy($scope.selectedReservation.guest_details);
             accompanyingGuestData = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
                 return guest.is_primary === true;
@@ -103,16 +105,19 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 last_name: $scope.guest.lastName,
                 first_name: $scope.guest.firstName
             });
-            var guestDetails = {'accompanying_guests_details':accompanyingGuestData, 'reservation_id':$scope.selectedReservation.id};
-            var onSuccessResponse = function(response){
-                  //push changes up to the reservation immediately
+            var guestDetails = {
+                'accompanying_guests_details': accompanyingGuestData,
+                'reservation_id': $scope.selectedReservation.id
+            };
+            var onSuccessResponse = function(response) {
+                //push changes up to the reservation immediately
                 $scope.selectedReservation.guest_details.push({
                     last_name: $scope.guest.lastName,
                     first_name: $scope.guest.firstName,
-                    id:response[response.length-1]
+                    id: response[response.length - 1]
                 });
             };
-            var onFailureResponse = function(response){
+            var onFailureResponse = function(response) {
                 //do nothing for now..i don't know what to be done in that case
             };
             $scope.callAPI(zsCheckinSrv.updateGuestTabDetails, {
@@ -122,7 +127,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             });
         };
 
-        $scope.goToNext = function(){
+        $scope.goToNext = function() {
             zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
             $state.go('zest_station.checkInReservationDetails');
         };
