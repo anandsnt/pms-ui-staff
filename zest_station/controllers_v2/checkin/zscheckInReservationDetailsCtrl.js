@@ -308,9 +308,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var fetchedEarlyCheckinSettingsCallback = function(response) {
             console.info(': fetchedEarlyCheckinSettingsCallback :', response);
             var earlyCheckinWasPurchasedAtStation = $stateParams.earlyCheckinPurchased;
-
+            var shouldGoThroughECI = shouldGoToEarlyCheckInFlow(response);
+            console.info('earlyCheckinWasPurchasedAtStation: ',earlyCheckinWasPurchasedAtStation);
+            console.info('shouldGoThroughECI: ',shouldGoThroughECI);
             if (!earlyCheckinWasPurchasedAtStation && // if they purchased it through zest station a minute ago...dont re-prompt the user
-                shouldGoToEarlyCheckInFlow(response)) {
+                shouldGoThroughECI) {
                 //fetch reservation info with upsell data from /guest_web/reservations/{res_id}.json
                 return true;
             } else return false;
@@ -325,8 +327,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             if (goToEarlyCheckin) {
                 beginEarlyCheckin(settings);
 
+            } else {
+                // terms and condition skip is done in terms and conditions page
+                initTermsPage();
             }
-            if (tooEarlyForCheckin) {
+            console.info("tooEarlyForCheckin: ",tooEarlyForCheckin);
+           /* if (tooEarlyForCheckin) {
                 console.warn(':: tooEarlyForCheckin ::');
                 console.warn(':: tooEarlyForCheckin ::');
                 console.warn(':: tooEarlyForCheckin ::');
@@ -334,9 +340,9 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 beginEarlyCheckin(settings);
 
             } else {
-                // terms and condition skip is done in terms and conditions page
-                initTermsPage();
-            }
+                */
+                
+  //          }
         };
         var routeToNext = function() {
             console.info(': routeToNext :');
