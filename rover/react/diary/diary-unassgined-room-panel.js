@@ -210,10 +210,8 @@ var UnassignedRoomPanel = React.createClass({
                         className: 'sidebar-header'
                     },
                     React.DOM.h2({
-                        className: 'sidebar-header'
                     }, 'Unassigned Rooms'),
                     React.DOM.p({
-                        className: 'sidebar-header'
                     }, 'Drag & Drop To Assign or Unassign a Room')   
                 ),
                 React.DOM.div({
