@@ -111,7 +111,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
 			var filter_values = {
 				page: 1,
-				per_page: 25
+				per_page: 99999
 			};
 
 			// fill 'time' and 'time_period_id'
