@@ -504,7 +504,10 @@ angular.module('sntRover')
 				var _sucess = function(data) {
 					data.forEach(function(reservation, idx) {
 						var guests = reservation.primary_guest;
-
+						//in case of guest name is blank, we have to show company name or travel agent name.
+						if(!guests) {
+							guests = reservation.travel_agent_name ? reservation.travel_agent_name : reservation.company_card_name;
+						}
 						//if there is any accomoanying guests
 						if(!_.isEmpty(reservation.accompanying_guests)) {
 							guests = guests + "  |  ";
