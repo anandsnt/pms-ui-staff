@@ -11,17 +11,17 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 	function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $stateParams, $timeout, $sce) {
 
 		/**********************************************************************************************
-		**		Please note that, not all the stateparams passed to this state will not be used in this state, 
-        **      however we will have to pass this so as to pass again to future states which will use these.
-		**
-        **      Expected state params -----> reservation_id,  first_name, guest_id ,payment_type_id
-        **       ,deposit_amount , guest_email_blacklisted, room_no, room_status and email           
-        **      Exit function -> updateComplete                             
-        **                                                                       
-        ***********************************************************************************************/
+		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
+		 **      however we will have to pass this so as to pass again to future states which will use these.
+		 **
+		 **      Expected state params -----> reservation_id,  first_name, guest_id ,payment_type_id
+		 **       ,deposit_amount , guest_email_blacklisted, room_no, room_status and email           
+		 **      Exit function -> updateComplete                             
+		 **                                                                       
+		 ***********************************************************************************************/
 
 		BaseCtrl.call(this, $scope);
-		
+
 		var init = function() {
 			//hide back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
@@ -29,16 +29,16 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			//back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-				 $state.go('zest_station.checkInReservationDetails',$stateParams);
+				$state.go('zest_station.checkInReservationDetails', $stateParams);
 			});
 			//starting mode
 			$scope.mode = "TERMS_CONDITIONS";
 
 		};
-		
+
 
 		var goToDepositScreen = function() {
-                    console.warn('to deposit screen: ',$stateParams.first_name);
+			console.warn('to deposit screen: ', $stateParams.first_name);
 			$state.go('zest_station.checkInDeposit', {
 				'guest_email': $stateParams.guest_email,
 				'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
@@ -52,12 +52,12 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'mode': 'DEPOSIT',
 				'balance_amount': $stateParams.balance_amount,
 				'confirmation_number': $stateParams.confirmation_number,
-				'pre_auth_amount_at_checkin' : $stateParams.pre_auth_amount_at_checkin,
-				'authorize_cc_at_checkin' : $stateParams.authorize_cc_at_checkin
+				'pre_auth_amount_at_checkin': $stateParams.pre_auth_amount_at_checkin,
+				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 			});
 		};
 		var goToSignaturePage = function() {
-                    console.warn('current state params: @ ',$state.current.name,$stateParams);
+			console.warn('current state params: @ ', $state.current.name, $stateParams);
 			var stateParams = {
 				'email': $stateParams.guest_email,
 				'reservation_id': $stateParams.reservation_id,
@@ -95,8 +95,8 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'first_name': $stateParams.first_name,
 				'mode': 'CREDIT_CARD_AUTH',
 				'balance_amount': $stateParams.balance_amount,
-				'pre_auth_amount_at_checkin' : $stateParams.pre_auth_amount_at_checkin,
-				'authorize_cc_at_checkin' : $stateParams.authorize_cc_at_checkin
+				'pre_auth_amount_at_checkin': $stateParams.pre_auth_amount_at_checkin,
+				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 			};
 			$state.go('zest_station.checkInCardSwipe', stateParams);
 		};
@@ -158,7 +158,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		 */
 		var initiateTermsAndConditions = function() {
 			$scope.setScroller('terms');
-			setDisplayContentHeight();//utils function
+			setDisplayContentHeight(); //utils function
 			var refreshScroller = function() {
 				$scope.refreshScroller('terms');
 			};
