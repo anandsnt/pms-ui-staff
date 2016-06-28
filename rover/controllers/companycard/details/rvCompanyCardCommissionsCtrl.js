@@ -38,8 +38,6 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     $scope.$on("commissionsTabActive", function() {
         refreshScroll();
     });
-    // Refresh the scroller when the tab is active.
-    $scope.$on("refreshComissionsScroll", refreshScroll);
 
     //Fetches the commission details for the given filter options
     var fetchCommissionDetails = function(isPageChanged) {
