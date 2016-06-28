@@ -19,7 +19,7 @@ sntZestStation.controller('zsSpeakToStaffCtrl', [
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
 		}();
 
-		$scope.navToHome = function(){
+		$scope.navToHome = function() {
 			$state.go('zest_station.home');
 		};
 

@@ -24,7 +24,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 		};
 
 		//qr scan arrow
-		$scope.arrowDirection  = !!$scope.zestStationData.qr_scanner_arrow_direction ? $scope.zestStationData.qr_scanner_arrow_direction : "right";
+		$scope.arrowDirection = !!$scope.zestStationData.qr_scanner_arrow_direction ? $scope.zestStationData.qr_scanner_arrow_direction : "right";
 
 		var fetchReservationDetails = function(reservation_id) {
 			/*
@@ -80,20 +80,20 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 		};
 
 		/**************** /DATALOGIC ************************/
-                
-        $scope.scanQRCode = function(){
-            if ($scope.zestStationData.qr_scanner_samsotech) {
-                console.info('scan samsotech');
+
+		$scope.scanQRCode = function() {
+			if ($scope.zestStationData.qr_scanner_samsotech) {
+				console.info('scan samsotech');
 				samsoTechScan();
 			} else {
-                console.info('scan datalogic');
+				console.info('scan datalogic');
 				//$scope.zestStationData.qr_scanner_datalogic
 				initChromeAppQRCodeScanner();
 			}
-        };
+		};
 
 		/******************* SAMSOTECH ********************/
-		var receiveSamsoTechMsg = function(evt, info){
+		var receiveSamsoTechMsg = function(evt, info) {
 			console.log(arguments);
 			if (typeof info.msg === typeof 'str') {
 				if (info.msg.indexOf('Invalid') !== -1) {
@@ -106,8 +106,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 					var reservationId = info.msg.split(' : ')[1];
 					if (reservationId) {
 						fetchReservationDetails(reservationId);
-					}
-					else {
+					} else {
 						onQRScanFail();
 					}
 				}
@@ -134,8 +133,8 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
 			}
 		};
-                
-        var initChromeAppQRCodeScanner = function() {
+
+		var initChromeAppQRCodeScanner = function() {
 			if ($scope.inChromeApp) {
 				$scope.chromeApp.fetchQRCode();
 				console.info("::Starting QR Code Scanner::");
@@ -149,7 +148,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
 		/******************* /SAMSOTECH ********************/
 
-                
+
 		/**
 		 * [initializeMe description]
 		 */
@@ -164,7 +163,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				$state.go('zest_station.home');
 			});
 			$scope.qrCodeScanFailed = false;
-			
+
 		}();
 
 		/******************** LISTENERS ***********************/

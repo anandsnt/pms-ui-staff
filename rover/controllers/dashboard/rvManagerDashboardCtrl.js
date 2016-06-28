@@ -4,8 +4,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
   var that = this;
   //scroller related settings
   var scrollerOptions = {
-    click: true,
-    preventDefault: false
+    preventDefault: false    
   };
 
   $scope.isStatisticsOpened = false;
@@ -134,45 +133,45 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
 
   /**
    * Function which checks whether ADR data is shown in statistic section or not
-   */
-   $scope.isADRShown = function() {
-      return ($scope.isStandAlone && !$scope.isHourlyRateOn && $scope.isStatisticsOpened);
-   };
+  */
+  $scope.isADRShown = function() {
+    return ($scope.isStandAlone && !$scope.isHourlyRateOn && $scope.isStatisticsOpened);
+  };
 
-   /**
+  /**
    * Function which handles the click of the statistic btn in dashboard
-   */
-   $scope.toggleStatistics = function() {
-    $scope.isStatisticsOpened = !$scope.isStatisticsOpened;
-    var onStatisticsFetchSuccess = function(data) {
-          $scope.$emit('hideLoader');
-          $scope.statistics = data;
+  */
+ $scope.toggleStatistics = function() {
+  $scope.isStatisticsOpened = !$scope.isStatisticsOpened;
+  var onStatisticsFetchSuccess = function(data) {
+        $scope.$emit('hideLoader');
+        $scope.statistics = data;
 
-          $scope.refreshScroller('dashboard_scroller');
-          $timeout(function() {
-            $scope.myScroll['dashboard_scroller'].scrollTo($scope.myScroll['dashboard_scroller'].maxScrollX,
-                    $scope.myScroll['dashboard_scroller'].maxScrollY, 500);
-          }, 500);
-
-        },
-        onStatisticsFetchFailure = function(error) {
-          $scope.$emit('hideLoader');
-
-        };
-    //Invoke the api only when the statistic block is opened
-    var requestParams = {
-      'show_adr' : true,
-      'show_upsell' : true,
-      'show_rate_of_day' : true
-    };
-    if($scope.isStatisticsOpened) {
-      $scope.invokeApi(RVDashboardSrv.fetchStatisticData,requestParams,onStatisticsFetchSuccess,onStatisticsFetchFailure);
-    } else {
-      $timeout(function() {
         $scope.refreshScroller('dashboard_scroller');
-      }, 500);
+        $timeout(function() {
+          $scope.myScroll['dashboard_scroller'].scrollTo($scope.myScroll['dashboard_scroller'].maxScrollX,
+                  $scope.myScroll['dashboard_scroller'].maxScrollY, 500);
+        }, 500);
 
-    }
+      },
+      onStatisticsFetchFailure = function(error) {
+        $scope.$emit('hideLoader');
 
-   };
+      };
+  //Invoke the api only when the statistic block is opened
+  var requestParams = {
+    'show_adr' : true,
+    'show_upsell' : true,
+    'show_rate_of_day' : true
+  };
+  if($scope.isStatisticsOpened) {
+    $scope.invokeApi(RVDashboardSrv.fetchStatisticData,requestParams,onStatisticsFetchSuccess,onStatisticsFetchFailure);
+  } else {
+    $timeout(function() {
+      $scope.refreshScroller('dashboard_scroller');
+    }, 500);
+
+  }
+
+ };
 }]);

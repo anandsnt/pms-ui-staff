@@ -48,15 +48,17 @@ var UnassignedRoomPanel = React.createClass({
         fullArrivalDate = new Date(arrival.year, arrival.month, arrival.date, arrival.hour, arrival.mins);
         fullDepartureDate = new Date(departure.year, departure.month, departure.date, departure.hour, departure.mins);
 
-        difference = Math.abs( fullDepartureDate - fullArrivalDate ) / 36e5;
-        fraction = Math.ceil( ((difference < 1.0) ? difference : (difference % Math.floor(difference))) * 10 );
+        difference = Math.abs( fullDepartureDate - fullArrivalDate );
+        hour_difference = Math.floor(difference / 36e5);
+        min_difference = Math.floor((difference % 36e5) / 6e4);
 
-        difference = Math.floor(difference);
+        //fraction = Math.ceil( ((difference < 1.0) ? difference : (difference % Math.floor(difference))) * 10 );
+        //difference = Math.floor(difference);
 
         return {
-            hh: difference,
-            mm: fraction,
-            hhs: difference + 'h'
+            hh: hour_difference,
+            mm: min_difference,
+            hhs: hour_difference + 'h'
         }
     },
 
@@ -120,6 +122,7 @@ var UnassignedRoomPanel = React.createClass({
             scrollX: false,
             scrollY: true,
             tap: true,
+            mouseWheel: true
             //bounce: false,
             //useTransition: true
         });
@@ -174,7 +177,7 @@ var UnassignedRoomPanel = React.createClass({
                             },
                             React.DOM.span({
                                 className: 'guest-name'
-                            }, room.primary_guest),
+                            }, room.guests),
                             React.DOM.span({
                                 className: 'room-type'
                             }, room.room_type_name),

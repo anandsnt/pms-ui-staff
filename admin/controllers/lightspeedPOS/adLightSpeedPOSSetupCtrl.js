@@ -47,7 +47,7 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 			params.lightspeed = _.pick(params.lightspeed, 'enabled');
 		}
 
-		if (params.lightspeed.charge_code_id === '') {
+		if ($scope.lightspeed.enabled && params.lightspeed.charge_code_id === '') {
 			$timeout(function() {
 				$scope.errorMessage = ['Please search a default charge code, pick from the list and proceed'];
 				clearConfigValues();
@@ -55,7 +55,7 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 			return;
 		}
 
-		if (!params.lightspeed.payment_charge_code_id) {
+		if ($scope.lightspeed.enabled && !params.lightspeed.payment_charge_code_id) {
 			$timeout(function() {
 				$scope.errorMessage = ['Please search a default payment code, pick from the list and proceed'];
 				clearPaymentChargeCodeValues();

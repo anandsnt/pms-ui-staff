@@ -31,7 +31,7 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
                     }
                     var eventData = {
                         day: (function() {
-                            if (dailyStat.date === arrivalDateString || dailyStat.date === departureDateString) {
+                            if (dailyStat.date >= arrivalDateString || dailyStat.date <= departureDateString) {
                                 return new tzIndependentDate(dailyStat.date).getDate().toString();
                             }
                             return "";
