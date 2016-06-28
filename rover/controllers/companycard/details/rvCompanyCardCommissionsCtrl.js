@@ -35,6 +35,9 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
         }, 3000);
     };
     refreshScroll();
+    $scope.$on("commissionsTabActive", function() {
+        refreshScroll();
+    });
     // Refresh the scroller when the tab is active.
     $scope.$on("refreshComissionsScroll", refreshScroll);
 
