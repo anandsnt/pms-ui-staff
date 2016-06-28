@@ -488,12 +488,14 @@ angular.module('sntRover')
 			open: false,
 			data: [],
 			dragData: {},
+			isItemSelected: false,
 			selectedReservations: $scope.selectedReservations,
 			reset: function() {
 				if ( this.open ) {
 					this.data = [];
 					this.open = false;
 					this.dragData = {};
+					this.isItemSelected = false;
 
 					$scope.clearAvailability();
 					$scope.resetEdit();
@@ -549,6 +551,7 @@ angular.module('sntRover')
 			selectAnUnassigned: function(options) {
 				var params   = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.stay_span, options.room_type_id),
 					keepOpen = true,
+					self = this,
 					success,
 					apiOptions;
 
@@ -561,6 +564,7 @@ angular.module('sntRover')
             			filters.arrival_time = new Date(rawData.arrival).toTimeString().substring(0, 5);
             			filters.room_type = _.findWhere(filters.room_types, { id: rawData.room_type_id });
 					}
+					self.isItemSelected = true;
 					successCallBackOfAvailabilityFetching(data, successParams, keepOpen);
 				};
 
@@ -699,7 +703,7 @@ angular.module('sntRover')
 
 		    		break;
 		    	}
-		    } else {
+		    } else if (!$scope.gridProps.unassignedRoomList.isItemSelected){
 		    	copy = util.shallowCopy({}, row_item_data);
 	    		copy.selected = selected;
 
