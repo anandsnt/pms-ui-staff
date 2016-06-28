@@ -9,7 +9,6 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     __getTimeDiff: function(arrivalDate, arrivalTime, departureDate, departureTime) {
-        debugger;
         var arrival = {},
             departure = {},
             dateParts,
