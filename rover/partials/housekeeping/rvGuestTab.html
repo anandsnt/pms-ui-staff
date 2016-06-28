@@ -34,7 +34,7 @@
       <strong class="h2">
         <!-- Please DO NOT change strucutre or add new lines. That may break how it is presented -->
         <label ng-show="roomDetails.is_late_checkout == 'true'">LATE CHECKOUT / </label>{{ roomDetails.current_room_reservation_status }}.
-        <span class="red">Departing <label ng-show="!!roomDetails.departure.time && !roomDetails.departure.date">at {{ roomDetails.departure.time }}.</label><label ng-show="!!roomDetails.departure.time && !!roomDetails.departure.date">at {{ roomDetails.departure.time }} </label><label ng-show="!!roomDetails.departure.date"> on {{ roomDetails.departure.date | date : dateFormat }}.<label></span>
+        <span class="red">Departing <label ng-show="!!roomDetails.departure.time && !roomDetails.departure.date">at {{ roomDetails.departure.time }}.</label><label ng-show="!!roomDetails.departure.time && !!roomDetails.departure.date">at {{ roomDetails.departure.time }}</label><label ng-show="!!roomDetails.departure.date">&nbsp;on {{ roomDetails.departure.date | date : dateFormat }}.<label></span>
       </strong>
       <figure class="guest-image">
         <img src="{{ roomDetails.avatar_src }}" alt="">
