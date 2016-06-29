@@ -83,12 +83,19 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     //to be confirmed
     $scope.checkinData.checkin_alert_primetime = (!$scope.checkinData.checkin_alert_primetime) ? "AM" : $scope.checkinData.checkin_alert_primetime;
     
+
     if($scope.checkinData.max_no_of_keys === "ROOM_OCCUPANCY"){
       $scope.checkinData.max_keys_type = "ROOM_OCCUPANCY";
+      $scope.checkinData.no_of_keys = 1;//default as 1
     }
     else{
        $scope.checkinData.max_keys_type = "other";
-       $scope.checkinData.no_of_keys = angular.copy($scope.checkinData.max_no_of_keys);
+       if($scope.checkinData.max_no_of_keys !== null){
+          $scope.checkinData.no_of_keys = angular.copy($scope.checkinData.max_no_of_keys);
+       }
+       else{
+           $scope.checkinData.no_of_keys = 1;//default as 1
+       }
     }
   };
 
