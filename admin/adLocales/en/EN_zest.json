@@ -102,7 +102,17 @@
 "OPT_IN_RESPONSE" : "Opt In Response",
 "OPT_IN_KEYWORDS" : "Opt In Keywords",
 "DOUBLE_OPT_IN_KEYWORDS" : "Double Opt In Keywords",
-"DOUBLE_OPT_IN_RESPONSE" : "Double Opt In Response"
+"DOUBLE_OPT_IN_RESPONSE" : "Double Opt In Response",
+
+"NO_OF_KEYS" : "Number of keys",
+"NO_OF_KEYS_INSTRUCTION" : "Setup whether to ask the guest for the number of keys",
+"PROMPT_FOR_KEYS" : "Prompt for keys?",
+"PROMPT_FOR_KEYS_TITLE":"Title",
+"PROMPT_FOR_KEYS_TEXT" : "Text",
+"PROMPT_FOR_KEYS_ERROR_MESSAGE" : "Error message",
+"MAXIMUM_NO_OF_KEYS" : "Maximum number of keys",
+"MAX_ROOM_OCCUPANCY" : "Maximum room occupancy",
+"OTHER" : "Other"
 
 
 

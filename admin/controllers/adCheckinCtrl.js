@@ -82,6 +82,14 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     });
     //to be confirmed
     $scope.checkinData.checkin_alert_primetime = (!$scope.checkinData.checkin_alert_primetime) ? "AM" : $scope.checkinData.checkin_alert_primetime;
+    
+    if($scope.checkinData.max_no_of_keys === "ROOM_OCCUPANCY"){
+      $scope.checkinData.max_keys_type = "ROOM_OCCUPANCY";
+    }
+    else{
+       $scope.checkinData.max_keys_type = "other";
+       $scope.checkinData.no_of_keys = angular.copy($scope.checkinData.max_no_of_keys);
+    }
   };
 
   /*
@@ -166,6 +174,15 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
 
     var startAutoCheckinFrom = ($scope.checkinData.auto_checkin_from_hour !== "" && $scope.checkinData.auto_checkin_from_minute !== "" && $scope.checkinData.auto_checkin_from_hour && $scope.checkinData.auto_checkin_from_minute) ? $scope.checkinData.auto_checkin_from_hour + ":" + $scope.checkinData.auto_checkin_from_minute : "";
     var startAutoCheckinTo = ($scope.checkinData.auto_checkin_to_hour !== "" && $scope.checkinData.auto_checkin_to_minute !== "" && $scope.checkinData.auto_checkin_to_hour && $scope.checkinData.auto_checkin_to_minute) ? $scope.checkinData.auto_checkin_to_hour + ":" + $scope.checkinData.auto_checkin_to_minute : "";
+    
+    var max_no_of_keys = "";
+    if($scope.checkinData.max_keys_type === "ROOM_OCCUPANCY"){
+      max_no_of_keys = "ROOM_OCCUPANCY";
+    }
+    else{
+       max_no_of_keys = $scope.checkinData.no_of_keys;
+    };
+
     var uploadData = {
       'checkin_alert_message': $scope.checkinData.checkin_alert_message,
       'checkin_staff_alert_option': $scope.checkinData.checkin_staff_alert_option,
@@ -215,7 +232,12 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'zest_checkin_now_text':$scope.checkinData.zest_checkin_now_text,
       'eta_enforcement':$scope.checkinData.eta_enforcement,
       'zestweb_enforce_deposit':$scope.checkinData.zestweb_enforce_deposit,
-      'enforce_country_sort' : $scope.checkinData.enforce_country_sort
+      'enforce_country_sort' : $scope.checkinData.enforce_country_sort,
+      'key_prompt_on' : $scope.checkinData.key_prompt_on,
+      'key_prompt_title' : $scope.checkinData.key_prompt_title,
+      'key_prompt_text': $scope.checkinData.key_prompt_text,
+      'key_prompt_save_error' : $scope.checkinData.key_prompt_save_error,
+      'max_no_of_keys' : max_no_of_keys
     };
 
     var saveCheckinDetailsFailureCallback = function (data) {
