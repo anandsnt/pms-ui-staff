@@ -35,12 +35,12 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 				'guest_email': $stateParams.guest_email,
 				'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
 				'balance_amount': $stateParams.balance_amount,
-				'pre_auth_amount_at_checkin' : $stateParams.pre_auth_amount_at_checkin,
-				'authorize_cc_at_checkin' : $stateParams.authorize_cc_at_checkin,
+				'pre_auth_amount_at_checkin': $stateParams.pre_auth_amount_at_checkin,
+				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin,
 				'deposit_amount': $stateParams.deposit_amount,
 				'confirmation_number': $stateParams.confirmation_number
 			};
-                        console.info('to card swipe ctrl params: ',stateParams)
+			console.info('to card swipe ctrl params: ', stateParams)
 			$state.go('zest_station.checkInCardSwipe', stateParams);
 		};
 
@@ -62,7 +62,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 			//back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 				if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
-					$state.go('zest_station.checkInReservationDetails',$stateParams);
+					$state.go('zest_station.checkInReservationDetails', $stateParams);
 				} else {
 					var stateParams = {
 						'guest_id': $stateParams.guest_id,
@@ -75,8 +75,8 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 						'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
 						'first_name': $stateParams.first_name,
 						'balance_amount': $stateParams.balance_amount,
-						'pre_auth_amount_at_checkin' : $stateParams.pre_auth_amount_at_checkin,
-						'authorize_cc_at_checkin' : $stateParams.authorize_cc_at_checkin
+						'pre_auth_amount_at_checkin': $stateParams.pre_auth_amount_at_checkin,
+						'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 					}
 					$state.go('zest_station.checkInTerms', stateParams);
 				}

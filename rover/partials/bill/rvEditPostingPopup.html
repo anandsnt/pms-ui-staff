@@ -23,12 +23,12 @@
                     <input ng-model="chargecodeData.chargeCodeSearchText" ng-keyup="chargeCodeEntered()" name="search-codes" id="search-codes" type="text" placeholder="{{'SEARCH_OR_SELECT_CODES_PLACEHOLDER' | translate}}" value="" autocomplete="off" />
                     <div class="mini-select" ng-click = "showAvailableChargeCodes()"></div>
                 </div>
-                <div ng-show="(chargecodeData.chargeCodeSearchText.length>2 || showChargeCodes)">
+                <div ng-show="isShowChargeCodeList()">
                     <!-- Charge code Results / content -->
-                    <div class="company-card-results charge-code-list" ng-show="isShowChargeCodeList()"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
+                    <div class="company-card-results charge-code-list"   ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
                         <div class="search-results">
                             <ul id="search-list">
-                                <li ng-repeat="chargeCode in availableChargeCodes" ng-click="selectChargeCode(chargeCode.id)" ng-show="chargeCode.is_row_visible === true">
+                                <li ng-repeat="chargeCode in availableChargeCodes" ng-click="selectChargeCode(chargeCode.id)" ng-show="chargeCode.is_row_visible === true || showChargeCodes">
                                     <h4 class="text-bold first-text" ng-class="{'grey':isChargeCodeSelected(chargeCode)}" ng-bind-html="chargeCode.name|highlight:chargecodeData.chargeCodeSearchText:false"></h4> &nbsp;
                                     <h4 class="text-bold" ng-class="{'grey':isChargeCodeSelected(chargeCode)}" ng-bind-html="chargeCode.description|highlight:chargecodeData.chargeCodeSearchText:false"></h4>
                                 </li>

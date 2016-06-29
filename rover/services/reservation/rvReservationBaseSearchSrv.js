@@ -283,13 +283,11 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             that['rates'] = [];
 
             // Make this call IFF there is a group/ allotment attached
-            if (params.group_id || params.allotment_id) {
+            if (params.group_id) {
                 promises.push(that.fetchGroupRates(params).then(function(response) {
                     _.each(response.rates, function(rate) {
-                        rate.isGroupRate = !!params.group_id;
-                        rate.isAllotmentRate = !!params.allotment_id;
                         if (rate.id === null) {
-                            rate.id = !!params.allotment_id ? 'ALLOTMENT_CUSTOM_' + params.allotment_id : 'GROUP_CUSTOM_' + params.group_id
+                            rate.id = '_CUSTOM_' + params.group_id;
                         }
                     });
                     that['rates'] = that['rates'].concat(response.rates);

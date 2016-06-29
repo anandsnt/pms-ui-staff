@@ -27,7 +27,8 @@
             <h3>{{ uiChosenReport.title }}<span>Configure report</span></h3>
             <div class="configure-report" ng-include="'/assets/partials/reports/filters/rvReportListFilters.html'"></div>
         </div>
-        <div class="column-actions" ng-class="{'two-buttons': uiChosenReport.display_export_button && !hideExportOption}">
+    </div>
+    <div class="column-actions" ng-class="{'two-buttons': uiChosenReport.display_export_button && !hideExportOption}">
             <button type="button" class="button purple"
                 ng-click="exportCSV(uiChosenReport)"
                 ng-show="uiChosenReport.display_export_button && !hideExportOption">Export</button>
@@ -35,5 +36,4 @@
                 ng-click="setnGenReport(uiChosenReport)"
                 ng-show="uiChosenReport.display_show_button">Show</button>
         </div>
-    </div>
 </div>

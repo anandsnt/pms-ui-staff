@@ -1,4 +1,7 @@
 var Grid = React.createClass({
+	componentDidUpdate: function(){
+		this.props.iscroll.grid.refresh();
+	},
 	componentDidMount: function() {
 		var iscroll = this.props.iscroll;
 
