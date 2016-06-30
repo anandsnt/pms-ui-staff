@@ -63,7 +63,7 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     __onListSelect: function(index) {
-        //this.props.iscroll.unassignedList.disable();
+        this.props.iscroll.unassignedList.disable();
         this.setState({
             selectedIndex: index.toString()
         });
