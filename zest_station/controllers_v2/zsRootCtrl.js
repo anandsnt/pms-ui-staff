@@ -46,6 +46,9 @@ sntZestStation.controller('zsRootCtrl', [
 			$state.go('zest_station.speakToStaff');
 		});
 
+		$scope.trustAsHtml = function(string) {
+ 		    return $sce.trustAsHtml(string);
+ 		};
 		/**
 		 * events for showing/hiding the back button and close button
 		 * @param  {[type]} event
