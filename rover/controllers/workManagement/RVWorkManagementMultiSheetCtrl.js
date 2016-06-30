@@ -907,7 +907,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		};
 
 		var checkAutoScroll = function() {
-			if ( $scope.$parent.hasOwnProperty('myScroll') && $scope.$parent.myScroll.hasOwnProperty('worksheetHorizontal') ) {
+			if (!!$scope.getScroller('worksheetHorizontal')) {
 				setUpAutoScroller();
 			} else {
 				setTimeout(checkAutoScroll, 100);
