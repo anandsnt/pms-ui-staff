@@ -1,6 +1,7 @@
 <!-- First column - Scheduled reports -->
 <div class="report-col main-col scrfailedollable buttons-1" ng-iscroll="REPORT_SCHEDULES_SCROLL"> <!-- Add vertical scroller here -->
     <ul class="wrapper">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <li class="report-item" ng-repeat="item in schedulesList" ng-class="{'active': item.active}" ng-click="selectSchedule(item, $index)" ng-hide="item.filteredOut"> <!-- Add class "active" when selected + load filters in 2nd column -->
         	<span ng-class="item.reportIconCls"></span>
         	<div class="data">
@@ -28,7 +29,7 @@
     <div class="scrollable" ng-iscroll="SECOND_COLUMN_SCROLL"> <!-- Add vertical scroller here + add class "buttons-3" if it's an existing schedule -->
         <div class="wrapper">
             <h3>Schedule Parameters<span>{{ selectedScheduleDetails.report.title }}</span></h3>
-            <div class="entry">
+            <div class="entry" ng-hide="IsGuestBalanceReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
                     <select ng-model="scheduleParams.time_period_id" ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods" iscroll-stop-propagation>
@@ -36,8 +37,14 @@
                     </select>
                 </div>
             </div>
+           
+            <multi-option-selection ng-show="IsGuestBalanceReport"
+                label="Guest/Account"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasGeneralOptions.data"
+                options="filters.hasGeneralOptions.options"></multi-option-selection>
 
-            <multi-option-selection ng-show="filters.hasGeneralOptions && filters.hasGeneralOptions.data.length"
+            <multi-option-selection ng-show="filters.hasGeneralOptions && filters.hasGeneralOptions.data.length && !IsGuestBalanceReport"
                 label="Option(s)"
                 data="filters.hasGeneralOptions.data"
                 on-update="refreshSecondColumnScroll"

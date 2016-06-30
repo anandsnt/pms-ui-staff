@@ -20,7 +20,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                             deferred.resolve(baseResults);
                         }, function(err) {
                             deferred.reject(err);
-                        })
+                        });
                     } else {
                         deferred.resolve(response);
                     }
@@ -28,7 +28,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                     deferred.resolve(response);
                 }
 
-            }, function(er) {
+            }, function(err) {
                 deferred.reject(err);
             });
             return deferred.promise;
@@ -55,10 +55,10 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             params.exclude_suite = true;
 
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
-                if (!!params.allotment_id || !!params.group_id) {
+                if (!!params.group_id) {
                     _.each(response.results, function(roomType) {
                         if (roomType.rate_id === null) {
-                            roomType.rate_id = !!params.allotment_id ? 'ALLOTMENT_CUSTOM_' + params.allotment_id : 'GROUP_CUSTOM_' + params.group_id
+                            roomType.rate_id = '_CUSTOM_' + params.group_id;
                         }
                     });
                 }
@@ -77,10 +77,10 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             params.exclude_suite = true;
 
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
-                if (!!params.allotment_id || !!params.group_id) {
+                if (!!params.group_id) {
                     _.each(response.results, function(rate) {
                         if (rate.id === null) {
-                            rate.id = !!params.allotment_id ? 'ALLOTMENT_CUSTOM_' + params.allotment_id : 'GROUP_CUSTOM_' + params.group_id
+                            rate.id = '_CUSTOM_' + params.group_id;
                         }
                     });
                 }
@@ -104,7 +104,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             } else {
                 if(params.travel_agent_id || params.company_id
                          || params.group_id || params.allotment_id
-                         || params.promotion_code || params.is_member == "true"){
+                         || params.promotion_code || params.is_member == "true" || defaultView === "RECOMMENDED"){
 
 
                     promises.push(service.fetchRateADRs(params, true).then(function(response) {

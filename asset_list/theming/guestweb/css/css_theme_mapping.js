@@ -20,11 +20,11 @@ module.exports = {
 			'guestweb_montauk' 	: [ themeCSSRoot + 'guestweb_montauk.css'],
 			'guestweb_nikko' 	: [ themeCSSRoot + 'guestweb_nikko.css'],
 			'guestweb_palms' 	: [ themeCSSRoot + 'guestweb_palms.css'],
-			'guestweb_sanctuary' : [ themeCSSRoot + 'guestweb_sanctuary.css'],	
+			'guestweb_sanctuary' : [ themeCSSRoot + 'guestweb_sanctuary.css'],
 			'guestweb_yotel' 	: [ themeCSSRoot + 'guestweb_yotel.css'],
 			'guestweb_zoku' 		: [ themeCSSRoot + 'guestweb_zoku.css'],
 			'guestweb_fontainebleau' 	: [ themeCSSRoot + 'guestweb_fontainebleau.css'],
-			'guestweb_knickerbocker' 	: [ themeCSSRoot + 'guestweb_knickerbocker.css'],		
+			'guestweb_knickerbocker' 	: [ themeCSSRoot + 'guestweb_knickerbocker.css'],
 			'guestweb_margaritaville' 	: [ themeCSSRoot + 'guestweb_margaritaville.css'],
 			'guestweb' 	: [ themeCSSRoot + 'guestweb.css'],
 			'guestweb_galleria' 	: [ themeCSSRoot + 'guestweb_galleria.css'],
@@ -59,7 +59,10 @@ module.exports = {
 			'guestweb_valencia_santana_row':[ themeCSSRoot + 'guestweb_valencia_santana_row.css'],
 			'guestweb_sorella_houston':[ themeCSSRoot + 'guestweb_sorella_houston.css'],
 			'guestweb_monte_carlo' 	: [ themeCSSRoot + 'guestweb_monte_carlo.css'],
-			'guestweb_sorella_kansas_city':[ themeCSSRoot + 'guestweb_sorella_kansas_city.css']
+			'guestweb_sorella_kansas_city':[ themeCSSRoot + 'guestweb_sorella_kansas_city.css'],
+			'guestweb_Pasea':[ themeCSSRoot + 'guestweb_Pasea.css'],
+			'guestweb_sobro':[ themeCSSRoot + 'guestweb_sobro.css'],
+			'guestweb_covington':[ themeCSSRoot + 'guestweb_covington.css']
 		}
 	}
 }

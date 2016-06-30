@@ -98,8 +98,6 @@
    "RES_AUTH_REMAIN": "Please Authorize a Credit Card for Stay Charges ",
    "RES_AUTH_REMAIN_SUB": "authorize remaining amount due (auth after deposit)...",
    
-   "RES_AUTH": "Please Complete Check-in (auth no deposit)...",
-   "RES_AUTH_SUB": "Please Swipe",
    
    
    "SWIPE_CARD_PLEASE": "Swipe Credit Card",
@@ -191,8 +189,9 @@
 
 
 
-
-
+   "EARLY_DONE":"Done",
+   "EARLY_CONTINUE":"Continue",
+   "EARLY_HEADER":"You're a little early!",
    "EARLY_AVAIL_HEADER":"You're a little early!",
    "EARLY_AVAIL_SUB_HEADER":"Our standard check in time is ",
    "EARLY_AVAIL_SUB_HEADER_2":"Early check-in is available for a fee of only",
@@ -244,7 +243,6 @@
    "RES_SRCH_TALK_SUB":"To a Staff Member ",
 
 
-   "CHECKOUT_BILL_NO_EMAIL":"Thanks for doing Zoku (no email on file)",
    "USER_CHECKED_OUT_ALRDY_HEADER":"Sorry",
    "USER_CHECKED_OUT_ALRDY_SUB":"You have already been checked out.",
    "USER_CHECKED_OUT_ALRDY_RTN":"Return",
@@ -335,7 +333,7 @@
 
    "EMAIL_TEXT": "E-Mail",
    "EDIT_EMAIL": "Edit My E-mail Address",
-   "CONTINUE_TEXT": "Continue",
+   
    "SEND_EMAIL": "Send E-Mail",
    "EMAIL_SENT_MSG": "The e-mail has been delivered.",
 
@@ -383,6 +381,7 @@
      "ADMIN_TIME_POP": "Idle Screen Prompt After (Seconds)",
      "ADMIN_WORKSTATION": "Work Station",
      "ADMIN_STATION_PRINTER": "Select Printer",
+     "ADMIN_STATION_DEMOMODE": "Demo Mode",
 
 
      "CHECKIN_KEY_FAIL" : "Check-In Key Fail",
@@ -403,7 +402,20 @@
      "PICKUP_KEY_FAIL_RESERVATION" : "Pickup Key Fail, Reservation Error",
      "SERVICE_FAILURE" : " : Service Failure, Restart Service",
      "PICKUP_KEY_FAIL_EMPTY" : "Pickup Key Fail, Empty Key Dispenser",
-     "CHECKOUT_PRINT_FAILED" : "Check-Out Print Fail"
+     "CHECKOUT_PRINT_FAILED" : "Check-Out Print Fail",
 
+    "CHECKIN_COMPLETED_HEADER" : "Thanks for living @ Zoku",
+    "CHECKIN_DONE_BTN" :  "Done",
+    "PRINT_SUCCESS_AND_KEY_SUCCESS" :"Your registration has been printed below.",
+    "PRINT_FAILED_AND_KEY_SUCCESS" : "",
+    "PRINT_SUCCESS_AND_KEY_FAILED" :"",
+    "PRINT_FAILED_AND_KEY_FAILED" : "",
+    "EMAIL_SUCCESS_AND_KEY_SUCCESS" : "",
+    "EMAIL_FAILED_AND_KEY_SUCCESS" : "",
+    "EMAIL_SUCCESS_AND_KEY_FAILED" : "",
+    "EMAIL_FAILED_AND_KEY_FAILED" : "",
+
+   "MAKE_KEY_TEXT_TWO": "Make Key 2",
+   "MAKE_KEY_TEXT_ONE": "Make Key"
 
 }

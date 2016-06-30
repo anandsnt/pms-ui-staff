@@ -1,7 +1,8 @@
-sntRover.controller('RVfrontDeskDashboardController',['$scope', '$rootScope', function($scope, $rootScope){
+sntRover.controller('RVfrontDeskDashboardController',['$scope', '$rootScope', 'statistics', function($scope, $rootScope, statistics){
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
+  $scope.statistics = statistics;
 	//scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
   	$scope.setScroller('dashboard_scroller', scrollerOptions);

@@ -20,7 +20,7 @@ sntZestStation.controller('zsAdminCtrl', [
             $state.go('zest_station.home');
         });
 
-        $scope.navToPrev = function(){
+        $scope.navToPrev = function() {
             $state.go('zest_station.home');
         };
 
@@ -57,11 +57,10 @@ sntZestStation.controller('zsAdminCtrl', [
                 return workstation.id == $scope.zestStationData.set_workstation_id;
             });
             $scope.workstation = {}
-            if(typeof selectedWorkStation !== 'undefined'){
+            if (typeof selectedWorkStation !== 'undefined') {
                 $scope.workstation.selected = parseInt(selectedWorkStation.id);
                 $scope.workstation.printer = selectedWorkStation.printer;
-            }
-            else{
+            } else {
                 $scope.workstation.selected = "";
                 $scope.workstation.printer = ""
             }
@@ -84,6 +83,7 @@ sntZestStation.controller('zsAdminCtrl', [
          */
         var submitLogin = function() {
             $scope.hasLoader = true;
+            $scope.callBlurEventForIpad();
             var onSuccess = function(response) {
                 if (response.admin) {
                     $scope.mode = "admin-screen-active";
@@ -116,7 +116,12 @@ sntZestStation.controller('zsAdminCtrl', [
         /**
          * Go to home page
          **/
-        $scope.cancelAdminSettings = function() {
+        var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled;
+        $scope.cancelAdminSettings = function(a) {
+            if (!a) {
+                console.info('setting demo mode back to: ', lastDemoModeSetting);
+                $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
+            }
             $state.go('zest_station.home');
             setTimeout(function() {
                 $rootScope.$broadcast('REFRESH_SETTINGS', {
@@ -131,7 +136,7 @@ sntZestStation.controller('zsAdminCtrl', [
          **/
         $scope.loginAdmin = function() {
             $scope.mode = "admin-name-mode";
-            $scope.headingText = 'Admin Username';
+            $scope.headingText = 'Admin Username'; //TODO: need to move this out to a tag.
             $scope.passwordField = false;
             showNavButtons();
         };
@@ -146,8 +151,9 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.userName = angular.copy($scope.input.inputTextValue);
                 $scope.input.inputTextValue = "";
                 $scope.mode = "admin-password-mode";
-                $scope.headingText = 'Admin Password';
+                $scope.headingText = 'Admin Password'; //TODO: need to move this out to a tag.
                 $scope.passwordField = true;
+                $scope.callBlurEventForIpad();
             } else {
                 //user has entered password
                 $scope.adminLoginError = false;
@@ -203,14 +209,14 @@ sntZestStation.controller('zsAdminCtrl', [
                 });
                 $scope.zestStationData.set_workstation_id = station.id;
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
-                $scope.zestStationData.key_encoder_id =  station.key_encoder_id;
+                $scope.zestStationData.key_encoder_id = station.key_encoder_id;
                 $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, {
                     'status': $scope.zestStationData.workstationStatus,
                     'reason': $scope.zestStationData.workstationOooReason
                 });
                 var workStationstorageKey = 'snt_zs_workstation';
                 localStorage.setItem(workStationstorageKey, $scope.savedSettings.kiosk.workstation.station_identifier);
-                $scope.zestStationData.workstationStatus === 'out-of-order' ? $state.go('zest_station.outOfService') : $scope.cancelAdminSettings(); //navigate to home screen
+                $scope.zestStationData.workstationStatus === 'out-of-order' ? $state.go('zest_station.outOfService') : $scope.cancelAdminSettings(true); //navigate to home screen
             };
             var failureCallBack = function(response) {
                 console.warn('unable to save workstation settings');
@@ -272,6 +278,8 @@ sntZestStation.controller('zsAdminCtrl', [
             var failureCallBack = function(response) {
                 console.warn('failed to save settings');
                 console.log(response);
+                console.info('save setting failed, set demo mode to last setting');
+                $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
             };
             var options = {
                 params: params,
@@ -305,7 +313,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 );
             }
         };
-
+        var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled;
         var initialize = function() {
             $scope.adminLoginError = false;
             $scope.input = {
@@ -315,14 +323,14 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.passWord = "";
             hideNavButtons();
             $scope.setScroller('admin-screen');
-            
-            
-            var localDebugging = false;//change this if testing locally, be sure to make false if going up to dev/release/prod
-            if (localDebugging && !($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad))){
+
+
+            var localDebugging = false; //change this if testing locally, be sure to make false if going up to dev/release/prod
+            if (localDebugging && !($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad))) {
                 $scope.isIpad = true;
                 $scope.zestStationData.isAdminFirstLogin = true;
             }
-            
+
             //if invoked from chrome app or ipad
             //show direct admin without login
             if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)) {
@@ -331,6 +339,9 @@ sntZestStation.controller('zsAdminCtrl', [
             } else {
                 $scope.mode = 'login-mode';
             };
+            setTimeout(function() {
+                refreshScroller(); //maybe need to update layout, but this works to fix scroll issue on admin after page load
+            }, 1000);
 
         }();
     }

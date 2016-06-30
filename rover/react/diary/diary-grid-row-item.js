@@ -16,7 +16,6 @@ var GridRowItem = React.createClass({
 	},
 
 	componentWillReceiveProps: function(nextProps) {
-
 		var meta_id = this.props.meta.occupancy.id,
 			edit = nextProps.edit,
 			editing = edit.active,

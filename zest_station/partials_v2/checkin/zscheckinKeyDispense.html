@@ -1,7 +1,7 @@
 <!--------------------- select no of keys mode ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_MODE'">
    <div id="content">
-        <h2 class="no-margin">{{'CHKED_IN_SUCCESS_HEADER' |translate}} {{selectedReservation.guest_details[0].first_name}}.</h2>
+        <h2 class="no-margin">{{'CHKED_IN_SUCCESS_HEADER' |translate}} {{first_name}}.</h2>
         <h1>{{'CHKED_IN_SUCCESS_MSG' |translate}}</h1>
         <div id="room" ng-show="zestStationData.show_room_number">
             <span class="number">{{room}}</span>
@@ -14,7 +14,7 @@
             </div>
         </div>
     </div>
-    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
 
 <!---------------------solo key one in progres ------------------------>
@@ -22,9 +22,13 @@
     <div id="content">
         <h1 translate>MAKE_KEY</h1>
         <h2 translate>MAKE_KEY_MSG</h2>
-         <div id="keys" ng-hide="remoteEncoding">
+         <div id="keys" ng-hide="remoteEncoding || icmp">
             <div ng-include="icons.url.createkey"></div>
         </div>
+        <div id="keys" ng-show="icmp">
+            <div ng-include="icons.url.createkey_icmp"></div>
+        </div>
+        <button ng-show="remoteEncoding" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_ONE' |translate}} </button>
     </div>
 </section>
 
@@ -33,9 +37,13 @@
     <div id="content">
         <h1 translate>MAKE_FIRST_KEY</h1>
         <h2 translate>MAKE_FIRST_KEY_SUB</h2>
-        <div id="keys" ng-hide="remoteEncoding">
+        <div id="keys" ng-hide="remoteEncoding || icmp">
             <div ng-include="icons.url.createkey"></div>
         </div>
+        <div id="keys" ng-show="icmp">
+            <div ng-include="icons.url.createkey_icmp"></div>
+        </div>
+        <button  ng-show="remoteEncoding" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_ONE' |translate}} </button>
     </div>
 </section>
 
@@ -44,9 +52,13 @@
     <div id="content">
         <h1 translate>MADE_FIRST_KEY_MSG</h1>
         <h2 translate>MADE_FIRST_KEY_MSG_SUB</h2>
-         <div id="keys" ng-hide="remoteEncoding">
+        <div id="keys" ng-hide="remoteEncoding || icmp">
             <div ng-include="icons.url.createkey"></div>
         </div>
+        <div id="keys" ng-show="icmp">
+            <div ng-include="icons.url.createkey_icmp"></div>
+        </div>
+        <button ng-show="remoteEncoding" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_TWO' |translate}} </button>
     </div>
 </section>
 
@@ -95,4 +107,5 @@
             </ul>
         </nav>
     </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>

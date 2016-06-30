@@ -1,27 +1,27 @@
- <div id="dashboard-occupancy" class="dashboard-block data">
-        <h3>Occupancy</h3>
-        <div class="house-col">
-            <h4 class="green">Arrivals</h4>
-            <ul>
-                <li>Today<span>{{statisticsData.occupancy.arrivals.today | round}}</span></li>
-                <li>{{tomorrow|date:monthAndDate}}<span>{{statisticsData.occupancy.arrivals.tomorrow | round}}</span></li>
-                <li>{{dayAfterTomorrow|date:monthAndDate}}<span>{{statisticsData.occupancy.arrivals.day_after_tomorrow | round}}</span></li>
-            </ul>
-        </div>
-        <div class="house-col">
-            <h4 class="blue">Stayovers</h4>
-            <ul>
-                <li>Today<span>{{statisticsData.occupancy.stayover.today | round}}</span></li>
-                <li>{{tomorrow|date:monthAndDate}}<span>{{statisticsData.occupancy.stayover.tomorrow | round}}</span></li>
-                <li>{{dayAfterTomorrow|date:monthAndDate}}<span>{{statisticsData.occupancy.stayover.day_after_tomorrow | round}}</span></li>
-            </ul>
-        </div>
-        <div class="house-col">
-            <h4 class="red">Departures</h4>
-            <ul>
-                <li>Today<span>{{statisticsData.occupancy.departures.today | round}}</span></li>
-                <li>{{tomorrow|date:monthAndDate}}<span>{{statisticsData.occupancy.departures.tomorrow | round}}</span></li>
-                <li>{{dayAfterTomorrow|date:monthAndDate}}<span>{{statisticsData.occupancy.departures.day_after_tomorrow | round}}</span></li>
-            </ul>
-        </div>
+ <div id="dashboard-occupancy" class="dashboard-block">
+    <h3>Occupancy</h3>
+    <div class="house-col">
+        <h4 class="green">Arrivals</h4>
+        <ul class="data">
+            <li>Today<span class="value">{{statisticsData.occupancy.arrivals.today | round}}</span></li>
+            <li>{{tomorrow|date:monthAndDate}}<span class="value">{{statisticsData.occupancy.arrivals.tomorrow | round}}</span></li>
+            <li>{{dayAfterTomorrow|date:monthAndDate}}<span class="value">{{statisticsData.occupancy.arrivals.day_after_tomorrow | round}}</span></li>
+        </ul>
     </div>
+    <div class="house-col">
+        <h4 class="blue">Stayovers</h4>
+        <ul class="data">
+            <li>Today<span class="value">{{statisticsData.occupancy.stayover.today | round}}</span></li>
+            <li>{{tomorrow|date:monthAndDate}}<span class="value">{{statisticsData.occupancy.stayover.tomorrow | round}}</span></li>
+            <li>{{dayAfterTomorrow|date:monthAndDate}}<span class="value">{{statisticsData.occupancy.stayover.day_after_tomorrow | round}}</span></li>
+        </ul>
+    </div>
+    <div class="house-col">
+        <h4 class="red">Departures</h4>
+        <ul class="data">
+            <li>Today<span class="value">{{statisticsData.occupancy.departures.today | round}}</span></li>
+            <li>{{tomorrow|date:monthAndDate}}<span class="value">{{statisticsData.occupancy.departures.tomorrow | round}}</span></li>
+            <li>{{dayAfterTomorrow|date:monthAndDate}}<span class="value">{{statisticsData.occupancy.departures.day_after_tomorrow | round}}</span></li>
+        </ul>
+    </div>
+</div>

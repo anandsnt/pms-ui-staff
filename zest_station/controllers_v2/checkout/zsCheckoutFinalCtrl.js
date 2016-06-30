@@ -6,10 +6,10 @@ sntZestStation.controller('zsCheckoutFinalCtrl', [
 	function($scope, $stateParams, $state, zsEventConstants) {
 
 		/**********************************************************************************************
-		**		Expected state params -----> printopted			  
-		**		Exit function -> $scope.navToHome								
-		**																		 
-		***********************************************************************************************/
+		 **		Expected state params -----> printopted			  
+		 **		Exit function -> $scope.navToHome								
+		 **																		 
+		 ***********************************************************************************************/
 
 		/**
 		 * [initializeMe description]
@@ -25,7 +25,7 @@ sntZestStation.controller('zsCheckoutFinalCtrl', [
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
 		}();
 
-		$scope.navToHome = function(){
+		$scope.navToHome = function() {
 			$state.go('zest_station.home');
 		};
 

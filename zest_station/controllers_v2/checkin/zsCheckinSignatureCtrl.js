@@ -12,13 +12,13 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
     function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv) {
 
         /**********************************************************************************************
-        **      Please note that, not all the stateparams passed to this state will not be used in this state, 
-        **      however we will have to pass this so as to pass again to future states which will use these.
-        **
-        **      Expected state params -----> reservation_id, room_no,  first_name, guest_id and email           
-        **      Exit function -> afterGuestCheckinCallback                             
-        **                                                                       
-        ***********************************************************************************************/
+         **      Please note that, not all the stateparams passed to this state will not be used in this state, 
+         **      however we will have to pass this so as to pass again to future states which will use these.
+         **
+         **      Expected state params -----> reservation_id, room_no,  first_name, guest_id and email           
+         **      Exit function -> afterGuestCheckinCallback                             
+         **                                                                       
+         ***********************************************************************************************/
 
         /**
          * TWO MODES
@@ -35,8 +35,8 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             $("#signature").jSignature("clear");
         };
 
-        var checkIfEmailIsBlackListedOrValid = function(){
-            return  ($stateParams.email.length> 0 && !($stateParams.guest_email_blacklisted ==='true') && zsUtilitySrv.isValidEmail($stateParams.email));
+        var checkIfEmailIsBlackListedOrValid = function() {
+            return ($stateParams.email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail($stateParams.email));
         };
 
         /**
@@ -47,19 +47,20 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
         var afterGuestCheckinCallback = function(response) {
             //if email is valid and is not blacklisted
             var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid();
-            console.info('current state params: ',$stateParams)
+            console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams)
             var stateParams = {
-                    'guest_id': $stateParams.guest_id,
-                    'reservation_id': $stateParams.reservation_id,
-                    'room_no': $stateParams.room_no,
-                    'first_name': $stateParams.first_name
+                'guest_id': $stateParams.guest_id,
+                'reservation_id': $stateParams.reservation_id,
+                'room_no': $stateParams.room_no,
+                'first_name': $stateParams.first_name
             };
 
-
+            console.info('haveValidGuestEmail: ', haveValidGuestEmail);
             if (haveValidGuestEmail) {
                 stateParams.email = $stateParams.email;
                 $state.go('zest_station.checkinKeyDispense', stateParams);
             } else {
+                console.warn('to email collection: ', stateParams)
                 $state.go('zest_station.checkInEmailCollection', stateParams);
             }
 
