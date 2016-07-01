@@ -260,10 +260,15 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 action_task: {
                     id: $scope.selectedAction.id
                 },
-                reservation_id: $scope.selectedAction.reservation_id,
                 assigned_to: $scope.selectedAction.department || null,
                 due_at: dateFilter($scope.selectedAction.dueDate, $rootScope.dateFormatForAPI) +
                 ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : "")
+            }
+
+            if($scope.selectedAction.selectedView == "GUEST") {
+                payLoad.reservation_id = $scope.selectedAction.reservation_id;
+            } else if($scope.selectedAction.selectedView == "GROUP") {
+                payLoad.group_id = $scope.selectedAction.group_id;
             }
 
             if ($scope.selectedAction.action_status === $scope._actionCompleted) {
@@ -297,9 +302,8 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         $scope.toGroup = function () {
             //Store the state of the filters so that while coming back from staycard the correct page can be loaded
             rvActionTasksSrv.setFilterState($scope.filterOptions);
-            $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-                "id": $scope.selectedAction.reservation_id,
-                "confirmationId": $scope.selectedAction.reservation_confirm_no,
+            $state.go('rover.groups.config', {
+                "id": $scope.selectedAction.group_id,
                 "isrefresh": false
             });
         };

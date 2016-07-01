@@ -1275,7 +1275,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
             /** @type {Array} states that are part of a proper flow */
             var flowStates = [
-                'rover.reservation.staycard.reservationcard.reservationdetails'
+                'rover.reservation.staycard.reservationcard.reservationdetails',
+                'rover.actionsManager'
             ];
 
             // if its part of reservation flow
