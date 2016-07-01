@@ -2132,6 +2132,7 @@ angular.module('sntRover')
 		$scope.gridProps.availability.resize.last_departure_time = null;
 		if(!$scope.gridProps.edit.active) {
 			$scope.Availability();
+			$scope.gridProps.unassignedRoomList.reset();
 		} else if ( $scope.gridProps.filter.arrival_time === '' ) {
 			$scope.clearAvailability();
 			$scope.resetEdit();
@@ -2142,6 +2143,7 @@ angular.module('sntRover')
 	$scope.clickedOnRoomType = function(){
 		if ( !$scope.gridProps.edit.active && !!$scope.gridProps.filter.room_type ) {
 			$scope.Availability();
+			$scope.gridProps.unassignedRoomList.reset();
 		} else if ( $scope.gridProps.filter.room_type === null ) {
 			$scope.clearAvailability();
 			$scope.resetEdit();

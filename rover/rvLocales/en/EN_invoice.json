@@ -21,4 +21,5 @@
 "CREDIT_AMOUNT" 	: "Credit amount",
 "REF_NO:"			: "Reference No.: ",
 "TAX_ID:"			: "Tax ID: ",
-"AR_NUMBER:"		: "AR No.: "
+"AR_NUMBER:"		: "AR No.: ",
+"AR_NO:"            : "AR Number: "
