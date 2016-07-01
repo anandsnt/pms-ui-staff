@@ -415,6 +415,38 @@
                     </div>
                     <ad-toggle-button is-checked="checkinData.enforce_country_sort" label="{{'ENFORCE_COUNTRY_SORT'| translate}}" div-class="full-width"></ad-toggle-button>
                 </fieldset>
+                 <!-- no of keys -->
+                <fieldset class="holder full-width">
+                    <div class="form-title half-width-title">
+                        <h3><span translate="">NO_OF_KEYS</span> </h3>
+                    </div>
+                    <div class="form-subtitle-title">
+                        <h6><span translate="">NO_OF_KEYS_INSTRUCTION</span> </h6>
+                    </div>
+                    <fieldset class="holder left">
+                        <ad-toggle-button is-checked="checkinData.key_prompt_on" label="{{'PROMPT_FOR_KEYS'| translate}}" div-class="full-width"></ad-toggle-button>
+                        <ad-textbox value="checkinData.key_prompt_title" label="{{'PROMPT_FOR_KEYS_TITLE' | translate}}" styleclass="full-width" placeholder=""></ad-textbox>
+                        <ad-textbox value="checkinData.key_prompt_text" label="{{'PROMPT_FOR_KEYS_TEXT' | translate}}" styleclass="full-width" placeholder=""></ad-textbox>
+                        <ad-textbox value="checkinData.key_prompt_save_error" label="{{'PROMPT_FOR_KEYS_ERROR_MESSAGE' | translate}}" styleclass="full-width" placeholder=""></ad-textbox>
+                        <div id="options" class="entry full-width">
+                            <label>
+                                {{ 'MAXIMUM_NO_OF_KEYS' | translate}}
+                            </label>
+                            <label class="radio" ng-class="{'checked':checkinData.max_keys_type== 'ROOM_OCCUPANCY'}">
+                                <span class="icon-form icon-radio " ng-class="{checked:checkinData.max_keys_type=='ROOM_OCCUPANCY'}"></span>
+                                <input type="radio" value="ROOM_OCCUPANCY" ng-model="checkinData.max_keys_type"> {{ 'MAX_ROOM_OCCUPANCY' | translate}}
+                            </label>
+                            <label class="radio" ng-class="{'checked':checkinData.max_keys_type == 'other'}">
+                                <span class="icon-form icon-radio " ng-class="{checked:checkinData.max_keys_type == 'other'}"></span>
+                                <input type="radio" value="other" ng-model="checkinData.max_keys_type"> {{ 'OTHER' | translate}}
+                            </label>
+                        </div>
+                        <div class="select select-col col1-3" ng-show="checkinData.max_keys_type === 'other'">
+                            <select ng-options="key for key  in [1,2,3,4,5,6,7,8,9,10]" ng-model="checkinData.no_of_keys">
+                            </select>
+                        </div>
+                    </fieldset>
+                </fieldset>
                 <div class="actions float">
                     <button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline">{{ 'CANCEL' | translate}}</button>
                     <button type="button" ng-click="saveCheckin()" class="button green">{{ 'SAVE_CHANGES' | translate}}</button>
