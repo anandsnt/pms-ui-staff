@@ -116,10 +116,10 @@
             </figure>
             <div class="data">
                 <h1 ng-if="filterOptions.selectedView === 'GUEST'">{{selectedAction.guest_name}}</h1>
-                <h1 ng-if="filterOptions.selectedView === 'GROUP'">A GROUP</h1>
+                <h1 ng-if="filterOptions.selectedView === 'GROUP'">{{selectedAction.group_name}}</h1>
                 <strong ng-if="selectedAction.room_no" ng-if="filterOptions.selectedView === 'GUEST'">Room {{selectedAction.room_no}}</strong>
             </div>
-            <div class="dates">
+            <div class="dates" ng-if="filterOptions.selectedView === 'GUEST'">
                 <div class="date">
                     <span class="guest-status small-icon check-in">check-in</span>
                     {{selectedAction.arrival_date | date:dayInWeek }}&nbsp;{{selectedAction.arrival_date |
@@ -133,8 +133,21 @@
                     &nbsp;{{selectedAction.departure_time}}
                 </div>
             </div>
-            <button type="button" class="button brand-colors" ng-click="toStayCard()" ng-if="filterOptions.selectedView === 'GUEST'">Stay Card</button>
-            <button type="button" class="button brand-colors" ng-click="toGroup()" ng-if="filterOptions.selectedView === 'GROUP'">Group</button>
+
+            <div class="dates" ng-if="filterOptions.selectedView === 'GROUP'">
+                <div class="date">
+                    <span class="guest-status small-icon check-in">check-in</span>
+                    {{selectedAction.from_date | date:dayInWeek }}&nbsp;{{selectedAction.from_date |
+                    date:dateFormat}}
+                </div>
+                <div class="date">
+                    <span class="guest-status small-icon check-out">check-out</span>
+                    {{selectedAction.to_date|date:dayInWeek}}&nbsp;{{selectedAction.to_date | date:
+                    dateFormat}}
+                </div>
+            </div>
+            <button type="button" class="button brand-colors" ng-click="toStayCard()" ng-show="filterOptions.selectedView === 'GUEST'">Stay Card</button>
+            <button type="button" class="button brand-colors" ng-click="toGroup()" ng-show="filterOptions.selectedView === 'GROUP'">Group</button>
         </div>
         <div class="summary">
             <div id="action-summary">

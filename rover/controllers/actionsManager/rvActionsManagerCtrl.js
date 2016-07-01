@@ -106,11 +106,17 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 if (!!$scope.filterOptions.query) {
                     payLoad.query = $scope.filterOptions.query;
                 }
-
-                $scope.callAPI(rvActionTasksSrv.fetchActions, {
+                if($scope.filterOptions.selectedView == "GUEST"){
+                    $scope.callAPI(rvActionTasksSrv.fetchActions, {
                     params: payLoad,
                     successCallBack: onFetchListSuccess
                 });
+                } else if($scope.filterOptions.selectedView == "GROUP"){
+                    $scope.callAPI(rvActionTasksSrv.fetchGroupActions, {
+                    params: payLoad,
+                    successCallBack: onFetchListSuccess
+                });
+                }
             },
             updateListEntry = function () {
                 var currentAction = _.find($scope.actions, function (action) {
