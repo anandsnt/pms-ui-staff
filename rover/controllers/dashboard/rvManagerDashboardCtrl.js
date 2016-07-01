@@ -4,7 +4,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
   var that = this;
   //scroller related settings
   var scrollerOptions = {
-    preventDefault: false    
+    preventDefault: false
   };
 
   $scope.isStatisticsOpened = false;
@@ -164,6 +164,10 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
     'show_upsell' : true,
     'show_rate_of_day' : true
   };
+  //CICO-31344
+  if(!$scope.isStandAlone) {
+    requestParams.show_adr = false;
+  }
   if($scope.isStatisticsOpened) {
     $scope.invokeApi(RVDashboardSrv.fetchStatisticData,requestParams,onStatisticsFetchSuccess,onStatisticsFetchFailure);
   } else {
