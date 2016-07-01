@@ -6,8 +6,8 @@
 		var checkin = function(url, data) {
 
 			var deferred = $q.defer();
-			data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "";
-			data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
+			data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
+			data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "WEB";
 			$http.post(url, data).success(function(response) {
 					this.responseData = response;
 					deferred.resolve(this.responseData);
@@ -34,8 +34,8 @@
 		var saveNoKeys = function(data) {
 			var url = '/sample_json/keys/no_of_keys_data.json';
 			var deferred = $q.defer();
-			data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "";
-			data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
+			data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
+			data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "WEB";
 			$http.post(url, data).success(function(response) {
 					this.responseData = response;
 					deferred.resolve(this.responseData);
