@@ -1,0 +1,47 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <!-- request text -->
+    <div class="row" ng-show="isLoading && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">
+                {{screenDetails.errorMessage}}
+            </p>
+            <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-click="skip()" ng-show="!guestBirthdateMandatory"> Skip</a>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- main content -->
+    <div class="row" ng-hide="isLoading || netWorkError">
+        <div class="col-md-4 top-spacing sm-no-top-spacing section-container float-none">
+            <p class="main-text">{{screenDetails.title}}</p>
+            <p class="sub-main-text">{{screenDetails.description}}</p>
+            <!-- birthday -->
+            <div class="row margin-top-20">
+                <div class="row">
+                    <div class="select-style three-quater-width">
+                        <select ng-model="noOfKeys" ng-options="key as key for key in keysArray">
+                        </select>
+                    </div>
+                </div>
+                <!-- submit -->
+                <a class="btn btn-template margin-top-80" ng-click="netWorkError = true">Continue</a>
+            </div>
+        </div>
+    </div>
