@@ -1038,7 +1038,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.stateCheck.pagination.roomType.page = 1;
 			$scope.stateCheck.pagination.rate.page = 1;
 
-			if (($scope.stateCheck.activeView === "RATE") || ($scope.stateCheck.activeView === "RECOMMENDED" && shouldRecommend)) {
+			if (($scope.stateCheck.activeView === "RATE") || ($scope.stateCheck.activeView === "RECOMMENDED" && shouldRecommend())) {
 				// Reset search
 				$scope.stateCheck.rateFilterText = "";
 				fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
