@@ -123,7 +123,7 @@
                             <br>
                             <ad-toggle-button is-checked="is_send_zest_checkout_alert_flag" label="{{'SEND_ZEST_CHECKOUT_NOTIFICATION_ALERT' | translate}}" div-class="full-width"></ad-toggle-button>
                             
-                            <div >
+                            <div ng-show="!checkoutData.is_hourly_hotel">
                             	<div class="entry full-width">
 									<label translate>
 										SEND_ZEST_CHECKOUT_ALERT_LABEL
@@ -176,7 +176,7 @@
 								</div>
                             </div> 
 
-                            <div>
+                            <div ng-show="checkoutData.is_hourly_hotel">
                             	<div class="entry full-width">
 									<label translate>
 										SEND_ZEST_HOURLY_CHECKOUT_ALERT_LABEL
