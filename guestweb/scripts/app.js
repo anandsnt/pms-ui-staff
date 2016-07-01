@@ -120,7 +120,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.KeyCountAttemptedToSave = false;
 
 		//TODO: to follow hotel settings
-		$rootScope.collectOutStandingBalance = true;
+		$rootScope.collectOutStandingBalance = false;
 		$rootScope.BalanceCollected = false;
 
 		//Params for zest mobile and desktop screens
