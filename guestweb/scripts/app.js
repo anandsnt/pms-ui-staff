@@ -118,6 +118,11 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.enforceCountrySort = !!reservationAndhotelData.enforce_country_sort ? true : false;
 		$rootScope.promptForKeyCount = !!reservationAndhotelData.key_prompt_on ? true : false;
 		$rootScope.KeyCountAttemptedToSave = false;
+
+		//TODO: to follow hotel settings
+		$rootScope.collectOutStandingBalance = true;
+		$rootScope.BalanceCollected = false;
+
 		//Params for zest mobile and desktop screens
 		if (reservationAndhotelData.hasOwnProperty('is_password_reset')) {
 			$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset;

@@ -171,5 +171,10 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/common_templates/partials/greatWolf/gwNoOfKeysEntry.html',
 		controller: 'selectNoOfkeysController',
 		title: 'Select No of Keys'
+	}).state('balancePaymentCCCollection', {
+		url: '/guestCheckinLate',
+		templateUrl: '/assets/common_templates/partials/greatWolf/gwbalancePaymentCCCollection.html',
+		//controller: '',
+		title: 'Check-in'
 	});
 }]);
