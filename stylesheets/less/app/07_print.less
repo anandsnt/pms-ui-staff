@@ -1995,6 +1995,37 @@ table {
                     }
                 }
             }
+
+            &.card-authorization-check-reports {
+                tbody {
+                    tr {
+                        td {
+                            width: 3.4cm; 
+
+                            &.entity-name {
+                                width: -webkit-calc(~'100% - 19cm');
+                                width: -moz-calc(~'100% - 19cm');
+                                width: calc(~'100% - 19cm');
+                            }
+                            
+                            &.red,
+                            &.penalty { color: @grey3; }
+
+                            &.red:before {
+                                content: '! ';
+                            }
+
+                            &.green {
+                                text-decoration: line-through;
+                            }
+
+                            &:first-child {
+                                width: 2cm;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         &.with-graphs {
