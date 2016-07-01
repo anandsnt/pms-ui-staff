@@ -265,9 +265,9 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : "")
             }
 
-            if($scope.selectedAction.selectedView == "GUEST") {
+            if(!!$scope.selectedAction.reservation_id) {
                 payLoad.reservation_id = $scope.selectedAction.reservation_id;
-            } else if($scope.selectedAction.selectedView == "GROUP") {
+            } else if(!!$scope.selectedAction.group_id) {
                 payLoad.group_id = $scope.selectedAction.group_id;
             }
 
