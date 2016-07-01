@@ -37,7 +37,7 @@ module.exports = {
 			'guestweb_luxor':[themeJsRoot + 'app_router_luxor.js'],
 			'guestweb_mgm_grand':[ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_mgm_grand.js'],
 			'guestweb_signature_at_mgm':[ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_signature_at_mgm.js'],
-			'guestweb_11Howard':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_11Howard':[ themeJsRoot + 'app_router_11howard.js'],
 			'guestweb_naples_grande':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_terranea':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_time_hotel':[ themeJsRoot + 'app_router_common.js'],
@@ -63,7 +63,8 @@ module.exports = {
 			'guestweb_monte_carlo': [ themeJsRoot + 'app_router_mgm_chain.js',themeJsRoot + 'app_router_monte_carlo.js'],
 			'guestweb_sorella_kansas_city':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_Pasea':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_sobro':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_sobro':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_covington':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }

@@ -488,12 +488,14 @@ angular.module('sntRover')
 			open: false,
 			data: [],
 			dragData: {},
+			isItemSelected: false,
 			selectedReservations: $scope.selectedReservations,
 			reset: function() {
 				if ( this.open ) {
 					this.data = [];
 					this.open = false;
 					this.dragData = {};
+					this.isItemSelected = false;
 
 					$scope.clearAvailability();
 					$scope.resetEdit();
@@ -502,6 +504,25 @@ angular.module('sntRover')
 			},
 			fetchList: function() {
 				var _sucess = function(data) {
+					data.forEach(function(reservation, idx) {
+						var guests = reservation.primary_guest;
+						//in case of guest name is blank, we have to show company name or travel agent name.
+						if(!guests) {
+							guests = reservation.travel_agent_name ? reservation.travel_agent_name : reservation.company_card_name;
+						}
+						//if there is any accomoanying guests
+						if(!_.isEmpty(reservation.accompanying_guests)) {
+							guests = guests + "  |  ";
+							_.each(reservation.accompanying_guests, function(element, index, list){
+								guests += (element.guest_name);
+								if(index !== (list.length - 1)){
+									guests += ", ";
+								}
+							});
+						}
+						reservation.guests = guests;
+					});
+
 					this.data = data;
 					this.open = true;
 					$scope.renderGrid();
@@ -530,10 +551,20 @@ angular.module('sntRover')
 			selectAnUnassigned: function(options) {
 				var params   = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.stay_span, options.room_type_id),
 					keepOpen = true,
+					self = this,
 					success,
 					apiOptions;
 
 				success = function(data, successParams) {
+					// CICO-24243: Set top filter values to selected reservation attributes
+					if (data.length) {
+						var rawData = data[0],
+							filters = $scope.gridProps.filter;
+
+            			filters.arrival_time = new Date(rawData.arrival).toTimeString().substring(0, 5);
+            			filters.room_type = _.findWhere(filters.room_types, { id: rawData.room_type_id });
+					}
+					self.isItemSelected = true;
 					successCallBackOfAvailabilityFetching(data, successParams, keepOpen);
 				};
 
@@ -543,7 +574,6 @@ angular.module('sntRover')
 					failureCallBack: 	failureCallBackOfAvailabilityFetching,
 					successCallBackParameters:  params
 				};
-
 				$scope.clearAvailability();
 				$scope.resetEdit();
 				$scope.renderGrid();
@@ -673,7 +703,7 @@ angular.module('sntRover')
 
 		    		break;
 		    	}
-		    } else {
+		    } else if (!$scope.gridProps.unassignedRoomList.isItemSelected){
 		    	copy = util.shallowCopy({}, row_item_data);
 	    		copy.selected = selected;
 
@@ -1348,6 +1378,12 @@ angular.module('sntRover')
 		$scope.openRateTypeChoosingBox = true;
 	};
 
+	var successCallBackOfAvailabilityAPI = function(data, successParams) {
+		// Setting the keep open flag to true to avoid clearing avail data.
+		// this will keep unassigned box open.
+		successCallBackOfAvailabilityFetching(data, successParams, true);
+	};
+
 	var callAvailabilityAPI = function(){
 		var params = getAvailabilityCallingParams(),
 			filter = $scope.gridProps.filter;
@@ -1366,7 +1402,7 @@ angular.module('sntRover')
 		}
 		var options = {
     		params: 			params,
-    		successCallBack: 	successCallBackOfAvailabilityFetching,
+    		successCallBack: 	successCallBackOfAvailabilityAPI,
     		failureCallBack: 	failureCallBackOfAvailabilityFetching,
     		successCallBackParameters:  params
     	};
@@ -1495,7 +1531,7 @@ angular.module('sntRover')
 				mm = 45;
 			} else {
 				mm = 0;
-				hh += hh;
+				//hh += hh;
 				// TODO: if this is gonna move the arrival date, update the provide arrival date
 			}
 			/**/
@@ -1526,13 +1562,12 @@ angular.module('sntRover')
 			dd = isNaN(dd) ? 0 : dd;
 
 			return {
-				mm: mm - 1,
+				mm: mm,
 				dd: dd
 			};
 		}
 
 		var processedAt = processTime(arrivalTime);
-		var processedAd = processDate(arrivalDate);
 
 		var filter = _.extend({}, this.filter);
 		var time_span = Time({ hours: staySpan.hh, minutes: staySpan.mm });
@@ -1952,10 +1987,14 @@ angular.module('sntRover')
 
     	// making sure no previous reset in progress
     	if ( ! $scope.gridProps.edit.reset_scroll ) {
-	    	$scope.clearAvailability();
-			$scope.resetEdit();
-			$scope.renderGrid();
-
+    		// CICO-24243 - need to call this anyway, and it calls others below
+    		if ($scope.gridProps.unassignedRoomList.open) {
+				$scope.gridProps.unassignedRoomList.reset();
+			} else {
+		    	$scope.clearAvailability();
+				$scope.resetEdit();
+				$scope.renderGrid();
+			}
 	    	$scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, _sucessCallback);
     	}
     };
@@ -2093,6 +2132,7 @@ angular.module('sntRover')
 		$scope.gridProps.availability.resize.last_departure_time = null;
 		if(!$scope.gridProps.edit.active) {
 			$scope.Availability();
+			$scope.gridProps.unassignedRoomList.reset();
 		} else if ( $scope.gridProps.filter.arrival_time === '' ) {
 			$scope.clearAvailability();
 			$scope.resetEdit();
@@ -2103,6 +2143,7 @@ angular.module('sntRover')
 	$scope.clickedOnRoomType = function(){
 		if ( !$scope.gridProps.edit.active && !!$scope.gridProps.filter.room_type ) {
 			$scope.Availability();
+			$scope.gridProps.unassignedRoomList.reset();
 		} else if ( $scope.gridProps.filter.room_type === null ) {
 			$scope.clearAvailability();
 			$scope.resetEdit();

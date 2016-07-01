@@ -4,20 +4,20 @@
       <div class="data">
          <span class="room" >
          <span class="guest-status room">room</span>
-         <span id="header-room-num" class="room-number" ng-class="getTopbarRoomStatusClass()"> {{headerData.room_number}}</span>
-         <span id="room-type" > {{headerData.room_type_name}} </span>
+         <span id="header-room-num" class="room-number" ng-class="getTopbarRoomStatusClass()"> {{reservationData.reservation_card.room_number}}</span>
+         <span id="room-type" > {{reservationData.reservation_card.room_type_description}} </span>
          </span>
          <span class="nights">
          <span class="guest-status nights"></span>
-         {{headerData.total_nights+" "+setNightsText()}}
+         {{reservationData.reservation_card.total_nights+" "+setNightsText()}}
          </span>
          <span class="date">
          <span class="guest-status small-icon check-in">check-in</span>
-         {{headerData.arrival_date|date:dateFormat}}
+         {{reservationData.reservation_card.arrival_date|date:dateFormat}}
          </span>
          <span class="date">
          <span class="guest-status small-icon check-out">check-out</span>
-         {{headerData.departure_date|date:dateFormat}}
+         {{reservationData.reservation_card.departure_date|date:dateFormat}}
          </span>
       </div>
    </div>

@@ -488,7 +488,15 @@ angular.module('sntRover')
                 params.rate_id = dialogData.rate.id;
             }
             else if(mode === $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE) {
-                params.rate_ids = _.pluck(dialogData.rates, 'id');
+                let rate_ids = _.pluck(dialogData.rates, 'id');
+
+                //if there is no rate_ids passed, checking for rate_type is being passed
+                if(!rate_ids.length && _.has(dialogData, 'rateTypes') && dialogData.rateTypes.length) {
+                    params.rate_type_ids = _.pluck(dialogData.rateTypes, 'id');
+                }
+                else {
+                    params.rate_ids = rate_ids;
+                }
             }
 
             params.details = [];

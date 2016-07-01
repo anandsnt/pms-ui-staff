@@ -251,6 +251,10 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     ..._.pick(params, 'from_date', 'to_date', 'name_card_ids[]')
                 };
 
+                if(params["rate_type_ids[]"]) {
+                    paramsForCommonRestrictions['rate_type_ids[]'] = params['rate_type_ids[]']; 
+                }
+                
                 if(params['considerRateIDsInCommonRestriction']){
                    paramsForCommonRestrictions['rate_ids[]'] = params['rate_ids[]']; 
                 }

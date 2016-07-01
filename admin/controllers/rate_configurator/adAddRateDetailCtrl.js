@@ -199,6 +199,14 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             var amount = parseInt($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
             var addOns = setUpAddOnData();
             var commissions = setupCommissionData();
+            angular.forEach($scope.rateData.tasks, function(rateTasks) {
+                if (rateTasks.id !== undefined) {
+                    rateTasks.task_id = rateTasks.id
+                }
+                //API throws erros if these keys are passed - so deleting - CICO-30780
+                delete rateTasks["id"];
+                delete rateTasks["name"];
+            });
             var data = {
                 'name': $scope.rateData.name,
                 'description': $scope.rateData.description,

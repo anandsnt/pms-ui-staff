@@ -680,7 +680,15 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                     list[x].due_at_time = list[x].time_due ? $filter('date')(list[x].due_at_str, "HH:mm") : "00:00";
 
                     if (typeof list[x].due_at === typeof 'string'){
-                        list[x].due_at_date = $filter('date')(list[x].due_at_str, $rootScope.dateFormat);
+                        var splitDueTimeString = list[x].due_at_str.split("T");
+                        // 24 hr format for the dropdown in the right panel
+                        list[x].due_at_time = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm");
+                        // 12 hr format for binding in the list
+                        list[x].due_at_time_str = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "hh:mm a");
+
+                        list[x].due_at_date = dateFilter(splitDueTimeString[0], $rootScope.dateFormat);
+                        //list[x].due_at_date = $filter('date')(list[x].due_at_str, $rootScope.dateFormat);
+
                         list[x].hasDate = true;
                     } else {
                         list[x].hasDate = false;
@@ -868,7 +876,6 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 } else {
                     list[x].assigned = false;
                 }
-
 
 
                 if (typeof list[x].due_at === typeof 'string'){

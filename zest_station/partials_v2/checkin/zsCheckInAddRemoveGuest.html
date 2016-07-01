@@ -5,9 +5,9 @@
         <h1>{{addGuestsHeading |translate}}</h1>
         <ul id="selection" class="editable">
 
-            <li ng-repeat='guest in selectedReservation.guest_details track by $index' ng-hide='$index === 0'>
+            <li ng-repeat='guest in selectedReservation.guest_details track by $index' ng-hide='guest.is_primary'>
                 <span class="details">{{guest.last_name}}, {{guest.first_name}}</span>
-                <button type="button" class="button" click-touch='removeGuest($index)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>{{'REMOVE_BTN' |translate}}</button>
+                <button type="button" class="button" click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>{{'REMOVE_BTN' |translate}}</button>
             </li>
 
         </ul>

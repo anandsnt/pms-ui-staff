@@ -555,15 +555,18 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             } else {
                 depositPaid = true;
             };
-
             var idPresent = ($stateParams.mode === 'OTHER' || $stateParams.mode === 'EDIT_HOURLY') ? (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id && !$scope.reservationData.allotment.id) : true;
             var isPaymentTypeNotSelected = ((typeof $scope.reservationData.paymentType.type.value === "undefined") || $scope.reservationData.paymentType.type.value.length === 0);
-            return (idPresent || isPaymentTypeNotSelected || !depositPaid);
+            //CICO-30786 - check the payment type selection only if deposit not paid
+            var isContinueDisabled = idPresent || !depositPaid ;
+            if (!depositPaid) {
+               isContinueDisabled =  isContinueDisabled || isPaymentTypeNotSelected;
+            }
+            return isContinueDisabled;
 
         };
 
         $scope.init = function() {
-
             if ($scope.isStandAlone) {
                 // Setup fees info
                 $scope.feeData.feesInfo = $scope.reservationData.selected_payment_fees_details;
@@ -571,7 +574,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 // CICO-15107 --
                 var aptSegment = ""; //Variable to store the suitable segment ID
                 angular.forEach($scope.otherData.segments, function(segment) {
-                    if ($scope.reservationData.stayDays.length - 1 < segment.los) {
+                    if ($scope.reservationData.stayDays.length - 1 <= segment.los) {
                         if (!aptSegment) {
                             aptSegment = segment.value;
                         }

@@ -82,6 +82,19 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 				return scrollerObject;
 			},
+			shouldRecommend = function () {
+				//This method checks if there are groups or cards attached
+				return $stateParams.travel_agent_id ||
+					$scope.reservationData.travelAgent.id ||
+					$stateParams.company_id ||
+					$scope.reservationData.company.id ||
+					$stateParams.group_id ||
+					$scope.reservationData.group.id ||
+					$stateParams.allotment_id ||
+					$scope.reservationData.allotment.id ||
+					$stateParams.promotion_code ||
+					$stateParams.is_member == "true"
+			},
 			isMembershipValid = function() {
 				var membership = $scope.reservationData.guestMemberships,
 					selectedMembership = $scope.reservationData.member.value,
@@ -322,9 +335,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				//Add these params to API - only in Reccommended tab. CICO-28657
 				if($scope.stateCheck.activeView === 'RECOMMENDED'){
 
-					payLoad.company_id = $stateParams.company_id;
-					payLoad.travel_agent_id = $stateParams.travel_agent_id;
-					payLoad.group_id = $stateParams.group_id || $stateParams.allotment_id;
+					payLoad.company_id = $scope.reservationData.company.id;
+					payLoad.travel_agent_id = $scope.reservationData.travelAgent.id;
+					payLoad.group_id = $scope.reservationData.group.id || $scope.reservationData.allotment.id;
 					payLoad.promotion_code = $stateParams.promotion_code;
 					payLoad.is_member = !!$scope.reservationData.member.isSelected;
 					payLoad.promotion_id = $scope.reservationData.promotionId;
@@ -947,9 +960,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					var isReccommendedTabApiRequired = false;
 					if($scope.stateCheck.activeView === "RATE"){
 						isReccommendedTabApiRequired = true;
-					} else if(($scope.stateCheck.activeView === "RECOMMENDED") && ($stateParams.travel_agent_id || $stateParams.company_id
-						 || $stateParams.group_id || $stateParams.allotment_id
-						 || $stateParams.promotion_code || $stateParams.is_member == "true")){
+					} else if(($scope.stateCheck.activeView === "RECOMMENDED") && shouldRecommend()) {
 						isReccommendedTabApiRequired = true;
 					}
 					if(isReccommendedTabApiRequired){
@@ -1027,7 +1038,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.stateCheck.pagination.roomType.page = 1;
 			$scope.stateCheck.pagination.rate.page = 1;
 
-			if ($scope.stateCheck.activeView === "RATE" || $scope.stateCheck.activeView === "RECOMMENDED") {
+			if (($scope.stateCheck.activeView === "RATE") || ($scope.stateCheck.activeView === "RECOMMENDED" && shouldRecommend())) {
 				// Reset search
 				$scope.stateCheck.rateFilterText = "";
 				fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
@@ -1595,6 +1606,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		$scope.getLeastAvailability = function(roomId, rateId) {
 			var secondary;
+			var availabilityCount = 0;
 			if ($scope.stateCheck.activeView === 'ROOM_TYPE') {
 				var roomType = _.find($scope.display.roomFirstGrid, {
 					id: roomId
@@ -1603,14 +1615,21 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					id: rateId
 				});
 			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
+
 				var rate = _.find($scope.display.rateFirstGrid, {
 					id: rateId
 				});
+
 				secondary = _.find(rate.rooms, {
 					id: roomId
 				});
+
 			}
-			return _.min(_.pluck(_.toArray(secondary.dates), 'availability'));
+			//CICO-30938 - fixing undefined issue in console
+			if(secondary !== undefined)
+				availabilityCount = _.min(_.pluck(_.toArray(secondary.dates), 'availability'));
+			return availabilityCount;
+
 		};
 
 		$scope.getLeastHouseAvailability = function() {
@@ -1719,6 +1738,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						   //restrictionObject.restrictionBgColor = getRestrictionClass(ratesMeta.restrictions[restrictionKey].key);
 						   restrictionObject.restrictionIcon = getRestrictionIcon(ratesMeta.restrictions[restrictionKey].key);
 						})
+
 						var proccesedRestrictions = processRestrictions( room.multiple_restrictions, rate.id),
 							roomInfo = {
 								id: room.id,

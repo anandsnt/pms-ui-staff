@@ -98,8 +98,6 @@
    "RES_AUTH_REMAIN": "Please Authorize a Credit Card for Stay Charges ",
    "RES_AUTH_REMAIN_SUB": "authorize remaining amount due (auth after deposit)...",
    
-   "RES_AUTH": "Please Complete Check-in (auth no deposit)...",
-   "RES_AUTH_SUB": "Please Swipe",
    
    
    "SWIPE_CARD_PLEASE": "Swipe Credit Card",
@@ -191,8 +189,9 @@
 
 
 
-
-
+   "EARLY_DONE":"Done",
+   "EARLY_CONTINUE":"Continue",
+   "EARLY_HEADER":"You're a little early!",
    "EARLY_AVAIL_HEADER":"You're a little early!",
    "EARLY_AVAIL_SUB_HEADER":"Our standard check in time is ",
    "EARLY_AVAIL_SUB_HEADER_2":"Early check-in is available for a fee of only",
@@ -244,7 +243,6 @@
    "RES_SRCH_TALK_SUB":"To a Staff Member ",
 
 
-   "CHECKOUT_BILL_NO_EMAIL":"Thanks for doing Zoku (no email on file)",
    "USER_CHECKED_OUT_ALRDY_HEADER":"Sorry",
    "USER_CHECKED_OUT_ALRDY_SUB":"You have already been checked out.",
    "USER_CHECKED_OUT_ALRDY_RTN":"Return",
@@ -335,7 +333,7 @@
 
    "EMAIL_TEXT": "E-Mail",
    "EDIT_EMAIL": "Edit My E-mail Address",
-   "CONTINUE_TEXT": "Continue",
+   
    "SEND_EMAIL": "Send E-Mail",
    "EMAIL_SENT_MSG": "The e-mail has been delivered.",
 
@@ -415,7 +413,9 @@
     "EMAIL_SUCCESS_AND_KEY_SUCCESS" : "",
     "EMAIL_FAILED_AND_KEY_SUCCESS" : "",
     "EMAIL_SUCCESS_AND_KEY_FAILED" : "",
-    "EMAIL_FAILED_AND_KEY_FAILED" : ""
+    "EMAIL_FAILED_AND_KEY_FAILED" : "",
 
+   "MAKE_KEY_TEXT_TWO": "Make Key 2",
+   "MAKE_KEY_TEXT_ONE": "Make Key"
 
 }
