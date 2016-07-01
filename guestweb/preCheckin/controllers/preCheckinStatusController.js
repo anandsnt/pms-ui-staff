@@ -8,8 +8,11 @@
 
 	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" :$rootScope.userEmail;
 	$rootScope.userMobile = ($rootScope.userMobile === null ) ? "" :$rootScope.userMobile;
-
-	if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb){
+	if($rootScope.promptForKeyCount && !$rootScope.KeyCountAttemptedToSave){
+		console.info("collect no of keys");
+		$state.go('selectNoOfkeys');
+	}
+	else if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb){
 		$state.go('checkinCcVerification');
 	}
 	else if($rootScope.application ==="SMS" 

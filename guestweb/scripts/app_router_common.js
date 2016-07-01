@@ -165,4 +165,11 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/common_templates/partials/checkin/gwLateToCheckin.html',
 		title: 'Check-in'
 	});
+
+	$stateProvider.state('selectNoOfkeys',{
+		url:'/selectNoOfkeys',
+		templateUrl: '/assets/common_templates/partials/checkin/gwNoOfKeysEntry.html',
+		controller: 'selectNoOfkeysController',
+		title: 'Select No of Keys'
+	})
 }]);

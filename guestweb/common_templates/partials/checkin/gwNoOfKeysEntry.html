@@ -22,11 +22,12 @@
             <p class="error-text">
                 {{screenDetails.errorMessage}}
             </p>
-            <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-click="skip()" ng-show="!guestBirthdateMandatory"> Skip</a>
+            <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-click="goToNextPage()"> Skip</a>
         </div>
         <div class="col-md-2">
         </div>
     </div>
+
     <!-- main content -->
     <div class="row" ng-hide="isLoading || netWorkError">
         <div class="col-md-4 top-spacing sm-no-top-spacing section-container float-none">
@@ -41,7 +42,7 @@
                     </div>
                 </div>
                 <!-- submit -->
-                <a class="btn btn-template margin-top-80" ng-click="netWorkError = true">Continue</a>
+                <a class="btn btn-template margin-top-80" ng-click="saveNoOfKeys()">Continue</a>
             </div>
         </div>
     </div>

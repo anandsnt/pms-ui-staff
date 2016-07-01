@@ -116,7 +116,9 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.skipDeposit = false;
 
 		$rootScope.enforceCountrySort = !!reservationAndhotelData.enforce_country_sort ? true : false;
-			//Params for zest mobile and desktop screens
+		$rootScope.promptForKeyCount = !!reservationAndhotelData.key_prompt_on ? true : false;
+		$rootScope.KeyCountAttemptedToSave = false;
+		//Params for zest mobile and desktop screens
 		if (reservationAndhotelData.hasOwnProperty('is_password_reset')) {
 			$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset;
 			$rootScope.isTokenExpired = reservationAndhotelData.is_token_expired === "true";
