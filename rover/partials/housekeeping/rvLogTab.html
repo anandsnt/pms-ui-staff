@@ -1,0 +1,59 @@
+<div ng-controller="RVHKLogTabCtrl">
+
+    <div class="room-content scrollable report-content">
+            <div class="wrapper">
+                <table class="log-table">
+                    <thead>
+                        <tr>
+                            <th><span class="sort sorting-asc">Date & Time</span></th>
+                            <th><span>Front Office Status</span></th>
+                            <th><span>Room Status</span></th>
+                            <th><span>Service Status</span></th>
+                            <th><span>Source</span></th>
+                            <th><span>Changed By</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-break">
+                            <!-- 'data-content' used in CSS, name of the columns -->
+                            <td data-content="Date &amp; Time">
+                                {date-time}
+                            </td>
+                            <td data-content="Front Office Status">
+                                <!-- show the status.old to log the from/to change -->
+                                <span class="status old">{old fo-status}</span>
+                                <span class="status">{fo-status}</span>
+                            </td>
+                            <td data-content="Room Status">
+                                <!-- show the status.old to log the from/to change -->
+                                <span class="status old">{old room-status}</span>
+                                <!-- 'room-status-class':
+                                        - dirty
+                                        - clean
+                                        - pickup
+                                        - inspected
+                                        - inhouse
+                                        - check-out
+                                        - check-in
+                                -->
+                                <span class="status {room-status-class}">
+                                    {room-status}
+                                </span>
+                            </td>
+                            <td data-content="Service Status">
+                                <!-- show the status.old to log the from/to change -->
+                                <span class="status old">{old service-status}</span>
+                                <span class="status">{service-status}</span>
+                            </td>
+                            <td data-content="Source">
+                                {source}
+                            </td>
+                            <td data-content="Changed By">
+                                {changed-by}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</div>
