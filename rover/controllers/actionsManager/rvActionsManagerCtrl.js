@@ -154,6 +154,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         $scope.filterOptions = {
             showFilters: false,
             selectedDay: $rootScope.businessDate,
+            selectedView: "GUEST",
             department: "",
             selectedStatus: "ALL", // other values "ASSIGNED", "UNASSIGNED", "COMPLETED",
             query: "",
@@ -230,6 +231,11 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             $scope.filterOptions.showFilters = !$scope.filterOptions.showFilters;
         };
 
+        $scope.switchTab = function (selectedTab) {
+            $scope.filterOptions.selectedView = selectedTab;
+            fetchActionsList();
+        };
+
         $scope.onDepartmentSelectionChange = function () {
             fetchActionsList();
         };
@@ -273,6 +279,16 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         };
 
         $scope.toStayCard = function () {
+            //Store the state of the filters so that while coming back from staycard the correct page can be loaded
+            rvActionTasksSrv.setFilterState($scope.filterOptions);
+            $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+                "id": $scope.selectedAction.reservation_id,
+                "confirmationId": $scope.selectedAction.reservation_confirm_no,
+                "isrefresh": false
+            });
+        };
+
+        $scope.toGroup = function () {
             //Store the state of the filters so that while coming back from staycard the correct page can be loaded
             rvActionTasksSrv.setFilterState($scope.filterOptions);
             $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {

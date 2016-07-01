@@ -70,7 +70,7 @@
                     </span>
                     <div class="data">
                         <h3>{{action.description}}</h3>
-                        <em><span class="room">{{action.room_no}}</span>{{action.guest_name}}</em>
+                        <em ng-if="filterOptions.selectedView === 'GUEST'"><span class="room">{{action.room_no}}</span>{{action.guest_name}}</em>
                     </div>
                     <span class="department">{{action.departmentName}}</span>
                 </li>
@@ -109,14 +109,15 @@
     <!-- Action details -->
     <div class="content-right" ng-if="actions.length > 0">
         <div class="sender-details">
-            <figure class="guest-image" ng-class="{'accompany': selectedAction.guest_images.length > 1}">
+            <figure class="guest-image" ng-class="{'accompany': selectedAction.guest_images.length > 1}" ng-if="filterOptions.selectedView === 'GUEST'">
                 <!-- If accompany, add class accompany -->
                 <!-- If accompany, show primary guest image here:  -->
                 <img ng-src="{{avatar.guest_image}}" ng-repeat="avatar in selectedAction.guest_images"/>
             </figure>
             <div class="data">
-                <h1>{{selectedAction.guest_name}}</h1>
-                <strong ng-if="selectedAction.room_no">Room {{selectedAction.room_no}}</strong>
+                <h1 ng-if="filterOptions.selectedView === 'GUEST'">{{selectedAction.guest_name}}</h1>
+                <h1 ng-if="filterOptions.selectedView === 'GROUP'">A GROUP</h1>
+                <strong ng-if="selectedAction.room_no" ng-if="filterOptions.selectedView === 'GUEST'">Room {{selectedAction.room_no}}</strong>
             </div>
             <div class="dates">
                 <div class="date">
@@ -132,7 +133,8 @@
                     &nbsp;{{selectedAction.departure_time}}
                 </div>
             </div>
-            <button type="button" class="button brand-colors" ng-click="toStayCard()">Stay Card</button>
+            <button type="button" class="button brand-colors" ng-click="toStayCard()" ng-if="filterOptions.selectedView === 'GUEST'">Stay Card</button>
+            <button type="button" class="button brand-colors" ng-click="toGroup()" ng-if="filterOptions.selectedView === 'GROUP'">Group</button>
         </div>
         <div class="summary">
             <div id="action-summary">
@@ -195,8 +197,18 @@
 <!-- Post form -->
 <form method="get" action="" id="actions-post" class="post-form">
 
+    <!-- Guest / Group -->
+    <button id="switch-guest-group" type="button" class="switch">
+        <span class="icons icon-messages-guests2" ng-class="{'active':filterOptions.selectedView === 'GUEST'}" ng-click="switchTab('GUEST')">
+            View Guests Actions
+        </span>
+        <span class="icons icon-messages-group" ng-class="{'active':filterOptions.selectedView === 'GROUP'}" ng-click="switchTab('GROUP')">
+            View Group Actions
+        </span>
+    </button>
+
     <!-- Change department -->
-    <div id="change-department" class="select">
+    <div id="change-department" class="select with-border">
         <select name="change-department" ng-options="department.name for department in departments"
                 ng-model="filterOptions.department" ng-change="onDepartmentSelectionChange()">
             <option value="" selected>All Departments</option>
