@@ -1,0 +1,108 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar mob-margin-bottom-3">
+        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-5 top-spacing res-date-container">
+           <!--  -->
+            <p class="sub-text light-text mob-margin-bottom-3">RESERVATION #{{confirmationNumber}}</p>
+            <p class="main-text mob-margin-bottom-3" ng-hide="ShowupgradedLabel">
+                Your Stay Details
+            </p>
+            <p class="main-text mob-margin-bottom-3" ng-show="ShowupgradedLabel">
+                Your New Stay Details
+            </p>
+            <div class="margin-top-10 mob-margin-top-3 mob-padding-bottom-3 bottom-border">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="res-details-heading">
+                            ARRIVAL DATE
+                        </div>
+                        <div class="res-date">
+                            {{reservationData.arrival_date}}
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="res-details-heading">
+                            DEPARTURE DATE
+                        </div>
+                        <div class="res-date">
+                         {{reservationData.departure_date}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-top-20 mob-margin-top-3">
+                <div class="col-xs-12 left-align">
+                    <div class="res-details-heading">
+                        ROOM TYPE <span class="upgrades-label" ng-show="ShowupgradedLabel">UPGRADED!</span>
+                    </div>
+                    <div class="res-date">
+                        {{reservationData.room_type}}
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-top-10 mob-margin-top-3">
+                <div class="col-xs-12 left-align">
+                    <div class="res-details-heading">
+                        RATE
+                    </div>
+                    <div class="res-date">
+                     {{reservationData.room_rate}}
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-top-10 mob-margin-top-3">
+                <div class="col-xs-12 left-align">
+                    <div class="res-details-heading">
+                        AVERAGE RATE PER NIGHT
+                    </div>
+                    <div class="res-date">
+                        {{currencySymbol}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2  }}
+                    </div>
+                </div>
+            </div>
+            <div class="row margin-top-10 mob-margin-top-3">
+                <div class="col-xs-12 left-align">
+                    <div class="res-details-heading">
+                        BALANCE
+                    </div>
+                    <div class="res-date">
+                        {{currencySymbol}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2  }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row margin-top-10 hide-in-mobile">
+                <div class="col-xs-12 left-align">
+                    <div class="footer-sub-text">
+                        QUESTIONS? <a href="tel: {{hotelPhone}}"><u class="phone-label">CALL US AT  {{hotelPhone}}.</u></a>
+                    </div>
+                </div>
+            </div>
+        <!--  -->
+        </div>
+        <div class="col-md-2 top-spacing">
+        	<div class="vertical-line vertical-line-long">&nbsp;</div>
+        </div>
+         <div class="col-md-3 lonely-btn">
+             <center>
+                 <a class="btn btn-template margin-top-10" ng-click="checkInButtonClicked()"> Continue</a>
+             </center>
+        </div>
+        <div class="col-md-1">
+        </div> 
+        <div class="margin-top-10 hide-in-desktop">
+                <div class="col-xs-12 left-align">
+                    <div class="footer-sub-text">
+                        QUESTIONS? <a href="tel: 121313"><u class="phone-label">CALL US AT  {{hotelPhone}}.</u></a>
+                    </div>
+                </div>
+        </div>                    
+    </div>
+</div>

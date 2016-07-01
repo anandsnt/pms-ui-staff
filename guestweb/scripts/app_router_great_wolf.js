@@ -74,8 +74,8 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/common_templates/partials/checkin/gwCheckinDetails.html',
-	 	controller : 'checkInReservationDetails',
+	 	templateUrl: '/assets/common_templates/partials/greatWolf/gwNewCheckinDetails.html',
+	 	controller : 'greatWolfCheckInReservationDetailsCtrl',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
@@ -168,7 +168,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('selectNoOfkeys',{
 		url:'/selectNoOfkeys',
-		templateUrl: '/assets/common_templates/partials/checkin/gwNoOfKeysEntry.html',
+		templateUrl: '/assets/common_templates/partials/greatWolf/gwNoOfKeysEntry.html',
 		controller: 'selectNoOfkeysController',
 		title: 'Select No of Keys'
 	});
