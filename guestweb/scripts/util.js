@@ -66,3 +66,18 @@ var extractScreenDetails = function(identifier,cms_screen_details) {
   return screen_details;
 
 };
+
+var creditCardTypes = {
+      "AMEX": 'AX',
+      "DINERS_CLUB": 'DC',
+      "DISCOVER": 'DS',
+      "JCB": 'JCB',
+      "MASTERCARD": 'MC',
+      "VISA": 'VA'
+};
+
+function getCreditCardType(cardBrand){
+    var card = (typeof cardBrand  ==="undefined") ? "":cardBrand.toUpperCase();
+    var cardArray = ['AX','DC','DS','JCB','MC','VA'];
+    return (cardArray.indexOf(card) != -1 ) ? card : (typeof creditCardTypes[card]!='undefined') ? creditCardTypes[card] : 'credit-card';
+}

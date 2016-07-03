@@ -8,7 +8,7 @@
 			};
 			//TO DO ----
 			/*******************************************/
-			$rootScope.reservationID = 100214;
+			$rootScope.reservationID = 1344568;
 			$rootScope.accessToken = '3b9b81823405849e79e7a6eab35212b0';
 			$rootScope.outStandingBalance = 100;
 			$scope.paymentMethodDetails = {
