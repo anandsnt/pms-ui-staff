@@ -174,7 +174,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	}).state('balancePaymentCCCollection', {
 		url: '/guestCheckinLate',
 		templateUrl: '/assets/common_templates/partials/greatWolf/gwbalancePaymentCCCollection.html',
-		//controller: '',
+		controller: 'outstandingBalanceDetailsController',
 		title: 'Check-in'
 	});
 }]);
