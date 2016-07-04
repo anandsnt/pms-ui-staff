@@ -172,7 +172,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		controller: 'selectNoOfkeysController',
 		title: 'Select No of Keys'
 	}).state('balancePaymentCCCollection', {
-		url: '/guestCheckinLate',
+		url: '/balancePaymentCCCollection',
 		templateUrl: '/assets/common_templates/partials/greatWolf/gwbalancePaymentCCCollection.html',
 		controller: 'outstandingBalanceDetailsController',
 		title: 'Check-in'

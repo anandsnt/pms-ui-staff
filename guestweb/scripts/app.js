@@ -121,7 +121,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		//TODO: to follow hotel settings
 		$rootScope.collectOutStandingBalance = false;
-		$rootScope.BalanceCollected = false;
+		$rootScope.skipBalanceCollection = false;
 
 		//Params for zest mobile and desktop screens
 		if (reservationAndhotelData.hasOwnProperty('is_password_reset')) {

@@ -8,7 +8,11 @@
 
 	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" :$rootScope.userEmail;
 	$rootScope.userMobile = ($rootScope.userMobile === null ) ? "" :$rootScope.userMobile;
-	if($rootScope.promptForKeyCount && !$rootScope.KeyCountAttemptedToSave){
+
+	if(parseInt($rootScope.outStandingBalance) > 0 && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection){
+		$state.go('balancePaymentCCCollection');
+	}
+	else if($rootScope.promptForKeyCount && !$rootScope.KeyCountAttemptedToSave){
 		console.info("collect no of keys");
 		$state.go('selectNoOfkeys');
 	}

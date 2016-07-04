@@ -1,10 +1,10 @@
 (function() {
-	var outstandingBalanceDetailsController = function($scope, $state, $rootScope, guestDetailsService,$modal,ccVerificationService) {
+	var outstandingBalanceDetailsController = function($scope, $state, $rootScope, guestDetailsService, $modal, ccVerificationService) {
 
 
 
 		$scope.goToNextPage = function() {
-			$rootScope.KeyCountAttemptedToSave = true;
+			$rootScope.skipBalanceCollection = true;
 			$state.go('preCheckinStatus');
 		};
 
@@ -67,27 +67,28 @@
 
 		var saveCardToReservation = function() {
 			//save cc success
-			var ccSaveSuccesActions = function(response){
-				$rootScope.isCCOnFile = true;
+			var ccSaveSuccesActions = function(response) {
+					$rootScope.isCCOnFile = true;
 					$rootScope.isCcAttachedFromGuestWeb = true;
+					$scope.cardPresent = true;
 					var cardNumberLength = $scope.cardNumber.length;
 					$scope.paymentMethodDetails.payment_details = {
-						"card_type_image": "images/"+response.data.credit_card_type+".png",
-						"card_number": $scope.cardNumber.toString().substring(cardNumberLength-4, cardNumberLength),
-						"card_expiry": $scope.monthSelected + "/"+ $scope.yearSelected.toString().substring(2, 4),
+						"card_type_image": "images/" + response.data.credit_card_type + ".png",
+						"card_number": $scope.cardNumber.toString().substring(cardNumberLength - 4, cardNumberLength),
+						"card_expiry": $scope.monthSelected + "/" + $scope.yearSelected.toString().substring(2, 4),
 						"card_name": $scope.cardName,
 						"id": response.data.id
 					}
 					$scope.mode = "PAYMENT_MODE";
-			}
-			//setup params
+				}
+				//setup params
 			var cardExpiryDate = $scope.yearSelected + "-" + $scope.monthSelected + "-" + "01";
 			var data = {
 				'reservation_id': $rootScope.reservationID,
 				'token': MLISessionId,
 				'card_expiry': cardExpiryDate,
 				'payment_type': "CC",
-				'card_name' : $scope.cardName
+				'card_name': $scope.cardName
 			};
 			//call API
 			$scope.isLoading = true;
@@ -96,10 +97,10 @@
 				if (response.status === "success") {
 					ccSaveSuccesActions(response);
 				} else {
-					$scope.netWorkError = true;
+					$scope.cardError = true;
 				};
 			}, function() {
-				$scope.netWorkError = true;
+				$scope.cardError = true;
 				$scope.isLoading = false;
 			});
 
@@ -170,24 +171,17 @@
 			$scope.yearSelected = "";
 			$scope.ccSaved = false;
 			$scope.cardName = "";
-			
+
 			//TO DO ----
 			/*******************************************/
 			$rootScope.reservationID = 1344568;
 			$rootScope.accessToken = '3b9b81823405849e79e7a6eab35212b0';
-			$rootScope.outStandingBalance = 100;
 			$scope.paymentMethodDetails = {
-					"payment_method_used": "CC",
-					"payment_details": {
-						"card_type_image": "images/mc.png",
-						"card_number": "5454",
-						"card_expiry": "12/17",
-						"card_name": "Resheil",
-						"id": 30970
-					}
+					"payment_method_used": $rootScope.payment_method_used,
+					"payment_details": $rootScope.paymentDetails
 				}
 				/*******************************************/
-			if ($scope.paymentMethodDetails.payment_method_used === "CC" && $scope.paymentMethodDetails.payment_details.id !== null) {
+			if ($scope.paymentMethodDetails.payment_method_used === "CC" && typeof $scope.paymentMethodDetails.payment_details !== "undefined" && typeof $scope.paymentMethodDetails.payment_details.id !== null) {
 				$scope.cardPresent = true;
 			} else {
 				$scope.cardPresent = false;
@@ -198,7 +192,7 @@
 	};
 
 	var dependencies = [
-		'$scope', '$state', '$rootScope', 'guestDetailsService','$modal','ccVerificationService',
+		'$scope', '$state', '$rootScope', 'guestDetailsService', '$modal', 'ccVerificationService',
 		outstandingBalanceDetailsController
 	];
 
