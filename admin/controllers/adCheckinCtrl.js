@@ -244,7 +244,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'key_prompt_title' : $scope.checkinData.key_prompt_title,
       'key_prompt_text': $scope.checkinData.key_prompt_text,
       'key_prompt_save_error' : $scope.checkinData.key_prompt_save_error,
-      'max_no_of_keys' : max_no_of_keys
+      'max_no_of_keys' : max_no_of_keys,
+      'zestweb_collect_outstanding_balance' : $scope.checkinData.zestweb_collect_outstanding_balance
     };
 
     var saveCheckinDetailsFailureCallback = function (data) {
