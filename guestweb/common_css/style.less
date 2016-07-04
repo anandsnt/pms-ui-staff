@@ -547,7 +547,6 @@ and (max-device-width : 1028px){
             padding-left:10px;
         }
         img{
-            float:right;
             height:30px;
             width:60px;
         }
@@ -561,6 +560,9 @@ and (max-device-width : 1028px){
         p{
             margin-bottom:0px;
             font-size:15px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 }
