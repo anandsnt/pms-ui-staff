@@ -131,6 +131,11 @@ var UnassignedRoomPanel = React.createClass({
         }, 0);
     },
 
+    componentWillMount: function() {
+        this.isTouchEnabled = 'ontouchstart' in window;
+        this.clickEvent = this.isTouchEnabled ? 'onTouchEnd' : 'onClick';
+    },
+
     componentWillUnmount: function() {
         var rootEl = angular.element( this.getDOMNode() );
 
@@ -164,14 +169,16 @@ var UnassignedRoomPanel = React.createClass({
         var unassignedList;
         if ( this.props.unassignedRoomList ) {
             unassignedList = this.props.unassignedRoomList.data.map(function(room, i) {
+                var occupancyBlock = {
+                    key: i,
+                    id: 'ob-' + i,
+                    className: 'occupancy-block unassigned-list-item'
+                };
+                occupancyBlock[self.clickEvent] = self.__onListSelect.bind(self, i);
+
                 return (
-                    React.DOM.div({
-                            key: i,
-                            id: 'ob-' + i,
-                            className: 'occupancy-block',
-                            draggable: !! self.state.selectedIndex,
-                            onClick: function () { self.__onListSelect(i); }
-                        },
+                    React.DOM.div(
+                        occupancyBlock,
                         React.DOM.span({
                                 className: __getItemClassName(i)
                             },
