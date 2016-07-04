@@ -29,7 +29,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		 * @type {[type]}
 		 */
 		$scope.selectedReservation = {
-			"reservationId" : $stateParams.reservation_id,
+			"reservationId": $stateParams.reservation_id,
 			"room": $stateParams.room_no,
 			"first_name": $stateParams.first_name
 		};

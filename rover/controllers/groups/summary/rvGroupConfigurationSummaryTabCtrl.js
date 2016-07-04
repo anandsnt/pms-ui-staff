@@ -394,6 +394,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
 				fetchApplicableRates();
+				$scope.computeSegment();//CICO-30986
 			}
 
 			//if it is is Move Date mode
@@ -467,13 +468,6 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 		};
 
-		var updateRateAndSegment = function(){
-			if(!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-				$scope.computeSegment();
-			}
-		};
-
 		/**
 		 * when to date choosed, this function will fire
 		 * @param  {Object} date
@@ -490,6 +484,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
 				fetchApplicableRates();
+				$scope.computeSegment();//CICO-30986
 			}
 			// check move validity
 			// departure left date change
