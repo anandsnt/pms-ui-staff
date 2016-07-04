@@ -9,6 +9,13 @@
 		};
 
 		$scope.changeCard = function() {
+			$scope.cardNumber = "";
+			$scope.ccv = "";
+			$scope.monthSelected = "";
+			$scope.yearSelected = "";
+			$scope.ccSaved = false;
+			$scope.cardName = "";
+			$scope.paymentError = false;
 			$scope.mode = "CC_ENTRY_MODE";
 		};
 
