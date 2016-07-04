@@ -1,4 +1,4 @@
-<div ng-controller="RVHKLogTabCtrl">
+<div >
 
     <div class="room-content scrollable report-content">
             <div class="wrapper">
@@ -9,24 +9,26 @@
                             <th><span>Front Office Status</span></th>
                             <th><span>Room Status</span></th>
                             <th><span>Service Status</span></th>
-                            <th><span>Source</span></th>
+                            <th><span>Action</span></th>
                             <th><span>Changed By</span></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="row-break">
+                        <tr class="row-break" ng-repeat="roomLog in roomLogData">
                             <!-- 'data-content' used in CSS, name of the columns -->
                             <td data-content="Date &amp; Time">
-                                {date-time}
+                                {{roomLog.date}}
                             </td>
                             <td data-content="Front Office Status">
                                 <!-- show the status.old to log the from/to change -->
-                                <span class="status old">{old fo-status}</span>
-                                <span class="status">{fo-status}</span>
+                                <span class="status old" ng-show="roomLog.front_office_status.old_value!==roomLog.front_office_status.new_value"> {{roomLog.front_office_status.old_value}}</span>
+                                <span class="status">{{roomLog.front_office_status.new_value}}</span>
                             </td>
                             <td data-content="Room Status">
                                 <!-- show the status.old to log the from/to change -->
-                                <span class="status old">{old room-status}</span>
+                                <span class="status old" ng-show="roomLog.room_status.old_value!==roomLog.room_status.new_value"> {{roomLog.room_status.old_value}}</span>
+                                <span class="status" ng-class="getRoomStatusClass(roomLog.room_status.new_value)" >{{roomLog.room_status.new_value}}</span>
+                                <!-- Both values are same - value from API and status class in HTML -->
                                 <!-- 'room-status-class':
                                         - dirty
                                         - clean
@@ -36,20 +38,18 @@
                                         - check-out
                                         - check-in
                                 -->
-                                <span class="status {room-status-class}">
-                                    {room-status}
-                                </span>
+
                             </td>
                             <td data-content="Service Status">
                                 <!-- show the status.old to log the from/to change -->
-                                <span class="status old">{old service-status}</span>
-                                <span class="status">{service-status}</span>
+                                <span class="status old" ng-show="roomLog.service_status.old_value!==roomLog.service_status.new_value"> {{roomLog.service_status.old_value}}</span>
+                                <span class="status">{{roomLog.service_status.new_value}}</span>
                             </td>
                             <td data-content="Source">
-                                {source}
+                                {{roomLog.action}}
                             </td>
                             <td data-content="Changed By">
-                                {changed-by}
+                               {{roomLog.user_name}}
                             </td>
                         </tr>
                     </tbody>
@@ -57,3 +57,8 @@
             </div>
         </div>
 </div>
+<div class="search-pagination" ng-show="!isPrevButtonDisabled()||!isNextButtonDisabled()">
+        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
+        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
+        <p>Showing {{end}} <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalResults}}</strong> items</p>
+    </div>
