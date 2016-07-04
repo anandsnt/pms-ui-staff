@@ -630,9 +630,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		};
 		if($scope.passData.details.isClickedCheckin !== undefined && $scope.passData.details.isClickedCheckin){
 			$scope.$emit("UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG", $scope.dataToSave.addToGuestCard);
-			successSwipePayment();
+			//successSwipePayment();
 
-		} else if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom === "guestCard")
+		};
+		if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom === "guestCard")
 		{
 			data.user_id = $scope.passData.userId;
 			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, addToGuestCardOnSwipe);

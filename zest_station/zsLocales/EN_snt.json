@@ -416,6 +416,13 @@
     "EMAIL_FAILED_AND_KEY_FAILED" : "",
 
    "MAKE_KEY_TEXT_TWO": "Make Key 2",
-   "MAKE_KEY_TEXT_ONE": "Make Key"
+   "MAKE_KEY_TEXT_ONE": "Make Key",
+
+
+   "CHECKIN_TOO_EARLY": "Sorry, You're too early to check-in",
+   "CHECKIN_TOO_EARLY_SUB": "Please try again at your arrival time",
+   "CHECKIN_TOO_EARLY_SUB_HEADER": "",
+   "CHECKIN_TOO_EARLY_SUB_MSG": "Please try again in a little while",
+   "CHECKIN_TOO_EARLY_DONE": "Done"
 
 }
