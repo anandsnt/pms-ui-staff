@@ -15,6 +15,16 @@ var GridRowItem = React.createClass({
 		});
 	},
 
+	componentDidMount: function() {
+		var rootElement = $(this.getDOMNode());
+		rootElement.droppable({
+			accept: ".unassigned-list-item",
+			drop: this.__onDrop.bind(this),
+			over: this.__onDragOver.bind(this),
+			out: this.__setDragOver.bind(this, false)
+		});
+	},
+
 	componentWillReceiveProps: function(nextProps) {
 		var meta_id = this.props.meta.occupancy.id,
 			edit = nextProps.edit,
@@ -233,9 +243,7 @@ var GridRowItem = React.createClass({
 			className: this.__get_class_for_reservation_span(),
 			style: {
 				width: reservation_time_span + 'px'
-			},
-			onDrop: function(e){ this.__onDrop(e) }.bind(this),
-			onDragOver: function(e){ this.__onDragOver(e) }.bind(this)
+			}
 		},
 		React.DOM.span({
 			className: show_outstanding_indicator ? 'deposit-icon' : '',
@@ -248,12 +256,14 @@ var GridRowItem = React.createClass({
 		}, ' '));
 	},
 
-	__onDrop: function(e) {
+	__onDrop: function(e, ui) {
 		var data = this.props.data;
 		var status = this.props.meta.occupancy.status;
 
 		if ( data[status] === 'available' ) {
 			e.preventDefault();
+			ui.helper.fadeOut();
+			$('#unassigned-list').css({overflow: 'hidden'});
 			this.props.unassignedRoomList.dropReservation( data['room_id'] );
 		}
 	},
@@ -264,5 +274,7 @@ var GridRowItem = React.createClass({
 		if ( data[status] === 'available' ) {
 			e.preventDefault();
 		}
+
+		this.__setDragOver(true);
 	},
 });

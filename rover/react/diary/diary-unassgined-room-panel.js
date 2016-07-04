@@ -6,6 +6,7 @@ var UnassignedRoomPanel = React.createClass({
         this.setState({
             selectedIndex: null
         });
+        $('#unassigned-list').css({overflow: 'hidden'});
     },
 
     __getTimeDiff: function(arrivalDate, arrivalTime, departureDate, departureTime) {
@@ -62,19 +63,41 @@ var UnassignedRoomPanel = React.createClass({
         }
     },
 
+    _dragStart: function(event) {
+        console.log('drag-start');
+    },
+
+    _dragEnd: function(event) {
+        console.log('drag-end');
+        $("#ob-" + this.state.selectedIndex).draggable('disable');
+        $('#unassigned-list').css({overflow: 'hidden'});
+        this.props.iscroll.unassignedList.enable();
+        this.props.unassignedRoomList.dragEnded();
+        this.setState({
+            selectedIndex: null
+        });
+    },
+
     __onListSelect: function(index) {
+       /* // Unselect item if clicked again on that item.
+        if (index.toString() === this.state.selectedIndex)  {
+            this.props.iscroll.unassignedList.enable();
+            this.setState({ selectedIndex: null });
+            $('#ob-' + index).draggable('disable');
+            return;
+        }*/
+
+        var item = this.props.unassignedRoomList.data[index];
         this.props.iscroll.unassignedList.disable();
         this.setState({
             selectedIndex: index.toString()
         });
-
-        var item = this.props.unassignedRoomList.data[index];
         this.props.unassignedRoomList.selectAnUnassigned({
-            arrival_date: item.arrival_date, 
+            arrival_date: item.arrival_date,
             arrival_time: item.arrival_time,
             departure_date: item.departure_date,
             departure_time: item.departure_time,
-            
+
             reservationId: item.reservation_id,
             adults: item.adults,
             children: item.children,
@@ -84,6 +107,19 @@ var UnassignedRoomPanel = React.createClass({
 
             stay_span: this.__getTimeDiff(item.arrival_date, item.arrival_time, item.departure_date, item.departure_time)
         });
+
+        //enable draggable
+        $('.unassigned-list-item.ui-draggable').draggable('disable');
+        $('#ob-' + index).draggable({
+            start: this._dragStart,
+            stop: this._dragEnd,
+            containment: '.diary-grid',
+            zIndex: 1100,
+            revert: true,
+            revertDuration: 200
+        });
+        $('#ob-' + index).draggable('enable');
+        $('#unassigned-list').css({overflow: 'visible'});
     },
 
     getInitialState: function() {
@@ -98,23 +134,7 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     componentDidMount: function() {
-        var self = this,
-            rootEl = angular.element( this.getDOMNode() );
-
-        var dragstart = function(e) {
-            event.dataTransfer.effectAllowed = 'move';
-        };
-
-        var dragend = function(e) {
-            self.props.iscroll.unassignedList.enable();
-            self.props.unassignedRoomList.dragEnded();
-            self.setState({
-                selectedIndex: null
-            });
-        };
-
-        rootEl.on('dragstart', '.occupancy-block', dragstart);
-        rootEl.on('dragend', '.occupancy-block', dragend);
+        var self = this;
 
         var iscroll = this.props.iscroll;
         iscroll.unassignedList = new IScroll('#unassigned-list', {
@@ -137,11 +157,7 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     componentWillUnmount: function() {
-        var rootEl = angular.element( this.getDOMNode() );
-
-        rootEl.off('dragstart');
-        rootEl.off('dragend');
-
+        $( ".selector" ).draggable( "destroy" );
         this.props.iscroll.unassignedList.destroy();
         this.props.iscroll.unassignedList = null;
     },
