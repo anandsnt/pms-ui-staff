@@ -71,11 +71,8 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     _dragEnd: function(event) {
-        $("#ob-" + this.state.selectedIndex).draggable('disable');
         this.props.iscroll.unassignedList.enable();
-        this.props.unassignedRoomList.dragEnded();
         this.setState({
-            selectedIndex: null,
             dragInProgress: null
         });
     },
