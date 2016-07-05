@@ -1,5 +1,5 @@
 (function() {
-	var outstandingBalanceDetailsController = function($scope, $state, $rootScope, guestDetailsService, $modal, ccVerificationService) {
+	var outstandingBalanceDetailsController = function($scope, $state, $rootScope, guestDetailsService, ccVerificationService, sntGuestWebSrv) {
 
 
 
@@ -9,13 +9,18 @@
 		};
 
 		$scope.changeCard = function() {
+			//card details
 			$scope.cardNumber = "";
 			$scope.ccv = "";
 			$scope.monthSelected = "";
 			$scope.yearSelected = "";
 			$scope.ccSaved = false;
 			$scope.cardName = "";
+			//error flags
+			$scope.cardError = false;
 			$scope.paymentError = false;
+			$scope.cardNotFilledError = false;
+			//mode
 			$scope.mode = "CC_ENTRY_MODE";
 		};
 
@@ -45,33 +50,6 @@
 		HostedForm.setMerchant($rootScope.mliMerchatId);
 
 
-		//setup options for error popup
-
-		$scope.cardErrorOpts = {
-			backdrop: true,
-			backdropClick: true,
-			templateUrl: '/assets/checkin/partials/ccErrorModal.html',
-			controller: ccVerificationModalCtrl,
-			resolve: {
-				errorMessage: function() {
-					return "There is a problem with your credit card.";
-				}
-			}
-		};
-
-		$scope.errorOpts = {
-			backdrop: true,
-			backdropClick: true,
-			templateUrl: '/assets/checkin/partials/ccErrorModal.html',
-			controller: ccVerificationModalCtrl,
-			resolve: {
-				errorMessage: function() {
-					return "You must provide all the required information. Please update and try again.";
-				}
-			}
-		};
-
-
 		var saveCardToReservation = function() {
 			//save cc success
 			var ccSaveSuccesActions = function(response) {
@@ -86,6 +64,8 @@
 						"card_name": $scope.cardName,
 						"id": response.data.id
 					}
+					$scope.cardError = false;
+					$scope.paymentError = false;
 					$scope.mode = "PAYMENT_MODE";
 				}
 				//setup params
@@ -115,26 +95,28 @@
 
 		$scope.saveCard = function() {
 
+			$scope.cardNotFilledError = false;
 			var fetchMLISessionId = function() {
 
 				var sessionDetails = {};
 
 				var mliCallback = function(response) {
-					$scope.$apply();
 					if (response.status === "ok") {
 						MLISessionId = response.session;
 						saveCardToReservation();
 					} else {
-						$modal.open($scope.cardErrorOpts);
+						$scope.cardError = true;
 						$scope.isLoading = false;
 					}
+					$scope.$apply();
 				};
-
+				//check if user has entered all data
 				if (($scope.cardNumber.length === 0) ||
 					($scope.ccv.length === 0) ||
 					(!$scope.monthSelected) ||
 					(!$scope.yearSelected)) {
-					$modal.open($scope.errorOpts); // details modal popup
+					$scope.cardError = false;
+					$scope.cardNotFilledError = true;
 					if ($scope.ccv.length === 0) {
 						$scope.isCVVEmpty = true;
 					} else {
@@ -159,6 +141,9 @@
 		};
 		$scope.cancelCardEntry = function() {
 			$scope.mode = "PAYMENT_MODE";
+			$scope.cardError = false;
+			$scope.paymentError = false;
+			$scope.cardNotFilledError = false;
 		};
 
 
@@ -199,7 +184,7 @@
 	};
 
 	var dependencies = [
-		'$scope', '$state', '$rootScope', 'guestDetailsService', '$modal', 'ccVerificationService',
+		'$scope', '$state', '$rootScope', 'guestDetailsService', 'ccVerificationService', 'sntGuestWebSrv',
 		outstandingBalanceDetailsController
 	];
 

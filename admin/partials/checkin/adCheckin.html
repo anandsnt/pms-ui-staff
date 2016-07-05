@@ -338,14 +338,17 @@
                     <div class="form-title half-width-title">
                         <h3><span  translate="">ADDRESS_COLLECTION</span> </h3>
                     </div>
-                    <div class="form-subtitle-title">
-                        <h6><span translate="">COLLECT_ADDRESS_SEPERATELY</span> </h6>
+                     <div class="form-subtitle-title">
+                        <h6><span translate="">CHECKIN_NOW_SUB_HEADING</span> </h6>
                     </div>
                     <!-- flag to check if we need to ask for guest address -->
                     <ad-toggle-button is-checked="checkinData.prompt_for_address_on" label="{{ 'PROMPT_FOR_GUEST_ADDRESS' | translate}}" div-class="full-width"></ad-toggle-button>
                     <!-- flag to check if we need to ask for CC entry-->
-                    <div class="form-title half-width-title">
+                    <div class="form-title">
                         <h3 class="ng-binding"><span class="ng-scope" translate="">GUEST_CC_COLLECTION</span> </h3>
+                    </div>
+                    <div class="form-subtitle-title">
+                        <h6><span translate="">PROMPT_FOR_CC_SUB_HEADING</span> </h6>
                     </div>
                     <ad-toggle-button is-checked="checkinData.checkin_collect_cc" label="{{'PROMPT_FOR_CC' | translate}}" div-class="full-width"></ad-toggle-button>
                 </fieldset>
@@ -415,8 +418,11 @@
                     <ad-toggle-button is-checked="checkinData.enforce_country_sort" label="{{'ENFORCE_COUNTRY_SORT'| translate}}" div-class="full-width"></ad-toggle-button>
                 </fieldset>
                 <fieldset class="holder right">
-                    <div class="form-title half-width-title">
+                    <div class="form-title">
                         <h3><span translate>COLLECT_OUTSTANDING_BALANCE </span> </h3>
+                    </div>
+                     <div class="form-subtitle-title">
+                        <h6><span translate="">CHECKIN_NOW_SUB_HEADING</span> </h6>
                     </div>
                     <ad-toggle-button is-checked="checkinData.zestweb_collect_outstanding_balance" label="{{'COLLECT_OUTSTANDING_BALANCE'| translate}}" div-class="full-width"></ad-toggle-button>
                 </fieldset>
