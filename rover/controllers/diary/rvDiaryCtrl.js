@@ -490,6 +490,8 @@ angular.module('sntRover')
 			dragData: {},
 			isItemSelected: false,
 			selectedReservations: $scope.selectedReservations,
+			isUnassignedPresent: false,
+
 			reset: function() {
 				if ( this.open ) {
 					this.data = [];
@@ -1335,9 +1337,22 @@ angular.module('sntRover')
 		}
 	};
 
+	/**
+	 * Helper method to summon the popup showing custom info message.
+	 * @params {String} message to display
+	 * @params {Object} Callback method to call after close.
+	 * @return {Undefined}
+	 */
+	var showPopupWithMessage = function(message, callback) {
+		//opening the popup with messages
+		$scope.callBackAfterClosingMessagePopUp = callback;
+		$scope.message	= [message];
+		openMessageShowingPopup();
+		return;
+	};
+
 	var successCallBackOfAvailabilityFetching = function(data, successParams, keepOpen){
 		var row_item_data;
-
 		if(data.length) {
 			row_item_data 	= data[0];
 			if(this.availability.resize.current_arrival_time !== null &&
@@ -1353,12 +1368,11 @@ angular.module('sntRover')
                 row_item_data:  row_item_data,
                 row_data:       _.findWhere(rvDiarySrv.data_Store.get('room'), { id: row_item_data.room_id })
             });
+			$scope.gridProps.unassignedRoomList.isUnassignedPresent = row_item_data.is_unassigned_reservation_present;
 		}
 		else {
-			//opening the popup with messages
-			$scope.callBackAfterClosingMessagePopUp = undefined;
-			$scope.message	= ['Sorry, No Availability found. Please change the parameter and continue'];
-			openMessageShowingPopup();
+			$scope.gridProps.unassignedRoomList.isUnassignedPresent = false;
+			showPopupWithMessage('Sorry, No Availability found. Please change the parameter and continue');
 			return;
 		}
 
@@ -1382,6 +1396,10 @@ angular.module('sntRover')
 		// Setting the keep open flag to true to avoid clearing avail data.
 		// this will keep unassigned box open.
 		successCallBackOfAvailabilityFetching(data, successParams, true);
+		// CICO-24243 comment-82523 https://goo.gl/b9HgY1
+		if (data && data.length && data[0].is_unassigned_reservation_present) {
+		 	showPopupWithMessage('Unassigned rooms exist. Consider assigning them first');
+	 	}
 	};
 
 	var callAvailabilityAPI = function(){

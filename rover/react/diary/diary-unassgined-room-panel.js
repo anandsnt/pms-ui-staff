@@ -163,14 +163,21 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     render: function() {
-        var self = this;
+        var self = this,
+            unassignedRoomListProp = this.props.unassignedRoomList;
 
         var panelClassName = 'sidebar-right',
-            containerClassName = 'sidebar-content scrollable';
+            containerClassName = 'sidebar-content scrollable',
+            handleClassName = "rightMenuHandle";
 
-        containerClassName = self.state.dragInProgress ? (containerClassName + ' dragging') : containerClassName;
-        if ( this.props.unassignedRoomList ) {
-           panelClassName = this.props.unassignedRoomList.open ? 'sidebar-right open' : 'sidebar-right';
+        if (unassignedRoomListProp && unassignedRoomListProp.open) {
+            panelClassName = panelClassName + ' open';
+        }
+        if (unassignedRoomListProp && unassignedRoomListProp.isUnassignedPresent) {
+            handleClassName = handleClassName + ' not-empty';
+        }
+        if (self.state.dragInProgress) {
+            containerClassName = containerClassName + ' dragging';
         }
 
         var __getItemClassName = function(index) {
@@ -178,8 +185,8 @@ var UnassignedRoomPanel = React.createClass({
         };
 
         var unassignedList;
-        if ( this.props.unassignedRoomList ) {
-            unassignedList = this.props.unassignedRoomList.data.map(function(room, i) {
+        if ( unassignedRoomListProp ) {
+            unassignedList = unassignedRoomListProp.data.map(function(room, i) {
                 var occupancyBlock = {
                     key: i,
                     id: 'ob-' + i,
@@ -221,7 +228,7 @@ var UnassignedRoomPanel = React.createClass({
                     className: panelClassName,
                 },
                 React.DOM.a({
-                    className: 'rightMenuHandle',
+                    className: handleClassName,
                     onClick: this.__onToggle
                 }),
                 React.DOM.div({
