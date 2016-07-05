@@ -4,15 +4,15 @@
     <div class="eod-header">
         <div class="entry">
             <label for="{eod-date}">Date</label>
-            <div class="entry-data">
-                <input name="{eod-date}" id="{eod-date}" type="text" class="datepicker" value="{date}" readonly>
-                <strong class="day">{day}</strong>
-                <span class="month">{month}</span>
-                <span class="year">{year}</span>
+            <div class="entry-data" ng-click="clickedDate()">
+                <input name="{eod-date}" id="{eod-date}" type="text" class="datepicker" value="{{selectedDate}}" readonly>
+                <strong class="day">{{selectedDate | date:'d'}}</strong>
+                <span class="month">{{selectedDate | date:'MMMM'}}</span>
+                <span class="year">{{selectedDate | date:'y'}}</span>
             </div>
         </div>
         <!-- Show this button if the business day is not today-->
-        <button type="button" class="button blue">Set to Today</button>
+        <button type="button" class="button blue" ng-click="setSelectedDateToBussinessDate()" ng-hide="showSetToTodayButton()">Set to Today</button>
     </div>
 
     <!-- Content -->

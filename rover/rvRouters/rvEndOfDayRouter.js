@@ -1,6 +1,3 @@
-/**
- * Created by rahul on 4/7/16.
- */
 angular.module('EndOfDayModule', [])
     .config(function($stateProvider, $urlRouterProvider, $translateProvider){
 
@@ -8,17 +5,18 @@ angular.module('EndOfDayModule', [])
             abstract: true,
             url: '/endofDay',
             templateUrl: '/assets/partials/endOfDay/rvEndofDay.html',
-            //controller: '',
+            controller: 'RVEndOfDayController',
             resolve: {
                 jsAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets(['endofday']);
                 }
             }
         });
+
         $stateProvider.state('rover.endOfDay.starteod', {
             url: '/endofDay',
-            templateUrl: '/assets/partials/endOfDay/rvEndOfDayStart.html'
-            //controller: '',
+            templateUrl: '/assets/partials/endOfDay/rvEndOfDayProcess.html',
+            controller: 'RVEndOfDayProcessController'
         });
 
     });
