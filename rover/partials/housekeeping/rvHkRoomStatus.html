@@ -133,6 +133,7 @@
 
                 <div class="room-info" ng-class="{ 'on-hold': room.is_on_hold }">
                     <h2 class="{{ room.roomStatusClass }}" bo-text="room.room_no"></h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
+                    <span class="room-type">{{room.room_type.name}}</span>
                     <span class="room-status {{ room.roomStatusClass }}">{{room.hk_status.value}}</span>
                 </div>
 
