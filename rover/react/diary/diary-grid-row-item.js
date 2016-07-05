@@ -56,8 +56,6 @@ var GridRowItem = React.createClass({
 	},
 
 	componentWillUnmount: function() {
-		var rootElement = $(this.getDOMNode());
-        // rootElement.droppable( "destroy" );
     },
 
 	__formInnerText: function(data, meta) {

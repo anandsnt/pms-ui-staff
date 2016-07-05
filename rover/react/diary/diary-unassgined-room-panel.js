@@ -64,7 +64,6 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     _dragStart: function(event) {
-        console.log('drag-start');
         this.props.iscroll.unassignedList.disable();
         this.setState({
             dragInProgress: true
@@ -72,7 +71,6 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     _dragEnd: function(event) {
-        console.log('drag-end');
         $("#ob-" + this.state.selectedIndex).draggable('disable');
         this.props.iscroll.unassignedList.enable();
         this.props.unassignedRoomList.dragEnded();
@@ -83,13 +81,6 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     __onListSelect: function(index) {
-       /* // Unselect item if clicked again on that item.
-        if (index.toString() === this.state.selectedIndex)  {
-            this.props.iscroll.unassignedList.enable();
-            this.setState({ selectedIndex: null });
-            $('#ob-' + index).draggable('disable');
-            return;
-        }*/
 
         var item = this.props.unassignedRoomList.data[index];
         this.setState({
@@ -161,7 +152,6 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     componentWillUnmount: function() {
-        // $( ".unassigned-list-item" ).draggable( "destroy" );
         this.props.iscroll.unassignedList.destroy();
         this.props.iscroll.unassignedList = null;
     },
