@@ -3,6 +3,7 @@ angular.module('reportsModule')
 		'CHECK_IN_CHECK_OUT'           : 'Check In / Check Out',
 		'CHECKIN_NOW_OR_LATER'         : 'Check In - Now or Later',
 		'UPSELL'                       : 'Upsell',
+		'ROOM_UPSELL'                  : 'Room Upsell',
 		'WEB_CHECK_OUT_CONVERSION'     : 'Web Check Out Conversion',
 		'WEB_CHECK_IN_CONVERSION'      : 'Web Check In Conversion',
 		'WEB_CHECK_IN_CONV_BY_DAY'     : 'Web Check In Conversion By Day',
