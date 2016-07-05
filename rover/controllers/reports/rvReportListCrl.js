@@ -165,12 +165,13 @@ sntRover.controller('RVReportListCrl', [
             mainCtrlScope.genReport();
         };
 
-        // var serveRefresh = $scope.$on(reportMsgs['REPORT_LIST_SCROLL_REFRESH'], function() {
-        //     $timeout( $scope.refreshScroller.bind($scope, LIST_ISCROLL_ATTR), 100 );
-        // });
+        /** event when backbutton clicked, fixing as part of CICO-31031 */
+        var serveRefresh = $scope.$on(reportMsgs['REPORT_LIST_SCROLL_REFRESH'], function() {
+            $timeout( $scope.refreshScroller.bind($scope, REPORT_LIST_SCROLL), 200 );
+        });
 
-        // removing event listners when scope is destroyed
-        // $scope.$on( '$destroy', serveRefresh );
+        //removing event listners when scope is destroyed
+        $scope.$on( '$destroy', serveRefresh );
 
         
     }
