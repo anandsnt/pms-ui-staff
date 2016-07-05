@@ -1079,8 +1079,8 @@ angular.module('sntRover')
 	    	$scope.renderGrid();
 	    };
 
-	    var resizeEndForExistingReservation = function (row_data, row_item_data) {
-	    	var params = getEditReservationParams($scope.gridProps.edit.originalItem);
+	    var resizeEndForExistingReservation = function (row_data, row_item_data, original) {
+	    	var params = getEditReservationParams(original);
 	    	var options = {
 	    		params: 			params,
 	    		successCallBack: 	successCallBackOfResizeExistingReservation,
@@ -1096,10 +1096,10 @@ angular.module('sntRover')
 
 	    $scope.onResizeEnd = function(row_data, row_item_data){
 			if($scope.gridProps.edit.active) {
-				resizeEndForExistingReservation (row_data, row_item_data);
+				resizeEndForExistingReservation (row_data, row_item_data, $scope.gridProps.edit.originalItem);
 			}
 			else{
-				resizeEndForNewReservation (row_data, row_item_data);
+				resizeEndForNewReservation (row_data, row_item_data, $scope.gridProps.edit.originalItem);
 			}
 	    };
 
@@ -1457,12 +1457,6 @@ angular.module('sntRover')
 		arrivalTime = new Date(this.currentResizeItem.arrival).toComponents().time;
 		arrivalTime = arrivalTime.hours + ":" + arrivalTime.minutes + ":" + arrivalTime.seconds;
 
-		var oldArrivalTime = new Date(originalRowItem.arrival).toComponents().time;
-			oldArrivalTime = oldArrivalTime.hours + ":" + oldArrivalTime.minutes + ":" + oldArrivalTime.seconds;
-
-		var oldDepTime = new Date(originalRowItem.departure).toComponents().time;
-			oldDepTime = oldDepTime.hours + ":" + oldDepTime.minutes + ":" + oldDepTime.seconds;
-
 		depTime 	= new Date(this.currentResizeItem.departure).toComponents().time;
 		depTime 	= depTime.hours + ":" + depTime.minutes + ":" + depTime.seconds;
         var params = {
@@ -1470,14 +1464,23 @@ angular.module('sntRover')
             reservation_id:     reservation_id,
             begin_date:         start,
             begin_time:         arrivalTime,
-            old_begin_time: 	oldArrivalTime,
             end_date:           end,
             end_time:           depTime,
-            old_end_time:      	oldDepTime,
             rate_type:          rate_type
         };
         if(account_id) {
 			params.account_id = account_id;
+		}
+
+		if (originalRowItem) {
+			var oldArrivalTime = new Date(originalRowItem.arrival).toComponents().time;
+				oldArrivalTime = oldArrivalTime.hours + ":" + oldArrivalTime.minutes + ":" + oldArrivalTime.seconds;
+
+			var oldDepTime = new Date(originalRowItem.departure).toComponents().time;
+				oldDepTime = oldDepTime.hours + ":" + oldDepTime.minutes + ":" + oldDepTime.seconds;
+
+			params.old_begin_time = oldArrivalTime;
+			params.old_end_time = oldDepTime;
 		}
 
 		return params;
