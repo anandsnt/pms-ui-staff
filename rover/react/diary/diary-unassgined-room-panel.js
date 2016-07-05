@@ -4,9 +4,9 @@ var UnassignedRoomPanel = React.createClass({
 
         this.props.iscroll.unassignedList.enable();
         this.setState({
-            selectedIndex: null
+            selectedIndex: null,
+            dragInProgress: null
         });
-        $('#unassigned-list').css({overflow: 'hidden'});
     },
 
     __getTimeDiff: function(arrivalDate, arrivalTime, departureDate, departureTime) {
@@ -65,16 +65,20 @@ var UnassignedRoomPanel = React.createClass({
 
     _dragStart: function(event) {
         console.log('drag-start');
+        this.props.iscroll.unassignedList.disable();
+        this.setState({
+            dragInProgress: true
+        });
     },
 
     _dragEnd: function(event) {
         console.log('drag-end');
         $("#ob-" + this.state.selectedIndex).draggable('disable');
-        $('#unassigned-list').css({overflow: 'hidden'});
         this.props.iscroll.unassignedList.enable();
         this.props.unassignedRoomList.dragEnded();
         this.setState({
-            selectedIndex: null
+            selectedIndex: null,
+            dragInProgress: null
         });
     },
 
@@ -88,9 +92,9 @@ var UnassignedRoomPanel = React.createClass({
         }*/
 
         var item = this.props.unassignedRoomList.data[index];
-        this.props.iscroll.unassignedList.disable();
         this.setState({
-            selectedIndex: index.toString()
+            selectedIndex: index.toString(),
+            dragInProgress: false
         });
         this.props.unassignedRoomList.selectAnUnassigned({
             arrival_date: item.arrival_date,
@@ -119,12 +123,12 @@ var UnassignedRoomPanel = React.createClass({
             revertDuration: 200
         });
         $('#ob-' + index).draggable('enable');
-        $('#unassigned-list').css({overflow: 'visible'});
     },
 
     getInitialState: function() {
         return {
-            selectedIndex: null
+            selectedIndex: null,
+            dragInProgress: null
         };
     },
 
@@ -157,7 +161,7 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     componentWillUnmount: function() {
-        $( ".unassigned-list-item" ).draggable( "destroy" );
+        // $( ".unassigned-list-item" ).draggable( "destroy" );
         this.props.iscroll.unassignedList.destroy();
         this.props.iscroll.unassignedList = null;
     },
@@ -165,7 +169,8 @@ var UnassignedRoomPanel = React.createClass({
     componentWillReceiveProps: function(nextProps) {
         if ( nextProps.edit.active || (nextProps.edit.passive && nextProps.unassignedRoomList.selectedReservations.length) ) {
             this.setState({
-                selectedIndex: null
+                selectedIndex: null,
+                dragInProgress: null
             });
         }
     },
@@ -173,7 +178,10 @@ var UnassignedRoomPanel = React.createClass({
     render: function() {
         var self = this;
 
-        var panelClassName = 'sidebar-right';
+        var panelClassName = 'sidebar-right',
+            containerClassName = 'sidebar-content scrollable';
+
+        containerClassName = self.state.dragInProgress ? (containerClassName + ' dragging') : containerClassName;
         if ( this.props.unassignedRoomList ) {
            panelClassName = this.props.unassignedRoomList.open ? 'sidebar-right open' : 'sidebar-right';
         }
@@ -239,7 +247,7 @@ var UnassignedRoomPanel = React.createClass({
                 ),
                 React.DOM.div({
                         id: 'unassigned-list',
-                        className: 'scrollable'
+                        className: containerClassName
                     },
                     React.DOM.div({
                         className: 'wrapper'

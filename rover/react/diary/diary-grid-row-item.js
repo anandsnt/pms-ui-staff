@@ -57,7 +57,7 @@ var GridRowItem = React.createClass({
 
 	componentWillUnmount: function() {
 		var rootElement = $(this.getDOMNode());
-        rootElement.droppable( "destroy" );
+        // rootElement.droppable( "destroy" );
     },
 
 	__formInnerText: function(data, meta) {
@@ -269,7 +269,6 @@ var GridRowItem = React.createClass({
 		if ( data[status] === 'available' ) {
 			e.preventDefault();
 			ui.helper.fadeOut();
-			$('#unassigned-list').css({overflow: 'hidden'});
 			this.props.unassignedRoomList.dropReservation( data['room_id'] );
 		}
 	},
