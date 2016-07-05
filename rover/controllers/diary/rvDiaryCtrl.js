@@ -1080,7 +1080,7 @@ angular.module('sntRover')
 	    };
 
 	    var resizeEndForExistingReservation = function (row_data, row_item_data) {
-	    	var params = getEditReservationParams();
+	    	var params = getEditReservationParams($scope.gridProps.edit.originalItem);
 	    	var options = {
 	    		params: 			params,
 	    		successCallBack: 	successCallBackOfResizeExistingReservation,
@@ -1439,7 +1439,7 @@ angular.module('sntRover')
 		}
 	};
 
-	var getEditReservationParams = function(){
+	var getEditReservationParams = function(originalRowItem){
 		var filter 	= _.extend({}, this.filter),
 		time_span 	= Time({ hours: this.min_hours }),
 
@@ -1457,6 +1457,12 @@ angular.module('sntRover')
 		arrivalTime = new Date(this.currentResizeItem.arrival).toComponents().time;
 		arrivalTime = arrivalTime.hours + ":" + arrivalTime.minutes + ":" + arrivalTime.seconds;
 
+		var oldArrivalTime = new Date(originalRowItem.arrival).toComponents().time;
+			oldArrivalTime = oldArrivalTime.hours + ":" + oldArrivalTime.minutes + ":" + oldArrivalTime.seconds;
+
+		var oldDepTime = new Date(originalRowItem.departure).toComponents().time;
+			oldDepTime = oldDepTime.hours + ":" + oldDepTime.minutes + ":" + oldDepTime.seconds;
+
 		depTime 	= new Date(this.currentResizeItem.departure).toComponents().time;
 		depTime 	= depTime.hours + ":" + depTime.minutes + ":" + depTime.seconds;
         var params = {
@@ -1464,8 +1470,10 @@ angular.module('sntRover')
             reservation_id:     reservation_id,
             begin_date:         start,
             begin_time:         arrivalTime,
+            old_begin_time: 	oldArrivalTime,
             end_date:           end,
             end_time:           depTime,
+            old_end_time:      	oldDepTime,
             rate_type:          rate_type
         };
         if(account_id) {
