@@ -157,7 +157,7 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     componentWillUnmount: function() {
-        $( ".selector" ).draggable( "destroy" );
+        $( ".unassigned-list-item" ).draggable( "destroy" );
         this.props.iscroll.unassignedList.destroy();
         this.props.iscroll.unassignedList = null;
     },
