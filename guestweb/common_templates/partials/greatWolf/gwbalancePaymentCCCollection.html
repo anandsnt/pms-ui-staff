@@ -48,7 +48,7 @@
                     <div class="cc-texts-container">
                         <p>****{{paymentMethodDetails.payment_details.card_number}}</p>
                         <p>{{paymentMethodDetails.payment_details.card_name}}</p>
-                        <p>Expires {{paymentMethodDetails.payment_details.card_expiry}}</p>
+                        <p>EXPIRES {{paymentMethodDetails.payment_details.card_expiry}}</p>
                     </div>
                 </div>
                 <br/>
@@ -87,10 +87,8 @@
                 </div>
                 <div class="row">
                     <!-- month -->
+                    <p class="sub-text upper-case left-align">Expires (Month/Year)</p>
                     <div class="drop-down-container pull-left">
-                        <span class="sub-text upper-case pull-left">Expires (Month/Year)</span>
-                        <br>
-                        <br>
                         <div class="select-style">
                             <select class="margin-top-10" ng-model="monthSelected" ng-options="month.value as month.name for month in months">
                                 <option value="">Month</option>
@@ -99,9 +97,6 @@
                     </div>
                     <!-- year -->
                     <div class="drop-down-container pull-right">
-                        <span class="sub-text upper-case  pull-left">&nbsp;&nbsp;</span>
-                        <br>
-                        <br>
                         <div class="select-style left-margin-5">
                             <select class="margin-top-10" ng-model="yearSelected" ng-options="year as year  for year in years">
                                 <option value="">Year</option>
