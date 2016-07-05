@@ -73,7 +73,7 @@
                         BALANCE
                     </div>
                     <div class="res-date">
-                        {{currencySymbol}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2  }}
+                        {{currencySymbol}} {{outStandingBalance}}
                     </div>
                 </div>
             </div>

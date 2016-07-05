@@ -163,11 +163,8 @@
 			$scope.yearSelected = "";
 			$scope.ccSaved = false;
 			$scope.cardName = "";
-
-			//TO DO ----
+			
 			/*******************************************/
-			$rootScope.reservationID = 1344568;
-			$rootScope.accessToken = '3b9b81823405849e79e7a6eab35212b0';
 			$scope.paymentMethodDetails = {
 					"payment_method_used": $rootScope.payment_method_used,
 					"payment_details": $rootScope.paymentDetails
