@@ -63,7 +63,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 		var valueIsInteger = function(v){
 			//must pass in a string (v), for the first character to be evaluated
 			try {	
-				console.log('valueIsInteger: ', v, '   |   ', v[0])
 				if (typeof parseInt(v[0]) === typeof 02){
 					return true;
 				}
@@ -73,11 +72,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 			}
 		};
         var setTotalsForReport = function(totals){
-                var totalsForMobileCheckinNow = [], v;
+                var totalsForReport = [], v;
                 _.each(totals, function(item) {
                     if (item.label.indexOf('Conversion')!==-1){
                         if (typeof item.value == typeof 'str' && item.value.indexOf('%')!=-1){
                         	v = item.value.split('%')[0]+'%';
+                        } else if (item.label.indexOf('Mobile Check In Conversion')!==-1 || item.label.indexOf('Auto Check In Conversion')!==-1){
+                        	v = item.value + '%';//these values are currently being passed without the percentage...just need to add the % sign
                         } else {
                             v = 'N/A';
                         }
@@ -92,9 +93,9 @@ sntRover.controller('RVReportDetailsCtrl', [
                     } else {
                         v = 0;
                     }
-                    totalsForMobileCheckinNow.push(v);
+                    totalsForReport.push(v);
                   });
-                $scope.resultsTotalRow = totalsForMobileCheckinNow;  
+                $scope.resultsTotalRow = totalsForReport;  
         };
 
 		// common methods to do things after fetch report
