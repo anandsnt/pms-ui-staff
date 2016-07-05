@@ -9,7 +9,8 @@
 	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" :$rootScope.userEmail;
 	$rootScope.userMobile = ($rootScope.userMobile === null ) ? "" :$rootScope.userMobile;
 
-	if(parseInt($rootScope.outStandingBalance) > 0 && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection){
+	if(parseInt($rootScope.outStandingBalance) > 0 && $rootScope.isMLI
+	   && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection){
 		$state.go('balancePaymentCCCollection');
 	}
 	else if($rootScope.promptForKeyCount && !$rootScope.KeyCountAttemptedToSave){
