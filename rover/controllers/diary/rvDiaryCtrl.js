@@ -498,6 +498,7 @@ angular.module('sntRover')
 					this.open = false;
 					this.dragData = {};
 					this.isItemSelected = false;
+					this.isUnassignedPresent = false;
 
 					$scope.clearAvailability();
 					$scope.resetEdit();
@@ -2012,6 +2013,7 @@ angular.module('sntRover')
 		    	$scope.clearAvailability();
 				$scope.resetEdit();
 				$scope.renderGrid();
+				$scope.gridProps.unassignedRoomList.isUnassignedPresent = false;
 			}
 	    	$scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, _sucessCallback);
     	}

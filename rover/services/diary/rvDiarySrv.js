@@ -812,8 +812,8 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                                 if ( !! match ) {
                                     avail.physical_count = match.available_count;
-                                    avail.is_unassigned_reservation_present = data.is_unassigned_reservation_present;
                                 }
+                                avail.is_unassigned_reservation_present = data.is_unassigned_reservation_present;
                             });
 
                             var existing_data   = JSON.parse(JSON.stringify(Availability.store.data)),
