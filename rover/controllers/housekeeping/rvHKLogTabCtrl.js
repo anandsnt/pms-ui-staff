@@ -11,15 +11,14 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 			$scope.roomDetails = $scope.$parent.roomDetails;
 			$scope.$emit('hideLoader');
 			$scope.roomLogData = roomDetailsLogData.results;
-			//angular.forEach($scope.roomLogData, function(roomLogItem, roomLogKeyValue) {
-				angular.forEach($scope.roomLogData, function(item, keyValue) {
-					item.front_office_status = _.findWhere(item.details, {key: "fo_status"});
-					item.room_status = _.findWhere(item.details, {key: "room_status"});
-					item.service_status = _.findWhere(item.details, {key: "service_status"});
-					item.service_status.old_value = getServiceStatusValue(item.service_status.old_value);
-					item.service_status.new_value = getServiceStatusValue(item.service_status.new_value);
-				});
-			//});
+
+			angular.forEach($scope.roomLogData, function(item, keyValue) {
+				item.front_office_status = _.findWhere(item.details, {key: "fo_status"});
+				item.room_status = _.findWhere(item.details, {key: "room_status"});
+				item.service_status = _.findWhere(item.details, {key: "service_status"});
+				item.service_status.old_value = getServiceStatusValue(item.service_status.old_value);
+				item.service_status.new_value = getServiceStatusValue(item.service_status.new_value);
+			});
 			//Paginaton
 	        $scope.totalResults = roomDetailsLogData.total_count;
 	        if($scope.roomLogData.total_count===0){
@@ -35,6 +34,13 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	        var callback = function(data) {
 
 	                $scope.roomLogData = data.results;
+	                angular.forEach($scope.roomLogData, function(item, keyValue) {
+						item.front_office_status = _.findWhere(item.details, {key: "fo_status"});
+						item.room_status = _.findWhere(item.details, {key: "room_status"});
+						item.service_status = _.findWhere(item.details, {key: "service_status"});
+						item.service_status.old_value = getServiceStatusValue(item.service_status.old_value);
+						item.service_status.new_value = getServiceStatusValue(item.service_status.new_value);
+					});
 	                $scope.totalResults = roomDetailsLogData.total_count;
 	                if ($scope.nextAction) {
 	                    $scope.start = $scope.start + $scope.perPage;
@@ -77,7 +83,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 		        $scope.end = $scope.start + $scope.roomLogData.length - 1;
 	        }
 	        $scope.page = 1;
-	        $scope.perPage = 50;
+	        $scope.perPage = 3;
 	        $scope.nextAction = false;
 	        $scope.prevAction = false;
 	    };
@@ -98,7 +104,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 
 	    $scope.isNextButtonDisabled = function() {
 	        var isDisabled = false;
-	        if ($scope.totalResults >= $scope.end) {
+	        if ($scope.end >= $scope.totalResults) {
 	            isDisabled = true;
 	        }
 	        return isDisabled;
@@ -113,6 +119,8 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	    };
 	    $scope.init();
 	    $scope.initPaginationParams();
+
+
 
 
 	}
