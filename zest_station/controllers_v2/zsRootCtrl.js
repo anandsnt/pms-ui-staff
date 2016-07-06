@@ -331,8 +331,15 @@ sntZestStation.controller('zsRootCtrl', [
 		/**
 		 * SVGs are ng-included inside HTML
 		 **/
+
+		$scope.showScreenIcons = function() { //currenly we will use this for yotel to detect if screen icons are needed
+			//also attaching this to navigation, yotel has text back & cancel, instead of svg icons for back and close;
+			if ($scope.zestStationData.theme === 'yotel') {
+				return true;
+			} else return false;
+		};
 		$scope.setSvgsToBeLoaded = function(iconsPath) {
-			$scope.activeScreenIcon = '';
+			$scope.activeScreenIcon = 'bed';
 			$scope.icons = {
 				url: {
 					active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
@@ -361,6 +368,84 @@ sntZestStation.controller('zsRootCtrl', [
 				}
 			};
 		};
+
+		/********************************************************************************
+		 *  Yotel has and icon at the top of the page which change depending on the state
+		 ********************************************************************************/
+
+		var setScreenIcon = function(name) {
+			$scope.activeScreenIcon = name;
+			if ($scope.icons && $scope.icons.url) {
+				$scope.icons.url.active_screen_icon = $scope.iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg';
+			}
+		};
+		var setScreenIconByState = function() {
+			var name = $state.current.name;
+			switch (name) {
+				//home screen handled from homeCtrl on init, others handled here
+				case 'zest_station.checkinKeyDispense':
+					setScreenIcon('card');
+					break;
+				case 'zest_station.checkInSignature':
+					setScreenIcon('card');
+					break;
+				case 'zest_station.checkInCardSwipe':
+					setScreenIcon('card');
+					break;
+				case 'zest_station.checkInDeposit':
+					setScreenIcon('card');
+					break;
+				case 'zest_station.checkInTerms':
+					setScreenIcon('bed');
+					break;
+				case 'zest_station.admin':
+					setScreenIcon('checkin');
+					break;
+				case 'zest_station.checkInReservationDetails':
+					setScreenIcon('checkin');
+					break;
+				case 'zest_station.checkInReservationSearch':
+					setScreenIcon('checkin');
+					break;
+				case 'zest_station.outOfService':
+					setScreenIcon('settings');
+					break;
+				case 'zest_station.checkoutReservationBill':
+					setScreenIcon('checkout');
+					break;
+				case 'zest_station.checkoutSearchOptions':
+					setScreenIcon('checkout');
+					break;
+				case 'zest_station.checkOutReservationSearch':
+					if ($state.params.mode === 'PICKUP_KEY') {
+						setScreenIcon('key');
+					} else {
+						setScreenIcon('checkout');
+					}
+					break;
+				case 'zest_station.reservationCheckedOut':
+					setScreenIcon('checkout');
+					break;
+				default:
+					setScreenIcon('bed');
+					break;
+			}
+		};
+		/**
+		 * get paths for theme based Icon files
+		 **/
+		$scope.$on('updateIconPath', function(evt, theme) {
+			if (theme === 'yotel') {
+				$scope.$emit('DONT_USE_NAV_ICONS');
+				$scope.theme = theme;
+				$scope.iconsPath = '/assets/zest_station/css/icons/yotel';
+				$scope.setSvgsToBeLoaded($scope.iconsPath);
+			} else if (theme === 'fontainebleau') {
+				//nothing else
+			} else {
+				$scope.iconsPath = '/assets/zest_station/css/icons/default';
+			}
+		});
 
 		/********************************************************************************
 		 *  User activity timer
@@ -426,6 +511,9 @@ sntZestStation.controller('zsRootCtrl', [
 
 
 		$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+			if ($scope.theme === 'yotel') {
+				setScreenIconByState();
+			}
 			console.info("\ngoing to----->" + from.name);
 			console.info("to stateparams" + toParams);
 			console.info(toParams);
