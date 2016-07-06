@@ -72,7 +72,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                             v = 'N/A';
                         }
                     } else if (item.label.indexOf('Revenue')!==-1){
-                    	if (typeof item.value == typeof 'str' && Number.isInteger( parseInt(item.value) ){
+                    	if (typeof item.value == typeof 'str' && Number.isInteger(parseInt(item.value))){
                         	v = item.value;
                         } else {
                             v = 'N/A';
