@@ -60,17 +60,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
-		var valueIsInteger = function(v){
-			//must pass in a string (v), for the first character to be evaluated
-			try {	
-				if (typeof parseInt(v[0]) === typeof 02){
-					return true;
-				}
-			} catch (err){
-				console.warn(err);
-				return false;
-			}
-		};
         var setTotalsForReport = function(totals){
                 var totalsForReport = [], v;
                 _.each(totals, function(item) {
@@ -83,7 +72,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                             v = 'N/A';
                         }
                     } else if (item.label.indexOf('Revenue')!==-1){
-                    	if (typeof item.value == typeof 'str' && valueIsInteger(item.value)){
+                    	if (typeof item.value == typeof 'str' && Number.isInteger( parseInt(item.value) ){
                         	v = item.value;
                         } else {
                             v = 'N/A';
