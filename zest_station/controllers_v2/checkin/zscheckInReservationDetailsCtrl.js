@@ -14,11 +14,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
 
         /**********************************************************************************************
-         **			Please note that, not all the stateparams passed to this state will not be used in this state, 
-         **      	however we will have to pass this so as to pass again to future states which will use these.
-         **      	
-         **			Expected state params -----> none    
-         **      	Exit function -> goToSignaturePage                              
+         **         Please note that, not all the stateparams passed to this state will not be used in this state, 
+         **         however we will have to pass this so as to pass again to future states which will use these.
+         **         
+         **         Expected state params -----> none    
+         **         Exit function -> goToSignaturePage                              
          **                                                                       
          ***********************************************************************************************/
 
@@ -309,8 +309,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             console.info(': fetchedEarlyCheckinSettingsCallback :', response);
             var earlyCheckinWasPurchasedAtStation = $stateParams.earlyCheckinPurchased;
             var shouldGoThroughECI = shouldGoToEarlyCheckInFlow(response);
-            console.info('earlyCheckinWasPurchasedAtStation: ',earlyCheckinWasPurchasedAtStation);
-            console.info('shouldGoThroughECI: ',shouldGoThroughECI);
+            console.info('earlyCheckinWasPurchasedAtStation: ', earlyCheckinWasPurchasedAtStation);
+            console.info('shouldGoThroughECI: ', shouldGoThroughECI);
             if (!earlyCheckinWasPurchasedAtStation && // if they purchased it through zest station a minute ago...dont re-prompt the user
                 shouldGoThroughECI) {
                 //fetch reservation info with upsell data from /guest_web/reservations/{res_id}.json
@@ -318,11 +318,87 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             } else return false;
         };
 
+        var getMilTime = function(t, am_pm) {
+            console.info(arguments);
+            if (am_pm === 'PM') {
+                var hour = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+                return hour[t];
+            } else {
+                return t;
+            }
+        };
+
+
+        var checkinTimeWithinTheHour = function() {
+            if ($scope.zestStationData.theme !== 'yotel'){
+                return true;
+            };
+            /*
+             * for hourly hotels, we just need to check that the reservation is checking in during their arrival time, otherwise, ask they wait until later
+             */
+            console.log(' :: checkinTimeNotWithinTheHour ::');
+            var current = new Date();
+
+            var nowHour = current.getHours(),
+                nowMin = current.getMinutes(),
+                arrival = $scope.selectedReservation.reservation_details.arrival_time.split(':');
+               // depart = $scope.selectedReservation.reservation_details.departure_time.split(':');
+
+            var arrival_am_pm = arrival[1].split(' ')[1];
+              //  depart_am_pm = depart[1].split(' ')[1];
+
+            var arrivalHour = getMilTime(parseInt(arrival[0]), arrival_am_pm);
+               // departHour = getMilTime(depart[0], depart_am_pm);
+
+            var arrivalMin = parseInt(arrival[1].split(' ')[0]);
+              //  departMin = parseInt(depart[1].split(' ')[0]);
+
+            console.warn('arrival time : ', arrivalHour);
+            //console.warn('hour time : ', departHour);
+            console.log('');
+            console.log('current time: ', nowHour,nowMin);
+            console.log('');
+            console.info('arrival time for this reservation: ', arrival, ' - [ ',arrivalHour, arrivalMin, arrival_am_pm,' ]');
+            //console.info('departure time for this reservation: ', depart, ' - [ ',departHour,departMin, depart_am_pm,' ]');
+
+            var tA = new Date();//, tD = new Date();
+            tA.setHours(arrivalHour);
+            tA.setMinutes(arrivalMin);
+            console.log(tA)
+            //we dont need departure time, only arrival time here, keeping this for generic use if wanted in the future
+            //tD.setHours(departHour);
+            //tD.setMinutes(departMin);
+
+            console.log('')
+            console.log('current: ',current);
+            console.log('arrival: ',tA);
+            //console.log('depart : ',tD);
+            console.log('');
+            var a = tA.getTime(),
+                c = current.getTime();
+
+            if (c > a){// && (d < c)){//if arrival time is greater than current time allow guest to check-in
+                console.warn('guest is within arrival time');
+                return true;
+            } else if (c+3600000 > a){// current time plus an hour is greater than arrival time, (within 60-minutes from arrival time, allow guest to check in (for yotel))
+                console.warn('guest is within an hour of arrival time');
+                return true;
+            } else {
+                console.warn('guest is not within 1 hour of arrival time');
+                return false;
+            };
+            /*
+             *
+             *  just need to check hour and minutes (of arrival time) are within/before (current time),
+             *    -date is assumed to be current day, since due_in on the reservation should already be checked from API
+             *
+             */
+        };
         var continueRouting = function(settings) {
             console.info(': continueRouting :', settings);
             var goToEarlyCheckin = fetchedEarlyCheckinSettingsCallback(settings);
-            console.info('*goToCheckin: ', goToEarlyCheckin);
-            var tooEarlyForCheckin = !shouldGoToEarlyCheckInFlow(settings); //debugging
+            console.info('*goToEarlyCheckin: ', goToEarlyCheckin);
+
 
             if (goToEarlyCheckin) {
                 beginEarlyCheckin(settings);
@@ -331,18 +407,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 // terms and condition skip is done in terms and conditions page
                 initTermsPage();
             }
-            console.info("tooEarlyForCheckin: ",tooEarlyForCheckin);
-           /* if (tooEarlyForCheckin) {
-                console.warn(':: tooEarlyForCheckin ::');
-                console.warn(':: tooEarlyForCheckin ::');
-                console.warn(':: tooEarlyForCheckin ::');
-
-                beginEarlyCheckin(settings);
-
-            } else {
-                */
-                
-  //          }
         };
         var routeToNext = function() {
             console.info(': routeToNext :');
@@ -368,7 +432,17 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             } else return false;
         };
 
-
+        var initCheckinTimeError = function() {
+            /*
+             *  guest attempted to check in too early, 
+             *  - for hourly hotels such as Yotel, guest is not allowed to check-in
+             *  - unless they are within the hour of the arrival time
+             */
+            $state.go('zest_station.checkinRoomError', {
+                'unavailable': true,
+                'first_name': $scope.selectedReservation.guest_details[0].first_name
+            });
+        };
         //
         //scope methods below here
         //
@@ -380,18 +454,31 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             console.log($scope.selectedReservation.reservation_details.reservation_id);
             console.info('roomAssigned: ', roomAssigned, ', roomReady: ', roomReady);
 
-            if (!roomIsAssigned()) {
-                console.info('assigning room');
-                assignRoomToReseravtion(); //assigns room, if success- goes to terms
+            console.info('reservation_details: ', $scope.selectedReservation.reservation_details);
+            //the reservation at this point, for check-in, should have a due-in status + arrival time,
+            //if this is for Yotel, we need to check the arrival time vs current time at the hotel,
+            //to make sure the arriving guest is within the arrival time (within the first hour);
+            console.warn('$scope.zestStationData.theme: ', $scope.zestStationData.theme);
 
-            } else if (roomIsAssigned() && roomIsReady()) {
-                console.info('room is assigned and ready, continuing');
-                routeToNext();
+            var withinTheHour = checkinTimeWithinTheHour();
 
-            } else if (roomIsAssigned() && !roomIsReady()) {
-                console.info('room assigned but not ready, show room error');
-                initRoomError();
+            if ($scope.zestStationData.theme === 'yotel' && !withinTheHour) {
+                initCheckinTimeError();
 
+            } else {
+                if (!roomIsAssigned()) {
+                    console.info('assigning room');
+                    assignRoomToReseravtion(); //assigns room, if success- goes to terms
+
+                } else if (roomIsAssigned() && roomIsReady()) {
+                    console.info('room is assigned and ready, continuing');
+                    routeToNext();
+
+                } else if (roomIsAssigned() && !roomIsReady()) {
+                    console.info('room assigned but not ready, show room error');
+                    initRoomError();
+
+                }
             }
 
         };
