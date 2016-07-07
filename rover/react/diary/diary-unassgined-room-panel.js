@@ -237,7 +237,7 @@ var UnassignedRoomPanel = React.createClass({
                     React.DOM.h2({
                     }, 'Unassigned Rooms'),
                     React.DOM.p({
-                    }, 'Drag & Drop To Assign or Unassign a Room')   
+                    }, 'Drag & Drop To Assign a Room')
                 ),
                 React.DOM.div({
                         id: 'unassigned-list',
