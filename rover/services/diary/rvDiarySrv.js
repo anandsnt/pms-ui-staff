@@ -1047,6 +1047,17 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     return deferred.promise;
                 };
 
+                this.fetchUnassignedRoomListCount = function(params) {
+                    var deferred = $q.defer();
+                    var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
+                    rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                        deferred.resolve(data.reservations.length);
+                    },function(error){
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+
                 this.unassignRoom = function(params) {
                     var deferred = $q.defer();
                     var url = 'api/reservations/' + params.id + '/unassign_room/';
