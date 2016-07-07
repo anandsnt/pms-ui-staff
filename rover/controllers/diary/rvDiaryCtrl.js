@@ -1095,6 +1095,11 @@ angular.module('sntRover')
 			}
 	    	this.availability.drag.lastRoom = util.copyRoom(this.currentResizeItemRow);
 	    	$scope.renderGrid();
+
+	    	// Show some message if unassigned exists.
+	    	if ($scope.gridProps.unassignedRoomList.isUnassignedPresent) {
+	    		showPopupWithMessage('Unassigned rooms exist. Consider assigning them first');
+	    	}
 	    }.bind($scope.gridProps);
 
 	    var failureCallBackOfResizeExistingReservation = function(errorMessage){
