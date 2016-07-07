@@ -1095,6 +1095,11 @@ angular.module('sntRover')
 			}
 	    	this.availability.drag.lastRoom = util.copyRoom(this.currentResizeItemRow);
 	    	$scope.renderGrid();
+
+	    	// Show some message if unassigned exists.
+	    	if ($scope.gridProps.unassignedRoomList.isUnassignedPresent) {
+	    		showPopupWithMessage('Unassigned rooms exist. Consider assigning them first');
+	    	}
 	    }.bind($scope.gridProps);
 
 	    var failureCallBackOfResizeExistingReservation = function(errorMessage){
@@ -1103,8 +1108,8 @@ angular.module('sntRover')
 	    	$scope.renderGrid();
 	    };
 
-	    var resizeEndForExistingReservation = function (row_data, row_item_data, original) {
-	    	var params = getEditReservationParams(original);
+	    var resizeEndForExistingReservation = function (row_data, row_item_data) {
+	    	var params = getEditReservationParams();
 	    	var options = {
 	    		params: 			params,
 	    		successCallBack: 	successCallBackOfResizeExistingReservation,
@@ -1463,7 +1468,7 @@ angular.module('sntRover')
 		}
 	};
 
-	var getEditReservationParams = function(originalRowItem){
+	var getEditReservationParams = function(){
 		var filter 	= _.extend({}, this.filter),
 		time_span 	= Time({ hours: this.min_hours }),
 
@@ -1494,17 +1499,6 @@ angular.module('sntRover')
         };
         if(account_id) {
 			params.account_id = account_id;
-		}
-
-		if (originalRowItem) {
-			var oldArrivalTime = new Date(originalRowItem.arrival).toComponents().time;
-				oldArrivalTime = oldArrivalTime.hours + ":" + oldArrivalTime.minutes + ":" + oldArrivalTime.seconds;
-
-			var oldDepTime = new Date(originalRowItem.departure).toComponents().time;
-				oldDepTime = oldDepTime.hours + ":" + oldDepTime.minutes + ":" + oldDepTime.seconds;
-
-			params.old_begin_time = oldArrivalTime;
-			params.old_end_time = oldDepTime;
 		}
 
 		return params;
