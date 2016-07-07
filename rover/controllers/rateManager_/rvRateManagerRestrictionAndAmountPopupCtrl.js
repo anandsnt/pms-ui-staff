@@ -642,49 +642,60 @@ angular.module('sntRover')
         /**
          * to get restriction displaying logic based upon the restriction listing
          * @param  {Object} restriction
-         * @param  {array} individualRateRestrictionList
+         * @param  {array} turnedOnRestrictions
+         * @param  {array} turnedOffRestrictions
+         * @param  {array} variedRestrictions
          * @return {Object}
          */
-        const getDisplayingParamsForRestricion = (restriction, individualRateRestrictionList, commonRestrictions) => {
-            const restrictionFoundInCommon = _.findWhere(commonRestrictions, {restriction_type_id: restriction.id});
-            
-            var returnable = {
+        const getDisplayingParamsForRestricion = (restriction, restrictionList) => {
+            const restrictionFoundInList = _.findWhere(restrictionList, { 'restriction_type_id': restriction.id });
+
+            //returning Object - default - OFF status
+            var returningRestrictionDisplayParams = {
                 status: 'OFF',
-                value: '',
-                isDisabled: $scope.isPastDate || (!!restrictionFoundInCommon && restrictionFoundInCommon.is_on_rate)
+                value : '',
+                isDisabled: $scope.isPastDate
             };
 
-            if(restrictionFoundInCommon) {
-                return {
-                    ...returnable,
-                    status: 'ON',
-                    value: restrictionFoundInCommon.days,
-                };
-            }
-            for(let i = 0; i < individualRateRestrictionList.length; i++ ) {
-                let correspondingRestriction = _.findWhere(individualRateRestrictionList[i], { restriction_type_id: restriction.id });
-                if(correspondingRestriction) {
-                    return {
-                        ...returnable,
-                        status: 'VARIED',
-                        value: RateManagerRestrictionTypes[restriction.value].hasInputField ? '??' : ''
-                    };
+            if(restrictionFoundInList) {
+                let isRestrictionOff = (restrictionFoundInList.days === false),
+                    isRestrictionOn = Number.isInteger(restrictionFoundInList.days) || restrictionFoundInList.days === true,
+                    isRestrictionVaried = restrictionFoundInList.varied;
+                
+                //if the restriction on the rate (set from the admin), we will disable it
+                returningRestrictionDisplayParams.isDisabled = ($scope.isPastDate || restrictionFoundInList.is_on_rate);
+
+                //forming the diff. value based on the restr. status
+                //restriction status - OFF
+                if( isRestrictionOff ) {
+                    //for now, nothing to DO
+                }
+
+                //restriction status - ON
+                else if( isRestrictionOn ) {
+                    returningRestrictionDisplayParams.status = 'ON';
+                    returningRestrictionDisplayParams.value = Number.isInteger(restrictionFoundInList.days) ? restrictionFoundInList.days : '';
+                }
+
+                //restriction status - VARIED
+                else if( isRestrictionVaried ) {
+                    returningRestrictionDisplayParams.status = 'VARIED';
+                    returningRestrictionDisplayParams.value = RateManagerRestrictionTypes[restriction.value].hasInputField ? '??' : '';
                 }
             }
-            return returnable;
+            return returningRestrictionDisplayParams;
         };
 
         /**
          * to get the active and class and other configrtion added restriction list
          * @return {array}
          */
-        const getRestrictionListForRateView = (restrictionTypes, restrictionSource, commonRestricitonSource) => {
-            const individualRateRestrictionList = _.pluck(restrictionSource, 'restrictions');
+        const getRestrictionListForRateView = (restrictionTypes, restrictionList) => {
             var restrictions = getValidRestrictionTypes(restrictionTypes)
                     .map(restrictionType => ({
                         ...restrictionType,
                         ...RateManagerRestrictionTypes[restrictionType.value],
-                        ...getDisplayingParamsForRestricion(restrictionType, individualRateRestrictionList, commonRestricitonSource),
+                        ...getDisplayingParamsForRestricion(restrictionType, restrictionList),
                         edited : false
                     }));
 
@@ -722,8 +733,7 @@ angular.module('sntRover')
          * to initialize the variabes on RM_SINGLE_RATE_RESTRICTION_MODE
          */
         const initializeSingleRateRestrictionMode = () => {
-            var dialogData = $scope.ngDialogData,
-                restrictionData = dialogData.restrictionData[0];
+            var dialogData = $scope.ngDialogData;
 
             $scope.header = dialogData.rate.name;
             
@@ -731,9 +741,9 @@ angular.module('sntRover')
 
             $scope.headerBottomRightLabel = 'All Room types';
 
-            $scope.restrictionList = getRestrictionListForRateView(dialogData.restrictionTypes,
-                    restrictionData.room_types,
-                    dialogData.commonRestrictions);
+            $scope.restrictionList = getRestrictionListForRateView(
+                    dialogData.restrictionTypes,
+                    dialogData.variedAndCommonRestrictions);
 
             $scope.roomTypeAndPrices = dialogData.roomTypesAndPrices;
 
@@ -745,8 +755,7 @@ angular.module('sntRover')
          * to initialize the multiple rate restriction mode
          */
         const initializeMultipleRateRestrictionMode = () => {
-            var dialogData = $scope.ngDialogData,
-                restrictionData = dialogData.restrictionData[0];
+            var dialogData = $scope.ngDialogData;
 
             $scope.headerBottomLeftLabel = 'All Rates';
                     
@@ -756,8 +765,7 @@ angular.module('sntRover')
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
-                    restrictionData.rates,
-                    dialogData.commonRestrictions);
+                    dialogData.variedAndCommonRestrictions);
             
             if(_.findWhere($scope.restrictionList, {status: 'VARIED'})) {
                 $scope.headerNoticeOnRight = 'Restrictions vary across Rates!';
@@ -770,9 +778,8 @@ angular.module('sntRover')
          * to initialize the variabes on RM_SINGLE_ROOMTYPE_RESTRICTION_MODE
          */
         const initializeSingleRoomTypeRestrictionMode = () => {
-            var dialogData = $scope.ngDialogData,
-                restrictionData = dialogData.restrictionData[0],
-                commonRestrictions = restrictionData.room_types[0].restrictions;
+            var dialogData = $scope.ngDialogData;
+            
             $scope.header = dialogData.roomType.name;
             
             $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
@@ -781,8 +788,7 @@ angular.module('sntRover')
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
-                    restrictionData.room_types,
-                    commonRestrictions);
+                    dialogData.variedAndCommonRestrictions);
 
             $scope.roomTypeAndPrices = dialogData.roomTypesAndPrices;
 
@@ -793,8 +799,7 @@ angular.module('sntRover')
          * to initialize the multiple room type restriction mode
          */
         const initializeMultipleRoomTypeRestrictionMode = () => {
-            var dialogData = $scope.ngDialogData,
-                restrictionData = dialogData.restrictionData[0];
+            var dialogData = $scope.ngDialogData;
                     
             $scope.header = formatDateForTopHeader(dialogData.date);
 
@@ -804,8 +809,7 @@ angular.module('sntRover')
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
-                    restrictionData.room_types,
-                    dialogData.commonRestrictions);
+                    dialogData.variedAndCommonRestrictions);
             
             if(_.findWhere($scope.restrictionList, {status: 'VARIED'})) {
                 $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';
@@ -866,7 +870,6 @@ angular.module('sntRover')
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
-                    roomTypePricesAndRestrictions.room_types,
                     commonRestrictions);
             
             if(_.findWhere($scope.restrictionList, { status: 'VARIED' })) {
@@ -952,8 +955,7 @@ angular.module('sntRover')
          * this function used to initialize the popup on that mode
          */
         const initializeSingleRateMultipleRoomTypeRestrictionAndAmountMode = () => {
-            var dialogData = $scope.ngDialogData,
-                roomTypePricesAndRestrictions = dialogData.roomTypePricesAndRestrictions;
+            var dialogData = $scope.ngDialogData;
 
             $scope.header = formatDateForTopHeader(dialogData.date);
 
@@ -963,8 +965,7 @@ angular.module('sntRover')
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
-                    roomTypePricesAndRestrictions.room_types,
-                    dialogData.commonRestrictions);
+                    dialogData.variedAndCommonRestrictions);
             
             if(_.findWhere($scope.restrictionList, { status: 'VARIED' })) {
                 $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';

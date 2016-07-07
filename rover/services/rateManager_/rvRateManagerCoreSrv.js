@@ -171,7 +171,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             if(params.fetchCommonRestrictions){
                 let commonRestrictionsParams = {
-                    ..._.pick(params, 'from_date', 'to_date'),
+                    ..._.pick(params, 'from_date', 'to_date', 'varied_inclusive'),
                     'rate_ids[]': [params.rate_id]
                 }
                 promises.push(service.fetchCommonRestrictions(commonRestrictionsParams)
@@ -212,7 +212,13 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             }));
 
             if(params.fetchCommonRestrictions){
-                promises.push(service.fetchCommonRestrictions(_.pick(params, 'from_date', 'to_date'))
+                let paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date', 'varied_inclusive');
+
+                if(params.room_type_id) {
+                    paramsForCommonRestrictions['room_type_ids[]'] = [params.room_type_id];
+                }
+
+                promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
                     .then((data) => {
                         response.commonRestrictions = data.results;
                     })
@@ -248,7 +254,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             if(params.fetchCommonRestrictions){
 
                 let paramsForCommonRestrictions = {
-                    ..._.pick(params, 'from_date', 'to_date', 'name_card_ids[]')
+                    ..._.pick(params, 'from_date', 'to_date', 'name_card_ids[]', 'varied_inclusive')
                 };
 
                 if(params["rate_type_ids[]"]) {
