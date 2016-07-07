@@ -869,10 +869,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         begin_time:         data.begin_time,
                         end_date:           data.end_date,
                         end_time:           data.end_time,
-                        rate_type:          data.rate_type,
-                        old_begin_time:     data.old_begin_time,
-                        old_end_time:       data.old_end_time
-
+                        rate_type:          data.rate_type
                     };
                     if(data.rate_type === 'Corporate') {
                         if(data.account_id){
