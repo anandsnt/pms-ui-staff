@@ -869,7 +869,9 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         begin_time:         data.begin_time,
                         end_date:           data.end_date,
                         end_time:           data.end_time,
-                        rate_type:          data.rate_type
+                        rate_type:          data.rate_type,
+                        old_begin_time:     data.old_begin_time,
+                        old_end_time:       data.old_end_time
 
                     };
                     if(data.rate_type === 'Corporate') {
@@ -1041,6 +1043,17 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                         deferred.resolve(data.reservations);
+                    },function(error){
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+
+                this.fetchUnassignedRoomListCount = function(params) {
+                    var deferred = $q.defer();
+                    var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
+                    rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                        deferred.resolve(data.reservations.length);
                     },function(error){
                         deferred.reject(error);
                     });

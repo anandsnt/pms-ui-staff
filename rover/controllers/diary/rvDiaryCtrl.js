@@ -180,6 +180,15 @@ angular.module('sntRover')
 	$scope.adj_property_date_time 	= util.correctTime(propertyTime.hotel_time.date, propertyTime);
 
 	/**
+	 * Converts date to API format
+	 * @param {Object} Date
+	 * @return {String} Date
+	 */
+	var formatDateForAPI = function(date) {
+		return $filter('date')(date, $rootScope.dateFormatForAPI);
+	};
+
+	/**
 	 * two check whether two dates are same
 	 * @param  {Date}  date1 [description]
 	 * @param  {Date}  date2 [description]
@@ -491,6 +500,7 @@ angular.module('sntRover')
 			isItemSelected: false,
 			selectedReservations: $scope.selectedReservations,
 			isUnassignedPresent: false,
+			unassignedCount: 0,
 
 			reset: function() {
 				if ( this.open ) {
@@ -498,12 +508,26 @@ angular.module('sntRover')
 					this.open = false;
 					this.dragData = {};
 					this.isItemSelected = false;
-					this.isUnassignedPresent = false;
 
 					$scope.clearAvailability();
 					$scope.resetEdit();
 					$scope.renderGrid();
 				}
+			},
+			fetchCount: function() {
+				var self 	= this,
+					params 	= { date: formatDateForAPI($scope.gridProps.filter.arrival_date) };
+
+				var _sucess = function(count) {
+					self.unassignedCount = count;
+					self.isUnassignedPresent = (count > 0);
+					$scope.renderGrid();
+				};
+				var _failed = function(error) {
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = error;
+				};
+				$scope.invokeApi(rvDiarySrv.fetchUnassignedRoomListCount, params, _sucess, _failed);
 			},
 			fetchList: function() {
 				var _sucess = function(data) {
@@ -1691,6 +1715,7 @@ angular.module('sntRover')
 				$scope.clearAvailability();
 				$scope.resetEdit();
 				$scope.renderGrid();
+				$scope.gridProps.unassignedRoomList.fetchCount();
 				//reservation trnsfr from one date to another started
 				if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
 
