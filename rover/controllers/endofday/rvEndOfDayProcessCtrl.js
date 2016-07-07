@@ -4,7 +4,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     var init =function(){
         $scope.eodLogDetails = {};
         $scope.dateFormat = $rootScope.dateFormat;
-        $scope.businessDate = $filter('date')($rootScope.businessDate, $rootScope.dateFormat);
+        $scope.businessDate = $rootScope.businessDate;
         $scope.selectedDate = $scope.businessDate;
         $scope.nextBusinessDate = tzIndependentDate($rootScope.businessDate);
         $scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate()+1);
@@ -41,8 +41,8 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         $scope.dateOptions = {
             changeYear: true,
             changeMonth: true,
-            dateFormat: $rootScope.jqDateFormat,
-            maxDate: $scope.businessDate,
+            dateFormat: 'dd-mm-yy',
+            maxDate: $filter('date')($scope.businessDate,'dd-MM-yyyy'),
             yearRange: "-100:+0",
             onSelect: function(date, inst) {
                 $scope.selectedDate = date;
@@ -79,7 +79,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
 
     var fetchEodLogOfSelectedDate = function(){
         var data = {
-            date:$filter('date')($scope.selectedDate, "dd-mm-yyyy")
+            date: $scope.selectedDate
         };
         var fetchEodLogSuccess = function(data){
             $scope.eodLogDetails = data.eod_processes;
