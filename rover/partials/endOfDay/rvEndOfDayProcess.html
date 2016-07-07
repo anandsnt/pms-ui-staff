@@ -17,7 +17,7 @@
 
     <!-- Content -->
     <!-- If there is content, add slider to this -->
-    <div class="eod-content scrollable">
+    <div class="eod-content scrollable" ng-iscroll="eod_scroll" ng-iscroll-delay="500">
         <!-- Case 1: 'Start Screen' - no content:
         -->
         
@@ -37,9 +37,9 @@
 
         <!-- Case 2: there is content:
         -->
-        <div class="wrapper" ng-if="!showSetToTodayButton()">
+        <div class="wrapper" ng-show="!showSetToTodayButton()">
 
-            <div class="eod-item" ng-repeat="eodLogDetail in eodLogDetails">
+            <div class="eod-item" ng-repeat="eodLogDetail in eodLogDetails" ng-class="getClass(eodLogDetail)" ng-click="showError($index)">
 
                 <!-- If everything is ok add class .has-success,
                      If there is an error add classes .error .has-arrow .toggle' | Add .active when toggled
@@ -49,18 +49,16 @@
 
                 <!-- Create notice only if there is an error -->
                 <!-- Remove class .hidden when toggled-->
-                <div class="notice hidden">
-                    <h3>{Notice Title}</h3>
+                <div class="notice" ng-class="{'hidden':!eodLogDetail.isOpened }" ng-if="eodLogDetail.status=='FAILED'">                   
+                        <h3>1{{eodLogDetail.errors[0].message}}</h3>
+                        <!-- Show if any-->
+                        <p>2{{eodLogDetail.errors[0].title}}</p>                    
                     <!-- Show if any-->
-                    <p>{Notice Description}</p>
-                    <!-- Show if any-->
-                    <ul>
-                        <li>{Notice list}</li>
-                        ... repeat for each notice list
-                    </ul>
+                    <!-- <ul>
+                        <li ng-repeat="error in eodLogDetail.errors">{Notice list}</li>
+                    </ul> -->
                 </div>
             </div>
         </div>
     </div>
-
 </section>
