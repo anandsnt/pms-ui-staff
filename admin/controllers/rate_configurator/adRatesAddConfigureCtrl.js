@@ -665,6 +665,11 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             }
         };
 
+        //Checks whether the rate is a hourly child rate
+        $scope.isHourlyChildRate = function() {
+            return ($scope.rateData.is_hourly_rate && $scope.rateData.based_on.id != "" && $scope.rateData.based_on.id != null)
+        };
+
         $scope.init();
     }
 ]);

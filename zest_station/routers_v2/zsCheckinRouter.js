@@ -100,7 +100,7 @@ sntZestStation.config(['$stateProvider',
       	
       	// check-in room error
       	$stateProvider.state('zest_station.checkinRoomError', {
-			url: '/checkinRoomError/:first_name',
+			url: '/checkinRoomError/:first_name/:unavailable',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomError.html',
 			controller: 'zsRoomErrorCtrl'
 		});

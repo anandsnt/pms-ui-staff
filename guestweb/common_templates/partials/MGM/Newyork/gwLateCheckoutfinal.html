@@ -7,7 +7,7 @@
 <!-- main section starts here -->
 <div class="container">
     <!-- request text -->
-    <div class="row" ng-hide="posted || isCheckoutCompleted || netWorkError || isCheckedout">
+    <div class="row" ng-hide="posted || netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
             <p class="request-text">Your request is being processed.
@@ -25,23 +25,24 @@
         <div class="col-md-2">
         </div>                   
     </div>
-    <!-- final message -->
-    <div class="row" ng-show="posted && success && isCheckoutCompleted && !netWorkError">
+    <!-- late checkout success -->
+    <div class="row" ng-show="success">
         <div class="col-md-2"></div>
-        <div class="col-md-8 top-spacing">
-            <p class="main-text">We hope to welcome you back to Mirage soon.</p>
-            <p class="sub-main-text"> Please retain your room key to exit the Self-Parking Garage should you be departing by vehicle.</p>
+        <!-- left side -->
+        <div class="col-md-4 top-spacing">
+            <p class="main-text">Thank You.</p>
+            <p class="sub-main-text"><em>The following will appear on your bill.</em>
+	        </p>
+	       <p class="sub-main-text">Late Check Out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}
+           </p>
+           <p class="sub-main-text">
+            <em>{{keyExpiry}}</em>
+           </p>
         </div>
-        <div class="col-md-2">
-        </div>                   
-    </div>
-   <!-- if guest has already checkout -->
-    <div class="row" ng-show="isCheckedout && !success">
         <div class="col-md-1"></div>
-        <div class="col-md-10 top-spacing">
-            <p class="main-text">It appears you have already completed your check out.</p>
-            <p class="sub-main-text">For further enquiries please contact the hotel at <a href="tel: {{hotelPhone}}"  class="phone-text">{{hotelPhone}}.</a> <br>Please retain your room key to exit the Self-Parking Garage should you be departing by vehicle.</p>
-            <p class="sub-main-text">Thank You!</p>
+        <!-- right side -->
+        <div class="col-md-5 top-spacing sm-no-top-spacing">
+            <a class="btn btn-template margin-top-10 late-checkout-final-button go-to-checkin-final-button" ui-sref="checkOutConfirmation">Back to check out screen</a>
         </div>
         <div class="col-md-1">
         </div>                   

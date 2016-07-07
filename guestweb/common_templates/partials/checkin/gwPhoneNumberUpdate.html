@@ -1,0 +1,72 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <!-- request text -->
+    <div class="row" ng-show="isLoading && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check in at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- email entry -->
+    <div class="row" ng-hide="isLoading || netWorkError || mobileUpdated">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing sm-no-top-spacing">
+            <form>
+                <div class="top-spacing section-container">
+                    <p class="main-text">Enter Your Mobile Phone Number</p>
+                    <div class="row">
+                        <p class="sub-text left-align">MOBILE PHONE NUMBER</p>
+                        <div class="eta-container country-container">
+                            <div class="select-style flag-container">
+                                <div class="flag {{ country_code}}"></div>
+                                <select ng-model="country_code" ng-change="countryChanged()" class="country-dropdown">
+                                    <option ng-repeat="option in countryDetails" value="{{option.countrycode}}">{{option.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="dial-div">{{dial}}</div>
+                        <div class="mobile-container">
+                            <input type="tel" ng-model="guestDetails.mobile" class="col-xs-12 textBox bottom-margin-10 mobile-field" />
+                        </div>
+                    </div>
+                </div>
+                <!--  submit button-->
+                <input type="submit" class="btn btn-template" ng-click="mobileSubmitted()" value="Continue" />
+                <a class="btn btn-template  margin-top-10 grey-btn" ng-click="continueClicked()"> Skip</a>
+            </form>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+    <!-- email updated -->
+    <div class="row" ng-hide="isLoading || netWorkError || !mobileUpdated">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing sm-no-top-spacing section-container mob-padding-bottom-10">
+            <div class="col-md-12 top-spacing section-container mob-padding-bottom-10">
+                <p class="main-text"> Mobile Phone NUmber Updated</p>
+                <p class="sub-main-text"> We updated your Guest profile to include this mobile phone number : {{dial}}-{{guestDetails.mobile}}</p>
+            </div>
+            <a class="btn btn-template margin-top-10" ng-click="continueClicked()">Continue</a>
+            <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-click="changeMobile()"> Change Mobile  Number</a>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>

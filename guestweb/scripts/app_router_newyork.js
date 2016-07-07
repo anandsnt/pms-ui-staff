@@ -1,3 +1,4 @@
+ 
 
 sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
 
@@ -55,7 +56,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/common_templates/partials/MGM/Luxor/gwLateCheckoutfinal.html',
+		templateUrl: '/assets/common_templates/partials/MGM/Newyork/gwLateCheckoutfinal.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -145,14 +146,8 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	templateUrl: '/assets/common_templates/partials/gwNoOption.html',
 	 	title: 'Feature not available'
 	});
-	 $stateProvider.state('checkOutStatus', {
-        url: '/checkOutStatus',
-       	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/common_templates/partials/MGM/Luxor/gwCheckoutfinal.html',
-		title: 'Status - Check-out Now'
-   	 });
 
-   	$stateProvider.state('externalCheckinVerification', {
+	$stateProvider.state('externalCheckinVerification', {
 		url: '/externalCheckinVerification',
 		templateUrl: '/assets/common_templates/partials/MGM/gwExternalCheckin.html',
 		controller: 'externalCheckinVerificationViewController',
@@ -209,6 +204,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		title: 'Phone number entry'
 	});
 
+
 	//checkin now states
 	$stateProvider.state('guestCheckinOptions', {
 		url: '/guestCheckinOptions',
@@ -241,4 +237,13 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		controller: 'eciOffRoomNotReadyController',
 		title: 'Room unavailable'
 	});
+
+
+	$stateProvider.state('checkOutStatus', {
+        url: '/checkOutStatus',
+       	controller: 'checkOutStatusController',
+       	templateUrl: '/assets/common_templates/partials/MGM/Newyork/gwCheckoutfinal.html',
+		title: 'Status - Check-out Now'
+   	 });
+
 }]);
