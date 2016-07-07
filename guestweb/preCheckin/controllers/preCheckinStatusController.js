@@ -33,8 +33,12 @@
 			&& $rootScope.userMobile.length ===0 && !$rootScope.userMobileSkipped){
 		$state.go('mobileNumberAddition');// if user has not attached an mobile
 	}
+<<<<<<< HEAD
 	//collect email
 	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application ==="SMS" || $rootScope.application ==="EMAIL")){
+=======
+	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application ==="SMS" || $rootScope.application ==="EMAIL" || $rootScope.application ==="URL")){
+>>>>>>> 5e239f741f096355eb97b6d0fb173b66b698c1fe
 		$state.go('emailAddition',{'isFrom':'checkinLater'});// if user has not attached an email
 	}
 	//collect deposit
