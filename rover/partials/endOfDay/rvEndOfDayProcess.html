@@ -1,0 +1,66 @@
+<section class="content" role="main">
+
+    <!-- Header -->
+    <div class="eod-header">
+        <div class="entry">
+            <label for="{eod-date}">Date</label>
+            <div class="entry-data" ng-click="clickedDate()">
+                <input name="eod-date" id="eod-date" type="text" class="datepicker" readonly>
+                <strong class="day">{{selectedDate | date:'d'}}</strong>
+                <span class="month">{{selectedDate | date:'MMMM'}}</span>
+                <span class="year">{{selectedDate | date:'yy'}}</span>
+            </div>
+        </div>
+        <!-- Show this button if the business day is not today-->
+        <button type="button" class="button blue" ng-click="setSelectedDateToBussinessDate()" ng-hide="showSetToTodayButton()">Set to Today</button>
+    </div>
+
+    <!-- Content -->
+    <!-- If there is content, add slider to this -->
+    <div class="eod-content scrollable">
+        <!-- Case 1: 'Start Screen' - no content:
+        -->
+        
+        <div class="no-content" ng-if="showSetToTodayButton()">
+        <div class="info">
+        <span class="icon-no-content icon-settings"></span>
+        <strong class="h1">End of Day</strong>
+        <span class="h2">
+            This will close the business day for 
+            <strong class="red">{{businessDate}}</strong>
+            and change the business date to 
+            <strong class="green">{{nextBusinessDate}}</strong>
+        </span>
+            <button type="submit" class="button green" ng-click="openEndOfDayPopup()">Start End Of Day</button>
+            </div>
+        </div>
+
+        <!-- Case 2: there is content:
+        -->
+        <div class="wrapper" ng-if="!showSetToTodayButton()">
+
+            <div class="eod-item" ng-repeat="eodLogDetail in eodLogDetails">
+
+                <!-- If everything is ok add class .has-success,
+                     If there is an error add classes .error .has-arrow .toggle' | Add .active when toggled
+                     If the status is pending add class .pending
+                -->
+                <h2>{{eodLogDetail.sequence_number}}. {{eodLogDetail.name}}</h2>
+
+                <!-- Create notice only if there is an error -->
+                <!-- Remove class .hidden when toggled-->
+                <div class="notice hidden">
+                    <h3>{Notice Title}</h3>
+                    <!-- Show if any-->
+                    <p>{Notice Description}</p>
+                    <!-- Show if any-->
+                    <ul>
+                        <li>{Notice list}</li>
+                        ... repeat for each notice list
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

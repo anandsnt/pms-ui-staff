@@ -7,6 +7,8 @@ module.exports = {
 			],
 			nonMinifiedFiles: [						
 				controllerRoot + 'rvEndOfDayModalCtrl.js',
+				controllerRoot + 'endofday/rvEndOfDayCtrl.js',
+				controllerRoot + 'endofday/rvEndOfDayProcessCtrl.js',
 				servicesRoot + "rvEndOfDayModalSrv.js"
 			]
 		};
