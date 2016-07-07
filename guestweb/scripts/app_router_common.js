@@ -165,8 +165,8 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/common_templates/partials/checkin/gwLateToCheckin.html',
 		title: 'Check-in'
 	});
-}]);
-$stateProvider.state('emailAddition', {
+
+	$stateProvider.state('emailAddition', {
 		url: '/emailAddition/:isFrom',
 		templateUrl: '/assets/common_templates/partials/checkin/gwEmailEntry.html',
 		controller: 'emailEntryController',
@@ -182,3 +182,4 @@ $stateProvider.state('emailAddition', {
 		controller: 'mobileOptionsController',
 		title: 'Phone number entry'
 	});
+}]);
