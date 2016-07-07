@@ -813,6 +813,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                                 if ( !! match ) {
                                     avail.physical_count = match.available_count;
                                 }
+                                avail.is_unassigned_reservation_present = data.is_unassigned_reservation_present;
                             });
 
                             var existing_data   = JSON.parse(JSON.stringify(Availability.store.data)),
@@ -869,7 +870,6 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         end_date:           data.end_date,
                         end_time:           data.end_time,
                         rate_type:          data.rate_type
-
                     };
                     if(data.rate_type === 'Corporate') {
                         if(data.account_id){
@@ -1040,6 +1040,17 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                         deferred.resolve(data.reservations);
+                    },function(error){
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+
+                this.fetchUnassignedRoomListCount = function(params) {
+                    var deferred = $q.defer();
+                    var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
+                    rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                        deferred.resolve(data.reservations.length);
                     },function(error){
                         deferred.reject(error);
                     });
