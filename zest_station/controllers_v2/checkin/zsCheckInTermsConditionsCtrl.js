@@ -33,7 +33,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			});
 			//starting mode
 			$scope.mode = "TERMS_CONDITIONS";
-
+			$scope.setScreenIcon('bed');
 		};
 
 
