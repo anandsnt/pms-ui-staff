@@ -27,8 +27,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                         return _.indexOf(selectedTaskIds, task.id) > -1;
                     });
 
-                    if(!currentSelection){
-                        var defaultTask = _.find(workType.tasks,{
+                    var defaultTask = null;
+                    if(!currentSelection && !$scope.is_edit){
+                        defaultTask = _.find(workType.tasks,{
                             is_default : true
                         });
                     }

@@ -329,8 +329,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
             //adding available room count over the data we got
             $scope.roomTypesAndData = _.map(data.result, function(data) {
-                data.availableRoomCount = toI(data.total_rooms) - toI(data.total_pickedup_rooms);
-                data.availableRoomCount = (data.availableRoomCount < 0) ? 0 : data.availableRoomCount;
+                data.availableRoomCount = data.availability;
                 return data;
             });
             //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
@@ -745,7 +744,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             var isValidSelectedRoomType = (typeof selectedRoomType !== "undefined");
 
             //forming [1,2,3,4]
-            $scope.possibleNumberOfRooms = isValidSelectedRoomType ? _.range(1, util.convertToInteger(selectedRoomType.total_rooms) + 1) : [];
+            $scope.possibleNumberOfRooms = isValidSelectedRoomType ? _.range(1, util.convertToInteger(selectedRoomType.availability) + 1) : [];
 
             // setting single as default occupancy as part of CICO-27540
             $scope.selectedOccupancy = '1';

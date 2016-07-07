@@ -67,6 +67,9 @@
     <div id="content">
         <h1 translate>SUCCESS_HDR</h1>
         <h2 translate>GRAB_KEYS</h2>
+        <div id="room" ng-show="zestStationData.show_room_number">
+            <span class="number">{{room}}</span><br><br>
+        </div>
         <button type="button" class="button" click-touch="goToNextScreen('success')" translate>DONE</button>
     </div>
 </section>   

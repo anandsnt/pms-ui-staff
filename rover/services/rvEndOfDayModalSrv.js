@@ -28,6 +28,19 @@ angular.module('sntRover').service('RVEndOfDayModalSrv', ['$q', 'rvBaseWebSrvV2'
 			});
 			return deferred.promise;
 		};
+		/**
+		 * service function used to change bussiness date
+		 */
+		this.fetchLog = function(data) {
+			var deferred = $q.defer();
+			var url = '/api/eod_processes';
+			rvBaseWebSrvV2.getJSON(url,data).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
 
 
 }]);
