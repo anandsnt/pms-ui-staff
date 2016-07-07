@@ -1373,6 +1373,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                         scope: $scope
                     });
                 }
+            });
         };
 
         $scope.updateAdditionalDetails = function(reservationId, index, goToConfirmationScreen) {
