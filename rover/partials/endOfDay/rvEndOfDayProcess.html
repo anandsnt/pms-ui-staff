@@ -6,9 +6,9 @@
             <label for="{eod-date}">Date</label>
             <div class="entry-data" ng-click="clickedDate()">
                 <input name="eod-date" id="eod-date" type="text" class="datepicker" readonly>
-                <strong class="day">{{selectedDate | date:'d'}}</strong>
-                <span class="month">{{selectedDate | date:'MMMM'}}</span>
-                <span class="year">{{selectedDate | date:'yy'}}</span>
+                <strong class="day">{{getFormatedDate(selectedDate) | date:'dd'}}</strong>
+                <span class="month">{{getFormatedDate(selectedDate) | date:'MMMM'}}</span>
+                <span class="year">{{getFormatedDate(selectedDate) | date:'y'}}</span>
             </div>
         </div>
         <!-- Show this button if the business day is not today-->
@@ -20,20 +20,6 @@
     <div class="eod-content scrollable" ng-iscroll="eod_scroll" ng-iscroll-delay="500">
         <!-- Case 1: 'Start Screen' - no content:
         -->
-        
-        <div class="no-content" ng-if="showSetToTodayButton()">
-        <div class="info">
-        <span class="icon-no-content icon-settings"></span>
-        <strong class="h1">End of Day</strong>
-        <span class="h2">
-            This will close the business day for 
-            <strong class="red">{{businessDate}}</strong>
-            and change the business date to 
-            <strong class="green">{{nextBusinessDate}}</strong>
-        </span>
-            <button type="submit" class="button green" ng-click="openEndOfDayPopup()">Start End Of Day</button>
-            </div>
-        </div>
 
         <!-- Case 2: there is content:
         -->
@@ -50,14 +36,27 @@
                 <!-- Create notice only if there is an error -->
                 <!-- Remove class .hidden when toggled-->
                 <div class="notice" ng-class="{'hidden':!eodLogDetail.isOpened }" ng-if="eodLogDetail.status=='FAILED'">                   
-                        <h3>1{{eodLogDetail.errors[0].message}}</h3>
+                        <h3>{{eodLogDetail.errors[0].title}}</h3>
                         <!-- Show if any-->
-                        <p>2{{eodLogDetail.errors[0].title}}</p>                    
+                        <p>{{eodLogDetail.errors[0].message}}</p>                    
                     <!-- Show if any-->
                     <!-- <ul>
                         <li ng-repeat="error in eodLogDetail.errors">{Notice list}</li>
                     </ul> -->
                 </div>
+            </div>
+        </div>
+        <div class="no-content" ng-if="showSetToTodayButton()">
+        <div class="info">
+        <span class="icon-no-content icon-settings"></span>
+        <strong class="h1">End of Day</strong>
+        <span class="h2">
+            This will close the business day for 
+            <strong class="red">{{businessDate}}</strong>
+            and change the business date to 
+            <strong class="green">{{nextBusinessDate}}</strong>
+        </span>
+            <button type="submit" class="button green" ng-click="openEndOfDayPopup()">Start End Of Day</button>
             </div>
         </div>
     </div>
