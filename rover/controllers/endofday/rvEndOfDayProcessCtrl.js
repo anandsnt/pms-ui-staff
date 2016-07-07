@@ -4,7 +4,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     var init =function(){
         $scope.eodLogDetails = {};
         $scope.dateFormat = $rootScope.dateFormat;
-        $scope.businessDate = $rootScope.businessDate;
+        $scope.businessDate = $filter('date')($rootScope.businessDate, $rootScope.dateFormat);
         $scope.selectedDate = $scope.businessDate;
         $scope.nextBusinessDate = tzIndependentDate($rootScope.businessDate);
         $scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate()+1);
@@ -53,9 +53,13 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             }
         };
     };
+    $scope.getFormatedDate = function(date){
+        return $filter('date')(tzIndependentDate(date), 'yyyy-mm-dd');       
+    }
     var refreshScroller = function() {
-        $scope.refreshScroller ('eod_scroll');
+        $scope.refreshScroller('eod_scroll');
     };
+    //refreshScroller();
 
     $scope.showError = function(index){
         $scope.eodLogDetails[index].isOpened = !$scope.eodLogDetails[index].isOpened;
@@ -83,14 +87,14 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         };
         var fetchEodLogSuccess = function(data){
             $scope.eodLogDetails = data.eod_processes;
+                      
+            $rootScope.$broadcast('hideLoader');
             $timeout(function() {
                 refreshScroller();           
-            },500);           
-            $rootScope.$broadcast('hideLoader');
+            },1000); 
         };
         var fetchEodLogFailure = function(){
             $rootScope.$broadcast('hideLoader');
-            console.log(data);
         };
         $scope.invokeApi(RVEndOfDayModalSrv.fetchLog,data,fetchEodLogSuccess,fetchEodLogFailure);
     };
