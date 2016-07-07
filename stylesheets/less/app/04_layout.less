@@ -2154,6 +2154,12 @@ body { overflow: hidden; }
 	            height: 80px;
 	        }
 
+	        .sidebar-content {
+	        	&.dragging {
+	        		overflow: visible !important;
+	        	}
+	        }
+
 	        .rightMenuHandle {
 	            position: absolute;
 	            top: 20px;
@@ -2171,6 +2177,10 @@ body { overflow: hidden; }
 	                background-image: @icons2x;
 	                background-size: 120px, 40px;
 	            }
+
+				&.not-empty {
+					background-color: @red;
+				}
 	        }
 
 	        &#room-diary-rooms {

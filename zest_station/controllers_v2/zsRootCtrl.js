@@ -331,8 +331,15 @@ sntZestStation.controller('zsRootCtrl', [
 		/**
 		 * SVGs are ng-included inside HTML
 		 **/
+
+		$scope.showScreenIcons = function() { //currenly we will use this for yotel to detect if screen icons are needed
+			//also attaching this to navigation, yotel has text back & cancel, instead of svg icons for back and close;
+			if ($scope.zestStationData.theme === 'yotel') {
+				return true;
+			} else return false;
+		};
 		$scope.setSvgsToBeLoaded = function(iconsPath) {
-			$scope.activeScreenIcon = '';
+			$scope.activeScreenIcon = 'bed';
 			$scope.icons = {
 				url: {
 					active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
@@ -361,6 +368,84 @@ sntZestStation.controller('zsRootCtrl', [
 				}
 			};
 		};
+
+		/********************************************************************************
+		 *  Yotel has and icon at the top of the page which change depending on the state
+		 ********************************************************************************/
+
+		var setScreenIcon = function(name) {
+			$scope.activeScreenIcon = name;
+			if ($scope.icons && $scope.icons.url) {
+				$scope.icons.url.active_screen_icon = $scope.iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg';
+			}
+		};
+		var setScreenIconByState = function() {
+			var name = $state.current.name;
+			switch (name) {
+				//home screen handled from homeCtrl on init, others handled here
+				case 'zest_station.checkinKeyDispense':
+					setScreenIcon('card');
+					break;
+				case 'zest_station.checkInSignature':
+					setScreenIcon('card');
+					break;
+				case 'zest_station.checkInCardSwipe':
+					setScreenIcon('card');
+					break;
+				case 'zest_station.checkInDeposit':
+					setScreenIcon('card');
+					break;
+				case 'zest_station.checkInTerms':
+					setScreenIcon('bed');
+					break;
+				case 'zest_station.admin':
+					setScreenIcon('checkin');
+					break;
+				case 'zest_station.checkInReservationDetails':
+					setScreenIcon('checkin');
+					break;
+				case 'zest_station.checkInReservationSearch':
+					setScreenIcon('checkin');
+					break;
+				case 'zest_station.outOfService':
+					setScreenIcon('settings');
+					break;
+				case 'zest_station.checkoutReservationBill':
+					setScreenIcon('checkout');
+					break;
+				case 'zest_station.checkoutSearchOptions':
+					setScreenIcon('checkout');
+					break;
+				case 'zest_station.checkOutReservationSearch':
+					if ($state.params.mode === 'PICKUP_KEY') {
+						setScreenIcon('key');
+					} else {
+						setScreenIcon('checkout');
+					}
+					break;
+				case 'zest_station.reservationCheckedOut':
+					setScreenIcon('checkout');
+					break;
+				default:
+					setScreenIcon('bed');
+					break;
+			}
+		};
+		/**
+		 * get paths for theme based Icon files
+		 **/
+		$scope.$on('updateIconPath', function(evt, theme) {
+			if (theme === 'yotel') {
+				$scope.$emit('DONT_USE_NAV_ICONS');
+				$scope.theme = theme;
+				$scope.iconsPath = '/assets/zest_station/css/icons/yotel';
+				$scope.setSvgsToBeLoaded($scope.iconsPath);
+			} else if (theme === 'fontainebleau') {
+				//nothing else
+			} else {
+				$scope.iconsPath = '/assets/zest_station/css/icons/default';
+			}
+		});
 
 		/********************************************************************************
 		 *  User activity timer
@@ -426,6 +511,9 @@ sntZestStation.controller('zsRootCtrl', [
 
 
 		$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+			if ($scope.theme === 'yotel') {
+				setScreenIconByState();
+			}
 			console.info("\ngoing to----->" + from.name);
 			console.info("to stateparams" + toParams);
 			console.info(toParams);
@@ -778,6 +866,38 @@ sntZestStation.controller('zsRootCtrl', [
 			//maximize the chrome app in the starting
 			(chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, "zest-station-login"): "";
 		};
+		var colorLogText = function(val){
+			//if using chrome, push debugging log for UI, colors only supported by chrome 24+
+			try {
+				if (val){
+					return 'color:#007F00';
+				} else {
+					return 'color:#e7390c';
+				}
+			} catch(err){
+				console.log('error trying color logging');
+				console.log(err);
+				return val;
+			}
+		};
+		var logTextOnOff = function(val){
+			//if using chrome, push debugging log for UI, colors only supported by chrome 24+
+			try {
+				if (val){
+					return '[ On ]';
+				} else {
+					return '[ Off ]';
+				}
+			} catch(err){
+				console.log('error trying color logging');
+				console.log(err);
+				return val;
+			}
+		};
+		var logSetting = function(txt, setting){
+			//adds colors green/red to console log, to quickly check if a setting is enabled or disabled
+			console.log('%c'+txt + logTextOnOff(setting), colorLogText(setting))
+		};
 		/*
 		 * Take a quick look at hotel + zest station settings, 
 		 *  -helpful for debugging and making sure settings are what we expect
@@ -787,45 +907,64 @@ sntZestStation.controller('zsRootCtrl', [
 			console.log('');
 			console.log('-');
 			console.log('-:-');
-			console.log('-:- Station Settings -:- ');
+			//zest-station general settings
+			console.log(' -:- Station Settings -:- ');
 			console.log('');
-			console.log('  - Payment Gateway    :  ', setting);
-			console.log('  - Key Writer         :  ', setting.keyWriter);
-			console.log('  - CC Reader          :  ', setting.ccReader);
-			console.log('  - Idle Timer         :  ', (setting.idle_timer.enabled) ? 'Enabled' : 'Disabled', '*');
+			console.log('  - Payment Gateway     :  ', setting);
+			console.log('  - Key Writer          :  ', setting.keyWriter);
+			console.log('  - CC Reader           :  ', setting.ccReader);
+			logSetting('  - Idle Timer          :  ',setting.idle_timer.enabled);
 			console.log('    -> Prompt  : ', (setting.idle_timer.prompt), 'sec ');
 			console.log('    -> Home    : ', (setting.idle_timer.max), 'sec ');
-
-			console.log('  - Chrome App ID      :  ', setting.chrome_app_id);
-			console.log('  - Bussiness Date     :  ', setting.bussinessDate);
-			console.log('  - ByPassCCForPrepaid :  ', (setting.bypass_cc_for_prepaid_reservation) ? 'On' : 'Off');
-			console.log('  - Collect Nationality:  ', (setting.check_in_collect_nationality) ? 'On' : 'Off');
-			console.log('  - Check-in Time      :  ', setting.check_in_time.hour + ':' + setting.check_in_time.minute + ' - ' + setting.check_in_time.primetime);
-			console.log('  - Check-out Time     :  ', setting.check_out_time.hour + ':' + setting.check_out_time.minute + ' - ' + setting.check_out_time.primetime);
+			console.log('');			
+			console.log('  - Chrome App ID       :  ', setting.chrome_app_id);
+			console.log('  - Bussiness Date      :  ', setting.bussinessDate);
+			console.log('  - Check-in Time       :  ', setting.check_in_time.hour + ':' + setting.check_in_time.minute + ' - ' + setting.check_in_time.primetime);
+			console.log('  - Check-out Time      :  ', setting.check_out_time.hour + ':' + setting.check_out_time.minute + ' - ' + setting.check_out_time.primetime);
+			//check-in
 			console.log('');
 			console.log('  - Check-In Settings - ');
 			console.log('');
-			console.log('  - *Confirmation      :  ', (setting.checkin_screen.authentication_settings.confirmation) ? 'On' : 'Off');
-			console.log('  - *Departure Date    :  ', (setting.checkin_screen.authentication_settings.departure_date) ? 'On' : 'Off');
-			console.log('  - *Email             :  ', (setting.checkin_screen.authentication_settings.email) ? 'On' : 'Off');
-			console.log('  - *No. Nights        :  ', (setting.checkin_screen.authentication_settings.number_of_nights) ? 'On' : 'Off');
-			console.log('  -  Enforce Deposit   :  ', (setting.enforce_deposit) ? 'On' : 'Off');
+			logSetting('  -  *Confirmation      :  ',setting.checkin_screen.authentication_settings.confirmation);
+			logSetting('  -  *Departure Date    :  ',setting.checkin_screen.authentication_settings.departure_date);
+			logSetting('  -  *Email             :  ',setting.checkin_screen.authentication_settings.email);
+			logSetting('  -  *No. Nights        :  ',setting.checkin_screen.authentication_settings.number_of_nights);
+			logSetting('  -  Enforce Deposit    :  ',setting.enforce_deposit);
+			logSetting('  -  Early Check-In     :  ',setting.offer_early_checkin);
+			logSetting('  -  On-Screen Room No  :  ',setting.show_room_number);			
+			logSetting('  -  Collect Nationality:  ',setting.check_in_collect_nationality);			
+			logSetting('  -  OWS Guest Messeges :  ',setting.is_kiosk_ows_messages_active);
+			logSetting('  -  Display Terms      :  ',setting.kiosk_display_terms_and_condition);
+			logSetting('  -  ByPass Prepaid CC  :  ',setting.bypass_cc_for_prepaid_reservation);
+			logSetting('  -  Validate First Name:  ',setting.kiosk_validate_first_name);
+			logSetting('  -  Country Sorted List:  ',setting.kiosk_enforce_country_sort);
+			//check-out
 			console.log('');
 			console.log('  - Check-Out Settings - ');
 			console.log('');
-			console.log('  - By Key Card        :  ', (setting.checkout_keycard_lookup) ? 'On' : 'Off');
+			logSetting('  -  Key Card Lookup    :  ',setting.checkout_keycard_lookup);
+			console.log('');
 			console.log('  - Guest Bill Delivery:  ');
-			console.log('    -> Print   : ', (setting.guest_bill.print) ? 'On' : 'Off');
-			console.log('    -> Email   : ', (setting.guest_bill.email) ? 'On' : 'Off');
-
-			//add others here
-
-
+			console.log('');
+			logSetting('  -  Print              :  ',setting.guest_bill.print);
+			logSetting('  -  Email              :  ',setting.guest_bill.email);
+			//pickup key
+			console.log('');
+			console.log('  - Pick-Up Keys Settings - ');
+			console.log('');
+			logSetting('  -  QR Scanner        :  ',setting.pickup_qr_scan);
+			logSetting('  -  QR FailOver       :  ',setting.pickup_qr_scan_fail_over);
+			console.log('');
+			console.log('  - Authentication - ');
+			console.log('');
+			logSetting('  - Datalogic           :  ',setting.qr_scanner_datalogic);
+			logSetting('  - Samsotech           :  ',setting.qr_scanner_samsotech);
+			console.log('  - Arrow Direction     :  ',setting.qr_scanner_arrow_direction);
 			console.log('');
 			console.log(' -:-- - - - - - - - --:- ');
+			console.log('-:-');
 			console.log('-');
 			console.log('');
-
 		};
 		/***
 		 * [initializeMe description]
