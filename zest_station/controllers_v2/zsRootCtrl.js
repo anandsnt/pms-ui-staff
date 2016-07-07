@@ -373,62 +373,14 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  Yotel has and icon at the top of the page which change depending on the state
 		 ********************************************************************************/
 
-		var setScreenIcon = function(name) {
-			$scope.activeScreenIcon = name;
-			if ($scope.icons && $scope.icons.url) {
-				$scope.icons.url.active_screen_icon = $scope.iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg';
-			}
-		};
-		var setScreenIconByState = function() {
-			var name = $state.current.name;
-			switch (name) {
-				//home screen handled from homeCtrl on init, others handled here
-				case 'zest_station.checkinKeyDispense':
-					setScreenIcon('card');
-					break;
-				case 'zest_station.checkInSignature':
-					setScreenIcon('card');
-					break;
-				case 'zest_station.checkInCardSwipe':
-					setScreenIcon('card');
-					break;
-				case 'zest_station.checkInDeposit':
-					setScreenIcon('card');
-					break;
-				case 'zest_station.checkInTerms':
-					setScreenIcon('bed');
-					break;
-				case 'zest_station.admin':
-					setScreenIcon('checkin');
-					break;
-				case 'zest_station.checkInReservationDetails':
-					setScreenIcon('checkin');
-					break;
-				case 'zest_station.checkInReservationSearch':
-					setScreenIcon('checkin');
-					break;
-				case 'zest_station.outOfService':
-					setScreenIcon('settings');
-					break;
-				case 'zest_station.checkoutReservationBill':
-					setScreenIcon('checkout');
-					break;
-				case 'zest_station.checkoutSearchOptions':
-					setScreenIcon('checkout');
-					break;
-				case 'zest_station.checkOutReservationSearch':
-					if ($state.params.mode === 'PICKUP_KEY') {
-						setScreenIcon('key');
-					} else {
-						setScreenIcon('checkout');
-					}
-					break;
-				case 'zest_station.reservationCheckedOut':
-					setScreenIcon('checkout');
-					break;
-				default:
-					setScreenIcon('bed');
-					break;
+		$scope.setScreenIcon = function(name) {
+			if ($scope.zestStationData.theme !== 'yotel'){
+				return;
+			} else {
+				$scope.activeScreenIcon = name;
+				if ($scope.icons && $scope.icons.url) {
+					$scope.icons.url.active_screen_icon = $scope.iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg';
+				}	
 			}
 		};
 		/**
@@ -511,9 +463,6 @@ sntZestStation.controller('zsRootCtrl', [
 
 
 		$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
-			if ($scope.theme === 'yotel') {
-				setScreenIconByState();
-			}
 			console.info("\ngoing to----->" + from.name);
 			console.info("to stateparams" + toParams);
 			console.info(toParams);

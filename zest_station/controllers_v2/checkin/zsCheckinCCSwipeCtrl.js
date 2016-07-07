@@ -610,7 +610,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
          * [setup controller]
          */
         var init = function() {
-
+            $scope.setScreenIcon('card');
 
             console.warn('$stateParams: ', $stateParams)
                 //if at the deposit screen, set the currency symbol and amount due, which should be passed from reservation details

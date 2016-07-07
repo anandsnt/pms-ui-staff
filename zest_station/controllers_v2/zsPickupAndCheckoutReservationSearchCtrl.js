@@ -44,6 +44,11 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 					$state.go('zest_station.checkoutSearchOptions');
 				};
 			});
+			if ($stateParams.mode === 'PICKUP_KEY'){
+				$scope.setScreenIcon('key');
+			} else {
+				$scope.setScreenIcon('checkout');
+			}
 			//starting mode
 			$scope.mode = "LAST_NAME_ENTRY";
 			$scope.reservationParams = {
