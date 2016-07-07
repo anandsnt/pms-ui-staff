@@ -1032,7 +1032,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var onFetchMultipleRateRestrictionDetailsForRateCell = (response, successCallBackParameters) => {
         var restrictionData = response.dailyRateAndRestrictions,
-            variedAndCommonRestrictions = response.commonRestrictions[0].restrictions,
+            variedAndCommonRestrictions = response.restrictionsWithStatus[0].restrictions,
             rates = !cachedRateList.length ? response.rates : cachedRateList,
             rateTypes = [];
 
@@ -1060,11 +1060,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     /**
-     * [description]
-     * @param  {[type]} rateIDs [description]
-     * @param  {[type]} rateIDs [description]
-     * @param  {[type]} date    [description]
-     * @return {[type]}         [description]
+     * fetch the rate restriction details for a day
+     * @param  {Array} rateIDs
+     * @param  {Array} rateIDs
+     * @param  {String]} date
+     * @return {undefined}
      */
     var fetchMultipleRateRestrictionsDetailsForPopup = (rateTypeIDs, rateIDs, date) => {
         //calling the API to get the details
@@ -1073,9 +1073,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             'rate_type_ids[]': rateTypeIDs,
             from_date: date,
             to_date: date,
-            fetchCommonRestrictions: true,
-            varied_inclusive: true,
-            considerRateIDsInCommonRestriction: rateIDs.length > 0
+            considerRateIDsInAllRestrictionStatusFetch: rateIDs.length > 0
         };
         var options = {
             params,
@@ -1086,7 +1084,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 rateTypeIDs
             }
         };
-        $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndDailyRates, options);
+        $scope.callAPI(rvRateManagerCoreSrv.fetchRateRestrictionDetailsAndCommonRestrictions, options);
     };
 
     /**

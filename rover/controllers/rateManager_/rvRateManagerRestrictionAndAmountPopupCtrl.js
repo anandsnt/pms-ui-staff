@@ -647,7 +647,7 @@ angular.module('sntRover')
          * @param  {array} variedRestrictions
          * @return {Object}
          */
-        const getDisplayingParamsForRestricion = (restriction, restrictionList) => {
+        const getDisplayingParamsForRestriction = (restriction, restrictionList) => {
             const restrictionFoundInList = _.findWhere(restrictionList, { 'restriction_type_id': restriction.id });
 
             //returning Object - default - OFF status
@@ -658,9 +658,9 @@ angular.module('sntRover')
             };
 
             if(restrictionFoundInList) {
-                let isRestrictionOff = (restrictionFoundInList.days === false),
-                    isRestrictionOn = Number.isInteger(restrictionFoundInList.days) || restrictionFoundInList.days === true,
-                    isRestrictionVaried = restrictionFoundInList.varied;
+                let isRestrictionOff = (restrictionFoundInList.status.toLowerCase() === 'off'),
+                    isRestrictionOn = (restrictionFoundInList.status.toLowerCase() === 'on'),
+                    isRestrictionVaried = (restrictionFoundInList.status.toLowerCase() === 'varied');
                 
                 //if the restriction on the rate (set from the admin), we will disable it
                 returningRestrictionDisplayParams.isDisabled = ($scope.isPastDate || restrictionFoundInList.is_on_rate);
@@ -695,7 +695,7 @@ angular.module('sntRover')
                     .map(restrictionType => ({
                         ...restrictionType,
                         ...RateManagerRestrictionTypes[restrictionType.value],
-                        ...getDisplayingParamsForRestricion(restrictionType, restrictionList),
+                        ...getDisplayingParamsForRestriction(restrictionType, restrictionList),
                         edited : false
                     }));
 

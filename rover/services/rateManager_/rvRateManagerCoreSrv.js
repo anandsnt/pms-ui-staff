@@ -32,24 +32,12 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
         service.fetchMultipleRateInfo = function (params) {
             var url = '/api/daily_rates';
-            var deferred = $q.defer();
-            BaseWebSrvV2.getJSON(url, params).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
+            return this.getJSON(url, params);
         };
 
         service.fetchAllRoomTypesInfo = function (params) {
             var url = '/api/daily_rates/room_restrictions';
-            var deferred = $q.defer();
-            BaseWebSrvV2.getJSON(url, params).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
+            return this.getJSON(url, params);
         };
 
         service.fetchSingleRateInfo = function (params) {
@@ -230,6 +218,82 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                     response.roomTypes = data;
                 }));
             }
+            $q.all(promises).then((data) => {
+                deferred.resolve(response);
+            });
+            console.log(typeof deferred.promise);
+            return deferred.promise;
+        };
+
+        /**
+         * utility method as getJSON is repeating all the time
+         * @param  {String} url
+         * @param  {Object} params 
+         * @return {Object} Promise
+         */
+        this.getJSON = (url, params) => {
+            var deferred = $q.defer();
+            BaseWebSrvV2.getJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise; 
+        };
+
+        /**
+         * to fetch the diffent restriction with status against for rates/roomTypes 
+         * @param  {Object} params [API params]
+         * @return {Object} Promise
+         */
+        this.fetchAllRestrictionsWithStatus = (params) => {
+            var url = '/api/daily_rates/all_restriction_statuses';
+            return this.getJSON(url, params);
+        };
+
+        /**
+         * to fetch the common restriction with restriction status and daily rates
+         * @param  {Object} params [API params]
+         * @return {Object} Promise
+         */
+        this.fetchRateRestrictionDetailsAndCommonRestrictions = ( params ) => {
+            var promises = [],
+                deferred = $q.defer(),
+                response = {};
+
+            //rate restriction details fetch
+            var paramsForRateRestrictionAPI = _.omit(params, 
+                'fetchRates',
+                'considerRateIDsInAllRestrictionStatusFetch'
+            );
+            promises.push(
+                service.fetchMultipleRateInfo( paramsForRateRestrictionAPI )
+                .then(( data ) => {
+                    response.dailyRateAndRestrictions = data.results;
+                    response.totalCount = data.total_count;
+                })
+            );
+
+            //restrcition details with status
+            var paramsForCommonRestrictions = _.pick(params, 
+                'from_date',
+                'to_date',
+                'name_card_ids[]',
+                'varied_inclusive',
+                'rate_type_ids[]',
+            );
+            if(params['considerRateIDsInAllRestrictionStatusFetch']){
+               paramsForCommonRestrictions['rate_ids[]'] = params['rate_ids[]']; 
+            }
+
+            promises.push(
+                service.fetchAllRestrictionsWithStatus( paramsForCommonRestrictions )
+                .then(( data ) => {
+                    response.restrictionsWithStatus = data.results;
+                })
+            );
+            
+            //fetch all and return the results
             $q.all(promises).then((data) => {
                 deferred.resolve(response);
             });
