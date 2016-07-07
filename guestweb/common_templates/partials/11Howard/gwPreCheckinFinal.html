@@ -1,0 +1,53 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <!-- request text -->
+    <div class="row" ng-show="isLoading && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed.
+            This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>                   
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check-in at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- main content -->
+    <div class="row" ng-hide="isLoading || netWorkError">
+        <div class="col-md-1"></div>
+        <!-- left side -->
+        <div class="col-md-4 top-spacing no-side-padding">
+            <p class="main-text final-text">Pre Check-in Complete</p>
+            <p class="sub-text">Reservation #:{{confirmationNumber}}</p>
+        </div>
+        <div class="horizontal-line-sep-mobile"></div>
+        <!-- right side -->
+        <div class="col-md-2"><div class="vertical-line">&nbsp;</div></div>
+        <div class="col-md-3 top-spacing sm-no-top-spacing">
+             <p class="sub-main-text">{{responseData.confirmation_message}}
+             </p>
+             </br>
+             <p class="sub-main-text" style="text-align: left;
+                padding: 0px 19px;">
+              Let 11 Howard curate your minibar just the way you want it. <a  href="http://www.11howard.com/content/pdfs/mini-bar-packages1.pdf" style ="text-decoration:none !important;color: #07C;">Click here</a>  to view your options. 
+
+            </p>
+        
+        </div>
+        <div class="col-md-1">
+        </div>                   
+    </div>
+</div>

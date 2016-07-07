@@ -490,12 +490,15 @@ angular.module('sntRover')
 			dragData: {},
 			isItemSelected: false,
 			selectedReservations: $scope.selectedReservations,
+			isUnassignedPresent: false,
+
 			reset: function() {
 				if ( this.open ) {
 					this.data = [];
 					this.open = false;
 					this.dragData = {};
 					this.isItemSelected = false;
+					this.isUnassignedPresent = false;
 
 					$scope.clearAvailability();
 					$scope.resetEdit();
@@ -1076,8 +1079,8 @@ angular.module('sntRover')
 	    	$scope.renderGrid();
 	    };
 
-	    var resizeEndForExistingReservation = function (row_data, row_item_data) {
-	    	var params = getEditReservationParams();
+	    var resizeEndForExistingReservation = function (row_data, row_item_data, original) {
+	    	var params = getEditReservationParams(original);
 	    	var options = {
 	    		params: 			params,
 	    		successCallBack: 	successCallBackOfResizeExistingReservation,
@@ -1093,10 +1096,10 @@ angular.module('sntRover')
 
 	    $scope.onResizeEnd = function(row_data, row_item_data){
 			if($scope.gridProps.edit.active) {
-				resizeEndForExistingReservation (row_data, row_item_data);
+				resizeEndForExistingReservation (row_data, row_item_data, $scope.gridProps.edit.originalItem);
 			}
 			else{
-				resizeEndForNewReservation (row_data, row_item_data);
+				resizeEndForNewReservation (row_data, row_item_data, $scope.gridProps.edit.originalItem);
 			}
 	    };
 
@@ -1335,9 +1338,22 @@ angular.module('sntRover')
 		}
 	};
 
+	/**
+	 * Helper method to summon the popup showing custom info message.
+	 * @params {String} message to display
+	 * @params {Object} Callback method to call after close.
+	 * @return {Undefined}
+	 */
+	var showPopupWithMessage = function(message, callback) {
+		//opening the popup with messages
+		$scope.callBackAfterClosingMessagePopUp = callback;
+		$scope.message	= [message];
+		openMessageShowingPopup();
+		return;
+	};
+
 	var successCallBackOfAvailabilityFetching = function(data, successParams, keepOpen){
 		var row_item_data;
-
 		if(data.length) {
 			row_item_data 	= data[0];
 			if(this.availability.resize.current_arrival_time !== null &&
@@ -1353,12 +1369,11 @@ angular.module('sntRover')
                 row_item_data:  row_item_data,
                 row_data:       _.findWhere(rvDiarySrv.data_Store.get('room'), { id: row_item_data.room_id })
             });
+			$scope.gridProps.unassignedRoomList.isUnassignedPresent = row_item_data.is_unassigned_reservation_present;
 		}
 		else {
-			//opening the popup with messages
-			$scope.callBackAfterClosingMessagePopUp = undefined;
-			$scope.message	= ['Sorry, No Availability found. Please change the parameter and continue'];
-			openMessageShowingPopup();
+			$scope.gridProps.unassignedRoomList.isUnassignedPresent = false;
+			showPopupWithMessage('Sorry, No Availability found. Please change the parameter and continue');
 			return;
 		}
 
@@ -1382,6 +1397,10 @@ angular.module('sntRover')
 		// Setting the keep open flag to true to avoid clearing avail data.
 		// this will keep unassigned box open.
 		successCallBackOfAvailabilityFetching(data, successParams, true);
+		// CICO-24243 comment-82523 https://goo.gl/b9HgY1
+		if (data && data.length && data[0].is_unassigned_reservation_present) {
+		 	showPopupWithMessage('Unassigned rooms exist. Consider assigning them first');
+	 	}
 	};
 
 	var callAvailabilityAPI = function(){
@@ -1420,7 +1439,7 @@ angular.module('sntRover')
 		}
 	};
 
-	var getEditReservationParams = function(){
+	var getEditReservationParams = function(originalRowItem){
 		var filter 	= _.extend({}, this.filter),
 		time_span 	= Time({ hours: this.min_hours }),
 
@@ -1451,6 +1470,17 @@ angular.module('sntRover')
         };
         if(account_id) {
 			params.account_id = account_id;
+		}
+
+		if (originalRowItem) {
+			var oldArrivalTime = new Date(originalRowItem.arrival).toComponents().time;
+				oldArrivalTime = oldArrivalTime.hours + ":" + oldArrivalTime.minutes + ":" + oldArrivalTime.seconds;
+
+			var oldDepTime = new Date(originalRowItem.departure).toComponents().time;
+				oldDepTime = oldDepTime.hours + ":" + oldDepTime.minutes + ":" + oldDepTime.seconds;
+
+			params.old_begin_time = oldArrivalTime;
+			params.old_end_time = oldDepTime;
 		}
 
 		return params;
@@ -1994,6 +2024,7 @@ angular.module('sntRover')
 		    	$scope.clearAvailability();
 				$scope.resetEdit();
 				$scope.renderGrid();
+				$scope.gridProps.unassignedRoomList.isUnassignedPresent = false;
 			}
 	    	$scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, _sucessCallback);
     	}
