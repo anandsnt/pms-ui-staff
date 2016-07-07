@@ -79,13 +79,13 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
 
     var fetchEodLogOfSelectedDate = function(){
         var data = {
-            date:$scope.selectedDate
+            date:$filter('date')($scope.selectedDate, "dd-mm-yyyy")
         };
         var fetchEodLogSuccess = function(data){
             $scope.eodLogDetails = data.eod_processes;
             $timeout(function() {
                 refreshScroller();           
-                },500);           
+            },500);           
             $rootScope.$broadcast('hideLoader');
         };
         var fetchEodLogFailure = function(){
