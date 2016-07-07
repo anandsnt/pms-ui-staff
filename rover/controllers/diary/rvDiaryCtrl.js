@@ -180,6 +180,15 @@ angular.module('sntRover')
 	$scope.adj_property_date_time 	= util.correctTime(propertyTime.hotel_time.date, propertyTime);
 
 	/**
+	 * Converts date to API format
+	 * @param {Object} Date
+	 * @return {String} Date
+	 */
+	var formatDateForAPI = function(date) {
+		return $filter('date')(date, $rootScope.dateFormatForAPI);
+	};
+
+	/**
 	 * two check whether two dates are same
 	 * @param  {Date}  date1 [description]
 	 * @param  {Date}  date2 [description]
@@ -491,6 +500,7 @@ angular.module('sntRover')
 			isItemSelected: false,
 			selectedReservations: $scope.selectedReservations,
 			isUnassignedPresent: false,
+			unassignedCount: 0,
 
 			reset: function() {
 				if ( this.open ) {
@@ -498,12 +508,26 @@ angular.module('sntRover')
 					this.open = false;
 					this.dragData = {};
 					this.isItemSelected = false;
-					this.isUnassignedPresent = false;
 
 					$scope.clearAvailability();
 					$scope.resetEdit();
 					$scope.renderGrid();
 				}
+			},
+			fetchCount: function() {
+				var self 	= this,
+					params 	= { date: formatDateForAPI($scope.gridProps.filter.arrival_date) };
+
+				var _sucess = function(count) {
+					self.unassignedCount = count;
+					self.isUnassignedPresent = (count > 0);
+					$scope.renderGrid();
+				};
+				var _failed = function(error) {
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = error;
+				};
+				$scope.invokeApi(rvDiarySrv.fetchUnassignedRoomListCount, params, _sucess, _failed);
 			},
 			fetchList: function() {
 				var _sucess = function(data) {
@@ -1071,6 +1095,11 @@ angular.module('sntRover')
 			}
 	    	this.availability.drag.lastRoom = util.copyRoom(this.currentResizeItemRow);
 	    	$scope.renderGrid();
+
+	    	// Show some message if unassigned exists.
+	    	if ($scope.gridProps.unassignedRoomList.isUnassignedPresent) {
+	    		showPopupWithMessage('Unassigned rooms exist. Consider assigning them first');
+	    	}
 	    }.bind($scope.gridProps);
 
 	    var failureCallBackOfResizeExistingReservation = function(errorMessage){
@@ -1079,8 +1108,8 @@ angular.module('sntRover')
 	    	$scope.renderGrid();
 	    };
 
-	    var resizeEndForExistingReservation = function (row_data, row_item_data, original) {
-	    	var params = getEditReservationParams(original);
+	    var resizeEndForExistingReservation = function (row_data, row_item_data) {
+	    	var params = getEditReservationParams();
 	    	var options = {
 	    		params: 			params,
 	    		successCallBack: 	successCallBackOfResizeExistingReservation,
@@ -1439,7 +1468,7 @@ angular.module('sntRover')
 		}
 	};
 
-	var getEditReservationParams = function(originalRowItem){
+	var getEditReservationParams = function(){
 		var filter 	= _.extend({}, this.filter),
 		time_span 	= Time({ hours: this.min_hours }),
 
@@ -1470,17 +1499,6 @@ angular.module('sntRover')
         };
         if(account_id) {
 			params.account_id = account_id;
-		}
-
-		if (originalRowItem) {
-			var oldArrivalTime = new Date(originalRowItem.arrival).toComponents().time;
-				oldArrivalTime = oldArrivalTime.hours + ":" + oldArrivalTime.minutes + ":" + oldArrivalTime.seconds;
-
-			var oldDepTime = new Date(originalRowItem.departure).toComponents().time;
-				oldDepTime = oldDepTime.hours + ":" + oldDepTime.minutes + ":" + oldDepTime.seconds;
-
-			params.old_begin_time = oldArrivalTime;
-			params.old_end_time = oldDepTime;
 		}
 
 		return params;
@@ -1691,6 +1709,7 @@ angular.module('sntRover')
 				$scope.clearAvailability();
 				$scope.resetEdit();
 				$scope.renderGrid();
+				$scope.gridProps.unassignedRoomList.fetchCount();
 				//reservation trnsfr from one date to another started
 				if (rvDiarySrv.isReservationMovingFromOneDateToAnother) {
 
