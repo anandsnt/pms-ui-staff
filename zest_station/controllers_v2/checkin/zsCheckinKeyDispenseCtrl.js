@@ -43,7 +43,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			//hide close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.mode = "DISPENSE_KEY_MODE";
-			console.info('station settings;', $scope.zestStationData)
+			console.info('station settings;', $scope.zestStationData);
+			$scope.setScreenIcon('card');
 		}();
 
 		var stateParams = {

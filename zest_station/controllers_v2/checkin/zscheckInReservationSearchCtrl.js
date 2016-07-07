@@ -314,6 +314,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			setReservationParams();
 			$scope.mode = "LAST_NAME_ENTRY";
 			focuInputField("last-name");
+			$scope.setScreenIcon('checkin');
 		};
 		init();
 	}
