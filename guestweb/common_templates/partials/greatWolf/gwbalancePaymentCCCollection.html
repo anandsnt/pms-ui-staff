@@ -7,7 +7,7 @@
 <!-- main section starts here -->
 <div class="container">
     <!-- request text -->
-    <div class="row" ng-show="isLoading && !paymentError && !cardError">
+    <div class="row" ng-show="isLoading">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
             <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
@@ -15,39 +15,25 @@
         <div class="col-md-2">
         </div>
     </div>
-    <!-- error message -->
-    <div class="row" ng-show="paymentError">
-        <div class="col-md-2"></div>
-        <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
-        </div>
-        <div class="col-md-2">
-        </div>
-    </div>
     <div class="row" ng-show="paymentSuccess">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="error-text">Payment Success</p>
-        </div>
-        <div class="col-md-2">
-        </div>
-    </div>
-    <div class="row" ng-show="cardError">
-        <div class="col-md-2"></div>
-        <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="main-text">Payment Success!</p>
+            <p class="sub-main-text">The payment was successfully paid.</p>
+            <a class="btn btn-template early-checkin-button margin-top-20" ng-click="goToNextPage()"> Continue</a>
         </div>
         <div class="col-md-2">
         </div>
     </div>
     <!-- cc entry -->
-    <div class="row" ng-hide="isLoading || cardError || paymentError ||  paymentSuccess">
+    <div class="row" ng-hide="isLoading ||  paymentSuccess">
         <div class="col-md-4"></div>
         <!-- PAYMENT_MODE -->
         <div class="col-md-4 top-spacing" ng-show="mode === 'PAYMENT_MODE'">
-            <p class="main-text">Start Pre Check-in</p>
+            <p class="main-text">Payment</p>
             <!-- end ngIf: isPrecheckinOnly -->
-            <p class="sub-main-text">To provide you with a <strong class="reservation-details">secure check-in</strong> process, please confirm the following <strong class="reservation-details">reservation details:</strong></p>
+            <p class="sub-main-text">You owe a balance of {{currencySymbol}}{{outStandingBalance}}. Select your payment method.</p>
+            <p class="sub-main-text error-notification margin-top-20" ng-show="paymentError">There was a problem making the payment.</p>
             <!-- starts here -->
             <div class="section-container margin-top-20">
                 <div class="cc-details-container margin-top-20" ng-show="cardPresent">
@@ -62,7 +48,7 @@
                     <div class="cc-texts-container">
                         <p>****{{paymentMethodDetails.payment_details.card_number}}</p>
                         <p>{{paymentMethodDetails.payment_details.card_name}}</p>
-                        <p>Expires {{paymentMethodDetails.payment_details.card_expiry}}</p>
+                        <p>EXPIRES {{paymentMethodDetails.payment_details.card_expiry}}</p>
                     </div>
                 </div>
                 <br/>
@@ -79,16 +65,15 @@
                 </div>
                 <!-- button actions -->
                 <a class="btn btn-template early-checkin-button margin-top-80" ng-click="payBalance()" ng-show="cardPresent"> Pay Balance</a>
-                <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-click="changeArrivalTime()"> Cancel</a>
             </div>
         </div>
         <!-- Card entry mode -->
         <div class="col-md-4 top-spacing" ng-show="mode === 'CC_ENTRY_MODE'">
             <div class="section-container cc-entry-container">
                 <div class="row">
-                    <p ng-if="isPrecheckinOnly" class="main-text ng-scope">Start Pre Check-in</p>
-                    <!-- end ngIf: isPrecheckinOnly -->
-                    <p class="sub-main-text">To provide you with a <strong class="reservation-details">secure check-in</strong> process, please confirm the following <strong class="reservation-details">reservation details:</strong></p>
+                    <p class="main-text">Add credit Card</p>
+                    <p class="sub-main-text error-notification" ng-show="cardError">There was a problem with your card.</p>
+                    <p class="sub-main-text error-notification" ng-show="cardNotFilledError">Please enter all the required information.</p>
                 </div>
                 <br/>
                 <br/>
@@ -97,15 +82,13 @@
                     <div>
                         <span class="sub-text upper-case pull-left">card number</span>
                         <br>
-                        <input class="input-field" ng-model="cardNumber"></input>
+                        <input class="input-field" ng-model="cardNumber" maxlength="16"></input>
                     </div>
                 </div>
                 <div class="row">
                     <!-- month -->
+                    <p class="sub-text upper-case left-align">Expires (Month/Year)</p>
                     <div class="drop-down-container pull-left">
-                        <span class="sub-text upper-case pull-left">Expiration date</span>
-                        <br>
-                        <br>
                         <div class="select-style">
                             <select class="margin-top-10" ng-model="monthSelected" ng-options="month.value as month.name for month in months">
                                 <option value="">Month</option>
@@ -114,9 +97,6 @@
                     </div>
                     <!-- year -->
                     <div class="drop-down-container pull-right">
-                        <span class="sub-text upper-case  pull-left">&nbsp;&nbsp;</span>
-                        <br>
-                        <br>
                         <div class="select-style left-margin-5">
                             <select class="margin-top-10" ng-model="yearSelected" ng-options="year as year  for year in years">
                                 <option value="">Year</option>
@@ -127,15 +107,15 @@
                 <div class="row">
                     <!-- card number -->
                     <div>
-                        <span class="sub-text upper-case pull-left">name</span>
+                        <span class="sub-text upper-case pull-left">Name on card</span>
                         <br>
-                        <input class="input-field" ng-model="cardNumber"></input>
+                        <input class="input-field" ng-model="cardName"></input>
                     </div>
                 </div>
                 <!-- cvv -->
                 <div class="row">
                     <div class="cvv-input-field">
-                        <span class="sub-text pull-left">#CVV</span>
+                        <span class="sub-text pull-left">CCV</span>
                         <br>
                         <input class="input-field" ng-model="ccv"></input>
                     </div>

@@ -499,6 +499,7 @@ and (max-device-width : 1028px){
     border:1px solid black;
     padding: 10px;
     height:75px;
+    background: #efefef none repeat scroll 0 0;
     -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
     transform-style: preserve-3d;
@@ -526,7 +527,7 @@ and (max-device-width : 1028px){
         }
     }
 }
-.cc-details-container,change-card-container{
+.cc-details-container{
     .cc-image-container{
         float:left;
         width:35%; 
@@ -547,7 +548,6 @@ and (max-device-width : 1028px){
             padding-left:10px;
         }
         img{
-            float:right;
             height:30px;
             width:60px;
         }
@@ -561,6 +561,10 @@ and (max-device-width : 1028px){
         p{
             margin-bottom:0px;
             font-size:15px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align:left;
         }
     }
 }
@@ -569,6 +573,9 @@ and (max-device-width : 1028px){
     .row{
         margin-bottom:10px;
     }
+}
+.error-notification{
+    color:red !important;
 }
 
 
