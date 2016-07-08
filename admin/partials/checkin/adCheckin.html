@@ -427,7 +427,7 @@
                     <ad-toggle-button is-checked="checkinData.zestweb_collect_outstanding_balance" label="{{'COLLECT_OUTSTANDING_BALANCE'| translate}}" div-class="full-width"></ad-toggle-button>
                 </fieldset>
                 <!-- no of keys -->
-                <fieldset class="holder full-width">
+                <fieldset class="holder left">
                     <div class="form-title half-width-title">
                         <h3><span translate="">NO_OF_KEYS</span> </h3>
                     </div>
@@ -457,6 +457,56 @@
                             </select>
                         </div>
                     </fieldset>
+                </fieldset>
+
+                <fieldset class="holder right">
+                    <div class="form-title half-width-title">
+                        <h3><span translate="">ZEST_WEB_SURVEY</span> </h3>
+                    </div>
+                    <div class="form-subtitle-title">
+                        <h6><span translate="">ZEST_WEB_SURVEY_SUB_HEADING</span> </h6>
+                    </div>
+                        <!-- ask for question -->
+                        <ad-toggle-button is-checked="checkinData.survey_question_prompt_on" label="{{'ASK_FOR_QUESTION'| translate}}" div-class="full-width"></ad-toggle-button>
+                        <!-- Question type -->
+                        <div class="form-subtitle-title">
+                            <h6><span translate="">QUESTTION_TYPE</span> </h6>
+                        </div>
+                        <div class="entry full-width float">
+                            <div class="select select-col col1-3">
+                                <select ng-options="type for type  in ['Numeric']" ng-model="checkinData.survey_question_type">
+                                    <option style="display:none" value="">SELECT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Question -->
+                        <ad-textbox value="checkinData.survey_question" label="{{'QUESTTION' | translate}}" styleclass="full-width" placeholder=""></ad-textbox>
+                        <!-- maximum count -->
+                        <div class="form-subtitle-title">
+                            <h6><span translate="">MAXIMUM</span> </h6>
+                        </div>
+                        <div class="entry full-width float">
+                            <div class="select select-col col1-3">
+                                <select ng-options="key for key  in [1,2,3,4,5,6,7,8,9,10]" ng-model="checkinData.numeric_answer_max_limit">
+                                    <option style="display:none" value="">SELECT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- mandotory -->
+                        <ad-toggle-button is-checked="checkinData.survey_question_is_mandatory" label="{{'RESPONSE_MANDATORY'| translate}}" div-class="full-width"></ad-toggle-button>
+                        <!-- image -->
+                        <div class="entry full-width" ng-if="!isAdminSnt">
+                            <label for="hotel-logo"> Image </label>
+                            <div class="file-upload with-preview">
+                                <span class="input">{{hotel_template_logo_file}}</span>
+                                <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-click="checkinData.suvey_question_image = 'false'"></a>
+                                <input type="file" ng-model="checkinData.suvey_question_image" accept="image/*" app-filereader />
+                                <button type="button" class="button brand-colors">
+                                    Choose file
+                                </button>
+                            </div>
+                            <span class="file-preview"> <img src="{{checkinData.suvey_question_image}}" alt="" height="112" width="auto"> </span>
+                        </div>
                 </fieldset>
                 <div class="actions float">
                     <button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline">{{ 'CANCEL' | translate}}</button>

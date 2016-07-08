@@ -113,7 +113,16 @@
 "PROMPT_FOR_KEYS_ERROR_MESSAGE" : "Error message",
 "MAXIMUM_NO_OF_KEYS" : "Maximum number of keys",
 "MAX_ROOM_OCCUPANCY" : "Maximum room occupancy",
-"OTHER" : "Other"
+"OTHER" : "Other",
+
+"ZEST_WEB_SURVEY" : "Survey",
+"ZEST_WEB_SURVEY_SUB_HEADING" : "Collect Information from your guests during checkin in",
+"ASK_FOR_QUESTION" : "Ask for Question?",
+"QUESTTION_TYPE" : "Question type",
+"QUESTTION" : "Question",
+"MAXIMUM" : "Maximum",
+"RESPONSE_MANDATORY" : "Response is mandatory?",
+"IMAGE" : "Image"
 
 
 
