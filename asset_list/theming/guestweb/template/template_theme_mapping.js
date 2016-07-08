@@ -134,6 +134,7 @@ module.exports = {
 										  checkoutNowlaterPartials+'Fontainebleau/*.html', precheckinPartials+'*.html',
 										  sharedHtml],
 			'guestweb_great_wolf' 	:[ 'guestweb/**/common_templates/partials/checkin/**.html',
+										'guestweb/**/common_templates/partials/greatWolf/**.html',
 										'guestweb/**/common_templates/partials/checkout/**.html',
 										'guestweb/**/common_templates/partials/gwNoOption.html',
 										checkoutNowPartials+'*.html',

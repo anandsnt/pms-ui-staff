@@ -9,20 +9,39 @@
 	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" :$rootScope.userEmail;
 	$rootScope.userMobile = ($rootScope.userMobile === null ) ? "" :$rootScope.userMobile;
 
-	if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb){
+	//collect oustanding stay total
+	if(parseInt($rootScope.outStandingBalance) > 0 && $rootScope.isMLI
+	   && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection){
+		$state.go('balancePaymentCCCollection');
+	}
+	//collect number of keys
+	else if($rootScope.promptForKeyCount && !$rootScope.KeyCountAttemptedToSave){
+		console.info("collect no of keys");
+		$state.go('selectNoOfkeys');
+	}
+	//collect credit card
+	else if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb){
 		$state.go('checkinCcVerification');
 	}
+	//collect mobile number with option to update already existing mobile number
 	else if($rootScope.application ==="SMS" 
 			&& $rootScope.userMobile.length >0 && !$rootScope.userMobileSkipped){
 		$state.go('mobileNumberOptions');// if user has not attached an mobile
 	}
+	//collect new mobile number
 	else if($rootScope.application ==="SMS" 
 			&& $rootScope.userMobile.length ===0 && !$rootScope.userMobileSkipped){
 		$state.go('mobileNumberAddition');// if user has not attached an mobile
 	}
+<<<<<<< HEAD
+	//collect email
+	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application ==="SMS" || $rootScope.application ==="EMAIL")){
+=======
 	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application ==="SMS" || $rootScope.application ==="EMAIL" || $rootScope.application ==="URL")){
+>>>>>>> 5e239f741f096355eb97b6d0fb173b66b698c1fe
 		$state.go('emailAddition',{'isFrom':'checkinLater'});// if user has not attached an email
 	}
+	//collect deposit
 	else if($rootScope.enforceDeposit && !$rootScope.skipDeposit){
 		$state.go('depositPayment'); //checkin deposit collection
 	}
