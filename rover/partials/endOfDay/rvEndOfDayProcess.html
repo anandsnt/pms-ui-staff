@@ -6,9 +6,9 @@
             <label for="{eod-date}">Date</label>
             <div class="entry-data" ng-click="clickedDate()">
                 <input name="eod-date" id="eod-date" type="text" class="datepicker" readonly>
-                <strong class="day">{{getFormatedDate(selectedDate) | date:'dd'}}</strong>
-                <span class="month">{{getFormatedDate(selectedDate) | date:'MMMM'}}</span>
-                <span class="year">{{getFormatedDate(selectedDate) | date:'y'}}</span>
+                <strong class="day">{{day}}</strong>
+                <span class="month">{{month}}</span>
+                <span class="year">{{year}}</span>
             </div>
         </div>
         <!-- Show this button if the business day is not today-->
@@ -52,9 +52,9 @@
         <strong class="h1">End of Day</strong>
         <span class="h2">
             This will close the business day for 
-            <strong class="red">{{businessDate}}</strong>
+            <strong class="red">{{businessDate | date : dateFormat}}</strong>
             and change the business date to 
-            <strong class="green">{{nextBusinessDate}}</strong>
+            <strong class="green">{{nextBusinessDate | date : dateFormat}}</strong>
         </span>
             <button type="submit" class="button green" ng-click="openEndOfDayPopup()">Start End Of Day</button>
             </div>
