@@ -277,9 +277,12 @@ angular.module('sntRover')
             event.stopPropagation();
             var restriction = _.findWhere($scope.restrictionList, {id: $scope.restrictionForShowingTheDetails.id});
             
+            var restrictionValue = $scope.restrictionForShowingTheDetails.value;
+
             if($scope.restrictionForShowingTheDetails.hasInputField && 
-                !util.isNumeric($scope.restrictionForShowingTheDetails.value)) {
-                $scope.errorMessage = ['Please enter a number'];
+                (!util.isNumeric(restrictionValue) || restrictionValue < 0)) {
+
+                $scope.errorMessage = ['Please enter a valid number'];
                 return;
             }
 
@@ -858,9 +861,7 @@ angular.module('sntRover')
          * @return {[type]} [description]
          */
         const initializeSingleRateSingleRoomTypeRestrictionAndAmountMode = () => {
-            var dialogData = $scope.ngDialogData,
-                roomTypePricesAndRestrictions = dialogData.roomTypePricesAndRestrictions,
-                commonRestrictions = roomTypePricesAndRestrictions.room_types[0].restrictions;
+            var dialogData = $scope.ngDialogData;
 
             $scope.header = dialogData.roomType.name;
 
@@ -870,7 +871,7 @@ angular.module('sntRover')
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
-                    commonRestrictions);
+                    dialogData.variedAndCommonRestrictions);
             
             if(_.findWhere($scope.restrictionList, { status: 'VARIED' })) {
                 $scope.headerNoticeOnRight = 'Restrictions vary across Room Types!';

@@ -1096,7 +1096,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var onFetchSingleRateRestrictionModeDetailsForPopup = (response, successCallBackParameters) => {
         var restrictionData = response.roomTypeAndRestrictions,
             roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
-            variedAndCommonRestrictions = response.commonRestrictions[0].restrictions,
+            variedAndCommonRestrictions = response.restrictionsWithStatus[0].restrictions,
             roomTypesAndPrices = response.roomTypeAndRestrictions[0]
                 .room_types.map(roomType =>
                     ({
@@ -1131,9 +1131,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             to_date: date,
             rate_id: rateID,
             fetchRoomTypes: !cachedRoomTypeList.length,
-            fetchRates: !cachedRateList.length,
-            fetchCommonRestrictions: true,
-            varied_inclusive: true
+            fetchRates: !cachedRateList.length
         };
         var options = {
             params,
@@ -1143,7 +1141,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 date
             }
         };
-        $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);
+        $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndCommonRestrictions, options);
     };
 
     /**
@@ -1182,7 +1180,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var onFetchSingleRoomTypeRestrictionDetailsForPopupSuccess = (response, successCallBackParameters) => {
         var restrictionData = response.roomTypeAndRestrictions,
             roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
-            variedAndCommonRestrictions = response.commonRestrictions[0].restrictions,
+            variedAndCommonRestrictions = response.restrictionsWithStatus[0].restrictions,
             roomTypesAndPrices = response.roomTypeAndRestrictions[0]
                 .room_types.map(roomType =>
                     ({
@@ -1215,9 +1213,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             from_date: date,
             to_date: date,
             room_type_id: roomTypeID,
-            fetchRoomTypes: !cachedRoomTypeList.length,
-            fetchCommonRestrictions: true,
-            varied_inclusive: true
+            fetchRoomTypes: !cachedRoomTypeList.length
         };
         var options = {
             params: params,
@@ -1227,7 +1223,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 date
             }
         };
-        $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndRoomTypes, options);
+        $scope.callAPI(rvRateManagerCoreSrv.fetchRoomTypeWithRestrictionStatus, options);
     };
 
     /**
@@ -1236,7 +1232,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     */
     var onFetchMultipleRoomTypeRestrictionsDetailsForPopupSuccess = (response, successCallBackParameters) => {
         var restrictionData = response.roomTypeAndRestrictions,
-            variedAndCommonRestrictions = response.commonRestrictions[0].restrictions,
+            variedAndCommonRestrictions = response.restrictionsWithStatus[0].restrictions,
             roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
             roomTypesAndPrices = response.roomTypeAndRestrictions[0]
                 .room_types.map(roomType =>
@@ -1280,8 +1276,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             from_date: date,
             to_date: date,
             fetchRoomTypes: !cachedRoomTypeList.length,
-            fetchCommonRestrictions: true,
-            varied_inclusive: true
         };
         var options = {
             params,
@@ -1290,7 +1284,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 date
             }
         };
-        $scope.callAPI(rvRateManagerCoreSrv.fetchRatesAndRoomTypes, options);
+        $scope.callAPI(rvRateManagerCoreSrv.fetchRoomTypeWithRestrictionStatus, options);
     };
 
     /**
@@ -1309,6 +1303,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var onFetchSingleRoomTypeRestrictionAndAmountDetailsForPopupSuccess = (response, successCallBackParameters) => {
         var roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
             rates = !cachedRateList.length ? response.rates : cachedRateList,
+            variedAndCommonRestrictions = response.restrictionsWithStatus[0].restrictions,
             roomTypePricesAndRestrictions = response.roomTypeAndRestrictions[0];
 
         //roomTypeList is now cached, we will not fetch that again
@@ -1324,7 +1319,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             rates: cachedRateList,
             date: successCallBackParameters.date,
             restrictionTypes,
-            roomTypePricesAndRestrictions
+            roomTypePricesAndRestrictions,
+            variedAndCommonRestrictions
         };
         showRateRestrictionPopup(data);
     };
@@ -1352,7 +1348,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 rateID
             }
         };
-        $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);
+        $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateRestrictionsAndAmountsDetails, options);
     };
 
     /**
@@ -1362,7 +1358,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     var onFetchMultipleRoomTypeRestrictionsAndAmountDetailsForPopup = (response, successCallBackParameters) => {
         var roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
             rates = !cachedRateList.length ? response.rates : cachedRateList,
-            variedAndCommonRestrictions = response.commonRestrictions[0].restrictions,
+            variedAndCommonRestrictions = response.restrictionsWithStatus[0].restrictions,
             roomTypePricesAndRestrictions = response.roomTypeAndRestrictions[0];
 
         //roomTypeList is now cached, we will not fetch that again
@@ -1394,9 +1390,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             to_date: date,
             rate_id: rateID,
             fetchRoomTypes: !cachedRoomTypeList.length,
-            fetchRates: !cachedRateList.length,
-            fetchCommonRestrictions: true,
-            varied_inclusive: true
+            fetchRates: !cachedRateList.length
         };
         var options = {
             params: params,
@@ -1406,7 +1400,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 rateID
             }
         };
-        $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateDetailsAndRoomTypes, options);
+        $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateRestrictionsAndAmountsDetails, options);
     };
 
     /**

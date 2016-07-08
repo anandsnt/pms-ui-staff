@@ -42,106 +42,48 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
         service.fetchSingleRateInfo = function (params) {
             var url = '/api/daily_rates/' + params.rate_id;
-            var deferred = $q.defer();
-            BaseWebSrvV2.getJSON(url, _.omit(params, 'rate_id')).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
+            return this.getJSON(url, _.omit(params, 'rate_id'));
         };
 
         service.fetchRates = function () {
             var url = '/api/rates/minimal';
-            var deferred = $q.defer();
-            BaseWebSrvV2.getJSON(url).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
+            return this.getJSON(url);
         };        
 
         service.fetchRestrictionTypes = function() {
             var url = '/api/restriction_types';
-            var deferred = $q.defer();
-            BaseWebSrvV2.getJSON(url).then(function (data) {
-                deferred.resolve(data.results);
-            }, function (data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
+            return this.getJSON(url, undefined, 'results');
         };
 
         service.applyAllRestrictions = (params) => {
-            var url = ' /api/daily_rates';
-            var deferred = $q.defer();
-            BaseWebSrvV2.postJSON(url, params).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
+            var url = '/api/daily_rates';
+            return this.postJSON(url, params);
         };
 
         service.fetchRateDetails = (params) => {
-            var url = ' /api/rates/' + params.rate_id;
-            var deferred = $q.defer();
-            BaseWebSrvV2.getJSON(url).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
+            var url = '/api/rates/' + params.rate_id;
+            return this.getJSON(url);
         };
 
         service.fetchRoomTypes = () => {
             var url = '/api/room_types.json?exclude_pseudo=true&exclude_suite=true';
-            var deferred = $q.defer();
-            BaseWebSrvV2.getJSON(url).then(function (data) {
-                deferred.resolve(data.results);
-            }, function (data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
+            return this.getJSON(url, undefined, 'results');
         };
 
         service.removeCustomRate = (params) => {
-            var url = '/api/daily_rates/remove_custom_rate',
-                deferred = $q.defer();
-
-            BaseWebSrvV2.postJSON(url, params)
-                .then(data => {
-                    deferred.resolve(data);
-                }, error => {
-                    deferred.reject(error);
-                });
-            return deferred.promise;
+            var url = '/api/daily_rates/remove_custom_rate';
+            return this.postJSON(url, params);
         };
         
         service.updateSingleRateRestrictionData = (params) => {
-            var url = '/api/daily_rates/',
-                deferred = $q.defer();
-
-            BaseWebSrvV2.postJSON(url, params)
-                .then(data => {
-                    deferred.resolve(data);
-                }, error => {
-                    deferred.reject(error);
-                });
-            return deferred.promise;
+            var url = '/api/daily_rates/';
+            return this.postJSON(url, params);
         };
 
 
         service.fetchCommonRestrictions = (params) => {
             var url = '/api/daily_rates/all_restrictions';
-            var deferred = $q.defer();
-            BaseWebSrvV2.getJSON(url, params).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;           
+            return this.getJSON(url, params);           
         };
 
         service.fetchSingleRateDetailsAndRoomTypes = (params) => {
@@ -221,7 +163,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             $q.all(promises).then((data) => {
                 deferred.resolve(response);
             });
-            console.log(typeof deferred.promise);
+
             return deferred.promise;
         };
 
@@ -231,14 +173,31 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
          * @param  {Object} params 
          * @return {Object} Promise
          */
-        this.getJSON = (url, params) => {
+        this.getJSON = (url, params, keyFromResult) => {
             var deferred = $q.defer();
             BaseWebSrvV2.getJSON(url, params).then(function (data) {
-                deferred.resolve(data);
+                deferred.resolve(keyFromResult ? data[keyFromResult] : data);
             }, function (data) {
                 deferred.reject(data);
             });
             return deferred.promise; 
+        };
+
+        /**
+         * utility method as postJSON is repeating all the time
+         * @param  {String} url
+         * @param  {Object} params 
+         * @return {Object} Promise
+         */
+        this.postJSON = (url, params) => {
+            var deferred = $q.defer();
+            BaseWebSrvV2.postJSON(url, params)
+                .then(data => {
+                    deferred.resolve(data);
+                }, error => {
+                    deferred.reject(error);
+                });
+            return deferred.promise;
         };
 
         /**
@@ -249,6 +208,169 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         this.fetchAllRestrictionsWithStatus = (params) => {
             var url = '/api/daily_rates/all_restriction_statuses';
             return this.getJSON(url, params);
+        };
+
+        /**
+         * to fetch the different restriction and room types
+         * @param  {Object} params [api params]
+         * @return {Object}        [promise]
+         */
+        this.fetchRoomTypeWithRestrictionStatus = (params) => {
+            var promises = [],
+                deferred = $q.defer(),
+                response = {};
+
+            //room types info.
+            var paramsForFetchRoomType = _.omit(params, 'fetchRoomTypes');
+            promises.push(
+                this.fetchAllRoomTypesInfo(paramsForFetchRoomType)
+                .then((data) => {
+                    response.roomTypeAndRestrictions = data.results;
+                })
+            );
+
+            //different restriction
+            var paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date');
+            if(params.room_type_id) {
+                paramsForCommonRestrictions['room_type_ids[]'] = [params.room_type_id];
+            }
+            promises.push(
+                this.fetchAllRestrictionsWithStatus(paramsForCommonRestrictions)
+                .then((data) => {
+                    response.restrictionsWithStatus = data.results;
+                })
+            );
+            
+
+            if (params.fetchRoomTypes) {
+                promises.push(
+                    this.fetchRoomTypes()
+                    .then((data) => {
+                        response.roomTypes = data;
+                    })
+                );
+            }
+
+            $q.all(promises).then((data) => {
+                deferred.resolve(response);
+            });
+
+            return deferred.promise;
+        };
+
+        /**
+         * to fetch the common restriction and single rate details
+         * @param  {Object} params [api params]
+         * @return {Object}        [promise]
+         */
+        this.fetchSingleRateDetailsAndCommonRestrictions = (params) => {
+            var promises = [],
+                deferred = $q.defer(),
+                response = {};
+
+            //single rate info.
+            var paramsForSingleRate = _.omit(params, 'fetchRoomTypes', 'fetchRates');
+            promises.push(
+                this.fetchSingleRateInfo( paramsForSingleRate )
+                .then( data => {
+                    response.roomTypeAndRestrictions = data.results;
+                })
+            );
+
+            //common restriction params
+            var commonRestrictionsParams = {
+                ..._.pick(params, 'from_date', 'to_date'),
+                'rate_ids[]': [params.rate_id]
+            };
+            promises.push(
+                this.fetchAllRestrictionsWithStatus( commonRestrictionsParams )
+                .then( data => {
+                    response.restrictionsWithStatus = data.results;
+                })
+            );
+            
+
+            if (params.fetchRoomTypes) {
+                promises.push(
+                    this.fetchRoomTypes()
+                    .then((data) => {
+                        response.roomTypes = data;
+                    })
+                );
+            }
+            if (params.fetchRates) {
+                promises.push(
+                    this.fetchRates()
+                    .then((data) => {
+                        response.rates = data.results;
+                    })
+                );
+            }
+
+            $q.all(promises).then((data) => {
+                deferred.resolve(response);
+            });
+
+            return deferred.promise;
+        };
+
+        /**
+         * to fetch single rate's restriction and amount details
+         * @param  {Object} params [api params]
+         * @return {Object}        [promise]
+         */
+        this.fetchSingleRateRestrictionsAndAmountsDetails = (params) => {
+            var promises = [],
+                deferred = $q.defer(),
+                response = {};
+
+            //fetch single rate info
+            var paramsForSingleRateInfo = _.omit(params, 'fetchRoomTypes', 'fetchRates');
+            promises.push(
+                this.fetchSingleRateInfo(paramsForSingleRateInfo)
+                .then((data) => {
+                    response.roomTypeAndRestrictions = data.results;
+                })
+            );
+
+            //varied and common restrictions
+            var commonRestrictionsParams = {
+                ..._.pick(params, 'from_date', 'to_date'),
+                'rate_ids[]': [params.rate_id]
+            }
+            if(params.room_type_id) {
+                commonRestrictionsParams['room_type_ids[]'] = [params.room_type_id];
+            }            
+            promises.push(
+                this.fetchAllRestrictionsWithStatus(commonRestrictionsParams)
+                .then((data) => {
+                    response.restrictionsWithStatus = data.results;
+                })
+            );
+            
+
+            if (params.fetchRoomTypes) {
+                promises.push(
+                    this.fetchRoomTypes()
+                    .then((data) => {
+                        response.roomTypes = data;
+                    })
+                );
+            }
+            if (params.fetchRates) {
+                promises.push(
+                    this.fetchRates()
+                    .then((data) => {
+                        response.rates = data.results;
+                    })
+                );
+            }
+
+            $q.all(promises).then((data) => {
+                deferred.resolve(response);
+            });
+
+            return deferred.promise;
         };
 
         /**
