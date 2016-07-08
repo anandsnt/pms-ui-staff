@@ -1,5 +1,5 @@
-sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExternalReferencesSrv',
-	function($rootScope, $scope, RVExternalReferencesSrv) {
+sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExternalReferencesSrv', '$filter',
+	function($rootScope, $scope, RVExternalReferencesSrv, $filter) {
 		BaseCtrl.call(this, $scope);
 
 		var resetScroller = function(timer) {
@@ -68,6 +68,11 @@ sntRover.controller('rvExternalReferencesCtrl', ['$rootScope', '$scope', 'RVExte
 				initializeData = function(response) {
 					$scope.stateExternalRef.thirdParties = response.systems;
 					$scope.stateExternalRef.references = response.references;
+					_.each($scope.stateExternalRef.references, function (reference) {
+						if(reference.is_primary){
+							reference.external_confirm_no += $filter('translate')('PRIMARY_EXTERNAL_REFERENCE');
+						}
+					});
 					toggleView();
 				},
 				options = {
