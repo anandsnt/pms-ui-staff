@@ -3,9 +3,16 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	'$rootScope',
 	'RVHkRoomDetailsSrv',
 	'roomDetailsLogData',
-	function($scope, $rootScope, RVHkRoomDetailsSrv, roomDetailsLogData) {
+	'$filter',
+	function($scope, $rootScope, RVHkRoomDetailsSrv, roomDetailsLogData, $filter) {
 
 		BaseCtrl.call(this, $scope);
+		// set the previous state
+		$rootScope.setPrevState = {
+			title: $filter('translate')('ROOM_STATUS'),
+			name: 'rover.housekeeping.roomStatus',
+			param: {}
+		};
 
 		$scope.init = function(){
 			$scope.roomDetails = $scope.$parent.roomDetails;
