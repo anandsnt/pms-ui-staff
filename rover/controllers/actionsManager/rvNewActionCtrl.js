@@ -1,13 +1,13 @@
 sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'dateFilter', 'rvActionTasksSrv', '$filter',
     function ($scope, $rootScope, rvUtilSrv, dateFilter, rvActionTasksSrv, $filter) {
         BaseCtrl.call(this, $scope);
-
         var init = function(){
 
             $scope.__maxLengthOfNotes = 255;
 
             $scope.newAction = {
                 reservation: null,
+                group: null,
                 dueDate: $rootScope.businessDate,
                 dueTime: "00:00",
                 note: "",
@@ -44,10 +44,14 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                 payLoad = {
                     description: ref.note,
                     assigned_to: ref.department? parseInt(ref.department, 10) : "",
-                    due_at: dateFilter(ref.dueDate, $rootScope.dateFormatForAPI) + "T" + ref.dueTime + ":00",
-                    reservation_id: ref.reservation.id
+                    due_at: dateFilter(ref.dueDate, $rootScope.dateFormatForAPI) + "T" + ref.dueTime + ":00"
                 };
-            
+            if(!!ref.reservation && !!ref.reservation.id) {
+                payLoad.reservation_id = ref.reservation.id;
+            } else if(!!ref.group && !!ref.group.id) {
+                payLoad.group_id = ref.group.id;
+            }
+
             $scope.callAPI(rvActionTasksSrv.postNewAction,{
                 params: payLoad,
                 successCallBack: function(){
@@ -78,9 +82,18 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
             $scope.newAction.dueDate = businessDate > arrivalDate ? businessDate : arrivalDate;
         });
 
+        var listenerGroupSelect = $scope.$on("GROUP_SELECTED",function(e, selectedGroup){
+
+            var businessDate = new tzIndependentDate($rootScope.businessDate),
+                arrivalDate = new tzIndependentDate(selectedGroup.from_date);
+
+            $scope.newAction.dueDate = businessDate > arrivalDate ? businessDate : arrivalDate;
+        });
+
         init();
 
         $scope.$on('$destroy', listenerInit);
         $scope.$on('$destroy', listenerReservationSelect);
+        $scope.$on('$destroy', listenerGroupSelect);
     }]
 );
