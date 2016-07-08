@@ -170,7 +170,9 @@
 									<li class="package active" click-touch="showGroupItems($index)" ng-repeat="groupItems in billData.group_items">
 										<div class="toggle" ng-class="{'active': $index == showGroupItemIndex}">
 											<span class="expense"> {{groupItems.title}} </span>
-											<span class="price" >{{currencySymbol}}{{groupItems.amount | number: precisonZero}}</span>
+											<!-- CICO-31516 - show if SR -->
+											<span class="price" ng-if="!isBalanceShown(billData.is_rate_suppressed)">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
+											<span class="price" ng-if="isBalanceShown(billData.is_rate_suppressed)">{{currencySymbol}}{{groupItems.amount | number: precisonZero}}</span>
 										</div>
 									</li>
 								</ul>
@@ -243,7 +245,14 @@
 									</thead>
 									<tbody>
 										<tr ng-repeat="billGroupExpense in billGroupItems.expense_details">
-											<td class="price" > {{currencySymbol}}{{billGroupExpense.expense | number: precisonTwo}} </td>
+											<!-- CICO-31516 - show if SR -->
+											<td class="price"
+												ng-if="!isBalanceShown(billData.is_rate_suppressed)">
+													{{'SUPPRESSED_RATES_TEXT' | translate}}
+											</td>
+											<td class="price"
+												ng-if="isBalanceShown(billData.is_rate_suppressed)"> {{currencySymbol}}{{billGroupExpense.expense | number: precisonTwo}}
+											</td>
 											<td> {{billGroupExpense.title}} </td>
 											<td> {{billGroupExpense.date | date:'MM-dd-yyyy'}} </td>
 										</tr>
