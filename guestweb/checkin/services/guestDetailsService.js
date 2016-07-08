@@ -126,6 +126,33 @@
 		});
 		return deferred.promise;
 	};
+
+
+
+	var fetchSurveyDetails = function(){
+		var deferred = $q.defer();
+		var url = '/guest_web/survey_details';
+		$http.get(url).success(function(response) {
+			deferred.resolve(response);
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
+	};
+
+	var submitSurvey = function(data){
+		var deferred = $q.defer();
+		var url = '/guest_web/submit_survey/'+$rootScope.reservationID;
+		$http.post(url,data).success(function(response) {
+			this.responseData = response;
+			deferred.resolve(this.responseData);
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
+	};
 	
 
 	return {
@@ -138,7 +165,9 @@
 	fetchHotelTime 		: fetchHotelTime,
 	fetchDepositDetails	: fetchDepositDetails,
 	submitPayment 		: submitPayment,
-	fetchSortedCountryList : fetchSortedCountryList
+	fetchSortedCountryList : fetchSortedCountryList,
+	fetchSurveyDetails  : fetchSurveyDetails,
+	submitSurvey        : submitSurvey
 	}
 };
 
