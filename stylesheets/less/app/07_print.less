@@ -2009,15 +2009,22 @@ table {
                             }
                             
                             &.red,
-                            &.penalty { color: @grey3; }
+                            &.penalty { color: @grey3; position:relative }
 
                             &.red:before {
-                                content: '! ';
-                            }
-
-                            &.green {
-                                text-decoration: line-through;
-                            }
+                                content: '!';
+                                position: absolute;
+                                right: 0;
+                                top: 2px;
+                                border-radius: 10px;
+                                background-color: @grey3;
+                                color: white;
+                                width: 15px;
+                                text-align: center;
+                                height: 15px; 
+                                line-height: 15px;
+                                font-weight: 600;
+                            } 
 
                             &:first-child {
                                 width: 2cm;
