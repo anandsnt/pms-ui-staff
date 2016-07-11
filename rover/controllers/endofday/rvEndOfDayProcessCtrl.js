@@ -18,7 +18,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     var setDisplyDateValues = function(){        
         var values = $scope.selectedDate.split("-");
         $scope.year = values[0];
-        $scope.month = $filter('date')(values[1], "MMMM");
+        $scope.month = $filter('date')(values[1] +1, "MMMM");
         $scope.day = values[2];
     };
     /*
