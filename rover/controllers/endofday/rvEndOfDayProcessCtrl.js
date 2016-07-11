@@ -7,7 +7,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         $scope.businessDate =$rootScope.businessDate;       
         setDefaultNextBussinessDate();
         setDefaultSelectedDate();
-        setDisplyDateValues();         
+        setDisplayDateValues();         
         $scope.setScroller('eod_scroll');
         setUpDatepData();
         fetchEodLogOfSelectedDate();
@@ -15,10 +15,10 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     /*
     * Function to get day, month and Year from Date(Date format is kept yyyy/mm/dd);
     */
-    var setDisplyDateValues = function(){        
+    var setDisplayDateValues = function(){        
         var values = $scope.selectedDate.split("-");
         $scope.year = values[0];
-        $scope.month = $filter('date')(values[1], "MMMM");
+        $scope.month = getMonthName(parseInt(values[1]-1));
         $scope.day = values[2];
     };
     /*
@@ -49,7 +49,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             yearRange: "-100:+0",
             onSelect: function(date, inst) {
                 $scope.selectedDate = date.split("-").reverse().join("-");
-                setDisplyDateValues();            
+                setDisplayDateValues();            
                 if($scope.selectedDate !==$scope.businessDate){
                    fetchEodLogOfSelectedDate(); 
                };                
@@ -96,7 +96,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
 
     $scope.setSelectedDateToBussinessDate = function(){
         $scope.selectedDate = $scope.businessDate;
-        setDisplyDateValues();
+        setDisplayDateValues();
     };
 
     $scope.showSetToTodayButton = function(){
