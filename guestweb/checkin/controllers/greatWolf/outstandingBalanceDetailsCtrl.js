@@ -71,7 +71,7 @@
 					var cardNumberLength = $scope.cardNumber.length;
 					//set data to be displayed
 					$scope.paymentMethodDetails.payment_details = {
-						"card_type_image": "images/" + response.data.credit_card_type + ".png",
+						"card_type_image": "images/" + response.data.credit_card_type.toLowerCase() + ".png",
 						"card_number": $scope.cardNumber.toString().substring(cardNumberLength - 4, cardNumberLength),
 						"card_expiry": $scope.monthSelected + "/" + $scope.yearSelected.toString().substring(2, 4),
 						"card_name": $scope.cardName,
