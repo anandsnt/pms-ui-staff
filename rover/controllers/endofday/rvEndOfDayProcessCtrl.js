@@ -7,7 +7,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         $scope.businessDate =$rootScope.businessDate;       
         setDefaultNextBussinessDate();
         setDefaultSelectedDate();
-        setDisplyDateValues();         
+        setDisplayDateValues();         
         $scope.setScroller('eod_scroll');
         setUpDatepData();
         fetchEodLogOfSelectedDate();
@@ -49,7 +49,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             yearRange: "-100:+0",
             onSelect: function(date, inst) {
                 $scope.selectedDate = date.split("-").reverse().join("-");
-                setDisplyDateValues();            
+                setDisplayDateValues();            
                 if($scope.selectedDate !==$scope.businessDate){
                    fetchEodLogOfSelectedDate(); 
                };                
@@ -96,7 +96,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
 
     $scope.setSelectedDateToBussinessDate = function(){
         $scope.selectedDate = $scope.businessDate;
-        setDisplyDateValues();
+        setDisplayDateValues();
     };
 
     $scope.showSetToTodayButton = function(){
