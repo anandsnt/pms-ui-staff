@@ -298,6 +298,15 @@ function getRestrictionIcon(restriction){
     return restrictionIcons[restriction];
 };
 
+var serviceStatus = {
+    "IN_SERVICE" : "IN SERVICE",
+    "OUT_OF_SERVICE" : "OUT OF SERVICE",
+    "OUT_OF_ORDER" : "OUT OF ORDER"
+    };
+function getServiceStatusValue(service_status){
+    return serviceStatus[service_status];
+};
+
 
 var avatharImgs = {
     'mr' : 'avatar-male.png',
