@@ -6,6 +6,7 @@ module.exports = {
                 minifiedFiles: [],
                 nonMinifiedFiles: [			
                     controllerRoot + "bill/**/*.js",
+                    controllerRoot + "billingInformation/**/*.js",
                     controllerRoot + 'roverPayment/rvCardOptionsCtrl.js',
                     controllerRoot + 'rvSaveNewCardPromptCtrl.js',
                     

@@ -9,6 +9,7 @@ module.exports = {
 			],
 			nonMinifiedFiles: [
 				controllerRoot + "bill/**/*.js",
+				controllerRoot + "billingInformation/**/*.js",
 				controllerRoot + "billFormat/rvBillFormatPopupController.js",
 				servicesRoot + "bill/**/*.js"
 			]
