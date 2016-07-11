@@ -27,7 +27,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     var setDefaultNextBussinessDate = function(){
         $scope.nextBusinessDate = tzIndependentDate($rootScope.businessDate);
         $scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate()+1);
-        $scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, "yyyy-mm-dd");
+        $scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, "yyyy-MM-dd");
     };
     /*
     * Set Selected date as previous date of Bussines date.
