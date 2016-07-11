@@ -190,7 +190,7 @@
 										</select>
 									</div>
 									<div class="select select-col select-med">
-										<select ng-options="minute for minute  in minutes" ng-model="checkoutData.zest_hourly_checkout_alert_time_minute" >
+										<select ng-disabled="checkoutData.zest_hourly_checkout_alert_time_hour === 4" ng-options="minute for minute  in minutes" ng-model="checkoutData.zest_hourly_checkout_alert_time_minute" >
 											<option  value="MM" translate>MM</option>
 										</select>
 									</div>
@@ -206,7 +206,7 @@
 										</select>
 									</div>
 									<div class="select select-col select-med">
-										<select ng-options="minute for minute  in minutes" ng-model="checkoutData.weekends_zest_hourly_checkout_alert_time_minute" >
+										<select ng-disabled="checkoutData.weekends_zest_hourly_checkout_alert_time_hour === 4" ng-options="minute for minute  in minutes" ng-model="checkoutData.weekends_zest_hourly_checkout_alert_time_minute" >
 											<option  value="MM" translate>MM</option>
 										</select>
 									</div>

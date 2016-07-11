@@ -112,6 +112,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
                 }
             });
         });
+            setWatchers();
         };
 		$scope.invokeApi(adCheckoutSrv.fetch, {},fetchCheckoutDetailsSuccessCallback,fetchCheckoutDetailsFailureCallback);
 	};
@@ -183,5 +184,27 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     	};
     	$scope.invokeApi(adCheckoutSrv.save, uploadData,saveCheckoutDetailsSuccessCallback);
     };
+
+    var setWatchers = function(){
+                $scope.$watch(function(){
+                return $scope.checkoutData.zest_hourly_checkout_alert_time_hour;
+            }, function(value) {
+                    if($scope.checkoutData.zest_hourly_checkout_alert_time_hour === 4 ){
+                         $scope.checkoutData.zest_hourly_checkout_alert_time_minute = "00";
+                    }
+
+                }
+            );
+            $scope.$watch(function(){
+                return $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour;
+            }, function(value) {
+                    if($scope.checkoutData.weekends_zest_hourly_checkout_alert_time_hour === 4 ){
+                         $scope.checkoutData.weekends_zest_hourly_checkout_alert_time_minute = "00";
+                    }
+
+                }
+            );
+    }
+    
 
 }]);
