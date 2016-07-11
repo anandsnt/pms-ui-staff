@@ -18,7 +18,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     var setDisplyDateValues = function(){        
         var values = $scope.selectedDate.split("-");
         $scope.year = values[0];
-        $scope.month = $filter('date')(values[1], "MMM");
+        $scope.month = $filter('date')(values[1], "MMMM");
         $scope.day = values[2];
     };
     /*
@@ -126,6 +126,6 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             className: 'end-of-day-popup ngdialog-theme-plain'
         });
     };
-    
+
     init();
 }]);
