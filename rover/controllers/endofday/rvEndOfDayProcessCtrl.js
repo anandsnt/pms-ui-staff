@@ -15,10 +15,10 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     /*
     * Function to get day, month and Year from Date(Date format is kept yyyy/mm/dd);
     */
-    var setDisplyDateValues = function(){        
+    var setDisplayDateValues = function(){        
         var values = $scope.selectedDate.split("-");
         $scope.year = values[0];
-        $scope.month = $filter('date')(values[1] +1, "MMMM");
+        $scope.month = getMonthName(parseInt(values[1]-1));
         $scope.day = values[2];
     };
     /*

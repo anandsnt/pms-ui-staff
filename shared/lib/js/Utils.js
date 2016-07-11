@@ -554,6 +554,23 @@ var tConvertToAPIFormat = function(hh, mm, ampm){
 	return time;
 
 }
+//retrieve month name from index
+function getMonthName(monthIndex){
+    var monthName = new Array(12);
+    monthName[0]=  "January";
+    monthName[1] = "February";
+    monthName[2] = "March";
+    monthName[3] = "April";
+    monthName[4] = "May";
+    monthName[5] = "June";
+    monthName[6] = "July";
+    monthName[7] = "August";
+    monthName[8] = "September";
+    monthName[9] = "October";
+    monthName[10] = "November";
+    monthName[11] = "December";
+    return monthName[monthIndex];
+};
 //retrieve card expiry based on paymnet gateway
 var retrieveCardExpiryDate = function(isSixPayment,tokenDetails,cardDetails){
     var expiryDate = isSixPayment?
