@@ -103,6 +103,22 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			return deferred.promise;
 		};
 
+		this.getRoomLog = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/room_actions/'+params.id+'/?page='+params.page+'&per_page='+params.per_page;
+
+
+				rvBaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						deferred.resolve(data);
+					}.bind(this), function(data) {
+						deferred.reject(data);
+					});
+
+
+			return deferred.promise;
+		};
+
 		// fetch oo/os details from server
 		this.getRoomServiceStatus = function(params) {
 			var deferred = $q.defer(),
