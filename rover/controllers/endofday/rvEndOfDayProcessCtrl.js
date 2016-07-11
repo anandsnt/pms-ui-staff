@@ -16,9 +16,9 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     * Function to get day, month and Year from Date(Date format is kept yyyy/mm/dd);
     */
     var setDisplyDateValues = function(){        
-        var values =$scope.selectedDate.split("-");
+        var values = $scope.selectedDate.split("-");
         $scope.year = values[0];
-        $scope.month = values[1];
+        $scope.month = $filter('date')(values[1], "MMMM");
         $scope.day = values[2];
     };
     /*
@@ -64,7 +64,8 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
 
     $scope.showError = function(index){
         $scope.eodLogDetails[index].isOpened = !$scope.eodLogDetails[index].isOpened;
-    }
+    };
+
     var fetchEodLogOfSelectedDate = function(){
         var data = {
             date: $scope.selectedDate
@@ -92,9 +93,12 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             scope: $scope
         });
     };
+
     $scope.setSelectedDateToBussinessDate = function(){
         $scope.selectedDate = $scope.businessDate;
+        setDisplyDateValues();
     };
+
     $scope.showSetToTodayButton = function(){
         return ($scope.selectedDate === $scope.businessDate)?true:false;
     };
@@ -114,6 +118,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             return " error has-arrow toggle ";
         };
     };
+
     $scope.openEndOfDayPopup = function() {
         ngDialog.open({
             template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
@@ -121,5 +126,6 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             className: 'end-of-day-popup ngdialog-theme-plain'
         });
     };
+
     init();
 }]);
