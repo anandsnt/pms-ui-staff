@@ -30,6 +30,7 @@ sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $
 	 */
 	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
 		event.preventDefault();
+		console.info("Hotel admin settigs are wrong. This feature is not available for this theme. Please check settings related to -> "+unfoundState.to);
 		$state.go('noOptionAvailable');
 	})
 }]);
