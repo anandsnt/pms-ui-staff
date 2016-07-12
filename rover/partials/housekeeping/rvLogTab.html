@@ -5,19 +5,25 @@
                 <table class="log-table">
                     <thead>
                         <tr>
+                            <th><span>User Name</span></th>
                             <th><span class="sort sorting-asc">Date & Time</span></th>
+                            <th><span>Action</span></th>
                             <th><span>Front Office Status</span></th>
                             <th><span>Room Status</span></th>
                             <th><span>Service Status</span></th>
-                            <th><span>Action</span></th>
-                            <th><span>Changed By</span></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="row-break" ng-repeat="roomLog in roomLogData">
+                            <td data-content="Changed By">
+                               {{roomLog.user_name}}
+                            </td>
                             <!-- 'data-content' used in CSS, name of the columns -->
                             <td data-content="Date &amp; Time">
-                                {{roomLog.date}}
+                                {{roomLog.date}}, {{roomLog.time}}
+                            </td>
+                            <td data-content="Source">
+                                {{roomLog.action}}
                             </td>
                             <td data-content="Front Office Status">
                                 <!-- show the status.old to log the from/to change -->
@@ -44,12 +50,6 @@
                                 <!-- show the status.old to log the from/to change -->
                                 <span class="status old" ng-show="roomLog.service_status.old_value!==roomLog.service_status.new_value"> {{roomLog.service_status.old_value}}</span>
                                 <span class="status">{{roomLog.service_status.new_value}}</span>
-                            </td>
-                            <td data-content="Source">
-                                {{roomLog.action}}
-                            </td>
-                            <td data-content="Changed By">
-                               {{roomLog.user_name}}
                             </td>
                         </tr>
                     </tbody>
