@@ -321,7 +321,7 @@ sntZestStation.controller('zsRootCtrl', [
 				(agentString.toLowerCase().indexOf('window') !== -1) &&
 				isTouchDevice &&
 				$scope.inChromeApp && themeUsesKeyboard;
-			console.info('shouldShowKeyboard: ', shouldShowKeyboard);
+			//console.info('shouldShowKeyboard: ', shouldShowKeyboard);
 			if (shouldShowKeyboard) {
 				if (id) {
 					new initScreenKeyboardListener('station', id, true);

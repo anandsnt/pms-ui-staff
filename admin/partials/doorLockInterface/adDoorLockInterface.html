@@ -8,6 +8,14 @@
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<div name="icare-services" method="post" class="form float" action="">
 					
+					<fieldset class="holder full-width" ng-show='!inProd'>
+						<div class="form-title">
+							<h3 translate>Developer Quick-Sets</h3>
+							<em class="status"> For Developer use only, this field will be hidden in production environments </em>
+                                                        <!-- ..because I'm tired of manually updating these all the time.. -->
+						</div>
+						<ad-dropdown label="Developer Quick-Sets" label-in-drop-down="Developer Quick-Sets" list="data.quick_key_systems" selected-Id='data.selected_quick_key_system' required = "no"></ad-dropdown>
+					</fieldset>
 					<fieldset class="holder full-width">
 						<div class="form-title">
 							<h3 translate>ROOM_KEY_SYSTEM_VENDOR</h3>
