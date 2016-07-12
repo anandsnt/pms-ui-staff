@@ -166,6 +166,25 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		title: 'Check-in'
 	});
 
+
+	$stateProvider.state('emailAddition', {
+		url: '/emailAddition/:isFrom',
+		templateUrl: '/assets/common_templates/partials/checkin/gwEmailEntry.html',
+		controller: 'emailEntryController',
+		title: 'E-mail entry'
+	}).state('mobileNumberAddition', {
+		url: '/mobileNumberAddition',
+		templateUrl: '/assets/common_templates/partials/checkin/gwPhoneNumberUpdate.html',
+		controller: 'mobileEntryController',
+		title: 'Phone number entry'
+	}).state('mobileNumberOptions', {
+		url: '/mobileNumberOptions',
+		templateUrl: '/assets/common_templates/partials/checkin/gwMobielNUmberOptions.html',
+		controller: 'mobileOptionsController',
+		title: 'Phone number entry'
+	});
+
+
 	$stateProvider.state('selectNoOfkeys',{
 		url:'/selectNoOfkeys',
 		templateUrl: '/assets/common_templates/partials/greatWolf/gwNoOfKeysEntry.html',
