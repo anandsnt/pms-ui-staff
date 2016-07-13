@@ -3,25 +3,28 @@
 @import "../style.less";
 
 body{
-    background-color:#FFF;
+    background-color:#fff;
 }
 
 .back-text{
-    color:#fff !important;
+    color:#000 !important;
 }
 a,a:hover,.main-text,
 .res-date,
 .footer-sub-text,.footer-sub-text:hover,.phone-label{
-    color:#1A1A1A;
+    color:#000;
 }
 .sub-main-text{
-    color:#444444;
+    color:#000;
+}
+.text-comment, .text-comment:hover {
+    color: #000 !important;
 }
 .header-bar{
-    background:#005596 !important;
-
+    background:#000;
 }
 .logo-image {
+    max-width :100%;
     margin: 4% auto 2%;
 }
 
@@ -29,55 +32,55 @@ a,a:hover,.main-text,
 .balance-amount,.phone-text,
 .phone-text:hover,.request-text,
 .error-text {
-    color: #444444 !important;
+    color: #000 !important;
 }
 .view-bill{
-    color:#f2be00;
+    color:#DB30A3;
 }
 .sub-text,.sub-text:hover,.query-text,.query-text:hover,.light-text{
-    color: #8c8c8c !important;
+    color: #000 !important;
 }
 .btn,.btn:hover{
-    background:#f2be00;
+    background:#DB30A3;
     color:@white;
 }
 .dark-button,.dark-button:hover{
-    background: #f2be00 !important;
+    background: #DB30A3 !important;
 }
 .light-button,.light-button:hover{
-    background: #ffe110 !important;
+    background: #F06BC1 !important;
 }
 .checkouttime1,.checkouttime1:hover{
-    background: #ffe110;
+    background: #F06BC1;
 }
 .checkouttime2,.checkouttime2:hover{
-    background: #f2be00;
+    background: #DB30A3;
 }
 .checkouttime3,.checkouttime3:hover{
-    background: #f2be00;
+    background: #C10A81;
 }
 .no-thanks,.no-thanks:hover{
-    color:black !important;
+    color:#DB30A3 !important;
     text-decoration: underline;
     text-transform:none;
 }
 
 .down-arrow-button{
-    background-image:url('/assets/guestweb/common_images/gold/down_arrow.png'); 
+    background-image:url('/assets/guestweb/common_images/black/down_arrow.png'); 
 }
 .right-arrow-button{
-    background-image:url('/assets/guestweb/common_images/gold/right_arrow.png'); 
+    background-image:url('/assets/guestweb/common_images/black/right_arrow.png'); 
 }
 
 .upgrade-details .upgrades-btn {
-    background: #f2be00;
+    background: #DB30A3;
 }
 
 .proceed-to-checkin {
-      background: #f2be00;
+      background: #DB30A3;
 }
 .upgrades-label{
-    color:#5497B8;
+    color:#1B596D;
 }
 
 
@@ -93,14 +96,14 @@ a,a:hover,.main-text,
 }
 
 .pickadate-cell .pickadate-active {
-  background-color: #f2be00 !important;
+  background-color: #DB30A3 !important;
   color:#fff !important;
 }
 .pickadate-head{
-    color:#696969;
+    color:#000000;
 }
 .calendar-selection {
-    color: #DAA520;
+    color: #DB30A3;
 }
 .pickadate-cell li:nth-child(1),
 .pickadate-cell li:nth-child(8),
@@ -114,7 +117,7 @@ a,a:hover,.main-text,
 .pickadate-cell .pickadate-disabled,
 .pickadate-cell .pickadate-enabled,
 .pickadate-cell .pickadate-outofrange-disabled {
-  background-color: #CDCDCD;
+  background-color: #E5E5E5;
 }
 
 .pickadate-cell .pickadate-disabled,
@@ -124,37 +127,42 @@ a,a:hover,.main-text,
 
 
 .pickadate-cell li {
-  border: 1px solid #fff;
+  border: 1px solid #FFF;
 }
 .pickadate a:visited, .pickadate a {
   color: #666666;
 }
 .date-picker-header{
-  background-color: #3D3D3B;
+  background-color: #000;
 }
 .calendar-back {
-  background-image: url('/assets/guestweb/common_images/gold/back_icon.png');
+  background-image: url('/assets/guestweb/common_images/back_icon.png');
 }
 
 
 .calendar-done{
-   background-image: url('/assets/guestweb/common_images/gold/done_icon.png');
+   background-image: url('/assets/guestweb/common_images/done_white.png');
 }
 
 .pickadate-prev,.pickadate-next,.pickadate-prev:hover,.pickadate-next:hover{
-  color:#000 !important;
+  color: #DB30A3 !important;
 }
 
 .date-picker-wrap {
-  background-color: #FFF !important;
+  background-color: #FFFFFF !important;
 }
 .date-picker-bg {
   background: rgba(0,0,0,0.5);
 }
 .horizontal-line-sep-mobile{
-  border-top: 1px solid ##005596;
+  border-top: 1px solid #9b9b9b;
 }
-
+.departure-date{
+  color:#fff;
+}
+.date-text{
+  color:#fff;
+}
 @media (max-width: 990px) {
     .logo-image {
         margin: 9% auto 7%;
@@ -163,4 +171,7 @@ a,a:hover,.main-text,
     .back-to-checkout{
         display:none;
     }
+}
+.res-details-heading, .res-details-heading:hover {
+    color: #DB30A3;
 }
