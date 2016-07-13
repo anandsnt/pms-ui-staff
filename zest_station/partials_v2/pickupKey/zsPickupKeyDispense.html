@@ -28,7 +28,7 @@
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
-        <button ng-show="remoteEncoding" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_ONE' |translate}} </button>
+        <button ng-show="remoteEncoding  || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_ONE' |translate}} </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
 </section>
@@ -44,7 +44,7 @@
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
-          <button ng-show="remoteEncoding" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_ONE' |translate}} </button>
+          <button ng-show="remoteEncoding  || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_ONE' |translate}} </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
 </section>
@@ -60,7 +60,7 @@
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
-        <button ng-show="remoteEncoding" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_TWO' |translate}} </button>
+        <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey()">{{'MAKE_KEY_TEXT_TWO' |translate}} </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
 </section>
