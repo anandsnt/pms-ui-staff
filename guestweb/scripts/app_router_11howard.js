@@ -34,7 +34,8 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
         controller: 'checkOutBalanceController',
        	templateUrl: '/assets/common_templates/partials/checkout/gwBill.html',
 	    title: 'Balance - Check-out Now'
-    }).state('checkOutStatus', {
+    })
+    .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
        	templateUrl: '/assets/common_templates/partials/checkout/gwCheckoutfinal.html',
@@ -108,15 +109,10 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/common_templates/partials/checkin/gwPreCheckinFinal.html',
+		templateUrl: '/assets/common_templates/partials/11Howard/gwPreCheckinFinal.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
-	 }).state('checkinCcVerification', {
-		url: '/checkinCcVerification',
-		templateUrl: '/assets/common_templates/partials/checkin/gwCheckinCCAddition.html',
-		controller: 'checkinCcVerificationController',
-		title: 'CC verification'
-	});
+	 });
 
 	$stateProvider.state('earlyCheckinOptions', {
 	 	url: '/earlyCheckinOptions/:time/:charge/:id',
@@ -164,22 +160,5 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		url: '/guestCheckinLate',
 		templateUrl: '/assets/common_templates/partials/checkin/gwLateToCheckin.html',
 		title: 'Check-in'
-	});
-
-	$stateProvider.state('emailAddition', {
-		url: '/emailAddition/:isFrom',
-		templateUrl: '/assets/common_templates/partials/checkin/gwEmailEntry.html',
-		controller: 'emailEntryController',
-		title: 'E-mail entry'
-	}).state('mobileNumberAddition', {
-		url: '/mobileNumberAddition',
-		templateUrl: '/assets/common_templates/partials/checkin/gwPhoneNumberUpdate.html',
-		controller: 'mobileEntryController',
-		title: 'Phone number entry'
-	}).state('mobileNumberOptions', {
-		url: '/mobileNumberOptions',
-		templateUrl: '/assets/common_templates/partials/checkin/gwMobielNUmberOptions.html',
-		controller: 'mobileOptionsController',
-		title: 'Phone number entry'
 	});
 }]);
