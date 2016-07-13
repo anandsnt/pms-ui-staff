@@ -14,6 +14,13 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 			param: {}
 		};
 
+		$scope.setScroller('LOG_TAB_SCROLL');
+
+		var refreshScroll = function(goTop) {
+			$scope.refreshScroller('room-tab-scroll');
+			goTop && $scope.getScroller('LOG_TAB_SCROLL').scrollTo(0, 0);
+		}
+
 		$scope.init = function(){
 			$scope.roomDetails = $scope.$parent.roomDetails;
 			$scope.$emit('hideLoader');
@@ -61,6 +68,8 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	                }
 	                $scope.end = $scope.start + $scope.roomLogData.length - 1;
 	                $scope.$emit('hideLoader');
+
+	                refreshScroll(true);
 	        };
 	        var params = {
 	                id: $scope.roomDetails.id,
@@ -129,7 +138,8 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 
 
 
-
+	    var unSubscrbeOpenLog = $scope.$on('OPEN_LOG', $scope.updateLog);
+	    $scope.$on('$destroy', unSubscrbeOpenLog);
 	}
 
 	]);
