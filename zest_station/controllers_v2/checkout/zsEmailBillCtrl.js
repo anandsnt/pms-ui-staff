@@ -8,18 +8,18 @@ sntZestStation.controller('zsEmailBillCtrl', [
 	function($scope, $stateParams, $state, zsEventConstants, zsUtilitySrv, zsCheckoutSrv) {
 
 		/***********************************************************************************************
-		**		Expected state params -----> printopted, reservation_id, email and guest_detail_id			  
-		**		Exit functions -> checkOutSuccess							
-		**																		 
-		************************************************************************************************/
+		 **		Expected state params -----> printopted, reservation_id, email and guest_detail_id			  
+		 **		Exit functions -> checkOutSuccess							
+		 **																		 
+		 ************************************************************************************************/
 
 
 		/** MODES in the screen
-		*   1.EMAIL_BILL_GUEST_OPTIONS --> two options - send email and edit email
-		*   2.EMAIL_BILL_EDIT_MODE --> email entry mode
-		*   3.GUEST_BILL_EMAIL_SENT --> checked out and mail has been sent/mail sending failed
-		*   4.emailError --> invalid email
-		**/
+		 *   1.EMAIL_BILL_GUEST_OPTIONS --> two options - send email and edit email
+		 *   2.EMAIL_BILL_EDIT_MODE --> email entry mode
+		 *   3.GUEST_BILL_EMAIL_SENT --> checked out and mail has been sent/mail sending failed
+		 *   4.emailError --> invalid email
+		 **/
 
 		/**
 		 * [initializeMe description]
@@ -55,15 +55,16 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			$scope.$emit('EJECT_KEYCARD');
 			$state.go('zest_station.speakToStaff');
 		};
-	
+
 
 		$scope.goToNextScreen = function() {
+			$scope.callBlurEventForIpad();
 			$scope.emailSendingFailed = true;
 			$scope.mode = 'GUEST_BILL_EMAIL_SENT';
 		};
 
 		$scope.sendEmail = function() {
-			
+			$scope.callBlurEventForIpad();
 			var sendBillSuccess = function(response) {
 				$scope.emailSent = true;
 				$scope.mode = 'GUEST_BILL_EMAIL_SENT';
@@ -85,6 +86,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		};
 
 		var callSaveEmail = function() {
+			$scope.callBlurEventForIpad();
 			var params = {
 				"guest_detail_id": $stateParams.guest_detail_id,
 				"email": $scope.email
@@ -109,7 +111,12 @@ sntZestStation.controller('zsEmailBillCtrl', [
 				return;
 			} else {
 				// check if email is valid
-				zsUtilitySrv.isValidEmail($scope.email) ? callSaveEmail() : $scope.emailError = true;
+				if (zsUtilitySrv.isValidEmail($scope.email)) {
+					callSaveEmail();
+				} else {
+					$scope.emailError = true;
+					$scope.callBlurEventForIpad();
+				}
 			}
 		};
 

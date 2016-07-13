@@ -27,13 +27,20 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 			var stateParams = {
 				'mode': 'DEPOSIT',
 				'swipe': 'true',
-				'id': $stateParams.reservation_id,
+				'reservation_id': $stateParams.reservation_id,
 				'room_no': $stateParams.room_no,
+				'first_name': $stateParams.first_name,
 				'room_status': $stateParams.room_status,
+				'guest_id': $stateParams.guest_id,
 				'guest_email': $stateParams.guest_email,
 				'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
-				'balance_amount': $stateParams.balance_amount
-			}
+				'balance_amount': $stateParams.balance_amount,
+				'pre_auth_amount_at_checkin': $stateParams.pre_auth_amount_at_checkin,
+				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin,
+				'deposit_amount': $stateParams.deposit_amount,
+				'confirmation_number': $stateParams.confirmation_number
+			};
+			console.info('to card swipe ctrl params: ', stateParams)
 			$state.go('zest_station.checkInCardSwipe', stateParams);
 		};
 
@@ -43,6 +50,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 			$scope.currencySymbol = $scope.zestStationData.currencySymbol;
 			$scope.depositAmount = $stateParams.deposit_amount;
 			$scope.showSwipeNav = true;
+			$scope.setScreenIcon('card');
 		}();
 
 		/**
@@ -55,7 +63,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 			//back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 				if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
-					$state.go('zest_station.checkInReservationDetails');
+					$state.go('zest_station.checkInReservationDetails', $stateParams);
 				} else {
 					var stateParams = {
 						'guest_id': $stateParams.guest_id,
@@ -67,7 +75,9 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 						'guest_email': $stateParams.guest_email,
 						'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
 						'first_name': $stateParams.first_name,
-						'balance_amount': $stateParams.balance_amount
+						'balance_amount': $stateParams.balance_amount,
+						'pre_auth_amount_at_checkin': $stateParams.pre_auth_amount_at_checkin,
+						'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 					}
 					$state.go('zest_station.checkInTerms', stateParams);
 				}

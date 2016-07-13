@@ -329,8 +329,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
             //adding available room count over the data we got
             $scope.roomTypesAndData = _.map(data.result, function(data) {
-                data.availableRoomCount = toI(data.total_rooms) - toI(data.total_pickedup_rooms);
-                data.availableRoomCount = (data.availableRoomCount < 0) ? 0 : data.availableRoomCount;
+                data.availableRoomCount = data.availability;
                 return data;
             });
             //initially selected room type, above one is '$scope.roomTypesAndData', pls. notice "S" between room type & data
@@ -745,7 +744,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             var isValidSelectedRoomType = (typeof selectedRoomType !== "undefined");
 
             //forming [1,2,3,4]
-            $scope.possibleNumberOfRooms = isValidSelectedRoomType ? _.range(1, util.convertToInteger(selectedRoomType.total_rooms) + 1) : [];
+            $scope.possibleNumberOfRooms = isValidSelectedRoomType ? _.range(1, util.convertToInteger(selectedRoomType.availability) + 1) : [];
 
             // setting single as default occupancy as part of CICO-27540
             $scope.selectedOccupancy = '1';
@@ -845,7 +844,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         
         $scope.filterReservation = function() {
             initialisePagination();
-            $timeout( $scope.fetchReservations, 500 );
+            $timeout( $scope.fetchReservations, 10 );
         };
         $scope.fiterByQuery = function() {
             var query = $scope.query.trim(),
@@ -944,10 +943,16 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 onSelect: fromDateChoosed
             }, commonDateOptions);
 
-            //date picker options - Departute
+            //date picker options - Arrival
+            $scope.arrivalDateOptions = _.extend({}, commonDateOptions);
+
+            //date picker options - To
             $scope.toDateOptions = _.extend({
                 onSelect: toDateChoosed
             }, commonDateOptions);
+
+            //date picker options - Departure
+            $scope.departureDateOptions = _.extend({}, commonDateOptions);
 
             //default from date, as per CICO-13900 it will be block_from date
             $scope.fromDate = refData.block_from;

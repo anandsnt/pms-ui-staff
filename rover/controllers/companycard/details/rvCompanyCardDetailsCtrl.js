@@ -165,6 +165,12 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (tabToSwitch === 'cc-notes') {
 				$scope.$broadcast("fetchNotes");
 			}
+			if (tabToSwitch === 'cc-contact-info') {
+				$scope.$broadcast("contactTabActive");
+			}
+			if (tabToSwitch === 'cc-commissions') {
+				$scope.$broadcast("commissionsTabActive");
+			}
 			if(tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable){
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
 			}
@@ -369,7 +375,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		var failureCallbackOfContactSaveData = function(errorMessage) {
 			$scope.$emit("hideLoader");
-			$scope.errorMessage = errorMessage;
+			$scope.$broadcast("setCardContactErrorMessage", errorMessage);
+			//$scope.errorMessage = errorMessage;
 			$scope.currentSelectedTab = 'cc-contact-info';
 		};
 

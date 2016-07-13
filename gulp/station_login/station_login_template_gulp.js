@@ -3,7 +3,7 @@ module.exports = function(gulp, $, options){
 	var DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'],
 		URL_APPENDER            = options['URL_APPENDER'],
 		MANIFEST_DIR 			= __dirname + "/manifests/",
-	    LOGIN_TEMPLATES_FILE    = 'stationlogin_templates.js',
+	    STATION_LOGIN_TEMPLATES_FILE    = 'stationlogin_templates.js',
 	    STATION_LOGIN_TEMPLATE_ROOT     = options['STATION_LOGIN_TEMPLATE_ROOT'],
 	    STATION_LOGIN_HTML_FILE     	= options['STATION_LOGIN_HTML_FILE'],
 	    LOGIN_PARTIALS 			= ['partials/**/*.html'],
@@ -28,7 +28,7 @@ module.exports = function(gulp, $, options){
 	//Be careful: PRODUCTION
 	gulp.task('inject-station-login-template-cache-production-to-template',  function(){
 		var template_manifest_json = require(MANIFEST_DIR + LOGIN_TEMPLTE_MANFEST_FILE),
-	        file_name = template_manifest_json[LOGIN_TEMPLATES_FILE];
+	        file_name = template_manifest_json[STATION_LOGIN_TEMPLATES_FILE];
 	    return templateInjector(file_name);
 	});
 
@@ -40,7 +40,7 @@ module.exports = function(gulp, $, options){
     			spare:true,
     			empty: true
 	  		}))
-	        .pipe($.templateCache(LOGIN_TEMPLATES_FILE, {
+	        .pipe($.templateCache(STATION_LOGIN_TEMPLATES_FILE, {
 	            module: 'login',//angular module
 	            root: URL_APPENDER + "/partials/"
 	        }))
@@ -53,13 +53,13 @@ module.exports = function(gulp, $, options){
 	        .pipe(gulp.dest(MANIFEST_DIR));
 	});
 
-	gulp.task('build-station-login-template-cache-dev', ['login-template-cache-dev'], function(){
-	    return templateInjector(LOGIN_TEMPLATES_FILE);
+	gulp.task('build-station-login-template-cache-dev', ['login-station-login-template-cache-dev'], function(){
+	    return templateInjector(STATION_LOGIN_TEMPLATES_FILE);
 	});
 
-	gulp.task('login-template-cache-dev', function () {
+	gulp.task('login-station-login-template-cache-dev', function () {
 	  return gulp.src(LOGIN_PARTIALS, {cwd:'login/'})
-	        .pipe($.templateCache(LOGIN_TEMPLATES_FILE, {
+	        .pipe($.templateCache(STATION_LOGIN_TEMPLATES_FILE, {
 	            module: 'login',
 	            root: URL_APPENDER + "/partials/"
 	        }))

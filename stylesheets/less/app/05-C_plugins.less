@@ -1165,7 +1165,11 @@
                     .charge-code-list {
                         position: absolute;
                         top: 40px;
-                        left: -20px;
+                        left: 0px;
+                        width: 280px;
+                        max-height: 240px;
+                        overflow: hidden;
+                        background-color: @white;
                     }
                 }
 
@@ -5979,19 +5983,23 @@
                             &.disabled {
                                 pointer-events: none;
                                 .restriction-name,
-                                .restriction-icon,
                                 .restriction-right,
                                 .icon-double-arrow {
                                     opacity: 0.2;
+                                }
+                                .restriction-icon {
+                                    opacity: 0.4;
                                 }
                             }
 
                             &.value-not-inserted {
                                 .restriction-name,
-                                .restriction-icon,
                                 .restriction-right {
                                     opacity: 0.4;
                                 }
+                                .restriction-icon {
+                                    opacity: 0.75;
+                                }                                
                             }
 
                             .clickable();

@@ -1,9 +1,9 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
 	<div id="group-room-assign" name="group-room-assign" class="modal-content form confirmation">
 	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>	   
-	    <span class="message h2" translate>GROUP_AUTO_ROOM_ASSIGN_CONFIRMATION</span> 
-	    <span class="text">
-	    	Assign Rooms for <strong>{{qualifiedReservations.length}} reservations </strong> in Group "{{groupConfigData.summary.group_name}}"?
+	    <span class="message h2" translate>ALLOTMENT_AUTO_ROOM_ASSIGN_CONFIRMATION</span>
+		<span class="text">
+		Assign Rooms for <strong>{{qualifiedReservations.length}} reservations </strong> in Allotment "{{allotmentConfigData.summary.allotment_name}}"?
 	    </span>
 
 	    <span class="notice" ng-if="messageForAutoRoomAssignment!=''" translate>

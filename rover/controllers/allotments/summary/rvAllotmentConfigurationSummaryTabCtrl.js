@@ -300,6 +300,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 
 		var successCallBackOfCopyDefaultBilling = function() {
 			$scope.$emit('hideLoader');
+			$scope.allotmentConfigData.summary.default_billing_info_present = true;
 			openBillingInformationPopup();
 		};
 
@@ -342,22 +343,34 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 			$scope.billingEntity = "ALLOTMENT_DEFAULT_BILLING";
 			$scope.billingInfoModalOpened = true;
 			$scope.attachedEntities = {};
+			$scope.billingInformationPresent = summaryData.default_billing_info_present;
 			$scope.attachedEntities.posting_account = _.extend({}, {
 				id: summaryData.allotment_id,
 				name: summaryData.posting_account_name,
 				logo: "ALLOTMENT_DEFAULT"
 			});
-
             $scope.$emit('showLoader'); 
             jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
-                $scope.$emit('hideLoader'); 
-                ngDialog.open({
-                    template: '/assets/partials/bill/rvBillingInformationPopup.html',
-                    controller: 'rvBillingInformationPopupCtrl',
-                    className: '',
-                    scope: $scope
-                });
+                $scope.$emit('hideLoader');
+                if($rootScope.UPDATED_BI_ENABLED_ON['ALLOTMENT']){
+                	console.log("##Billing-info updated version");
+	                ngDialog.open({
+	                    template: '/assets/partials/billingInformation/allotment/rvBillingInfoAllotmentMain.html',
+	                    controller: 'rvBillingInfoAllotmentMainCtrl',
+	                    className: '',
+	                    scope: $scope
+	                });
+	            }
+	            else{
+	            	console.log("##Billing-info old version");
+	            	ngDialog.open({
+	                	template: '/assets/partials/bill/rvBillingInformationPopup.html',
+	                    controller: 'rvBillingInformationPopupCtrl',
+	                    className: '',
+	                    scope: $scope
+	                });
+	            }
             });
 		};
 

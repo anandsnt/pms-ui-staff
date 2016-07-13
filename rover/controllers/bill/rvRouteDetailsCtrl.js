@@ -286,6 +286,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
             $scope.invokeApi(RVBillinginfoSrv.fetchAvailableChargeCodes, data, successCallback, errorCallback);
     };
+    $scope.showPaymentOption = function(){
+        return (!$scope.isAddPayment && $scope.showPayment && $scope.renderAddedPayment == null);
+    }
     /**
     * function to fetch available billing groups from the server
     */

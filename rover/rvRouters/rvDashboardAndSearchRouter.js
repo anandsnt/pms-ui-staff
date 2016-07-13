@@ -65,7 +65,17 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
         $stateProvider.state('rover.dashboard.frontoffice', {
             url: '/frontoffice',
             templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html',
-            controller: 'RVfrontDeskDashboardController'
+            controller: 'RVfrontDeskDashboardController',
+            resolve : {
+                statistics : function(RVDashboardSrv) {
+                    var requestParams = {
+                        'show_adr' : false,
+                        'show_upsell' : true,
+                        'show_rate_of_day' : false
+                    };
+                    return RVDashboardSrv.fetchStatisticData(requestParams);
+                }
+            }
         });
         $stateProvider.state('rover.dashboard.housekeeping', {
             url: '/housekeeping',  //TODO: check can we reduced it to hk?

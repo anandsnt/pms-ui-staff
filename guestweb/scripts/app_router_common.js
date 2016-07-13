@@ -111,7 +111,12 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/common_templates/partials/checkin/gwPreCheckinFinal.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
-	 });
+	 }).state('checkinCcVerification', {
+		url: '/checkinCcVerification',
+		templateUrl: '/assets/common_templates/partials/checkin/gwCheckinCCAddition.html',
+		controller: 'checkinCcVerificationController',
+		title: 'CC verification'
+	});
 
 	$stateProvider.state('earlyCheckinOptions', {
 	 	url: '/earlyCheckinOptions/:time/:charge/:id',
@@ -159,5 +164,22 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		url: '/guestCheckinLate',
 		templateUrl: '/assets/common_templates/partials/checkin/gwLateToCheckin.html',
 		title: 'Check-in'
+	});
+
+	$stateProvider.state('emailAddition', {
+		url: '/emailAddition/:isFrom',
+		templateUrl: '/assets/common_templates/partials/checkin/gwEmailEntry.html',
+		controller: 'emailEntryController',
+		title: 'E-mail entry'
+	}).state('mobileNumberAddition', {
+		url: '/mobileNumberAddition',
+		templateUrl: '/assets/common_templates/partials/checkin/gwPhoneNumberUpdate.html',
+		controller: 'mobileEntryController',
+		title: 'Phone number entry'
+	}).state('mobileNumberOptions', {
+		url: '/mobileNumberOptions',
+		templateUrl: '/assets/common_templates/partials/checkin/gwMobielNUmberOptions.html',
+		controller: 'mobileOptionsController',
+		title: 'Phone number entry'
 	});
 }]);

@@ -48,19 +48,19 @@ sntZestStation.config(['$stateProvider',
                 
 		//checking credit card swipe                 
       	$stateProvider.state('zest_station.checkInCardSwipe', {
-			url: '/checkInReservationCard/:mode/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:payment_type_id/:deposit_amount/:balance_amount',
+			url: '/checkInReservationCard/:mode/:first_name/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:payment_type_id/:deposit_amount/:balance_amount/:pre_auth_amount_at_checkin/:authorize_cc_at_checkin/:confirmation_number',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinCCSwipe.html',
 			controller: 'zsCheckinCCSwipeCtrl'
 		});
 		//terms and conditions                
       	$stateProvider.state('zest_station.checkInTerms', {
-			url: '/checkInTermsAndConditions/:guest_id/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name/:balance_amount',
+			url: '/checkInTermsAndConditions/:guest_id/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name/:balance_amount/:pre_auth_amount_at_checkin/:authorize_cc_at_checkin/:confirmation_number',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinTermsConditions.html',
 			controller: 'zsCheckInTermsConditionsCtrl'
 		});
 		//reservation deposit                
       	$stateProvider.state('zest_station.checkInDeposit', {
-			url: '/checkInReservationDeposit/:reservation_id/:mode/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:guest_id/:balance_amount',
+			url: '/checkInReservationDeposit/:reservation_id/:mode/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:guest_id/:balance_amount/:pre_auth_amount_at_checkin/:authorize_cc_at_checkin/:confirmation_number/:first_name',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinDeposit.html',
 			controller: 'zsCheckinDepositCtrl'
 		});
@@ -100,7 +100,7 @@ sntZestStation.config(['$stateProvider',
       	
       	// check-in room error
       	$stateProvider.state('zest_station.checkinRoomError', {
-			url: '/checkinRoomError/:first_name',
+			url: '/checkinRoomError/:first_name/:unavailable',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomError.html',
 			controller: 'zsRoomErrorCtrl'
 		});

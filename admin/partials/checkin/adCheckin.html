@@ -9,10 +9,9 @@
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <form style="overflow-y:auto;" class="form float">
                 <fieldset class="holder left">
-                    <ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="{{ 'SEND_CHECKIN_ALERT' | translate}}" is-disabled="checkinData.is_precheckin_only"></ad-toggle-button>
+                    <ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="{{ 'SEND_CHECKIN_ALERT' | translate}}"></ad-toggle-button>
                     <ad-toggle-button is-checked="checkinData.is_precheckin_only" label="{{ 'PRE_CHECK_IN_ONLY' | translate}}"></ad-toggle-button>
                     <ad-toggle-button is-checked="checkinData.is_send_zest_alert_flag" label="{{ 'SEND_ZEST_CHECKIN_ALERT' | translate}}"></ad-toggle-button>
-                    
                     <ad-checkbox is-checked="checkinData.is_notify_on_room_not_assigned_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_NOT_ASSIGNED_TITLE' | translate}}" div-class="full-width"></ad-checkbox>
                     <ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only" ng-show="!checkinData.is_precheckin_only"></ad-checkbox>
                     <ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width"></ad-checkbox>
@@ -339,14 +338,17 @@
                     <div class="form-title half-width-title">
                         <h3><span  translate="">ADDRESS_COLLECTION</span> </h3>
                     </div>
-                    <div class="form-subtitle-title">
-                        <h6><span translate="">COLLECT_ADDRESS_SEPERATELY</span> </h6>
+                     <div class="form-subtitle-title">
+                        <h6><span translate="">CHECKIN_NOW_SUB_HEADING</span> </h6>
                     </div>
                     <!-- flag to check if we need to ask for guest address -->
                     <ad-toggle-button is-checked="checkinData.prompt_for_address_on" label="{{ 'PROMPT_FOR_GUEST_ADDRESS' | translate}}" div-class="full-width"></ad-toggle-button>
                     <!-- flag to check if we need to ask for CC entry-->
-                    <div class="form-title half-width-title">
+                    <div class="form-title">
                         <h3 class="ng-binding"><span class="ng-scope" translate="">GUEST_CC_COLLECTION</span> </h3>
+                    </div>
+                    <div class="form-subtitle-title">
+                        <h6><span translate="">PROMPT_FOR_CC_SUB_HEADING</span> </h6>
                     </div>
                     <ad-toggle-button is-checked="checkinData.checkin_collect_cc" label="{{'PROMPT_FOR_CC' | translate}}" div-class="full-width"></ad-toggle-button>
                 </fieldset>
@@ -415,6 +417,47 @@
                     </div>
                     <ad-toggle-button is-checked="checkinData.enforce_country_sort" label="{{'ENFORCE_COUNTRY_SORT'| translate}}" div-class="full-width"></ad-toggle-button>
                 </fieldset>
+                <fieldset class="holder right">
+                    <div class="form-title">
+                        <h3><span translate>COLLECT_OUTSTANDING_BALANCE </span> </h3>
+                    </div>
+                     <div class="form-subtitle-title">
+                        <h6><span translate="">CHECKIN_NOW_SUB_HEADING</span> </h6>
+                    </div>
+                    <ad-toggle-button is-checked="checkinData.zestweb_collect_outstanding_balance" label="{{'COLLECT_OUTSTANDING_BALANCE'| translate}}" div-class="full-width"></ad-toggle-button>
+                </fieldset>
+                <!-- no of keys -->
+                <fieldset class="holder full-width">
+                    <div class="form-title half-width-title">
+                        <h3><span translate="">NO_OF_KEYS</span> </h3>
+                    </div>
+                    <div class="form-subtitle-title">
+                        <h6><span translate="">NO_OF_KEYS_INSTRUCTION</span> </h6>
+                    </div>
+                    <fieldset class="holder left">
+                        <ad-toggle-button is-checked="checkinData.key_prompt_on" label="{{'PROMPT_FOR_KEYS'| translate}}" div-class="full-width"></ad-toggle-button>
+                        <ad-textbox value="checkinData.key_prompt_title" label="{{'PROMPT_FOR_KEYS_TITLE' | translate}}" styleclass="full-width" placeholder=""></ad-textbox>
+                        <ad-textbox value="checkinData.key_prompt_text" label="{{'PROMPT_FOR_KEYS_TEXT' | translate}}" styleclass="full-width" placeholder=""></ad-textbox>
+                        <ad-textbox value="checkinData.key_prompt_save_error" label="{{'PROMPT_FOR_KEYS_ERROR_MESSAGE' | translate}}" styleclass="full-width" placeholder=""></ad-textbox>
+                        <div id="options" class="entry full-width">
+                            <label>
+                                {{ 'MAXIMUM_NO_OF_KEYS' | translate}}
+                            </label>
+                            <label class="radio" ng-class="{'checked':checkinData.max_keys_type== 'ROOM_OCCUPANCY'}">
+                                <span class="icon-form icon-radio " ng-class="{checked:checkinData.max_keys_type=='ROOM_OCCUPANCY'}"></span>
+                                <input type="radio" value="ROOM_OCCUPANCY" ng-model="checkinData.max_keys_type"> {{ 'MAX_ROOM_OCCUPANCY' | translate}}
+                            </label>
+                            <label class="radio" ng-class="{'checked':checkinData.max_keys_type == 'other'}">
+                                <span class="icon-form icon-radio " ng-class="{checked:checkinData.max_keys_type == 'other'}"></span>
+                                <input type="radio" value="other" ng-model="checkinData.max_keys_type"> {{ 'OTHER' | translate}}
+                            </label>
+                        </div>
+                        <div class="select select-col col1-3" ng-show="checkinData.max_keys_type === 'other'">
+                            <select ng-options="key for key  in [1,2,3,4,5,6,7,8,9,10]" ng-model="checkinData.no_of_keys">
+                            </select>
+                        </div>
+                    </fieldset>
+                </fieldset>
                 <div class="actions float">
                     <button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline">{{ 'CANCEL' | translate}}</button>
                     <button type="button" ng-click="saveCheckin()" class="button green">{{ 'SAVE_CHANGES' | translate}}</button>
@@ -422,4 +465,4 @@
             </form>
         </section>
     </div>
-</section
+    </section

@@ -1995,6 +1995,44 @@ table {
                     }
                 }
             }
+
+            &.card-authorization-check-reports {
+                tbody {
+                    tr {
+                        td {
+                            width: 3.4cm; 
+
+                            &.entity-name {
+                                width: -webkit-calc(~'100% - 19cm');
+                                width: -moz-calc(~'100% - 19cm');
+                                width: calc(~'100% - 19cm');
+                            }
+                            
+                            &.red,
+                            &.penalty { color: @grey3; position:relative }
+
+                            &.red:before {
+                                content: '!';
+                                position: absolute;
+                                right: 0;
+                                top: 2px;
+                                border-radius: 10px;
+                                background-color: @grey3;
+                                color: white;
+                                width: 15px;
+                                text-align: center;
+                                height: 15px; 
+                                line-height: 15px;
+                                font-weight: 600;
+                            } 
+
+                            &:first-child {
+                                width: 2cm;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         &.with-graphs {

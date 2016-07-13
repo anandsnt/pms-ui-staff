@@ -1099,6 +1099,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          */
         $scope.discardNewGroup = function() {
             $scope.groupConfigData.summary = angular.copy(rvGroupConfigurationSrv.baseConfigurationSummary);
+            $scope.groupConfigData.summary.selected_room_types_and_bookings = [];
+            $scope.groupConfigData.summary.selected_room_types_and_rates = [];
+            $scope.groupConfigData.summary.selected_room_types_and_occupanies = [];
+            $scope.groupConfigData.summary.release_date = '';
         }
 
         $scope.onCompanyCardChange = function() {
@@ -1275,7 +1279,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
             /** @type {Array} states that are part of a proper flow */
             var flowStates = [
-                'rover.reservation.staycard.reservationcard.reservationdetails'
+                'rover.reservation.staycard.reservationcard.reservationdetails',
+                'rover.actionsManager'
             ];
 
             // if its part of reservation flow

@@ -1,12 +1,13 @@
-sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$state', '$vault', function($scope, $rootScope, $state, $vault) {
+sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$state', '$vault', 'RVDashboardSrv', '$timeout', function($scope, $rootScope, $state, $vault, RVDashboardSrv, $timeout) {
   //inheriting some useful things
   BaseCtrl.call(this, $scope);
   var that = this;
   //scroller related settings
   var scrollerOptions = {
-    click: true,
     preventDefault: false
   };
+
+  $scope.isStatisticsOpened = false;
   $scope.setScroller('dashboard_scroller', scrollerOptions);
 
   //changing the header
@@ -129,4 +130,52 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
       'reservation': 'HOURLY'
     });
   };
+
+  /**
+   * Function which checks whether ADR data is shown in statistic section or not
+  */
+  $scope.isADRShown = function() {
+    return ($scope.isStandAlone && !$scope.isHourlyRateOn && $scope.isStatisticsOpened);
+  };
+
+  /**
+   * Function which handles the click of the statistic btn in dashboard
+  */
+ $scope.toggleStatistics = function() {
+  $scope.isStatisticsOpened = !$scope.isStatisticsOpened;
+  var onStatisticsFetchSuccess = function(data) {
+        $scope.$emit('hideLoader');
+        $scope.statistics = data;
+
+        $scope.refreshScroller('dashboard_scroller');
+        $timeout(function() {
+          $scope.myScroll['dashboard_scroller'].scrollTo($scope.myScroll['dashboard_scroller'].maxScrollX,
+                  $scope.myScroll['dashboard_scroller'].maxScrollY, 500);
+        }, 500);
+
+      },
+      onStatisticsFetchFailure = function(error) {
+        $scope.$emit('hideLoader');
+
+      };
+  //Invoke the api only when the statistic block is opened
+  var requestParams = {
+    'show_adr' : true,
+    'show_upsell' : true,
+    'show_rate_of_day' : true
+  };
+  //CICO-31344
+  if(!$scope.isStandAlone) {
+    requestParams.show_adr = false;
+  }
+  if($scope.isStatisticsOpened) {
+    $scope.invokeApi(RVDashboardSrv.fetchStatisticData,requestParams,onStatisticsFetchSuccess,onStatisticsFetchFailure);
+  } else {
+    $timeout(function() {
+      $scope.refreshScroller('dashboard_scroller');
+    }, 500);
+
+  }
+
+ };
 }]);

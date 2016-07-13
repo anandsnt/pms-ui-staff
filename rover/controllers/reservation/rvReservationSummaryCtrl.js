@@ -555,15 +555,18 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             } else {
                 depositPaid = true;
             };
-
             var idPresent = ($stateParams.mode === 'OTHER' || $stateParams.mode === 'EDIT_HOURLY') ? (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id && !$scope.reservationData.allotment.id) : true;
             var isPaymentTypeNotSelected = ((typeof $scope.reservationData.paymentType.type.value === "undefined") || $scope.reservationData.paymentType.type.value.length === 0);
-            return (idPresent || isPaymentTypeNotSelected || !depositPaid);
+            //CICO-30786 - check the payment type selection only if deposit not paid
+            var isContinueDisabled = idPresent || !depositPaid ;
+            if (!depositPaid) {
+               isContinueDisabled =  isContinueDisabled || isPaymentTypeNotSelected;
+            }
+            return isContinueDisabled;
 
         };
 
         $scope.init = function() {
-
             if ($scope.isStandAlone) {
                 // Setup fees info
                 $scope.feeData.feesInfo = $scope.reservationData.selected_payment_fees_details;
@@ -571,7 +574,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 // CICO-15107 --
                 var aptSegment = ""; //Variable to store the suitable segment ID
                 angular.forEach($scope.otherData.segments, function(segment) {
-                    if ($scope.reservationData.stayDays.length - 1 < segment.los) {
+                    if ($scope.reservationData.stayDays.length - 1 <= segment.los) {
                         if (!aptSegment) {
                             aptSegment = segment.value;
                         }
@@ -798,6 +801,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
             }
             var saveSuccess = function(data) {
+                console.log(data);
+                console.log($scope.reservationData)
                 //CICO-18699 credit card not saving to guest card when selecting Deposit later option.
                 if ($scope.addToGuestCard) {
                     addToGuestCard(data);
@@ -925,17 +930,33 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             $scope.errorMessage = [];
 
-            if (typeof index === 'undefined') {
-                // TO HANDLE OVERRIDE ALL SCENARIO
-                _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
-                    postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
-                    promises.push(RVReservationSummarySrv.updateReservation(postData));
-                });
-            } else {
-                postData.reservationId = reservationId;
-                promises.push(RVReservationSummarySrv.updateReservation(postData));
+            console.log( $scope.reservationData.reservationId );
+            var check = function() {
+                if ( ! $scope.reservationData.reservationId ) {
+                    setTimeout(check, 100);
+                } else {
+                    _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                        postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
+                        promises.push(RVReservationSummarySrv.updateReservation(postData));
+                    });
+
+                    $q.all(promises).then(updateSuccess, updateFailure);
+                }
             }
-            $q.all(promises).then(updateSuccess, updateFailure);
+            check();
+
+            // THE BELOW CODE IS SHIT!
+            // if (typeof index === 'undefined') {
+            //     // TO HANDLE OVERRIDE ALL SCENARIO
+            //     _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
+            //         postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
+            //         promises.push(RVReservationSummarySrv.updateReservation(postData));
+            //     });
+            // } else {
+            //     postData.reservationId = reservationId;
+            //     promises.push(RVReservationSummarySrv.updateReservation(postData));
+            // }
+            // $q.all(promises).then(updateSuccess, updateFailure);
         };
 
         $scope.onPayDepositLater = function(){
@@ -1332,15 +1353,27 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             $scope.$emit('showLoader');
             jsMappings.fetchAssets(['addBillingInfo', 'directives'])
-                .then(function() {
-                    $scope.$emit('hideLoader');
+            .then(function(){
+                $scope.$emit('hideLoader'); 
+                if($rootScope.UPDATED_BI_ENABLED_ON['RESERVATION']){
+                    console.log("##Billing-info updated version");
+                    ngDialog.open({
+                        template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
+                        controller: 'rvBillingInfoReservationMainCtrl',
+                        className: '',
+                        scope: $scope
+                    });
+                }
+                else{
+                    console.log("##Billing-info old version");
                     ngDialog.open({
                         template: '/assets/partials/bill/rvBillingInformationPopup.html',
                         controller: 'rvBillingInformationPopupCtrl',
                         className: '',
                         scope: $scope
                     });
-                });
+                }
+            });
         };
 
         $scope.updateAdditionalDetails = function(reservationId, index, goToConfirmationScreen) {

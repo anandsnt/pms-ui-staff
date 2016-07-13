@@ -60,13 +60,20 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
-
-        var setTotalsForCheckinNowReport = function(totals){
-                var totalsForMobileCheckinNow = [], v;
+        var setTotalsForReport = function(totals){
+                var totalsForReport = [], v;
                 _.each(totals, function(item) {
                     if (item.label.indexOf('Conversion')!==-1){
                         if (typeof item.value == typeof 'str' && item.value.indexOf('%')!=-1){
-                            v = item.value.split('%')[0]+'%';
+                        	v = item.value.split('%')[0]+'%';
+                        } else if (item.label.indexOf('Mobile Check In Conversion')!==-1 || item.label.indexOf('Auto Check In Conversion')!==-1){
+                        	v = item.value + '%';//these values are currently being passed without the percentage...just need to add the % sign
+                        } else {
+                            v = 'N/A';
+                        }
+                    } else if (item.label.indexOf('Revenue')!==-1){
+                    	if (typeof item.value == typeof 'str'){
+                        	v = item.value;
                         } else {
                             v = 'N/A';
                         }
@@ -75,9 +82,9 @@ sntRover.controller('RVReportDetailsCtrl', [
                     } else {
                         v = 0;
                     }
-                    totalsForMobileCheckinNow.push(v);
+                    totalsForReport.push(v);
                   });
-                $scope.resultsTotalRow = totalsForMobileCheckinNow;  
+                $scope.resultsTotalRow = totalsForReport;  
         };
 
 		// common methods to do things after fetch report
@@ -208,12 +215,23 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['MOBILE_CHECKIN_NOW']:
-                                        $scope.hasReportTotals = true;
-                                        $scope.hasNoResults = false;
-                                        $scope.hasNoTotals = false;
-                                        setTotalsForCheckinNowReport(totals);
+                    $scope.hasReportTotals = true;
+                    $scope.hasNoResults = false;
+                    $scope.hasNoTotals = false;
+                    setTotalsForReport(totals);//refreshes Totals
 					break;
 				case reportNames['MOBILE_CHECKIN']:
+                    $scope.hasReportTotals = true;
+                    $scope.hasNoResults = false;
+                    $scope.hasNoTotals = false;
+                    setTotalsForReport(totals);//refreshes Totals
+					break;
+
+				case reportNames['ROOM_UPSELL']:
+                    $scope.hasReportTotals = true;
+                    $scope.hasNoResults = false;
+                    $scope.hasNoTotals = false;
+                    setTotalsForReport(totals);//refreshes Totals
 					break;
 				case reportNames['CHECKIN_NOW_OR_LATER']:
 					break;

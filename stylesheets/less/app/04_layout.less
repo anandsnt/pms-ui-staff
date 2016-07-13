@@ -351,6 +351,12 @@ body { overflow: hidden; }
 						color: @logoPrimary;
 						#blink > .infinite();
 					}
+
+					&.error {
+	                    color:  @red;
+	                    font-style: normal;
+	                    font-weight: 600;
+	                }
 				}
 			}
 		}
@@ -2148,6 +2154,12 @@ body { overflow: hidden; }
 	            height: 80px;
 	        }
 
+	        .sidebar-content {
+	        	&.dragging {
+	        		overflow: visible !important;
+	        	}
+	        }
+
 	        .rightMenuHandle {
 	            position: absolute;
 	            top: 20px;
@@ -2165,6 +2177,10 @@ body { overflow: hidden; }
 	                background-image: @icons2x;
 	                background-size: 120px, 40px;
 	            }
+
+				&.not-empty {
+					background-color: @red;
+				}
 	        }
 
 	        &#room-diary-rooms {
@@ -2275,130 +2291,6 @@ body { overflow: hidden; }
 	        }
 	    }
 	}
-
-/* Dashboard block			==============================*/	
-	.dashboard-block {
-		padding-bottom: 20px;
-	    margin-bottom: 20px;
-
-	    ul {
-	        li {
-	            margin-bottom: 10px;
-	            .show;
-	        }
-
-	        &:not(.actions) { width: 100%; }
-	    }
-
-		.data,
-		&.data {
-            li {
-                line-height: 36px;
-                vertical-align: middle;
-                padding-bottom: 5px;
-                margin-bottom: 5px;
-                text-transform: uppercase;
-                width: 100%;
-                border-bottom: 1px solid rgba(0,0,0,.1);
-
-                strong,
-                span {
-                    line-height: 1em;
-                    color: @textColor;
-                    .show;
-                    .pull-right;
-
-                    &.green { color: @green; }
-                    &.red { color: @red; }
-                    &.blue { color: @blue; }
-                    &.yellow { color: @yellow; }
-                    &.orange { color: @logoPrimary; }
-                    &.grey { color: @grey3; }
-
-                    &.no-data {
-                        font-size: 1em;
-                        line-height: 30px;
-                        color: @grey4;
-                        text-transform: none;
-                        font-weight: 400;
-                        font-style: italic;
-                    }
-                }
-
-                strong { font-size: 36px; }
-
-                span {
-                    font-size: 30px;
-                    font-weight: 300;                                
-                }
-
-                &:last-child {
-                    padding-bottom: 0;
-                    margin-bottom: 0;
-                    border-bottom: 0;
-                }
-            }
-        }
-	}
-
-	/* 768px+               ==============================*/
-    @media only screen and (min-width: 768px) {
-        .dashboard-block {
-            margin-bottom: 40px;
-            border-bottom: 1px solid rgba(0,0,0,.1);
-            .flex(center);
-            .float;
-
-            ul {
-                li {
-                    margin-bottom: 0;
-                    .pull-left;
-                }
-            }
-
-           	.data,
-           	&.data {
-                li {
-                    text-align: center;
-                    line-height: 1em;
-                    margin: 0 40px 0 0;
-                    border-bottom: 0;
-                    padding-bottom: 0;
-                    color: @grey3;
-                    .calc-width(20, 32);
-
-                    strong,
-                    span {
-                        font-size: 48px;
-                        font-weight: 300;
-                        float: none;
-
-                        &.no-data {
-                            font-size: 16px;
-                            line-height: 1em;
-                            padding: 16px 0;
-                        }
-                    }
-
-                    i { .show; }
-
-                    &:last-child { margin-right: 0; }
-                }
-            }
-        }
-    }
-
-    /* 1360px+               ==============================*/
-    @media only screen and (min-width: 1360px) {
-    	.dashboard-block {
-           	.data,
-           	&.data {
-                li {
-                    i { display: inline; }
-                }
-            }
-        }
-    }
 
 /* Notes					==============================*/
 	@media not print {
@@ -2758,6 +2650,27 @@ body { overflow: hidden; }
 						}
 					}
 
+					&.group-details {
+	                    .data {
+	                        .calc-width(100, 270);
+	                        height:50px;
+	                        display: flex;
+	                        justify-content: center;
+	                        align-items: center;
+	                        h1 {
+	                            max-height: 50px; 
+	                            width:100%;
+	                            display:block;
+	                            white-space: normal;
+	                            font-size: 24px;
+	                        }
+	                    }
+
+	                    .dates {
+	                        width: 140px;
+	                    }
+	                }
+
 	                .button { 
 	                	position: absolute;
 	                	top: 25px;
@@ -3060,6 +2973,12 @@ body { overflow: hidden; }
 				margin-right: 20px;
 				.size(40px, 240px);
 				.pull-left;
+
+				&.with-border {
+	                .size(40px, 260px);
+	                padding-left: 20px;
+	                border-left:1px solid rgba(0, 0, 0, 0.1);
+	            }
 			}
 
 			.button { .pull-right; }

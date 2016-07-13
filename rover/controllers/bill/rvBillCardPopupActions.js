@@ -125,8 +125,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	    if($scope.chargecodeData.chargeCodeSearchText.length < 3){
 	      //based on 'is_row_visible' parameter we are showing the data in the template
 	      for(var i = 0; i < $scope.availableChargeCodes.length; i++){
-	          $scope.availableChargeCodes[i].is_row_visible = true;
-	          $scope.availableChargeCodes[i].is_selected = true;
+	          $scope.availableChargeCodes[i].is_row_visible = false;
 	      }
 	      $scope.refreshScroller('chargeCodesList');
 	      // we have changed data, so we are refreshing the scrollerbar
@@ -177,5 +176,25 @@ sntRover.controller('rvBillCardPopupCtrl',
 	   	var queryText = $scope.chargecodeData.chargeCodeSearchText;
 	    $scope.chargecodeData.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
     };
+
+    // To show or hide charge code list
+    $scope.isShowChargeCodeList = function(){
+    	var isShowChargeCodeList = false,
+    		chargeCodeLength = $scope.availableChargeCodes.length,
+    		queryLength = $scope.chargecodeData.chargeCodeSearchText.length;
+
+    	if($scope.showChargeCodes){
+    		isShowChargeCodeList = true;
+    	}
+    	else if(queryLength > 2 && chargeCodeLength !== 0){
+			for(var i = 0; i < chargeCodeLength; i++){
+			 	if($scope.availableChargeCodes[i].is_row_visible){
+			 		isShowChargeCodeList = true;
+			 		break;
+			 	}
+			}
+		}
+		return isShowChargeCodeList;
+	};
 
 }]);

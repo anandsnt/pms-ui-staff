@@ -775,17 +775,20 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 /*Primary Method to obtian Available Slots for a given range, room type, and optional
                   GUID*/
                 this.Availability = function(params) {
-                    var start_date = params.start_date,
-                        end_date = params.end_date,
-                        room_type_id = params.room_type_id,
-                        rate_type = params.rate_type,
-                        account_id = params.account_id,
-                        GUID = params.GUID,
-                        _data_Store = this.data_Store,
-                        q = $q.defer(),
-                        guid = GUID || _.uniqueId('avl-'),
-                        params = dateRange(start_date, end_date, room_type_id, rate_type);
+                    var start_date         = params.start_date,
+                        end_date           = params.end_date,
+                        room_type_id       = params.room_type_id,
+                        rate_type          = params.rate_type,
+                        account_id         = params.account_id,
+                        GUID               = params.GUID,
+                        _data_Store        = this.data_Store,
+                        q                  = $q.defer(),
+                        guid               = GUID || _.uniqueId('avl-'),
+                        is_unassigned_room = params.is_unassigned_room,
+                        params             = dateRange(start_date, end_date, room_type_id, rate_type);
+
                     var self = this;
+
                     //If rate_type is available
                     if(rate_type) {
                         if(account_id){
@@ -793,6 +796,10 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         }
                     }
 
+                    // if from unassigned room
+                    if ( is_unassigned_room ) {
+                        _.extend(params, { is_unassigned_room: true });
+                    }
 
                     Availability.read(params)
                     .then(function(data) {
@@ -862,7 +869,6 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         end_date:           data.end_date,
                         end_time:           data.end_time,
                         rate_type:          data.rate_type
-
                     };
                     if(data.rate_type === 'Corporate') {
                         if(data.account_id){
@@ -1033,6 +1039,17 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                         deferred.resolve(data.reservations);
+                    },function(error){
+                        deferred.reject(error);
+                    });
+                    return deferred.promise;
+                };
+
+                this.fetchUnassignedRoomListCount = function(params) {
+                    var deferred = $q.defer();
+                    var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
+                    rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                        deferred.resolve(data.reservations.length);
                     },function(error){
                         deferred.reject(error);
                     });

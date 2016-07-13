@@ -6,10 +6,10 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 	function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $rootScope, $window) {
 
 		/**********************************************************************************************
-        **      Expected state params -----> guest_id    
-        **      Exit function -> closePopup                              
-        **                                                                       
-        ***********************************************************************************************/
+		 **      Expected state params -----> guest_id    
+		 **      Exit function -> closePopup                              
+		 **                                                                       
+		 ***********************************************************************************************/
 
 
 		BaseCtrl.call(this, $scope);
@@ -20,12 +20,12 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 
 			setBeforePrintSetup();
 			// add the orientation
-			addPrintOrientation();
+		addPrintOrientation();
 
-			var onPrintSuccess = function(){
+			var onPrintSuccess = function() {
 				//do nothing for now
 			};
-			var onPrintError = function(){
+			var onPrintError = function() {
 				//do nothing for now
 			};
 
@@ -49,7 +49,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			 */
 			setTimeout(function() {
 				removePrintOrientation();
-				$('.popup').show();//show popup again
+				$('.popup').show(); //show popup again
 				$scope.runDigestCycle();
 			}, 100);
 		};
@@ -58,7 +58,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 
 			var showEmailButton = function() {
 				//check if reservation had email id
-				$scope.showEmailButton = ($scope.selectedReservation.guest_details[0].email.length >0) ? true : false;
+				$scope.showEmailButton = ($scope.selectedReservation.guest_details[0].email.length > 0) ? true : false;
 			};
 
 			var onOwsMsgFetchSuccess = function(response) {
@@ -67,7 +67,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 				if ($scope.owsMessages.length > 0) {
 					//popup in zeststation was implemented in other way, not using ngdialog
 					//open popup only if there are any OWS messages
-					$scope.owsMsgOpenPoup =  true;
+					$scope.owsMsgOpenPoup = true;
 					//select first message
 					$scope.currentOwsMessage = $scope.owsMessages[0].message;
 					var selectedOwsMessageIndex = 0;
@@ -98,12 +98,12 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 					//email the message to the guest
 					$scope.emailOwsMsg = function() {
 						var options = {
-						params: {
-							"message_id" : $scope.owsMessages[selectedOwsMessageIndex].id,
-							"reservation_id": $scope.selectedReservation.id 
-						}
-					};
-					$scope.callAPI(zsCheckinSrv.sendOWSMsgAsMail, options);
+							params: {
+								"message_id": $scope.owsMessages[selectedOwsMessageIndex].id,
+								"reservation_id": $scope.selectedReservation.id
+							}
+						};
+						$scope.callAPI(zsCheckinSrv.sendOWSMsgAsMail, options);
 					};
 
 					$scope.closePopup = function() {
@@ -117,10 +117,10 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			};
 
 			var fetchOwsMessages = function() {
-				$scope.owsMsgOpenPoup =  false;
+				$scope.owsMsgOpenPoup = false;
 				var options = {
 					params: {
-						"reservation_id": $scope.selectedReservation.id 
+						"reservation_id": $scope.selectedReservation.id
 					},
 					successCallBack: onOwsMsgFetchSuccess
 				};

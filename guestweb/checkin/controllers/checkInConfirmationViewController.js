@@ -57,6 +57,9 @@
 			$scope.isResponseSuccess = true;
 			checkinDetailsService.setResponseData(response.data);
 			$rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
+			$rootScope.outStandingBalance = response.data.outstanding_balance;
+			$rootScope.payment_method_used = response.data.payment_method_used;
+			$rootScope.paymentDetails = response.data.payment_details;
 			//navigate to next page
 			$state.go('checkinReservationDetails');
 		}

@@ -1,0 +1,24 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+   <form ng-hide="shouldShowWaiting" method="post" action="billing-information" id="billing-information" name="billing-information" class="modal-content billing-information" ng-class="{'add-card':saveData.newPaymentFormVisible}">
+   <button id="modal-close" type="button" class="dark-title modal-close" ng-click="handleCloseDialog()"><span class="icons icon-close"></button>
+      <div class="modal-header">
+         <h1 translate>BILLING_INFO_TITLE</h1>
+      </div>
+      <div style="position: relative;overflow: hidden;height:510px;">
+         <div class = "wrapper">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+            <div ng-if = "billingInfoFlags.isEntitySelected" class="billing-info-body" ng-include="'/assets/partials/billingInformation/allotment/rvBillingInfoAllotmentRouteDetails.html'"  > </div>
+
+            <div ng-if = "!billingInfoFlags.isEntitySelected" class="billing-info-entity" ng-include="'/assets/partials/billingInformation/sharedPartials/rvSearchAndAttachEntity.html'"></div>
+
+         </div>
+      </div>
+   </form>
+   <div ng-show="shouldShowWaiting" class="modal-content modal-vertical-centered waiting-dialog" style="position: relative;padding: 40px;text-align: center;" ng-cloak>
+		<div class="centeralign alert-box">
+			WAITING
+		</div>
+		<div class="waiting-payment">&nbsp;</div>
+	</div>
+</div>

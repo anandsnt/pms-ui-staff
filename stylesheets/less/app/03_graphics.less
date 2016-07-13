@@ -30,6 +30,8 @@
 		&.icon-actions { background-position: 0 -750px; }
 		&.icon-notes { background-position: 0 -810px; }
 		&.icon-allotments { background-position: 0 -870px; }
+		&.icon-settings { background-position: 0 -930px; } 
+        &.icon-layers { background-position: 0 -990px; }
 
 		@media only screen and (min-width: 600px) { 
 			background-size: 125px;
@@ -51,6 +53,8 @@
 			&.icon-actions { background-position: 0 -1570px; }
 			&.icon-notes { background-position: 0 -1690px; }
 			&.icon-allotments { background-position: 0 -1800px; }
+			&.icon-settings { background-position: 0 -1920px; }
+            &.icon-layers { background-position: 0 -2040px; }
 		}
 
 		@media @highdpi { background-image: @iconNoContent2x; }
@@ -212,9 +216,17 @@
 					&.active { background-position: 18px -4815px; }
 				}
 
-				&.icon-hk-guest { background-position: 50% -4890px; }
-				&.icon-hk-work { background-position: 50% -5010px; }
-				&.icon-hk-room { background-position: 50% -5130px; }
+				&.icon-hk-guest,
+                &.icon-hk-work,
+                &.icon-hk-room,
+                &.icon-hk-log {
+                    background-size: 80px;
+                }
+
+                &.icon-hk-guest { background-position: 50% -3250px; }
+                &.icon-hk-work { background-position: 50% -3330px; }
+                &.icon-hk-room { background-position: 50% -3410px; }
+                &.icon-hk-log { background-position: 50% -6607px; }
 
 				&.icon-summary { background-position: 50% -7950px; }
 				&.icon-revenue { background-position: 50% -5250px; }
@@ -229,9 +241,17 @@
 				&.icon-authorizations { background-position: 50% -6985px; }
 
 				@media only screen and (min-width: 768px) {
-					&.icon-hk-guest { background-position: 50% -4880px; }
-					&.icon-hk-work { background-position: 50% -5000px; }
-					&.icon-hk-room { background-position: 50% -5120px; }
+					&.icon-hk-guest,
+                    &.icon-hk-work,
+                    &.icon-hk-room,
+                    &.icon-hk-log {
+                        background-size: 120px;
+                    }
+                    
+                    &.icon-hk-guest { background-position: 50% -4880px; }
+                    &.icon-hk-work { background-position: 50% -5000px; }
+                    &.icon-hk-room { background-position: 50% -5120px; }
+                    &.icon-hk-log { background-position: 50% -9916px; }
 				}
 
 				&.only-icon { 
@@ -428,6 +448,16 @@
 				background-position: 15px -2430px;
 				&.active { background-position: 15px -2490px; }
 			}
+
+			&.icon-messages-guests2 { 
+                background-position: 13px -9572px;
+                &.active { background-position: 13px -9512px; }
+            }
+            
+            &.icon-messages-group { 
+                background-position: 14px -9450px;
+                &.active { background-position: 14px -9390px; }
+            }
 
 			&.icon-pencil-blue { background-position: 3px -2137px; }
 
@@ -922,6 +952,9 @@
 		&.bg-violet { background-color: @purpleStart; } 
 		&.bg-green { background-color: @green; }
 		&.bg-drk { background-color: @black; }
+		&.bg-blue-dark { background-color: @darkBlue;}
+        &.bg-orange { background-color: @orangeStart;}
+
 
 		/* With image ***/
         &.closed,

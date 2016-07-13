@@ -58,10 +58,11 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
 
             if ($scope.rateData.room_type_ids.indexOf(room_type.id) >=0){
                 $scope.assignedRoomTypes.push(room_type);
-            } else if($scope.rateData.based_on.id === ""){
+            } else if($scope.rateData.based_on.id === "" || $scope.rateData.based_on.is_copied){
                 $scope.nonAssignedroomTypes.push(room_type);
             } else if($scope.basedonRateData.name !== undefined){
-                if($scope.basedonRateData.room_type_ids.indexOf(room_type.id) >= 0){
+                //CICO-31088 - Added the based_on room types only for rates that are not copied from other rates(ie;only for based on rates)
+                if($scope.rateData.based_on && !$scope.rateData.based_on.is_copied && $scope.basedonRateData.room_type_ids.indexOf(room_type.id) >= 0){
                     $scope.nonAssignedroomTypes.push(room_type);
                 }
             }
