@@ -30,6 +30,7 @@
 
 		$scope.goToNextPage = function() {
 			$rootScope.KeyCountAttemptedToSave =  true;
+			$rootScope.netWorkError = false;
 			$state.go('preCheckinStatus');
 		};
 

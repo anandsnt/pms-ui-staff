@@ -10,7 +10,7 @@
 	$rootScope.userMobile = ($rootScope.userMobile === null ) ? "" :$rootScope.userMobile;
 
 	//collect oustanding stay total
-	if(parseInt($rootScope.outStandingBalance) > 0 && $rootScope.isMLI
+	if(parseFloat($rootScope.outStandingBalance) > 0 && $rootScope.isMLI
 	   && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection){
 		$state.go('balancePaymentCCCollection');
 	}
