@@ -109,6 +109,18 @@
                 }
             }
 
+            &.no-margin {
+                margin:0 !important;
+            }
+
+            &.pull-right {
+                .pull-right;
+            }
+
+            &.auto-width {
+                width: auto;
+            }
+
             label {
                 font-size: 14px;
                 line-height: 14px;
@@ -161,6 +173,41 @@
 
                 &:last-child { margin-right: 0; }
             }
+
+            .number-input {
+
+                .buttons,
+                input {
+                    display:inline-block;
+                    vertical-align: middle;
+                }
+                
+                input {
+                    .calc-width(100, 25);
+                }
+
+                .buttons {
+                    width: 20px;
+                    border:none;
+
+                    button {
+                        height: 20px;
+                        width: 20px;
+                        transform: rotate(90deg);
+                        background-size: 30px;
+                        .box-shadow(0px 0px 2px rgba(0, 0, 0, 0.15));
+                        background-color: @grey1;
+                        &.icon-mover-right {
+                            background-position: 6px -505px;
+                        }
+
+                        &.icon-mover-left {
+                            background-position: 6px -475px;
+                        }
+                    }
+                }
+            }
+
 
             .select {
                 select { height: 40px; }
