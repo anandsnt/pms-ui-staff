@@ -321,7 +321,7 @@ sntZestStation.controller('zsRootCtrl', [
 				(agentString.toLowerCase().indexOf('window') !== -1) &&
 				isTouchDevice &&
 				$scope.inChromeApp && themeUsesKeyboard;
-			console.info('shouldShowKeyboard: ', shouldShowKeyboard);
+			//console.info('shouldShowKeyboard: ', shouldShowKeyboard);
 			if (shouldShowKeyboard) {
 				if (id) {
 					new initScreenKeyboardListener('station', id, true);
@@ -331,8 +331,15 @@ sntZestStation.controller('zsRootCtrl', [
 		/**
 		 * SVGs are ng-included inside HTML
 		 **/
+
+		$scope.showScreenIcons = function() { //currenly we will use this for yotel to detect if screen icons are needed
+			//also attaching this to navigation, yotel has text back & cancel, instead of svg icons for back and close;
+			if ($scope.zestStationData.theme === 'yotel') {
+				return true;
+			} else return false;
+		};
 		$scope.setSvgsToBeLoaded = function(iconsPath) {
-			$scope.activeScreenIcon = '';
+			$scope.activeScreenIcon = 'bed';
 			$scope.icons = {
 				url: {
 					active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
@@ -361,6 +368,36 @@ sntZestStation.controller('zsRootCtrl', [
 				}
 			};
 		};
+
+		/********************************************************************************
+		 *  Yotel has and icon at the top of the page which change depending on the state
+		 ********************************************************************************/
+
+		$scope.setScreenIcon = function(name) {
+			if ($scope.zestStationData.theme !== 'yotel'){
+				return;
+			} else {
+				$scope.activeScreenIcon = name;
+				if ($scope.icons && $scope.icons.url) {
+					$scope.icons.url.active_screen_icon = $scope.iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg';
+				}	
+			}
+		};
+		/**
+		 * get paths for theme based Icon files
+		 **/
+		$scope.$on('updateIconPath', function(evt, theme) {
+			if (theme === 'yotel') {
+				$scope.$emit('DONT_USE_NAV_ICONS');
+				$scope.theme = theme;
+				$scope.iconsPath = '/assets/zest_station/css/icons/yotel';
+				$scope.setSvgsToBeLoaded($scope.iconsPath);
+			} else if (theme === 'fontainebleau') {
+				//nothing else
+			} else {
+				$scope.iconsPath = '/assets/zest_station/css/icons/default';
+			}
+		});
 
 		/********************************************************************************
 		 *  User activity timer

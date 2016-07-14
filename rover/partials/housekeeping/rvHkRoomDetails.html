@@ -2,9 +2,9 @@
     <div ng-include="'/assets/partials/common/header.html'"></div>
     <!-- Rooms details -->
     <section id="room-details" class="content">
-      
+
       <!-- {room-status} can be clean, dirty, pickup, inspected or out -->
-      <header id="room-header" class="room-header {{ getHeaderColor() }}" role="banner" ng-class="{ 'on-hold': roomDetails.is_on_hold }"> 
+      <header id="room-header" class="room-header {{ getHeaderColor() }}" role="banner" ng-class="{ 'on-hold': roomDetails.is_on_hold }">
           <div class="icons icon-room">
             <h1>{{ roomDetails.current_room_no }}</h1>
             <span>{{ roomDetails.room_type.name }}</span>
@@ -13,14 +13,17 @@
             <li ng-class="{ 'active': openTab === 'Guest' }" click-touch="tabSwitch('Guest')"><span class="icons icon-navbar icon-hk-guest">Guest</span></li>
             <li ng-class="{ 'active': openTab === 'Work' }" click-touch="tabSwitch('Work')"><span class="icons icon-navbar icon-hk-work">Work</span></li>
             <li ng-class="{ 'active': openTab === 'Room' }" click-touch="tabSwitch('Room')"><span class="icons icon-navbar icon-hk-room">Room</span></li>
+            <li ng-class="{ 'active': openTab === 'Log' }" click-touch="showLogTab()"><span class="icons icon-navbar icon-hk-log">Log</span></li>
           </ul>
         </header>
-        
+
         <div ng-if="openTab === 'Guest'" ng-include="'/assets/partials/housekeeping/rvGuestTab.html'" class="room-info"></div>
 
         <div ng-if="openTab === 'Work'" ng-include="'/assets/partials/housekeeping/rvWorkTab.html'" class="room-info"></div>
 
         <div ng-if="openTab === 'Room'" ng-include="'/assets/partials/housekeeping/rvRoomTab.html'" class="room-info"></div>
-        
+        <div class="room-info"  ui-view></div>
+         <!-- <div ng-if="openTab === 'Log'" ng-include="'/assets/partials/housekeeping/rvLogTab.html'" class="room-info"></div> -->
+
     </section>
 </div>

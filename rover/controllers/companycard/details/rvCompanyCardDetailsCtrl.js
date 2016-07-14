@@ -375,7 +375,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		var failureCallbackOfContactSaveData = function(errorMessage) {
 			$scope.$emit("hideLoader");
-			$scope.errorMessage = errorMessage;
+			$scope.$broadcast("setCardContactErrorMessage", errorMessage);
+			//$scope.errorMessage = errorMessage;
 			$scope.currentSelectedTab = 'cc-contact-info';
 		};
 

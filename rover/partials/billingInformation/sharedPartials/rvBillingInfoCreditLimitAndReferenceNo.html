@@ -1,0 +1,17 @@
+<div ng-hide="isHourlyRateOn">
+	<!-- Credit Limit -->
+	<div class="title">
+	    {{'CREDIT_LIMIT' | translate}}<span>({{currencySymbol}})</span>
+	</div>
+	<div class="entry">
+	    <input type="text" ng-model="selectedEntity.credit_limit" ng-disabled="!hasPermissionToEditCreditLimit();"/>
+	</div>
+
+	<!-- Reference No. -->
+	<div class="title">
+	    {{'REFERENCE_NUMBER' | translate}}
+	</div>
+	<div class="entry" >
+	    <input type="text" ng-model="selectedEntity.reference_number"/>
+	</div>
+</div>

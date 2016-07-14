@@ -44,6 +44,11 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 					$state.go('zest_station.checkoutSearchOptions');
 				};
 			});
+			if ($stateParams.mode === 'PICKUP_KEY'){
+				$scope.setScreenIcon('key');
+			} else {
+				$scope.setScreenIcon('checkout');
+			}
 			//starting mode
 			$scope.mode = "LAST_NAME_ENTRY";
 			$scope.reservationParams = {
@@ -62,13 +67,15 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			var checkoutVerificationSuccess = function(data) {
 				if (data.is_checked_out) {
 					$scope.alreadyCheckedOut = true;
-				} else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY') {
+				} else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY' && data.is_checked_in) {
 					var stateParams = {
 						'reservation_id': data.reservation_id,
 						'room_no': $scope.reservationParams.room_no,
 						"first_name": data.first_name
 					};
 					$state.go('zest_station.pickUpKeyDispense', stateParams);
+				} else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY' && !data.is_checked_in){
+					checkoutVerificationCallBack();
 				} else {
 					var stateParams = {
 						"from": "searchByName",
@@ -92,6 +99,10 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 				"last_name": $scope.reservationParams.last_name,
 				"room_no": $scope.reservationParams.room_no + ''.replace(/\-/g, '') //adding '' to for non-str values
 			};
+			if ($stateParams.mode === 'PICKUP_KEY'){
+				params.is_checked_in = true;
+			}
+
 			var options = {
 				params: params,
 				successCallBack: checkoutVerificationSuccess,

@@ -119,7 +119,7 @@ sntZestStation.controller('zsHomeCtrl', [
 				$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, params);
 				$state.go('zest_station.outOfService');
 			} else {
-				//do nothing
+				$scope.setScreenIcon('bed');
 			}
 		}();
 
