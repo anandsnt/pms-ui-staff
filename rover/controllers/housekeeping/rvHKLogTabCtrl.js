@@ -99,7 +99,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 		        $scope.end = $scope.start + $scope.roomLogData.length - 1;
 	        }
 	        $scope.page = 1;
-	        $scope.perPage = 3;
+	        $scope.perPage = 50;
 	        $scope.nextAction = false;
 	        $scope.prevAction = false;
 	    };
