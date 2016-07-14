@@ -36,6 +36,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				$scope: $scope
 			});
 			$scope.mode = "DISPENSE_KEY_MODE";
+			$scope.readyForUserToPressMakeKey = true;
 		}();
 
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
@@ -202,15 +203,27 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 					'status': 'success'
 				});
 			} else {
-				$scope.callAPI(zsGeneralSrv.encodeKey, {
-					params: params,
-					"loader": "none", //to hide loader
-					'successCallBack': onResponseSuccess,
-					'failureCallBack': setFailureReason
-				});
+				if ($scope.zestStationData.keyWriter === 'local'){
+					//encode / dispense key from infinea || ingenico
+
+
+				} else {
+					$scope.callAPI(zsGeneralSrv.encodeKey, {
+						params: params,
+						"loader": "none", //to hide loader
+						'successCallBack': onResponseSuccess,
+						'failureCallBack': setFailureReason
+					});
+				}
+
+
 			}
 		};
-		$scope.readyForUserToPressMakeKey = true;
+
+
+
+
+
 		var initMakeKey = function() {
 			console.info('waiting on user to press make key, which will start key create')
 
@@ -222,18 +235,26 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 			} else {
 				//do nothing
 			}
-			if ($scope.remoteEncoding) {
+			if ($scope.remoteEncoding || $scope.zestStationData.keyWriter === 'local') {
 				$scope.readyForUserToPressMakeKey = true;
+				if ($scope.zestStationData.keyWriter === 'local'){
+					console.warn('local encoder')
+					$scope.localWriter = true;//icmp (ingenico) or infinea device
+				}
 			} else {
 				startMakingKey();
 			}
-
-
 		};
+
+
 		$scope.onReadyToPrintKey = function() {
-			$scope.readyForUserToPressMakeKey = false;
-			startMakingKey();
+			if ($scope.readyForUserToPressMakeKey){
+				$scope.readyForUserToPressMakeKey = false;
+				startMakingKey();
+			}
 		};
+
+
 
 		function remoteEncodingSuccsess(response) {
 			noOfKeysCreated++;
@@ -246,7 +267,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				$scope.mode = "KEY_ONE_CREATION_SUCCESS_MODE";
 				revertFailureReason();
 				//provide some timeout for user to grab keys
-				$timeout(initMakeKey, 6000);
+				$timeout(initMakeKey, 3000);
 			}
 		};
 

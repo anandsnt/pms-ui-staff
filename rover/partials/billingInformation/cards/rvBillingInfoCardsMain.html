@@ -1,0 +1,19 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+   <form ng-hide="billingInfoFlags.shouldShowWaiting" method="post" action="billing-information" id="billing-information" name="billing-information" class="modal-content billing-information" ng-class="{'add-card':saveData.newPaymentFormVisible}">
+   <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog()"><span class="icons icon-close"></button>
+      <div class="modal-header">
+         <h1 translate>BILLING_INFO_TITLE</h1>
+
+         <em ng-if = "billingEntity == 'TRAVEL_AGENT_DEFAULT_BILLING'">{{attachedEntities.travel_agent.name}}</em>
+         <em ng-if = "billingEntity == 'COMPANY_CARD_DEFAULT_BILLING'">{{attachedEntities.company_card.name}}</em>
+
+         <button type="button" class="button red" ng-click="deleteDefaultRouting()" translate>DELETE</button>
+      </div>
+      <div style="position: relative;overflow: hidden;height:510px;">
+         <div class = "wrapper">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div class="billing-info-body" ng-include="'/assets/partials/billingInformation/cards/rvBillingInfoCardsRouteDetails.html'"></div>
+         </div>
+      </div>
+   </form>
+</div>

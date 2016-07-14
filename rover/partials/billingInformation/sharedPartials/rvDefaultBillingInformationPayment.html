@@ -1,0 +1,23 @@
+<div class="title">{{'PAYMENT' | translate}}
+	<button type="button" id="edit-entity" ng-click="editPaymentMethod();" class="button with-icon only-icon purple edit" ng-show= "renderAddedPayment != null && !paymentFlags.isAddPayment">
+		<span class="icons icon-pencil" ></span>
+	</button>
+</div>
+
+<div class="payment active"  ng-show = "showAvailableCreditCard();">
+	<!-- add class active when selected -->
+	<span ng-show = "renderAddedPayment.payment_type == 'CC'">
+		<figure class="card-logo">
+			<img src="/assets/{{renderAddedPayment.creditCardType}}.png" alt="" />
+		</figure>
+		<span class="number">{{'NUMBER' | translate}} <span class="value number">{{renderAddedPayment.endingWith}}</span></span>
+		<span class="date">{{'DATE' | translate}} <span class="value date">{{renderAddedPayment.cardExpiry}}</span></span>
+	</span>
+	<span class="value code" ng-show = "renderAddedPayment.payment_type != 'CC'">{{ renderAddedPayment.payment_type_description }}</span>
+	<span class="icons icon-ok-10" ></span>
+</div>
+
+<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!paymentFlags.isAddPayment && renderAddedPayment == null">{{'NEW_PAYMENT' | translate}}</button>
+
+<!-- Payment drop down -->
+<div id = "newpaymentview"  ng-show = "paymentFlags.isAddPayment && paymentFlags.showPaymentDropDown"  ng-include="'/assets/partials/billingInformation/sharedPartials/rvBillingInfoAddPayment.html'"></div>

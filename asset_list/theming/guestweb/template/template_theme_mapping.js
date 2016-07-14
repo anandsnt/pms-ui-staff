@@ -13,12 +13,13 @@ module.exports = {
 			sharedHtml  			 = 'guestweb/**/shared/**/*.html',
 			zestHtml				 = 'guestweb/**/zest/partials/';
 		return {
-			'guestweb_row' 			:[landingPartials + 'Row_nyc/*.html',
-										  checkoutNowPartials+'Row_nyc/*.html',checkoutNowPartials+'*.html',
-										  checkoutNowlaterPartials+'*.html',checkoutNowlaterPartials+'Row_nyc/*.html',
-										  checkinPartials+'Row_nyc/*.html',checkinPartials+"*.html",
-										  precheckinPartials+'Row_nyc/*.html', precheckinPartials+'*.html',
-										  sharedHtml],
+			'guestweb_row' 			:[ 'guestweb/**/common_templates/partials/checkin/**.html',
+										'guestweb/**/common_templates/partials/checkout/**.html',
+										'guestweb/**/common_templates/partials/gwNoOption.html',
+										'guestweb/**/common_templates/partials/row_nyc/gwCheckinFinal.html',
+										checkoutNowPartials+'*.html',
+										checkinPartials+"*.html",
+										precheckinPartials+'*.html'],
 			'guestweb_atura' 	    :[landingPartials + 'common-black/*.html',
 										  checkoutNowPartials+'common-black/*.html',checkoutNowPartials+'*.html',
 										  checkoutNowlaterPartials+'*.html',
@@ -363,7 +364,14 @@ module.exports = {
 										'guestweb/**/common_templates/partials/gwNoOption.html',
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
+										precheckinPartials+'*.html'],
+		'guestweb_consciousVondelpark'	 : [ 'guestweb/**/common_templates/partials/checkin/**.html',
+										'guestweb/**/common_templates/partials/checkout/**.html',
+										'guestweb/**/common_templates/partials/gwNoOption.html',
+										checkoutNowPartials+'*.html',
+										checkinPartials+"*.html",
 										precheckinPartials+'*.html']
+										
 
 		}
 	}
