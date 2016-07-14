@@ -121,6 +121,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 width: $(window).width() - 120,
                 lineWidth: 1
             };
+            $scope.setScreenIcon('card');
         }();
 
         var setTimedOut = function() {
