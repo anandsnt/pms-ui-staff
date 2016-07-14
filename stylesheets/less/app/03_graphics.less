@@ -583,6 +583,19 @@
 		}
 	}
 
+	.has-success {
+        background-position: 100% 50%;
+        background-repeat: no-repeat;
+        border: 0;
+        .show;
+        background-image: @success; 
+        background-size: 11px 10px; 
+
+        @media @highdpi {
+             background-image: @success2x; 
+        }
+    }
+
 /* Report icons			==================================*/
 	.icon-report {
 		background-image: @iconReports;
