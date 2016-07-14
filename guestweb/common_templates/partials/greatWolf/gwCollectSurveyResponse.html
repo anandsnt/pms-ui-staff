@@ -36,8 +36,8 @@
             <!-- answers -->
             <div class="row margin-top-20">
                 <!-- Numeric answer -->
-                <div class="select-style three-quater-width" ng-show="surveyDetails.survey_question_type === 'Numeric'">
-                    <select ng-model="survey_response" ng-options="number_of_items as number_of_items for number_of_items in responseArray">
+                <div class="select-style" ng-show="surveyDetails.survey_question_type === 'Numeric'">
+                    <select ng-model="survey_response" ng-options="number_of_items as number_of_items for number_of_items in responseArray" id="select-response">
                     </select>
                 </div>
                 <!-- String answer -->
