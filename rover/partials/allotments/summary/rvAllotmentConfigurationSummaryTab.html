@@ -68,7 +68,7 @@
                     {{'ALLOTMENT_RELEASE_DATE' | translate}}
                 </label>
                 <!-- cutoffDateOptions -->
-                <input class="datepicker" type="text" ui-date="releaseDateOptions" value="{{allotmentConfigData.summary.release_date|date:dateFormat}}" readonly ng-class="{'not-selected': !allotmentConfigData.summary.release_date}" />
+                <input class="datepicker" type="text" ui-date="releaseDateOptions" value="{{allotmentConfigData.summary.release_date|date:dateFormat}}" rv-clear-text-box listen-this="allotmentConfigData.summary.release_date" readonly ng-class="{'not-selected': !allotmentConfigData.summary.release_date}" />
                 <button type="button" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode() || !!allotmentConfigData.summary.is_cancelled}" translate>ALLOTMENT_RELEASE_NOW</button>
                 <!-- Class grey is for new allotment (when this button does nothing), red is for existing allotment -->
             </div>
