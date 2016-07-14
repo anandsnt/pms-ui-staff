@@ -29,7 +29,20 @@ angular.module('sntRover').service('RVEndOfDayModalSrv', ['$q', 'rvBaseWebSrvV2'
 			return deferred.promise;
 		};
 		/**
-		 * service function used to change bussiness date
+		 * service function used to re-run the failed process
+		 */
+		this.restartFailedProcess = function(data) {
+			var deferred = $q.defer();
+			var url = '/api/end_of_days/'+data.id+'/re-run';
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
+		/**
+		 * service function used to fetch log
 		 */
 		this.fetchLog = function(data) {
 			var deferred = $q.defer();
