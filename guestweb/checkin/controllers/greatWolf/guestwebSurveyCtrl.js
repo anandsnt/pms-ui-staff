@@ -25,10 +25,17 @@
 				for (i = 1; i <= response.numeric_answer_max_limit; i++) {
 					$scope.responseArray.push(i);
 				};
+				
+				var questionType = _.find(response.survey_question_types, function(survey_question_type) {
+				    return survey_question_type.id === response.survey_question_type_id;
+				});
+
+				$scope.surveyDetails.survey_question_type = questionType.description;
+
 				//set initial values
-				if (response.survey_question_type === 'Boolean') {
-					$scope.survey_response = 'yes';
-				} else if (response.survey_question_type === 'Numeric') {
+				if ($scope.surveyDetails.survey_question_type === 'Boolean') {
+					$scope.survey_response = 'Yes';
+				} else if ($scope.surveyDetails.survey_question_type === 'Numeric') {
 					$scope.survey_response = 1;
 				};
 			};

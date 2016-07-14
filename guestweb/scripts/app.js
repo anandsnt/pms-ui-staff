@@ -124,7 +124,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 
 		//TODO: to follow hotel settings
-		$rootScope.conductSurvey = true ? true : false;
+		$rootScope.conductSurvey =  !!reservationAndhotelData.survey_question_prompt_on ? true : false;
 		$rootScope.skipBalanceconductSurvey = false;
 
 		//Params for zest mobile and desktop screens

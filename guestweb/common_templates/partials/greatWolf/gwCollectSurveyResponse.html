@@ -46,17 +46,14 @@
                 </div>
                 <!-- yes/no answer -->
                 <div ng-show="surveyDetails.survey_question_type === 'Boolean'">
-                        <input type="radio" value="yes" ng-model="survey_response">
-                        <label class="left-margin-5">YES</label>
-                        <br/>
-                        <input type="radio" value="no" ng-model="survey_response">
-                        <label class="left-margin-5">NO</label>
-                    </div>
+                    <select ng-model="survey_response" ng-options="bool as bool for bool in ['Yes','No']">
+                    </select>
                 </div>
-                <!-- submit -->
-                <a class="btn btn-template margin-top-80" ng-click="postSurveyResponse()">Continue</a>
-                <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-hide="surveyDetails.survey_question_is_mandatory" ng-click="goToNextPage()"> Skip</a>
             </div>
+            <!-- submit -->
+            <a class="btn btn-template margin-top-80" ng-click="postSurveyResponse()">Continue</a>
+            <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-hide="surveyDetails.survey_question_is_mandatory" ng-click="goToNextPage()"> Skip</a>
         </div>
     </div>
+</div>
 </div>
