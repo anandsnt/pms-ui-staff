@@ -176,5 +176,10 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/common_templates/partials/greatWolf/gwbalancePaymentCCCollection.html',
 		controller: 'outstandingBalanceDetailsController',
 		title: 'Check-in'
-	});
+	}).state('conductSurvey',{
+		url:'/conductSurvey',
+		templateUrl: '/assets/common_templates/partials/greatWolf/gwCollectSurveyResponse.html',
+		controller: 'guestwebSurveyController',
+		title: 'Survey'
+	})
 }]);

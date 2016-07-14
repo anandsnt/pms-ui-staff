@@ -132,6 +132,7 @@
 	var fetchSurveyDetails = function(){
 		var deferred = $q.defer();
 		var url = '/guest_web/survey_details';
+		var url = '/sample_json/zestweb_v2/survey_settings.json'
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);
 		}.bind(this))
@@ -144,6 +145,7 @@
 	var submitSurvey = function(data){
 		var deferred = $q.defer();
 		var url = '/guest_web/submit_survey/'+$rootScope.reservationID;
+		var url = '/sample_json/zestweb_v2/survey_settings.json'
 		$http.post(url,data).success(function(response) {
 			this.responseData = response;
 			deferred.resolve(this.responseData);

@@ -11,9 +11,16 @@
 
 				$scope.isLoading = false;
 				var screenCMSDetails = {};
-				screenCMSDetails.title = response.survey_title;
+				screenCMSDetails.title = response.survey_question_title;
 				screenCMSDetails.description = response.survey_question;
 				$scope.screenDetails = screenCMSDetails;
+
+
+				$scope.surveyDetails = response;
+
+				if(response.survey_question_type === 'Boolean'){
+					$scope.survey_response = 'yes';
+				};
 
 				$scope.responseNumber = 1;
 				$scope.responseArray = [];
@@ -28,8 +35,13 @@
 		}();
 
 		$scope.goToNextPage = function() {
-			$rootScope.surveyAttempted =  true;
+			$rootScope.skipBalanceconductSurvey =  true;
+			$rootScope.netWorkError = false;//unset error flag
 			$state.go('preCheckinStatus');
+		};
+
+		$scope.checkboxClicked = function(params){
+			$scope.survey_response = !$scope.survey_response;
 		};
 
 		$scope.postSurveyResponse = function() {

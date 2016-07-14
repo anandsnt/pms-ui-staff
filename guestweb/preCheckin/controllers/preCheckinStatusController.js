@@ -41,6 +41,10 @@
 	else if($rootScope.enforceDeposit && !$rootScope.skipDeposit){
 		$state.go('depositPayment'); //checkin deposit collection
 	}
+	//conduct survey
+	else if($rootScope.conductSurvey && !$rootScope.skipBalanceconductSurvey){
+		$state.go('conductSurvey'); //conduct Survey
+	}
 	else{
 		//this page will be used again after email entry
 		// So once preckin is completed we store some details
