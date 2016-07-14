@@ -17,7 +17,7 @@
 
 				$scope.surveyDetails = response;
 
-				$scope.showSurveyImage = response.suvey_question_image.length > 0 ? true : false;
+				$scope.showSurveyImage = response.survey_question_image.length > 0 ? true : false;
 
 				$scope.responseNumber = 1;
 				$scope.responseArray = [];

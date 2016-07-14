@@ -474,7 +474,7 @@
                         </div>
                         <div class="entry full-width float">
                             <div class="select select-col col1-3">
-                                <select ng-options="type for type  in ['Numeric']" ng-model="checkinData.survey_question_type">
+                                <select ng-options="item.id as item.value for item in checkinData.survey_question_types" ng-model="checkinData.survey_question_type_id">
                                     <option style="display:none" value="">SELECT</option>
                                 </select>
                             </div>
@@ -501,13 +501,13 @@
                             <label for="hotel-logo"> Image </label>
                             <div class="file-upload with-preview">
                                 <span class="input">{{hotel_template_logo_file}}</span>
-                                <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-click="checkinData.suvey_question_image = 'false'"></a>
-                                <input type="file" ng-model="checkinData.suvey_question_image" accept="image/*" app-filereader />
+                                <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-click="checkinData.survey_question_image = 'false'"></a>
+                                <input type="file" ng-model="checkinData.survey_question_image" accept="image/*" app-filereader />
                                 <button type="button" class="button brand-colors">
                                     Choose file
                                 </button>
                             </div>
-                            <span class="file-preview"> <img src="{{checkinData.suvey_question_image}}" alt="" height="112" width="auto"> </span>
+                            <span class="file-preview"> <img src="{{checkinData.survey_question_image}}" alt="" height="112" width="auto"> </span>
                         </div>
                 </fieldset>
                 <div class="actions float">
