@@ -200,9 +200,8 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 					}, 2000);
 				}
 			} else {
-				console.log('debugging');
-				onSuccessLocalKeyWrite();
-				//emitCordovaKeyError('bad config? not in ipad..');
+				//onSuccessLocalKeyWrite();
+				emitCordovaKeyError('bad config? not in ipad while trying to local encode to cordova..');
 			}
 		};
 
