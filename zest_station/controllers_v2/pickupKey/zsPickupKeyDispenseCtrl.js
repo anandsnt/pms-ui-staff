@@ -178,7 +178,14 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 * [initMakeKey description]
 		 * @return {[type]} [description]
 		 */
+		$scope.$on('printLocalKeyCordovaFailed', function(evt, response) {
+			console.warn('error: ', response);
+			onGeneralFailureCase();
+		});
 
+		$scope.$on('continueFromCordovaKeyWrite', function() {
+			remoteEncodingSuccsess();
+		});
 
 		var startMakingKey = function() {
 			var onResponseSuccess;
@@ -203,10 +210,19 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 					'status': 'success'
 				});
 			} else {
-				if ($scope.zestStationData.keyWriter === 'local'){
+				if ($scope.writeLocally()) {
+					console.log('write locally');
 					//encode / dispense key from infinea || ingenico
+					//local encoding + infinea
+					if ($scope.inDemoMode()) {
+						setTimeout(function() {
+								onSuccessWriteKeyDataLocal();
+							}, 2800) //add some delay for demo purposes
+					} else {
 
-
+						$scope.$emit('printLocalKeyCordova', $scope.selectedReservation.reservationId, $scope.noOfKeysSelected);
+						return;
+					};
 				} else {
 					$scope.callAPI(zsGeneralSrv.encodeKey, {
 						params: params,
@@ -222,10 +238,8 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
 
 
-
-
 		var initMakeKey = function() {
-			console.info('waiting on user to press make key, which will start key create')
+			console.info('waiting on user to press make key, which will start key create here...')
 
 			if ($scope.noOfKeysSelected === 1) {
 				$scope.mode = 'SOLO_KEY_CREATION_IN_PROGRESS_MODE';
@@ -237,9 +251,9 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 			}
 			if ($scope.remoteEncoding || $scope.zestStationData.keyWriter === 'local') {
 				$scope.readyForUserToPressMakeKey = true;
-				if ($scope.zestStationData.keyWriter === 'local'){
+				if ($scope.zestStationData.keyWriter === 'local') {
 					console.warn('local encoder')
-					$scope.localWriter = true;//icmp (ingenico) or infinea device
+					$scope.localWriter = true; //icmp (ingenico) or infinea device
 				}
 			} else {
 				startMakingKey();
@@ -248,7 +262,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
 
 		$scope.onReadyToPrintKey = function() {
-			if ($scope.readyForUserToPressMakeKey){
+			if ($scope.readyForUserToPressMakeKey) {
 				$scope.readyForUserToPressMakeKey = false;
 				startMakingKey();
 			}

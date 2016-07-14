@@ -69,7 +69,7 @@ var GlobalZestStationApp = function(){
     	else{
     		that.browser = browser;
     	}
-    	if(browser === 'rv_native' && !that.cordovaLoaded){
+    	if(!that.cordovaLoaded){
     	   //TODO: check URL
                 var url = "/assets/shared/cordova.js";
 
@@ -82,6 +82,7 @@ var GlobalZestStationApp = function(){
   				if (xhr.readyState===4 && xhr.status===200){
   					that.fetchCompletedOfCordovaPlugins(xhr.responseText);
   				} else {
+
   					that.fetchFailedOfCordovaPlugins();
   				}
   			};
@@ -105,11 +106,13 @@ var GlobalZestStationApp = function(){
         try{
             that.iBeaconLinker = new iBeaconOperation();
         }
-        catch(er){};
+        catch(er){
+
+        };
 
     };
-    this.fetchCompletedOfCordovaPlugins();
-
+    //this.fetchCompletedOfCordovaPlugins();
+    
     // success function of coddova plugin's appending
     this.fetchFailedOfCordovaPlugins = function(errorMessage){
     	that.cordovaLoaded = false;
@@ -119,8 +122,6 @@ var GlobalZestStationApp = function(){
         that.cardSwipeDebug = true; // Mark it as true to debug cardSwipe opertations
         that.cardReader = new CardOperation();
     };
-    this.resdebug = false;//to debug a reservation payment request from zest station
-    this.resdebug_id = 0;
 };
 
 zestSntApp = new GlobalZestStationApp();
