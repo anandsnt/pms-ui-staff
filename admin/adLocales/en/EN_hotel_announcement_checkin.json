@@ -53,5 +53,7 @@
     "EMAIL_OR_TEXT_MESSAGE":"Email or Text Message",
     "ETA_ENFORCEMENT":"ETA enforcement",
     "ARRIVAL_TIMES":"Arrival Times",
-    "LIMIT_ARRIVAL_TIMES":"Limit Arrival Times based on Hotel's local time"
+    "LIMIT_ARRIVAL_TIMES":"Limit Arrival Times based on Hotel's local time",
+    "EXCLUDE_ROUTING_FROM_EMAIL":"Exclude Reservations With Routing From Email Invite",
+    "EXCLUDE_ROUTING_FROM_EMAIL_TITLE":"Email Invite"
 
