@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="eod-header">
         <div class="entry">
-            <label for="{eod-date}">Date</label>
+            <label for="eod-date">Log Date</label>
             <div class="entry-data" ng-click="clickedDate()">
                 <input name="eod-date" id="eod-date" type="text" class="datepicker" readonly>
                 <strong class="day">{{day}}</strong>
@@ -12,7 +12,7 @@
             </div>
         </div>
         <!-- Show this button if the business day is not today-->
-        <button type="button" class="button blue" ng-click="setSelectedDateToBussinessDate()" ng-hide="showSetToTodayButton()">Set to Today</button>
+        <button type="button" class="button blue" ng-click="setSelectedDateToBussinessDate()" ng-hide="showSetToTodayButton()">Run EOD</button>
     </div>
 
     <!-- Content -->
