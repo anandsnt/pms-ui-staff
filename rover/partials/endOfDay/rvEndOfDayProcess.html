@@ -38,7 +38,7 @@
                 <div class="notice" ng-class="{'hidden':!eodLogDetail.isOpened }" ng-if="eodLogDetail.status=='FAILED'" ng-click="restartFailedProcess(eodLogDetail)">                   
                         <h3>{{eodLogDetail.errors[0].title}}</h3>
                         <!-- Show if any-->
-                        <p>{{eodLogDetail.errors[0].message}}</p>                    
+                        <p ng-bind-html="eodLogDetail.errors[0].message"></p>
                     <!-- Show if any-->
                     <!-- <ul>
                         <li ng-repeat="error in eodLogDetail.errors">{Notice list}</li>
