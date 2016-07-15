@@ -30,6 +30,7 @@ sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $
 	 */
 	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
 		event.preventDefault();
+		console.info("Hotel admin settings are wrong. This feature is not available for this theme. Please check the settings related to -> "+unfoundState.to);
 		$state.go('noOptionAvailable');
 	})
 }]);
@@ -116,7 +117,15 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.skipDeposit = false;
 
 		$rootScope.enforceCountrySort = !!reservationAndhotelData.enforce_country_sort ? true : false;
-			//Params for zest mobile and desktop screens
+		$rootScope.promptForKeyCount = !!reservationAndhotelData.key_prompt_on ? true : false;
+		$rootScope.KeyCountAttemptedToSave = false;
+
+		//TODO: to follow hotel settings
+		$rootScope.collectOutStandingBalance = !!reservationAndhotelData.zestweb_collect_outstanding_balance ? true : false;
+		$rootScope.skipBalanceCollection = false;
+
+
+		//Params for zest mobile and desktop screens
 		if (reservationAndhotelData.hasOwnProperty('is_password_reset')) {
 			$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset;
 			$rootScope.isTokenExpired = reservationAndhotelData.is_token_expired === "true";

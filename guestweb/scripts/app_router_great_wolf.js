@@ -74,8 +74,8 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/common_templates/partials/checkin/gwCheckinDetails.html',
-	 	controller : 'checkInReservationDetails',
+	 	templateUrl: '/assets/common_templates/partials/greatWolf/gwNewCheckinDetails.html',
+	 	controller : 'greatWolfCheckInReservationDetailsCtrl',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
@@ -84,7 +84,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/common_templates/partials/row_nyc/gwCheckinFinal.html',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwCheckinFinal.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
@@ -166,6 +166,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		title: 'Check-in'
 	});
 
+
 	$stateProvider.state('emailAddition', {
 		url: '/emailAddition/:isFrom',
 		templateUrl: '/assets/common_templates/partials/checkin/gwEmailEntry.html',
@@ -181,5 +182,18 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/common_templates/partials/checkin/gwMobielNUmberOptions.html',
 		controller: 'mobileOptionsController',
 		title: 'Phone number entry'
+	});
+
+
+	$stateProvider.state('selectNoOfkeys',{
+		url:'/selectNoOfkeys',
+		templateUrl: '/assets/common_templates/partials/greatWolf/gwNoOfKeysEntry.html',
+		controller: 'selectNoOfkeysController',
+		title: 'Select No of Keys'
+	}).state('balancePaymentCCCollection', {
+		url: '/balancePaymentCCCollection',
+		templateUrl: '/assets/common_templates/partials/greatWolf/gwbalancePaymentCCCollection.html',
+		controller: 'outstandingBalanceDetailsController',
+		title: 'Check-in'
 	});
 }]);

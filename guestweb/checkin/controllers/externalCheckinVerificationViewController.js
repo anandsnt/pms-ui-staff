@@ -57,9 +57,9 @@
 	    //so fetch it with reservation id
 	    var getToken = function(response){
 	    	var data = {"reservation_id":$rootScope.reservationID};
-		    checkinConfirmationService.getToken(data).then(function(tokenData) {
+		    checkinConfirmationService.getToken(data).then(function(res_data) {
 	    		//set guestweb token
-	    		$rootScope.accessToken 				= tokenData.guest_web_token;
+	    		$rootScope.accessToken 				= res_data.guest_web_token;
 				// display options for room upgrade screen
 				$rootScope.ShowupgradedLabel = false;
 				$rootScope.roomUpgradeheading = "Your trip details";
@@ -70,6 +70,10 @@
 				$rootScope.isCCOnFile = (response.results[0].is_cc_attached === "true") ? true : false;
 				$rootScope.userEmail = response.results[0].guest_email;
 				$rootScope.userMobile = response.results[0].guest_mobile;
+
+				$rootScope.outStandingBalance = res_data.outstanding_balance;
+				$rootScope.payment_method_used = res_data.payment_method_used;
+				$rootScope.paymentDetails = res_data.payment_details;
 
 				//navigate to next page
 				$state.go('checkinReservationDetails');
