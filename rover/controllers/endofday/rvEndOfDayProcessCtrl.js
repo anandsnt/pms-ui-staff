@@ -111,7 +111,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         ngDialog.open({
             template: '/assets/partials/endOfDay/rvEodDatepicker.html',
             className: 'single-date-picker',
-            controller :'RVEndOfDayProcessController',
+            //controller :'RVEndOfDayProcessController',
             scope: $scope
         });
     };
