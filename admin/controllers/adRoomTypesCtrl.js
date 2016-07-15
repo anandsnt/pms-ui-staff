@@ -138,7 +138,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 
 
     	if($scope.isAddMode) {
-    		//$scope.invokeApi(ADRoomTypesSrv.createRoomType, data , addSuccessCallbackSave);
+    		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data , addSuccessCallbackSave);
     	}
       	else {
     	   // $scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , editSuccessCallbackSave);
