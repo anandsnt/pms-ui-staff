@@ -17,7 +17,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 		$scope.setScroller('LOG_TAB_SCROLL');
 
 		var refreshScroll = function(goTop) {
-			$scope.refreshScroller('room-tab-scroll');
+			$scope.refreshScroller('LOG_TAB_SCROLL');
 			goTop && $scope.getScroller('LOG_TAB_SCROLL').scrollTo(0, 0);
 		}
 
@@ -42,6 +42,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	          $scope.start = 1;
 	          $scope.end = $scope.start + $scope.roomLogData.length - 1;
 	        }
+	        refreshScroll(false);
 		};
 
 		$scope.updateLog = function(){
