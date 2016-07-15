@@ -176,8 +176,8 @@ angular.module('sntRover').service('rvMenuSrv',
 		            menuIndex: "accounts"
 		        }, {
 	                title: "MENU_END_OF_DAY",
-	                action: "",
-	                actionPopup: true,
+	                action: "rover.endOfDay.starteod",
+	                actionPopup: false,
 	                menuIndex: "endOfDay"
             	}]
 		    }, {

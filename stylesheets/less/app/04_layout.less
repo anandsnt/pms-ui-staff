@@ -351,6 +351,12 @@ body { overflow: hidden; }
 						color: @logoPrimary;
 						#blink > .infinite();
 					}
+
+					&.error {
+	                    color:  @red;
+	                    font-style: normal;
+	                    font-weight: 600;
+	                }
 				}
 			}
 		}
@@ -2148,6 +2154,12 @@ body { overflow: hidden; }
 	            height: 80px;
 	        }
 
+	        .sidebar-content {
+	        	&.dragging {
+	        		overflow: visible !important;
+	        	}
+	        }
+
 	        .rightMenuHandle {
 	            position: absolute;
 	            top: 20px;
@@ -2165,6 +2177,10 @@ body { overflow: hidden; }
 	                background-image: @icons2x;
 	                background-size: 120px, 40px;
 	            }
+
+				&.not-empty {
+					background-color: @red;
+				}
 	        }
 
 	        &#room-diary-rooms {
@@ -2634,6 +2650,27 @@ body { overflow: hidden; }
 						}
 					}
 
+					&.group-details {
+	                    .data {
+	                        .calc-width(100, 270);
+	                        height:50px;
+	                        display: flex;
+	                        justify-content: center;
+	                        align-items: center;
+	                        h1 {
+	                            max-height: 50px; 
+	                            width:100%;
+	                            display:block;
+	                            white-space: normal;
+	                            font-size: 24px;
+	                        }
+	                    }
+
+	                    .dates {
+	                        width: 140px;
+	                    }
+	                }
+
 	                .button { 
 	                	position: absolute;
 	                	top: 25px;
@@ -2936,6 +2973,12 @@ body { overflow: hidden; }
 				margin-right: 20px;
 				.size(40px, 240px);
 				.pull-left;
+
+				&.with-border {
+	                .size(40px, 260px);
+	                padding-left: 20px;
+	                border-left:1px solid rgba(0, 0, 0, 0.1);
+	            }
 			}
 
 			.button { .pull-right; }

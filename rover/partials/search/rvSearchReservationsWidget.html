@@ -72,7 +72,7 @@
                         <span class="guest-status check-out"></span>
                         <time class="guest-time">
                             <span>{{row.departure_date| date : dateFormat}}</span>
-                            <span class="hours">{{getTimeConverted(row.departure_time)}}</span>
+                            <span class="hours">{{getTimeConverted(row.late_checkout_time || row.departure_time)}}</span>
                         </time>
                     </div>
 

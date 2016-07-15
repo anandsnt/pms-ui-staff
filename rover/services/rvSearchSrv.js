@@ -4,6 +4,7 @@ angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWe
 	self.searchPerPage = 50;
 	self.page = 1;
 	self.to_date = "";
+	self.from_date = "";
 
 	this.fetch = function(dataToSend, useCache){
 		var deferred = $q.defer();
@@ -178,5 +179,31 @@ angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWe
 
 		return deferred.promise;
 	};
+
+	this.getGroupList = function(params) {
+			var deferred = $q.defer(),
+
+				url = '/api/groups/search';
+
+			var data = {
+				'q': params.query,
+				'from_date': self.from_date,
+				'to_date': self.to_date,
+				'per_page': self.searchPerPage,
+				'page': self.page
+			};
+
+			rvBaseWebSrvV2.getJSON(url, data).then(
+				function(data) {
+					self.data = data.groups;
+					deferred.resolve(self.data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
 
 }]);

@@ -83,7 +83,7 @@ angular.module('housekeepingModule', [])
                     var params = {
                         id: $stateParams.id,
                         page: 1,
-                        per_page: 3
+                        per_page: 50
                     };
                     return RVHkRoomDetailsSrv.getRoomLog(params);
                 }

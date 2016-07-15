@@ -25,7 +25,7 @@ module.exports = {
 			'guestweb_yotel' 	: [ themeJsRoot + 'app_router_yotel.js',zestRootJS],
 			'guestweb_zoku' 		: [ themeJsRoot + 'app_router_zoku.js',zestRootJS],
 			'guestweb_fontainebleau' 	: [ themeJsRoot + 'app_router_fontainebleau.js'],
-			'guestweb_great_wolf' 		: [ themeJsRoot + 'app_router_common.js'],
+			'guestweb_great_wolf' 		: [ themeJsRoot + 'app_router_great_wolf.js'],
 			'guestweb_knickerbocker' 	: [ themeJsRoot + 'app_router_knickerbocker.js'],
 			'guestweb_margaritaville' 	: [ themeJsRoot + 'app_router_margaritaville.js'],
 			'guestweb' 	: [ themeJsRoot + 'app_router_carlyle.js'],
@@ -53,8 +53,8 @@ module.exports = {
 			'guestweb_knickerbocker_yacht_club':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_kingsley':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_avery':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_newyork':[ themeJsRoot + 'app_router_mgm_chain.js'],
-			'guestweb_mirage': [ themeJsRoot + 'app_router_mgm_chain.js' , themeJsRoot + 'app_router_mirage.js'],
+			'guestweb_newyork':[themeJsRoot + 'app_router_newyork.js'],
+			'guestweb_mirage': [themeJsRoot + 'app_router_mirage.js'],
 			'guestweb_valencia_san_antonio':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_lonestar_court_austin':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_ponchartrain':[themeJsRoot + 'app_router_ponchartrain.js'],
@@ -64,7 +64,9 @@ module.exports = {
 			'guestweb_sorella_kansas_city':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_Pasea':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_sobro':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_covington':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_covington':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_consciousVondelpark':[ themeJsRoot + 'app_router_common.js']
+			
 		}
 	}
 }

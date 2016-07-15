@@ -976,7 +976,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.getConfirmationNo = function(reservation) {
 			var confirmationNo = "";
 
-			if(reservation.external_confirm_no) {
+			// CICO-28150 show external reference numbers only for external reservations
+			if(reservation.external_confirm_no && !reservation.is_from_rover) {
 				confirmationNo = reservation.external_confirm_no;
 			} else if (reservation.confirmation) {
 				confirmationNo = reservation.confirmation;
@@ -992,7 +993,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.getConfirmationNoText = function(reservation) {
 			var confirmationText = "";
 
-			if(reservation.external_confirm_no) {
+			// CICO-28150 show external reference numbers only for external reservations
+			if(reservation.external_confirm_no && !reservation.is_from_rover) {
 				confirmationText = $filter('translate')('EXTERNAL_REF_NO_PREFIX');
 			} else if (reservation.confirmation) {
 				confirmationText = $filter('translate')('CONFIRM_NO_PREFIX');

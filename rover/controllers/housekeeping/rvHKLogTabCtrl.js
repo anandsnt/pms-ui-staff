@@ -3,9 +3,23 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	'$rootScope',
 	'RVHkRoomDetailsSrv',
 	'roomDetailsLogData',
-	function($scope, $rootScope, RVHkRoomDetailsSrv, roomDetailsLogData) {
+	'$filter',
+	function($scope, $rootScope, RVHkRoomDetailsSrv, roomDetailsLogData, $filter) {
 
 		BaseCtrl.call(this, $scope);
+		// set the previous state
+		$rootScope.setPrevState = {
+			title: $filter('translate')('ROOM_STATUS'),
+			name: 'rover.housekeeping.roomStatus',
+			param: {}
+		};
+
+		$scope.setScroller('LOG_TAB_SCROLL');
+
+		var refreshScroll = function(goTop) {
+			$scope.refreshScroller('LOG_TAB_SCROLL');
+			goTop && $scope.getScroller('LOG_TAB_SCROLL').scrollTo(0, 0);
+		}
 
 		$scope.init = function(){
 			$scope.roomDetails = $scope.$parent.roomDetails;
@@ -28,10 +42,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	          $scope.start = 1;
 	          $scope.end = $scope.start + $scope.roomLogData.length - 1;
 	        }
-	        $scope.setScroller('log-tab-scroll');
-	        setTimeout(function(){
-				$scope.refreshScroller('log-tab-scroll');
-			}, 1500);
+	        refreshScroll(false);
 		};
 
 		$scope.updateLog = function(){
@@ -58,6 +69,8 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	                }
 	                $scope.end = $scope.start + $scope.roomLogData.length - 1;
 	                $scope.$emit('hideLoader');
+
+	                refreshScroll(true);
 	        };
 	        var params = {
 	                id: $scope.roomDetails.id,
@@ -87,7 +100,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 		        $scope.end = $scope.start + $scope.roomLogData.length - 1;
 	        }
 	        $scope.page = 1;
-	        $scope.perPage = 3;
+	        $scope.perPage = 50;
 	        $scope.nextAction = false;
 	        $scope.prevAction = false;
 	    };
@@ -126,7 +139,8 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 
 
 
-
+	    var unSubscrbeOpenLog = $scope.$on('OPEN_LOG', $scope.updateLog);
+	    $scope.$on('$destroy', unSubscrbeOpenLog);
 	}
 
 	]);

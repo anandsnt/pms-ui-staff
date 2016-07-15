@@ -30,6 +30,8 @@
 		&.icon-actions { background-position: 0 -750px; }
 		&.icon-notes { background-position: 0 -810px; }
 		&.icon-allotments { background-position: 0 -870px; }
+		&.icon-settings { background-position: 0 -930px; } 
+        &.icon-layers { background-position: 0 -990px; }
 
 		@media only screen and (min-width: 600px) { 
 			background-size: 125px;
@@ -51,6 +53,8 @@
 			&.icon-actions { background-position: 0 -1570px; }
 			&.icon-notes { background-position: 0 -1690px; }
 			&.icon-allotments { background-position: 0 -1800px; }
+			&.icon-settings { background-position: 0 -1920px; }
+            &.icon-layers { background-position: 0 -2040px; }
 		}
 
 		@media @highdpi { background-image: @iconNoContent2x; }
@@ -445,6 +449,16 @@
 				&.active { background-position: 15px -2490px; }
 			}
 
+			&.icon-messages-guests2 { 
+                background-position: 13px -9572px;
+                &.active { background-position: 13px -9512px; }
+            }
+            
+            &.icon-messages-group { 
+                background-position: 14px -9450px;
+                &.active { background-position: 14px -9390px; }
+            }
+
 			&.icon-pencil-blue { background-position: 3px -2137px; }
 
 		/* Add / Remove / Reset ***/
@@ -594,6 +608,19 @@
 			}
 		}
 	}
+
+	.has-success {
+        background-position: 100% 50%;
+        background-repeat: no-repeat;
+        border: 0;
+        .show;
+        background-image: @success; 
+        background-size: 11px 10px; 
+
+        @media @highdpi {
+             background-image: @success2x; 
+        }
+    }
 
 /* Report icons			==================================*/
 	.icon-report {
