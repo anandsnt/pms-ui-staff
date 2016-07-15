@@ -118,10 +118,12 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
 		var roomNumberEntered = false;
 		$scope.lastNameEntered = function() {
-
 			//if room is already entered, no need to enter again
-			if ($scope.reservationParams.room_no.length > 0 && roomNumberEntered) {
-				searchReservation();
+			if (roomNumberEntered) {
+				if ($scope.reservationParams.room_no.length > 0){
+					searchReservation();	
+				}
+				
 			} else {
 				if ($scope.reservationParams.last_name.length > 0) {
 					$scope.mode = "ROOM_NUMBER_ENTRY";

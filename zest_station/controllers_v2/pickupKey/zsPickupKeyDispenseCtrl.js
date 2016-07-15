@@ -187,13 +187,20 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 			remoteEncodingSuccsess();
 		});
 
-		var startMakingKey = function() {
+		var startMakingKey = function(keyNo) {
 			var onResponseSuccess;
 			var params = {
 				"is_additional": false,
 				"is_kiosk": true,
 				"key": 1,
 				"reservation_id": $scope.selectedReservation.reservationId
+			};
+
+			if (keyNo){
+				params.key = keyNo;
+				if (keyNo === 2){
+					params.is_additional = true;
+				}
 			};
 
 			if (!$scope.remoteEncoding) {
@@ -232,10 +239,8 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 					});
 				}
 
-
 			}
 		};
-
 
 
 		var initMakeKey = function() {
@@ -261,10 +266,10 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		};
 
 
-		$scope.onReadyToPrintKey = function() {
+		$scope.onReadyToPrintKey = function(keyNo) {
 			if ($scope.readyForUserToPressMakeKey) {
 				$scope.readyForUserToPressMakeKey = false;
-				startMakingKey();
+				startMakingKey(keyNo);
 			}
 		};
 
