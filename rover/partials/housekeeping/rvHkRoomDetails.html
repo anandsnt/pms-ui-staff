@@ -13,7 +13,7 @@
             <li ng-class="{ 'active': openTab === 'Guest' }" click-touch="tabSwitch('Guest')"><span class="icons icon-navbar icon-hk-guest">Guest</span></li>
             <li ng-class="{ 'active': openTab === 'Work' }" click-touch="tabSwitch('Work')"><span class="icons icon-navbar icon-hk-work">Work</span></li>
             <li ng-class="{ 'active': openTab === 'Room' }" click-touch="tabSwitch('Room')"><span class="icons icon-navbar icon-hk-room">Room</span></li>
-            <li ng-class="{ 'active': openTab === 'Log' }" click-touch="showLogTab()"><span class="icons icon-navbar icon-hk-log">Log</span></li>
+            <li ng-hide="!isStandAlone" ng-class="{ 'active': openTab === 'Log' }" click-touch="showLogTab()"><span class="icons icon-navbar icon-hk-log">Log</span></li>
           </ul>
         </header>
 
