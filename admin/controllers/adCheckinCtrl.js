@@ -97,6 +97,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
            $scope.checkinData.no_of_keys = 1;//default as 1
        }
     }
+
+    $scope.surveyQuestionImage = angular.copy($scope.checkinData.survey_question_image);
   };
 
   /*
@@ -248,8 +250,19 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'key_prompt_save_error' : $scope.checkinData.key_prompt_save_error,
       'max_no_of_keys' : max_no_of_keys,
       'zestweb_collect_outstanding_balance' : $scope.checkinData.zestweb_collect_outstanding_balance,
-      'exclude_routing_reservations_from_email' : $scope.checkinData.exclude_routing_reservations_from_email
+      'exclude_routing_reservations_from_email' : $scope.checkinData.exclude_routing_reservations_from_email,
+      'survey_question_prompt_on': $scope.checkinData.survey_question_prompt_on,
+      'survey_question_type_id': $scope.checkinData.survey_question_type_id,
+      'survey_question_title': $scope.checkinData.survey_question_title,
+      'survey_question': $scope.checkinData.survey_question,
+      'numeric_answer_max_limit': $scope.checkinData.numeric_answer_max_limit,
+      'survey_question_is_mandatory': $scope.checkinData.survey_question_is_mandatory,
+      'survey_question_image' : angular.copy($scope.checkinData.survey_question_image)
     };
+
+    if($scope.surveyQuestionImage === $scope.checkinData.survey_question_image){
+      uploadData.survey_question_image = '';
+    }
 
     var saveCheckinDetailsFailureCallback = function (data) {
       $scope.$emit('hideLoader');
