@@ -31,7 +31,7 @@
     <div class="row" ng-hide="isLoading || netWorkError">
         <div class="col-md-4 top-spacing sm-no-top-spacing section-container float-none">
             <p class="main-text final-text">{{screenDetails.title}}</p>
-            <img src="data:image/png;base64, {{image|| responseData.key_info}}" width="180" height="180" alt="" ng-show="showSurveyImage">
+            <img ng-src="{{surveyDetails.survey_question_image}}" width="180" height="180" alt="" ng-show="showSurveyImage">
             <p class="sub-text margin-top-20">{{screenDetails.description}}</p>
             <!-- answers -->
             <div class="row margin-top-20">
