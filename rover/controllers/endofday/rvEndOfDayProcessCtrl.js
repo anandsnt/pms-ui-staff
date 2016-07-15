@@ -9,7 +9,6 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         setDefaultSelectedDate();
         setDisplayDateValues();         
         $scope.setScroller('eod_scroll');
-        setUpDatepData();
         fetchEodLogOfSelectedDate();
     };
     /*
@@ -59,15 +58,16 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         $scope.dateOptions = {
             changeYear: true,
             changeMonth: true,
-            dateFormat: 'dd-mm-yy',
-            maxDate: $filter('date')($scope.businessDate,'dd-MM-yyyy'),
+            dateFormat: 'yy-mm-dd',
+            maxDate: $scope.businessDate,
             yearRange: "-100:+0",
             onSelect: function(date, inst) {
-                $scope.selectedDate = date.split("-").reverse().join("-");
+                $scope.date = date; 
+                $scope.selectedDate = date;
                 setDisplayDateValues();            
                 if($scope.selectedDate !==$scope.businessDate){
                    fetchEodLogOfSelectedDate(); 
-               };                
+                };                
                 ngDialog.close();
             }
         };
@@ -102,15 +102,19 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     * Show date picker
     */
     $scope.clickedDate = function(){
+        setUpDatepData();
         ngDialog.open({
             template: '/assets/partials/endOfDay/rvEodDatepicker.html',
             className: 'single-date-picker',
+            controller :'RVEndOfDayProcessController',
             scope: $scope
         });
     };
 
     $scope.setSelectedDateToBussinessDate = function(){
         $scope.selectedDate = $scope.businessDate;
+        //updating calender date selection.
+        $scope.date = $scope.businessDate;
         setDisplayDateValues();
     };
 
