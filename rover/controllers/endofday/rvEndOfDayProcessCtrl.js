@@ -30,6 +30,21 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         $scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, "yyyy-MM-dd");
     };
     /*
+    * Function to restart a failed process.
+    */
+    $scope.restartFailedProcess = function(process){
+        var data = {           
+            id : process.id
+        };
+        var restartProcessSuccess = function(){
+            fetchEodLogOfSelectedDate();
+        };
+        var restartProcessFail = function(data){
+            $rootScope.$broadcast('hideLoader');
+        };
+        $scope.invokeApi(RVEndOfDayModalSrv.restartFailedProcess,data,restartProcessSuccess,restartProcessFail);
+    };
+    /*
     * Set Selected date as previous date of Bussines date.
     */
     var setDefaultSelectedDate = function(){       
