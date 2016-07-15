@@ -49,14 +49,13 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     var setDefaultSelectedDate = function(){       
         var previousDate = tzIndependentDate($rootScope.businessDate);
         previousDate.setDate(previousDate.getDate() - 1)              
-        $scope.selectedDate = $filter('date')(previousDate, "dd-MM-yyyy").split("-").reverse().join("-");
-        //updating calender date selection.
-        $scope.date = $scope.selectedDate;
+        $scope.selectedDate = $filter('date')(previousDate, "dd-MM-yyyy").split("-").reverse().join("-");        
     };
     /*
     * Setting Date options
     */
-    var setUpDatepData = function(){
+    var setUpDateData = function(){
+        $scope.date =  $scope.selectedDate;
         $scope.dateOptions = {
             changeYear: true,
             changeMonth: true,
@@ -64,7 +63,6 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             maxDate: $scope.businessDate,
             yearRange: "-100:+0",
             onSelect: function(date, inst) {
-                $scope.date = date; 
                 $scope.selectedDate = date;
                 setDisplayDateValues();            
                 if($scope.selectedDate !==$scope.businessDate){
@@ -104,7 +102,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     * Show date picker
     */
     $scope.clickedDate = function(){
-        setUpDatepData();
+        setUpDateData();
         ngDialog.open({
             template: '/assets/partials/endOfDay/rvEodDatepicker.html',
             className: 'single-date-picker',
@@ -114,9 +112,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     };
 
     $scope.setSelectedDateToBussinessDate = function(){
-        $scope.selectedDate = $scope.businessDate;
-        //updating calender date selection.
-        $scope.date = $scope.businessDate;
+        $scope.selectedDate = $scope.businessDate;        
         setDisplayDateValues();
     };
 
