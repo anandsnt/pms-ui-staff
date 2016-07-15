@@ -2,6 +2,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
 
     BaseCtrl.call(this, $scope);
     var init =function(){
+        setTitle();
         $scope.eodLogDetails = {};
         $scope.dateFormat = $rootScope.dateFormat;
         $scope.businessDate =$rootScope.businessDate;       
@@ -10,6 +11,10 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         setDisplayDateValues();         
         $scope.setScroller('eod_scroll');
         fetchEodLogOfSelectedDate();
+    };
+    var setTitle = function() {
+            var title = $filter('translate')('END_OF_DAY');
+            $scope.setHeadingTitle(title);
     };
     /*
     * Function to get day, month and Year from Date(Date format is kept yyyy/mm/dd);
