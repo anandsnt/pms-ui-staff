@@ -50,6 +50,8 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         var previousDate = tzIndependentDate($rootScope.businessDate);
         previousDate.setDate(previousDate.getDate() - 1)              
         $scope.selectedDate = $filter('date')(previousDate, "dd-MM-yyyy").split("-").reverse().join("-");
+        //updating calender date selection.
+        $scope.date = $scope.selectedDate;
     };
     /*
     * Setting Date options
