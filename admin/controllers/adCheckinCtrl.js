@@ -158,6 +158,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     $scope.checkinData.is_notify_on_room_ready = ($scope.checkinData.is_notify_on_room_ready_flag) ? 'true' : 'false';
     $scope.checkinData.require_cc_for_checkin_email = ($scope.checkinData.require_cc_for_checkin_email_flag) ? 'true' : 'false';
 
+    $scope.checkinData.exclude_routing_reservations_from_email = ($scope.checkinData.exclude_routing_reservations_from_email) ? true : false;
+
     var excluded_rate_codes = [];
     var excluded_block_codes = [];
 
@@ -245,7 +247,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'key_prompt_text': $scope.checkinData.key_prompt_text,
       'key_prompt_save_error' : $scope.checkinData.key_prompt_save_error,
       'max_no_of_keys' : max_no_of_keys,
-      'zestweb_collect_outstanding_balance' : $scope.checkinData.zestweb_collect_outstanding_balance
+      'zestweb_collect_outstanding_balance' : $scope.checkinData.zestweb_collect_outstanding_balance,
+      'exclude_routing_reservations_from_email' : $scope.checkinData.exclude_routing_reservations_from_email
     };
 
     var saveCheckinDetailsFailureCallback = function (data) {
