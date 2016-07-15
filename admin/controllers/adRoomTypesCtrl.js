@@ -114,7 +114,11 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 			$scope.roomTypeData.is_image_deleted = $scope.is_image_deleted;
 			unwantedKeys = ["image_of_room_type"];
 		}
-		 var data = dclone($scope.roomTypeData, unwantedKeys);
+        if($scope.roomTypeData.is_suite){
+            $scope.roomTypeData.component_room_types = $scope.availableRoomTypes;
+        }
+		var data = dclone($scope.roomTypeData, unwantedKeys);
+
 
     	var editSuccessCallbackSave = function(data){
     		$scope.$emit('hideLoader');
@@ -134,10 +138,10 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 
 
     	if($scope.isAddMode) {
-    		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data , addSuccessCallbackSave);
+    		//$scope.invokeApi(ADRoomTypesSrv.createRoomType, data , addSuccessCallbackSave);
     	}
       	else {
-    	    $scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , editSuccessCallbackSave);
+    	   // $scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , editSuccessCallbackSave);
     	}
     };
    /*Handle click
@@ -189,7 +193,10 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
     $scope.fetchAvailableRoomTypesForSuite = function(){
         var successCallbackGetAvailableRoomTypesForSuite = function(data){
             $scope.$emit('hideLoader');
-            console.log(data)
+            $scope.availableRoomTypes = data.data;
+            _.each($scope.availableRoomTypes, function(value, key){
+                value.blocked_rooms_count = 0;
+            })
 
         };
         $scope.invokeApi(ADRoomTypesSrv.fetchRoomTypesAvailableForSuite, '' , successCallbackGetAvailableRoomTypesForSuite);
@@ -247,6 +254,18 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 		};
 	$scope.invokeApi(ADRoomTypesSrv.deleteRoomTypes, {'roomtype_id': roomtype_id}, successCallBack);
 	};
+
+    $scope.incrementBlockedRoomTypesCount = function(roomTypeId){
+        var clickedBlockRoomType = _.findWhere($scope.availableRoomTypes, {id: roomTypeId});
+        if(clickedBlockRoomType.blocked_rooms_count < clickedBlockRoomType.rooms_count)
+            clickedBlockRoomType.blocked_rooms_count = clickedBlockRoomType.blocked_rooms_count + 1;
+    };
+
+    $scope.decrementBlockedRoomTypesCount = function(roomTypeId){
+        var clickedBlockRoomType = _.findWhere($scope.availableRoomTypes, {id: roomTypeId});
+        if(clickedBlockRoomType.blocked_rooms_count > 0)
+            clickedBlockRoomType.blocked_rooms_count = clickedBlockRoomType.blocked_rooms_count -1;
+    };
 
 	init();
 

@@ -50,24 +50,24 @@
 			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_suite" label="{{ 'SUITE_ROOM_TYPE' | translate }}"></ad-checkbox>
 			<ad-checkbox hide="{{ !isRoomStatusImportPerRoomTypeOn || isStandAlone }}" div-class="full-width" is-checked="roomTypeData.is_room_type_ows_request_per_status_type" label="{{ 'SEND_INTERFACE_REQUEST' | translate }}"></ad-checkbox>
 
-			<div class="entry full-width ">
+			<div class="entry full-width" ng-class="{'hidden': !roomTypeData.is_suite}">
 		        <ul class="room-type-list">
-		            <li>
-		                <span class="room-type-name">Room Type Name</span>
+		            <li ng-repeat="roomTypes in availableRoomTypes">
+		                <span class="room-type-name">{{roomTypes.name}}</span>
 		                <div class="number-input">
-		                    <input type="number" value="5" />
+		                    <input type="number" value="{{roomTypes.blocked_rooms_count}}" ng-model="roomTypes.blocked_rooms_count" min="0" />
 		                    <div class="buttons">
 		                        <!-- On click move the count up by 1 -->
-		                        <button type="button" class="icons icon-mover-right">
+		                        <button type="button" class="icons icon-mover-right" ng-click="incrementBlockedRoomTypesCount(roomTypes.id)">
 		                        </button>
 		                        <!-- on click move the count down by 1 (until 0) -->
-		                        <button type="button" class="icons icon-mover-left">
+		                        <button type="button" class="icons icon-mover-left" ng-click="decrementBlockedRoomTypesCount(roomTypes.id)">
 		                        </button>
 		                    </div>
 		                </div>
 		            </li>
 		        </ul>
-		    </div
+		    </div>
 		</fieldset>
 		<div class="actions float">
 			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()">
