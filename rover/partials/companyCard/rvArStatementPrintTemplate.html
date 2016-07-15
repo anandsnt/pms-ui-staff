@@ -1,12 +1,9 @@
 <div class="invoice ar-statement">
-    <div class="invoice-header">
+    <div class="invoice-logo envelope">
+        <img ng-src="{{printData.hotel_logo}}" alt="" />
         <h1>{{printData.hotel_name}}</h1>
-        <span class="statement-company-address" ng-bind-html="printData.hotel_address">
-        </span>
-        <img ng-src="{{printData.hotel_logo}}" alt="">
-    </div>
-    <div class="invoice-logo">
-        <h1 translate>STATEMENT</h1>
+        <span ng-bind-html="printData.hotel_address"></span>
+        <span class="type" translate>INVOICE</span>
     </div>
 
     <div class="statement-header">

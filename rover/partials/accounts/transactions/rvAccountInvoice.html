@@ -1,12 +1,8 @@
-<div class="invoice-header top-header">
-    <h1>{{printData.hotel_name}}</h1>
-    <span class="invoice-header-address" ng-bind-html="printData.hotel_address">
-    </span>
+<div class="invoice-logo envelope">
     <img ng-src="{{printData.hotel_logo}}" alt="" />
-</div>
-
-<div class="invoice-logo envelope smaller">
-    <h1 translate>INVOICE</h1>
+    <h1>{{printData.hotel_name}}</h1>
+    <span ng-bind-html="printData.hotel_address"></span>
+    <span class="type" translate>INVOICE</span>
 </div>
 
 <div class="info-container account-info">
