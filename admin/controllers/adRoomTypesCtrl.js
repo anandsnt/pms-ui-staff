@@ -1,6 +1,6 @@
 admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomTypesSrv', 'ngTableParams','$filter','$anchorScroll', '$timeout', '$location', function($scope, $rootScope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
 
-	
+
 	var init = function(){
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -12,7 +12,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 	$scope.imageFileName = $scope.fileName;
 	if($rootScope.isEnabledRoomTypeByRoomClass && !$rootScope.isStandAlone){
 		$scope.getRoomClassList();
-	}	
+	}
 	//To list room types
 	$scope.listRoomTypes();
 	}
@@ -57,8 +57,8 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 		};
 		$scope.invokeApi(ADRoomTypesSrv.fetchRoomClasses, {} , successCallbackFetch);
 	};
-	
-	
+
+
    /*
     * To render edit room types screen
     * @param {index} index of selected room type
@@ -115,7 +115,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 			unwantedKeys = ["image_of_room_type"];
 		}
 		 var data = dclone($scope.roomTypeData, unwantedKeys);
-		 
+
     	var editSuccessCallbackSave = function(data){
     		$scope.$emit('hideLoader');
     		$scope.is_image_deleted = false;
@@ -186,6 +186,15 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 		$scope.invokeApi(ADRoomTypesSrv.importFromPms, '' , successCallbackImport);
 	};
 
+    $scope.fetchAvailableRoomTypesForSuite = function(){
+        var successCallbackGetAvailableRoomTypesForSuite = function(data){
+            $scope.$emit('hideLoader');
+            console.log(data)
+
+        };
+        $scope.invokeApi(ADRoomTypesSrv.fetchRoomTypesAvailableForSuite, '' , successCallbackGetAvailableRoomTypesForSuite);
+    };
+
   /*
     * To add new room type
     *
@@ -214,6 +223,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
             $location.hash('new-form-holder');
             $anchorScroll();
     	});
+        $scope.fetchAvailableRoomTypesForSuite();
 	};
 
 	$scope.sortByName = function(){
