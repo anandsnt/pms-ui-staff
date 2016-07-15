@@ -28,6 +28,10 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	          $scope.start = 1;
 	          $scope.end = $scope.start + $scope.roomLogData.length - 1;
 	        }
+	        $scope.setScroller('log-tab-scroll');
+	        setTimeout(function(){
+				$scope.refreshScroller('log-tab-scroll');
+			}, 1500);
 		};
 
 		$scope.updateLog = function(){
