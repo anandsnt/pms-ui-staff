@@ -677,9 +677,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				} else if ($scope.otherData.defaultRateDisplayName === 'By Rate') {
 					$scope.stateCheck.activeView = 'RATE';
 				} else {
-					if($stateParams.travel_agent_id || $stateParams.company_id
+					if(($stateParams.travel_agent_id || $stateParams.company_id
 						 || $stateParams.group_id || $stateParams.allotment_id
-						 || $stateParams.promotion_code || $stateParams.is_member == "true"){
+						 || $stateParams.promotion_code || $stateParams.is_member == "true") && $scope.otherData.recommendedRateDisplay){
 						$scope.stateCheck.activeView = 'RECOMMENDED';
 					} else {
 						// By default RoomType
