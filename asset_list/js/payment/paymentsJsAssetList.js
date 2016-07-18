@@ -9,7 +9,8 @@ module.exports = {
                     paymentRoot + "services/**/*.js",
                     paymentRoot + "constants/**/*.js"
                 ],
-                mli: []
+                mli: [paymentRoot + 'payApp.js',
+                    paymentRoot + "controllers/**/*.js"]
             };
         return paymentJsAssets;
     }
