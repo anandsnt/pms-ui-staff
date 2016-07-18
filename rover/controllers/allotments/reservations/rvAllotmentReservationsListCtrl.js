@@ -484,7 +484,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return {[type]}      [description]
      */
     var mailSent = function(data) {
-      $scope.successMessage = 'e-mail sent successfully';
+      $scope.successMessage = 'Email sent successfully';
       $scope.closeDialog();
     };
 
