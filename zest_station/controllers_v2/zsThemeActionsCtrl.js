@@ -55,23 +55,10 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 			link = assetPath + theme.toLowerCase() + ext; //default to snt for now until other stylesheets are generated
 			return link;
 		};
-		/**
-		 * get paths for theme based Icon files
-		 **/
-		var updateIconPath = function(theme) {
-			if (theme === 'yotel') {
-				$scope.$emit('DONT_USE_NAV_ICONS');
-				$scope.theme = theme;
-				iconsPath = '/assets/zest_station/css/icons/yotel';
-				$scope.setSvgsToBeLoaded(iconsPath);
-			} else if (theme === 'fontainebleau') {
-				//nothing else
-			};
-		};
 		var setThemeByName = function(theme) {
 			$('body').css('display', 'none');
 			var link, logo;
-			updateIconPath(theme);
+			$scope.$emit('updateIconPath',theme);
 			link = getThemeLink(theme);
 			logo = getLogoSvg(theme);
 			$('#logo').append(logo); //load logo

@@ -136,7 +136,11 @@
 "COLLECT_BIRTHDAY_INSTRUCTION":"Set to zero if there is no minimum age required",
 "COLLECT_ADDRESS_SEPERATELY":"Control Zest Web templates that collect birth date separately from address",
 "CHECKIN_NOW_MAIN_HEADING":"Check In Now or Later Call to Action",
-"CHECKIN_NOW_SUB_HEADING":"Control the calls to action when guest has the option to check in now or check in later by providing an arrival time."
+"CHECKIN_NOW_SUB_HEADING":"Control the calls to action when guest has the option to check in now or check in later by providing an arrival time.",
+"PROMPT_FOR_CC_SUB_HEADING" : "Always collect new credit card (even if one exists)",
+"COLLECT_OUTSTANDING_BALANCE" : "Require zero outstanding stay total to check in",
+"OUTSTANDING_BALANCE_COLLECTION_SUBHEADING": "Switch ‘ON’ to require the guest to pay the outstanding balance prior to completing check in."
+
 
 
 

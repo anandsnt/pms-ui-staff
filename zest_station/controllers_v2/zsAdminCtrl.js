@@ -342,6 +342,7 @@ sntZestStation.controller('zsAdminCtrl', [
             setTimeout(function() {
                 refreshScroller(); //maybe need to update layout, but this works to fix scroll issue on admin after page load
             }, 1000);
+            $scope.setScreenIcon('checkin');
 
         }();
     }
