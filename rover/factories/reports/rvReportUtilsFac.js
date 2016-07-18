@@ -203,8 +203,8 @@ angular.module('reportsModule')
          * @param {Object} report The ith report object
          * @param {Object} filter The ith report's filter object
          */
-        var __pushGeneralOptionData = function(report, filter) {
-            var selected = false;
+        var __pushGeneralOptionData = function(report, filter, selected) {
+            var selected = typeof selected === typeof true ? selected : false;
             var mustSend = false;
 
             var includeCancelled = {
@@ -491,6 +491,9 @@ angular.module('reportsModule')
                 if ( __optionFilterNames[filter.value] ) {
                     __pushGeneralOptionData( report, filter );
                 };
+                if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'INCLUDE_DUE_OUT' ) {
+                    __pushGeneralOptionData( report, filter, true );
+                }
 
                  // fill up DS for options combo box
                 if ( __excludeFilterNames[filter.value] ) {
@@ -534,7 +537,7 @@ angular.module('reportsModule')
                     __pushGuestOrAccountData( report, filter );
                 };
 
-                if ( __showFilterNames[filter.value] ) {
+                if ( __showFilterNames[filter.value] && report.title !== reportNames['IN_HOUSE_GUEST'] ) {
                     __pushShowData( report, filter );
                 };
 
