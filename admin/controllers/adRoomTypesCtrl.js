@@ -2,19 +2,19 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 
 
 	var init = function(){
-	$scope.errorMessage = '';
-	BaseCtrl.call(this, $scope);
-	$scope.roomTypeData = {};
-	$scope.successMessage = "";
-	$scope.errorMessage ="";
-	$scope.is_image_deleted = false;
-	$scope.fileName = "Choose File....";
-	$scope.imageFileName = $scope.fileName;
-	if($rootScope.isEnabledRoomTypeByRoomClass && !$rootScope.isStandAlone){
-		$scope.getRoomClassList();
-	}
-	//To list room types
-	$scope.listRoomTypes();
+    	$scope.errorMessage = '';
+    	BaseCtrl.call(this, $scope);
+    	$scope.roomTypeData = {};
+    	$scope.successMessage = "";
+    	$scope.errorMessage ="";
+    	$scope.is_image_deleted = false;
+    	$scope.fileName = "Choose File....";
+    	$scope.imageFileName = $scope.fileName;
+    	if($rootScope.isEnabledRoomTypeByRoomClass && !$rootScope.isStandAlone){
+    		$scope.getRoomClassList();
+    	}
+    	//To list room types
+    	$scope.listRoomTypes();
 	}
 
    /*
@@ -67,6 +67,8 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 	$scope.editRoomTypes = function(index, id)	{
         $scope.fetchAvailableRoomTypesForSuite();
 		$scope.isAddMode =false;
+        $scope.isComponentUpArrowEnabled = true;
+        $scope.isComponentDownArrowEnabled = true;
 		$scope.departmentData={};
 		$scope.currentClickedElement = index;
 		$scope.roomTypeData = {};
@@ -220,6 +222,8 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 		$scope.isAddMode = $scope.isAddMode ? false : true;
 		$scope.fileName = "Choose File....";
 		$scope.imageFileName = $scope.fileName;
+        $scope.isComponentUpArrowEnabled = true;
+        $scope.isComponentDownArrowEnabled = true;
 
 		//reset data
 		$scope.roomTypeData = {
@@ -266,14 +270,25 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 
     $scope.incrementBlockedRoomTypesCount = function(roomTypeId){
         var clickedBlockRoomType = _.findWhere($scope.availableRoomTypes, {id: roomTypeId});
-        if(clickedBlockRoomType.blocked_rooms_count < clickedBlockRoomType.rooms_count)
+
+        if(clickedBlockRoomType.blocked_rooms_count < clickedBlockRoomType.rooms_count){
             clickedBlockRoomType.blocked_rooms_count = clickedBlockRoomType.blocked_rooms_count + 1;
+            $scope.isComponentUpArrowEnabled = true;
+
+        } else {
+            $scope.isComponentUpArrowEnabled = false;
+
+        }
     };
 
     $scope.decrementBlockedRoomTypesCount = function(roomTypeId){
         var clickedBlockRoomType = _.findWhere($scope.availableRoomTypes, {id: roomTypeId});
-        if(clickedBlockRoomType.blocked_rooms_count > 0)
+        if(clickedBlockRoomType.blocked_rooms_count > 0){
             clickedBlockRoomType.blocked_rooms_count = clickedBlockRoomType.blocked_rooms_count -1;
+            $scope.isComponentDownArrowEnabled = true;
+        } else {
+            $scope.isComponentDownArrowEnabled = false;
+        }
     };
 
 	init();
