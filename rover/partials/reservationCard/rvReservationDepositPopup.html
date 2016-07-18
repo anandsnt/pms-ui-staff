@@ -12,7 +12,8 @@
 
               <!--  <div ng-init="isReservationDeposit = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div> -->
 
-               <snt-payment payment-types="passData.details.paymentTypes" selected-payment-type="CA"></snt-payment>
+               <snt-payment payment-types="passData.details.paymentTypes" 
+               selected-payment-type="depositData.paymentType"></snt-payment>
 
                 <!-- Card Input type - output only if Six Payments and payment type is CC -->
                 <div class="entry" ng-show="paymentGateway === 'sixpayments' && depositData.paymentType ==='CC' && !showCCPage">

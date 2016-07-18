@@ -5,7 +5,7 @@ sntPay.directive('sntPayment', function () {
         transclude: 'true',
         scope: {
             paymentTypes : '=',
-            selectedPaymentType : '@',
+            selectedPaymentType : '=',
             reservationId : '@',
             guestId : '@',
             amount : '@'
