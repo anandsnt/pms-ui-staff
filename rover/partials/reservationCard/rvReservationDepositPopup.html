@@ -5,7 +5,15 @@
         <strong class="h2 message">Deposit required</strong>
         <div class="payment-form">
             <!-- Payment type -->
-               <div ng-init="isReservationDeposit = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div>
+
+
+            
+
+
+              <!--  <div ng-init="isReservationDeposit = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div> -->
+
+               <snt-payment payment-types="passData.details.paymentTypes" selected-payment-type="CA"></snt-payment>
+
                 <!-- Card Input type - output only if Six Payments and payment type is CC -->
                 <div class="entry" ng-show="paymentGateway === 'sixpayments' && depositData.paymentType ==='CC' && !showCCPage">
                    <div ng-include="'/assets/partials/payment/rvSixPayCardInput.html'"></div>
