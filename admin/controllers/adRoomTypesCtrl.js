@@ -65,12 +65,14 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
     * @param {id} id of the room type
     */
 	$scope.editRoomTypes = function(index, id)	{
+        $scope.fetchAvailableRoomTypesForSuite();
 		$scope.isAddMode =false;
 		$scope.departmentData={};
 		$scope.currentClickedElement = index;
 		$scope.roomTypeData = {};
 	 	var successCallbackRender = function(data){
 	 		$scope.$emit('hideLoader');
+
 	 		$scope.roomTypeData = data;
 	 		if($scope.roomTypeData.is_pseudo_room_type === "true" || $scope.roomTypeData.is_pseudo_room_type === true){
 	 			$scope.roomTypeData.is_pseudo_room_type = true;
@@ -84,6 +86,13 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 	 		else{
 	 			$scope.roomTypeData.is_suite = false;
 	 		}
+            var blockedRoomsCountObj;
+            _.each($scope.availableRoomTypes, function(value, key){
+                blockedRoomsCountObj = _.find($scope.roomTypeData.component_room_types, {'component_room_type_id': value.id});
+                value.blocked_rooms_count = (blockedRoomsCountObj !== undefined) ? blockedRoomsCountObj.rooms_count : 0;
+            });
+
+
 	 	};
 	 	var data = {"id":id };
 	 	$scope.invokeApi(ADRoomTypesSrv.getRoomTypeDetails, data, successCallbackRender);
@@ -141,7 +150,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
     		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data , addSuccessCallbackSave);
     	}
       	else {
-    	   // $scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , editSuccessCallbackSave);
+    	    $scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , editSuccessCallbackSave);
     	}
     };
    /*Handle click
