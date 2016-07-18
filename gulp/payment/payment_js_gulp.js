@@ -67,6 +67,12 @@ module.exports = function (gulp, $, options) {
             mkdirp 		= require('mkdirp'),
             extendedMappings = {};
 
+        for (var listName in PAYMENT_JS_LIST){
+            extendedMappings[listName] = glob.sync(PAYMENT_JS_LIST[listName]).map(function(e){
+                return "/assets/" + e;
+            });
+        }
+
         mkdirp(paymentGeneratedDir, function (err) {
             if (err) {
                 console.error('rover JS mapping directory failed!! (' + err + ')');
