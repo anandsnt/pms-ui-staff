@@ -54,7 +54,8 @@ module.exports = function(gulp, $, options) {
                     'build-admin-dev', 
                     'build-zest-dev', 
                     'build-guestweb-dev',
-                    'build-guestweb-v2-dev'
+                    'build-guestweb-v2-dev',
+                    'build-payment-dev'
                 ],
 
 		watchTasks = [
@@ -64,7 +65,8 @@ module.exports = function(gulp, $, options) {
                     'watch-admin-files', 
                     'watch-zest-files', 
                     'watch-guestweb-files',
-                    'watch-guestweb-v2-files'
+                    'watch-guestweb-v2-files',
+                    'watch-payment-files'
                 ];
 
 	var processArgs = function() {

@@ -36,6 +36,9 @@ angular.module('stayCardModule', [])
                  */
                 baseSearchData: function(RVReservationBaseSearchSrv, staycardJsAssets) {
                     return RVReservationBaseSearchSrv.fetchBaseSearchData();
+                },
+                loadPaymentModule: function (jsMappings) {
+                    return jsMappings.loadPaymentModule();
                 }
             }
         });

@@ -43,4 +43,45 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
     };
   };
 
+        /**
+         * [loadPaymentModule description]
+         * @param  {array} keys               [description]
+         * @param  {[type]} modules_to_inject [description]
+         * @return {[type]}                   [description]
+         *
+         */
+
+        this.loadPaymentModule = function (keys) {
+            var locMappingFile = "assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentJsMappings.json";
+
+            if (!keys) {
+                keys = ['common', 'templates'];
+            }
+
+            var deferred = $q.defer();
+
+            rvBaseWebSrvV2.getJSON(locMappingFile).then(function (data) {
+                mappingList = data;
+                var promises = [], length = keys.length, i = 0;
+                if (!!mappingList) {
+                    mappingList.templates = ["/assets/payment_templates.js"];
+                    for (; i < length; i++) {
+                        promises.push($ocLazyLoad.load({serie: true, files: mappingList[keys[i]]}));
+                    }
+                    return $q.all(promises).then(function () {
+                        $ocLazyLoad.inject(['sntPay']);
+                        deferred.resolve(true);
+                    });
+
+                } else {
+                    console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
+                    deferred.reject('error');
+                }
+            }, function (error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        };
+
 }]);
