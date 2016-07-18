@@ -145,6 +145,10 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             if (to){
 
                 $scope.editData.sntValues = $scope.mappingInterface.mappingTypeRefs[to];
+                if($scope.mappingInterface.mappingTypeRefsExt[to]){
+                    $scope.editData.externalValues = $scope.mappingInterface.mappingTypeRefsExt[to];
+                }
+
             }
                $scope.hasValidSelection();
         });
@@ -180,6 +184,23 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                     }
                     $scope.mappingInterface.mappingTypeRefs[mTypeName].push(mappingTypeRefObject);
                 }
+
+                if(data.mapping_type[x].externalvalues){
+                    if(!$scope.mappingInterface.mappingTypeRefsExt){
+                        $scope.mappingInterface.mappingTypeRefsExt = [];
+                    }
+
+                    if(!$scope.mappingInterface.mappingTypeRefsExt[mTypeName]){
+                        $scope.mappingInterface.mappingTypeRefsExt[mTypeName] = [];
+                    }
+                    _.each(data.mapping_type[x].externalvalues, function(extRef){
+                        $scope.mappingInterface.mappingTypeRefsExt[mTypeName].push({
+                            value:extRef.value,
+                            description:extRef.desc
+                        });
+                    });
+                }
+
             }
 
             for (var n in data.mapping) {
