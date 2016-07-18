@@ -1,1 +1,8 @@
-<div id="paymentHome"></div>
+<div id="payment-type" class="entry full-width">
+    <label for="payment-type" translate>PAYMENT_TYPE</label>
+    <div class="select">
+        <select ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes" ng-model="selectedPaymentType">
+        	<option value="" translate>SELECT_PAYMENT_TYPE</option>
+        </select>
+    </div>
+</div>

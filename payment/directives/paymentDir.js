@@ -2,9 +2,13 @@ sntPay.directive('sntPayment', function () {
 
     return {
         restrict: 'E',
-        replace: 'true',
+        transclude: 'true',
         scope: {
-            instanceConfig: '@'
+            paymentTypes : '=',
+            selectedPaymentType : '@',
+            reservationId : '@',
+            guestId : '@',
+            amount : '@'
         },
         link: function () {
             console.log("--From Payment Module Init--");
