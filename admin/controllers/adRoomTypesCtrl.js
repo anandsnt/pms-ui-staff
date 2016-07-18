@@ -115,7 +115,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 			unwantedKeys = ["image_of_room_type"];
 		}
         if($scope.roomTypeData.is_suite){
-            $scope.roomTypeData.component_room_types = $scope.availableRoomTypes;
+            $scope.roomTypeData.component_room_types = _.reject($scope.availableRoomTypes, {"blocked_rooms_count": 0});
         }
 		var data = dclone($scope.roomTypeData, unwantedKeys);
 
