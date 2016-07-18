@@ -8,12 +8,12 @@
 <div class="info-container account-info">
 
     <span ng-if="printData.card_type === 'COMPANY'">
-        {{printData.company_card_details.name}}<br ng-if="printData.company_card_details.name" />
+        <span>{{printData.company_card_details.name}}</span><br ng-if="printData.company_card_details.name" />
         <span ng-bind-html="printData.company_card_details.address"></span>
     </span>
 
     <span ng-if="printData.card_type === 'TRAVELAGENT'">
-        {{printData.ta_card_details.name}}<br ng-if="printData.ta_card_details.name" />
+        <span>{{printData.ta_card_details.name}}</span><br ng-if="printData.ta_card_details.name" />
         <span ng-bind-html="printData.ta_card_details.address"></span>
     </span>
 
