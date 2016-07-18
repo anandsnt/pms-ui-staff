@@ -482,7 +482,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 console.log('!authAtCheckinRequired, to signature');
                 goToCardSign();
             } else {
-                amount = 0;
+                //amount = 0;//pass through the actual amount, the amount passed here adheres to the reservation setting rules (via api)
                 captureAuthorization(amount, isEmv, false);
             }
         };
