@@ -1,6 +1,6 @@
 <div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')" ng-controller="RVGuestCardCtrl" ng-click="guestCardClicked()">
     <section ng-if="!searchMode">
-        <figure class="guest-image" ng-click="switchCard('guest-card')"> 
+        <figure class="guest-image" ng-click="switchCard('guest-card')">
             <img ng-src="{{guestCardData.contactInfo.avatar}}" />
             <span class="vip" ng-show="guestCardData.contactInfo.vip">VIP</span>
         </figure>
@@ -23,14 +23,15 @@
                         <span class="switch-icon vip">VIP</span>
                     </label>
                 </div>
-                
+
             </div>
             <div class="holder data">
                 <input type="text" data-size="{{guestCardData.contactInfo.address.city.length}}" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.address.city" ng-blur="updateContactInfo()" auto-grow-field />
                 <input type="text" data-size="{{guestCardData.contactInfo.address.state.length}}" class="masked-input" ng-model="guestCardData.contactInfo.address.state" ng-blur="updateContactInfo()" auto-grow-field />
+                <input type="text" id="gc-mobile" data-size="{{guestCardData.contactInfo.mobile.length}}" class="masked-input icons icon-gc-mobile" ng-model="guestCardData.contactInfo.mobile" ng-blur="updateContactInfo()" auto-grow-field />
                 <input type="tel" data-size="{{guestCardData.contactInfo.phone.length}}" class="masked-input icons icon-gc-phone" ng-model="guestCardData.contactInfo.phone" ng-blur="updateContactInfo()" auto-grow-field />
                 <input type="text" data-size="{{guestCardData.contactInfo.email.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email" ng-blur="updateContactInfo()" auto-grow-field />
-            </div>          
+            </div>
         </form>
         <div class="card-actions" ng-show="viewState.isAddNewCard">
             <button class="button green ng-scope" type="button" ng-click="clickedSaveCard('guest')" translate="">Save new card</button>

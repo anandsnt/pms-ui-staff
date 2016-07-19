@@ -27,6 +27,20 @@ admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2',
 	            });
 	            return deferred.promise;
     	};
+    	/*
+		 * To get the available room types for suite
+		 * @return array available room types for suite
+		 */
+    	this.fetchRoomTypesAvailableForSuite = function () {
+	        var deferred = $q.defer(),
+	        url = '/admin/room_types/available_for_suite';
+	        ADBaseWebSrvV2.getJSON(url).then(function (data) {
+	            deferred.resolve(data);
+	            }, function (data) {
+	                deferred.reject(data);
+	            });
+	            return deferred.promise;
+    	};
 
 		/*
 		 * To get the details of the selected room type
