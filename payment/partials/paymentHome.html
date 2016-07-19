@@ -1,3 +1,4 @@
+<!-- Drop down to select payment method -->
 <div id="payment-type" class="entry full-width" ng-show="actionType === 'deposit'">
     <label for="payment-type" translate>PAYMENT_TYPE</label>
     <div class="select">
@@ -6,6 +7,8 @@
         </select>
     </div>
 </div>
+
+<!-- Display the selected Credit card details -->
 <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="showSelectedCard()">
     <label>Credit Card (<span>Tap to change</span>)</label>
     <label class="active-item item-payment">
@@ -16,4 +19,6 @@
         <span class="date">Date <span class="value date">{{attachedCc.expiry_date}}</span></span>
     </label>
 </div>
+
+<!-- Payment type actions. This can be add payment method addition, submit payment, deposit collection etc -->
 <div ng-include="'/assets/partials/depositPayment.html'" ng-show="actionType ==='DEPOSIT'"></div>
