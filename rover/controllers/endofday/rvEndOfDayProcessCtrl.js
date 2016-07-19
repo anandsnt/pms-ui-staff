@@ -84,6 +84,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
 
     $scope.showError = function(index){
         $scope.eodLogDetails[index].isOpened = !$scope.eodLogDetails[index].isOpened;
+        refreshScroller();
     };
 
     var fetchEodLogOfSelectedDate = function(){
