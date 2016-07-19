@@ -12,7 +12,7 @@ sntPay.controller('sntPaymentController', function($scope,sntPaymentSrv,ngDialog
 
   	$scope.shouldHidePayMentButton = function(){
   		var paymentType = $scope.selectedPaymentType;
-  		return (paymentType === '' || paymentType === null || $scope.hasPermissionToMakePayment);
+  		return (paymentType === '' || paymentType === null || !$scope.hasPermissionToMakePayment);
   	};
 
 
