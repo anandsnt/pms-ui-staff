@@ -2,7 +2,7 @@ module.exports = function (gulp, $, options) {
 
     var DEST_ROOT_PATH = options['DEST_ROOT_PATH'],
         URL_APPENDER = options['URL_APPENDER'],
-        PAYMENT_TEMPLATES_FILE = 'payment_templates.js',
+        PAYMENT_TEMPLATES_FILE = options['PAYMENT_TEMPLATES_FILE'],
         PAYMENT_TEMPLATE_ROOT = options['PAYMENT_TEMPLATE_ROOT'],
         PAYMENT_PARTIALS = ['**/*.html'],
         PAYMENT_TEMPLTE_MANFEST_FILE = options['PAYMENT_TEMPLTE_MANFEST_FILE'],

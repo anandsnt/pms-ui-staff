@@ -6,6 +6,7 @@ module.exports = function (gulp, $, options) {
 
     _options.PAYMENT_JS_MANIFEST_FILE =  "payment_js_manifest.json";
     _options.PAYMENT_TEMPLTE_MANFEST_FILE = "payment_template_manifest.json";
+    _options.PAYMENT_TEMPLATES_FILE = 'payment_templates.js';
     _options.MANIFEST_DIR = MANIFEST_DIR;
 
     require('./payment/payment_js_gulp')(gulp, $, _options);
@@ -22,7 +23,8 @@ module.exports = function (gulp, $, options) {
     var createJSONFileForLazyLoading = function () {
         var edit = require('gulp-json-editor'), 
             es = require('event-stream'),
-            fs = require('fs');
+            fs = require('fs'),
+            $q = require('q');
 
         var jsJsonFileContent = {};
         var jsJsonFile = gulp.src(MANIFEST_DIR + _options.PAYMENT_JS_MANIFEST_FILE)
@@ -39,7 +41,23 @@ module.exports = function (gulp, $, options) {
                         }));
 
         return es.merge(jsJsonFile).on('end', function(data) {
-            console.log(templateJsonFileContent, jsJsonFileContent);
+            var deferred = $q.defer();
+
+            var fileContent = {
+                js: jsJsonFileContent,
+                template: templateJsonFileContent[_options.PAYMENT_TEMPLATES_FILE]
+            }
+
+            var newJsonFileName = '../../public/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json';
+
+            fs.writeFile(newJsonFileName, JSON.stringify(fileContent), function(err) {
+                if(err) {
+                    return console.error('rover JS mapping file failed!! (' + err + ')');
+                }
+                console.log('rover JS mapping file created ( )');
+                deferred.resolve();
+            });
+            return deferred.promise;
         });
     };
 
