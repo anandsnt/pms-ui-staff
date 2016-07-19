@@ -19,6 +19,9 @@ angular.module('sharedHttpInterceptor', []).factory('sharedHttpInterceptor', [
         if(response.data.is_eod_failed){
             $rootScope.isEodProcessFailed = true;
         };
+        if(response.data.is_eod_process_running){
+            $rootScope.isEodProcessRunning = true;
+        };
         return response || $q.when(response);
     },
     responseError: function(rejection) {
