@@ -52,7 +52,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
          */
 
         this.loadPaymentModule = function (keys) {
-            var locMappingFile = "assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentJsMappings.json";
+            var locMappingFile = "/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentJsMappings.json";
 
             if (!keys) {
                 keys = ['common', 'templates'];
@@ -61,12 +61,11 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
             var deferred = $q.defer();
 
             rvBaseWebSrvV2.getJSON(locMappingFile).then(function (data) {
-                mappingList = data;
                 var promises = [], length = keys.length, i = 0;
-                if (!!mappingList) {
-                    mappingList.templates = ["/assets/payment_templates.js"];
+                if (!!data) {
+                    data.templates = ["/assets/payment_templates.js"];
                     for (; i < length; i++) {
-                        promises.push($ocLazyLoad.load({serie: true, files: mappingList[keys[i]]}));
+                        promises.push($ocLazyLoad.load({serie: true, files: data[keys[i]]}));
                     }
                     return $q.all(promises).then(function () {
                         $ocLazyLoad.inject(['sntPay']);
