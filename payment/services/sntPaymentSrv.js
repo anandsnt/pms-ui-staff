@@ -1,4 +1,4 @@
-sntPay.service('paymentSrv', ['$q', '$http',
+sntPay.service('sntPaymentSrv', ['$q', '$http',
 	function($q, $http) {
 
 		this.submitPaymentOnBill = function(dataToSrv) {
@@ -14,7 +14,7 @@ sntPay.service('paymentSrv', ['$q', '$http',
 			var url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
 			//to do
 			var pollToTerminal = function(async_callback_url) {
-				
+
 			};
 			return deferred.promise;
 		};

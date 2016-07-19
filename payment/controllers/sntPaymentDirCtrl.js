@@ -1,4 +1,4 @@
-sntPay.controller('sntPaymentController', function($scope,paymentSrv) {
+sntPay.controller('sntPaymentController', function($scope,sntPaymentSrv) {
 
 	var zeroAmount = parseFloat("0.00");
 

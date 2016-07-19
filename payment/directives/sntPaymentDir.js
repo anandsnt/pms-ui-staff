@@ -20,7 +20,7 @@ sntPay.directive('sntPayment', function() {
         link: function() {
             console.log("--From Payment Module Init--");
         },
-        templateUrl: "/assets/partials/paymentHome.html",
+        templateUrl: "/assets/partials/sntPaymentHome.html",
         controller: 'sntPaymentController'
     };
 
