@@ -143,14 +143,16 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         $scope.$watch('editData.mapping_type_value',function(to, fm, evt){
             if (to){
-
                 $scope.editData.sntValues = $scope.mappingInterface.mappingTypeRefs[to];
-                if($scope.mappingInterface.mappingTypeRefsExt[to]){
+                // In case external values list has been obtained for this mapping type refer to the list
+                if ($scope.mappingInterface.mappingTypeRefsExt && $scope.mappingInterface.mappingTypeRefsExt[to]) {
                     $scope.editData.externalValues = $scope.mappingInterface.mappingTypeRefsExt[to];
+                }else{
+                    $scope.editData.externalValues = null;
                 }
-
             }
-               $scope.hasValidSelection();
+
+            $scope.hasValidSelection();
         });
 
 
@@ -185,7 +187,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                     $scope.mappingInterface.mappingTypeRefs[mTypeName].push(mappingTypeRefObject);
                 }
 
-                if(data.mapping_type[x].externalvalues){
+                if(_.isArray(data.mapping_type[x].extvalues) && data.mapping_type[x].extvalues.length > 0){
                     if(!$scope.mappingInterface.mappingTypeRefsExt){
                         $scope.mappingInterface.mappingTypeRefsExt = [];
                     }
@@ -193,10 +195,10 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                     if(!$scope.mappingInterface.mappingTypeRefsExt[mTypeName]){
                         $scope.mappingInterface.mappingTypeRefsExt[mTypeName] = [];
                     }
-                    _.each(data.mapping_type[x].externalvalues, function(extRef){
+                    _.each(data.mapping_type[x].extvalues, function(extRef){
                         $scope.mappingInterface.mappingTypeRefsExt[mTypeName].push({
-                            value:extRef.value,
-                            description:extRef.desc
+                            name:extRef.value,
+                            description:extRef.description
                         });
                     });
                 }
