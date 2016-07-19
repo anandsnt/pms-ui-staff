@@ -10,6 +10,7 @@ sntPay.directive('sntPayment', function() {
             billId : '@',
             amount: '@',
             feeData: '=',
+            linkedCreditCards: '=',
             attachedCc: '=',
             actionType: '@',
             depositPolicyName: '=',

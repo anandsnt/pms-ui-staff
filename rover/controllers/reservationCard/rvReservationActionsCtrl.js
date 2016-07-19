@@ -149,7 +149,7 @@ sntRover.controller('reservationActionsController', [
 				ngDialog.open({
 					template: '/assets/partials/reservationCard/rvReservationDepositPopup.html',
 					className: '',
-					controller: 'RVReservationDepositController',
+					controller: 'rvReservationPendingDepositController',
 					scope: $scope,
 					closeByDocument: false,
 					closeByEscape: false
