@@ -1,7 +1,7 @@
-<div id="payment-type" class="entry full-width">
+<div id="payment-type" class="entry full-width" ng-show="actionType === 'deposit'">
     <label for="payment-type" translate>PAYMENT_TYPE</label>
     <div class="select">
-        <select ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes" ng-model="selectedPaymentType">
+        <select ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes" ng-model="selectedPaymentType" ng-change="paymentTypeChanged()">
             <option value="" translate>SELECT_PAYMENT_TYPE</option>
         </select>
     </div>
@@ -16,3 +16,4 @@
         <span class="date">Date <span class="value date">{{attachedCc.expiry_date}}</span></span>
     </label>
 </div>
+<div ng-include="'/assets/partials/depositPayment.html'" ng-show="actionType ==='DEPOSIT'"></div>

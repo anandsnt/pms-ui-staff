@@ -12,8 +12,16 @@
 
               <!--  <div ng-init="isReservationDeposit = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div> -->
 
-               <snt-payment payment-types="passData.details.paymentTypes" 
-               selected-payment-type="depositData.paymentType" attached-cc="depositDetails.attached_card"></snt-payment>
+               <snt-payment 
+                   payment-types="passData.details.paymentTypes" 
+                   selected-payment-type="depositData.paymentType" 
+                   attached-cc="depositDetails.attached_card" 
+                   amount='12' 
+                   fee-data="feeData" 
+                   action-type="DEPOSIT" 
+                   deposit-policy-name="depositPolicyName" 
+                   currency-symbol="currencySymbol" 
+                   is-deposit-editable='true'></snt-payment>
 
                 <!-- Card Input type - output only if Six Payments and payment type is CC -->
                 <div class="entry" ng-show="paymentGateway === 'sixpayments' && depositData.paymentType ==='CC' && !showCCPage">
@@ -35,7 +43,7 @@
             <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="showCCPage"></div>
 
             <!-- Fields -->
-            <div class="notice deposit" ng-hide="showDepositNotice()"><!-- showCCPage || depositInProcess || depositPaidSuccesFully -->
+           <!--  <div class="notice deposit" ng-hide="showDepositNotice()">
                 <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
                 <div class="entry full-width" ng-class="{'amount': isShowFees()}">
                     <input ng-show="depositData.paymentType === 'GIFT_CARD'" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
@@ -62,7 +70,7 @@
                     </span>
                 </div>
                 <!-- Reference field - use only when it exsits -->
-                <div class="entry full-width reference" ng-show="isDisplayReference">
+               <!--  <div class="entry full-width reference" ng-show="isDisplayReference">
                     <label for="reference">Reference</label>
                     <input name="reference" id="reference" ng-model="reservationData.referanceText" type="text" />
                 </div>
@@ -71,7 +79,7 @@
                     <button type="button" class="button blue" ng-if="depositDetails.isFromCheckin"  ng-hide="depositData.paymentType ==='' || depositData.paymentType === null"ng-click="proceedCheckin()">Pay deposit later</button>
                     <button type="button" class="button green" ng-hide="shouldHidePayNowButtonInPopUp()" ng-click="payDeposit()">Pay deposit now</button>
                 </div>
-            </div>
+            </div> --> 
 
             <!-- Success feedback -->
             <div class="feedback no-top-border" ng-show="depositPaidSuccesFully">
