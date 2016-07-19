@@ -20,7 +20,7 @@ module.exports = function (gulp, $, options) {
         var glob   = require('glob-all'),
             fs     = require('fs'),
             es     = require('event-stream'),
-            mkdirp = require('mkdirp');
+            mkdirp = require('mkdirp'),
             $q     = require('q');
 
         var deferred = $q.defer();
@@ -32,9 +32,9 @@ module.exports = function (gulp, $, options) {
             } else {
                 console.log('rover JS mapping directory created (' + paymentGeneratedDir + ')');
             }
-            
-            fs.writeFile(paymentGeneratedFile, JSON.stringify(extendedMappings), function(err) {
-                if(err) {
+
+            fs.writeFile(paymentGeneratedFile, JSON.stringify(extendedMappings), function (err) {
+                if (err) {
                     return console.error('rover JS mapping file failed!! (' + err + ')');
                 }
                 console.log('rover JS mapping file created (' + paymentGeneratedFile + ')');
@@ -56,28 +56,30 @@ module.exports = function (gulp, $, options) {
 
             var fileName = paymentProvider + ".min.js";
 
-            return gulp.src(PAYMENT_JS_LIST[paymentProvider], { base: '.' })
+            return gulp.src(PAYMENT_JS_LIST[paymentProvider], {base: '.'})
                 .pipe($.jsvalidate())
                 .pipe($.babel())
                 .pipe($.concat(fileName))
                 .on('error', onError)
                 .pipe($.ngAnnotate({single_quotes: true, debug: true}))
                 .on('error', onError)
-                .pipe($.uglify({compress: { drop_console: true }, output: {
-                    space_colon: false
-                }}))
+                .pipe($.uglify({
+                    compress: {drop_console: true}, output: {
+                        space_colon: false
+                    }
+                }))
                 .on('error', onError)
                 .pipe($.rev())
-                .pipe(gulp.dest(DEST_ROOT_PATH + 'payment'), { overwrite: true })
+                .pipe(gulp.dest(DEST_ROOT_PATH + 'payment'), {overwrite: true})
                 .pipe($.rev.manifest(PAYMENT_JS_MANIFEST_FILE))
-                .pipe(edit(function(manifest){
+                .pipe(edit(function (manifest) {
                     Object.keys(manifest).forEach(function (path, orig) {
                         extendedMappings[paymentProvider] = [URL_APPENDER + "/" + manifest[path]];
                     });
-                    console.log ('Payment mapping mapping-generation-end: ' + paymentProvider);
+                    console.log('Payment mapping mapping-generation-end: ' + paymentProvider);
                     return extendedMappings;
                 }))
-                .pipe(gulp.dest(MANIFEST_DIR), { overwrite: true });
+                .pipe(gulp.dest(MANIFEST_DIR), {overwrite: true});
         });
 
         return es.merge(tasks);
@@ -91,22 +93,20 @@ module.exports = function (gulp, $, options) {
             es = require('event-stream'),
             stream = require('merge-stream'),
             edit = require('gulp-json-editor');
+        var filesList = _.reduce(PAYMENT_JS_LIST, function (a, b) {
+            return a.concat(b);
+        }, []);
 
         var tasks = Object.keys(PAYMENT_JS_LIST).map(function (paymentProvider) {
 
-            var filesList = _.reduce(PAYMENT_JS_LIST, function (a, b) {
-                return a.concat(b);
-            }, []);
-            for (var listName in PAYMENT_JS_LIST){
-                extendedMappings[listName] = glob.sync(PAYMENT_JS_LIST[listName]).map(function(e){
-                    return URL_APPENDER + '/' + e;
-                });
-            }
+            extendedMappings[paymentProvider] = glob.sync(PAYMENT_JS_LIST[paymentProvider]).map(function (e) {
+                return URL_APPENDER + '/' + e;
+            });
 
-            return gulp.src(filesList, { base: '.' })
+            return gulp.src(filesList, {base: '.'})
                 .pipe($.jsvalidate())
                 .pipe($.babel())
-                .pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
+                .pipe(gulp.dest(DEST_ROOT_PATH), {overwrite: true});
         });
 
         return es.merge(tasks);
