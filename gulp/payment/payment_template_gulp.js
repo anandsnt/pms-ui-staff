@@ -5,8 +5,8 @@ module.exports = function (gulp, $, options) {
         PAYMENT_TEMPLATES_FILE = 'payment_templates.js',
         PAYMENT_TEMPLATE_ROOT = options['PAYMENT_TEMPLATE_ROOT'],
         PAYMENT_PARTIALS = ['**/*.html'],
-        PAYMENT_TEMPLTE_MANFEST_FILE = "payment_template_manifest.json",
-        MANIFEST_DIR =  __dirname + "/manifests/",
+        PAYMENT_TEMPLTE_MANFEST_FILE = options['PAYMENT_TEMPLTE_MANFEST_FILE'],
+        MANIFEST_DIR =  options['MANIFEST_DIR'],
         MODULE_NAME = 'sntPay';
 
 

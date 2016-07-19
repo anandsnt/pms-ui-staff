@@ -2,11 +2,11 @@ module.exports = function (gulp, $, options) {
 
     var DEST_ROOT_PATH = options['DEST_ROOT_PATH'],
         URL_APPENDER = options['URL_APPENDER'],
-        MANIFEST_DIR = __dirname + "/manifests/",
+        MANIFEST_DIR = options['MANIFEST_DIR'],
         PAYMENT_JS_COMBINED_FILE = 'payment.js',
         PAYMENT_TEMPLATE_ROOT = options['PAYMENT_TEMPLATE_ROOT'],
         PAYMENT_HTML_FILE = options['PAYMENT_HTML_FILE'],
-        PAYMENT_JS_MANIFEST_FILE = "payment_js_manifest.json",
+        PAYMENT_JS_MANIFEST_FILE = options['PAYMENT_JS_MANIFEST_FILE'],
         onError = options.onError,
         runSequence = require('run-sequence'),
         extendedMappings = {},
@@ -69,14 +69,15 @@ module.exports = function (gulp, $, options) {
                 .on('error', onError)
                 .pipe($.rev())
                 .pipe(gulp.dest(DEST_ROOT_PATH + 'payment'), { overwrite: true })
-                .pipe($.rev.manifest())
+                .pipe($.rev.manifest(PAYMENT_JS_MANIFEST_FILE))
                 .pipe(edit(function(manifest){
                     Object.keys(manifest).forEach(function (path, orig) {
                         extendedMappings[paymentProvider] = [URL_APPENDER + "/" + manifest[path]];
                     });
                     console.log ('Payment mapping mapping-generation-end: ' + paymentProvider);
                     return extendedMappings;
-                }));
+                }))
+                .pipe(gulp.dest(MANIFEST_DIR), { overwrite: true });
         });
 
         return es.merge(tasks);
