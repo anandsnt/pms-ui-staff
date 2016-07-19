@@ -14,7 +14,8 @@ angular.module('sharedHttpInterceptor', []).factory('sharedHttpInterceptor', [
     response: function (response) {
         // if manual bussiness date change is in progress alert user.
         if(response.data.is_eod_in_progress && !$rootScope.isCurrentUserChangingBussinessDate){
-           $rootScope.$emit('bussinessDateChangeInProgress');
+          $rootScope.isEodRunning = true;
+          $rootScope.$emit('bussinessDateChangeInProgress');
         };
         if(response.data.is_eod_failed){
             $rootScope.isEodProcessFailed = true;
