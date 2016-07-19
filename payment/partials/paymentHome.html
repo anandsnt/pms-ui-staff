@@ -2,7 +2,17 @@
     <label for="payment-type" translate>PAYMENT_TYPE</label>
     <div class="select">
         <select ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes" ng-model="selectedPaymentType">
-        	<option value="" translate>SELECT_PAYMENT_TYPE</option>
+            <option value="" translate>SELECT_PAYMENT_TYPE</option>
         </select>
     </div>
+</div>
+<div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="showSelectedCard()">
+    <label>Credit Card (<span>Tap to change</span>)</label>
+    <label class="active-item item-payment">
+        <figure class="card-logo">
+            <img ng-src="/assets/images/{{attachedCc.card_code.toLowerCase()}}.png" alt="" />
+        </figure>
+        <span class="number">Ending with <span class="value number">{{attachedCc.ending_with}}</span></span>
+        <span class="date">Date <span class="value date">{{attachedCc.expiry_date}}</span></span>
+    </label>
 </div>

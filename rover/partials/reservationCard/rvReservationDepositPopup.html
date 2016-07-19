@@ -13,14 +13,14 @@
               <!--  <div ng-init="isReservationDeposit = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div> -->
 
                <snt-payment payment-types="passData.details.paymentTypes" 
-               selected-payment-type="depositData.paymentType"></snt-payment>
+               selected-payment-type="depositData.paymentType" attached-cc="depositDetails.attached_card"></snt-payment>
 
                 <!-- Card Input type - output only if Six Payments and payment type is CC -->
                 <div class="entry" ng-show="paymentGateway === 'sixpayments' && depositData.paymentType ==='CC' && !showCCPage">
                    <div ng-include="'/assets/partials/payment/rvSixPayCardInput.html'"></div>
                 </div>
             <!-- Selected card - Show when card is selected/added -->
-            <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="showSelectedCard()">
+            <!-- <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="showSelectedCard()">
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label id="pay-with-jcb" class="active-item item-payment">
                     <figure class="card-logo">
@@ -29,7 +29,7 @@
                     <span class="number">Ending with <span class="value number">{{depositData.cardNumber}}</span></span>
                     <span class="date">Date <span class="value date">{{depositData.expiry_date}}</span></span>
                 </label>
-            </div>
+            </div> -->
 
             <!-- Existing / new CC - Hide everything else when showing this. Output only if payment type is CC, hide if Card input type is set to C&P -->
             <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="showCCPage"></div>
