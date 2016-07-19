@@ -57,10 +57,10 @@
 		                <div class="number-input">
 		                    <input type="number" value="{{roomTypes.blocked_rooms_count}}" ng-model="roomTypes.blocked_rooms_count" limit-input-range="{from: 0, to: {{roomTypes.rooms_count}}, zeroPrefix: false}"/>
 		                    <div class="buttons">
-		                        <!-- On click move the count up by 1 -->
+
 		                        <button type="button" class="icons icon-mover-right" ng-click="incrementBlockedRoomTypesCount(roomTypes.id)" ng-class="{'disabled': !isComponentUpArrowEnabled}">
 		                        </button>
-		                        <!-- on click move the count down by 1 (until 0) -->
+
 		                        <button type="button" class="icons icon-mover-left" ng-click="decrementBlockedRoomTypesCount(roomTypes.id)" ng-class="{'disabled': !isComponentDownArrowEnabled}">
 		                        </button>
 		                    </div>
