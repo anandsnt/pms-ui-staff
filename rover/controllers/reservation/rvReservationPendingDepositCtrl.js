@@ -22,17 +22,15 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		$scope.successMessage = "";
 		$scope.authorizedCode = "";
 
-		$scope.depositData = {};
+	
 		$scope.isReservationRateSuppressed = $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates;
-		$scope.depositData.paymentType = ($scope.reservationData.reservation_card.payment_method_used) ? $scope.reservationData.reservation_card.payment_method_used : "";
+		$scope.paymentType = ($scope.reservationData.reservation_card.payment_method_used) ? $scope.reservationData.reservation_card.payment_method_used : "";
 		$scope.isDepositEditable = ($scope.depositDetails.deposit_policy.allow_deposit_edit !== null && $scope.depositDetails.deposit_policy.allow_deposit_edit) ? true : false;
 		$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
+		$scope.depositAmount = parseFloat($scope.depositDetails.deposit_amount).toFixed(2);
 
-		$scope.reservationData = {};
-		$scope.reservationData.referanceText = "";
-		$scope.reservationData.depositAmount = parseFloat($scope.depositDetails.deposit_amount).toFixed(2);
 
-		$scope.closeDepositPopup = function() {
+		var closeDepositPopup = function() {
 			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", false);
 			//to add stjepan's popup showing animation
 			$rootScope.modalOpened = false;
@@ -41,22 +39,23 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			}, 250);
 
 		};
-		/**
-		 * function to check whether the user has permission
-		 * to make payment
-		 * @return {Boolean}
-		 */
-		$scope.hasPermissionToMakePayment = function() {
-			return rvPermissionSrv.getPermissionValue('MAKE_PAYMENT');
-		};
 
-		$scope.proceedCheckin = function() {
-			if($scope.depositDetails.$parent.isFromCheckin){
+		$scope.$on('PAY_LATER',function(){
+			if($scope.depositDetails.isFromCheckin){
 				$scope.$emit("PROCEED_CHECKIN");
 			}
 			else{
 				//do nothing
 			};
+			closeDepositPopup();
+		});
+		
+		$scope.hasPermissionToMakePayment = function() {
+			return rvPermissionSrv.getPermissionValue('MAKE_PAYMENT');
+		};
+
+		$scope.proceedCheckin = function() {
+			$scope.$emit("PROCEED_CHECKIN");
 			$scope.closeDialog();	
 		};
 

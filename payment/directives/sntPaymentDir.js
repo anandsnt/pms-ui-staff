@@ -16,7 +16,8 @@ sntPay.directive('sntPayment', function() {
             depositPolicyName: '=',
             isDepositEditable : '=',
             currencySymbol : '=',
-            isReservationRateSuppressed : '='
+            isReservationRateSuppressed : '=',
+            hasPermissionToMakePayment : '='
         },
         link: function() {
             console.log("--From Payment Module Init--");

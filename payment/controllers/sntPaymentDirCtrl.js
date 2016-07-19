@@ -10,9 +10,14 @@ sntPay.controller('sntPaymentController', function($scope,sntPaymentSrv,ngDialog
 		return isCCPresent;
 	};
 
+  	$scope.shouldHidePayMentButton = function(){
+  		var paymentType = $scope.selectedPaymentType;
+  		return (paymentType === '' || paymentType === null || $scope.hasPermissionToMakePayment);
+  	};
 
-	$scope.closeDialog = function(){
-		ngDialog.close();
+
+	$scope.payLater = function(){
+		$scope.$emit('PAY_LATER');
 	};
 
 	var initiate = function(){

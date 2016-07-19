@@ -37,8 +37,8 @@
     </div> -->
     <div class="actions">
         <!-- need to check what is difference -->
-        <button type="button" class="button blue" ng-if="!depositDetails.isFromCheckin" ng-hide="depositData.paymentType ==='' || depositData.paymentType === null" ng-click="closeDialog()">Pay deposit later</button>
-        <button type="button" class="button blue" ng-if="depositDetails.isFromCheckin" ng-hide="depositData.paymentType ==='' || depositData.paymentType === null" ng-click="proceedCheckin()">Pay deposit later</button>
+        <button type="button" class="button blue" ng-if="!depositDetails.isFromCheckin" ng-hide="selectedPaymentType ==='' || selectedPaymentType === null" ng-click="payLater()">Pay deposit later</button>
+        <button type="button" class="button blue" ng-if="depositDetails.isFromCheckin" ng-hide="selectedPaymentType ==='' || selectedPaymentType === null" ng-click="proceedCheckin()">Pay deposit later</button>
         <button type="button" class="button green" ng-hide="shouldHidePayNowButtonInPopUp()" ng-click="payDeposit()">Pay deposit now</button>
     </div>
 </div>
