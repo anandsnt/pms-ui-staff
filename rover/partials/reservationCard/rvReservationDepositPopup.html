@@ -12,14 +12,23 @@
 
               <!--  <div ng-init="isReservationDeposit = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div> -->
 
-               <snt-payment payment-types="passData.details.paymentTypes" selected-payment-type="CA"></snt-payment>
+               <snt-payment 
+                   payment-types="passData.details.paymentTypes" 
+                   selected-payment-type="depositData.paymentType" 
+                   attached-cc="depositDetails.attached_card" 
+                   amount='12' 
+                   fee-data="feeData" 
+                   action-type="DEPOSIT" 
+                   deposit-policy-name="depositPolicyName" 
+                   currency-symbol="currencySymbol" 
+                   is-deposit-editable='true'></snt-payment>
 
                 <!-- Card Input type - output only if Six Payments and payment type is CC -->
                 <div class="entry" ng-show="paymentGateway === 'sixpayments' && depositData.paymentType ==='CC' && !showCCPage">
                    <div ng-include="'/assets/partials/payment/rvSixPayCardInput.html'"></div>
                 </div>
             <!-- Selected card - Show when card is selected/added -->
-            <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="showSelectedCard()">
+            <!-- <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="showSelectedCard()">
                 <label>Credit Card (<span>Tap to change</span>)</label>
                 <label id="pay-with-jcb" class="active-item item-payment">
                     <figure class="card-logo">
@@ -28,13 +37,13 @@
                     <span class="number">Ending with <span class="value number">{{depositData.cardNumber}}</span></span>
                     <span class="date">Date <span class="value date">{{depositData.expiry_date}}</span></span>
                 </label>
-            </div>
+            </div> -->
 
             <!-- Existing / new CC - Hide everything else when showing this. Output only if payment type is CC, hide if Card input type is set to C&P -->
             <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="showCCPage"></div>
 
             <!-- Fields -->
-            <div class="notice deposit" ng-hide="showDepositNotice()"><!-- showCCPage || depositInProcess || depositPaidSuccesFully -->
+           <!--  <div class="notice deposit" ng-hide="showDepositNotice()">
                 <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
                 <div class="entry full-width" ng-class="{'amount': isShowFees()}">
                     <input ng-show="depositData.paymentType === 'GIFT_CARD'" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
@@ -61,7 +70,7 @@
                     </span>
                 </div>
                 <!-- Reference field - use only when it exsits -->
-                <div class="entry full-width reference" ng-show="isDisplayReference">
+               <!--  <div class="entry full-width reference" ng-show="isDisplayReference">
                     <label for="reference">Reference</label>
                     <input name="reference" id="reference" ng-model="reservationData.referanceText" type="text" />
                 </div>
@@ -70,7 +79,7 @@
                     <button type="button" class="button blue" ng-if="depositDetails.isFromCheckin"  ng-hide="depositData.paymentType ==='' || depositData.paymentType === null"ng-click="proceedCheckin()">Pay deposit later</button>
                     <button type="button" class="button green" ng-hide="shouldHidePayNowButtonInPopUp()" ng-click="payDeposit()">Pay deposit now</button>
                 </div>
-            </div>
+            </div> --> 
 
             <!-- Success feedback -->
             <div class="feedback no-top-border" ng-show="depositPaidSuccesFully">
