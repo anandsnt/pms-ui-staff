@@ -1359,3 +1359,38 @@ div.move-all-icons{
 .bold{
         font-weight: bold;
     }
+
+.scrollable {
+    width: 100%;
+    overflow: hidden;
+    -ms-touch-action: none;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -o-text-size-adjust: none;
+    text-size-adjust: none
+}
+
+.scrollable .wrapper {
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0)
+}
+
+.iScrollVerticalScrollbar {
+    position: absolute;
+    width: 4px;
+    top: 20px;
+    right: 5px;
+    bottom: 20px;
+    z-index: 99;
+    
+    .iScrollIndicator {
+        position: absolute;
+        width: 100%;
+        background: rgba(0,0,0,.1);
+        #border-radius > .rounded(4px);
+    }
+}
