@@ -51,10 +51,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 				params.postData.reference_text = $scope.payment.referenceText;
 			}
 
-			//to do
-			//handle fees and ref text
-
 			$scope.$emit('showLoader');
+
 			sntPaymentSrv.submitPayment(params).then(function(response) {
 					console.log("payment success" + $scope.payment.amount);
 					response.amountPaid = $scope.payment.amount;
@@ -70,7 +68,6 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 					$scope.$emit('PAYMENT_FAILED', errorMessage);
 					$scope.$emit('hideLoader');
 				});
-
 		};
 	};
 
@@ -100,17 +97,15 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 	//------------------------------------------------------------------------------------------------------------------
 	//
 	//------------------------------------------------------------------------------------------------------------------
-	var initiate = function() {
-		$scope.onPaymentInfoChange();
-		$scope.actionType = !!$scope.actionType ? $scope.actionType : 'DEFAULT';
 
-		console.log("initiate");
+	(function() {
+		$scope.actionType = !!$scope.actionType ? $scope.actionType : 'DEFAULT';
 
 		$scope.payment.amount = $scope.amount || 0;
 		$scope.payment.isRateSuppressed = $scope.isRateSuppressed || false;
 		$scope.payment.isEditable = $scope.isEditable || false;
 
-	}();
-
+		$scope.onPaymentInfoChange();
+	})();
 
 });
