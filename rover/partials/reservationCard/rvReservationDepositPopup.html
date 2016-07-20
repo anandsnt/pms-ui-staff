@@ -6,7 +6,19 @@
         <strong class="h2 message" ng-show="!errorOccured && !depositPaidSuccesFully">Deposit required</strong>
         <div class="payment-form">
             <!-- below is the payment directive -->
-            <snt-payment reservation-id="{{reservationId}}" payment-types="passData.details.paymentTypes" selected-payment-type="paymentType" attached-cc="depositDetails.attached_card" amount='depositAmount' fee-data="feeData" action-type="DEPOSIT" deposit-policy-name="depositPolicyName" currency-symbol="currencySymbol" is-deposit-editable='true' has-permission-to-make-payment='hasPermissionToMakePayment()' form-template-url='/assets/partials/reservationCard/rvSntDepositPayment.html' ng-show="!errorOccured && !depositPaidSuccesFully">
+            <snt-payment reservation-id="{{reservationId}}" 
+                payment-types="passData.details.paymentTypes" 
+                selected-payment-type="paymentType" 
+                attached-cc="depositDetails.attached_card" 
+                amount='depositAmount' 
+                action-type="DEPOSIT" 
+                deposit-policy-name="depositPolicyName" 
+                currency-symbol="currencySymbol" 
+                is-editable='isDepositEditable'
+                is-rate-suppressed='isReservationRateSuppressed' 
+                has-permission='hasPermissionToMakePayment()' 
+                form-template-url='/assets/partials/reservationCard/rvSntDepositPayment.html' 
+                ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
             <!-- Deposit payment successfully -->
             <div class="feedback no-top-border" ng-show="depositPaidSuccesFully">
@@ -15,11 +27,11 @@
                     <li ng-show="authorizedCode !==''">
                         Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
                     </li>
-                    <li ng-if="isShowFees()">
-                        Amount paid: <span class="value"> {{currencySymbol}}{{depositAmount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                    <li ng-if="feePaid">
+                        Amount paid: <span class="value"> {{currencySymbol}}{{depositAmount}} + {{currencySymbol}}{{feePaid}} fee
                         </span>
                     </li>
-                    <li ng-if="!isShowFees()">
+                    <li ng-if="!feePaid">
                         Amount paid: <span class="value"> {{currencySymbol}}{{depositAmount}}
                         </span>
                     </li>

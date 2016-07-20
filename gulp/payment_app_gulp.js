@@ -44,7 +44,7 @@ module.exports = function (gulp, $, options) {
             
             var fileContent = {
                 js: jsJsonFileContent,
-                template: _options.PAYMENT_TEMPLATES_FILE
+                template: [_options.URL_APPENDER + "/" + _options.PAYMENT_TEMPLATES_FILE]
             }
 
             fs.writeFile(newJsonFileName, JSON.stringify(fileContent), function(err) {
@@ -95,7 +95,7 @@ module.exports = function (gulp, $, options) {
             
             var fileContent = {
                 js: jsJsonFileContent,
-                template: templateJsonFileContent[_options.PAYMENT_TEMPLATES_FILE]
+                template: [_options.URL_APPENDER + "/" +templateJsonFileContent[_options.PAYMENT_TEMPLATES_FILE]]
             }
 
             fs.writeFile(newJsonFileName, JSON.stringify(fileContent), function(err) {

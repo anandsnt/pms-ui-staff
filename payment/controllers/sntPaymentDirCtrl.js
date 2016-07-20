@@ -1,32 +1,34 @@
 sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
+	// TODO: Fetch All cards for the guest ID
 
 	$scope.payment = {
-		reference_text: "",
-		amount: 0
+		referenceText: "",
+		amount: 0,
+		isRateSuppressed: false,
+		isEditable: false,
+		addToGuestCard: false
 	};
 
-	$scope.addToGuestCard = false;
-	$scope.depositData = {};
-	$scope.depositData.amount = angular.copy($scope.amount);
 	$scope.showSelectedCard = function() {
 		//below condition may be modified wrt payment gateway and all
 		var isCCPresent = ($scope.selectedPaymentType === "CC" && $scope.attachedCc.ending_with.length > 0);
 		return isCCPresent;
 	};
 
-	$scope.shouldHidePayMentButton = function() {
-		var paymentType = $scope.selectedPaymentType;
-		return (paymentType === '' || paymentType === null || !$scope.hasPermissionToMakePayment);
+	$scope.shouldHidePaymentButton = function() {
+		return !$scope.selectedPaymentType || !$scope.hasPermission;
 	};
 
+	//------------------------------------------------------------------------------------------------------------------
+	//
+	//------------------------------------------------------------------------------------------------------------------
 
 	$scope.payLater = function() {
 		$scope.$emit('PAY_LATER');
 	};
 
-	$scope.submitPaymentForReservation = function() {
-
-		if ($scope.depositData.amount === '' || $scope.depositData.amount === null) {
+	$scope.submitPayment = function() {
+		if ($scope.payment.amount === '' || $scope.payment.amount === null) {
 			$scope.$emit('NO_AMOUNT_NOTIFICATION');
 		} else {
 			var payment_type_id = null;
@@ -46,7 +48,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 			};
 
 			if ($scope.isDisplayRef) {
-				params.postData.reference_text = $scope.payment.reference_text;
+				params.postData.reference_text = $scope.payment.referenceText;
 			}
 
 			//to do
@@ -54,12 +56,17 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 
 			$scope.$emit('showLoader');
 			sntPaymentSrv.submitPayment(params).then(function(response) {
-					response.depositAmount = $scope.depositData.amount;
-					response.feesAmount = 0;
+					console.log("payment success" + $scope.payment.amount);
+					response.amountPaid = $scope.payment.amount;
+					// NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
+					if ($scope.feeData) {
+						response.feePaid = $scope.feeData.calculatedFee;
+					}
 					$scope.$emit('PAYMENT_SUCCESS', response);
 					$scope.$emit('hideLoader');
 				},
 				function(errorMessage) {
+					console.log("payment success" + $scope.payment.amount);
 					$scope.$emit('PAYMENT_FAILED', errorMessage);
 					$scope.$emit('hideLoader');
 				});
@@ -74,7 +81,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 				name: $scope.selectedPaymentType
 			}),
 			feeInfo = selectedPaymentType && selectedPaymentType.charge_code && selectedPaymentType.charge_code.fees_information || {},
-			currFee = sntPaymentSrv.calculateFee($scope.depositData.amount, feeInfo);
+			currFee = sntPaymentSrv.calculateFee($scope.payment.amount, feeInfo);
 
 		$scope.isDisplayRef = selectedPaymentType && selectedPaymentType.is_display_reference;
 
@@ -86,13 +93,23 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 	};
 
 	$scope.onFeeOverride = function() {
-		var totalAmount = parseFloat($scope.feeData.calculatedFee) + parseFloat($scope.depositData.amount);
+		var totalAmount = parseFloat($scope.feeData.calculatedFee) + parseFloat($scope.payment.amount);
 		$scope.feeData.totalOfValueAndFee = totalAmount.toFixed(2);
 	};
 
+	//------------------------------------------------------------------------------------------------------------------
+	//
+	//------------------------------------------------------------------------------------------------------------------
 	var initiate = function() {
 		$scope.onPaymentInfoChange();
 		$scope.actionType = !!$scope.actionType ? $scope.actionType : 'DEFAULT';
+
+		console.log("initiate");
+
+		$scope.payment.amount = $scope.amount || 0;
+		$scope.payment.isRateSuppressed = $scope.isRateSuppressed || false;
+		$scope.payment.isEditable = $scope.isEditable || false;
+
 	}();
 
 

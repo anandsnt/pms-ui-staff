@@ -52,10 +52,10 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
          */
 
         this.loadPaymentModule = function (keys) {
-            var locMappingFile = "/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentJsMappings.json";
+            var locMappingFile = "/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json";
 
             if (!keys) {
-                keys = ['common', 'templates'];
+                keys = ['common'];
             }
 
             var deferred = $q.defer();
@@ -63,13 +63,14 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
             rvBaseWebSrvV2.getJSON(locMappingFile).then(function (data) {
                 var promises = [], length = keys.length, i = 0;
                 if (!!data) {
-                    data.templates = ["/assets/payment_templates.js"];
                     for (; i < length; i++) {
-                        promises.push($ocLazyLoad.load({serie: true, files: data[keys[i]]}));
+                        promises.push($ocLazyLoad.load({serie: true, files: data.js[keys[i]]}));
                     }
+                    promises.push($ocLazyLoad.load({serie: true, files: data['template']}));
+
                     return $q.all(promises).then(function () {
                         $ocLazyLoad.inject(['sntPay']);
-                        deferred.resolve(true);
+                        deferred.resolve();
                     });
 
                 } else {

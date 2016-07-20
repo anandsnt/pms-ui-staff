@@ -9,15 +9,14 @@ sntPay.directive('sntPayment', function() {
             guestId: '@',
             billId : '@',
             amount: '=',
-            feeData: '=',
             linkedCreditCards: '=',
             attachedCc: '=',
             actionType: '@',
             depositPolicyName: '=',
-            isDepositEditable : '=',
+            isEditable : '=',
+            isRateSuppressed: '=',
             currencySymbol : '=',
-            isReservationRateSuppressed : '=',
-            hasPermissionToMakePayment : '=',
+            hasPermission : '=',
             formTemplateUrl : '@'
         },
         link: function() {

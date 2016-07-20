@@ -9,59 +9,54 @@
         <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
 
         <input ng-change="onPaymentInfoChange()"
-               ng-model="depositData.amount"
+               ng-model="payment.amount"
                type="text"
-               ng-disabled="!isDepositEditable"
+               ng-disabled="!payment.isEditable"
                class="amount"
-               ng-if="!isReservationRateSuppressed" />
+               ng-if="!payment.isRateSuppressed" />
 
 
         <input type="text"
-               ng-disabled="!isDepositEditable"
+               ng-disabled="!payment.isEditable"
                class="amount"
-               ng-if="isReservationRateSuppressed"
+               ng-if="payment.isRateSuppressed"
                value="{{'SUPPRESSED_RATES_TEXT' | translate}}" />
 
         <span ng-show="feeData.showFee" class="delimiter">+</span>
 
-        <input ng-show="feeData.showFee"
+        <input ng-show="feeData.showFee && !payment.isRateSuppressed"
                ng-change="onFeeOverride()"
                ng-model="feeData.calculatedFee"
                value="{{feeData.calculatedFee}}"
                type="text"
-               class="fee"
-               ng-if="!isReservationRateSuppressed" />
+               class="fee"/>
 
-        <input ng-show="feeData.showFee"
-               name="fee"
-               id="fee"
+        <input ng-show="feeData.showFee && payment.isRateSuppressed"
                value="{{'SUPPRESSED_RATES_TEXT' | translate}}"
                type="text"
-               class="fee"
-               ng-if="isReservationRateSuppressed" />
+               class="fee"/>
 
         <span ng-show="feeData.showFee" class="delimiter">fee</span>
 
         <span ng-show="feeData.showFee" class="total">
-                        Total:
-                        <strong ng-if="!isReservationRateSuppressed">
-                            {{currencySymbol}}{{feeData.totalOfValueAndFee}}
-                        </strong>
-                        <strong ng-if="isReservationRateSuppressed">
-                            {{'SUPPRESSED_RATES_TEXT' | translate}}
-                        </strong>
-                    </span>
+          Total:
+          <strong ng-if="!payment.isRateSuppressed">
+              {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+          </strong>
+          <strong ng-if="payment.isRateSuppressed">
+              {{'SUPPRESSED_RATES_TEXT' | translate}}
+          </strong>
+        </span>
     </div>
     <!-- Reference field - use only when it exsits; This configuration is available in the Admin/Financials -->
     <div class="entry full-width reference" ng-show="isDisplayRef">
         <label>Reference</label>
-        <input ng-model="payment.reference_text" type="text" />
+        <input ng-model="payment.referenceText" type="text" />
     </div>
     <div class="actions">
         <!-- need to check what is difference -->
-        <button type="button" class="button blue" ng-if="!depositDetails.isFromCheckin" ng-hide="selectedPaymentType ==='' || selectedPaymentType === null" ng-click="payLater()">Pay deposit later</button>
-        <button type="button" class="button blue" ng-if="depositDetails.isFromCheckin" ng-hide="selectedPaymentType ==='' || selectedPaymentType === null" ng-click="proceedCheckin()">Pay deposit later</button>
-        <button type="button" class="button green" ng-hide="shouldHidePayMentButton()" ng-click="submitPaymentForReservation()">Pay deposit now</button>
+        <button type="button" class="button blue" ng-click="payLater()">Pay deposit later</button>
+        <button type="button" class="button green" ng-hide="shouldHidePaymentButton()" ng-click="submitPayment()">Pay deposit now</button>
     </div>
 </div>
 <!-- show if new card is added -->
