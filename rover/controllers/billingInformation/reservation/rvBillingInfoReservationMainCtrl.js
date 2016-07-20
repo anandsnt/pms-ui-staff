@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
+sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', 'RVBillingInfoUtilSrv', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog, RVBillingInfoUtilSrv){
 
     BaseCtrl.call(this, $scope);
 
@@ -153,18 +153,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
      * @return {String} class of 'li'
      */
 	$scope.getEntityRole = function(route) {
-    	if (route.entity_type === 'RESERVATION' &&  !route.has_accompanying_guests) {
-    		return 'guest';
-        }
-    	else if (route.entity_type === 'RESERVATION') {
-    		return 'accompany';
-        }
-    	else if (route.entity_type === 'TRAVEL_AGENT') {
-    		return 'travel-agent';
-        }
-    	else if (route.entity_type === 'COMPANY_CARD') {
-    		return 'company';
-        }
+        return RVBillingInfoUtilSrv.getEntityRole(route);
     };
 
     /**
@@ -173,15 +162,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
      * @return {String} class of 'icon'
      */
     $scope.getEntityIconClass = function(route) {
-        if (route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests) {
-            return 'accompany';
-        }
-    	else if (route.entity_type === 'RESERVATION' || route.entity_type === 'COMPANY_CARD') {
-            return '';
-        }
-    	else if (route.entity_type === 'TRAVEL_AGENT') {
-    		return 'icons icon-travel-agent';
-        }
+        return RVBillingInfoUtilSrv.getEntityIconClass(route);
     };
 
     /**
