@@ -14,7 +14,7 @@ angular.module('EndOfDayModule', [])
         });
 
         $stateProvider.state('rover.endOfDay.starteod', {
-            url: '/endofDay',
+            url: '/starteod',
             templateUrl: '/assets/partials/endOfDay/rvEndOfDayProcess.html',
             controller: 'RVEndOfDayProcessController'
         });

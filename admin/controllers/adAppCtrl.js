@@ -122,7 +122,10 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		            	action: "staff#/staff/accounts/search",
 		            	menuIndex: "accounts"
 		            	//hidden: $rootScope.isHourlyRatesEnabled
-		       	 	}]
+		       	 	},{
+						title: "MENU_END_OF_DAY",
+						action: "staff#/staff/endofDay/starteod"
+					  }]
 				}, {
 			        title: "MENU_GROUPS",
 
@@ -243,18 +246,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				  submenu: [],
 				  iconClass: "icon-housekeeping"
 				}];
-
-				if(!$rootScope.is_auto_change_bussiness_date){
-			          var eodSubMenu =  {
-						title: "MENU_END_OF_DAY",
-						action: "staff#/staff/dashboard/changeBussinessDate"
-					  };
-			          angular.forEach($scope.menu, function(menu, index) {
-			              if(menu.title === 'MENU_FRONT_DESK'){
-			                menu.submenu.push(eodSubMenu);
-			              }
-			          });
-       			};
 
 			} else {
 					$scope.menu = [{
