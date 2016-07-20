@@ -2,7 +2,9 @@
 <div id="payment-type" class="entry full-width">
     <label for="payment-type" translate>PAYMENT_TYPE</label>
     <div class="select">
-        <select ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes" ng-model="selectedPaymentType" ng-change="paymentTypeChanged()">
+        <select ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes"
+                ng-model="selectedPaymentType"
+                ng-change="onPaymentInfoChange()">
             <option value="" translate>SELECT_PAYMENT_TYPE</option>
         </select>
     </div>
@@ -21,4 +23,4 @@
 </div>
 
 <!-- Payment type actions. This can be add payment method addition, submit payment, deposit collection etc -->
-<div ng-include="'/assets/partials/sntDepositPayment.html'" ng-show="actionType ==='DEPOSIT'"></div>
+<div ng-include="formTemplateUrl"></div>

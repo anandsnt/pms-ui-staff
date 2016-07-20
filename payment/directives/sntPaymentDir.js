@@ -8,14 +8,17 @@ sntPay.directive('sntPayment', function() {
             reservationId: '@',
             guestId: '@',
             billId : '@',
-            amount: '@',
+            amount: '=',
             feeData: '=',
+            linkedCreditCards: '=',
             attachedCc: '=',
             actionType: '@',
             depositPolicyName: '=',
             isDepositEditable : '=',
             currencySymbol : '=',
-            isReservationRateSuppressed : '='
+            isReservationRateSuppressed : '=',
+            hasPermissionToMakePayment : '=',
+            formTemplateUrl : '@'
         },
         link: function() {
             console.log("--From Payment Module Init--");
