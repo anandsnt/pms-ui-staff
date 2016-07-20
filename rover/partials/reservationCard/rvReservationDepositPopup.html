@@ -18,6 +18,7 @@
             currency-symbol="currencySymbol" 
             is-deposit-editable='true' 
             has-permission-to-make-payment='hasPermissionToMakePayment()'
+            form-template-url='/assets/partials/reservationCard/rvSntDepositPayment.html'
             ng-show="!errorOccured && !depositPaidSuccesFully">
            </snt-payment>
             {{hasPermissionToMakePayment}}

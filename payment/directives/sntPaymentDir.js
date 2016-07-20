@@ -17,7 +17,8 @@ sntPay.directive('sntPayment', function() {
             isDepositEditable : '=',
             currencySymbol : '=',
             isReservationRateSuppressed : '=',
-            hasPermissionToMakePayment : '='
+            hasPermissionToMakePayment : '=',
+            formTemplateUrl : '@'
         },
         link: function() {
             console.log("--From Payment Module Init--");
