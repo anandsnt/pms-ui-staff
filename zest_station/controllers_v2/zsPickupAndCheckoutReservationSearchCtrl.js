@@ -30,7 +30,21 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			}, 300);
 
 		};
+		var debugWithReservation = function(){
+			//use this to quickly go through last name + room number and debug keys faster
+			//just replace the below params for whichever reservation you want to use
+			$scope.reservationParams = {
+				"last_name": "mike",
+				"room_no": "102"
+			};
+			setTimeout(function(){
+				$scope.lastNameEntered();
+			},300);
 
+			setTimeout(function(){
+				$scope.roomNumberEntered();
+			},500);
+		};
 		var init = function() {
 			//show back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
@@ -51,10 +65,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			}
 			//starting mode
 			$scope.mode = "LAST_NAME_ENTRY";
-			$scope.reservationParams = {
-				"last_name": "",
-				"room_no": ""
-			};
+			//debugWithReservation();//debugging, comment out before deploying
 		};
 		init();
 
@@ -113,10 +124,12 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
 		var roomNumberEntered = false;
 		$scope.lastNameEntered = function() {
-
 			//if room is already entered, no need to enter again
-			if ($scope.reservationParams.room_no.length > 0 && roomNumberEntered) {
-				searchReservation();
+			if (roomNumberEntered) {
+				if ($scope.reservationParams.room_no.length > 0){
+					searchReservation();	
+				}
+				
 			} else {
 				if ($scope.reservationParams.last_name.length > 0) {
 					$scope.mode = "ROOM_NUMBER_ENTRY";

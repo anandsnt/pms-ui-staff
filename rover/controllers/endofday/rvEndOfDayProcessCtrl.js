@@ -1,16 +1,22 @@
 sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootScope','$filter','RVEndOfDayModalSrv','$state','$timeout', function($scope,ngDialog,$rootScope,$filter,RVEndOfDayModalSrv, $state, $timeout){
 
     BaseCtrl.call(this, $scope);
+    var calenderMaxDate;
     var init =function(){
+        setTitle();
         $scope.eodLogDetails = {};
         $scope.dateFormat = $rootScope.dateFormat;
         $scope.businessDate =$rootScope.businessDate;       
         setDefaultNextBussinessDate();
         setDefaultSelectedDate();
+        calenderMaxDate = ($rootScope.hotelDetails.is_auto_change_bussiness_date)?$scope.selectedDate:$scope.businessDate;
         setDisplayDateValues();         
         $scope.setScroller('eod_scroll');
-        setUpDatepData();
         fetchEodLogOfSelectedDate();
+    };
+    var setTitle = function() {
+            var title = $filter('translate')('END_OF_DAY');
+            $scope.setHeadingTitle(title);
     };
     /*
     * Function to get day, month and Year from Date(Date format is kept yyyy/mm/dd);
@@ -21,6 +27,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         $scope.month = getMonthName(parseInt(values[1]-1));
         $scope.day = values[2];
     };
+    
     /*
     * Setting nextBussiness Date
     */
@@ -30,29 +37,45 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         $scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, "yyyy-MM-dd");
     };
     /*
+    * Function to restart a failed process.
+    */
+    $scope.restartFailedProcess = function(process){
+        var data = {           
+            id : process.id
+        };
+        var restartProcessSuccess = function(){
+            fetchEodLogOfSelectedDate();
+        };
+        var restartProcessFail = function(data){
+            $rootScope.$broadcast('hideLoader');
+        };
+        $scope.invokeApi(RVEndOfDayModalSrv.restartFailedProcess,data,restartProcessSuccess,restartProcessFail);
+    };
+    /*
     * Set Selected date as previous date of Bussines date.
     */
     var setDefaultSelectedDate = function(){       
         var previousDate = tzIndependentDate($rootScope.businessDate);
         previousDate.setDate(previousDate.getDate() - 1)              
-        $scope.selectedDate = $filter('date')(previousDate, "dd-MM-yyyy").split("-").reverse().join("-");
+        $scope.selectedDate = $filter('date')(previousDate, "dd-MM-yyyy").split("-").reverse().join("-");        
     };
     /*
     * Setting Date options
     */
-    var setUpDatepData = function(){
+    var setUpDateData = function(){
+        $scope.date =  $scope.selectedDate;
         $scope.dateOptions = {
             changeYear: true,
             changeMonth: true,
-            dateFormat: 'dd-mm-yy',
-            maxDate: $filter('date')($scope.businessDate,'dd-MM-yyyy'),
+            dateFormat: 'yy-mm-dd',
+            maxDate: calenderMaxDate,
             yearRange: "-100:+0",
             onSelect: function(date, inst) {
-                $scope.selectedDate = date.split("-").reverse().join("-");
+                $scope.selectedDate = date;
                 setDisplayDateValues();            
                 if($scope.selectedDate !==$scope.businessDate){
                    fetchEodLogOfSelectedDate(); 
-               };                
+                };                
                 ngDialog.close();
             }
         };
@@ -64,6 +87,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
 
     $scope.showError = function(index){
         $scope.eodLogDetails[index].isOpened = !$scope.eodLogDetails[index].isOpened;
+        refreshScroller();
     };
 
     var fetchEodLogOfSelectedDate = function(){
@@ -87,19 +111,24 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     * Show date picker
     */
     $scope.clickedDate = function(){
+        setUpDateData();
         ngDialog.open({
             template: '/assets/partials/endOfDay/rvEodDatepicker.html',
             className: 'single-date-picker',
+            //controller :'RVEndOfDayProcessController',
             scope: $scope
         });
     };
 
     $scope.setSelectedDateToBussinessDate = function(){
-        $scope.selectedDate = $scope.businessDate;
+        $scope.selectedDate = $scope.businessDate;        
         setDisplayDateValues();
     };
 
     $scope.showSetToTodayButton = function(){
+        return (!$rootScope.hotelDetails.is_auto_change_bussiness_date||$scope.isSameSelectedAndBussiness())?true:false;
+    };
+    $scope.isSameSelectedAndBussiness = function(){
         return ($scope.selectedDate === $scope.businessDate)?true:false;
     };
     /*
