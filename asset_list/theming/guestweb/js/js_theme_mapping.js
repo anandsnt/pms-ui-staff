@@ -64,7 +64,8 @@ module.exports = {
 			'guestweb_sorella_kansas_city':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_Pasea':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_sobro':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_covington':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_covington':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_chancellors_house':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }

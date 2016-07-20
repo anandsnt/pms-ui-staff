@@ -62,7 +62,8 @@ module.exports = {
 			'guestweb_sorella_kansas_city':[ themeCSSRoot + 'guestweb_sorella_kansas_city.css'],
 			'guestweb_Pasea':[ themeCSSRoot + 'guestweb_Pasea.css'],
 			'guestweb_sobro':[ themeCSSRoot + 'guestweb_sobro.css'],
-			'guestweb_covington':[ themeCSSRoot + 'guestweb_covington.css']
+			'guestweb_covington':[ themeCSSRoot + 'guestweb_covington.css'],
+			'guestweb_chancellors_house':[ themeCSSRoot + 'guestweb_chancellors_house.css']
 		}
 	}
 }
