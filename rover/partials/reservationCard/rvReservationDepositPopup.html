@@ -1,35 +1,30 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
-    <form ng-show="!shouldShowWaiting" method="post" action="deposit-required" id="deposit-required" name="deposit-required" class="modal-content form deposit-required"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
+    <form ng-show="!shouldShowWaiting" method="post" action="deposit-required" id="deposit-required" name="deposit-required" class="modal-content form deposit-required">
+        <!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <strong class="h2 message">Deposit required</strong>
+        <strong class="h2 message" ng-show="!errorOccured && !depositPaidSuccesFully" >Deposit required</strong>
         <div class="payment-form">
             <!-- Payment type -->
-
-
-            
-
-
-              <!--  <div ng-init="isReservationDeposit = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div> -->
-
-               <snt-payment 
-                   reservation-id ="{{reservationId}}"
-                   payment-types="passData.details.paymentTypes" 
-                   selected-payment-type="paymentType" 
-                   attached-cc="depositDetails.attached_card" 
-                   amount='depositAmount' 
-                   fee-data="feeData" 
-                   action-type="DEPOSIT" 
-                   deposit-policy-name="depositPolicyName" 
-                   currency-symbol="currencySymbol" 
-                   is-deposit-editable='true'
-                   has-permission-to-make-payment='hasPermissionToMakePayment()'
-                   ></snt-payment>
-                   {{hasPermissionToMakePayment}}
-                <!-- Card Input type - output only if Six Payments and payment type is CC -->
-                <div class="entry" ng-show="paymentGateway === 'sixpayments' && depositData.paymentType ==='CC' && !showCCPage">
-                   <div ng-include="'/assets/partials/payment/rvSixPayCardInput.html'"></div>
-                </div>
+            <!--  <div ng-init="isReservationDeposit = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div> -->
+            <snt-payment 
+            reservation-id="{{reservationId}}" 
+            payment-types="passData.details.paymentTypes" 
+            selected-payment-type="paymentType" 
+            attached-cc="depositDetails.attached_card" 
+            amount='depositAmount' fee-data="feeData" 
+            action-type="DEPOSIT" 
+            deposit-policy-name="depositPolicyName" 
+            currency-symbol="currencySymbol" 
+            is-deposit-editable='true' 
+            has-permission-to-make-payment='hasPermissionToMakePayment()'
+            ng-show="!errorOccured && !depositPaidSuccesFully">
+           </snt-payment>
+            {{hasPermissionToMakePayment}}
+            <!-- Card Input type - output only if Six Payments and payment type is CC -->
+            <div class="entry" ng-show="paymentGateway === 'sixpayments' && depositData.paymentType ==='CC' && !showCCPage">
+                <div ng-include="'/assets/partials/payment/rvSixPayCardInput.html'"></div>
+            </div>
             <!-- Selected card - Show when card is selected/added -->
             <!-- <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="showSelectedCard()">
                 <label>Credit Card (<span>Tap to change</span>)</label>
@@ -41,12 +36,10 @@
                     <span class="date">Date <span class="value date">{{depositData.expiry_date}}</span></span>
                 </label>
             </div> -->
-
             <!-- Existing / new CC - Hide everything else when showing this. Output only if payment type is CC, hide if Card input type is set to C&P -->
             <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="showCCPage"></div>
-
             <!-- Fields -->
-           <!--  <div class="notice deposit" ng-hide="showDepositNotice()">
+            <!--  <div class="notice deposit" ng-hide="showDepositNotice()">
                 <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
                 <div class="entry full-width" ng-class="{'amount': isShowFees()}">
                     <input ng-show="depositData.paymentType === 'GIFT_CARD'" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
@@ -73,7 +66,7 @@
                     </span>
                 </div>
                 <!-- Reference field - use only when it exsits -->
-               <!--  <div class="entry full-width reference" ng-show="isDisplayReference">
+            <!--  <div class="entry full-width reference" ng-show="isDisplayReference">
                     <label for="reference">Reference</label>
                     <input name="reference" id="reference" ng-model="reservationData.referanceText" type="text" />
                 </div>
@@ -82,8 +75,7 @@
                     <button type="button" class="button blue" ng-if="depositDetails.isFromCheckin"  ng-hide="depositData.paymentType ==='' || depositData.paymentType === null"ng-click="proceedCheckin()">Pay deposit later</button>
                     <button type="button" class="button green" ng-hide="shouldHidePayNowButtonInPopUp()" ng-click="payDeposit()">Pay deposit now</button>
                 </div>
-            </div> --> 
-
+            </div> -->
             <!-- Success feedback -->
             <div class="feedback no-top-border" ng-show="depositPaidSuccesFully">
                 <div class="notice success">Deposit paid!</div>
@@ -92,30 +84,29 @@
                         Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
                     </li>
                     <li ng-if="isShowFees()">
-                        Amount paid: <span class="value"> {{currencySymbol}}{{reservationData.depositAmount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                        Amount paid: <span class="value"> {{currencySymbol}}{{depositAmount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
                         </span>
                     </li>
                     <li ng-if="!isShowFees()">
-                        Amount paid: <span class="value"> {{currencySymbol}}{{reservationData.depositAmount}}
+                        Amount paid: <span class="value"> {{currencySymbol}}{{depositAmount}}
                         </span>
                     </li>
                 </ul>
             </div>
-
             <!-- Fail feedback -->
             <div class="feedback" ng-show="errorOccured">
                 <div class="notice error">{{paymentErrorMessage}}</div>
+                <div class="actions" ng-hide="showCCPage">
+                    <button type="button" class="button blue" ng-click="tryAgain()">Try again</button>
+                </div>
             </div>
-
-             <!-- <div class="entry full-width" ng-show="showAddtoGuestCardBox()">
+            <!-- <div class="entry full-width" ng-show="showAddtoGuestCardBox()">
                 <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': depositData.addToGuestCard}">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': depositData.addToGuestCard}"></span>
                     <input ng-model="depositData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
                     {{'ADD_TO_GUEST_CARD' | translate}}
                 </label>
             </div> -->
-
-
             <!-- Buttons -->
             <div class="actions" ng-hide="showCCPage">
                 <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close</button>
@@ -125,9 +116,9 @@
         </div>
     </form>
     <div ng-show="shouldShowWaiting && pageloadingOver && !errorOccured && !depositPaidSuccesFully" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
-		<div class="centeralign alert-box">
-			WAITING FOR PAYMENT COMPLETION
-		</div>
-		<div class="waiting-payment">&nbsp;</div>
-	</div>
+        <div class="centeralign alert-box">
+            WAITING FOR PAYMENT COMPLETION
+        </div>
+        <div class="waiting-payment">&nbsp;</div>
+    </div>
 </div>

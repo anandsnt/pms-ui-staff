@@ -30,7 +30,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 	$scope.submitPaymentForReservation = function() {
 
 		if ($scope.depositData.amount === '' || $scope.depositData.amount === null) {
-			$scope.errorMessage = ["Please enter amount"];
+			$scope.$emit('NO_AMOUNT_NOTIFICATION');
 		} else {
 			var payment_type_id = null;
 			if ($scope.selectedPaymentType === 'CC' && $scope.selectedCard !== -1) {
@@ -50,11 +50,16 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 			//to do
 			//handle fees and ref text
 
+			$scope.$emit('SHOW_LOADER');
 			sntPaymentSrv.submitPayment(params).then(function(response) {
-					console.log(response);
+					response.depositAmount = $scope.depositData.amount;
+					response.feesAmount    = 0;
+					$scope.$emit('PAYMENT_SUCCESS', response);
+					$scope.$emit('HIDE_LOADER');
 				},
-				function() {
-					console.log(response);
+				function(errorMessage) {
+					$scope.$emit('PAYMENT_FAILED', errorMessage);
+					$scope.$emit('HIDE_LOADER');
 				});
 
 		};

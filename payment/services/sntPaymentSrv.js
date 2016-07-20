@@ -9,7 +9,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
 			var deferred = $q.defer();
 			var url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
 			$http.post(url,dataToSrv.postData).success(function(response) {
-					deferred.resolve(data);
+					deferred.resolve(response);
 				}.bind(this))
 				.error(function(error) {
 					deferred.reject(error);

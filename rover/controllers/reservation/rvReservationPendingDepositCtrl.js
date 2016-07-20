@@ -35,16 +35,6 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			}, 250);
 
 		};
-
-		$scope.$on('PAY_LATER',function(){
-			if($scope.depositDetails.isFromCheckin){
-				$scope.$emit("PROCEED_CHECKIN");
-			}
-			else{
-				//do nothing
-			};
-			closeDepositPopup();
-		});
 		
 		$scope.hasPermissionToMakePayment = function() {
 			return rvPermissionSrv.getPermissionValue('MAKE_PAYMENT');
@@ -56,9 +46,49 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		};
 
 		$scope.tryAgain = function() {
-			$scope.depositInProcess = false;
+			$scope.errorOccured = false;
 			$scope.errorMessage = "";
 			$scope.errorOccured = false;
 		};
+
+
+		/***************** Events from directive ************************/
+
+		//user selected pay later option
+		$scope.$on('PAY_LATER',function(){
+			if($scope.depositDetails.isFromCheckin){
+				$scope.$emit("PROCEED_CHECKIN");
+			}
+			else{
+				//do nothing
+			};
+			closeDepositPopup();
+		});
+
+		//TO DO : move hide/show loader to a common place
+		//show loader
+		$scope.$on('SHOW_LOADER',function(){
+			$scope.$emit('showLoader');
+		});
+		//hide loader
+		$scope.$on('SHOW_LOADER',function(){
+			$scope.$emit('hideLoader');
+		});
+		//payment success
+		$scope.$on('NO_AMOUNT_NOTIFICATION',function(event,data){
+			$scope.errorMessage = ["Please enter amount"];
+		});
+		//payment success
+		$scope.$on('PAYMENT_SUCCESS',function(event,data){
+			$scope.depositPaidSuccesFully = true;
+			$scope.depositAmount =  data.depositAmount;
+			//$scope.runDigestCycle();
+			console.log(data);
+		});
+		//payment failed
+		$scope.$on('PAYMENT_FAILED',function(event,errorMessageArray){
+			$scope.errorOccured = true;
+			$scope.paymentErrorMessage = errorMessageArray[0];
+		});
 	}
 ]);
