@@ -1,7 +1,7 @@
 <section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
     <div>
         <header class="content-title float">
-            <h2> Edit <font class="h2-grey">{{selectedInterface.name}}</font></h2>
+            <h2> Edit&nbsp;<font class="h2-grey">{{selectedInterface.description}}</font></h2>
             <a ng-click="goBackToPreviousState()" class="action back">Back to Channel Managers</a>
             <a id="import-channel-rates" class="action import ng-binding" ng-click="importChannelRates($event)" ng-show="is_import_available" style="float:right">IMPORT ALL CHANNEL RATES</a>
         </header>
@@ -13,8 +13,6 @@
             <table ng-repeat="rate in data" >
                 <tbody ng-if='data.length > 0'>
                     <tr>
-
-                        
                         <td>
                             <table class="grid smaller-spacing inline-channel-editing" ng-class="{'inline-editing':rate.rate.editing}">
                                 <tbody>
@@ -51,34 +49,24 @@
                                 </tr>
                             </table>
                         </td>
-                        
-                        
-                        
                     </tr>
-
-
-
                 </tbody>
             </table>
-            
             <table>
                 <tbody ng-hide='!showMainAddRemove' ng-show='showMainAddRemove'>
                     <tr>
-                        <div style='position: relative' ng-include="'/assets/partials/common/addRemoveSection.html'" 
-                             ng-hide='!showMainAddRemove' 
+                        <div style='position: relative' ng-include="'/assets/partials/common/addRemoveSection.html'"
+                             ng-hide='!showMainAddRemove'
                              ng-show='showMainAddRemove'>
                         </div>
                     </tr>
                 </tbody>
             </table>
-            
-            <div ng-click="addRateToChannel(selectedInterface)" class="nowrap center_align add_new_date_range_container newset-container" ng-hide='showMainAddRemove' ng-show='!showMainAddRemove'> 
+            <div ng-click="addRateToChannel(selectedInterface)" class="nowrap center_align add_new_date_range_container newset-container" ng-hide='showMainAddRemove' ng-show='!showMainAddRemove'>
                 <a class="icons icon-add green">
                     <span style="margin-left:5px;">ADD RATE TO CHANNEL MANAGER</span>
                 </a>
             </div>
-            
         </section>
     </div>
-
 </section>
