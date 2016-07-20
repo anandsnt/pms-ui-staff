@@ -6,7 +6,7 @@ admin.controller('adTelnetInterfaceCtrl', ['$scope', 'adTelnetInterfaceSrv', fun
      * when telnet connection success
      */
     var onTelnetConnectivitySuccess = function() {
-        $scope.successMessage = ['Telnet connection successful!!'];
+        $scope.successMessage = 'Telnet connection successful!!';
     };
 
     /**
