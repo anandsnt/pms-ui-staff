@@ -73,8 +73,11 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		$scope.$on('PAYMENT_SUCCESS',function(event,data){
 			$scope.depositPaidSuccesFully = true;
 			$scope.depositAmount =  data.depositAmount;
-			//$scope.runDigestCycle();
-			console.log(data);
+
+			//update amounts in STAYCARD
+		    $scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = data.reservation_balance;
+			
+			$scope.$parent.reservationData.reservation_card.balance_amount = data.reservation_balance;
 		});
 		//payment failed
 		$scope.$on('PAYMENT_FAILED',function(event,errorMessageArray){

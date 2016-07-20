@@ -36,7 +36,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 				"postData": {
 					"bill_number": 1,
 					"payment_type": $scope.selectedPaymentType,
-					"amount": $scope.depositData.amount,
+					"amount": $scope.feeData.totalOfValueAndFee,//amount + fee
 					"payment_type_id": payment_type_id
 				},
 				"reservation_id": $scope.reservationId
