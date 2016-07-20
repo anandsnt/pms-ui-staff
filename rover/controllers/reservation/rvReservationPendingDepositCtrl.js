@@ -11,12 +11,8 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			$scope.pageloadingOver = true;
 		}, 3000);
 
-		var runDigestCycle = function() {
-			if (!$scope.$$phase) {
-				$scope.$digest();
-			}
-		};
-
+		
+		$scope.reservationId = $stateParams.id;
 		$scope.errorMessage = "";
 		$scope.depositPaidSuccesFully = false;
 		$scope.successMessage = "";

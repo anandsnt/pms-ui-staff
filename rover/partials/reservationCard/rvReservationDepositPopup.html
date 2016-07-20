@@ -13,16 +13,19 @@
               <!--  <div ng-init="isReservationDeposit = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div> -->
 
                <snt-payment 
+                   reservation-id ="{{reservationId}}"
                    payment-types="passData.details.paymentTypes" 
-                   selected-payment-type="depositData.paymentType" 
+                   selected-payment-type="paymentType" 
                    attached-cc="depositDetails.attached_card" 
-                   amount='12' 
+                   amount='depositAmount' 
                    fee-data="feeData" 
                    action-type="DEPOSIT" 
                    deposit-policy-name="depositPolicyName" 
                    currency-symbol="currencySymbol" 
-                   is-deposit-editable='true'></snt-payment>
-
+                   is-deposit-editable='true'
+                   has-permission-to-make-payment='hasPermissionToMakePayment()'
+                   ></snt-payment>
+                   {{hasPermissionToMakePayment}}
                 <!-- Card Input type - output only if Six Payments and payment type is CC -->
                 <div class="entry" ng-show="paymentGateway === 'sixpayments' && depositData.paymentType ==='CC' && !showCCPage">
                    <div ng-include="'/assets/partials/payment/rvSixPayCardInput.html'"></div>

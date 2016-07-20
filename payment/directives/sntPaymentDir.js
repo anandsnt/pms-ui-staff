@@ -8,7 +8,7 @@ sntPay.directive('sntPayment', function() {
             reservationId: '@',
             guestId: '@',
             billId : '@',
-            amount: '@',
+            amount: '=',
             feeData: '=',
             linkedCreditCards: '=',
             attachedCc: '=',
