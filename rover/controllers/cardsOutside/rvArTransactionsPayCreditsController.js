@@ -217,7 +217,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',['$scope','RVPaymentS
 					"amount": $scope.renderData.defaultPaymentAmount,
 					"payment_method_id" : $scope.saveData.payment_type_id
 				},
-				"bill_id":bill_id
+				"bill_id":$scope.arTransactionDetails.company_or_ta_bill_id
 			};
 			if($scope.isShowFees()){
 				if($scope.feeData.calculatedFee) {
