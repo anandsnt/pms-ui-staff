@@ -1,6 +1,9 @@
 sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 
-	var zeroAmount = parseFloat("0.00");
+	$scope.payment = {
+		reference_text: "",
+		amount: 0
+	};
 
 	$scope.addToGuestCard = false;
 	$scope.depositData = {};
@@ -36,18 +39,23 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 				"postData": {
 					"bill_number": 1,
 					"payment_type": $scope.selectedPaymentType,
-					"amount": $scope.feeData.totalOfValueAndFee,//amount + fee
+					"amount": $scope.feeData.totalOfValueAndFee, //amount + fee
 					"payment_type_id": payment_type_id
 				},
 				"reservation_id": $scope.reservationId
 			};
+
+			if ($scope.isDisplayRef) {
+				params.postData.reference_text = $scope.payment.reference_text;
+			}
+
 			//to do
 			//handle fees and ref text
 
 			$scope.$emit('showLoader');
 			sntPaymentSrv.submitPayment(params).then(function(response) {
 					response.depositAmount = $scope.depositData.amount;
-					response.feesAmount    = 0;
+					response.feesAmount = 0;
 					$scope.$emit('PAYMENT_SUCCESS', response);
 					$scope.$emit('hideLoader');
 				},
@@ -59,28 +67,33 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		};
 	};
 
-    $scope.onPaymentInfoChange = function () {
-        //NOTE: Fees information is to be calculated only for standalone systems
-        var selectedPaymentType = _.find($scope.paymentTypes, {name: $scope.selectedPaymentType}),
-            feeInfo = selectedPaymentType && selectedPaymentType.charge_code && selectedPaymentType.charge_code.fees_information || {},
-            currFee = sntPaymentSrv.calculateFee($scope.depositData.amount, feeInfo);
+	$scope.onPaymentInfoChange = function() {
+		//NOTE: Fees information is to be calculated only for standalone systems
+		//TODO: Handle CC & GC Seperately Here
+		var selectedPaymentType = _.find($scope.paymentTypes, {
+				name: $scope.selectedPaymentType
+			}),
+			feeInfo = selectedPaymentType && selectedPaymentType.charge_code && selectedPaymentType.charge_code.fees_information || {},
+			currFee = sntPaymentSrv.calculateFee($scope.depositData.amount, feeInfo);
 
-        $scope.feeData = {
-            calculatedFee: currFee.calculatedFee,
-            totalOfValueAndFee: currFee.totalOfValueAndFee,
-            showFee: currFee.showFees
-        };
-    };
+		$scope.isDisplayRef = selectedPaymentType && selectedPaymentType.is_display_reference;
 
-    $scope.onFeeOverride = function () {
-        var totalAmount = parseFloat($scope.feeData.calculatedFee) + parseFloat($scope.depositData.amount);
-        $scope.feeData.totalOfValueAndFee = totalAmount.toFixed(2);
-    };
+		$scope.feeData = {
+			calculatedFee: currFee.calculatedFee,
+			totalOfValueAndFee: currFee.totalOfValueAndFee,
+			showFee: currFee.showFees
+		};
+	};
 
-    var initiate = function() {
-        $scope.onPaymentInfoChange();
-        $scope.actionType = !!$scope.actionType ? $scope.actionType : 'DEFAULT';
-    }();
+	$scope.onFeeOverride = function() {
+		var totalAmount = parseFloat($scope.feeData.calculatedFee) + parseFloat($scope.depositData.amount);
+		$scope.feeData.totalOfValueAndFee = totalAmount.toFixed(2);
+	};
+
+	var initiate = function() {
+		$scope.onPaymentInfoChange();
+		$scope.actionType = !!$scope.actionType ? $scope.actionType : 'DEFAULT';
+	}();
 
 
 });

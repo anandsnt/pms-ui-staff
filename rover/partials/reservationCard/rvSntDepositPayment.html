@@ -1,7 +1,7 @@
 <div class="notice deposit">
     <!-- showCCPage || depositInProcess || depositPaidSuccesFully -->
     <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
-    <div class="entry full-width" ng-class="{'amount': isShowFees()}">
+    <div class="entry full-width" ng-class="{'amount': feeData.showFee}">
         <!-- gift card handle later -->
         <!--  <input ng-show="depositData.paymentType === 'GIFT_CARD'" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
         <label ng-show="depositData.paymentType === 'GIFT_CARD' && giftCardAmountAvailable" ng-hide="depositData.paymentType !== 'GIFT_CARD' || !giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label> -->
@@ -52,11 +52,11 @@
                         </strong>
                     </span>
     </div>
-    <!-- Reference field - use only when it exsits -->
-    <!--   <div class="entry full-width reference" ng-show="isDisplayReference">
-        <label for="reference">Reference</label>
-        <input name="reference" id="reference" ng-model="reservationData.referanceText" type="text" />
-    </div> -->
+    <!-- Reference field - use only when it exsits; This configuration is available in the Admin/Financials -->
+    <div class="entry full-width reference" ng-show="isDisplayRef">
+        <label>Reference</label>
+        <input ng-model="payment.reference_text" type="text" />
+    </div>
     <div class="actions">
         <!-- need to check what is difference -->
         <button type="button" class="button blue" ng-if="!depositDetails.isFromCheckin" ng-hide="selectedPaymentType ==='' || selectedPaymentType === null" ng-click="payLater()">Pay deposit later</button>
