@@ -65,15 +65,6 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			closeDepositPopup();
 		});
 
-		//TO DO : move hide/show loader to a common place
-		//show loader
-		$scope.$on('SHOW_LOADER',function(){
-			$scope.$emit('showLoader');
-		});
-		//hide loader
-		$scope.$on('SHOW_LOADER',function(){
-			$scope.$emit('hideLoader');
-		});
 		//payment success
 		$scope.$on('NO_AMOUNT_NOTIFICATION',function(event,data){
 			$scope.errorMessage = ["Please enter amount"];

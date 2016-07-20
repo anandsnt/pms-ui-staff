@@ -50,16 +50,16 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 			//to do
 			//handle fees and ref text
 
-			$scope.$emit('SHOW_LOADER');
+			$scope.$emit('showLoader');
 			sntPaymentSrv.submitPayment(params).then(function(response) {
 					response.depositAmount = $scope.depositData.amount;
 					response.feesAmount    = 0;
 					$scope.$emit('PAYMENT_SUCCESS', response);
-					$scope.$emit('HIDE_LOADER');
+					$scope.$emit('hideLoader');
 				},
 				function(errorMessage) {
 					$scope.$emit('PAYMENT_FAILED', errorMessage);
-					$scope.$emit('HIDE_LOADER');
+					$scope.$emit('hideLoader');
 				});
 
 		};
