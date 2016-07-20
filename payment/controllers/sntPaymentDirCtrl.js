@@ -21,16 +21,10 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		$scope.$emit('PAY_LATER');
 	};
 
-	var initiate = function() {
-
-		$scope.actionType = !!$scope.actionType ? $scope.actionType : 'DEFAULT';
-	}();
-
-
 	$scope.submitPaymentForReservation = function() {
 
 		if ($scope.depositData.amount === '' || $scope.depositData.amount === null) {
-			$scope.errorMessage = ["Please enter amount"];
+			$scope.$emit('NO_AMOUNT_NOTIFICATION');
 		} else {
 			var payment_type_id = null;
 			if ($scope.selectedPaymentType === 'CC' && $scope.selectedCard !== -1) {
@@ -50,15 +44,43 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 			//to do
 			//handle fees and ref text
 
+			$scope.$emit('showLoader');
 			sntPaymentSrv.submitPayment(params).then(function(response) {
-					console.log(response);
+					response.depositAmount = $scope.depositData.amount;
+					response.feesAmount    = 0;
+					$scope.$emit('PAYMENT_SUCCESS', response);
+					$scope.$emit('hideLoader');
 				},
-				function() {
-					console.log(response);
+				function(errorMessage) {
+					$scope.$emit('PAYMENT_FAILED', errorMessage);
+					$scope.$emit('hideLoader');
 				});
 
 		};
 	};
+
+    $scope.onPaymentInfoChange = function () {
+        //NOTE: Fees information is to be calculated only for standalone systems
+        var selectedPaymentType = _.find($scope.paymentTypes, {name: $scope.selectedPaymentType}),
+            feeInfo = selectedPaymentType && selectedPaymentType.charge_code && selectedPaymentType.charge_code.fees_information || {},
+            currFee = sntPaymentSrv.calculateFee($scope.depositData.amount, feeInfo);
+
+        $scope.feeData = {
+            calculatedFee: currFee.calculatedFee,
+            totalOfValueAndFee: currFee.totalOfValueAndFee,
+            showFee: currFee.showFees
+        };
+    };
+
+    $scope.onFeeOverride = function () {
+        var totalAmount = parseFloat($scope.feeData.calculatedFee) + parseFloat($scope.depositData.amount);
+        $scope.feeData.totalOfValueAndFee = totalAmount.toFixed(2);
+    };
+
+    var initiate = function() {
+        $scope.onPaymentInfoChange();
+        $scope.actionType = !!$scope.actionType ? $scope.actionType : 'DEFAULT';
+    }();
 
 
 });

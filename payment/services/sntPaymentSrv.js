@@ -1,19 +1,18 @@
 sntPay.service('sntPaymentSrv', ['$q', '$http',
     function ($q, $http) {
-
         var service = this;
 
-        service.submitPayment = function (dataToSrv) {
+        this.submitPayment = function(dataToSrv) {
 
             //TO DO polling
 
 
             var deferred = $q.defer();
             var url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
-            $http.post(url, dataToSrv.postData).success(function (response) {
-                deferred.resolve(data);
+            $http.post(url,dataToSrv.postData).success(function(response) {
+                deferred.resolve(response);
             }.bind(this))
-                .error(function (error) {
+                .error(function(error) {
                     deferred.reject(error);
                 });
             return deferred.promise;
@@ -72,5 +71,6 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
                 showFees: defaultAmount >= minFees && !!defaultAmount && !!feeAmount
             };
         };
-    }]
-);
+
+    }
+]);
