@@ -10,11 +10,10 @@ module.exports = function (gulp, $, options) {
         onError = options.onError,
         runSequence = require('run-sequence'),
         extendedMappings = {},
-        generated = "____generated",
         PAYMENT_JS_LIST = require("../../asset_list/js/payment/paymentsJsAssetList").getList(),
         _ = require('lodash'),
-        paymentGeneratedDir = DEST_ROOT_PATH + 'asset_list/' + generated + 'gatewayJsMappings/' + generated + 'payment/',
-        paymentGeneratedFile = paymentGeneratedDir + generated + 'paymentJsMappings.json';
+        paymentGeneratedDir = options.paymentGeneratedDir,
+        paymentGeneratedFile = options.paymentGeneratedFile;
 
     var saveTheMappingJsonFile = function () {
         var glob   = require('glob-all'),
@@ -27,17 +26,17 @@ module.exports = function (gulp, $, options) {
 
         mkdirp(paymentGeneratedDir, function (err) {
             if (err) {
-                console.error('rover JS mapping directory failed!! (' + err + ')');
+                console.error('payment JS mapping directory failed!! (' + err + ')');
                 deferred.reject();
             } else {
-                console.log('rover JS mapping directory created (' + paymentGeneratedDir + ')');
+                console.log('payment JS mapping directory created (' + paymentGeneratedDir + ')');
             }
 
             fs.writeFile(paymentGeneratedFile, JSON.stringify(extendedMappings), function (err) {
                 if (err) {
-                    return console.error('rover JS mapping file failed!! (' + err + ')');
+                    return console.error('payment JS mapping file failed!! (' + err + ')');
                 }
-                console.log('rover JS mapping file created (' + paymentGeneratedFile + ')');
+                console.log('payment JS mapping file created (' + paymentGeneratedFile + ')');
                 deferred.resolve();
             });
         });

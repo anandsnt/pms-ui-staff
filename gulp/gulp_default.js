@@ -23,7 +23,8 @@ module.exports = function(gulp, $, options) {
                     'login-asset-prod-precompile',
                     'station-login-asset-prod-precompile',
                     'guestweb-asset-prod-precompile',
-                    'guestweb-v2-asset-prod-precompile'
+                    'guestweb-v2-asset-prod-precompile',
+                    'payment-asset-prod-precompile'
                 ],
 
 		tasksAfterCompilation = [
