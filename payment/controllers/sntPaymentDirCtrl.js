@@ -99,6 +99,9 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 
 		$scope.isDisplayRef = selectedPaymentType && selectedPaymentType.is_display_reference;
 
+		//If the changed payment type is CC
+		//and payment gateway is MLI show CC addition options
+		//if there are attached cards, show them first
 		if(selectedPaymentType.name === "CC"){
 			if($scope.paymentGateway === "MLI"){
 				$scope.payment.screenMode = "CARD_ADD_MODE";
