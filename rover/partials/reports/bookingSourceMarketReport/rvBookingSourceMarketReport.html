@@ -30,7 +30,7 @@
                         <span class="count">{{sourcesValuesTotal}}</span>
                     </li>
                     <!-- Bottom filters -->
-                    <li class="totals">
+                    <li class="totals for-print">
                         <span class="pull-left">
                             Booked Date Range <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
                             Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span><br/>
@@ -107,7 +107,7 @@
                             </li>
                         </ul>
                     </div>
-                    <li class="totals">
+                    <div class="totals">
                         <span class="pull-left">
                             Booked Date Range <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
                             Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span><br/>
@@ -119,7 +119,7 @@
                         <span class="pull-right">
                             Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
                         </span>
-                    </li>
+                    </div>
                 </div>
             </div>
 
@@ -142,7 +142,7 @@
                         <span class="count">{{marketsValuesTotal}}</span>
                     </li>
                     <!-- Bottom filters -->
-                    <li class="totals">
+                    <li class="totals for-print">
                         <span class="pull-left">
                             Booked Date Range <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
                             Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span><br/>
@@ -219,7 +219,7 @@
                             </li>
                         </ul>
                     </div>
-                    <li class="totals">
+                    <div class="totals">
                         <span class="pull-left">
                             Booked Date Range <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
                             Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span><br />
@@ -231,7 +231,7 @@
                         <span class="pull-right">
                             Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
                         </span>
-                    </li>
+                    </div>
                 </div>
             </div>
         </div>
