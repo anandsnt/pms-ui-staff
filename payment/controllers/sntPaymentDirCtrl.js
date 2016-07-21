@@ -67,6 +67,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 			sntPaymentSrv.submitPayment(params).then(function(response) {
 					console.log("payment success" + $scope.payment.amount);
 					response.amountPaid = $scope.payment.amount;
+					response.authorizationCode = response.authorization_code;
 					// NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
 					if ($scope.feeData) {
 						response.feePaid = $scope.feeData.calculatedFee;

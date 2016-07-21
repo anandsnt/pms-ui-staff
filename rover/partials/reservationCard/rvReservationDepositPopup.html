@@ -26,8 +26,8 @@
             <div class="feedback no-top-border" ng-show="depositPaidSuccesFully">
                 <div class="notice success">Deposit paid!</div>
                 <ul class="transaction">
-                    <li ng-show="authorizedCode !==''">
-                        Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
+                    <li ng-show="authorizationCode !==''">
+                        Your Authorize code is: <span class="auth">{{authorizationCode}}</span>
                     </li>
                     <li ng-if="feePaid">
                         Amount paid: <span class="value"> {{currencySymbol}}{{depositAmount}} + {{currencySymbol}}{{feePaid}} fee

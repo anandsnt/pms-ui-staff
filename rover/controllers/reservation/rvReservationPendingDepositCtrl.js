@@ -75,6 +75,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			$scope.depositPaidSuccesFully = true;
 			$scope.depositAmount =  data.amountPaid;
 			$scope.feePaid = data.feePaid;
+			$scope.authorizationCode = data.authorizationCode;
 			
 			//update amounts in STAYCARD
 		    $scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = data.reservation_balance;
