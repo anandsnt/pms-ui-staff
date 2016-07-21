@@ -18,14 +18,14 @@
 <!-- Exsiting cards - use only when they exsit -->
 <div id="cc-exsiting-card" class="cards-list cards-container scrollable" ng-show="payment.addCCMode === 'EXISTING_CARDS'" ng-iscroll="cardsList">
     <div class="wrapper">
-        <label class="active-item item-payment" ng-click="setCreditCardFromList($index)" ng-repeat="card in cardsList" ng-show="card.is_credit_card">
+        <label class="active-item item-payment" ng-click="setCreditCardFromList($index)" ng-repeat="card in payment.linkedCreditCards" ng-show="card.is_credit_card">
             <!-- Add class "primary" when selected -->
             <figure class="card-logo">
                 <img ng-src="/assets/images/{{card.card_code}}.png" alt="">
             </figure>
             <span class="number">{{'ENDING_WITH' | translate}} <span class="value number">{{card.mli_token}}</span></span>
             <span class="date">{{'DATE' | translate}} <span class="value date">{{card.card_expiry}}</span></span>
-            <span class="icons icon-ok-10" ng-show="cardselectedIndex === $index"></span>
+            <span class="icons icon-ok-10" ng-show="{{attachedCc.value == card.value}}"></span>
         </label>
     </div>
 </div>

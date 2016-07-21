@@ -1,5 +1,5 @@
 sntPay.service('sntPaymentSrv', ['$q', '$http',
-    function ($q, $http) {
+    function($q, $http) {
         var service = this;
 
         this.submitPayment = function(dataToSrv) {
@@ -9,9 +9,21 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
 
             var deferred = $q.defer();
             var url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
-            $http.post(url,dataToSrv.postData).success(function(response) {
-                deferred.resolve(response);
-            }.bind(this))
+            $http.post(url, dataToSrv.postData).success(function(response) {
+                    deferred.resolve(response);
+                }.bind(this))
+                .error(function(error) {
+                    deferred.reject(error);
+                });
+            return deferred.promise;
+        };
+
+        this.getLinkedCardList = function(reservationId) {
+            var deferred = $q.defer();
+            var url = '/staff/staycards/get_credit_cards.json?reservation_id=' + reservationId;
+            $http.get(url).success(function(response) {
+                    deferred.resolve(response.data);
+                }.bind(this))
                 .error(function(error) {
                     deferred.reject(error);
                 });
@@ -25,7 +37,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
          * @param feeInfo
          * @returns {{calculatedFee: string, minFees: number, defaultAmount: *, totalOfValueAndFee: string}}
          */
-        service.calculateFee = function (amount, feeInfo) {
+        service.calculateFee = function(amount, feeInfo) {
             /**
              * feeInfo object is expected to have these following keys
              * amount

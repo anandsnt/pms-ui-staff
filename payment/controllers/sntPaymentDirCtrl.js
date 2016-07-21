@@ -8,7 +8,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		isEditable: false,
 		addToGuestCard: false,
 		billNumber: 1,
-		linkedCreditCards:[]
+		linkedCreditCards: []
 	};
 
 	$scope.showSelectedCard = function() {
@@ -51,7 +51,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 				"reservation_id": $scope.reservationId
 			};
 
-			if($scope.feeData.showFee){
+			if ($scope.feeData.showFee) {
 				//if fee was calculated wrt to payment type
 				params.postData.fees_amount = $scope.feeData.calculatedFee;
 				params.postData.fees_charge_code_id = $scope.feeData.feeChargeCode;
@@ -84,10 +84,12 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		};
 	};
 
-	var existingCardsPresent = function(){
+	//check if there are existing cards to be shown in list
+	var existingCardsPresent = function() {
 		return $scope.payment.linkedCreditCards.length > 0;
 	};
 
+	// Payment type change action
 	$scope.onPaymentInfoChange = function() {
 		//NOTE: Fees information is to be calculated only for standalone systems
 		//TODO: Handle CC & GC Seperately Here
@@ -102,8 +104,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		//If the changed payment type is CC
 		//and payment gateway is MLI show CC addition options
 		//if there are attached cards, show them first
-		if(selectedPaymentType.name === "CC"){
-			if($scope.paymentGateway === "MLI"){
+		if (selectedPaymentType.name === "CC") {
+			if ($scope.paymentGateway === "MLI") {
 				$scope.payment.screenMode = "CARD_ADD_MODE";
 				$scope.payment.addCCMode = existingCardsPresent() ? "EXISTING_CARDS" : "ADD_CARD";
 			};
@@ -124,11 +126,51 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 
 	/**************** CC handling ********************/
 
-	$scope.onCardClick =  function(){
+	$scope.onCardClick = function() {
 		$scope.payment.screenMode = "CARD_ADD_MODE";
+		$scope.payment.addCCMode = existingCardsPresent() ? "EXISTING_CARDS" : "ADD_CARD";
 	};
-	$scope.cancelCardSelection = function(){
+	$scope.cancelCardSelection = function() {
 		$scope.payment.screenMode = "PAYMENT_MODE";
+	};
+
+	$scope.hideCardToggles = function() {
+		if ($scope.payment.linkedCreditCards && $scope.payment.linkedCreditCards.length === 0) {
+			return true;
+		} else {
+			return false
+		};
+	};
+	var onFetchLinkedCreditCardListSuccess = function(data) {
+		$scope.$emit('hideLoader');
+		$scope.payment.linkedCreditCards = _.where(data.existing_payments, {
+			is_credit_card: true
+		});
+		$scope.payment.linkedCreditCards.forEach(function(card) {
+			card.mli_token = card.ending_with;
+			delete card.ending_with;
+			card.card_expiry = card.expiry_date;
+			delete card.expiry_date;
+		});
+		if ($scope.payment.linkedCreditCards.length > 0) {
+			//refreshCardsList();//iscroll
+		};
+	};
+
+	//if there is reservationID fetch the linked credit card items
+	if (!!$scope.reservationId) {
+		$scope.$emit('showLoader');
+
+		sntPaymentSrv.getLinkedCardList($scope.reservationId).then(function(response) {
+				onFetchLinkedCreditCardListSuccess(response);
+				$scope.$emit('hideLoader');
+			},
+			function(errorMessage) {
+				$scope.$emit('PAYMENT_FAILED', errorMessage);
+				$scope.$emit('hideLoader');
+			});
+	} else {
+		$scope.payment.linkedCreditCards = [];
 	};
 
 	//------------------------------------------------------------------------------------------------------------------
