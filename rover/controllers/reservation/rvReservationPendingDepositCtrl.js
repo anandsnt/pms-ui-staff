@@ -17,6 +17,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		$scope.depositPaidSuccesFully = false;
 		$scope.successMessage = "";
 		$scope.authorizedCode = "";
+		$scope.billNumber = "1";//set bill no as 1
 
 	
 		$scope.isReservationRateSuppressed = $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates;
