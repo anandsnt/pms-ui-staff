@@ -65,14 +65,10 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
     * @param {id} id of the room type
     */
     $scope.editRoomTypeDetails = function(index, id){
-         $scope.isAddMode =false;
+        $scope.isAddMode =false;
         $scope.fetchAvailableRoomTypesForSuite(index, id);
     };
 	$scope.editRoomTypes = function(index, id)	{
-
-      //  $scope.fetchAvailableRoomTypesForSuite();
-
-
 		$scope.departmentData={};
 		$scope.currentClickedElement = index;
 		$scope.roomTypeData = {};
