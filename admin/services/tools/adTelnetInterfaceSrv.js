@@ -9,8 +9,8 @@ admin.service('adTelnetInterfaceSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 		    deferred.resolve();
-		},function(data){
-		    deferred.reject();
+		},function(error){
+		    deferred.reject(error);
 		});
 		return deferred.promise;
 	};
