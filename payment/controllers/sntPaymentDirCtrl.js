@@ -137,6 +137,14 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		$scope.payment.screenMode = "PAYMENT_MODE";
 	};
 
+	$scope.setCreditCardFromList = function(selectedCardValue){
+		var selectedCard = _.find($scope.payment.linkedCreditCards, {
+			value: selectedCardValue
+		});
+		$scope.attachedCc = selectedCard;
+		$scope.payment.screenMode = "PAYMENT_MODE";
+	};
+
 	$scope.hideCardToggles = function() {
 		return false;//need to handle later
 	};
@@ -145,12 +153,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		$scope.payment.linkedCreditCards = _.where(data.existing_payments, {
 			is_credit_card: true
 		});
-		$scope.payment.linkedCreditCards.forEach(function(card) {
-			card.mli_token = card.ending_with;
-			delete card.ending_with;
-			card.card_expiry = card.expiry_date;
-			delete card.expiry_date;
-		});
+
 		if ($scope.payment.linkedCreditCards.length > 0) {
 			//TODO:handle Scroll
 			//$scope.refreshScroller('cardsList');
