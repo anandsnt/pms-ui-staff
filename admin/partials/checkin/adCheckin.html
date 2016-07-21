@@ -300,6 +300,15 @@
                         </div>
                     </div>
                 </fieldset>
+
+                <fieldset class="holder full-width" ng-show="!isStandAlone">
+                <div class="form-title half-width-title">
+                        <h3><span translate="">EXCLUDE_ROUTING_FROM_EMAIL_TITLE</span> </h3>
+                    </div>
+                    <ad-toggle-button is-checked="checkinData.exclude_routing_reservations_from_email" label="{{ 'EXCLUDE_ROUTING_FROM_EMAIL' | translate}}" div-class="full-width">
+                    </ad-toggle-button>
+                </fieldset>
+
                 <fieldset class="holder full-width">
                     <div class="form-title half-width-title">
                         <h3><span translate="">GUEST_DETAIL_COLLECTION</span> </h3>
