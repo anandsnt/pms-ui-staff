@@ -6,7 +6,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		amount: 0,
 		isRateSuppressed: false,
 		isEditable: false,
-		addToGuestCard: false
+		addToGuestCard: false,
+		billNumber: 1
 	};
 
 	$scope.showSelectedCard = function() {
@@ -31,26 +32,37 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		if ($scope.payment.amount === '' || $scope.payment.amount === null) {
 			$scope.$emit('NO_AMOUNT_NOTIFICATION');
 		} else {
-			var payment_type_id = null;
+			//for CC payments, we need payment type id
+			var paymentTypeId = null;
 			if ($scope.selectedPaymentType === 'CC' && $scope.selectedCard !== -1) {
-				payment_type_id = $scope.selectedCardId;
+				paymentTypeId = $scope.attachedCc.value;
 			} else {
-				payment_type_id = null;
+				paymentTypeId = null;
 			};
+
 			var params = {
 				"postData": {
-					"bill_number": 1,
+					"bill_number": $scope.payment.billNumber,
 					"payment_type": $scope.selectedPaymentType,
-					"amount": $scope.feeData.totalOfValueAndFee, //amount + fee
-					"payment_type_id": payment_type_id
+					"amount": $scope.payment.amount,
+					"payment_type_id": paymentTypeId,
 				},
 				"reservation_id": $scope.reservationId
 			};
 
+			if($scope.feeData.showFee){
+				//if fee was calculated wrt to payment type
+				params.postData.fees_amount = $scope.feeData.calculatedFee;
+				params.postData.fees_charge_code_id = $scope.feeData.feeChargeCode;
+			}
+
 			if ($scope.isDisplayRef) {
+				//if reference text is presernt for the payment type
 				params.postData.reference_text = $scope.payment.referenceText;
 			}
 
+			//we need to notify the parent controllers to show loader
+			//as this is an external directive
 			$scope.$emit('showLoader');
 
 			sntPaymentSrv.submitPayment(params).then(function(response) {
@@ -85,7 +97,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		$scope.feeData = {
 			calculatedFee: currFee.calculatedFee,
 			totalOfValueAndFee: currFee.totalOfValueAndFee,
-			showFee: currFee.showFees
+			showFee: currFee.showFees,
+			feeChargeCode: currFee.feeChargeCode
 		};
 	};
 
@@ -104,7 +117,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		$scope.payment.amount = $scope.amount || 0;
 		$scope.payment.isRateSuppressed = $scope.isRateSuppressed || false;
 		$scope.payment.isEditable = $scope.isEditable || false;
-
+		$scope.payment.billNumber = $scope.payment.billNumber || 1;
 		$scope.onPaymentInfoChange();
 	})();
 

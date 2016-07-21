@@ -65,6 +65,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
 
             return {
                 calculatedFee: calculatedFee,
+                feeChargeCode: feeInfo.charge_code_id,
                 minFees: minFees,
                 defaultAmount: defaultAmount,
                 totalOfValueAndFee: totalOfValueAndFee,

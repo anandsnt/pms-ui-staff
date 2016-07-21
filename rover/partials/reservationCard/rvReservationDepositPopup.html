@@ -7,17 +7,19 @@
         <div class="payment-form">
             <!-- below is the payment directive -->
             <snt-payment reservation-id="{{reservationId}}" 
+                bill-number="1"
                 payment-types="passData.details.paymentTypes" 
                 selected-payment-type="paymentType" 
                 attached-cc="depositDetails.attached_card" 
                 amount='depositAmount' 
                 action-type="DEPOSIT" 
-                deposit-policy-name="depositPolicyName" 
-                currency-symbol="currencySymbol" 
+                deposit-policy-name="{{depositPolicyName}}" 
+                currency-symbol="{{currencySymbol}}" 
                 is-editable='isDepositEditable'
                 is-rate-suppressed='isReservationRateSuppressed' 
                 has-permission='hasPermissionToMakePayment()' 
                 form-template-url='/assets/partials/reservationCard/rvSntDepositPayment.html' 
+                payment-gateway="{{paymentGateway}}"
                 ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
             <!-- Deposit payment successfully -->
