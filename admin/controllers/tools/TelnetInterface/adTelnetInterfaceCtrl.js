@@ -12,8 +12,8 @@ admin.controller('adTelnetInterfaceCtrl', ['$scope', 'adTelnetInterfaceSrv', fun
     /**
      * when api returned failed
      */
-    var onTelnetConnectivityFailure = function() {
-        $scope.errorMessage = ['Telnet connection failed'];
+    var onTelnetConnectivityFailure = function(errorMessage) {
+        $scope.errorMessage = errorMessage;
     };
 
     /** when clicked on test button */
