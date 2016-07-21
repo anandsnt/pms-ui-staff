@@ -478,6 +478,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         var getCCAuthorization = function(authAtCheckinRequired, amount, isEmv) {
             console.info('getCCAuthorization: ', arguments);
+            if (authAtCheckinRequired === 'true'){
+                authAtCheckinRequired = true;
+            } else if(authAtCheckinRequired === 'false') {
+                authAtCheckinRequired = false;
+            }
             if (!authAtCheckinRequired) {
                 console.log('!authAtCheckinRequired, to signature');
                 goToCardSign();
@@ -518,7 +523,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
 
             if ($scope.inDemoMode() && atCardSwipeScreen()) {
-                onSuccess({
+                onSuccessCaptureAuth({
                     'status': 'success'
                 });
 
