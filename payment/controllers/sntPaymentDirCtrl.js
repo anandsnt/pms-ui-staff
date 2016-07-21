@@ -7,13 +7,14 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		isRateSuppressed: false,
 		isEditable: false,
 		addToGuestCard: false,
-		billNumber: 1
+		billNumber: 1,
+		linkedCreditCards:[]
 	};
 
 	$scope.showSelectedCard = function() {
 		//below condition may be modified wrt payment gateway and all
 		var isCCPresent = ($scope.selectedPaymentType === "CC" && $scope.attachedCc.ending_with.length > 0);
-		return isCCPresent;
+		return (isCCPresent && $scope.payment.screenMode === "PAYMENT_MODE");
 	};
 
 	$scope.shouldHidePaymentButton = function() {
@@ -83,6 +84,10 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		};
 	};
 
+	var existingCardsPresent = function(){
+		return $scope.payment.linkedCreditCards.length > 0;
+	};
+
 	$scope.onPaymentInfoChange = function() {
 		//NOTE: Fees information is to be calculated only for standalone systems
 		//TODO: Handle CC & GC Seperately Here
@@ -93,6 +98,13 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 			currFee = sntPaymentSrv.calculateFee($scope.payment.amount, feeInfo);
 
 		$scope.isDisplayRef = selectedPaymentType && selectedPaymentType.is_display_reference;
+
+		if(selectedPaymentType.name === "CC"){
+			if($scope.paymentGateway === "MLI"){
+				$scope.payment.screenMode = "CARD_ADD_MODE";
+				$scope.payment.addCCMode = existingCardsPresent() ? "EXISTING_CARDS" : "ADD_CARD";
+			};
+		};
 
 		$scope.feeData = {
 			calculatedFee: currFee.calculatedFee,
@@ -107,6 +119,15 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		$scope.feeData.totalOfValueAndFee = totalAmount.toFixed(2);
 	};
 
+	/**************** CC handling ********************/
+
+	$scope.onCardClick =  function(){
+		$scope.payment.screenMode = "CARD_ADD_MODE";
+	};
+	$scope.cancelCardSelection = function(){
+		$scope.payment.screenMode = "PAYMENT_MODE";
+	};
+
 	//------------------------------------------------------------------------------------------------------------------
 	//
 	//------------------------------------------------------------------------------------------------------------------
@@ -118,7 +139,12 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		$scope.payment.isRateSuppressed = $scope.isRateSuppressed || false;
 		$scope.payment.isEditable = $scope.isEditable || false;
 		$scope.payment.billNumber = $scope.payment.billNumber || 1;
+		$scope.payment.linkedCreditCards = $scope.linkedCreditCards || [];
 		$scope.onPaymentInfoChange();
+		$scope.payment.screenMode = "PAYMENT_MODE";
+		$scope.payment.addCCMode = "ADD_CARD";
+		//to change to mapping
+		$scope.paymentGatewayUIInterfaceUrl = "/assets/partials/payMLIPartial.html";
 	})();
 
 });

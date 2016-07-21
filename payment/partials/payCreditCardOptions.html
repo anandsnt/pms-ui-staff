@@ -1,0 +1,39 @@
+
+<!-- Credit card options - hidden until payment type is set as CC -->
+<!-- If hidden by default, add class="hidden" -->
+<!-- Card toggle - Use only if there are exsiting cards on file -->
+<ul class="card-toggle" ng-hide="hideCardToggles()" ng-init="checkForGiftCard();">
+    <li ng-class="{'active': payment.addCCMode === 'EXISTING_CARDS'}" click-touch="payment.addCCMode = 'EXISTING_CARDS'">
+        Existing Cards
+    </li>
+    <li ng-class="{'active': payment.addCCMode === 'ADD_CARD'}" click-touch="payment.addCCMode = 'ADD_CARD'">
+        Add New Card
+    </li>
+    <!-- TO DO: inlude gift card later -->
+    <!-- <li ng-show="showGiftCardToggle()" ng-class="{'active':isGiftCard}" click-touch="clickedGiftCardToggle()">
+        Gift Card
+    </li> -->
+</ul>
+
+<!-- Exsiting cards - use only when they exsit -->
+<div id="cc-exsiting-card" class="cards-list cards-container scrollable" ng-show="payment.addCCMode === 'EXISTING_CARDS'" ng-iscroll="cardsList">
+    <div class="wrapper">
+        <label class="active-item item-payment" ng-click="setCreditCardFromList($index)" ng-repeat="card in cardsList" ng-show="card.is_credit_card">
+            <!-- Add class "primary" when selected -->
+            <figure class="card-logo">
+                <img ng-src="/assets/images/{{card.card_code}}.png" alt="">
+            </figure>
+            <span class="number">{{'ENDING_WITH' | translate}} <span class="value number">{{card.mli_token}}</span></span>
+            <span class="date">{{'DATE' | translate}} <span class="value date">{{card.card_expiry}}</span></span>
+            <span class="icons icon-ok-10" ng-show="cardselectedIndex === $index"></span>
+        </label>
+    </div>
+</div>
+
+<div ng-include="paymentGatewayUIInterfaceUrl" ng-show="payment.addCCMode === 'ADD_CARD'"></div>
+
+<div class="actions">
+    <button type="button" class="button blank" ng-click="cancelCardSelection()">
+        Cancel Card selection
+    </button>
+</div>

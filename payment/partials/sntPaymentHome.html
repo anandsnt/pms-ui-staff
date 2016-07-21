@@ -1,5 +1,5 @@
 <!-- Drop down to select payment method -->
-<div id="payment-type" class="entry full-width">
+<div id="payment-type" class="entry full-width" ng-show="payment.screenMode === 'PAYMENT_MODE'">
     <label for="payment-type" translate>PAYMENT_TYPE</label>
     <div class="select">
         <select ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes"
@@ -22,5 +22,7 @@
     </label>
 </div>
 
+<div ng-include="'/assets/partials/payCreditCardOptions.html'" ng-show="payment.screenMode === 'CARD_ADD_MODE'"></div>
+
 <!-- Payment type actions. This can be add payment method addition, submit payment, deposit collection etc -->
-<div ng-include="formTemplateUrl"></div>
+<div ng-include="formTemplateUrl" ng-show="payment.screenMode === 'PAYMENT_MODE'"></div>
