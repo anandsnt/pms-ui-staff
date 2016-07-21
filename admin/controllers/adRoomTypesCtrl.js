@@ -64,9 +64,15 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
     * @param {index} index of selected room type
     * @param {id} id of the room type
     */
+    $scope.editRoomTypeDetails = function(index, id){
+         $scope.isAddMode =false;
+        $scope.fetchAvailableRoomTypesForSuite(index, id);
+    };
 	$scope.editRoomTypes = function(index, id)	{
-        $scope.fetchAvailableRoomTypesForSuite();
-		$scope.isAddMode =false;
+
+      //  $scope.fetchAvailableRoomTypesForSuite();
+
+
 		$scope.departmentData={};
 		$scope.currentClickedElement = index;
 		$scope.roomTypeData = {};
@@ -204,7 +210,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 		$scope.invokeApi(ADRoomTypesSrv.importFromPms, '' , successCallbackImport);
 	};
 
-    $scope.fetchAvailableRoomTypesForSuite = function(){
+    $scope.fetchAvailableRoomTypesForSuite = function(index, id){
         var successCallbackGetAvailableRoomTypesForSuite = function(data){
             $scope.$emit('hideLoader');
             $scope.availableRoomTypes = data.data;
@@ -213,6 +219,9 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
                 value.isComponentUpArrowEnabled = true;
                 value.isComponentDownArrowEnabled = false;
             })
+            if(!$scope.isAddMode){
+                $scope.editRoomTypes(index, id);
+            }
 
         };
         $scope.invokeApi(ADRoomTypesSrv.fetchRoomTypesAvailableForSuite, '' , successCallbackGetAvailableRoomTypesForSuite);
