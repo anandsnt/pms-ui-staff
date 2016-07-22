@@ -85,5 +85,41 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
             };
         };
 
+
+        /********************************* MLI **************************************/
+
+        //fetch MLI session details
+        this.fetchMLISessionDetails = function(sessionDetails, successCallback, failureCallback) {
+
+            var callback = function(response) {
+                (response.status === "ok") ? successCallback(response) : failureCallback(response);
+            };
+            HostedForm.updateSession(sessionDetails, callback);
+        };
+
+        this.fetchMLIToken = function(sessionDetails, successCallback, failureCallback) {
+
+            var success = function(response) {
+                successCallback(response);
+            };
+            var failure = function(data) {
+                var errorMessage = ['There is a problem with your credit card'];
+                failureCallback(errorMessage);
+            };
+
+            if (sessionDetails.cardNumber.length > 0) {
+                try {
+                    service.fetchMLISessionDetails(sessionDetails, success, failure);
+                } catch (err) {
+                    var errorMessage = ['There was a problem connecting to the payment gateway.'];
+                    failureCallback(errorMessage);
+                };
+            } else {
+                var errorMessage = ['There is a problem with your credit card'];
+                failureCallback(errorMessage);
+            };
+
+        };
+
     }
 ]);

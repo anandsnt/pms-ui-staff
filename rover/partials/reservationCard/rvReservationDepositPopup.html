@@ -21,6 +21,7 @@
                 form-template-url='/assets/partials/reservationCard/rvSntDepositPayment.html' 
                 payment-gateway="{{paymentGateway}}"
                 is-manual-cc-entry-enabled="isManualCCEntryEnabled"
+                mli-merchant-id="{{MLImerchantId}}"
                 ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
             <!-- Deposit payment successfully -->

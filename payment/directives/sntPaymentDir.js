@@ -21,7 +21,8 @@ sntPay.directive('sntPayment', function() {
             currencySymbol : '@',
             hasPermission : '=',
             formTemplateUrl : '@',
-            isManualCcEntryEnabled: '='
+            isManualCcEntryEnabled: '=',
+            MLImerchantId: '@'
         },
         link: function() {
             console.log("--From Payment Module Init--");

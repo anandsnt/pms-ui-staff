@@ -9,7 +9,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		addToGuestCard: false,
 		billNumber: 1,
 		linkedCreditCards: [],
-		isManualCcEntryEnabled: true
+		isManualCcEntryEnabled: true,
+		MLImerchantId: ''
 	};
 
 	$scope.showSelectedCard = function() {
@@ -193,7 +194,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		$scope.onPaymentInfoChange();
 		$scope.payment.screenMode = "PAYMENT_MODE";
 		$scope.payment.addCCMode = "ADD_CARD";
-		$scope.payment.isManualCcEntryEnabled = $scope.payment.isManualCcEntryEnabled || true;
+		$scope.payment.isManualCcEntryEnabled = $scope.isManualCcEntryEnabled || true;
+		$scope.payment.MLImerchantId = $scope.MLImerchantId || "";
 		//TODO:handle Scroll
 		//$scope.setScroller('cardsList',{'click':true, 'tap':true}); 
 		fetchAttachedCreditCards();
