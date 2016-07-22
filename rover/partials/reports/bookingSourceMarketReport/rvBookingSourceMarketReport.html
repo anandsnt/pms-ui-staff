@@ -33,11 +33,17 @@
                     <li class="totals for-print">
                         <span class="pull-left">
                             Booked Date Range <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
-                            Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span><br/>
+                            Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span>
                             <!-- chosen options -->
                     		<label ng-if="appliedFilter.options.length">
+                                <br/>
                     			Options: <span>{{ appliedFilter.options.join(', ') }}</span>
                     		</label>
+                            <label>
+                                <br/>
+                                Sort By: <span ng-if="reportStatus.sort.source.name">Name</span><span ng-if="!reportStatus.sort.source.name">Count</span>
+                                Sort Direction: <span ng-if="reportStatus.sort.source.ascending">Ascending</span><span ng-if="!reportStatus.sort.source.ascending">Descending</span>
+                            </label>
                         </span>
                         <span class="pull-right">
                             Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
@@ -110,11 +116,17 @@
                     <div class="totals">
                         <span class="pull-left">
                             Booked Date Range <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
-                            Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span><br/>
+                            Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span>
                             <!-- chosen options -->
                     		<label ng-if="appliedFilter.options.length">
+                                <br/>
                     			Options: <span>{{ appliedFilter.options.join(', ') }}</span>
                     		</label>
+                            <label>
+                                <br/>
+                                Sort By: <span ng-if="reportStatus.sort.source.name">Name</span><span ng-if="!reportStatus.sort.source.name">Count</span>
+                                Sort Direction: <span ng-if="reportStatus.sort.source.ascending">Ascending</span><span ng-if="!reportStatus.sort.source.ascending">Descending</span>
+                            </label>
                         </span>
                         <span class="pull-right">
                             Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
@@ -145,11 +157,17 @@
                     <li class="totals for-print">
                         <span class="pull-left">
                             Booked Date Range <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
-                            Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span><br/>
+                            Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span>
                             <!-- chosen options -->
                     		<label ng-if="appliedFilter.options.length">
+                                <br/>
                     			Options: <span>{{ appliedFilter.options.join(', ') }}</span>
                     		</label>
+                            <label>
+                                <br/>
+                                Sort By: <span ng-if="reportStatus.sort.market.name">Name</span><span ng-if="!reportStatus.sort.market.name">Count</span>
+                                Sort Direction: <span ng-if="reportStatus.sort.market.ascending">Ascending</span><span ng-if="!reportStatus.sort.market.ascending">Descending</span>
+                            </label>
                         </span>
                         <span class="pull-right">
                             Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
@@ -222,11 +240,17 @@
                     <div class="totals">
                         <span class="pull-left">
                             Booked Date Range <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br />
-                            Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span><br />
+                            Arrival Date Range <span>{{ appliedFilter.arrivalFromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.arrivalToDate | date:dateFormat }}</span>
                             <!-- chosen options -->
                     		<label ng-if="appliedFilter.options.length">
+                                <br />
                     			Options: <span>{{ appliedFilter.options.join(', ') }}</span>
                     		</label>
+                            <label>
+                                <br />
+                                Sort By: <span ng-if="reportStatus.sort.market.name">Name</span><span ng-if="!reportStatus.sort.market.name">Count</span>
+                                Sort Direction: <span ng-if="reportStatus.sort.market.ascending">Ascending</span><span ng-if="!reportStatus.sort.market.ascending">Descending</span>
+                            </label>
                         </span>
                         <span class="pull-right">
                             Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
