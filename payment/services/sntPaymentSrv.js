@@ -88,6 +88,24 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
 
         /********************************* MLI **************************************/
 
+        this.getCreditCardTypeForMLI = function(cardBrand){
+            var card = (typeof cardBrand  ==="undefined") ? "":cardBrand.toUpperCase();
+            var cardArray = ['AX','DC','DS','JCB','MC','VA'];
+            return (cardArray.indexOf(card) != -1 ) ? card : (typeof creditCardTypes[card]!='undefined') ? creditCardTypes[card] : 'credit-card';
+        };
+
+        this.savePaymentDetails = function(params){
+            var deferred = $q.defer();
+            var url = 'staff/reservation/save_payment';
+             $http.post(url,params).success(function(response) {
+                    deferred.resolve(response);
+                }.bind(this))
+                .error(function(error) {
+                    deferred.reject(error);
+                });
+            return deferred.promise;
+        };
+
         //fetch MLI session details
         this.fetchMLISessionDetails = function(sessionDetails, successCallback, failureCallback) {
 

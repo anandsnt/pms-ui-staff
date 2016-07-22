@@ -18,12 +18,33 @@ sntPay.controller('payMLIOperationsController', function($scope, sntPaymentSrv) 
 		return sessionDetails;
 	};
 
-	var notifyParent = function(tokenDetails){
-		console.log(tokenDetails);
+	var retrieveCardtype = function() {
+		var cardType = sntPaymentSrv.getCreditCardTypeForMLI($scope.cardData.cardType);
+		return cardType;
+	};
+
+	var notifyParent = function(tokenDetails) {
+		var expiryMonth = angular.copy($scope.cardData.expiryMonth);
+		var expiryYear = angular.copy($scope.cardData.expiryYear);
+		var cardExpiry = (expiryMonth && expiryYear) ? ("20" + expiryYear + "-" + expiryMonth + "-01") : "";
+		var paymentData = {
+			apiParams : {
+				name_on_card: $scope.cardData.userName,
+				payment_type: "CC",
+				token: tokenDetails.session,
+				card_expiry: cardExpiry
+			},
+			cardDisplayData : {
+				card_code: retrieveCardtype(),
+				ending_with : $scope.cardData.cardNumber.slice(-4),
+				expiry_date : expiryMonth+" / "+expiryYear
+			}
+		};
+		$scope.$emit("CC_TOKEN_GENERATED", paymentData);
 	};
 
 
-	var notifyParentError = function(errorMessage){
+	var notifyParentError = function(errorMessage) {
 		console.error(errorMessage);
 		$scope.$emit("MLI_ERROR", errorMessage);
 	};
@@ -56,7 +77,6 @@ sntPay.controller('payMLIOperationsController', function($scope, sntPaymentSrv) 
 	(function() {
 
 		$scope.cardData = {
-			addToGuestCard: false,
 			cardNumber: "",
 			CCV: "",
 			expiryMonth: "",

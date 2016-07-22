@@ -91,7 +91,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		return $scope.payment.linkedCreditCards.length > 0;
 	};
 
-	var changeToCardAddMode = function(){
+	var changeToCardAddMode = function() {
 		$scope.payment.screenMode = "CARD_ADD_MODE";
 		$scope.payment.addCCMode = existingCardsPresent() ? "EXISTING_CARDS" : "ADD_CARD";
 		//TODO:handle Scroll
@@ -141,7 +141,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		$scope.payment.screenMode = "PAYMENT_MODE";
 	};
 
-	$scope.setCreditCardFromList = function(selectedCardValue){
+	$scope.setCreditCardFromList = function(selectedCardValue) {
 		var selectedCard = _.find($scope.payment.linkedCreditCards, {
 			value: selectedCardValue
 		});
@@ -150,7 +150,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 	};
 
 	$scope.hideCardToggles = function() {
-		return false;//need to handle later
+		return false; //need to handle later
 	};
 	var onFetchLinkedCreditCardListSuccess = function(data) {
 		$scope.$emit('hideLoader');
@@ -165,31 +165,66 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 	};
 
 	//if there is reservationID fetch the linked credit card items
-	var fetchAttachedCreditCards = function(){
+	var fetchAttachedCreditCards = function() {
 		if (!!$scope.reservationId) {
-		$scope.$emit('showLoader');
+			$scope.$emit('showLoader');
 
-		sntPaymentSrv.getLinkedCardList($scope.reservationId).then(function(response) {
-				onFetchLinkedCreditCardListSuccess(response);
-				$scope.$emit('hideLoader');
-			},
-			function(errorMessage) {
-				$scope.$emit('PAYMENT_FAILED', errorMessage);
-				$scope.$emit('hideLoader');
-			});
+			sntPaymentSrv.getLinkedCardList($scope.reservationId).then(function(response) {
+					onFetchLinkedCreditCardListSuccess(response);
+					$scope.$emit('hideLoader');
+				},
+				function(errorMessage) {
+					$scope.$emit('PAYMENT_FAILED', errorMessage);
+					$scope.$emit('hideLoader');
+				});
 		} else {
 			$scope.payment.linkedCreditCards = [];
 		};
 	};
 
-	var getCrediCardTypesList = function(){
+	var getCrediCardTypesList = function() {
 		//filter CC types from payment types
-		var creditCardTypes =  _.find($scope.paymentTypes, {
+		var creditCardTypes = _.find($scope.paymentTypes, {
 			name: 'CC'
 		});
 		return creditCardTypes.values;
 	};
-	
+
+	//save CC
+	var saveCCPayment = function(cardDetails) {
+
+
+		var onSaveSuccess = function(response) {
+
+			$scope.attachedCc.value = response.data.id;
+			$scope.attachedCc.card_code = cardDetails.cardDisplayData.card_code;
+			$scope.attachedCc.ending_with = cardDetails.cardDisplayData.ending_with;
+			$scope.attachedCc.expiry_date = cardDetails.cardDisplayData.expiry_date;
+
+			if ($scope.isStandAlone) {
+				//TODO:calculate fee
+				// $scope.feeData.feesInfo = data.fees_information;
+				// $scope.setupFeeData();
+			}
+			$scope.payment.screenMode = "PAYMENT_MODE";
+		};
+
+
+		$scope.$emit('showLoader');
+		sntPaymentSrv.savePaymentDetails(cardDetails.apiParams).then(function(response) {
+				onSaveSuccess(response);
+				$scope.$emit('hideLoader');
+			},
+			function(errorMessage) {
+				$scope.errorMessage = errorMessage;
+				$scope.$emit('hideLoader');
+			});
+	};
+
+	$scope.$on('CC_TOKEN_GENERATED', function(event, data) {
+		saveCCPayment(data);
+	});
+
 	/****************** init ***********************************************/
 
 	(function() {
