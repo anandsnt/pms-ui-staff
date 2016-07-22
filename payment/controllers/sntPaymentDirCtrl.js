@@ -195,7 +195,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		$scope.payment.screenMode = "PAYMENT_MODE";
 		$scope.payment.addCCMode = "ADD_CARD";
 		$scope.payment.isManualCcEntryEnabled = $scope.isManualCcEntryEnabled || true;
-		$scope.payment.MLImerchantId = $scope.MLImerchantId || "";
+		$scope.payment.MLImerchantId = $scope.mliMerchantId || "";
 		//TODO:handle Scroll
 		//$scope.setScroller('cardsList',{'click':true, 'tap':true}); 
 		fetchAttachedCreditCards();
