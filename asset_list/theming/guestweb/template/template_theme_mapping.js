@@ -141,12 +141,12 @@ module.exports = {
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
 										precheckinPartials+'*.html'],
-			'guestweb_knickerbocker':[landingPartials + 'Knickerbocker/*.html',
-										  checkoutNowPartials+'Knickerbocker/*.html',checkoutNowPartials+'*.html',
-										  checkoutNowlaterPartials+'Knickerbocker/*.html',
-										  checkinPartials+'Knickerbocker/*.html',checkinPartials+"*.html",
-										  precheckinPartials+'Knickerbocker/*.html', precheckinPartials+'*.html',
-										  sharedHtml],
+			'guestweb_knickerbocker'  : [ 'guestweb/**/common_templates/partials/checkin/**.html',
+										'guestweb/**/common_templates/partials/checkout/**.html',
+										'guestweb/**/common_templates/partials/gwNoOption.html',
+										checkoutNowPartials+'*.html',
+										checkinPartials+"*.html",
+										precheckinPartials+'*.html'],
 			'guestweb_margaritaville':[landingPartials + 'common/*.html',
 										  checkoutNowPartials+'common/*.html',checkoutNowPartials+'*.html',
 										  checkoutNowlaterPartials+'common/*.html',
@@ -365,6 +365,8 @@ module.exports = {
 										checkoutNowPartials+'*.html',
 										checkinPartials+"*.html",
 										precheckinPartials+'*.html']
+
+			
 
 		}
 	}
