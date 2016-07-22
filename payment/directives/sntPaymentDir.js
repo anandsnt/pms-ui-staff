@@ -20,7 +20,8 @@ sntPay.directive('sntPayment', function() {
             isRateSuppressed: '=',
             currencySymbol : '@',
             hasPermission : '=',
-            formTemplateUrl : '@'
+            formTemplateUrl : '@',
+            isManualCcEntryEnabled: '='
         },
         link: function() {
             console.log("--From Payment Module Init--");

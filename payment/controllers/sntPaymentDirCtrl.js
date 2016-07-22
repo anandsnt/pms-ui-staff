@@ -8,7 +8,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		isEditable: false,
 		addToGuestCard: false,
 		billNumber: 1,
-		linkedCreditCards: []
+		linkedCreditCards: [],
+		isManualCcEntryEnabled: true
 	};
 
 	$scope.showSelectedCard = function() {
@@ -192,6 +193,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		$scope.onPaymentInfoChange();
 		$scope.payment.screenMode = "PAYMENT_MODE";
 		$scope.payment.addCCMode = "ADD_CARD";
+		$scope.payment.isManualCcEntryEnabled = $scope.payment.isManualCcEntryEnabled || true;
 		//TODO:handle Scroll
 		//$scope.setScroller('cardsList',{'click':true, 'tap':true}); 
 		fetchAttachedCreditCards();

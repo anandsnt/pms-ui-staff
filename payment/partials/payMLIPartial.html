@@ -1,9 +1,9 @@
-<div id="cc-new-card" class="new-card">
+<div id="cc-new-card" class="new-card" ng-controller="payMLIOperationsController">
 	<!-- CC type -->
     <div class="entry card-type">
         <label for="card-type">Card type </label>
         <div class="select">
-            <select name="card-type" ng-disabled="!isManualCCEntryEnabled" ng-model="cardData.cardType" class="placeholder">
+            <select name="card-type" ng-disabled="!payment.isManualCcEntryEnabled" ng-model="cardData.cardType" class="placeholder">
                 <option value="" selected>Select Card type</option>
                 <option ng-repeat="cardType in creditCardTypes" value="{{cardType.cardcode}}" ng-selected="cardType.cardcode == cardData.cardType">{{cardType.cardname}}</option>
             </select>
@@ -12,13 +12,13 @@
     <!-- card Number -->
     <div class="entry card-number">
         <label for="card-number">Card number (<span>No spaces</span>)</label>
-        <input name="card-number" ng-readonly="!isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
+        <input name="card-number" ng-readonly="!payment.isManualCcEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
     </div>
     <!-- Expiry date -->
     <div class="entry card-expiry">
         <label for="expiry-month">Expires (<span>Month/Year</span>)</label>
-        <input name="expiry-month" ng-readonly="!isManualCCEntryEnabled" id="expiry-month" placeholder="MM" ng-model="cardData.expiryMonth" maxlength="2" size="3" type="text" />
-        <input name="expiry-year" ng-readonly="!isManualCCEntryEnabled" id="expiry-year" placeholder="YY" ng-model="cardData.expiryYear" maxlength="2" size="3" type="text" />
+        <input name="expiry-month" ng-readonly="!payment.isManualCcEntryEnabled" id="expiry-month" placeholder="MM" ng-model="cardData.expiryMonth" maxlength="2" size="3" type="text" />
+        <input name="expiry-year" ng-readonly="!payment.isManualCcEntryEnabled" id="expiry-year" placeholder="YY" ng-model="cardData.expiryYear" maxlength="2" size="3" type="text" />
     </div>
     <!-- Card Name -->
     <div class="entry card-name">
