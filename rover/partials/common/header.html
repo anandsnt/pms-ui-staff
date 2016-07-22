@@ -22,7 +22,7 @@
              <em class="date" ng-hide="isEodRunning"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em>
              <em class="date updating" ng-show="isEodRunning">End of Day Routine in Progress</em>
              <em class="date updating" ng-show="isEodProcessRunning&&!isEodRunning">EOD running again.</em>
-             <em class="date error" ng-show="isEodProcessFailed&&!(isEodProcessRunning||isEodRunning)">Some EOD Processes failed, check log!</em>
+             <em class="date error" ng-show="isEodProcessFailed&&!(isEodProcessRunning||isEodRunning)">EOD Processes failed, please check log!</em>
         </div>
     </h1>
 </header>
