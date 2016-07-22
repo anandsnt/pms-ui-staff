@@ -10,7 +10,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		billNumber: 1,
 		linkedCreditCards: [],
 		isManualCcEntryEnabled: true,
-		MLImerchantId: ''
+		MLImerchantId: '',
+		creditCardTypes: []
 	};
 
 	$scope.showSelectedCard = function() {
@@ -180,6 +181,14 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 			$scope.payment.linkedCreditCards = [];
 		};
 	};
+
+	var getCrediCardTypesList = function(){
+		//filter CC types from payment types
+		var creditCardTypes =  _.find($scope.paymentTypes, {
+			name: 'CC'
+		});
+		return creditCardTypes.values;
+	};
 	
 	/****************** init ***********************************************/
 
@@ -196,6 +205,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		$scope.payment.addCCMode = "ADD_CARD";
 		$scope.payment.isManualCcEntryEnabled = $scope.isManualCcEntryEnabled || true;
 		$scope.payment.MLImerchantId = $scope.mliMerchantId || "";
+		$scope.payment.creditCardTypes = getCrediCardTypesList();
 		//TODO:handle Scroll
 		//$scope.setScroller('cardsList',{'click':true, 'tap':true}); 
 		fetchAttachedCreditCards();

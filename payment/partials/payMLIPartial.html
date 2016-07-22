@@ -5,7 +5,7 @@
         <div class="select">
             <select name="card-type" ng-disabled="!payment.isManualCcEntryEnabled" ng-model="cardData.cardType" class="placeholder">
                 <option value="" selected>Select Card type</option>
-                <option ng-repeat="cardType in creditCardTypes" value="{{cardType.cardcode}}" ng-selected="cardType.cardcode == cardData.cardType">{{cardType.cardname}}</option>
+                <option ng-repeat="cardType in payment.creditCardTypes" value="{{cardType.cardcode}}" ng-selected="cardType.cardcode == cardData.cardType">{{cardType.cardname}}</option>
             </select>
         </div>
     </div>
