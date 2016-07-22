@@ -1022,15 +1022,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 		$scope.hasSort = function(index) {
-			return !! $scope.chosenReport.sortByOptions[index]
+			var s = $scope.chosenReport.sortByOptions || [];
+			return !! s[index];
 		}
 
 		$scope.isAsc = function(index) {
-			return !! $scope.chosenReport.sortByOptions[index] && $scope.chosenReport.sortByOptions[index]['sortDir'] === true;
+			var s = $scope.chosenReport.sortByOptions || [];
+			return !! s[index] && s[index]['sortDir'] === true;
 		};
 
 		$scope.isDesc = function(index) {
-			return !! $scope.chosenReport.sortByOptions[index] && $scope.chosenReport.sortByOptions[index]['sortDir'] === false;
+			var s = $scope.chosenReport.sortByOptions || [];
+			return !! s[index] && s[index]['sortDir'] === false;
 		};
 
 
