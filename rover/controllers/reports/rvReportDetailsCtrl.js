@@ -113,6 +113,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isCondensedPrint = false;
 			$scope.isBalanceReport = false;
 			$scope.isDepositBalanceReport = false;
+			$scope.isCancellationReport = false;
 
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
@@ -134,6 +135,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['CANCELLATION_NO_SHOW']:
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
+					$scope.isCancellationReport = true;
 					$scope.hasNoSorting = true;
 					break;
 
