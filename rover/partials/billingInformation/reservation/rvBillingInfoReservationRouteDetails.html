@@ -85,7 +85,7 @@
 				<!-- Payment type drop down -->
 				<div id = "newpaymentview"  ng-show = "showSelectPaymentTypeDropDown();" ng-include="'/assets/partials/billingInformation/sharedPartials/rvBillingInfoAddPayment.html'"> </div>
 
-				<span ng-include="'/assets/partials/billingInformation/sharedPartials/rvBillingInfoCreditLimitAndReferenceNo.html'"></span>
+				<span ng-hide="isGroupOrHouse" ng-include="'/assets/partials/billingInformation/sharedPartials/rvBillingInfoCreditLimitAndReferenceNo.html'"></span>
 			</div>
 		</div>
 	</fieldset>
