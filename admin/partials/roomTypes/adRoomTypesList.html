@@ -40,7 +40,7 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="room_types in $data" >
-						<td ng-click="editRoomTypes($index,room_types.id)" ng-hide="currentClickedElement == $index" >
+						<td ng-click="editRoomTypeDetails($index,room_types.id)" ng-hide="currentClickedElement == $index" >
 							<a data-item="3" data-colspan="2" class="edit-data-inline">{{room_types.name}} </a>
 						</td>
 						<td class="text-left" ng-hide="currentClickedElement == $index" >
