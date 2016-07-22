@@ -370,6 +370,25 @@
     .inline-modal {
         .modal-content {
 
+            .alipay {
+                .hide();
+                text-align: center;
+                padding: 0 20px;
+            }
+
+            &.show-alipay {
+                .h2,
+                .text,
+                .payment-form,
+                .notice {
+                    .hide();
+                } 
+
+                .alipay {
+                    .show();
+                }
+            }
+            
             /* Alert ***/
             &.alert {
                 padding: 30px 20px;
