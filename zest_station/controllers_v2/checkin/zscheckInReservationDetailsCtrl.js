@@ -298,7 +298,9 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
         var roomAssignCallback = function(response) {
             if (response.status && response.status === 'success') {
-                //$scope.selectedReservation.room = response.data.room_number;
+                $scope.selectedReservation.room = response.data.room_number;
+                //will need to check and combine one later
+                //fixing for hotfix
                 $scope.selectedReservation.reservation_details.room_no = response.data.room_number;
                 routeToNext();
             } else {
