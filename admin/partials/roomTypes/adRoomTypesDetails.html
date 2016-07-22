@@ -14,8 +14,8 @@
 
 			<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="roomTypeData.snt_description" name = "snt-desc" id = "snt-desc" label = "{{ 'SNT_DESCRIPTION' | translate }}" placeholder = "{{ 'SNT_DESCRIPTION_PLACE_HOLDER' | translate }}"></ad-textarea>
 
-			<div class="entry full-width" ng-style="" ng-if ="isEnabledRoomTypeByRoomClass"> 
-				<label for="room-type-picture"> {{ 'ROOM CLASS' | translate }} </label> 
+			<div class="entry full-width" ng-style="" ng-if ="isEnabledRoomTypeByRoomClass">
+				<label for="room-type-picture"> {{ 'ROOM CLASS' | translate }} </label>
 				<div class="select">
 				    <select id="" name="" class="" ng-style="0" ng-model="roomTypeData.room_class_id">
 				      <option value="" ng-hide="labelInDropDown.length===0 || !labelInDropDown" class="ng-binding">
@@ -47,8 +47,27 @@
 			</div>
 
 			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_pseudo_room_type" hide="{{ isStandAlone }}" label="{{ 'PSEUDO_ROOM_TYPE' | translate }}"></ad-checkbox>
-			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_suite" label="{{ 'SUITE_ROOM_TYPE' | translate }}"></ad-checkbox>
+			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_suite" hide="{{isHourlyRatesEnabled}}" label="{{ 'SUITE_ROOM_TYPE' | translate }}"></ad-checkbox>
 			<ad-checkbox hide="{{ !isRoomStatusImportPerRoomTypeOn || isStandAlone }}" div-class="full-width" is-checked="roomTypeData.is_room_type_ows_request_per_status_type" label="{{ 'SEND_INTERFACE_REQUEST' | translate }}"></ad-checkbox>
+
+			<div class="entry full-width" ng-class="{'hidden': !roomTypeData.is_suite}" hide="{{isHourlyRatesEnabled}}">
+		        <ul class="room-type-list">
+		            <li ng-repeat="roomTypes in availableRoomTypes">
+		                <span class="room-type-name">{{roomTypes.name}}</span>
+		                <div class="number-input">
+		                    <input type="number" value="{{roomTypes.blocked_rooms_count}}" ng-change="changeInBlockedRoomCount(roomTypes.id)" ng-model="roomTypes.blocked_rooms_count" limit-input-range="{from: 0, to: {{roomTypes.rooms_count}}, zeroPrefix: false}"/>
+		                    <div class="buttons">
+
+		                        <button type="button" class="icons icon-mover-right" ng-click="incrementBlockedRoomTypesCount(roomTypes.id)" ng-class="{'disabled': !roomTypes.isComponentUpArrowEnabled}">
+		                        </button>
+
+		                        <button type="button" class="icons icon-mover-left" ng-click="decrementBlockedRoomTypesCount(roomTypes.id)" ng-class="{'disabled': !roomTypes.isComponentDownArrowEnabled}">
+		                        </button>
+		                    </div>
+		                </div>
+		            </li>
+		        </ul>
+		    </div>
 		</fieldset>
 		<div class="actions float">
 			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()">

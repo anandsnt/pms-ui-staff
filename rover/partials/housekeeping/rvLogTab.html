@@ -54,6 +54,36 @@
                     </tr>
                 </tbody>
             </table>
+
+            <div class="log-table-mobile">
+                <div class="row-break" ng-repeat="roomLog in roomLogData">
+                    <div data-content="Changed By">
+                        {{roomLog.user_name}}
+                    </div>
+                    <!-- 'data-content' used in CSS, name of the columns -->
+                    <div data-content="Date &amp; Time">
+                        {{roomLog.date}}, {{roomLog.time}}
+                    </div>
+                    <div data-content="Source">
+                        {{roomLog.action}}
+                    </div>
+                    <div data-content="Front Office Status">
+                        <!-- show the status.old to log the from/to change -->
+                        <span class="status old" ng-show="roomLog.front_office_status.old_value!==roomLog.front_office_status.new_value">{{roomLog.front_office_status.old_value}}</span>
+                        <span class="status">{{roomLog.front_office_status.new_value}}</span>
+                    </div>
+                    <div data-content="Room Status">
+                        <!-- show the status.old to log the from/to change -->
+                        <span class="status old" ng-show="roomLog.room_status.old_value!==roomLog.room_status.new_value"> {{roomLog.room_status.old_value}}</span>
+                        <span class="status" ng-class="getRoomStatusClass(roomLog.room_status.new_value)" >{{roomLog.room_status.new_value}}</span>
+                    </div>
+                    <div data-content="Service Status">
+                        <!-- show the status.old to log the from/to change -->
+                        <span class="status old" ng-show="roomLog.service_status.old_value!==roomLog.service_status.new_value"> {{roomLog.service_status.old_value}}</span>
+                        <span class="status">{{roomLog.service_status.new_value}}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="search-pagination" ng-show="!isPrevButtonDisabled()||!isNextButtonDisabled()">

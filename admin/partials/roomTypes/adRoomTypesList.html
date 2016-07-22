@@ -1,5 +1,5 @@
 <section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
-	
+
 	<div data-view="HotelRoomTypesView">
 		<header class="content-title float">
 			<h2> {{ 'ROOM_TYPES' | translate }} </h2>
@@ -11,17 +11,17 @@
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 			<div id="new-form-holder"></div>
-			<span id="new-form-holder" class="grid" ng-if="isAddMode" ng-include="'/assets/partials/roomTypes/adRoomTypesDetails.html'"></span>	
-			<table id="brands" class="grid " ng-table="tableParams" template-pagination="nil">
+			<span id="new-form-holder" class="grid" ng-if="isAddMode" ng-include="'/assets/partials/roomTypes/adRoomTypesDetails.html'"></span>
+			<table id="brands" class="grid " ng-table="tableParams" template-pagination="">
 				<thead>
 					<tr>
-						 
+
 	           		<th width="45%" ng-class="{
 	           			'sortable': currentClickedElement == -1,
 	                    'sort-asc': tableParams.isSortBy('name', 'asc'),
 	                    'sort-desc': tableParams.isSortBy('name', 'desc')
 	                  }"
-	                  
+
 	                    ng-click="sortByName()" rowspan="2">
 	                    <div><i class="glyphicon glyphicon-user" ></i> <span >Room Type</span></div>
 	                </th>
@@ -30,7 +30,7 @@
 	                    'sort-asc': tableParams.isSortBy('code', 'asc'),
 	                    'sort-desc': tableParams.isSortBy('code', 'desc')
 	                  }"
-	                  
+
 	                    ng-click="sortByCode()" rowspan="2">
 	                    <div><i class="glyphicon glyphicon-user" ></i> <span >Room Code</span></div>
 	                </th>
@@ -39,17 +39,17 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="room_types in $data" > 
-						<td ng-click="editRoomTypes($index,room_types.id)" ng-hide="currentClickedElement == $index" >
+					<tr ng-repeat="room_types in $data" >
+						<td ng-click="editRoomTypeDetails($index,room_types.id)" ng-hide="currentClickedElement == $index" >
 							<a data-item="3" data-colspan="2" class="edit-data-inline">{{room_types.name}} </a>
 						</td>
 						<td class="text-left" ng-hide="currentClickedElement == $index" >
 							{{room_types.code}}
 						</td>
 						<td ng-hide="currentClickedElement == $index|| !isStandAlone">
-							<a class="icons icon-delete large-icon" ng-click="deleteRoomTypes(room_types.id)" ></a>										
-						</td>						
-						<td colspan="3" ng-include="getTemplateUrl($index, room_types.id)" ng-show="currentClickedElement == $index">						
+							<a class="icons icon-delete large-icon" ng-click="deleteRoomTypes(room_types.id)" ></a>
+						</td>
+						<td colspan="3" ng-include="getTemplateUrl($index, room_types.id)" ng-show="currentClickedElement == $index">
 						</td>
 					</tr>
 				</tbody>
