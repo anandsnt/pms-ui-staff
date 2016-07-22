@@ -14,7 +14,8 @@ module.exports = {
                     servicesRoot + 'rvReservationSrv.js',
                     servicesRoot + 'rvCompanyCardSearchSrv.js',
                     servicesRoot + 'payment/rvPaymentSrv.js',
-                    servicesRoot + 'payment/rvGuestPaymentSrv.js'
+                    servicesRoot + 'payment/rvGuestPaymentSrv.js',
+                    servicesRoot + 'billingInformation/rvBillingInfoUtilSrv.js'
                 ]
 		};
 		return comapnycardDetailsJsAssets;
