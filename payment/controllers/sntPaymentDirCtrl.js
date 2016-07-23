@@ -1,4 +1,4 @@
-sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
+sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$location) {
 	// TODO: Fetch All cards for the guest ID
 
 	$scope.payment = {
@@ -13,7 +13,16 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		MLImerchantId: '',
 		creditCardTypes: [],
 		showAddToGuestCard: false,
-		addToGuestCardSelected: false
+		addToGuestCardSelected: false,
+		guestFirstName: '',
+		guestLastName: '',
+		manualSixPayCardEntry: false
+	};
+
+	
+
+	$scope.shouldHidePaymentButton = function() {
+		return !$scope.selectedPaymentType || !$scope.hasPermission;
 	};
 
 	$scope.showSelectedCard = function() {
@@ -22,13 +31,38 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		return (isCCPresent && $scope.payment.screenMode === "PAYMENT_MODE");
 	};
 
-	$scope.shouldHidePaymentButton = function() {
-		return !$scope.selectedPaymentType || !$scope.hasPermission;
-	};
-
 	var showAddtoGuestCardBox = function(){
 		//this need to be set to true only if new card is added
 		$scope.payment.showAddToGuestCard = true;
+	};
+
+	var changeToCardAddMode = function() {
+		$scope.payment.screenMode = "CARD_ADD_MODE";
+		$scope.payment.addCCMode = existingCardsPresent() ? "EXISTING_CARDS" : "ADD_CARD";
+		//TODO:handle Scroll
+		//$scope.refreshScroller('cardsList');
+	};
+
+	$scope.sixPayEntryOptionChanged = function(){
+		if($scope.payment.manualSixPayCardEntry){
+			$scope.payment.manualSixPayCardEntry = false;
+		}
+		else{
+			$scope.payment.manualSixPayCardEntry = true;
+			changeToCardAddMode();
+		}
+	};
+
+	$scope.refreshIframe = function(){
+		//in case of hotel with MLI iframe will not be present
+		if($scope.paymentGateway === 'sixpayments' && !!$("#sixIframe").length){
+			var iFrame = document.getElementById('sixIframe');
+			iFrame.src = iFrame.src;
+		};
+	};
+	$scope.toggleCCMOde = function(mode){
+		$scope.payment.addCCMode = mode;
+		mode === 'ADD_CARD' ? $scope.refreshIframe() : '';
 	};
 
 	/********************* Payment Actions *****************************/
@@ -103,13 +137,6 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		return $scope.payment.linkedCreditCards.length > 0;
 	};
 
-	var changeToCardAddMode = function() {
-		$scope.payment.screenMode = "CARD_ADD_MODE";
-		$scope.payment.addCCMode = existingCardsPresent() ? "EXISTING_CARDS" : "ADD_CARD";
-		//TODO:handle Scroll
-		//$scope.refreshScroller('cardsList');
-	};
-
 	// Payment type change action
 	$scope.onPaymentInfoChange = function() {
 		//NOTE: Fees information is to be calculated only for standalone systems
@@ -128,7 +155,9 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		if (selectedPaymentType.name === "CC") {
 			if ($scope.paymentGateway === "MLI") {
 				changeToCardAddMode();
-			};
+			}else if($scope.paymentGateway = 'sixpayments'){
+				$scope.refreshIframe();
+			};	
 		}
 		else{
 			$scope.payment.showAddToGuestCard = false;
@@ -151,6 +180,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 
 	$scope.onCardClick = function() {
 		changeToCardAddMode();
+		$scope.refreshIframe();
 	};
 	$scope.cancelCardSelection = function() {
 		$scope.payment.screenMode = "PAYMENT_MODE";
@@ -227,14 +257,23 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 			showAddtoGuestCardBox();
 		};
 
+		var onSaveFailure = function(errorMessage){
+			$scope.errorMessage = errorMessage;
+		};
+
 
 		$scope.$emit('showLoader');
 		sntPaymentSrv.savePaymentDetails(cardDetails.apiParams).then(function(response) {
-				onSaveSuccess(response);
+				if(response.status == "success"){
+					onSaveSuccess(response);
+				}
+				else{
+					onSaveFailure(response.errors);
+				};
 				$scope.$emit('hideLoader');
 			},
 			function(errorMessage) {
-				$scope.errorMessage = errorMessage;
+				onSaveFailure(errorMessage);
 				$scope.$emit('hideLoader');
 			});
 	};
@@ -259,11 +298,22 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		$scope.payment.isManualCcEntryEnabled = $scope.isManualCcEntryEnabled || true;
 		$scope.payment.MLImerchantId = $scope.mliMerchantId || "";
 		$scope.payment.creditCardTypes = getCrediCardTypesList();
+		$scope.payment.guestFirstName = $scope.firstName || '';
+		$scope.payment.guestLastName = $scope.lastName || '';
 		//TODO:handle Scroll
 		//$scope.setScroller('cardsList',{'click':true, 'tap':true}); 
 		fetchAttachedCreditCards();
-		//to change to mapping
+
+		//TODO: change to mapping
+		//MLI
 		$scope.paymentGatewayUIInterfaceUrl = "/assets/partials/payMLIPartial.html";
+		//SIX pay
+		var time = new Date().getTime();
+		var absoluteUrl = $location.$$absUrl;
+		var domainUrl = absoluteUrl.split("/staff#/")[0];
+		$scope.payment.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + $scope.payment.guestFirstName + "&card_holder_last_name=" + $scope.payment.guestLastName + "&service_action=createtoken&time="+time;
+		$scope.paymentGatewayUIInterfaceUrl = "/assets/partials/paySixPaymentPartial.html";
+		console.log($scope.payment.iFrameUrl);
 	})();
 
 });

@@ -3,10 +3,10 @@
 <!-- If hidden by default, add class="hidden" -->
 <!-- Card toggle - Use only if there are exsiting cards on file -->
 <ul class="card-toggle" ng-hide="hideCardToggles()" ng-init="checkForGiftCard();">
-    <li ng-class="{'active': payment.addCCMode === 'EXISTING_CARDS'}" click-touch="payment.addCCMode = 'EXISTING_CARDS'">
+    <li ng-class="{'active': payment.addCCMode === 'EXISTING_CARDS'}" click-touch="toggleCCMOde( 'EXISTING_CARDS')">
         Existing Cards
     </li>
-    <li ng-class="{'active': payment.addCCMode === 'ADD_CARD'}" click-touch="payment.addCCMode = 'ADD_CARD'">
+    <li ng-class="{'active': payment.addCCMode === 'ADD_CARD'}" click-touch="toggleCCMOde('ADD_CARD')">
         Add New Card
     </li>
     <!-- TO DO: inlude gift card later -->

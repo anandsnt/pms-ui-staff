@@ -18,6 +18,8 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		$scope.successMessage = "";
 		$scope.authorizedCode = "";
 		$scope.billNumber = "1";//set bill no as 1
+		$scope.firstName = (typeof $scope.passData.details.firstName ==="undefined")?"":$scope.passData.details.firstName;
+		$scope.lastName = (typeof $scope.passData.details.lastName ==="undefined")?"":$scope.passData.details.lastName;
 
 	
 		$scope.isReservationRateSuppressed = $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates;
@@ -59,7 +61,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			$scope.runDigestCycle();
 			console.log($scope.errorMessage);
 		});
-		
+
 		//user selected pay later option
 		$scope.$on('PAY_LATER',function(){
 			if($scope.depositDetails.isFromCheckin){

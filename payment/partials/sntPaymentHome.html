@@ -2,14 +2,26 @@
 <div id="payment-type" class="entry full-width" ng-show="payment.screenMode === 'PAYMENT_MODE'">
     <label for="payment-type" translate>PAYMENT_TYPE</label>
     <div class="select">
-        <select ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes"
-                ng-model="selectedPaymentType"
-                ng-change="onPaymentInfoChange()">
+        <select ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes" ng-model="selectedPaymentType" ng-change="onPaymentInfoChange()">
             <option value="" translate>SELECT_PAYMENT_TYPE</option>
         </select>
     </div>
 </div>
-
+<!-- six pay options -->
+<div class="entry" ng-show="paymentGateway === 'sixpayments' && selectedPaymentType ==='CC' &&payment.screenMode === 'PAYMENT_MODE'">
+    <label for="card-source">Card Input</label>
+    <div class="switch-button" ng-class="{'on': !payment.manualSixPayCardEntry}">
+        <input name="card-source" id="card-source" value="card-source" type="checkbox" ng-model="payment.manualSixPayCardEntry" ng-click="sixPayEntryOptionChanged()" />
+        <label class="data-off">
+            <span class="value">C &amp; P</span>
+            <span class="switch-icon">Manual</span>
+        </label>
+        <label class="data-on">
+            <span class="switch-icon">C &amp; P</span>
+            <span class="value">Manual</span>
+        </label>
+    </div>
+</div>
 <!-- Display the selected Credit card details -->
 <div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="showSelectedCard()">
     <label>Credit Card (<span>Tap to change</span>)</label>
@@ -21,8 +33,6 @@
         <span class="date">Date <span class="value date">{{attachedCc.expiry_date}}</span></span>
     </label>
 </div>
-
 <div ng-include="'/assets/partials/payCreditCardOptions.html'" ng-show="payment.screenMode === 'CARD_ADD_MODE'"></div>
-
 <!-- Payment type actions. This can be add payment method addition, submit payment, deposit collection etc -->
 <div ng-include="formTemplateUrl" ng-show="payment.screenMode === 'PAYMENT_MODE'"></div>

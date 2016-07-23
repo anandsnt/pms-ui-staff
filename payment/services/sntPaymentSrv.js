@@ -85,6 +85,23 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
             };
         };
 
+        /********************************* SIX PAY **********************************/
+        var sixCreditCardTypes = {
+              "AX": 'AX',
+              "DI": 'DS',
+              "DN": 'DC',
+              "JC": 'JCB',
+              "MC": 'MC',
+              "VS": 'VA',
+              "VX": 'VA',
+              "MX": 'DS',//Six iframe reurns MX for discover. not good,
+              "MV": 'MC'
+        };
+
+        this.getSixPayCreditCardType = function(cardCode){
+            var card = cardCode.toUpperCase();
+            return sixCreditCardTypes[card];
+        };
 
         /********************************* MLI **************************************/
 
