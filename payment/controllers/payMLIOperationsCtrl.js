@@ -46,7 +46,7 @@ sntPay.controller('payMLIOperationsController', function($scope, sntPaymentSrv) 
 
 	var notifyParentError = function(errorMessage) {
 		console.error(errorMessage);
-		$scope.$emit("MLI_ERROR", errorMessage);
+		$scope.$emit("ERROR_OCCURED", errorMessage);
 	};
 
 

@@ -51,10 +51,15 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			$scope.errorMessage = "";
 			$scope.errorOccured = false;
 		};
-
-
 		/***************** Events From Payment Module ************************/
 
+		$scope.$on("ERROR_OCCURED",function(event,data){
+			//TODO: fix issue with error msg not been shown
+			$scope.errorMessage = data;
+			$scope.runDigestCycle();
+			console.log($scope.errorMessage);
+		});
+		
 		//user selected pay later option
 		$scope.$on('PAY_LATER',function(){
 			if($scope.depositDetails.isFromCheckin){
@@ -64,11 +69,6 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 				//do nothing
 			};
 			closeDepositPopup();
-		});
-
-		//payment success
-		$scope.$on('NO_AMOUNT_NOTIFICATION',function(event,data){
-			$scope.errorMessage = ["Please enter amount"];
 		});
 
 		//payment success

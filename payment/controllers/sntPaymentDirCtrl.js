@@ -32,7 +32,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 
 	$scope.submitPayment = function() {
 		if ($scope.payment.amount === '' || $scope.payment.amount === null) {
-			$scope.$emit('NO_AMOUNT_NOTIFICATION');
+			var errorMessage = ["Please enter amount"];
+			$scope.$emit('ERROR_OCCURED',errorMessage);
 		} else {
 			//for CC payments, we need payment type id
 			var paymentTypeId = null;

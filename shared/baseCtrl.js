@@ -15,6 +15,12 @@ function BaseCtrl($scope) {
 
   };
 
+  $scope.runDigestCycle = function() {
+    if (!$scope.$$phase) {
+      $scope.$digest();
+    }
+  };
+
   //function that converts a null value to a desired string.
   //if no replace value is passed, it returns an empty string
   $scope.escapeNull = function(value, replaceWith) {
