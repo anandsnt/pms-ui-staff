@@ -42,6 +42,9 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 	/****************** init ***********************************************/
 
 	(function() {
+		//Initially set Manaul card Entry if card is attached already
+		var isCCPresent = angular.copy($scope.showSelectedCard());
+		$scope.payment.manualSixPayCardEntry = isCCPresent && $scope.paymentGateway === 'sixpayments' ?  true : false;
 
 		//handle six payment iFrame communication
 		var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
