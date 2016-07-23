@@ -57,11 +57,14 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 
 		$scope.$on("ERROR_OCCURED",function(event,data){
 			//TODO: fix issue with error msg not been shown
-			$scope.errorMessage = data;
-			$scope.runDigestCycle();
+			
+			$timeout(function() {
+				//provide some delay to deal with clearErrorMessage function
+				$scope.errorMessage = data;
+				$scope.runDigestCycle();
+			}, 500);
 			console.log($scope.errorMessage);
 		});
-
 		//user selected pay later option
 		$scope.$on('PAY_LATER',function(){
 			if($scope.depositDetails.isFromCheckin){
