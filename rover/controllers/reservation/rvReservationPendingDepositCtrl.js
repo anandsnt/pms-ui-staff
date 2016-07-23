@@ -65,6 +65,10 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			}, 500);
 			console.log($scope.errorMessage);
 		});
+
+		$scope.$on('CLOSE_DIALOG',function(){
+			closeDepositPopup();
+		});
 		//user selected pay later option
 		$scope.$on('PAY_LATER',function(){
 			if($scope.depositDetails.isFromCheckin){

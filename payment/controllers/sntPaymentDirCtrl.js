@@ -67,6 +67,10 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 
 	/********************* Payment Actions *****************************/
 
+	$scope.closeThePopup = function(){
+		$scope.$emit('CLOSE_DIALOG');
+	};
+
 	$scope.payLater = function() {
 		$scope.$emit('PAY_LATER');
 	};
