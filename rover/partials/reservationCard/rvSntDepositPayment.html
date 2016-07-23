@@ -60,9 +60,12 @@
     </div>
 </div>
 <!-- show if new card is added -->
-<div class="entry full-width" ng-show="showAddtoGuestCardBox()">
-    <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked':addToGuestCard}">
-        <span class="icon-form icon-checkbox" ng-class="{'checked': addToGuestCard}"></span>
-        <input ng-model="addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" /> {{'ADD_TO_GUEST_CARD' | translate}}
+<div class="entry full-width" ng-show="payment.showAddToGuestCard">
+    <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked':payment.addToGuestCardSelected}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked': payment.addToGuestCardSelected}"></span>
+        <input ng-model="payment.addToGuestCardSelected" id="add-in-guest-card" value="1" type="checkbox" /> {{'ADD_TO_GUEST_CARD' | translate}}
     </label>
+</div>
+<div class="actions" ng-show="payment.screenMode === 'PAYMENT_MODE'">
+  <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close</button>
 </div>

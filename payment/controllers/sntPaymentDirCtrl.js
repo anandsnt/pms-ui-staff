@@ -11,7 +11,9 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 		linkedCreditCards: [],
 		isManualCcEntryEnabled: true,
 		MLImerchantId: '',
-		creditCardTypes: []
+		creditCardTypes: [],
+		showAddToGuestCard: false,
+		addToGuestCardSelected: false
 	};
 
 	$scope.showSelectedCard = function() {
@@ -22,6 +24,11 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 
 	$scope.shouldHidePaymentButton = function() {
 		return !$scope.selectedPaymentType || !$scope.hasPermission;
+	};
+
+	var showAddtoGuestCardBox = function(){
+		//this need to be set to true only if new card is added
+		$scope.payment.showAddToGuestCard = true;
 	};
 
 	/********************* Payment Actions *****************************/
@@ -51,6 +58,10 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 					"payment_type_id": paymentTypeId,
 				},
 				"reservation_id": $scope.reservationId
+			};
+			if($scope.payment.showAddToGuestCard){
+				//check if add to guest card was selected
+				params.postData.add_to_guest_card = $scope.payment.addToGuestCardSelected;
 			};
 
 			if ($scope.feeData.showFee) {
@@ -118,6 +129,9 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 			if ($scope.paymentGateway === "MLI") {
 				changeToCardAddMode();
 			};
+		}
+		else{
+			$scope.payment.showAddToGuestCard = false;
 		};
 
 		$scope.feeData = {
@@ -147,6 +161,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 			value: selectedCardValue
 		});
 		$scope.attachedCc = selectedCard;
+		//this need to be set to true only if new card is added
+		$scope.payment.showAddToGuestCard = false;
 		$scope.payment.screenMode = "PAYMENT_MODE";
 	};
 
@@ -208,6 +224,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv) {
 				// $scope.setupFeeData();
 			}
 			$scope.payment.screenMode = "PAYMENT_MODE";
+			showAddtoGuestCardBox();
 		};
 
 
