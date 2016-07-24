@@ -1,4 +1,4 @@
-sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$location) {
+sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv, $location) {
 	// TODO: Fetch All cards for the guest ID
 
 	$scope.payment = {
@@ -19,7 +19,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 		manualSixPayCardEntry: false
 	};
 
-	
+
 	//hide payment method if there is no permission or no payment type
 	$scope.shouldHidePaymentButton = function() {
 		return !$scope.selectedPaymentType || !$scope.hasPermission;
@@ -27,13 +27,13 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 
 	//show the selected card
 	$scope.showSelectedCard = function() {
-		var isCCPresent = ($scope.selectedPaymentType === "CC" && 
-		                  (!!$scope.attachedCc.ending_with && $scope.attachedCc.ending_with.length > 0));
+		var isCCPresent = ($scope.selectedPaymentType === "CC" &&
+			(!!$scope.attachedCc.ending_with && $scope.attachedCc.ending_with.length > 0));
 		return (isCCPresent && $scope.payment.screenMode === "PAYMENT_MODE" && $scope.payment.manualSixPayCardEntry);
 	};
 
 	//show add to guest card checkbox to add the card to the guestcard
-	var showAddtoGuestCardBox = function(){
+	var showAddtoGuestCardBox = function() {
 		//this need to be set to true only if new card is added
 		$scope.payment.showAddToGuestCard = true;
 	};
@@ -47,12 +47,11 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 	};
 
 	//toggle between manual card entry and six payment swipe for sixpayments
-	$scope.sixPayEntryOptionChanged = function(){
-		if($scope.payment.manualSixPayCardEntry){
+	$scope.sixPayEntryOptionChanged = function() {
+		if ($scope.payment.manualSixPayCardEntry) {
 			$scope.payment.manualSixPayCardEntry = false;
 			$scope.attachedCc = {};
-		}
-		else{
+		} else {
 			$scope.payment.manualSixPayCardEntry = true;
 			changeToCardAddMode();
 		}
@@ -60,23 +59,23 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 
 	//we need to refresh iframe each time, 
 	//as we don't have direct control over the fields on it
-	$scope.refreshIframe = function(){
+	$scope.refreshIframe = function() {
 		//in case of hotel with MLI iframe will not be present
-		if($scope.paymentGateway === 'sixpayments' && !!$("#sixIframe").length){
+		if ($scope.paymentGateway === 'sixpayments' && !!$("#sixIframe").length) {
 			var iFrame = document.getElementById('sixIframe');
 			iFrame.src = iFrame.src;
 		};
 	};
 
 	//toggle between CC entry and existing card selection
-	$scope.toggleCCMOde = function(mode){
+	$scope.toggleCCMOde = function(mode) {
 		$scope.payment.addCCMode = mode;
 		mode === 'ADD_CARD' ? $scope.refreshIframe() : '';
 	};
 
 	/********************* Payment Actions *****************************/
 
-	$scope.closeThePopup = function(){
+	$scope.closeThePopup = function() {
 		$scope.$emit('CLOSE_DIALOG');
 	};
 
@@ -87,26 +86,18 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 	$scope.submitPayment = function() {
 		if ($scope.payment.amount === '' || $scope.payment.amount === null) {
 			var errorMessage = ["Please enter amount"];
-			$scope.$emit('ERROR_OCCURED',errorMessage);
+			$scope.$emit('ERROR_OCCURED', errorMessage);
 		} else {
-			//for CC payments, we need payment type id
-			var paymentTypeId = null;
-			if ($scope.selectedPaymentType === 'CC' && $scope.selectedCard !== -1) {
-				paymentTypeId = $scope.attachedCc.value;
-			} else {
-				paymentTypeId = null;
-			};
-
+			//set up params for API
 			var params = {
 				"postData": {
 					"bill_number": $scope.payment.billNumber,
 					"payment_type": $scope.selectedPaymentType,
-					"amount": $scope.payment.amount,
-					"payment_type_id": paymentTypeId,
+					"amount": $scope.payment.amount
 				},
 				"reservation_id": $scope.reservationId
 			};
-			if($scope.payment.showAddToGuestCard){
+			if ($scope.payment.showAddToGuestCard) {
 				//check if add to guest card was selected
 				params.postData.add_to_guest_card = $scope.payment.addToGuestCardSelected;
 			};
@@ -122,34 +113,43 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 				params.postData.reference_text = $scope.payment.referenceText;
 			}
 
-			
+
 			//check if chip and pin is selected in case of six payments
 			//the rest of actions will in paySixPayController
-			if($scope.paymentGateway === 'sixpayments' && !$scope.payment.manualSixPayCardEntry){
-				$scope.$broadcast('INITIATE_CHIP_AND_PIN_PAYMENT',params);
-			}
-			else{
-			//we need to notify the parent controllers to show loader
-			//as this is an external directive
-			$scope.$emit('showLoader');
+			if ($scope.paymentGateway === 'sixpayments' && !$scope.payment.manualSixPayCardEntry) {
+				$scope.$broadcast('INITIATE_CHIP_AND_PIN_PAYMENT', params);
+			} else {
+
+				//for CC payments, we need payment type id
+				var paymentTypeId = null;
+				if ($scope.selectedPaymentType === 'CC' && $scope.selectedCard !== -1) {
+					paymentTypeId = $scope.attachedCc.value;
+				} else {
+					paymentTypeId = null;
+				};
+				params.postData.payment_type_id = paymentTypeId;
+
+				//we need to notify the parent controllers to show loader
+				//as this is an external directive
+				$scope.$emit('showLoader');
 				sntPaymentSrv.submitPayment(params).then(function(response) {
-					console.log("payment success" + $scope.payment.amount);
-					response.amountPaid = $scope.payment.amount;
-					response.authorizationCode = response.authorization_code;
-					// NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
-					if ($scope.feeData) {
-						response.feePaid = $scope.feeData.calculatedFee;
-					}
-					$scope.$emit('PAYMENT_SUCCESS', response);
-					$scope.$emit('hideLoader');
-				},
-				function(errorMessage) {
-					console.log("payment success" + $scope.payment.amount);
-					$scope.$emit('PAYMENT_FAILED', errorMessage);
-					$scope.$emit('hideLoader');
-				});
+						console.log("payment success" + $scope.payment.amount);
+						response.amountPaid = $scope.payment.amount;
+						response.authorizationCode = response.authorization_code;
+						// NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
+						if ($scope.feeData) {
+							response.feePaid = $scope.feeData.calculatedFee;
+						}
+						$scope.$emit('PAYMENT_SUCCESS', response);
+						$scope.$emit('hideLoader');
+					},
+					function(errorMessage) {
+						console.log("payment success" + $scope.payment.amount);
+						$scope.$emit('PAYMENT_FAILED', errorMessage);
+						$scope.$emit('hideLoader');
+					});
 			}
-			
+
 		};
 	};
 
@@ -176,11 +176,10 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 		if (selectedPaymentType.name === "CC") {
 			if ($scope.paymentGateway === "MLI") {
 				changeToCardAddMode();
-			}else if($scope.paymentGateway = 'sixpayments'){
+			} else if ($scope.paymentGateway = 'sixpayments') {
 				$scope.refreshIframe();
-			};	
-		}
-		else{
+			};
+		} else {
 			$scope.payment.showAddToGuestCard = false;
 		};
 
@@ -280,17 +279,16 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 			showAddtoGuestCardBox();
 		};
 
-		var onSaveFailure = function(errorMessage){
+		var onSaveFailure = function(errorMessage) {
 			$scope.errorMessage = errorMessage;
 		};
 
 
 		$scope.$emit('showLoader');
 		sntPaymentSrv.savePaymentDetails(cardDetails.apiParams).then(function(response) {
-				if(response.status == "success"){
+				if (response.status == "success") {
 					onSaveSuccess(response);
-				}
-				else{
+				} else {
 					onSaveFailure(response.errors);
 				};
 				$scope.$emit('hideLoader');
@@ -334,7 +332,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 		var time = new Date().getTime();
 		var absoluteUrl = $location.$$absUrl;
 		var domainUrl = absoluteUrl.split("/staff#/")[0];
-		$scope.payment.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + $scope.payment.guestFirstName + "&card_holder_last_name=" + $scope.payment.guestLastName + "&service_action=createtoken&time="+time;
+		$scope.payment.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + $scope.payment.guestFirstName + "&card_holder_last_name=" + $scope.payment.guestLastName + "&service_action=createtoken&time=" + time;
 		$scope.paymentGatewayUIInterfaceUrl = "/assets/partials/paySixPaymentPartial.html";
 		console.log($scope.payment.iFrameUrl);
 	})();
