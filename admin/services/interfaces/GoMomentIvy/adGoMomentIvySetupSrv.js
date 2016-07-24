@@ -6,11 +6,10 @@ admin.service('adGoMomentIvySetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
 	 */
 	this.fetchGoMomentIvyConfiguration = function() {
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings.json';
-		//var url = "ui/show?json_input=Gusto/settings.json&format=json";
+		var url = '/api/hotel_settings/gomomentivy.json';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-			deferred.resolve(data.gomomentivy);
+			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
 		});
@@ -23,7 +22,7 @@ admin.service('adGoMomentIvySetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
 	 */
 	this.saveGoMomentIvyConfiguration = function(params) {
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings/change_settings';
+		var url = '/api/hotel_settings/gomomentivy';
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
