@@ -94,6 +94,8 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		    $scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = data.reservation_balance;
 			
 			$scope.$parent.reservationData.reservation_card.balance_amount = data.reservation_balance;
+			//TO DO:Update starycard payment to CC if old payment method wasn't CC
+			//TO DO: Add to guestcard
 		});
 
 		//payment failed
