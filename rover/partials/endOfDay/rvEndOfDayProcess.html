@@ -13,6 +13,11 @@
         </div>
         <!-- Show this button if the business day is not today-->
         <button type="button" class="button blue" ng-click="setSelectedDateToBussinessDate()" ng-show="showSetToTodayButton()">Run EOD</button>
+        <span ng-show="!showSetToTodayButton()" class="eod-automatic">EOD set to run automatically at 
+            <strong>
+             <time datetime="">{{nextEodRunTime}}</time>
+            </strong>
+        </span>
     </div>
 
     <!-- Content -->

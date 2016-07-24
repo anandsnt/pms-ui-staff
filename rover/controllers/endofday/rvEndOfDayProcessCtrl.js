@@ -96,6 +96,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         };
         var fetchEodLogSuccess = function(data){
             $scope.eodLogDetails = data.eod_processes;
+            $scope.nextEodRunTime = data.eod_process_time;
                       
             $rootScope.$broadcast('hideLoader');
             $timeout(function() {
