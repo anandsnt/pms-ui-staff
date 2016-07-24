@@ -20,22 +20,25 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 	};
 
 	
-
+	//hide payment method if there is no permission or no payment type
 	$scope.shouldHidePaymentButton = function() {
 		return !$scope.selectedPaymentType || !$scope.hasPermission;
 	};
 
+	//show the selected card
 	$scope.showSelectedCard = function() {
-		//below condition may be modified wrt payment gateway and all
-		var isCCPresent = ($scope.selectedPaymentType === "CC" && $scope.attachedCc.ending_with.length > 0);
-		return (isCCPresent && $scope.payment.screenMode === "PAYMENT_MODE");
+		var isCCPresent = ($scope.selectedPaymentType === "CC" && 
+		                  (!!$scope.attachedCc.ending_with && $scope.attachedCc.ending_with.length > 0));
+		return (isCCPresent && $scope.payment.screenMode === "PAYMENT_MODE" && $scope.payment.manualSixPayCardEntry);
 	};
 
+	//show add to guest card checkbox to add the card to the guestcard
 	var showAddtoGuestCardBox = function(){
 		//this need to be set to true only if new card is added
 		$scope.payment.showAddToGuestCard = true;
 	};
 
+	//change screen mode to collect CC info
 	var changeToCardAddMode = function() {
 		$scope.payment.screenMode = "CARD_ADD_MODE";
 		$scope.payment.addCCMode = existingCardsPresent() ? "EXISTING_CARDS" : "ADD_CARD";
@@ -43,9 +46,11 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 		//$scope.refreshScroller('cardsList');
 	};
 
+	//toggle between manual card entry and six payment swipe for sixpayments
 	$scope.sixPayEntryOptionChanged = function(){
 		if($scope.payment.manualSixPayCardEntry){
 			$scope.payment.manualSixPayCardEntry = false;
+			$scope.attachedCc = {};
 		}
 		else{
 			$scope.payment.manualSixPayCardEntry = true;
@@ -53,6 +58,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 		}
 	};
 
+	//we need to refresh iframe each time, 
+	//as we don't have direct control over the fields on it
 	$scope.refreshIframe = function(){
 		//in case of hotel with MLI iframe will not be present
 		if($scope.paymentGateway === 'sixpayments' && !!$("#sixIframe").length){
@@ -60,6 +67,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 			iFrame.src = iFrame.src;
 		};
 	};
+
+	//toggle between CC entry and existing card selection
 	$scope.toggleCCMOde = function(mode){
 		$scope.payment.addCCMode = mode;
 		mode === 'ADD_CARD' ? $scope.refreshIframe() : '';
@@ -113,11 +122,17 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 				params.postData.reference_text = $scope.payment.referenceText;
 			}
 
+			
+			//check if chip and pin is selected in case of six payments
+			//the rest of actions will in paySixPayController
+			if($scope.paymentGateway === 'sixpayments' && !$scope.payment.manualSixPayCardEntry){
+				$scope.$broadcast('INITIATE_CHIP_AND_PIN_PAYMENT',params);
+			}
+			else{
 			//we need to notify the parent controllers to show loader
 			//as this is an external directive
 			$scope.$emit('showLoader');
-
-			sntPaymentSrv.submitPayment(params).then(function(response) {
+				sntPaymentSrv.submitPayment(params).then(function(response) {
 					console.log("payment success" + $scope.payment.amount);
 					response.amountPaid = $scope.payment.amount;
 					response.authorizationCode = response.authorization_code;
@@ -133,6 +148,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 					$scope.$emit('PAYMENT_FAILED', errorMessage);
 					$scope.$emit('hideLoader');
 				});
+			}
+			
 		};
 	};
 
@@ -181,15 +198,16 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 	};
 
 	/**************** CC handling ********************/
-
+	//if the selected card is clicked, go to card entry page
 	$scope.onCardClick = function() {
 		changeToCardAddMode();
 		$scope.refreshIframe();
 	};
+	//cancel CC entry and go to initial page
 	$scope.cancelCardSelection = function() {
 		$scope.payment.screenMode = "PAYMENT_MODE";
 	};
-
+	//choose among the existing cards
 	$scope.setCreditCardFromList = function(selectedCardValue) {
 		var selectedCard = _.find($scope.payment.linkedCreditCards, {
 			value: selectedCardValue
@@ -199,10 +217,11 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 		$scope.payment.showAddToGuestCard = false;
 		$scope.payment.screenMode = "PAYMENT_MODE";
 	};
-
+	//hide existing cards in some places like in guestcard add CC
 	$scope.hideCardToggles = function() {
 		return false; //need to handle later
 	};
+	//list the existing cards for the reservation
 	var onFetchLinkedCreditCardListSuccess = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.payment.linkedCreditCards = _.where(data.existing_payments, {
@@ -232,7 +251,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv,$locati
 			$scope.payment.linkedCreditCards = [];
 		};
 	};
-
+	//Extract the credit card types
 	var getCrediCardTypesList = function() {
 		//filter CC types from payment types
 		var creditCardTypes = _.find($scope.paymentTypes, {

@@ -39,6 +39,10 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 	var notifyParentError = function(errorMessage) {
 		console.error(errorMessage);
 	};
+
+	$scope.$on('INITIATE_CHIP_AND_PIN_PAYMENT',function(event,data){
+		console.log(data);
+	});
 	/****************** init ***********************************************/
 
 	(function() {
