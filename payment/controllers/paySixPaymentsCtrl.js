@@ -4,16 +4,16 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 		var cardDetails = {};
 		cardDetails.cardType = tokenDetails.token_no.substr(tokenDetails.token_no.length - 4);
 		cardDetails.expiryMonth = tokenDetails.expiry.substring(2, 4);
-		cardDetails.expiryYear  = tokenDetails.expiry.substring(0, 2);
+		cardDetails.expiryYear = tokenDetails.expiry.substring(0, 2);
 		//for displaying
-		cardDetails.expiryDate = cardDetails.expiryMonth+" / "+cardDetails.expiryYear;
+		cardDetails.expiryDate = cardDetails.expiryMonth + " / " + cardDetails.expiryYear;
 		//for API params
 		cardDetails.cardExpiry = (cardDetails.expiryMonth && cardDetails.expiryYear) ? ("20" + cardDetails.expiryYear + "-" + cardDetails.expiryMonth + "-01") : "";
 		cardDetails.cardCode = sntPaymentSrv.getSixPayCreditCardType(tokenDetails.card_type).toLowerCase();
 		//last 4 number of card
 		cardDetails.endingWith = tokenDetails.token_no.substr(tokenDetails.token_no.length - 4);
-		cardDetails.token = tokenDetails.token_no,
-		cardDetails.nameOnCard = $scope.payment.guestFirstName+' '+$scope.payment.guestLastName;
+		cardDetails.token = tokenDetails.token_no;
+		cardDetails.nameOnCard = $scope.payment.guestFirstName + ' ' + $scope.payment.guestLastName;
 		return cardDetails;
 	};
 
@@ -40,15 +40,41 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 		console.error(errorMessage);
 	};
 
-	$scope.$on('INITIATE_CHIP_AND_PIN_PAYMENT',function(event,data){
-		console.log(data);
+	var proceedChipAndPinPayment = function(params) {
+		//we need to notify the parent controllers to show loader
+		//as this is an external directive
+		$scope.$emit('showLoader');
+		sntPaymentSrv.submitPaymentForChipAndPin(params).then(function(response) {
+				console.log("payment success" + $scope.payment.amount);
+				response.amountPaid = $scope.payment.amount;
+				response.authorizationCode = response.authorization_code;
+				// NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
+				if ($scope.feeData) {
+					response.feePaid = $scope.feeData.calculatedFee;
+				}
+				$scope.$emit('PAYMENT_SUCCESS', response);
+				$scope.$emit('hideLoader');
+			},
+			function(errorMessage) {
+				console.log("payment success" + $scope.payment.amount);
+				$scope.$emit('PAYMENT_FAILED', errorMessage);
+				$scope.$emit('hideLoader');
+			});
+	};
+
+	$scope.$on('INITIATE_CHIP_AND_PIN_PAYMENT', function(event, data) {
+		var paymentParams = data;
+		paymentParams.postData.is_emv_request = true;
+		paymentParams.postData.workstation_id = $scope.payment.workstationId;
+		paymentParams.emvTimeout = $scope.payment.emvTimeout;
+		proceedChipAndPinPayment(data);
 	});
 	/****************** init ***********************************************/
 
 	(function() {
 		//Initially set Manaul card Entry if card is attached already
 		var isCCPresent = angular.copy($scope.showSelectedCard());
-		$scope.payment.manualSixPayCardEntry = isCCPresent && $scope.paymentGateway === 'sixpayments' ?  true : false;
+		$scope.payment.manualSixPayCardEntry = isCCPresent && $scope.paymentGateway === 'sixpayments' ? true : false;
 
 		//handle six payment iFrame communication
 		var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";

@@ -16,7 +16,9 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv, $locat
 		addToGuestCardSelected: false,
 		guestFirstName: '',
 		guestLastName: '',
-		manualSixPayCardEntry: false
+		manualSixPayCardEntry: false,
+		workstationId: '',
+		emvTimeout: 120
 	};
 
 
@@ -321,6 +323,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv, $locat
 		$scope.payment.creditCardTypes = getCrediCardTypesList();
 		$scope.payment.guestFirstName = $scope.firstName || '';
 		$scope.payment.guestLastName = $scope.lastName || '';
+		$scope.payment.workstationId = $scope.workstationId || '';
+		$scope.payment.emvTimeout = $scope.emvTimeout || 120;
 		//TODO:handle Scroll
 		//$scope.setScroller('cardsList',{'click':true, 'tap':true}); 
 		fetchAttachedCreditCards();

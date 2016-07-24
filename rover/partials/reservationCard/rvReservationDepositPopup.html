@@ -7,6 +7,8 @@
         <div class="payment-form">
             <!-- below is the payment directive -->
             <snt-payment reservation-id="{{reservationId}}" 
+                workstation-id="{{workstation_id}}"
+                emv-timeout="emvTimeout"
                 bill-number="billNumber"
                 payment-types="passData.details.paymentTypes" 
                 selected-payment-type="paymentType" 

@@ -4,7 +4,8 @@ sntPay.directive('sntPayment', function() {
         transclude: 'true',
         scope: {
             paymentGateway: '@',
-            workstationId: '@',//for EMV terminal we must pass this ID
+            workstationId: '@',//for EMV terminal we must pass this ID,
+            emvTimeout:'=',
             paymentTypes: '=',
             selectedPaymentType: '=',
             reservationId: '@',
