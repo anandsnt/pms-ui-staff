@@ -86,7 +86,6 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 		$scope.payment.manualSixPayCardEntry = isCCPresent && $scope.paymentGateway === 'sixpayments' ? true : false;
 
 		//handle six payment iFrame communication
-		//TODO:may need to handle this some other way. This may keep on addd listners each time
 		var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 		var eventer = window[eventMethod];
 		var messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
