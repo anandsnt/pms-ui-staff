@@ -8,7 +8,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
         };
 
         $scope.datePickerOptions = {
-            dateFormat: getJqDateFormat(),
+            dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
             maxDate: new tzIndependentDate($rootScope.businessDate).addDays(-1),
             changeYear: true,
