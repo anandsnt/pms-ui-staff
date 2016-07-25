@@ -963,7 +963,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					} else if(($scope.stateCheck.activeView === "RECOMMENDED") && shouldRecommend()) {
 						isReccommendedTabApiRequired = true;
 					}
-					if(isReccommendedTabApiRequired){
+					if(
+						isReccommendedTabApiRequired){
 						fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
 							$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 							generateRatesGrid(response.results);
@@ -1121,6 +1122,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		$scope.setActiveView = function(view) {
 			$scope.stateCheck.activeView = view;
+			RVRoomRatesSrv.setRoomAndRateActiveTab(view);
 			reInitialize();
 		};
 
