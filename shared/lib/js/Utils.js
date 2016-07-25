@@ -534,13 +534,18 @@ var getJqDateFormat = function(dateFormat) {
         return DateFormatInfoMappings[dateFormat][1];
     }
 };
-/** Convert 24hr format into 12hr (am/pm) format **/
+
+/** 
+ * Convert 24hr format into 12hr (am/pm) format.
+ * @param {string} time string in format 'HH:MM' may contain blanks
+ * @returns {object} converted time array
+ */
 var tConvert = function(time){
 	if(time == '' || time == undefined){
 		return {};
 	}
     tDict = {};
-    var t = time.split(':');
+    var t = time.match(/[0-9]+/g);  // can also handle HH:MM AM as input and blank spaces
     tDict.hh = (t[0] >= 12) ? (t[0] - 12) : t[0];
     tDict.hh = tDict.hh == 0 ? 12 : tDict.hh;
     tDict.mm = t[1];
