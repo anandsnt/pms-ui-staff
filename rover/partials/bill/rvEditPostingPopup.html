@@ -7,8 +7,8 @@
             <span class="h2 message" translate>EDIT_CHARGE</span>
             <span class="text">{{selectedTransaction.desc}}<strong>{{currencySymbol}}{{selectedTransaction.amount}}</strong></span>
             <ul id="change-edit-type" class="modal-options">
-                <li ng-class="{'active':!chargeCodeActive}" ng-click="setchargeCodeActive(false)" translate>AMOUNT</li>
-                <li ng-class="{'active':chargeCodeActive}" ng-click="setchargeCodeActive(true)" translate>CHARGE_CODE</li>
+                <li ng-class="{'active':!chargeCodeActive, 'disabled': shouldDisableEditChargeAmount() }" ng-click="!shouldDisableEditChargeAmount() && setchargeCodeActive(false)" translate>AMOUNT</li>
+                <li ng-class="{'active':chargeCodeActive, 'disabled': shouldDisableEditChargeCode() }" ng-click="!shouldDisableEditChargeCode() && setchargeCodeActive(true)" translate>CHARGE_CODE</li>
             </ul>
 
             <!-- Edit amount field -->
@@ -52,7 +52,7 @@
                 </ul>
             </div>
             <div>
-                <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editCharge(newAmount,selectedChargeCode)" translate>CHANGE_AMOUNT</button>
+                <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editCharge(newAmount,selectedChargeCode)">{{getEditChargeButtonText() | translate}}</button>
                 <button type="button" class="button blank guest-bill-edit-buttons" ng-click="callActionsPopupAction('close')" translate>CANCEL</button> 
             </div>
         </fieldset>
