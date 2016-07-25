@@ -2,6 +2,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	['$scope','$rootScope','$filter','RVBillCardSrv', 'ngDialog', '$timeout', function($scope, $rootScope,$filter, RVBillCardSrv, ngDialog, $timeout){
 
 	BaseCtrl.call(this, $scope);
+	$scope.newAmount = '';
 
 	var refreshListWithData = function(data){
 		$scope.init(data);
@@ -103,6 +104,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 /*----------------------------edit charge drop down implementation--------------------------------------*/
 	$scope.chargecodeData = {};
 	$scope.chargecodeData.chargeCodeSearchText = "";
+	$scope.selectedChargeCode = { description: '' };
 	var scrollerOptionsForSearch = {click: true, preventDefault: false};
 	$scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
 
@@ -195,6 +197,18 @@ sntRover.controller('rvBillCardPopupCtrl',
 			}
 		}
 		return isShowChargeCodeList;
+	};
+
+	$scope.shouldDisableEditChargeCode = function() {
+		return $scope.newAmount.length > 0;
+	};
+
+	$scope.shouldDisableEditChargeAmount = function() {
+		return $scope.selectedChargeCode.description.length > 0;
+	};
+
+	$scope.getEditChargeButtonText = function() {
+		return ($scope.chargeCodeActive) ? 'CHANGE_CHARGE_CODE' : 'CHANGE_AMOUNT';
 	};
 
 }]);
