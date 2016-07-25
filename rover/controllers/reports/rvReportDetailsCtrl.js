@@ -372,6 +372,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 3;
 					break;
 
+				case reportNames['ROOM_UPSELL']:
+				case reportNames['MOBILE_CHECKIN']:
+				case reportNames['MOBILE_CHECKIN_NOW']:
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 4;
+					break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
