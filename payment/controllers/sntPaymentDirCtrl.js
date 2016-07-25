@@ -146,6 +146,10 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv, $locat
 						if($scope.selectedPaymentType === "CC"){
 							response.cc_details = angular.copy($scope.attachedCc);
 						};
+						if ($scope.payment.showAddToGuestCard) {
+							//check if add to guest card was selected
+							response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
+						};
 						$scope.$emit('PAYMENT_SUCCESS', response);
 						$scope.$emit('hideLoader');
 					},
@@ -273,6 +277,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv, $locat
 			$scope.attachedCc.card_code = cardDetails.cardDisplayData.card_code;
 			$scope.attachedCc.ending_with = cardDetails.cardDisplayData.ending_with;
 			$scope.attachedCc.expiry_date = cardDetails.cardDisplayData.expiry_date;
+			$scope.attachedCc.holder_name = cardDetails.cardDisplayData.name_on_card;
 
 			if ($scope.isStandAlone) {
 				//TODO:calculate fee
@@ -341,12 +346,12 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv, $locat
 		//MLI
 		$scope.paymentGatewayUIInterfaceUrl = "/assets/partials/payMLIPartial.html";
 		//SIX pay
-		var time = new Date().getTime();
-		var absoluteUrl = $location.$$absUrl;
-		var domainUrl = absoluteUrl.split("/staff#/")[0];
-		$scope.payment.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + $scope.payment.guestFirstName + "&card_holder_last_name=" + $scope.payment.guestLastName + "&service_action=createtoken&time=" + time;
-		$scope.paymentGatewayUIInterfaceUrl = "/assets/partials/paySixPaymentPartial.html";
-		console.log($scope.payment.iFrameUrl);
+		// var time = new Date().getTime();
+		// var absoluteUrl = $location.$$absUrl;
+		// var domainUrl = absoluteUrl.split("/staff#/")[0];
+		// $scope.payment.iFrameUrl = domainUrl + "/api/ipage/index.html?card_holder_first_name=" + $scope.payment.guestFirstName + "&card_holder_last_name=" + $scope.payment.guestLastName + "&service_action=createtoken&time=" + time;
+		// $scope.paymentGatewayUIInterfaceUrl = "/assets/partials/paySixPaymentPartial.html";
+		// console.log($scope.payment.iFrameUrl);
 	})();
 
 });

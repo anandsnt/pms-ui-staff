@@ -58,6 +58,10 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 				$scope.attachedCc.ending_with = response.payment_method.ending_with;
 				$scope.attachedCc.expiry_date = response.payment_method.expiry_date;
 				response.cc_details = angular.copy($scope.attachedCc);
+				if ($scope.payment.showAddToGuestCard) {
+					//check if add to guest card was selected
+					response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
+				};
 				$scope.$emit('PAYMENT_SUCCESS', response);
 				$scope.$emit("HIDE_SIX_PAY_LOADER");
 			},
