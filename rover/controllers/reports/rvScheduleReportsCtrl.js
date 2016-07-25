@@ -225,7 +225,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			INCLUDE_NO_SHOW: 'INCLUDE_NO_SHOW',
 			INCLUDE_NOTES: 'INCLUDE_NOTES',
 			SHOW_GUESTS: 'SHOW_GUESTS',
-			VIP_ONLY: 'VIP_ONLY'
+			VIP_ONLY: 'VIP_ONLY',
+			// this filter for few reports could also be listed
+			// under SHOW and not OPTIONS
+			INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT'
 		};
 
 		var matchSortFields = {
@@ -281,6 +284,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
 					if ( $scope.selectedScheduleDetails.report.description === 'Departing Guests' && filter.value === 'DUE_OUT_DEPARTURES' ) {
 						selected = true;
+					}
+
+					if ( $scope.selectedScheduleDetails.report.description === 'All In-House Guests' && filter.value === 'INCLUDE_DUE_OUT' ) {
+					    selected = true;
 					}
 
 					$scope.filters.hasGeneralOptions.data.push({

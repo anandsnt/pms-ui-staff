@@ -1,6 +1,7 @@
 sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootScope','$filter','RVEndOfDayModalSrv','$state','$timeout', function($scope,ngDialog,$rootScope,$filter,RVEndOfDayModalSrv, $state, $timeout){
 
     BaseCtrl.call(this, $scope);
+    var calenderMaxDate;
     var init =function(){
         setTitle();
         $scope.eodLogDetails = {};
@@ -8,6 +9,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         $scope.businessDate =$rootScope.businessDate;       
         setDefaultNextBussinessDate();
         setDefaultSelectedDate();
+        calenderMaxDate = ($rootScope.hotelDetails.is_auto_change_bussiness_date)?$scope.selectedDate:$scope.businessDate;
         setDisplayDateValues();         
         $scope.setScroller('eod_scroll');
         fetchEodLogOfSelectedDate();
@@ -25,6 +27,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         $scope.month = getMonthName(parseInt(values[1]-1));
         $scope.day = values[2];
     };
+    
     /*
     * Setting nextBussiness Date
     */
@@ -65,7 +68,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             changeYear: true,
             changeMonth: true,
             dateFormat: 'yy-mm-dd',
-            maxDate: $scope.businessDate,
+            maxDate: calenderMaxDate,
             yearRange: "-100:+0",
             onSelect: function(date, inst) {
                 $scope.selectedDate = date;
@@ -93,6 +96,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         };
         var fetchEodLogSuccess = function(data){
             $scope.eodLogDetails = data.eod_processes;
+            $scope.nextEodRunTime = data.eod_process_time;
                       
             $rootScope.$broadcast('hideLoader');
             $timeout(function() {
@@ -123,6 +127,9 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     };
 
     $scope.showSetToTodayButton = function(){
+        return (!$rootScope.hotelDetails.is_auto_change_bussiness_date||$scope.isSameSelectedAndBussiness())?true:false;
+    };
+    $scope.isSameSelectedAndBussiness = function(){
         return ($scope.selectedDate === $scope.businessDate)?true:false;
     };
     /*

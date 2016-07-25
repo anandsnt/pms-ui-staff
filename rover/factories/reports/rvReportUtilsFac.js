@@ -1492,9 +1492,6 @@ angular.module('reportsModule')
 
                 });
 
-                // adding custom name ref for easy access
-                report['sortByOptions'] = report['sort_fields'];
-
                 // making sort by room type default
                 if ( report['title'] === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
                     var roomType = _.find(report['sort_fields'], { 'value': 'ROOM_TYPE' });
@@ -1521,7 +1518,10 @@ angular.module('reportsModule')
                         report['chosenSortBy'] = roomNo['value'];
                     };
                 };
-            };
+
+                // adding custom name ref for easy access
+                report['sortByOptions'] = report['sort_fields'];
+            }
         };
 
 

@@ -30,7 +30,7 @@
 				    return survey_question_type.id === response.survey_question_type_id;
 				});
 
-				$scope.surveyDetails.survey_question_type = questionType.description;
+				$scope.surveyDetails.survey_question_type = !!questionType.description ? questionType.description : "Numeric";
 
 				//set initial values
 				if ($scope.surveyDetails.survey_question_type === 'Boolean') {
