@@ -53,11 +53,11 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 				if ($scope.feeData) {
 					response.feePaid = $scope.feeData.calculatedFee;
 				};
-				$scope.attachedCc.value = response.payment_method.id;
-				$scope.attachedCc.card_code = response.payment_method.card_type;
-				$scope.attachedCc.ending_with = response.payment_method.ending_with;
-				$scope.attachedCc.expiry_date = response.payment_method.expiry_date;
-				response.cc_details = angular.copy($scope.attachedCc);
+				$scope.selectedCC.value = response.payment_method.id;
+				$scope.selectedCC.card_code = response.payment_method.card_type;
+				$scope.selectedCC.ending_with = response.payment_method.ending_with;
+				$scope.selectedCC.expiry_date = response.payment_method.expiry_date;
+				response.cc_details = angular.copy($scope.selectedCC);
 				$scope.$emit('PAYMENT_SUCCESS', response);
 				$scope.$emit("HIDE_SIX_PAY_LOADER");
 			},
@@ -80,7 +80,7 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 	(function() {
 		//Initially set Manaul card Entry if card is attached already
 		var isCCPresent = angular.copy($scope.showSelectedCard());
-		$scope.payment.manualSixPayCardEntry = isCCPresent && $scope.paymentGateway === 'sixpayments' ? true : false;
+		$scope.payment.isManualEntryInsideIFrame = isCCPresent && $scope.paymentGateway === 'sixpayments' ? true : false;
 
 		//handle six payment iFrame communication
 		var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";

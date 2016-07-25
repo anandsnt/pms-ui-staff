@@ -5,7 +5,8 @@
 angular.module("sntPayConfig", []).constant("PAYMENT_CONFIG", Object.freeze({
     "MLI": {
         iFrameUrl: null,
-        jsLibrary: "https://cnp.merchantlink.com/form/v2.1/hpf.js"
+        jsLibrary: "https://cnp.merchantlink.com/form/v2.1/hpf.js",
+        partial: "/assets/partials/payMLIPartial.html"
     },
     "sixpayments": {
         iFrameUrl: "/api/ipage/index.html",
@@ -19,6 +20,7 @@ angular.module("sntPayConfig", []).constant("PAYMENT_CONFIG", Object.freeze({
             //current time stamp new Date() -> getTime()
             "time": ""
         },
-        jsLibrary: null
+        jsLibrary: null,
+        partial: "/assets/partials/paySixPaymentPartial.html"
     }
 }));

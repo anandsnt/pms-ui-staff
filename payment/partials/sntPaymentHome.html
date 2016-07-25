@@ -10,7 +10,7 @@
 <!-- six pay options -->
 <div class="entry" ng-show="paymentGateway === 'sixpayments' && selectedPaymentType ==='CC' &&payment.screenMode === 'PAYMENT_MODE'">
     <label for="card-source">Card Input</label>
-    <div class="switch-button" ng-class="{'on': !payment.manualSixPayCardEntry}">
+    <div class="switch-button" ng-class="{'on': !payment.isManualEntryInsideIFrame}">
         <input name="card-source" id="card-source" value="card-source" type="checkbox" ng-model="payment.manualSixPayCardEntry" ng-click="sixPayEntryOptionChanged()" />
         <label class="data-off">
             <span class="value">C &amp; P</span>
@@ -27,10 +27,10 @@
     <label>Credit Card (<span>Tap to change</span>)</label>
     <label class="active-item item-payment">
         <figure class="card-logo">
-            <img ng-src="/assets/images/{{attachedCc.card_code.toLowerCase()}}.png" alt="" />
+            <img ng-src="/assets/images/{{selectedCC.card_code.toLowerCase()}}.png" alt="" />
         </figure>
-        <span class="number">Ending with <span class="value number">{{attachedCc.ending_with}}</span></span>
-        <span class="date">Date <span class="value date">{{attachedCc.expiry_date}}</span></span>
+        <span class="number">Ending with <span class="value number">{{selectedCC.ending_with}}</span></span>
+        <span class="date">Date <span class="value date">{{selectedCC.expiry_date}}</span></span>
     </label>
 </div>
 <div ng-include="'/assets/partials/payCreditCardOptions.html'" ng-show="payment.screenMode === 'CARD_ADD_MODE'"></div>

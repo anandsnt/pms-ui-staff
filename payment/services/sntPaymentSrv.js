@@ -1,8 +1,8 @@
-sntPay.service('sntPaymentSrv', ['$q', '$http',
-    function($q, $http) {
+sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
+    function($q, $http, $location, PAYMENT_CONFIG) {
         var service = this;
 
-        this.submitPayment = function(dataToSrv) {
+        service.submitPayment = function(dataToSrv) {
 
             var deferred = $q.defer();
             var url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
@@ -15,7 +15,8 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
             return deferred.promise;
         };
 
-        this.getLinkedCardList = function(reservationId) {
+        service.getLinkedCardList = function(reservationId) {
+
             var deferred = $q.defer();
             var url = '/staff/staycards/get_credit_cards.json?reservation_id=' + reservationId;
             $http.get(url).success(function(response) {
@@ -26,7 +27,6 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
                 });
             return deferred.promise;
         };
-
 
         /**
          *
@@ -83,32 +83,34 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
         };
 
         /********************************* SIX PAY **********************************/
-        var sixCreditCardTypes = {
-            "AX": 'AX',
-            "DI": 'DS',
-            "DN": 'DC',
-            "JC": 'JCB',
-            "MC": 'MC',
-            "VS": 'VA',
-            "VX": 'VA',
-            "MX": 'DS', //Six iframe reurns MX for discover. not good,
-            "MV": 'MC'
-        };
 
-        this.getSixPayCreditCardType = function(cardCode) {
-            var card = cardCode.toUpperCase();
-            return sixCreditCardTypes[card];
+        service.getSixPayCreditCardType = function(cardCode) {
+            var sixCreditCardTypes = {
+                "AX": 'AX',
+                "DI": 'DS',
+                "DN": 'DC',
+                "JC": 'JCB',
+                "MC": 'MC',
+                "VS": 'VA',
+                "VX": 'VA',
+                "MX": 'DS', //Six iframe returns MX for discover. not good,
+                "MV": 'MC'
+            };
+
+            return sixCreditCardTypes[cardCode.toUpperCase()];
         };
 
         /********************************* MLI **************************************/
 
-        this.getCreditCardTypeForMLI = function(cardBrand) {
+        service.getCreditCardTypeForMLI = function(cardBrand) {
+
             var card = (typeof cardBrand === "undefined") ? "" : cardBrand.toUpperCase();
             var cardArray = ['AX', 'DC', 'DS', 'JCB', 'MC', 'VA'];
             return (cardArray.indexOf(card) != -1) ? card : (typeof creditCardTypes[card] != 'undefined') ? creditCardTypes[card] : 'credit-card';
         };
 
-        this.savePaymentDetails = function(params) {
+        service.savePaymentDetails = function(params) {
+
             var deferred = $q.defer();
             var url = 'staff/reservation/save_payment';
             $http.post(url, params).success(function(response) {
@@ -119,11 +121,9 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
                 });
             return deferred.promise;
         };
+
         //SIX payment actions
-
-        this.submitPaymentForChipAndPin = function(dataToSrv) {
-
-
+        service.submitPaymentForChipAndPin = function(dataToSrv) {
 
             var deferred = $q.defer();
             var url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
@@ -163,7 +163,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
                             deferred.reject(data);
                         }
                     });
-                };
+                }
             };
 
             $http.post(url, dataToSrv.postData).success(function(response, status, headers) {
@@ -182,15 +182,16 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
         };
 
         //fetch MLI session details
-        this.fetchMLISessionDetails = function(sessionDetails, successCallback, failureCallback) {
+        service.fetchMLISessionDetails = function(sessionDetails, successCallback, failureCallback) {
 
             var callback = function(response) {
                 (response.status === "ok") ? successCallback(response): failureCallback(response);
             };
+
             HostedForm.updateSession(sessionDetails, callback);
         };
 
-        this.fetchMLIToken = function(sessionDetails, successCallback, failureCallback) {
+        service.fetchMLIToken = function(sessionDetails, successCallback, failureCallback) {
 
             var success = function(response) {
                 successCallback(response);
@@ -206,12 +207,46 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
                 } catch (err) {
                     var errorMessage = ['There was a problem connecting to the payment gateway.'];
                     failureCallback(errorMessage);
-                };
+                }
             } else {
                 var errorMessage = ['There is a problem with your credit card'];
                 failureCallback(errorMessage);
-            };
+            }
 
+        };
+
+        /**
+         *
+         * @param gateWay
+         * @returns {{iFrameUrl: string, paymentGatewayUIInterfaceUrl: string}}
+         */
+        service.resolvePaths = function(gateWay, params) {
+            var iFrameUrl = "",
+                paymentGatewayUIInterfaceUrl = PAYMENT_CONFIG[gateWay].partial;
+
+            switch (gateWay){
+                case "sixpayments":
+                    var time = new Date().getTime(),
+                        absoluteUrl = $location.$$absUrl,
+                        domainUrl = absoluteUrl.split("/staff#/")[0];
+
+                    iFrameUrl = domainUrl +
+                        "/api/ipage/index.html?card_holder_first_name=" +
+                        params.card_holder_first_name +
+                        "&card_holder_last_name=" +
+                        params.card_holder_last_name +
+                        "&service_action=createtoken&time=" +
+                        time;
+                    break;
+                default:
+                    console.error("Payment Gateway not configured");
+
+            }
+
+            return{
+                iFrameUrl : iFrameUrl,
+                paymentGatewayUIInterfaceUrl : paymentGatewayUIInterfaceUrl
+            };
         };
 
     }

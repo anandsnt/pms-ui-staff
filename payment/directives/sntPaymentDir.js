@@ -13,7 +13,7 @@ sntPay.directive('sntPayment', function() {
             billNumber: '=',
             billId : '@',
             amount: '=',
-            attachedCc: '=',
+            selectedCC: '=',
             actionType: '@',
             depositPolicyName: '@',
             isEditable : '=',
