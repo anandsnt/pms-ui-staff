@@ -186,19 +186,14 @@ x
 
 	};
 
-	// Payment type change action
-	$scope.onPaymentInfoChange = function() {
-		//NOTE: Fees information is to be calculated only for standalone systems
-		//TODO: GC Seperately Here
-		//TODO: See how to handle fee in case of C&P
-
+	var calculateFee = function(){
 		var selectedPaymentType = _.find($scope.paymentTypes, {
 				name: $scope.selectedPaymentType
 			}),
 			feeInfo = selectedPaymentType && selectedPaymentType.charge_code && selectedPaymentType.charge_code.fees_information || {};
 
 		// In case a credit card is selected; the fee information is to be that of the card
-		if(selectedPaymentType.name === "CC" && $scope.selectedCC && $scope.selectedCC.card_code){
+		if(!!selectedPaymentType && selectedPaymentType.name === "CC" && $scope.selectedCC && $scope.selectedCC.card_code){
 			feeInfo = $scope.selectedCC.fees_information;
 		}
 
@@ -206,9 +201,29 @@ x
 
 		$scope.isDisplayRef = selectedPaymentType && selectedPaymentType.is_display_reference;
 
+
+		$scope.feeData = {
+			calculatedFee: currFee.calculatedFee,
+			totalOfValueAndFee: currFee.totalOfValueAndFee,
+			showFee: currFee.showFees,
+			feeChargeCode: currFee.feeChargeCode
+		};
+	};
+
+	// Payment type change action
+	$scope.onPaymentInfoChange = function() {
+		//NOTE: Fees information is to be calculated only for standalone systems
+		//TODO: GC Seperately Here
+		//TODO: See how to handle fee in case of C&P
+
+		calculateFee();
+		var selectedPaymentType = _.find($scope.paymentTypes, {
+				name: $scope.selectedPaymentType
+	    });
+
 		//If the changed payment type is CC and payment gateway is MLI show CC addition options
 		//If there are attached cards, show them first
-		if (selectedPaymentType.name === "CC") {
+		if (!!selectedPaymentType && selectedPaymentType.name === "CC") {
 			if (!!PAYMENT_CONFIG[$scope.paymentGateway].iFrameUrl) {
 				refreshIFrame();
 			} else {
@@ -217,13 +232,6 @@ x
 		} else {
 			$scope.payment.showAddToGuestCard = false;
 		}
-
-		$scope.feeData = {
-			calculatedFee: currFee.calculatedFee,
-			totalOfValueAndFee: currFee.totalOfValueAndFee,
-			showFee: currFee.showFees,
-			feeChargeCode: currFee.feeChargeCode
-		};
 	};
 
 	$scope.onFeeOverride = function() {
@@ -240,6 +248,9 @@ x
 	//cancel CC entry and go to initial page
 	$scope.cancelCardSelection = function() {
 		$scope.payment.screenMode = "PAYMENT_MODE";
+		$scope.selectedPaymentType = "";
+		$scope.selectedCC = {};
+		calculateFee();
 	};
 	//choose among the existing cards
 	$scope.setCreditCardFromList = function(selectedCardValue) {
@@ -250,6 +261,7 @@ x
 		//this need to be set to true only if new card is added
 		$scope.payment.showAddToGuestCard = false;
 		$scope.payment.screenMode = "PAYMENT_MODE";
+		calculateFee();
 	};
 	//hide existing cards in some places like in guestcard add CC
 	$scope.hideCardToggles = function() {
@@ -311,6 +323,7 @@ x
 			}
 
 			$scope.payment.screenMode = "PAYMENT_MODE";
+			calculateFee();
 			showAddtoGuestCardBox();
 		};
 
