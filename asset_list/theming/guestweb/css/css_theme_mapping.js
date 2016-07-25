@@ -64,7 +64,8 @@ module.exports = {
 			'guestweb_sobro':[ themeCSSRoot + 'guestweb_sobro.css'],
 			'guestweb_covington':[ themeCSSRoot + 'guestweb_covington.css'],
 			'guestweb_consciousVondelpark':[ themeCSSRoot + 'guestweb_consciousVondelpark.css'],
-			'guestweb_halcyon':[ themeCSSRoot + 'guestweb_halcyon.css']
+			'guestweb_halcyon':[ themeCSSRoot + 'guestweb_halcyon.css'],
+			'guestweb_chancellors_house':[ themeCSSRoot + 'guestweb_chancellors_house.css']
 		}
 	}
 }
