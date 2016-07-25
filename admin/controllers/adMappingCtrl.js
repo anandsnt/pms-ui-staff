@@ -251,7 +251,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         $scope.fetchInterfaceMappings = function () {
             var lastInterface = getLastInterface();
-            $scope.clickedInterfaceName = lastInterface.name;
+            $scope.clickedInterfaceName = lastInterface.description;
             $scope.invokeApi(ADInterfaceMappingSrv.fetchInterfaceMappingsList, {
                 'hotel_id': lastInterface.hotelId,
                 'interface_type_id': lastInterface.id,
