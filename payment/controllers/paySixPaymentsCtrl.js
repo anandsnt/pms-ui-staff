@@ -62,7 +62,7 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 				$scope.$emit("HIDE_SIX_PAY_LOADER");
 			},
 			function(errorMessage) {
-				console.log("payment success" + $scope.payment.amount);
+				console.log("payment failed" + errorMessage);
 				$scope.$emit('PAYMENT_FAILED', errorMessage);
 				$scope.$emit("HIDE_SIX_PAY_LOADER");
 			});

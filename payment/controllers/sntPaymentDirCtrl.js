@@ -150,7 +150,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv, $locat
 						$scope.$emit('hideLoader');
 					},
 					function(errorMessage) {
-						console.log("payment success" + $scope.payment.amount);
+						console.log("payment failed" + errorMessage);
 						$scope.$emit('PAYMENT_FAILED', errorMessage);
 						$scope.$emit('hideLoader');
 					});
