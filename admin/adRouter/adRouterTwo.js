@@ -515,6 +515,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/backOfficeInterfaces'
 		});
 
+		$stateProvider.state('admin.textMessagingGroup', {
+			templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+			controller: 'ADInterfaceSubMenuCtrl',
+			url : '/textMessagingInterfaces'
+		});
+
 		$stateProvider.state('admin.stationary', {
 			templateUrl: '/assets/partials/stationary/adStationary.html',
 			controller: 'ADStationaryCtrl',

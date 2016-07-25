@@ -69,7 +69,7 @@ var GlobalZestStationApp = function(){
     	else{
     		that.browser = browser;
     	}
-    	if(!that.cordovaLoaded){
+    	if(browser === 'rv_native' && !that.cordovaLoaded){
     	   //TODO: check URL
                 var url = "/assets/shared/cordova.js";
 
@@ -82,7 +82,6 @@ var GlobalZestStationApp = function(){
   				if (xhr.readyState===4 && xhr.status===200){
   					that.fetchCompletedOfCordovaPlugins(xhr.responseText);
   				} else {
-
   					that.fetchFailedOfCordovaPlugins();
   				}
   			};
@@ -106,13 +105,11 @@ var GlobalZestStationApp = function(){
         try{
             that.iBeaconLinker = new iBeaconOperation();
         }
-        catch(er){
-
-        };
+        catch(er){};
 
     };
-    //this.fetchCompletedOfCordovaPlugins();
-    
+    this.fetchCompletedOfCordovaPlugins();
+
     // success function of coddova plugin's appending
     this.fetchFailedOfCordovaPlugins = function(errorMessage){
     	that.cordovaLoaded = false;
