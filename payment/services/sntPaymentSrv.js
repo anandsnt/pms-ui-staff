@@ -140,7 +140,9 @@ sntPay.service('sntPaymentSrv', ['$q', '$http',
                     var errors = ["Request timed out. Unable to process the transaction"];
                     deferred.reject(errors);
                 } else {
-                    //TODO: remove below and test with actual.This can be kept to mock the response
+                    //TODO: remove below line of code and test with actual.
+                    //This can be kept to mock the response
+                    
                     //var async_callback_url = '/sample_json/payment/six_payment_sample.json';
                     $http.get(async_callback_url).success(function(data,status) {
                         //if the request is still not proccesed
