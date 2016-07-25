@@ -2,7 +2,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
     function($q, RVBaseWebSrvV2, RVReservationBaseSearchSrv) {
 
         var service = this;
-
+        service.roomAndRateActiveTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
         //--------------------------------------------------------------------------------------------------------------
         // A. Private Methods
         var getInitialRoomTypeWithUpSell = function(params) {
@@ -38,9 +38,10 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
         * Prepare the parameters for the room type and rate tab request
         */
         var processParamsForRoomTypeAndRateRequest = function(params) {
-            var defaultView = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
+            var defaultView = RVReservationBaseSearchSrv.getRoomRatesDefaultView(),
+                currentRoomAndRateActiveView = service.getRoomAndRateActiveTab();
 
-            if(defaultView === "RATE" || defaultView === "ROOM_TYPE") {
+            if(defaultView === "RATE" || defaultView === "ROOM_TYPE" || currentRoomAndRateActiveView === "RATE" || currentRoomAndRateActiveView === "ROOM_TYPE") {
                params.is_member = "false";
 
                if(params.company_id) {
@@ -147,6 +148,16 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             });
 
             return deferred.promise;
+        };
+
+        // Set the room and rates active tab
+        service.setRoomAndRateActiveTab = function(view) {
+            service.roomAndRateActiveTab = view;
+        };
+
+        //Get the current active tab in room and rates screen
+        service.getRoomAndRateActiveTab = function() {
+            return service.roomAndRateActiveTab;
         };
 
         //--------------------------------------------------------------------------------------------------------------
