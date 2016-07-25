@@ -266,8 +266,6 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv, $locat
 
 	//save CC
 	var saveCCPayment = function(cardDetails) {
-
-
 		var onSaveSuccess = function(response) {
 
 			$scope.attachedCc.value = response.data.id;

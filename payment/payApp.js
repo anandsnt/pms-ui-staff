@@ -3,9 +3,6 @@ var sntPay = angular.module('sntPay', [
     'oc.lazyLoad'
 ]);
 
-
-sntPay.run(function ($rootScope) {
-    $rootScope.viewState = {
-        numRequests: 0
-    };
-});
+sntPay.run(['$rootScope',  'PAYMENT_CONFIG', function($rootScope, PAYMENT_CONFIG) {
+    console.log("----------------", PAYMENT_CONFIG);
+}]);

@@ -1,6 +1,6 @@
-angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLazyLoad',
-	function($q, rvBaseWebSrvV2, $ocLazyLoad) {
-  
+angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLazyLoad', '$timeout',
+	function($q, rvBaseWebSrvV2, $ocLazyLoad, $timeout) {
+
   var mappingList = null;
 
   /**
@@ -31,7 +31,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
     if (!!mappingList) {
       for(; i < length; i++) {
         promises.push( $ocLazyLoad.load({ serie: true, files: mappingList[keys[i]] }) );
-      }      
+      }
       return $q.all(promises).then(function() {
         if (typeof modules_to_inject !== "undefined") {
          $ocLazyLoad.inject(modules_to_inject);
@@ -66,10 +66,10 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
                     for (; i < length; i++) {
                         promises.push($ocLazyLoad.load({serie: true, files: data.js[keys[i]]}));
                     }
-                    promises.push($ocLazyLoad.load({serie: true, files: data['template']}));
+                   promises.push($ocLazyLoad.load({serie: true, files: data['template']}));
 
                     return $q.all(promises).then(function () {
-                        $ocLazyLoad.inject(['sntPay']);
+                        $ocLazyLoad.inject(['sntPayConfig', 'sntPay','sntPayTemplates']);
                         deferred.resolve();
                     });
 

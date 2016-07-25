@@ -10,7 +10,8 @@ module.exports = function (gulp, $, options) {
         onError = options.onError,
         runSequence = require('run-sequence'),
         extendedMappings = {},
-        PAYMENT_JS_LIST = require("../../asset_list/js/payment/paymentsJsAssetList").getList(),
+        paymentMappingFile = "../../asset_list/js/payment/paymentsJsAssetList",
+        PAYMENT_JS_LIST = require(paymentMappingFile).getList(),
         _ = require('lodash'),
         paymentGeneratedDir = options.paymentGeneratedDir,
         paymentGeneratedFile = options.paymentGeneratedFile;
@@ -73,7 +74,7 @@ module.exports = function (gulp, $, options) {
                 .pipe($.rev.manifest(PAYMENT_JS_MANIFEST_FILE))
                 .pipe(edit(function (manifest) {
                     Object.keys(manifest).forEach(function (path, orig) {
-                        extendedMappings[paymentProvider] = [URL_APPENDER + "/" + manifest[path]];
+                        extendedMappings[paymentProvider] = [URL_APPENDER + "/payment/" + manifest[path]];
                     });
                     console.log('Payment mapping mapping-generation-end: ' + paymentProvider);
                     return extendedMappings;
@@ -113,11 +114,14 @@ module.exports = function (gulp, $, options) {
 
 
     gulp.task('payment-watch-js-files', function () {
+        delete require.cache[require.resolve(paymentMappingFile)];
+        PAYMENT_JS_LIST = require(paymentMappingFile).getList();
+
         var filesList = _.reduce(PAYMENT_JS_LIST, function (a, b) {
             return a.concat(b);
         }, []);
 
-        gulp.watch(filesList, ['build-payment-js-dev']);
+        gulp.watch(filesList, ['payment-generate-mapping-list-dev']);
     });
 
     gulp.task('payment-generate-mapping-list-dev', ['build-payment-js-dev'], saveTheMappingJsonFile);
