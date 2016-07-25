@@ -31,7 +31,8 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv, $locat
 	$scope.showSelectedCard = function() {
 		var isCCPresent = ($scope.selectedPaymentType === "CC" &&
 			(!!$scope.attachedCc.ending_with && $scope.attachedCc.ending_with.length > 0));
-		return (isCCPresent && $scope.payment.screenMode === "PAYMENT_MODE" && $scope.payment.manualSixPayCardEntry);
+		var isSixPayManual = $scope.paymentGateway === 'sixpayments' && $scope.payment.manualSixPayCardEntry;
+		return (isCCPresent && $scope.payment.screenMode === "PAYMENT_MODE" && (isSixPayManual || $scope.paymentGateway !== 'sixpayments'));
 	};
 
 	//show add to guest card checkbox to add the card to the guestcard
@@ -181,7 +182,7 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv, $locat
 		if (selectedPaymentType.name === "CC") {
 			if ($scope.paymentGateway === "MLI") {
 				changeToCardAddMode();
-			} else if ($scope.paymentGateway = 'sixpayments') {
+			} else if ($scope.paymentGateway === 'sixpayments') {
 				$scope.refreshIframe();
 			};
 		} else {
@@ -328,9 +329,15 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv, $locat
 		$scope.payment.guestLastName = $scope.lastName || '';
 		$scope.payment.workstationId = $scope.workstationId || '';
 		$scope.payment.emvTimeout = $scope.emvTimeout || 120;
-		//TODO:handle Scroll
-		//$scope.setScroller('cardsList',{'click':true, 'tap':true}); 
 		fetchAttachedCreditCards();
+		$scope.$emit('SET_SCROLL_FOR_EXISTING_CARDS');
+
+		//check if card is present, if yes turn on flag
+		if($scope.paymentGateway === 'sixpayments'){
+			var isCCPresent = ($scope.selectedPaymentType === "CC" &&
+			(!!$scope.attachedCc.ending_with && $scope.attachedCc.ending_with.length > 0));
+			$scope.payment.manualSixPayCardEntry = true;
+		};
 
 		//TODO: change to mapping
 		//MLI

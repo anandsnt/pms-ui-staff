@@ -56,6 +56,12 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			$scope.errorMessage = "";
 			$scope.errorOccured = false;
 		};
+
+		$scope.$on('SET_SCROLL_FOR_EXISTING_CARDS',function(){
+			console.log("set_scroll");
+			$scope.setScroller('cardsList',{'click':true, 'tap':true});
+		});
+
 		/***************** Events From Payment Module ************************/
 
 		$scope.$on("ERROR_OCCURED",function(event,data){
