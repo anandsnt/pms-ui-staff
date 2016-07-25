@@ -63,7 +63,8 @@ module.exports = {
 			'guestweb_Pasea':[ themeCSSRoot + 'guestweb_Pasea.css'],
 			'guestweb_sobro':[ themeCSSRoot + 'guestweb_sobro.css'],
 			'guestweb_covington':[ themeCSSRoot + 'guestweb_covington.css'],
-			'guestweb_consciousVondelpark':[ themeCSSRoot + 'guestweb_consciousVondelpark.css']
+			'guestweb_consciousVondelpark':[ themeCSSRoot + 'guestweb_consciousVondelpark.css'],
+			'guestweb_chancellors_house':[ themeCSSRoot + 'guestweb_chancellors_house.css']
 		}
 	}
 }
