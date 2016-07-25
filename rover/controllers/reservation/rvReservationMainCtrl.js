@@ -1,18 +1,18 @@
 sntRover.controller('RVReservationMainCtrl', ['$scope',
             '$rootScope',
-            'ngDialog', 
+            'ngDialog',
             '$filter',
-            'RVCompanyCardSrv', 
-            '$state', 
+            'RVCompanyCardSrv',
+            '$state',
             'dateFilter',
             'baseSearchData',
             'RVReservationSummarySrv',
-            'RVReservationCardSrv', 
+            'RVReservationCardSrv',
             'RVPaymentSrv',
             '$timeout',
             '$stateParams',
             'RVReservationGuestSrv',
-            'RVReservationStateService', 
+            'RVReservationStateService',
             'RVReservationDataService',
             function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService) {
 
@@ -861,7 +861,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             });
             angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {
                 if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
+                    //CICO-32021 - API expects null if room id not there.
+                    room.roomId  = (room.roomId !== "") ? room.roomId : null;
                     data.room_id.push(room.roomId);
+
                 }
             });
 
