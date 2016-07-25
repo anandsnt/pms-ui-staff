@@ -4,13 +4,13 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
         BaseCtrl.call(this, $scope);
 
         $scope.exportOptions = {
-            date: $rootScope.businessDate
+            date: new tzIndependentDate($rootScope.businessDate).addDays(-1)
         };
 
         $scope.datePickerOptions = {
             dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
-            maxDate: new tzIndependentDate($rootScope.businessDate).addDays(-1),
+            maxDate: $scope.exportOptions.date,
             changeYear: true,
             changeMonth: true,
             beforeShow: function (input, inst) {
