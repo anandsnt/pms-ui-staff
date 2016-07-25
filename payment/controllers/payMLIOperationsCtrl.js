@@ -30,11 +30,13 @@ sntPay.controller('payMLIOperationsController', function($scope, sntPaymentSrv) 
 		var paymentData = {
 			apiParams : {
 				name_on_card: $scope.cardData.userName,
+				card_code: retrieveCardtype(),
 				payment_type: "CC",
 				token: tokenDetails.session,
 				card_expiry: cardExpiry
 			},
 			cardDisplayData : {
+				name_on_card: $scope.cardData.userName,
 				card_code: retrieveCardtype(),
 				ending_with : $scope.cardData.cardNumber.slice(-4),
 				expiry_date : expiryMonth+" / "+expiryYear

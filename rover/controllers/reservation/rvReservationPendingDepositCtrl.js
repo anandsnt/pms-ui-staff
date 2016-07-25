@@ -111,7 +111,24 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 				$scope.$parent.reservationData.reservation_card.payment_details.card_expiry = data.cc_details.expiry_date;
 				$scope.$parent.reservationData.reservation_card.payment_details.card_type_image = 'images/'+data.cc_details.card_code+'.png';
 			};
-			//TO DO: Add to guestcard
+			
+			//Add the CC to guestcard
+			if(typeof data.add_to_guest_card !=="undefined" && data.add_to_guest_card){
+
+				var dataToGuestList = {
+					"card_code": data.cc_details.card_code,
+					"mli_token": data.cc_details.ending_with,
+					"card_expiry": data.cc_details.expiry_date,
+					"card_name": data.cc_details.holder_name,
+					"id": data.cc_details.value,
+					"isSelected": true,
+					"is_primary":false,
+					"payment_type":"CC",
+					"payment_type_id": 1,
+					"is_credit_card": true
+				};
+				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
+			};
 		});
 
 		//payment failed

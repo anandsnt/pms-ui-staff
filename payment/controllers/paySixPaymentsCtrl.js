@@ -52,12 +52,18 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 				// NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
 				if ($scope.feeData) {
 					response.feePaid = $scope.feeData.calculatedFee;
-				};
+				}
+
 				$scope.selectedCC.value = response.payment_method.id;
 				$scope.selectedCC.card_code = response.payment_method.card_type;
 				$scope.selectedCC.ending_with = response.payment_method.ending_with;
 				$scope.selectedCC.expiry_date = response.payment_method.expiry_date;
 				response.cc_details = angular.copy($scope.selectedCC);
+			
+				if ($scope.payment.showAddToGuestCard) {
+					//check if add to guest card was selected
+					response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
+				}
 				$scope.$emit('PAYMENT_SUCCESS', response);
 				$scope.$emit("HIDE_SIX_PAY_LOADER");
 			},

@@ -1,4 +1,4 @@
-sntPay.controller('sntPaymentController', ["$scope", "sntPaymentSrv", "$location", "PAYMENT_CONFIG",
+angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPaymentSrv", "$location", "PAYMENT_CONFIG",
 	function($scope, sntPaymentSrv, $location, PAYMENT_CONFIG) {
 
 	$scope.payment = {
@@ -42,6 +42,11 @@ sntPay.controller('sntPaymentController', ["$scope", "sntPaymentSrv", "$location
 	var showAddtoGuestCardBox = function() {
 		//this need to be set to true only if new card is added
 		$scope.payment.showAddToGuestCard = true;
+	};
+
+	//check if there are existing cards to be shown in list
+	var existingCardsPresent = function() {
+		return $scope.payment.linkedCreditCards.length > 0;
 	};
 
 	//change screen mode to collect CC info
@@ -89,87 +94,96 @@ sntPay.controller('sntPaymentController', ["$scope", "sntPaymentSrv", "$location
 		$scope.$emit('PAY_LATER');
 	};
 
+	var intiateSubmitPaymentParams = function() {
+		//set up params for API
+		var params = {
+			"postData": {
+				"bill_number": $scope.payment.billNumber,
+				"payment_type": $scope.selectedPaymentType,
+				"amount": $scope.payment.amount
+			},
+			"reservation_id": $scope.reservationId
+		};
+
+		if ($scope.payment.showAddToGuestCard) {
+			//check if add to guest card was selected
+			params.postData.add_to_guest_card = $scope.payment.addToGuestCardSelected;
+		}
+
+		if ($scope.feeData.showFee) {
+			//if fee was calculated wrt to payment type
+			params.postData.fees_amount = $scope.feeData.calculatedFee;
+			params.postData.fees_charge_code_id = $scope.feeData.feeChargeCode;
+		}
+
+		if ($scope.isDisplayRef) {
+			//if reference text is presernt for the payment type
+			params.postData.reference_text = $scope.payment.referenceText;
+		}
+		return params;
+	};
+
 	$scope.submitPayment = function() {
+
 		if ($scope.payment.amount === '' || $scope.payment.amount === null) {
 			var errorMessage = ["Please enter amount"];
 			$scope.$emit('ERROR_OCCURED', errorMessage);
+			return;
+		}
+
+		var params = intiateSubmitPaymentParams();
+
+		//check if chip and pin is selected in case of six payments
+		//the rest of actions will in paySixPayController
+		if ($scope.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
+			$scope.$broadcast('INITIATE_CHIP_AND_PIN_PAYMENT', params);
+			return;
+		}
+
+		//for CC payments, we need payment type id
+		var paymentTypeId;
+
+		if ($scope.selectedPaymentType === 'CC' && $scope.selectedCard !== -1) {
+			paymentTypeId = $scope.selectedCC.value;
 		} else {
-			//set up params for API
-			var params = {
-				"postData": {
-					"bill_number": $scope.payment.billNumber,
-					"payment_type": $scope.selectedPaymentType,
-					"amount": $scope.payment.amount
-				},
-				"reservation_id": $scope.reservationId
-			};
+			paymentTypeId = null;
+		}
+
+		params.postData.payment_type_id = paymentTypeId;
+
+		//we need to notify the parent controllers to show loader
+		//as this is an external directive
+		$scope.$emit('showLoader');
+
+		sntPaymentSrv.submitPayment(params).then(response => {
+
+			console.log("payment success" + $scope.payment.amount);
+			response.amountPaid = $scope.payment.amount;
+			response.authorizationCode = response.authorization_code;
+			// NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
+			if ($scope.feeData) {
+				response.feePaid = $scope.feeData.calculatedFee;
+			}
+
+			if ($scope.selectedPaymentType === "CC") {
+				response.cc_details = angular.copy($scope.selectedCC);
+			}
+x
 			if ($scope.payment.showAddToGuestCard) {
 				//check if add to guest card was selected
-				params.postData.add_to_guest_card = $scope.payment.addToGuestCardSelected;
-			};
-
-			if ($scope.feeData.showFee) {
-				//if fee was calculated wrt to payment type
-				params.postData.fees_amount = $scope.feeData.calculatedFee;
-				params.postData.fees_charge_code_id = $scope.feeData.feeChargeCode;
+				response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
 			}
 
-			if ($scope.isDisplayRef) {
-				//if reference text is presernt for the payment type
-				params.postData.reference_text = $scope.payment.referenceText;
+			$scope.$emit('PAYMENT_SUCCESS', response);
+			$scope.$emit('hideLoader');
+			}, errorMessage => {
+
+				console.log("payment failed" + errorMessage);
+				$scope.$emit('PAYMENT_FAILED', errorMessage);
+				$scope.$emit('hideLoader');
 			}
+		);
 
-
-			//check if chip and pin is selected in case of six payments
-			//the rest of actions will in paySixPayController
-			if ($scope.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
-				$scope.$broadcast('INITIATE_CHIP_AND_PIN_PAYMENT', params);
-			} else {
-
-				//for CC payments, we need payment type id
-				var paymentTypeId = null;
-
-				if ($scope.selectedPaymentType === 'CC' && $scope.selectedCard !== -1) {
-					paymentTypeId = $scope.selectedCC.value;
-				} else {
-					paymentTypeId = null;
-				}
-
-				params.postData.payment_type_id = paymentTypeId;
-
-				//we need to notify the parent controllers to show loader
-				//as this is an external directive
-				$scope.$emit('showLoader');
-
-				sntPaymentSrv.submitPayment(params).then(function(response) {
-						console.log("payment success" + $scope.payment.amount);
-						response.amountPaid = $scope.payment.amount;
-						response.authorizationCode = response.authorization_code;
-						// NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
-						if ($scope.feeData) {
-							response.feePaid = $scope.feeData.calculatedFee;
-						}
-
-						if($scope.selectedPaymentType === "CC"){
-							response.cc_details = angular.copy($scope.selectedCC);
-						}
-
-						$scope.$emit('PAYMENT_SUCCESS', response);
-						$scope.$emit('hideLoader');
-					},
-					function(errorMessage) {
-						console.log("payment failed" + errorMessage);
-						$scope.$emit('PAYMENT_FAILED', errorMessage);
-						$scope.$emit('hideLoader');
-					});
-			}
-
-		}
-	};
-
-	//check if there are existing cards to be shown in list
-	var existingCardsPresent = function() {
-		return $scope.payment.linkedCreditCards.length > 0;
 	};
 
 	// Payment type change action
@@ -288,6 +302,7 @@ sntPay.controller('sntPaymentController', ["$scope", "sntPaymentSrv", "$location
 			$scope.selectedCC.card_code = cardDetails.cardDisplayData.card_code;
 			$scope.selectedCC.ending_with = cardDetails.cardDisplayData.ending_with;
 			$scope.selectedCC.expiry_date = cardDetails.cardDisplayData.expiry_date;
+			$scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;
 
 			if ($scope.isStandAlone) {
 				//TODO:calculate fee
@@ -306,7 +321,7 @@ sntPay.controller('sntPaymentController', ["$scope", "sntPaymentSrv", "$location
 
 		$scope.$emit('showLoader');
 		sntPaymentSrv.savePaymentDetails(cardDetails.apiParams).then(function(response) {
-				if (response.status == "success") {
+				if (response.status === "success") {
 					onSaveSuccess(response);
 				} else {
 					onSaveFailure(response.errors);
@@ -364,6 +379,7 @@ sntPay.controller('sntPaymentController', ["$scope", "sntPaymentSrv", "$location
 
 		$scope.payment.iFrameUrl = paths.iFrameUrl;
 		$scope.paymentGatewayUIInterfaceUrl = paths.paymentGatewayUIInterfaceUrl;
+
 
 	})();
 
