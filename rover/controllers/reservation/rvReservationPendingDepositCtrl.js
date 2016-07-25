@@ -94,7 +94,17 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		    $scope.$parent.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = data.reservation_balance;
 			
 			$scope.$parent.reservationData.reservation_card.balance_amount = data.reservation_balance;
-			//TO DO:Update starycard payment to CC if old payment method wasn't CC
+			
+			//if the existing payment method is not CC or Direct BIll and the selected payment method is CC
+			//The submit payment will update the payment type for the bill #1(staycard too)
+			if($scope.$parent.reservationData.reservation_card.payment_method_used !== 'CC'
+			   && $scope.$parent.reservationData.reservation_card.payment_method_used !== 'DB'
+			   && typeof data.cc_details !=="undefined"){
+				$scope.$parent.reservationData.reservation_card.payment_method_used = 'CC';
+				$scope.$parent.reservationData.reservation_card.payment_details.card_number = data.cc_details.ending_with;
+				$scope.$parent.reservationData.reservation_card.payment_details.card_expiry = data.cc_details.expiry_date;
+				$scope.$parent.reservationData.reservation_card.payment_details.card_type_image = 'images/'+data.cc_details.card_code+'.png';
+			};
 			//TO DO: Add to guestcard
 		});
 

@@ -142,6 +142,9 @@ sntPay.controller('sntPaymentController', function($scope, sntPaymentSrv, $locat
 						if ($scope.feeData) {
 							response.feePaid = $scope.feeData.calculatedFee;
 						}
+						if($scope.selectedPaymentType === "CC"){
+							response.cc_details = angular.copy($scope.attachedCc);
+						};
 						$scope.$emit('PAYMENT_SUCCESS', response);
 						$scope.$emit('hideLoader');
 					},

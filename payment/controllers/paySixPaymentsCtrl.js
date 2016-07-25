@@ -43,6 +43,8 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 	var proceedChipAndPinPayment = function(params) {
 		//we need to notify the parent controllers to show loader
 		//as this is an external directive
+		
+		//TODO: change the loader to six pay loader
 		$scope.$emit('showLoader');
 		sntPaymentSrv.submitPaymentForChipAndPin(params).then(function(response) {
 				console.log("payment success" + $scope.payment.amount);
@@ -51,13 +53,20 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 				// NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
 				if ($scope.feeData) {
 					response.feePaid = $scope.feeData.calculatedFee;
-				}
+				};
+				$scope.attachedCc.value = response.payment_method.id;
+				$scope.attachedCc.card_code = response.payment_method.card_type;
+				$scope.attachedCc.ending_with = response.payment_method.ending_with;
+				$scope.attachedCc.expiry_date = response.payment_method.expiry_date;
+				response.cc_details = angular.copy($scope.attachedCc);
 				$scope.$emit('PAYMENT_SUCCESS', response);
+				//TODO: change the loader to six pay loader
 				$scope.$emit('hideLoader');
 			},
 			function(errorMessage) {
 				console.log("payment success" + $scope.payment.amount);
 				$scope.$emit('PAYMENT_FAILED', errorMessage);
+				//TODO: change the loader to six pay loader
 				$scope.$emit('hideLoader');
 			});
 	};
