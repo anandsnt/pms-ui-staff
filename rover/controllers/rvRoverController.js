@@ -355,6 +355,12 @@ sntRover.controller('roverController',
       $scope.hasLoader = false;
     });
 
+    $scope.$on("SHOW_SIX_PAY_LOADER",function(){
+      $scope.showSixPayLoader = true;
+    });
+    $scope.$on("HIDE_SIX_PAY_LOADER",function(){
+      $scope.showSixPayLoader = false;
+    });
     /**
      * in case of we want to reinitialize left menu based on new $rootScope values or something
      * which set during it's creation, we can use

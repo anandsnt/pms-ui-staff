@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-click="clearErrorMessage()" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-click="clearErrorMessage()" ng-hide="showSixPayLoader" ng-cloak>
     <form ng-show="pageloadingOver" method="post" action="deposit-required" id="deposit-required" name="deposit-required" class="modal-content form deposit-required">
         <!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
