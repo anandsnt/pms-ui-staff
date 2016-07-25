@@ -187,6 +187,9 @@ x
 	};
 
 	var calculateFee = function(){
+		if(!$scope.isStandAlone){
+			return;
+		}
 		var selectedPaymentType = _.find($scope.paymentTypes, {
 				name: $scope.selectedPaymentType
 			}),
@@ -316,12 +319,6 @@ x
 			$scope.selectedCC.expiry_date = cardDetails.cardDisplayData.expiry_date;
 			$scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;
 
-			if ($scope.isStandAlone) {
-				//TODO:calculate fee
-				// $scope.feeData.feesInfo = data.fees_information;
-				// $scope.setupFeeData();
-			}
-
 			$scope.payment.screenMode = "PAYMENT_MODE";
 			calculateFee();
 			showAddtoGuestCardBox();
@@ -373,6 +370,7 @@ x
 		$scope.payment.guestLastName = $scope.lastName || '';
 		$scope.payment.workstationId = $scope.workstationId || '';
 		$scope.payment.emvTimeout = $scope.emvTimeout || 120;
+		$scope.isStandAlone = $scope.isStandAlone || true;
 
 		fetchAttachedCreditCards();
 

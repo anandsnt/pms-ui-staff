@@ -3,6 +3,7 @@ sntPay.directive('sntPayment', function() {
         restrict: 'E',
         transclude: 'true',
         scope: {
+            isStandAlone:'=',
             paymentGateway: '@',
             workstationId: '@',//for EMV terminal we must pass this ID,
             emvTimeout:'=',

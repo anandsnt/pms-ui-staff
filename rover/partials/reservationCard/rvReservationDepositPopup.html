@@ -6,7 +6,9 @@
         <strong class="h2 message" ng-show="!errorOccured && !depositPaidSuccesFully">Deposit required</strong>
         <div class="payment-form">
             <!-- below is the payment directive -->
-            <snt-payment reservation-id="{{reservationId}}" 
+            <snt-payment 
+                is-stand-alone="isStandAlone"
+                reservation-id="{{reservationId}}" 
                 workstation-id="{{workstation_id}}"
                 emv-timeout="emvTimeout"
                 bill-number="billNumber"
