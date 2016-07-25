@@ -922,6 +922,10 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			if (time === null || time === undefined) {
 				return "";
 			}
+			if (time.indexOf('AM') > -1 || time.indexOf('PM') > -1) {
+				// time is already in 12H format
+				return time;
+			}
 			var timeDict = tConvert(time);
 			return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
 		};
