@@ -7,7 +7,7 @@ module.exports = function (gulp, $, options) {
         PAYMENT_PARTIALS = ['**/*.html'],
         PAYMENT_TEMPLTE_MANFEST_FILE = options['PAYMENT_TEMPLTE_MANFEST_FILE'],
         MANIFEST_DIR =  options['MANIFEST_DIR'],
-        MODULE_NAME = 'sntPay';
+        MODULE_NAME = 'sntPayTemplates';
 
 
 
@@ -27,7 +27,8 @@ module.exports = function (gulp, $, options) {
         return gulp.src(PAYMENT_PARTIALS, {cwd: 'payment/'})
             .pipe($.templateCache(PAYMENT_TEMPLATES_FILE, {
                 module: MODULE_NAME,
-                root: URL_APPENDER
+                root: URL_APPENDER,
+                standalone: true
             }))
             .pipe(gulp.dest(DEST_ROOT_PATH));
     });
@@ -43,7 +44,8 @@ module.exports = function (gulp, $, options) {
             }))
             .pipe($.templateCache(PAYMENT_TEMPLATES_FILE, {
                 module: MODULE_NAME,
-                root: URL_APPENDER
+                root: URL_APPENDER,
+                standalone: true
             }))
             .pipe($.uglify({compress:true}))
             .pipe($.rev())
