@@ -957,7 +957,37 @@ body { overflow: hidden; }
     }
 }
   
+/* Room Types               ==============================*/
 
+.room-type-list {
+    width: 100%;
+    margin-top: 20px;
+    .float;
+    li {
+        padding-bottom: 1em;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid rgba(0, 0, 0, 0.15);  
+        }
+        
+
+        span,
+        .number-input {
+            display:inline-block !important;
+            vertical-align: middle;
+        }
+
+        span {
+             .calc-width(100, 95);
+             .nowrap;
+        }
+ 
+        .number-input {
+            width: 90px;
+        }
+        
+    }
+}
 
 
 /* IE can just show/hide with no transition */

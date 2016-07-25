@@ -479,11 +479,16 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         var getCCAuthorization = function(authAtCheckinRequired, amount, isEmv) {
             console.info('getCCAuthorization: ', arguments);
+            if (authAtCheckinRequired === 'true'){
+                authAtCheckinRequired = true;
+            } else if(authAtCheckinRequired === 'false') {
+                authAtCheckinRequired = false;
+            }
             if (!authAtCheckinRequired) {
                 console.log('!authAtCheckinRequired, to signature');
                 goToCardSign();
             } else {
-                amount = 0;
+                //amount = 0;//pass through the actual amount, the amount passed here adheres to the reservation setting rules (via api)
                 captureAuthorization(amount, isEmv, false);
             }
         };

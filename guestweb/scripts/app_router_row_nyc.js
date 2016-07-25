@@ -1,27 +1,48 @@
 
-
 sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/noOptionAvailable");
 
+    // External verification
+
+    $stateProvider.state('externalVerification', {
+	 	url: '/externalVerification',
+	 	templateUrl: '/assets/common_templates/partials/checkout/gwExternal.html',
+	 	controller : 'externalVerificationViewController',
+	 	title: 'External verification'
+	 });
+
+
+    //room and cc verification 
+
+	 $stateProvider.state('checkoutRoomVerification', {
+	 	url: '/checkoutRoomVerification',
+	 	templateUrl: '/assets/common_templates/partials/checkout/gwRoomVerification.html',
+	 	controller : 'checkoutRoomVerificationViewController',
+	 	title: 'Room verification'
+	 }).state('ccVerification', {
+	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
+	 	templateUrl: '/assets/common_templates/partials/checkout/gwCcEntry.html',
+	 	controller : 'ccVerificationViewController',
+	 	title: 'CC verification'
+	 });
 
     // checkout now states
 
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/checkoutnow/partials/Row_nyc/checkoutBalance.html',
+       	templateUrl: '/assets/common_templates/partials/checkout/gwBill.html',
 	    title: 'Balance - Check-out Now'
-    })
-    .state('checkOutStatus', {
+    }).state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/checkoutnow/partials/Row_nyc/checkOutStatus.html',
+       	templateUrl: '/assets/common_templates/partials/checkout/gwCheckoutfinal.html',
 		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/checkoutnow/partials/Row_nyc/checkoutConfirmation.html',
+       	templateUrl:  '/assets/common_templates/partials/checkout/gwCheckout.html',
 		title: 'Confirm - Check-out Now'
     });
 
@@ -29,17 +50,17 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/landing/Row_nyc/landing.html',
+	 	templateUrl: '/assets/common_templates/partials/checkout/gwCheckoutoptions.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/checkoutlater/partials/Row_nyc/checkOutLater.html',
+		templateUrl: '/assets/common_templates/partials/checkout/gwLatecheckoutoptions.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/checkoutlater/partials/Row_nyc/checkOutLaterSuccess.html',
+		templateUrl: '/assets/common_templates/partials/checkout/gwLateCheckoutfinal.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Check-out Later'
 	 });
@@ -48,109 +69,117 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/checkin/partials/Row_nyc/checkInConfirmation.html',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwCheckin.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/checkin/partials/Row_nyc/checkInReservationDetails.html',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwCheckinDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/checkin/partials/Row_nyc/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwRoomUpgrades.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/checkin/partials/Row_nyc/checkInKeys.html',
+	 	templateUrl: '/assets/common_templates/partials/row_nyc/gwCheckinFinal.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/checkin/partials/Row_nyc/checkinSuccess.html',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwAlreadyCheckedIn.html',
 	 	title: 'Status - Check-in'
 	 }).state('checkinArrival', {
 	 	url: '/checkinArrival',
 	 	controller:'checkinArrivalDetailsController',
-	 	templateUrl: '/assets/checkin/partials/Row_nyc/arrivalDetails.html',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwArrivalTime.html',
 	 	title: 'Arrival Details - Check-in'
-	 });
+	 }).state('guestDetails', {
+	 	url: '/guestDetails',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwGuestDetail.html',
+	 	controller : 'guestDetailsController',
+	    title: 'Guest Details'
+	 })
+	 
 
-
-	 //room verification
-
-	 $stateProvider.state('checkoutRoomVerification', {
-	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/checkoutnow/partials/Row_nyc/checkoutRoomVerification.html',
-	 	controller : 'checkoutRoomVerificationViewController',
-	 	title: 'Room verification'
-	 }).state('ccVerification', {
-	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/checkoutnow/partials/Row_nyc/ccVerification.html',
-	 	controller : 'ccVerificationViewController',
-	 	title: 'CC verification'
-	 });
-	  // pre checkin states
+	// pre checkin states
 
     $stateProvider.state('preCheckinStatus', {
 		url: '/preCheckinStatus',
-		templateUrl: '/assets/preCheckin/partials/Row_nyc/preCheckinStatus.html',
+		templateUrl: '/assets/common_templates/partials/checkin/gwPreCheckinFinal.html',
 		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
-	 });
+	 }).state('checkinCcVerification', {
+		url: '/checkinCcVerification',
+		templateUrl: '/assets/common_templates/partials/checkin/gwCheckinCCAddition.html',
+		controller: 'checkinCcVerificationController',
+		title: 'CC verification'
+	});
 
-    $stateProvider.state('earlyCheckinOptions', {
+	$stateProvider.state('earlyCheckinOptions', {
 	 	url: '/earlyCheckinOptions/:time/:charge/:id',
-	 	templateUrl: '/assets/checkin/partials/Row_nyc/earlyCheckinOptions.html',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwEarlyCheckinOptions.html',
 	 	controller : 'earlyCheckinOptionsController',
 	 	title: 'Early Check-in'
 	 }).state('earlyCheckinFinal', {
 	 	url: '/earlyCheckinFinal/:time/:charge/:id',
-	 	templateUrl: '/assets/checkin/partials/Row_nyc/earlyCheckinFinal.html',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwEarlyCheckinFinal.html',
 	 	controller : 'earlyCheckinFinalController',
 	 	title: 'Early Check-in'
 	 }).state('laterArrival', {
 	 	url: '/laterArrival/:time/:isearlycheckin',
-	 	templateUrl: '/assets/checkin/partials/Row_nyc/lateArrivalDetails.html',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwLateArrivalTime.html',
 	 	controller : 'checkinArrivalDetailsController',
 	    title: 'Early Check-in'
 	 }).state('depositPayment', {
 	 	url: '/depositPayment',
-	 	templateUrl: '/assets/checkin/partials/Row_nyc/gwDepositPayment.html',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwDepositPayment.html',
 	 	controller : 'checkinDepositPaymentController',
 	    title: 'Pay Deposit'
 	 });
 
-	 $stateProvider.state('externalVerification', {
-	 	url: '/externalVerification',
-	 	templateUrl: '/assets/checkoutnow/partials/Row_nyc/externalVerification.html',
-	 	controller : 'externalVerificationViewController',
-	 	title: 'External verification'
-	 }).state('externalVerificationError', {
-	 	url: '/verificationError',
-	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/externalVerificationError.html',
-	 	controller:'verificationErrorController',
-	 	title: 'External verification Error'
-	 });
-
-	
 	 $stateProvider.state('noOptionAvailable', {
     	url: '/noOptionAvailable',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	templateUrl: '/assets/common_templates/partials/gwNoOption.html',
 	 	title: 'Feature not available'
 	});
 
- 	$stateProvider.state('externalCheckinVerification', {
+	$stateProvider.state('externalCheckinVerification', {
 		url: '/externalCheckinVerification',
-		templateUrl: '/assets/checkin/partials/Row_nyc/gwExternalCheckin.html',
+		templateUrl: '/assets/common_templates/partials/checkin/gwExternalCheckin.html',
 		controller: 'externalCheckinVerificationViewController',
 		title: 'External Check in verification'
 	}).state('guestCheckinTurnedOff',{
 	 	url: '/guestCheckinTurnedOff',
-	 	templateUrl: '/assets/checkin/partials/Row_nyc/gwExternalCheckInTurnedOff.html',
+	 	templateUrl: '/assets/common_templates/partials/checkin/gwExternalCheckInTurnedOff.html',
 	 	title: 'Check-in'
-	 });
+	 }).state('guestCheckinEarly', {
+		url: '/guestCheckinEarly/:date',
+		templateUrl: '/assets/common_templates/partials/checkin/gwEarlyToCheckin.html',
+		controller: 'earlyToCheckinCtrl',
+		title: 'Check-in'
+	}).state('guestCheckinLate', {
+		url: '/guestCheckinLate',
+		templateUrl: '/assets/common_templates/partials/checkin/gwLateToCheckin.html',
+		title: 'Check-in'
+	});
 
-	 
+	$stateProvider.state('emailAddition', {
+		url: '/emailAddition/:isFrom',
+		templateUrl: '/assets/common_templates/partials/checkin/gwEmailEntry.html',
+		controller: 'emailEntryController',
+		title: 'E-mail entry'
+	}).state('mobileNumberAddition', {
+		url: '/mobileNumberAddition',
+		templateUrl: '/assets/common_templates/partials/checkin/gwPhoneNumberUpdate.html',
+		controller: 'mobileEntryController',
+		title: 'Phone number entry'
+	}).state('mobileNumberOptions', {
+		url: '/mobileNumberOptions',
+		templateUrl: '/assets/common_templates/partials/checkin/gwMobielNUmberOptions.html',
+		controller: 'mobileOptionsController',
+		title: 'Phone number entry'
+	});
 }]);

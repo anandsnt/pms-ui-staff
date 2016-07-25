@@ -1,0 +1,27 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveCheckmateSetup" header-caption="{{'CHECKMATE_SETUP_HEADER'|translate}}">
+    <div class="form-title full-width">
+        <h3><span translate>CHECKMATE_SUB_TITLE</span> </h3>
+    </div>
+    <div class="entry full-width">
+        <label><span translate>CHECKMATE_ACTIVATE_INACTIVATE</span></label>
+        <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: checkmate.enabled }" ng-click="toggleCheckmateEnabled()">
+            <input type="checkbox">
+            <span class="switch-icon"></span>
+        </div>
+    </div>
+
+    <fieldset class="holder left">
+        <ad-textbox inputtype="text"
+                    value="checkmate.url"
+                    label="{{'CHECKMATE_URL'| translate}}"
+                    styleclass="full-width"
+                    ng-if="checkmate.enabled"></ad-textbox>
+    </fieldset>
+
+    <fieldset class="holder right">
+        <ad-textbox inputtype="text" value="checkmate.access_token"
+                    label="{{'CHECKMATE_ACCESS_TOKEN'| translate}}"
+                    styleclass="full-width"
+                    ng-if="checkmate.enabled"></ad-textbox>
+    </fieldset>
+</ad-common-parts-in-form-dir>

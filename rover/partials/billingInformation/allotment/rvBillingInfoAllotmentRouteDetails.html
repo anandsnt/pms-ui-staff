@@ -1,0 +1,44 @@
+<div id="billing-content" class="content-wrapper" ng-controller="rvBillingInfoAllotmentRouteDetailsCtrl">
+	<fieldset class="content-left">
+		<div id="entity-details" ng-iscroll='routeDetails' ng-iscroll-delay='100' class="entity-details scrollable">
+			<div class="wrapper">
+				<div class="title">
+					{{'ENTITY' | translate}}
+					<button type="button" id="edit-entity" ng-click="deSelectEntity()" class="button with-icon only-icon purple edit">
+						<span class="icons icon-pencil"></span>
+					</button>
+				</div>
+				<!-- Selected entity -->
+				<div class="entity guest">
+					<figure class="guest-image" ng-class = "getEntityIconClass(selectedEntity)" ng-if="escapeNull(selectedEntity.images[0].guest_image)!=''">
+						<img src="{{selectedEntity.images[0].guest_image}}" alt="" />
+					</figure>
+
+					<figure class="guest-image" ng-if="escapeNull(selectedEntity.images[0].guest_image)==''">
+	                    <div class="guest-image icons icon-company" ng-if="escapeNull(selectedEntity.entity_type)=='COMPANY_CARD'" ></div>
+	                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(selectedEntity.entity_type)=='TRAVEL_AGENT'" ></div>
+	                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='GROUP' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
+	                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
+	                </figure>
+
+					<h2>{{selectedEntity.name}}</h2>
+					<span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
+                  	<span class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</span>
+				</div>
+
+				<span ng-include="'/assets/partials/billingInformation/sharedPartials/rvDefaultBillingInformationPayment.html'"></span>
+
+				<span ng-include="'/assets/partials/billingInformation/sharedPartials/rvBillingInfoCreditLimitAndReferenceNo.html'"></span>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset class="content-right">
+		<span class="h2 message" translate> DETAILS</span>
+		<span ng-include="'/assets/partials/billingInformation/sharedPartials/rvChargeCodesAndBillingGroup.html'">
+		</span>
+	</fieldset>
+</div>
+<div class="actions">
+	<button type="button" id="close-information" class="button blank modal-close" ng-click = "closeThisDialog()">CANCEL</button>
+	<button type="button" id="save-route" class="button green modal-close" ng-click = "saveRoute()" translate>SAVE</button>
+</div>

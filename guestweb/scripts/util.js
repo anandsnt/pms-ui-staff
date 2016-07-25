@@ -66,3 +66,58 @@ var extractScreenDetails = function(identifier,cms_screen_details) {
   return screen_details;
 
 };
+
+var creditCardTypes = {
+      "AMEX": 'AX',
+      "DINERS_CLUB": 'DC',
+      "DISCOVER": 'DS',
+      "JCB": 'JCB',
+      "MASTERCARD": 'MC',
+      "VISA": 'VA'
+};
+
+function getCreditCardType(cardBrand){
+    var card = (typeof cardBrand  ==="undefined") ? "":cardBrand.toUpperCase();
+    var cardArray = ['AX','DC','DS','JCB','MC','VA'];
+    return (cardArray.indexOf(card) != -1 ) ? card : (typeof creditCardTypes[card]!='undefined') ? creditCardTypes[card] : 'credit-card';
+}
+
+var returnMonthsArray = function() {
+  return [{
+    'name': 'JAN',
+    'value': '01'
+  }, {
+    'name': 'FEB',
+    'value': '02'
+  }, {
+    'name': 'MAR',
+    'value': '03'
+  }, {
+    'name': 'APR',
+    'value': '04'
+  }, {
+    'name': 'MAY',
+    'value': '05'
+  }, {
+    'name': 'JUN',
+    'value': '06'
+  }, {
+    'name': 'JUL',
+    'value': '07'
+  }, {
+    'name': 'AUG',
+    'value': '08'
+  }, {
+    'name': 'SEP',
+    'value': '09'
+  }, {
+    'name': 'OCT',
+    'value': '10'
+  }, {
+    'name': 'NOV',
+    'value': '11'
+  }, {
+    'name': 'DEC',
+    'value': '12'
+  }];
+}

@@ -7,8 +7,8 @@ const RateManagerGridViewRootComponent = createClass ({
 			scrollbars: false,
 			scrollX: false,
 			scrollY: true,
-			click: true,
-			preventDefaultException: {tagName: /^(BUTTON)$/},
+			preventDefault: true,
+			preventDefaultException: { tagName: /^(BUTTON)$/i },
 			mouseWheel: true,
 			deceleration: 0.0009
 		};
@@ -31,6 +31,12 @@ const RateManagerGridViewRootComponent = createClass ({
 		if(this.props.shouldShow && !this.leftScrollableElement) {
 			this.leftScrollableElement = $(findDOMNode(this)).find(".pinnedLeft-list")[0];
 		}
+
+		//if the left scroller become invalid
+		if(this.leftScroller && this.leftScroller.wrapper instanceof Element && !document.body.contains(this.leftScroller.wrapper)) {
+			this.leftScroller = null;
+		}
+
 		if(this.props.shouldShow && !this.leftScroller) {
 			this.leftScroller = new IScroll(this.leftScrollableElement, this.commonIScrollOptions);
 		}
@@ -40,6 +46,12 @@ const RateManagerGridViewRootComponent = createClass ({
 		if(this.props.shouldShow && !this.rightHeadScrollableElement) {
 			this.rightHeadScrollableElement = $(findDOMNode(this)).find(".calendar-rate-table-days.scrollable")[0];
 		}
+
+		//if the right head scroller become invalid
+		if(this.rightHeadScroller && this.rightHeadScroller.wrapper instanceof Element && !document.body.contains(this.rightHeadScroller.wrapper)) {
+			this.rightHeadScroller = null;
+		}
+
 		if(this.props.shouldShow && !this.rightHeadScroller) {
 			this.rightHeadScroller = new IScroll(this.rightHeadScrollableElement, {
 				...this.commonIScrollOptions,
@@ -54,10 +66,17 @@ const RateManagerGridViewRootComponent = createClass ({
 		if(this.props.shouldShow && !this.rightScrollableElement) {
 			this.rightScrollableElement = $(findDOMNode(this)).find(".calendar-rate-table-grid.scrollable")[0];
 		}
+
+		//if the right scroller become invalid
+		if(this.rightScroller && this.rightScroller.wrapper instanceof Element && !document.body.contains(this.rightScroller.wrapper)) {
+			this.rightScroller = null;
+		}
+
 		if(this.props.shouldShow && !this.rightScroller) {
 			this.rightScroller = new IScroll(this.rightScrollableElement, {
 				...this.commonIScrollOptions,
 				scrollX: true,
+				click: true,
 				scrollbars: 'custom'
 			});
 		}
@@ -132,6 +151,9 @@ const RateManagerGridViewRootComponent = createClass ({
 
 	render() {
 		if(!this.props.shouldShow) {
+			//this dom node related variables need to invalidate
+			this.leftScrollableElement = this.rightScrollableElement = this.rightHeadScrollableElement = null;
+			this.leftScroller = this.rightScroller = this.rightHeaderScroller = null;
 			return false;
 		}
 

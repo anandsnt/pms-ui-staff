@@ -1,3 +1,6 @@
-@import 'guestweb/css/less/snt.less';
+/*@import 'guestweb/css/less/snt.less';
 @import 'guestweb/css/less/row_nyc.less';
 @import (inline) 'shared/lib/css/bootstrap.min.css';
+*/
+@import (inline) 'shared/lib/css/bootstrap.min.css';
+@import 'guestweb/common_css/row_nyc/theme.less';

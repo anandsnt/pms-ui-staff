@@ -131,6 +131,16 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 				$scope.openTab = tab;
 			};
 		};
+	   /*
+		*Not used tabswitch for log tab. bcoz pagination not appears
+		*/
+		$scope.showLogTab  = function(){
+			$scope.openTab = "Log";
+			$scope.$broadcast('OPEN_LOG');
+			$state.go('rover.housekeeping.roomDetails.log',{
+                id: $scope.roomDetails.id
+            });
+		};
 
 		$scope.updateRoomDetails = function(prop, value) {
 			if ($scope.roomDetails.hasOwnProperty(prop)) {

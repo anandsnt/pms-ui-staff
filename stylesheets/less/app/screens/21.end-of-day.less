@@ -7,6 +7,15 @@
         background: rgba(0,0,0,.1);
         .float;
 
+        .eod-automatic {
+            display: block; 
+            float: left;
+            height: 50px;
+            line-height: 50px;
+            margin-top: 30px;
+            color:@grey4;
+        }
+
         .entry {
             padding-top: 10px;
             margin-right: 10px;
@@ -105,6 +114,7 @@
 
                 &.has-arrow {
                     background-position: 100% 50%;
+                    cursor:pointer;
                 }
 
                 &.pending {
@@ -144,6 +154,14 @@
                             left: -5px;
                         }
                     }
+                }
+            }
+
+            .actions {
+                text-align: center;
+
+                .button:not(:first-child) {
+                    margin-left: 20px;
                 }
             }
         }

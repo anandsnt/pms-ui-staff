@@ -152,6 +152,8 @@
     "SELECT_LANGUAGE" : "Select Language",
     "CONF_CUSTOM_TEXT" : "Confirmation Custom Text",
     "TITLE" : "Title",
-    "TEXT" : "Text"
+    "TEXT" : "Text",
+
+    "PRIMARY_EXTERNAL_REFERENCE": " [PRIMARY]"
 
 
