@@ -36,7 +36,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             //we should not go to the error page, ie. on card swipe failure, or timeout, if user has
             //skipped the page, then ignore going to error screen
             //*used for develop and release environment where we are testing other screens
-            var debuggingCardPmt = $scope.debuggingCardPayment();
+            var debuggingCardPmt = $scope.debuggingCardPayment(true);//pass true if the button is being called to continue
             console.info('debuggingCardPmt: ',debuggingCardPmt)
             if (!debuggingCardPmt) {
                 return;
@@ -522,7 +522,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             } else {
                 $scope.authAfterDeposit = false;
             }
-            var debuggingCardPmt = $scope.debuggingCardPayment(),
+            var debuggingCardPmt = $scope.debuggingCardPayment(false),
                 inDemo = $scope.inDemoMode(),
                 atCardSwipe = atCardSwipeScreen();
 

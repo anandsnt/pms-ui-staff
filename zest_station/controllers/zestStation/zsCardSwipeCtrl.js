@@ -146,7 +146,7 @@ sntZestStation.controller('zsCardSwipeCtrl', [
         };
         
         $scope.simulateSixPay = function(){
-            var debuggingCardPmt = $scope.debuggingCardPayment();
+            var debuggingCardPmt = $scope.debuggingCardPayment(true);
             console.info('debuggingCardPayment: ',debuggingCardPmt);
             if (!debuggingCardPmt){
                 $scope.isSimulated = false;
