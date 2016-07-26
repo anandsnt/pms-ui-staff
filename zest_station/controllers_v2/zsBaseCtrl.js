@@ -25,11 +25,11 @@ function BaseCtrl($scope) {
     var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
     return valueToReturn;
   };
-  $scope.debuggingCardPayment = function(){
+  $scope.debuggingCardPayment = function(btn){
     console.info('sntZestStation.cardSwipeDebug: ',sntZestStation.cardSwipeDebug);
     var url = document.location,
         inDevEnvironment = false;
-        if (url.hostname) {
+        if (url.hostname && btn) {//if btn === true, then the user is clicking continue to bypass cc screen in dev environment
           if (typeof url.hostname === typeof 'str') {
             if (url.hostname.indexOf('pms-dev') !== -1 ||
               url.hostname.indexOf('pms-release') !== -1 ||
