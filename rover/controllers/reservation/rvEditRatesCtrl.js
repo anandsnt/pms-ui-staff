@@ -119,6 +119,22 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		};
 
 		/**
+		 * whether to allow editing rate or not.
+		 * CICO-31868 - also check for permission - update and overwrite rate amout.
+		 * @param {object} stayDay data for date
+		 * @return {boolean}
+		 */
+		$scope.shouldSupressRateInput = function(stayDay) {
+			if (rvPermissionSrv.getPermissionValue('UPDATE_AND_OVERWRITE_RATE_AMOUNT')) {
+				return false;
+			}
+			else if (stayDay.rateDetails.is_suppressed == 'true') {
+				return true;
+			}
+			return false;
+		}
+
+		/**
 		 * things we need to do while initializing
 		 * @return {[type]} [description]
 		 */
