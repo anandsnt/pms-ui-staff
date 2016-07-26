@@ -7,25 +7,20 @@
         <div class="payment-form">
             <!-- below is the payment directive -->
             <snt-payment 
-                is-stand-alone="isStandAlone"
+                hotel-config="hotelPaymentConfig"
                 reservation-id="{{reservationId}}" 
-                workstation-id="{{workstation_id}}"
-                emv-timeout="emvTimeout"
                 bill-number="billNumber"
                 payment-types="passData.details.paymentTypes" 
                 selected-payment-type="paymentType" 
                 selected-c-c="depositDetails.attached_card"
                 amount='depositAmount' 
                 action-type="DEPOSIT" 
-                deposit-policy-name="{{depositPolicyName}}" 
-                currency-symbol="{{currencySymbol}}" 
+                deposit-policy-name="{{depositPolicyName}}"
                 is-editable='isDepositEditable'
                 is-rate-suppressed='isReservationRateSuppressed' 
                 has-permission='hasPermissionToMakePayment()' 
                 form-template-url='/assets/partials/reservationCard/rvSntDepositPayment.html' 
-                payment-gateway="{{paymentGateway}}"
                 is-manual-cc-entry-enabled="isManualCCEntryEnabled"
-                mli-merchant-id="{{MLImerchantId}}"
                 first-name="{{firstName}}"
                 last-name="{{lastName}}"
                 ng-show="!errorOccured && !depositPaidSuccesFully">

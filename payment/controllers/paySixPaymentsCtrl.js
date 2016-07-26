@@ -77,8 +77,8 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 	$scope.$on('INITIATE_CHIP_AND_PIN_PAYMENT', function(event, data) {
 		var paymentParams = data;
 		paymentParams.postData.is_emv_request = true;
-		paymentParams.postData.workstation_id = $scope.payment.workstationId;
-		paymentParams.emvTimeout = $scope.payment.emvTimeout;
+		paymentParams.postData.workstation_id = $scope.hotelConfig.workstationId;
+		paymentParams.emvTimeout = $scope.hotelConfig.emvTimeout;
 		proceedChipAndPinPayment(data);
 	});
 	/****************** init ***********************************************/
@@ -86,7 +86,7 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 	(function() {
 		//Initially set Manaul card Entry if card is attached already
 		var isCCPresent = angular.copy($scope.showSelectedCard());
-		$scope.payment.isManualEntryInsideIFrame = isCCPresent && $scope.paymentGateway === 'sixpayments' ? true : false;
+		$scope.payment.isManualEntryInsideIFrame = isCCPresent && $scope.hotelConfig.paymentGateway === 'sixpayments' ? true : false;
 
 		//handle six payment iFrame communication
 		var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";

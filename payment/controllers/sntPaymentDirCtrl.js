@@ -31,11 +31,11 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 	$scope.showSelectedCard = function() {
 		var isCCPresent = ($scope.selectedPaymentType === "CC" &&
 			(!!$scope.selectedCC.ending_with && $scope.selectedCC.ending_with.length > 0));
-		var isManualEntry = !!PAYMENT_CONFIG[$scope.paymentGateway].iFrameUrl &&
+		var isManualEntry = !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl &&
 			$scope.payment.isManualEntryInsideIFrame;
 
 		return (isCCPresent && $scope.payment.screenMode === "PAYMENT_MODE" &&
-			(isManualEntry || $scope.paymentGateway !== 'sixpayments'));
+			(isManualEntry || $scope.hotelConfig.paymentGateway !== 'sixpayments'));
 	};
 
 	//show add to guest card checkbox to add the card to the guestcard
@@ -61,7 +61,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 	// as we don't have direct control over the fields on it
 	var	refreshIFrame = function() {
 		//in case of hotel with MLI iframe will not be present
-		if ($scope.paymentGateway === 'sixpayments' && !!$("#sixIframe").length) {
+		if ($scope.hotelConfig.paymentGateway === 'sixpayments' && !!$("#sixIframe").length) {
 			var iFrame = document.getElementById('sixIframe');
 			iFrame.src = iFrame.src;
 		}
@@ -135,7 +135,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
 		//check if chip and pin is selected in case of six payments
 		//the rest of actions will in paySixPayController
-		if ($scope.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
+		if ($scope.hotelConfig.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
 			$scope.$broadcast('INITIATE_CHIP_AND_PIN_PAYMENT', params);
 			return;
 		}
@@ -168,7 +168,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 			if ($scope.selectedPaymentType === "CC") {
 				response.cc_details = angular.copy($scope.selectedCC);
 			}
-x
+			
 			if ($scope.payment.showAddToGuestCard) {
 				//check if add to guest card was selected
 				response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
@@ -187,7 +187,7 @@ x
 	};
 
 	var calculateFee = function(){
-		if(!$scope.isStandAlone){
+		if(!$scope.hotelConfig.isStandAlone){
 			return;
 		}
 		var selectedPaymentType = _.find($scope.paymentTypes, {
@@ -227,7 +227,7 @@ x
 		//If the changed payment type is CC and payment gateway is MLI show CC addition options
 		//If there are attached cards, show them first
 		if (!!selectedPaymentType && selectedPaymentType.name === "CC") {
-			if (!!PAYMENT_CONFIG[$scope.paymentGateway].iFrameUrl) {
+			if (!!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
 				refreshIFrame();
 			} else {
 				changeToCardAddMode();
@@ -364,26 +364,34 @@ x
 		$scope.payment.screenMode = "PAYMENT_MODE";
 		$scope.payment.addCCMode = "ADD_CARD";
 		$scope.payment.isManualCcEntryEnabled = $scope.isManualCcEntryEnabled || true;
-		$scope.payment.MLImerchantId = $scope.mliMerchantId || "";
 		$scope.payment.creditCardTypes = getCrediCardTypesList();
 		$scope.payment.guestFirstName = $scope.firstName || '';
 		$scope.payment.guestLastName = $scope.lastName || '';
-		$scope.payment.workstationId = $scope.workstationId || '';
-		$scope.payment.emvTimeout = $scope.emvTimeout || 120;
-		$scope.isStandAlone = $scope.isStandAlone || true;
+
+		if(!$scope.hotelConfig){
+			throw "Need hotel config to proceed. Need the following params.\n isStandAlone, paymentGateway, workstationId, emvTimeout, mliMerchantId, and currencySymbol";
+		}
+		
+		$scope.hotelConfig.mliMerchantId = $scope.hotelConfig.mliMerchantId || "";
+		$scope.hotelConfig.workstationId = $scope.hotelConfig.workstationId || '';
+		$scope.hotelConfig.emvTimeout = $scope.hotelConfig.emvTimeout || 120;
+		$scope.hotelConfig.isStandAlone = $scope.hotelConfig.isStandAlone || true;
+		$scope.hotelConfig.paymentGateway = $scope.hotelConfig.paymentGateway;
+		$scope.currencySymbol = $scope.hotelConfig.currencySymbol;
+
 
 		fetchAttachedCreditCards();
 
 		$scope.$emit('SET_SCROLL_FOR_EXISTING_CARDS');
 
 		//check if card is present, if yes turn on flag
-		if($scope.paymentGateway === 'sixpayments'){
+		if($scope.hotelConfig.paymentGateway === 'sixpayments'){
 			var isCCPresent = ($scope.selectedPaymentType === "CC" &&
 			(!!$scope.selectedCC.ending_with && $scope.selectedCC.ending_with.length > 0));
 			$scope.payment.isManualEntryInsideIFrame = true;
 		}
 
-		var paths = sntPaymentSrv.resolvePaths($scope.paymentGateway, {
+		var paths = sntPaymentSrv.resolvePaths($scope.hotelConfig.paymentGateway, {
 			card_holder_first_name:$scope.payment.guestFirstName,
 			card_holder_last_name: $scope.payment.guestLastName
 		});

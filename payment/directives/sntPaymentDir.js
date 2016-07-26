@@ -3,10 +3,7 @@ sntPay.directive('sntPayment', function() {
         restrict: 'E',
         transclude: 'true',
         scope: {
-            isStandAlone:'=',
-            paymentGateway: '@',
-            workstationId: '@',//for EMV terminal we must pass this ID,
-            emvTimeout:'=',
+            hotelConfig: '=',
             paymentTypes: '=',
             selectedPaymentType: '=',
             reservationId: '@',
@@ -19,11 +16,9 @@ sntPay.directive('sntPayment', function() {
             depositPolicyName: '@',
             isEditable : '=',
             isRateSuppressed: '=',
-            currencySymbol : '@',
             hasPermission : '=',
             formTemplateUrl : '@',
             isManualCcEntryEnabled: '=',
-            mliMerchantId: '@',
             firstName: '@',
             lastName: '@'
         },

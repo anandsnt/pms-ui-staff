@@ -53,7 +53,7 @@ sntPay.controller('payMLIOperationsController', function($scope, sntPaymentSrv) 
 
 
 	//to set your merchant ID provided by Payment Gateway
-	HostedForm.setMerchant($scope.payment.MLImerchantId);
+	HostedForm.setMerchant($scope.hotelConfig.mliMerchantId);
 
 	/*
 	 * Function to get MLI token on click 'Add' button in form
