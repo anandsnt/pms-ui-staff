@@ -77,27 +77,26 @@ sntRover.controller('rvBillCardPopupCtrl',
 		$scope.invokeApi(RVBillCardSrv.transactionSplit, splitData, transactionSplitSuccessCallback,failureCallBack);
 	};
 
-   /*
+	var transactionEditSuccessCallback = function(data) {
+		hideLoaderAndClosePopup();
+		refreshListWithData(data);
+	};
+
+   	/**
 	 * API call edit transaction
+	 * @param {string} newAmount updated charge amount
+	 * @param {number} chargeCode updated charge code id
+	 * @returns {undefined}
 	 */
-	$scope.editCharge = function(newAmount,chargeCode){
-
-		var newData =
-		{
-			"updatedDate":
-						{
-				  			"new_amount":newAmount,
-				  			"charge_code_id": chargeCode.id
-						},
-					"id" :$scope.selectedTransaction.id
+	$scope.editCharge = function(newAmount, chargeCode){
+		var params = {
+			id: $scope.selectedTransaction.id,
+			updatedData: {
+				new_amount: newAmount || undefined,
+				charge_code_id: chargeCode.id
+			}
 		};
-
-		var transactionEditSuccessCallback = function(data){
-			hideLoaderAndClosePopup();
-			refreshListWithData(data);
-		};
-		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback,failureCallBack);
-
+		$scope.invokeApi(RVBillCardSrv.transactionEdit, params, transactionEditSuccessCallback, failureCallBack);
 	};
 
 

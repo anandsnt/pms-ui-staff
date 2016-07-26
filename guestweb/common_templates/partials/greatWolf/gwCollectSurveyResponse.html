@@ -36,7 +36,7 @@
             <!-- answers -->
             <div class="row margin-top-20">
                 <!-- Numeric answer -->
-                <div class="select-style" ng-show="surveyDetails.survey_question_type === 'Numeric'">
+                <div class="select-style select-width-40" ng-show="surveyDetails.survey_question_type === 'Numeric'">
                     <select ng-model="survey_response" ng-options="number_of_items as number_of_items for number_of_items in responseArray" id="select-response">
                     </select>
                 </div>
@@ -45,7 +45,7 @@
                     <input class="input-field" ng-model="survey_response"></input>
                 </div>
                 <!-- yes/no answer -->
-                <div ng-show="surveyDetails.survey_question_type === 'Boolean'">
+                <div class="select-style select-width-40"  ng-show="surveyDetails.survey_question_type === 'Boolean'">
                     <select ng-model="survey_response" ng-options="bool as bool for bool in ['Yes','No']">
                     </select>
                 </div>
