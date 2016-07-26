@@ -363,7 +363,6 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
 		$scope.payment.screenMode = "PAYMENT_MODE";
 		$scope.payment.addCCMode = "ADD_CARD";
-		$scope.payment.isManualCcEntryEnabled = $scope.isManualCcEntryEnabled || true;
 		$scope.payment.creditCardTypes = getCrediCardTypesList();
 		$scope.payment.guestFirstName = $scope.firstName || '';
 		$scope.payment.guestLastName = $scope.lastName || '';
@@ -372,6 +371,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 			throw "Need hotel config to proceed. Need the following params.\n isStandAlone, paymentGateway, workstationId, emvTimeout, mliMerchantId, and currencySymbol";
 		}
 		
+		$scope.payment.isManualCcEntryEnabled = $scope.hotelConfig.isManualCcEntryEnabled || true;
 		$scope.hotelConfig.mliMerchantId = $scope.hotelConfig.mliMerchantId || "";
 		$scope.hotelConfig.workstationId = $scope.hotelConfig.workstationId || '';
 		$scope.hotelConfig.emvTimeout = $scope.hotelConfig.emvTimeout || 120;

@@ -3,24 +3,23 @@ sntPay.directive('sntPayment', function() {
         restrict: 'E',
         transclude: 'true',
         scope: {
-            hotelConfig: '=',
-            paymentTypes: '=',
-            selectedPaymentType: '=',
+            hotelConfig: '=',//hotel settings related
+            paymentTypes: '=',//the payment types present
+            selectedPaymentType: '=',//selected initial payment type
             reservationId: '@',
             guestId: '@',
             billNumber: '=',
             billId : '@',
-            amount: '=',
-            selectedCC: '=',
+            amount: '=',//amount to pay
+            selectedCC: '=',//selected CC details
             actionType: '@',
             depositPolicyName: '@',
-            isEditable : '=',
+            isEditable : '=',//is the amount editable
             isRateSuppressed: '=',
-            hasPermission : '=',
-            formTemplateUrl : '@',
-            isManualCcEntryEnabled: '=',
-            firstName: '@',
-            lastName: '@'
+            hasPermission : '=',//has permission to amke payment
+            formTemplateUrl : '@',//the URL of the partial to be laoded as form
+            firstName: '@',//first name to be used in six pay iframe
+            lastName: '@'//second name to be used in six pay iframe
         },
         link: function() {
             console.log("--From Payment Module Init--");

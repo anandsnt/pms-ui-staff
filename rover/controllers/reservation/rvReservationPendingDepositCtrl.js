@@ -36,7 +36,8 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 				workstationId: $rootScope.workstation_id,
 				emvTimeout: $rootScope.emvTimeout,
 				mliMerchantId: $rootScope.MLImerchantId,
-				currencySymbol: $rootScope.currencySymbol
+				currencySymbol: $rootScope.currencySymbol,
+				isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled
 			};
 		}();
 		
