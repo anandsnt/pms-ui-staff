@@ -26,8 +26,23 @@ function BaseCtrl($scope) {
     return valueToReturn;
   };
   $scope.debuggingCardPayment = function(){
-    console.info('sntZestStation.cardSwipeDebug: ',sntZestStation.cardSwipeDebug)
-      if (zestSntApp.cardSwipeDebug){//in production, dont allow this function
+    console.info('sntZestStation.cardSwipeDebug: ',sntZestStation.cardSwipeDebug);
+    var url = document.location,
+        inDevEnvironment = false;
+        if (url.hostname) {
+          if (typeof url.hostname === typeof 'str') {
+            if (url.hostname.indexOf('pms-dev') !== -1 ||
+              url.hostname.indexOf('pms-release') !== -1 ||
+              url.hostname.indexOf('192.168.1.218') !== -1 ||
+              url.hostname.indexOf('192.168.1.239') !== -1 ||
+              url.hostname.indexOf('localhost') !== -1) {
+
+                inDevEnvironment = true;
+            }
+          }
+        }
+    
+      if (zestSntApp.cardSwipeDebug || inDevEnvironment){//in production, dont allow this function unless manually called for debugging via console like [   zestSntApp.cardSwipeDebug(true)   ]
           return true;
       } else return false;
   };
