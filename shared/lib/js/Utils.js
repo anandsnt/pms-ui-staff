@@ -361,7 +361,7 @@ var sixCreditCardTypes = {
 
 function getSixCreditCardType(cardCode){
     var card = cardCode.toUpperCase();
-    return sixCreditCardTypes[card];
+    return ( !!sixCreditCardTypes[card] ? sixCreditCardTypes[card] : card );
 }
 
 

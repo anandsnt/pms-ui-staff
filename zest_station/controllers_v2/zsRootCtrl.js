@@ -155,7 +155,6 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//$scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
 		$scope.isIpad = (zestSntApp.cordovaLoaded && iphoneOrIpad);
-		console.log('$scope.isIpad: ' + $scope.isIpad)
 			/**
 			 * This is workaround till we find how to detect if app
 			 *  is invoked from chrome app, we will be hidding this tag from chrome app and
