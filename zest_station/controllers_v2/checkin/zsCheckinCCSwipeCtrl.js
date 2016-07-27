@@ -339,6 +339,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var initWsSwipe = function() {
+            if ($scope.inDemoMode()){
+                setTimeout(function(){
+                    goToCardSign();
+                },2000);
+                return;
+            }
+
             setTimeOutFunctionToEnsureSocketIsOpened();
             console.info("websocket: readyState -> " + $scope.socketOperator.returnWebSocketObject().readyState);
             //open socket if not in open state
@@ -359,7 +366,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         var initiateiPadCardReader = function() {
             if ($scope.inDemoMode()){
-                goToCardSign();
+                setTimeout(function(){
+                    goToCardSign();
+                },2000);
                 return;
             }
 
@@ -530,9 +539,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             var debuggingCardPmt = $scope.debuggingCardPayment(false),
                 inDemo = $scope.inDemoMode(),
                 atCardSwipe = atCardSwipeScreen();
-
-
-
 
             if ((inDemo && atCardSwipe) || debuggingCardPmt) {
                 console.info('inDemo: ',inDemo);

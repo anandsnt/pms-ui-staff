@@ -976,7 +976,6 @@ sntZestStation.controller('zsRootCtrl', [
 		}
 
 
-
 		/***
 		 * [initializeMe description]
 		 * @return {[type]} [description]
