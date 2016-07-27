@@ -87,15 +87,16 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 
 		/***************** Events From Payment Module ************************/
 
-		$scope.$on("ERROR_OCCURED",function(event,data){
-			//TODO: fix issue with error msg not been shown
-			
+		var showErrorMessage = function(data){
 			$timeout(function() {
 				//provide some delay to deal with clearErrorMessage function
 				$scope.errorMessage = data;
 				$scope.runDigestCycle();
 			}, 500);
 			console.log($scope.errorMessage);
+		};		
+		$scope.$on("ERROR_OCCURED",function(event,data){
+			showErrorMessage(data);
 		});
 
 		$scope.$on('CLOSE_DIALOG',function(){
@@ -155,9 +156,9 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		});
 
 		//payment failed
-		$scope.$on('PAYMENT_FAILED',function(event,errorMessageArray){
+		$scope.$on('PAYMENT_FAILED',function(event,data){
 			$scope.errorOccured = true;
-			$scope.paymentErrorMessage = errorMessageArray[0];
+			showErrorMessage(data);
 		});
 	}
 ]);
