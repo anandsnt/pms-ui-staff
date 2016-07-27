@@ -367,14 +367,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					txtInQry(res.travel_agent) ||
 					txtInQry(res.company) ||
 					txtInQry(res.allotment) ||
-					txtInQry(escN(res.room).toString(), false) ||
+					txtInQry(escN(res.room).toString(), true) ||
 					txtInQry(escN(res.confirmation).toString(), false) ||
 					(escN(res.reservation_status).toUpperCase() === "CANCELED" && txtInQry(escN(res.cancellation_no).toString(), false))  ||
 					txtInQry(res.external_confirm_no));
 		};
 
 		var applyFilters = function(isLocalFiltering) {
-			var researvation = "";
+			var reservation = "";
 			//searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 			//if it is zero, then we will request for webservice
 			for (var i = 0; i < $scope.results.length; i++) {

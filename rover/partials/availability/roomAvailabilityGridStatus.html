@@ -116,8 +116,8 @@
 						<div class="inner" ng-bind="count.bothCount"></div>
 					</td>
 				</tr>
-				<tr class="italic" ng-if="!isHourlyRateOn" ng-class="{'hidden': !toggleStatusOf.roomsSold }" ng-repeat="roomTypeWiseDetail in data.additionalData.roomTypeWiseDetails track by $index">
-					<th scope="row" ng-bind="data.additionalData.roomTypeNames[$index]" ></th>
+				<tr class="italic" ng-if="!isHourlyRateOn" ng-class="{'hidden': !toggleStatusOf.roomsSold , 'different': data.additionalData.roomTypeNames[$index].is_suite}" ng-repeat="roomTypeWiseDetail in data.additionalData.roomTypeWiseDetails track by $index">
+					<th scope="row" ng-bind="data.additionalData.roomTypeNames[$index].name" ></th>
 					<td ng-repeat="roomType in roomTypeWiseDetail track by $index">
 						<div class="inner" ng-bind="roomType.sold"></div>
 					</td>

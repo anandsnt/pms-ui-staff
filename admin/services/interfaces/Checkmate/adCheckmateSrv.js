@@ -1,12 +1,12 @@
-admin.service('adGoMomentIvySetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
+admin.service('adCheckmateSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
 	
 	/**
-	 * to get the GoMomentIvy configraton values
+	 * to get the CheckMate configraton values
 	 * @return {undefined}
 	 */
-	this.fetchGoMomentIvyConfiguration = function() {
+	this.fetchCheckmateConfiguration = function() {
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings/gomomentivy.json';
+		var url = '/api/hotel_settings/checkmate.json';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -17,12 +17,12 @@ admin.service('adGoMomentIvySetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
 	};
 
 	/**
-	 * to save the GoMomentIvy configration values
+	 * to save the CheckMate configration values
 	 * @return {undefined}
 	 */
-	this.saveGoMomentIvyConfiguration = function(params) {
+	this.saveCheckmateConfiguration = function(params) {
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings/gomomentivy';
+		var url = '/api/hotel_settings/checkmate';
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
