@@ -95,6 +95,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			}, 500);
 			console.log($scope.errorMessage);
 		};		
+		
 		$scope.$on("ERROR_OCCURED",function(event,data){
 			showErrorMessage(data);
 		});
@@ -157,8 +158,12 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 
 		//payment failed
 		$scope.$on('PAYMENT_FAILED',function(event,data){
-			$scope.errorOccured = true;
-			showErrorMessage(data);
+			$timeout(function() {
+				$scope.errorOccured = true;
+				//provide some delay to deal with clearErrorMessage function
+				$scope.errorMessage = data;
+				$scope.runDigestCycle();
+			}, 500);
 		});
 	}
 ]);
