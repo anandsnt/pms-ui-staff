@@ -125,7 +125,9 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         }
                     };
                     if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id) {
-                        $scope.$emit('PROMPTCARD');
+                        $timeout(function() {
+                            $scope.$emit('PROMPTCARD');
+                        }, 500);
                         $scope.$watch("reservationData.guest.id", save);
                         $scope.$watch("reservationData.company.id", save);
                         $scope.$watch("reservationData.travelAgent.id", save);
