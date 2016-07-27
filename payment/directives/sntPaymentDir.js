@@ -21,8 +21,9 @@ sntPay.directive('sntPayment', function() {
             firstName: '@',//first name to be used in six pay iframe
             lastName: '@'//second name to be used in six pay iframe
         },
-        link: function() {
+        link: function(scope, element, attrs) {
             console.log("--From Payment Module Init--");
+            console.log(attrs);
         },
         templateUrl: "/assets/partials/sntPaymentHome.html",
         controller: 'sntPaymentController'

@@ -1,5 +1,19 @@
 sntPay.controller('payMLIOperationsController', function($scope, sntPaymentSrv) {
 
+	var isSwipedCardData = false;
+	var swipedCCData = {};
+
+	$scope.$on('RESET_CARD_DETAILS', function(e, data) {
+		isSwipedCardData = false;
+		swipedCCData = {};
+		$scope.cardData = {
+			cardNumber: "",
+			CCV: "",
+			expiryMonth: "",
+			expiryYear: "",
+			userName: ""
+		}
+	});
 
 	var emptyCardDetails = function() {
 		$scope.cardData.cardNumber = "";
@@ -28,18 +42,18 @@ sntPay.controller('payMLIOperationsController', function($scope, sntPaymentSrv) 
 		var expiryYear = angular.copy($scope.cardData.expiryYear);
 		var cardExpiry = (expiryMonth && expiryYear) ? ("20" + expiryYear + "-" + expiryMonth + "-01") : "";
 		var paymentData = {
-			apiParams : {
+			apiParams: {
 				name_on_card: $scope.cardData.userName,
 				card_code: retrieveCardtype(),
 				payment_type: "CC",
 				token: tokenDetails.session,
 				card_expiry: cardExpiry
 			},
-			cardDisplayData : {
+			cardDisplayData: {
 				name_on_card: $scope.cardData.userName,
 				card_code: retrieveCardtype(),
-				ending_with : $scope.cardData.cardNumber.slice(-4),
-				expiry_date : expiryMonth+" / "+expiryYear
+				ending_with: $scope.cardData.cardNumber.slice(-4),
+				expiry_date: expiryMonth + " / " + expiryYear
 			}
 		};
 		$scope.$emit("CC_TOKEN_GENERATED", paymentData);
@@ -51,17 +65,36 @@ sntPay.controller('payMLIOperationsController', function($scope, sntPaymentSrv) 
 		$scope.$emit("ERROR_OCCURED", errorMessage);
 	};
 
+	var doSwipedCardActions = function(swipedCardData) {
 
-	//to set your merchant ID provided by Payment Gateway
-	HostedForm.setMerchant($scope.hotelConfig.mliMerchantId);
+		var swipeOperationObj = new SwipeOperation();
+		var swipedCardDataToSave = swipeOperationObj.createSWipedDataToSave(swipedCardData);
+
+		var apiParams = swipedCardDataToSave;
+		apiParams.payment_credit_type = swipedCardDataToSave.cardType;
+		apiParams.credit_card = swipedCardDataToSave.cardType;
+		apiParams.card_expiry = "20" + swipedCardDataToSave.cardExpiryYear + "-" + swipedCardDataToSave.cardExpiryMonth + "-01";
+		apiParams.card_name = swipedCardData.nameOnCard;
+
+		var paymentData = {
+			apiParams: apiParams,
+			cardDisplayData: {
+				name_on_card: swipedCardData.nameOnCard,
+				card_code: swipedCardDataToSave.cardType,
+				ending_with: $scope.cardData.cardNumber.slice(-4),
+				expiry_date: swipedCardDataToSave.cardExpiryMonth + " / " + swipedCardDataToSave.cardExpiryYear
+			}
+		};
+		$scope.$emit("CC_TOKEN_GENERATED", paymentData);
+	};
 
 	/*
 	 * Function to get MLI token on click 'Add' button in form
 	 */
 	$scope.getMLIToken = function($event) {
 		$event.preventDefault();
-		if (false) {
-			//TODO:handle wipe
+		if (isSwipedCardData) {
+			doSwipedCardActions(swipedCCData);
 		} else {
 			var sessionDetails = setUpSessionDetails();
 			var successCallBack = function(response) {
@@ -74,10 +107,28 @@ sntPay.controller('payMLIOperationsController', function($scope, sntPaymentSrv) 
 		};
 	};
 
+	var renderDataFromSwipe = function(event, swipedCardData) {
+		isSwipedCardData = true;
+		swipedCCData = swipedCardData;
+		$scope.cardData.cardNumber = swipedCardData.cardNumber;
+		$scope.cardData.userName = swipedCardData.nameOnCard;
+		$scope.cardData.expiryMonth = swipedCardData.cardExpiryMonth;
+		$scope.cardData.expiryYear = swipedCardData.cardExpiryYear;
+		$scope.cardData.cardType = swipedCardData.cardType;
+		$scope.payment.screenMode = "CARD_ADD_MODE";
+		$scope.payment.addCCMode = "ADD_CARD";
+	};
+
+	$scope.$on("RENDER_SWIPED_DATA", function(e, data) {
+		console.log(data);
+		renderDataFromSwipe(e, data);
+	});
+
 	/****************** init ***********************************************/
 
 	(function() {
-
+		//to set your merchant ID provided by Payment Gateway
+		HostedForm.setMerchant($scope.hotelConfig.mliMerchantId);
 		$scope.cardData = {
 			cardNumber: "",
 			CCV: "",

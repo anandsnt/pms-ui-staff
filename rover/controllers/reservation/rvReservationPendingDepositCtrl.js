@@ -6,6 +6,8 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		BaseCtrl.call(this, $scope);
 
 		var init = function(){
+
+			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG",true);
 			//adding a flag to be set after some timeout to remove flickering action in iPad
 			$scope.pageloadingOver = false;
 			$timeout(function() {
@@ -71,6 +73,11 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		$scope.$on('SET_SCROLL_FOR_EXISTING_CARDS',function(){
 			console.log("set_scroll");
 			$scope.setScroller('cardsList',{'click':true, 'tap':true});
+		});
+
+		//Listen to swipe events
+		$scope.$on("SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN", function(e, swipedCardDataToRender){
+			$scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 		});
 
 		/***************** Events From Payment Module ************************/

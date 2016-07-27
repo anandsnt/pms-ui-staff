@@ -53,6 +53,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 	var changeToCardAddMode = function() {
 		$scope.payment.screenMode = "CARD_ADD_MODE";
 		$scope.payment.addCCMode = existingCardsPresent() ? "EXISTING_CARDS" : "ADD_CARD";
+		$scope.$broadcast('RESET_CARD_DETAILS');
 		//TODO:handle Scroll
 		//$scope.refreshScroller('cardsList');
 	};
@@ -196,9 +197,12 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 			feeInfo = selectedPaymentType && selectedPaymentType.charge_code && selectedPaymentType.charge_code.fees_information || {};
 
 		// In case a credit card is selected; the fee information is to be that of the card
-		if(!!selectedPaymentType && selectedPaymentType.name === "CC" && $scope.selectedCC && $scope.selectedCC.card_code){
-			feeInfo = $scope.selectedCC.fees_information;
+		if(!!selectedPaymentType && selectedPaymentType.name === "CC" && $scope.selectedCC){
+			var cardTypeInfo = _.find(selectedPaymentType.values,({cardcode:$scope.selectedCC.card_code}));
+			feeInfo = (cardTypeInfo && cardTypeInfo.charge_code && cardTypeInfo.charge_code.fees_information) ||
+			feeInfo;
 		}
+		
 
 		var currFee = sntPaymentSrv.calculateFee($scope.payment.amount, feeInfo);
 
