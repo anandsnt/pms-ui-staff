@@ -358,6 +358,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
 
         var initiateiPadCardReader = function() {
+            if ($scope.inDemoMode()){
+                goToCardSign();
+                return;
+            }
+
             if (atCardSwipeScreen()) { //check which screen we're at,
                 // some delay in request could cause the error / success to come back when at another screen, 
                 // typically when developing or in demo mode
@@ -526,7 +531,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 inDemo = $scope.inDemoMode(),
                 atCardSwipe = atCardSwipeScreen();
 
-            if ((inDemo && atCardSwipe || debuggingCardPmt)) {
+
+
+
+            if ((inDemo && atCardSwipe) || debuggingCardPmt) {
                 console.info('inDemo: ',inDemo);
                 console.info('atCardSwipe: ',atCardSwipe);
                 console.warn('debuggingCardPayment: ',debuggingCardPmt);
