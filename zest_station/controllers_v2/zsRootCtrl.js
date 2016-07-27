@@ -83,7 +83,7 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.callBlurEventForIpad = function() {
 			//need to check if its ipad here too as it 
 			//will be called from multiple areas
-			if ($scope.isIpad || $scope.inChromeApp) {
+			if ($scope.isIpad) {
 				document.activeElement.blur();
 				$("input").blur();
 			} else {
@@ -308,7 +308,14 @@ sntZestStation.controller('zsRootCtrl', [
 			var focused = $('#' + $scope.lastKeyboardId);
 			if ($(focused)) {
 				if ($(focused).getkeyboard()) {
-					$(focused).getkeyboard().accept(true);
+            		if ($(focused).getkeyboard().isOpen){
+            			try {
+							$(focused).getkeyboard().accept(true);
+            			} catch(err){
+            				console.warn($(focused).getkeyboard())
+            			}
+						
+					}
 				}
 			}
 		};
@@ -317,17 +324,14 @@ sntZestStation.controller('zsRootCtrl', [
 			//pull up the virtual keyboard (snt) theme... if chrome & fullscreen
 			var isTouchDevice = 'ontouchstart' in document.documentElement,
 				agentString = window.navigator.userAgent;
-			//console.log('theme: ',$scope.theme);
 			var themeUsesKeyboard = false;
 			if ($scope.theme === 'yotel' || !$scope.theme) {
 				themeUsesKeyboard = true;
 			}
-			//console.info('themeUsesKeyboard: ',themeUsesKeyboard)
 			var shouldShowKeyboard = (typeof chrome) &&
 				(agentString.toLowerCase().indexOf('window') !== -1) &&
 				isTouchDevice &&
 				$scope.inChromeApp && themeUsesKeyboard;
-			console.info('shouldShowKeyboard: ', shouldShowKeyboard);
 			if (shouldShowKeyboard) {
 				if (id) {
 					new initScreenKeyboardListener('station', id, true);
@@ -414,9 +418,6 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.zestStationData.timeOut = false;
 
 			$scope.resetTime = function() {
-				if ($scope.inChromeApp){
-					$('input').blur();
-				}
 				userInActivityTimeInSeconds = 0;
 				$scope.zestStationData.timeOut = false;
 			};
@@ -476,7 +477,6 @@ sntZestStation.controller('zsRootCtrl', [
 			console.info("to stateparams" + toParams);
 			console.info(toParams);
 			console.info("going to----->" + to.name);
-			$scope.hideKeyboardIfUp();
 			$scope.resetTime();
 		});
 
@@ -945,10 +945,6 @@ sntZestStation.controller('zsRootCtrl', [
 		};
 
 		var optimizeTouchEventsForChromeApp = function(){
-			var blurEl = function(){
-				document.activeElement.blur();
-				$("input").blur();
-			}
 			var optimizeTouch = function(e){
 
 				if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SPAN' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'DIV'){
@@ -960,7 +956,6 @@ sntZestStation.controller('zsRootCtrl', [
 					} else {
 						console.log('hide keyboard if up');
 						$scope.hideKeyboardIfUp();
-						//blurEl();
 					}
 				}
 			}
