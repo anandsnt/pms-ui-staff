@@ -202,12 +202,27 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 					'status': 'success'
 				});
 			} else {
-				$scope.callAPI(zsGeneralSrv.encodeKey, {
-					params: params,
-					"loader": "none", //to hide loader
-					'successCallBack': onResponseSuccess,
-					'failureCallBack': setFailureReason
-				});
+				if ($scope.writeLocally()) {
+					console.log('write locally');
+					//encode / dispense key from infinea || ingenico
+					//local encoding + infinea
+					if ($scope.inDemoMode()) {
+						setTimeout(function() {
+								onSuccessWriteKeyDataLocal();
+							}, 2800) //add some delay for demo purposes
+					} else {
+						$scope.$emit('printLocalKeyCordova', $scope.selectedReservation.reservationId, $scope.noOfKeysSelected);
+						return;
+					};
+				} else {
+					$scope.callAPI(zsGeneralSrv.encodeKey, {
+						params: params,
+						"loader": "none", //to hide loader
+						'successCallBack': onResponseSuccess,
+						'failureCallBack': setFailureReason
+					});
+				}
+
 			}
 		};
 		$scope.readyForUserToPressMakeKey = true;
@@ -248,6 +263,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				//provide some timeout for user to grab keys
 				$timeout(initMakeKey, 6000);
 			}
+			$scope.runDigestCycle();
 		};
 
 

@@ -237,7 +237,13 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 		};
 
-
+		$scope.writeLocally = function(){
+            if ($scope.zestStationData.keyWriter === 'local'){
+                return true;
+            } else {
+                return false;
+            }
+        };
 
 		$scope.inDemoMode = function() {
 			if ($scope.zestStationData.demoModeEnabled === 'true') {
