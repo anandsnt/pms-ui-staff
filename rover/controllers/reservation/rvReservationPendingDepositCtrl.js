@@ -47,12 +47,17 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 
 		var closeDepositPopup = function() {
 			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", false);
-			//to add stjepan's popup showing animation
+			//to add popup showing animation
 			$rootScope.modalOpened = false;
 			$timeout(function() {
 				ngDialog.close();
 			}, 250);
 
+		};
+		//need to to override $scope.closeDialog function to handle 
+		//popup flags
+		$scope.closeDialog = function(){
+			closeDepositPopup();
 		};
 		
 		$scope.hasPermissionToMakePayment = function() {
@@ -61,7 +66,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 
 		$scope.proceedCheckin = function() {
 			$scope.$emit("PROCEED_CHECKIN");
-			$scope.closeDialog();	
+			closeDepositPopup();	
 		};
 
 		$scope.tryAgain = function() {
