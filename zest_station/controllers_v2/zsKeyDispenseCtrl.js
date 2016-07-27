@@ -62,10 +62,10 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 
 		var callKeyFetchAPI = function(cardInfo) {
 			var postParams = {
+				"is_additional": false,
 				"reservation_id": $scope.reservation_id,
 				"key": 1,
-				"is_kiosk": true,
-				"is_additional": false
+				//"is_kiosk": true
 			};
 			if ($scope.makingKey === 1) {
                 postParams.is_additional = false;
@@ -80,7 +80,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			}
 			//debugging
 			var debugPostParams = {
-				'reservation_id': 1347546,
+				'reservation_id': $scope.reservation_id,
 				'key': 1,
 				'is_additional': false,
 				'card_info': {
@@ -101,7 +101,6 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 					'failureCallBack': emitCordovaKeyError
 				});
 			} else {
-
 				$scope.callAPI(zsGeneralSrv.encodeKey, {
 					params: postParams,
 					'successCallBack': fetchKeyDataSuccess,
@@ -114,7 +113,6 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		$scope.$on('printLocalKeyCordova', function(evt, reservation_id, keys) {
 			$scope.reservation_id = reservation_id;
 			$scope.makingKey = keys;
-			console.warn('printLocalKeyCordova:: init ::')
 			makeKeyViaCordova(reservation_id, keys);
 		});
 
@@ -138,7 +136,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		};
 
 		var fetchKeyDataSuccess = function(response) {
-			$scope.keyData = response.data;
+			$scope.keyData = response;
 			writeKey($scope.keyData, $scope.makingKey);
 		};
 
@@ -146,7 +144,6 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		 * Calculate the keyWrite data from the API response and call the write key method for key writing.
 		 */
 		var onSuccessWriteKeyDataLocal = function(response) {
-			console.info(':: onSuccessWriteKeyDataLocal ::');
 			//if the setting of smart band create along with key creation enabled, we will create a smartband with open room charge
 			continueFromCordovaKeyWrite(response);
 		};
@@ -178,9 +175,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		}
 		var makeKeyViaCordova = function(data, reservation_id, keys) {
 			//to start writing process to a local device (ingenico | infinea), need to read the card info, then write back the respond onto the card
-			var isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
-			//isIpad = true;//debugging
-			if ($scope.writeLocally() && isIpad) {
+			if ($scope.writeLocally() && $scope.isIpad) {
 				console.info('accessing card writer object to retrieve card info...');
 				console.log('$scope.cardwriter: ', $scope.cardwriter)
 
@@ -189,7 +184,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 					'failureCallBack': emitCordovaKeyError
 				});
 
-			} else if (isIpad) {
+			} else if ($scope.isIpad) {
 				//If cordova not loaded in server, or page is not yet loaded completely
 				//One second delay is set so that call will repeat in 1 sec delay
 				if ($scope.numberOfCordovaCalls < 50) {

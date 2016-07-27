@@ -226,7 +226,6 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 								onSuccessWriteKeyDataLocal();
 							}, 2800) //add some delay for demo purposes
 					} else {
-
 						$scope.$emit('printLocalKeyCordova', $scope.selectedReservation.reservationId, $scope.noOfKeysSelected);
 						return;
 					};
@@ -288,6 +287,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				//provide some timeout for user to grab keys
 				$timeout(initMakeKey, 3000);
 			}
+			$scope.runDigestCycle();
 		};
 
 
