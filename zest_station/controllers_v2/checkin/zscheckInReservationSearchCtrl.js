@@ -163,6 +163,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		}
 
 		$scope.lastNameEntered = function() {
+			$scope.hideKeyboardIfUp();
 			//if room is already entered, no need to enter again
 			if ($scope.reservationParams.no_of_nights.length > 0 ||
 				$scope.reservationParams.alt_confirmation_number.length > 0 ||
@@ -189,6 +190,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		};
 
 		$scope.firstNameEntered = function() {
+			$scope.hideKeyboardIfUp();
 			//if room is already entered, no need to enter again
 			if ($scope.reservationParams.no_of_nights.length > 0 ||
 				$scope.reservationParams.alt_confirmation_number.length > 0 ||
@@ -204,6 +206,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		};
 
 		$scope.noOfNightsEntered = function() {
+
+			$scope.hideKeyboardIfUp();
 			var params = angular.copy($scope.reservationParams);
 			delete params.alt_confirmation_number;
 			delete params.email;
@@ -213,6 +217,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		};
 
 		$scope.confNumberEntered = function() {
+
+			$scope.hideKeyboardIfUp();
 			var params = angular.copy($scope.reservationParams);
 			delete params.no_of_nights;
 			delete params.email;
@@ -221,6 +227,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			$scope.resetTime();
 		};
 		$scope.emailEntered = function() {
+
+			$scope.hideKeyboardIfUp();
 			var params = angular.copy($scope.reservationParams);
 			delete params.no_of_nights;
 			delete params.alt_confirmation_number;
@@ -230,6 +238,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		};
 
 		$scope.dateEntered = function() {
+
 			var params = angular.copy($scope.reservationParams);
 			delete params.no_of_nights;
 			delete params.alt_confirmation_number;
@@ -294,6 +303,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		};
 
 		var init = function() {
+			$scope.hideKeyboardIfUp();
 			//show back button
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			//show close button

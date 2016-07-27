@@ -83,7 +83,7 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.callBlurEventForIpad = function() {
 			//need to check if its ipad here too as it 
 			//will be called from multiple areas
-			if ($scope.isIpad) {
+			if ($scope.isIpad || $scope.inChromeApp) {
 				document.activeElement.blur();
 				$("input").blur();
 			} else {
@@ -414,6 +414,9 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.zestStationData.timeOut = false;
 
 			$scope.resetTime = function() {
+				if ($scope.inChromeApp){
+					$('input').blur();
+				}
 				userInActivityTimeInSeconds = 0;
 				$scope.zestStationData.timeOut = false;
 			};
@@ -473,6 +476,7 @@ sntZestStation.controller('zsRootCtrl', [
 			console.info("to stateparams" + toParams);
 			console.info(toParams);
 			console.info("going to----->" + to.name);
+			$scope.hideKeyboardIfUp();
 			$scope.resetTime();
 		});
 
@@ -921,6 +925,55 @@ sntZestStation.controller('zsRootCtrl', [
 			console.log('-');
 			console.log('');
 		};
+
+		var cardwriter = new CardOperation();
+		var initCardReadTest = function() {
+			if ($scope.isIpad) {
+				setTimeout(function() {
+					var options = {
+						'successCallBack': function(data) {
+							return data;
+						},
+						'failureCallBack': function(reason) {
+							return reason;
+						}
+					};
+
+					cardwriter.retrieveCardInfo(options);
+				}, 3000);
+			}
+		};
+
+		var optimizeTouchEventsForChromeApp = function(){
+			var blurEl = function(){
+				document.activeElement.blur();
+				$("input").blur();
+			}
+			var optimizeTouch = function(e){
+
+				if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SPAN' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'DIV'){
+					console.log('hide keyboard if up');
+					$scope.hideKeyboardIfUp();
+				} else if (e.target.tagName == 'BUTTON' || e.target.tagName === 'DIV' || e.target.tagName === 'BTN'){
+					if (e.target.className.indexOf('keyboard') != -1){
+						console.warn('button or div with keyboard el');
+					} else {
+						console.log('hide keyboard if up');
+						$scope.hideKeyboardIfUp();
+						//blurEl();
+					}
+				}
+			}
+
+			var el = window.document;
+			  el.addEventListener("touchstart", optimizeTouch, false);
+			  el.addEventListener("touchend", optimizeTouch, false);
+			  el.addEventListener("touchcancel", optimizeTouch, false);
+			  el.addEventListener("touchmove", optimizeTouch, false);
+		}
+
+
+
 		/***
 		 * [initializeMe description]
 		 * @return {[type]} [description]
@@ -944,7 +997,11 @@ sntZestStation.controller('zsRootCtrl', [
 			fetchHotelSettings();
 			getAdminWorkStations();
 			$scope.zestStationData.bussinessDate = hotelTimeData.hotel_time.date;
-
+			zestSntApp.setBrowser();
+			if ($scope.inChromeApp){
+				optimizeTouchEventsForChromeApp();	
+			}
+			//initCardReadTest(); //debugging, comment out when done
 		}();
 	}
 ]);
