@@ -358,7 +358,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
-					$scope.leftColSpan = 3;
+					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 5;
 					break;
 
@@ -951,6 +951,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['ADDON_FORECAST']:
 				case reportNames['CREDIT_CHECK_REPORT']:
 				case reportNames['DEPOSIT_SUMMARY']:
+				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
 					orientation = 'landscape';
 					break;
 

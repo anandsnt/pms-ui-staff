@@ -115,9 +115,17 @@ var GlobalZestStationApp = function(){
     	that.cordovaLoaded = false;
     };
 
-    this.enableCardSwipeDebug = function(){
-        that.cardSwipeDebug = true; // Mark it as true to debug cardSwipe opertations
-        that.cardReader = new CardOperation();
+    this.enableCardSwipeDebug = function(toggle){
+        console.log('pass true to enable, false or no arg to disable cardSwipeDebug');
+        if (toggle){
+            console.log('turning ON card swipe debugging');
+            that.cardSwipeDebug = true; // Mark it as true to debug cardSwipe opertations
+            that.cardReader = new CardOperation();
+        } else {
+            console.log('no argument passed, turning OFF card swipe debugging');
+            that.cardSwipeDebug = false; // Mark it as false to disable debug cardSwipe opertations
+        }
+        console.warn('cardSwipeDebug: ',that.cardSwipeDebug)
     };
 };
 

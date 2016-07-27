@@ -155,7 +155,6 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//$scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
 		$scope.isIpad = (zestSntApp.cordovaLoaded && iphoneOrIpad);
-		console.log('$scope.isIpad: ' + $scope.isIpad)
 			/**
 			 * This is workaround till we find how to detect if app
 			 *  is invoked from chrome app, we will be hidding this tag from chrome app and
@@ -317,7 +316,14 @@ sntZestStation.controller('zsRootCtrl', [
 			var focused = $('#' + $scope.lastKeyboardId);
 			if ($(focused)) {
 				if ($(focused).getkeyboard()) {
-					$(focused).getkeyboard().accept(true);
+            		if ($(focused).getkeyboard().isOpen){
+            			try {
+							$(focused).getkeyboard().accept(true);
+            			} catch(err){
+            				console.warn($(focused).getkeyboard())
+            			}
+						
+					}
 				}
 			}
 		};
@@ -326,17 +332,14 @@ sntZestStation.controller('zsRootCtrl', [
 			//pull up the virtual keyboard (snt) theme... if chrome & fullscreen
 			var isTouchDevice = 'ontouchstart' in document.documentElement,
 				agentString = window.navigator.userAgent;
-			//console.log('theme: ',$scope.theme);
 			var themeUsesKeyboard = false;
 			if ($scope.theme === 'yotel' || !$scope.theme) {
 				themeUsesKeyboard = true;
 			}
-			//console.info('themeUsesKeyboard: ',themeUsesKeyboard)
 			var shouldShowKeyboard = (typeof chrome) &&
 				(agentString.toLowerCase().indexOf('window') !== -1) &&
 				isTouchDevice &&
 				$scope.inChromeApp && themeUsesKeyboard;
-			//console.info('shouldShowKeyboard: ', shouldShowKeyboard);
 			if (shouldShowKeyboard) {
 				if (id) {
 					new initScreenKeyboardListener('station', id, true);
@@ -949,6 +952,30 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 		};
 
+		var optimizeTouchEventsForChromeApp = function(){
+			var optimizeTouch = function(e){
+
+				if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SPAN' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'DIV'){
+					console.log('hide keyboard if up');
+					$scope.hideKeyboardIfUp();
+				} else if (e.target.tagName == 'BUTTON' || e.target.tagName === 'DIV' || e.target.tagName === 'BTN'){
+					if (e.target.className.indexOf('keyboard') != -1){
+						console.warn('button or div with keyboard el');
+					} else {
+						console.log('hide keyboard if up');
+						$scope.hideKeyboardIfUp();
+					}
+				}
+			}
+
+			var el = window.document;
+			  el.addEventListener("touchstart", optimizeTouch, false);
+			  el.addEventListener("touchend", optimizeTouch, false);
+			  el.addEventListener("touchcancel", optimizeTouch, false);
+			  el.addEventListener("touchmove", optimizeTouch, false);
+		}
+
+
 
 		/***
 		 * [initializeMe description]
@@ -974,6 +1001,9 @@ sntZestStation.controller('zsRootCtrl', [
 			getAdminWorkStations();
 			$scope.zestStationData.bussinessDate = hotelTimeData.hotel_time.date;
 			zestSntApp.setBrowser();
+			if ($scope.inChromeApp){
+				optimizeTouchEventsForChromeApp();	
+			}
 			//initCardReadTest(); //debugging, comment out when done
 		}();
 	}
