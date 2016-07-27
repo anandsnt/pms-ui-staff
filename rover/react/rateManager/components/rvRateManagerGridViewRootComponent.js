@@ -7,8 +7,8 @@ const RateManagerGridViewRootComponent = createClass ({
 			scrollbars: false,
 			scrollX: false,
 			scrollY: true,
-			click: true,
-			preventDefaultException: {tagName: /^(BUTTON)$/},
+			preventDefault: true,
+			preventDefaultException: { tagName: /^(BUTTON)$/i },
 			mouseWheel: true,
 			deceleration: 0.0009
 		};
@@ -76,6 +76,7 @@ const RateManagerGridViewRootComponent = createClass ({
 			this.rightScroller = new IScroll(this.rightScrollableElement, {
 				...this.commonIScrollOptions,
 				scrollX: true,
+				click: true,
 				scrollbars: 'custom'
 			});
 		}
