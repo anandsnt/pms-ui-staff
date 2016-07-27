@@ -45,8 +45,10 @@
                                 Sort Direction: <span ng-if="reportStatus.sort.source.ascending">Ascending</span><span ng-if="!reportStatus.sort.source.ascending">Descending</span>
                             </label>
                         </span>
-                        <span class="pull-right">
+                        <span class="pull-right" style="text-align: right">
                             Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
+                            <br />
+                            User: <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
                         </span>
                     </li>
                 </ul>
@@ -128,7 +130,7 @@
                                 Sort Direction: <span ng-if="reportStatus.sort.source.ascending">Ascending</span><span ng-if="!reportStatus.sort.source.ascending">Descending</span>
                             </label>
                         </span>
-                        <span class="pull-right">
+                        <span class="pull-right" style="text-align: right">
                             Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
                             <br />
                             User: <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
@@ -171,7 +173,7 @@
                                 Sort Direction: <span ng-if="reportStatus.sort.market.ascending">Ascending</span><span ng-if="!reportStatus.sort.market.ascending">Descending</span>
                             </label>
                         </span>
-                        <span class="pull-right">
+                        <span class="pull-right" style="text-align: right">
                             Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
                             <br />
                             User: <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
@@ -256,7 +258,7 @@
                                 Sort Direction: <span ng-if="reportStatus.sort.market.ascending">Ascending</span><span ng-if="!reportStatus.sort.market.ascending">Descending</span>
                             </label>
                         </span>
-                        <span class="pull-right">
+                        <span class="pull-right" style="text-align: right">
                             Business date <span>{{ userInfo.business_date | date:dateFormat }}</span>
                             <br />
                             User: <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
