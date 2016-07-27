@@ -339,6 +339,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var initWsSwipe = function() {
+            if ($scope.inDemoMode()){
+                setTimeout(function(){
+                    goToCardSign();
+                },2000);
+                return;
+            }
+
             setTimeOutFunctionToEnsureSocketIsOpened();
             console.info("websocket: readyState -> " + $scope.socketOperator.returnWebSocketObject().readyState);
             //open socket if not in open state
@@ -358,6 +365,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
 
         var initiateiPadCardReader = function() {
+            if ($scope.inDemoMode()){
+                setTimeout(function(){
+                    goToCardSign();
+                },2000);
+                return;
+            }
+
             if (atCardSwipeScreen()) { //check which screen we're at,
                 // some delay in request could cause the error / success to come back when at another screen, 
                 // typically when developing or in demo mode
@@ -526,7 +540,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 inDemo = $scope.inDemoMode(),
                 atCardSwipe = atCardSwipeScreen();
 
-            if ((inDemo && atCardSwipe || debuggingCardPmt)) {
+            if ((inDemo && atCardSwipe) || debuggingCardPmt) {
                 console.info('inDemo: ',inDemo);
                 console.info('atCardSwipe: ',atCardSwipe);
                 console.warn('debuggingCardPayment: ',debuggingCardPmt);
