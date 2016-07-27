@@ -160,6 +160,8 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				setTimeout(function(){
 					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
 					dispenseKey();
+
+					$scope.runDigestCycle();
 				},2000);
 
 			} else {
@@ -168,6 +170,8 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 						$scope.dispenseKeyData = response.key_info[0].base64;
 						$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
 						dispenseKey();
+
+						$scope.runDigestCycle();
 					} else {
 						setFailureReason();
 					}
