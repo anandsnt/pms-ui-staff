@@ -170,8 +170,11 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		 */
 		var localEncodingSuccsess = function(response) {
 			if ($scope.inDemoMode()) {
-				$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
-				dispenseKey();
+				setTimeout(function(){
+					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
+					dispenseKey();
+				},2000);
+
 			} else {
 				if (response.key_info && response.key_info[0]) {
 					if (response.key_info[0].base64) {
@@ -209,9 +212,11 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 
 			if ($scope.inDemoMode()) {
-				onResponseSuccess({
-					'status': 'success'
-				});
+				setTimeout(function(){
+					onResponseSuccess({
+						'status': 'success'
+					});
+				},1200);
 			} else {
 				$scope.callAPI(zsGeneralSrv.encodeKey, {
 					params: params,
