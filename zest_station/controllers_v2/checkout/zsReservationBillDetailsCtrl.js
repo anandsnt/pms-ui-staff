@@ -192,10 +192,13 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
         var cashReservationBalanceDue = function() {
             if($scope.balance === 0){
-                return false;//if balance is 0 allow checkout
+                return false;//if balance is 0, allow checkout
+            }
+            else if($scope.balance < 0){
+                return true;//if refund if present, dont allow checkout
             }
             else{
-                return !$scope.has_cc;//check if CC is present
+                return !$scope.has_cc;//if balance >0, check if CC is present
             }
         };
         $scope.nextClicked = function() {
