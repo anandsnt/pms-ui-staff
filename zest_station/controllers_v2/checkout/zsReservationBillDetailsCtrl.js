@@ -191,7 +191,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          */
 
         var cashReservationBalanceDue = function() {
-            return (!$scope.has_cc && $scope.balance > 0);
+            return (!$scope.has_cc && $scope.balance !== 0);
         };
         $scope.nextClicked = function() {
 
