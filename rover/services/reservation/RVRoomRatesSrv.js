@@ -2,7 +2,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
     function($q, RVBaseWebSrvV2, RVReservationBaseSearchSrv) {
 
         var service = this;
-
+        service.roomAndRateActiveTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
         //--------------------------------------------------------------------------------------------------------------
         // A. Private Methods
         var getInitialRoomTypeWithUpSell = function(params) {
@@ -34,6 +34,32 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             return deferred.promise;
         };
 
+        /**
+        * Prepare the parameters for the room type and rate tab request
+        */
+        var processParamsForRoomTypeAndRateRequest = function(params) {
+            var defaultView = RVReservationBaseSearchSrv.getRoomRatesDefaultView(),
+                currentRoomAndRateActiveView = service.getRoomAndRateActiveTab();
+
+            if(defaultView === "RATE" || defaultView === "ROOM_TYPE" || currentRoomAndRateActiveView === "RATE" || currentRoomAndRateActiveView === "ROOM_TYPE") {
+               params.is_member = "false";
+
+               if(params.company_id) {
+                delete params.company_id;
+               }
+               if(params.travel_agent_id) {
+                delete params.travel_agent_id;
+               }
+               if(params.promotion_code) {
+                delete params.promotion_code;
+               }
+               if(params.promotion_id) {
+                delete params.promotion_id;
+               }
+            }
+
+        };
+
         //--------------------------------------------------------------------------------------------------------------
         // B. Private Methods
 
@@ -53,6 +79,8 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             //CICO-27146
             params.exclude_pseudo = true;
             params.exclude_suite = true;
+
+            processParamsForRoomTypeAndRateRequest(params);
 
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
                 if (!!params.group_id) {
@@ -76,6 +104,8 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             params.exclude_pseudo = true;
             params.exclude_suite = true;
 
+            processParamsForRoomTypeAndRateRequest(params);
+
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
                 if (!!params.group_id) {
                     _.each(response.results, function(rate) {
@@ -96,6 +126,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                 promises = [],
                 deferred = $q.defer(),
                 data = [];
+
             if (defaultView === "RATE" || ((params.travel_agent_id || params.company_id
                          || params.group_id || params.allotment_id
                          || params.promotion_code || params.is_member == "true") && defaultView === "RECOMMENDED")) {
@@ -117,6 +148,16 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             });
 
             return deferred.promise;
+        };
+
+        // Set the room and rates active tab
+        service.setRoomAndRateActiveTab = function(view) {
+            service.roomAndRateActiveTab = view;
+        };
+
+        //Get the current active tab in room and rates screen
+        service.getRoomAndRateActiveTab = function() {
+            return service.roomAndRateActiveTab;
         };
 
         //--------------------------------------------------------------------------------------------------------------
