@@ -55,7 +55,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			currentRow = availabilityAdditionalFromAPI.results[i];
 
 			// date for th day
-			date = {'dateObj': new Date(currentRow.date)};
+			date = { 'dateObj': new tzIndependentDate(currentRow.date) };
 
 			//forming bookable room data for a day
 			//total number of rooms - outoforder for that day
