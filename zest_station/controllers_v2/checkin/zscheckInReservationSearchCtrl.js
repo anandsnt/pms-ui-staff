@@ -4,8 +4,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 	'$state',
 	'zsEventConstants',
 	'zsCheckinSrv',
+	'zsGeneralSrv',
 	'$timeout',
-	function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $timeout) {
+	function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, zsGeneralSrv, $timeout) {
 
 		/**********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -278,18 +279,55 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			$state.go('zest_station.speakToStaff');
 		};
 
+		var setHotelDateTime = function(response){
+			//fetch the current date and time from the API, 
+			// **this should be combined into 1 api call in the future
+			// * have noticed multiple API calls that get date/time and there are inconsistencies
+			$scope.zestStationData.bussinessDate = $scope.hotel_date.business_date;
+			
+			var hotelDate = new Date($scope.zestStationData.bussinessDate),
+			 currentHours = parseInt(response.hotel_time.hh), currentMins = parseInt(response.hotel_time.mm),
+			 hotelDateParams = $scope.zestStationData.bussinessDate.split('-');// [year, month, day]
 
+			hotelDate.setHours(currentHours);
+			hotelDate.setMinutes(currentMins);
 
-		var setDateOptions = function() {
+			hotelDate.setYear(hotelDateParams[0]);
+			hotelDate.setMonth(hotelDateParams[1]-1);
+			hotelDate.setDate(hotelDateParams[2]);
+
+			console.warn('hotelDate with current time: ',hotelDate);
 			$scope.dateOptions = {
-				dateFormat: 'MM-dd-yy',
 				dateFormat: $scope.zestStationData.hotelDateFormat,
 				yearRange: "0:+10",
-				minDate: new Date($scope.zestStationData.bussinessDate),
+				minDate: hotelDate,
 				onSelect: function(value) {
 					$scope.showDatePicker();
 				}
 			};
+
+			console.info(':: zestStationData > bussinessDate :: ',$scope.zestStationData.bussinessDate);
+		}
+		var setDateOptions = function() {
+
+			var options = {
+				params: {},//just get the current / active business date to update the calendar
+				successCallBack: function(hotel_date){
+					$scope.hotel_date = hotel_date;
+
+					var timeOptions = {
+						params: {},//just get the current / active business date to update the calendar
+						successCallBack: setHotelDateTime,
+						failureCallBack: function(errorMessage){$scope.$emit('GENERAL_ERROR', errorMessage);}
+
+						}
+					$scope.callAPI(zsGeneralSrv.fetchHotelTime, timeOptions);
+				},
+				failureCallBack: function(errorMessage){
+    				$scope.$emit('GENERAL_ERROR', errorMessage);
+				}
+			};
+			$scope.callAPI(zsGeneralSrv.fetchHotelBusinessDate, options);
 		};
 		var setReservationParams = function() {
 			$scope.reservationParams = {
