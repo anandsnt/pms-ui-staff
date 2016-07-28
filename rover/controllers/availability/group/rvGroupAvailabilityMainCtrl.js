@@ -19,7 +19,7 @@ angular.module('sntRover').controller('groupAvailabilityMainController', [
 
 	//default date value
 	$scope.data.selectedDate = $rootScope.businessDate;
-	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, 'dd-MM-yyyy');
+	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.dateFormat);
 
 	// To popup contract start date
 	$scope.clickedOnDatePicker = function() {
