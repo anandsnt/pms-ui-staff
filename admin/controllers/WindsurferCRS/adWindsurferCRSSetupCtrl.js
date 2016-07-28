@@ -18,7 +18,6 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
                     $('#ui-datepicker-overlay').remove();
                 },
                 minDate: tzIndependentDate($rootScope.businessDate),
-                maxDate: new Date(maxDate.setDate(maxDate.getDate() + MAX_REFRESH_SPAN_DAYS)),
                 yearRange: "0:+5"
             },
             initTimeCopy = function() {
@@ -73,6 +72,7 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
                     },
                     datepickerDefaults),
                 to: angular.extend({
+                    maxDate: new Date(maxDate.setDate(maxDate.getDate() + MAX_REFRESH_SPAN_DAYS)),
                     onSelect: function(selection) {
                         if (new tzIndependentDate($scope.datepicker.from) > new tzIndependentDate($scope.datepicker.to)) {
                             $scope.datepicker.from = $scope.datepicker.to;
