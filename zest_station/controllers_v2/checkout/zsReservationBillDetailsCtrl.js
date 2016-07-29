@@ -190,20 +190,23 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          *  If so we redirect to the staff
          */
 
-        var cashReservationBalanceDue = function() {
+        var checkIfDueBalancePresent = function() {
             if($scope.balance === 0){
-                return false;//if balance is 0, allow checkout
+                //if balance is 0, allow checkout
+                return false;
             }
             else if($scope.balance < 0){
-                return true;//if refund if present, dont allow checkout
+                //if refund if present, don't allow checkout
+                return true;
             }
             else{
-                return !$scope.has_cc;//if balance >0, check if CC is present
+                //if balance >0, allow checkout if CC is present
+                return !$scope.has_cc;
             }
         };
         $scope.nextClicked = function() {
 
-            if (cashReservationBalanceDue()) {
+            if (checkIfDueBalancePresent()) {
                 console.warn("reservation has balance due");
                 $state.go('zest_station.speak_to_staff');
             } else {
