@@ -120,7 +120,7 @@ angular.module('stayCardModule', [])
                     });
                 },
                 rates: function(RVRoomRatesSrv, $stateParams, staycardJsAssets, RVReservationBaseSearchSrv) {
-                    var params = {};RVReservationBaseSearchSrv
+                    var params = {};
                         params.from_date = $stateParams.from_date;
                         params.to_date   = $stateParams.to_date;
                         params.override_restrictions =  $stateParams.override_restrictions;
