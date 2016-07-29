@@ -38,10 +38,9 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
         * Prepare the parameters for the room type and rate tab request
         */
         var processParamsForRoomTypeAndRateRequest = function(params) {
-            var defaultView = RVReservationBaseSearchSrv.getRoomRatesDefaultView(),
-                currentRoomAndRateActiveView = service.getRoomAndRateActiveTab();
+            var currentRoomAndRateActiveView = service.getRoomAndRateActiveTab();
 
-            if(defaultView === "RATE" || defaultView === "ROOM_TYPE" || currentRoomAndRateActiveView === "RATE" || currentRoomAndRateActiveView === "ROOM_TYPE") {
+            if(currentRoomAndRateActiveView === "RATE" || currentRoomAndRateActiveView === "ROOM_TYPE") {
                params.is_member = "false";
 
                if(params.company_id) {
@@ -56,6 +55,10 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                if(params.promotion_id) {
                 delete params.promotion_id;
                }
+            }
+
+            if(currentRoomAndRateActiveView === "RECOMMENDED") {
+                delete params.room_type_id;
             }
 
         };
