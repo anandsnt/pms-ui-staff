@@ -28,19 +28,20 @@
                         <ad-textbox inputtype="text" value="ifc_comtrol.authentication_token" name="authentication-token" id="authentication-token" label="{{'IFC_COMTROL_AUTHENTICATION_TOKEN' | translate}}" styleclass="full-width"></ad-textbox>
                     </fieldset>
                     <div class="form-title full-width">
-                        <h3><span translate>IFC_COMTROL_SUB_TITLE_DEVICE_TYPES</span></h3>
-                        <fieldset class="holder full-width">
-                            <ad-toggle-button is-checked="ifc_comtrol.cas_enabled" label="{{ 'IFC_COMTROL_CAS_ENABLED' | translate}}"></ad-toggle-button>
-                            <ad-toggle-button is-checked="ifc_comtrol.energy_management_enabled" label="{{ 'IFC_COMTROL_ENERGY_MANAGEMENT_ENABLED' | translate}}"></ad-toggle-button>
-                            <ad-toggle-button is-checked="ifc_comtrol.internet_enabled" label="{{ 'IFC_COMTROL_INTERNET_ENABLED' | translate}}"></ad-toggle-button>
-                            <ad-toggle-button is-checked="ifc_comtrol.keys_enabled" label="{{ 'IFC_COMTROL_KEYS_ENABLED' | translate}}"></ad-toggle-button>
-                            <ad-toggle-button is-checked="ifc_comtrol.minibar_enabled" label="{{ 'IFC_COMTROL_MINIBAR_ENABLED' | translate}}"></ad-toggle-button>
-                            <ad-toggle-button is-checked="ifc_comtrol.movies_enabled" label="{{ 'IFC_COMTROL_MOVIES_ENABLED' | translate}}"></ad-toggle-button>
-                            <ad-toggle-button is-checked="ifc_comtrol.pbx_enabled" label="{{ 'IFC_COMTROL_PBX_ENABLED' | translate}}"></ad-toggle-button>
-                            <ad-toggle-button is-checked="ifc_comtrol.pos_enabled" label="{{ 'IFC_COMTROL_POS_ENABLED' | translate}}"></ad-toggle-button>
-                            <ad-toggle-button is-checked="ifc_comtrol.voice_mail_enabled" label="{{ 'IFC_COMTROL_VOICEMAIL_ENABLED' | translate}}"></ad-toggle-button>
-                        </fieldset>
+                        <h3><span translate>IFC_COMTROL_KEY_SYSTEM_SETTINGS</span></h3>
                     </div>
+                    <fieldset class="holder left">
+                        <ad-textbox inputtype="text" value="ifc_comtrol.site_name" name="name" id="name" label="{{'IFC_COMTROL_KEY_SYSTEM_NAME' | translate}}" styleclass="full-width" ng-if="ifc_comtrol.enabled"></ad-textbox>
+                    </fieldset>
+                    <fieldset class="holder right">
+                        <ad-textbox inputtype="text" value="ifc_comtrol.operator_id" label="{{'IFC_COMTROL_KEY_SYSTEM_LOGIN' | translate}}" styleclass="full-width" ng-if="ifc_comtrol.enabled" ></ad-textbox>
+                    </fieldset>
+                    <fieldset class="holder left">
+                        <ad-textbox inputtype="password" value="ifc_comtrol.password" label="{{'IFC_COMTROL_KEY_SYSTEM_PASSWORD' | translate}}" styleclass="full-width" ng-if="ifc_comtrol.enabled"></ad-textbox>
+                    </fieldset>
+                    <fieldset class="holder right">
+                        <ad-textbox inputtype="text" value="ifc_comtrol.access_level" name="access_level" id="access_level" label="{{'IFC_COMTROL_KEY_SYSTEM_ACCESS_LEVEL' | translate}}" styleclass="full-width" ng-if="ifc_comtrol.enabled"></ad-textbox>
+                    </fieldset>
                 </div>
             </fieldset>
 

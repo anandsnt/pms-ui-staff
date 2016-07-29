@@ -21,6 +21,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 		emvTimeout: 120
 	};
 
+	$scope.giftCard = {
+		number: ""
+	};
+
 
 	//hide payment method if there is no permission or no payment type
 	$scope.shouldHidePaymentButton = function() {
@@ -72,6 +76,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 	$scope.sixPayEntryOptionChanged = function() {
 		if ($scope.payment.isManualEntryInsideIFrame) {
 			$scope.payment.isManualEntryInsideIFrame = false;
+			//Add to guestcard feature for C&P
+			$scope.payment.showAddToGuestCard = $scope.payment.isManualEntryInsideIFrame ? false : true;
 			$scope.selectedCC = {};
 		} else {
 			$scope.payment.isManualEntryInsideIFrame = true;
@@ -217,6 +223,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 		};
 	};
 
+	$scope.onChangeGiftCard = function() {
+		console.log("GC #",$scope.giftCard.number);
+	};
+
 	// Payment type change action
 	$scope.onPaymentInfoChange = function() {
 		//NOTE: Fees information is to be calculated only for standalone systems
@@ -232,6 +242,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 		//If there are attached cards, show them first
 		if (!!selectedPaymentType && selectedPaymentType.name === "CC") {
 			if (!!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
+				//Add to guestcard feature for C&P
+				$scope.payment.showAddToGuestCard = $scope.payment.isManualEntryInsideIFrame ? false : true;
 				refreshIFrame();
 			} else {
 				changeToCardAddMode();
@@ -380,7 +392,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 		$scope.hotelConfig.workstationId = $scope.hotelConfig.workstationId || '';
 		$scope.hotelConfig.emvTimeout = $scope.hotelConfig.emvTimeout || 120;
 		$scope.hotelConfig.isStandAlone = $scope.hotelConfig.isStandAlone || true;
-		$scope.hotelConfig.paymentGateway = $scope.hotelConfig.paymentGateway;
+		$scope.hotelConfig.paymentGateway = $scope.hotelConfig.paymentGateway || "";
+
 		$scope.currencySymbol = $scope.hotelConfig.currencySymbol;
 
 
@@ -393,6 +406,9 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 			var isCCPresent = ($scope.selectedPaymentType === "CC" &&
 			(!!$scope.selectedCC.ending_with && $scope.selectedCC.ending_with.length > 0));
 			$scope.payment.isManualEntryInsideIFrame = true;
+			//Add to guestcard feature for C&P
+			$scope.payment.showAddToGuestCard = $scope.payment.isManualEntryInsideIFrame ? false : true;
+
 		}
 
 		var paths = sntPaymentSrv.resolvePaths($scope.hotelConfig.paymentGateway, {

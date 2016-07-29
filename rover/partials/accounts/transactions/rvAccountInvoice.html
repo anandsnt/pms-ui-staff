@@ -1,33 +1,20 @@
-<div class="invoice-header top-header">
-    <h1>{{printData.hotel_name}}</h1>
-    <span class="invoice-header-address">
-        {{printData.hotel_address}}
-    </span>
+<div class="invoice-logo envelope">
     <img ng-src="{{printData.hotel_logo}}" alt="" />
-</div>
-
-<div class="invoice-logo envelope smaller">
-    <h1 translate>INVOICE</h1>
+    <h1>{{printData.hotel_name}}</h1>
+    <span ng-bind-html="printData.hotel_address"></span>
+    <span class="type" translate>INVOICE</span>
 </div>
 
 <div class="info-container account-info">
 
     <span ng-if="printData.card_type === 'COMPANY'">
-        {{printData.company_card_details.name}}<br ng-if="printData.company_card_details.name" />
-        {{printData.company_card_details.contact_name}}<br ng-if="printData.company_card_details.contact_name" />
-        {{printData.company_card_details.address_line_1}}<br ng-if="printData.company_card_details.address_line_1" />
-        {{printData.company_card_details.address_line_2}}<br ng-if="printData.company_card_details.address_line_2" /> 
-        {{printData.company_card_details.city_address}}<br ng-if="printData.company_card_details.city_address" />
-        {{printData.company_card_details.country}}
+        <span>{{printData.company_card_details.name}}</span><br ng-if="printData.company_card_details.name" />
+        <span ng-bind-html="printData.company_card_details.address"></span>
     </span>
 
     <span ng-if="printData.card_type === 'TRAVELAGENT'">
-        {{printData.ta_card_details.name}}<br ng-if="printData.ta_card_details.name" />
-        {{printData.ta_card_details.contact_name}}<br ng-if="printData.ta_card_details.contact_name" />
-        {{printData.ta_card_details.address_line_1}}<br ng-if="printData.ta_card_details.address_line_1" />
-        {{printData.ta_card_details.address_line_2}}<br ng-if="printData.ta_card_details.address_line_2" /> 
-        {{printData.ta_card_details.city_address}}<br ng-if="printData.ta_card_details.city_address" />
-        {{printData.ta_card_details.country}}
+        <span>{{printData.ta_card_details.name}}</span><br ng-if="printData.ta_card_details.name" />
+        <span ng-bind-html="printData.ta_card_details.address"></span>
     </span>
 
     <div class="info-bottom">

@@ -51,6 +51,18 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
   });
 
 
+  $stateProvider.state('admin.checkmate', {
+    templateUrl: '/assets/partials/interfaces/Checkmate/checkmateSetup.html',
+    controller: 'adCheckmateSetupCtrl',
+    url : '/checkmate/setup',
+    resolve: {
+      checkmateSetupValues: ['adCheckmateSetupSrv', function(adCheckmateSetupSrv) {
+        return adCheckmateSetupSrv.fetchCheckmateConfiguration();
+      }]
+    }
+  });
+
+
   $stateProvider.state('admin.lightspeedPosSetup', {
     templateUrl: '/assets/partials/lightspeedPOS/adLightspeedPOSSetup.html',
     controller: 'adLightSpeedPOSSetupCtrl',

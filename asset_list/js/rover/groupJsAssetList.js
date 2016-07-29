@@ -9,6 +9,8 @@ module.exports = {
 				roverRoot + "controllers/groups/**/*.js",
 				roverRoot + "controllers/accounts/**/*.js",
 				roverRoot + "filters/rangeFilter.js",
+				roverRoot + "controllers/depositBalance/rvDepositBalanceAccountsCtrl.js",
+				roverRoot + "controllers/roverPayment/rvCardOptionsCtrl.js",
 				roverRoot + "controllers/billFormat/rvBillFormatPopupController.js",
 				servicesRoot + "group/**/*.js",
 				servicesRoot + "reservation/rvReservationSummarySrv.js",

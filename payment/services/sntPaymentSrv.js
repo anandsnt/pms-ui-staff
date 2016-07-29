@@ -225,6 +225,8 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                 paymentGatewayUIInterfaceUrl = PAYMENT_CONFIG[gateWay].partial;
 
             switch (gateWay){
+                case "MLI":
+                    break;
                 case "sixpayments":
                     var time = new Date().getTime(),,
                         service_action = PAYMENT_CONFIG[gateWay].params.service_action;
@@ -234,10 +236,10 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                         "&card_holder_last_name=" + params.card_holder_last_name +
                         "&service_action=" + service_action +
                         "&time=" + time;
+
                     break;
                 default:
-                    console.error("Payment Gateway not configured");
-
+                    throw new Error("Payment Gateway not configured");
             }
 
             return{

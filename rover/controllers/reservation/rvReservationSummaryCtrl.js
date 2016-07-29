@@ -908,10 +908,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = data;
             };
-
+            var postData1 = $scope.computeReservationDataforUpdate(true, true);
             var postData = {
                 payment_type : {}
             };
+            postData.arrival_time = postData1.arrival_time;
+            postData.departure_time = postData1.departure_time;
 
             if ($scope.reservationData.paymentType.type.value !== null) {
                 angular.forEach($scope.reservationData.paymentMethods, function(item) {

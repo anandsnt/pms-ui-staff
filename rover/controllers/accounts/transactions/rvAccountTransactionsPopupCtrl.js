@@ -45,6 +45,22 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	};
 
+	/**
+	 * update splitted values for display
+	 * handles split by amount and split by percent
+	 * @return {undefined}
+	 */
+	$scope.showSpiltValues = function() {
+		var transaction = $scope.selectedTransaction;
+		if ($scope.splitTypeisAmount) {
+			$scope.displayFirstValue  = transaction.amount - $scope.splitValue;
+			$scope.displaySecondValue = $scope.splitValue;
+		} else {
+			$scope.displaySecondValue = parseFloat(transaction.amount * $scope.splitValue / 100).toFixed(2);
+			$scope.displayFirstValue  = transaction.amount - $scope.displaySecondValue;
+		}
+	};
+
    /*
 	 * API call split transaction
 	 */

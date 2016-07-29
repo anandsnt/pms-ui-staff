@@ -143,10 +143,16 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         $scope.$watch('editData.mapping_type_value',function(to, fm, evt){
             if (to){
-
                 $scope.editData.sntValues = $scope.mappingInterface.mappingTypeRefs[to];
+                // In case external values list has been obtained for this mapping type refer to the list
+                if ($scope.mappingInterface.mappingTypeRefsExt && $scope.mappingInterface.mappingTypeRefsExt[to]) {
+                    $scope.editData.externalValues = $scope.mappingInterface.mappingTypeRefsExt[to];
+                }else{
+                    $scope.editData.externalValues = null;
+                }
             }
-               $scope.hasValidSelection();
+
+            $scope.hasValidSelection();
         });
 
 
@@ -180,6 +186,23 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                     }
                     $scope.mappingInterface.mappingTypeRefs[mTypeName].push(mappingTypeRefObject);
                 }
+
+                if(_.isArray(data.mapping_type[x].extvalues) && data.mapping_type[x].extvalues.length > 0){
+                    if(!$scope.mappingInterface.mappingTypeRefsExt){
+                        $scope.mappingInterface.mappingTypeRefsExt = [];
+                    }
+
+                    if(!$scope.mappingInterface.mappingTypeRefsExt[mTypeName]){
+                        $scope.mappingInterface.mappingTypeRefsExt[mTypeName] = [];
+                    }
+                    _.each(data.mapping_type[x].extvalues, function(extRef){
+                        $scope.mappingInterface.mappingTypeRefsExt[mTypeName].push({
+                            name:extRef.value,
+                            description:extRef.description
+                        });
+                    });
+                }
+
             }
 
             for (var n in data.mapping) {
@@ -228,7 +251,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         $scope.fetchInterfaceMappings = function () {
             var lastInterface = getLastInterface();
-            $scope.clickedInterfaceName = lastInterface.name;
+            $scope.clickedInterfaceName = lastInterface.description;
             $scope.invokeApi(ADInterfaceMappingSrv.fetchInterfaceMappingsList, {
                 'hotel_id': lastInterface.hotelId,
                 'interface_type_id': lastInterface.id,

@@ -6,10 +6,10 @@ admin.service('adIFCComtrolSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
 	 */
 	this.fetchIFCComtrolConfiguration = function() {
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings.json';
+		var url = '/api/hotel_settings/comtrol';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-			deferred.resolve(data.ifc_comtrol);
+			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
 		});
@@ -22,7 +22,7 @@ admin.service('adIFCComtrolSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
 	 */
 	this.saveIFCComtrolConfiguration = function(params) {
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings/change_settings';
+		var url = '/api/hotel_settings/comtrol';
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
