@@ -6,10 +6,14 @@ angular.module("sntPayConfig", []).constant("PAYMENT_CONFIG", Object.freeze({
     "MLI": {
         iFrameUrl: null,
         jsLibrary: "https://cnp.merchantlink.com/form/v2.1/hpf.js",
-        partial: "/assets/partials/payMLIPartial.html"
+        partial: "/assets/partials/payMLIPartial.html",
+        params: null
     },
     "sixpayments": {
         iFrameUrl: "/api/ipage/index.html",
+        //Iframe loading url query string params
+        //Skelton
+        //TODO: need to use while constructing from the params from service
         params: {
             //guest's first name
             "card_holder_first_name": "",

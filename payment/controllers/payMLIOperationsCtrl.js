@@ -1,10 +1,14 @@
-sntPay.controller('payMLIOperationsController', function($scope, sntPaymentSrv) {
+angular.module("sntPay").controller('payMLIOperationsController', ['$scope', 'sntPaymentSrv', function($scope, sntPaymentSrv) {
 
-	var isSwipedCardData = false;
-	var swipedCCData = {};
+	var isSwiped;
+	var swipedCCData;
 
-	$scope.$on('RESET_CARD_DETAILS', function(e, data) {
-		isSwipedCardData = false;
+	/**
+	 * to initialize the carda
+	 * @return undefined
+	 */
+	var initializeCardData = () => {
+		isSwiped = false;
 		swipedCCData = {};
 		$scope.cardData = {
 			cardNumber: "",
@@ -13,6 +17,10 @@ sntPay.controller('payMLIOperationsController', function($scope, sntPaymentSrv) 
 			expiryYear: "",
 			userName: ""
 		}
+	};
+
+	$scope.$on('RESET_CARD_DETAILS', function(e, data) {
+		initializeCardData();
 	});
 
 	var emptyCardDetails = function() {
@@ -129,14 +137,10 @@ sntPay.controller('payMLIOperationsController', function($scope, sntPaymentSrv) 
 	(function() {
 		//to set your merchant ID provided by Payment Gateway
 		HostedForm.setMerchant($scope.hotelConfig.mliMerchantId);
-		$scope.cardData = {
-			cardNumber: "",
-			CCV: "",
-			expiryMonth: "",
-			expiryYear: "",
-			userName: ""
-		}
+
+		//
+		initializeCardData();
 
 	})();
 
-});
+}]);

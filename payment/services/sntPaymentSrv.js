@@ -221,22 +221,19 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
          * @returns {{iFrameUrl: string, paymentGatewayUIInterfaceUrl: string}}
          */
         service.resolvePaths = function(gateWay, params) {
-            var iFrameUrl = "",
+            var iFrameUrlWithParams = "",
                 paymentGatewayUIInterfaceUrl = PAYMENT_CONFIG[gateWay].partial;
 
             switch (gateWay){
                 case "sixpayments":
-                    var time = new Date().getTime(),
-                        absoluteUrl = $location.$$absUrl,
-                        domainUrl = absoluteUrl.split("/staff#/")[0];
+                    var time = new Date().getTime(),,
+                        service_action = PAYMENT_CONFIG[gateWay].params.service_action;
 
-                    iFrameUrl = domainUrl +
-                        "/api/ipage/index.html?card_holder_first_name=" +
-                        params.card_holder_first_name +
-                        "&card_holder_last_name=" +
-                        params.card_holder_last_name +
-                        "&service_action=createtoken&time=" +
-                        time;
+                    iFrameUrlWithParams = PAYMENT_CONFIG[gateWay].iFrameUrl +
+                        "card_holder_first_name=" + params.card_holder_first_name +
+                        "&card_holder_last_name=" + params.card_holder_last_name +
+                        "&service_action=" + service_action +
+                        "&time=" + time;
                     break;
                 default:
                     console.error("Payment Gateway not configured");
@@ -244,7 +241,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             }
 
             return{
-                iFrameUrl : iFrameUrl,
+                iFrameUrl : iFrameUrlWithParams,
                 paymentGatewayUIInterfaceUrl : paymentGatewayUIInterfaceUrl
             };
         };
