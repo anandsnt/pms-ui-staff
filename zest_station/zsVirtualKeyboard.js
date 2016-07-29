@@ -273,7 +273,16 @@ this.initScreenKeyboardListener = function(from, id, show){
     
         this.blurHandler = function(){
             var focused = $('#'+id);
-            $(focused).getkeyboard().accept(true);
+            if ($(focused).getkeyboard().isOpen){
+              try {
+               $(focused).getkeyboard().accept(true);
+              } catch(err){
+                //console.warn($(focused).getkeyboard())
+                $(focused).getkeyboard().close();
+              }  
+            }
+            
+
        };
         var focused = $('#'+id);
         $(focused).focus(this.focusHandler).blur(this.blurHandler).keydown(function (e) {

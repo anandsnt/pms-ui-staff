@@ -21,6 +21,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 		emvTimeout: 120
 	};
 
+	$scope.giftCard = {
+		number: ""
+	};
+
 
 	//hide payment method if there is no permission or no payment type
 	$scope.shouldHidePaymentButton = function() {
@@ -219,6 +223,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 		};
 	};
 
+	$scope.onChangeGiftCard = function() {
+		console.log("GC #",$scope.giftCard.number);
+	};
+
 	// Payment type change action
 	$scope.onPaymentInfoChange = function() {
 		//NOTE: Fees information is to be calculated only for standalone systems
@@ -384,7 +392,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 		$scope.hotelConfig.workstationId = $scope.hotelConfig.workstationId || '';
 		$scope.hotelConfig.emvTimeout = $scope.hotelConfig.emvTimeout || 120;
 		$scope.hotelConfig.isStandAlone = $scope.hotelConfig.isStandAlone || true;
-		$scope.hotelConfig.paymentGateway = $scope.hotelConfig.paymentGateway;
+		$scope.hotelConfig.paymentGateway = $scope.hotelConfig.paymentGateway || "";
+
 		$scope.currencySymbol = $scope.hotelConfig.currencySymbol;
 
 

@@ -120,10 +120,13 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.promptForKeyCount = !!reservationAndhotelData.key_prompt_on ? true : false;
 		$rootScope.KeyCountAttemptedToSave = false;
 
-		//TODO: to follow hotel settings
 		$rootScope.collectOutStandingBalance = !!reservationAndhotelData.zestweb_collect_outstanding_balance ? true : false;
 		$rootScope.skipBalanceCollection = false;
 
+
+		//TODO: to follow hotel settings
+		$rootScope.conductSurvey =  !!reservationAndhotelData.survey_question_prompt_on ? true : false;
+		$rootScope.skipBalanceconductSurvey = false;
 
 		//Params for zest mobile and desktop screens
 		if (reservationAndhotelData.hasOwnProperty('is_password_reset')) {

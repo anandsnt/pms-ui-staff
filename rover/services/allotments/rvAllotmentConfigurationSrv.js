@@ -24,6 +24,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			"block_to": "",
 			"revenue_actual": null,
 			"revenue_potential": null,
+			"release_date":"",
 			"rooms_total": null,
 			"rooms_pickup": null,
 			"rate": "",

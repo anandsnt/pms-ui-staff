@@ -31,11 +31,11 @@
 		                        <td class="rate" ng-if="stayDay.rateDetails.is_suppressed == 'true'">
 		                        	SR
 		                        </td>
-		                        <td class="edit" ng-if="stayDay.rateDetails.is_suppressed != 'true'">
+		                        <td class="edit" ng-if="!shouldSupressRateInput(stayDay)">
 		                        	{{currencySymbol}}
 		                        	<input ng-disabled="shouldDisableRateChange(stayDay, date)" type="text" value="" ng-model="stayDay.rateDetails.modified_amount" />
 		                        </td>
-		                        <td class="edit" ng-if="stayDay.rateDetails.is_suppressed == 'true'">
+		                        <td class="edit" ng-if="shouldSupressRateInput(stayDay)">
 		                        	SR
 		                        </td>
 		                    </tr>		                    

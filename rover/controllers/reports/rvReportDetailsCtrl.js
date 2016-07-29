@@ -113,6 +113,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isCondensedPrint = false;
 			$scope.isBalanceReport = false;
 			$scope.isDepositBalanceReport = false;
+			$scope.isCancellationReport = false;
 
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
@@ -134,6 +135,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['CANCELLATION_NO_SHOW']:
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
+					$scope.isCancellationReport = true;
 					$scope.hasNoSorting = true;
 					break;
 
@@ -356,7 +358,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
-					$scope.leftColSpan = 3;
+					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 5;
 					break;
 
@@ -368,6 +370,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['DEPOSIT_SUMMARY']:
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 3;
+					break;
+
+				case reportNames['ROOM_UPSELL']:
+				case reportNames['MOBILE_CHECKIN']:
+				case reportNames['MOBILE_CHECKIN_NOW']:
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 4;
 					break;
 
 				default:
@@ -942,6 +951,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['ADDON_FORECAST']:
 				case reportNames['CREDIT_CHECK_REPORT']:
 				case reportNames['DEPOSIT_SUMMARY']:
+				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
 					orientation = 'landscape';
 					break;
 
@@ -1022,15 +1032,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 		$scope.hasSort = function(index) {
-			return !! $scope.chosenReport.sortByOptions[index]
+			var s = $scope.chosenReport.sortByOptions || [];
+			return !! s[index];
 		}
 
 		$scope.isAsc = function(index) {
-			return !! $scope.chosenReport.sortByOptions[index] && $scope.chosenReport.sortByOptions[index]['sortDir'] === true;
+			var s = $scope.chosenReport.sortByOptions || [];
+			return !! s[index] && s[index]['sortDir'] === true;
 		};
 
 		$scope.isDesc = function(index) {
-			return !! $scope.chosenReport.sortByOptions[index] && $scope.chosenReport.sortByOptions[index]['sortDir'] === false;
+			var s = $scope.chosenReport.sortByOptions || [];
+			return !! s[index] && s[index]['sortDir'] === false;
 		};
 
 

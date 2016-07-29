@@ -1,6 +1,20 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams', 'RVReservationGuestSrv',
-    'RVReservationStateService', 'RVReservationDataService',
-    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService) {
+sntRover.controller('RVReservationMainCtrl', ['$scope',
+            '$rootScope',
+            'ngDialog',
+            '$filter',
+            'RVCompanyCardSrv',
+            '$state',
+            'dateFilter',
+            'baseSearchData',
+            'RVReservationSummarySrv',
+            'RVReservationCardSrv',
+            'RVPaymentSrv',
+            '$timeout',
+            '$stateParams',
+            'RVReservationGuestSrv',
+            'RVReservationStateService',
+            'RVReservationDataService',
+            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService) {
 
         BaseCtrl.call(this, $scope);
 
@@ -774,7 +788,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
                                 return rate && rate.toString().match(/_CUSTOM_/) ? null : rate
                             })(),
                             room_type_id: room.roomTypeId,
-                            room_id: room.room_id,
+                            room_id: room.roomId,
                             adults_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
                             children_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydata.guests.children),
                             infants_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydata.guests.infants),
@@ -847,7 +861,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             });
             angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {
                 if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
-                    data.room_id.push(room.room_id);
+                    //CICO-32021 - API expects null if room id not there.
+                    room.roomId  = (room.room_id !== "") ? room.room_id : null;
+                    data.room_id.push(room.roomId);
+
                 }
             });
 

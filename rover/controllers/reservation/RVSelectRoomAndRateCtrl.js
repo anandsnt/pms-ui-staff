@@ -677,9 +677,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				} else if ($scope.otherData.defaultRateDisplayName === 'By Rate') {
 					$scope.stateCheck.activeView = 'RATE';
 				} else {
-					if($stateParams.travel_agent_id || $stateParams.company_id
+					if(($stateParams.travel_agent_id || $stateParams.company_id
 						 || $stateParams.group_id || $stateParams.allotment_id
-						 || $stateParams.promotion_code || $stateParams.is_member == "true"){
+						 || $stateParams.promotion_code || $stateParams.is_member == "true") && $scope.otherData.recommendedRateDisplay){
 						$scope.stateCheck.activeView = 'RECOMMENDED';
 					} else {
 						// By default RoomType
@@ -963,7 +963,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					} else if(($scope.stateCheck.activeView === "RECOMMENDED") && shouldRecommend()) {
 						isReccommendedTabApiRequired = true;
 					}
-					if(isReccommendedTabApiRequired){
+					if(
+						isReccommendedTabApiRequired){
 						fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
 							$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 							generateRatesGrid(response.results);
@@ -1121,6 +1122,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		$scope.setActiveView = function(view) {
 			$scope.stateCheck.activeView = view;
+			RVRoomRatesSrv.setRoomAndRateActiveTab(view);
 			reInitialize();
 		};
 

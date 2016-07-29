@@ -9,10 +9,9 @@
     <li ng-class="{'active': payment.addCCMode === 'ADD_CARD'}" click-touch="toggleCCMOde('ADD_CARD')">
         Add New Card
     </li>
-    <!-- TO DO: inlude gift card later -->
-    <!-- <li ng-show="showGiftCardToggle()" ng-class="{'active':isGiftCard}" click-touch="clickedGiftCardToggle()">
+    <li ng-show="showGiftCardToggle()" ng-class="{'active': payment.addCCMode === 'GIFT_CARD'}" click-touch="toggleCCMOde('GIFT_CARD')">
         Gift Card
-    </li> -->
+    </li>
 </ul>
 
 <!-- Exsiting cards - use only when they exsit -->
