@@ -7,6 +7,7 @@
 "CHARGE_WILL_APPEAR_AS":"Charge will appear as:",
 "ADJUSTMENT":"Adjustment",
 "CHANGE_AMOUNT":"Change Amount",
+"CHANGE_CHARGE_CODE": "Change Charge Code",
 "REMOVE_CHARGE":"Remove charge",
 "SPLIT_CHARGE":"Split charge",
 "SPLITTING_FOR":"Splitting for",

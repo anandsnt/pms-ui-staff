@@ -170,8 +170,11 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		 */
 		var localEncodingSuccsess = function(response) {
 			if ($scope.inDemoMode()) {
-				$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
-				dispenseKey();
+				setTimeout(function(){
+					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
+					dispenseKey();
+				},2000);
+
 			} else {
 				if (response.key_info && response.key_info[0]) {
 					if (response.key_info[0].base64) {
@@ -186,17 +189,32 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 				}
 			}
 		};
+		$scope.$on('printLocalKeyCordovaFailed', function(evt, response) {
+			console.warn('error: ', response);
+			onGeneralFailureCase();
+		});
+
+		$scope.$on('continueFromCordovaKeyWrite', function() {
+			remoteEncodingSuccsess();
+		});
 		/**
 		 * [initMakeKey description]
 		 * @return {[type]} [description]
 		 */
-		var startMakingKey = function() {
+		var startMakingKey = function(keyNo) {
 			var onResponseSuccess;
 			var params = {
 				"is_additional": false,
 				"is_kiosk": true,
 				"key": 1,
 				"reservation_id": $scope.selectedReservation.reservationId
+			};
+
+			if (keyNo){
+				params.key = keyNo;
+				if (keyNo === 2){
+					params.is_additional = true;
+				}
 			};
 
 			if (!$scope.remoteEncoding) {
@@ -209,18 +227,41 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 
 			if ($scope.inDemoMode()) {
-				onResponseSuccess({
-					'status': 'success'
-				});
+				setTimeout(function(){
+					onResponseSuccess({
+						'status': 'success'
+					});
+				},1200);
 			} else {
-				$scope.callAPI(zsGeneralSrv.encodeKey, {
-					params: params,
-					"loader": "none", //to hide loader
-					'successCallBack': onResponseSuccess,
-					'failureCallBack': onGeneralFailureCase
-				});
+				if ($scope.writeLocally()) {
+					console.log('write locally');
+					//encode / dispense key from infinea || ingenico
+					//local encoding + infinea
+					if ($scope.inDemoMode()) {
+						setTimeout(function() {
+								onSuccessWriteKeyDataLocal();
+							}, 2800) //add some delay for demo purposes
+					} else {
+
+						$scope.$emit('printLocalKeyCordova', $scope.selectedReservation.reservationId, $scope.noOfKeysSelected);
+						return;
+					};
+				} else {
+					$scope.callAPI(zsGeneralSrv.encodeKey, {
+						params: params,
+						"loader": "none", //to hide loader
+						'successCallBack': onResponseSuccess,
+						'failureCallBack': onGeneralFailureCase
+					});
+				}
+
 			}
 		};
+
+
+
+
+
 		$scope.readyForUserToPressMakeKey = true;
 		var initMakeKey = function() {
 			console.info('waiting on user to press make key, which will start key create')
@@ -242,9 +283,11 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 
 		};
-		$scope.onReadyToPrintKey = function() {
-			$scope.readyForUserToPressMakeKey = false;
-			startMakingKey();
+		$scope.onReadyToPrintKey = function(keyNo) {
+			if ($scope.readyForUserToPressMakeKey) {
+				$scope.readyForUserToPressMakeKey = false;
+				startMakingKey(keyNo);
+			}
 		};
 
 		function remoteEncodingSuccsess(response) {

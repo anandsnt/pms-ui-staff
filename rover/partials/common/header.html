@@ -19,9 +19,10 @@
         <div class="user">
             <strong>{{userInfo.first_name}}
 		{{userInfo.last_name}}</strong>
-             <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em>
-             <em class="date updating" ng-show="!isEodProcessFailed&&isBussinessDateChanging">End of Day Routine in Progress</em>
-             <em class="date error" ng-show="isEodProcessFailed">Some EOD Processes failed, check log!</em>
+             <em class="date" ng-hide="isEodRunning"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em>
+             <em class="date updating" ng-show="isEodRunning">End of Day Routine in Progress</em>
+             <em class="date updating" ng-show="isEodProcessRunning&&!isEodRunning">EOD running again.</em>
+             <em class="date error" ng-show="isEodProcessFailed&&!(isEodProcessRunning||isEodRunning)">EOD Processes failed, please check log!</em>
         </div>
     </h1>
 </header>

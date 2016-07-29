@@ -496,6 +496,12 @@
 
                     &:first-child { #border-radius > .left(); }
                     &:last-child { #border-radius > .right(); }
+
+                    &.disabled {
+                    	color: @grey3;
+						background-color: rgba(0,0,0,.1);
+						.box-shadow(none);
+                    }
                 }
 			}
 

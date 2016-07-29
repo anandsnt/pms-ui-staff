@@ -4,7 +4,7 @@
 		<table class="dates-grid">
 			<colgroup>
 				<col>
-				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">
 			</colgroup>
 			<thead>
 				<tr>
@@ -17,13 +17,13 @@
 					</th>
 				</tr>
 			</thead>
-		</table> 
+		</table>
 
 		<!-- Occupancy -->
 		<table class="dates-grid blue">
 			<colgroup>
 				<col>
-				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">
 			</colgroup>
 			<tbody>
 				<!-- Total % -->
@@ -40,7 +40,7 @@
 						<div class="inner" ng-bind="inventory" ng-class="{ 'unavailable': 0 >= inventory, 'warning': 5 >= inventory}"></div>
 					</td>
 				</tr>
-				
+
 				<tr class="italic" ng-class="{'hidden': !toggleStatusOf.roomInventory || !toggleStatusOf.occupancy}" ng-repeat="roomType in data.roomTypes track by $index">
 					<th scope="row" ng-bind="roomType.name"></th>
 					<td ng-repeat="eachDate in data.dates">
@@ -70,13 +70,13 @@
 					</td>
 				</tr>
 			</tbody>
-		</table> 
+		</table>
 
 		<!-- Available Rooms -->
 		<table class="dates-grid green">
 			<colgroup>
 				<col>
-				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">
 			</colgroup>
 			<tbody>
 				<tr class="main">
@@ -86,12 +86,13 @@
 					</td>
 				</tr>
 				<!-- Room types -->
-				<tr class="italic" ng-class="{'hidden': !toggleStatusOf.availableRooms}" ng-repeat="roomTypeWiseDetail in data.additionalData.roomTypeWiseDetails track by $index">
-					<th scope="row" ng-bind="data.additionalData.roomTypeNames[$index]"></th>
+				<tr class="italic" ng-class="{'hidden': !toggleStatusOf.availableRooms, 'different': data.additionalData.roomTypeNames[$index].is_suite}" ng-repeat="roomTypeWiseDetail in data.additionalData.roomTypeWiseDetails track by $index">
+					<th scope="row" ng-bind="data.additionalData.roomTypeNames[$index].name"></th>
+
 					<td ng-repeat="roomType in roomTypeWiseDetail track by $index">
 						<div class="inner" ng-bind="roomType.availability" ng-class="{ 'unavailable': 0 >= roomType.availability, 'warning': 5 >= roomType.availability}"></div>
 					</td>
-				</tr>				
+				</tr>
 			</tbody>
 		</table>
 
@@ -99,7 +100,7 @@
 		<table class="dates-grid orange">
 			<colgroup>
 				<col>
-				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">
 			</colgroup>
 			<tbody>
 				<tr class="main" ng-if="!isHourlyRateOn">
@@ -115,8 +116,8 @@
 						<div class="inner" ng-bind="count.bothCount"></div>
 					</td>
 				</tr>
-				<tr class="italic" ng-if="!isHourlyRateOn" ng-class="{'hidden': !toggleStatusOf.roomsSold }" ng-repeat="roomTypeWiseDetail in data.additionalData.roomTypeWiseDetails track by $index">
-					<th scope="row" ng-bind="data.additionalData.roomTypeNames[$index]" ></th>
+				<tr class="italic" ng-if="!isHourlyRateOn" ng-class="{'hidden': !toggleStatusOf.roomsSold , 'different': data.additionalData.roomTypeNames[$index].is_suite}" ng-repeat="roomTypeWiseDetail in data.additionalData.roomTypeWiseDetails track by $index">
+					<th scope="row" ng-bind="data.additionalData.roomTypeNames[$index].name" ></th>
 					<td ng-repeat="roomType in roomTypeWiseDetail track by $index">
 						<div class="inner" ng-bind="roomType.sold"></div>
 					</td>
@@ -128,7 +129,7 @@
 		<table class="dates-grid" ng-if="!isHourlyRateOn">
 			<colgroup>
 				<col>
-				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">
 			</colgroup>
 			<tbody>
 				<tr class="main">
@@ -144,7 +145,7 @@
 		<table class="dates-grid purple" ng-if="!isHourlyRateOn">
 			<colgroup>
 				<col>
-				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
+				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">
 			</colgroup>
 			<tbody>
 				<tr class="main">

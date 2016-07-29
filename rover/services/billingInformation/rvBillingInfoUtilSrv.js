@@ -19,14 +19,14 @@ angular.module('sntRover').service('RVBillingInfoUtilSrv',
     * @param {Boolean}
     * @return {String} [class according to reservation status]
     */
-    this.getGuestStatusMapped(reservationStatus, isLateCheckoutOn) {
+    this.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn) {
     	if (isLateCheckoutOn && "CHECKING_OUT" === reservationStatus) {
             return guestStatusMappings[reservationStatus][1];
     	}
     	else if (reservationStatus !== "" && reservationStatus !== undefined) {
     		return guestStatusMappings[reservationStatus][0];
     	}
-    }
+    };
 
     /**
      * Returns the desired class name for the entity.
@@ -53,7 +53,7 @@ angular.module('sntRover').service('RVBillingInfoUtilSrv',
      * @param {Object} selected entity/route details
      * @return {String} class name
      */
-    $scope.getEntityIconClass = function(route){
+    this.getEntityIconClass = function(route){
         if(route.entity_type === 'RESERVATION' &&  route.has_accompanying_guests ) {
             return 'accompany';
         }

@@ -400,6 +400,9 @@
                                 }
                             }
                         }
+                        .log-table-mobile {
+                            display:none;
+                        }
                     }
                 }
 
@@ -705,6 +708,7 @@
                         text-indent: 0; 
                         font-size: 15px;
                         font-weight: 600;
+                        height: 55px;
                     }
                 }
             }
@@ -987,73 +991,56 @@
                         padding:0;
                         margin-top:0;
 
-                        .log-table {
-                            font-size: 14px;
+                        .log-table-mobile {
                             display:block;
+                            text-transform: uppercase;
+                            font-size: 14px;
 
+                            .row-break {
+                                &:nth-child(odd) {
+                                    
+                                    background-color: @white;
+                                   
+                                }
 
-                            tr,td,th,thead,tbody {
-                                display: block;
-                            }
-
-                            thead tr { 
-                                position: absolute;
-                                top: -9999px;
-                                left: -9999px;
-                            }
-
-                            tr { 
-                                &.row-break{
-                                    td:after {
-                                        display:none;
+                                > div {
+                                     /* Behave  like a "row" */
+                                    border: none;
+                                    text-align: left;
+                                    position: relative;
+                                    padding: 5px 0 5px 50%;
+                                    min-height: 26px;
+                                    &:first-child {
+                                        padding-top: 20px;
+                                        min-height: 41px;
+                                        &:before {
+                                            top: 21px;
+                                        }
                                     }
-                                }
-
-                                &:nth-child(even) {
-                                    td {
-                                        background-color: @grey1;
+                                    &:last-child {
+                                        padding-bottom: 20px;
+                                        min-height: 41px;
                                     }
-                                }
-                            }
-    
-                            td { 
-                                /* Behave  like a "row" */
-                                border: none;
-                                position: relative;
-                                padding: 5px 0 5px 50%;
 
-                                &:first-child {
-                                    padding-top: 20px;
-
-                                    &:before {
-                                        top: 21px;
-                                    }
-                                }
-                                &:last-child {
-                                    padding-bottom: 20px;
-                                }
-
-                                .status {
-                                    &.old {
-                                        padding-bottom: 10px;
+                                    &:before { 
+                                        /* Now like a table header */
+                                        position: absolute;
+                                        /* Top/left values mimic padding */
+                                        top: 6px;
+                                        left: 5px;
+                                        width: 50%; 
+                                        padding-right: 20px;
+                                        white-space: nowrap;
+                                        content: attr(data-content);
+                                        text-align: right;
+                                        font-size: 12px;
+                                        color: @grey3;
                                     }
                                 }
                             }
-                            
-                            td:before { 
-                                /* Now like a table header */
-                                position: absolute;
-                                /* Top/left values mimic padding */
-                                top: 6px;
-                                left: 5px;
-                                width: 50%; 
-                                padding-right: 20px;
-                                white-space: nowrap;
-                                content: attr(data-content);
-                                text-align: right;
-                                font-size: 12px;
-                                color: @grey3;
-                            }
+                        }
+                        .log-table {
+                            display:none;
                         }
                     }
                 }

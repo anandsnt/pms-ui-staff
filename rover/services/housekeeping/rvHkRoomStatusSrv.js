@@ -285,7 +285,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 		// fetch all room types
 		this.roomTypes = [];
 		this.fetchRoomTypes = function() {
-			var url = 'api/room_types?exclude_pseudo=true&exclude_suite=true';
+			var url = 'api/room_types?exclude_pseudo=true';
 			var deferred = $q.defer();
 
 			if ( that.roomTypes.length ) {

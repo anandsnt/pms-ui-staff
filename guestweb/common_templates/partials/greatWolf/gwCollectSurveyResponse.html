@@ -1,0 +1,59 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <!-- request text -->
+    <div class="row" ng-show="isLoading && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">
+                Something went wrong while collecting survey.
+            </p>
+            <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-click="goToNextPage()"> Skip</a>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- main content -->
+    <div class="row" ng-hide="isLoading || netWorkError">
+        <div class="col-md-4 top-spacing sm-no-top-spacing section-container float-none">
+            <p class="main-text final-text">{{screenDetails.title}}</p>
+            <img ng-src="{{surveyDetails.survey_question_image}}" width="180" height="180" alt="" ng-show="showSurveyImage">
+            <p class="sub-text margin-top-20">{{screenDetails.description}}</p>
+            <!-- answers -->
+            <div class="row margin-top-20">
+                <!-- Numeric answer -->
+                <div class="select-style select-width-40" ng-show="surveyDetails.survey_question_type === 'Numeric'">
+                    <select ng-model="survey_response" ng-options="number_of_items as number_of_items for number_of_items in responseArray" id="select-response">
+                    </select>
+                </div>
+                <!-- String answer -->
+                <div ng-show="surveyDetails.survey_question_type === 'String'">
+                    <input class="input-field" ng-model="survey_response"></input>
+                </div>
+                <!-- yes/no answer -->
+                <div class="select-style select-width-40"  ng-show="surveyDetails.survey_question_type === 'Boolean'">
+                    <select ng-model="survey_response" ng-options="bool as bool for bool in ['Yes','No']">
+                    </select>
+                </div>
+            </div>
+            <!-- submit -->
+            <a class="btn btn-template margin-top-80" ng-click="postSurveyResponse()">Continue</a>
+            <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-hide="surveyDetails.survey_question_is_mandatory" ng-click="goToNextPage()"> Skip</a>
+        </div>
+    </div>
+</div>
+</div>

@@ -2,10 +2,25 @@
     <!-- showCCPage || depositInProcess || depositPaidSuccesFully -->
     <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
     <div class="entry full-width" ng-class="{'amount': feeData.showFee}">
-        <!-- gift card handle later -->
-        <!--  <input ng-show="depositData.paymentType === 'GIFT_CARD'" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
-        <label ng-show="depositData.paymentType === 'GIFT_CARD' && giftCardAmountAvailable" ng-hide="depositData.paymentType !== 'GIFT_CARD' || !giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label> -->
-        <!--     <input ng-show="depositData.paymentType === 'GIFT_CARD' && giftCardAmountAvailable" ng-hide="depositData.paymentType !== 'GIFT_CARD' || !giftCardAmountAvailable" name="giftCardAmount" id="amount" ng-readonly="true" ng-model="giftCardAvailableBalance" type="text" class="amount" value="{{ giftCardAvailableBalance }}" /> -->
+        <!-- gift card -->
+        <section ng-show="selectedPaymentType === 'GIFT_CARD'">
+            <input placeholder="Enter Card number"
+                   ng-model="giftCard.number"
+                   maxlength="22"
+                   rv-delay-textbox
+                   delay="1000"
+                   function-to-fire="onChangeGiftCard"
+                   type="text"/>
+
+            <label ng-show="giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
+
+            <input ng-show="giftCardAmountAvailable"
+                   ng-readonly="true"
+                   ng-model="giftCardAvailableBalance"
+                   type="text"
+                   class="amount"/>
+        </section>
+
         <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
 
         <input ng-change="onPaymentInfoChange()"

@@ -145,27 +145,10 @@ sntZestStation.controller('zsCardSwipeCtrl', [
             $state.go('zest_station.error');
         };
         
-        $scope.inProd = function(){
-            var notProd = false;
-            var url = true ? document.location : window.location;
-            if (url.hostname){
-                if (typeof url.hostname === typeof 'str'){
-                    if (url.hostname.indexOf('pms-dev') !==-1 || 
-                        url.hostname.indexOf('pms-release') !==-1 || 
-                        url.hostname.indexOf('192.168.1.218') !==-1 || 
-                        url.hostname.indexOf('localhost') !==-1){
-                        notProd = true;
-                    }
-                }
-            }
-            if (!notProd){//in production, dont allow this function
-                return true;
-            } else return false;
-        };
         $scope.simulateSixPay = function(){
-            var inProduction = $scope.inProd();
-            console.info('inProduction: ',inProduction);
-            if (inProduction){
+            var debuggingCardPmt = $scope.debuggingCardPayment(true);
+            console.info('debuggingCardPayment: ',debuggingCardPmt);
+            if (!debuggingCardPmt){
                 $scope.isSimulated = false;
                 return;
             }

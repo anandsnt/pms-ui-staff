@@ -340,6 +340,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
             $scope.setNumberOfNights();
             $scope.errorMessage = [];
+            //CICO-31353
+            clearGroupSelection();
         };
         /*  The following method helps to initiate the staydates object across the period of
          *  stay. The occupany selected for each room is taken assumed to be for the entire period of the
@@ -999,6 +1001,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.restrictMultipleBookings = function() {
             return !!$rootScope.isHourlyRateOn || !!$scope.reservationData.group.id;
         }
+
+        //Clear the group selection when the departure date is changed
+        var clearGroupSelection = function() {
+            if( $scope.reservationData.group && $scope.reservationData.group.id) {
+               $scope.reservationData.group = {};
+               $scope.companySearchText = "";
+               $scope.codeSearchText = "";
+            }
+        };
 
     }
 ]);
