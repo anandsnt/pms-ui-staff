@@ -226,12 +226,8 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
 
             switch (gateWay){
                 case "sixpayments":
-                    var time = new Date().getTime(),
-                        absoluteUrl = $location.$$absUrl,
-                        domainUrl = absoluteUrl.split("/staff#/")[0];
-
-                    iFrameUrl = domainUrl +
-                        "/api/ipage/index.html?card_holder_first_name=" +
+                    var time = new Date().getTime();
+                    iFrameUrl = "/api/ipage/index.html?card_holder_first_name=" +
                         params.card_holder_first_name +
                         "&card_holder_last_name=" +
                         params.card_holder_last_name +
