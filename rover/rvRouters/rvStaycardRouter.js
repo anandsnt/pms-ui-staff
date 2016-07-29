@@ -119,8 +119,8 @@ angular.module('stayCardModule', [])
                         is_active: true
                     });
                 },
-                rates: function(RVRoomRatesSrv, $stateParams, staycardJsAssets) {
-                    var params = {};
+                rates: function(RVRoomRatesSrv, $stateParams, staycardJsAssets, RVReservationBaseSearchSrv) {
+                    var params = {};RVReservationBaseSearchSrv
                         params.from_date = $stateParams.from_date;
                         params.to_date   = $stateParams.to_date;
                         params.override_restrictions =  $stateParams.override_restrictions;
@@ -140,6 +140,7 @@ angular.module('stayCardModule', [])
                         params.room_type_id = $stateParams.room_type_id;
                     if($stateParams.is_member == "true")
                         params.is_member = $stateParams.is_member;
+                    RVRoomRatesSrv.setRoomAndRateActiveTab(RVReservationBaseSearchSrv.getRoomRatesDefaultView());
                     return RVRoomRatesSrv.fetchRatesInitial(params)
                 },
                 ratesMeta: function(RVReservationBaseSearchSrv, staycardJsAssets) {
