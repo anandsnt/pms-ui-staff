@@ -109,7 +109,7 @@
                            </select>
                         </div>
                 </div>
-                <div class="entry with-label"  ng-if="zestStationData.theme === 'snt'">
+                <div class="entry with-label" ng-show="showDebugModeOption">
                     <label>{{'ADMIN_STATION_DEMOMODE' |translate}}</label>
                      <div class="entry select">
                         <select ng-model="zestStationData.demoModeEnabled">
@@ -125,5 +125,10 @@
             <button type="button" class="button" touch-press='saveSettings()'>Save</button>
             <button type="button" class="button" touch-press='logOutApplication()'>{{'LOGOUT' |translate}}</button>
         </div>
+    </div>
+    <div>
+    <button class='button blue invis bottom-left' click-touch="toggleDebugMode()">
+            Admin
+    </button>
     </div>
 </section>
