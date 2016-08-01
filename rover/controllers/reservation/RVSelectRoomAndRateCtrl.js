@@ -681,7 +681,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 				if($stateParams.travel_agent_id || $stateParams.company_id
 					 || $stateParams.group_id || $stateParams.allotment_id
-					 || $stateParams.promotion_code || $stateParams.is_member == "true"){
+					 || $stateParams.promotion_code || $stateParams.is_member == "true" || $stateParams.promotion_id){
 					$scope.stateCheck.activeView = 'RECOMMENDED';
 				}
 
