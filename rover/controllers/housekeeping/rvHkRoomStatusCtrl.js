@@ -729,9 +729,12 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room){ return room.is_add_to_update});
 			params.room_id = _.pluck(roomsToAdd,'id');
-
-			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, params, successCallBack);
-
+			//as per CICO-32168 comments
+			if(params.room_id.length > 0) {
+				$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, params, successCallBack);
+			} else {
+				$scope.closeForcefullyUpdatePopup();
+			}
 		};
 
 
