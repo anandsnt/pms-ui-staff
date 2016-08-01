@@ -976,7 +976,6 @@ sntZestStation.controller('zsRootCtrl', [
 		}
 
 
-
 		/***
 		 * [initializeMe description]
 		 * @return {[type]} [description]
@@ -999,7 +998,7 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
 			fetchHotelSettings();
 			getAdminWorkStations();
-			$scope.zestStationData.bussinessDate = hotelTimeData.hotel_time.date;
+			$scope.zestStationData.bussinessDate = hotelTimeData.business_date;
 			zestSntApp.setBrowser();
 			if ($scope.inChromeApp){
 				optimizeTouchEventsForChromeApp();	

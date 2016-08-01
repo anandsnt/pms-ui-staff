@@ -26,8 +26,8 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       "value": "%",
       "name": "%"
     }, {
-      "value": "$",
-      "name": "$"
+      "value" : "amount",
+      "name"  : $rootScope.currencySymbol
     }];
     $scope.checkin_types = [{
       "value": "perStay",
@@ -40,8 +40,8 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       "value": "%",
       "name": "%"
     }, {
-      "value": "$",
-      "name": "$"
+      "value" : "amount",
+      "name"  : $rootScope.currencySymbol
     }];
     $scope.eod_types = [{
       "value": "perStay",

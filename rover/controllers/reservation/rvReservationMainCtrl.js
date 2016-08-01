@@ -862,7 +862,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {
                 if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
                     //CICO-32021 - API expects null if room id not there.
-                    room.roomId  = (room.roomId !== "") ? room.roomId : null;
+                    room.roomId  = (room.room_id !== "") ? room.room_id : null;
                     data.room_id.push(room.roomId);
 
                 }

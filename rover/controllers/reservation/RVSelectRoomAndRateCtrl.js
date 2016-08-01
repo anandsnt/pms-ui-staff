@@ -671,20 +671,18 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
 				}
 
-				// activate room type default view based on reservation settings
+
+				// By default RoomType
+				$scope.stateCheck.activeView = 'ROOM_TYPE';
 				if ($scope.otherData.defaultRateDisplayName === 'Recommended') {
 					$scope.stateCheck.activeView = 'RECOMMENDED';
 				} else if ($scope.otherData.defaultRateDisplayName === 'By Rate') {
 					$scope.stateCheck.activeView = 'RATE';
-				} else {
-					if(($stateParams.travel_agent_id || $stateParams.company_id
-						 || $stateParams.group_id || $stateParams.allotment_id
-						 || $stateParams.promotion_code || $stateParams.is_member == "true") && $scope.otherData.recommendedRateDisplay){
-						$scope.stateCheck.activeView = 'RECOMMENDED';
-					} else {
-						// By default RoomType
-						$scope.stateCheck.activeView = 'ROOM_TYPE';
-					}
+				}
+				if($stateParams.travel_agent_id || $stateParams.company_id
+					 || $stateParams.group_id || $stateParams.allotment_id
+					 || $stateParams.promotion_code || $stateParams.is_member == "true" || $stateParams.promotion_id){
+					$scope.stateCheck.activeView = 'RECOMMENDED';
 				}
 
 				if (!!$scope.reservationData.code && !!$scope.reservationData.code.id) {

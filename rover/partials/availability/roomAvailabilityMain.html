@@ -14,12 +14,12 @@
 			</select>
 		</div>
 	    <ul class="display">
-	    	<li id="show-grid" ng-click="setSelectedView('grid')" ng-class="{'active': selectedView == 'grid'}"> 
+	    	<li id="show-grid" ng-click="setSelectedView('grid')" ng-class="{'active': selectedView == 'grid'}">
 	    		<span class="icons icon-navbar only-icon icon-grid" ng-class="{'active': selectedView == 'grid'}">
 	    			Grid
 	    		</span>
 	    	</li>
-	    	<li id="show-graph" ng-class="{'active': selectedView == 'graph'}" ng-click="setSelectedView('graph')">
+	    	<li id="show-graph" ng-class="{'active': selectedView == 'graph'}" ng-click="setSelectedView('graph')" ng-hide="isStandAlone">
 	    		<span class="icons icon-navbar only-icon icon-graph" ng-class="{'active': selectedView == 'graph'}">Graph</span>
 	    	</li>
 	    </ul>

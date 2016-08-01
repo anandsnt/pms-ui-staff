@@ -46,7 +46,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             group_id: $scope.reservationData.group.id,
                             room_type_id: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
                             adults: $scope.reservationData.tabs[$scope.viewState.currentTab].numAdults,
-                            children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren
+                            children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren,
+                            promotion_id : $scope.reservationData.promotionId
 
                         }
                     };
@@ -125,7 +126,9 @@ sntRover.controller('RVReservationAddonsCtrl', [
                         }
                     };
                     if (!$scope.reservationData.guest.id && !$scope.reservationData.company.id && !$scope.reservationData.travelAgent.id && !$scope.reservationData.group.id) {
-                        $scope.$emit('PROMPTCARD');
+                        $timeout(function() {
+                            $scope.$emit('PROMPTCARD');
+                        }, 500);
                         $scope.$watch("reservationData.guest.id", save);
                         $scope.$watch("reservationData.company.id", save);
                         $scope.$watch("reservationData.travelAgent.id", save);

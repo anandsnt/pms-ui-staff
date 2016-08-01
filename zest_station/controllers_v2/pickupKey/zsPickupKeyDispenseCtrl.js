@@ -157,8 +157,12 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 */
 		var localEncodingSuccsess = function(response) {
 			if ($scope.inDemoMode()) {
-				$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
-				dispenseKey();
+				setTimeout(function(){
+					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
+					dispenseKey();
+
+					$scope.runDigestCycle();
+				},2000);
 
 			} else {
 				if (response !== null && response.key_info && response.key_info[0]) {
@@ -166,6 +170,8 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 						$scope.dispenseKeyData = response.key_info[0].base64;
 						$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
 						dispenseKey();
+
+						$scope.runDigestCycle();
 					} else {
 						setFailureReason();
 					}
@@ -213,9 +219,11 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
 
 			if ($scope.inDemoMode()) {
-				onResponseSuccess({
-					'status': 'success'
-				});
+				setTimeout(function(){
+					onResponseSuccess({
+						'status': 'success'
+					});
+				},1200);
 			} else {
 				if ($scope.writeLocally()) {
 					console.log('write locally');
