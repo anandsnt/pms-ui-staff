@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <ng-include="'/assets/partials/zestStation/kiosk/_include/head.html'"></ng-include>
+    </head>
+        <!-- Header --> 
+        <ng-include="'/assets/zest_station/css/kiosk/_include/navigation.html'" ></ng-include>
+
+        <!-- Content -->
+        <section id="main" class="centered" role="main">
+            <div id="content">
+                <h1>{{'ERR_PAGE_SUB' |translate}}</h1>
+                <button type="button" class="button" touch-press='goToScreen($event,"admin-login")'>{{'ADMIN_LOGIN' |translate}}</button>
+                <button type="button" class="button transparent" touch-press='goToScreen($event,"home")'>{{'ADMIN_EXIT' |translate}}</button>
+            </div>
+        </section>
+</html>

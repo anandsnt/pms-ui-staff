@@ -1,0 +1,96 @@
+<!-- search mode -->
+<ng-include src="'/assets/partials/kiosk/generic/input-text.html'" ng-show="isSearchMode() && mode !== 'no-match' && at !== 'input-qr-code'"></ng-include>
+<!-- reservation list view -->
+<section id="main" class="centered test ng-scope" role="main" ng-hide="isSearchMode() || mode === 'no-match' || mode === 'single-reservation'" click-touch="resetTime()">
+    <div id="content" ng-show="shouldShowSearchResults()">
+        <h1>{{'RES_SRCH_SEL' |translate}}</h1>
+        <div id="labels">
+            <span class="label">{{'RES_SRCH_NAME' |translate}}</span>
+            <span class="label">{{'RES_SRCH_CHK_OUT_ROOM' |translate}}</span>
+        </div>
+        <ul id="selection">
+            <!-- Show no more than 3 results per page -->
+            <li ng-repeat="reservation in reservations">
+                <div class="details" touch-press="selectReservation(reservation)">
+                    <strong class="name">{{reservation.guest_details[0].last_name}}, {{reservation.guest_details[0].first_name}}</strong>
+                    <div class="date">
+                        {{reservation.departure_date | date:dateFormat}} ({{reservation.stay_dates.length-1}} {{"FIND_RESERVATION_HOURLY_NIGHTLY"|translate}})
+                        <!--span>{{reservation.room_type}}</span-->
+                        <span>{{reservation.stay_dates[0].room_type}}</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
+</section>
+<!-- no match -->
+<section id="main" class="centered" role="main" ng-show='mode === "no-match"' click-touch='resetTime()'>
+    <div id="content">
+        <h1 style="padding-top: 23px;">{{'RES_SRCH_SRY' |translate}}</h1>
+        <h2>{{'RES_SRCH_SRY_SUB' |translate}}</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li ng-if="!qrCodeScanFailed">
+                    <button type="button" class="button option" touch-press='reEnterLastName(reservationParams.last_name)'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    {{'RES_SRCH_RE_ENTER_LAST' |translate}}
+                    <span>"{{reservationParams.last_name}}"</span>
+                </li>
+                <li ng-if="qrCodeScanFailed">
+                    <button type="button" 
+                            class="button option" 
+                            touch-press='retryQRScan()'>
+                        <div ng-include="icons.url.qr_noarrow"></div>
+                    </button>
+                    {{'QR_SCAN_RETRY' |translate}}
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li ng-show="showRoomEnter && !qrCodeScanFailed">
+                    <button type="button" class="button option" touch-press='reEnterRoomNumber(reservationParams.room_no)'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    {{'RES_SRCH_RE_ENTER_ROOM' |translate}}
+                    <span>"{{reservationParams.room_no}}"</span>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    {{'RES_SRCH_TALK' |translate}}
+                    <span>{{'RES_SRCH_TALK_SUB' |translate}}</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
+</section>
+<section id="main" class="centered" role="main" ng-show='at === "input-qr-code"' click-touch='resetTime()'>
+    <div id="content" ng-hide="qrCodeScanFailed" touch-press='startScanPressed()'>
+        <h1 style="padding-top: 23px;">{{'QR_LOOKUP_HEADER' |translate}}</h1>
+        <h2>{{'QR_LOOKUP_SUB_HEADER' |translate}}</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option">
+                        <div ng-include="icons.url.qr_noarrow"></div>
+                    </button>
+                </li>
+            </ul>
+            <h1>{{'QR_LOOKUP_BUTTON_TEXT' |translate}}</h1>
+        </nav>
+    </div>
+    
+    <div ng-include="'/assets/partials/kiosk/specific/zsQRScanFailure.html'"></div>
+    
+    <span ng-include="'/assets/partials/rvTabletFooter.html'"></span>
+</section>

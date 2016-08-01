@@ -1,0 +1,31 @@
+
+        <!-- Content -->
+<section id="main" class="centered" role="main" ng-hide='at !== "select-reservation"' click-touch='resetTime()'>
+    <div id="content">
+        <h1>{{'SEL_RES_HEADER' |translate}}</h1>
+        <div id="labels">
+            <span class="label">{{'SEL_RES_HEADER' |translate}}</span>
+            <span class="label">{{'SEL_RES_CO_DATE_ROOM_TYPE' |translate}}</span>
+        </div>
+        
+        <ul id="selection"> <!-- Show no more than 3 results per page -->
+            <li ng-repeat="reservation in resList track by $index">
+                <div class="details" touch-press="selectReservation(reservation)">
+                    <strong class="name">{{reservation.guest_details[0].last_name}}, {{reservation.guest_details[0].first_name}}</strong>
+                    <div class="date">
+                        {{reservation.arrival_date | date:dateFormat}} ({{reservation.stay_dates.length-1}} {{hoursNights}})
+                        <!--span>{{reservation.room_type}}</span-->
+                        <span>{{reservation.stay_dates[0].room_type}}</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div id="actions" class='select-reservation selectPagingBtns'> <!-- If showing only "Next" button, add class "align-right". When showing only "Previous" button, or both buttons, remove that class -->
+            <button type="button" class="button transparent prev" touch-press='reservationPreviousPage()' ng-class='{"overlay":page ==1 }'>{{'SEL_RES_LAST' |translate}}</button>
+            <label ng-show='reservationPages > 1' ng-hide='reservationPages == 1'>{{reservationPageNum}} / {{reservationPages}}</label>
+            <button type="button" class="button transparent next" touch-press='reservationNextPage()' ng-class='{"overlay":page==totalPages}'>{{'SEL_RES_NEXT' |translate}}</button>
+        </div> 
+    </div> 
+    
+<span ng-include="'/assets/partials/rvTabletFooter.html'" ></span>
+</section>

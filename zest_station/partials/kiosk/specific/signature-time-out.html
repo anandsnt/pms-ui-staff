@@ -1,0 +1,29 @@
+
+<section id="main" class="centered" role="main" ng-hide='at !== "cc-sign-time-out"' click-touch='resetTime()'>
+<div id="content">
+    <h1>{{'CC_SIGN_TIMEOUT' |translate}}</h1>
+    <h2>{{'CC_SIGN_TIMEOUT_SUB' |translate}}</h2>
+    <nav id="options" role="nav">
+        <ul role="menu">
+            <li>
+                <button type="button" class="button option" touch-press='reSignCC()'>
+                    <!--div ng-include="'/assets/zest_station/css/icons/pen.svg'"></div-->
+                    <div ng-include="icons.url.pen"></div>
+                </button>
+                {{'CC_SIGN_TIMEOUT_SIGN' |translate}}
+            </li>
+            <li class="break">
+                <span>{{'OR_TEXT' |translate}}</span>
+            </li>
+            <li>
+                <button type="button" class="button option" touch-press='speakToStaff()'>
+                    <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
+                    <div ng-include="icons.url.staff"></div>
+                </button>
+                {{'SPEAK' |translate}}
+                <span>{{'SPEAK_SUB' |translate}}</span>
+            </li>
+        </ul>
+    </nav>
+</div>
+</section>

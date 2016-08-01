@@ -1,0 +1,84 @@
+<!-- print option -->
+<section id="main" role="main" class="centered" ng-show="mode === 'print-mode'">
+    <div id="content">
+        <!--h1>{{'END_THANKS' |translate}}</h1-->
+        <h3 ng-show="hasEmail && emailOpted && !emailError">{{'EMAILED_BILL_WANT_PRINTED' |translate}}</h3>
+        <h3 ng-show="emailError">{{'PRINT_BELOW_EMAIL_BILL_NOT_SENT_MSG' |translate}}</h3>
+        <h3 ng-show="(!emailOpted && !hasEmail) && zestStationData.theme == 'zoku'">{{'CHECKOUT_BILL_NO_EMAIL' |translate}}</h3>
+        
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='printBill()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/print.svg'"></div-->
+                        <div ng-include="icons.url.print"></div>
+                    </button>
+                    {{'PRINT_BILL' |translate}}
+                </li>
+                <li class="break">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='clickedNoThanks()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/no-print.svg'"></div-->
+                        <div ng-include="icons.url.noprint"></div>
+                    </button>
+                    {{'NO_THX' |translate}}
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+
+<!-- Email entry -->
+<section id="main" role="main" class="centered" ng-show="mode === 'email-mode'">
+    <!-- Type Email -->
+    <div id="content" ng-show="!emailError">
+        <h1>{{'TYPE_EMAIL' |translate}}</h1>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input class="start-focused" id="email_text" ng-focus="showOnScreenKeyboard('email_text')" ng-click="showOnScreenKeyboard('email_text')" type="text" ng-keydown="resetTime()" ng-model="email" placeholder="" enter-press="saveEmail()" value="" touch-press />
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" touch-press='saveEmail()' ng-class="{'overlay': email.length < 1}">{{'NEXT_BTN' |translate}}</button>
+            </div>
+        </form>
+        <button id="skipEmailInputBtn" ng-show='mode === "email-mode"' type='button' class='button' touch-press='skipEmailEntryAfterSwipe(); resetTime()'>{{'SKIP_BTN' |translate}}</button>
+    </div>
+    <!-- Email invalid -->
+    <div id="content" ng-show="emailError">
+        <h1>{{'EMAIL_ERR_HEADER' |translate}}</h1>
+        <h2>{{'EMAIL_ERR_HEADER_SUB' |translate}}</h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='reTypeEmail()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    {{'RE_TYPE' |translate}}
+                    <span>{{email}}</span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+
+
+<!-- Final view-->
+<section id="main" role="main" class="centered" ng-show="mode === 'final-mode'">
+    <div id="content">
+        <h1>{{'END_THANKS' |translate}}</h1>
+        <h3 ng-show="emailOpted && !emailSkipped && !emailError">{{'EMAIL_BILL_SENT_MSG' |translate}}</h3>
+        <h3 ng-show="!emailSkipped && emailError">{{'EMAIL_BILL_NOT_SENT_MSG' |translate}}</h3>
+        <h3 ng-show="printOpted">{{'BILL_PRINTED_BELOW' |translate}}</h3>
+        <button type="button" class="button" click-touch='clickedOnCloseButton()'>{{'DONE_BTN' |translate}}</button>
+    </div>
+</section>
+<!-- print starts here -->
+<div ng-include="'/assets/partials/kiosk/specific/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
+</div>
+<div ng-include="'/assets/partials/kiosk/specific/zsYotelBillPrint.html'" ng-if="zestStationData.theme === 'yotel'">
+</div>
