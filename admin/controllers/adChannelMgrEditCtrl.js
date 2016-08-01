@@ -1,6 +1,6 @@
-admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ADChannelMgrSrv', '$filter', '$timeout', '$stateParams',
-    function ($scope, $rootScope, $state, ADChannelMgrSrv, $filter, $timeout, $stateParams) {
-
+admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'availableRates', 'availableRoomTypes', 'ADChannelMgrSrv', '$filter', '$timeout', '$stateParams',
+    function ($scope, $rootScope, $state, availableRates, availableRoomTypes,  ADChannelMgrSrv, $filter, $timeout, $stateParams) {
+        console.log(availableRoomTypes, availableRates);
         $scope.errorMessage = '';
         $scope.successMessage = "";
         $scope.selectedInterface = {};
@@ -505,34 +505,20 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ADC
             $scope.invokeApi(ADChannelMgrSrv.fetchRates, {}, fetchSuccess, fetchFailure);
         };
         $scope.populateAvailableRates = function(){
-              var fetchSuccess = function(data){
+                // I dont know WTH is doing here, we need to work on this screen later.
                 $scope.available_rates = [];
-                for (var i in data.results){
-                    $scope.available_rates.push(data.results[i]);
+                for (var i in availableRates){
+                    $scope.available_rates.push(availableRates[i]);
                 }
                 $scope.sortList($scope.available_rates, 'name');
                 $scope.available_rates.unshift({id: 0, placeholder: true, name: 'Select Rate'});
                 $scope.selectedRate = $scope.available_rates[0];
                 $scope.refreshLists();
-                $scope.$emit('hideLoader');
-            };
-            var fetchFailure = function(data){
-                $scope.$emit('hideLoader');
-            };
-            
-            $scope.invokeApi(ADChannelMgrSrv.fetchRates, {}, fetchSuccess, fetchFailure);
         };
         $scope.populateAvailableRoomTypes = function(){
-            var fetchSuccess = function(data){
-                    $scope.available_room_types = data.data.room_types;
-                    $scope.resortLists();
-                    $scope.$emit('hideLoader');
-                };
-                var fetchFailure = function(data){
-                    $scope.$emit('hideLoader');
-                };
-
-                $scope.invokeApi(ADChannelMgrSrv.fetchRoomTypes, {}, fetchSuccess, fetchFailure);
+            // I dont know WTH is doing here, we need to work on this screen later.
+            $scope.available_room_types = availableRoomTypes;
+            $scope.resortLists();
         };
         
         $scope.cancelMainAddRemove = function(){
