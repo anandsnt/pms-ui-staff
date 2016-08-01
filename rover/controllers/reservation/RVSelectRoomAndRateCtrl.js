@@ -93,6 +93,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$stateParams.allotment_id ||
 					$scope.reservationData.allotment.id ||
 					$stateParams.promotion_code ||
+					$scope.reservationData.promotionId ||
 					$stateParams.is_member == "true"
 			},
 			isMembershipValid = function() {
