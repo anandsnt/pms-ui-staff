@@ -1,6 +1,6 @@
 admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'availableRates', 'availableRoomTypes', 'ADChannelMgrSrv', '$filter', '$timeout', '$stateParams',
     function ($scope, $rootScope, $state, availableRates, availableRoomTypes,  ADChannelMgrSrv, $filter, $timeout, $stateParams) {
-        console.log(availableRoomTypes, availableRates);
+
         $scope.errorMessage = '';
         $scope.successMessage = "";
         $scope.selectedInterface = {};
@@ -505,7 +505,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
             $scope.invokeApi(ADChannelMgrSrv.fetchRates, {}, fetchSuccess, fetchFailure);
         };
         $scope.populateAvailableRates = function(){
-                // I dont know WTH is doing here, we need to work on this screen later.
+                // TODO: This needs to be reworked. Approach can be modified a little bit so that devs. can follow eaily
                 $scope.available_rates = [];
                 for (var i in availableRates){
                     $scope.available_rates.push(availableRates[i]);
@@ -516,7 +516,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 $scope.refreshLists();
         };
         $scope.populateAvailableRoomTypes = function(){
-            // I dont know WTH is doing here, we need to work on this screen later.
+            // TODO: This needs to be reworked. Approach can be modified a little bit so that devs. can follow eaily
             $scope.available_room_types = availableRoomTypes;
             $scope.resortLists();
         };
