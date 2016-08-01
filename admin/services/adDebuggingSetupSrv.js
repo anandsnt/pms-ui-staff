@@ -2,8 +2,8 @@ admin.service('adDebuggingSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSr
 
 	this.fetchDevices = function(){
 		var deferred = $q.defer();
-		var url = '/api/notifications/notification_device_list?application=ROVER';
-		ADBaseWebSrvV2.getJSON(url).then(function({}) {
+		var url = '/api/notifications/notification_device_list?application=ZEST';
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);

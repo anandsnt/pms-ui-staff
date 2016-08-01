@@ -1,7 +1,7 @@
 <section class="content current admin-scrollfix">
     <div data-view="ReportsListView">
         <header class="content-title float">
-            <h2 translate> DEBUGGING SETUP </h2>
+            <h2 translate> DEBUGGING_SETUP_TITLE </h2>
         </header>
         <section class="content-scroll">
             <div class="wrapper">
@@ -10,30 +10,44 @@
                         <a href="#" class="toggle-filter has-arrow" ng-class="{'active': device.device_uid === selectedDevice.device_uid}" ng-click="selectDevice($event, device)">
                             <div class="data">
                                 <h2 class="single-title">
-                                     {{ device.title }}
+                                     {{ device.device_uid }}
                                 </h2>
                             </div>
                         </a>
-                        <div class="configure-report" ng-if="device.device_uid === selectedDevice.device_uid"  >
+                        <div ng-if="device.device_uid === selectedDevice.device_uid"  >
+                            <div class="form">
+                                <fieldset class="holder left">
+                                	<div class="entry full-width" >
+        								<label for="enable_debugging" translate> DEBUGGING_SWITCH_LABEL </label>
+        								<div class="switch-button single" ng-class="{ on : device.is_logging_enabled }" >
+        									<input type="checkbox" ng-model="device.is_logging_enabled">
+        									<span class="switch-icon"></span>
+        								</div>
+        							</div>
+                                    <div class="entry full-width" >
+                                        <label class="entry" ng-show="device.logging_start_time != ''"> {{'START_LABEL' | translate}} {{getDisplayTime(device.logging_start_time)}}</label>
+                                    </div>
+                                    
+                                </fieldset>
 
-                        	<div class="entry" >
-								<label for="enable_debugging" translate> DEBUGGING_SWITCH_LABEL </label>
-								<div class="switch-button single" ng-class="{ on : device.is_logging_enabled }" >
-									<input type="checkbox" ng-model="device.is_logging_enabled">
-									<span class="switch-icon"></span>
-								</div>
-							</div>
+                                <fieldset class="holder right">
+                                    <ad-dropdown label-in-drop-down="{{'DEBUG_DURATION_PLACEHOLDER' | translate}}" list="hours" selected-id='device.hours_log_enabled' div-class="full-width" selbox-class="placeholder" label="{{'DEBUG_DURATION_LABEL' | translate}}" on-change = "changeDuration"></ad-dropdown>
+                                    <div class="entry full-width" >
+                                        <label class="entry" ng-show="device.logging_end_time != ''" >{{'END_LABEL' | translate}} {{getDisplayTime(device.logging_end_time)}}  </label>
+                                    </div>
+                                </fieldset>
 
-							<ad-dropdown label-in-drop-down="{{'DEBUG_DURATION_PLACEHOLDER' | translate}}" list="hours" selected-id='device.hours_log_enabled' selbox-class="placeholder" div-class="full-width" label="{{'DEBUG_DURATION_LABEL' | translate}}"></ad-dropdown>
+    							
 
-							<div class="actions float">
-								<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
-									CANCEL
-								</button>
-								<button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="saveDebugSettings()" translate>
-									SAVE_CHANGES
-								</button>
-							</div>
+    							<div class="actions float">
+    								<button type="button" id="cancel" class="button blank add-data-inline" ng-click="selectDevice($event, device)" translate>
+    									CANCEL
+    								</button>
+    								<button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="saveDebugSettings()" translate>
+    									SAVE_CHANGES
+    								</button>
+    							</div>
+                            </div>
                         </div>
                     </li>
                 </ul>

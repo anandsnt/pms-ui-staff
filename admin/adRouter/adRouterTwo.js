@@ -548,7 +548,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		});
 
 		$stateProvider.state('admin.debuggingSetup', {
-			templateUrl: '/assets/partials/DebuggingSetup/adDebuggingSetup.html',
+			templateUrl: '/assets/partials/debuggingSetup/adDebuggingSetup.html',
 			controller: 'adDebuggingSetupCtrl',
 			url : '/debuggingSetup'
 		});

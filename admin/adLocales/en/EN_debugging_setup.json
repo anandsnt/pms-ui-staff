@@ -1,0 +1,13 @@
+
+
+
+
+
+
+
+"DEBUGGING_SETUP_TITLE": "Logging Setup",
+"DEBUGGING_SWITCH_LABEL": "Enable Logging",
+"DEBUG_DURATION_PLACEHOLDER": "duration",
+"DEBUG_DURATION_LABEL": "Debug Duration (in hours)",
+"START_LABEL" : "Started at :",
+"END_LABEL" : "Ends at :"
