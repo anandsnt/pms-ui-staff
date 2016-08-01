@@ -481,6 +481,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 
 		$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+			$scope.hideKeyboardIfUp();
 			console.info("\ngoing to----->" + from.name);
 			console.info("to stateparams" + toParams);
 			console.info(toParams);
