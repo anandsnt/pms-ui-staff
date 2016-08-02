@@ -52,7 +52,7 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
                     $scope.translateTo('EN_snt', language);
                 }
             };
-            
+
             //update flag to say that some language was set
             $scope.zestStationData.IsDefaultLanguageSet = true;
 
@@ -71,7 +71,9 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
             }
         };
         $scope.selectLanguage = function(language) {
+            //update home ctrl variable
             $scope.$parent.selectedLanguage = language;
+             //update root ctrl variable
             $scope.zestStationData.selectedLanguage = language;
             $scope.translateTo($scope.$parent.selectedLanguage.info.code, $scope.$parent.selectedLanguage);
             $scope.$parent.languageSelect();
