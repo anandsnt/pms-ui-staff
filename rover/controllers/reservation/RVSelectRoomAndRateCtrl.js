@@ -2073,28 +2073,26 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		//Check whether the rates are available in ratemeta which is cached
 		var checkForRatesInCache = function() {
 			var isRateInCache = _.every(rates.results, function(rate) {
-									return ratesMeta.rates[rate.id];
+									//For room type adr request, rate object contains rate_id and for rates its id
+									var rateId = rate.rate_id ? rate.rate_id : rate.id;
+									return ratesMeta.rates[rateId];
 								});
 			return isRateInCache;
 		};
 
 		$scope.reservationData.ratesMeta = ratesMeta['rates'];
-
-		if(RVRoomRatesSrv.getRoomAndRateActiveTab() === 'RATE' || RVRoomRatesSrv.getRoomAndRateActiveTab() === 'RECOMMENDED') {
-			var isRateInCache = checkForRatesInCache();
-			if(!isRateInCache) {
-					var params = {};
-					params.isForceRefresh = true;
-					RVReservationBaseSearchSrv.fetchRatesMeta(params).then(function(response) {
-						$scope.reservationData.ratesMeta = response.rates;
-						initialize();
-					});
-			} else {
-				initialize();
-			}
+		var isRateInCache = checkForRatesInCache();
+		if(!isRateInCache) {
+				var params = {};
+				params.isForceRefresh = true;
+				RVReservationBaseSearchSrv.fetchRatesMeta(params).then(function(response) {
+					$scope.reservationData.ratesMeta = response.rates;
+					initialize();
+				});
 		} else {
 			initialize();
 		}
+
 
 	}
 ]);
