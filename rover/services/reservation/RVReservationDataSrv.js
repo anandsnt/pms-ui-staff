@@ -46,7 +46,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 					roomTypeId: '',
 					roomTypeName: '',
 					rateId: '',
-					roomId:'',
+					room_id:'',
 					rateName: '',
 					rateAvg: 0,
 					rateTotal: 0,
@@ -485,7 +485,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 				roomDetails.rateId.push(item.rate_id);
 				if (index === 0) {
 					roomDetails.roomTypeId = item.room_type_id;
-					roomDetails.roomId = stayCard.room_id;
+					roomDetails.room_id = stayCard.room_id;
 					roomDetails.roomTypeName = stayCard.room_type_description;
 					RVReservationStateService.bookMark.lastPostedRate = item.rate_id;
 				}
