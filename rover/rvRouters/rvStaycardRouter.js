@@ -140,7 +140,12 @@ angular.module('stayCardModule', [])
                         params.room_type_id = $stateParams.room_type_id;
                     if($stateParams.is_member == "true")
                         params.is_member = $stateParams.is_member;
-                    RVRoomRatesSrv.setRoomAndRateActiveTab(RVReservationBaseSearchSrv.getRoomRatesDefaultView());
+
+                    var activeTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
+                    if(params.company_id || params.travel_agent_id || params.group_id || params.promotion_code || params.promotion_id || params.is_member) {
+                        activeTab = 'RECOMMENDED';
+                    }
+                    RVRoomRatesSrv.setRoomAndRateActiveTab(activeTab);
                     return RVRoomRatesSrv.fetchRatesInitial(params)
                 },
                 ratesMeta: function(RVReservationBaseSearchSrv, staycardJsAssets) {
