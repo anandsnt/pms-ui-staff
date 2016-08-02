@@ -1,4 +1,4 @@
-admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state','$filter','$stateParams',function($scope,adDebuggingSetupSrv,$state,$filter,$stateParams){
+admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state','$filter','$stateParams', 'ngTableParams',function($scope,adDebuggingSetupSrv,$state,$filter,$stateParams, ngTableParams){
 
  /*
   * To retrieve previous state
@@ -8,8 +8,37 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
   $scope.successMessage = '';
   $scope.isLoading = true;
   $scope.selectedDevice = "";
+  $scope.searchText = "";
   BaseCtrl.call(this, $scope);
 
+
+  $scope.sortByName = function(){
+      if($scope.selectedDevice === "") {
+        $scope.tableParams.sorting({'device_name' : $scope.tableParams.isSortBy('device_name', 'asc') ? 'desc' : 'asc'});
+      }
+  };
+  $scope.sortByUser = function(){
+      if($scope.selectedDevice === "") {
+        $scope.tableParams.sorting({'last_logged_in_user' : $scope.tableParams.isSortBy('last_logged_in_user', 'asc') ? 'desc' : 'asc'});
+      }
+  };
+  $scope.sortByDevice = function(){
+      if($scope.selectedDevice === "") {
+        $scope.tableParams.sorting({'device_type' : $scope.tableParams.isSortBy('device_type', 'asc') ? 'desc' : 'asc'});
+    }
+  };
+
+  $scope.filterDevices = function(value, index, array){
+      if($scope.searchText == '')
+        return true;
+      var searchRegExp = new RegExp($scope.searchText.toLowerCase());
+      if(value.device_name != undefined && value.device_name != null)
+        return searchRegExp.test(value.device_name.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase()) || searchRegExp.test(value.device_version.toLowerCase());
+      else if(value.device_version != undefined && value.device_version != null)
+        return searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase()) || searchRegExp.test(value.device_version.toLowerCase());
+      else
+        return searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase());
+   };
 
   $scope.fetchDeviceDebugSetup = function(){
 
@@ -18,6 +47,32 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
         $scope.$emit('hideLoader');
         $scope.deviceList = data;
         setDurations();
+        // REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
+        $scope.tableParams = new ngTableParams({
+          // show first page
+          page: 1,
+          // count per page - Need to change when on pagination implemntation
+          count: $scope.deviceList.length,
+          sorting: {
+            // initial sorting
+            device_name: 'asc'
+          }
+        }, {
+          // length of data
+          total: $scope.deviceList.length,
+          getData: function ($defer, params)
+          {
+            if (params.settings().$scope == null) {
+              params.settings().$scope = $scope;
+            };
+            // use build-in angular filter
+            var orderedData = params.sorting() ?
+              $filter('orderBy')($scope.deviceList, params.orderBy()) :
+              $scope.deviceList;
+            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+          }
+        });
+        $scope.tableParams.reload();
   };
   
   $scope.invokeApi(adDebuggingSetupSrv.fetchDevices, {},fetchDeviceDebugSetupSuccessCallback);
