@@ -10,7 +10,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 'activeDateRangeIndex': '',
                 'rateSavePromptOpen': false,
                 'isEdit': false,
-                'isBasedOn': false
+                'notIsBasedOn': true
             };
 
             $scope.is_edit = false;
@@ -64,7 +64,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 setRateDetails(rateDetails);
                 $scope.is_edit = true;
                 if(rateDetails.based_on && rateDetails.based_on.id){
-                    $scope.otherData.isBasedOn = (rateDetails.based_on.is_copied) ? false :  true;
+                    $scope.otherData.notIsBasedOn = (rateDetails.based_on.is_copied) ? false :  true;
                 }
                 $scope.otherData.isEdit = true;
             }

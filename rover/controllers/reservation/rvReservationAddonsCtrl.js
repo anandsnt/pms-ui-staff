@@ -46,7 +46,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             group_id: $scope.reservationData.group.id,
                             room_type_id: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
                             adults: $scope.reservationData.tabs[$scope.viewState.currentTab].numAdults,
-                            children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren
+                            children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren,
+                            promotion_id : $scope.reservationData.promotionId
 
                         }
                     };

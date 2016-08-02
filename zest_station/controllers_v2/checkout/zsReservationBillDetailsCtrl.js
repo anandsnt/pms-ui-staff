@@ -208,7 +208,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
             if (checkIfDueBalancePresent()) {
                 console.warn("reservation has balance due");
-                $state.go('zest_station.speak_to_staff');
+                $state.go('zest_station.speakToStaff');
             } else {
                 $scope.checkOutGuest();
             };
