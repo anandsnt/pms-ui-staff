@@ -770,6 +770,17 @@
                             .size(40px, 120px); 
                         }
                     }
+
+                    .numbers-pagination {
+                        -webkit-justify-content: center;
+                        justify-content: center;
+
+                        .button {
+                            font-size: 14px;
+                            line-height: 40px;
+                            .square(40px);
+                        }
+                    }
                 }
 
                 .content-right {
@@ -4950,10 +4961,20 @@
                             &.with-pagination { .calc-height(100, 60); }
                         }
                             
-                        .search-pagination {
+                        .search-pagination,
+                        .numbers-pagination {
                             position: relative;
                             padding: 10px;
                             background: @grey2 @darkTexture repeat;
+
+                            .button {
+                                font-size: 14px;
+                                line-height: 40px;
+                                height: 40px;
+                            }
+                        }
+
+                        .search-pagination {
 
                             p {
                                 font-size: 14px;
@@ -4962,10 +4983,14 @@
                             }
 
                             .button {
-                                font-size: 14px;
-                                line-height: 40px;
                                 width: 90px;
                                 .pull-right;
+                            }
+                        }
+
+                        .numbers-pagination {
+                            .button {
+                                width: 40px;
                             }
                         }
                     }
