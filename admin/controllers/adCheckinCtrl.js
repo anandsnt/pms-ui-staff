@@ -158,6 +158,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     $scope.checkinData.is_notify_on_room_ready = ($scope.checkinData.is_notify_on_room_ready_flag) ? 'true' : 'false';
     $scope.checkinData.require_cc_for_checkin_email = ($scope.checkinData.require_cc_for_checkin_email_flag) ? 'true' : 'false';
 
+    $scope.checkinData.exclude_routing_reservations_from_email = ($scope.checkinData.exclude_routing_reservations_from_email) ? true : false;
+
     var excluded_rate_codes = [];
     var excluded_block_codes = [];
 
@@ -240,6 +242,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'eta_enforcement':$scope.checkinData.eta_enforcement,
       'zestweb_enforce_deposit':$scope.checkinData.zestweb_enforce_deposit,
       'enforce_country_sort' : $scope.checkinData.enforce_country_sort,
+      'exclude_routing_reservations_from_email' : $scope.checkinData.exclude_routing_reservations_from_email,
       'key_prompt_on' : $scope.checkinData.key_prompt_on,
       'key_prompt_title' : $scope.checkinData.key_prompt_title,
       'key_prompt_text': $scope.checkinData.key_prompt_text,

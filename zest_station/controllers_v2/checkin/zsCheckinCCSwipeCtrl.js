@@ -338,6 +338,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var initWsSwipe = function() {
+            if ($scope.inDemoMode()){
+                setTimeout(function(){
+                    goToCardSign();
+                },2000);
+                return;
+            }
+
             setTimeOutFunctionToEnsureSocketIsOpened();
             console.info("websocket: readyState -> " + $scope.socketOperator.returnWebSocketObject().readyState);
             //open socket if not in open state
@@ -357,6 +364,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
 
         var initiateiPadCardReader = function() {
+            if ($scope.inDemoMode()){
+                setTimeout(function(){
+                    goToCardSign();
+                },2000);
+                return;
+            }
+
             if (atCardSwipeScreen()) { //check which screen we're at,
                 // some delay in request could cause the error / success to come back when at another screen, 
                 // typically when developing or in demo mode
@@ -478,11 +492,16 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         var getCCAuthorization = function(authAtCheckinRequired, amount, isEmv) {
             console.info('getCCAuthorization: ', arguments);
+            if (authAtCheckinRequired === 'true'){
+                authAtCheckinRequired = true;
+            } else if(authAtCheckinRequired === 'false') {
+                authAtCheckinRequired = false;
+            }
             if (!authAtCheckinRequired) {
                 console.log('!authAtCheckinRequired, to signature');
                 goToCardSign();
             } else {
-                amount = 0;
+                //amount = 0;//pass through the actual amount, the amount passed here adheres to the reservation setting rules (via api)
                 captureAuthorization(amount, isEmv, false);
             }
         };
@@ -516,9 +535,18 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             } else {
                 $scope.authAfterDeposit = false;
             }
+            var debuggingCardPmt = $scope.debuggingCardPayment(false),
+                inDemo = $scope.inDemoMode(),
+                atCardSwipe = atCardSwipeScreen();
 
-            if ($scope.inDemoMode() && atCardSwipeScreen()) {
-                onSuccess({
+
+
+
+            if ((inDemo && atCardSwipe) || debuggingCardPmt) {
+                console.info('inDemo: ',inDemo);
+                console.info('atCardSwipe: ',atCardSwipe);
+                console.warn('debuggingCardPayment: ',debuggingCardPmt);
+                onSuccessCaptureAuth({
                     'status': 'success'
                 });
 

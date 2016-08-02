@@ -156,8 +156,10 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 */
 		var localEncodingSuccsess = function(response) {
 			if ($scope.inDemoMode()) {
-				$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
-				dispenseKey();
+				setTimeout(function(){
+					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
+					dispenseKey();
+				},2000);
 
 			} else {
 				if (response !== null && response.key_info && response.key_info[0]) {
@@ -198,16 +200,33 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
 
 			if ($scope.inDemoMode()) {
-				onResponseSuccess({
-					'status': 'success'
-				});
+				setTimeout(function(){
+					onResponseSuccess({
+						'status': 'success'
+					});
+				},1200);
 			} else {
-				$scope.callAPI(zsGeneralSrv.encodeKey, {
-					params: params,
-					"loader": "none", //to hide loader
-					'successCallBack': onResponseSuccess,
-					'failureCallBack': setFailureReason
-				});
+				if ($scope.writeLocally()) {
+					console.log('write locally');
+					//encode / dispense key from infinea || ingenico
+					//local encoding + infinea
+					if ($scope.inDemoMode()) {
+						setTimeout(function() {
+								onSuccessWriteKeyDataLocal();
+							}, 2800) //add some delay for demo purposes
+					} else {
+						$scope.$emit('printLocalKeyCordova', $scope.selectedReservation.reservationId, $scope.noOfKeysSelected);
+						return;
+					};
+				} else {
+					$scope.callAPI(zsGeneralSrv.encodeKey, {
+						params: params,
+						"loader": "none", //to hide loader
+						'successCallBack': onResponseSuccess,
+						'failureCallBack': setFailureReason
+					});
+				}
+
 			}
 		};
 		$scope.readyForUserToPressMakeKey = true;
@@ -248,6 +267,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				//provide some timeout for user to grab keys
 				$timeout(initMakeKey, 6000);
 			}
+			$scope.runDigestCycle();
 		};
 
 
