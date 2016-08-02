@@ -788,7 +788,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                                 return rate && rate.toString().match(/_CUSTOM_/) ? null : rate
                             })(),
                             room_type_id: room.roomTypeId,
-                            room_id: room.roomId,
+                            room_id: room.room_id,
                             adults_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
                             children_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydata.guests.children),
                             infants_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydata.guests.infants),
@@ -862,8 +862,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {
                 if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
                     //CICO-32021 - API expects null if room id not there.
-                    room.roomId  = (room.room_id !== "") ? room.room_id : null;
-                    data.room_id.push(room.roomId);
+                    room.room_id  = (room.room_id !== "") ? room.room_id : null;
+                    data.room_id.push(room.room_id);
 
                 }
             });
