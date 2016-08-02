@@ -670,6 +670,24 @@
                                 content: "" !important;
                                 display: block !important;
                             }
+
+                            /* Details ***/
+                            &.details {
+                                em,
+                                span,
+                                strong {
+                                    line-height: 1;
+                                    .show();
+                                }
+
+                                .adjusted {
+                                    color: darken(@yellow, 10);
+                                }
+
+                                .reference {
+                                    color: @grey3;
+                                }
+                            }
                         }
 
                         &:nth-child(odd) {
