@@ -22,7 +22,9 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 	};
 
 	$scope.giftCard = {
-		number: ""
+		number: "",
+        amountAvailable: false,
+        availableBalance: null
 	};
 
 
@@ -71,6 +73,19 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 			iFrame.src = iFrame.src;
 		}
 	};
+
+
+	var fetchGiftCardBalance = function() {
+        // $scope.giftCardAmountAvailable = false;
+        // var fetchGiftCardBalanceSuccess = function(giftCardData){
+        //     $scope.giftCardAvailableBalance = giftCardData.amount;
+        //     $scope.giftCardAmountAvailable = true;
+        //     $scope.$emit('giftCardAvailableBalance',giftCardData);
+        //     //data.expiry_date //unused at this time
+        //     $scope.$emit('hideLoader');
+        // };
+        // $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
+    };
 
 	//toggle between manual card entry and six payment swipe (C&P option in UI) for sixpayments
 	$scope.sixPayEntryOptionChanged = function() {
@@ -223,8 +238,31 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 		};
 	};
 
+    /**
+     * This method handles manual entry of Gift Card
+     */
 	$scope.onChangeGiftCard = function() {
-		console.log("GC #",$scope.giftCard.number);
+		var charLength = $scope.giftCard.number.length;
+
+		if(charLength >= 8 && charLength <= 22){
+
+		    $scope.$emit('showLoader');
+
+            sntPaymentSrv.fetchGiftCardBalance($scope.giftCard.number).then( response => {
+                //NOTE: response.expiry_date is unused at this time
+                $scope.giftCard.availableBalance = response.amount;
+                $scope.giftCard.amountAvailable = true;
+                $scope.$emit('hideLoader');
+            }, errorMessage => {
+                $scope.giftCard.amountAvailable = false;
+                $scope.errorMessage = errorMessage;
+            });
+
+		}else{
+			//hides the field and reset the amount stored
+			$scope.giftCard.amountAvailable = false;
+            $scope.giftCard.availableBalance = null;
+		}
 	};
 
 	// Payment type change action
