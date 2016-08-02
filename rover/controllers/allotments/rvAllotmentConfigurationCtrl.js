@@ -146,7 +146,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             if (!$scope.isInAddMode()) {
                 $scope.allotmentConfigData.summary.block_from = new tzIndependentDate($scope.allotmentConfigData.summary.block_from);
                 $scope.allotmentConfigData.summary.block_to = new tzIndependentDate($scope.allotmentConfigData.summary.block_to);
-                $scope.allotmentConfigData.summary.release_date = new tzIndependentDate($scope.allotmentConfigData.summary.release_date);
+                $scope.allotmentConfigData.summary.release_date = ($scope.allotmentConfigData.summary.release_date) ? new tzIndependentDate($scope.allotmentConfigData.summary.release_date) : "";
             }
 
 
