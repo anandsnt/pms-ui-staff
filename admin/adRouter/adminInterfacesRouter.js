@@ -85,6 +85,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     }
   });
 
+  $stateProvider.state('admin.travelClickSetup', {
+    templateUrl: '/assets/partials/interfaces/TravelClick/adTravelClickCRSSetup.html',
+    controller: 'adTravelClickCRSSetupCtrl',
+    url : '/travelclick/setup',
+    resolve: {
+      windsurferCRSSetupValues: ['adTravelClickCRSSetupSrv', function(adTravelClickCRSSetupSrv) {
+        return adTravelClickCRSSetupSrv.fetchWindsurferCRSConfiguration();
+      }]
+    }
+  });
+
   $stateProvider.state('admin.ideasSetup',{
     templateUrl: '/assets/partials/interfaces/ideas/adIdeasSetup.html',
     controller: 'adIdeasSetupCtrl',
