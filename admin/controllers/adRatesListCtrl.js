@@ -56,7 +56,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSr
 		            rate: 'asc' // initial sorting
 		        }
 		    }, {
-		        total: 0, // length of data
+		        total: $scope.data.length, // length of data
 		        getData: $scope.fetchTableData
 
 		    }
