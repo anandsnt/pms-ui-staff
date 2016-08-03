@@ -41,7 +41,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSr
 	        	params.total(data.total_count);
 	        	//params.total(data.results.length);
 	            $defer.resolve($scope.data);
-		    }, 1000);
+		    }, 500);
 
 		};
 		$scope.invokeApi(ADRatesSrv.fetchRates, getParams, fetchSuccessOfItemList);
