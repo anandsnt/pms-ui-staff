@@ -402,6 +402,14 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 		saveCCPayment(data);
 	});
 
+	$scope.showGiftCardToggle = function(){
+		var isGiftCardEnabled = _.find($scope.paymentTypes, {
+			name: "GIFT_CARD"
+		});
+
+		return $scope.hotelConfig.isStandAlone && !!isGiftCardEnabled;
+	};
+
 	/****************** init ***********************************************/
 
 	(function() {

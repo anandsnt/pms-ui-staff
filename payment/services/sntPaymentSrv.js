@@ -228,7 +228,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                 case "MLI":
                     break;
                 case "sixpayments":
-                    var time = new Date().getTime(),,
+                    var time = new Date().getTime(),
                         service_action = PAYMENT_CONFIG[gateWay].params.service_action;
 
                     iFrameUrlWithParams = PAYMENT_CONFIG[gateWay].iFrameUrl +
@@ -246,7 +246,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                 iFrameUrl : iFrameUrlWithParams,
                 paymentGatewayUIInterfaceUrl : paymentGatewayUIInterfaceUrl
             };
-        }
+        };
 
 
         /**
@@ -265,7 +265,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                 deferred.reject(response);
             });
             return deferred.promise;
-        }
+        };
 
     }
 ]);
