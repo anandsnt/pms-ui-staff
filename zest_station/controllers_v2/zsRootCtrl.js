@@ -420,9 +420,9 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, false);
 			} else if (theme === 'fontainebleau') {
 				//nothing else
-			}  else if (theme === 'concious') {
+			}  else if (theme === 'conscious') {
 				$scope.theme = theme;
-				$scope.iconsPath = '/assets/zest_station/css/icons/concious';
+				$scope.iconsPath = '/assets/zest_station/css/icons/conscious';
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
 			} else {
 				$scope.iconsPath = commonIconsPath;
