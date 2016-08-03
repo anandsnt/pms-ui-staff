@@ -122,7 +122,7 @@ admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'CRSConfi
         $scope.saveCRSSetup = function() {
             var params = {};
 
-            if (!$scope.saveCRSSetup.active) {
+            if (!$scope.CRSConfig.active) {
                 params = _.pick($scope.CRSConfig, 'active');
             } else {
                 params = _.extendOwn({}, $scope.CRSConfig);
