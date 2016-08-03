@@ -25,9 +25,9 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
                     return $scope.$parent.selectedLanguage;
                 }
                 //when some language was set initially, we need not translate to the default language
-                //instead we need to update that to the selected language
+                //instead we need to update (mainly to set the icon) that to the selected language
             if (!setToDefaultLanguage) {
-                $scope.translateTo($scope.zestStationData.selectedLanguage.info.code, $scope.zestStationData.selectedLanguage);
+                $scope.selectedLanguage = $scope.zestStationData.selectedLanguage;
             }
             //if some default language is set and corresposnding file is updated
             else if (!!$scope.zestStationData.zest_lang.default_language) {
