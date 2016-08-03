@@ -88,12 +88,13 @@ sntRover.controller('rvBillCardPopupCtrl',
 	 * @param {number} chargeCode updated charge code id
 	 * @returns {undefined}
 	 */
-	$scope.editCharge = function(newAmount, chargeCode){
+	$scope.editCharge = function(newAmount, chargeCode, adjustmentReason){
 		var params = {
 			id: $scope.selectedTransaction.id,
-			updatedData: {
-				new_amount: newAmount || undefined,
-				charge_code_id: chargeCode.id
+			updatedData : {
+				new_amount : newAmount || undefined,
+				charge_code_id : chargeCode.id,
+				adjustment_reason : adjustmentReason
 			}
 		};
 		$scope.invokeApi(RVBillCardSrv.transactionEdit, params, transactionEditSuccessCallback, failureCallBack);
