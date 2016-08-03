@@ -1,5 +1,5 @@
-admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'windsurferCRSSetupValues', 'adTravelClickCRSSetupSrv', '$timeout', 'dateFilter', 'ngDialog', 'adExternalInterfaceCommonSrv', '$interval',
-    function($scope, $rootScope, windsurferCRSSetupValues, adTravelClickCRSSetupSrv, $timeout, dateFilter, ngDialog, adExternalInterfaceCommonSrv, $interval) {
+admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'CRSConfig', 'adTravelClickCRSSetupSrv', '$timeout', 'dateFilter', 'ngDialog', 'adExternalInterfaceCommonSrv', '$interval',
+    function($scope, $rootScope, CRSConfig, adTravelClickCRSSetupSrv, $timeout, dateFilter, ngDialog, adExternalInterfaceCommonSrv, $interval) {
 
         BaseCtrl.call(this, $scope);
 
@@ -21,9 +21,9 @@ admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'windsurf
                 yearRange: "0:+5"
             },
             initTimeCopy = function() {
-                if ($scope.windsurferSetup.full_refresh) {
+                if ($scope.CRSConfig.full_refresh) {
                     timer = $interval(function() {
-                        var refreshDateObj = new Date($scope.windsurferSetup.full_refresh);
+                        var refreshDateObj = new Date($scope.CRSConfig.full_refresh);
                         $scope.lastRefreshedTimeMark = timeSince(refreshDateObj.valueOf());
                     }, 1000);
                 }
@@ -93,8 +93,8 @@ admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'windsurf
                     end_date: dateFilter($scope.datepicker.to, $rootScope.dateFormatForAPI)
                 },
                 onSuccess: function(response) {
-                    $scope.successMessage = 'Windsurfer Full Refresh Success!';
-                    $scope.windsurferSetup.full_refresh = new Date();
+                    $scope.successMessage = 'Travel Click Full Refresh Success!';
+                    $scope.CRSConfig.full_refresh = new Date();
                     initTimeCopy();
                     ngDialog.close();
                 }
@@ -109,32 +109,23 @@ admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'windsurf
         };
 
         /**
-         * when clicked on check box to enable/diable pabx
-         * @return {undefiend}
+         * Take user back to prev state on successful save
          */
-        $scope.toggleWindsurferCRSEnabled = function() {
-            $scope.windsurferSetup.enabled = !$scope.windsurferSetup.enabled;
-        };
-
-        /**
-         * when the save is success
-         * @return {undefien
-         */
-        var successCallBackOfWindsurferCRSSetup = function(data) {
+        var onSaveSuccess = function() {
             $scope.goBackToPreviousState();
         };
 
         /**
          * when we clicked on save button
-         * @return {undefiend}
+         * @return {undefined}
          */
-        $scope.saveWindsurferCRSSetup = function() {
+        $scope.saveCRSSetup = function() {
             var params = {};
 
-            if (!$scope.windsurferSetup.active) {
-                params = _.pick($scope.windsurferSetup, 'active');
+            if (!$scope.saveCRSSetup.active) {
+                params = _.pick($scope.CRSConfig, 'active');
             } else {
-                params = _.extendOwn({}, $scope.windsurferSetup);
+                params = _.extendOwn({}, $scope.CRSConfig);
                 params["payment_id"] = params.default_payment_id;
                 params["origin_id"] = params.default_origin;
                 params["rate_id"] = params.default_rate;
@@ -142,31 +133,32 @@ admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'windsurf
 
             var options = {
                 params: _.omit(params, ["default_payment_id", "default_origin", "default_rate"]),
-                successCallBack: successCallBackOfWindsurferCRSSetup
+                successCallBack: onSaveSuccess
             };
-            $scope.callAPI(adTravelClickCRSSetupSrv.saveWindsurferCRSConfiguration, options);
+
+            $scope.callAPI(adTravelClickCRSSetupSrv.saveCRSConfiguration, options);
         };
 
         /**
          * Initialization stuffs
-         * @return {undefiend}
+         * @return {undefined}
          */
-        var initializeMe = function() {
-            var onfetchMetaSuccess = function(response) {
+        (function() {
+            var onFetchMetaSuccess = function(response) {
                 $scope.channelManagerRates = _.pluck(response.rates, 'rate');
                 $scope.bookingOrigins = response.bookingOrigins;
                 $scope.paymentMethods = response.paymentMethods;
-                $scope.windsurferSetup = windsurferCRSSetupValues;
+                $scope.CRSConfig = CRSConfig;
                 initTimeCopy();
             }
 
             $scope.callAPI(adExternalInterfaceCommonSrv.fetchMetaData, {
                 params: {
-                    interface_id: windsurferCRSSetupValues.interface_id
+                    interface_id: CRSConfig.interface_id
                 },
-                onSuccess: onfetchMetaSuccess
+                onSuccess: onFetchMetaSuccess
             });
-        }();
+        })();
 
 
         $scope.$on('$destroy', function(){

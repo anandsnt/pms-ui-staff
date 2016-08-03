@@ -90,8 +90,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     controller: 'adTravelClickCRSSetupCtrl',
     url : '/travelclick/setup',
     resolve: {
-      windsurferCRSSetupValues: ['adTravelClickCRSSetupSrv', function(adTravelClickCRSSetupSrv) {
-        return adTravelClickCRSSetupSrv.fetchWindsurferCRSConfiguration();
+      CRSConfig: ['adTravelClickCRSSetupSrv', function(adTravelClickCRSSetupSrv) {
+        return adTravelClickCRSSetupSrv.fetchCRSConfiguration();
       }]
     }
   });
