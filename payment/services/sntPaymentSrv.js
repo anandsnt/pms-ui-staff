@@ -100,14 +100,6 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             return sixCreditCardTypes[cardCode.toUpperCase()];
         };
 
-        /********************************* MLI **************************************/
-
-        service.getCreditCardTypeForMLI = function(cardBrand) {
-
-            var card = (typeof cardBrand === "undefined") ? "" : cardBrand.toUpperCase();
-            var cardArray = ['AX', 'DC', 'DS', 'JCB', 'MC', 'VA'];
-            return (cardArray.indexOf(card) != -1) ? card : (typeof creditCardTypes[card] != 'undefined') ? creditCardTypes[card] : 'credit-card';
-        };
 
         service.savePaymentDetails = function(params) {
 
