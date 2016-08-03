@@ -24,9 +24,9 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
                     });
                     return $scope.$parent.selectedLanguage;
                 }
-            //if we don't want to reset to default language, happens when we select another language and comes 
-            //to home ctrl
-            if(!setToDefaultLanguage){
+                //when some language was set initially, we need not translate to the default language
+                //instead we need to update that to the selected language
+            if (!setToDefaultLanguage) {
                 $scope.translateTo($scope.zestStationData.selectedLanguage.info.code, $scope.zestStationData.selectedLanguage);
             }
             //if some default language is set and corresposnding file is updated
@@ -53,7 +53,11 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
                 }
             };
 
-            //update flag to say that some language was set
+            //update flag to say that some language was set, if some language
+            //is selected we dont need to change to defaulkt language, on
+            //going to the home controller
+            //so this is one time check only, so once translate function is called
+            //the below flag will be set true always.
             $scope.zestStationData.IsDefaultLanguageSet = true;
 
         };
@@ -73,7 +77,7 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
         $scope.selectLanguage = function(language) {
             //update home ctrl variable
             $scope.$parent.selectedLanguage = language;
-             //update root ctrl variable
+            //update root ctrl variable
             $scope.zestStationData.selectedLanguage = language;
             $scope.translateTo($scope.$parent.selectedLanguage.info.code, $scope.$parent.selectedLanguage);
             $scope.$parent.languageSelect();
@@ -94,11 +98,7 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
             //check if default language was already set, if else 
             //no need to set to default
             var setToDefaultLanguage = !$scope.zestStationData.IsDefaultLanguageSet;
-            if(!$scope.zestStationData.IsDefaultLanguageSet){
-                setToLanguage(setToDefaultLanguage);
-            }else{
-                setToLanguage(setToDefaultLanguage);
-            }
+            setToLanguage(setToDefaultLanguage);
         };
         initializeMe();
 
