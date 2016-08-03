@@ -4,4 +4,5 @@
 "EXACT_ONLINE_OAUTH": "Authorize",
 "EXACT_ONLINE_RUN": "Run",
 "EXACT_ONLINE_AUTHORIZED": "Authorized",
-"EXACT_ONLINE_UNAUTHORIZED": "Unauthorized"
+"EXACT_ONLINE_UNAUTHORIZED": "Unauthorized",
+"JOURNAL_CODE":"Journal Code"
