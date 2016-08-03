@@ -43,7 +43,6 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 * the less files are named in lower case
 		 **/
 		var getThemeName = function(theme) {
-                    return 'conscious';
 			if (theme === 'Zoku' || theme === 'Fontainebleau' || theme === 'Yotel' || theme === 'Conscious') {
 				return theme.toLowerCase();
 			} else {
