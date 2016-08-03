@@ -157,8 +157,15 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					roomList = response.data;
 					roomList.summary = response.data.summary;
 
-					var roomServiceInVault = $vault.get('LAST_ROOM_SERVICE'),
-						serviceStatus = !! roomServiceInVault ? JSON.parse(roomServiceInVault) : {};
+					var lastRoomService = $vault.get('LAST_ROOM_SERVICE');
+					if ( !! lastRoomService ) {
+						lastRoomService = JSON.parse(lastRoomService)
+					} else {
+						lastRoomService = {
+							rooms: [],
+							status: {}
+						};
+					}
 
 					var i, j;
 					for (i = 0, j = roomList.rooms.length; i < j; i++) {
@@ -184,11 +191,15 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 						room.ooOsTitle = calculateOoOsTitle(room);
 
-						room.service_status = $.extend(
-							{},
-							room.service_status,
-							serviceStatus
-						);
+						if ( lastRoomService.rooms.length ) {
+							if ( _.indexOf(lastRoomService.rooms, room.id) > -1 ) {
+								room.service_status = $.extend(
+									{},
+									room.service_status,
+									lastRoomService.status
+								);
+							}
+						}
 					};
 
 					deferred.resolve(roomList);
