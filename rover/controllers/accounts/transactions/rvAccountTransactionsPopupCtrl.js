@@ -89,14 +89,15 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
    /*
 	 * API call edit transaction
 	 */
-	$scope.editCharge = function(newAmount,chargeCode){
+	$scope.editCharge = function(newAmount,chargeCode,adjustmentReason){
 		$scope.$emit('showLoader');
 		var editData =
 		{
 			"updatedDate":
 						{
 				  			"new_amount":newAmount,
-				  			"charge_code_id": chargeCode.id
+				  			"charge_code_id": chargeCode.id,
+				  			"adjustment_reason":adjustmentReason
 						},
 					"id" :$scope.selectedTransaction.id
 		};
