@@ -12,13 +12,12 @@
                    function-to-fire="onChangeGiftCard"
                    type="text"/>
 
-            <label ng-show="giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
+            <label ng-show="giftCard.amountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
 
-            <input ng-show="giftCardAmountAvailable"
+            <input ng-show="giftCard.amountAvailable"
                    ng-readonly="true"
-                   ng-model="giftCardAvailableBalance"
-                   type="text"
-                   class="amount"/>
+                   ng-model="giftCard.availableBalance"
+                   type="text"/>
         </section>
 
         <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>

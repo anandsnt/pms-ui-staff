@@ -2,7 +2,7 @@
 <!-- Credit card options - hidden until payment type is set as CC -->
 <!-- If hidden by default, add class="hidden" -->
 <!-- Card toggle - Use only if there are exsiting cards on file -->
-<ul class="card-toggle" ng-hide="hideCardToggles()" ng-init="checkForGiftCard();">
+<ul class="card-toggle" ng-hide="hideCardToggles()">
     <li ng-class="{'active': payment.addCCMode === 'EXISTING_CARDS'}" click-touch="toggleCCMOde( 'EXISTING_CARDS')">
         Existing Cards
     </li>
