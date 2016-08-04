@@ -58,8 +58,8 @@ var SwipeOperation = function(){
 			"pan": swipedCardData.pan,
 			"mli_token": swipedCardData.token,
 			"payment_type": "CC",
-			"cardExpiryMonth": swipedCardData.cardExpiryMonth,
-			"cardExpiryYear": swipedCardData.cardExpiryYear,
+			"expiryMonth": swipedCardData.cardExpiryMonth,
+			"expiryYear": swipedCardData.cardExpiryYear,
 			"cardNumber": swipedCardData.cardNumber
 		};
 		return swipedCardDataToSave;

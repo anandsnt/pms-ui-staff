@@ -20,7 +20,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
           CCV: '',
           expiryMonth: '',
           expiryYear: '',
-          userName: ''
+          nameOnCard: ''
         };
       };
 
@@ -30,82 +30,78 @@ angular.module('sntPay').controller('payMLIOperationsController',
        */
       var resetCardEventHandler =
         $scope.$on(payEvntConst.RESET_CARD_DETAILS, () => initializeCardData);
-  
+      
+      /**
+       * [notifyParent description]
+       * @param  {[type]} tokenDetails [description]
+       * @return {[type]}              [description]
+       */
       var notifyParent = function(tokenDetails) {
-          var expiryMonth = angular.copy($scope.cardData.expiryMonth);
-          var expiryYear = angular.copy($scope.cardData.expiryYear);
-          var cardExpiry = (expiryMonth && expiryYear) ? ("20" + expiryYear + "-" + expiryMonth + "-01") : "";
-          var paymentData = {
-              apiParams: {
-                  name_on_card: $scope.cardData.userName,
-                  card_code: util.getCreditCardTypeForMLI($scope.cardData.cardType),
-                  payment_type: "CC",
-                  token: tokenDetails.session,
-                  card_expiry: cardExpiry
-              },
-              cardDisplayData: {
-                  name_on_card: $scope.cardData.userName,
-                  card_code: util.getCreditCardTypeForMLI($scope.cardData.cardType),
-                  ending_with: $scope.cardData.cardNumber.slice(-4),
-                  expiry_date: expiryMonth + " / " + expiryYear
-              }
-          };
+          var paymentData = util.formCCTokenGeneratedParams({...$scope.cardData, tokenDetails});
           $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, paymentData);
       };
   
-  
+      /**
+       * [notifyParentError description]
+       * @param  {[type]} errorMessage [description]
+       * @return {[type]}              [description]
+       */
       var notifyParentError = function(errorMessage) {
           console.error(errorMessage);
-          $scope.$emit("ERROR_OCCURED", errorMessage);
+          $scope.$emit(payEvntConst.PAYMENTAPP_ERROR_OCCURED, errorMessage);
       };
   
+      /**
+       * [doSwipedCardActions description]
+       * @param  {[type]} swipedCardData [description]
+       * @return {[type]}                [description]
+       */
       var doSwipedCardActions = function(swipedCardData) {
-  
-          var swipeOperationObj = new SwipeOperation();
-          var swipedCardDataToSave = swipeOperationObj.createSWipedDataToSave(swipedCardData);
-  
-          var apiParams = swipedCardDataToSave;
-          apiParams.payment_credit_type = swipedCardDataToSave.cardType;
-          apiParams.credit_card = swipedCardDataToSave.cardType;
-          apiParams.card_expiry = "20" + swipedCardDataToSave.cardExpiryYear + "-" + swipedCardDataToSave.cardExpiryMonth + "-01";
-          apiParams.card_name = swipedCardData.nameOnCard;
-  
-          var paymentData = {
-              apiParams: apiParams,
-              cardDisplayData: {
-                  name_on_card: swipedCardData.nameOnCard,
-                  card_code: swipedCardDataToSave.cardType,
-                  ending_with: $scope.cardData.cardNumber.slice(-4),
-                  expiry_date: swipedCardDataToSave.cardExpiryMonth + " / " + swipedCardDataToSave.cardExpiryYear
-              }
-          };
-          $scope.$emit("CC_TOKEN_GENERATED", paymentData);
+          var swipedCardDataToSave = new SwipeOperation().createSWipedDataToSave(swipedCardData),
+
+          var paymentData = util.formCCTokenGeneratedParams({
+            ...$scope.cardData,
+            swipedCardData,
+            swipedCardDataToSave
+          });
+          $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, paymentData);
       };
   
+      /**
+       * [description]
+       * @param  {[type]} response [description]
+       * @return {[type]}          [description]
+       */
+      var successCallBackOfGetMLIToken = (response) => notifyParent(response);
+
+      /**
+       * [description]
+       * @param  {[type]} error [description]
+       * @return {[type]}       [description]
+       */
+      var failureCallBackOfGetMLIToken = (error) => notifyParentError(error);
+      
       /*
        * Function to get MLI token on click 'Add' button in form
        */
       $scope.getMLIToken = function($event) {
           $event.preventDefault();
-          if (isSwipedCardData) {
+
+          //if swiped data is present
+          if (swipedCCData) {
               doSwipedCardActions(swipedCCData);
-          } else {
-              var sessionDetails = util.setUpSessionDetails($scope.cardData);
-              var successCallBack = function(response) {
-                  notifyParent(response);
-              };
-              var failureCallback = function(errorMessage) {
-                  notifyParentError(errorMessage);
-              };
-              sntPaymentSrv.fetchMLIToken(sessionDetails, successCallBack, failureCallback);
-          };
+              return;
+          }
+
+          var params = util.formParamsForFetchingTheToken($scope.cardData);
+          sntPaymentSrv.fetchMLIToken(params, successCallBackOfGetMLIToken, failureCallBackOfGetMLIToken);
       };
   
       var renderDataFromSwipe = function(event, swipedCardData) {
-          isSwipedCardData = true;
+          swipedCCData = true;
           swipedCCData = swipedCardData;
           $scope.cardData.cardNumber = swipedCardData.cardNumber;
-          $scope.cardData.userName = swipedCardData.nameOnCard;
+          $scope.cardData.nameOnCard = swipedCardData.nameOnCard;
           $scope.cardData.expiryMonth = swipedCardData.cardExpiryMonth;
           $scope.cardData.expiryYear = swipedCardData.cardExpiryYear;
           $scope.cardData.cardType = swipedCardData.cardType;
@@ -130,6 +126,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
           //
           initializeCardData();
   
+          $scope.modes = paymentConstants.modes;
       })();
   
   }]);

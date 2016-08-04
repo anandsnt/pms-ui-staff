@@ -17,7 +17,17 @@ angular.module('sntPay').constant('paymentConstants', (function(){
 		VISA: 'VA'
 	};
 
+	/**
+	 * to handle the different mode in payment app
+	 * @type {Object}
+	 */
+	var modes = {
+		CARD_ADD_MODE: "PAYMENTAPP_CARD_ADD_MODE",
+		
+	};
+
 	return {
-		creditCardMappingTypes: creditCardMappingTypes
-	}
+		creditCardMappingTypes,
+		modes
+	};
 })());
