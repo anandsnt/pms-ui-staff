@@ -380,6 +380,16 @@ sntRover.controller('roverController',
         $scope.isMenuOpen();
         $scope.menuOpen = false;
 
+        $rootScope.hotelPaymentConfig = {
+            isStandAlone: $rootScope.isStandAlone,
+            paymentGateway: $rootScope.paymentGateway,
+            workstationId: $rootScope.workstation_id,
+            emvTimeout: $rootScope.emvTimeout,
+            mliMerchantId: $rootScope.MLImerchantId,
+            currencySymbol: $rootScope.currencySymbol,
+            isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled
+        };
+
     };
 
     $scope.init();
