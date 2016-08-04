@@ -78,12 +78,26 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
         });
         return deferred.promise;
     };
+    /**
+    *   Service to get service provider details
+    *   @param id unique identifier of the service provider
+    */
+    this.getServiceProviderUserDetails = function(request){
+        var deferred = $q.defer();        
+        var url = '/admin/users/'+ request.id+'/edit.json';
+        ADBaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 
      /**
     *   Service to edit a new service provider user
     *   @param {Object} data holding the service provider details.
     */
-    this.editServiceProviderUser = function(data){
+    this.updateServiceProviderUser = function(data){
         var deferred = $q.defer();
         var url = '/admin/users';
         ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
