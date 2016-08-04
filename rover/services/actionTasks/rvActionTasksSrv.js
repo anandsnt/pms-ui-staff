@@ -201,6 +201,18 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
         return deferred.promise;
     };
 
+    this.fetchGroupActions = function (params) {
+        var deferred = $q.defer(),
+            url = "api/action_tasks/hotel_group_actions";
+
+        BaseWebSrvV2.getJSON(url, params).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
     //-------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
     this.cache = {

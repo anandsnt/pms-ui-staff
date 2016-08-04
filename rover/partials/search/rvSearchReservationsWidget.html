@@ -35,7 +35,7 @@
         <!-- Add reservation -->
     	<a class="add-new-button" ui-sref="rover.reservation.search" ng-show="showAddNewGuestButton && showSearchResultsArea && textInQueryBox.length !== 0">+ New</a>
 	</form>
-	<div class="search-pagination" ng-show="totalSearchResults >= searchPerPage && results.length > 0 && showSearchResultsArea">
+	<div class="search-pagination" ng-show="totalSearchResults > searchPerPage && results.length > 0 && showSearchResultsArea">
 	    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
 	    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
 	    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalSearchResults}}</strong> items</p>
@@ -50,6 +50,7 @@
                        <img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true)}">
                         <!-- if it's accompanying guest, show this as well:
                         <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
+                        <span class="vip" ng-show="row.vip==1">VIP</span>
                     </figure>
                     <div class="data">
                         <!-- Add .cancelled if the guest has cancelled or no show -->
@@ -72,7 +73,7 @@
                         <span class="guest-status check-out"></span>
                         <time class="guest-time">
                             <span>{{row.departure_date| date : dateFormat}}</span>
-                            <span class="hours">{{getTimeConverted(row.departure_time)}}</span>
+                            <span class="hours">{{getTimeConverted(row.late_checkout_time || row.departure_time)}}</span>
                         </time>
                     </div>
 

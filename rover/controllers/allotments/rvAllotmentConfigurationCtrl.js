@@ -68,6 +68,17 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
 
         /**
+         * Function to check the mandatory values while saving the reservation
+         * Handling in client side owing to alleged issues on import if handled in the server side
+         * @return boolean [true if all the mandatory values are present]
+         */
+        var ifMandatoryValuesEntered = function() {
+            var summary = $scope.allotmentConfigData.summary;
+            return !!summary.allotment_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to;
+        }
+
+
+        /**
          * we will update the summary data, when we got this one
          * @return undefined
          */
@@ -135,6 +146,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             if (!$scope.isInAddMode()) {
                 $scope.allotmentConfigData.summary.block_from = new tzIndependentDate($scope.allotmentConfigData.summary.block_from);
                 $scope.allotmentConfigData.summary.block_to = new tzIndependentDate($scope.allotmentConfigData.summary.block_to);
+                $scope.allotmentConfigData.summary.release_date = ($scope.allotmentConfigData.summary.release_date) ? new tzIndependentDate($scope.allotmentConfigData.summary.release_date) : "";
             }
 
 
@@ -279,17 +291,21 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         $scope.saveNewAllotment = function() {
             $scope.errorMessage = "";
             if (rvPermissionSrv.getPermissionValue('CREATE_ALLOTMENT_SUMMARY') && !$scope.allotmentConfigData.summary.allotment_id) {
-                if (!$scope.allotmentConfigData.summary.rate) {
-                    $scope.allotmentConfigData.summary.rate = -1;
-                }
-                var options = {
-                    successCallBack: onAllotmentSaveSuccess,
-                    failureCallBack: onAllotmentSaveFailure,
-                    params: {
-                        summary: $scope.allotmentConfigData.summary
+                if (ifMandatoryValuesEntered()) {
+                    if (!$scope.allotmentConfigData.summary.rate) {
+                        $scope.allotmentConfigData.summary.rate = -1;
                     }
-                };
-                $scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentSummary, options);
+                    var options = {
+                        successCallBack: onAllotmentSaveSuccess,
+                        failureCallBack: onAllotmentSaveFailure,
+                        params: {
+                            summary: $scope.allotmentConfigData.summary
+                        }
+                    };
+                    $scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentSummary, options);
+                } else {
+                    $scope.errorMessage = ["Allotment's name, from date, to date and hold status are mandatory"];
+                }
             } else {
                 $scope.$emit("showErrorMessage", ["Sorry, you don\'t have enough permission to save the details"]);
             }

@@ -122,56 +122,101 @@
                         <fieldset >
                             <br>
                             <ad-toggle-button is-checked="is_send_zest_checkout_alert_flag" label="{{'SEND_ZEST_CHECKOUT_NOTIFICATION_ALERT' | translate}}" div-class="full-width"></ad-toggle-button>
-                            <div class="entry full-width">
-							<label translate>
-									SEND_ZEST_CHECKOUT_ALERT_LABEL
-								</label>
-							</div>
-							<div class="entry">								
-								<div class="select select-col select-med">
-									<select ng-options="hour for hour  in hours" ng-model="checkoutData.zest_checkout_alert_time_hour" >
-										<option  value="HH" translate>HH</option>
-									</select>
+                            
+                            <div ng-show="!checkoutData.is_hourly_hotel">
+                            	<div class="entry full-width">
+									<label translate>
+										SEND_ZEST_CHECKOUT_ALERT_LABEL
+									</label>
 								</div>
-								<div class="select select-col select-med">
-									<select ng-options="minute for minute  in minutes" ng-model="checkoutData.zest_checkout_alert_time_minute" >
-										<option  value="MM" translate>MM</option>
-									</select>
-								</div>
-								<div class="select select-col select-med">
-									<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
-										<option value="AM" selected="" translate>AM</option>
-										<option value="PM" translate>PM</option>
-									</select>
-								</div>
+								<div class="entry">								
+									<div class="select select-col select-med">
+										<select ng-options="hour for hour  in hours" ng-model="checkoutData.zest_checkout_alert_time_hour" >
+											<option  value="HH" translate>HH</option>
+										</select>
+									</div>
+									<div class="select select-col select-med">
+										<select ng-options="minute for minute  in minutes" ng-model="checkoutData.zest_checkout_alert_time_minute" >
+											<option  value="MM" translate>MM</option>
+										</select>
+									</div>
+									<div class="select select-col select-med">
+										<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
+											<option value="AM" selected="" translate>AM</option>
+											<option value="PM" translate>PM</option>
+										</select>
+									</div>
 
-								<label class="label-checkout" translate>
-									ON_WEEKDAYS
-								</label>
-							</div>	
+									<label class="label-checkout" translate>
+										ON_WEEKDAYS
+									</label>
+								</div>	
 							
-							<div class="entry">								
-								<div class="select select-col select-med">
-									<select ng-options="hour for hour  in hours" ng-model="checkoutData.weekends_zest_checkout_alert_time_hour" >
-										<option  value="HH" translate>HH</option>
-									</select>
+								<div class="entry">								
+									<div class="select select-col select-med">
+										<select ng-options="hour for hour  in hours" ng-model="checkoutData.weekends_zest_checkout_alert_time_hour" >
+											<option  value="HH" translate>HH</option>
+										</select>
+									</div>
+									<div class="select select-col select-med">
+										<select ng-options="minute for minute  in minutes" ng-model="checkoutData.weekends_zest_checkout_alert_time_minute" >
+											<option  value="MM" translate>MM</option>
+										</select>
+									</div>
+									<div class="select select-col select-med">
+										<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
+											<option value="AM" selected="" translate>AM</option>
+											<option value="PM" translate>PM</option>
+										</select>
+									</div>
+
+									<label class="label-checkout" translate>
+										ON_SATURDAY_SUNDAY
+									</label>
 								</div>
-								<div class="select select-col select-med">
-									<select ng-options="minute for minute  in minutes" ng-model="checkoutData.weekends_zest_checkout_alert_time_minute" >
-										<option  value="MM" translate>MM</option>
-									</select>
-								</div>
-								<div class="select select-col select-med">
-									<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
-										<option value="AM" selected="" translate>AM</option>
-										<option value="PM" translate>PM</option>
-									</select>
+                            </div> 
+
+                            <div ng-show="checkoutData.is_hourly_hotel">
+                            	<div class="entry full-width">
+									<label translate>
+										SEND_ZEST_HOURLY_CHECKOUT_ALERT_LABEL
+									</label>
 								</div>
 
-								<label class="label-checkout" translate>
-									ON_SATURDAY_SUNDAY
-								</label>
-							</div>
+								<div class="entry">								
+									<div class="select select-col select-med">
+										<select ng-options="hour for hour  in [0,1,2,3,4]" ng-model="checkoutData.zest_hourly_checkout_alert_time_hour" >
+											<option  value="HH" translate>HH</option>
+										</select>
+									</div>
+									<div class="select select-col select-med">
+										<select ng-disabled="checkoutData.zest_hourly_checkout_alert_time_hour === 4" ng-options="minute for minute  in minutes" ng-model="checkoutData.zest_hourly_checkout_alert_time_minute" >
+											<option  value="MM" translate>MM</option>
+										</select>
+									</div>
+									<label class="label-checkout" translate>
+										ON_WEEKDAYS
+									</label>
+								</div>
+
+								<div class="entry">								
+									<div class="select select-col select-med">
+										<select ng-options="hour for hour  in [0,1,2,3,4]" ng-model="checkoutData.weekends_zest_hourly_checkout_alert_time_hour" >
+											<option  value="HH" translate>HH</option>
+										</select>
+									</div>
+									<div class="select select-col select-med">
+										<select ng-disabled="checkoutData.weekends_zest_hourly_checkout_alert_time_hour === 4" ng-options="minute for minute  in minutes" ng-model="checkoutData.weekends_zest_hourly_checkout_alert_time_minute" >
+											<option  value="MM" translate>MM</option>
+										</select>
+									</div>
+									<label class="label-checkout" translate>
+										ON_SATURDAY_SUNDAY
+									</label>
+								</div>
+
+                            </div>                  
+							
 						</fieldset>	
 
 

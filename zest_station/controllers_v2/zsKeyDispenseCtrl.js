@@ -16,6 +16,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		/**
 		 * [initializeMe description]
 		 */
+		var cardwriter = new CardOperation();
 		var initializeMe = function() {
 
 			BaseCtrl.call(this, $scope);
@@ -23,6 +24,8 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			//hide close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+
+
 		}();
 		/**
 		 * [set data from stateParams description]

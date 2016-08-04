@@ -10,7 +10,7 @@ angular.module('housekeepingModule', [])
                 housekeepingAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets(['rover.housekeeping', 'directives']);
                 }
-            } 
+            }
         });
 
         $stateProvider.state('rover.housekeeping.roomStatus', {
@@ -70,6 +70,22 @@ angular.module('housekeepingModule', [])
             resolve: {
                 roomDetailsData: function(RVHkRoomDetailsSrv, $stateParams, housekeepingAssets) {
                     return RVHkRoomDetailsSrv.fetch($stateParams.id);
+                }
+            }
+        });
+        $stateProvider.state('rover.housekeeping.roomDetails.log', {
+            url: '/roomDetails/log',
+            templateUrl: '/assets/partials/housekeeping/rvLogTab.html',
+            controller: 'RVHKLogTabCtrl',
+            resolve: {
+
+                roomDetailsLogData: function(RVHkRoomDetailsSrv, $stateParams) {
+                    var params = {
+                        id: $stateParams.id,
+                        page: 1,
+                        per_page: 50
+                    };
+                    return RVHkRoomDetailsSrv.getRoomLog(params);
                 }
             }
         });

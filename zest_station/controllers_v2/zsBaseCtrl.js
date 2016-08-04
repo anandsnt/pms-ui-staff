@@ -25,7 +25,6 @@ function BaseCtrl($scope) {
     var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
     return valueToReturn;
   };
-  
   $scope.debuggingCardPayment = function(btn){
     console.info('sntZestStation.cardSwipeDebug: ',sntZestStation.cardSwipeDebug);
     var url = document.location,
@@ -42,7 +41,7 @@ function BaseCtrl($scope) {
             }
           }
         }
-    
+
       if (zestSntApp.cardSwipeDebug || inDevEnvironment){//in production, dont allow this function unless manually called for debugging via console like [   zestSntApp.cardSwipeDebug(true)   ]
           return true;
       } else return false;

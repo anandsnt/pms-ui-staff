@@ -36,6 +36,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				$scope: $scope
 			});
 			$scope.mode = "DISPENSE_KEY_MODE";
+			$scope.readyForUserToPressMakeKey = true;
 		}();
 
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
@@ -159,6 +160,8 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				setTimeout(function(){
 					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
 					dispenseKey();
+
+					$scope.runDigestCycle();
 				},2000);
 
 			} else {
@@ -167,6 +170,8 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 						$scope.dispenseKeyData = response.key_info[0].base64;
 						$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
 						dispenseKey();
+
+						$scope.runDigestCycle();
 					} else {
 						setFailureReason();
 					}
@@ -179,15 +184,29 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 * [initMakeKey description]
 		 * @return {[type]} [description]
 		 */
+		$scope.$on('printLocalKeyCordovaFailed', function(evt, response) {
+			console.warn('error: ', response);
+			onGeneralFailureCase();
+		});
 
+		$scope.$on('continueFromCordovaKeyWrite', function() {
+			remoteEncodingSuccsess();
+		});
 
-		var startMakingKey = function() {
+		var startMakingKey = function(keyNo) {
 			var onResponseSuccess;
 			var params = {
 				"is_additional": false,
 				"is_kiosk": true,
 				"key": 1,
 				"reservation_id": $scope.selectedReservation.reservationId
+			};
+
+			if (keyNo){
+				params.key = keyNo;
+				if (keyNo === 2){
+					params.is_additional = true;
+				}
 			};
 
 			if (!$scope.remoteEncoding) {
@@ -229,9 +248,10 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
 			}
 		};
-		$scope.readyForUserToPressMakeKey = true;
+
+
 		var initMakeKey = function() {
-			console.info('waiting on user to press make key, which will start key create')
+			console.info('waiting on user to press make key, which will start key create here...')
 
 			if ($scope.noOfKeysSelected === 1) {
 				$scope.mode = 'SOLO_KEY_CREATION_IN_PROGRESS_MODE';
@@ -241,18 +261,26 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 			} else {
 				//do nothing
 			}
-			if ($scope.remoteEncoding) {
+			if ($scope.remoteEncoding || $scope.zestStationData.keyWriter === 'local') {
 				$scope.readyForUserToPressMakeKey = true;
+				if ($scope.zestStationData.keyWriter === 'local') {
+					console.warn('local encoder')
+					$scope.localWriter = true; //icmp (ingenico) or infinea device
+				}
 			} else {
 				startMakingKey();
 			}
+		};
 
 
+		$scope.onReadyToPrintKey = function(keyNo) {
+			if ($scope.readyForUserToPressMakeKey) {
+				$scope.readyForUserToPressMakeKey = false;
+				startMakingKey(keyNo);
+			}
 		};
-		$scope.onReadyToPrintKey = function() {
-			$scope.readyForUserToPressMakeKey = false;
-			startMakingKey();
-		};
+
+
 
 		function remoteEncodingSuccsess(response) {
 			noOfKeysCreated++;
@@ -265,7 +293,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				$scope.mode = "KEY_ONE_CREATION_SUCCESS_MODE";
 				revertFailureReason();
 				//provide some timeout for user to grab keys
-				$timeout(initMakeKey, 6000);
+				$timeout(initMakeKey, 3000);
 			}
 			$scope.runDigestCycle();
 		};

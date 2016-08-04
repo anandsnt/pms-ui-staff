@@ -47,16 +47,6 @@ angular.module('sntRover').service('rvMenuSrv',
     var isConnected = function() {
     	return (RVHotelDetailsSrv.hotelDetails.pms_type === null);
     };
-
-    /**
-    * utility function to decide whether the auto business date change is enabled or not
-    * will use the hotel details API response
-    * @return {Boolean}
-    */
-    var isAutoBussinessDateChangeEnabled = function() {
-    	return RVHotelDetailsSrv.hotelDetails.is_auto_change_bussiness_date;
-    };
-
     /**
      * Decide whether the task management submenu is to be shown in housekeeping menu
      * will use the hotel details API response
@@ -176,8 +166,8 @@ angular.module('sntRover').service('rvMenuSrv',
 		            menuIndex: "accounts"
 		        }, {
 	                title: "MENU_END_OF_DAY",
-	                action: "",
-	                actionPopup: true,
+	                action: "rover.endOfDay.starteod",
+	                actionPopup: false,
 	                menuIndex: "endOfDay"
             	}]
 		    }, {
@@ -521,7 +511,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			//if auto change business is not enabled, we have to show EOD menu
 			// hote admin -> Hotel & Staff -> Settings & Parameter -> AUTO CHANGE BUSINESS DATE
 			case 'endOfDay':
-				returnValue = !isAutoBussinessDateChangeEnabled();
+				returnValue = true;
 				break;
 
 			//we are hiding conversations for now

@@ -888,7 +888,7 @@ sntRover.controller('RVroomAssignmentController',[
 		var r_data = $scope.reservationData.reservation_card;
 		return (r_data.reservation_status.indexOf(['CHECKING_IN', 'RESERVED']) &&
 			!!r_data.room_number &&
-			$rootScope.isStandAlone &&
+			// $rootScope.isStandAlone &&	// CICO-31323: add unassing in connected hotel
 			!$scope.roomAssgnment.inProgress &&
 			!r_data.is_hourly_reservation &&
 			r_data.reservation_status !== "CHECKEDIN");

@@ -1353,15 +1353,27 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             $scope.$emit('showLoader');
             jsMappings.fetchAssets(['addBillingInfo', 'directives'])
-                .then(function() {
-                    $scope.$emit('hideLoader');
+            .then(function(){
+                $scope.$emit('hideLoader'); 
+                if($rootScope.UPDATED_BI_ENABLED_ON['RESERVATION']){
+                    console.log("##Billing-info updated version");
+                    ngDialog.open({
+                        template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
+                        controller: 'rvBillingInfoReservationMainCtrl',
+                        className: '',
+                        scope: $scope
+                    });
+                }
+                else{
+                    console.log("##Billing-info old version");
                     ngDialog.open({
                         template: '/assets/partials/bill/rvBillingInformationPopup.html',
                         controller: 'rvBillingInformationPopupCtrl',
                         className: '',
                         scope: $scope
                     });
-                });
+                }
+            });
         };
 
         $scope.updateAdditionalDetails = function(reservationId, index, goToConfirmationScreen) {

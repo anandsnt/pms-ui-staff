@@ -66,6 +66,7 @@ module.exports = {
 			'guestweb_sobro':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_covington':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_consciousVondelpark':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_halcyon':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_chancellors_house':[ themeJsRoot + 'app_router_common.js']
 		}
 	}

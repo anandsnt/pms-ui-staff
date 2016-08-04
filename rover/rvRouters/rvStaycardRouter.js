@@ -119,7 +119,7 @@ angular.module('stayCardModule', [])
                         is_active: true
                     });
                 },
-                rates: function(RVRoomRatesSrv, $stateParams, staycardJsAssets) {
+                rates: function(RVRoomRatesSrv, $stateParams, staycardJsAssets, RVReservationBaseSearchSrv) {
                     var params = {};
                         params.from_date = $stateParams.from_date;
                         params.to_date   = $stateParams.to_date;
@@ -140,6 +140,12 @@ angular.module('stayCardModule', [])
                         params.room_type_id = $stateParams.room_type_id;
                     if($stateParams.is_member == "true")
                         params.is_member = $stateParams.is_member;
+
+                    var activeTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
+                    if(params.company_id || params.travel_agent_id || params.group_id || params.promotion_code || params.promotion_id || params.is_member) {
+                        activeTab = 'RECOMMENDED';
+                    }
+                    RVRoomRatesSrv.setRoomAndRateActiveTab(activeTab);
                     return RVRoomRatesSrv.fetchRatesInitial(params)
                 },
                 ratesMeta: function(RVReservationBaseSearchSrv, staycardJsAssets) {

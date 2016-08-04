@@ -755,12 +755,24 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
             	$scope.$emit('hideLoader');
-			    ngDialog.open({
-			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
-			        controller: 'rvBillingInformationPopupCtrl',
-			        className: '',
-			        scope: $scope
-			    });
+            	if($rootScope.UPDATED_BI_ENABLED_ON['ACCOUNTS']){
+            		console.log("##Billing-info updated version");
+            		ngDialog.open({
+				        template: '/assets/partials/billingInformation/accounts/rvBillingInfoAccountsMain.html',
+						controller: 'rvBillingInfoAccountsMainCtrl',
+				        className: '',
+				        scope: $scope
+				    });
+            	}
+            	else{
+            		console.log("##Billing-info old version");
+				    ngDialog.open({
+				        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+				        controller: 'rvBillingInformationPopupCtrl',
+				        className: '',
+				        scope: $scope
+				    });
+				}
 			});
 		};
 
@@ -845,6 +857,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 			else{
 			  summaryMemento.rate = $scope.groupConfigData.summary.rate;
+				//fetch summary once rate is changed - as per CICO-31812 comments
+				$scope.$emit("FETCH_SUMMARY");
 			}
 		};
 

@@ -51,16 +51,12 @@
                     </select>
                 </div>
             </div>
-            <!-- CICO-9289 Hourly Rates Hiding the Based On thing until implementation is completed -->
-            <!-- TODO : Once thebased on rates is handled for hourly, do away with the ng-show conditon -->
-            <div class="entry entry-no-bottom full-width" ng-class="{'overlay' : is_edit}">
+            <div class="entry entry-no-bottom full-width" ng-hide="isHourlyRatesEnabled()">
                 <label>Based On / Copy From</label>
                 <div class="boxes">
                     <div class="switch-container">
-                        <!-- Add class ".on" when selected Copy From -->
-                        <div class="switch-button with-text" ng-class="{'on' : !rateData.based_on.is_copied}">
-                            <!-- Add attribute checked when selected Copy From -->
-                            <input id="basedon" name="basedon" type="checkbox" ng-model="rateData.based_on.is_copied" />
+                        <div class="switch-button with-text" ng-class="{'on' : !rateData.based_on.is_copied, 'overlay': is_edit}">
+                            <input  id="basedon" name="basedon" type="checkbox" ng-model="rateData.based_on.is_copied" />
                             <label class="data-off">
                                 <span class="value">Based</span>
                                 <span class="button orange">Copy From</span>
@@ -72,14 +68,14 @@
                         </div>
                     </div>
                     <div class="full-width">
-                        <div class="entry margin">
+                        <div class="entry margin" ng-class="{'overlay': is_edit}">
                             <div class="select white">
                                 <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
                                     <option value="">Select Rate</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="entry">
+                        <div class="entry" ng-class="{'overlay': !otherData.notIsBasedOn}">
                             <div class="select white select-col col1-3">
                                 <select class="placeholder" ng-model="rateData.based_on.value_sign">
                                                 <option value="+">+</option>

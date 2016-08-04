@@ -2,7 +2,6 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
     function($q, RVBaseWebSrvV2, RVReservationBaseSearchSrv) {
 
         var service = this;
-        service.roomAndRateActiveTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
         //--------------------------------------------------------------------------------------------------------------
         // A. Private Methods
         var getInitialRoomTypeWithUpSell = function(params) {
@@ -38,10 +37,9 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
         * Prepare the parameters for the room type and rate tab request
         */
         var processParamsForRoomTypeAndRateRequest = function(params) {
-            var defaultView = RVReservationBaseSearchSrv.getRoomRatesDefaultView(),
-                currentRoomAndRateActiveView = service.getRoomAndRateActiveTab();
+            var currentRoomAndRateActiveView = service.getRoomAndRateActiveTab();
 
-            if(defaultView === "RATE" || defaultView === "ROOM_TYPE" || currentRoomAndRateActiveView === "RATE" || currentRoomAndRateActiveView === "ROOM_TYPE") {
+            if(currentRoomAndRateActiveView === "RATE" || currentRoomAndRateActiveView === "ROOM_TYPE") {
                params.is_member = "false";
 
                if(params.company_id) {
@@ -56,6 +54,10 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                if(params.promotion_id) {
                 delete params.promotion_id;
                }
+            }
+
+            if(currentRoomAndRateActiveView === "RECOMMENDED") {
+                delete params.room_type_id;
             }
 
         };
@@ -122,19 +124,18 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
         };
 
         service.fetchRatesInitial = function(params) {
-            var defaultView = RVReservationBaseSearchSrv.getRoomRatesDefaultView(),
+            var activeView = service.getRoomAndRateActiveTab(),
                 promises = [],
                 deferred = $q.defer(),
                 data = [];
 
-            if (defaultView === "RATE" || ((params.travel_agent_id || params.company_id
-                         || params.group_id || params.allotment_id
-                         || params.promotion_code || params.is_member == "true") && defaultView === "RECOMMENDED")) {
+            if (activeView === "RATE" || (activeView === "RECOMMENDED" && (params.company_id || params.travel_agent_id || params.group_id
+                || params.promotion_code || params.promotion_id || params.is_member))) {
                 params.order = "ALPHABETICAL";
                 promises.push(service.fetchRateADRs(params, true).then(function(response) {
                     data = response;
                 }));
-            } else if (defaultView === "ROOM_TYPE") {
+            } else if (activeView === "ROOM_TYPE") {
                     promises.push(getInitialRoomTypeWithUpSell(params, true).then(function(response) {
                         data = response;
                     }));

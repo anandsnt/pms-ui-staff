@@ -107,13 +107,11 @@ angular.module('sntRover').service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2
 	 * @return {object} defer promise
 	 */
 
-	this.transactionEdit = function(data){
+	this.transactionEdit = function(params){
 
 		var deferred = $q.defer();
-		var trasactionId = data.id;
-		var updatedDate  = data.updatedDate;
-		var url = 'api/financial_transactions/'+trasactionId;
-		BaseWebSrvV2.putJSON(url, updatedDate).then(function(data) {
+		var url = 'api/financial_transactions/' + params.id;
+		BaseWebSrvV2.putJSON(url, params.updatedData).then(function(data) {
 		   	 deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);

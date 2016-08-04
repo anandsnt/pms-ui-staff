@@ -1,0 +1,129 @@
+<div id="billing-content" class="content-wrapper" ng-controller="rvBillingInfoGroupAndAllotmentRouteDetailsCtrl">
+	<fieldset class="content-left">
+		<div id="entity-details" ng-iscroll='routeDetails' ng-iscroll-delay='100' class="entity-details scrollable">
+			<div class="wrapper">
+				<div ng-hide="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'">
+					<div class="title">
+	                        {{'DATE_RANGE' | translate}}
+	                </div>
+	                <div class="entry">
+	                    <div class="has-datepicker">
+	                        <label for="routing-range-from">{{'FROM_DATE' | translate}}</label>
+	                        <input id="routing-range-from" ui-date="routingDateFromOptions" class="range-datepicker" ng-model="routeDates.from" ng-change="onRouteDateChange()" readonly />
+	                    </div>
+	                    <div class="has-datepicker">
+	                        <label for="routing-range-to">{{'TO_DATE' | translate}}</label>
+	                        <input id="routing-range-to" ui-date="routingDateToOptions"  class="range-datepicker" ng-model="routeDates.to" ng-change="onRouteDateChange()" readonly />
+	                    </div>
+	                </div>
+                </div>
+
+				<div class="title">
+					{{'ENTITY' | translate}}
+					<button type="button" id="edit-entity" ng-click="deSelectEntity()" class="button with-icon only-icon purple edit" ng-if="isInAddRoutesMode || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'" ng-hide="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING'  || billingEntity === 'GROUP_DEFAULT_BILLING'">
+						<span class="icons icon-pencil"></span>
+					</button>
+				</div>
+				<!-- Selected entity -->
+				<div class="entity guest">
+					<figure class="guest-image" ng-class = "getEntityIconClass(selectedEntity)" ng-if="escapeNull(selectedEntity.images[0].guest_image)!=''">
+						<img src="{{selectedEntity.images[0].guest_image}}" alt="" />
+					</figure>
+
+					<figure class="guest-image" ng-if="escapeNull(selectedEntity.images[0].guest_image)==''">
+	                    <div class="guest-image icons icon-company" ng-if="escapeNull(selectedEntity.entity_type)=='COMPANY_CARD'" ></div>
+	                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(selectedEntity.entity_type)=='TRAVEL_AGENT'" ></div>
+	                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='GROUP' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
+	                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
+	                </figure>
+
+					<h2>{{selectedEntity.name}}</h2>
+					<span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
+                  	<span class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</span>
+				</div>
+
+				<div class="title" ng-show= "showPayment" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || ((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') && (billingEntity !== 'GROUP_DEFAULT_BILLING'))">{{'PAYMENT' | translate}}
+					<button type="button" id="edit-entity" ng-click="editPaymentMethod();" class="button with-icon only-icon purple edit" ng-show= "renderAddedPayment != null">
+						<span class="icons icon-pencil" ></span>
+					</button>
+				</div>
+
+				<!-- Available credit card -->
+				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;max-height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null" ng-hide="(((selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE') || selectedEntity.has_accompanying_guests || renderAddedPayment != null))">
+					<div class="wrapper">
+						<div class="payment" ng-class="{'active': selectedEntity.selected_payment == paymentType.id}" ng-show = "!isAddPayment && showPayment" ng-repeat="paymentType in attachedPaymentTypes" ng-click = "selectedEntity.selected_payment = paymentType.id">
+							<!-- add class active when selected -->
+							<span ng-show = "paymentType.payment_type_id == 1">
+								<figure class="card-logo">
+									<img src="/assets/{{paymentType.card_code}}.png" alt="" />
+								</figure>
+								<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentType.mli_token}}</span></span>
+								<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>
+							</span>
+							<span class="value code" ng-show = "paymentType.payment_type_id != 1">{{ paymentType.payment_type }}</span>
+							<span class="icons icon-ok-10" ng-show="selectedEntity.selected_payment == paymentType.id"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="payment active"  ng-show = "renderAddedPayment != null && !isAddPayment  && showPayment && !saveData.newPaymentFormVisible && ( (selectedEntity.entity_type !== 'GROUP' && selectedEntity.entity_type !== 'HOUSE') || billingEntity == 'GROUP_DEFAULT_BILLING' || billingEntity == 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity == 'TRAVEL_AGENT_DEFAULT_BILLING')">
+						<!-- add class active when selected -->
+						<span ng-show = "renderAddedPayment.payment_type == 'CC'">
+							<figure class="card-logo">
+								<img src="/assets/{{renderAddedPayment.creditCardType}}.png" alt="" />
+							</figure>
+							<span class="number">{{'NUMBER' | translate}} <span class="value number">{{renderAddedPayment.endingWith}}</span></span>
+							<span class="date">{{'DATE' | translate}} <span class="value date">{{renderAddedPayment.cardExpiry}}</span></span>
+						</span>
+						<span class="value code" ng-show = "renderAddedPayment.payment_type != 'CC'">{{ renderAddedPayment.payment_type_description }}</span>
+						<span class="icons icon-ok-10" ></span>
+				</div>
+
+				<!-- Add new credit card button - remove it when new card is added -->				
+				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment && showPayment && renderAddedPayment == null" ng-hide="(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || (selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'HOUSE' || billingEntity === 'GROUP_DEFAULT_BILLING') || renderAddedPayment != null">{{'NEW_PAYMENT' | translate}}</button>
+
+				<!-- For to add the new credit card, should be shown when button above is tapped -->
+				<div id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
+
+				<div ng-show="selectedEntity.entity_type === 'RESERVATION' || selectedEntity.entity_type === 'TRAVEL_AGENT' || selectedEntity.entity_type === 'COMPANY_CARD' || billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'">
+					<!-- Posting Amount -->
+	                <div class="title">
+	                    {{'POSTING_CAP' | translate}}<span>({{currencySymbol}})</span>
+	                </div>
+	                <div class="entry">
+	                    <input type="text" ng-model="selectedEntity.credit_limit"/>
+	                </div>
+
+	                <!-- Reference No. -->
+	                <div class="title">
+	                    {{'REFERENCE_NUMBER' | translate}}
+	                </div>
+	                <div class="entry" >
+	                    <input type="text" ng-model="selectedEntity.reference_number"/>
+	                </div>
+                </div>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset class="content-right">
+		<span class="h2 message" ng-hide = "(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION') || billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING' || billingEntity === 'GROUP_DEFAULT_BILLING' || (selectedEntity.entity_type == 'GROUP' || selectedEntity.entity_type == 'ALLOTMENT' || selectedEntity.entity_type == 'HOUSE')">
+		  {{'ROUTE_TO_BILL' | translate}}
+			<div class="select"> <!-- 'select-stand-alone' this class was removed as part of a fix. Need to verify-->
+				<select ng-model = "selectedEntity.to_bill" ng-disabled = "!selectedEntity.is_new" name="post-charge-to-bill" >
+					<option value="{{bill.id}}" ng-selected = "bill.id == selectedEntity.to_bill" ng-repeat = "bill in bills">{{bill.bill_number}}</option>
+					<!-- .. add options as needed -->
+				</select>
+			</div>
+		</span>
+		<span class="h2 message" ng-show="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'GROUP_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'" translate> DETAILS</span>
+		<span ng-include="'/assets/partials/billingInformation/sharedPartials/rvChargeCodesAndBillingGroup.html'">		
+		</span>
+	</fieldset>
+</div>
+<div class="actions">
+	<button type="button" id="close-information" class="button blank modal-close" ng-click = "headerButtonClicked()" ng-hide="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING' || billingEntity === 'GROUP_DEFAULT_BILLING'">CANCEL</button>
+	<button type="button" id="close-information" class="button blank modal-close" ng-click = "closeThisDialog()" ng-show="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING' || billingEntity === 'GROUP_DEFAULT_BILLING'">CANCEL</button>
+
+	<button type="button" id="save-route" class="button green modal-close" ng-click = "saveRoute()" ng-hide="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING'" translate>SAVE_ROUTE</button>
+	<button type="button" id="save-route" class="button green modal-close" ng-click = "saveRoute()" ng-show="billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING'" translate>SAVE</button>
+</div>
