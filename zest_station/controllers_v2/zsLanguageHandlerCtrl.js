@@ -14,7 +14,7 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
             $scope.runDigestCycle();
         };
 
-        var setDefaultLanguage = function() {
+        var setToLanguage = function(setToDefaultLanguage) {
 
             var findTheDefaultLanguage = function() {
                     _.each($scope.languageDetails, function(language) {
@@ -24,8 +24,13 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
                     });
                     return $scope.$parent.selectedLanguage;
                 }
-                //if some default language is set and corresposnding file is updated
-            if (!!$scope.zestStationData.zest_lang.default_language) {
+                //when some language was set initially, we need not translate to the default language
+                //instead we need to update (mainly to set the icon) that to the selected language
+            if (!setToDefaultLanguage) {
+                $scope.selectedLanguage = $scope.zestStationData.selectedLanguage;
+            }
+            //if some default language is set and corresposnding file is updated
+            else if (!!$scope.zestStationData.zest_lang.default_language) {
                 $scope.zestStationData.zest_lang.default_language = $scope.zestStationData.zest_lang.default_language;
                 var language = findTheDefaultLanguage();
                 //when english is set as default language and 
@@ -48,6 +53,13 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
                 }
             };
 
+            //update flag to say that some language was set, if some language
+            //is selected we dont need to change to defaulkt language, on
+            //going to the home controller
+            //so this is one time check only, so once translate function is called
+            //the below flag will be set true always.
+            $scope.zestStationData.IsDefaultLanguageSet = true;
+
         };
         var setlanguageListForPopUp = function() {
             $scope.languageList = [];
@@ -63,13 +75,17 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
             }
         };
         $scope.selectLanguage = function(language) {
+            //update home ctrl variable
             $scope.$parent.selectedLanguage = language;
+            //update root ctrl variable
+            $scope.zestStationData.selectedLanguage = language;
             $scope.translateTo($scope.$parent.selectedLanguage.info.code, $scope.$parent.selectedLanguage);
             $scope.$parent.languageSelect();
         };
 
         $scope.$on('RESET_LANGUAGE', function() {
-            setDefaultLanguage();
+            var setToDefaultLanguage = true;
+            setToLanguage(setToDefaultLanguage);
         });
 
         /**
@@ -79,7 +95,10 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
         var initializeMe = function() {
             $scope.languageDetails = zsGeneralSrv.returnLanguageList();
             setlanguageListForPopUp();
-            setDefaultLanguage();
+            //check if default language was already set, if else 
+            //no need to set to default
+            var setToDefaultLanguage = !$scope.zestStationData.IsDefaultLanguageSet;
+            setToLanguage(setToDefaultLanguage);
         };
         initializeMe();
 

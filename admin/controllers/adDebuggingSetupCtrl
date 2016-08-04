@@ -1,0 +1,55 @@
+admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state','$filter','$stateParams',function($scope,adDebuggingSetupSrv,$state,$filter,$stateParams){
+
+ /*
+  * To retrieve previous state
+  */
+
+  $scope.errorMessage = '';
+  $scope.successMessage = '';
+  $scope.isLoading = true;
+
+  BaseCtrl.call(this, $scope);
+
+
+  $scope.fetchDeviceDebugSetup = function(){
+
+    var fetchDeviceDebugSetupSuccessCallback = function(data) {
+        $scope.isLoading = false;
+        $scope.$emit('hideLoader');
+        $scope.deviceList = data;
+
+  };
+  
+  $scope.invokeApi(adDebuggingSetupSrv.fetchDevices, {},fetchDeviceDebugSetupSuccessCallback);
+
+  };
+  $scope.fetchDeviceDebugSetup();
+
+  $scope.saveDebugSettings = function(){
+
+    var saveDebugSetupSuccessCallback = function(data) {
+        $scope.isLoading = false;
+        $scope.$emit('hideLoader');
+
+
+  };
+  var unwantedKeys = ["app_version", "device_type", "logging_start_time", "logging_end_time"];
+  var saveData = dclone($scope.selectedDevice, unwantedKeys);
+
+  $scope.invokeApi(adDebuggingSetupSrv.saveSetup, saveData,saveDebugSetupSuccessCallback);
+
+  };
+
+  $scope.selectDevice = function(device){
+    $scope.selectedDevice = device;
+  }
+
+  var setHoursList = function(){
+    $scope.hours = [];
+    for(var i = 1; i < 25; i++){
+      $scope.hours.push(i);
+    } 
+  };
+  setHoursList();
+
+  }]);

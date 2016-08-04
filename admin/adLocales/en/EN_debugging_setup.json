@@ -1,0 +1,19 @@
+
+
+
+
+
+
+
+"DEBUGGING_SETUP_TITLE": "Logging Setup",
+"DEBUGGING_SWITCH_LABEL": "Enable Logging",
+"DEBUG_DURATION_PLACEHOLDER": "duration",
+"DEBUG_DURATION_LABEL": "Debug Duration (in hours)",
+"DEBUG_APP_LABEL": "Application :",
+"DEBUG_APP_VERSION_LABEL": "Application version :",
+"DEBUG_DEVICE_TYPE_LABEL": "Device type :",
+"DEBUG_DEVICE_VERSION_LABEL": "Device version :",
+"DEBUG_DEVICE_USER_LABEL": "Last logged in user :",
+"START_LABEL" : "Started at :",
+"DEBUG_DEVICE_NAME_LABEL" : "Device name :",
+"END_LABEL" : "Ends at :"

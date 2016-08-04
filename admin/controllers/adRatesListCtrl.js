@@ -30,15 +30,19 @@ admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSr
 	$scope.fetchTableData = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
-			$scope.$emit('hideLoader');
-			//No expanded rate view
-			$scope.currentClickedElement = -1;
-			$scope.totalCount = data.total_count;
-			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
-			$scope.data = data.results;
-			$scope.currentPage = params.page();
-        	params.total(data.total_count);
-            $defer.resolve($scope.data);
+			$timeout(function() {
+		        $scope.$emit('hideLoader');
+				//No expanded rate view
+				$scope.currentClickedElement = -1;
+				$scope.totalCount = data.total_count;
+				$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+				$scope.data = data.results;
+				$scope.currentPage = params.page();
+	        	params.total(data.total_count);
+	        	//params.total(data.results.length);
+	            $defer.resolve($scope.data);
+		    }, 500);
+
 		};
 		$scope.invokeApi(ADRatesSrv.fetchRates, getParams, fetchSuccessOfItemList);
 	};
@@ -52,8 +56,9 @@ admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSr
 		            rate: 'asc' // initial sorting
 		        }
 		    }, {
-		        total: 0, // length of data
+		        total: $scope.data.length, // length of data
 		        getData: $scope.fetchTableData
+
 		    }
 		);
 	};
