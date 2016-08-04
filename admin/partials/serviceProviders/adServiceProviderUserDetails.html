@@ -4,8 +4,8 @@
 		<!-- CICO-30219 START -->
 		<!-- Add New User -->
 		<header class="content-title float">
-		    <h2>Add new User for <strong>{Service Provider Name}</strong></h2>
-		    <a ui-sref="admin.serviceProviderUsers({id:usedDetails.service_provider_id,name:serviceProviderName})"class="action back">Back to Users</a>
+		    <h2>Add new User for <strong>{{serviceProviderName}}</strong></h2>
+		    <a ui-sref="admin.serviceProviderUsers({id:userDetails.service_provider_id,name:serviceProviderName})"class="action back">Back to Users</a>
 		</header>
 		<form method="post" action="{action}" class="form float">
 		    <fieldset class="holder left">
@@ -15,27 +15,27 @@
 		        </div>
 		        <div class="entry">
 		            <label for="{first-name}" >First name <strong>*</strong></label>
-		            <input type="text" name="{first-name}" id="{first-name}" placeholder="Enter first name" value="{value}" ng-model="usedDetails.first_name" required />
+		            <input type="text" name="{first-name}" id="{first-name}" placeholder="Enter first name" ng-model="userDetails.first_name" required />
 		        </div>
 		        <div class="entry">
 		            <label for="{last-name}">Last name <strong>*</strong></label>
-		            <input type="text" name="{last-name}" id="{last-name}" placeholder="Enter last name" value="{value}" ng-model="usedDetails.last_name" required />
+		            <input type="text" name="{last-name}" id="{last-name}" placeholder="Enter last name" ng-model="userDetails.last_name" required />
 		        </div>
 		        <div class="entry">
 		            <label for="{job-title}">Job Title <strong>*</strong></label>
-		            <input type="text" name="{job-title}" id="{job-title}" placeholder="Enter job title" value="{value}" ng-model="usedDetails.job_title"	required />
+		            <input type="text" name="{job-title}" id="{job-title}" placeholder="Enter job title" ng-model="userDetails.job_title"	required />
 		        </div>
 		        <div class="entry">
 		            <label for="{phone}">Phone</label>
-		            <input type="text" name="{phone}" id="{phone}" placeholder="Enter phone number" value="{value}" ng-model="usedDetails.phone"/>
+		            <input type="text" name="{phone}" id="{phone}" placeholder="Enter phone number" ng-model="userDetails.phone"/>
 		        </div>
 		        <div class="entry full-width">
 		            <label for="{user-picture}">Picture <strong>*</strong></label>
 		            <div class="file-upload with-preview">
-		                <input type="file" ng-model="usedDetails.image" accept="image/*" app-filereader />
+		                <input type="file" ng-model="userDetails.image" accept="image/*" app-filereader />
 		                <button type="button" class="button brand-colors">Choose file</button>
 		            </div>
-		            <span class="file-preview"><img ng-src="{{usedDetails.image}}" id="file-preview" alt=""></span>
+		            <span class="file-preview"><img ng-src="{{userDetails.image}}" id="file-preview" alt=""></span>
 		        </div>
 		    </fieldset>
 		    <fieldset class="holder right">
@@ -45,19 +45,19 @@
 		        </div>
 		        <div class="entry full-width">
 		            <label for="{email}">Email <strong>*</strong></label>
-		            <input type="text" name="{email}" id="{email}" placeholder="Enter email addres" value="{value}" ng-model="usedDetails.email"required />
+		            <input type="text" name="{email}" id="{email}" placeholder="Enter email addres" value="{value}" ng-model="userDetails.email"required />
 		        </div>
 		        <div class="entry full-width">
 		            <label for="{retype-email}">Re-type email <strong>*</strong></label>
-		            <input type="text" name="{retype-email}" id="{retype-email}" placeholder="Confirm email addres" value="{value}" ng-model="usedDetails.confirm_email" required />
+		            <input type="text" name="{retype-email}" id="{retype-email}" placeholder="Confirm email addres" value="{value}" ng-model="userDetails.confirm_email" required />
 		        </div>
 		        <div class="entry full-width">
 		            <label for="{password}">Password <strong>*</strong></label>
-		            <input type="password" name="{password}" id="{password}" placeholder="Enter password" value="{value}" ng-model="usedDetails.password" required />
+		            <input type="password" name="{password}" id="{password}" placeholder="Enter password" value="" ng-model="userDetails.password" required />
 		        </div>
 		        <div class="entry full-width">
 		            <label for="{retype-password}">Re-type password <strong>*</strong></label>
-		            <input type="password" name="{retype-password}" id="{retype-password}" placeholder="Confirm password" value="{value}" ng-model="usedDetails.confirm_password" required />
+		            <input type="password" name="{retype-password}" id="{retype-password}" placeholder="Confirm password" value="" ng-model="userDetails.confirm_password" required />
 		        </div>
 		    </fieldset>
 		    <div class="actions float">
