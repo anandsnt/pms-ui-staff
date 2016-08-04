@@ -22,15 +22,30 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
     this.fetch = function(params){
 
         var deferred = $q.defer();
-        //var url = '/admin/users.json';
-        
-        var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
+        var url = '/admin/users.json';        
+        //var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
         ADBaseWebSrvV2.getJSON(url ,params).then(function(data) {
                 deferred.resolve(data);
             },function(data){
                 deferred.reject(data);
             });
         return deferred.promise;
+    };
+    /**
+    * To activate/inactivate user
+    * @param {object} data - data to activate/inactivate
+    * @return {object}
+    */
+    this.activateInactivate = function(data){
+        var deferred = $q.defer();
+        var url = '/admin/users/toggle_activation';
+        ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+
     };
 
     /**
@@ -42,6 +57,36 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
         var url = '/admin/service_providers';
 
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    /**
+    *   Service to add a new service provider user
+    *   @param {Object} data holding the service provider details.
+    */
+    this.addServiceProviderUser = function(data){
+        var deferred = $q.defer();
+        var url = '/admin/users';
+        ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+     /**
+    *   Service to edit a new service provider user
+    *   @param {Object} data holding the service provider details.
+    */
+    this.editServiceProviderUser = function(data){
+        var deferred = $q.defer();
+        var url = '/admin/users';
+        ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
             deferred.resolve(data);
         },function(data){
             deferred.reject(data);
