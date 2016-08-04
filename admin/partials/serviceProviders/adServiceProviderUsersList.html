@@ -5,7 +5,7 @@
         <header class="content-title float">
             <h2>Users for <strong>{{serviceProviderName}}</strong></h2>
             <span class="count">({{totalCount}})</span>
-            <a href="{service-provider-users-new-or-edit.html}" class="action add">Add new</a>
+            <a ui-sref="admin.serviceprovideruserdetails({ page: 'add', serviceProviderId: serviceProviderId,name:serviceProviderName})" class="action add">Add new</a>
             <a href="{service-provider-edit}" class="action back">Back to {{serviceProviderName}}</a>
         </header>    
         <section>

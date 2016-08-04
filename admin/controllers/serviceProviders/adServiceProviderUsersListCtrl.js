@@ -54,7 +54,7 @@ admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'
 			$scope.data[index].is_active = (currentStatus === "true" ? "false" : "true");
 			$scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(ADUserSrv.activateInactivate, data , successCallbackActivateInactivate);
+		$scope.invokeApi(ADServiceProviderSrv.activateInactivate, data , successCallbackActivateInactivate);
 	};
    /**
     * To delete user
@@ -71,7 +71,7 @@ admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'
 			//To refresh the user list
 			$scope.listUsers();
 		};
-		$scope.invokeApi(ADUserSrv.deleteUser, data, successDelete );
+		$scope.invokeApi(ADServiceProviderSrv.deleteUser, data, successDelete );
 	};
 
 
