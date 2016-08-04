@@ -239,7 +239,7 @@
 					<span ng-show="feesData.reference_text != ''" class="reference">
 						{{feesData.reference_text}}
 					</span>
-					<span class="adjusted" ng-show="feesData.adjustment_reason !=''">
+					<span class="adjusted" ng-show="feesData.adjustment_reason && feesData.adjustment_reason !=''">
 						<em>{{'ADJUSTMENT' | translate}}</em> - {{feesData.adjustment_reason}}
 					</span>
 				</td>
