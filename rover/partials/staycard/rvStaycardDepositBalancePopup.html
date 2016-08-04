@@ -1,0 +1,111 @@
+<!--<div ng-init="isModifiedDepositBalanceModal = true"-->
+<!--ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div>-->
+
+<!--<div class="entry" ng-show="showSixPayCardInput()">-->
+<!--<div ng-include="'/assets/partials/payment/rvSixPayCardInput.html'"></div>-->
+<!--</div>-->
+
+
+<!--<div ng-hide="depositBalanceMakePaymentData.payment_type == 'GIFT_CARD'">-->
+<!--<div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"-->
+<!--ng-hide="shouldShowMakePaymentScreen"></div>-->
+<!--</div>-->
+
+<!--<div class="entry full-width" ng-click="showAddCardSection()"-->
+<!--ng-show="shouldShowMakePaymentScreen  && !depositPaidSuccesFully && shouldCardAvailable && depositBalanceMakePaymentData.payment_type ==='CC' && (paymentGateway !== 'sixpayments' || isManual)"-->
+<!--id="selected-card">-->
+<!--<label>Credit Card (<span>Tap to change</span>)</label>-->
+<!--<label class="active-item item-payment" id="pay-with-discover">-->
+<!--<figure class="card-logo">-->
+<!--<img alt="" src="/assets/images/{{depositBalanceMakePaymentData.card_code}}.png">-->
+<!--</figure>-->
+<!--<span class="number">Ending with <span class="value number">{{depositBalanceMakePaymentData.ending_with}}</span></span>-->
+<!--<span class="date">Date <span class="value date">{{depositBalanceMakePaymentData.card_expiry}}</span></span>-->
+<!--</label>-->
+<!--</div>-->
+
+<!-- Add class "amount" when fee exsists -->
+<div class="entry full-width deposit-amount"
+     ng-show="(shouldShowMakePaymentScreen && !depositPaidSuccesFully) || selectedPaymentType === 'GIFT_CARD'"
+     ng-class="{'amount': feeData.showFee}">
+
+    <div class="entry card-number"
+         ng-show="selectedPaymentType === 'GIFT_CARD'">
+        <label>Card number (<span>No spaces</span>)</label>
+        <input placeholder="Enter Card number"
+               ng-model="giftCard.number"
+               maxlength="22"
+               rv-delay-textbox
+               delay="1000"
+               function-to-fire="onChangeGiftCard"
+               type="text"/>
+        <label ng-show="giftCard.amountAvailable"> Available Card Balance({{currencySymbol}}) </label>
+        <input ng-show="giftCard.amountAvailable"
+               ng-readonly="true"
+               ng-model="giftCard.availableBalance"
+               type="text"/>
+    </div>
+    <div class="entry full-width" ng-if="!isBalanceAmountShown()">
+        <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+
+        <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
+        <input ng-change="onPaymentInfoChange()"
+               ng-model="payment.amount"
+               type="text"
+               ng-disabled="!payment.isEditable"
+               class="amount"
+               ng-if="!payment.isRateSuppressed" />
+        <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
+        <input type="text"
+               ng-disabled="!payment.isEditable"
+               class="amount"
+               ng-if="payment.isRateSuppressed"
+               value="{{'SUPPRESSED_RATES_TEXT' | translate}}" />
+
+        <span ng-show="feeData.showFee" class="delimiter">+</span>
+
+        <input ng-show="feeData.showFee && !payment.isRateSuppressed"
+               ng-change="onFeeOverride()"
+               ng-model="feeData.calculatedFee"
+               value="{{feeData.calculatedFee}}"
+               type="text"
+               class="fee"/>
+
+        <input ng-show="feeData.showFee && payment.isRateSuppressed"
+               value="{{'SUPPRESSED_RATES_TEXT' | translate}}"
+               type="text"
+               class="fee"/>
+
+        <span ng-show="feeData.showFee" class="delimiter">fee</span>
+
+        <span ng-show="feeData.showFee" class="total">
+          Total:
+          <strong ng-if="!payment.isRateSuppressed">
+              {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+          </strong>
+          <strong ng-if="payment.isRateSuppressed">
+              {{'SUPPRESSED_RATES_TEXT' | translate}}
+          </strong>
+        </span>
+    </div>
+</div>
+<!-- Reference field - use only when it exsits -->
+<div class="entry full-width reference"
+     ng-show="shouldShowMakePaymentScreen  && isDisplayReference && !depositPaidSuccesFully">
+    <label for="reference">Reference</label>
+    <input name="reference" id="reference" ng-model="referanceText" type="text"/>
+</div>
+<div class="entry full-width add-to-guest payment-checkbox-container" style="float:left;"
+     ng-show="isAddToGuestCardVisible && !depositPaidSuccesFully && shouldShowMakePaymentScreen && passData.origin=='STAYCARD'">
+    <label class="checkbox add-to-guest" ng-class="{'checked': depositBalanceMakePaymentData.add_to_guest_card}">
+        <span class="icon-form icon-checkbox"
+              ng-class="{'checked': depositBalanceMakePaymentData.add_to_guest_card}"></span>
+        <input type="checkbox" ng-model="depositBalanceMakePaymentData.add_to_guest_card">
+        <span class="guest_card_promotions" translate>ADD_TO_GUEST_CARD</span>
+    </label>
+    <!-- <label class="checkbox add-to-guest payment-checkbox" ng-show="passData.showDoNotAuthorize && saveData.selected_payment_type == '0'"  ng-class="{'checked': do_not_cc_auth}" >
+        <span class="icon-form icon-checkbox" ng-class="{'checked': do_not_cc_auth}"></span>
+        <input type="checkbox" ng-model="do_not_cc_auth" >
+        <span class="guest_card_promotions" translate>DO_NOT_AUTHORIZE</span>
+    </label> -->
+</div>

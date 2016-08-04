@@ -30,17 +30,6 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			$scope.isDepositEditable = ($scope.depositDetails.deposit_policy.allow_deposit_edit !== null && $scope.depositDetails.deposit_policy.allow_deposit_edit) ? true : false;
 			$scope.depositPolicyName = $scope.depositDetails.deposit_policy.description;
 			$scope.depositAmount = parseFloat($scope.depositDetails.deposit_amount).toFixed(2);
-			
-			//TODO:move this to root ctrl
-			$scope.hotelPaymentConfig = {
-				isStandAlone: $rootScope.isStandAlone,
-				paymentGateway: $rootScope.paymentGateway,
-				workstationId: $rootScope.workstation_id,
-				emvTimeout: $rootScope.emvTimeout,
-				mliMerchantId: $rootScope.MLImerchantId,
-				currencySymbol: $rootScope.currencySymbol,
-				isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled
-			};
 		}();
 		
 
