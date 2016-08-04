@@ -1,0 +1,61 @@
+<section id="replacing-div-first" class="content current admin-scrollfix" div-touch-move-stop-propogate>
+    <div id="users_list" data-view="UsersListView">
+        <!-- Hotels list -->
+    <section>   
+        <header class="content-title float">
+            <h2>Users for <strong>{{serviceProviderName}}</strong></h2>
+            <span class="count">({{totalCount}})</span>
+            <a href="{service-provider-users-new-or-edit.html}" class="action add">Add new</a>
+            <a href="{service-provider-edit}" class="action back">Back to {{serviceProviderName}}</a>
+        </header>    
+        <section>
+            <table class="grid datatable" id="users_list_table" ng-table="tableParams"
+            template-pagination="custom/pager">    
+                <tbody>
+                    <tr ng-repeat="user in $data">
+                        <td data-title="'Name'" sortable="'full_name'">
+                            <a href="{service-provider-user-new-or-edit.html}">{{user.full_name}}</a>
+                        </td>
+                        <td data-title="'Email'" sortable="'email'">{{user.email}}</td>
+                    
+                        <td data-title ="'Last Login'"><span class="login" sortable="last_login_date">{{user.last_login_date}}</span></td>
+                        <td class="activate">
+                            <!-- add .on if active, remove .on if inactive -->
+                            <div class="switch-button" ng-class="{ on : user.is_active == 'true' }" ng-click="activateInactivate(user.id, user.is_active, $index)">
+                                <!-- add checked if active, remove checked if inactive -->
+                                <input name="{name}" id="{id}" value="{value}" type="checkbox" checked />
+                                <span class="switch-icon"></span>
+                            </div>
+                        </td>
+                        <td class="delete">
+                            <button type="button" class="icons icon-lock">Unlock</button>
+                        </td>
+                        <td class="delete"><a href="#" class="icons icon-delete large-icon">Delete</a></td>
+                    </tr>
+                </tbody>
+            </table>    
+        </section>
+        <!--Custom pagination footer goes here-->
+        <script type="text/ng-template" id="custom/pager">
+            <div class = "pager">
+                <span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+                <span ng-show="totalCount==0">Showing 0 items</span>
+                <ul class="ng-cloak">
+                    <li ng-repeat="page in pages"
+                        ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                        ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+    
+                        <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+                        
+                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+                        <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+                    </li>
+                </ul>
+            </div>
+        </script>
+    </section>
+    </div>
+</section>
