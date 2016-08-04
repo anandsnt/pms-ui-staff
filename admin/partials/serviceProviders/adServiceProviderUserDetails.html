@@ -32,10 +32,12 @@
 		        <div class="entry full-width">
 		            <label for="{user-picture}">Picture <strong>*</strong></label>
 		            <div class="file-upload with-preview">
-		                <input type="file" ng-model="userDetails.image" accept="image/*" app-filereader />
+		                <input type="file" ng-model="userDetails.user_photo" accept="image/*" app-filereader />
 		                <button type="button" class="button brand-colors">Choose file</button>
 		            </div>
-		            <span class="file-preview"><img ng-src="{{userDetails.image}}" id="file-preview" alt=""></span>
+		            <span class="file-preview">
+		            	<img ng-src="{{userDetails.user_photo}}" id="file-preview" alt=""></span>
+		            	<em ng-hide="userDetails.user_photo"=>Preview not available</em>
 		        </div>
 		    </fieldset>
 		    <fieldset class="holder right">

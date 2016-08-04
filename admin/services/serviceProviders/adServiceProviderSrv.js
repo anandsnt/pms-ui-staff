@@ -99,7 +99,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
     */
     this.updateServiceProviderUser = function(data){
         var deferred = $q.defer();
-        var url = '/admin/users';
+        var url = '/admin/users/'+ data.user_id;
         ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
             deferred.resolve(data);
         },function(data){
