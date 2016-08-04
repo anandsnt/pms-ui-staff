@@ -333,13 +333,14 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
 
         var checkinTimeWithinTheHour = function() {
-            if ($scope.zestStationData.theme !== 'yotel'){
+            if (!$scope.zestStationData.isHourlyRateOn){
+                console.log('Non-Hourly Hotel, not checking arrival time');
                 return true;
             };
             /*
              * for hourly hotels, we just need to check that the reservation is checking in during their arrival time, otherwise, ask they wait until later
              */
-            console.log(' :: checkinTimeNotWithinTheHour ::');
+            console.log(' :: Hourly Hotel, Checking if arrival time is within an hour ::');
             var current = new Date();
 
             var nowHour = current.getHours(),
