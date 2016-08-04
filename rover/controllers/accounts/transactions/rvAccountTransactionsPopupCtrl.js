@@ -190,5 +190,11 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	   	var queryText = $scope.chargecodeData.chargeCodeSearchText;
 	    $scope.chargecodeData.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
     };
+    /* 
+     * Method to update the button label on EDIT CHARGE screen
+     */
+    $scope.getEditChargeButtonText = function() {
+		return ($scope.chargeCodeActive) ? 'CHANGE_CHARGE_CODE' : 'CHANGE_AMOUNT';
+	};
 
 }]);
