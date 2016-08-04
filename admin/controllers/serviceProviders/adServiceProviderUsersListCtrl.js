@@ -1,12 +1,16 @@
 admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$stateParams', 'ADServiceProviderSrv', 'ngTableParams','$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADServiceProviderSrv, ngTableParams, $filter){
 	BaseCtrl.call(this, $scope);
+	ADBaseTableCtrl.call(this, $scope, ngTableParams); 
+	var init = function(){
 	$scope.serviceProviderId = $stateParams.id;
 	$scope.serviceProviderName = $stateParams.name;
-	ADBaseTableCtrl.call(this, $scope, ngTableParams);   
+	loadTable();
+	};
+	  
    /**
     * To fetch the list of users
     */
-	$scope.fetchTableData = function($defer, params){
+	var fetchTableData = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
 		getParams.service_provider_id = $scope.serviceProviderId;
 		var successCallbackFetch = function(data){
@@ -23,7 +27,7 @@ admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'
 	};
 
 
-	$scope.loadTable = function(){
+	var loadTable = function(){
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
 		        count: $scope.displyCount, // count per page
@@ -32,12 +36,11 @@ admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'
 		        }
 		    }, {
 		        total: 0, // length of data
-		        getData: $scope.fetchTableData
+		        getData: fetchTableData
 		    }
 		);
 	};
-
-	$scope.loadTable();
+	
    /**
     * To Activate/Inactivate user
     * @param {string} user id
@@ -61,25 +64,16 @@ admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'
     * @param {int} index of the selected user
     * @param {string} user id
     */
-	$scope.deleteUser = function(index, userId){
+	$scope.deleteUser = function(userId, index){
 		var data = {
-			"id": userId,
-			"index": index
+			"id": userId
 		};
 		var successDelete = function(){
-			$scope.$emit('hideLoader');
-			//To refresh the user list
-			$scope.listUsers();
+			$scope.data.splice(index,1);
+			$scope.$emit('hideLoader');			
 		};
 		$scope.invokeApi(ADServiceProviderSrv.deleteUser, data, successDelete );
 	};
 
-
-	/**
-    * Handle back action
-    */
-	$scope.clickBack = function(){
-		$state.go("admin.hoteldetails");
-	};
-
+	init();
 }]);

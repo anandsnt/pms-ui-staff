@@ -6,7 +6,7 @@
             <h2>Users for <strong>{{serviceProviderName}}</strong></h2>
             <span class="count">({{totalCount}})</span>
             <a ui-sref="admin.serviceprovideruserdetails({ serviceProviderId: serviceProviderId,name:serviceProviderName})" class="action add">Add new</a>
-            <a href="{service-provider-edit}" class="action back">Back to {{serviceProviderName}}</a>
+            <a ui-sref="admin.sntserviceproviderdetails({action:'edit',id:serviceProviderId})" class="action back">Back to {{serviceProviderName}}</a>
         </header>    
         <section>
             <table class="grid datatable" id="users_list_table" ng-table="tableParams"
@@ -21,16 +21,16 @@
                         <td data-title ="'Last Login'"><span class="login" sortable="last_login_date">{{user.last_login_date}}</span></td>
                         <td class="activate">
                             <!-- add .on if active, remove .on if inactive -->
-                            <div class="switch-button" ng-class="{ on : user.is_active == 'true' }" ng-click="activateInactivate(user.id, user.is_active, $index)">
+                            <div class="switch-button" ng-class="{ on : user.is_active == 'true' }">
                                 <!-- add checked if active, remove checked if inactive -->
-                                <input name="{name}" id="{id}" value="{value}" type="checkbox" checked />
+                                <input name="{name}" id="{id}" value="{value}" type="checkbox" ng-click="activateInactivate(user.id, user.is_active, $index)"  checked />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
                         <td class="delete">
-                            <button type="button" class="icons icon-lock">Unlock</button>
+                            <button type="button" class="icons icon-lock" >Unlock</button>
                         </td>
-                        <td class="delete"><a href="#" class="icons icon-delete large-icon">Delete</a></td>
+                        <td class="delete" ng-click="deleteUser(user.id, $index)"><a href="#" class="icons icon-delete large-icon" >Delete</a></td>
                     </tr>
                 </tbody>
             </table>    
