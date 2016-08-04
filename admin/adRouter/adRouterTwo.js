@@ -547,6 +547,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/analyticSetup'
 		});
 
+		$stateProvider.state('admin.debuggingSetup', {
+			templateUrl: '/assets/partials/debuggingSetup/adDebuggingSetup.html',
+			controller: 'adDebuggingSetupCtrl',
+			url : '/debuggingSetup'
+		});
+
 		$stateProvider.state('admin.zestAddons', {
 			templateUrl: '/assets/partials/zestAddonSetup/adZestAddonSetup.html',
 			controller: 'adZestAddonSetupCtrl',
