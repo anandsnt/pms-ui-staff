@@ -77,4 +77,14 @@
 			<span>{{ note.note }}</span>
 		</p>
 	</td>
+
+	<!-- actions -->
+	<td ng-if="each.isActionData" class="secondary actions" colspan="5">
+	    <strong>Actions</strong>
+	    <p ng-repeat="action in each.actions">
+	        <i class="icons icon-action-report" ng-class="{'icon-assigned': (action.action_status == 'ASSIGNED'), 'icon-unassigned': (action.action_status =='UNASSIGNED'), 'icon-completed': (action.action_status == 'COMPLETED')}"></i>
+	        <span>{{ action.due_at }} &#8226; {{ action.assigned_to }}</span>
+	        <span>{{ action.description }}</span>
+	    </p>
+	</td>
 </tr>
