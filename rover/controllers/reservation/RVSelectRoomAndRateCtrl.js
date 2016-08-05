@@ -92,7 +92,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.reservationData.group.id ||
 					$stateParams.allotment_id ||
 					$scope.reservationData.allotment.id ||
-					$stateParams.promotion_code ||
+					$stateParams.promotion_id ||
 					$scope.reservationData.promotionId ||
 					$stateParams.is_member == "true"
 			},
@@ -682,7 +682,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 				if($stateParams.travel_agent_id || $stateParams.company_id
 					 || $stateParams.group_id || $stateParams.allotment_id
-					 || $stateParams.promotion_code || $stateParams.is_member == "true" || $stateParams.promotion_id){
+					 || $stateParams.is_member == "true" || $stateParams.promotion_id){
 					$scope.stateCheck.activeView = 'RECOMMENDED';
 				}
 
@@ -695,7 +695,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if ($scope.stateCheck.activeView === 'ROOM_TYPE') {
 					$scope.stateCheck.baseInfo.roomTypes = rates.results;
 					generateRoomTypeGrid();
-				} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
+				} else if ($scope.stateCheck.activeView === 'RATE' || ($scope.stateCheck.activeView === 'RECOMMENDED' && shouldRecommend())) {
 					$scope.stateCheck.baseInfo.rates = rates.results;
 					generateRatesGrid($scope.stateCheck.baseInfo.rates);
 				}

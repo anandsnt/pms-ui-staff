@@ -142,7 +142,7 @@ angular.module('stayCardModule', [])
                         params.is_member = $stateParams.is_member;
 
                     var activeTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
-                    if(params.company_id || params.travel_agent_id || params.group_id || params.promotion_code || params.promotion_id || params.is_member) {
+                    if(params.company_id || params.travel_agent_id || params.group_id || params.promotion_id || params.is_member) {
                         activeTab = 'RECOMMENDED';
                     }
                     RVRoomRatesSrv.setRoomAndRateActiveTab(activeTab);
