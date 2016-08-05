@@ -1,0 +1,92 @@
+admin.controller('ADServiceProviderUserDetailsCtrl',['$scope','$rootScope', '$q' ,'$state','$stateParams', 'ADServiceProviderSrv', 'ngTableParams','$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADServiceProviderSrv, ngTableParams, $filter){
+	BaseCtrl.call(this, $scope);	
+
+	var init = function(){
+		$scope.userDetails = {};
+		$scope.userDetails.service_provider_id = $stateParams.serviceProviderId;
+		//if userId exist its edit screen else add new screen
+		if(!!$stateParams.userId){
+			$scope.userDetails.user_id = $stateParams.userId;
+			fetchUserDetails();
+		};
+		$scope.serviceProviderName = $stateParams.name;
+	};
+	/**
+    * To fetch users details
+    */
+	var fetchUserDetails =  function(){
+		var param = {
+			id :$scope.userDetails.user_id
+		};
+		var successCallbackFetch = function(data){
+			$scope.userDetails = Object.assign($scope.userDetails,data);
+			$scope.$emit('hideLoader');
+		};
+		var failedCallbackFetch = function(data){
+			$scope.errorMessage = data;
+			$scope.$emit('hideLoader');
+		};
+		$scope.invokeApi(ADServiceProviderSrv.getServiceProviderUserDetails, param, successCallbackFetch, failedCallbackFetch);
+	};
+	/**
+    * checks whether its from unlock button click
+    */
+	var isInUnlockingMode = function (){
+		return ($stateParams.isUnlocking === "true");
+	};
+	/**
+    * checks the re-invite button status
+    */
+	$scope.disableReInviteButton = function (data) {
+		if (!isInUnlockingMode()) {
+			return (data.is_activated === 'true');
+		}
+		else {
+			return false;
+		}
+	};
+	/*
+    * Function to send invitation
+    * @param {int} user id
+    */
+	$scope.sendInvitation = function(userId){
+		var data = {"id": userId,
+					"password":$scope.userDetails.password,
+					"is_trying_to_unlock": true
+				};
+		var failedCallbackSendInvitation = function(data){
+		$state.go('admin.serviceproviderusers', { 'id': $scope.userDetails.service_provider_id,
+			'name':$scope.serviceProviderName });
+		};
+		var successCallbackOfSendInvitation = function (data) {
+		$scope.$emit('hideLoader');
+		$state.go('admin.serviceproviderusers', {'id': $scope.userDetails.service_provider_id,
+			'name': $scope.serviceProviderName});
+		};		
+	 	$scope.invokeApi(ADServiceProviderSrv.sendInvitation, data, successCallbackOfSendInvitation, failedCallbackSendInvitation);
+	};
+	/**
+    * To save user details
+    */	
+	$scope.save = function(){
+		var successCallbackFetch = function(data){
+			if(!!data.user_id){
+				$scope.userDetails.user_id = data.user_id;
+				};
+			$scope.$emit('hideLoader');
+		};
+		var failedCallbackFetch = function(data){
+			$scope.errorMessage = data;
+			$scope.$emit('hideLoader');
+		};
+		//if userId exist updates the user else add new user
+		if(!$scope.userDetails.user_id){
+			$scope.invokeApi(ADServiceProviderSrv.addServiceProviderUser, $scope.userDetails, successCallbackFetch, failedCallbackFetch);
+		}else{
+			$scope.invokeApi(ADServiceProviderSrv.updateServiceProviderUser, $scope.userDetails, successCallbackFetch, failedCallbackFetch);
+		}
+	};
+	
+	init();
+
+}]);
