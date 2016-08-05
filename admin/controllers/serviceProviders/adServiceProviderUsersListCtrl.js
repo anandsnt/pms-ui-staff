@@ -1,19 +1,23 @@
 admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$stateParams', 'ADServiceProviderSrv', 'ngTableParams','$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADServiceProviderSrv, ngTableParams, $filter){
 	BaseCtrl.call(this, $scope);
-	ADBaseTableCtrl.call(this, $scope, ngTableParams); 
+	ADBaseTableCtrl.call(this, $scope, ngTableParams);
+
 	var init = function(){
 	$scope.serviceProviderId = $stateParams.id;
 	$scope.serviceProviderName = $stateParams.name;
 	loadTable();
 	};
-	  
-   /**
+   	/**
     * To fetch the list of users
     */
 	var fetchTableData = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
 		getParams.service_provider_id = $scope.serviceProviderId;
-		var successCallbackFetch = function(data){
+		var failedcallback = function(data){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = data;
+		};
+		var successCallbackFetch = function(data){			
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			$scope.totalCount = data.total_count;
@@ -23,10 +27,11 @@ admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'
         	params.total(data.total_count);
             $defer.resolve($scope.data);
 		};
-		$scope.invokeApi(ADServiceProviderSrv.fetch, getParams, successCallbackFetch);
+		$scope.invokeApi(ADServiceProviderSrv.fetch, getParams, successCallbackFetch, failedcallback);
 	};
-
-
+	/**
+    * To table data structuring
+    */
 	var loadTable = function(){
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
@@ -74,6 +79,9 @@ admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'
 		};
 		$scope.invokeApi(ADServiceProviderSrv.deleteUser, data, successDelete );
 	};
-
+	/**
+    *Initiating
+    */	
 	init();
+	
 }]);

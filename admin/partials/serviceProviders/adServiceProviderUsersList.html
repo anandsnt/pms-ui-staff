@@ -18,19 +18,17 @@
                         </td>
                         <td data-title="'Email'" sortable="'email'">{{user.email}}</td>
                     
-                        <td data-title ="'Last Login'"><span class="login" sortable="last_login_date">{{user.last_login_date}}</span></td>
-                        <td class="activate">
-                            <!-- add .on if active, remove .on if inactive -->
-                            <div class="switch-button" ng-class="{ on : user.is_active == 'true' }">
-                                <!-- add checked if active, remove checked if inactive -->
+                        <td data-title ="'Last Login'"><span class="login" sortable="last_login_date">{{user.last_login_date}} {{user.last_login_time}}</span></td>
+                        <td data-title ="'Active'" class="activate">                           
+                            <div class="switch-button" ng-class="{ on : user.is_active == 'true' }">                                
                                 <input name="{name}" id="{id}" value="{value}" type="checkbox" ng-click="activateInactivate(user.id, user.is_active, $index)"  checked />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
-                        <td class="delete">
-                            <button type="button" class="icons icon-lock" >Unlock</button>
+                        <td data-title ="'Locked'"class="delete" >
+                            <button ng-show="user.is_locked" type="button" class="icons icon-lock" ui-sref="admin.serviceprovideruserdetails({ serviceProviderId: serviceProviderId,name:serviceProviderName, userId: user.id, isUnlocking:'true'})" >Unlock</button>
                         </td>
-                        <td class="delete" ng-click="deleteUser(user.id, $index)"><a href="#" class="icons icon-delete large-icon" >Delete</a></td>
+                        <td data-title ="'Delete'"class="delete" ng-click="deleteUser(user.id, $index)"><a href="#" class="icons icon-delete large-icon" >Delete</a></td>
                     </tr>
                 </tbody>
             </table>    

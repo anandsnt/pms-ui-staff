@@ -1,11 +1,10 @@
 <section id="replacing-div-first" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
 	<div>		
-		<section class="content-scroll">
-		<!-- CICO-30219 START -->
-		<!-- Add New User -->
+		<section class="content-scroll">		
 		<header class="content-title float">
-		    <h2>Add new User for <strong>{{serviceProviderName}}</strong></h2>
-		    <a ui-sref="admin.serviceProviderUsers({id:userDetails.service_provider_id,name:serviceProviderName})"class="action back">Back to Users</a>
+		    <h2 ng-show="!!userDetails.user_id">Edit User for <strong>{{serviceProviderName}}</strong></h2>
+		    <h2 ng-hide="!!userDetails.user_id">Add new User for <strong>{{serviceProviderName}}</strong></h2>
+		    <a ui-sref="admin.serviceproviderusers({id:userDetails.service_provider_id,name:serviceProviderName})"class="action back">Back to Users</a>
 		</header>
 		<form method="post" action="{action}" class="form float">
 		    <fieldset class="holder left">
@@ -61,9 +60,24 @@
 		            <label for="{retype-password}">Re-type password <strong>*</strong></label>
 		            <input type="password" name="{retype-password}" id="{retype-password}" placeholder="Confirm password" value="" ng-model="userDetails.confirm_password" required />
 		        </div>
+		        <div class="entry re-invite" ng-show="!!userDetails.user_id">
+						<label> Activation Status </label>
+						<div ng-show="userDetails.is_activated == 'true'">
+							ACTIVATED
+						</div>
+						<div ng-show="userDetails.is_activated == 'false'">
+							PENDING
+						</div>
+					</div>
+					<div class="entry re-invite" ng-if="!!userDetails.user_id">
+						<label>
+							<button id="re-invite" ng-click="sendInvitation(userDetails.user_id)" class="button" ng-disabled="!isableReInviteButton(userDetails)" ng-class="{'green': disableReInviteButton(userDetails), 'grey': !disableReInviteButton(userDetails)}">
+								Re-Invite
+							</button> </label>
+					</div>
 		    </fieldset>
 		    <div class="actions float">
-		        <button type="button" class="button blank" ng-click="clickBack()">Cancel</button>
+		        <button type="button" class="button blank" ui-sref="admin.serviceproviderusers({id:userDetails.service_provider_id,name:serviceProviderName})">Cancel</button>
 		        <button type="button" class="button green" ng-click="save()">Save changes</button>  
 		    </div>
 		</form>

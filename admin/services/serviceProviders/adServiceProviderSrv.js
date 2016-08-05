@@ -22,7 +22,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
     this.fetch = function(params){
 
         var deferred = $q.defer();
-        var url = '/admin/users.json';        
+        var url = '/admin/users.json';
         //var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
         ADBaseWebSrvV2.getJSON(url ,params).then(function(data) {
                 deferred.resolve(data);
@@ -94,7 +94,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
     };
 
      /**
-    *   Service to edit a new service provider user
+    *   Service to edit a service provider user
     *   @param {Object} data holding the service provider details.
     */
     this.updateServiceProviderUser = function(data){
@@ -177,7 +177,6 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
     * @return {object}
     */
     this.deleteUser = function(data){
-
         var deferred = $q.defer();
         var url = '/admin/users/'+data.id;
            ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {           
@@ -187,6 +186,21 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
         });
         return deferred.promise;
 
+    };
+    /**
+    * To send invitation mail
+    * @param {object} data - user id
+    * @return {object}  status
+    */
+    this.sendInvitation = function(data){
+        var deferred = $q.defer();
+        var url = '/admin/user/send_invitation';
+        ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
     };
 
 
