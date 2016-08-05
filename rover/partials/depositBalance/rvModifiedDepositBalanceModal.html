@@ -155,53 +155,6 @@
 	                    </li>
 	                </ul>
 	            </div>
-				<div class="actions" ng-show="shouldShowMakePaymentScreen && !depositWithGiftCard">
-					<button type="button" id="close" class="button blank modal-close" ng-click="closeDepositModal()">
-						Close
-					</button>
-					<span ng-hide="depositPaidSuccesFully">
-							<span>
-								<button type="button" ng-disabled="disableMakePayment()" ng-class="showMakePaymentButtonStatus()" ng-click="clickedMakePayment()"  id="make-payment"  class="button modal-close"
-								ng-hide="hideMakePayment()" >
-								Make Payment
-								</button>
-							</span>
-
-					 <!-- the below functionality will be implemented later CICO-13435 -->
-						<!-- <span ng-show="shouldShowMakePaymentButton"><button type="button" ng-disabled="disableMakePayment()" ng-class="showMakePaymentButtonStatus()" ng-click="clickedMakePayment()"  id="make-payment" class="button modal-close" >
-							Make Payment
-						</button>
-					</span>
-						<span ng-show="!shouldShowMakePaymentButton"><button type="button" ng-disabled="disableMakePayment()" ng-class="showRefundButtonStatus()" ng-click="clickedMakePayment()"  id="make-payment" class="button modal-close" >
-							Refund {{currencySymbol}}{{refundAmount}}
-						</button></span> -->
-					</span>
-
-				</div>
-
-				<div class="actions" ng-show="depositWithGiftCard" ng-hide="!depositWithGiftCard">
-					<button type="button" id="close" class="button blank modal-close" ng-click="closeDepositModal()">
-						Close
-					</button>
-					<span ng-hide="depositPaidSuccesFully">
-							<span>
-								<button type="button" ng-disabled="disableMakePayment()" ng-class="showMakePaymentButtonStatus()" ng-click="clickedMakePayment()"  id="make-payment"  class="button modal-close"
-								ng-hide="hideMakePayment()" >
-								Make Payment
-								</button>
-							</span>
-
-					 <!-- the below functionality will be implemented later CICO-13435 -->
-						<!-- <span ng-show="shouldShowMakePaymentButton"><button type="button" ng-disabled="disableMakePayment()" ng-class="showMakePaymentButtonStatus()" ng-click="clickedMakePayment()"  id="make-payment" class="button modal-close" >
-							Make Payment
-						</button>
-					</span>
-						<span ng-show="!shouldShowMakePaymentButton"><button type="button" ng-disabled="disableMakePayment()" ng-class="showRefundButtonStatus()" ng-click="clickedMakePayment()"  id="make-payment" class="button modal-close" >
-							Refund {{currencySymbol}}{{refundAmount}}
-						</button></span> -->
-					</span>
-
-				</div>
                 </div>
 			</div>
 		</fieldset>

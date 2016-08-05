@@ -101,7 +101,7 @@ angular.module("sntPay").controller('payMLIOperationsController', ['$scope', 'sn
 	 */
 	$scope.getMLIToken = function($event) {
 		$event.preventDefault();
-		if (isSwipedCardData) {
+		if (isSwiped) {
 			doSwipedCardActions(swipedCCData);
 		} else {
 			var sessionDetails = setUpSessionDetails();
@@ -116,7 +116,7 @@ angular.module("sntPay").controller('payMLIOperationsController', ['$scope', 'sn
 	};
 
 	var renderDataFromSwipe = function(event, swipedCardData) {
-		isSwipedCardData = true;
+		isSwiped = true;
 		swipedCCData = swipedCardData;
 		$scope.cardData.cardNumber = swipedCardData.cardNumber;
 		$scope.cardData.userName = swipedCardData.nameOnCard;
