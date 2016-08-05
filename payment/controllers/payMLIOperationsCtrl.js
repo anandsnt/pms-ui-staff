@@ -37,7 +37,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
        * @return {[type]}              [description]
        */
       var notifyParent = function(tokenDetails) {
-          var paymentData = util.formCCTokenGeneratedParams({...$scope.cardData, tokenDetails});
+          var paymentData = util.formCCTokenGeneratedParams({...$scope.cardData, ...tokenDetails});
           $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, paymentData);
       };
   
@@ -88,7 +88,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
           $event.preventDefault();
 
           //if swiped data is present
-          if (swipedCCData) {
+          if (isSwiped) {
               doSwipedCardActions(swipedCCData);
               return;
           }

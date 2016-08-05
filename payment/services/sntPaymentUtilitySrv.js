@@ -15,10 +15,10 @@ angular.module('sntPay').service('paymentUtilSrv',
      * @return {object}
      */
     this.formParamsForFetchingTheToken = (object) => ({
-       cardNumber: object.cardData.cardNumber,
-       cardSecurityCode: object.cardData.CCV,
-       cardExpiryMonth: object.cardData.expiryMonth,
-       cardExpiryYear: object.cardData.expiryYear
+       cardNumber: object.cardNumber,
+       cardSecurityCode: object.CCV,
+       cardExpiryMonth: object.expiryMonth,
+       cardExpiryYear: object.expiryYear
     });
 
     /**
