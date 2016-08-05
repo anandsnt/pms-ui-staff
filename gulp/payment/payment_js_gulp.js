@@ -57,8 +57,8 @@ module.exports = function (gulp, $, options) {
             var fileName = paymentProvider + ".min.js";
 
             return gulp.src(PAYMENT_JS_LIST[paymentProvider], {base: '.'})
-                .pipe($.jsvalidate())
                 .pipe($.babel())
+                .pipe($.jsvalidate())
                 .pipe($.concat(fileName))
                 .on('error', onError)
                 .pipe($.ngAnnotate({single_quotes: true, debug: true}))
@@ -104,8 +104,8 @@ module.exports = function (gulp, $, options) {
             });
 
             return gulp.src(filesList, {base: '.'})
-                .pipe($.jsvalidate())
                 .pipe($.babel())
+                .pipe($.jsvalidate())
                 .pipe(gulp.dest(DEST_ROOT_PATH), {overwrite: true});
         });
 

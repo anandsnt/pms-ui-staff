@@ -42,8 +42,8 @@ angular.module('sntPay').service('paymentUtilSrv',
      * @return {object}
      */
     this.formCCTokenGeneratedParams = (object)=> ({
-        apiParams: formApiParamsForCreditCardSaving(object),
-        cardDisplayData: cardDisplayData(object)
+        apiParams: this.formApiParamsForCreditCardSaving(object),
+        cardDisplayData: this.formCardDisplayData(object)
     });
 
     /**
@@ -83,12 +83,12 @@ angular.module('sntPay').service('paymentUtilSrv',
         else if(mliSwipeKey in object) {
             tokenDetails = {
                 ...['et2', 'ksn', 'pan', 'mli_token']
-                    .map(key) => ({[key]: object[key]}),
+                    .map(key => ({[key]: object[key]})),
                 
                 card_code: this.getCreditCardTypeForMLI(object.cardType)
             }
         }
-        var dateDataExist = (expiryMonth && expiryYear);
+        var dateDataExist = (object.expiryMonth && object.expiryYear);
         return {
             ...tokenDetails,
             card_name: object.nameOnCard,
@@ -96,7 +96,7 @@ angular.module('sntPay').service('paymentUtilSrv',
             // after discussing with api team
             // we need to change this, we need to send the month, year as seperately
             // and api can add these hardcoded values
-            card_expiry: dateDataExist ? ('20' + object.expiryYear + '-' + object.expiryMonth + '-01') : '';
+            card_expiry: dateDataExist ? ('20' + object.expiryYear + '-' + object.expiryMonth + '-01') : ''
         }
     };
 

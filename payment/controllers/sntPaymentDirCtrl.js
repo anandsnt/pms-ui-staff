@@ -1,5 +1,5 @@
-angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPaymentSrv", "$location", "PAYMENT_CONFIG",
-	function($scope, sntPaymentSrv, $location, PAYMENT_CONFIG) {
+angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPaymentSrv", "paymentAppEventConstants", "$location", "PAYMENT_CONFIG",
+	function($scope, sntPaymentSrv, payEvntConst, $location, PAYMENT_CONFIG) {
 
 	$scope.payment = {
 		referenceText: "",
@@ -398,7 +398,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 			});
 	};
 
-	$scope.$on('CC_TOKEN_GENERATED', function(event, data) {
+	$scope.$on(payEvntConst.CC_TOKEN_GENERATED, function(event, data) {
 		saveCCPayment(data);
 	});
 

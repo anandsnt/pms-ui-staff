@@ -4,8 +4,10 @@ module.exports = {
             paymentJsAssets = {
                 common: [
 
-                    paymentRoot + "constants/**/*.js",
+                    paymentRoot + "constants/payConfig.js",
                     paymentRoot + 'payApp.js',
+                    paymentRoot + "constants/paymentConstants.js",
+                    paymentRoot + "constants/paymentEventConstants.js",
                     paymentRoot + "controllers/**/*.js",
                     paymentRoot + "directives/**/*.js",
                     paymentRoot + "services/**/*.js"

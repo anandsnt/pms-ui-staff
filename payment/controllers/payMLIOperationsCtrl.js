@@ -1,6 +1,6 @@
 angular.module('sntPay').controller('payMLIOperationsController',
-    ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', 'paymentUtilSrv',
-    function($scope, sntPaymentSrv, payEvntConst, util) {
+    ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', 'paymentUtilSrv', 'paymentConstants',
+    function($scope, sntPaymentSrv, payEvntConst, util, paymentConstants) {
 
       /**
        * variable to keep track swiped & data coming from swipe
@@ -57,7 +57,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
        * @return {[type]}                [description]
        */
       var doSwipedCardActions = function(swipedCardData) {
-          var swipedCardDataToSave = new SwipeOperation().createSWipedDataToSave(swipedCardData),
+          var swipedCardDataToSave = new SwipeOperation().createSWipedDataToSave(swipedCardData);
 
           var paymentData = util.formCCTokenGeneratedParams({
             ...$scope.cardData,
