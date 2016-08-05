@@ -689,6 +689,10 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.closeDialog();
 	};
 
+	$scope.$on("CLOSE_DIALOG", function() {
+		$scope.closeDepositModal();
+	});
+
 	/*
 	 * Make payment button success
 	 * Update balance data in staycard

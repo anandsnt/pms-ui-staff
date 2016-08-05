@@ -26,7 +26,7 @@
 
 <!-- Add class "amount" when fee exsists -->
 <div class="entry full-width deposit-amount"
-     ng-show="(shouldShowMakePaymentScreen && !depositPaidSuccesFully) || selectedPaymentType === 'GIFT_CARD'"
+     ng-show="!!selectedPaymentType"
      ng-class="{'amount': feeData.showFee}">
 
     <div class="entry card-number"
@@ -45,7 +45,7 @@
                ng-model="giftCard.availableBalance"
                type="text"/>
     </div>
-    <div class="entry full-width" ng-if="!isBalanceAmountShown()">
+    <div class="entry full-width">
         <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
 
         <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
@@ -54,13 +54,13 @@
                type="text"
                ng-disabled="!payment.isEditable"
                class="amount"
-               ng-if="!payment.isRateSuppressed" />
+               ng-if="!payment.isRateSuppressed"/>
         <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
         <input type="text"
                ng-disabled="!payment.isEditable"
                class="amount"
                ng-if="payment.isRateSuppressed"
-               value="{{'SUPPRESSED_RATES_TEXT' | translate}}" />
+               value="{{'SUPPRESSED_RATES_TEXT' | translate}}"/>
 
         <span ng-show="feeData.showFee" class="delimiter">+</span>
 
@@ -89,23 +89,45 @@
         </span>
     </div>
 </div>
-<!-- Reference field - use only when it exsits -->
-<div class="entry full-width reference"
-     ng-show="shouldShowMakePaymentScreen  && isDisplayReference && !depositPaidSuccesFully">
-    <label for="reference">Reference</label>
-    <input name="reference" id="reference" ng-model="referanceText" type="text"/>
+
+<div class="entry full-width reference" ng-show="isDisplayRef">
+    <label>Reference</label>
+    <input ng-model="payment.referenceText" type="text"/>
 </div>
-<div class="entry full-width add-to-guest payment-checkbox-container" style="float:left;"
-     ng-show="isAddToGuestCardVisible && !depositPaidSuccesFully && shouldShowMakePaymentScreen && passData.origin=='STAYCARD'">
-    <label class="checkbox add-to-guest" ng-class="{'checked': depositBalanceMakePaymentData.add_to_guest_card}">
-        <span class="icon-form icon-checkbox"
-              ng-class="{'checked': depositBalanceMakePaymentData.add_to_guest_card}"></span>
-        <input type="checkbox" ng-model="depositBalanceMakePaymentData.add_to_guest_card">
-        <span class="guest_card_promotions" translate>ADD_TO_GUEST_CARD</span>
+
+<!--<div class="entry full-width add-to-guest payment-checkbox-container" style="float:left;"-->
+     <!--ng-show="isAddToGuestCardVisible && !depositPaidSuccesFully && shouldShowMakePaymentScreen && passData.origin=='STAYCARD'">-->
+    <!--<label class="checkbox add-to-guest" ng-class="{'checked': depositBalanceMakePaymentData.add_to_guest_card}">-->
+        <!--<span class="icon-form icon-checkbox"-->
+              <!--ng-class="{'checked': depositBalanceMakePaymentData.add_to_guest_card}"></span>-->
+        <!--<input type="checkbox" ng-model="depositBalanceMakePaymentData.add_to_guest_card">-->
+        <!--<span class="guest_card_promotions" translate>ADD_TO_GUEST_CARD</span>-->
+    <!--</label>-->
+    <!--&lt;!&ndash; <label class="checkbox add-to-guest payment-checkbox" ng-show="passData.showDoNotAuthorize && saveData.selected_payment_type == '0'"  ng-class="{'checked': do_not_cc_auth}" >-->
+        <!--<span class="icon-form icon-checkbox" ng-class="{'checked': do_not_cc_auth}"></span>-->
+        <!--<input type="checkbox" ng-model="do_not_cc_auth" >-->
+        <!--<span class="guest_card_promotions" translate>DO_NOT_AUTHORIZE</span>-->
+    <!--</label> &ndash;&gt;-->
+<!--</div>-->
+
+<!-- show if new card is added -->
+<div class="entry full-width" ng-show="payment.showAddToGuestCard">
+    <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked':payment.addToGuestCardSelected}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked': payment.addToGuestCardSelected}"></span>
+        <input ng-model="payment.addToGuestCardSelected" id="add-in-guest-card" value="1" type="checkbox" /> {{'ADD_TO_GUEST_CARD' | translate}}
     </label>
-    <!-- <label class="checkbox add-to-guest payment-checkbox" ng-show="passData.showDoNotAuthorize && saveData.selected_payment_type == '0'"  ng-class="{'checked': do_not_cc_auth}" >
-        <span class="icon-form icon-checkbox" ng-class="{'checked': do_not_cc_auth}"></span>
-        <input type="checkbox" ng-model="do_not_cc_auth" >
-        <span class="guest_card_promotions" translate>DO_NOT_AUTHORIZE</span>
-    </label> -->
+</div>
+
+<div class="actions">
+    <button type="button" id="close" class="button blank modal-close" ng-click="closeThePopup()">
+        Close
+    </button>
+
+    <button type="button"
+            ng-disabled="disableMakePayment()"
+            ng-class="showMakePaymentButtonStatus()" ng-click="submitPayment()"
+            class="button modal-close"
+            ng-hide="shouldHidePaymentButton()">
+        Make Payment
+    </button>
 </div>
