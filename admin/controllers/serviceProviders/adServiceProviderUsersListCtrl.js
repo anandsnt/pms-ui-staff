@@ -12,22 +12,22 @@ admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'
     */
 	var fetchTableData = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
-		getParams.service_provider_id = $scope.serviceProviderId;
-		var failedcallback = function(data){
-			$scope.$emit('hideLoader');
-			$scope.errorMessage = data;
+		getParams.service_provider_id = $scope.serviceProviderId;		
+		var successCallbackFetch = function(data){
+			if(data.status = "failure"){
+				$scope.errorMessage = data.errors;
+			}else{			
+				$scope.currentClickedElement = -1;
+				$scope.totalCount = data.total_count;
+				$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+				$scope.data = data.users;
+				$scope.currentPage = params.page();
+	        	params.total(data.total_count);
+	            $defer.resolve($scope.data);
+        	};
+        	$scope.$emit('hideLoader');
 		};
-		var successCallbackFetch = function(data){			
-			$scope.$emit('hideLoader');
-			$scope.currentClickedElement = -1;
-			$scope.totalCount = data.total_count;
-			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
-			$scope.data = data.users;
-			$scope.currentPage = params.page();
-        	params.total(data.total_count);
-            $defer.resolve($scope.data);
-		};
-		$scope.invokeApi(ADServiceProviderSrv.fetch, getParams, successCallbackFetch, failedcallback);
+		$scope.invokeApi(ADServiceProviderSrv.fetch, getParams, successCallbackFetch);
 	};
 	/**
     * To table data structuring
