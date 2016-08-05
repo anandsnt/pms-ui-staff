@@ -3,6 +3,7 @@ admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
 	var init = function(){
+	$scope.errorMessage = ' ';
 	$scope.serviceProviderId = $stateParams.id;
 	$scope.serviceProviderName = $stateParams.name;
 	loadTable();
@@ -14,17 +15,16 @@ admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'
 		var getParams = $scope.calculateGetParams(params);
 		getParams.service_provider_id = $scope.serviceProviderId;		
 		var successCallbackFetch = function(data){
-			if(data.status = "failure"){
+			if(data.status === "failure"){
 				$scope.errorMessage = data.errors;
-			}else{			
-				$scope.currentClickedElement = -1;
-				$scope.totalCount = data.total_count;
-				$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
-				$scope.data = data.users;
-				$scope.currentPage = params.page();
-	        	params.total(data.total_count);
-	            $defer.resolve($scope.data);
-        	};
+			};
+			$scope.currentClickedElement = -1;
+			$scope.totalCount = data.total_count;
+			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+			$scope.data = data.users;
+			$scope.currentPage = params.page();
+	        params.total(data.total_count);
+	        $defer.resolve($scope.data);
         	$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADServiceProviderSrv.fetch, getParams, successCallbackFetch);
