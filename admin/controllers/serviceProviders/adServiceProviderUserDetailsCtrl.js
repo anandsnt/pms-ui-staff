@@ -20,11 +20,10 @@ admin.controller('ADServiceProviderUserDetailsCtrl',['$scope','$rootScope', '$q'
 			id :$scope.userDetails.user_id
 		};
 		var successCallbackFetch = function(data){
-			if(data.status = "failure"){
+			if(data.status === "failure"){
 				$scope.errorMessage = data.errors;
-				}else{
-				$scope.userDetails = Object.assign($scope.userDetails,data);	
-			}
+			};
+			$scope.userDetails = Object.assign($scope.userDetails,data);	
 			$scope.$emit('hideLoader');
 		};		
 		$scope.invokeApi(ADServiceProviderSrv.getServiceProviderUserDetails, param, successCallbackFetch);
@@ -55,14 +54,13 @@ admin.controller('ADServiceProviderUserDetailsCtrl',['$scope','$rootScope', '$q'
 					"password":$scope.userDetails.password,
 					"is_trying_to_unlock": true
 				};
-		var failedCallbackSendInvitation = function(data){
-			if(data.status = "failure"){
+		var successCallbackOfSendInvitation = function(data){
+			if(data.status === "failure"){
 				$scope.errorMessage = data.errors;
-				$scope.$emit('hideLoader');
-			}else{
-				$state.go('admin.serviceproviderusers', { 'id': $scope.userDetails.service_provider_id,
-				'name':$scope.serviceProviderName });
 			};
+			$scope.$emit('hideLoader');
+			$state.go('admin.serviceproviderusers', { 'id': $scope.userDetails.service_provider_id,
+				'name':$scope.serviceProviderName });
 		};
 	 	$scope.invokeApi(ADServiceProviderSrv.sendInvitation, data, successCallbackOfSendInvitation);
 	};
@@ -70,14 +68,13 @@ admin.controller('ADServiceProviderUserDetailsCtrl',['$scope','$rootScope', '$q'
     * To save user details
     */	
 	$scope.save = function(){
-		var successCallbackFetch = function(data){
-			if(data.status = "failure"){
+		var successCallbackFetch = function(data){			
+			if(data.status ==="failure"){
 				$scope.errorMessage = data.errors;
-			}else{			
+			};
 			if(!!data.user_id){
 				$scope.userDetails.user_id = data.user_id;
-				};
-			}
+			};			
 			$scope.$emit('hideLoader');
 		};
 		//if userId exist updates the user else add new user
