@@ -1,4 +1,4 @@
-sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
+sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 'sntPaymentSrv', function($scope, payEvntConst, sntPaymentSrv) {
 
 	var retrieveCardDetails = function(tokenDetails) {
 		var cardDetails = {};
@@ -32,7 +32,7 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 				expiry_date: cardDetails.expiryDate
 			}
 		};
-		$scope.$emit("CC_TOKEN_GENERATED", paymentData);
+		$scope.$emit(payEvntConst.CC_TOKEN_GENERATED, paymentData);
 	};
 
 
@@ -101,4 +101,4 @@ sntPay.controller('paySixPayController', function($scope, sntPaymentSrv) {
 		}, false);
 	})();
 
-});
+}]);
