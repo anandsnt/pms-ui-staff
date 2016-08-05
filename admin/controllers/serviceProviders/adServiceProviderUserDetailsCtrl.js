@@ -2,6 +2,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl',['$scope','$rootScope', '$q'
 	BaseCtrl.call(this, $scope);	
 
 	var init = function(){
+		$scope.errorMessage = '';
 		$scope.userDetails = {};
 		$scope.userDetails.service_provider_id = $stateParams.serviceProviderId;
 		//if userId exist its edit screen else add new screen
@@ -19,14 +20,14 @@ admin.controller('ADServiceProviderUserDetailsCtrl',['$scope','$rootScope', '$q'
 			id :$scope.userDetails.user_id
 		};
 		var successCallbackFetch = function(data){
-			$scope.userDetails = Object.assign($scope.userDetails,data);
+			if(data.status = "failure"){
+				$scope.errorMessage = data.errors;
+				}else{
+				$scope.userDetails = Object.assign($scope.userDetails,data);	
+			}
 			$scope.$emit('hideLoader');
-		};
-		var failedCallbackFetch = function(data){
-			$scope.errorMessage = data;
-			$scope.$emit('hideLoader');
-		};
-		$scope.invokeApi(ADServiceProviderSrv.getServiceProviderUserDetails, param, successCallbackFetch, failedCallbackFetch);
+		};		
+		$scope.invokeApi(ADServiceProviderSrv.getServiceProviderUserDetails, param, successCallbackFetch);
 	};
 	/**
     * checks whether its from unlock button click
@@ -55,35 +56,35 @@ admin.controller('ADServiceProviderUserDetailsCtrl',['$scope','$rootScope', '$q'
 					"is_trying_to_unlock": true
 				};
 		var failedCallbackSendInvitation = function(data){
-		$state.go('admin.serviceproviderusers', { 'id': $scope.userDetails.service_provider_id,
-			'name':$scope.serviceProviderName });
+			if(data.status = "failure"){
+				$scope.errorMessage = data.errors;
+				$scope.$emit('hideLoader');
+			}else{
+				$state.go('admin.serviceproviderusers', { 'id': $scope.userDetails.service_provider_id,
+				'name':$scope.serviceProviderName });
+			};
 		};
-		var successCallbackOfSendInvitation = function (data) {
-		$scope.$emit('hideLoader');
-		$state.go('admin.serviceproviderusers', {'id': $scope.userDetails.service_provider_id,
-			'name': $scope.serviceProviderName});
-		};		
-	 	$scope.invokeApi(ADServiceProviderSrv.sendInvitation, data, successCallbackOfSendInvitation, failedCallbackSendInvitation);
+	 	$scope.invokeApi(ADServiceProviderSrv.sendInvitation, data, successCallbackOfSendInvitation);
 	};
 	/**
     * To save user details
     */	
 	$scope.save = function(){
 		var successCallbackFetch = function(data){
+			if(data.status = "failure"){
+				$scope.errorMessage = data.errors;
+			}else{			
 			if(!!data.user_id){
 				$scope.userDetails.user_id = data.user_id;
 				};
-			$scope.$emit('hideLoader');
-		};
-		var failedCallbackFetch = function(data){
-			$scope.errorMessage = data;
+			}
 			$scope.$emit('hideLoader');
 		};
 		//if userId exist updates the user else add new user
 		if(!$scope.userDetails.user_id){
-			$scope.invokeApi(ADServiceProviderSrv.addServiceProviderUser, $scope.userDetails, successCallbackFetch, failedCallbackFetch);
+			$scope.invokeApi(ADServiceProviderSrv.addServiceProviderUser, $scope.userDetails, successCallbackFetch);
 		}else{
-			$scope.invokeApi(ADServiceProviderSrv.updateServiceProviderUser, $scope.userDetails, successCallbackFetch, failedCallbackFetch);
+			$scope.invokeApi(ADServiceProviderSrv.updateServiceProviderUser, $scope.userDetails, successCallbackFetch);
 		}
 	};
 	

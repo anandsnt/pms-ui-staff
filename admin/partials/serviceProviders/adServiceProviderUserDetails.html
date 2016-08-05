@@ -6,6 +6,7 @@
 		    <h2 ng-hide="!!userDetails.user_id">Add new User for <strong>{{serviceProviderName}}</strong></h2>
 		    <a ui-sref="admin.serviceproviderusers({id:userDetails.service_provider_id,name:serviceProviderName})"class="action back">Back to Users</a>
 		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<form method="post" action="{action}" class="form float">
 		    <fieldset class="holder left">
 		        <div class="form-title">

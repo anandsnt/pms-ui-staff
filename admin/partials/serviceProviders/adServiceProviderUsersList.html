@@ -9,6 +9,7 @@
             <a ui-sref="admin.sntserviceproviderdetails({action:'edit',id:serviceProviderId})" class="action back">Back to {{serviceProviderName}}</a>
         </header>    
         <section>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <table class="grid datatable" id="users_list_table" ng-table="tableParams"
             template-pagination="custom/pager">    
                 <tbody>
