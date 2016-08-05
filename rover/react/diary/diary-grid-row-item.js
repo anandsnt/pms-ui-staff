@@ -134,7 +134,7 @@ var GridRowItem = React.createClass({
 		//guest status mapping
 		switch (data[m.status]) {
 			case 'reserved':
-				className += ' check-in ';
+				className += ' check-in locked';
 				break;
 
 			case 'checking_in':
@@ -249,10 +249,15 @@ var GridRowItem = React.createClass({
 				width: reservation_time_span + 'px'
 			}
 		},
+
 		React.DOM.span({
 			className: show_outstanding_indicator ? 'deposit-icon' : '',
 			style: styleForDepositIcon
 		}, display.currency_symbol),
+		React.DOM.span({
+			className: 'icons icon-diary-lock'
+
+		}, 'll'),
 		innerText),
 		React.DOM.span({
 			className: 'maintenance',
