@@ -265,7 +265,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				var selected = false,
 					mustSend = false;
 
-					if(filter.value == 'ACCOUNT'|| filter.value == 'GUEST') {
+				if(filter.value == 'ACCOUNT'|| filter.value == 'GUEST') {
 					$scope.IsGuestBalanceReport = true;
 					selected = true;
 					$scope.filters.hasGeneralOptions.data.push({
@@ -275,6 +275,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 						mustSend    : mustSend
 					});
 				}
+
 				selected = false;
 				if ( matchGeneralOptions[filter.value] ) {
 					
@@ -296,6 +297,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 						selected    : selected,
 						mustSend    : mustSend
 					});
+
+					if ( $scope.selectedScheduleDetails.report.description === 'Arriving Guests' ) {
+						$scope.filters.hasGeneralOptions.options.noSelectAll = true;
+					}
 				}
 			});
 
