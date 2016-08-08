@@ -929,13 +929,26 @@
                         .select { width: 60px; }
 
                         &.description {
-                            padding: 0 10px;
+                            font-style: normal;
+                            
+                            em,
+                            span,
+                            strong {
+                                line-height: 1;
+                                .show();
+                            }
 
-                            span { 
-                                line-height: 16px;
-                                .show; 
+                            .edited {
+                                padding-left: 14px;
+                                background-position: 0 -4000px;
+                            }
 
-                                &.reference { color: @grey3; }
+                            .adjusted {
+                                color: darken(@yellow, 10);
+                            }
+
+                            .reference {
+                                color: @grey3;
                             }
                         }
 

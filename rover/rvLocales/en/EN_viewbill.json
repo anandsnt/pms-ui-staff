@@ -173,6 +173,7 @@
     "GROSS" : "Gross",
     "NET" : "Net",
     "TAX" : "Tax",
-    "TOTAL" : "Total"
+    "TOTAL" : "Total",
+    "ADJUSTMENT" : "Adjustment"
 
 
