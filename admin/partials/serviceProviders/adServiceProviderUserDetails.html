@@ -1,0 +1,90 @@
+<section id="replacing-div-first" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+	<div>		
+		<section class="content-scroll">		
+		<header class="content-title float">
+		    <h2 ng-show="!!userDetails.user_id">Edit User for <strong>{{serviceProviderName}}</strong></h2>
+		    <h2 ng-hide="!!userDetails.user_id">Add new User for <strong>{{serviceProviderName}}</strong></h2>
+		    <a ui-sref="admin.serviceproviderusers({id:userDetails.service_provider_id,name:serviceProviderName})"class="action back">Back to Users</a>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<form method="post" action="{action}" class="form float">
+		    <fieldset class="holder left">
+		        <div class="form-title">
+		            <h3><span>User</span> details</h3>
+		            <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
+		        </div>
+		        <div class="entry">
+		            <label for="{first-name}" >First name <strong>*</strong></label>
+		            <input type="text" name="{first-name}" id="{first-name}" placeholder="Enter first name" ng-model="userDetails.first_name" required />
+		        </div>
+		        <div class="entry">
+		            <label for="{last-name}">Last name <strong>*</strong></label>
+		            <input type="text" name="{last-name}" id="{last-name}" placeholder="Enter last name" ng-model="userDetails.last_name" required />
+		        </div>
+		        <div class="entry">
+		            <label for="{job-title}">Job Title <strong>*</strong></label>
+		            <input type="text" name="{job-title}" id="{job-title}" placeholder="Enter job title" ng-model="userDetails.job_title"	required />
+		        </div>
+		        <div class="entry">
+		            <label for="{phone}">Phone</label>
+		            <input type="text" name="{phone}" id="{phone}" placeholder="Enter phone number" ng-model="userDetails.phone"/>
+		        </div>
+		        <div class="entry full-width">
+		            <label for="{user-picture}">Picture</label>
+		            <div class="file-upload with-preview">
+		                <input type="file" ng-model="uploadedImage" accept="image/*" app-filereader ng-change="imageSelected()" />
+		                <button type="button" class="button brand-colors">Choose file</button>
+		            </div>
+		            <span class="file-preview">
+		            	<img ng-src="{{userDetails.previewImage}}" id="file-preview" alt="">
+		            	<em ng-hide="userDetails.previewImage">Preview not available</em>
+		            	</span>
+		            	
+		        </div>
+		    </fieldset>
+		    <fieldset class="holder right">
+		        <div class="form-title">
+		            <h3><span>User</span> credentials</h3>
+		            <em class="status"><strong>All fields are mandatory!</strong></em>
+		        </div>
+		        <div class="entry full-width">
+		            <label for="{email}">Email <strong>*</strong></label>
+		            <input type="text" name="{email}" id="{email}" placeholder="Enter email addres" value="{value}" ng-model="userDetails.email"required />
+		        </div>
+		        <div class="entry full-width">
+		            <label for="{retype-email}">Re-type email <strong>*</strong></label>
+		            <input type="text" name="{retype-email}" id="{retype-email}" placeholder="Confirm email addres" value="{value}" ng-model="userDetails.confirm_email" required />
+		        </div>
+		        <div class="entry full-width">
+		            <label for="{password}">Password <strong>*</strong></label>
+		            <input type="password" name="{password}" id="{password}" placeholder="Enter password" value="" ng-model="userDetails.password" required />
+		        </div>
+		        <div class="entry full-width">
+		            <label for="{retype-password}">Re-type password <strong>*</strong></label>
+		            <input type="password" name="{retype-password}" id="{retype-password}" placeholder="Confirm password" value="" ng-model="userDetails.confirm_password" required />
+		        </div>
+		        <div class="entry re-invite" ng-show="!!userDetails.user_id">
+						<label> Activation Status </label>
+						<div ng-show="userDetails.is_activated == 'true'">
+							ACTIVATED
+						</div>
+						<div ng-show="userDetails.is_activated == 'false'">
+							PENDING
+						</div>
+					</div>
+					<div class="entry re-invite" ng-if="!!userDetails.user_id">
+						<label>
+							<button id="re-invite" ng-click="sendInvitation(userDetails.user_id)" class="button" ng-disabled="!isableReInviteButton(userDetails)" ng-class="{'green': disableReInviteButton(userDetails), 'grey': !disableReInviteButton(userDetails)}">
+								Re-Invite
+							</button> </label>
+					</div>
+		    </fieldset>
+		    <div class="actions float">
+		        <button type="button" class="button blank" ui-sref="admin.serviceproviderusers({id:userDetails.service_provider_id,name:serviceProviderName})">Cancel</button>
+		        <button type="button" class="button green" ng-click="save()">Save changes</button>  
+		    </div>
+		</form>
+			
+		</section>
+	</div>
+</section>

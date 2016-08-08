@@ -1,4 +1,2 @@
-@import 'guestweb/css/less/snt.less';
 @import (inline) 'shared/lib/css/bootstrap.min.css';
-@import 'guestweb/css/less/knickerbocker.less';
-@import 'guestweb/css/less/common_styles.less';
+@import 'guestweb/common_css/knickerbocker/theme.less';

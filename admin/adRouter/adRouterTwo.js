@@ -523,6 +523,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/backOfficeInterfaces'
 		});
 
+		$stateProvider.state('admin.centralReservationSystemGroup', {
+			templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+			controller: 'ADInterfaceSubMenuCtrl',
+			url : '/backOfficeInterfaces'
+		});
+
 		$stateProvider.state('admin.textMessagingGroup', {
 			templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
 			controller: 'ADInterfaceSubMenuCtrl',
