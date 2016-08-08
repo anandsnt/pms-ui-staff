@@ -876,19 +876,21 @@ sntZestStation.controller('zsRootCtrl', [
 			console.log('-');
 			console.log('-:-');
 			//zest-station general settings
-			console.log(' -:- Station Settings -:- ');
+			console.log(' -:- Station Settings -:- ', setting);
 			console.log('');
-			console.log('  - Payment Gateway     :  ', setting);
-			console.log('  - Key Writer          :  ', setting.keyWriter);
-			console.log('  - CC Reader           :  ', setting.ccReader);
-			logSetting('  - Idle Timer          :  ', setting.idle_timer.enabled);
+			logSetting('  - Hourly Hotel Mode  :  ', $scope.zestStationData.isHourlyRateOn);
+			
+			console.log('  - Payment Gateway    :  ', setting.paymentGateway);
+			console.log('  - Key Writer         :  ', setting.keyWriter);
+			console.log('  - CC Reader          :  ', setting.ccReader);
+			logSetting('  - Idle Timer         :  ', setting.idle_timer.enabled);
 			console.log('    -> Prompt  : ', (setting.idle_timer.prompt), 'sec ');
 			console.log('    -> Home    : ', (setting.idle_timer.max), 'sec ');
 			console.log('');
-			console.log('  - Chrome App ID       :  ', setting.chrome_app_id);
-			console.log('  - Bussiness Date      :  ', setting.bussinessDate);
-			console.log('  - Check-in Time       :  ', setting.check_in_time.hour + ':' + setting.check_in_time.minute + ' - ' + setting.check_in_time.primetime);
-			console.log('  - Check-out Time      :  ', setting.check_out_time.hour + ':' + setting.check_out_time.minute + ' - ' + setting.check_out_time.primetime);
+			console.log('  - Chrome App ID      :  ', setting.chrome_app_id);
+			console.log('  - Bussiness Date     :  ', setting.bussinessDate);
+			console.log('  - Check-in Time      :  ', setting.check_in_time.hour + ':' + setting.check_in_time.minute + ' - ' + setting.check_in_time.primetime);
+			console.log('  - Check-out Time     :  ', setting.check_out_time.hour + ':' + setting.check_out_time.minute + ' - ' + setting.check_out_time.primetime);
 			//check-in
 			console.log('');
 			console.log('  - Check-In Settings - ');
@@ -927,7 +929,7 @@ sntZestStation.controller('zsRootCtrl', [
 			console.log('');
 			logSetting('  - Datalogic           :  ', setting.qr_scanner_datalogic);
 			logSetting('  - Samsotech           :  ', setting.qr_scanner_samsotech);
-			console.log('  - Arrow Direction     :  ', setting.qr_scanner_arrow_direction);
+			console.log('  - Arrow Direction    :  ', setting.qr_scanner_arrow_direction);
 			console.log('');
 			console.log(' -:-- - - - - - - - --:- ');
 			console.log('-:-');
