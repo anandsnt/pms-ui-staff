@@ -1,0 +1,17 @@
+<div class="numbers-pagination" ng-show="pageOptions.totalPages > 1">
+    <div class="pages">
+        <button type="button" class="button prev" ng-hide="currentFocus <= 3 || pageOptions.totalPages <= showCount" ng-click="setScroll(currentFocus-3)">Prev</button>
+        
+        <button type="button" class="button dark-grey number" ng-click="gotoPage(1)" ng-class="{'active': pageOptions.currentPage === 1}">1</button>
+
+        <span class="delimiter" ng-show="pageNoArray.firstDelim">...</span>
+
+        <button type="button" class="button dark-grey number" ng-repeat="pageNo in pageNoArray.nums track by $index" ng-click="gotoPage(pageNo)" ng-class="{'active': pageOptions.currentPage === pageNo}">{{pageNo}} </button>
+
+        <span class="delimiter" ng-show="pageNoArray.lastDelim">...</span>
+
+        <button type="button" class="button dark-grey number" ng-click="gotoPage(pageOptions.totalPages)" ng-class="{'active': pageOptions.currentPage === pageOptions.totalPages}">{{pageOptions.totalPages}}</button>
+
+        <button type="button" class="button next" ng-hide="currentFocus >= (pageOptions.totalPages-2) || pageOptions.totalPages <= showCount" ng-click="setScroll(currentFocus+3)">Next</button>
+    </div>
+</div>

@@ -152,28 +152,32 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
 
 	initSummaryData();
 
-    //To load API datas for pagination
-    var loadAPIData = function( balance_type, pageNo){
-        var item = getSummaryItemByBalanceType( balance_type );
-        item.page_no = pageNo;
+    //To load API data for pagination
+    var loadAPIData = function( balance_type, pageNo ){
+        var item        = getSummaryItemByBalanceType( balance_type );
+        item.page_no    = pageNo;
         fetchBalanceDetails( balance_type, true );
     };
     
-    //Datas for pagination directive
+    // Pagination options for GUEST_BALANCE
     $scope.guestPagination = {
-        id: 'GUEST_BALANCE',
-        api: [loadAPIData, 'GUEST_BALANCE'],
-        perPage: $scope.perPage
+        id      : 'GUEST_BALANCE',
+        api     : [ loadAPIData, 'GUEST_BALANCE' ],
+        perPage : $scope.perPage
     };
+
+    // Pagination options for DEPOSIT_BALANCE
     $scope.depositPagination = {
-        id: 'DEPOSIT_BALANCE',
-        api: [loadAPIData, 'DEPOSIT_BALANCE'],
-        perPage: $scope.perPage
+        id      : 'DEPOSIT_BALANCE',
+        api     : [ loadAPIData, 'DEPOSIT_BALANCE' ],
+        perPage : $scope.perPage
     };
+
+    // Pagination options for AR_BALANCE
     $scope.arPagination = {
-        id: 'AR_BALANCE',
-        api: [loadAPIData, 'AR_BALANCE'],
-        perPage: $scope.perPage
+        id      : 'AR_BALANCE',
+        api     : [ loadAPIData, 'AR_BALANCE' ],
+        perPage : $scope.perPage
     };
 
 }]);
