@@ -30,14 +30,16 @@
 		            <input type="text" name="{phone}" id="{phone}" placeholder="Enter phone number" ng-model="userDetails.phone"/>
 		        </div>
 		        <div class="entry full-width">
-		            <label for="{user-picture}">Picture <strong>*</strong></label>
+		            <label for="{user-picture}">Picture</label>
 		            <div class="file-upload with-preview">
-		                <input type="file" ng-model="userDetails.user_photo" accept="image/*" app-filereader />
+		                <input type="file" ng-model="uploadedImage" accept="image/*" app-filereader ng-change="imageSelected()" />
 		                <button type="button" class="button brand-colors">Choose file</button>
 		            </div>
 		            <span class="file-preview">
-		            	<img ng-src="{{userDetails.user_photo}}" id="file-preview" alt=""></span>
-		            	<em ng-hide="userDetails.user_photo"=>Preview not available</em>
+		            	<img ng-src="{{userDetails.previewImage}}" id="file-preview" alt="">
+		            	<em ng-hide="userDetails.previewImage">Preview not available</em>
+		            	</span>
+		            	
 		        </div>
 		    </fieldset>
 		    <fieldset class="holder right">
