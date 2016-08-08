@@ -7,15 +7,22 @@ angular.module('sntRover').controller('reservationRoomStatus',
     'RVKeyPopupSrv',
     'RVReservationCardSrv',
     'rvPermissionSrv',
-	function($state, $rootScope, $scope, ngDialog, $stateParams, RVKeyPopupSrv, RVReservationCardSrv,rvPermissionSrv){
+    'RVReservationSummarySrv',
+    '$timeout',
+	function($state, $rootScope, $scope, ngDialog, $stateParams, RVKeyPopupSrv, RVReservationCardSrv,rvPermissionSrv, RVReservationSummarySrv, $timeout){
 	BaseCtrl.call(this, $scope);
 	$scope.encoderTypes = [];
 
-	$scope.getRoomClass = function(reservationStatus){
+
+    $timeout(function() { $scope.$apply(); }, 3000);
+    //CICO- 6086 - New class for lock
+	$scope.getRoomClass = function(reservationStatus, canMoveRoom){
 		var reservationRoomClass = '';
 		if(reservationStatus === 'CANCELED'){
 			reservationRoomClass ='overlay';
-		}
+		} else if (canMoveRoom){
+            reservationRoomClass = 'has-lock hover-hand';
+        }
 		else if( !$rootScope.isStandAlone && reservationStatus !== 'NOSHOW' && reservationStatus !== 'CHECKEDOUT' && reservationStatus !== 'CANCELED' && reservationStatus !== 'CHECKEDIN' && reservationStatus !== 'CHECKING_OUT'){
 			reservationRoomClass = 'has-arrow hover-hand';
 		}
@@ -78,6 +85,8 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	$scope.isFutureReservation = function(reservationStatus){
 		return (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
 	};
+
+
 	$scope.showKeysButton = function(reservationStatus){
 		var showKey = false;
 		if((reservationStatus === 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number !== '')|| reservationStatus === 'CHECKING_OUT' || reservationStatus === 'CHECKEDIN'){
@@ -233,11 +242,32 @@ angular.module('sntRover').controller('reservationRoomStatus',
 			gotToDiaryInEditMode ();
 		} else if($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)){
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton","upgrade_available" : isUpgradeAvaiable});
-		}else if($scope.reservationData.reservation_card.reservation_status==="CHECKEDIN" && $rootScope.isStandAlone){ // As part of CICO-27631 added Check for overlay hotels 
+		}else if($scope.reservationData.reservation_card.reservation_status==="CHECKEDIN" && $rootScope.isStandAlone){ // As part of CICO-27631 added Check for overlay hotels
 			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton","upgrade_available" : isUpgradeAvaiable});
 		}
 
 	};
+    var successCallBackOfSaveReservation = function(){
+        $scope.reservationData.reservation_card.can_move_room = !$scope.reservationData.reservation_card.can_move_room;
+    };
+    /*
+     * Do not move - lock/unlock room
+     *
+     */
+    $scope.toggleDoNotMove= function(){
+
+        var updateParams = {
+            "no_room_move": !$scope.reservationData.reservation_card.can_move_room,
+            "reservationId": $scope.reservationData.reservation_card.reservation_id
+        }
+
+        var options = {
+            params:             updateParams,
+            successCallBack:    successCallBackOfSaveReservation
+        };
+        $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
+    }
+
     var keySettings = $scope.reservationData.reservation_card.key_settings;
     $scope.showPopupsOnlineOfflineRoomMove = function(){
         setTimeout(function(){
@@ -254,6 +284,8 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
         }, 700)
     };
+
+
 
     if($rootScope.isStandAlone && !$rootScope.isHourlyRateOn){
         if((($stateParams.isOnlineRoomMove == null && $stateParams.isKeySystemAvailable) || $stateParams.isOnlineRoomMove == "false"

@@ -134,15 +134,18 @@ var GridRowItem = React.createClass({
 		//guest status mapping
 		switch (data[m.status]) {
 			case 'reserved':
-				className += ' check-in locked';
+				className += ' check-in';
+				className += (!data[m.can_move_room] ? 'locked' : '')
 				break;
 
 			case 'checking_in':
 				className += ' check-in ';
+				className += (!data[m.can_move_room] ? 'locked' : '')
 				break;
 
 			case 'checkedin':
 				className += ' inhouse ';
+				className += (!data[m.can_move_room] ? 'locked' : '')
 				break;
 
 			case 'checkedout':
@@ -185,6 +188,7 @@ var GridRowItem = React.createClass({
 			houseKeepingTaskStyle	= this.__formHouseKeepingStyle(data, display, m, end_time_ms),
 			left 					= (start_time_ms - x_origin) * px_per_ms + 'px',
 			is_balance_present	 	= data.is_balance_present,
+			is_room_locked          = !data.can_move_room,
 			show_outstanding_indicator = ((data.reservation_status === 'check-in' || data.reservation_status === 'reserved') && is_balance_present),
 			row_item_class 			= 'occupancy-block' + ( state.editing ? ' editing' : '')
 										+ (show_outstanding_indicator ? ' deposit-required': '');
@@ -236,6 +240,7 @@ var GridRowItem = React.createClass({
 			__onDragStop: 		props.__onDragStop,
 			__onResizeCommand: 	props.__onResizeCommand,
 			show_outstanding_indicator: show_outstanding_indicator,
+			is_room_locked: is_room_locked,
 			currentDragItem:    props.currentResizeItem,
 			style: 			   {
 				display: 'block',
@@ -255,9 +260,8 @@ var GridRowItem = React.createClass({
 			style: styleForDepositIcon
 		}, display.currency_symbol),
 		React.DOM.span({
-			className: 'icons icon-diary-lock'
-
-		}, 'll'),
+			className: is_room_locked ? 'icons icon-diary-lock' : ''
+		}, ''),
 		innerText),
 		React.DOM.span({
 			className: 'maintenance',
