@@ -18,6 +18,7 @@
 	"VALIDATION_MSG_MIN_LENGTH" : "Minimum Length of Stay restriction exists for this booking.",
 	"ROOM_SCHEDULED_FOR_MAINTENANCE": "Room is scheduled for Maintenance",
 	"ROOM_CANNOT_UNASSIGN": "Room cannot be unassigned from arriving guest",
+	"ROOMIS_OOO": "Assigned room is Out of Order for the selected dates.",
 	"OF": "of",
 	"APPLIES_TO_RESERVATION": "applies to this reservation/date",
 	"NO": "No",

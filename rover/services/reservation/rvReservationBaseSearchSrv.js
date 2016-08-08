@@ -363,11 +363,11 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
         };
 
 
-        this.fetchRatesDetailed = function() {
+        this.fetchRatesDetailed = function(params) {
             var deferred = $q.defer(),
                 url = '/api/rates/detailed';
 
-            if (that.cache.responses['rateDetails'] === null || Date.now() > that.cache.responses['rateDetails']['expiryDate']) {
+            if ((params && params.isForceRefresh) || that.cache.responses['rateDetails'] === null || Date.now() > that.cache.responses['rateDetails']['expiryDate']) {
                 RVBaseWebSrvV2.getJSON(url).then(function(response) {
                     var rates = [];
                     _.each(response.results, function(rate) {
@@ -415,7 +415,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
             that['rates-restrictions'] = {};
 
-            promises.push(that.fetchRatesDetailed().then(function(response) {
+            promises.push(that.fetchRatesDetailed(params).then(function(response) {
                 that['rates-restrictions']['rates'] = response;
             }));
 

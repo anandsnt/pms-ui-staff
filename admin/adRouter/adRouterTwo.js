@@ -31,7 +31,15 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.channelManagerEditRates', {
 			templateUrl: '/assets/partials/rates/adChannelManagerEditRates.html',
 			controller: 'ADChannelMgrEditCtrl',
-			url : '/channelManagerEditRates'
+			url : '/channelManagerEditRates',
+			resolve: {
+				availableRates: function (ADChannelMgrSrv) {
+					return ADChannelMgrSrv.fetchRates().then(function(data) {return data.results});
+				},
+				availableRoomTypes: function (ADChannelMgrSrv) {
+					return ADChannelMgrSrv.fetchRoomTypes().then(function(data) {return data.data.room_types});
+				}
+			}
 		});
 
 		$stateProvider.state('admin.ratetypes', {
@@ -510,6 +518,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		});
 
 		$stateProvider.state('admin.backOfficeSetup', {
+			templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+			controller: 'ADInterfaceSubMenuCtrl',
+			url : '/backOfficeInterfaces'
+		});
+
+		$stateProvider.state('admin.centralReservationSystemGroup', {
 			templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
 			controller: 'ADInterfaceSubMenuCtrl',
 			url : '/backOfficeInterfaces'
