@@ -9,7 +9,7 @@
 
         <div class="move-room" >
             <label for="lock-room" class="label">Do Not Move</label>
-            <div class="switch-button" ng-class="{'on': reservationData.reservation_card.can_move_room}">
+            <div class="switch-button" ng-class="{'on': reservationData.reservation_card.cannot_move_room}">
 
                 <!-- <input name="room-service-date" id="check-in-date" type="checkbox" ng-model="reservationData.reservation_card.can_move_room" > -->
                 <!-- Work around: checkbox not working. Click/change not propogating event-->
@@ -22,12 +22,12 @@
 
 	<!-- Room Assignment screen is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
 	<!-- The arrows are removed and room assignment buttons are not clickable in that case -->
-	<a class="next-view no-auto-bind" ng-click="goToroomAssignment()" ng-class="getRoomClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.can_move_room)">
+	<a class="next-view no-auto-bind" ng-click="goToroomAssignment()" ng-class="getRoomClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.cannot_move_room)">
 		 <strong class="room-number" ng-class="getRoomStatusClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.room_status, reservationData.reservation_card.fo_status, reservationData.reservation_card.room_ready_status,  reservationData.reservation_card.checkin_inspected_only)" >
 		 	 {{reservationData.reservation_card.room_number}}
 		 </strong>
 		 {{reservationData.reservation_card.room_type_description}}
-     <span class="icons icon-room-lock" ng-show="reservationData.reservation_card.can_move_room"></span>
+     <span class="icons icon-room-lock" ng-show="reservationData.reservation_card.cannot_move_room"></span>
 	</a>
 
 	<!-- If room assignment not available:

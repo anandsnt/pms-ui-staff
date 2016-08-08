@@ -16,11 +16,11 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
     $timeout(function() { $scope.$apply(); }, 3000);
     //CICO- 6086 - New class for lock
-	$scope.getRoomClass = function(reservationStatus, canMoveRoom){
+	$scope.getRoomClass = function(reservationStatus, cannotMoveRoom){
 		var reservationRoomClass = '';
 		if(reservationStatus === 'CANCELED'){
 			reservationRoomClass ='overlay';
-		} else if (canMoveRoom){
+		} else if (cannotMoveRoom){
             reservationRoomClass = 'has-lock hover-hand';
         }
 		else if( !$rootScope.isStandAlone && reservationStatus !== 'NOSHOW' && reservationStatus !== 'CHECKEDOUT' && reservationStatus !== 'CANCELED' && reservationStatus !== 'CHECKEDIN' && reservationStatus !== 'CHECKING_OUT'){
@@ -248,7 +248,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
 	};
     var successCallBackOfSaveReservation = function(){
-        $scope.reservationData.reservation_card.can_move_room = !$scope.reservationData.reservation_card.can_move_room;
+        $scope.reservationData.reservation_card.cannot_move_room = !$scope.reservationData.reservation_card.cannot_move_room;
     };
     /*
      * Do not move - lock/unlock room
@@ -257,7 +257,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
     $scope.toggleDoNotMove= function(){
 
         var updateParams = {
-            "no_room_move": !$scope.reservationData.reservation_card.can_move_room,
+            "no_room_move": !$scope.reservationData.reservation_card.cannot_move_room,
             "reservationId": $scope.reservationData.reservation_card.reservation_id
         }
 
