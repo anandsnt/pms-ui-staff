@@ -64,7 +64,7 @@
             and change the business date to 
             <strong class="green">{{nextBusinessDate | date : dateFormat}}</strong>
         </span>
-            <button type="submit" class="button green" ng-click="openEndOfDayPopup()">Start End Of Day</button>
+            <button type="submit" class="button" ng-click="openEndOfDayPopup()" ng-class="{'green':!isBussinessDateChanging , 'grey':isBussinessDateChanging}" ng-disabled="isBussinessDateChanging">Start End Of Day</button>
             </div>
         </div>
     </div>

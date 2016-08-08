@@ -224,6 +224,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			INCLUDE_CANCELED: 'INCLUDE_CANCELED',
 			INCLUDE_NO_SHOW: 'INCLUDE_NO_SHOW',
 			INCLUDE_NOTES: 'INCLUDE_NOTES',
+			INCLUDE_ACTIONS: 'INCLUDE_ACTIONS',
 			SHOW_GUESTS: 'SHOW_GUESTS',
 			VIP_ONLY: 'VIP_ONLY',
 			// this filter for few reports could also be listed
