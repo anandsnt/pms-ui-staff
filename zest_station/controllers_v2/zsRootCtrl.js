@@ -1017,6 +1017,9 @@ sntZestStation.controller('zsRootCtrl', [
 				optimizeTouchEventsForChromeApp();	
 			}
 			//initCardReadTest(); //debugging, comment out when done
+			
+			//flag to check if default language was set or not
+			$scope.zestStationData.IsDefaultLanguageSet = false;
 		}();
 	}
 ]);

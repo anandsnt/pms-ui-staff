@@ -1032,7 +1032,7 @@ angular.module('sntRover')
 					if(roomIndex !== -1) {
 						var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), oItem.reservation_id);
 						if(occupancyIndex !== -1){
-							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = util.copyReservation( this.currentResizeItem);
+							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = util.copyReservation(oItem);
 						}
 					}
 					this.currentResizeItemRow = util.copyRoom(oRowItem);
@@ -1057,7 +1057,7 @@ angular.module('sntRover')
 					if(roomIndex !== -1) {
 						var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), props.currentResizeItem.reservation_id);
 						if(occupancyIndex !== -1){
-							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = this.currentResizeItem;
+							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = oItem;
 						}
 					}
 					this.currentResizeItemRow = this.availability.drag.lastRoom;

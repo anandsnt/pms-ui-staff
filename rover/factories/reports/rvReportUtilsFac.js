@@ -166,7 +166,8 @@ angular.module('reportsModule')
             'INCLUDE_TAX_RATE': true,
             'INCLUDE_ADDON_RATE': true,
             'INCLUDE_ADDONS': true,
-            'INCLUDE_ADDON_REVENUE' :true
+            'INCLUDE_ADDON_REVENUE' :true,
+            'INCLUDE_ACTIONS'    : true
         };
 
         var __excludeFilterNames = {
@@ -204,8 +205,8 @@ angular.module('reportsModule')
          * @param {Object} filter The ith report's filter object
          */
         var __pushGeneralOptionData = function(report, filter, selected) {
-            var selected = typeof selected === typeof true ? selected : false;
-            var mustSend = false;
+            var selected = typeof selected === typeof true ? selected : false,
+                mustSend = false;
 
             var includeCancelled = {
                         'INCLUDE_CANCELLED' : true,
@@ -256,6 +257,11 @@ angular.module('reportsModule')
                 selected    : selected,
                 mustSend    : mustSend
             });
+
+            // if filter value is either of these, selectAll should be false
+            if ( report['title'] == reportNames['ARRIVAL'] ) {
+                report.hasGeneralOptions.options.noSelectAll = true;
+            };
         };
 
         /**

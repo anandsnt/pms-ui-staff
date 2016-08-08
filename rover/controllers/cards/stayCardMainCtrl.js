@@ -1130,7 +1130,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 					});
 
-					if (data.deposit_policy_id) {
+					if ((data.deposit_policy && data.deposit_policy.id) || data.deposit_policy_id) {
 						$scope.reservationData.depositData = {};
 						$scope.reservationData.depositData.isDepositRequired = true;
 						$scope.reservationData.depositData.description = data.deposit_policy.description;

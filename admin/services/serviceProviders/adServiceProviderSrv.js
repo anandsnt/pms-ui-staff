@@ -14,6 +14,39 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
         });
         return deferred.promise;
     };
+    /**
+    * To fetch the list of users
+    * @return {object} users list json
+    */
+
+    this.fetch = function(params){
+
+        var deferred = $q.defer();
+        var url = '/admin/users.json';
+        //var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
+        ADBaseWebSrvV2.getJSON(url ,params).then(function(data) {
+                deferred.resolve(data);
+            },function(data){
+                deferred.reject(data);
+            });
+        return deferred.promise;
+    };
+    /**
+    * To activate/inactivate user
+    * @param {object} data - data to activate/inactivate
+    * @return {object}
+    */
+    this.activateInactivate = function(data){
+        var deferred = $q.defer();
+        var url = '/admin/users/toggle_activation';
+        ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+
+    };
 
     /**
     *   Service to add a new service provider
@@ -24,6 +57,50 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
         var url = '/admin/service_providers';
 
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    /**
+    *   Service to add a new service provider user
+    *   @param {Object} data holding the service provider details.
+    */
+    this.addServiceProviderUser = function(data){
+        var deferred = $q.defer();
+        var url = '/admin/users';
+        ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+    /**
+    *   Service to get service provider details
+    *   @param id unique identifier of the service provider
+    */
+    this.getServiceProviderUserDetails = function(request){
+        var deferred = $q.defer();        
+        var url = '/admin/users/'+ request.id+'/edit.json';
+        ADBaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+     /**
+    *   Service to edit a service provider user
+    *   @param {Object} data holding the service provider details.
+    */
+    this.updateServiceProviderUser = function(data){
+        var deferred = $q.defer();
+        var url = '/admin/users/'+ data.user_id;
+        ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
             deferred.resolve(data);
         },function(data){
             deferred.reject(data);
@@ -88,6 +165,37 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
         var url = '/admin/service_providers/' + id;
 
         ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+    /**
+    * To delete user
+    * @param {object} data - data to delete
+    * @return {object}
+    */
+    this.deleteUser = function(data){
+        var deferred = $q.defer();
+        var url = '/admin/users/'+data.id;
+           ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {           
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+
+    };
+    /**
+    * To send invitation mail
+    * @param {object} data - user id
+    * @return {object}  status
+    */
+    this.sendInvitation = function(data){
+        var deferred = $q.defer();
+        var url = '/admin/user/send_invitation';
+        ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
             deferred.resolve(data);
         },function(data){
             deferred.reject(data);

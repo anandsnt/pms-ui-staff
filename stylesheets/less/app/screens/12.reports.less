@@ -1199,6 +1199,7 @@
             .purple { color: @purpleStart; }
             .blue { color: @blue; }
             .unassigned { color: @grey3; }
+            .unassigned { color: @grey3; }
 
             strong { font-weight: 600; }
 
@@ -1547,21 +1548,48 @@
                             color: @grey3;
                             font-weight: 400;
 
-                            span { .show;}
+                            span { 
+                                .show(); 
 
-                            &.notes {
-                                display: table-cell;
-
-                                strong { 
-                                    color: @grey4;
+                                &.red,
+                                &.orange,
+                                &.green {
                                     text-transform: uppercase;
-                                    font-weight: 600;
-                                    .show;
-
-                                    &.red { color: @red; }
                                 }
+                            }
 
-                                p { line-height: 1em; }
+                            strong { 
+                                color: @grey4;
+                                text-transform: uppercase;
+                                font-weight: 600;
+                                margin-bottom: 10px;
+                                .show();
+
+                                &.red { color: @red; }
+                            }
+
+                            p { 
+                                line-height: 1;
+                            }
+
+                            &.notes,
+                            &.actions {
+                                display: table-cell;
+                            }
+
+                            &.actions {
+                                p {
+                                    position: relative;
+                                    padding-left: 26px;
+
+                                    .icons {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                    }
+
+                                    
+                                }
                             }
 
                             &:first-child { padding-left: 0; }
