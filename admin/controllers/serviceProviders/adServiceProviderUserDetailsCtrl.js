@@ -78,10 +78,8 @@ admin.controller('ADServiceProviderUserDetailsCtrl',['$scope','$rootScope', '$q'
 		var successCallbackFetch = function(data){			
 			if(data.status ==="failure"){
 				$scope.errorMessage = data.errors;
-			};
-			if(!!data.user_id){
-				$scope.userDetails.user_id = data.user_id;
-				$state.go('admin.serviceproviderusers', {'id':$scope.userDetails.service_provider_id,'name':$scope.serviceProviderName});				
+			}else{				
+				$state.go('admin.serviceproviderusers', {'id':$scope.userDetails.service_provider_id,'name':$scope.serviceProviderName});
 			};			
 			$scope.$emit('hideLoader');
 		};
