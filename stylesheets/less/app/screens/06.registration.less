@@ -930,10 +930,10 @@
 
                         &.description {
                             font-style: normal;
-                            
-                            em,
-                            span,
-                            strong {
+
+                            .charge,
+                            .adjusted,
+                            .reference {
                                 line-height: 1;
                                 .show();
                             }
@@ -943,12 +943,14 @@
                                 background-position: 0 -4000px;
                             }
 
-                            .adjusted {
-                                color: darken(@yellow, 10);
-                            }
-
                             .reference {
                                 color: @grey3;
+                            }
+
+                            .adjusted {
+                                em {
+                                    color: darken(@yellow, 10);
+                                }
                             }
                         }
 

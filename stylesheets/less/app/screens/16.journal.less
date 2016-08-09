@@ -673,19 +673,15 @@
 
                             /* Details ***/
                             &.details {
-                                em,
-                                span,
-                                strong {
+                                span {
                                     line-height: 1;
                                     .show();
                                 }
 
                                 .adjusted {
-                                    color: darken(@yellow, 10);
-                                }
-
-                                .reference {
-                                    color: @grey3;
+                                    em {
+                                        color: darken(@yellow, 10);
+                                    }
                                 }
                             }
                         }
