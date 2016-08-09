@@ -1,104 +1,118 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak ng-click="clearErrorMessage();">
-	<form id="move-room" name="move-room" class="modal-content form move-charge" ng-class="{'searching':!targetSelected}"> <!-- Remove class searching when guest/account is selected -->
+	<form id="move-room" name="move-room" class="modal-content form move-charge" ng-class="{'searching-account':searching,'selected-bill':targetBillSelected,'selected-account': targetSelected}"> <!-- Remove class searching when guest/account is selected -->
 		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
 		<span class="h2 message">Move Charge(s)</span>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<!-- Move From -->
-		<span class="h3">From</span>
-		<div class="holder">
-			<div class="entry margin">
-				<label for="move-from-label">Account / Guest</label>
-				<input id="move-from-label" placeholder="" ng-model="moveChargeData.displayName" type="text" disabled />
-			</div>
-			<div class="entry">
-				<label for="move-from-bill">Bill</label>
-				<input id="move-from-bill" placeholder="" ng-model="moveChargeData.currentActiveBillNumber" type="text" disabled />
+		<div class="another-bill">
+			<span class="h3">From</span>
+			<div class="holder">
+				<div class="entry margin">
+					<label for="move-from-label">Account / Guest</label>
+					<input id="move-from-label" placeholder="" ng-model="moveChargeData.displayName" type="text" disabled />
+				</div>
+				<div class="entry">
+					<label for="move-from-bill">From Bill</label>
+					<input id="move-from-bill" placeholder="" ng-model="moveChargeData.currentActiveBillNumber" type="text" disabled />
+				</div>
+				<div class="entry">
+	                <label for="move-to-bill">To Bill</label>
+	                <div class="select">
+	                    <select id="move-to-bill" ng-model="selectedBillId" ng-change="billSelected()" ng-disabled = "targetSelected">
+	                        <option value=""></option>
+	                        <option value="{{bill.bill_id}}" ng-repeat="bill in billOptions">{{bill.bill_number}}</option>
+	                    </select>
+	                </div>
+	            </div>
 			</div>
 		</div>
-		<!-- Move To -->
-		<span class="h3">To</span>
-		<div class="holder search" ng-hide="targetSelected">
-			<div class="entry margin">
-				<label for="move-to-number">Room / Account No.</label>
-				<button type="button" class="clear-query"  ng-click="clearNumberQuery()" ng-class="{'visible':numberQuery.length>0}"> 
-					<span class="icons icon-clear-search">Clear query</span>
-				</button>
-				<input id="move-to-number" placeholder="Search by No." ng-model="numberQuery" class="search" type="text" autocomplete="off" rv-delay-textbox
-                delay="1000" 
-                function-to-fire="queryEntered"/>
-			</div>
-			<div class="entry">
-				<label for="move-to-name">Guest / Account Name</label>
-				<button type="button" class="clear-query"  ng-click="clearTextQuery()" ng-class="{'visible':textQuery.length>0}"> 
-					<span class="icons icon-clear-search">Clear query</span>
-				</button>
-				<input id="move-to-name" placeholder="Search by Name, Reservation Number" ng-model="textQuery" class="search" type="text" autocomplete="off" rv-delay-textbox
-                delay="1000" 
-                function-to-fire="queryEntered"/>
-			</div>
-		</div> 
-		<!-- When guest/account selected, show this and remove upper search options and lower search results-->
-		<div class="holder" ng-show="targetSelected">
-			<div class="entry margin">
-				<label for="move-to-button">Account / Guest</label>
-				<button type="button" id="move-to-button" class="button with-label white blue-text" ng-click="changeSelection()">
-					<span>{{selectedTarget.displayNumber}}</span>
-					<strong>{{selectedTarget.displaytext}}</strong>
-					Change
-				</button>
-			</div>
-			<div class="entry">
-				<label for="move-to-bill">Bill</label>
-				<div class="select">
-					<select id="move-to-bill" ng-options="bill.id as bill.bill_number for bill in selectedTarget.bills" ng-model="targetBillId">
-				    </select>
+		<div class="another-account">	
+			<!-- Move To -->
+			<span class="h3">To</span>
+			<div class="holder search" ng-hide="targetSelected" disable>
+				<div class="entry margin">
+					<label for="move-to-number">Room / Account No.</label>
+					<button type="button" class="clear-query"  ng-click="clearNumberQuery()" ng-class="{'visible':numberQuery.length>0}"> 
+						<span class="icons icon-clear-search">Clear query</span>
+					</button>
+					<input id="move-to-number" placeholder="Search by No." ng-model="numberQuery" class="search" type="text" autocomplete="off" rv-delay-textbox
+	                delay="1000" 
+	                function-to-fire="queryEntered"
+	                ng-disabled = "targetBillSelected"/>
+				</div>
+				<div class="entry">
+					<label for="move-to-name">Guest / Account Name</label>
+					<button type="button" class="clear-query"  ng-click="clearTextQuery()" ng-class="{'visible':textQuery.length>0}"> 
+						<span class="icons icon-clear-search">Clear query</span>
+					</button>
+					<input id="move-to-name" placeholder="Search by Name, Reservation Number" ng-model="textQuery" class="search" type="text" autocomplete="off" rv-delay-textbox
+	                delay="1000" 
+	                function-to-fire="queryEntered"
+	                ng-disabled = "targetBillSelected"/>
+				</div>
+			</div> 
+			<!-- When guest/account selected, show this and remove upper search options and lower search results-->
+			<div class="holder" ng-show="targetSelected">
+				<div class="entry margin">
+					<label for="move-to-button">Account / Guest</label>
+					<button type="button" id="move-to-button" class="button with-label white blue-text" ng-click="changeSelection()">
+						<span>{{selectedTarget.displayNumber}}</span>
+						<strong>{{selectedTarget.displaytext}}</strong>
+						Change
+					</button>
+				</div>
+				<div class="entry">
+					<label for="move-to-bill">Bill</label>
+					<div class="select">
+						<select id="move-to-bill" ng-options="bill.id as bill.bill_number for bill in selectedTarget.bills" ng-model="targetBillId">
+					    </select>
+					</div>
 				</div>
 			</div>
-		</div>
-		<!-- Search results -->
-		<div class="scrollable" ng-iscroll='search_results' ng-iscroll-delay="100" ng-hide="targetSelected">
-			<ul class="search-results wrapper"> 
-				<!-- if no search is done -->
-				<li class="no-content" ng-show="(textQuery.length<3 && numberQuery.length<3) && searchResults.length === 0">
-					<div class="info">
-						<span class="icon-no-content icon-groups"></span>
-						<strong class="h1">Find Account or Guest</strong>
-						<span class="h2">Search by Account/Guest Name or Account/Room No.</span>
-					</div>
-				</li>
-				<!-- if no search results are found -->
-				<li class="no-content" ng-show="(textQuery.length >= 3 || numberQuery.length >=3) && searchResults.length === 0">
-					<div class="info">
-						<span class="icon-no-content icon-groups"></span>
-						<strong class="h1">No Matches</strong>
-						<span class="h2">Check that you didn't mispell the Group <strong>Name</strong> or <strong>Code</strong>.</span>
-					</div>
-				</li>
+			<!-- Search results -->
+			<div class="scrollable" ng-iscroll='search_results' ng-iscroll-delay="100" ng-hide="targetSelected">
+				<ul class="search-results wrapper"> 
+					<!-- if no search is done -->
+					<li class="no-content" ng-show="(textQuery.length<3 && numberQuery.length<3) && searchResults.length === 0">
+						<div class="info">
+							<span class="icon-no-content icon-groups"></span>
+							<strong class="h1">Find Account or Guest</strong>
+							<span class="h2">Search by Account/Guest Name or Account/Room No.</span>
+						</div>
+					</li>
+					<!-- if no search results are found -->
+					<li class="no-content" ng-show="(textQuery.length >= 3 || numberQuery.length >=3) && searchResults.length === 0">
+						<div class="info">
+							<span class="icon-no-content icon-groups"></span>
+							<strong class="h1">No Matches</strong>
+							<span class="h2">Check that you didn't mispell the Group <strong>Name</strong> or <strong>Code</strong>.</span>
+						</div>
+					</li>
 
-				<li class="group-account" ng-show="searchResults.length !== 0" ng-repeat="item in searchResults" ngrepeatend ng-click="targetClicked(item.entity_id)">
-					<div class="room" ng-show="item.type === 'RESERVATION'">
-						<strong ng-bind-html="escapeNull(item.room_no)|highlight:numberQuery:false"></strong>
-					</div>
-					<div class="data guest"  ng-show="item.type === 'RESERVATION'">
-						<h2 ng-bind-html="escapeNull(item.displaytext)|highlight:textQuery:false"></h2>
-					</div>
-					  <div class="reservation" ng-show="item.type === 'RESERVATION'">
-                    	<!-- If not inhouse/departure, show:-->
-                   		<span class="date" ng-bind-html="escapeNull(item.arrival_date)" ng-hide="item.status === 'CHECKEDIN'"></span> 
-                    	<span class="guest-status {{getGuestStatusIcon(item.status,item.is_opted_late_checkout,item.is_pre_checkin)}}" ng-class="">{{item.status}}</span>
-               		 </div>
-					<div class="group-info" ng-show="item.type === 'ACCOUNT' || item.type === 'GROUP'">
-						<strong ng-bind-html="escapeNull(item.account_number)|highlight:numberQuery:false"></strong>
-						<span class="type" ng-show="item.type === 'ACCOUNT'">Account</span>
-						<span class="type" ng-show="item.type === 'GROUP'">Group</span>
-					</div>
-					<div class="data" ng-show="item.type === 'ACCOUNT' || item.type === 'GROUP'">
-						<h2 ng-bind-html="escapeNull(item.account_name)|highlight:textQuery:false"></h2>
-					</div>
-				</li>
-			</ul>
+					<li class="group-account" ng-show="searchResults.length !== 0" ng-repeat="item in searchResults" ngrepeatend ng-click="targetClicked(item.entity_id)">
+						<div class="room" ng-show="item.type === 'RESERVATION'">
+							<strong ng-bind-html="escapeNull(item.room_no)|highlight:numberQuery:false"></strong>
+						</div>
+						<div class="data guest"  ng-show="item.type === 'RESERVATION'">
+							<h2 ng-bind-html="escapeNull(item.displaytext)|highlight:textQuery:false"></h2>
+						</div>
+						  <div class="reservation" ng-show="item.type === 'RESERVATION'">
+	                    	<!-- If not inhouse/departure, show:-->
+	                   		<span class="date" ng-bind-html="escapeNull(item.arrival_date)" ng-hide="item.status === 'CHECKEDIN'"></span> 
+	                    	<span class="guest-status {{getGuestStatusIcon(item.status,item.is_opted_late_checkout,item.is_pre_checkin)}}" ng-class="">{{item.status}}</span>
+	               		 </div>
+						<div class="group-info" ng-show="item.type === 'ACCOUNT' || item.type === 'GROUP'">
+							<strong ng-bind-html="escapeNull(item.account_number)|highlight:numberQuery:false"></strong>
+							<span class="type" ng-show="item.type === 'ACCOUNT'">Account</span>
+							<span class="type" ng-show="item.type === 'GROUP'">Group</span>
+						</div>
+						<div class="data" ng-show="item.type === 'ACCOUNT' || item.type === 'GROUP'">
+							<h2 ng-bind-html="escapeNull(item.account_name)|highlight:textQuery:false"></h2>
+						</div>
+					</li>
+				</ul>
+			</div>
 		</div>
-
 		<!-- Actions - hidden when search is opened -->
 		<div class="actions" ng-show="targetSelected">
 			<button type="button" class="button blank" ng-click="closeDialog()">Cancel</button> 
