@@ -122,6 +122,8 @@ var GridRowItem = React.createClass({
 			m     = props.meta.occupancy,
 			is_temp_reservation = (data[m.status] === 'available');
 
+		//	console.log(props)
+
 		//if not availability check, this reservation was already there
 		var className  = (!is_temp_reservation ? 'occupied ' : '');
 
@@ -132,20 +134,22 @@ var GridRowItem = React.createClass({
 			className += ((is_temp_reservation && data.selected) || (is_temp_reservation && this.state.isDragOver) ? ' reserved' : '');
 
 		//guest status mapping
+		// console.log(data.cannot_move_room)
 		switch (data[m.status]) {
+
 			case 'reserved':
 				className += ' check-in';
-				className += (!data[m.can_move_room] ? 'locked' : '')
 				break;
 
 			case 'checking_in':
 				className += ' check-in ';
-				className += (!data[m.can_move_room] ? 'locked' : '')
+				// console.log(">++>"+data.cannot_move_room)
+				// className += (data[m.cannnot_move_room] ? 'locked' : '')
 				break;
 
 			case 'checkedin':
 				className += ' inhouse ';
-				className += (!data[m.can_move_room] ? 'locked' : '')
+				// className += (data[m.cannnot_move_room] ? 'locked' : '')
 				break;
 
 			case 'checkedout':
@@ -162,6 +166,10 @@ var GridRowItem = React.createClass({
 				className += ' ' + data[m.status];
 				break;
 		}
+		if(data.cannot_move_room){
+			className += ' locked';
+		}
+
 
 		return className;
 
@@ -188,7 +196,7 @@ var GridRowItem = React.createClass({
 			houseKeepingTaskStyle	= this.__formHouseKeepingStyle(data, display, m, end_time_ms),
 			left 					= (start_time_ms - x_origin) * px_per_ms + 'px',
 			is_balance_present	 	= data.is_balance_present,
-			is_room_locked          = !data.can_move_room,
+			is_room_locked          = data.cannot_move_room,
 			show_outstanding_indicator = ((data.reservation_status === 'check-in' || data.reservation_status === 'reserved') && is_balance_present),
 			row_item_class 			= 'occupancy-block' + ( state.editing ? ' editing' : '')
 										+ (show_outstanding_indicator ? ' deposit-required': '');

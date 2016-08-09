@@ -174,7 +174,7 @@ angular.module('sntRover')
 
 
 
-		
+
 
 	//adjuested property date time (rounded to next 15min slot time)
 	$scope.adj_property_date_time 	= util.correctTime(propertyTime.hotel_time.date, propertyTime);
@@ -804,26 +804,33 @@ angular.module('sntRover')
 	    }.bind($scope.gridProps);
 
 	    $scope.unassignRoom = function() {
-			var params = {
-				id: this.currentResizeItem.reservation_id
-			};
 
-			var success = function() {
-				$scope.$emit('hideLoader');
-				$scope.gridProps.unassignedRoomList.reset();
-				successCallBackOfSaveReservation();
+	    	if(this.currentResizeItem.cannot_move_room){
+				$scope.message = ["Guest is ffset to 'Do Not Move' - Remove flag from Stay Card to move reservation"];
+				openMessageShowingPopup();
+	    	} else {
 
-				$scope.clearAvailability();
-				$scope.resetEdit();
-				$scope.renderGrid();
-			};
+				var params = {
+					id: this.currentResizeItem.reservation_id
+				};
 
-			var error = function(msg) {
-				$scope.$emit('hideLoader');
-				$scope.errorMessage = msg;
-			};
+				var success = function() {
+					$scope.$emit('hideLoader');
+					$scope.gridProps.unassignedRoomList.reset();
+					successCallBackOfSaveReservation();
 
-			$scope.invokeApi(rvDiarySrv.unassignRoom, params, success, error);
+					$scope.clearAvailability();
+					$scope.resetEdit();
+					$scope.renderGrid();
+				};
+
+				var error = function(msg) {
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = msg;
+				};
+
+				$scope.invokeApi(rvDiarySrv.unassignRoom, params, success, error);
+			}
 	    }.bind($scope.gridProps);
 
 	    var openMessageShowingPopup = function(){
@@ -988,7 +995,12 @@ angular.module('sntRover')
 		    $scope.onDragEnd = function(nextRoom, reservation) {
 		    	var availability;
 
-		    	if($scope.gridProps.edit.active) {
+
+		    	if(reservation.cannot_move_room){
+					$scope.message = ["Guest is set to 'Do Not Move' - Remove flag from Stay Card to move reservation"];
+					openMessageShowingPopup();
+
+		    	} else if($scope.gridProps.edit.active) {
 			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
 		    		if(prevRoom.id !== nextRoom.id){
 			    		util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);
