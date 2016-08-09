@@ -1,7 +1,10 @@
 <!-- First column - Scheduled reports -->
 <div class="report-col main-col scrfailedollable buttons-1" ng-iscroll="REPORT_SCHEDULES_SCROLL"> <!-- Add vertical scroller here -->
-    <ul class="wrapper">
-            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+    <ul ng-show="!isAddingNew"
+        class="wrapper"
+    >
         <li class="report-item" ng-repeat="item in schedulesList" ng-class="{'active': item.active}" ng-click="selectSchedule(item, $index)" ng-hide="item.filteredOut"> <!-- Add class "active" when selected + load filters in 2nd column -->
         	<span ng-class="item.reportIconCls"></span>
         	<div class="data">
@@ -10,17 +13,36 @@
         	</div>
         </li>
     </ul>
-    <div class="main-column-actions" ng-show="NOT_NOW">
-        <button type="button" class="button blue with-icon">
+
+    <ul ng-show="isAddingNew"
+        class="wrapper"
+    >
+        <li class="report-item" ng-repeat="item in schedulableReports" ng-class="{'active': item.active}" ng-click="selectSchedule(item, $index)" ng-hide="item.filteredOut"> <!-- Add class "active" when selected + load filters in 2nd column -->
+            <span ng-class="item.reportIconCls"></span>
+            <div class="data">
+                <h2 ng-bind-html="escapeNull(item.report.title)|highlight:query:false"></h2>
+                <em>{{ item.report.description }}</em>
+            </div>
+        </li>
+    </ul>
+
+    <div class="main-column-actions">
+        <button ng-show="!isAddingNew"
+            type="button"
+            class="button blue with-icon"
+            ng-click="scheduleReport()"
+        >
             <i class="icons icon-pencil"></i>
             Schedule a Report
         </button>
-        <!-- When L14 is pressed, replace it with these (+ load all reports in ul on L3(as defined in all-reports.hmtl) and refresh the scroller)
-        <button type="button" class="back-button">
+        <button ng-show="isAddingNew"
+            type="button"
+            class="back-button"
+            ng-click="cancelScheduleReport()"
+        >
             Back to Scheduled Reports
         </button>
-        <strong>Select a Report</strong>
-        -->
+        <strong ng-show="isAddingNew">Select a Report</strong>
     </div>
 </div>
 

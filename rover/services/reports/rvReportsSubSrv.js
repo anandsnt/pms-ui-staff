@@ -315,6 +315,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			});
 		};
 
+		service.fetchSchedulableReports = function() {
+			return callApi({
+				name   : 'schedulableReports',
+				method : 'getJSON',
+				url    : 'admin/export_reports.json',
+				resKey : 'results'
+			});
+		};
+
 		return service;
 	}
 ]);
