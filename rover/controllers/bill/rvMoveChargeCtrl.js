@@ -100,7 +100,7 @@ sntRover.controller('RVMoveChargeCtrl',
 		$scope.clearTextQuery = function(){
 			$scope.textQuery = '';
 			unsetSearchList();
-			$scope.searching = true;
+			$scope.searching = false;
 			$scope.targetSelected = false;
 		};
 
@@ -108,7 +108,7 @@ sntRover.controller('RVMoveChargeCtrl',
 		$scope.clearNumberQuery = function(){
 			$scope.numberQuery = '';
 			unsetSearchList();
-			$scope.searching = true;
+			$scope.searching = false;
 			$scope.targetSelected = false;
 		};
 
@@ -179,6 +179,13 @@ sntRover.controller('RVMoveChargeCtrl',
 			$scope.selectedTarget = {};
 			$scope.targetSelected = false;
 			$scope.searching = true;
+		};
+		/**
+		 * show Move/Cancel button
+		 *
+		 */
+		$scope.showMoveButton = function(){
+			return ($scope.targetSelected || $scope.targetBillSelected);
 		};
 
 
