@@ -519,6 +519,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// to make sure API that doesnt requires any parsing will be returned with any parse
 			var parseAPIoptions = {
 				'groupedByKey'    : $scope.$parent.reportGroupedBy,
+				'checkAction'     : $scope.chosenReport.chosenOptions['include_actions'],
 				'checkNote'       : $scope.chosenReport.chosenOptions['include_notes'],
 				'checkGuest'      : $scope.chosenReport.chosenOptions['show_guests'],
 				'checkCancel'     : $scope.chosenReport.chosenOptions['include_cancelled'] || $scope.chosenReport.chosenOptions['include_cancelled'],

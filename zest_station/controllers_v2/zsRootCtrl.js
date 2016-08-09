@@ -354,35 +354,41 @@ sntZestStation.controller('zsRootCtrl', [
 			//also attaching this to navigation, yotel has text back & cancel, instead of svg icons for back and close;
 			if ($scope.zestStationData.theme === 'yotel') {
 				return true;
-			} else return false;
+			} else {
+				return false;
+			}
 		};
-		$scope.setSvgsToBeLoaded = function(iconsPath) {
+		$scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons) {
 			$scope.activeScreenIcon = 'bed';
 			$scope.icons = {
 				url: {
+                                    
 					active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
-					key: iconsPath + '/key.svg',
-					date: iconsPath + '/date.svg',
-					checkin: iconsPath + '/checkin.svg',
-					checkout: iconsPath + '/checkout.svg',
-					oos: iconsPath + '/oos.svg',
-					staff: iconsPath + '/staff.svg',
-					email: iconsPath + '/email.svg',
-					pen: iconsPath + '/pen.svg',
-					creditcard: iconsPath + '/creditcard.svg',
-					keyboard: iconsPath + '/keyboard.svg',
-					noprint: iconsPath + '/no-print.svg',
-					print: iconsPath + '/print.svg',
-					confirmation: iconsPath + '/confirmation.svg',
-					moon: iconsPath + '/moon.svg',
-					back: iconsPath + '/back.svg',
-					close: iconsPath + '/close.svg',
-					qr: iconsPath + '/qr-scan.svg',
-					qr_noarrow: iconsPath + '/qr-scan_noarrow.svg',
-					createkey: iconsPath + '/create-key.svg',
-					logo: iconsPath + '/print_logo.svg',
-					watch: iconsPath + '/watch.svg',
-					qr_arrow: iconsPath + '/qr-arrow.svg'
+                                        
+					checkin: (useCommonIcons ? iconsPath : commonIconsPath) + '/checkin.svg',
+					checkout: (useCommonIcons ? iconsPath : commonIconsPath)  + '/checkout.svg',
+                                        key: (useCommonIcons ? iconsPath : commonIconsPath)  + '/key.svg',
+                                        
+					oos: (!useCommonIcons ? iconsPath : commonIconsPath)  + '/oos.svg',
+					back: (!useCommonIcons ? iconsPath : commonIconsPath)  + '/back.svg',
+					close: (!useCommonIcons ? iconsPath : commonIconsPath)  + '/close.svg',
+                                        
+                                        date: (!useCommonIcons ? iconsPath : commonIconsPath) + '/date.svg',
+					staff: (!useCommonIcons ? iconsPath : commonIconsPath) + '/staff.svg',
+					email: (!useCommonIcons ? iconsPath : commonIconsPath) + '/email.svg',
+					pen: (!useCommonIcons ? iconsPath : commonIconsPath) + '/pen.svg',
+					creditcard: (!useCommonIcons ? iconsPath : commonIconsPath) + '/creditcard.svg',
+					keyboard: (!useCommonIcons ? iconsPath : commonIconsPath) + '/keyboard.svg',
+					noprint: (!useCommonIcons ? iconsPath : commonIconsPath) + '/no-print.svg',
+					print: (!useCommonIcons ? iconsPath : commonIconsPath) + '/print.svg',
+					confirmation: (!useCommonIcons ? iconsPath : commonIconsPath) + '/confirmation.svg',
+					moon: (!useCommonIcons ? iconsPath : commonIconsPath) + '/moon.svg',
+					qr: (!useCommonIcons ? iconsPath : commonIconsPath) + '/qr-scan.svg',
+					qr_noarrow: (!useCommonIcons ? iconsPath : commonIconsPath) + '/qr-scan_noarrow.svg',
+					createkey: (!useCommonIcons ? iconsPath : commonIconsPath) + '/create-key.svg',
+					logo: (!useCommonIcons ? iconsPath : commonIconsPath) + '/print_logo.svg',
+					watch: (!useCommonIcons ? iconsPath : commonIconsPath) + '/watch.svg',
+					qr_arrow: (!useCommonIcons ? iconsPath : commonIconsPath) + '/qr-arrow.svg'
 				}
 			};
 		};
@@ -405,15 +411,21 @@ sntZestStation.controller('zsRootCtrl', [
 		 * get paths for theme based Icon files
 		 **/
 		$scope.$on('updateIconPath', function(evt, theme) {
+            var commonIconsPath = '/assets/zest_station/css/icons/default';
+                        
 			if (theme === 'yotel') {
 				$scope.$emit('DONT_USE_NAV_ICONS');
 				$scope.theme = theme;
 				$scope.iconsPath = '/assets/zest_station/css/icons/yotel';
-				$scope.setSvgsToBeLoaded($scope.iconsPath);
+				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, false);
 			} else if (theme === 'fontainebleau') {
 				//nothing else
+			}  else if (theme === 'conscious') {
+				$scope.theme = theme;
+				$scope.iconsPath = '/assets/zest_station/css/icons/conscious';
+				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
 			} else {
-				$scope.iconsPath = '/assets/zest_station/css/icons/default';
+				$scope.iconsPath = commonIconsPath;
 			}
 		});
 
@@ -481,6 +493,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 
 		$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+			$scope.hideKeyboardIfUp();
 			console.info("\ngoing to----->" + from.name);
 			console.info("to stateparams" + toParams);
 			console.info(toParams);
@@ -875,19 +888,21 @@ sntZestStation.controller('zsRootCtrl', [
 			console.log('-');
 			console.log('-:-');
 			//zest-station general settings
-			console.log(' -:- Station Settings -:- ');
+			console.log(' -:- Station Settings -:- ', setting);
 			console.log('');
-			console.log('  - Payment Gateway     :  ', setting);
-			console.log('  - Key Writer          :  ', setting.keyWriter);
-			console.log('  - CC Reader           :  ', setting.ccReader);
-			logSetting('  - Idle Timer          :  ', setting.idle_timer.enabled);
+			logSetting('  - Hourly Hotel Mode  :  ', $scope.zestStationData.isHourlyRateOn);
+			
+			console.log('  - Payment Gateway    :  ', setting.paymentGateway);
+			console.log('  - Key Writer         :  ', setting.keyWriter);
+			console.log('  - CC Reader          :  ', setting.ccReader);
+			logSetting('  - Idle Timer         :  ', setting.idle_timer.enabled);
 			console.log('    -> Prompt  : ', (setting.idle_timer.prompt), 'sec ');
 			console.log('    -> Home    : ', (setting.idle_timer.max), 'sec ');
 			console.log('');
-			console.log('  - Chrome App ID       :  ', setting.chrome_app_id);
-			console.log('  - Bussiness Date      :  ', setting.bussinessDate);
-			console.log('  - Check-in Time       :  ', setting.check_in_time.hour + ':' + setting.check_in_time.minute + ' - ' + setting.check_in_time.primetime);
-			console.log('  - Check-out Time      :  ', setting.check_out_time.hour + ':' + setting.check_out_time.minute + ' - ' + setting.check_out_time.primetime);
+			console.log('  - Chrome App ID      :  ', setting.chrome_app_id);
+			console.log('  - Bussiness Date     :  ', setting.bussinessDate);
+			console.log('  - Check-in Time      :  ', setting.check_in_time.hour + ':' + setting.check_in_time.minute + ' - ' + setting.check_in_time.primetime);
+			console.log('  - Check-out Time     :  ', setting.check_out_time.hour + ':' + setting.check_out_time.minute + ' - ' + setting.check_out_time.primetime);
 			//check-in
 			console.log('');
 			console.log('  - Check-In Settings - ');
@@ -926,7 +941,7 @@ sntZestStation.controller('zsRootCtrl', [
 			console.log('');
 			logSetting('  - Datalogic           :  ', setting.qr_scanner_datalogic);
 			logSetting('  - Samsotech           :  ', setting.qr_scanner_samsotech);
-			console.log('  - Arrow Direction     :  ', setting.qr_scanner_arrow_direction);
+			console.log('  - Arrow Direction    :  ', setting.qr_scanner_arrow_direction);
 			console.log('');
 			console.log(' -:-- - - - - - - - --:- ');
 			console.log('-:-');
