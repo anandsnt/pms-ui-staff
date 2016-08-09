@@ -52,7 +52,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'mode': 'DEPOSIT',
 				'balance_amount': $stateParams.balance_amount,
 				'confirmation_number': $stateParams.confirmation_number,
-				'pre_auth_amount_at_checkin': $stateParams.pre_auth_amount_at_checkin,
+				'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
 				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 			});
 		};
@@ -95,7 +95,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'first_name': $stateParams.first_name,
 				'mode': 'CREDIT_CARD_AUTH',
 				'balance_amount': $stateParams.balance_amount,
-				'pre_auth_amount_at_checkin': $stateParams.pre_auth_amount_at_checkin,
+				'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
 				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 			};
 			$state.go('zest_station.checkInCardSwipe', stateParams);
