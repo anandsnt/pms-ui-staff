@@ -12,6 +12,21 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 	function($rootScope, $scope, reportsSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util) {
 		BaseCtrl.call(this, $scope);
 
+		$scope.isAddingNew = false;
+
+		$scope.scheduleReport = function() {
+			$scope.isAddingNew = true;
+		}
+
+		$scope.cancelScheduleReport = function() {
+			$scope.isAddingNew = false;
+		}
+
+
+
+
+
+
 		$scope.removeEmail = function(index) {
 			$scope.emailList = [].concat(
 				$scope.emailList.slice(0, index),
@@ -265,7 +280,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				var selected = false,
 					mustSend = false;
 
-					if(filter.value == 'ACCOUNT'|| filter.value == 'GUEST') {
+				if(filter.value == 'ACCOUNT'|| filter.value == 'GUEST') {
 					$scope.IsGuestBalanceReport = true;
 					selected = true;
 					$scope.filters.hasGeneralOptions.data.push({
@@ -275,6 +290,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 						mustSend    : mustSend
 					});
 				}
+
 				selected = false;
 				if ( matchGeneralOptions[filter.value] ) {
 					
@@ -296,6 +312,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 						selected    : selected,
 						mustSend    : mustSend
 					});
+
+					if ( $scope.selectedScheduleDetails.report.description === 'Arriving Guests' ) {
+						$scope.filters.hasGeneralOptions.options.noSelectAll = true;
+					}
 				}
 			});
 
@@ -400,11 +420,36 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			$scope.timeSlots = reportUtils.createTimeSlots(30);
 		};
 
-		var fetchReportSchedulesFrequencyTimePeriod = function() {
+		var fetch_reportSchedules_frequency_timePeriod_scheduableReports = function() {
 			var success = function(payload) {
 				$scope.$parent.$parent.schedulesList = payload.schedulesList;
 				$scope.scheduleFrequency = payload.scheduleFrequency;
 				$scope.scheduleTimePeriods = payload.scheduleTimePeriods;
+				$scope.$parent.$parent.schedulableReports = [];
+
+				var found;
+				_.each(payload.schedulableReports, function(id) {
+					found = _.find($scope.$parent.$parent.reportList, { 'id': id });
+					console.log(found);
+
+					if ( !! found ) {
+						$scope.$parent.$parent.schedulableReports.push(
+							$.extend(
+								{},
+								found
+							)
+						);
+
+						$scope.$parent.$parent.schedulableReports.push({
+							id: found.id,
+							title: found.title,
+							description: found.description,
+							filters: found.filters,
+							sort_fields: found.sort_fields
+						});
+					}
+				});
+				console.log($scope.$parent.$parent.schedulableReports);
 
 				var getValue = function(value) {
 					switch(value) {
@@ -468,7 +513,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
 			setupScrolls();
 
-			fetchReportSchedulesFrequencyTimePeriod();
+			fetch_reportSchedules_frequency_timePeriod_scheduableReports();
 		};
 
 		init();

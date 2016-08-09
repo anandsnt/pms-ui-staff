@@ -159,7 +159,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			var shallWeResolve = function() {
 				var payloadCount = _.keys( payload ).length;
-				if ( payloadCount === 3 ) {
+				if ( payloadCount === 4 ) {
 					deferred.resolve( payload );
 				}
 			};
@@ -182,6 +182,10 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			subSrv.fetchTimePeriods()
 				.then( success.bind(null, 'scheduleTimePeriods'), failed.bind(null, 'scheduleTimePeriods', []) );
+
+			subSrv.fetchSchedulableReports()
+				.then( success.bind(null, 'schedulableReports'), failed.bind(null, 'schedulableReports', []) );
+			// success('schedulableReports', [8, 7, 33, 34]);
 
 			return deferred.promise;
 		};
