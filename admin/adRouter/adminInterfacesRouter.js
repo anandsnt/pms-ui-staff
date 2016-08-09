@@ -10,6 +10,9 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
       }],
       journalsList : ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
         return adExactOnlineSetupSrv.fetchJournalsList();
+      }],
+      balancingAccounts : ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
+        return adExactOnlineSetupSrv.fetchBalancingAccounts();
       }]
     }
   });

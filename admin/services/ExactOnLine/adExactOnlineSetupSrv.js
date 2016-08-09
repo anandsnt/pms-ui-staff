@@ -48,6 +48,20 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
         return deferred.promise;
     };
 
+    this.fetchBalancingAccounts = function() {
+        var deferred = $q.defer();
+        var url = 'api/hotel_settings/exactonline/gl_accounts';
+
+        ADBaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+
+
+        return deferred.promise;
+    };
+
     /**
      * to get the ExactOnLine configraton values
      * @return {undefined}
@@ -61,6 +75,7 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
         },function(data){
             deferred.reject(data);
         });
+
 
         return deferred.promise;
     };
