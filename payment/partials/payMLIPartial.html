@@ -1,9 +1,9 @@
 <div id="cc-new-card" class="new-card" ng-controller="payMLIOperationsController">
 	<!-- CC type -->
     <div class="entry card-type">
-        <label for="card-type">Card type </label>
+        <label>Card type </label>
         <div class="select">
-            <select name="card-type" ng-disabled="!payment.isManualCcEntryEnabled" ng-model="cardData.cardType" class="placeholder">
+            <select ng-disabled="!hotelConfig.isManualCCEntryEnabled" ng-model="cardData.cardType" class="placeholder">
                 <option value="" selected>Select Card type</option>
                 <option ng-repeat="cardType in payment.creditCardTypes" value="{{cardType.cardcode}}" ng-selected="cardType.cardcode == cardData.cardType">{{cardType.cardname}}</option>
             </select>
@@ -12,26 +12,26 @@
     <!-- card Number -->
     <div class="entry card-number">
         <label for="card-number">Card number (<span>No spaces</span>)</label>
-        <input name="card-number" ng-readonly="!payment.isManualCcEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
+        <input name="card-number" ng-readonly="!hotelConfig.isManualCCEntryEnabled" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="16" type="text" />
     </div>
     <!-- Expiry date -->
     <div class="entry card-expiry">
         <label for="expiry-month">Expires (<span>Month/Year</span>)</label>
-        <input name="expiry-month" ng-readonly="!payment.isManualCcEntryEnabled" id="expiry-month" placeholder="MM" ng-model="cardData.expiryMonth" maxlength="2" size="3" type="text" />
-        <input name="expiry-year" ng-readonly="!payment.isManualCcEntryEnabled" id="expiry-year" placeholder="YY" ng-model="cardData.expiryYear" maxlength="2" size="3" type="text" />
+        <input name="expiry-month" ng-readonly="!hotelConfig.isManualCCEntryEnabled" id="expiry-month" placeholder="MM" ng-model="cardData.expiryMonth" maxlength="2" size="3" type="text" />
+        <input name="expiry-year" ng-readonly="!hotelConfig.isManualCCEntryEnabled" id="expiry-year" placeholder="YY" ng-model="cardData.expiryYear" maxlength="2" size="3" type="text" />
     </div>
     <!-- Card Name -->
     <div class="entry card-name">
         <label for="name-on-card">Name on card</label>
-        <input name="name-on-card" id="name-on-card" placeholder="Enter name on card" ng-model="cardData.nameOnCard" type="text" />
+        <input name="name-on-card" ng-disabled="!hotelConfig.isManualCCEntryEnabled" id="name-on-card" placeholder="Enter name on card" ng-model="cardData.nameOnCard" type="text" />
     </div>
     <!-- Card CCV -->
     <div class="entry card-ccv">
         <label for="ccv">CCV</label>
-        <input name="ccv" id="ccv" placeholder="CCV" ng-model="cardData.CCV" maxlength="4" size="4" type="text" />
+        <input name="ccv" id="ccv" ng-disabled="!hotelConfig.isManualCCEntryEnabled" placeholder="CCV" ng-model="cardData.CCV" maxlength="4" size="4" type="text" />
     </div>
     <!-- Button action -->
     <div class="entry card-action">
-        <button type="button" class="button blue" ng-click="getMLIToken($event)">Add</button>
+        <button type="button" ng-disabled="!hotelConfig.isManualCCEntryEnabled" class="button blue" ng-class="{'grey' : !hotelConfig.isManualCCEntryEnabled}" ng-click="getMLIToken($event)">Add</button>
     </div>
 </div>

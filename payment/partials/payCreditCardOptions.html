@@ -14,7 +14,7 @@
     </li>
 </ul>
 
-<!-- Exsiting cards - use only when they exsit -->
+<!-- Existing cards - use only when they exist -->
 <div id="cc-exsiting-card" class="cards-list cards-container scrollable" ng-show="payment.addCCMode === 'EXISTING_CARDS'" ng-iscroll="cardsList">
     <div class="wrapper">
         <label class="active-item item-payment" ng-click="setCreditCardFromList(card.value)" ng-repeat="card in payment.linkedCreditCards" ng-show="card.is_credit_card">
@@ -31,8 +31,85 @@
 
 <div ng-include="paymentGatewayUIInterfaceUrl" ng-show="payment.addCCMode === 'ADD_CARD'"></div>
 
-<div class="actions">
+<div class="new-card" ng-show="payment.addCCMode === 'GIFT_CARD'">
+    <div class="entry card-number card-type full-width">
+        <label>Card number (<span>No spaces</span>)</label>
+        <input placeholder="Enter Card number"
+               ng-model="giftCard.number"
+               maxlength="22"
+               rv-delay-textbox
+               delay="1000"
+               function-to-fire="onChangeGiftCard"
+               type="text"/>
+    </div>
+    <div class="entry full-width">
+        <label ng-show="giftCard.amountAvailable"> Available Card Balance({{currencySymbol}}) </label>
+        <input ng-show="giftCard.amountAvailable"
+               ng-readonly="true"
+               ng-model="giftCard.availableBalance"
+               type="text"/>
+    </div>
+    <div class="entry full-width">
+        <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+
+        <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
+        <input ng-change="onPaymentInfoChange()"
+               ng-model="payment.amount"
+               type="text"
+               ng-disabled="!payment.isEditable"
+               class="amount"
+               ng-if="!payment.isRateSuppressed"/>
+        <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
+        <input type="text"
+               ng-disabled="!payment.isEditable"
+               class="amount"
+               ng-if="payment.isRateSuppressed"
+               value="{{'SUPPRESSED_RATES_TEXT' | translate}}"/>
+
+        <span ng-show="feeData.showFee" class="delimiter">+</span>
+
+        <input ng-show="feeData.showFee && !payment.isRateSuppressed"
+               ng-change="onFeeOverride()"
+               ng-model="feeData.calculatedFee"
+               value="{{feeData.calculatedFee}}"
+               type="text"
+               class="fee"/>
+
+        <input ng-show="feeData.showFee && payment.isRateSuppressed"
+               value="{{'SUPPRESSED_RATES_TEXT' | translate}}"
+               type="text"
+               class="fee"/>
+
+        <span ng-show="feeData.showFee" class="delimiter">fee</span>
+
+        <span ng-show="feeData.showFee" class="total">
+          Total:
+          <strong ng-if="!payment.isRateSuppressed">
+              {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+          </strong>
+          <strong ng-if="payment.isRateSuppressed">
+              {{'SUPPRESSED_RATES_TEXT' | translate}}
+          </strong>
+        </span>
+    </div>
+</div>
+
+<div class="actions" ng-if="payment.addCCMode === 'EXISTING_CARDS' || payment.addCCMode === 'ADD_CARD'">
     <button type="button" class="button blank" ng-click="cancelCardSelection()">
         Cancel Card selection
+    </button>
+</div>
+
+
+<div class="actions" ng-if="payment.addCCMode === 'GIFT_CARD'">
+    <button type="button" id="close" class="button blank modal-close" ng-click="closeThePopup()">
+        Close
+    </button>
+
+    <button type="button"
+            ng-click="submitPayment()"
+            class="button green"
+            ng-hide="shouldHidePaymentButton()">
+        Make Payment
     </button>
 </div>

@@ -122,20 +122,20 @@
                 <div class="wrapper">
 					<snt-payment
 							hotel-config="hotelPaymentConfig"
-							reservation-id="{{reservationId}}"
+							reservation-id="{{reservationData.reservation_card.reservation_id}}"
 							bill-number="billNumber"
 							payment-types="passData.details.paymentTypes"
-							selected-payment-type="paymentType"
+							selected-payment-type="depositBalanceMakePaymentData.payment_type"
 							selected-c-c="depositDetails.attached_card"
 							amount='depositBalanceMakePaymentData.amount'
-							action-type="DEPOSIT"
+							action-type="DEPOSIT_BALANCE_STAYCARD"
 							deposit-policy-name="{{depositPolicyName}}"
 							is-editable='isDepositEditable'
 							is-rate-suppressed='isReservationRateSuppressed'
 							has-permission='hasPermissionToMakePayment()'
 							form-template-url='/assets/partials/staycard/rvStaycardDepositBalancePopup.html'
-							first-name="{{firstName}}"
-							last-name="{{lastName}}"
+							first-name="{{passData.details.firstName}}"
+							last-name="{{passData.details.lastName}}"
 							ng-show="!errorOccured && !depositPaidSuccesFully">
 					</snt-payment>
 				<!-- Reference field - use only when it exsits -->

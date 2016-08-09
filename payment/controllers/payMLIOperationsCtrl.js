@@ -98,7 +98,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
       };
   
       var renderDataFromSwipe = function(event, swipedCardData) {
-          swipedCCData = true;
+          isSwiped = true;
           swipedCCData = swipedCardData;
           $scope.cardData.cardNumber = swipedCardData.cardNumber;
           $scope.cardData.nameOnCard = swipedCardData.nameOnCard;

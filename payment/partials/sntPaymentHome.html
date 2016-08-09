@@ -8,7 +8,7 @@
     </div>
 </div>
 <!-- six pay options -->
-<div class="entry" ng-show="hotelConfig.paymentGateway === 'sixpayments' && selectedPaymentType ==='CC' &&payment.screenMode === 'PAYMENT_MODE'">
+<div class="entry" ng-show="hotelConfig.paymentGateway === 'sixpayments' && selectedPaymentType ==='CC' && payment.screenMode === 'PAYMENT_MODE'">
     <label for="card-source">Card Input</label>
     <div class="switch-button" ng-class="{'on': !payment.isManualEntryInsideIFrame}">
         <input name="card-source" id="card-source" value="card-source" type="checkbox" ng-model="payment.manualSixPayCardEntry" ng-click="sixPayEntryOptionChanged()" />
