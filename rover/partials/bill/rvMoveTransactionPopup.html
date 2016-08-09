@@ -70,7 +70,7 @@
 				</div>
 			</div>
 			<!-- Search results -->
-			<div class="scrollable" ng-iscroll='search_results' ng-iscroll-delay="100" ng-hide="targetSelected">
+			<div class="scrollable" ng-iscroll='search_results' ng-iscroll-delay="100" ng-hide="targetSelected||targetBillSelected">
 				<ul class="search-results wrapper"> 
 					<!-- if no search is done -->
 					<li class="no-content" ng-show="(textQuery.length<3 && numberQuery.length<3) && searchResults.length === 0">
