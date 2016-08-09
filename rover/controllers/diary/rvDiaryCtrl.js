@@ -806,7 +806,7 @@ angular.module('sntRover')
 	    $scope.unassignRoom = function() {
 
 	    	if(this.currentResizeItem.cannot_move_room){
-				$scope.message = ["Guest is ffset to 'Do Not Move' - Remove flag from Stay Card to move reservation"];
+				$scope.message = ["Guest is set to 'Do Not Move' - Remove flag from Stay Card to move reservation"];
 				openMessageShowingPopup();
 	    	} else {
 
@@ -994,7 +994,7 @@ angular.module('sntRover')
 
 		    $scope.onDragEnd = function(nextRoom, reservation) {
 		    	var availability;
-
+console.log(nextRoom, reservation)
 
 		    	if(reservation.cannot_move_room){
 					$scope.message = ["Guest is set to 'Do Not Move' - Remove flag from Stay Card to move reservation"];
