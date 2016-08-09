@@ -45,7 +45,7 @@
 
 
 		<div class="clearButton" ng-show="reservationBillData.required_signature_at === 'CHECKIN'">
-			<a id="clear-signature" class="button blank" click-touch='clickedClearSignature()' ng-hide="isSigned()" translate>CLEAR_SIGNATURE</a>
+			<a id="clear-signature" class="button blank" click-touch='clickedClearSignature()' ng-hide="isSigned() || reservation.reservation_card.is_pre_checkin" translate>CLEAR_SIGNATURE</a>
 		</div>
 	</div>
 </form>
