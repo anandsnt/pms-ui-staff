@@ -11,13 +11,23 @@
 				<input id="move-from-label" placeholder="" ng-model="moveChargeData.displayName" type="text" disabled />
 			</div>
 			<div class="entry">
-				<label for="move-from-bill">Bill</label>
+				<label for="move-from-bill">From Bill</label>
 				<input id="move-from-bill" placeholder="" ng-model="moveChargeData.currentActiveBillNumber" type="text" disabled />
 			</div>
+			<div class="entry">
+                <label for="move-to-bill">To Bill</label>
+                <div class="select">
+                    <select id="move-to-bill" ng-model="selectedBillId" ng-change="billSelected()">
+                        <option value=""></option>
+                        <option value="{{bill.bill_id}}" ng-repeat="bill in billOptions">{{bill.bill_number}}</option>
+                    </select>
+                </div>
+            </div>
+
 		</div>
 		<!-- Move To -->
 		<span class="h3">To</span>
-		<div class="holder search" ng-hide="targetSelected">
+		<div class="holder search" ng-hide="targetSelected" disable>
 			<div class="entry margin">
 				<label for="move-to-number">Room / Account No.</label>
 				<button type="button" class="clear-query"  ng-click="clearNumberQuery()" ng-class="{'visible':numberQuery.length>0}"> 
