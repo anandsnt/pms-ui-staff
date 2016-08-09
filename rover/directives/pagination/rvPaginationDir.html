@@ -6,7 +6,7 @@
 
         <span class="delimiter" ng-show="pageNoArray.firstDelim">...</span>
 
-        <button type="button" class="button dark-grey number" ng-repeat="pageNo in pageNoArray.nums track by $index" ng-click="gotoPage(pageNo)" ng-class="{'active': pageOptions.currentPage === pageNo}">{{pageNo}} </button>
+        <button type="button" class="button dark-grey number" ng-repeat="pageNo in pageNoArray.numbers track by $index" ng-click="gotoPage(pageNo)" ng-class="{'active': pageOptions.currentPage === pageNo}">{{pageNo}} </button>
 
         <span class="delimiter" ng-show="pageNoArray.lastDelim">...</span>
 

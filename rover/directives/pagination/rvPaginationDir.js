@@ -1,7 +1,7 @@
 /*
  * Number pagination directive for Rover App.
  */
-sntRover.directive('rvPaginationDir', function() {
+sntRover.directive('rvPagination', function() {
 
     var linkFn = function($scope, element, attr) {
         var pageOptions = {
@@ -26,6 +26,6 @@ sntRover.directive('rvPaginationDir', function() {
             pageData    : '=pageData'
         },
         controller   : 'rvPaginationCtrl',
-        linkFn       : linkFn
+        link         : linkFn
     };
 });
