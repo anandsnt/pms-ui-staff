@@ -11,10 +11,21 @@ sntRover.controller('RVMoveChargeCtrl',
 			$scope.targetSelected = false;
 			$scope.selectedTarget = {};
 			$scope.targetBillId   = "";
-			$scope.setScroller('search_results');
+			$scope.setScroller('search_results');			
+			$scope.billOptions = [];
+			createBillOptions();
 		};
 
-		initiate();
+		/**
+         * return - An array of Bills except current acive bill
+         */
+		var createBillOptions = function(){
+			_.each($scope.reservationBillData.bills, function(result,index){
+				if(index !== $scope.currentActiveBill){
+					$scope.billOptions.push(result);
+				}
+			});
+		};		
 
 		/**
          * to run angular digest loop,
@@ -25,6 +36,15 @@ sntRover.controller('RVMoveChargeCtrl',
             if (!$scope.$$phase) {
                 $scope.$digest();
             }
+        };
+
+        /**
+         * Handle bill selected Action
+         * TODO : Disable search Portion
+         */
+        $scope.billSelected = function(){
+        	$scope.targetBillId = $scope.selectedBillId;
+        	$scope.targetSelected = true;
         };
 
 
@@ -171,4 +191,6 @@ sntRover.controller('RVMoveChargeCtrl',
             };
 			$scope.invokeApi(RVMoveChargeSrv.moveChargesToTargetEntity, params, chargesMovedSuccess, failureCallback );
 		};
+		initiate();
+
 }]);
