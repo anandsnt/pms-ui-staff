@@ -155,11 +155,11 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//$scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
 		$scope.isIpad = (zestSntApp.cordovaLoaded && iphoneOrIpad);
-			/**
-			 * This is workaround till we find how to detect if app
-			 *  is invoked from chrome app, we will be hidding this tag from chrome app and
-			 *  checking that to distinguish if app was launched using chrome app or not 
-			 * */
+		/**
+		 * This is workaround till we find how to detect if app
+		 *  is invoked from chrome app, we will be hidding this tag from chrome app and
+		 *  checking that to distinguish if app was launched using chrome app or not 
+		 * */
 		var CheckIfItsChromeApp = function() {
 			$scope.inChromeApp = $("#hideFromChromeApp").css("visibility") === 'hidden';
 			console.info(":: is in chrome app ->" + $scope.inChromeApp);
@@ -316,13 +316,13 @@ sntZestStation.controller('zsRootCtrl', [
 			var focused = $('#' + $scope.lastKeyboardId);
 			if ($(focused)) {
 				if ($(focused).getkeyboard()) {
-            		if ($(focused).getkeyboard().isOpen){
-            			try {
+					if ($(focused).getkeyboard().isOpen) {
+						try {
 							$(focused).getkeyboard().accept(true);
-            			} catch(err){
-            				console.warn($(focused).getkeyboard())
-            			}
-						
+						} catch (err) {
+							console.warn($(focused).getkeyboard())
+						}
+
 					}
 				}
 			}
@@ -359,36 +359,38 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 		};
 		$scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons) {
+			var iconBasePath = (!useCommonIcons ? iconsPath : commonIconsPath);
+
 			$scope.activeScreenIcon = 'bed';
 			$scope.icons = {
 				url: {
-                                    
+
 					active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
-                                        
-					checkin: (useCommonIcons ? iconsPath : commonIconsPath) + '/checkin.svg',
-					checkout: (useCommonIcons ? iconsPath : commonIconsPath)  + '/checkout.svg',
-                                        key: (useCommonIcons ? iconsPath : commonIconsPath)  + '/key.svg',
-                                        
-					oos: (!useCommonIcons ? iconsPath : commonIconsPath)  + '/oos.svg',
-					back: (!useCommonIcons ? iconsPath : commonIconsPath)  + '/back.svg',
-					close: (!useCommonIcons ? iconsPath : commonIconsPath)  + '/close.svg',
-                                        
-                                        date: (!useCommonIcons ? iconsPath : commonIconsPath) + '/date.svg',
-					staff: (!useCommonIcons ? iconsPath : commonIconsPath) + '/staff.svg',
-					email: (!useCommonIcons ? iconsPath : commonIconsPath) + '/email.svg',
-					pen: (!useCommonIcons ? iconsPath : commonIconsPath) + '/pen.svg',
-					creditcard: (!useCommonIcons ? iconsPath : commonIconsPath) + '/creditcard.svg',
-					keyboard: (!useCommonIcons ? iconsPath : commonIconsPath) + '/keyboard.svg',
-					noprint: (!useCommonIcons ? iconsPath : commonIconsPath) + '/no-print.svg',
-					print: (!useCommonIcons ? iconsPath : commonIconsPath) + '/print.svg',
-					confirmation: (!useCommonIcons ? iconsPath : commonIconsPath) + '/confirmation.svg',
-					moon: (!useCommonIcons ? iconsPath : commonIconsPath) + '/moon.svg',
-					qr: (!useCommonIcons ? iconsPath : commonIconsPath) + '/qr-scan.svg',
-					qr_noarrow: (!useCommonIcons ? iconsPath : commonIconsPath) + '/qr-scan_noarrow.svg',
-					createkey: (!useCommonIcons ? iconsPath : commonIconsPath) + '/create-key.svg',
-					logo: (!useCommonIcons ? iconsPath : commonIconsPath) + '/print_logo.svg',
-					watch: (!useCommonIcons ? iconsPath : commonIconsPath) + '/watch.svg',
-					qr_arrow: (!useCommonIcons ? iconsPath : commonIconsPath) + '/qr-arrow.svg'
+
+					checkin: iconBasePath + '/checkin.svg',
+					checkout: iconBasePath + '/checkout.svg',
+					key: iconBasePath + '/key.svg',
+
+					oos: iconBasePath + '/oos.svg',
+					back: iconBasePath + '/back.svg',
+					close: iconBasePath + '/close.svg',
+
+					date: iconBasePath + '/date.svg',
+					staff: iconBasePath + '/staff.svg',
+					email: iconBasePath + '/email.svg',
+					pen: iconBasePath + '/pen.svg',
+					creditcard: iconBasePath + '/creditcard.svg',
+					keyboard: iconBasePath + '/keyboard.svg',
+					noprint: iconBasePath + '/no-print.svg',
+					print: iconBasePath + '/print.svg',
+					confirmation: iconBasePath + '/confirmation.svg',
+					moon: iconBasePath + '/moon.svg',
+					qr: iconBasePath + '/qr-scan.svg',
+					qr_noarrow: iconBasePath + '/qr-scan_noarrow.svg',
+					createkey: iconBasePath + '/create-key.svg',
+					logo: iconBasePath + '/print_logo.svg',
+					watch: iconBasePath + '/watch.svg',
+					qr_arrow: iconBasePath + '/qr-arrow.svg'
 				}
 			};
 		};
@@ -411,8 +413,8 @@ sntZestStation.controller('zsRootCtrl', [
 		 * get paths for theme based Icon files
 		 **/
 		$scope.$on('updateIconPath', function(evt, theme) {
-            var commonIconsPath = '/assets/zest_station/css/icons/default';
-                        
+			var commonIconsPath = '/assets/zest_station/css/icons/default';
+
 			if (theme === 'yotel') {
 				$scope.$emit('DONT_USE_NAV_ICONS');
 				$scope.theme = theme;
@@ -420,7 +422,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, false);
 			} else if (theme === 'fontainebleau') {
 				//nothing else
-			}  else if (theme === 'conscious') {
+			} else if (theme === 'conscious') {
 				$scope.theme = theme;
 				$scope.iconsPath = '/assets/zest_station/css/icons/conscious';
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
@@ -888,19 +890,21 @@ sntZestStation.controller('zsRootCtrl', [
 			console.log('-');
 			console.log('-:-');
 			//zest-station general settings
-			console.log(' -:- Station Settings -:- ');
+			console.log(' -:- Station Settings -:- ', setting);
 			console.log('');
-			console.log('  - Payment Gateway     :  ', setting);
-			console.log('  - Key Writer          :  ', setting.keyWriter);
-			console.log('  - CC Reader           :  ', setting.ccReader);
-			logSetting('  - Idle Timer          :  ', setting.idle_timer.enabled);
+			logSetting('  - Hourly Hotel Mode  :  ', $scope.zestStationData.isHourlyRateOn);
+			
+			console.log('  - Payment Gateway    :  ', setting.paymentGateway);
+			console.log('  - Key Writer         :  ', setting.keyWriter);
+			console.log('  - CC Reader          :  ', setting.ccReader);
+			logSetting('  - Idle Timer         :  ', setting.idle_timer.enabled);
 			console.log('    -> Prompt  : ', (setting.idle_timer.prompt), 'sec ');
 			console.log('    -> Home    : ', (setting.idle_timer.max), 'sec ');
 			console.log('');
-			console.log('  - Chrome App ID       :  ', setting.chrome_app_id);
-			console.log('  - Bussiness Date      :  ', setting.bussinessDate);
-			console.log('  - Check-in Time       :  ', setting.check_in_time.hour + ':' + setting.check_in_time.minute + ' - ' + setting.check_in_time.primetime);
-			console.log('  - Check-out Time      :  ', setting.check_out_time.hour + ':' + setting.check_out_time.minute + ' - ' + setting.check_out_time.primetime);
+			console.log('  - Chrome App ID      :  ', setting.chrome_app_id);
+			console.log('  - Bussiness Date     :  ', setting.bussinessDate);
+			console.log('  - Check-in Time      :  ', setting.check_in_time.hour + ':' + setting.check_in_time.minute + ' - ' + setting.check_in_time.primetime);
+			console.log('  - Check-out Time     :  ', setting.check_out_time.hour + ':' + setting.check_out_time.minute + ' - ' + setting.check_out_time.primetime);
 			//check-in
 			console.log('');
 			console.log('  - Check-In Settings - ');
@@ -939,7 +943,7 @@ sntZestStation.controller('zsRootCtrl', [
 			console.log('');
 			logSetting('  - Datalogic           :  ', setting.qr_scanner_datalogic);
 			logSetting('  - Samsotech           :  ', setting.qr_scanner_samsotech);
-			console.log('  - Arrow Direction     :  ', setting.qr_scanner_arrow_direction);
+			console.log('  - Arrow Direction    :  ', setting.qr_scanner_arrow_direction);
 			console.log('');
 			console.log(' -:-- - - - - - - - --:- ');
 			console.log('-:-');
@@ -965,14 +969,14 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 		};
 
-		var optimizeTouchEventsForChromeApp = function(){
-			var optimizeTouch = function(e){
+		var optimizeTouchEventsForChromeApp = function() {
+			var optimizeTouch = function(e) {
 
-				if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SPAN' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'DIV'){
+				if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SPAN' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'DIV') {
 					console.log('hide keyboard if up');
 					$scope.hideKeyboardIfUp();
-				} else if (e.target.tagName == 'BUTTON' || e.target.tagName === 'DIV' || e.target.tagName === 'BTN'){
-					if (e.target.className.indexOf('keyboard') != -1){
+				} else if (e.target.tagName == 'BUTTON' || e.target.tagName === 'DIV' || e.target.tagName === 'BTN') {
+					if (e.target.className.indexOf('keyboard') != -1) {
 						console.warn('button or div with keyboard el');
 					} else {
 						console.log('hide keyboard if up');
@@ -982,10 +986,10 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 
 			var el = window.document;
-			  el.addEventListener("touchstart", optimizeTouch, false);
-			  el.addEventListener("touchend", optimizeTouch, false);
-			  el.addEventListener("touchcancel", optimizeTouch, false);
-			  el.addEventListener("touchmove", optimizeTouch, false);
+			el.addEventListener("touchstart", optimizeTouch, false);
+			el.addEventListener("touchend", optimizeTouch, false);
+			el.addEventListener("touchcancel", optimizeTouch, false);
+			el.addEventListener("touchmove", optimizeTouch, false);
 		}
 
 
@@ -1013,8 +1017,8 @@ sntZestStation.controller('zsRootCtrl', [
 			getAdminWorkStations();
 			$scope.zestStationData.bussinessDate = hotelTimeData.business_date;
 			zestSntApp.setBrowser();
-			if ($scope.inChromeApp){
-				optimizeTouchEventsForChromeApp();	
+			if ($scope.inChromeApp) {
+				optimizeTouchEventsForChromeApp();
 			}
 			//initCardReadTest(); //debugging, comment out when done
 			

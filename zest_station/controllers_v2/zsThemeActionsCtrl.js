@@ -43,8 +43,10 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 * the less files are named in lower case
 		 **/
 		var getThemeName = function(theme) {
-			if (theme === 'Zoku' || theme === 'Fontainebleau' || theme === 'Yotel' || theme === 'Conscious') {
+			if (theme === 'Zoku' || theme === 'Fontainebleau' || theme === 'Yotel') {
 				return theme.toLowerCase();
+			} else if (theme.indexOf('Conscious') !== -1) { //naming is odd on this template Consciousvondelpark instead of Conscious Vondelpark...which may change
+				return 'conscious';
 			} else {
 				//default to snt theme for now
 				return 'snt';
