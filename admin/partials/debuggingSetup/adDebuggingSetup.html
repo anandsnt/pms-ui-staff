@@ -1,4 +1,4 @@
-<section class="content current admin-scrollfix">
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate>
     <div data-view="ReportsListView">
         <header class="content-title float">
             <h2 translate> DEBUGGING_SETUP_TITLE </h2>
@@ -59,14 +59,14 @@
                                                 <span class="switch-icon"></span>
                                             </div>
                                         </div>
+
+                                        <ad-textbox value="device.device_uid"   label = "{{'DEBUG_APP_LABEL' | translate}}"  styleclass="full-width" disabled = "true"></ad-textbox>
                                         
                                         <ad-textbox value="device.application"   label = "{{'DEBUG_APP_LABEL' | translate}}"  styleclass="full-width" disabled = "true"></ad-textbox>
 
                                         <ad-textbox value="device.last_logged_in_user"   label = "{{'DEBUG_DEVICE_USER_LABEL' | translate}}"  styleclass="full-width" disabled = "true"></ad-textbox>
 
-                                        <ad-textbox value="device.device_name"   label = "{{'DEBUG_DEVICE_NAME_LABEL' | translate}}"  styleclass="full-width" disabled = "true"></ad-textbox>
-
-                                        <ad-textbox value="device.device_type"   label = "{{'DEBUG_DEVICE_TYPE_LABEL' | translate}}"   disabled = "true" styleclass="full-width"></ad-textbox>             
+                                        <ad-textbox value="device.device_name"   label = "{{'DEBUG_DEVICE_NAME_LABEL' | translate}}"  styleclass="full-width" disabled = "true"></ad-textbox>           
                                         
                                     </fieldset>
 
@@ -75,6 +75,8 @@
 
                                         <ad-textbox ng-show="device.logging_start_time != ''" value="getDisplayTime(device.logging_start_time)"   label = "{{'START_LABEL' | translate}}"  disabled = "true" styleclass="full-width"></ad-textbox>
                                         <ad-textbox ng-show="device.logging_end_time != ''" value="getDisplayTime(device.logging_end_time)"   label = "{{'END_LABEL' | translate}}"  disabled = "true" styleclass="full-width"></ad-textbox>
+
+                                        <ad-textbox value="device.device_type"   label = "{{'DEBUG_DEVICE_TYPE_LABEL' | translate}}"   disabled = "true" styleclass="full-width"></ad-textbox>  
                                         
                                         <ad-textbox value="device.device_version"   label = "{{'DEBUG_DEVICE_VERSION_LABEL' | translate}}"  disabled = "true" styleclass="full-width"></ad-textbox>
 
