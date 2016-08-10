@@ -1,9 +1,9 @@
 <!-- Checkin screen -->
 <form id="signature-pad" class="complete-registration form" ng-if="clickedButton == 'checkinButton' && $index === 0">
-	<h2  ng-show="reservationBillData.required_signature_at === 'CHECKIN' && reservationBillData.signature_details.is_signed === 'false'" translate>PLEASE_SIGN_BELOW</h2>
-	<div class="sig sigWrapper" ng-show="reservationBillData.required_signature_at === 'CHECKIN'  && reservationBillData.signature_details.is_signed === 'false'">
+	<h2  ng-show="reservationBillData.required_signature_at === 'CHECKIN' && reservationBillData.signature_details.is_signed === 'false' && !reservation.reservation_card.is_pre_checkin" translate>PLEASE_SIGN_BELOW</h2>
+	<div class="sig sigWrapper" ng-show="reservationBillData.required_signature_at === 'CHECKIN'  && reservationBillData.signature_details.is_signed === 'false' && !reservation.reservation_card.is_pre_checkin">
 		<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
-			
+
 		</div>
 	</div>
 	<div class="entry">
@@ -18,48 +18,48 @@
 	</div>
 	<div class="actions">
 		<!-- Complete checkin button disabled out until ready / vacant room is assigned -->
-                
+
 		<!-- Advance put in Queue flow now exists, from admin -> rooms -> housekeeping -> ENABLE ADVANCED QUEUE PRE-CHECKIN -->
 		<!--  if using the advanced queue flow, only via 'Put in Queue' will the button text change, all other functionality is the same: CICO-19673-->
 		<button ng-show="!putInQueue"
-                    id="checkin-button" click-touch="clickedCompleteCheckin()" 
-                        data-room-status="READY" 
-                        data-reseravation-status="CHECKING_IN" 
-                        data-required-signature="CHECKIN" 
-                        data-key-settings="encode" 
-                        data-fo-status="VACANT" 
+                    id="checkin-button" click-touch="clickedCompleteCheckin()"
+                        data-room-status="READY"
+                        data-reseravation-status="CHECKING_IN"
+                        data-required-signature="CHECKIN"
+                        data-key-settings="encode"
+                        data-fo-status="VACANT"
                         class="button green" translate>
 			COMPLETE_CHECKIN
 		</button>
 		<button ng-show="putInQueue"
-                    id="checkin-button" click-touch="clickedCompleteAddToQueue()" 
-                        data-room-status="READY" 
-                        data-reseravation-status="CHECKING_IN" 
-                        data-required-signature="CHECKIN" 
-                        data-key-settings="encode" 
-                        data-fo-status="VACANT" 
+                    id="checkin-button" click-touch="clickedCompleteAddToQueue()"
+                        data-room-status="READY"
+                        data-reseravation-status="CHECKING_IN"
+                        data-required-signature="CHECKIN"
+                        data-key-settings="encode"
+                        data-fo-status="VACANT"
                         class="button green" translate>
 			COMPLETE_ADD_TO_QUEUE
 		</button>
-                
-                
-                
+
+
+
 		<div class="clearButton" ng-show="reservationBillData.required_signature_at === 'CHECKIN'">
-			<a id="clear-signature" class="button blank" click-touch='clickedClearSignature()' ng-hide="isSigned()" translate>CLEAR_SIGNATURE</a>
+			<a id="clear-signature" class="button blank" click-touch='clickedClearSignature()' ng-hide="isSigned() || reservation.reservation_card.is_pre_checkin" translate>CLEAR_SIGNATURE</a>
 		</div>
 	</div>
 </form>
 
 <!-- Checkout screen -->
 <form id="signature-pad" class="complete-registration form" ng-if="(clickedButton == 'checkoutButton') && (reservationBillData.reservation_status === 'CHECKING_OUT' || reservationBillData.reservation_status === 'CHECKEDIN')">
-	
+
 	<div>
-		
+
 		<div ng-if="reservationBillData.required_signature_at === 'CHECKOUT' && (($index+1) === reservationBillData.bills.length)">
 			<h2 translate>PLEASE_SIGN_BELOW</h2>
 			<div class="sig sigWrapper">
 				<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
-					
+
 				</div>
 			</div>
 		</div>
@@ -72,7 +72,7 @@
             </label>
         </div>
 
-		<!-- 
+		<!--
 			CICO-9597 : While required_signature_at is not 'CHECKOUT',
 						#terms-and-conditions field is making hidden and
 		    			acceptCharges always chekcked or saveData.acceptCharges = true.
@@ -84,7 +84,7 @@
 				<input type="checkbox" ng-model="saveData.acceptCharges">
 				{{ 'ACCEPT_CHARGE_TEXT' | translate }} </label>
 		</div>
-		
+
 		<div class="actions" ng-show="($index+1) != reservationBillData.bills.length">
 			<button type="submit" ng-click="clickedReviewButton($index)" class="button" ng-class="{'grey':(reviewStatusArray[$index].reviewStatus),'red':(!reviewStatusArray[$index].reviewStatus)}" ng-disabled="reviewStatusArray[$index].reviewStatus">
 				{{ 'REVIEW_BILL' | translate }}
@@ -92,7 +92,7 @@
 				{{ 'AND_CONTINUE' | translate }}
 			</button>
 		</div>
-		
+
 		<div class="actions" ng-show="($index+1) === reservationBillData.bills.length">
 			<button type="submit" click-touch="clickedCompleteCheckout()" id="complete-checkout-button" data-reseravation-status="CHECKEDIN" data-required-signature="CHECKIN" class="button red">
 				{{ 'REVIEW_BILL' | translate }}
@@ -105,7 +105,7 @@
 		</div>
 
 	</div>
-	
+
 </form>
 <form id="signature-pad" class="complete-registration form" ng-show="clickedButton == 'reverseCheckoutButton' && $index === 0">
 	<div class="actions">

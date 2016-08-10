@@ -771,21 +771,21 @@
     }
 
     &.cols-2 {
-        .report-col.main-col { .calc-width(100, 260); }
+        .report-col.main-col { .calc-width(100, 270); }
         .cols-wrapper { padding-right: 20px; }
-        > .wrapper { width: 100%; }
+        > .wrapper { min-width: 790px; }
     }
-
+    
     &.cols-3 {
-        .report-col.main-col { .calc-width(100, 530); }
+        .report-col.main-col { .calc-width(100, 540); }
         .cols-wrapper { padding-right: 20px; }
-        > .wrapper { min-width: 1080px; }
+        > .wrapper { min-width: 1060px; }
     }
 
     &.cols-4 {
-        .report-col.main-col { .calc-width(100, 800); }
+        .report-col.main-col { .calc-width(100, 790); }
         .cols-wrapper { padding-right: 20px; }
-        > .wrapper { min-width: 1350px; }
+        > .wrapper { min-width: 1330px; }
     }
 }
 
@@ -1199,6 +1199,7 @@
             .purple { color: @purpleStart; }
             .blue { color: @blue; }
             .unassigned { color: @grey3; }
+            .unassigned { color: @grey3; }
 
             strong { font-weight: 600; }
 
@@ -1547,21 +1548,48 @@
                             color: @grey3;
                             font-weight: 400;
 
-                            span { .show;}
+                            span { 
+                                .show(); 
 
-                            &.notes {
-                                display: table-cell;
-
-                                strong { 
-                                    color: @grey4;
+                                &.red,
+                                &.orange,
+                                &.green {
                                     text-transform: uppercase;
-                                    font-weight: 600;
-                                    .show;
-
-                                    &.red { color: @red; }
                                 }
+                            }
 
-                                p { line-height: 1em; }
+                            strong { 
+                                color: @grey4;
+                                text-transform: uppercase;
+                                font-weight: 600;
+                                margin-bottom: 10px;
+                                .show();
+
+                                &.red { color: @red; }
+                            }
+
+                            p { 
+                                line-height: 1;
+                            }
+
+                            &.notes,
+                            &.actions {
+                                display: table-cell;
+                            }
+
+                            &.actions {
+                                p {
+                                    position: relative;
+                                    padding-left: 26px;
+
+                                    .icons {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                    }
+
+                                    
+                                }
                             }
 
                             &:first-child { padding-left: 0; }

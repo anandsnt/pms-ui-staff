@@ -53,6 +53,7 @@ sntRover.controller('RVroomAssignmentController',[
 	$scope.roomAssgnment = {};
 	$scope.roomAssgnment.inProgress = false;
 	$scope.roomTransfer = {};
+	$scope.isRoomLockedForThisReservation = $stateParams.cannot_move_room;
 	/**
 	* function to to get the rooms based on the selected room type
 	*/
@@ -162,34 +163,42 @@ sntRover.controller('RVroomAssignmentController',[
 
 
 	$scope.checkRoomTypeAvailability = function(roomObject){
-		var availabilityCount = _.findWhere($scope.roomTypes, {"id": roomObject.room_type_id}).availability;
-		var currentRoomType = $scope.getCurrentRoomType();
-		var isAvailablityExist = (availabilityCount > 0) ? true : false;
-		var isOverBookPermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
-		$scope.currentRoomObject = roomObject;
-		if (currentRoomType.type == oldRoomType) {
-   			$scope.showMaximumOccupancyDialog(roomObject);
+		if($scope.isRoomLockedForThisReservation === "true"){
+			ngDialog.open({
+                template: '/assets/partials/roomAssignment/rvRoomLocked.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
 		} else {
-		    if (!isAvailablityExist) {
-		        if (isOverBookPermission) {
-		            ngDialog.open({
-		                template: '/assets/partials/roomAssignment/rvOverBookRoom.html',
-		                controller: 'RVOverBookRoomDialogController',
-		                className: 'ngdialog-theme-default',
-		                scope: $scope
-		            });
+			var availabilityCount = _.findWhere($scope.roomTypes, {"id": roomObject.room_type_id}).availability;
+			var currentRoomType = $scope.getCurrentRoomType();
+			var isAvailablityExist = (availabilityCount > 0) ? true : false;
+			var isOverBookPermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+			$scope.currentRoomObject = roomObject;
+			if (currentRoomType.type == oldRoomType) {
+	   			$scope.showMaximumOccupancyDialog(roomObject);
+			} else {
+			    if (!isAvailablityExist) {
+			        if (isOverBookPermission) {
+			            ngDialog.open({
+			                template: '/assets/partials/roomAssignment/rvOverBookRoom.html',
+			                controller: 'RVOverBookRoomDialogController',
+			                className: 'ngdialog-theme-default',
+			                scope: $scope
+			            });
 
-		        } else {
-		            ngDialog.open({
-		                template: '/assets/partials/roomAssignment/rvRoomTypeNotAvailable.html',
-		                className: 'ngdialog-theme-default',
-		                scope: $scope
-		            });
-		        }
-		    } else {
-		        $scope.showMaximumOccupancyDialog(roomObject);
-		    }
+			        } else {
+			            ngDialog.open({
+			                template: '/assets/partials/roomAssignment/rvRoomTypeNotAvailable.html',
+			                className: 'ngdialog-theme-default',
+			                scope: $scope
+			            });
+			        }
+			    } else {
+			        $scope.showMaximumOccupancyDialog(roomObject);
+			    }
 
+			}
 		}
 		////showMaximumOccupancyDialog()
 	};

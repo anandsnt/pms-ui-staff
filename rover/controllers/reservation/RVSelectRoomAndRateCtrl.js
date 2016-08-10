@@ -92,7 +92,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.reservationData.group.id ||
 					$stateParams.allotment_id ||
 					$scope.reservationData.allotment.id ||
-					$stateParams.promotion_code ||
+					$stateParams.promotion_id ||
 					$scope.reservationData.promotionId ||
 					$stateParams.is_member == "true"
 			},
@@ -656,7 +656,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					}
 				}
 
-				$scope.reservationData.ratesMeta = ratesMeta['rates'];
 
 				updateMetaInfoWithCustomRates();
 
@@ -682,7 +681,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 				if($stateParams.travel_agent_id || $stateParams.company_id
 					 || $stateParams.group_id || $stateParams.allotment_id
-					 || $stateParams.promotion_code || $stateParams.is_member == "true" || $stateParams.promotion_id){
+					 || $stateParams.is_member == "true" || $stateParams.promotion_id){
 					$scope.stateCheck.activeView = 'RECOMMENDED';
 				}
 
@@ -695,7 +694,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if ($scope.stateCheck.activeView === 'ROOM_TYPE') {
 					$scope.stateCheck.baseInfo.roomTypes = rates.results;
 					generateRoomTypeGrid();
-				} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
+				} else if ($scope.stateCheck.activeView === 'RATE' || ($scope.stateCheck.activeView === 'RECOMMENDED' && shouldRecommend())) {
 					$scope.stateCheck.baseInfo.rates = rates.results;
 					generateRatesGrid($scope.stateCheck.baseInfo.rates);
 				}
@@ -2070,7 +2069,30 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		   restrictionObject.restrictionIcon = getRestrictionIcon(restrictionKey);
 		});
 		$scope.legendRestrictionsArray = restrictionsArray;
-		initialize();
+
+		//Check whether the rates are available in ratemeta which is cached
+		var checkForRatesInCache = function() {
+			var isRateInCache = _.every(rates.results, function(rate) {
+									//For room type adr request, rate object contains rate_id and for rates its id
+									var rateId = rate.rate_id ? rate.rate_id : rate.id;
+									return ratesMeta.rates[rateId];
+								});
+			return isRateInCache;
+		};
+
+		$scope.reservationData.ratesMeta = ratesMeta['rates'];
+		var isRateInCache = checkForRatesInCache();
+		if(!isRateInCache) {
+				var params = {};
+				params.isForceRefresh = true;
+				RVReservationBaseSearchSrv.fetchRatesMeta(params).then(function(response) {
+					$scope.reservationData.ratesMeta = response.rates;
+					initialize();
+				});
+		} else {
+			initialize();
+		}
+
 
 	}
 ]);

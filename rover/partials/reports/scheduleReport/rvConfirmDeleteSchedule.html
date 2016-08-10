@@ -1,0 +1,14 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+  <div ng-cloak class="modal-content">
+	    <button id="modal-close" class="modal-close" ng-click="closeDialog()">
+	    	<span class="icons icon-close invert">
+	    </button>
+		<span class="h2 message">
+			<span class="red">Would you like to delete the schedule?</span>
+		</span>
+		<div class="actions">        	
+        	<button class="button red" ng-click="deleteSchedule()">Sure</button>
+        	<button class="button blank" ng-click="closeDialog()">Cancel</button>
+    	</div>
+   </div>
+</div>

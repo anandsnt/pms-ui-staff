@@ -174,7 +174,7 @@ angular.module('sntRover')
 
 
 
-		
+
 
 	//adjuested property date time (rounded to next 15min slot time)
 	$scope.adj_property_date_time 	= util.correctTime(propertyTime.hotel_time.date, propertyTime);
@@ -804,26 +804,33 @@ angular.module('sntRover')
 	    }.bind($scope.gridProps);
 
 	    $scope.unassignRoom = function() {
-			var params = {
-				id: this.currentResizeItem.reservation_id
-			};
 
-			var success = function() {
-				$scope.$emit('hideLoader');
-				$scope.gridProps.unassignedRoomList.reset();
-				successCallBackOfSaveReservation();
+	    	if(this.currentResizeItem.cannot_move_room){
+				$scope.message = ["Guest is set to 'Do Not Move' - Remove flag from Stay Card to move reservation"];
+				openMessageShowingPopup();
+	    	} else {
 
-				$scope.clearAvailability();
-				$scope.resetEdit();
-				$scope.renderGrid();
-			};
+				var params = {
+					id: this.currentResizeItem.reservation_id
+				};
 
-			var error = function(msg) {
-				$scope.$emit('hideLoader');
-				$scope.errorMessage = msg;
-			};
+				var success = function() {
+					$scope.$emit('hideLoader');
+					$scope.gridProps.unassignedRoomList.reset();
+					successCallBackOfSaveReservation();
 
-			$scope.invokeApi(rvDiarySrv.unassignRoom, params, success, error);
+					$scope.clearAvailability();
+					$scope.resetEdit();
+					$scope.renderGrid();
+				};
+
+				var error = function(msg) {
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = msg;
+				};
+
+				$scope.invokeApi(rvDiarySrv.unassignRoom, params, success, error);
+			}
 	    }.bind($scope.gridProps);
 
 	    var openMessageShowingPopup = function(){
@@ -987,8 +994,14 @@ angular.module('sntRover')
 
 		    $scope.onDragEnd = function(nextRoom, reservation) {
 		    	var availability;
+		    	var selectedReservationRoomType = _.findWhere($scope.room, {"id": reservation.room_id})
 
-		    	if($scope.gridProps.edit.active) {
+
+		    	if(reservation.cannot_move_room && (nextRoom.room_type_id !== selectedReservationRoomType.room_type_id)){
+					$scope.message = ["Guest is set to 'Do Not Move' - Remove flag from Stay Card to move reservation"];
+					openMessageShowingPopup();
+
+		    	} else if($scope.gridProps.edit.active) {
 			    	availability = determineAvailability(nextRoom[meta.room.row_children], reservation).shift();
 		    		if(prevRoom.id !== nextRoom.id){
 			    		util.reservationRoomTransfer($scope.gridProps.data, nextRoom, prevRoom, reservation);
@@ -1032,7 +1045,7 @@ angular.module('sntRover')
 					if(roomIndex !== -1) {
 						var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), oItem.reservation_id);
 						if(occupancyIndex !== -1){
-							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = util.copyReservation( this.currentResizeItem);
+							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = util.copyReservation(oItem);
 						}
 					}
 					this.currentResizeItemRow = util.copyRoom(oRowItem);
@@ -1057,7 +1070,7 @@ angular.module('sntRover')
 					if(roomIndex !== -1) {
 						var occupancyIndex 	= _.indexOf(_.pluck($scope.gridProps.data[roomIndex].occupancy, 'reservation_id'), props.currentResizeItem.reservation_id);
 						if(occupancyIndex !== -1){
-							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = this.currentResizeItem;
+							$scope.gridProps.data[roomIndex].occupancy[occupancyIndex] = oItem;
 						}
 					}
 					this.currentResizeItemRow = this.availability.drag.lastRoom;

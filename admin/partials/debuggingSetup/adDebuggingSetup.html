@@ -1,0 +1,106 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate>
+    <div data-view="ReportsListView">
+        <header class="content-title float">
+            <h2 translate> DEBUGGING_SETUP_TITLE </h2>
+            <div ng-show="selectedDevice == ''" class="entry table-search">
+                    <span class="search-text">Search</span>
+                    <span class="icons icon-search" name="submit" type="submit"></span>
+                    <input placeholder="Search by device name, type, application, versions etc.." autocomplete="off" type="text" ng-model="searchText" class="search-hotel">
+                </div>
+        </header>
+        <section class="content-scroll">
+            <div class="wrapper">
+
+
+
+                    <table id="brands" class="grid " ng-table="tableParams" template-pagination="">
+                    <thead>
+                        <tr>
+
+                            <th width="50%" ng-class="{
+                                'sortable': selectedDevice == '',
+                                'sort-asc': tableParams.isSortBy('application', 'asc'),
+                                'sort-desc': tableParams.isSortBy('application', 'desc')
+                              }"
+
+                                ng-click="sortByName()" rowspan="2">
+                                <div><i class="glyphicon glyphicon-user" ></i> <span >Name</span></div>
+                            </th>
+                            <th width="50%" ng-class="{
+                                'sortable': selectedDevice == '',
+                                'sort-asc': tableParams.isSortBy('device_type', 'asc'),
+                                'sort-desc': tableParams.isSortBy('device_type', 'desc')
+                              }"
+
+                                ng-click="sortByDevice()" rowspan="2">
+                                <div><i class="glyphicon glyphicon-user" ></i> <span >Device</span></div>
+                            </th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="device in $data | filter:filterDevices" >                        
+                            
+                            <td ng-click="selectDevice($event, device)" ng-hide="device.device_uid === selectedDevice.device_uid">
+                                {{device.device_name}}
+                            </td>
+                            <td ng-click="selectDevice($event, device)" ng-hide="device.device_uid === selectedDevice.device_uid" >
+                                {{device.device_type}} 
+                            </td>
+                            <td colspan="3" ng-show="device.device_uid === selectedDevice.device_uid">
+
+
+                                <div class="form">
+                                    <fieldset class="holder left">
+                                        <div class="entry full-width" >
+                                            <label for="enable_debugging" translate> DEBUGGING_SWITCH_LABEL </label>
+                                            <div class="switch-button single" ng-class="{ on : device.is_logging_enabled }" >
+                                                <input type="checkbox" ng-model="device.is_logging_enabled">
+                                                <span class="switch-icon"></span>
+                                            </div>
+                                        </div>
+
+                                        <ad-textbox value="device.device_uid"   label = "{{'DEBUG_APP_LABEL' | translate}}"  styleclass="full-width" disabled = "true"></ad-textbox>
+                                        
+                                        <ad-textbox value="device.application"   label = "{{'DEBUG_APP_LABEL' | translate}}"  styleclass="full-width" disabled = "true"></ad-textbox>
+
+                                        <ad-textbox value="device.last_logged_in_user"   label = "{{'DEBUG_DEVICE_USER_LABEL' | translate}}"  styleclass="full-width" disabled = "true"></ad-textbox>
+
+                                        <ad-textbox value="device.device_name"   label = "{{'DEBUG_DEVICE_NAME_LABEL' | translate}}"  styleclass="full-width" disabled = "true"></ad-textbox>           
+                                        
+                                    </fieldset>
+
+                                    <fieldset class="holder right">
+                                        <ad-dropdown label-in-drop-down="{{'DEBUG_DURATION_PLACEHOLDER' | translate}}" list="hours" selected-id='device.hours_log_enabled' div-class="full-width" selbox-class="placeholder" label="{{'DEBUG_DURATION_LABEL' | translate}}" on-change = "changeDuration"></ad-dropdown>
+
+                                        <ad-textbox ng-show="device.logging_start_time != ''" value="getDisplayTime(device.logging_start_time)"   label = "{{'START_LABEL' | translate}}"  disabled = "true" styleclass="full-width"></ad-textbox>
+                                        <ad-textbox ng-show="device.logging_end_time != ''" value="getDisplayTime(device.logging_end_time)"   label = "{{'END_LABEL' | translate}}"  disabled = "true" styleclass="full-width"></ad-textbox>
+
+                                        <ad-textbox value="device.device_type"   label = "{{'DEBUG_DEVICE_TYPE_LABEL' | translate}}"   disabled = "true" styleclass="full-width"></ad-textbox>  
+                                        
+                                        <ad-textbox value="device.device_version"   label = "{{'DEBUG_DEVICE_VERSION_LABEL' | translate}}"  disabled = "true" styleclass="full-width"></ad-textbox>
+
+                                        <ad-textbox value="device.app_version"   label = "{{'DEBUG_APP_VERSION_LABEL' | translate}}"  disabled = "true" styleclass="full-width"></ad-textbox>
+                                    </fieldset>
+
+                                    
+
+                                    <div class="actions float">
+                                        <button type="button" id="cancel" class="button blank add-data-inline" ng-click="selectDevice($event, device)" translate>
+                                            CANCEL
+                                        </button>
+                                        <button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="saveDebugSettings()" translate>
+                                            SAVE_CHANGES
+                                        </button>
+                                    </div>
+                                </div>
+                            
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </section>
+    </div>
+</section>
