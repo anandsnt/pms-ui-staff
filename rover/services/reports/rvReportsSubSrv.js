@@ -293,7 +293,6 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 		};
 		service.fetchSchedules = function() {
 			return callApi({
-				name   : 'schedulesList',
 				method : 'getJSON',
 				url    : 'admin/export_schedules.json',
 				resKey : 'results'
