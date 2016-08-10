@@ -293,7 +293,6 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 		};
 		service.fetchSchedules = function() {
 			return callApi({
-				name   : 'schedulesList',
 				method : 'getJSON',
 				url    : 'admin/export_schedules.json',
 				resKey : 'results'
@@ -312,6 +311,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				method : 'getJSON',
 				url    : 'api/campaigns/campaign_types',
 				resKey : 'campaign_types'
+			});
+		};
+
+		service.fetchSchedulableReports = function() {
+			return callApi({
+				name   : 'schedulableReports',
+				method : 'getJSON',
+				url    : 'admin/export_reports.json',
+				resKey : 'results'
 			});
 		};
 
