@@ -41,6 +41,10 @@
 				early_checkin_charge = response.early_checkin_charge;
 				checkin_time = response.checkin_time;
 				reservation_is_in_early_checkin_window = response.reservation_in_early_checkin_window;
+				$rootScope.earlyCheckinRestrictHour = response.early_checkin_restrict_hour;
+				$rootScope.earlyCheckinRestrictHourForDisplay = response.early_checkin_restrict_hour_for_display;
+				$rootScope.earlyCheckinRestrictMinute = response.early_checkin_restrict_minute;
+				$rootScope.earlyCheckinRestrictPrimetime = response.early_checkin_restrict_primetime;
 				// if user is not arriving today
 				if (!response.guest_arriving_today) {
 					$state.go('checkinArrival');
