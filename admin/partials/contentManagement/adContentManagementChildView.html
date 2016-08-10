@@ -6,7 +6,7 @@
                                 <em ng-if="content.is_system_defined" translate="" class="ng-scope">(system defined)</em>
                                 <span class="cms-type cms-content-type">{{content.component_type == 'PAGE'? 'ITEM_LABEL' : content.component_type | translate}}</span>
                                 <em class="cms-date">{{getFormattedTime(content.updated_at)}}</em>
-                                <div class="cms-activate" ng-show = "(content.component_type != 'HOME SCREEN' && !content.is_system_defined)">
+                                <div class="cms-activate" ng-show = "(content.component_type != 'HOME SCREEN')">
                                     <div class="switch-button" ng-class="{'on':content.status}">
                                         <input name="category" ng-change="saveAvailabilityStatus(content.id, content.status)" id="category" value="category" type="checkbox" ng-model="content.status" />
                                         <span class="switch-icon"></span>

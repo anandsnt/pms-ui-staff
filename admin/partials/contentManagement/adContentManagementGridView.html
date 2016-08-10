@@ -167,7 +167,7 @@
                         <td>{{gridItem.no_of_categories}}</td>
                         <td>{{gridItem.no_of_items}}</td>
                         <td >
-                            <div class="switch-button " ng-show="!gridItem.is_system_defined" ng-class="{'on':gridItem.status}">
+                            <div class="switch-button " ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
