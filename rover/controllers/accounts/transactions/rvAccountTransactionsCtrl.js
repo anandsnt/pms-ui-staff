@@ -471,6 +471,42 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		/**
+		* function to check whether the user has permission
+		* to Split charges
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToSplitCharges = function() {
+			return rvPermissionSrv.getPermissionValue ('SPLIT_CHARGE');
+		};
+
+		/**
+		* function to check whether the user has permission
+		* to Edit charges
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToEditCharges = function() {
+			return rvPermissionSrv.getPermissionValue ('EDIT_CHARGE');
+		};
+
+		/**
+		* function to check whether the user has permission
+		* to Delete charges
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToDeleteCharges = function() {
+			return rvPermissionSrv.getPermissionValue ('DELETE_CHARGE');
+		};
+
+		/**
+		* function to check whether the user has permission
+		* to make payment
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToMakePayment = function() {
+			return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
+		};
+
+		/**
 		 * function to decide whether to show Edit charge button
 		 * @param {String} - Fees type value
 		 * @return {Boolean}
