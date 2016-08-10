@@ -445,7 +445,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 						mustSend    : mustSend
 					});
 
-					if ( $scope.selectedEntityDetails.report.description === 'Arriving Guests' ) {
+					if ( $scope.selectedEntityDetails.report.description === 'Arriving Guests' || $scope.selectedEntityDetails.report.description === 'Departing Guests' ) {
 						$scope.filters.hasGeneralOptions.options.noSelectAll = true;
 					}
 				}
@@ -580,6 +580,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				// sort schedule list by report name
 				$scope.$parent.$parent.schedulesList = _.sortBy(payload.schedulesList, function(item){ return item.report.title });
 
+				// add filtered out 
+				_.each($scope.$parent.$parent.schedulesList, function(item) {
+					item.filteredOut = false;
+				});
+
 				// structure the schedulable reports exactly like the
 				// schedules list, then we can re-use the support functions
 				var found;
@@ -679,6 +684,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         	$scope.addingStage = 'SCHEDULE_PARAMETERS';
 
         	$scope.selectedSchedule.active = false;
+
+        	$scope.switchReportView($scope.reportViews[2]);
         	$scope.setViewCol( $scope.viewCols[0] );
         }
 
@@ -700,6 +707,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         	$scope.addingStage = '';
 
         	$scope.selectedReport.active = false;
+
+        	$scope.switchReportView(reportViews[2]);
         	$scope.setViewCol( $scope.viewCols[0] );
 
         	$scope.closeDialog();

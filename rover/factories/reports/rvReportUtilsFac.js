@@ -1,3 +1,4 @@
+
 angular.module('reportsModule')
 .factory('RVReportUtilsFac', [
     '$rootScope',
@@ -258,7 +259,7 @@ angular.module('reportsModule')
             });
 
             // if filter value is either of these, selectAll should be false
-            if ( report['title'] == reportNames['ARRIVAL'] ) {
+            if ( report['title'] == reportNames['ARRIVAL'] || report['title'] == reportNames['DEPARTURE'] ) {
                 report.hasGeneralOptions.options.noSelectAll = true;
             };
         };
