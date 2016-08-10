@@ -379,6 +379,7 @@ sntRover.factory('RVReportParserFac', [
                 customData = [],
                 guestData  = {},
                 noteData   = {},
+                actionData = {},
                 cancelData = {},
                 adjustData = [],
                 options    = options;
@@ -408,6 +409,11 @@ sntRover.factory('RVReportParserFac', [
 
             var checkNote = function(item) {
                 var check = !!options['checkNote'] && !!item['notes'] && !!item['notes'].length;
+                return check;
+            };
+
+            var checkAction = function(item) {
+                var check = !!options['checkAction'] && !!item['actions'] && !!item['actions'].length;
                 return check;
             };
 
@@ -488,6 +494,13 @@ sntRover.factory('RVReportParserFac', [
                         customData.push( noteData );
                     };
 
+                    if ( checkAction(makeCopy) ) {
+                        actionData = {
+                            isActionData : true,
+                            actions      : angular.copy( makeCopy['actions'] )
+                        };
+                        customData.push( actionData );
+                    };
 
                     if ( checkRateAdjust(makeCopy) ) {
                         adjustData = {

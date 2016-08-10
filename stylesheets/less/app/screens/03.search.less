@@ -309,26 +309,44 @@
                         h2 {
                             margin-bottom: 6px;
                             em { font-weight: 700; }
+                            .calc-max-width(100, 110);
+                            display: inline-block;
+                            vertical-align: middle;
+                        }
+
+                        .information {
+                            width: 100%;
                         }
 
                         .confirmation,
+                        .invoice,
                         .arrival,
                         .departure,
                         .icon-time {
                             font-size: 14px;
                             line-height: 20px;
-                            .show;
-                            .pull-left;
+                            .nowrap();
+                            .show; 
 
                             &:not(:last-child) {
                                 margin-right: 10px;
                             }
                         }
 
-                        .confirmation {
+
+                        .invoice,
+                        .arrival,
+                        .departure,
+                        .icon-time {      
+                            .pull-left;
+                        }
+
+                        .confirmation,
+                        .invoice {
                             font-weight: 400;
                             text-transform: uppercase;
                             color: @grey3;
+                            width: 100px;
                             .nowrap();
 
                             .value {
@@ -337,6 +355,13 @@
                                 font-weight: 600;
                                 margin-left: 5px;
                             }
+                        }
+
+                        .confirmation {
+                            display:inline-block;
+                            vertical-align: middle;
+                            margin-left: 10px;
+                            margin-right: 0px;
                         }
 
                         .arrival,

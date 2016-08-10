@@ -167,7 +167,8 @@ angular.module('reportsModule')
             'INCLUDE_TAX_RATE': true,
             'INCLUDE_ADDON_RATE': true,
             'INCLUDE_ADDONS': true,
-            'INCLUDE_ADDON_REVENUE' :true
+            'INCLUDE_ADDON_REVENUE' :true,
+            'INCLUDE_ACTIONS'    : true
         };
 
         var __excludeFilterNames = {

@@ -637,4 +637,12 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 
 	//CICO-12488
 	$scope.changePaymentType();
+
+    /**
+    * Set this value as true always as we have not implemented permission
+    * based SR view rate functionality in accounts
+    */
+    $scope.isBalanceAmountShown = function() {
+        return true;
+    }
 }]);

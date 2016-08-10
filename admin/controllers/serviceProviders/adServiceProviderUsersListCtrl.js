@@ -19,6 +19,7 @@ admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'
 				$scope.errorMessage = data.errors;
 			};
 			$scope.currentClickedElement = -1;
+			$scope.displyCount = 5;
 			$scope.totalCount = data.total_count;
 			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
 			$scope.data = data.users;

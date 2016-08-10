@@ -23,7 +23,9 @@ admin.controller('ADServiceProviderUserDetailsCtrl',['$scope','$rootScope', '$q'
 			if(data.status === "failure"){
 				$scope.errorMessage = data.errors;
 			};
-			$scope.userDetails = Object.assign($scope.userDetails,data);	
+			$scope.userDetails = Object.assign($scope.userDetails,data);
+			$scope.userDetails.previewImage = $scope.userDetails.user_photo;
+			delete $scope.userDetails.user_photo;			
 			$scope.$emit('hideLoader');
 		};		
 		$scope.invokeApi(ADServiceProviderSrv.getServiceProviderUserDetails, param, successCallbackFetch);
@@ -64,16 +66,20 @@ admin.controller('ADServiceProviderUserDetailsCtrl',['$scope','$rootScope', '$q'
 		};
 	 	$scope.invokeApi(ADServiceProviderSrv.sendInvitation, data, successCallbackOfSendInvitation);
 	};
+	$scope.imageSelected = function(){
+		$scope.userDetails.previewImage = $scope.uploadedImage;
+		$scope.userDetails.user_photo = $scope.uploadedImage;
+	};
 	/**
     * To save user details
     */	
 	$scope.save = function(){
+		delete $scope.userDetails.previewImage;
 		var successCallbackFetch = function(data){			
 			if(data.status ==="failure"){
 				$scope.errorMessage = data.errors;
-			};
-			if(!!data.user_id){
-				$scope.userDetails.user_id = data.user_id;
+			}else{				
+				$state.go('admin.serviceproviderusers', {'id':$scope.userDetails.service_provider_id,'name':$scope.serviceProviderName});
 			};			
 			$scope.$emit('hideLoader');
 		};
