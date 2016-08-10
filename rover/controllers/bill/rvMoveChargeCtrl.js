@@ -22,7 +22,9 @@ sntRover.controller('RVMoveChargeCtrl',
          * return - An array of Bills except current acive bill
          */
 		var createBillOptions = function(){
-			_.each($scope.reservationBillData.bills, function(result,index){
+			//Bills are collected from reservationBillData or transactionsDetails		
+			var data = $scope.reservationBillData ||$scope.transactionsDetails;			
+			_.each(data.bills, function(result,index){
 				if(index !== $scope.currentActiveBill){
 					$scope.billOptions.push(result);
 				}
@@ -46,7 +48,7 @@ sntRover.controller('RVMoveChargeCtrl',
          */
         $scope.billSelected = function(){
         	if($scope.selectedBillId!==""){
-        		$scope.targetBillId = $scope.selectedBillId;
+        		$scope.targetBillId = parseInt($scope.selectedBillId);
         		$scope.targetBillSelected = true;
         	}else{
         		$scope.targetBillSelected = false;
