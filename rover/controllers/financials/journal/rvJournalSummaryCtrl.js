@@ -145,8 +145,6 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
      */
     $scope.toggleJournalSummaryItem = function( balance_type ) {
 
-        var toggleItem = getSummaryItemByBalanceType( balance_type );
-
         fetchBalanceDetails( balance_type, false );
     };
 
