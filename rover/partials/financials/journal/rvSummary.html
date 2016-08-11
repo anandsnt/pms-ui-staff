@@ -60,8 +60,8 @@
         </div>
 
         <div class="journal-summary">
-            <h3 ng-if="(data.summaryData.guest_debits !== 0 || data.summaryData.guest_debits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.guest_balance.active }" ng-click="toggleJournalSummaryItem('GUEST_BALANCE')" translate>GUEST_BAL</h3>
-            <h3 ng-if="(data.summaryData.guest_debits === 0 && data.summaryData.guest_debits === 0)" translate>GUEST_BAL</h3>
+            <h3 ng-if="(data.summaryData.guest_debits !== 0 || data.summaryData.guest_credits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.guest_balance.active }" ng-click="toggleJournalSummaryItem('GUEST_BALANCE')" translate>GUEST_BAL</h3>
+            <h3 ng-if="(data.summaryData.guest_debits === 0 && data.summaryData.guest_credits === 0)" translate>GUEST_BAL</h3>
             <ul>
                 <li><span>{{currencySymbol}}{{data.summaryData.guest_opening_balance | number: precisonTwo }}</span></li>
                 <li><span>{{currencySymbol}}{{data.summaryData.guest_debits | number: precisonTwo }}</span></li>
