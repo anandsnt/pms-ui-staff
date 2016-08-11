@@ -1,6 +1,7 @@
 var sntPay = angular.module('sntPay', [
     'pascalprecht.translate',
-    'oc.lazyLoad'
+    'oc.lazyLoad',
+    'sntPayTemplates'
 ]);
 
 sntPay.run(['$rootScope',  'PAYMENT_CONFIG', function($rootScope, PAYMENT_CONFIG) {
