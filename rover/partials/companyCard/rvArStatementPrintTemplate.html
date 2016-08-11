@@ -2,7 +2,7 @@
     <div class="invoice-logo envelope">
         <img ng-src="{{printData.hotel_logo}}" alt="" />
         <h1>{{printData.hotel_name}}</h1>
-        <span ng-bind-html="printData.hotel_address"></span>
+        <span ng-bind-html="printData.hotel_address" ng-if="printData.show_hotel_address"></span>
         <span class="type" translate>STATEMENT</span>
     </div>
 

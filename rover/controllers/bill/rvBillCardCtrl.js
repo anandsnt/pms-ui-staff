@@ -62,7 +62,7 @@ sntRover.controller('RVbillCardController',
 	$scope.saveData = {};
 	$scope.signatureData = "";
 	$scope.saveData.promotions = !!reservationBillData.is_promotions_and_email_set ? true : false;
-	$scope.saveData.termsAndConditions = false;
+	$scope.saveData.termsAndConditions = $scope.reservation.reservation_card.is_pre_checkin ? $scope.reservation.reservation_card.is_pre_checkin : false;
 	$scope.reviewStatusArray = [];
 	$scope.isAllBillsReviewed = false;
 	$scope.saveData.isEarlyDepartureFlag = false;
@@ -433,7 +433,7 @@ sntRover.controller('RVbillCardController',
 	    if($scope.clickedButton === "checkinButton" && !isAlreadyShownPleaseSwipeForCheckingIn){
 	     	isAlreadyShownPleaseSwipeForCheckingIn = true;
 	     	setTimeout(function(){
-	     		if($scope.reservationBillData.is_disabled_cc_swipe === "false" || $scope.reservationBillData.is_disabled_cc_swipe === "" || $scope.reservationBillData.is_disabled_cc_swipe === null){
+	     		if(($scope.reservationBillData.is_disabled_cc_swipe === "false" || $scope.reservationBillData.is_disabled_cc_swipe === "" || $scope.reservationBillData.is_disabled_cc_swipe === null) && !$scope.reservation.reservation_card.is_pre_checkin){
 	     			$scope.openPleaseSwipe();
 	     		}
 
@@ -1402,7 +1402,7 @@ sntRover.controller('RVbillCardController',
 
 	// CICO-17266 Considering Billing info details before Auth..
 	var showPreAuthPopupWithBillingInfo = function(data){
-		
+
 		$scope.clickedIncidentalsOnly = function(){
 			// @params : data , isCheckinWithoutAuth: false
 			data.is_cc_authorize_for_incidentals = true;
@@ -1542,7 +1542,7 @@ sntRover.controller('RVbillCardController',
 
 		var errorMsg = "", signatureData = $scope.getSignature();
 
-		if($scope.signatureNeeded(signatureData)){
+		if($scope.signatureNeeded(signatureData) && !$scope.reservation.reservation_card.is_pre_checkin){
 			errorMsg = "Signature is missing";
 			$scope.showErrorPopup(errorMsg);
 
@@ -2525,7 +2525,7 @@ sntRover.controller('RVbillCardController',
     * Checks whether the amount needs to show or not
     */
     $scope.isBalanceShown = function(is_rate_suppressed) {
-    	return (!is_rate_suppressed || $scope.isSRViewRateBtnClicked); 
+    	return (!is_rate_suppressed || $scope.isSRViewRateBtnClicked);
     };
 
 

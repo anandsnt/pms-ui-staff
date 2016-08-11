@@ -656,7 +656,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					}
 				}
 
-				$scope.reservationData.ratesMeta = ratesMeta['rates'];
 
 				updateMetaInfoWithCustomRates();
 
@@ -2070,7 +2069,30 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		   restrictionObject.restrictionIcon = getRestrictionIcon(restrictionKey);
 		});
 		$scope.legendRestrictionsArray = restrictionsArray;
-		initialize();
+
+		//Check whether the rates are available in ratemeta which is cached
+		var checkForRatesInCache = function() {
+			var isRateInCache = _.every(rates.results, function(rate) {
+									//For room type adr request, rate object contains rate_id and for rates its id
+									var rateId = rate.rate_id ? rate.rate_id : rate.id;
+									return ratesMeta.rates[rateId];
+								});
+			return isRateInCache;
+		};
+
+		$scope.reservationData.ratesMeta = ratesMeta['rates'];
+		var isRateInCache = checkForRatesInCache();
+		if(!isRateInCache) {
+				var params = {};
+				params.isForceRefresh = true;
+				RVReservationBaseSearchSrv.fetchRatesMeta(params).then(function(response) {
+					$scope.reservationData.ratesMeta = response.rates;
+					initialize();
+				});
+		} else {
+			initialize();
+		}
+
 
 	}
 ]);
