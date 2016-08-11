@@ -1060,6 +1060,23 @@
                     &.clean-not-inspected { color: @red; }
 
                     &.out { color: @grey3; }
+                    .icons {  
+                        display:inline-block;
+                        vertical-align: middle;
+                        margin-left: 10px;
+                    }
+
+                    .number {
+                        .nowrap();
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+
+                    &.is-suite {
+                        .number {
+                           .calc-max-width(100, 35); 
+                        }
+                    }
                 }
 
                 .room-type {
