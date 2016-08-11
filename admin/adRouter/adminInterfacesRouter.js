@@ -7,6 +7,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     resolve: {
       exactOnlineSetupValues: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
         return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
+      }],
+      journalsList : ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
+        return adExactOnlineSetupSrv.fetchJournalsList();
+      }],
+      balancingAccounts : ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
+        return adExactOnlineSetupSrv.fetchBalancingAccounts();
       }]
     }
   });

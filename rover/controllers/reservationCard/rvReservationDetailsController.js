@@ -262,6 +262,8 @@ sntRover.controller('reservationDetailsController',
 			RVSearchSrv.updateRoomDetails($scope.reservationData.reservation_card.confirmation_num, data);
 		};
 
+
+
 		// update any room related data to search service also
 		$scope.updateSearchCache();
 

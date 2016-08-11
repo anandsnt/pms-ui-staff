@@ -262,7 +262,7 @@ angular.module('stayCardModule', [])
             }
         });
         $stateProvider.state('rover.reservation.staycard.roomassignment', {
-            url: '/roomassignment/:reservation_id/:room_type/:clickedButton/:upgrade_available',
+            url: '/roomassignment/:reservation_id/:room_type/:clickedButton/:upgrade_available/:cannot_move_room',
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController',
             resolve: {
