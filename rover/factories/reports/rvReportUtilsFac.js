@@ -1,3 +1,4 @@
+
 angular.module('reportsModule')
 .factory('RVReportUtilsFac', [
     '$rootScope',
@@ -259,7 +260,7 @@ angular.module('reportsModule')
             });
 
             // if filter value is either of these, selectAll should be false
-            if ( report['title'] == reportNames['ARRIVAL'] ) {
+            if ( report['title'] == reportNames['ARRIVAL'] || report['title'] == reportNames['DEPARTURE'] ) {
                 report.hasGeneralOptions.options.noSelectAll = true;
             };
         };
@@ -1487,10 +1488,12 @@ angular.module('reportsModule')
 
         // to process the report sort by
         factory.processSortBy = function ( report ) {
+            // adding custom name copy for easy access
+            report['sortByOptions'] = angular.copy( report['sort_fields'] );
 
             // sort by options - include sort direction
-            if ( report['sort_fields'] && report['sort_fields'].length ) {
-                _.each(report['sort_fields'], function(item, index, list) {
+            if ( report['sortByOptions'] && report['sortByOptions'].length ) {
+                _.each(report['sortByOptions'], function(item, index, list) {
 
                     if ( !! item ) {
                         item['sortDir'] = undefined;
@@ -1500,7 +1503,7 @@ angular.module('reportsModule')
 
                 // making sort by room type default
                 if ( report['title'] === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
-                    var roomType = _.find(report['sort_fields'], { 'value': 'ROOM_TYPE' });
+                    var roomType = _.find(report['sortByOptions'], { 'value': 'ROOM_TYPE' });
                     if ( !! roomType ) {
                         roomType['sortDir'] = true;
                         report['chosenSortBy'] = roomType['value'];
@@ -1509,7 +1512,7 @@ angular.module('reportsModule')
 
                 // making sort by Revenue [desc] default
                 if ( report['title'] === reportNames['COMPANY_TA_TOP_PRODUCERS'] ) {
-                    var revenue = _.find(report['sort_fields'], { 'value': 'REVENUE' });
+                    var revenue = _.find(report['sortByOptions'], { 'value': 'REVENUE' });
                     if ( !! revenue ) {
                         revenue['sortDir'] = false;
                         report['chosenSortBy'] = revenue['value'];
@@ -1518,15 +1521,12 @@ angular.module('reportsModule')
 
                 // making sort by Room Number [asc] default
                 if ( report['title'] === reportNames['CREDIT_CHECK_REPORT'] ) {
-                    var roomNo = _.find(report['sort_fields'], { 'value': 'ROOM_NO' });
+                    var roomNo = _.find(report['sortByOptions'], { 'value': 'ROOM_NO' });
                     if ( !! roomNo ) {
                         roomNo['sortDir'] = true;
                         report['chosenSortBy'] = roomNo['value'];
                     };
                 };
-
-                // adding custom name ref for easy access
-                report['sortByOptions'] = report['sort_fields'];
             }
         };
 

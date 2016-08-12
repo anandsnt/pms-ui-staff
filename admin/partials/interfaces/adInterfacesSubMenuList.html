@@ -8,6 +8,8 @@
         </section>
     </div>
     <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <ul class="dashboard-items float">
             <li ng-repeat="submenu in subComponents">
                 <a data-type="load-listing" class="{{submenu.icon_class}}">

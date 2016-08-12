@@ -842,6 +842,45 @@ sntRover.controller('roverController',
         return $sce.trustAsHtml(string);
     };
 
+    /**
+     * Converts charactors to their html encoded value
+     * @param  {string} str input value
+     * @return {string}     encoded value
+     */
+    var toHTMLSpecials = function (str) {
+      if (typeof str === 'string' && !!str) {
+        str = str.replace(/&/g, '&amp;');
+        str = str.replace(/"/g, '&quot;');
+        str = str.replace(/'/g, '&#039;');
+        str = str.replace(/</g, '&lt;');
+        str = str.replace(/>/g, '&gt;');
+      }
+      return str;
+    }
+
+    /**
+     * Forms highlighted html content to use with ng-bind-html
+     * Handles case when there are special charactors
+     * @param  {string} text text to format
+     * @param  {string} queryString search query
+     * @return {Object} trusted HTML object
+     */
+    $rootScope.getHighlightedHTML = function(text, query) {
+      text = text || '';
+      query = query || '';
+
+      if (!query) {
+        return $rootScope.trustAsHtml(toHTMLSpecials(text));
+      }
+
+       // convert HTML syntax charactors to their encoded value ex: < to &lt;
+      text = text.split(query).map(toHTMLSpecials);
+      query = toHTMLSpecials(query);
+      text = text.join('<span class="highlight">'+ query +'</span>');
+      
+      return $rootScope.trustAsHtml(text);
+    };
+
 
     var MENU_SCROLLER = 'MENU_SCROLLER';
     var setupScrolls = function() {

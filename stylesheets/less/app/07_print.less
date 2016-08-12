@@ -22,6 +22,7 @@ body { overflow: visible; height:auto; }
 .logo-hide,
 .text-hide,
 .no-print,
+.numbers-pagination,
 .search-pagination,
 .reservation-tabs-nav,
 .reservation-list,
@@ -1352,6 +1353,10 @@ table {
                             }
                         }
 
+                        a {
+                            color: @textColor;
+                        }
+
                         .data {
                             margin: 0 2pt;
 
@@ -1473,17 +1478,38 @@ table {
                             padding-left: 0;
                             border-top: 1px solid @grey1;
 
-                            span { .show; }
+                            span { 
+                                .show(); 
+                            }
 
-                            &.notes {
-                                strong {
-                                    color: @grey4;
-                                    text-transform: uppercase;
-                                    font-weight: 600;
-                                    .show;
+                            strong { 
+                                color: @grey4;
+                                text-transform: uppercase;
+                                font-weight: 600;
+                                margin-bottom: 0;
+                                .show();
+                            }
+
+                            p { 
+                                line-height: 1;
+                            }
+
+                            &.actions {
+                                p {
+                                    position: relative;
+                                    padding-left: 15px;
+
+                                    .icons {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        .square(10px);
+
+                                        &.icon-unassigned { background-position: 0 -220px; }
+                                        &.icon-assigned { background-position: 0 -240px; }
+                                        &.icon-completed { background-position: 0 -260px; }
+                                    }                                    
                                 }
-
-                                p { line-height: 1em; }
                             }
                         }
                     }

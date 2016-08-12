@@ -1,6 +1,7 @@
 sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
+    $scope.perPage = 10;
 
     $scope.setScroller('summary_content',{});
     var refreshSummaryScroller = function () {
@@ -31,7 +32,6 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
 
         switch( balance_type ) {
             case 'DEPOSIT_BALANCE'  :
-
                 summaryItem = $scope.data.summaryData.deposit_balance;
                 break;
             case 'GUEST_BALANCE' :
@@ -110,26 +110,16 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
             summaryItem.transactions = [];
             summaryItem.transactions = responce.transactions;
             summaryItem.total_count  = responce.total_count;
-            summaryItem.end = summaryItem.start + summaryItem.transactions.length - 1;
 
             updateTotalForBalanceType( balance_type, responce.opening_balance, responce.debit_sum, responce.credit_sum, responce.closing_balance );
 
-            if(isFromPagination){
-                // Compute the start, end and total count parameters
-                if(summaryItem.nextAction){
-                    summaryItem.start = summaryItem.start + $scope.data.filterData.perPage;
-                }
-                if(summaryItem.prevAction){
-                    summaryItem.start = summaryItem.start - $scope.data.filterData.perPage;
-                }
-                summaryItem.end = summaryItem.start + summaryItem.transactions.length - 1;
-            }
-            else if(summaryItem.transactions.length > 0){
+            if(!isFromPagination && summaryItem.transactions.length > 0){
                 summaryItem.active = !summaryItem.active;
             }
 
             $scope.errorMessage = "";
             refreshSummaryScroller();
+            $scope.$broadcast('updatePagination', balance_type);
             $scope.$emit('hideLoader');
         };
 
@@ -138,7 +128,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
             var params = {
                 "date": $scope.data.summaryDate,
                 "page_no": summaryItem.page_no,
-                "per_page": $scope.data.filterData.perPage,
+                "per_page": $scope.perPage,
                 "type": balance_type
             };
             $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, params, successCallBackFetchBalanceDetails);
@@ -155,51 +145,37 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
      */
     $scope.toggleJournalSummaryItem = function( balance_type ) {
 
-        var toggleItem = getSummaryItemByBalanceType( balance_type );
-
         fetchBalanceDetails( balance_type, false );
     };
 
 	initSummaryData();
 
-    // Logic for pagination starts here ..
-    $scope.loadNextSet = function( balance_type ){
-        var item = getSummaryItemByBalanceType( balance_type );
-        item.page_no ++;
-        item.nextAction = true;
-        item.prevAction = false;
+    //To load API data for pagination
+    var loadAPIData = function( balance_type, pageNo ){
+        var item        = getSummaryItemByBalanceType( balance_type );
+        item.page_no    = pageNo;
         fetchBalanceDetails( balance_type, true );
     };
-
-    $scope.loadPrevSet = function( balance_type ){
-        var item = getSummaryItemByBalanceType( balance_type );
-        item.page_no --;
-        item.nextAction = false;
-        item.prevAction = true;
-        fetchBalanceDetails( balance_type, true );
+    
+    // Pagination options for GUEST_BALANCE
+    $scope.guestPagination = {
+        id      : 'GUEST_BALANCE',
+        api     : [ loadAPIData, 'GUEST_BALANCE' ],
+        perPage : $scope.perPage
     };
 
-    $scope.isNextButtonDisabled = function( balance_type ){
-
-        var item = getSummaryItemByBalanceType( balance_type ),
-            isDisabled = false;
-
-        if(!!item && item.end >= item.total_count){
-            isDisabled = true;
-        }
-        return isDisabled;
+    // Pagination options for DEPOSIT_BALANCE
+    $scope.depositPagination = {
+        id      : 'DEPOSIT_BALANCE',
+        api     : [ loadAPIData, 'DEPOSIT_BALANCE' ],
+        perPage : $scope.perPage
     };
 
-    $scope.isPrevButtonDisabled = function( balance_type ){
-
-        var item = getSummaryItemByBalanceType( balance_type ),
-            isDisabled = false;
-
-        if(!!item && item.page_no === 1){
-            isDisabled = true;
-        }
-        return isDisabled;
+    // Pagination options for AR_BALANCE
+    $scope.arPagination = {
+        id      : 'AR_BALANCE',
+        api     : [ loadAPIData, 'AR_BALANCE' ],
+        perPage : $scope.perPage
     };
-    // Pagination logic ends ...
 
 }]);
