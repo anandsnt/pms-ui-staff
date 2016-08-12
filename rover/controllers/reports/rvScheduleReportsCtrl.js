@@ -225,11 +225,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				$scope.setViewCol( $scope.viewCols[0] );
 
 
-				var updatedSchedule = _.find($scope.$parent.$parent.schedulesList, function(item) {
-					return params.id === item.id;
-				});
-				if ( !! updatedSchedule ) {
-					updatedSchedule.occurance = findOccurance(updatedSchedule);
+				var updatedIndex = _.findIndex($scope.$parent.$parent.schedulesList, { id: params.id });
+				if ( updatedIndex > -1 ) {
+					$scope.$parent.$parent.schedulesList[updatedIndex].occurance = findOccurance($scope.$parent.$parent.schedulesList[updatedIndex]);
 				}
 			};
 
@@ -242,13 +240,25 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 		};
 
 		$scope.checkCanCreate = function() {
-			if ( ! $scope.scheduleParams.time_period_id && ! $scope.emailList.length ) {
+			$scope.createErrors = [];
+
+			if ( !! $scope.scheduleParams.time_period_id && !! $scope.scheduleParams.frequency_id && $scope.emailList.length ) {
+				$scope.createSchedule();
+			} else {
+				if ( ! $scope.scheduleParams.time_period_id ) {
+					$scope.createErrors.push('Time period in parameters')
+				}
+				if ( ! $scope.scheduleParams.frequency_id ) {
+					$scope.createErrors.push('Repeat frequency in details')
+				}
+				if ( ! $scope.emailList.length ) {
+					$scope.createErrors.push('Emails in distribution list')
+				}
+
 				ngDialog.open({
 					template: '/assets/partials/reports/scheduleReport/rvCantCreateSchedule.html',
-					scope: $scope
+					scope: $scope,
 				});
-			} else {
-				$scope.createSchedule();
 			}
 		}
 
@@ -326,7 +336,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			};
 
 			var failed = function(errors) {
-				console.log(errors);
 				$scope.errorMessage = errors;
 				$scope.$emit( 'hideLoader' );
 			};
@@ -583,7 +592,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			if ( !! $scope.selectedEntityDetails.emails ) {
 				$scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
 			} else {
-				$scope.emailList = [];
+				$scope.emailList = [];	
 			}
 
 			$scope.timeSlots = reportUtils.createTimeSlots(30);
@@ -734,6 +743,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         		$scope.addingStage = STAGES.SHOW_DISTRIBUTION;
         		$scope.setViewCol( $scope.viewCols[3] );
         	}
+
+        	$scope.scrollToLast();
         }
 
 
