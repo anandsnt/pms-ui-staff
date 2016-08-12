@@ -275,7 +275,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
         var shouldShowDNMToggleButton = true,
             reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 
-        if( reservationStatus === 'NOSHOW' || reservationStatus === 'CHECKEDOUT' || reservationStatus === 'CANCELED' || $scope.reservationData.reservation_card.room_number === ""){
+        if(!$scope.isStandAlone || reservationStatus === 'NOSHOW' || reservationStatus === 'CHECKEDOUT' || reservationStatus === 'CANCELED' || $scope.reservationData.reservation_card.room_number === "" || !rvPermissionSrv.getPermissionValue('DO_NOT_MOVE_RESERVATION')){
             shouldShowDNMToggleButton = false;
         }
 
