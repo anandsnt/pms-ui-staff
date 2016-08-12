@@ -1,7 +1,7 @@
 sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
-    $scope.perPage = 50;
+    $scope.perPage = 10;
 
     $scope.setScroller('summary_content',{});
     var refreshSummaryScroller = function () {
