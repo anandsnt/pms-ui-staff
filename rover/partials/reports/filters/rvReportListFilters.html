@@ -184,7 +184,10 @@
             <span class="icons icon-clear-search">Clear query</span>
         </button>
         <input ng-show="uiChosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
-        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
+        
+        <input ng-show="uiChosenReport.hasSysDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
+
+        <input ng-show="!uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
     </div>
 </div>
 

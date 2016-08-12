@@ -309,7 +309,7 @@
                         h2 {
                             margin-bottom: 6px;
                             em { font-weight: 700; }
-                            .calc-max-width(100, 110);
+                            .calc-max-width(100, 160);
                             display: inline-block;
                             vertical-align: middle;
                         }
@@ -346,7 +346,7 @@
                             font-weight: 400;
                             text-transform: uppercase;
                             color: @grey3;
-                            width: 100px;
+                            width: 150px;
                             .nowrap();
 
                             .value {
@@ -361,7 +361,7 @@
                             display:inline-block;
                             vertical-align: middle;
                             margin-left: 10px;
-                            margin-right: 0px;
+                            margin-right: 0px; 
                         }
 
                         .arrival,
@@ -1059,6 +1059,23 @@
                     &.clean-not-inspected { color: @red; }
 
                     &.out { color: @grey3; }
+                    .icons {  
+                        display:inline-block;
+                        vertical-align: middle;
+                        margin-left: 10px;
+                    }
+
+                    .number {
+                        .nowrap();
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+
+                    &.is-suite {
+                        .number {
+                           .calc-max-width(100, 35); 
+                        }
+                    }
                 }
 
                 .room-type {
