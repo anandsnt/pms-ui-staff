@@ -1,5 +1,5 @@
 <div class="block-wrapper" ng-if="isStandAlone">
-    <a class="block-title toggle has-arrow" ng-click="toggleHKDetails()">Room Attendance</a>
+    <a class="block-title toggle has-arrow" ng-class="{'active': roomAttendance}" ng-click="toggleHKDetails()">Room Attendance</a>
 
     <div ng-class="{'hidden': houseKeeping.hideDetails}"> <!-- Toggle class hidden when L2 is clicked -->
 
