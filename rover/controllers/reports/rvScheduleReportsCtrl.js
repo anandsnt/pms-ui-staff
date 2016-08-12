@@ -15,24 +15,26 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
 		// helper function 
 		var findOccurance = function(item) {
-			var occurance = '',
+			var occurance = 'Runs ',
 				frequency = _.find($scope.scheduleFrequency, { id: item.frequency_id }).description;
 
-			occurance = frequency + '. Repeats every ';
-			if ( item.repeats_every > 1 ) {
-				occurance += item.repeats_every + ' ';
-			}
-			if ( 1 === item.frequency_id ) {
-				occurance += 'day';
-			}
-			if ( 2 === item.frequency_id ) {
-				occurance += 'hour';
-			}
-			if ( 3 === item.frequency_id ) {
-				occurance += 'week';
-			}
-			if ( 4 === item.frequency_id ) {
-				occurance += 'month';
+			if ( ! item.repeats_every ) {
+				occurance += frequency.toLowerCase();
+			} else {
+				occurance += 'after every ' + item.repeats_every + ' ';
+
+				if ( 1 === item.frequency_id ) {
+					occurance += (item.repeats_every === 1) ? 'day' : 'days';
+				}
+				if ( 2 === item.frequency_id ) {
+					occurance += (item.repeats_every === 1) ? 'hour' : 'hours';
+				}
+				if ( 3 === item.frequency_id ) {
+					occurance += (item.repeats_every === 1) ? 'week' : 'weeks';
+				}
+				if ( 4 === item.frequency_id ) {
+					occurance += (item.repeats_every === 1) ? 'month' : 'months';
+				}
 			}
 
 			return occurance;
@@ -95,6 +97,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				/**/
 				$scope.selectedReport.active = false;
 
+				$scope.addingStage = STAGES.SHOW_DISTRIBUTION;
 				$scope.setViewCol( $scope.viewCols[3] );
 
 				processScheduleDetails();
@@ -222,7 +225,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				$scope.setViewCol( $scope.viewCols[0] );
 
 
-				var updatedSchedule = _.find($scope.$parent.$parent.schedulesList, { id: $scope.selectedEntityDetails.id });
+				var updatedSchedule = _.find($scope.$parent.$parent.schedulesList, function(item) {
+					return params.id === item.id;
+				});
 				if ( !! updatedSchedule ) {
 					updatedSchedule.occurance = findOccurance(updatedSchedule);
 				}
@@ -315,12 +320,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 					$scope.selectedReport.active = false;
 				}
 				$scope.setViewCol( $scope.viewCols[0] );
-				$scope.addingStage = '';
+				$scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
 				fetch_reportSchedules_frequency_timePeriod_scheduableReports();
 			};
 
 			var failed = function(errors) {
+				console.log(errors);
 				$scope.errorMessage = errors;
 				$scope.$emit( 'hideLoader' );
 			};
@@ -343,7 +349,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 					$scope.selectedReport.active = false;
 				}
 				$scope.setViewCol( $scope.viewCols[0] );
-				$scope.addingStage = '';
+				$scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
 				fetch_reportSchedules_frequency_timePeriod_scheduableReports();
 			};
@@ -687,7 +693,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         $scope.scheduleReport = function() {
         	$scope.isAddingNew = true;
-        	$scope.addingStage = 'SCHEDULE_PARAMETERS';
+        	$scope.addingStage = STAGES.SHOW_PARAMETERS;
 
         	$scope.selectedSchedule.active = false;
 
@@ -710,7 +716,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         $scope.cancelScheduleReport = function() {
         	$scope.isAddingNew = false;
-        	$scope.addingStage = '';
+        	$scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
         	$scope.selectedReport.active = false;
 
@@ -720,19 +726,56 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         	$scope.closeDialog();
         }
 
-        $scope.goToNext = function(next) {
-        	if ( $scope.addingStage === 'SCHEDULE_PARAMETERS' ) {
-        		$scope.addingStage = 'SCHEDULE_DETAILS';
+        $scope.goToNext = function() {
+        	if ( $scope.addingStage === STAGES.SHOW_PARAMETERS ) {
+        		$scope.addingStage = STAGES.SHOW_DETAILS;
         		$scope.setViewCol( $scope.viewCols[2] );
-        	} else if ( $scope.addingStage === 'SCHEDULE_DETAILS' ) {
-        		$scope.addingStage = 'DISTRIBUTION_LIST';
+        	} else if ( $scope.addingStage === STAGES.SHOW_DETAILS ) {
+        		$scope.addingStage = STAGES.SHOW_DISTRIBUTION;
         		$scope.setViewCol( $scope.viewCols[3] );
         	}
         }
 
+
+
+
+        var STAGES = {
+        	SHOW_SCHEDULE_LIST  : 'SHOW_SCHEDULE_LIST',
+        	SHOW_PARAMETERS   : 'SHOW_PARAMETERS',
+        	SHOW_DETAILS      : 'SHOW_DETAILS',
+        	SHOW_DISTRIBUTION : 'SHOW_DISTRIBUTION'
+        }
+
+        $scope.shouldHideParametersCol = function() {
+        	if ( $scope.addingStage === STAGES.SHOW_SCHEDULE_LIST ) {
+        		return true;
+        	} else {
+        		return false;
+        	}
+        }
+
+        $scope.shouldHideDetailsCol = function() {
+        	if ( $scope.addingStage === STAGES.SHOW_SCHEDULE_LIST || $scope.addingStage === STAGES.SHOW_PARAMETERS ) {
+        		return true;
+        	} else {
+        		return false;
+        	}
+        }
+
+        $scope.shouldHideDistributionCol = function() {
+        	if ( $scope.addingStage === STAGES.SHOW_SCHEDULE_LIST || $scope.addingStage === STAGES.SHOW_PARAMETERS || $scope.addingStage === STAGES.SHOW_DETAILS ) {
+        		return true;
+        	} else {
+        		return false;
+        	}
+        }
+
+
+
+
 		var init = function() {
 			$scope.isAddingNew = false;
-			$scope.addingStage = '';
+			$scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
 
 			$scope.selectedSchedule = {};
 			$scope.selectedReport = {};
