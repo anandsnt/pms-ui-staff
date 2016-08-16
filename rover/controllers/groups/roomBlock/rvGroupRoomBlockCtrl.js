@@ -1264,23 +1264,26 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				$scope.errorMessage = ['Sorry, You dont have enough permission to proceed!!'];
 				return;
 			}
+			if(!$scope.groupConfigData.summary || !$scope.groupConfigData.summary.group_id) {
+				$scope.switchTabTo('SUMMARY');
+			} else {
+				var paramsForRoomBlockDetails = {
+					group_id: $scope.groupConfigData.summary.group_id
+				};
 
-			var paramsForRoomBlockDetails = {
-				group_id: $scope.groupConfigData.summary.group_id
-			};
+	            var promises = [];
+	            //we are not using our normal API calling since we have multiple API calls needed
+	            $scope.$emit('showLoader');
 
-            var promises = [];
-            //we are not using our normal API calling since we have multiple API calls needed
-            $scope.$emit('showLoader');
+	            promises.push(rvGroupConfigurationSrv
+	                .getRoomBlockGridDetails(paramsForRoomBlockDetails)
+	                .then(successCallBackOfFetchRoomBlockGridDetails)
+	            );
 
-            promises.push(rvGroupConfigurationSrv
-                .getRoomBlockGridDetails(paramsForRoomBlockDetails)
-                .then(successCallBackOfFetchRoomBlockGridDetails)
-            );
-
-            //Lets start the processing
-            $q.all(promises)
-                .then(successFetchOfAllReqdForRoomBlock, failedToFetchOfAllReqdForRoomBlock);
+	            //Lets start the processing
+	            $q.all(promises)
+	                .then(successFetchOfAllReqdForRoomBlock, failedToFetchOfAllReqdForRoomBlock);
+			}
         };
 
 		/**

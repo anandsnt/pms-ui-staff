@@ -32,12 +32,12 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
       if($scope.searchText == '')
         return true;
       var searchRegExp = new RegExp($scope.searchText.toLowerCase());
-      if(value.device_name != undefined && value.device_name != null)
-        return searchRegExp.test(value.device_name.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase()) || searchRegExp.test(value.device_version.toLowerCase());
-      else if(value.device_version != undefined && value.device_version != null)
-        return searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase()) || searchRegExp.test(value.device_version.toLowerCase());
+      if(value.device_name != undefined && value.device_name != null && value.device_name != "")
+        return searchRegExp.test(value.device_uid.toLowerCase()) || searchRegExp.test(value.device_name.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase()) || searchRegExp.test(value.device_version.toLowerCase());
+      else if(value.device_version != undefined && value.device_version != null && value.device_version != "")
+        return searchRegExp.test(value.device_uid.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase()) || searchRegExp.test(value.device_version.toLowerCase());
       else
-        return searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase());
+        return searchRegExp.test(value.device_uid.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase());
    };
 
   $scope.fetchDeviceDebugSetup = function(){

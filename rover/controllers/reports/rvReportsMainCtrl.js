@@ -42,6 +42,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.codeSettings   = payload.codeSettings;
 		$scope.activeUserList = payload.activeUserList;
 		$scope.schedulesList = [];
+		$scope.schedulableReports = [];
 
 		$scope.showReportDetails = false;
 
@@ -59,12 +60,22 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			});
 		})();
 		/**/
-		var refreshScroll = function() {
+		var refreshScroll = function( noReset ) {
 			$scope.refreshScroller(FULL_REPORT_SCROLL);
-			if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
+
+			if ( !! noReset ) {
+				return;
+			} else if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
 			    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo(0, 0, 100);
 			}
 		};
+		$scope.scrollToLast = function() {
+			setTimeout(function() {
+				if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
+				    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo($scope.myScroll[FULL_REPORT_SCROLL].maxScrollX, 0, 299);
+				}
+			}, 300);
+		}
 		/**/
 		$scope.viewCols = [1, 2, 3, 4];
 		var _currentViewCol = $scope.viewCols[0];
@@ -74,15 +85,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.isViewCol = function(value) {
 			return value === _currentViewCol;
 		};
-		$scope.setViewCol = function(value) {
+		$scope.setViewCol = function(value, noReset) {
 			_currentViewCol = value;
-			refreshScroll();
+			refreshScroll(noReset);
 		};
 
 
 
 		/** Report views managing area */
-		$scope.reportViews = ['ALL_REPORT', 'SCHEDULE_REPORT'];
+		$scope.reportViews = ['ALL_REPORT', 'SCHEDULED_REPORT', 'SCHEDULED_A_REPORT'];
 		var _selectedReportView = $scope.reportViews[0];
 		/**/
 		$scope.isReportView = function(name) {
@@ -118,7 +129,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		        title, i, j;
 
 		    $scope.setViewCol( $scope.viewCols[0] );
-		    source = $scope.isReportView( $scope.reportViews[0] ) ? $scope.reportList : $scope.schedulesList;
+
+		    if ( $scope.isReportView($scope.reportViews[0]) ) {
+		    	source = $scope.reportList;
+		    } else if ( $scope.isReportView($scope.reportViews[0]) ) {
+		    	source = $scope.schedulesList;
+		    } else {
+		    	source = $scope.schedulableReports;
+		    }
 
 		    if ( query.length < 3 ) {
 		        for (i = 0, j = source.length; i < j; i++) {

@@ -771,21 +771,21 @@
     }
 
     &.cols-2 {
-        .report-col.main-col { .calc-width(100, 260); }
+        .report-col.main-col { .calc-width(100, 270); }
         .cols-wrapper { padding-right: 20px; }
-        > .wrapper { width: 100%; }
+        > .wrapper { min-width: 790px; }
     }
-
+    
     &.cols-3 {
-        .report-col.main-col { .calc-width(100, 530); }
+        .report-col.main-col { .calc-width(100, 540); }
         .cols-wrapper { padding-right: 20px; }
-        > .wrapper { min-width: 1080px; }
+        > .wrapper { min-width: 1060px; }
     }
 
     &.cols-4 {
-        .report-col.main-col { .calc-width(100, 800); }
+        .report-col.main-col { .calc-width(100, 790); }
         .cols-wrapper { padding-right: 20px; }
-        > .wrapper { min-width: 1350px; }
+        > .wrapper { min-width: 1330px; }
     }
 }
 
@@ -2825,6 +2825,7 @@
                             padding: 0;
                             background-color: transparent;
                             
+                            .numbers-pagination,
                             .search-pagination {
                                 position: static;
                                 left: auto;
