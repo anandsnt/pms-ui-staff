@@ -26,6 +26,29 @@
                         {{'EXACT_ONLINE_OAUTH' | translate}}
                     </a>
                 </div>
+            </fieldset>
+
+            <fieldset class="holder left">
+                <ad-dropdown-name savemodel="exactOnlineSetup.journal_code"
+                                  valueproperty="code"
+                                  property="description"
+                                  list="journals"
+                                  label="{{'JOURNAL_CODE'| translate}}"
+                                  div-class="full-width"
+                                  prefix-value="true">
+                </ad-dropdown-name>
+
+                <ad-dropdown-name savemodel="exactOnlineSetup.balancing_account_code"
+                                  valueproperty="code"
+                                  property="description"
+                                  list="balancingAccounts"
+                                  label="{{'BALANCING_ACCOUNT'| translate}}"
+                                  div-class="full-width"
+                                  prefix-value="true">
+                </ad-dropdown-name>
+            </fieldset>
+
+            <fieldset class="holder left">
                 <div class="entry full-width has-datepicker" ng-if="exactOnlineSetup.authorized">
                     <label>
                         RUN EXPORT
@@ -44,6 +67,7 @@
                     </fieldset>
                 </div>
             </fieldset>
+
             <ad-save-cancel-area save-action="saveExactOnlineSetup"
                                  cancel-action="goBackToPreviousState"></ad-save-cancel-area>
         </form>
