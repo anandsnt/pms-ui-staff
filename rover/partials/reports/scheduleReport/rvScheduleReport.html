@@ -1,5 +1,4 @@
 <!-- First column - Scheduled reports -->
-
 <div class="report-col main-col scrfailedollable buttons-1" ng-iscroll="REPORT_SCHEDULES_SCROLL"> <!-- Add vertical scroller here -->
     <div class="wrapper">
         <ul ng-hide="isAddingNew">
@@ -79,7 +78,9 @@
             <div class="entry" ng-show="selectedEntityDetails.sort_fields.length">
                 <label>Sort By</label>
                 <div class="select">
-                    <select ng-model="scheduleParams.sort_field" ng-options="sortBy.value as sortBy.description for sortBy in selectedEntityDetails.sort_fields" iscroll-stop-propagation>
+                    <select ng-model="scheduleParams.sort_field"
+                        ng-options="sortBy.value as sortBy.description for sortBy in selectedEntityDetails.sort_fields | filter:showValidSortBy" iscroll-stop-propagation
+                    >
                         <option value="">Sort By</option>
                     </select>
                 </div>
