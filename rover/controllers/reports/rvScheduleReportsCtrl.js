@@ -100,7 +100,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				$scope.addingStage = STAGES.SHOW_DISTRIBUTION;
 				$scope.setViewCol( $scope.viewCols[3] );
 
-				processScheduleDetails();
+				processScheduleDetails(item);
 				setupFilters();
 				applySavedFilters();
 
@@ -146,7 +146,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			$scope.addingStage = STAGES.SHOW_PARAMETERS;
 			$scope.setViewCol( $scope.viewCols[1] );
 
-			processScheduleDetails();
+			processScheduleDetails(item);
 			setupFilters();
 			applySavedFilters();
 
@@ -490,8 +490,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				var selected = false,
 					mustSend = false;
 
-				if(filter.value == 'ACCOUNT'|| filter.value == 'GUEST') {
-					$scope.isGuestBalanceReport = true;
+				if(filter.value == 'ACCOUNT' || filter.value == 'GUEST') {
 					selected = true;
 					$scope.filters.hasGeneralOptions.data.push({
 						paramKey    : filter.value.toLowerCase(),
@@ -552,14 +551,29 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			runDigestCycle();
 		};
 
-		var processScheduleDetails = function() {
+		var processScheduleDetails = function(report) {
 			$scope.scheduleParams = {};
 
-			if ( !! $scope.selectedEntityDetails.time_period_id ) {
+			var hasAccOrGuest, todayTimePeriod;
+			
+			hasAccOrGuest = _.find(report.filters, function(filter) {
+				return filter.value == 'ACCOUNT' || filter.value == 'GUEST'
+			});
+
+			if ( !! hasAccOrGuest ) {
+				todayTimePeriod = _.find($scope.scheduleTimePeriods, function(each) {
+					return each.value === 'TODAY';
+				});
+
+				$scope.scheduleParams.time_period_id = todayTimePeriod.id
+				$scope.isGuestBalanceReport = true;
+			} else if ( !! $scope.selectedEntityDetails.time_period_id ) {
 				$scope.scheduleParams.time_period_id = $scope.selectedEntityDetails.time_period_id;
 			} else {
 				$scope.scheduleParams.time_period_id = undefined;
 			}
+
+			
 			if ( !! $scope.selectedEntityDetails.time ) {
 				$scope.scheduleParams.time = $scope.selectedEntityDetails.time;
 			} else {
