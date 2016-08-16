@@ -66,6 +66,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo(0, 0, 100);
 			}
 		};
+		$scope.scrollToLast = function() {
+			setTimeout(function() {
+				if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
+				    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo($scope.myScroll[FULL_REPORT_SCROLL].maxScrollX, 0, 100);
+				}
+			}, 500);
+		}
 		/**/
 		$scope.viewCols = [1, 2, 3, 4];
 		var _currentViewCol = $scope.viewCols[0];
