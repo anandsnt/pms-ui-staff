@@ -163,7 +163,7 @@ sntRover.controller('RVroomAssignmentController',[
 
 
 	$scope.checkRoomTypeAvailability = function(roomObject){
-		if($scope.isRoomLockedForThisReservation === "true"){
+		if($scope.isRoomLockedForThisReservation === "true" || roomObject.donot_move_room){
 			ngDialog.open({
                 template: '/assets/partials/roomAssignment/rvRoomLocked.html',
                 className: 'ngdialog-theme-default',
