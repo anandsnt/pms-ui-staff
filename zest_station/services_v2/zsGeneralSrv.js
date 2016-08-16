@@ -126,7 +126,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer();
             var url = '/staff/payments/tokenize';
 
-            zsBaseWebSrv.postJSON(url, data).then(function(data) {
+            zsBaseWebSrv2.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

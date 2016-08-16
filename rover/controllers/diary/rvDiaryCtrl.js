@@ -997,7 +997,7 @@ angular.module('sntRover')
 		    	var selectedReservationRoomType = _.findWhere($scope.room, {"id": reservation.room_id})
 
 
-		    	if(reservation.cannot_move_room && (nextRoom.room_type_id !== selectedReservationRoomType.room_type_id)){
+		    	if(reservation.cannot_move_room && (nextRoom.room_no !== selectedReservationRoomType.room_no)){
 					$scope.message = ["Guest is set to 'Do Not Move' - Remove flag from Stay Card to move reservation"];
 					openMessageShowingPopup();
 

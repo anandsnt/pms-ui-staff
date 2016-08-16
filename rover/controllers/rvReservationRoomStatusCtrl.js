@@ -20,7 +20,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		var reservationRoomClass = '';
 		if(reservationStatus === 'CANCELED'){
 			reservationRoomClass ='overlay';
-		} else if (cannotMoveRoom){
+		} else if (cannotMoveRoom && $scope.reservationData.reservation_card.room_number !== ""){
             reservationRoomClass = 'has-lock hover-hand';
         }
 		else if( !$rootScope.isStandAlone && reservationStatus !== 'NOSHOW' && reservationStatus !== 'CHECKEDOUT' && reservationStatus !== 'CANCELED' && reservationStatus !== 'CHECKEDIN' && reservationStatus !== 'CHECKING_OUT'){
@@ -238,13 +238,15 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		}
 		//check if roomupgrade is available
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
-        var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
+        var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'),
+            cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_no;
 		if($scope.reservationData.reservation_card.is_hourly_reservation){
 			gotToDiaryInEditMode ();
 		} else if($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)){
-			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton","upgrade_available" : isUpgradeAvaiable, "cannot_move_room": $scope.reservationData.reservation_card.cannot_move_room});
+
+			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton","upgrade_available" : isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
 		}else if($scope.reservationData.reservation_card.reservation_status==="CHECKEDIN" && $rootScope.isStandAlone){ // As part of CICO-27631 added Check for overlay hotels
-			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton","upgrade_available" : isUpgradeAvaiable, "cannot_move_room": $scope.reservationData.reservation_card.cannot_move_room});
+			$state.go("rover.reservation.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton","upgrade_available" : isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
 		}
 
 	};
@@ -273,7 +275,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
         var shouldShowDNMToggleButton = true,
             reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 
-        if( reservationStatus === 'NOSHOW' || reservationStatus === 'CHECKEDOUT' || reservationStatus === 'CANCELED'){
+        if( reservationStatus === 'NOSHOW' || reservationStatus === 'CHECKEDOUT' || reservationStatus === 'CANCELED' || $scope.reservationData.reservation_card.room_number === ""){
             shouldShowDNMToggleButton = false;
         }
 
