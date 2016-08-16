@@ -87,7 +87,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 		$scope.pickSchedule = function(item, index) {
 			var success = function(data) {
 				$scope.selectedEntityDetails = data;
-				$scope.IsGuestBalanceReport = false;
+				$scope.isGuestBalanceReport = false;
 
 				if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
 					$scope.selectedSchedule.active = false;
@@ -124,9 +124,16 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			$scope.invokeApi( reportsSrv.fetchOneSchedule, params, success, failed );
 		};
 
+		$scope.check = function (argument) {
+			ngDialog.open({
+				template: '/assets/partials/reports/scheduleReport/rvConfirmDiscard.html',
+				scope: $scope
+			});
+		}
+
 		$scope.pickReport = function(item, index) {
 			$scope.selectedEntityDetails = $scope.$parent.$parent.schedulableReports[index];
-			$scope.IsGuestBalanceReport = false;
+			$scope.isGuestBalanceReport = false;
 
 			if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
 				$scope.selectedReport.active = false;
@@ -136,6 +143,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			/**/
 			$scope.selectedSchedule.active = false;
 
+			$scope.addingStage = STAGES.SHOW_PARAMETERS;
 			$scope.setViewCol( $scope.viewCols[1] );
 
 			processScheduleDetails();
@@ -242,19 +250,42 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 		$scope.checkCanCreate = function() {
 			$scope.createErrors = [];
 
-			if ( !! $scope.scheduleParams.time_period_id && !! $scope.scheduleParams.frequency_id && $scope.emailList.length ) {
-				$scope.createSchedule();
-			} else {
-				if ( ! $scope.scheduleParams.time_period_id ) {
-					$scope.createErrors.push('Time period in parameters')
+			var hasTimePeriod = function() {
+				if ( $scope.isGuestBalanceReport ) {
+					return true;
+				} else {
+					return !! $scope.scheduleParams.time_period_id;
+				}
+			}
+
+			var hasFrequency = function() {
+				return !! $scope.scheduleParams.frequency_id;
+			}
+
+			var hasEmailList = function() {
+				return $scope.emailList.length;
+			}
+
+			var canCreateSchedule = function() {
+				return hasTimePeriod() && hasFrequency() && hasEmailList();
+			}
+
+			var fillErrors = function() {
+				if ( ! $scope.isGuestBalanceReport && ! $scope.scheduleParams.time_period_id ) {
+					$scope.createErrors.push('Time period in parameters');
 				}
 				if ( ! $scope.scheduleParams.frequency_id ) {
-					$scope.createErrors.push('Repeat frequency in details')
+					$scope.createErrors.push('Repeat frequency in details');
 				}
 				if ( ! $scope.emailList.length ) {
-					$scope.createErrors.push('Emails in distribution list')
+					$scope.createErrors.push('Emails in distribution list');
 				}
+			}
 
+			if ( canCreateSchedule() ) {
+				$scope.createSchedule();
+			} else {
+				fillErrors();
 				ngDialog.open({
 					template: '/assets/partials/reports/scheduleReport/rvCantCreateSchedule.html',
 					scope: $scope,
@@ -460,7 +491,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 					mustSend = false;
 
 				if(filter.value == 'ACCOUNT'|| filter.value == 'GUEST') {
-					$scope.IsGuestBalanceReport = true;
+					$scope.isGuestBalanceReport = true;
 					selected = true;
 					$scope.filters.hasGeneralOptions.data.push({
 						paramKey    : filter.value.toLowerCase(),
@@ -736,12 +767,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         }
 
         $scope.goToNext = function() {
+        	var noReset = true;
+
         	if ( $scope.addingStage === STAGES.SHOW_PARAMETERS ) {
         		$scope.addingStage = STAGES.SHOW_DETAILS;
-        		$scope.setViewCol( $scope.viewCols[2] );
+        		$scope.setViewCol( $scope.viewCols[2], noReset );
         	} else if ( $scope.addingStage === STAGES.SHOW_DETAILS ) {
         		$scope.addingStage = STAGES.SHOW_DISTRIBUTION;
-        		$scope.setViewCol( $scope.viewCols[3] );
+        		$scope.setViewCol( $scope.viewCols[3], noReset );
         	}
 
         	$scope.scrollToLast();
