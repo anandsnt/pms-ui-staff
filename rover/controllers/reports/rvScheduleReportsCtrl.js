@@ -365,6 +365,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
 				var updatedIndex = _.findIndex($scope.$parent.$parent.schedulesList, { id: params.id });
 				if ( updatedIndex > -1 ) {
+					$scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;
 					$scope.$parent.$parent.schedulesList[updatedIndex].occurance = findOccurance($scope.$parent.$parent.schedulesList[updatedIndex]);
 				}
 			};
