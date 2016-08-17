@@ -101,8 +101,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
                     'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
                 };
-
-
+                //check if this page was invoked through pickupkey flow
+                if(!!$stateParams.pickup_key_mode){
+                    stateParams.pickup_key_mode = 'manual';
+                }
                 //need to go to [ last viewed ] screen, terms&conditions may be turned off...
                 $state.go('zest_station.checkInTerms', stateParams);
             }
