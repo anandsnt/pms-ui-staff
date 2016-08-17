@@ -1,5 +1,5 @@
 <!-- Diary header -->
-<div ng-include="'/assets/partials/common/header.html'"></div> 
+<div ng-include="'/assets/partials/common/header.html'"></div>
 
 <section id="diary-content" class="content diary-content" role="main">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -9,10 +9,10 @@
                 <h1 ng-show="gridProps.edit.originalItem.reservation_primary_guest_full_name">
                     {{gridProps.edit.originalItem.reservation_primary_guest_full_name}}
                 </h1>
-                <h1 ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name"> 
-                    {{gridProps.edit.originalItem.account_name}}   
+                <h1 ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name">
+                    {{gridProps.edit.originalItem.account_name}}
                 </h1>
-            </div>            
+            </div>
             <div class="actions">
                 <button id="edit-staycard" class="button white" ng-click="unassignRoom()">Unassign</button>
                 <button id="edit-staycard" class="button white" ng-click="openStayCard()">StayCard</button>
@@ -34,9 +34,9 @@
         <div class="entry time">
             <label for="arrival-time">Arrival Time</label>
             <div class="select">
-                <select id="arrival-time" 
-                        name="arrival-time" 
-                        ng-model="gridProps.filter.arrival_time" 
+                <select id="arrival-time"
+                        name="arrival-time"
+                        ng-model="gridProps.filter.arrival_time"
                         ng-options="arrival_time as arrival_time for arrival_time in gridProps.filter.arrival_times" ng-change="clickedOnArrivalTime()">
                     <option value="" selected="selected">Select</option>
                     <!--<option value={{arrival_time}}>{{arrival_time}}</option> -->
@@ -46,9 +46,9 @@
         <div class="entry room">
             <label for="room-type">Room Type</label>
             <div class="select">
-                <select id="room-type" 
-                        name="room-type" 
-                        ng-model="gridProps.filter.room_type" 
+                <select id="room-type"
+                        name="room-type"
+                        ng-model="gridProps.filter.room_type"
                         ng-options="room_type as room_type.name for room_type in gridProps.filter.room_types" ng-change="clickedOnRoomType()" class="placeholder">
                     <option value="" selected="selected">Select</option>
                 </select>
@@ -61,24 +61,24 @@
             </div>
             <div id="diary-rates" class="faux-select-options"  ng-class="{'showing-search': gridProps.filter.rate_type === 'Corporate', 'hidden': !openRateTypeChoosingBox}">
                 <div class="header">
-                    
+
                     <label class="radio inline" ng-click="clickedOnRateType()">
                         <span class="icon-form icon-radio" ng-class="{checked: gridProps.filter.rate_type === 'Standard'}"></span>
-                        <input name="rate-type" 
-                               id="standard-rate" 
-                               value="Standard" 
-                               ng-model="gridProps.filter.rate_type" 
+                        <input name="rate-type"
+                               id="standard-rate"
+                               value="Standard"
+                               ng-model="gridProps.filter.rate_type"
                                type="radio"/>
                         Standard
                     </label>
                     <label class="radio inline" ng-click="clickedOnRateType()">
                         <span class="icon-form icon-radio" ng-class="{checked: gridProps.filter.rate_type === 'Corporate'}"></span>
-                        <input name="rate-type" 
-                               id="corporate-rate" 
-                               value="Corporate" 
-                               ng-model="gridProps.filter.rate_type" 
+                        <input name="rate-type"
+                               id="corporate-rate"
+                               value="Corporate"
+                               ng-model="gridProps.filter.rate_type"
                                type="radio"/>
-                        Corporate 
+                        Corporate
                         <span  id="selected-company" class="placeholder" ng-hide="gridProps.filter.rate" >
                             Select account
                         </span>
@@ -91,7 +91,7 @@
                         <button type="button" id="diary-corporate-cancel" class="icons icon-remove-10" ng-show="gridProps.filter.rate" ng-click="discardSelectedCompCardOrTravelAg()">
                             Cancel
                         </button>
-                    </label> 
+                    </label>
                 </div>
                 <div id="corporate-rate-search" class="entry search" ng-show="gridProps.filter.rate_type === 'Corporate'">
                     <a href="#" id="diary-corporate-clear-query" class="clear-query" ng-class="{'visible': corporateSearchText != ''}"  ng-click="clearCorporateSearchText()">
@@ -102,8 +102,8 @@
                     </button>
                     <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
                     <input auto-complete="" auto-options="autocompleteOptions" name="diary-corporate-query" id="diary-corporate-query" class="query ui-autocomplete-input" placeholder="Type Company or Travel Agent Name" type="search" ng-model="corporateSearchText" ul-class="find-cards" focus-me="focusOnCorporateSearchText">
-                </div>                           
-                         
+                </div>
+
             </div>
         </div>
         <div class="entry switch" ng-hide="!isHourlyRateOn">
@@ -140,12 +140,12 @@
                 <span class="icons icon-reset"></span>
             </button>
         </div>
-       
+
         <!--<div class="actions">
             <button type="button" class="button green" ng-click="onUpdate()">Update</button>
         </div>-->
     </form>
-    
+
     <!-- Diary Content -->
     <react-component id="component-wrapper" class="component-wrapper" name="DiaryContent"></react-component>
 </section>

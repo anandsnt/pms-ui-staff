@@ -23,7 +23,7 @@
             <div class="wrapper">
                 <div class="cols-wrapper">
                     <span ng-if="isReportView(reportViews[0])" ng-controller="RVReportListCrl" ng-include="'/assets/partials/reports/shared/rvViewAllReports.html'"></span>
-                    <span ng-if="isReportView(reportViews[1])" ng-controller="RVScheduleReportsCtrl" ng-include="'/assets/partials/reports/scheduleReport/rvScheduleReport.html'"></span>
+                    <span ng-if="!isReportView(reportViews[0])" ng-controller="RVScheduleReportsCtrl" ng-include="'/assets/partials/reports/scheduleReport/rvScheduleReport.html'"></span>
                 </div>
             </div>
         </div>

@@ -873,12 +873,11 @@ sntRover.controller('roverController',
         return $rootScope.trustAsHtml(toHTMLSpecials(text));
       }
 
-      // convert HTML syntax charactors to their encoded value ex: < to &lt;
-      text = toHTMLSpecials(text) || '';
-      query = toHTMLSpecials(query).replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+       // convert HTML syntax charactors to their encoded value ex: < to &lt;
+      text = text.split(query).map(toHTMLSpecials);
+      query = toHTMLSpecials(query);
+      text = text.join('<span class="highlight">'+ query +'</span>');
       
-      // use a regex with specials escaped
-      text = text.replace(new RegExp(query, 'gi'), '<span class="highlight">$&</span>');
       return $rootScope.trustAsHtml(text);
     };
 
