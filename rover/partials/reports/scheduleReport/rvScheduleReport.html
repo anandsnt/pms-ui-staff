@@ -95,7 +95,7 @@
         class="column-actions"
     >
         <button class="button green"
-            ng-click="saveSchedule()">Save Schedule</button>
+            ng-click="checkCanSaveSchedule()">Save Schedule</button>
         <button class="button red"
             ng-click="confirmDelete()">Delete Schedule</button>
     </div>
@@ -208,7 +208,7 @@
         class="column-actions"
     >
         <button class="button green"
-            ng-click="saveSchedule()">Save Schedule</button>
+            ng-click="checkCanSaveSchedule()">Save Schedule</button>
     </div>
 
     <div ng-show="isAddingNew"
@@ -249,13 +249,13 @@
         class="column-actions"
     >
         <button class="button green"
-            ng-click="saveSchedule()">Save Schedule</button>
+            ng-click="checkCanSaveSchedule()">Save Schedule</button>
     </div>
 
     <div ng-show="isAddingNew"
         class="column-actions"
     >
-        <button ng-click="checkCanCreate()"
+        <button ng-click="checkCanCreateSchedule()"
             class="button green">Create Schedule</button>
     </div>
 </div>
