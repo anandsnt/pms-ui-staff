@@ -60,18 +60,21 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			});
 		})();
 		/**/
-		var refreshScroll = function() {
+		var refreshScroll = function( noReset ) {
 			$scope.refreshScroller(FULL_REPORT_SCROLL);
-			if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
+
+			if ( !! noReset ) {
+				return;
+			} else if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
 			    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo(0, 0, 100);
 			}
 		};
 		$scope.scrollToLast = function() {
 			setTimeout(function() {
 				if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
-				    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo($scope.myScroll[FULL_REPORT_SCROLL].maxScrollX, 0, 100);
+				    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo($scope.myScroll[FULL_REPORT_SCROLL].maxScrollX, 0, 299);
 				}
-			}, 500);
+			}, 300);
 		}
 		/**/
 		$scope.viewCols = [1, 2, 3, 4];
@@ -82,9 +85,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.isViewCol = function(value) {
 			return value === _currentViewCol;
 		};
-		$scope.setViewCol = function(value) {
+		$scope.setViewCol = function(value, noReset) {
 			_currentViewCol = value;
-			refreshScroll();
+			refreshScroll(noReset);
 		};
 
 
