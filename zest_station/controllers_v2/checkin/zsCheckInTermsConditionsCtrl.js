@@ -57,7 +57,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			};
 			//check if this page was invoked through pickupkey flow
 			if(!!$stateParams.pickup_key_mode){
-               	stateParams.pickup_key_mode = 'manual';
+               	stateparams.pickup_key_mode = 'manual';
           	}
 			$state.go('zest_station.checkInDeposit',  stateparams);
 		};
