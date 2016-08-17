@@ -54,6 +54,7 @@ angular.module('sntRover').controller('RVUpgradesCtrl',['$scope','$state', '$sta
 				roomToUpgrade	 = _.filter(roomsInRoomType, isRoomReadyToAssign)[0];
 
 			roomType.upgrade_room_number = roomToUpgrade.room_number;
+			roomType.donot_move_room = roomToUpgrade.donot_move_room;
 			$scope.upgradesList.push(roomType)
 		});
 
