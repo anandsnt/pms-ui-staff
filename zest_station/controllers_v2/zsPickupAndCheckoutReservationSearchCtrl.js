@@ -123,8 +123,14 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 					};
 					$state.go('zest_station.pickUpKeyDispense', stateParams);
 				} else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY' && !data.is_checked_in){
-					//go to Checkin flow
-					fetchReservationDetailsForCheckingIn(data.reservation_id);
+					if(data.guest_arriving_today){
+						//go to Checkin flow -- CICO-32703
+						fetchReservationDetailsForCheckingIn(data.reservation_id);
+					}
+					else{
+						generalFailureActions();
+					}
+					
 				} else {
 					var stateParams = {
 						"from": "searchByName",
