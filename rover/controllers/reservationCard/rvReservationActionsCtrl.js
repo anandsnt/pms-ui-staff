@@ -285,9 +285,11 @@ sntRover.controller('reservationActionsController', [
                     });
                 };
                 $scope.goToRoomUpgrades = function(){
+                    var cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number!=="";
                     $state.go('rover.reservation.staycard.upgrades', {
                             "reservation_id": $scope.reservationData.reservation_card.reservation_id,
-                            "clickedButton": "checkinButton"
+                            "clickedButton": "checkinButton",
+                            "cannot_move_room" : cannotMoveState
                     });
                 };
                 $scope.validateEmailPhone = function(){

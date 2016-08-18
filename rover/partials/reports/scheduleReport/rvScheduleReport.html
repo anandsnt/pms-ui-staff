@@ -1,39 +1,38 @@
 <!-- First column - Scheduled reports -->
 <div class="report-col main-col scrfailedollable buttons-1" ng-iscroll="REPORT_SCHEDULES_SCROLL"> <!-- Add vertical scroller here -->
-    <ul ng-hide="isAddingNew"
-        class="wrapper">
-        <li ng-repeat="item in schedulesList"
-            ng-hide="item.filteredOut"
-            ng-class="{'active': item.active}"
-            ng-click="pickSchedule(item, $index)"
-            class="report-item"
-        >
-            <span ng-class="item.reportIconCls"></span>
-            <div class="data">
-                <h2 ng-bind-html="escapeNull(item.report.title)|highlight:query:false"></h2>
-                <em>{{ item.occurance }}</em>
-            </div>
-        </li>
-    </ul>
+    <div class="wrapper">
+        <ul ng-hide="isAddingNew">
+            <li ng-repeat="item in schedulesList"
+                ng-hide="item.filteredOut"
+                ng-class="{'active': item.active}"
+                ng-click="pickSchedule(item, $index)"
+                class="report-item"
+            >
+                <span ng-class="item.reportIconCls"></span>
+                <div class="data">
+                    <h2 ng-bind-html="escapeNull(item.report.title)|highlight:query:false"></h2>
+                    <em>{{ item.occurance }}</em>
+                </div>
+            </li>
+        </ul>
 
-    <ul ng-show="isAddingNew"
-        class="wrapper">
-        <li ng-repeat="item in schedulableReports"
-            ng-hide="item.filteredOut"
-            ng-class="{'active': item.active}"
-            ng-click="pickReport(item, $index)"
-            class="report-item"
-        >
-            <span ng-class="item.reportIconCls"></span>
-            <div class="data">
-                <h2 ng-bind-html="escapeNull(item.report.title)|highlight:query:false"></h2>
-                <em>{{ item.report.description }}</em>
-            </div>
-        </li>
-    </ul>
+        <ul ng-show="isAddingNew">
+            <li ng-repeat="item in schedulableReports"
+                ng-hide="item.filteredOut"
+                ng-class="{'active': item.active}"
+                ng-click="pickReport(item, $index)"
+                class="report-item"
+            >
+                <span ng-class="item.reportIconCls"></span>
+                <div class="data">
+                    <h2 ng-bind-html="escapeNull(item.report.title)|highlight:query:false"></h2>
+                    <em>{{ item.report.description }}</em>
+                </div>
+            </li>
+        </ul>
+    </div>
 
     <div class="main-column-actions">
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <button ng-show="!isAddingNew"
             ng-click="scheduleReport()"
             class="button blue with-icon"
@@ -54,22 +53,26 @@
     <div class="scrollable" ng-iscroll="SECOND_COLUMN_SCROLL"> <!-- Add vertical scroller here + add class "buttons-3" if it's an existing schedule -->
         <div class="wrapper">
             <h3>Schedule Parameters<span>{{ selectedEntityDetails.report.title }}</span></h3>
-            <div class="entry" ng-hide="IsGuestBalanceReport">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div class="entry">
                 <label for="time-period">Time Period</label>
                 <div class="select">
-                    <select ng-model="scheduleParams.time_period_id" ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods" iscroll-stop-propagation>
+                    <select ng-model="scheduleParams.time_period_id"
+                        ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods"
+                        ng-disabled="isGuestBalanceReport"
+                        iscroll-stop-propagation>
                         <option value="">Time period</option>
                     </select>
                 </div>
             </div>
            
-            <multi-option-selection ng-show="IsGuestBalanceReport"
+            <multi-option-selection ng-show="isGuestBalanceReport"
                 label="Guest/Account"
                 on-update="refreshSecondColumnScroll"
                 data="filters.hasGeneralOptions.data"
                 options="filters.hasGeneralOptions.options"></multi-option-selection>
 
-            <multi-option-selection ng-show="filters.hasGeneralOptions && filters.hasGeneralOptions.data.length && !IsGuestBalanceReport"
+            <multi-option-selection ng-show="filters.hasGeneralOptions && filters.hasGeneralOptions.data.length && !isGuestBalanceReport"
                 label="Option(s)"
                 data="filters.hasGeneralOptions.data"
                 on-update="refreshSecondColumnScroll"
@@ -78,7 +81,9 @@
             <div class="entry" ng-show="selectedEntityDetails.sort_fields.length">
                 <label>Sort By</label>
                 <div class="select">
-                    <select ng-model="scheduleParams.sort_field" ng-options="sortBy.value as sortBy.description for sortBy in selectedEntityDetails.sort_fields" iscroll-stop-propagation>
+                    <select ng-model="scheduleParams.sort_field"
+                        ng-options="sortBy.value as sortBy.description for sortBy in selectedEntityDetails.sort_fields | filter:showValidSortBy" iscroll-stop-propagation
+                    >
                         <option value="">Sort By</option>
                     </select>
                 </div>
@@ -90,7 +95,7 @@
         class="column-actions"
     >
         <button class="button green"
-            ng-click="saveSchedule()">Save Schedule</button>
+            ng-click="checkCanSaveSchedule()">Save Schedule</button>
         <button class="button red"
             ng-click="confirmDelete()">Delete Schedule</button>
     </div>
@@ -109,6 +114,7 @@
     <div class="scrollable" ng-iscroll="THIRD_COLUMN_SCROLL"> <!-- Add vertical scroller here + add class "buttons-2" if it's an existing schedule -->
         <div class="wrapper">
             <h3>Schedule Details<span>{{ selectedEntityDetails.report.title }}</span></h3>
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="entry" ng-show="NOT_NOW">
                 <label for="schedule-date-range">Data Date Range</label>
                 <div class="select">
@@ -202,7 +208,7 @@
         class="column-actions"
     >
         <button class="button green"
-            ng-click="saveSchedule()">Save Schedule</button>
+            ng-click="checkCanSaveSchedule()">Save Schedule</button>
     </div>
 
     <div ng-show="isAddingNew"
@@ -218,8 +224,8 @@
     class="report-col">
     <div class="scrollable" ng-iscroll="FOURTH_COLUMN_SCROLL"> <!-- Add vertical scroller here -->
         <div class="wrapper">
-            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <h3>Distribution List<span>{{ selectedEntityDetails.report.title }}</span></h3>
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="entry search">
                 <label for="distribution-list-add-user">Add Recipient</label>
                 <button class="clear-query">
@@ -243,13 +249,13 @@
         class="column-actions"
     >
         <button class="button green"
-            ng-click="saveSchedule()">Save Schedule</button>
+            ng-click="checkCanSaveSchedule()">Save Schedule</button>
     </div>
 
     <div ng-show="isAddingNew"
         class="column-actions"
     >
-        <button ng-click="checkCanCreate()"
+        <button ng-click="checkCanCreateSchedule()"
             class="button green">Create Schedule</button>
     </div>
 </div>
