@@ -383,7 +383,6 @@ sntRover.controller('roverController',
         $rootScope.hotelPaymentConfig = {
             isStandAlone: $rootScope.isStandAlone,
             paymentGateway: $rootScope.paymentGateway,
-            workstationId: $rootScope.workstation_id,
             emvTimeout: $rootScope.emvTimeout,
             mliMerchantId: $rootScope.MLImerchantId,
             currencySymbol: $rootScope.currencySymbol,

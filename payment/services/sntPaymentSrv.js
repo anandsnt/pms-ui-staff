@@ -100,20 +100,6 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             return sixCreditCardTypes[cardCode.toUpperCase()];
         };
 
-
-        service.savePaymentDetails = function(params) {
-
-            var deferred = $q.defer();
-            var url = 'staff/reservation/save_payment';
-            $http.post(url, params).success(function(response) {
-                    deferred.resolve(response);
-                }.bind(this))
-                .error(function(error) {
-                    deferred.reject(error);
-                });
-            return deferred.promise;
-        };
-
         //SIX payment actions
         service.submitPaymentForChipAndPin = function(dataToSrv) {
 
@@ -256,6 +242,55 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             }).error(function(response) {
                 deferred.reject(response);
             });
+            return deferred.promise;
+        };
+
+        service.savePaymentDetails = function(data){
+            var deferred = $q.defer();
+            var url = '/staff/reservation/save_payment';
+
+            $http.post(url, data).success(data => {
+                deferred.resolve(data);
+            }).error(data => {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+
+        };
+
+        /**
+         * This method is used to link a card available with the guest card to the reservation
+         * @param data
+         * @returns {deferred.promise|{then, catch, finally}}
+         */
+        service.mapPaymentToReservation = function(data){
+            var deferred = $q.defer();
+            var url = '/staff/reservation/link_payment';
+
+            $http.post(url, data).success(data => {
+                deferred.resolve(data);
+            }).error(data => {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        /**
+         *
+         * @param data
+         * @returns {deferred.promise|{then, catch, finally}}
+         */
+        service.addCardToGuest = function(data){
+            var deferred = $q.defer();
+            var url = 'staff/payments/save_new_payment';
+
+            $http.post(url, data).success(data => {
+                deferred.resolve(data);
+            }).error(data => {
+                deferred.reject(data);
+            });
+
             return deferred.promise;
         };
 

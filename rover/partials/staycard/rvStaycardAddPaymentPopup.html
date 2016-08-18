@@ -1,0 +1,16 @@
+<!-- show if new card is added -->
+<div class="entry full-width" ng-show="payment.showAddToGuestCard && actionType!== 'ADD_PAYMENT_GUEST_CARD'">
+    <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked':payment.addToGuestCardSelected}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked': payment.addToGuestCardSelected}"></span>
+        <input ng-model="payment.addToGuestCardSelected" id="add-in-guest-card" value="1" type="checkbox" /> {{'ADD_TO_GUEST_CARD' | translate}}
+    </label>
+</div>
+
+<div class="actions" ng-show="!showCCPage">
+    <button type="button" class="button blank modal-close" ng-click="closeThePopup()">
+        Close
+    </button>
+    <button type="button" class="button green" ng-click="saveReservationPaymentMethod();">
+        Add
+    </button>
+</div>

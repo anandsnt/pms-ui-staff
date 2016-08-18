@@ -16,10 +16,11 @@ sntPay.directive('sntPayment', function() {
             depositPolicyName: '@',
             isEditable : '=',//is the amount editable
             isRateSuppressed: '=',
+            workstationId : "@",
             hasPermission : '=',//has permission to amke payment
             formTemplateUrl : '@',//the URL of the partial to be laoded as form
             firstName: '@',//first name to be used in six pay iframe
-            lastName: '@'//second name to be used in six pay iframe
+            lastName: '@',//second name to be used in six pay iframe
         },
         link: function(scope, element, attrs) {
             console.log("--From Payment Module Init--");

@@ -1,166 +1,48 @@
-<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-show="showManualEntryDisabledPopup && !showWarningMessage" ng-cloak>
-	<div class="modal-content">
-		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
-			<span class="icons icon-close invert"></span>
-		</button>
-		<span class="h3 message solo">Manual Credit Card Updates are Disabled!</span>
-	</div>
-</div>
-
-
-
-<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-show="shouldShowWaiting && !showWarningMessage" ng-cloak>
-	<div class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;" >
-		<div class="centeralign alert-box">
-			WAITING FOR PAYMENT COMPLETION 
-		</div>
-		<div class="waiting-payment">&nbsp;</div>
-	</div>
-</div>
-
-
-
-<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-show="!showManualEntryDisabledPopup && !showWarningMessage" ng-click="clearErrorMessage()" ng-cloak>
-
-    
-    
-    
-    <form ng-show="!shouldShowWaiting" method="post" id="new-payment" name="new-payment" class="modal-content form new-content" ng-class="{'has-card': hasExistingCard(), 'select-card':showCCPage}"><!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
-    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <strong class="h2 message">New payment method</strong>
-    <div class="payment-form">
-        <!-- Payment type -->
-        
-        
-        
-        
-        
-        
-        
-        
-               <div ng-init="isADDPaymentModal = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <!-- Card Input type - output only if Six Payments and payment type is CC -->
-        <!-- Use only for Six Payments -->
-		<div class="entry" ng-show="paymentGateway === 'sixpayments' && dataToSave.paymentType ==='CC' && !showCCPage">
-		    <label for="card-source">Card Input</label>
-		    <div class="switch-button" ng-class="{'on': !isManual}">
-		        <input name="card-source" id="card-source" value="card-source" type="checkbox" ng-model="isManual" ng-change="changeOnsiteCallIn()" />
-		        <label class="data-off">
-		            <span class="value">C &amp; P</span>
-		            <span class="switch-icon">Manual</span>
-		        </label>
-		        <label class="data-on">
-		            <span class="switch-icon">C &amp; P</span>
-		            <span class="value">Manual</span>
-		        </label>
-		    </div>
-		</div>
-        
-        
-        
-        
-        
-        
-        
-        <!-- Selected card - Show when card is selected/added -->
-       <div class="entry full-width" id="selected-card"  ng-show="showAddedCard()" ng-click="showCCList()">
-			<label>Credit Card (<span>Tap to change</span>)</label>
-			<label class="active-item item-payment" id="pay-with-amex">
-				<figure class="card-logo">
-					<img ng-src="/assets/images/{{renderData.creditCardType}}.png" alt="">
-				</figure>
-				<span class="number">Ending with 
-					<span class="value number">{{renderData.endingWith}}</span>
-				</span>
-				<span class="date">Date 
-					<span class="value date">{{renderData.cardExpiry}}</span>
-				</span>
-			</label>
-		</div>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-			
-
-        <!-- Payment method options -->
-        <div class="holder" ng-show="showAddtoGuestCardBox()">
-        	<div class="entry full-width" >
-        		<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': dataToSave.addToGuestCard}">
-        			<span class="icon-form icon-checkbox" ng-class="{'checked': dataToSave.addToGuestCard}"></span>
-        			<input ng-model="dataToSave.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
-        			{{'ADD_TO_GUEST_CARD' | translate}}
-        		</label>
-        	</div> 
-        	<!--  
-        	<div class="entry full-width" >
-        		<label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': cardData.authorize}">
-        			<span class="icon-form icon-checkbox" ng-class="{'checked': cardData.authorize}"></span>
-        			<input ng-model="cardData.authorize" id="add-in-guest-card" value="1" type="checkbox" />
-        			Do Not Authorize Card
-        		</label>
-        	</div>  
-        	-->
-        </div>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-        <!-- New CC - Hide everything else when showing this. Output only if payment type is CC, hide if Card input type is set to C&P. Never output exsisting cards here! -->
-       <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ng-show="showCCPage"></div>       
-
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-        <!-- Buttons -->
-       	<div class="actions"  ng-show="!showCCPage">
-			<button type="button" class="button blank modal-close" ng-click="closeDialog()">
-				Close
-			</button>
-			<button type="button" class="button green" ng-click="addNewPayment();">
-				Add
-			</button>
-		</div>
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
+    <div class="modal-content"
+         ng-show="showManualEntryDisabledPopup && !showWarningMessage">
+        <button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
+            <span class="icons icon-close invert"></span>
+        </button>
+        <span class="h3 message solo">Manual Credit Card Updates are Disabled!</span>
     </div>
-</form>
-</div>
 
-<div role="dialog" id="modal" class="modal-show" ng-show="showWarningMessage" ng-class="{'modal-show': !modalClosing}" ng-cloak>
-	<div class="modal-content new-content form warning warning-modal">
-	  <div class="ows_error">{{warningMessage}}</div>
-	  <div class="actions float">
-	    <button class="button modal-close white red-text" ng-click="closeDialog()" translate>CLOSE</button>
-	  </div>
-	</div>
+    <!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
+    <form class="modal-content form new-content has-card select-card"
+          ng-show="!showManualEntryDisabledPopup && !showWarningMessage">
+
+        <button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
+            <span class="icons icon-close invert"></span>
+        </button>
+
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+        <strong class="h2 message">New payment method</strong>
+        {{payment.addCCMode}}
+        {{payment.screenMode}}
+
+        <div class="payment-form">
+
+            <snt-payment
+                    hotel-config="hotelPaymentConfig"
+                    reservation-id="{{passData.reservationId}}"
+                    guest-id="{{passData.guest_id}}"
+                    workstation-id = "{{workstation_id}}"
+                    bill-number="billNumber"
+                    payment-types="paymentData.paymentTypes"
+                    selected-payment-type="depositBalanceMakePaymentData.payment_type"
+                    selected-c-c="depositDetails.attached_card"
+                    amount='depositBalanceMakePaymentData.amount'
+                    action-type="{{getAddActionType()}}"
+                    deposit-policy-name="{{depositPolicyName}}"
+                    is-editable='isDepositEditable'
+                    is-rate-suppressed='isReservationRateSuppressed'
+                    has-permission='hasPermissionToMakePayment()'
+                    form-template-url='/assets/partials/staycard/rvStaycardAddPaymentPopup.html'
+                    first-name="{{passData.details.firstName}}"
+                    last-name="{{passData.details.lastName}}"
+                    ng-show="!errorOccured && !depositPaidSuccesFully">
+            </snt-payment>
+        </div>
+    </form>
 </div>

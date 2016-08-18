@@ -16,17 +16,25 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	};
 	$scope.openAddNewPaymentModel = function(data){
 
-	 	var passData = {
- 		"guest_id": $scope.guestCardData.contactInfo.user_id,
- 		"isFromGuestCard": true,
- 		"details":{
- 			"firstName" : $scope.guestCardData.contactInfo.first_name,
- 			"lastName" : $scope.guestCardData.contactInfo.last_name
- 		}
-	 	};
-	 	var paymentData = $scope.paymentData;
-	 	$scope.openPaymentDialogModal(passData, paymentData);
-
+		// NOTE: Need to send payment methods from here
+		$scope.callAPI(RVPaymentSrv.renderPaymentScreen, {
+			params:{"direct_bill": false},
+			onSuccess : function(response) {
+				var creditCardPaymentTypeObj = _.find(response, function(obj){ return obj.name === 'CC' });
+				var passData = {
+					"guest_id": $scope.guestCardData.contactInfo.user_id,
+					"isFromGuestCard": true,
+					"details":{
+						"firstName" : $scope.guestCardData.contactInfo.first_name,
+						"lastName" : $scope.guestCardData.contactInfo.last_name
+					}
+				};
+				var paymentData = $scope.paymentData;
+				// NOTE : As of now only guest cards can be added as payment types and associated with a guest card
+				paymentData.paymentTypes = [creditCardPaymentTypeObj];
+				$scope.openPaymentDialogModal(passData, paymentData);
+			}
+		});
   	 };
   	 /*
 	 * To open set as as primary or delete payment
