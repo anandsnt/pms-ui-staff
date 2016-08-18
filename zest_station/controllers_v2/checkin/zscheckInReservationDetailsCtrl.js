@@ -138,7 +138,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         $scope.addRemove = function() {
             setSelectedReservation();
-            $state.go('zest_station.add_remove_guests');
+            var stateParams = {};
+            if(!!$stateParams.pickup_key_mode){
+                stateParams.pickup_key_mode = 'manual';
+            }
+            $state.go('zest_station.add_remove_guests',stateParams);
         };
 
         //will need to check for ECI & Terms bypass, happy path for now
