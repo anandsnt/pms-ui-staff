@@ -5,7 +5,8 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 	'$window',
 	'BaseWebSrvV2',
 	'$rootScope',
-	function($http, $q, RVBaseWebSrvV2, $window, BaseWebSrvV2, $rootScope) {
+	'$vault',
+	function($http, $q, RVBaseWebSrvV2, $window, BaseWebSrvV2, $rootScope, $vault) {
 
 		this.initFilters = function() {
 			return {
@@ -156,8 +157,18 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					roomList = response.data;
 					roomList.summary = response.data.summary;
 
+					var lastRoomService = $vault.get('LAST_ROOM_SERVICE');
+					if ( !! lastRoomService ) {
+						lastRoomService = JSON.parse(lastRoomService)
+					} else {
+						lastRoomService = {
+							rooms: [],
+							status: {}
+						};
+					}
 
-					for (var i = 0, j = roomList.rooms.length; i < j; i++) {
+					var i, j;
+					for (i = 0, j = roomList.rooms.length; i < j; i++) {
 						var room = roomList.rooms[i];
 
 						// reduce scope search
@@ -179,7 +190,18 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 						room.assigned_staff = calculateAssignedStaff(room);
 
 						room.ooOsTitle = calculateOoOsTitle(room);
-					}
+
+						if ( lastRoomService.rooms.length ) {
+							if ( _.indexOf(lastRoomService.rooms, room.id) > -1 ) {
+								room.service_status = $.extend(
+									{},
+									room.service_status,
+									lastRoomService.status
+								);
+							}
+						}
+					};
+
 					deferred.resolve(roomList);
 				}.bind(this), function(data) {
 					deferred.reject(data);
@@ -704,7 +726,6 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 						room.room_reservation_hk_status === 3 ? 'Out of Order' :
 						false;
 				} else {
-					if (true) {};
 					return room.hk_status.value === 'OS' ? 'Out of Service' :
 						room.hk_status.value === 'OO' ? 'Out of Order' :
 						false;

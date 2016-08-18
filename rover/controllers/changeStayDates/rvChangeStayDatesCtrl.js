@@ -250,6 +250,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				$scope.rightSideReservationUpdates = 'MAINTENANCE';
 			} else if ($scope.availabilityDetails.availability_status === "do_not_move") {
 				$scope.rightSideReservationUpdates = "ROOM_CANNOT_UNASSIGN";
+			} else if ($scope.availabilityDetails.availability_status === "room_ooo") {
+				$scope.rightSideReservationUpdates = "ROOM_OOO";
 			}
 			$scope.refreshMyScroller();
 		};

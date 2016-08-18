@@ -43,20 +43,16 @@
                         <td>{{item.name}}</td>
                         <td>{{item.reservation_number}}</td>
                         <td>{{item.type}}</td>
-                        <td ng-bind-html="item.details"></td>
+                        <td class="details" ng-bind-html="item.details"></td>
                         <td>{{item.time}}</td>
                         <td>{{item.charge_code}}</td>
                         <td>{{item.charge_desc}}</td>
                         <td>{{item.debit | number: precisonTwo}}</td>
                         <td>{{item.credit | number: precisonTwo}}</td>
                     </tr>
-                    <tr class="pagination" ng-show="data.summaryData.deposit_balance.total_count > data.filterData.perPage && data.summaryData.deposit_balance.transactions.length > 0">
+                    <tr class="pagination" ng-show="data.summaryData.deposit_balance.total_count > perPage && data.summaryData.deposit_balance.transactions.length > 0">
                         <td colspan="8">
-                            <div class="search-pagination">
-                                <button type="button" class="button dark-grey next" ng-click="loadNextSet('DEPOSIT_BALANCE')" ng-disabled="isNextButtonDisabled('DEPOSIT_BALANCE')" translate>NEXT</button>
-                                <button type="button" class="button dark-grey prev" ng-click="loadPrevSet('DEPOSIT_BALANCE')" ng-disabled="isPrevButtonDisabled('DEPOSIT_BALANCE')" translate>PREVIOUS</button>
-                                <p>{{ 'SHOWING' | translate }} <strong>{{ data.summaryData.deposit_balance.start }}-{{ data.summaryData.deposit_balance.end }}</strong> {{ 'OF' | translate }} <strong>{{ data.summaryData.deposit_balance.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
-                            </div>
+                            <rv-pagination page-options="depositPagination" page-data="data.summaryData.deposit_balance"></rv-pagination>
                         </td>
                     </tr>
                 </tbody>
@@ -64,8 +60,8 @@
         </div>
 
         <div class="journal-summary">
-            <h3 ng-if="(data.summaryData.guest_debits !== 0 || data.summaryData.guest_debits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.guest_balance.active }" ng-click="toggleJournalSummaryItem('GUEST_BALANCE')" translate>GUEST_BAL</h3>
-            <h3 ng-if="(data.summaryData.guest_debits === 0 && data.summaryData.guest_debits === 0)" translate>GUEST_BAL</h3>
+            <h3 ng-if="(data.summaryData.guest_debits !== 0 || data.summaryData.guest_credits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.guest_balance.active }" ng-click="toggleJournalSummaryItem('GUEST_BALANCE')" translate>GUEST_BAL</h3>
+            <h3 ng-if="(data.summaryData.guest_debits === 0 && data.summaryData.guest_credits === 0)" translate>GUEST_BAL</h3>
             <ul>
                 <li><span>{{currencySymbol}}{{data.summaryData.guest_opening_balance | number: precisonTwo }}</span></li>
                 <li><span>{{currencySymbol}}{{data.summaryData.guest_debits | number: precisonTwo }}</span></li>
@@ -96,20 +92,16 @@
                         <td>{{item.name}}</td>
                         <td>{{item.reservation_number}}</td>
                         <td>{{item.type}}</td>
-                        <td ng-bind-html="item.details"></td>
+                        <td class="details" ng-bind-html="item.details"></td>
                         <td>{{item.time}}</td>
                         <td>{{item.charge_code}}</td>
                         <td>{{item.charge_desc}}</td>
                         <td>{{item.debit | number: precisonTwo}}</td>
                         <td>{{item.credit | number: precisonTwo}}</td>
                     </tr>
-                    <tr class="pagination" ng-show="data.summaryData.guest_balance.total_count > data.filterData.perPage && data.summaryData.guest_balance.transactions.length > 0">
+                    <tr class="pagination" ng-show="data.summaryData.guest_balance.total_count > perPage && data.summaryData.guest_balance.transactions.length > 0">
                         <td colspan="8">
-                            <div class="search-pagination">
-                                <button type="button" class="button dark-grey next" ng-click="loadNextSet('GUEST_BALANCE')" ng-disabled="isNextButtonDisabled('GUEST_BALANCE')" translate>NEXT</button>
-                                <button type="button" class="button dark-grey prev" ng-click="loadPrevSet('GUEST_BALANCE')" ng-disabled="isPrevButtonDisabled('GUEST_BALANCE')" translate>PREVIOUS</button>
-                                <p>{{ 'SHOWING' | translate }} <strong>{{ data.summaryData.guest_balance.start }}-{{ data.summaryData.guest_balance.end }}</strong> {{ 'OF' | translate }} <strong>{{ data.summaryData.guest_balance.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
-                            </div>
+                            <rv-pagination page-options="guestPagination" page-data="data.summaryData.guest_balance"></rv-pagination>
                         </td>
                     </tr>
                 </tbody>
@@ -149,20 +141,16 @@
                         <td>{{item.name}}</td>
                         <td>{{item.reservation_number}}</td>
                         <td>{{item.type}}</td>
-                        <td ng-bind-html="item.details"></td>
+                        <td class="details" ng-bind-html="item.details"></td>
                         <td>{{item.time}}</td>
                         <td>{{item.charge_code}}</td>
                         <td>{{item.charge_desc}}</td>
                         <td>{{item.debit | number: precisonTwo}}</td>
                         <td>{{item.credit | number: precisonTwo}}</td>
                     </tr>
-                    <tr class="pagination" ng-show="data.summaryData.ar_balance.total_count > data.filterData.perPage && data.summaryData.ar_balance.transactions.length > 0">
+                    <tr class="pagination" ng-show="data.summaryData.ar_balance.total_count > perPage && data.summaryData.ar_balance.transactions.length > 0">
                         <td colspan="8">
-                            <div class="search-pagination">
-                                <button type="button" class="button dark-grey next" ng-click="loadNextSet('AR_BALANCE')" ng-disabled="isNextButtonDisabled('AR_BALANCE')" translate>NEXT</button>
-                                <button type="button" class="button dark-grey prev" ng-click="loadPrevSet('AR_BALANCE')" ng-disabled="isPrevButtonDisabled('AR_BALANCE')" translate>PREVIOUS</button>
-                                <p>{{ 'SHOWING' | translate }} <strong>{{ data.summaryData.ar_balance.start }}-{{ data.summaryData.ar_balance.end }}</strong> {{ 'OF' | translate }} <strong>{{ data.summaryData.ar_balance.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
-                            </div>
+                            <rv-pagination page-options="arPagination" page-data="data.summaryData.ar_balance"></rv-pagination>
                         </td>
                     </tr>
                 </tbody>

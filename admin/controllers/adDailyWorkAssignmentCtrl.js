@@ -329,7 +329,12 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.$emit('hideLoader');
 				$scope.roomTypesList = data;
 			};
-			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchRoomTypes, {}, rtCallback);
+			//hide suite as per CICO-24369
+			var params = {
+				exclude_suite : true
+			};
+
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchRoomTypes, params, rtCallback);
 
 			var resHkCallback = function(data) {
 				$scope.$emit('hideLoader');

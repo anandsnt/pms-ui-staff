@@ -1,0 +1,59 @@
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <ad-form-header-with-back-button cancel-action="goBackToPreviousState"
+                                     form-title="{{'TRAVELCLICK_CRS_SETUP_HEADER'|translate}}"></ad-form-header-with-back-button>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <div class="form float">
+            <ad-form-title full-width="true" form-title="{{'TRAVELCLICK_CRS_SUB_TITLE'| translate}}"></ad-form-title>
+            <fieldset class="holder left">
+                <ad-toggle-button is-checked="CRSConfig.active"
+                                  label="{{'TRAVELCLICK_CRS_ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+            </fieldset>
+            <fieldset class="holder right" ng-if="CRSConfig.active">
+                <div class="entry full-width">
+                    <label>
+                        FULL REFRESH
+                        <span ng-if="!!CRSConfig.full_refresh && !!lastRefreshedTimeMark">
+                            {{'SITEMINDER_LAST_REFRESH'|translate}} : {{lastRefreshedTimeMark}} at {{CRSConfig.full_refresh | date: dateFormat + ' hh:mm:ss a'}}
+                        </span>
+                    </label>
+                    <button type="button" like-type="common" class="button ng-binding blue sm-refresh-btn"
+                            ng-click="showRefreshDialog()" translate>
+                        RUN
+                    </button>
+                </div>
+            </fieldset>
+            <fieldset class="holder left">
+                <ad-textbox inputtype="text" value="CRSConfig.hotel_code" name="hotel-code" id="hotel-code"
+                            label="{{'TRAVELCLICK_CRS_HOTEL_CODE'| translate}}" styleclass="full-width"
+                            ng-if="CRSConfig.active"></ad-textbox>
+                <ad-textbox inputtype="text" value="CRSConfig.access_url" name="access-url" id="hotel-code"
+                            label="{{'TRAVELCLICK_CRS_ACCESS_URL'| translate}}" styleclass="full-width"
+                            ng-if="CRSConfig.active"></ad-textbox>
+                <ad-textbox inputtype="text" value="CRSConfig.username"
+                            label="{{'TRAVELCLICK_CRS_USERNAME'| translate}}" ng-if="CRSConfig.active"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="password" value="CRSConfig.password"
+                            label="{{'TRAVELCLICK_CRS_PASSWORD'| translate}}" styleclass="full-width"
+                            ng-if="CRSConfig.active"></ad-textbox>
+            </fieldset>
+            <fieldset class="holder right" ng-if="CRSConfig.active">
+                <ad-dropdown-name name="default-rate" savemodel="CRSConfig.default_rate" valueproperty="id"
+                                  property="rate_name" list="channelManagerRates"
+                                  label="{{'DEFAULT_EXTERNAL_RATE_CODE'| translate}}" div-class="full-width">
+                </ad-dropdown-name>
+                <ad-dropdown-name name="default-origin" savemodel="CRSConfig.default_origin" valueproperty="value"
+                                  property="name" list="bookingOrigins"
+                                  label="{{'SITEMINDER_DEFAULT_BOOKING_ORIGIN'| translate}}" div-class="full-width">
+                </ad-dropdown-name>
+                <ad-dropdown-name name="default-payment" savemodel="CRSConfig.default_payment_id"
+                                  valueproperty="id" property="description" list="paymentMethods"
+                                  label="{{'SITEMINDER_DEFAULT_PAYMENT_METHOD'| translate}}" div-class="full-width">
+                </ad-dropdown-name>
+            </fieldset>
+            <ad-save-cancel-area save-action="saveCRSSetup"
+                                 cancel-action="goBackToPreviousState"></ad-save-cancel-area>
+        </div>
+    </section>
+</div>

@@ -1,5 +1,5 @@
 <div class="block-wrapper">
-    <span class="block-title toggle has-arrow" ng-click="toggleActivityLogDetails()">Activity Log</span>
+    <span class="block-title toggle has-arrow" ng-class="{'active': !activityLog.hideDetails}" ng-click="toggleActivityLogDetails()">Activity Log</span>
     <div class="block-item" ng-class="{'hidden':activityLog.hideDetails}"> <!-- Remove class hidden when 'a.toggle' is clicked -->
         <a ng-click="showDetails()" class="button brand-colors" id="activity-log-button">
             Show Details
