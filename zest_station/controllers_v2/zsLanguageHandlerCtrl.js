@@ -31,8 +31,8 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
             }
             //if some default language is set and corresposnding file is updated
             else if (!!$scope.zestStationData.zest_lang.default_language) {
-                $scope.zestStationData.zest_lang.default_language = $scope.zestStationData.zest_lang.default_language;
                 var language = findTheDefaultLanguage();
+                $scope.zestStationData.selectedLanguage = language;
                 //when english is set as default language and 
                 //no english file is uploaded
                 if ($scope.zestStationData.zest_lang.default_language === "English" && !$scope.zestStationData.zest_lang.english_translations_file_updated) {

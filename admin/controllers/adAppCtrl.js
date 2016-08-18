@@ -444,6 +444,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			}, 10000);
 		});
 
+		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error){
+			$scope.$emit('hideLoader');
+			$scope.$broadcast("STATE_CHANGE_FAILURE", error);
+		});
+
 		/*
 		 * function for handling click operation on menu item
 		 * Here is a special case

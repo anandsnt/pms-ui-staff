@@ -112,19 +112,18 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         $scope.swipeData;
 
         var onFetchMLITokenResponse = function(response) {
-            if (response && response.status !== 'failure') {
-                $scope.$emit('hideLoader');
-                console.info('general callback');
-                console.info(response);
-                $scope.swipeData.token = response.data;
+            $scope.$emit('hideLoader');
+            console.info('general callback');
+            console.info(response);
+            $scope.swipeData.token = response;
+            saveSwipedCardMLI($scope.swipeData);
 
-                saveSwipedCardMLI($scope.swipeData);
-            } else {
-                console.warn(response);
-                $scope.$emit('hideLoader');
-                goToSwipeError();
-            }
+        };
 
+        var onFethMLIFailure = function(response){
+            console.warn(response);
+            $scope.$emit('hideLoader');
+            goToSwipeError();
         };
 
 
@@ -182,7 +181,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     'status': 'success'
                 });
             } else {
-                $scope.invokeApi(zsGeneralSrv.tokenize, getTokenFrom, onFetchMLITokenResponse);
+                $scope.invokeApi(zsGeneralSrv.tokenize, getTokenFrom, onFetchMLITokenResponse,onFethMLIFailure);
             }
 
         };
@@ -202,7 +201,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
         };
         var onCardSwipeResponse = function(evt, swipedCardData) {
-            if (readLocally()) {
+            if (readLocally() || swipeFromSocket()) {
                 console.log('processing local read from local reader: ' + JSON.stringify(swipedCardData));
                 processSwipeCardData(swipedCardData);
             }
@@ -253,20 +252,17 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $state.go('zest_station.error');
         };
 
-        var saveSwipedCardMLI = function(data) {
+        var saveSwipedCardMLI = function(response) {
             var token;
-            if (data) {
-                if (data.token) {
-                    data.data.token = data.token;
-                }
-                if (data.evt === null && data.data) {
-                    token = data.token;
-                    data = data.data;
-                } else {
-                    data = $scope.swipeData;
-                }
-            }
             //save the payment to guest card/reservation
+            if (response.evt === null && response.data) {
+                //ingenico/infinea
+                data = response.data;
+                data.token = response.token;
+            }else{
+                //MLI desktop swipe
+                data = response;
+            };
             var swipeOperationObj = new SwipeOperation();
             var postData = swipeOperationObj.createSWipedDataToSave(data);
             postData.reservation_id = $stateParams.reservation_id;
