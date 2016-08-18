@@ -1,5 +1,4 @@
 <!-- First column - Scheduled reports -->
-
 <div class="report-col main-col scrfailedollable buttons-1" ng-iscroll="REPORT_SCHEDULES_SCROLL"> <!-- Add vertical scroller here -->
     <div class="wrapper">
         <ul ng-hide="isAddingNew">
@@ -55,10 +54,13 @@
         <div class="wrapper">
             <h3>Schedule Parameters<span>{{ selectedEntityDetails.report.title }}</span></h3>
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-            <div class="entry" ng-hide="isGuestBalanceReport">
+            <div class="entry">
                 <label for="time-period">Time Period</label>
                 <div class="select">
-                    <select ng-model="scheduleParams.time_period_id" ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods" iscroll-stop-propagation>
+                    <select ng-model="scheduleParams.time_period_id"
+                        ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods"
+                        ng-disabled="isGuestBalanceReport"
+                        iscroll-stop-propagation>
                         <option value="">Time period</option>
                     </select>
                 </div>
@@ -79,7 +81,9 @@
             <div class="entry" ng-show="selectedEntityDetails.sort_fields.length">
                 <label>Sort By</label>
                 <div class="select">
-                    <select ng-model="scheduleParams.sort_field" ng-options="sortBy.value as sortBy.description for sortBy in selectedEntityDetails.sort_fields" iscroll-stop-propagation>
+                    <select ng-model="scheduleParams.sort_field"
+                        ng-options="sortBy.value as sortBy.description for sortBy in selectedEntityDetails.sort_fields | filter:showValidSortBy" iscroll-stop-propagation
+                    >
                         <option value="">Sort By</option>
                     </select>
                 </div>
@@ -91,7 +95,7 @@
         class="column-actions"
     >
         <button class="button green"
-            ng-click="saveSchedule()">Save Schedule</button>
+            ng-click="checkCanSaveSchedule()">Save Schedule</button>
         <button class="button red"
             ng-click="confirmDelete()">Delete Schedule</button>
     </div>
@@ -204,7 +208,7 @@
         class="column-actions"
     >
         <button class="button green"
-            ng-click="saveSchedule()">Save Schedule</button>
+            ng-click="checkCanSaveSchedule()">Save Schedule</button>
     </div>
 
     <div ng-show="isAddingNew"
@@ -245,13 +249,13 @@
         class="column-actions"
     >
         <button class="button green"
-            ng-click="saveSchedule()">Save Schedule</button>
+            ng-click="checkCanSaveSchedule()">Save Schedule</button>
     </div>
 
     <div ng-show="isAddingNew"
         class="column-actions"
     >
-        <button ng-click="checkCanCreate()"
+        <button ng-click="checkCanCreateSchedule()"
             class="button green">Create Schedule</button>
     </div>
 </div>

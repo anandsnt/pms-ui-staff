@@ -201,7 +201,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
         };
         var onCardSwipeResponse = function(evt, swipedCardData) {
-            if (readLocally() || $scope.zestStationData.ccReader === 'websocket') {
+            if (readLocally() || swipeFromSocket()) {
                 console.log('processing local read from local reader: ' + JSON.stringify(swipedCardData));
                 processSwipeCardData(swipedCardData);
             }
