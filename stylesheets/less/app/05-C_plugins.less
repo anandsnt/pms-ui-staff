@@ -2179,6 +2179,7 @@
             &.grid {
                 padding: 20px;
                 width: 550px;
+                max-height: 480px;
                 
                 .grid-wrapper {
                     .float;
@@ -2224,6 +2225,27 @@
                                 &:nth-child(6n) { margin-right: 0; }
                             }
                         }
+
+                        &.scrollable {
+                            position: relative;
+                            max-height: 320px;
+
+                            .wrapper {
+                                .float;
+                            }
+                        }
+                    }
+                }
+
+                .actions {
+                    margin-top: 20px;
+                    text-align: center;
+
+                    .button { 
+                        display: inline-block;
+                        width: auto;
+
+                        &.green { padding: 0 40px; }
                     }
                 }
 
@@ -2350,19 +2372,7 @@
                             }
                         }
                     }
-                }
-
-                .actions {
-                    margin-top: 20px;
-                    text-align: center;
-
-                    .button { 
-                        display: inline-block;
-                        width: auto;
-
-                        &.green { padding: 0 40px; }
-                    }
-                }
+                }                
             }
             
             /* Reservation confirmation modals ***/
