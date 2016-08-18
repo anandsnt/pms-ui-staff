@@ -190,9 +190,14 @@ angular.module('reportsModule')
         var __showFilterNames = {
             'SHOW_COMPANY': true,
             'SHOW_TRAVEL_AGENT': true,
+            
             // for CREDIT_CHECK_REPORT
             'INCLUDE_DUE_OUT': true,
-            'INCLUDE_INHOUSE': true
+            'INCLUDE_INHOUSE': true,
+
+            // for room ooo oos report
+            OOO: true,
+            OOS: true
         };
 
         var __chargeTypeFilterNames = {
@@ -679,6 +684,12 @@ angular.module('reportsModule')
                         .then( fillCampaignTypes );
                 }
 
+                else if ( 'FLOOR' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchFloors()
+                        .then( fillFloors );
+                }
+
                 else {
                     // no op
                 };
@@ -991,6 +1002,27 @@ angular.module('reportsModule')
                 checkAllCompleted();
             };
 
+            function fillFloors (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'FLOOR'});
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasFloorList = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'floor_number',
+                                defaultValue: 'Select Floors(s)'
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
+
             var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
                 var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
                     rateTypeListIds      = _.unique(rateTypeListIds),
@@ -1116,10 +1148,6 @@ angular.module('reportsModule')
                                 }
                             }
                         }
-
-                        console.log( '=====================' );
-                        console.log( report['title'] );
-                        console.log( report.hasByChargeGroup );
                     };
 
                     foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' }) || _.find(report['filters'], { value: 'SHOW_CHARGE_CODES' });
@@ -1479,6 +1507,39 @@ angular.module('reportsModule')
                 report['sort_fields'][3] = null;
                 report['sort_fields'][4] = debit;
                 report['sort_fields'][5] = credit;
+            };
+
+            // need to reorder the sort_by options
+            // for guest balance report in the following order
+            if ( report['title'] === reportNames['ROOMS_OOO_OOS'] ) {
+                var roomNo, roomType, startDate, endDate;
+
+                _.each(report['sort_fields'], function(field) {
+                    if ( !! field ) {
+                        if ( 'ROOM_NO' === field.value ) {
+                            roomNo = angular.copy(field);
+                        }
+                        if ( 'ROOM_TYPE' === field.value ) {
+                            roomType = angular.copy(field);
+                        }
+                        if ( 'START_DATE' === field.value ) {
+                            startDate = angular.copy(field);
+                        }
+                        if ( 'END_DATE' === field.value ) {
+                            endDate = angular.copy(field);
+                        }
+                    }
+                });
+
+                report['sort_fields'] = [
+                    roomNo,
+                    roomType,
+                    null,
+                    startDate,
+                    endDate,
+                    null,
+                    null
+                ];
             };
         };
 
