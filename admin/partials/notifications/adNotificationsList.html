@@ -1,0 +1,32 @@
+<section id="replacing-div-first" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+	<div data-view="NotificationListView">
+		<!-- Notifications list -->
+		<section>
+			<header class="content-title float">
+				<h2>Notifications</h2>
+				<a ui-sref="admin" class="action add" >Add new</a>				
+			</header>
+			<section class="content-scroll">
+				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+				<table class="grid datatable table" template-pagination="nil" ng-table="tableParams">
+					<tbody>
+						<tr data-notification-id="{{notification.id}}" ng-repeat="notification in $data">
+							<td data-title="'Property Type'" sortable="'pms_type'" header-class="width-20">
+								<a ui-sref="admin.snthoteldetails({action:'edit',id:hotel.id})" class="title">
+									 <strong ng-bind-html="notification.pms_type"> </strong>
+								</a>
+							</td>
+							<td data-title="'Message'" sortable="'message'" header-class="width-40"><span class="number"> {{notification.message}} </span></td>
+							<td data-title="'Date'" sortable="'activates_at'" header-class="width-10" ng-bind-html="notification.activates_at"></td>
+							<td data-title="'Showing Date'" header-class="width-20" ng-bind-html="notification.hotel_code"></td>							
+							<td data-title="'Delete'" class="delete" header-class="delete header-class="width-10" ">
+								<a id="165" class="icons icon-delete large-icon" ng-click="deleteNotification($index, notification.id)">Delete this user</a>				
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+		</section>
+		
+	</div>
+</section>
