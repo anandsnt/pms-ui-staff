@@ -46,7 +46,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				$scope.emailList.slice(index + 1)
 			);
 
-			$scope.refreshFourthColumnScroll(true);
+			var reset = true;
+			$scope.refreshFourthColumnScroll(reset);
 		};
 		$scope.userAutoCompleteSimple = {
 			minLength: 3,
@@ -72,7 +73,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				this.value = '';
 
 				runDigestCycle();
-				$scope.refreshFourthColumnScroll(true);
+
+				var reset = true;
+				$scope.refreshFourthColumnScroll(reset);
 
 				return false;
 			},
@@ -104,10 +107,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				setupFilters();
 				applySavedFilters();
 
-				$scope.refreshSecondColumnScroll(true);
-				$scope.refreshThirdColumnScroll(true);
-				$scope.refreshSecondColumnScroll(true);
-				$scope.refreshFourthColumnScroll(true);
+				$scope.refreshAllOtherColumnScrolls();
 
 				$scope.$emit( 'hideLoader' );
 			};
@@ -150,10 +150,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			setupFilters();
 			applySavedFilters();
 
-			$scope.refreshSecondColumnScroll(true);
-			$scope.refreshThirdColumnScroll(true);
-			$scope.refreshSecondColumnScroll(true);
-			$scope.refreshFourthColumnScroll(true);
+			$scope.refreshAllOtherColumnScrolls();
 		}
 
 		$scope.getRepeatPer = function() {
@@ -458,6 +455,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 		$scope.refreshFourthColumnScroll = function(reset) {
 			refreshScroll(FOURTH_COLUMN_SCROLL, reset);
 		};
+		$scope.refreshAllOtherColumnScrolls = function() {
+			var reset = true;
+
+			$scope.refreshSecondColumnScroll(reset);
+			$scope.refreshThirdColumnScroll(reset);
+			$scope.refreshFourthColumnScroll(reset);
+		}
 
 
 
@@ -744,7 +748,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 					}
 				});
 
-				$scope.refreshReportSchedulesScroll(true);
+				var reset = true;
+				$scope.refreshReportSchedulesScroll(reset);
 				$scope.$emit( 'hideLoader' );
 			};
 
@@ -801,13 +806,16 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         $scope.goToNext = function() {
         	var noReset = true;
+        	var verReset = true;
 
         	if ( $scope.addingStage === STAGES.SHOW_PARAMETERS ) {
         		$scope.addingStage = STAGES.SHOW_DETAILS;
         		$scope.setViewCol( $scope.viewCols[2], noReset );
+        		$scope.refreshThirdColumnScroll(verReset);
         	} else if ( $scope.addingStage === STAGES.SHOW_DETAILS ) {
         		$scope.addingStage = STAGES.SHOW_DISTRIBUTION;
         		$scope.setViewCol( $scope.viewCols[3], noReset );
+        		$scope.refreshFourthColumnScroll(verReset);
         	}
 
         	$scope.scrollToLast();
