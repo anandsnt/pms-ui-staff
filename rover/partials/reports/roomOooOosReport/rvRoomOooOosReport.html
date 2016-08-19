@@ -45,18 +45,24 @@
             <tbody>
             	<!-- <tr ng-repeat="each in resultItem track by $index" class="{{ each.className }}" ng-include="'/assets/partials/reports/reservationByUserReport/rvReservationByUserReportRowContent.html'" ngrepeatend></tr> -->
 
-            	<tr class="row-break" ng-repeat="each in results track by $index">
-					<td>
+            	<tr ng-repeat="each in results track by $index" class="{{ each.className }}">
+					<td rowspan="{{ each.rowspan }}"
+						ng-show="each.isMainRow"
+					>
 						<strong class="title">{{ each.room_no }}</strong>
 					</td>
-					<td>{{ each.room_type }}</td>
+					<td rowspan="{{ each.rowspan }}"
+						ng-show="each.isMainRow"
+					>
+						{{ each.room_type }}
+					</td>
 					<td ng-show="'OUT_OF_ORDER' === each.status">OOO</td>
-					<td ng-show="'OUT_OF_STATUS' === each.status">OOS</td>
-					<td>{{ each.start_date }}</td>
-					<td>{{ each.end_date }}</td>
-					<td>{{ each.reason || ' ' }}</td>
+					<td ng-show="'OUT_OF_SERVICE' === each.status">OOS</td>
+					<td>{{ each.start_date | date:dateFormat }}</td>
+					<td>{{ each.end_date | date:dateFormat }}</td>
+					<td>{{ each.reason || '' }}</td>
 					<td>
-						<em>{{ each.comments || ' ' }}</em>
+						<em>{{ each.comments || '' }}</em>
 					</td>
 				</tr>
             </tbody>

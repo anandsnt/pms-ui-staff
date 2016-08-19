@@ -53,6 +53,10 @@ sntRover.factory('RVReportParserFac', [
                 return _.isEmpty(apiResponse) ? apiResponse : $_parseDataToSubArrays( reportName, apiResponse, options );
             }
 
+            else if ( reportName === reportNames['ROOMS_OOO_OOS'] ) {
+                return _.isEmpty(apiResponse) ? apiResponse : $_parseDataForRoomOOOOOSReport( reportName, apiResponse, options );
+            }
+
             // a common parser that data into meaningful info like - notes, guests, addons, compTAgrp
             // this can be reused by the parsers defined above
             else {
@@ -1008,6 +1012,63 @@ sntRover.factory('RVReportParserFac', [
 
             return returnObj;
         };
+
+        function $_parseDataForRoomOOOOOSReport ( reportName, apiResponse, options ) {
+            var groupedByKey = {},
+                returnAry = [];
+
+            var i, j, k;
+
+            if ( !! options['chosenSortBy'] && options['chosenSortBy'] === 'ROOM_NO' ) {
+                groupedByKey = _.groupBy(apiResponse, 'room_no');
+
+                _.each(groupedByKey, function(eachAry) {
+                    for (i = 0, j = eachAry.length, k = j - 1; i < j; i++) {
+                        if ( 0 === i ) {
+                            returnAry.push(
+                                $.extend(
+                                    {},
+                                    eachAry[i],
+                                    {
+                                        rowspan: eachAry.length,
+                                        isMainRow: true,
+                                    }
+                                )
+                            );
+                        } else if ( k === i ) {
+                            returnAry.push(
+                                $.extend(
+                                    {},
+                                    _.omit(eachAry[i], ['room_no', 'room_type']),
+                                    {
+                                        className: 'row-break'
+                                    }
+                                )
+                            );
+                        } else {
+                            returnAry.push(
+                                _.omit(eachAry[i], ['room_no', 'room_type'])
+                            )
+                        }
+                    }
+                });
+            } else {
+                _.each(apiResponse, function(result) {
+                    returnAry.push(
+                        $.extend(
+                            {},
+                            result,
+                            {
+                                className: 'row-break',
+                                isMainRow: true,
+                            }
+                        )
+                    );
+                });
+            }
+
+            return returnAry;
+        };            
 
         return factory;
     }

@@ -526,7 +526,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 				'checkNote'       : $scope.chosenReport.chosenOptions['include_notes'],
 				'checkGuest'      : $scope.chosenReport.chosenOptions['show_guests'],
 				'checkCancel'     : $scope.chosenReport.chosenOptions['include_cancelled'] || $scope.chosenReport.chosenOptions['include_cancelled'],
-				'checkRateAdjust' : $scope.chosenReport.chosenOptions['show_rate_adjustments_only']
+				'checkRateAdjust' : $scope.chosenReport.chosenOptions['show_rate_adjustments_only'],
+				'chosenSortBy'    : $scope.chosenReport.chosenSortBy
 			};
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions, $scope.$parent.resultsTotalRow) );
 			// if there are any results
