@@ -45,7 +45,7 @@
         <span class="name">{{ roomDetails.guest_name }}</span>
       </h2>
       <!-- If Guest Due Out, show Check Out button -->
-        <button ng-if="!roomDetails.is_suite" type="button" class="button red" ng-show="roomDetails.reservation_is_due_out && hasCheckOutReservationPermission()" ng-click="checkOutReservation()">Check Out</button>
+        <button ng-if="roomDetails.is_suite === false" type="button" class="button red" ng-show="roomDetails.reservation_is_due_out && hasCheckOutReservationPermission()" ng-click="checkOutReservation()">Check Out</button>
 
     </div>
   </div>
