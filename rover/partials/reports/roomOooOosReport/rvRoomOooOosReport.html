@@ -8,23 +8,32 @@
 
 <div id="report-content" class="report-content scrollable" ng-hide="hasNoResults" ng-class="{ 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
 	<div class="wrapper">
-	    <table class="room-reports">
+	    <table class="guest-reports room-reports">
 	    	<thead>
                 <tr>
                     <th class="cell-110">
-                        <span class="sort" ng-class="{ 'sorting-asc' : isAsc(0), 'sorting-desc': isDesc(0) }">Room No.</span>
+                        <span class="sort"
+                        	ng-class="{ 'sorting-asc' : isAsc(0), 'sorting-desc': isDesc(0) }"
+                        	ng-click="sortResultBy(chosenReport.sortByOptions[0], chosenReport)">Room No.</span>
                     </th>
                     <th class="cell-140">
-                        <span class="sort" ng-class="{ 'sorting-asc' : isAsc(1), 'sorting-desc': isDesc(1) }">Room Type</span>
+                        <span class="sort"
+                        	ng-class="{ 'sorting-asc' : isAsc(1), 'sorting-desc': isDesc(1) }"
+                        	ng-click="sortResultBy(chosenReport.sortByOptions[1], chosenReport)">Room Type</span>
                     </th>
                     <th class="cell-80">
                         <span>Status</span>
                     </th>
                     <th class="cell-110">
-                        <span class="sort" ng-class="{ 'sorting-asc' : isAsc(3), 'sorting-desc': isDesc(3) }">Start Date</span>
+                        <span class="sort"
+                        	ng-class="{ 'sorting-asc' : isAsc(3), 'sorting-desc': isDesc(3) }"
+                        	ng-click="sortResultBy(chosenReport.sortByOptions[3], chosenReport)">Start Date</span>
                     </th>
                     <th class="cell-110">
-                        <span class="sort" ng-class="{ 'sorting-asc' : isAsc(4), 'sorting-desc': isDesc(4) }">End Date</span>
+                        <span class="sort"
+                        	ng-class="{ 'sorting-asc' : isAsc(4), 'sorting-desc': isDesc(4) }"
+                        	ng-click="sortResultBy(chosenReport.sortByOptions[4], chosenReport)"	
+                        >End Date</span>
                     </th>
                     <th><span>Reason</span></th>
                     <th><span>Comments</span></th>
@@ -34,7 +43,22 @@
             <tfoot ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot>
 
             <tbody>
-            	<tr ng-repeat="each in resultItem track by $index" class="{{ each.className }}" ng-include="'/assets/partials/reports/reservationByUserReport/rvReservationByUserReportRowContent.html'" ngrepeatend></tr>
+            	<!-- <tr ng-repeat="each in resultItem track by $index" class="{{ each.className }}" ng-include="'/assets/partials/reports/reservationByUserReport/rvReservationByUserReportRowContent.html'" ngrepeatend></tr> -->
+
+            	<tr class="row-break" ng-repeat="each in results track by $index">
+					<td>
+						<strong class="title">{{ each.room_no }}</strong>
+					</td>
+					<td>{{ each.room_type }}</td>
+					<td ng-show="'OUT_OF_ORDER' === each.status">OOO</td>
+					<td ng-show="'OUT_OF_STATUS' === each.status">OOS</td>
+					<td>{{ each.start_date }}</td>
+					<td>{{ each.end_date }}</td>
+					<td>{{ each.reason || ' ' }}</td>
+					<td>
+						<em>{{ each.comments || ' ' }}</em>
+					</td>
+				</tr>
             </tbody>
 	    </table>
 	</div>
