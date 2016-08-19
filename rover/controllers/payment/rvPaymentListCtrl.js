@@ -99,6 +99,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 
      });
 
+
 	$scope.openAddNewPaymentModel = function(){
 		$scope.closeDialog();
 		$rootScope.$emit('OPENPAYMENTMODEL');

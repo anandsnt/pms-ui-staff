@@ -757,6 +757,18 @@ sntRover.controller('RVbillCardController',
 	 	 return showGuestBalance;
 	 };
 
+	 var fetchPaymentTypesAndOpenPaymentModal = function(passData, paymentData) {
+		 $scope.callAPI(RVPaymentSrv.renderPaymentScreen, {
+			 params: {
+			     direct_bill: false
+			 },
+			 onSuccess : function(response) {
+				 paymentData.paymentTypes = response;
+				 $scope.openPaymentDialogModal(passData, paymentData);
+			 }
+		 });
+	 };
+
 	 $scope.addNewPaymentModal = function(swipedCardData){
 	 	//Current active bill is index - adding 1 to get billnumber
 	 	var billNumber = parseInt($scope.currentActiveBill)+parseInt(1);
@@ -784,7 +796,7 @@ sntRover.controller('RVbillCardController',
 				$scope.setScroller('cardsList');
 				$scope.addmode = false;
 				passData.details.hideDirectBill = true;
-		 		$scope.openPaymentDialogModal(passData, paymentData);
+				fetchPaymentTypesAndOpenPaymentModal(passData, paymentData);
 
   	 	} else {
 
@@ -793,7 +805,7 @@ sntRover.controller('RVbillCardController',
 
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 				if(swipedCardDataToRender.swipeFrom !== "payButton" && swipedCardDataToRender.swipeFrom !== 'billingInfo'){
-					$scope.openPaymentDialogModal(passData, paymentData);
+					fetchPaymentTypesAndOpenPaymentModal(passData, paymentData);
 				} else if(swipedCardDataToRender.swipeFrom === "payButton") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
 				}
