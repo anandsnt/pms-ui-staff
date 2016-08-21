@@ -4,7 +4,7 @@
 		<section>
 			<header class="content-title float">
 				<h2>Notifications</h2>
-				<a ui-sref="admin" class="action add" >Add new</a>				
+				<a ui-sref="admin.addeditnotification({action:'add'})" class="action add" >Add new</a>				
 			</header>
 			<section class="content-scroll">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -12,7 +12,7 @@
 					<tbody>
 						<tr data-notification-id="{{notification.id}}" ng-repeat="notification in $data">
 							<td data-title="'Property Type'" sortable="'pms_type'" header-class="width-20">
-								<a ui-sref="admin.snthoteldetails({action:'edit',id:hotel.id})" class="title">
+								<a ui-sref="admin.addeditnotification({action:'edit',id:notification.id})" class="title">
 									 <strong ng-bind-html="notification.pms_type"> </strong>
 								</a>
 							</td>
@@ -26,7 +26,6 @@
 					</tbody>
 				</table>
 			</section>
-		</section>
-		
+		</section>		
 	</div>
 </section>

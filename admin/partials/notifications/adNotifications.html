@@ -1,0 +1,62 @@
+<section id="replacing-div-first" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+   <div data-view="NotificationListView">
+      <!-- Notifications list -->
+      <section>
+         <header class="content-title float">
+            <h2>Notifications</h2>
+         </header>
+         <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+               <div style="display: block;" id="add-new" class="edit-data">
+                  <div class="data-holder">
+                     <form class="form inline-form float">
+                        <div class="form-title">
+                           <h3 translate><span>Edit&nbsp;</span>Notifications</h3>
+                           <em class="status">{{'MANDATORY_FIELDS_MESSAGE1' | translate}}<strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
+                        </div>
+                            <div class="entry">                              
+                                 <label for="notification-type-id">
+                                 TYPE
+                                 </label>
+                                 <div class="select">
+                                    <select name="notification-type-id" id="notification-type-id" ng-model="notification.type">
+                                      
+                                       <option value="BOTH" translate>Both</option>
+                                       <option value="STANDALONE" translate>Standalone</option>
+                                       <option value="OVERLAY" translate>Overlay</option>
+                                    </select>
+                                 </div>
+                             
+                           </div>                          
+                           <ad-textarea rows="4" value="notification.message" div-class="full-width" text-area-class="full-width" name="desc" id="desc" label="{{'Message' | translate}}" placeholder="Enter message"></ad-textarea>
+                           <ad-textbox value="notification.action_source"styleclass="full-width"  label="{{'LINK' | translate}}" placeholder="{{'Enter notification name' | translate}}" required="yes"></ad-textbox>
+
+                            <div class="entry has-datepicker margin">
+                              <label>{{'ACTIVE FROM DATE' | translate}}
+                              </label>
+                              <input type="text" ng-model="notification.activates_at"readonly="" placeholder="Select Start Date" class="date-picker-input-small" >
+                              <button ng-click="popupCalendar()" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
+                              ...
+                              </button>
+                           </div>
+                           <div class="entry">
+                              <ad-textbox value="notification.duaration" styleclass="half-width"  name="days" id="days" label="days" placeholder="Duration"></ad-textbox>
+                              <label>
+                              </label>
+                           </div>
+                                                                          
+                        <div class="actions float">
+                           <button type="button" id="cancel" class="button blank edit-data-inline" ng-click="onCancelEdit($index)" translate>
+                           CANCEL
+                           </button>
+                           <button type="button" id="save" class="button green edit-data-inline" ng-click="save(notification)" translate>
+                           SAVE_CHANGES
+                           </button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+         </section>
+      </section>
+   </div>
+</section>
