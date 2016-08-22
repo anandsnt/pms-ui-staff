@@ -586,7 +586,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         /****************** init ***********************************************/
 
         (function() {
-            $scope.actionType = !!$scope.actionType ? $scope.actionType : 'DEFAULT';
+            $scope.actionType = $scope.actionType || 'DEFAULT';
 
             /**
              * NOTE: action types for add payment have to be named with ADD_PAYMENT (case-sensitive)

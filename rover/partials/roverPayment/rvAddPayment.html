@@ -30,14 +30,13 @@
                     workstation-id = "{{workstation_id}}"
                     bill-number="billNumber"
                     payment-types="paymentData.paymentTypes"
-                    selected-payment-type="depositBalanceMakePaymentData.payment_type"
-                    selected-c-c="depositDetails.attached_card"
+                    selected-payment-type="selectedPaymentType"
+                    selected-c-c="selectedCC"
                     amount='depositBalanceMakePaymentData.amount'
                     action-type="{{getAddActionType()}}"
                     deposit-policy-name="{{depositPolicyName}}"
                     is-editable='isDepositEditable'
                     is-rate-suppressed='isReservationRateSuppressed'
-                    has-permission='hasPermissionToMakePayment()'
                     form-template-url='/assets/partials/staycard/rvStaycardAddPaymentPopup.html'
                     first-name="{{passData.details.firstName}}"
                     last-name="{{passData.details.lastName}}"

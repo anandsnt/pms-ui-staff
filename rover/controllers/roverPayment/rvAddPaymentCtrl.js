@@ -159,15 +159,15 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
             (function() {
                 // In case this is opened on a swipe;
                 // TODO : Tell the directive that this is from a swipe
-                setTimeout(function() {
-                    if (!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)) {
-                        $scope.dataToSave.paymentType = "CC";
-                    }
-                }, 2000);
+                if (!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)) {
+                    $scope.selectedPaymentType = "CC";
+                    $scope.selectedCC = $scope.passData.details.swipedDataToRenderInScreen;
+                }
 
                 $scope.billNumber = $scope.passData.fromBill || 1;
 
             })();
 
         }
-    ]);
+    ])
+;
