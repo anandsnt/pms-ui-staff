@@ -1,7 +1,21 @@
 <div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
 
 <!-- Removed the animation class added while drawer menu open/close as it may be conflicting with ui-view animations -->
-<div class="container" ng-click="closeDrawerMenu()" ng-class="{ 'return-back': returnBack }" ng-show="!kiosk">
+<div class="container" class="has-release-notes" ng-click="closeDrawerMenu()" ng-class="{ 'return-back': returnBack, 'has-release-notes':!!activeNotification }" ng-show="!kiosk">
+	<div class="release-notes note" ng-if="!!activeNotification&&showNotificationForCurrentUser">
+		<span class="release-notes_text">
+		{{activeNotification.message}}
+		</span>
+		<div class="release-notes_action">
+			<label class="checkbox inline">
+				<span class="icon-form icon-checkbox "></span>
+				<input type="checkbox" value="1" ng-click="changeNotificationStatus(activeNotification)"/>
+				Don't Show Again
+			</label>
+			<button class="button blank" ng-click="cancelReleaseNote(activeNotification)">Close</button>
+			<button class="button blue" ng-click="showReleaseNote(activeNotification)">View Details</button>
+		</div>
+	</div>	
 	<div class="ui-router-wrapper">		
 		<div ui-view class="main-view"></div>
 	</div>

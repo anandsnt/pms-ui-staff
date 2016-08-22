@@ -17,6 +17,7 @@
                             <div class="entry">                              
                                  <label for="notification-type-id">
                                  PROPERTY TYPE
+                                 <strong>*</strong>
                                  </label>
                                  <div class="select">
                                     <select name="notification-type-id" id="notification-type-id" ng-model="notification.pms_type">
@@ -27,11 +28,12 @@
                                  </div>
                              
                            </div>                          
-                           <ad-textarea rows="4" value="notification.message" div-class="full-width" text-area-class="full-width" name="desc" id="desc" label="{{'MARKETING TEXT' | translate}}" placeholder="Enter message"></ad-textarea required="yes">
-                           <ad-textbox value="notification.action_source" styleclass="full-width"  label="{{'LINK' | translate}}" placeholder="{{'Enter notification name' | translate}}" required="yes"></ad-textbox>
+                           <ad-textarea rows="4" value="notification.message" div-class="full-width" text-area-class="full-width" name="desc" id="desc" label="{{'MARKETING TEXT' | translate}}" placeholder="Enter message" required="true"></ad-textarea required="yes">
+                           <ad-textbox value="notification.action_source" styleclass="full-width"  label="{{'LINK' | translate}}" placeholder="{{'Enter notification name' | translate}}" ></ad-textbox>
 
                             <div class="entry has-datepicker margin">
                               <label>{{'ACTIVE FROM DATE' | translate}}
+                              <strong>*</strong>
                               </label>
                               <input type="text" ng-model="notification.activates_at"readonly="" placeholder="Select Start Date" class="date-picker-input-small" >
                               <button ng-click="popupCalendar()" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
@@ -39,7 +41,7 @@
                               </button>
                            </div>
                            <div class="entry">
-                              <ad-textbox value="notification.duration" styleclass="half-width"  name="days" id="days" label="NUMBER OF ACTIVE DAYS" placeholder="Duration"></ad-textbox>
+                              <ad-textbox value="notification.duration" styleclass="half-width"  name="days" id="days" label="NUMBER OF ACTIVE DAYS" placeholder="Duration" required="yes"></ad-textbox>
                               <label>
                               </label>
                            </div>
