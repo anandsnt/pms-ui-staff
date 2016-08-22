@@ -951,15 +951,31 @@
                         .pull-left;
                     }
 
-                    .icon-queued {
+                    .reservation-status {
+                        position: relative;
+                        padding-top: 10px;
+                        width: 40px;
+                        .pull-left;
+                    }
+
+                    .room-icons {
                         position: absolute;
                         top: 10px;
                         right: 0;
-                        background-position: 0 -3480px; 
+                    }
+
+                    .icon-queued,
+                    .icon-suite {
+                        float:left;
+                    }
+                     
+
+                    .icon-queued { 
+                        margin-left: 5px;
+                        background-position: 4px -3480px; 
                         background-size: 100px;
                         .size(20px, 30px);
                     }
-
                   
                     .room-info {
                         padding-top: 12px;
