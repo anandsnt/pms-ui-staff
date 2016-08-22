@@ -118,7 +118,12 @@ sntZestStation.service('zsBaseWebSrv', ['$http', '$q', '$window','$rootScope', f
 			httpDict.params = params;
 		} else if (httpMethod === 'POST' || httpMethod === 'PUT') {
 			httpDict.data = params;
+			if(typeof $rootScope.workstation_id !== 'undefined') {
+				httpDict.data.workstation_id = $rootScope.workstation_id;
+			}
 		};
+
+		
 
 		$http(httpDict).success(function(response, status, headers) {
 			//202 ---> The request has been accepted for processing, but the processing has not been completed.

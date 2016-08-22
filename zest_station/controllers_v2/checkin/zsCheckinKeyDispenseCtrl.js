@@ -10,14 +10,14 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 	function($scope, $stateParams, $state, zsEventConstants, $controller, zsGeneralSrv, $timeout, $filter) {
 
 		/**********************************************************************************************
-		**		Please note that, not all the stateparams passed to this state will not be used in this state, 
-        **       however we will have to pass this so as to pass again to future states which will use these.
-        **       
-		**		Expected state params -----> reservation_id, room_no,  first_name, guest_id and email			  
-		**		Exit function -> $scope.goToNextScreen								
-		**																		 
-		***********************************************************************************************/
-		
+		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
+		 **       however we will have to pass this so as to pass again to future states which will use these.
+		 **       
+		 **		Expected state params -----> reservation_id, room_no,  first_name, guest_id and email			  
+		 **		Exit function -> $scope.goToNextScreen								
+		 **																		 
+		 ***********************************************************************************************/
+
 		/**
 		 *    MODES inside the page
 		 *    
@@ -43,6 +43,8 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			//hide close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.mode = "DISPENSE_KEY_MODE";
+			console.info('station settings;', $scope.zestStationData);
+			$scope.setScreenIcon('card');
 		}();
 
 		var stateParams = {
@@ -52,14 +54,15 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			'room_no': $stateParams.room_no,
 			'first_name': $stateParams.first_name
 		};
-                $scope.room = $stateParams.room_no;
-
+		$scope.first_name = $stateParams.first_name;
+		$scope.room = $stateParams.room_no;
+		console.info('room number is: ', $scope.room);
 
 		$scope.reEncodeKey = function() {
 			$scope.mode = "DISPENSE_KEY_MODE";
 		};
 
-		var changePageModeToFailure = function(){
+		var changePageModeToFailure = function() {
 			$scope.mode = "DISPENSE_KEY_FAILRURE_MODE";
 			$scope.runDigestCycle();
 		};
@@ -87,15 +90,23 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		 *  if webscoket ready state is not ready
 		 */
 		var dispenseKey = function() {
-			//check if socket is open
-			if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
-				$scope.socketOperator.DispenseKey($scope.dispenseKeyData);
+			if ($scope.inDemoMode()) {
+				setTimeout(function() {
+					saveUIDToReservationSuccsess();
+					$scope.runDigestCycle();
+				}, 3500);
+
 			} else {
-				$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
+				//check if socket is open
+				if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+					$scope.socketOperator.DispenseKey($scope.dispenseKeyData);
+				} else {
+					$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
+				}
 			}
 		};
 
-		
+
 
 		var noOfKeysCreated = 0;
 		/**
@@ -103,22 +114,23 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		 * @param  {[type]} uid [description]
 		 * @return {[type]}     [description]
 		 */
-		var saveUIDToReservation = function(uid) {
-			var saveUIDToReservationSuccsess = function() {
-				noOfKeysCreated++;
+		var saveUIDToReservationSuccsess = function() {
+			noOfKeysCreated++;
 
-				if ($scope.noOfKeysSelected === noOfKeysCreated) {
-					//all keys are made
-					$scope.mode = "KEY_CREATION_SUCCESS_MODE";
-					revertFailureReason();
-				} else if ($scope.noOfKeysSelected > noOfKeysCreated) {
-					//if more key is needed
-					$scope.mode = "KEY_ONE_CREATION_SUCCESS_MODE";
-					revertFailureReason();
-					//provide some timeout for user to grab keys
-					$timeout(dispenseKey, 6000);
-				}
-			};
+			if ($scope.noOfKeysSelected === noOfKeysCreated) {
+				//all keys are made
+				$scope.mode = "KEY_CREATION_SUCCESS_MODE";
+				revertFailureReason();
+			} else if ($scope.noOfKeysSelected > noOfKeysCreated) {
+				//if more key is needed
+				$scope.mode = "KEY_ONE_CREATION_SUCCESS_MODE";
+				revertFailureReason();
+				//provide some timeout for user to grab keys
+				$timeout(dispenseKey, 6000);
+			}
+		};
+		var saveUIDToReservation = function(uid) {
+
 			$scope.callAPI(zsGeneralSrv.saveUIDtoRes, {
 				params: {
 					reservation_id: $scope.selectedReservation.reservationId,
@@ -157,21 +169,39 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		 * @return {[type]}          [description]
 		 */
 		var localEncodingSuccsess = function(response) {
-			if (response.key_info && response.key_info[0]) {
-				if (response.key_info[0].base64) {
-					$scope.dispenseKeyData = response.key_info[0].base64;
+			if ($scope.inDemoMode()) {
+				setTimeout(function(){
 					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
 					dispenseKey();
-				}
+				},2000);
+
 			} else {
-				onGeneralFailureCase();
+				if (response.key_info && response.key_info[0]) {
+					if (response.key_info[0].base64) {
+						$scope.dispenseKeyData = response.key_info[0].base64;
+						$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
+						dispenseKey();
+					} else {
+						onGeneralFailureCase();
+					}
+				} else {
+					onGeneralFailureCase();
+				}
 			}
 		};
+		$scope.$on('printLocalKeyCordovaFailed', function(evt, response) {
+			console.warn('error: ', response);
+			onGeneralFailureCase();
+		});
+
+		$scope.$on('continueFromCordovaKeyWrite', function() {
+			remoteEncodingSuccsess();
+		});
 		/**
 		 * [initMakeKey description]
 		 * @return {[type]} [description]
 		 */
-		var initMakeKey = function() {
+		var startMakingKey = function(keyNo) {
 			var onResponseSuccess;
 			var params = {
 				"is_additional": false,
@@ -180,28 +210,84 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 				"reservation_id": $scope.selectedReservation.reservationId
 			};
 
+			if (keyNo){
+				params.key = keyNo;
+				if (keyNo === 2){
+					params.is_additional = true;
+				}
+			};
+
 			if (!$scope.remoteEncoding) {
 				params.uid = null;
 				onResponseSuccess = localEncodingSuccsess;
 			} else {
-				if ($scope.noOfKeysSelected === 1) {
-					$scope.mode = 'SOLO_KEY_CREATION_IN_PROGRESS_MODE';
-				} else if (noOfKeysCreated === 0) {
-					//one key has been made out of total 2
-					$scope.mode = 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
-				} else {
-					//do nothing
-				}
 				params.key_encoder_id = $scope.zestStationData.key_encoder_id;
 				onResponseSuccess = remoteEncodingSuccsess;
 			};
 
-			$scope.callAPI(zsGeneralSrv.encodeKey, {
-				params: params,
-				"loader": "none", //to hide loader
-				'successCallBack': onResponseSuccess,
-				'failureCallBack': onGeneralFailureCase
-			});
+
+			if ($scope.inDemoMode()) {
+				setTimeout(function(){
+					onResponseSuccess({
+						'status': 'success'
+					});
+				},1200);
+			} else {
+				if ($scope.writeLocally()) {
+					console.log('write locally');
+					//encode / dispense key from infinea || ingenico
+					//local encoding + infinea
+					if ($scope.inDemoMode()) {
+						setTimeout(function() {
+								onSuccessWriteKeyDataLocal();
+							}, 2800) //add some delay for demo purposes
+					} else {
+
+						$scope.$emit('printLocalKeyCordova', $scope.selectedReservation.reservationId, $scope.noOfKeysSelected);
+						return;
+					};
+				} else {
+					$scope.callAPI(zsGeneralSrv.encodeKey, {
+						params: params,
+						"loader": "none", //to hide loader
+						'successCallBack': onResponseSuccess,
+						'failureCallBack': onGeneralFailureCase
+					});
+				}
+
+			}
+		};
+
+
+
+
+
+		$scope.readyForUserToPressMakeKey = true;
+		var initMakeKey = function() {
+			console.info('waiting on user to press make key, which will start key create')
+
+			if ($scope.noOfKeysSelected === 1) {
+				$scope.mode = 'SOLO_KEY_CREATION_IN_PROGRESS_MODE';
+			} else if (noOfKeysCreated === 0) {
+				//one key has been made out of total 2
+				$scope.mode = 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
+			} else {
+				//do nothing
+			}
+			if ($scope.remoteEncoding) {
+				$scope.readyForUserToPressMakeKey = true;
+			} else {
+				startMakingKey();
+			}
+
+
+
+		};
+		$scope.onReadyToPrintKey = function(keyNo) {
+			if ($scope.readyForUserToPressMakeKey) {
+				$scope.readyForUserToPressMakeKey = false;
+				startMakingKey(keyNo);
+			}
 		};
 
 		function remoteEncodingSuccsess(response) {
@@ -232,7 +318,9 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 
 		$scope.goToNextScreen = function(status) {
-			stateParams.key_success = status ==='success'; 
+
+			stateParams.key_success = status === 'success';
+			console.warn('goToNextScreen: ', stateParams);
 			$state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);
 		};
 

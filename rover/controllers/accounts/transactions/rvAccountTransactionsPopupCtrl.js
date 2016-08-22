@@ -45,6 +45,22 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	};
 
+	/**
+	 * update splitted values for display
+	 * handles split by amount and split by percent
+	 * @return {undefined}
+	 */
+	$scope.showSpiltValues = function() {
+		var transaction = $scope.selectedTransaction;
+		if ($scope.splitTypeisAmount) {
+			$scope.displayFirstValue  = transaction.amount - $scope.splitValue;
+			$scope.displaySecondValue = $scope.splitValue;
+		} else {
+			$scope.displaySecondValue = parseFloat(transaction.amount * $scope.splitValue / 100).toFixed(2);
+			$scope.displayFirstValue  = transaction.amount - $scope.displaySecondValue;
+		}
+	};
+
    /*
 	 * API call split transaction
 	 */
@@ -73,14 +89,15 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
    /*
 	 * API call edit transaction
 	 */
-	$scope.editCharge = function(newAmount,chargeCode){
+	$scope.editCharge = function(newAmount,chargeCode,adjustmentReason){
 		$scope.$emit('showLoader');
 		var editData =
 		{
 			"updatedDate":
 						{
 				  			"new_amount":newAmount,
-				  			"charge_code_id": chargeCode.id
+				  			"charge_code_id": chargeCode.id,
+				  			"adjustment_reason":adjustmentReason
 						},
 					"id" :$scope.selectedTransaction.id
 		};
@@ -173,5 +190,11 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	   	var queryText = $scope.chargecodeData.chargeCodeSearchText;
 	    $scope.chargecodeData.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
     };
+    /* 
+     * Method to update the button label on EDIT CHARGE screen
+     */
+    $scope.getEditChargeButtonText = function() {
+		return ($scope.chargeCodeActive) ? 'CHANGE_CHARGE_CODE' : 'CHANGE_AMOUNT';
+	};
 
 }]);

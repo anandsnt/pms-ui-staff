@@ -71,7 +71,11 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			};
 
 			var printFailedActions = function() {
-				$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_PRINT_FAIL');
+				if ($stateParams.key_success === "true") {
+					$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_PRINT_FAIL');
+				} else {
+					$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL_PRINT_FAIL');
+				};
 				$scope.zestStationData.workstationStatus = 'out-of-order';
 				var printopted = true;
 				var emailopted = false;
@@ -85,8 +89,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				nextPageActions(printopted, emailopted, actionStatus);
 			}
 			var handleBillPrint = function() {
-				 // add the orientation
-                addPrintOrientation();
+				// add the orientation
+				addPrintOrientation();
 				setBeforePrintSetup();
 				try {
 					// this will show the popup with full bill
@@ -209,6 +213,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		var updateGuestEmail = function() {
 			var updateComplete = function(response) {
 				$scope.mode = "EMAIL_SEND_MODE";
+				$scope.callBlurEventForIpad();
 				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 			};
 			/**
@@ -245,6 +250,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				updateGuestEmail();
 			} else {
 				$scope.mode = "EMAIL_INVLAID_MODE";
+				$scope.callBlurEventForIpad();
 			};
 		};
 
@@ -256,7 +262,12 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON); //hide back buttons in 2 options page
 			//show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			$scope.email = $stateParams.email.length > 0 ? $stateParams.email : "";
+			if ($stateParams.email) {
+				$scope.email = $stateParams.email.length > 0 ? $stateParams.email : "";
+			} else {
+				$scope.email = "";
+			}
+
 			$scope.from = $stateParams.from;
 			if ($scope.zestStationData.registration_card.auto_print) {
 				$scope.clickedPrint();

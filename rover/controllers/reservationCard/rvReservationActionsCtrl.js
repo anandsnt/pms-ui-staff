@@ -196,7 +196,7 @@ sntRover.controller('reservationActionsController', [
 		 */
 		var shouldRedirectToDiary = function() {
 			var reservationData = $scope.reservationData.reservation_card;
-			if (reservationData.room_status === 'NOTREADY' && reservationData.is_hourly_reservation) {
+			if ((reservationData.room_status === 'NOTREADY' || reservationData.room_reservation_hk_status === 3 ) && reservationData.is_hourly_reservation) {
 				return true;
 			}
 			return false;
@@ -326,7 +326,11 @@ sntRover.controller('reservationActionsController', [
 
 
                         }
-                        if ($scope.roomAssignmentNeeded()) {
+
+                        if (shouldRedirectToDiary()) {
+							gotoDiaryInEditMode();
+						}
+                        else if ($scope.roomAssignmentNeeded()) {
                                $scope.goToRoomAssignment();
 
                         } else if ($scope.upsellNeeded()) {
@@ -372,7 +376,6 @@ sntRover.controller('reservationActionsController', [
 			// NOTE: room_id is provided as string and number >.<, that why checking length/existance
 			var hasRoom = typeof $scope.reservationData.reservation_card.room_id === 'string' ? $scope.reservationData.reservation_card.room_id.length : $scope.reservationData.reservation_card.room_id;
 
-
                         if (!hasRoom && $scope.putInQueueClicked){
                             if ($scope.reservationMissingPhone()) {
                                     $scope.$emit('showLoader');
@@ -396,8 +399,8 @@ sntRover.controller('reservationActionsController', [
 						$scope.reservationData.reservation_card.room_ready_status = data.current_hk_status;
 						$scope.reservationData.reservation_card.room_status = data.is_ready === "true" ? 'READY' : 'NOTREADY';
 						$scope.reservationData.reservation_card.fo_status = data.is_occupied === "true" ? 'OCCUPIED' : 'VACANT';
+						$scope.reservationData.reservation_card.room_reservation_hk_status = data.room_reservation_hk_status;
 						//CICO-14777 Yotel - Hourly Setup: Checkin with not ready room assigned should redirect to diary
-
 
 
 						if (shouldRedirectToDiary()) {

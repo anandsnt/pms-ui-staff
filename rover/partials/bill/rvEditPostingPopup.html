@@ -7,8 +7,8 @@
             <span class="h2 message" translate>EDIT_CHARGE</span>
             <span class="text">{{selectedTransaction.desc}}<strong>{{currencySymbol}}{{selectedTransaction.amount}}</strong></span>
             <ul id="change-edit-type" class="modal-options">
-                <li ng-class="{'active':!chargeCodeActive}" ng-click="setchargeCodeActive(false)" translate>AMOUNT</li>
-                <li ng-class="{'active':chargeCodeActive}" ng-click="setchargeCodeActive(true)" translate>CHARGE_CODE</li>
+                <li ng-class="{'active':!chargeCodeActive, 'disabled': shouldDisableEditChargeAmount() }" ng-click="!shouldDisableEditChargeAmount() && setchargeCodeActive(false)" translate>AMOUNT</li>
+                <li ng-class="{'active':chargeCodeActive, 'disabled': shouldDisableEditChargeCode() }" ng-click="!shouldDisableEditChargeCode() && setchargeCodeActive(true)" translate>CHARGE_CODE</li>
             </ul>
 
             <!-- Edit amount field -->
@@ -23,12 +23,12 @@
                     <input ng-model="chargecodeData.chargeCodeSearchText" ng-keyup="chargeCodeEntered()" name="search-codes" id="search-codes" type="text" placeholder="{{'SEARCH_OR_SELECT_CODES_PLACEHOLDER' | translate}}" value="" autocomplete="off" />
                     <div class="mini-select" ng-click = "showAvailableChargeCodes()"></div>
                 </div>
-                <div ng-show="(chargecodeData.chargeCodeSearchText.length>2 || showChargeCodes)">
+                <div ng-show="isShowChargeCodeList()">
                     <!-- Charge code Results / content -->
-                    <div class="company-card-results charge-code-list" ng-hide="availableChargeCodes.length === 0"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
+                    <div class="company-card-results charge-code-list"   ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
                         <div class="search-results">
                             <ul id="search-list">
-                                <li ng-repeat="chargeCode in availableChargeCodes" ng-click="selectChargeCode(chargeCode.id)" ng-show="chargeCode.is_row_visible === true">
+                                <li ng-repeat="chargeCode in availableChargeCodes" ng-click="selectChargeCode(chargeCode.id)" ng-show="chargeCode.is_row_visible === true || showChargeCodes">
                                     <h4 class="text-bold first-text" ng-class="{'grey':isChargeCodeSelected(chargeCode)}" ng-bind-html="chargeCode.name|highlight:chargecodeData.chargeCodeSearchText:false"></h4> &nbsp;
                                     <h4 class="text-bold" ng-class="{'grey':isChargeCodeSelected(chargeCode)}" ng-bind-html="chargeCode.description|highlight:chargecodeData.chargeCodeSearchText:false"></h4>
                                 </li>
@@ -37,7 +37,10 @@
                     </div>
                 </div>
             </div>
-            
+            <!-- Adjustment reason -->
+            <div class="entry full-width">
+                <textarea placeholder="Adjustment reason" ng-model="adjustmentReason" rows="2"></textarea>
+            </div>
             <!-- Preview, hidden until amount edited or charge code changed -->
             <div id="edit-preview" class="entry full-width notice" ng-show="selectedChargeCode.description.length>0 || newAmount.length>0">
                 <strong class="h4" translate>CHARGE_WILL_APPEAR_AS</strong>
@@ -52,7 +55,7 @@
                 </ul>
             </div>
             <div>
-                <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editCharge(newAmount,selectedChargeCode)" translate>CHANGE_AMOUNT</button>
+                <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editCharge(newAmount, selectedChargeCode, adjustmentReason)">{{getEditChargeButtonText() | translate}}</button>
                 <button type="button" class="button blank guest-bill-edit-buttons" ng-click="callActionsPopupAction('close')" translate>CANCEL</button> 
             </div>
         </fieldset>

@@ -124,11 +124,11 @@
 			</li>
 			<li>
 				<!-- Don't show if there are no rooms in the rooming list -->
-				<label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked': allotmentConfigData.summary.hide_rates }">
+				<!-- <label class="checkbox inline" for="no-rate-print" ng-class="{ 'checked': allotmentConfigData.summary.hide_rates }">
 					<span class="icon-form icon-checkbox" ng-class="{ 'checked':allotmentConfigData.summary.hide_rates }"></span>
 					<input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
 					{{ 'DONT_PRINT_RATE' | translate }}
-				</label>
+				</label> -->
 				<button type="button" class="button with-icon only-icon blue" ng-hide="shouldShowNoReservations()" ng-click="sendRoomingList()">
 					<span class="icons icon-email"></span>
 					{{'ALLOTMENT_EMAIL'|translate}}

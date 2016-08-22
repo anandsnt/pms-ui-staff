@@ -203,13 +203,15 @@
             background: @grey3;
             .transition;
             .float;
+            position: relative;
+            z-index: 2;
 
             .icon-room {
                 padding: 10px 0 10px 46px;
                 margin-left: 10px;
                 overflow: hidden;
                 height: 60px;
-                .calc-width(100, 190);
+                .calc-width(100, 210);
                 .show;
                 .pull-left;
 
@@ -232,7 +234,7 @@
 
             .display {
                 min-width: 60px;
-                max-width: 180px;
+                max-width: 200px;
                 .pull-right;
 
                 li {
@@ -242,7 +244,7 @@
                     text-align: center;
                     text-transform: uppercase;
                     .box-shadow(1px 0 0 rgba(0,0,0,.1));
-                    .square(60px);
+                    .size(60px, 50px);
                     .show;
                     .pull-left;
 
@@ -378,6 +380,53 @@
                         top: 20px;
                         bottom: 20px;
                     }
+
+                    &.report-content {
+                        padding: 30px 20px 0 20px;
+                        height: 100%;
+                        .wrapper {
+                            padding: 0px 0 30px 0;
+                        }
+
+                        &.with-pagination {
+                            .calc-height(100, 60);
+                        }
+
+                        .log-table {
+                            font-size: 12px;
+                            thead {
+                                th:nth-child(3) {
+                                    width: 170px;
+                                }
+                            }
+                        }
+                        .log-table-mobile {
+                            display:none;
+                        }
+                    }
+                }
+
+                .status {
+                    width: 100%;
+                    display:block;
+
+                    &.old {
+                        color:@grey3;
+                        text-decoration: line-through;
+                        font-style: italic;
+                        font-weight: 400;
+                    }
+
+                    &.clean,
+                    &.inspected,
+                    &.check-in { color: @green; font-weight: 600;}
+
+                    &.pickup { color: @orange; font-weight: 600;}
+
+                    &.dirty,
+                    &.check-out { color: @red; font-weight: 600;}
+
+                    &.inhouse { color: @blue; font-weight: 600;}
                 }
 
                 &.no-content {
@@ -641,7 +690,7 @@
 
             .icon-room {
                 margin-top: 10px;
-                .calc-width(100, 250);
+                .calc-width(100, 330);
 
                 h1 { font-size: 48px; }
                 span { font-size: 14px; }
@@ -649,7 +698,7 @@
 
             .display {
                 min-width: 80px;
-                max-width: 240px;
+                max-width: 320px;
 
                 li {
                     .square(80px);
@@ -659,6 +708,7 @@
                         text-indent: 0; 
                         font-size: 15px;
                         font-weight: 600;
+                        height: 55px;
                     }
                 }
             }
@@ -776,7 +826,7 @@
                 margin-top: 5px;
                 padding-left: 90px;
                 height: 80px;
-                .calc-width(100, 310);
+                .calc-width(100, 410);
 
                 h1 { font-size: 60px; }
                 span { font-size: 18px; }
@@ -784,7 +834,7 @@
 
             .display {
                 min-width: 100px;
-                max-width: 300px;
+                max-width: 400px;
 
                 li {
                     .size(90px, 100px);
@@ -905,5 +955,96 @@
                 .button { width: 50%; }
             }
         } 
+    }
+}
+
+@media only screen and (min-width:1024px){
+    /* Room details ***/
+    #room-details {
+        .room-info {
+             
+            .room-content {
+                .status {
+                    width: 50%;
+                    .pull-left;
+                }
+            }
+        }
+    }
+
+}
+
+@media only screen and (max-width: 767px) { 
+    #room-details {
+
+        .room-info {
+            
+            .room-content{
+                &.scrollable {
+
+                    &.report-content {
+                        height: 100%;
+                        &.with-pagination {
+                            .calc-height(100,60);
+                        }
+                        
+                        padding:0;
+                        margin-top:0;
+
+                        .log-table-mobile {
+                            display:block;
+                            text-transform: uppercase;
+                            font-size: 14px;
+
+                            .row-break {
+                                &:nth-child(odd) {
+                                    
+                                    background-color: @white;
+                                   
+                                }
+
+                                > div {
+                                     /* Behave  like a "row" */
+                                    border: none;
+                                    text-align: left;
+                                    position: relative;
+                                    padding: 5px 0 5px 50%;
+                                    min-height: 26px;
+                                    &:first-child {
+                                        padding-top: 20px;
+                                        min-height: 41px;
+                                        &:before {
+                                            top: 21px;
+                                        }
+                                    }
+                                    &:last-child {
+                                        padding-bottom: 20px;
+                                        min-height: 41px;
+                                    }
+
+                                    &:before { 
+                                        /* Now like a table header */
+                                        position: absolute;
+                                        /* Top/left values mimic padding */
+                                        top: 6px;
+                                        left: 5px;
+                                        width: 50%; 
+                                        padding-right: 20px;
+                                        white-space: nowrap;
+                                        content: attr(data-content);
+                                        text-align: right;
+                                        font-size: 12px;
+                                        color: @grey3;
+                                    }
+                                }
+                            }
+                        }
+                        .log-table {
+                            display:none;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

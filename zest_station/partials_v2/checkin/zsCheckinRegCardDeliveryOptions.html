@@ -121,17 +121,21 @@
             </div>
             <div class="content">
                 <!-- business date/time -->
-                <span>{{'REGISTRATION_READY_PRINT_BUSINESS_DATE_LABEL' | translate}} {{currentDateTime | date:'dd-MMM yyyy HH:mm'}}</span>
-                <br><br><br>
+              <!--   <span>{{'REGISTRATION_READY_PRINT_BUSINESS_DATE_LABEL' | translate}} {{currentDateTime | date:'dd-MMM yyyy HH:mm'}}</span>
+                <br>-->
+                <br>
+                <br>
+                <br>
+                <br>
                 
                 <span>{{'REGISTRATION_READY_PRINT_ROOM_NO' | translate}}</span>
                 <br><br><br>
                     <strong class="large_txt">{{printRegCardData.room_number}}</strong>
                 <br><br><br>
-                <span>
-                    {{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}}
+                    <span ng-hide="zestStationData.isHourlyRateOn">{{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}}</span>
+                    <span ng-show="zestStationData.isHourlyRateOn">{{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}} @ {{printRegCardData.arrival_time}}</span>
                 <br>    
-                    {{'REGISTRATION_READY_PRINT_STD_CHECKOUT' | translate}} {{zestStationData.check_out_time.hour}}:{{zestStationData.check_out_time.minute}} {{zestStationData.check_out_time.primetime|lowercase}}
+                   <!--  {{'REGISTRATION_READY_PRINT_STD_CHECKOUT' | translate}} {{zestStationData.check_out_time.hour}}:{{zestStationData.check_out_time.minute}} {{zestStationData.check_out_time.primetime|lowercase}} -->
                 </span>
                 <br><br><br>
 

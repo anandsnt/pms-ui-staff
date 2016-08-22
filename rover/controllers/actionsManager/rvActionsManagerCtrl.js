@@ -106,11 +106,17 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 if (!!$scope.filterOptions.query) {
                     payLoad.query = $scope.filterOptions.query;
                 }
-
-                $scope.callAPI(rvActionTasksSrv.fetchActions, {
+                if($scope.filterOptions.selectedView == "GUEST"){
+                    $scope.callAPI(rvActionTasksSrv.fetchActions, {
                     params: payLoad,
                     successCallBack: onFetchListSuccess
                 });
+                } else if($scope.filterOptions.selectedView == "GROUP"){
+                    $scope.callAPI(rvActionTasksSrv.fetchGroupActions, {
+                    params: payLoad,
+                    successCallBack: onFetchListSuccess
+                });
+                }
             },
             updateListEntry = function () {
                 var currentAction = _.find($scope.actions, function (action) {
@@ -154,6 +160,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         $scope.filterOptions = {
             showFilters: false,
             selectedDay: $rootScope.businessDate,
+            selectedView: "GUEST",
             department: "",
             selectedStatus: "ALL", // other values "ASSIGNED", "UNASSIGNED", "COMPLETED",
             query: "",
@@ -230,6 +237,11 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             $scope.filterOptions.showFilters = !$scope.filterOptions.showFilters;
         };
 
+        $scope.switchTab = function (selectedTab) {
+            $scope.filterOptions.selectedView = selectedTab;
+            fetchActionsList();
+        };
+
         $scope.onDepartmentSelectionChange = function () {
             fetchActionsList();
         };
@@ -248,10 +260,15 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 action_task: {
                     id: $scope.selectedAction.id
                 },
-                reservation_id: $scope.selectedAction.reservation_id,
                 assigned_to: $scope.selectedAction.department || null,
                 due_at: dateFilter($scope.selectedAction.dueDate, $rootScope.dateFormatForAPI) +
                 ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : "")
+            }
+
+            if(!!$scope.selectedAction.reservation_id) {
+                payLoad.reservation_id = $scope.selectedAction.reservation_id;
+            } else if(!!$scope.selectedAction.group_id) {
+                payLoad.group_id = $scope.selectedAction.group_id;
             }
 
             if ($scope.selectedAction.action_status === $scope._actionCompleted) {
@@ -278,6 +295,15 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
             $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
                 "id": $scope.selectedAction.reservation_id,
                 "confirmationId": $scope.selectedAction.reservation_confirm_no,
+                "isrefresh": false
+            });
+        };
+
+        $scope.toGroup = function () {
+            //Store the state of the filters so that while coming back from staycard the correct page can be loaded
+            rvActionTasksSrv.setFilterState($scope.filterOptions);
+            $state.go('rover.groups.config', {
+                "id": $scope.selectedAction.group_id,
                 "isrefresh": false
             });
         };

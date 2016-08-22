@@ -45,6 +45,7 @@
     		$modal.open(errorOpts);
     	}
     	else{
+        $scope.isLoading = true;
         guestDetailsService.postGuestDetails({"email":$scope.guestDetails.email}).then(function(response) {
           $scope.isLoading = false;
           $scope.emailUpdated = true;

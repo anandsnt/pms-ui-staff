@@ -729,9 +729,12 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room){ return room.is_add_to_update});
 			params.room_id = _.pluck(roomsToAdd,'id');
-
-			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, params, successCallBack);
-
+			//as per CICO-32168 comments
+			if(params.room_id.length > 0) {
+				$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, params, successCallBack);
+			} else {
+				$scope.closeForcefullyUpdatePopup();
+			}
 		};
 
 
@@ -1286,7 +1289,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					$rooms.style.WebkitTransition = addTransition;
 					$rooms.style.webkitTransform  = translateZero;
 
-					$rooms.removeEventListener(touchMoveHandler);
+					$rooms.removeEventListener('touchmove', touchMoveHandler);
 				};
 
 				var resetIndicators = function() {
@@ -1299,7 +1302,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					$load.style.WebkitTransition = addTransition;
 					$load.style.webkitTransform  = translateZero;
 
-					$rooms.removeEventListener(touchMoveHandler);
+					$rooms.removeEventListener('touchmove', touchMoveHandler);
 
 					$timeout(function() {
 						$refresh.classList.remove('show');
@@ -1381,9 +1384,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 			// remove the DOM binds when this scope is distroyed
 			ngScope.$on('$destroy', function() {
-				!!$rooms.length && $rooms.removeEventListener('touchstart');
-				!!$rooms.length && $rooms.removeEventListener('touchend');
-				!!$rooms.length && $rooms.removeEventListener('touchcancel');
+				!!$rooms.length && $rooms.removeEventListener('touchstart', touchStartHandler);
+				!!$rooms.length && $rooms.removeEventListener('touchend', touchEndHandler);
+				!!$rooms.length && $rooms.removeEventListener('touchcancel', touchEndHandler);
 			});
 		};
 

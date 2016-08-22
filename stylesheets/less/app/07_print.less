@@ -22,6 +22,7 @@ body { overflow: visible; height:auto; }
 .logo-hide,
 .text-hide,
 .no-print,
+.numbers-pagination,
 .search-pagination,
 .reservation-tabs-nav,
 .reservation-list,
@@ -1352,6 +1353,10 @@ table {
                             }
                         }
 
+                        a {
+                            color: @textColor;
+                        }
+
                         .data {
                             margin: 0 2pt;
 
@@ -1473,17 +1478,38 @@ table {
                             padding-left: 0;
                             border-top: 1px solid @grey1;
 
-                            span { .show; }
+                            span { 
+                                .show(); 
+                            }
 
-                            &.notes {
-                                strong {
-                                    color: @grey4;
-                                    text-transform: uppercase;
-                                    font-weight: 600;
-                                    .show;
+                            strong { 
+                                color: @grey4;
+                                text-transform: uppercase;
+                                font-weight: 600;
+                                margin-bottom: 0;
+                                .show();
+                            }
+
+                            p { 
+                                line-height: 1;
+                            }
+
+                            &.actions {
+                                p {
+                                    position: relative;
+                                    padding-left: 15px;
+
+                                    .icons {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        .square(10px);
+
+                                        &.icon-unassigned { background-position: 0 -220px; }
+                                        &.icon-assigned { background-position: 0 -240px; }
+                                        &.icon-completed { background-position: 0 -260px; }
+                                    }                                    
                                 }
-
-                                p { line-height: 1em; }
                             }
                         }
                     }
@@ -1494,6 +1520,13 @@ table {
                             border-bottom: 2px solid @grey2;
                         }
                     }
+                }
+            }
+
+            &.cancellation-report {
+                tr td:last-child .data.room,
+                tr td:last-child .data.rate {
+                    text-align: left;
                 }
             }
 
@@ -1995,6 +2028,44 @@ table {
                     }
                 }
             }
+
+            &.card-authorization-check-reports {
+                tbody {
+                    tr {
+                        td {
+                            width: 3.4cm; 
+
+                            &.entity-name {
+                                width: -webkit-calc(~'100% - 19cm');
+                                width: -moz-calc(~'100% - 19cm');
+                                width: calc(~'100% - 19cm');
+                            }
+                            
+                            &.red,
+                            &.penalty { color: @grey3; position:relative }
+
+                            &.red:before {
+                                content: '!';
+                                position: absolute;
+                                right: 0;
+                                top: 2px;
+                                border-radius: 10px;
+                                background-color: @grey3;
+                                color: white;
+                                width: 15px;
+                                text-align: center;
+                                height: 15px; 
+                                line-height: 15px;
+                                font-weight: 600;
+                            } 
+
+                            &:first-child {
+                                width: 2cm;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         &.with-graphs {
@@ -2002,6 +2073,10 @@ table {
             .report-block {
 
                 .totals {
+                    &.for-print {
+                        .show;
+                    }
+
                     font-size: 8pt;
                     line-height: 10pt;
                     text-transform: uppercase;
@@ -2945,24 +3020,39 @@ table {
             height: 2cm;
             position: relative;
 
-            &.envelope {
-                height: 3cm;
-            }
-
-            h1 {
+            &:not(.envelope) {
+              h1 {
                 position: absolute;
-                top: 0;
-                left: 0;
-                font-size: 18pt;
+                top:0;
+                left:0;
+                font-size:18pt;
                 font-weight: 600;
                 line-height: 40px;
+                }  
             }
+            
 
             img {
-                position: absolute;
-                top: 0;
-                right: 0;
                 .size(40px, auto);
+                -webkit-filter: grayscale(100%);
+                filter: grayscale(100%);
+            }
+
+            &.envelope {
+                height: 4.8cm;
+                h1 {
+                    font-size: 10pt;
+                    font-weight: 600; 
+                }
+
+                .type {
+                    position: absolute;
+                    top:0;
+                    right:0;
+                    font-size:18pt;
+                    font-weight: 600;
+                    line-height: 40px;
+                }
             }
         }
 

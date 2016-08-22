@@ -66,7 +66,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             };
 
             that.fetchRoomTypes = function() {
-                var url = 'api/room_types.json?exclude_pseudo=true&exclude_suite=true&per_page=100';
+                var url = 'api/room_types.json?exclude_pseudo=true&per_page=100';
                 RVBaseWebSrvV2.getJSON(url).then(function(data) {
                     that.reservation.roomTypes = data.results;
                     that.fetchBussinessDate();
@@ -283,13 +283,11 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             that['rates'] = [];
 
             // Make this call IFF there is a group/ allotment attached
-            if (params.group_id || params.allotment_id) {
+            if (params.group_id) {
                 promises.push(that.fetchGroupRates(params).then(function(response) {
                     _.each(response.rates, function(rate) {
-                        rate.isGroupRate = !!params.group_id;
-                        rate.isAllotmentRate = !!params.allotment_id;
                         if (rate.id === null) {
-                            rate.id = !!params.allotment_id ? 'ALLOTMENT_CUSTOM_' + params.allotment_id : 'GROUP_CUSTOM_' + params.group_id
+                            rate.id = '_CUSTOM_' + params.group_id;
                         }
                     });
                     that['rates'] = that['rates'].concat(response.rates);
@@ -365,11 +363,11 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
         };
 
 
-        this.fetchRatesDetailed = function() {
+        this.fetchRatesDetailed = function(params) {
             var deferred = $q.defer(),
                 url = '/api/rates/detailed';
 
-            if (that.cache.responses['rateDetails'] === null || Date.now() > that.cache.responses['rateDetails']['expiryDate']) {
+            if ((params && params.isForceRefresh) || that.cache.responses['rateDetails'] === null || Date.now() > that.cache.responses['rateDetails']['expiryDate']) {
                 RVBaseWebSrvV2.getJSON(url).then(function(response) {
                     var rates = [];
                     _.each(response.results, function(rate) {
@@ -417,7 +415,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
             that['rates-restrictions'] = {};
 
-            promises.push(that.fetchRatesDetailed().then(function(response) {
+            promises.push(that.fetchRatesDetailed(params).then(function(response) {
                 that['rates-restrictions']['rates'] = response;
             }));
 

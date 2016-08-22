@@ -394,6 +394,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
 				fetchApplicableRates();
+				$scope.computeSegment();//CICO-30986
 			}
 
 			//if it is is Move Date mode
@@ -467,13 +468,6 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 		};
 
-		var updateRateAndSegment = function(){
-			if(!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
-				fetchApplicableRates();
-				$scope.computeSegment();
-			}
-		};
-
 		/**
 		 * when to date choosed, this function will fire
 		 * @param  {Object} date
@@ -490,6 +484,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 			if (!!$scope.groupConfigData.summary.block_from && !!$scope.groupConfigData.summary.block_to) {
 				fetchApplicableRates();
+				$scope.computeSegment();//CICO-30986
 			}
 			// check move validity
 			// departure left date change
@@ -760,12 +755,24 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
             	$scope.$emit('hideLoader');
-			    ngDialog.open({
-			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
-			        controller: 'rvBillingInformationPopupCtrl',
-			        className: '',
-			        scope: $scope
-			    });
+            	if($rootScope.UPDATED_BI_ENABLED_ON['ACCOUNTS']){
+            		console.log("##Billing-info updated version");
+            		ngDialog.open({
+				        template: '/assets/partials/billingInformation/accounts/rvBillingInfoAccountsMain.html',
+						controller: 'rvBillingInfoAccountsMainCtrl',
+				        className: '',
+				        scope: $scope
+				    });
+            	}
+            	else{
+            		console.log("##Billing-info old version");
+				    ngDialog.open({
+				        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+				        controller: 'rvBillingInformationPopupCtrl',
+				        className: '',
+				        scope: $scope
+				    });
+				}
 			});
 		};
 
@@ -850,6 +857,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 			else{
 			  summaryMemento.rate = $scope.groupConfigData.summary.rate;
+				//fetch summary once rate is changed - as per CICO-31812 comments
+				$scope.$emit("FETCH_SUMMARY");
 			}
 		};
 
@@ -1297,21 +1306,22 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			if (activeTab !== 'SUMMARY') {
 				return;
 			}
+			if(!$scope.isInAddMode()) {
+				$scope.$emit("FETCH_SUMMARY");
 
-			$scope.$emit("FETCH_SUMMARY");
+				//to date picker will be in disabled in move mode
+				//in order to fix the issue of keeping that state even after coming back to this
+				//tab after going to some other tab
+				setDatePickerOptions();
 
-			//to date picker will be in disabled in move mode
-			//in order to fix the issue of keeping that state even after coming back to this
-			//tab after going to some other tab
-			setDatePickerOptions();
+				initializeChangeDateActions ();
 
-			initializeChangeDateActions ();
+				//we are resetting the API call in progress check variable
+				$scope.isUpdateInProgress = false;
 
-			//we are resetting the API call in progress check variable
-			$scope.isUpdateInProgress = false;
-
-			//we have to refresh this data on tab siwtch
-			$scope.computeSegment();
+				//we have to refresh this data on tab siwtch
+				$scope.computeSegment();
+			}
 		});
 
 		/**

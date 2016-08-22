@@ -267,6 +267,15 @@ body {
     }
 }
 
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1028px){
+.checkout-alone-button {
+    margin-top: 30%  !important;
+    margin-left: 40% !important;
+}
+
+}
 
 @media (max-width: 480px) {
     .btn-template{
@@ -437,3 +446,146 @@ body {
 .tnc p{
   text-align:left !important;
 }
+
+
+/* New Greatwolf pages styles */
+
+.customcb {
+  width: 17px;
+  height: 17px;
+  margin: 2px 0 2px 0;
+  background: #ddd;
+  border-radius: 100%;
+  position: relative;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .5);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, .5);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .5);
+}
+.customcb label.inner {
+  display: block;
+  width: 12.75px;
+  height: 12.75px;
+  border-radius: 100px;
+  -webkit-transition: all .5s ease;
+  -moz-transition: all .5s ease;
+  -o-transition: all .5s ease;
+  -ms-transition: all .5s ease;
+  transition: all .5s ease;
+  cursor: pointer;
+  position: absolute;
+  top: 2.125px;
+  left: 2.125px;
+  z-index: 1;
+  background: #eee;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .5);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .5);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .5)
+}
+.customcb label.outer {
+  margin-left: 25px;
+}
+.customcb [type=checkbox] {
+  display: none
+}
+.red.customcb input[type=checkbox]:checked+label.inner {
+  background: red
+}
+.orange.customcb input[type=checkbox]:checked+label.inner {
+  background: #d61
+}
+
+.cc-details-container,.change-card-container{
+    width:100%;
+    border:1px solid black;
+    padding: 10px;
+    height:75px;
+    background: #efefef none repeat scroll 0 0;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+.change-card-container{
+    padding-left:20px;
+    padding-right:20px;
+    cursor: pointer;
+    .change-card-text,.change-card-img{
+         position: relative;
+         top: 50%;
+         transform: translateY(-50%);
+    }
+    .change-card-text{
+        float:left;
+        p{
+            margin-bottom:0px;
+            font-size:24px;
+        }
+    }
+    .change-card-img{
+        float:right;
+        img{
+            height:25px;
+        }
+    }
+}
+.cc-details-container{
+    .cc-image-container{
+        float:left;
+        width:35%; 
+        position: relative;
+        height:100%;
+        -webkit-transform-style: preserve-3d;
+        -moz-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        img,.customcb{ 
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .customcb{
+            display: table-cell; 
+            vertical-align: middle; 
+            float:left;
+            padding-left:10px;
+        }
+        img{
+            height:30px;
+            width:60px;
+        }
+    }
+    .cc-texts-container{
+        float:right;
+        width:65%;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        p{
+            margin-bottom:0px;
+            font-size:15px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align:left;
+        }
+    }
+}
+
+.cc-entry-container{
+    .row{
+        margin-bottom:10px;
+    }
+}
+.error-notification{
+    color:red !important;
+}
+
+#select-response{
+    width:100% !important;
+}
+
+.select-width-40{
+    width:40%;
+    margin:0 auto;
+}
+
+
+

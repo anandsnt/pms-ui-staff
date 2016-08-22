@@ -122,7 +122,10 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		            	action: "staff#/staff/accounts/search",
 		            	menuIndex: "accounts"
 		            	//hidden: $rootScope.isHourlyRatesEnabled
-		       	 	}]
+		       	 	},{
+						title: "MENU_END_OF_DAY",
+						action: "staff#/staff/endofDay/starteod"
+					  }]
 				}, {
 			        title: "MENU_GROUPS",
 
@@ -243,18 +246,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				  submenu: [],
 				  iconClass: "icon-housekeeping"
 				}];
-
-				if(!$rootScope.is_auto_change_bussiness_date){
-			          var eodSubMenu =  {
-						title: "MENU_END_OF_DAY",
-						action: "staff#/staff/dashboard/changeBussinessDate"
-					  };
-			          angular.forEach($scope.menu, function(menu, index) {
-			              if(menu.title === 'MENU_FRONT_DESK'){
-			                menu.submenu.push(eodSubMenu);
-			              }
-			          });
-       			};
 
 			} else {
 					$scope.menu = [{
@@ -453,6 +444,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			}, 10000);
 		});
 
+		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error){
+			$scope.$emit('hideLoader');
+			$scope.$broadcast("STATE_CHANGE_FAILURE", error);
+		});
+
 		/*
 		 * function for handling click operation on menu item
 		 * Here is a special case
@@ -521,6 +517,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
                         $rootScope.isStandAlone = $scope.isStandAlone;
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
+			$rootScope.jqDateFormat = getJqDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');
 			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
@@ -635,5 +632,28 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 	            $rootScope.modalOpened = true;
 	        }, 300);
 	    });
+
+
+	    var MENU_SCROLLER = 'MENU_SCROLLER';
+	    var setupScrolls = function() {
+	      var scrollerOptions = {
+	        tap: true,
+	        preventDefault: false,
+	        showScrollbar: true
+	      };
+
+	      $scope.setScroller(MENU_SCROLLER, scrollerOptions);
+	    };
+	    setupScrolls();
+	    var refreshScroll = function(name, reset) {
+	      $scope.refreshScroller(name);
+	      /**/
+	      if ( !! reset && $scope.myScroll.hasOwnProperty(name) ) {
+	          $scope.myScroll[name].scrollTo(0, 0, 100);
+	      }
+	    };
+	    $scope.refreshMenuScroll = function(reset) {
+	      refreshScroll(MENU_SCROLLER, reset);
+	    };
 
 }]);

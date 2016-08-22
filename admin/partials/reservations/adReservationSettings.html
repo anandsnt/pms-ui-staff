@@ -12,7 +12,7 @@
 				<fieldset class="holder left"  ng-if="isStandAlone">
 					<div style="height:20px;"></div>
 					<!-- <ad-checkbox is-checked="reservationSettingsData.recommended_rate_display" label="{{'USE_RECOMMENDED_RATE_DISPLAY' | translate}}" div-class="full-width"></ad-checkbox> -->
-					<ad-toggle-button label="{{'USE_RECOMMENDED_RATE_DISPLAY' | translate}}" is-checked="reservationSettingsData.recommended_rate_display" ></ad-toggle-button>
+					<ad-toggle-button label="{{'USE_RECOMMENDED_RATE_DISPLAY' | translate}}" is-checked="reservationSettingsData.recommended_rate_display" div-class="hide"></ad-toggle-button>
 					<div class="entry">
 						<label translate>DEFAULT_RATE_DISPLAY</label>
 						<div class="select">
@@ -27,22 +27,22 @@
 				<fieldset class="holder right"  ng-if="isStandAlone">
 					<div class="entry full-width">
 						<div class=" col1-3 actions_margin_top">
-							<ad-textbox inputtype="text" value="reservationSettingsData.max_guests.max_adults" styleclass = "col1-3"
+							<ad-textbox inputtype="text" value="reservationSettingsData.max_guests.max_adults" styleclass = "col1-5"
 							label = "{{'MAX_ADULTS' | translate}}" placeholder = "" style=" width: 100px;"
 							></ad-textbox>
 						</div>
 						<div class=" actions_margin_top" >
-							<ad-textbox inputtype="text" value="reservationSettingsData.max_guests.max_children" styleclass = "col1-3"
+							<ad-textbox inputtype="text" value="reservationSettingsData.max_guests.max_children" styleclass = "col1-5"
 							label = "{{'MAX_CHILDREN' | translate}}" placeholder = "" style=" width: 100px;"
 							></ad-textbox>
 						</div>
 						<div class="col1-3">
-							<ad-textbox inputtype="text" value="reservationSettingsData.max_guests.max_infants" styleclass = "col1-3"
+							<ad-textbox inputtype="text" value="reservationSettingsData.max_guests.max_infants" styleclass = "col1-5"
 							label = "{{'MAX_INFANTS' | translate}}" placeholder = "" style=" width: 100px;"
 							></ad-textbox>
 						</div>
 						<div class="col1-3">
-							<ad-textbox inputtype="text" value="reservationSettingsData.max_room_quantity" styleclass = "col1-3"
+							<ad-textbox inputtype="text" value="reservationSettingsData.max_room_quantity" styleclass = "col1-5"
 							label = "{{'MAX_ROOM_QUANTITY' | translate}}" placeholder = "" style=" width: 100px;"
 							></ad-textbox>
 						</div>
@@ -69,15 +69,15 @@
 						</div>
 					</div>
 					<div ng-show="true" class="entry full-width" >
-						<div class="select select-col col1-4 ">
+						<div class="select select-col col1-5">
 							<select ng-model="reservationSettingsData.cc_authorization_at_checkin_symbol" class="styled">
 	                        	<option ng-repeat="sign in defaultSignDisplays" ng-selected="sign.value==reservationSettingsData.cc_authorization_at_checkin_symbol" value="{{sign.value}}">{{sign.value}}</option>
 	                        </select>
 						</div>
 						<div class=" select-col col1-4 " >
-							<ad-textbox value="reservationSettingsData.cc_authorization_at_checkin_per_value" inputtype="text" value="" styleclass = "col1-3"	label = "" placeholder = "" style="  margin-top: 0; width: 100px;"></ad-textbox>
+							<ad-textbox value="reservationSettingsData.cc_authorization_at_checkin_per_value" inputtype="text" value="" styleclass = "col1-4"	label = "" placeholder = "" style="  margin-top: 0; width: 100px;"></ad-textbox>
 						</div>
-						<div class="select select-col col1-4">
+						<div class="select select-col col1-5">
 							<select ng-model="reservationSettingsData.cc_authorization_at_checkin_value" class="styled">
 	                            <option ng-repeat="checkin_value in checkin_values"  ng-selected="checkin_value.value ===reservationSettingsData.cc_authorization_at_checkin_value" value="{{checkin_value.value}}">{{checkin_value.name}}</option>
 	                        </select>
@@ -108,15 +108,15 @@
 						</div>
 					</div>
 					<div ng-show="true" class="entry full-width" >
-						<div class="select select-col col1-4 ">
+						<div class="select select-col col1-5">
 							<select ng-model="reservationSettingsData.cc_authorization_for_stay_extension_symbol" class="styled">
 	                        	<option ng-repeat="sign in defaultSignDisplays" ng-selected="sign.value==reservationSettingsData.cc_authorization_for_stay_extension_symbol" value="{{sign.value}}">{{sign.value}}</option>
 	                        </select>
 						</div>
 						<div class=" select-col col1-4 " >
-							<ad-textbox value="reservationSettingsData.cc_authorization_for_stay_extension_per_value" inputtype="text" value="" styleclass = "col1-3"	label = "" placeholder = "" style="  margin-top: 0; width: 100px;"></ad-textbox>
+							<ad-textbox value="reservationSettingsData.cc_authorization_for_stay_extension_per_value" inputtype="text" value="" styleclass = "col1-4"	label = "" placeholder = "" style="  margin-top: 0; width: 100px;"></ad-textbox>
 						</div>
-						<div class="select select-col col1-4">
+						<div class="select select-col col1-5">
 							<select ng-model="reservationSettingsData.cc_authorization_for_stay_extension_value" class="styled">
 	                            <option ng-repeat="checkin_value in checkin_values"  ng-selected="checkin_value.value ===reservationSettingsData.cc_authorization_for_stay_extension_value" value="{{checkin_value.value}}">{{checkin_value.name}}</option>
 	                        </select>
@@ -146,15 +146,15 @@
 						</div>
 					</div>
 					<div ng-show="true" class="entry full-width" >
-						<div class="select select-col col1-4 ">
+						<div class="select select-col col1-5">
 							<select ng-model="reservationSettingsData.cc_authorization_at_eod_symbol" class="styled">
 	                        	<option ng-repeat="sign in defaultSignDisplays" ng-selected="sign.value==reservationSettingsData.cc_authorization_at_eod_symbol" value="{{sign.value}}">{{sign.value}}</option>
 	                        </select>
 						</div>
-						<div class=" select-col col1-4 " >
-							<ad-textbox value="reservationSettingsData.cc_authorization_at_eod_per_value" inputtype="text" value="" styleclass = "col1-3"	label = "" placeholder = "" style="  margin-top: 0; width: 100px;"></ad-textbox>
+						<div class=" select-col col1-4" >
+							<ad-textbox value="reservationSettingsData.cc_authorization_at_eod_per_value" inputtype="text" value="" styleclass = "col1-2"	label = "" placeholder = "" style="  margin-top: 0; width: 100px;"></ad-textbox>
 						</div>
-						<div class="select select-col col1-4">
+						<div class="select select-col col1-5">
 							<select ng-model="reservationSettingsData.cc_authorization_at_eod_value" class="styled">
 	                            <option ng-repeat="eod_value in eod_values"  ng-selected="eod_value.value ===reservationSettingsData.cc_authorization_at_eod_value" value="{{eod_value.value}}">{{eod_value.name}}</option>
 	                        </select>
@@ -177,10 +177,10 @@
 	                    </div>
 	                </div>
 					<div class="entry full-width" >
-						<div class=" select-col col1-4 " >
-							<ad-textbox value="reservationSettingsData.cc_authorization_for_incidental_per_value" inputtype="text" value="" styleclass = "col1-3" label = "" placeholder = "" style="margin-top: 0; width: 100px;"></ad-textbox>
+						<div class=" select-col col1-3" >
+							<ad-textbox value="reservationSettingsData.cc_authorization_for_incidental_per_value" inputtype="text" value="" styleclass = "col1-5" label = "" placeholder = "" style="margin-top: 0; width: 100px;"></ad-textbox>
 						</div>
-						<div class="select select-col col1-4">
+						<div class="select select-col col1-5">
 							<select class="styled">
 	                            <option ng-repeat="value in incidentalObj.values"  ng-selected="true">{{value.name}}</option>
 	                        </select>
@@ -210,7 +210,7 @@
 					<ad-checkbox is-checked="reservationSettingsData.commission_by_rate" label="{{ 'Commissions by Rate' | translate}}" div-class="" hide='{{!reservationSettingsData.has_enabled_commissions}}'></ad-checkbox>
 					<div class="entry" ng-hide="!reservationSettingsData.commission_by_agent || !reservationSettingsData.has_enabled_commissions">
                 		<div class="select-col col1-3 ">
-                    		<ad-textbox inputtype="text" value="reservationSettingsData.agent_commission_value" styleclass="col1-3" label="" placeholder="" style=" width: 66px;"></ad-textbox>
+                    		<ad-textbox inputtype="text" value="reservationSettingsData.agent_commission_value" styleclass="col1-5" label="" placeholder="" style=" width: 66px;"></ad-textbox>
                 		</div>
                 		<div class="select select-col col1-3">
                     		<select class="styled" ng-model="reservationSettingsData.agent_commission_type">
@@ -220,8 +220,8 @@
                 		</div>
             		</div>
 					<div class="entry float_right_important" ng-hide="!reservationSettingsData.commission_by_rate || !reservationSettingsData.has_enabled_commissions">
-						<div class="select-col col1-3 ">
-                    		<ad-textbox inputtype="text" value="reservationSettingsData.rate_commission_value" styleclass="col1-3" label="" placeholder="" style=" width: 66px;"></ad-textbox>
+						<div class="select-col col1-3">
+                    		<ad-textbox inputtype="text" value="reservationSettingsData.rate_commission_value" styleclass="col1-5" label="" placeholder="" style=" width: 66px;"></ad-textbox>
                 		</div>
                 		<div class="select select-col col1-3">
                     		<select class="styled" ng-model="reservationSettingsData.rate_commission_type">

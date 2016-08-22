@@ -1,0 +1,71 @@
+<section class="content" role="main">
+
+    <!-- Header -->
+    <div class="eod-header">
+        <div class="entry">
+            <label for="eod-date">Log Date</label>
+            <div class="entry-data" ng-click="clickedDate()">
+                <input name="eod-date" id="eod-date" type="text" class="datepicker" readonly>
+                <strong class="day">{{day}}</strong>
+                <span class="month">{{month}}</span>
+                <span class="year">{{year}}</span>
+            </div>
+        </div>
+        <!-- Show this button if the business day is not today-->
+        <button type="button" class="button blue" ng-click="setSelectedDateToBussinessDate()" ng-show="showSetToTodayButton()">Run EOD</button>
+        <span ng-show="!showSetToTodayButton()" class="eod-automatic">EOD set to run automatically at 
+            <strong>
+             <time datetime="">{{nextEodRunTime}}</time>
+            </strong>
+        </span>
+    </div>
+
+    <!-- Content -->
+    <!-- If there is content, add slider to this -->
+    <div class="eod-content scrollable" ng-iscroll="eod_scroll" ng-iscroll-delay="500">
+        <!-- Case 1: 'Start Screen' - no content:
+        -->
+
+        <!-- Case 2: there is content:
+        -->
+        <div class="wrapper" ng-hide="isSameSelectedAndBussiness()">
+
+            <div class="eod-item" ng-repeat="eodLogDetail in eodLogDetails" ng-click="showError($index)">
+
+                <!-- If everything is ok add class .has-success,
+                     If there is an error add classes .error .has-arrow .toggle' | Add .active when toggled
+                     If the status is pending add class .pending
+                -->
+                <h2 ng-class="getClass(eodLogDetail)">{{eodLogDetail.sequence_number}}. {{eodLogDetail.name}}</h2>
+
+                <!-- Create notice only if there is an error -->
+                <!-- Remove class .hidden when toggled-->
+                <div class="notice" ng-class="{'hidden':!eodLogDetail.isOpened }" ng-if="eodLogDetail.status=='FAILED'" >                   
+                        <h3>{{eodLogDetail.errors[0].title}}</h3>
+                        <!-- Show if any-->
+                        <p ng-bind-html="eodLogDetail.errors[0].message"></p>
+                    <!-- Show if any-->
+                    <!-- <ul>
+                        <li ng-repeat="error in eodLogDetail.errors">{Notice list}</li>
+                    </ul> -->
+                </div>
+                 <div class="actions" ng-class="{'hidden':!eodLogDetail.isOpened }" ng-if="eodLogDetail.status=='FAILED'">
+                    <button class="button green" ng-click="restartFailedProcess(eodLogDetail)">Re-run</button>
+                </div>
+            </div>
+        </div>
+        <div class="no-content" ng-show="isSameSelectedAndBussiness()">
+        <div class="info">
+        <span class="icon-no-content icon-settings"></span>
+        <strong class="h1">End of Day</strong>
+        <span class="h2">
+            This will close the business day for 
+            <strong class="red">{{businessDate | date : dateFormat}}</strong>
+            and change the business date to 
+            <strong class="green">{{nextBusinessDate | date : dateFormat}}</strong>
+        </span>
+            <button type="submit" class="button" ng-click="openEndOfDayPopup()" ng-class="{'green':!isBussinessDateChanging , 'grey':isBussinessDateChanging}" ng-disabled="isBussinessDateChanging">Start End Of Day</button>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,6 +1,7 @@
 <div ng-show="hasLoader" id="loading">
     <div id="loading-spinner"></div>
 </div>
+<div ng-show="zestStationData.demoModeEnabled == 'true'" class="demo-text">demo</div>
 <div ng-include="'/assets/partials_v2/zsTabletHeader.html'"></div>
 <!--PopUp For External webPage-->
 <div class="popup iframe-popup open" ng-if="showExternalWebPage">

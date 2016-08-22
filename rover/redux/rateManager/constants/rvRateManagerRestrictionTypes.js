@@ -32,7 +32,7 @@ const RateManagerRestrictionTypes = {
 		'hasInputField': true
 	},
 	'MAX_STAY_LENGTH': {
-		'className': 'restriction-icon',
+		'className': 'restriction-icon bg-blue-dark',
 		'description': 'Max Length of Stay',
 		'defaultText': '',
 		'hasInputField': true
@@ -50,7 +50,7 @@ const RateManagerRestrictionTypes = {
 		'hasInputField': true
 	},
 	'MAX_ADV_BOOKING': {
-		'className': 'restriction-icon',
+		'className': 'restriction-icon bg-orange',
 		'description': 'Max Advance Booking',
 		'defaultText': '',
 		'hasInputField': true

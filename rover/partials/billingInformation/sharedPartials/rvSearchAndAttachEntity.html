@@ -1,0 +1,182 @@
+<div id="billing-content" class="content-wrapper no-action" ng-controller="rvSearchAndAttachEntityCtrl">
+   	<fieldset class="content-left">
+      	<div class="search-form" role="search">
+         	<div class="entry">
+	            <a href="#" id="billing-info-clear-query" class="clear-query" ng-class="{'visible': textInQueryBox!=''}">
+	            	<span class="icons icon-clear-search" ng-click="clearResults()"  translate>CLEAR_QUERY</span>
+	            </a>
+	            <button type="submit" name="submit" class="icons icon-search" translate>MENU_SEARCH</button>
+	            <input name="billing-info-query" id="billing-info-query" class="query" placeholder="{{'FIND_PLACEHOLDER' | translate}}" type="search" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()"/>
+         	</div>
+      	</div>
+      	<div id="available-entities">
+	        <!-- Attached entities, if exist -->
+	        <span class="h3 message" ng-hide="textInQueryBox!=''" translate>ATTACHED_ENTITIES</span>
+	        <div id="entities" ng-iscroll='entities' ng-iscroll-delay='100' class="entities-list scrollable" ng-hide="textInQueryBox!=''" >
+	            <ul class="wrapper">
+	            	<!-- List for guests -->
+	                <li class="entity guest" ng-show="attachedEntities.hasOwnProperty('primary_guest_details')" ng-click="selectAttachedEntity(-1,'GUEST')">
+						<!-- image -->
+						<figure class="guest-image" >
+						<img src="{{attachedEntities.primary_guest_details.avatar}}" alt="" />
+						</figure>
+
+						<!-- heading -->
+						<h2>{{attachedEntities.primary_guest_details.name}}</h2>
+
+						<!-- icon -->
+						<span class="guest-status small-icon" ng-class = "getGuestStatusMapped(reservationData.reservation_status, reservationData.is_opted_late_checkout)"   >{{attachedEntities.primary_guest_details.name}}</span>
+	                </li>
+
+	                <!-- List for accompany guests -->
+	                <li class="entity accompany" ng-repeat="entity in attachedEntities.accompanying_guest_details" ng-click="selectAttachedEntity($index,'ACCOMPANY_GUEST')">
+						<!-- image -->
+						<figure class="guest-image accompany" >
+							<img ng-src="{{entity.primary_avatar}}" alt="" />
+							<img ng-src="{{entity.avatar}}" alt="" />
+						</figure>
+
+						<div class="data">
+						    <h2>{{entity.name}}</h2>
+						</div>
+
+						<!-- icon -->
+						<span class="guest-status small-icon" ng-class = "getGuestStatusMapped(reservationData.reservation_status, reservationData.is_opted_late_checkout)"   >{{entity.name}}</span>
+	                </li>
+
+	                <!-- Company card -->
+	                <li class="entity company" ng-show="attachedEntities.hasOwnProperty('company_card')" ng-click="selectAttachedEntity(-1,'COMPANY_CARD')">
+	                  	<!-- image -->
+                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.company_card.logo)!=''">
+	                        <img ng-src="{{attachedEntities.company_card.logo}}" alt="">
+	                	</figure>
+                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.company_card.logo)==''">
+		                    <div class="guest-image icons icon-company" ></div>
+		                </figure>
+	                    <h2>{{attachedEntities.company_card.name}}</h2>
+	                </li>
+
+	                <!-- Travel agent card -->
+	                <li class="entity travel-agent" ng-show="attachedEntities.hasOwnProperty('travel_agent')" ng-click="selectAttachedEntity(-1,'TRAVEL_AGENT')">
+	                    <!-- image -->
+                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.travel_agent.logo)!=''">
+	                        <img ng-src="{{attachedEntities.travel_agent.logo}}" alt="">
+	                	</figure>
+
+                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.travel_agent.logo)==''">
+		                    <div class="guest-image icons icon-travel-agent" ></div>
+		                </figure>
+
+	                 	<h2>{{attachedEntities.travel_agent.name}}</h2>
+	                </li>
+
+	                <!-- If group added -->
+	                <li class="entity group" ng-show="billingEntity == 'GROUP_DEFAULT_BILLING' && attachedEntities.hasOwnProperty('posting_account')" ng-click="selectAttachedEntity(-1,attachedEntities.posting_account.type)">
+	                    <div class="group-info">A</div>
+	                    <h2>{{attachedEntities.posting_account.name}}</h2>
+	                </li>
+
+	                <li class="entity guest" ng-show="billingEntity == 'ALLOTMENT_DEFAULT_BILLING'" ng-click="selectAttachedEntity(-1, 'ALLOTMENT')">
+						<figure class="guest-image" ng-class = "getEntityIconClass(selectedEntity)" ng-if="escapeNull(selectedEntity.images[0].guest_image)!=''">
+							<img src="{{selectedEntity.images[0].guest_image}}" alt="" />
+						</figure>
+
+						<figure class="guest-image" ng-if="escapeNull(selectedEntity.images[0].guest_image)==''">
+							<div class="guest-image icons icon-company" ng-if="escapeNull(selectedEntity.entity_type)=='COMPANY_CARD'" ></div>
+							<div class="guest-image icons icon-travel-agent" ng-if="escapeNull(selectedEntity.entity_type)=='TRAVEL_AGENT'" ></div>
+							<div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='GROUP' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
+							<div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
+						</figure>
+
+	                    <h2>{{selectedEntity.name}}</h2>
+	                    <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
+	                    <span class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</span>
+                	</li>
+            	</ul>
+         	</div>
+
+         	<!-- Search results, show instead of attached entities when searching -->
+	        <ul id="filter-entities" class="modal-options" ng-show="textInQueryBox!=''">
+				<li click-touch="toggleClicked(true)" ng-class="{'active':isReservationActive}" translate>
+					RESERVATIONS
+				</li>
+				<li click-touch="toggleClicked(false)" ng-class="{'active':!isReservationActive}" translate>
+					ACCOUNTS_AND_CARDS
+				</li>
+			</ul>
+
+			<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
+				<ul class="wrapper">
+					<div class="entity" ng-repeat="row in searchResults.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="searchResults.cards.length == 0" ng-click="selectEntityFromSearchResults($index,'ACCOUNT')">
+						<!-- image -->
+						<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
+						<img ng-src="{{row.company_logo}}" alt="">
+						</figure>
+
+						<figure class="guest-image" ng-if="escapeNull(row.company_logo)==''">
+						<div class="guest-image icons icon-company" ng-if="escapeNull(row.account_type)=='COMPANY'" ></div>
+						<div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT'" ></div>
+						</figure>
+						<!-- heading -->
+						<h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
+						<!-- icon -->
+						<span class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></span>
+	        		</div>
+
+			        <div class="entity" ng-repeat="row in searchResults.posting_accounts" ng-show="row.is_row_visible==true" ng-hide="searchResults.posting_accounts.length == 0" ng-click="selectEntityFromSearchResults($index, row.account_type )">
+			         	<div class="group-info">A</div>
+			            <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
+			        </div>
+				</ul>
+
+				<!-- No results / no content when searched query not found-->
+	            <div class="no-content" ng-show="noSearchResultsFoundInAccountsAndCards();">
+					<div class="info">
+						<span class="icon-no-content icon-cards"></span>
+						<strong class="h1" translate>NO_MATCH_FOUND_MSG</strong>
+					</div>
+				</div>
+			</div>
+
+			<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
+				<ul class="wrapper">
+					<div class="entity" ng-repeat="row in searchResults.reservations" ng-show="row.is_row_visible==true" ng-hide="searchResults.reservations.length == 0 || row.images.length >1" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntityFromSearchResults($index,'RESERVATIONS')">
+
+						<!-- image -->
+						<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
+							<img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true), 'second-image':(row.images.length >1 && image.is_primary==false)}">
+							<span class="vip" ng-show="row.vip==true" translate>VIP</span>
+						</figure>
+
+						<div class="data">
+							<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false" 
+							ng-class="{'grey' : row.images.length >1}"> </h2>
+							<span class="confirmation" ng-bind-html="'# {{row.confirmation}}'|highlight:textInQueryBox:false" ></span>
+							<span class="room">{{'ROOM_LABEL' | translate}} <strong ng-bind-html="'{{row.room}}'|highlight:textInQueryBox:false"></strong></span>
+						</div>	
+
+						<span class="guest-status small-icon {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}" ></span>
+					</div>
+				</ul>
+
+				<!-- No results / no content when searched query not found-->
+	        	<div class="no-content" ng-show="noSearchResultsFoundInReservations();">
+					<div class="info">
+						<span class="icon-no-content"></span>
+						<strong class="h1" translate>NO_MATCH_FOUND_MSG</strong>
+					</div>
+				</div>
+			</div>
+			<button ng-show="textInQueryBox!=''" type="button" id="cancel-entity-search" class="button blank" ng-click="clearResults()" translate>CANCEL_SEARCH</button>
+      	</div>
+    </fieldset>
+
+    <fieldset class="content-right">
+        <div class="no-content" >
+        	<div class="info">
+            	<strong class="h1" translate>ENTITY_NOT_SELECTED</strong>
+            	<span class="h2" translate>SELECT_ENTITY_TO_CONFIGURE</span>
+        	</div>
+      	</div>
+    </fieldset>
+</div>

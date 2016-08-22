@@ -60,13 +60,20 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
-
-        var setTotalsForCheckinNowReport = function(totals){
-                var totalsForMobileCheckinNow = [], v;
+        var setTotalsForReport = function(totals){
+                var totalsForReport = [], v;
                 _.each(totals, function(item) {
                     if (item.label.indexOf('Conversion')!==-1){
                         if (typeof item.value == typeof 'str' && item.value.indexOf('%')!=-1){
-                            v = item.value.split('%')[0]+'%';
+                        	v = item.value.split('%')[0]+'%';
+                        } else if (item.label.indexOf('Mobile Check In Conversion')!==-1 || item.label.indexOf('Auto Check In Conversion')!==-1){
+                        	v = item.value + '%';//these values are currently being passed without the percentage...just need to add the % sign
+                        } else {
+                            v = 'N/A';
+                        }
+                    } else if (item.label.indexOf('Revenue')!==-1){
+                    	if (typeof item.value == typeof 'str'){
+                        	v = item.value;
                         } else {
                             v = 'N/A';
                         }
@@ -75,9 +82,9 @@ sntRover.controller('RVReportDetailsCtrl', [
                     } else {
                         v = 0;
                     }
-                    totalsForMobileCheckinNow.push(v);
+                    totalsForReport.push(v);
                   });
-                $scope.resultsTotalRow = totalsForMobileCheckinNow;  
+                $scope.resultsTotalRow = totalsForReport;  
         };
 
 		// common methods to do things after fetch report
@@ -106,6 +113,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isCondensedPrint = false;
 			$scope.isBalanceReport = false;
 			$scope.isDepositBalanceReport = false;
+			$scope.isCancellationReport = false;
 
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
@@ -127,6 +135,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['CANCELLATION_NO_SHOW']:
 					$scope.hasNoTotals = true;
 					$scope.isGuestReport = true;
+					$scope.isCancellationReport = true;
 					$scope.hasNoSorting = true;
 					break;
 
@@ -208,12 +217,23 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['MOBILE_CHECKIN_NOW']:
-                                        $scope.hasReportTotals = true;
-                                        $scope.hasNoResults = false;
-                                        $scope.hasNoTotals = false;
-                                        setTotalsForCheckinNowReport(totals);
+                    $scope.hasReportTotals = true;
+                    $scope.hasNoResults = false;
+                    $scope.hasNoTotals = false;
+                    setTotalsForReport(totals);//refreshes Totals
 					break;
 				case reportNames['MOBILE_CHECKIN']:
+                    $scope.hasReportTotals = true;
+                    $scope.hasNoResults = false;
+                    $scope.hasNoTotals = false;
+                    setTotalsForReport(totals);//refreshes Totals
+					break;
+
+				case reportNames['ROOM_UPSELL']:
+                    $scope.hasReportTotals = true;
+                    $scope.hasNoResults = false;
+                    $scope.hasNoTotals = false;
+                    setTotalsForReport(totals);//refreshes Totals
 					break;
 				case reportNames['CHECKIN_NOW_OR_LATER']:
 					break;
@@ -338,7 +358,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
-					$scope.leftColSpan = 3;
+					$scope.leftColSpan = 5;
 					$scope.rightColSpan = 5;
 					break;
 
@@ -350,6 +370,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['DEPOSIT_SUMMARY']:
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 3;
+					break;
+
+				case reportNames['ROOM_UPSELL']:
+				case reportNames['MOBILE_CHECKIN']:
+				case reportNames['MOBILE_CHECKIN_NOW']:
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 4;
 					break;
 
 				default:
@@ -492,6 +519,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// to make sure API that doesnt requires any parsing will be returned with any parse
 			var parseAPIoptions = {
 				'groupedByKey'    : $scope.$parent.reportGroupedBy,
+				'checkAction'     : $scope.chosenReport.chosenOptions['include_actions'],
 				'checkNote'       : $scope.chosenReport.chosenOptions['include_notes'],
 				'checkGuest'      : $scope.chosenReport.chosenOptions['show_guests'],
 				'checkCancel'     : $scope.chosenReport.chosenOptions['include_cancelled'] || $scope.chosenReport.chosenOptions['include_cancelled'],
@@ -924,6 +952,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['ADDON_FORECAST']:
 				case reportNames['CREDIT_CHECK_REPORT']:
 				case reportNames['DEPOSIT_SUMMARY']:
+				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
 					orientation = 'landscape';
 					break;
 
@@ -1004,15 +1033,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 		$scope.hasSort = function(index) {
-			return !! $scope.chosenReport.sortByOptions[index]
+			var s = $scope.chosenReport.sortByOptions || [];
+			return !! s[index];
 		}
 
 		$scope.isAsc = function(index) {
-			return !! $scope.chosenReport.sortByOptions[index] && $scope.chosenReport.sortByOptions[index]['sortDir'] === true;
+			var s = $scope.chosenReport.sortByOptions || [];
+			return !! s[index] && s[index]['sortDir'] === true;
 		};
 
 		$scope.isDesc = function(index) {
-			return !! $scope.chosenReport.sortByOptions[index] && $scope.chosenReport.sortByOptions[index]['sortDir'] === false;
+			var s = $scope.chosenReport.sortByOptions || [];
+			return !! s[index] && s[index]['sortDir'] === false;
 		};
 
 

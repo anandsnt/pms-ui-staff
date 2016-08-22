@@ -1,17 +1,23 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content">
-        
-        <h1 ng-show='waitingForSwipe' translate>TO_COMPLETE</h1>
-        <h2 ng-show='waitingForSwipe' translate>SWIPE_CARD_PLEASE</h2>
-        
-        <h1 ng-show='swipeError' translate>SWIPE_ERR_HEADER</h1>
-        <h1 ng-show='swipeTimeout' translate>CC_SIGN_TIMEOUT</h1>
-        <h2 ng-show='swipeTimeout' translate>CC_SIGN_TIMEOUT_SUB</h2>
+        <!-- normal flow, no deposit required, just swiping for reservation -->
+        <h1 ng-show='waitingForSwipe && !authAfterDeposit && !payingDeposit' translate>TO_COMPLETE</h1>
+        <h2 ng-show='waitingForSwipe && !authAfterDeposit && !payingDeposit' translate>SWIPE_CARD_PLEASE</h2>
+        <!-- timeout / error -->
+        <h1 ng-show='swipeError && !waitingForSwipe' translate>SWIPE_ERR_HEADER</h1>
+        <h1 ng-show='swipeTimeout && !waitingForSwipe' translate>CC_SWIPE_TIMEOUT</h1>
+        <h2 ng-show='swipeTimeout && !waitingForSwipe' translate>CC_SWIPE_TIMEOUT_SUB</h2>
+        <!-- collect CC authorization after taking a deposit payment -->
+        <h1 ng-show="authAfterDeposit && waitingForSwipe" translate>RES_AUTH_REMAIN</h2>
+        <h2 ng-show="authAfterDeposit && waitingForSwipe" translate>RES_AUTH_REMAIN_SUB</h2>
+        <!-- collecting deposit payment -->
+        <h1 ng-show="!authAfterDeposit && waitingForSwipe && payingDeposit" translate>RES_AUTH_DEPOSIT</h2>
+        <h2 ng-show="!authAfterDeposit && waitingForSwipe && payingDeposit" translate>RES_AUTH_DEPOSIT_SUB</h2>
         
         <nav id="options" role="nav">
             <ul role="menu">
                 <!-- card swipe -->
-                <li ng-show='waitingForSwipe' touch-press='continue()'>
+                <li ng-show='waitingForSwipe && !icmp' touch-press='continue()'>
                     <button type="button" class="button option">
                         <div ng-include="icons.url.creditcard"></div>
                         
@@ -19,20 +25,27 @@
                     <span translate>SWIPE_CARD_PLEASE</span>
                     <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
                 </li>
+                <li ng-show='waitingForSwipe && icmp' touch-press='continue()'>
+                   <div class="margin-adj">
+                        <div ng-include="icons.url.creditcard_icmp"></div>
+                    </div>
+                    <span translate>SWIPE_CARD_PLEASE</span>
+                    <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
+                </li>
                 
-                <li ng-show='swipeTimeout'>
+                <li ng-show='(swipeTimeout || swipeError) && !waitingForSwipe'>
                     <button type="button" class="button option" touch-press='reTryCardSwipe()'>
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
                     <h1 translate>TRY_AGAIN</h1>
                 </li>
                 
-                <li class="break" ng-show='swipeTimeout'>
+                <li class="break" ng-show='(swipeTimeout || swipeError) && !waitingForSwipe'>
                     <span translate>OR_TEXT</span>
                 </li>
                 
 
-                <li ng-show='swipeTimeout'> 
+                <li ng-show='(swipeTimeout || swipeError) && !waitingForSwipe'>
                     <button type="button" class="button option" touch-press='initStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
@@ -43,4 +56,5 @@
             </ul>
         </nav>
     </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>

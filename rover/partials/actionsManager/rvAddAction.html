@@ -1,6 +1,7 @@
 <span class="h2 message">New Action</span>
 
-<span auto-complete-reservations ng-model="newAction.reservation"></span>
+<span ng-if="filterOptions.selectedView == 'GUEST'" auto-complete-reservations ng-model="newAction.reservation"></span>
+<span ng-if="filterOptions.selectedView == 'GROUP'" auto-complete-groups ng-model="newAction.group"></span>
 
 
 <div class="entry full-width">
@@ -50,8 +51,8 @@
 </div>
 <div class="actions">
     <button type="button" class="button green" ng-click="saveNewAction()"
-            ng-class="{'grey':!newAction.reservation.id || !newAction.note}"
-            ng-disabled="!newAction.reservation.id || !newAction.note">
+            ng-class="{'grey':!newAction.reservation.id && !newAction.group.id || !newAction.note}"
+            ng-disabled="!newAction.reservation.id && !newAction.group.id || !newAction.note">
         Post Action
     </button>
     <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>

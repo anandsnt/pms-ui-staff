@@ -262,6 +262,8 @@ sntRover.controller('reservationDetailsController',
 			RVSearchSrv.updateRoomDetails($scope.reservationData.reservation_card.confirmation_num, data);
 		};
 
+
+
 		// update any room related data to search service also
 		$scope.updateSearchCache();
 
@@ -1412,7 +1414,7 @@ sntRover.controller('reservationDetailsController',
      * Checks whether the rate amount needs to show or not
      */
      $scope.isRateAmountShown = function() {
-     	return (!$scope.reservationData.reservation_card.is_rates_suppressed || RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked"));
+     	return ($scope.reservationData.reservation_card.is_rates_suppressed == 'false' || RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked"));
      };
 
 

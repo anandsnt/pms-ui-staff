@@ -2,7 +2,6 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
     function($q, RVBaseWebSrvV2, RVReservationBaseSearchSrv) {
 
         var service = this;
-
         //--------------------------------------------------------------------------------------------------------------
         // A. Private Methods
         var getInitialRoomTypeWithUpSell = function(params) {
@@ -20,7 +19,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                             deferred.resolve(baseResults);
                         }, function(err) {
                             deferred.reject(err);
-                        })
+                        });
                     } else {
                         deferred.resolve(response);
                     }
@@ -28,10 +27,39 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                     deferred.resolve(response);
                 }
 
-            }, function(er) {
+            }, function(err) {
                 deferred.reject(err);
             });
             return deferred.promise;
+        };
+
+        /**
+        * Prepare the parameters for the room type and rate tab request
+        */
+        var processParamsForRoomTypeAndRateRequest = function(params) {
+            var currentRoomAndRateActiveView = service.getRoomAndRateActiveTab();
+
+            if(currentRoomAndRateActiveView === "RATE" || currentRoomAndRateActiveView === "ROOM_TYPE") {
+               params.is_member = "false";
+
+               if(params.company_id) {
+                delete params.company_id;
+               }
+               if(params.travel_agent_id) {
+                delete params.travel_agent_id;
+               }
+               if(params.promotion_code) {
+                delete params.promotion_code;
+               }
+               if(params.promotion_id) {
+                delete params.promotion_id;
+               }
+            }
+
+            if(currentRoomAndRateActiveView === "RECOMMENDED") {
+                delete params.room_type_id;
+            }
+
         };
 
         //--------------------------------------------------------------------------------------------------------------
@@ -54,11 +82,13 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             params.exclude_pseudo = true;
             params.exclude_suite = true;
 
+            processParamsForRoomTypeAndRateRequest(params);
+
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
-                if (!!params.allotment_id || !!params.group_id) {
+                if (!!params.group_id) {
                     _.each(response.results, function(roomType) {
                         if (roomType.rate_id === null) {
-                            roomType.rate_id = !!params.allotment_id ? 'ALLOTMENT_CUSTOM_' + params.allotment_id : 'GROUP_CUSTOM_' + params.group_id
+                            roomType.rate_id = '_CUSTOM_' + params.group_id;
                         }
                     });
                 }
@@ -76,11 +106,13 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             params.exclude_pseudo = true;
             params.exclude_suite = true;
 
+            processParamsForRoomTypeAndRateRequest(params);
+
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
-                if (!!params.allotment_id || !!params.group_id) {
+                if (!!params.group_id) {
                     _.each(response.results, function(rate) {
                         if (rate.id === null) {
-                            rate.id = !!params.allotment_id ? 'ALLOTMENT_CUSTOM_' + params.allotment_id : 'GROUP_CUSTOM_' + params.group_id
+                            rate.id = '_CUSTOM_' + params.group_id;
                         }
                     });
                 }
@@ -92,34 +124,21 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
         };
 
         service.fetchRatesInitial = function(params) {
-            var defaultView = RVReservationBaseSearchSrv.getRoomRatesDefaultView(),
+            var activeView = service.getRoomAndRateActiveTab(),
                 promises = [],
                 deferred = $q.defer(),
-                data;
-            if (defaultView === "RATE") {
+                data = [];
+
+            if (activeView === "RATE" || (activeView === "RECOMMENDED" && (params.company_id || params.travel_agent_id || params.group_id
+                || params.promotion_code || params.promotion_id || params.is_member))) {
                 params.order = "ALPHABETICAL";
                 promises.push(service.fetchRateADRs(params, true).then(function(response) {
                     data = response;
                 }));
-            } else {
-                if(params.travel_agent_id || params.company_id
-                         || params.group_id || params.allotment_id
-                         || params.promotion_code || params.is_member == "true"){
-
-
-                    promises.push(service.fetchRateADRs(params, true).then(function(response) {
-                        data = response;
-                    }));
-
-                } else {
+            } else if (activeView === "ROOM_TYPE") {
                     promises.push(getInitialRoomTypeWithUpSell(params, true).then(function(response) {
                         data = response;
                     }));
-
-                }
-
-
-
 
             }
 
@@ -130,6 +149,16 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             });
 
             return deferred.promise;
+        };
+
+        // Set the room and rates active tab
+        service.setRoomAndRateActiveTab = function(view) {
+            service.roomAndRateActiveTab = view;
+        };
+
+        //Get the current active tab in room and rates screen
+        service.getRoomAndRateActiveTab = function() {
+            return service.roomAndRateActiveTab;
         };
 
         //--------------------------------------------------------------------------------------------------------------

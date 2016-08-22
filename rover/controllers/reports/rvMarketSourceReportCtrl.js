@@ -54,12 +54,12 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 		$scope.reportStatus = {
 			sort: {
 				source: {
-					name: true,
-					ascending: true
+					name: undefined,
+					ascending: undefined
 				},
 				market: {
-					name: true,
-					ascending: true
+					name: undefined,
+					ascending: undefined
 				}
 			}
 		};
@@ -215,6 +215,9 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 
 		$scope.$on('report.updated', function() {
 			init();
+		});
+		$scope.$on('report.submited', function() {
+			$scope.sources && init();
 		});
 
 		init();

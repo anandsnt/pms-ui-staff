@@ -1,115 +1,111 @@
 <!-- contentarea starts here-->
 <div class="jumbotron">
-   <div class="container backgroundbg" >
-      <div class="container-fluid">
-         <div class="row headerrow template-header-bg">
-            <logo-image></logo-image>
-         </div>
-      </div>
-      <div ng-show="isLoading && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-         <p class="msg-head">Your request is being processed.</p>
-         <p class="msg-body">This may take a few seconds..... please wait!</p>
-      </div>
-      <div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-         <p class="msg-head">Our apologies, something went wrong, please complete your pre check in at our front desk.</p>
-         </p>
-         <p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
-      </div>
-      <!-- contentarea starts here-->
-      <div class="container" ng-hide="isLoading || netWorkError">
-         <!-- top section starts here-->
-         <div class="row checkin-wrapper-top arrival-details">
-            <div class="pre-checkin-container-padding">
-               <div class="chekin-heading centeralign">
-                  Enter Your Address
-               </div>
-               <div class="date-container ">
-                  <div class="row cabin_number_field bottom-margin-10">
-                     <em class="labelText template-text">COUNTRY</em>
-                    
-                        <div class="select-style select-style-fullwidth">
-                           <select ng-model="guestDetails.country"
-                              ng-options="country.id as country.value  for country in countries">
-                              <option value="">SELECT</option>
-                           </select>
-                        </div>
-                  </div>
-                  
-                 
-                  <div class="row">                  
-                     
-                     <div class="date-container half-width-select zip-code">
-                        <div class="row cabin_number_field ">
-                           <em class="labelText template-text">ADDRESS LINE 1</em>
-                           <input type="text" ng-model="guestDetails.street" class = "col-xs-12 textBox"/>
-                        </div>
-                     </div>
-
-                     <div class="date-container half-width-select zip-code">
-                        <div class="row cabin_number_field ">
-                           <em class="labelText template-text">ADDRESS LINE 2(OPTIONAL)</em>
-                           <input type="text" ng-model="guestDetails.street2" class = "col-xs-12 textBox"/>
-                        </div>
-                     </div>
-
-
-                     <div class="date-container half-width-select zip-code">
-                        <div class="row cabin_number_field ">
-                           <em class="labelText template-text">CITY</em>
-                           <input type="text" ng-model="guestDetails.city" class = "col-xs-12 textBox"/>
-                        </div>
-                     </div>
-                     
-                     <div class="date-container half-width-select zip-code">
-                        <div class="row cabin_number_field ">
-                           <em class="labelText template-text">STATE/PROVINCE/REGION</em>
-                           <input type="text" ng-model="guestDetails.state" class = "col-xs-12 textBox"/>
-                        </div>
-                     </div>
-
-                     <div class="date-container half-width-select zip-code">
-                        <div class="row cabin_number_field ">
-                           <em class="labelText template-text">ZIP/POSTAL CODE</em>
-                           <input type="text" ng-model="guestDetails.postal_code" class = "col-xs-12 textBox"/>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row cabin_number_field ">
-                     <p><em class="labelText template-text">BIRTHDAY&nbsp;(OPTIONAL)</em></p>
-                     <div class="expiry-year-container eta-container">
-                        <div class="select-style">
-                           <select ng-model="guestDetails.month"
-                              ng-options="month as month for month in months">
-                              <option value="">MM</option>
-                           </select>
-                        </div>
-                     </div>
-                     <div class="expiry-year-container eta-container">
-                        <div class="select-style">
-                           <select ng-model="guestDetails.day"
-                              ng-options="day as day for day in days">
-                              <option value="">DD</option>
-                           </select>
-                        </div>
-                     </div>
-                     <div class="expiry-year-container eta-container">
-                        <div class="select-style arrival-time">
-                           <select ng-model="guestDetails.year"
-                              ng-options="year as year for year in years">
-                              <option value="">YYYY</option>
-                           </select>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+    <div class="container backgroundbg">
+        <div class="container-fluid">
+            <div class="row headerrow template-header-bg">
+                <logo-image></logo-image>
             </div>
-            <div class="row cabin_number_field padding-5">  
-               <button class="checkin-button continue-button template-button"
-               ng-click="postGuestDetails()">
-               <span >Continue</span>
-               </button>
+        </div>
+        <div ng-show="isLoading && !netWorkError" class="checkout-status centeralign checkout-now-status">
+            <p class="msg-head">Your request is being processed.</p>
+            <p class="msg-body">This may take a few seconds..... please wait!</p>
+        </div>
+        <div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+            <p class="msg-head">Our apologies, something went wrong, please complete your pre check in at our front desk.</p>
+            </p>
+            <p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}" class="white-alert-link-tag">{{hotelPhone}}.</a></p>
+        </div>
+        <!-- contentarea starts here-->
+        <div class="container" ng-hide="isLoading || netWorkError">
+            <!-- top section starts here-->
+            <div class="row checkin-wrapper-top arrival-details">
+                <div class="pre-checkin-container-padding">
+                    <div class="chekin-heading centeralign">
+                        Enter Your Address
+                    </div>
+                    <div class="date-container ">
+                        <div class="row cabin_number_field bottom-margin-10">
+                            <em class="labelText template-text">COUNTRY</em>
+                            <!--  -->
+                            <div class="select-style select-style-fullwidth">
+                                <!-- unsorted -->
+                                <select ng-model="guestDetails.country" ng-options="country.id as country.value  for country in countries" ng-hide="enforceCountrySort">
+                                    <option value="">SELECT</option>
+                                </select>
+                                <!-- sorted -->
+                                <select ng-model="guestDetails.country" ng-show="enforceCountrySort">
+                                    <option value="">-- Select country --</option>
+                                    <option ng-repeat="country in sortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
+                                    <option value="" ng-show="sortedCountries.length > 0" disabled> ------------------ </option>
+                                    <option ng-repeat="country in unSortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
+                                </select>
+                            </div>
+                            <!--  -->
+                        </div>
+                        <div class="row">
+                            <div class="date-container half-width-select zip-code">
+                                <div class="row cabin_number_field ">
+                                    <em class="labelText template-text">ADDRESS LINE 1</em>
+                                    <input type="text" ng-model="guestDetails.street" class="col-xs-12 textBox" />
+                                </div>
+                            </div>
+                            <div class="date-container half-width-select zip-code">
+                                <div class="row cabin_number_field ">
+                                    <em class="labelText template-text">ADDRESS LINE 2(OPTIONAL)</em>
+                                    <input type="text" ng-model="guestDetails.street2" class="col-xs-12 textBox" />
+                                </div>
+                            </div>
+                            <div class="date-container half-width-select zip-code">
+                                <div class="row cabin_number_field ">
+                                    <em class="labelText template-text">CITY</em>
+                                    <input type="text" ng-model="guestDetails.city" class="col-xs-12 textBox" />
+                                </div>
+                            </div>
+                            <div class="date-container half-width-select zip-code">
+                                <div class="row cabin_number_field ">
+                                    <em class="labelText template-text">STATE/PROVINCE/REGION</em>
+                                    <input type="text" ng-model="guestDetails.state" class="col-xs-12 textBox" />
+                                </div>
+                            </div>
+                            <div class="date-container half-width-select zip-code">
+                                <div class="row cabin_number_field ">
+                                    <em class="labelText template-text">ZIP/POSTAL CODE</em>
+                                    <input type="text" ng-model="guestDetails.postal_code" class="col-xs-12 textBox" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row cabin_number_field ">
+                            <p><em class="labelText template-text">BIRTHDAY&nbsp;(OPTIONAL)</em></p>
+                            <div class="expiry-year-container eta-container">
+                                <div class="select-style">
+                                    <select ng-model="guestDetails.month" ng-options="month as month for month in months">
+                                        <option value="">MM</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="expiry-year-container eta-container">
+                                <div class="select-style">
+                                    <select ng-model="guestDetails.day" ng-options="day as day for day in days">
+                                        <option value="">DD</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="expiry-year-container eta-container">
+                                <div class="select-style arrival-time">
+                                    <select ng-model="guestDetails.year" ng-options="year as year for year in years">
+                                        <option value="">YYYY</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row cabin_number_field padding-5">
+                    <button class="checkin-button continue-button template-button" ng-click="postGuestDetails()">
+                        <span>Continue</span>
+                    </button>
+                </div>
             </div>
-         </div>
-      </div>
-   </div>
+        </div>
+    </div>
 </div>

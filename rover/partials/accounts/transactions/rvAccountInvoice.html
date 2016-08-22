@@ -1,55 +1,49 @@
-<div class="invoice-header top-header">
-    <h1>{{printData.hotel_name}}</h1>
-    <span class="invoice-header-address">
-        {{printData.hotel_address}}
-    </span>
+<div class="invoice-logo envelope">
     <img ng-src="{{printData.hotel_logo}}" alt="" />
-</div>
-
-<div class="invoice-logo envelope smaller">
-    <h1 translate>INVOICE</h1>
+    <h1>{{printData.hotel_name}}</h1>
+    <span ng-bind-html="printData.hotel_address" ng-if="printData.show_hotel_address"></span>
+    <span class="type" translate>INVOICE</span>
 </div>
 
 <div class="info-container account-info">
 
     <span ng-if="printData.card_type === 'COMPANY'">
-        {{printData.company_card_details.name}}<br ng-if="printData.company_card_details.name" />
-        {{printData.company_card_details.contact_name}}<br ng-if="printData.company_card_details.contact_name" />
-        {{printData.company_card_details.address_line_1}}<br ng-if="printData.company_card_details.address_line_1" />
-        {{printData.company_card_details.address_line_2}}<br ng-if="printData.company_card_details.address_line_2" /> 
-        {{printData.company_card_details.city_address}}<br ng-if="printData.company_card_details.city_address" />
-        {{printData.company_card_details.country}}
+        <span>{{printData.company_card_details.name}}</span><br ng-if="printData.company_card_details.name" />
+        <span ng-bind-html="printData.company_card_details.address"></span>
     </span>
 
     <span ng-if="printData.card_type === 'TRAVELAGENT'">
-        {{printData.ta_card_details.name}}<br ng-if="printData.ta_card_details.name" />
-        {{printData.ta_card_details.contact_name}}<br ng-if="printData.ta_card_details.contact_name" />
-        {{printData.ta_card_details.address_line_1}}<br ng-if="printData.ta_card_details.address_line_1" />
-        {{printData.ta_card_details.address_line_2}}<br ng-if="printData.ta_card_details.address_line_2" /> 
-        {{printData.ta_card_details.city_address}}<br ng-if="printData.ta_card_details.city_address" />
-        {{printData.ta_card_details.country}}
+        <span>{{printData.ta_card_details.name}}</span><br ng-if="printData.ta_card_details.name" />
+        <span ng-bind-html="printData.ta_card_details.address"></span>
     </span>
 
     <div class="info-bottom">
-        <div class="info-left">
+        <div class="info-left" ng-if="printData.card_type === 'COMPANY'">
             <strong translate>INVOICE_DATE:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <strong translate>INVOICE_NO:</strong>{{printData.invoice_number}}<br/>
+            <strong translate>INVOICE_NO:</strong>{{printData.invoice_number}}<br>
+            <strong ng-if="printData.company_card_details.reference_number" translate>REF_NO:</strong>{{printData.company_card_details.reference_number}}<br ng-if="printData.company_card_details.reference_number" />
+            <strong ng-if="printData.company_card_details.payment_due_in_days" translate>PAYMENT_DUE_IN_DAYS:</strong>{{printData.company_card_details.payment_due_in_days}}<br ng-if="printData.company_card_details.payment_due_in_days" />
+        </div>
+        <div class="info-left" ng-if="printData.card_type === 'TRAVELAGENT'">
+            <strong translate>INVOICE_DATE:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
+            <strong translate>INVOICE_NO:</strong>{{printData.invoice_number}}<br>
+            <strong ng-if="printData.ta_card_details.reference_number" translate>REF_NO:</strong>{{printData.ta_card_details.reference_number}}<br ng-if="printData.ta_card_details.reference_number" />
+            <strong ng-if="printData.ta_card_details.payment_due_in_days" translate>PAYMENT_DUE_IN_DAYS:</strong>{{printData.ta_card_details.payment_due_in_days}}<br ng-if="printData.ta_card_details.payment_due_in_days" />
         </div>
         <div class="info-right" ng-if="printData.card_type === 'COMPANY'">
             <strong translate>ACCOUNT_NAME:</strong>{{printData.account_name}}<br/>
             <strong ng-if="printData.group_account_contact && printData.is_group" translate>ACCOUNT_CONTACT:</strong>{{printData.group_account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
-            <strong ng-if="printData.company_card_details.payment_due_in_days" translate>PAYMENT_DUE_IN_DAYS:</strong>{{printData.company_card_details.payment_due_in_days}}<br ng-if="printData.company_card_details.payment_due_in_days" />
             <strong translate>CORP_ID:</strong>{{printData.company_card_details.corporate_id}}<br/>
-            <strong translate>TAX_ID:</strong>{{printData.company_card_details.tax_id}}<br ng-if="printData.company_card_details.tax_id" />
-            <strong ng-if="printData.company_card_details.reference_number" translate>REF_NO:</strong>{{printData.company_card_details.reference_number}}
+            <strong translate>TAX_ID:</strong>{{printData.company_card_details.tax_id}}<br/>
+            <strong ng-if="printData.company_card_details.ar_number" translate>AR_NO:</strong>{{printData.company_card_details.ar_number}}<br ng-if="printData.company_card_details.ar_number" />
         </div>
         <div class="info-right" ng-if="printData.card_type === 'TRAVELAGENT'">
             <strong translate>ACCOUNT_NAME:</strong>{{printData.account_name}}<br/>
             <strong ng-if="printData.group_account_contact && printData.is_group" translate>ACCOUNT_CONTACT:</strong>{{printData.group_account_contact}}<br ng-if="printData.group_account_contact && printData.is_group" />
             <strong ng-if="printData.ta_card_details.payment_due_in_days" translate>PAYMENT_DUE_IN_DAYS:</strong>{{printData.ta_card_details.payment_due_in_days}}<br ng-if="printData.ta_card_details.payment_due_in_days" />
             <strong translate>IATA_#:</strong>{{printData.ta_card_details.iata_no}}<br/>
-            <strong translate>TAX_ID:</strong>{{printData.ta_card_details.tax_id}}<br ng-if="printData.ta_card_details.tax_id" />
-            <strong ng-if="printData.ta_card_details.reference_number" translate>REF_NO:</strong>{{printData.ta_card_details.reference_number}}
+            <strong translate>TAX_ID:</strong>{{printData.ta_card_details.tax_id}}<br/>
+            <strong ng-if="printData.ta_card_details.ar_number" translate>AR_NO:</strong>{{printData.ta_card_details.ar_number}}<br ng-if="printData.ta_card_details.ar_number" />
         </div>
     </div>
 </div>
@@ -92,7 +86,7 @@
                 <td>{{currencySymbol}}{{tax.amount | number : 2}}</td>
             </tr>
             <tr>
-                <td colspan="4" translate>TOTAL_INCL_TAX</td>
+                <td colspan="4" translate>TOTAL_TAX_INCL</td>
                 <td>{{currencySymbol}}{{printData.bill_transactions_info.total_incl_tax | number:2}}</td>
             </tr>
         </tfoot>

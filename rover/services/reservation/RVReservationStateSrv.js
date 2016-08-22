@@ -48,7 +48,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 			var rateAddons = _.findWhere(self.metaData.rateAddons, {
 				rate_id: addonInfo[0].rateId
 			});
-			
+
 			if(rateAddons){
 				rateAddons[0] = addonInfo[0];
 			}else{
@@ -58,7 +58,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 
 		self.getCustomRateModel = function(id, name, type) {
 			var isAllotment = type && type === 'ALLOTMENT',
-				rateIdentifier = isAllotment ? 'ALLOTMENT_CUSTOM_' + id : 'GROUP_CUSTOM_' + id, //Default to the GROUP
+				rateIdentifier = '_CUSTOM_' + id, //Default to the GROUP
 				rateName = isAllotment ? "Custom Rate for Allotment " + name : "Custom Rate for Group " + name,
 				rateDescription = isAllotment ? "Custom Allotment Rate" : "Custom Group Rate";
 			return {

@@ -1,23 +1,14 @@
-<div class="invoice-header top-header">
-    <h1>{{printData.hotel_name}}</h1>
-    <span class="invoice-header-address">
-        {{printData.hotel_address}}
-    </span>
-    <img ng-src="{{printData.hotel_logo}}" alt="" />
-</div>
-
 <div class="invoice-logo envelope">
-    <h1 translate>INVOICE</h1>
+    <img ng-src="{{printData.hotel_logo}}" alt="" />
+    <h1>{{printData.hotel_name}}</h1>
+    <span ng-bind-html="printData.hotel_address" ng-if="printData.show_hotel_address"></span>
+    <span class="type" translate>INVOICE</span>
 </div>
 
 <!-- Case 1: Guest Bill -->
 <div class="info-container" ng-if="!printData.is_from_cards">
     <div class="info-left">
-        {{printData.guest_details.first_name}} {{printData.guest_details.last_name}}<br/>
-        {{printData.guest_details.street}}<br ng-if="printData.guest_details.street"/>
-        {{printData.guest_details.street2}}<br ng-if="printData.guest_details.street2"/> 
-        {{printData.guest_details.city_address}}<br ng-if="printData.guest_details.city_address"/>
-        {{printData.guest_details.country}}
+        <span ng-bind-html="printData.guest_details.address"></span>
         <div class="info-bottom">
             <strong translate>INVOICE_DATE:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <strong translate>INVOICE_NO:</strong>{{printData.invoice_number}}<br/>
@@ -37,11 +28,7 @@
     <div class="float">
         <div class="info-left">
             {{printData.card_details.name}}<br ng-if="printData.card_details.name"/>
-            {{printData.card_details.contact_name}}<br ng-if="printData.card_details.contact_name"/>
-            {{printData.card_details.address_line_1}}<br ng-if="printData.card_details.address_line_1"/>
-            {{printData.card_details.address_line_2}}<br ng-if="printData.card_details.address_line_2"/>  
-            {{printData.card_details.city_address}}<br ng-if="printData.card_details.city_address"/>
-            {{printData.card_details.country}}
+            <span ng-bind-html="printData.card_details.address"></span>
         </div>
         <div class="info-right">
             <strong translate>GUEST_NAME:</strong>{{printData.guest_details.first_name}} {{printData.guest_details.last_name}}<br/>

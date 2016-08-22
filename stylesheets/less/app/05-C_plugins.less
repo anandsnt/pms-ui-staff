@@ -770,6 +770,17 @@
                             .size(40px, 120px); 
                         }
                     }
+
+                    .numbers-pagination {
+                        -webkit-justify-content: center;
+                        justify-content: center;
+
+                        .button {
+                            font-size: 14px;
+                            line-height: 40px;
+                            .square(40px);
+                        }
+                    }
                 }
 
                 .content-right {
@@ -1165,7 +1176,11 @@
                     .charge-code-list {
                         position: absolute;
                         top: 40px;
-                        left: -20px;
+                        left: 0px;
+                        width: 280px;
+                        max-height: 240px;
+                        overflow: hidden;
+                        background-color: @white;
                     }
                 }
 
@@ -2742,16 +2757,69 @@
 
             &.move-charge {
                 padding: 20px 0 0 0;
-                width: 580px;
+                .size(630px, 580px);
+               
+                input[disabled] {
+                    .box-shadow(inset 1px 1px 1px rgba(0, 0, 0, 0.1));
+                    font-style: italic;
+                    color: @grey2;
+                }
 
                 .h3 {
                     text-transform: uppercase;
-                    font-weight: 600;
-                    margin: 0 20px;
+                    font-weight: 600; 
+                    font-size: 18px;
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+
+                .move-options,
+                .delete-charges {
+                    .hide();
+                }
+
+                .move-or-delete,
+                .delete-charges {
+                    .button {
+                        margin-bottom: 20px;
+                        &:last-child {
+                            margin-bottom:0;
+                        }
+                    }
+                }
+
+                &.delete-confirmation {
+                    .delete-charges {
+                        .show();
+                    }
+
+                    .move-or-delete {
+                        .hide();
+                    }
+                }
+
+                &.show-options {
+                    .size(630px, 580px);
+
+                    .move-options {
+                        .show();
+                    }
+
+                    .move-or-delete {
+                        .hide();
+                    }
+                }
+
+                .another-bill {
+                    .holder {
+                        .box-shadow(0px 1px 0px rgba(0, 0, 0, 0.1));
+                        margin-bottom: 30px;
+                    }
                 }
 
                 .holder {
-                    padding: 0 20px;
+                    padding: 0 0 20px 0px;
+                    margin:0 20px;
                     .float;
 
                     .entry {
@@ -2786,6 +2854,12 @@
                             }
 
                             strong { text-transform: uppercase; }
+
+                            &.with-label {
+                                strong {
+                                    max-width: 60%;
+                                }
+                            }
                         }
 
                         .clear-query {
@@ -2826,50 +2900,72 @@
 
                         &.margin { 
                             margin-right: 20px;
-                            .calc-width(100, 100);
+                        }
+
+                        &:first-child {
+                            .calc-width(100, 200);
                         }
                     }
 
                     &.search {
                         .entry {
-                            .calc-width(100, 160);
+                            .calc-width(100, 180);
 
-                            &.margin { width: 140px; }
+                            &.margin { width: 160px; }
+                        }
+                    }
+
+                    &.account-selected {
+                        .entry {
+                            &.margin { .calc-width(100, 100); }
                         }
                     }
                 }
 
-                .scrollable {
-                    position: relative;
+                .account-search {
+                    height: 260px;
+                    padding:20px 0;
                     background-color: rgba(0,0,0,.05);
+                    overflow: hidden;
+                    .box-shadow(0 -1px 1px rgba(0,0,0,.15));
                     #border-radius > .bottom();
-                    .calc-height(100, 242);
-                    .box-shadow(0 -2px 2px rgba(0,0,0,.15));
+                }
 
-                    .wrapper { padding: 20px; }
-
-                    .no-content {
-                        height: 230px;
-                        overflow: hidden;
-
-                        .h1 { 
-                            font-size: 24px;
-                            line-height: 26px;
-                            margin-bottom: 12px 0;
-                        }
-
-                        .h2 {
-                            font-size: 20px;
-                            line-height: 24px;
-                        }
+                .no-content {
+                    height: 200px !important;
+                    .icon-no-content.icon-groups {
+                        height: 100px;
+                        background-position: 0 -1450px;
                     }
+                    .h1 { 
+                        font-size: 24px;
+                        line-height: 26px;
+                        margin-bottom: 12px 0;
+                    }
+
+                    .h2 {
+                        font-size: 20px;
+                        line-height: 24px;
+                    }
+                }
+
+                .scrollable { 
+                    height: 100%;
+                    overflow: hidden;
+                    position: relative;
+
+                    .wrapper {
+                        padding:0 20px 0px 20px;
+                    }
+                    
                 }
 
                 .actions {
+                    .hide();
                     text-align: center;
                     padding: 20px;
-                    background-color: rgba(0,0,0,.05);
-                    .box-shadow(0 -2px 2px rgba(0,0,0,.15));
+                    background-color: rgba(0,0,0,.01);
+                    .box-shadow(0 -1px 2px rgba(0,0,0,.15));
                     .size(90px, 100%);
 
                     .button {
@@ -2879,14 +2975,43 @@
                     }
                 }
 
-                &.searching { height: 540px; }
+                .account-selected {
+                    .hide();
+                }
 
-                @media only screen and (min-height: 768px) { 
-                    .holder { padding: 0 20px 20px 20px; }
+                
+                &.selected-bill,
+                &.selected-account {
+                    height: 455px;
+                    .actions{
+                        .show();
+                    }
+                }
 
-                    .scrollable { .calc-height(100, 282); }
-                    
-                    &.searching { height: 600px; }
+                &.selected-bill {
+                    .another-account {
+                        opacity: 0.3;
+                        .account-search {
+                            .hide();
+                        }
+                    }
+                }
+
+                &.searching-account,
+                &.selected-account {
+                    .another-bill {
+                        opacity: 0.3;
+                    }
+                }
+
+                &.selected-account {
+                    .account-search,
+                    .holder.search {
+                        .hide();
+                    }
+                    .account-selected {
+                        .show();
+                    }
                 }
             }
 
@@ -4946,10 +5071,20 @@
                             &.with-pagination { .calc-height(100, 60); }
                         }
                             
-                        .search-pagination {
+                        .search-pagination,
+                        .numbers-pagination {
                             position: relative;
                             padding: 10px;
                             background: @grey2 @darkTexture repeat;
+
+                            .button {
+                                font-size: 14px;
+                                line-height: 40px;
+                                height: 40px;
+                            }
+                        }
+
+                        .search-pagination {
 
                             p {
                                 font-size: 14px;
@@ -4958,10 +5093,14 @@
                             }
 
                             .button {
-                                font-size: 14px;
-                                line-height: 40px;
                                 width: 90px;
                                 .pull-right;
+                            }
+                        }
+
+                        .numbers-pagination {
+                            .button {
+                                width: 40px;
                             }
                         }
                     }
@@ -5979,19 +6118,23 @@
                             &.disabled {
                                 pointer-events: none;
                                 .restriction-name,
-                                .restriction-icon,
                                 .restriction-right,
                                 .icon-double-arrow {
                                     opacity: 0.2;
+                                }
+                                .restriction-icon {
+                                    opacity: 0.4;
                                 }
                             }
 
                             &.value-not-inserted {
                                 .restriction-name,
-                                .restriction-icon,
                                 .restriction-right {
                                     opacity: 0.4;
                                 }
+                                .restriction-icon {
+                                    opacity: 0.75;
+                                }                                
                             }
 
                             .clickable();

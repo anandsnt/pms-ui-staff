@@ -484,7 +484,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * @return {[type]}      [description]
      */
     var mailSent = function(data) {
-      $scope.successMessage = 'e-mail sent successfully';
+      $scope.successMessage = 'Email sent successfully';
       $scope.closeDialog();
     };
 
@@ -590,8 +590,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         scope             : $scope,
         closeByDocument   : false,
         closeByEscape     : false,
-        data              : JSON.stringify(data),
-        controller        : 'rvGroupRoomingAutoRoomAssignPopUpCtrl'
+        data              : JSON.stringify(data)
       });
     };
 

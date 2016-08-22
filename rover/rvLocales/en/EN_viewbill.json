@@ -156,6 +156,7 @@
     "BALANCE":"Balance",
     "NET_AMOUNT":"Net Amount",
     "TOTAL_INCL_TAX":"Total Incl Tax",
+    "TOTAL_TAX_INCL":"Total Tax Incl",
     "UPDATE":"Update",
     "NOT_DEFINED": "Not Defined",
     "DONT_PRINT_RATE" : "Don't Print Rate",
@@ -172,6 +173,7 @@
     "GROSS" : "Gross",
     "NET" : "Net",
     "TAX" : "Tax",
-    "TOTAL" : "Total"
+    "TOTAL" : "Total",
+    "ADJUSTMENT" : "Adjustment"
 
 

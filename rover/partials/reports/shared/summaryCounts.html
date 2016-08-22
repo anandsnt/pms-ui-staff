@@ -3,14 +3,14 @@
     <li ng-if="summaryCounts.has_both || summaryCounts.has_in" class="sub">Check Ins<span>{{  summaryCounts.check_ins }}</span></li>
     <li ng-if="summaryCounts.has_both || summaryCounts.has_in" class="sub">Via Rover<span>{{ summaryCounts.ins_via_rover }}</span></li>
     <li ng-if="summaryCounts.has_both || summaryCounts.has_in" class="sub">Via Web<span>{{ summaryCounts.ins_via_web }}</span></li>
-    <li ng-if="summaryCounts.has_both || summaryCounts.has_in" class="sub">Via Zest<span>{{ summaryCounts.ins_via_zest }}</span></li>
-    <li ng-if="summaryCounts.has_both || summaryCounts.has_in">Via Kiosk<span>{{ summaryCounts.ins_via_kiosk }}</span></li>
+    <li ng-if="summaryCounts.has_both || summaryCounts.has_in" class="sub">Via App<span>{{ summaryCounts.ins_via_zest }}</span></li>
+    <li ng-if="summaryCounts.has_both || summaryCounts.has_in">Via Station<span>{{ summaryCounts.ins_via_kiosk }}</span></li>
 
     <li ng-if="summaryCounts.has_both || summaryCounts.has_out" class="sub">Check Outs<span class="red">{{ summaryCounts.check_outs }}</span></li>
     <li ng-if="summaryCounts.has_both || summaryCounts.has_out" class="sub">Via Rover<span>{{ summaryCounts.outs_via_rover }}</span></li>
     <li ng-if="summaryCounts.has_both || summaryCounts.has_out" class="sub">Via Web<span>{{ summaryCounts.outs_via_web }}</span></li>
-    <li ng-if="summaryCounts.has_both || summaryCounts.has_out" class="sub">Via Zest<span>{{ summaryCounts.outs_via_zest }}</span></li>
-    <li ng-if="summaryCounts.has_both || summaryCounts.has_out" class="sub">Via Kiosk<span>{{ summaryCounts.outs_via_kiosk }}</span></li>
+    <li ng-if="summaryCounts.has_both || summaryCounts.has_out" class="sub">Via App<span>{{ summaryCounts.outs_via_zest }}</span></li>
+    <li ng-if="summaryCounts.has_both || summaryCounts.has_out" class="sub">Via Station<span>{{ summaryCounts.outs_via_kiosk }}</span></li>
 </ul>
 
 <!-- Upsell -->

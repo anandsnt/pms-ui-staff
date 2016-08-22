@@ -2,6 +2,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	['$scope','$rootScope','$filter','RVBillCardSrv', 'ngDialog', '$timeout', function($scope, $rootScope,$filter, RVBillCardSrv, ngDialog, $timeout){
 
 	BaseCtrl.call(this, $scope);
+	$scope.newAmount = '';
 
 	var refreshListWithData = function(data){
 		$scope.init(data);
@@ -76,33 +77,34 @@ sntRover.controller('rvBillCardPopupCtrl',
 		$scope.invokeApi(RVBillCardSrv.transactionSplit, splitData, transactionSplitSuccessCallback,failureCallBack);
 	};
 
-   /*
+	var transactionEditSuccessCallback = function(data) {
+		hideLoaderAndClosePopup();
+		refreshListWithData(data);
+	};
+
+   	/**
 	 * API call edit transaction
+	 * @param {string} newAmount updated charge amount
+	 * @param {number} chargeCode updated charge code id
+	 * @returns {undefined}
 	 */
-	$scope.editCharge = function(newAmount,chargeCode){
-
-		var newData =
-		{
-			"updatedDate":
-						{
-				  			"new_amount":newAmount,
-				  			"charge_code_id": chargeCode.id
-						},
-					"id" :$scope.selectedTransaction.id
+	$scope.editCharge = function(newAmount, chargeCode, adjustmentReason){
+		var params = {
+			id: $scope.selectedTransaction.id,
+			updatedData : {
+				new_amount : newAmount || undefined,
+				charge_code_id : chargeCode.id,
+				adjustment_reason : adjustmentReason
+			}
 		};
-
-		var transactionEditSuccessCallback = function(data){
-			hideLoaderAndClosePopup();
-			refreshListWithData(data);
-		};
-		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback,failureCallBack);
-
+		$scope.invokeApi(RVBillCardSrv.transactionEdit, params, transactionEditSuccessCallback, failureCallBack);
 	};
 
 
 /*----------------------------edit charge drop down implementation--------------------------------------*/
 	$scope.chargecodeData = {};
 	$scope.chargecodeData.chargeCodeSearchText = "";
+	$scope.selectedChargeCode = { description: '' };
 	var scrollerOptionsForSearch = {click: true, preventDefault: false};
 	$scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
 
@@ -125,8 +127,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	    if($scope.chargecodeData.chargeCodeSearchText.length < 3){
 	      //based on 'is_row_visible' parameter we are showing the data in the template
 	      for(var i = 0; i < $scope.availableChargeCodes.length; i++){
-	          $scope.availableChargeCodes[i].is_row_visible = true;
-	          $scope.availableChargeCodes[i].is_selected = true;
+	          $scope.availableChargeCodes[i].is_row_visible = false;
 	      }
 	      $scope.refreshScroller('chargeCodesList');
 	      // we have changed data, so we are refreshing the scrollerbar
@@ -177,5 +178,37 @@ sntRover.controller('rvBillCardPopupCtrl',
 	   	var queryText = $scope.chargecodeData.chargeCodeSearchText;
 	    $scope.chargecodeData.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
     };
+
+    // To show or hide charge code list
+    $scope.isShowChargeCodeList = function(){
+    	var isShowChargeCodeList = false,
+    		chargeCodeLength = $scope.availableChargeCodes.length,
+    		queryLength = $scope.chargecodeData.chargeCodeSearchText.length;
+
+    	if($scope.showChargeCodes){
+    		isShowChargeCodeList = true;
+    	}
+    	else if(queryLength > 2 && chargeCodeLength !== 0){
+			for(var i = 0; i < chargeCodeLength; i++){
+			 	if($scope.availableChargeCodes[i].is_row_visible){
+			 		isShowChargeCodeList = true;
+			 		break;
+			 	}
+			}
+		}
+		return isShowChargeCodeList;
+	};
+
+	$scope.shouldDisableEditChargeCode = function() {
+		return $scope.newAmount.length > 0;
+	};
+
+	$scope.shouldDisableEditChargeAmount = function() {
+		return $scope.selectedChargeCode.description.length > 0;
+	};
+
+	$scope.getEditChargeButtonText = function() {
+		return ($scope.chargeCodeActive) ? 'CHANGE_CHARGE_CODE' : 'CHANGE_AMOUNT';
+	};
 
 }]);

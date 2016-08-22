@@ -18,29 +18,50 @@ function BaseCtrl($scope) {
   //function that converts a null value to a desired string.
   //if no replace value is passed, it returns an empty string
   $scope.escapeNull = function(value, replaceWith) {
-      var newValue = '';
-      if ((typeof replaceWith !== 'undefined') && (replaceWith !== null)) {
-    newValue = replaceWith;
-      }
-      var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
-      return valueToReturn;
+    var newValue = '';
+    if ((typeof replaceWith !== 'undefined') && (replaceWith !== null)) {
+      newValue = replaceWith;
+    }
+    var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
+    return valueToReturn;
   };
-  $scope.inProd = function(){
-      var notProd = false;
-      var url = true ? document.location : window.location;
-      if (url.hostname){
-          if (typeof url.hostname === typeof 'str'){
-              if (url.hostname.indexOf('pms-dev') !==-1 || 
-                  url.hostname.indexOf('pms-release') !==-1 || 
-                  url.hostname.indexOf('192.168.1.218') !==-1 || 
-                  url.hostname.indexOf('localhost') !==-1){
-                  notProd = true;
-              }
+  $scope.debuggingCardPayment = function(btn){
+    console.info('sntZestStation.cardSwipeDebug: ',sntZestStation.cardSwipeDebug);
+    var url = document.location,
+        inDevEnvironment = false;
+        if (url.hostname && btn) {//if btn === true, then the user is clicking continue to bypass cc screen in dev environment
+          if (typeof url.hostname === typeof 'str') {
+            if (url.hostname.indexOf('pms-dev') !== -1 ||
+              url.hostname.indexOf('pms-release') !== -1 ||
+              url.hostname.indexOf('192.168.1.218') !== -1 ||
+              url.hostname.indexOf('192.168.1.239') !== -1 ||
+              url.hostname.indexOf('localhost') !== -1) {
+
+                inDevEnvironment = true;
+            }
           }
-      }
-      if (!notProd){//in production, dont allow this function
+        }
+
+      if (zestSntApp.cardSwipeDebug || inDevEnvironment){//in production, dont allow this function unless manually called for debugging via console like [   zestSntApp.cardSwipeDebug(true)   ]
           return true;
       } else return false;
+  };
+  $scope.inProd = function() {
+    var notProd = false;
+    var url = true ? document.location : window.location;
+    if (url.hostname) {
+      if (typeof url.hostname === typeof 'str') {
+        if (url.hostname.indexOf('pms-dev') !== -1 ||
+          url.hostname.indexOf('pms-release') !== -1 ||
+          url.hostname.indexOf('192.168.1.218') !== -1 ||
+          url.hostname.indexOf('localhost') !== -1) {
+          notProd = true;
+        }
+      }
+    }
+    if (!notProd) { //in production, dont allow this function
+      return true;
+    } else return false;
   };
   $scope.fetchedFailed = function(errorMessage) {
     $scope.$emit('hideLoader');
@@ -56,7 +77,7 @@ function BaseCtrl($scope) {
     }
     // if needed ,to be handled as per requirements in controllers (scroll to top,empty fields)
     $scope.$broadcast('scrollToErrorMessage');
-    $scope.$emit('GENERAL_ERROR',errorMessage);
+    $scope.$emit('GENERAL_ERROR', errorMessage);
   };
 
   $scope.invokeApi = function(serviceApi, params, successCallback, failureCallback, loaderType) {
@@ -77,44 +98,44 @@ function BaseCtrl($scope) {
 
   $scope.callAPI = function(serviceApi, options) {
     var options = options ? options : {},
-    params = options['params'] ? options['params'] : null,
-    loader = options['loader'] ? options['loader'] : 'BLOCKER',
-    showLoader = loader.toUpperCase() === 'BLOCKER' ? true : false,
-    successCallBack = options['successCallBack'] ? options['successCallBack'] : (options['onSuccess'] ? options['onSuccess'] : $scope.fetchedCompleted),
-    failureCallBack = options['failureCallBack'] ? options['failureCallBack'] : $scope.fetchedFailed,
-    successCallBackParameters = options['successCallBackParameters'] ? options['successCallBackParameters'] : null,
-    failureCallBackParameters = options['failureCallBackParameters'] ? options['failureCallBackParameters'] : null;
+      params = options['params'] ? options['params'] : null,
+      loader = options['loader'] ? options['loader'] : 'BLOCKER',
+      showLoader = loader.toUpperCase() === 'BLOCKER' ? true : false,
+      successCallBack = options['successCallBack'] ? options['successCallBack'] : (options['onSuccess'] ? options['onSuccess'] : $scope.fetchedCompleted),
+      failureCallBack = options['failureCallBack'] ? options['failureCallBack'] : $scope.fetchedFailed,
+      successCallBackParameters = options['successCallBackParameters'] ? options['successCallBackParameters'] : null,
+      failureCallBackParameters = options['failureCallBackParameters'] ? options['failureCallBackParameters'] : null;
 
     if (showLoader) {
       $scope.$emit('showLoader');
     }
 
     return serviceApi(params).then(
-    //success call back
+      //success call back
       function(data) {
-  if (showLoader) {
-    $scope.$emit('hideLoader');
-  }
-  if (successCallBack) {
-    if (successCallBackParameters) {
-      successCallBack(data, successCallBackParameters);
-    } else {
-      successCallBack(data);
-    }
-  }
+        if (showLoader) {
+          $scope.$emit('hideLoader');
+        }
+        if (successCallBack) {
+          if (successCallBackParameters) {
+            successCallBack(data, successCallBackParameters);
+          } else {
+            successCallBack(data);
+          }
+        }
       },
       //failure callback
       function(error) {
-  if (showLoader) {
-    $scope.$emit('hideLoader');
-  }
-  if (failureCallBack) {
-    if (failureCallBackParameters) {
-      failureCallBack(error, failureCallBackParameters);
-    } else {
-      failureCallBack(error);
-    }
-  }
+        if (showLoader) {
+          $scope.$emit('hideLoader');
+        }
+        if (failureCallBack) {
+          if (failureCallBackParameters) {
+            failureCallBack(error, failureCallBackParameters);
+          } else {
+            failureCallBack(error);
+          }
+        }
       }
     );
   };
@@ -129,13 +150,13 @@ function BaseCtrl($scope) {
   };
 
   /**
-  * function to get day against a date
-  * if you give today's date it will return 'Today', Tomorrow will return against tomorrow's date
-  * for others, it will return week day (Sunday, Monday..)
-  */
+   * function to get day against a date
+   * if you give today's date it will return 'Today', Tomorrow will return against tomorrow's date
+   * for others, it will return week day (Sunday, Monday..)
+   */
 
   $scope.getSimplifiedDayName = function(date) {
-      var returnText = '';
+    var returnText = '';
     try {
       var passedDate = tzIndependentDate(date);
       var currentDate = tzIndependentDate($scope.businessDate);
@@ -157,27 +178,30 @@ function BaseCtrl($scope) {
         returnText = weekday[passedDate.getDay()];
       }
       return returnText;
-    }
-    catch (e) {
+    } catch (e) {
       return date;
     }
   };
 
   /*
-  * To set the title of each navigation
-  */
+   * To set the title of each navigation
+   */
   $scope.setTitle = function(title) {
-      document.title = title;
+    document.title = title;
   };
 
   $scope.goBack = function($rootScope, $state) {
 
     if ($rootScope.previousStateParam) {
-      $state.go($rootScope.previousState, {menu: $rootScope.previousStateParam});
+      $state.go($rootScope.previousState, {
+        menu: $rootScope.previousStateParam
+      });
     } else if ($rootScope.previousState) {
       $state.go($rootScope.previousState);
     } else {
-      $state.go('admin.dashboard', {menu : 0});
+      $state.go('admin.dashboard', {
+        menu: 0
+      });
     }
 
   };
@@ -188,14 +212,16 @@ function BaseCtrl($scope) {
       */
   $scope.timeOutForScrollerRefresh = 300;
   var defaultScrollerOptions = {
-      snap: false,
+    snap: false,
     scrollbars: 'custom',
     hideScrollbar: false,
     click: false,
     scrollX: false,
     scrollY: true,
     preventDefault: true,
-    preventDefaultException: {tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/}
+    preventDefaultException: {
+      tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/
+    }
   };
 
   /*
@@ -204,22 +230,22 @@ function BaseCtrl($scope) {
     @param2: object as scroller options
   */
   $scope.setScroller = function(key, scrollerOptions) {
-      if (typeof scrollerOptions === 'undefined') {
+    if (typeof scrollerOptions === 'undefined') {
       scrollerOptions = {};
-      }
-      //we are merging the settings provided in the function call with defaults
-      var tempScrollerOptions = angular.copy(defaultScrollerOptions);
-      angular.extend(tempScrollerOptions, scrollerOptions); //here is using a angular function to extend,
-      scrollerOptions = tempScrollerOptions;
-      //checking whether scroll options object is already initilised in parent controller
-      //if so we need add a key, otherwise initialise and add
-      var isEmptyParentScrollerOptions = isEmptyObject($scope.$parent.myScrollOptions);
+    }
+    //we are merging the settings provided in the function call with defaults
+    var tempScrollerOptions = angular.copy(defaultScrollerOptions);
+    angular.extend(tempScrollerOptions, scrollerOptions); //here is using a angular function to extend,
+    scrollerOptions = tempScrollerOptions;
+    //checking whether scroll options object is already initilised in parent controller
+    //if so we need add a key, otherwise initialise and add
+    var isEmptyParentScrollerOptions = isEmptyObject($scope.$parent.myScrollOptions);
 
-      if (isEmptyParentScrollerOptions) {
+    if (isEmptyParentScrollerOptions) {
       $scope.$parent.myScrollOptions = {};
-      }
+    }
 
-      $scope.$parent.myScrollOptions[key] = scrollerOptions;
+    $scope.$parent.myScrollOptions[key] = scrollerOptions;
   };
 
   /*
@@ -227,7 +253,7 @@ function BaseCtrl($scope) {
     @param1: string as key
   */
   $scope.refreshScroller = function(key) {
-      setTimeout(function() {
+    setTimeout(function() {
       if (!!$scope.$parent && $scope.$parent.myScroll) {
         if (key in $scope.$parent.myScroll) {
           $scope.$parent.myScroll[key].refresh();
@@ -236,7 +262,7 @@ function BaseCtrl($scope) {
       if ($scope.hasOwnProperty('myScroll') && (key in $scope.myScroll)) {
         $scope.myScroll[key].refresh();
       }
-      }, $scope.timeOutForScrollerRefresh);
+    }, $scope.timeOutForScrollerRefresh);
   };
 
   $scope.getScroller = function(key) {
@@ -253,8 +279,8 @@ function BaseCtrl($scope) {
   };
 
   /*
-  * MLI integration
-  */
+   * MLI integration
+   */
 
   $scope.fetchMLI = function(sessionDetails, successCallback, failureCallback) {
 
@@ -273,9 +299,8 @@ function BaseCtrl($scope) {
     if (sessionDetails.cardNumber.length > 0) {
       try {
         $scope.$emit('showLoader');
-        sntapp.MLIOperator.fetchMLISessionDetails(sessionDetails,success,failure);
-      }
-      catch (err) {
+        sntapp.MLIOperator.fetchMLISessionDetails(sessionDetails, success, failure);
+      } catch (err) {
         $scope.$emit('hideLoader');
         var errorMessage = ['There was a problem connecting to the payment gateway.'];
         failureCallback(errorMessage);

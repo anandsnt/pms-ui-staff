@@ -929,13 +929,28 @@
                         .select { width: 60px; }
 
                         &.description {
-                            padding: 0 10px;
+                            font-style: normal;
 
-                            span { 
-                                line-height: 16px;
-                                .show; 
+                            .charge,
+                            .adjusted,
+                            .reference {
+                                line-height: 1;
+                                .show();
+                            }
 
-                                &.reference { color: @grey3; }
+                            .edited {
+                                padding-left: 14px;
+                                background-position: 0 -4000px;
+                            }
+
+                            .reference {
+                                color: @grey3;
+                            }
+
+                            .adjusted {
+                                em {
+                                    color: darken(@yellow, 10);
+                                }
                             }
                         }
 
@@ -985,7 +1000,7 @@
 
                     &.pagination {
                         td {
-                            
+                            .numbers-pagination, 
                             .search-pagination {
                                 position: static;
                                 left: auto;

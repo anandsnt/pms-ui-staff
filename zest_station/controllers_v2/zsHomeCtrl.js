@@ -5,18 +5,19 @@ sntZestStation.controller('zsHomeCtrl', [
 	'zsEventConstants',
 	'$translate',
 	'zsCheckinSrv',
-	function($scope, $rootScope, $state, zsEventConstants,$translate,zsCheckinSrv) {
+	function($scope, $rootScope, $state, zsEventConstants, $translate, zsCheckinSrv) {
 
 		/**
 		 * when we clicked on pickup key from home screen
 		 */
 		$scope.clickedOnPickUpKey = function() {
 			clearInterval($scope.activityTimer);
-			if($scope.zestStationData.pickup_qr_scan){
+			if ($scope.zestStationData.pickup_qr_scan) {
 				$state.go('zest_station.qrPickupKey');
-			}
-			else{
-				$state.go('zest_station.checkOutReservationSearch',{'mode':'PICKUP_KEY'});
+			} else {
+				$state.go('zest_station.checkOutReservationSearch', {
+					'mode': 'PICKUP_KEY'
+				});
 			}
 		};
 
@@ -43,7 +44,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		$scope.language = {};
 
 		/**************************************************************************************/
-       
+
 		var setHomeScreenTimer = function() {
 			var userInActivityTimeInHomeScreenInSeconds = 0;
 
@@ -51,45 +52,44 @@ sntZestStation.controller('zsHomeCtrl', [
 				userInActivityTimeInHomeScreenInSeconds = 0;
 			};
 
-			var  incrementHomeScreenTimer = function() {
-               
-					userInActivityTimeInHomeScreenInSeconds++;
-					//when user activity is not recorded for more than 120 secs
-					//translating to default lanaguage
-					if (userInActivityTimeInHomeScreenInSeconds >=  120) {
-	                    console.info("translating to default lanaguage");
-	                    $rootScope.$broadcast('RESET_LANGUAGE');
-	                    userInActivityTimeInHomeScreenInSeconds = 0;
-					} else {
-						//do nothing;
-					}
-                };
-			    $scope.activityTimer = setInterval(incrementHomeScreenTimer, 1000);
+			var incrementHomeScreenTimer = function() {
+
+				userInActivityTimeInHomeScreenInSeconds++;
+				//when user activity is not recorded for more than 120 secs
+				//translating to default lanaguage
+				if (userInActivityTimeInHomeScreenInSeconds >= 120) {
+					console.info("translating to default lanaguage");
+					$rootScope.$broadcast('RESET_LANGUAGE');
+					userInActivityTimeInHomeScreenInSeconds = 0;
+				} else {
+					//do nothing;
+				}
+			};
+			$scope.activityTimer = setInterval(incrementHomeScreenTimer, 1000);
 		};
 		setHomeScreenTimer();
 		/**************************************************************************************/
 
-		$scope.openExternalWebPage = function(){
-			
-			$scope.showExternalWebPage =true;
+		$scope.openExternalWebPage = function() {
+
+			$scope.showExternalWebPage = true;
 		};
 
-		$scope.closeExternalWebPage = function(){
+		$scope.closeExternalWebPage = function() {
 			setHomeScreenTimer();
-			$scope.showExternalWebPage =false;
+			$scope.showExternalWebPage = false;
 		};
 
-		var initiateLanguagePopUpSetting = function(){
-			$scope.showLanguagePopup =false;
+		var initiateLanguagePopUpSetting = function() {
+			$scope.showLanguagePopup = false;
 			//This value will be updated from child controller ie, zsLanguageHandlerCtrl during init
-			$scope.selectedLanguage= {};
+			$scope.selectedLanguage = {};
 		};
-		$scope.languageSelect = function(){
+		$scope.languageSelect = function() {
 			$scope.showLanguagePopup = !$scope.showLanguagePopup;
-			if($scope.showLanguagePopup){
+			if ($scope.showLanguagePopup) {
 				clearInterval($scope.activityTimer);
-			}
-			else{
+			} else {
 				setHomeScreenTimer();
 			}
 		};
@@ -112,15 +112,14 @@ sntZestStation.controller('zsHomeCtrl', [
 			$scope.zestStationData.keyCardInserted = false;
 			initiateLanguagePopUpSetting();
 			$scope.resetHomeScreenTimer();
-            if($scope.zestStationData.workstationStatus === 'out-of-order'){
-            	var params = {};
-            	params.reason = $scope.zestStationData.wsFailedReason;
+			if ($scope.zestStationData.workstationStatus === 'out-of-order') {
+				var params = {};
+				params.reason = $scope.zestStationData.workstationOooReason;
 				params.status = 'out-of-order';
-            	$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS,params);
+				$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, params);
 				$state.go('zest_station.outOfService');
-			}
-			else{
-				//do nothing
+			} else {
+				$scope.setScreenIcon('bed');
 			}
 		}();
 

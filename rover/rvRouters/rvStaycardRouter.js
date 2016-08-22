@@ -108,7 +108,7 @@ angular.module('stayCardModule', [])
                     $stateParams.promotion_code = null;
                 }
                 if(!$stateParams.room_type_id){
-                    $stateParams.room_type_id = "";
+                    $stateParams.room_type_id = null;
                 }
             },
             resolve: {
@@ -119,21 +119,34 @@ angular.module('stayCardModule', [])
                         is_active: true
                     });
                 },
-                rates: function(RVRoomRatesSrv, $stateParams, staycardJsAssets) {
-                    return RVRoomRatesSrv.fetchRatesInitial({
-                        from_date: $stateParams.from_date,
-                        to_date: $stateParams.to_date,
-                        company_id: $stateParams.company_id,
-                        travel_agent_id: $stateParams.travel_agent_id,
-                        group_id: $stateParams.group_id || $stateParams.allotment_id,
-                        override_restrictions: $stateParams.override_restrictions,
-                        promotion_code: $stateParams.promotion_code,
-                        adults: $stateParams.adults,
-                        children: $stateParams.children,
-                        promotion_id: $stateParams.promotion_id,
-                        room_type_id: $stateParams.room_type_id,
-                        is_member: $stateParams.is_member
-                    })
+                rates: function(RVRoomRatesSrv, $stateParams, staycardJsAssets, RVReservationBaseSearchSrv) {
+                    var params = {};
+                        params.from_date = $stateParams.from_date;
+                        params.to_date   = $stateParams.to_date;
+                        params.override_restrictions =  $stateParams.override_restrictions;
+                        params.adults  = $stateParams.adults;
+                        params.children = $stateParams.children;
+                    if($stateParams.company_id)
+                        params.company_id = $stateParams.company_id;
+                    if($stateParams.travel_agent_id)
+                        params.travel_agent_id = $stateParams.travel_agent_id;
+                    if($stateParams.group_id || $stateParams.allotment_id)
+                        params.group_id = $stateParams.group_id || $stateParams.allotment_id;
+                    if($stateParams.promotion_code)
+                        params.promotion_code = $stateParams.promotion_code;
+                    if($stateParams.promotion_id)
+                        params.promotion_id = $stateParams.promotion_id;
+                    if($stateParams.room_type_id)
+                        params.room_type_id = $stateParams.room_type_id;
+                    if($stateParams.is_member == "true")
+                        params.is_member = $stateParams.is_member;
+
+                    var activeTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
+                    if(params.company_id || params.travel_agent_id || params.group_id || params.promotion_id || params.is_member) {
+                        activeTab = 'RECOMMENDED';
+                    }
+                    RVRoomRatesSrv.setRoomAndRateActiveTab(activeTab);
+                    return RVRoomRatesSrv.fetchRatesInitial(params)
                 },
                 ratesMeta: function(RVReservationBaseSearchSrv, staycardJsAssets) {
                     return RVReservationBaseSearchSrv.fetchRatesMeta();
@@ -249,7 +262,7 @@ angular.module('stayCardModule', [])
             }
         });
         $stateProvider.state('rover.reservation.staycard.roomassignment', {
-            url: '/roomassignment/:reservation_id/:room_type/:clickedButton/:upgrade_available',
+            url: '/roomassignment/:reservation_id/:room_type/:clickedButton/:upgrade_available/:cannot_move_room',
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController',
             resolve: {

@@ -1,16 +1,16 @@
-admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnlineSetupValues', 'adExactOnlineSetupSrv', 'dateFilter',
-    function ($scope, $rootScope, exactOnlineSetupValues, adExactOnlineSetupSrv, dateFilter) {
+admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnlineSetupValues', 'adExactOnlineSetupSrv', 'dateFilter', 'journalsList', 'balancingAccounts',
+    function ($scope, $rootScope, exactOnlineSetupValues, adExactOnlineSetupSrv, dateFilter, journalsList, balancingAccounts) {
 
         BaseCtrl.call(this, $scope);
 
         $scope.exportOptions = {
-            date: $rootScope.businessDate
+            date: new tzIndependentDate($rootScope.businessDate).addDays(-1)
         };
 
         $scope.datePickerOptions = {
-            dateFormat: getJqDateFormat(),
+            dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
-            maxDate: new tzIndependentDate($rootScope.businessDate),
+            maxDate: $scope.exportOptions.date,
             changeYear: true,
             changeMonth: true,
             beforeShow: function (input, inst) {
@@ -44,7 +44,9 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
         $scope.saveExactOnlineSetup = function () {
             var options = {
                 params: {
-                    enabled: $scope.exactOnlineSetup.enabled
+                    enabled: $scope.exactOnlineSetup.enabled,
+                    journal_code: $scope.exactOnlineSetup.journal_code,
+                    balancing_account_code : $scope.exactOnlineSetup.balancing_account_code
                 },
                 successCallBack: successCallBackOfExactOnlineSetup
             };
@@ -71,5 +73,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
          */
         var initializeMe = function () {
             $scope.exactOnlineSetup = exactOnlineSetupValues;
+            $scope.journals = journalsList;
+            $scope.balancingAccounts = balancingAccounts;
         }();
     }]);

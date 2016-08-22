@@ -31,7 +31,15 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.channelManagerEditRates', {
 			templateUrl: '/assets/partials/rates/adChannelManagerEditRates.html',
 			controller: 'ADChannelMgrEditCtrl',
-			url : '/channelManagerEditRates'
+			url : '/channelManagerEditRates',
+			resolve: {
+				availableRates: function (ADChannelMgrSrv) {
+					return ADChannelMgrSrv.fetchRates().then(function(data) {return data.results});
+				},
+				availableRoomTypes: function (ADChannelMgrSrv) {
+					return ADChannelMgrSrv.fetchRoomTypes().then(function(data) {return data.data.room_types});
+				}
+			}
 		});
 
 		$stateProvider.state('admin.ratetypes', {
@@ -515,6 +523,18 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/backOfficeInterfaces'
 		});
 
+		$stateProvider.state('admin.centralReservationSystemGroup', {
+			templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+			controller: 'ADInterfaceSubMenuCtrl',
+			url : '/backOfficeInterfaces'
+		});
+
+		$stateProvider.state('admin.textMessagingGroup', {
+			templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+			controller: 'ADInterfaceSubMenuCtrl',
+			url : '/textMessagingInterfaces'
+		});
+
 		$stateProvider.state('admin.stationary', {
 			templateUrl: '/assets/partials/stationary/adStationary.html',
 			controller: 'ADStationaryCtrl',
@@ -539,6 +559,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			templateUrl: '/assets/partials/AnalyticSetup/adAnalyticSetup.html',
 			controller: 'adAnalyticSetupCtrl',
 			url : '/analyticSetup'
+		});
+
+		$stateProvider.state('admin.debuggingSetup', {
+			templateUrl: '/assets/partials/debuggingSetup/adDebuggingSetup.html',
+			controller: 'adDebuggingSetupCtrl',
+			url : '/debuggingSetup'
 		});
 
 		$stateProvider.state('admin.zestAddons', {

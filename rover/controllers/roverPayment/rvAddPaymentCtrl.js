@@ -303,6 +303,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.paymentData.bills[billNumber].credit_card_details.card_code = creditCardType.toLowerCase();
 		$scope.paymentData.bills[billNumber].credit_card_details.card_number = retrieveCardNumber();
 		$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = retrieveExpiryDate();
+		$scope.paymentData.bills[billNumber].credit_card_details.payment_id = data.id;
 		billScreenCommonActions(data);
 	};
 
@@ -314,6 +315,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		$scope.paymentData.bills[billNumber].credit_card_details.card_code = $scope.renderData.creditCardType;
 		$scope.paymentData.bills[billNumber].credit_card_details.card_number = $scope.renderData.endingWith;
 		$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = $scope.renderData.cardExpiry;
+		$scope.paymentData.bills[billNumber].credit_card_details.payment_id = data.id;
 		$scope.paymentData.bills[billNumber].credit_card_details.is_swiped = $scope.renderData.cardExpiry.is_swiped ;
 		$scope.paymentData.bills[billNumber].credit_card_details.auth_color_code = $scope.renderData.auth_color_code;
 		billScreenCommonActions(data);
@@ -585,6 +587,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.paymentData.bills[billNumber].credit_card_details.card_code = cardType;
 			$scope.paymentData.bills[billNumber].credit_card_details.card_number = endingWith;
 			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = expiryDate;
+			$scope.paymentData.bills[billNumber].credit_card_details.payment_id = response.payment_method_id;
 			$scope.paymentData.bills[billNumber].credit_card_details.payment_type = "CC";
 		}
 		if($scope.dataToSave.addToGuestCard || $scope.isFromGuestCard){
@@ -627,9 +630,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 		};
 		if($scope.passData.details.isClickedCheckin !== undefined && $scope.passData.details.isClickedCheckin){
 			$scope.$emit("UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG", $scope.dataToSave.addToGuestCard);
-			successSwipePayment();
+			//successSwipePayment();
 
-		} else if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom === "guestCard")
+		};
+		if($scope.passData.details.swipedDataToRenderInScreen.swipeFrom === "guestCard")
 		{
 			data.user_id = $scope.passData.userId;
 			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, addToGuestCardOnSwipe);
@@ -658,6 +662,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			$scope.paymentData.bills[billNumber].credit_card_details.card_code = $scope.swipedCardDataToSave.cardType.toLowerCase();
 			$scope.paymentData.bills[billNumber].credit_card_details.card_number = $scope.swipedCardDataToSave.cardNumber.slice(-4);
 			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = $scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear;
+			$scope.paymentData.bills[billNumber].credit_card_details.payment_id = data.id;
 			$scope.paymentData.bills[billNumber].credit_card_details.payment_type = "CC";
 			$scope.paymentData.bills[billNumber].credit_card_details.is_swiped = true;
 
@@ -674,7 +679,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			"card_code": $scope.swipedCardDataToSave.cardType.toLowerCase(),
 			"mli_token": $scope.swipedCardDataToSave.cardNumber.slice(-4),
 			"card_expiry":$scope.swipedCardDataToSave.cardExpiryMonth+"/"+$scope.swipedCardDataToSave.cardExpiryYear,
-			"card_name": $scope.swipedCardDataToSave.nameOnCard,
+			"card_name": $scope.swipedCardDataToSave.card_name,
 			"id": (typeof data.guest_payment_method_id !== "undefined") ? data.guest_payment_method_id : data.id,
 			"isSelected": true,
 			"is_primary":false,

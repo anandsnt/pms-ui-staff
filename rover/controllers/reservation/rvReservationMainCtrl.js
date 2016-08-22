@@ -1,6 +1,20 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData', 'RVReservationSummarySrv', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$stateParams', 'RVReservationGuestSrv',
-    'RVReservationStateService', 'RVReservationDataService',
-    function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService) {
+sntRover.controller('RVReservationMainCtrl', ['$scope',
+            '$rootScope',
+            'ngDialog',
+            '$filter',
+            'RVCompanyCardSrv',
+            '$state',
+            'dateFilter',
+            'baseSearchData',
+            'RVReservationSummarySrv',
+            'RVReservationCardSrv',
+            'RVPaymentSrv',
+            '$timeout',
+            '$stateParams',
+            'RVReservationGuestSrv',
+            'RVReservationStateService',
+            'RVReservationDataService',
+            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService) {
 
         BaseCtrl.call(this, $scope);
 
@@ -847,7 +861,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'ngDialog'
             });
             angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {
                 if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
+                    //CICO-32021 - API expects null if room id not there.
+                    room.room_id  = (room.room_id !== "") ? room.room_id : null;
                     data.room_id.push(room.room_id);
+
                 }
             });
 

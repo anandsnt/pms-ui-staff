@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', '$q', 'jsMappings', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog',
-	function($scope, $q, jsMappings, RVCompanyCardSrv, $state, $stateParams, ngDialog) {
+angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', '$q', 'jsMappings', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog', '$rootScope',
+	function($scope, $q, jsMappings, RVCompanyCardSrv, $state, $stateParams, ngDialog, $rootScope) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller('companyCardDetailsContactCtrl');
@@ -45,13 +45,25 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 	    	$scope.$emit('showLoader'); 
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function(){
-            	$scope.$emit('hideLoader'); 
-			    ngDialog.open({
-			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
-			        controller: 'rvBillingInformationPopupCtrl',
-			        className: '',
-			        scope: $scope
-			    });
+            	$scope.$emit('hideLoader');
+            	if($rootScope.UPDATED_BI_ENABLED_ON['CARDS']){
+            		console.log("##Billing-info updated version");
+				    ngDialog.open({
+				        template: '/assets/partials/billingInformation/cards/rvBillingInfoCardsMain.html',
+				        controller: 'rvBillingInfoCardsMainCtrl',
+				        className: '',
+				        scope: $scope
+				    });
+				}
+			    else{
+			    	console.log("##Billing-info old version");
+				    ngDialog.open({
+				        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+				        controller: 'rvBillingInformationPopupCtrl',
+				        className: '',
+				        scope: $scope
+				    });
+				}
 			});
 	    };
 

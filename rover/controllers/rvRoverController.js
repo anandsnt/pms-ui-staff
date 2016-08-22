@@ -89,6 +89,16 @@ sntRover.controller('roverController',
     $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; //January 06, 2014
     $rootScope.timeWithAMPM = "hh:mm a"; //01:00 AM
 
+    // CICO-25098 - Flag to enable/disable the billing info code refactoring.
+    // Need to be removed finally.
+    $rootScope.UPDATED_BI_ENABLED_ON = {
+      'RESERVATION' : false,
+      'CARDS'       : false,
+      'ACCOUNTS'    : false,
+      'ALLOTMENT'   : false
+    };
+    enableBillingInfo = $rootScope.UPDATED_BI_ENABLED_ON; // Need to be removed finally.
+
     $rootScope.isCurrentUserChangingBussinessDate = false;
     $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
     /*
@@ -830,6 +840,45 @@ sntRover.controller('roverController',
      */
     $rootScope.trustAsHtml = function(string) {
         return $sce.trustAsHtml(string);
+    };
+
+    /**
+     * Converts charactors to their html encoded value
+     * @param  {string} str input value
+     * @return {string}     encoded value
+     */
+    var toHTMLSpecials = function (str) {
+      if (typeof str === 'string' && !!str) {
+        str = str.replace(/&/g, '&amp;');
+        str = str.replace(/"/g, '&quot;');
+        str = str.replace(/'/g, '&#039;');
+        str = str.replace(/</g, '&lt;');
+        str = str.replace(/>/g, '&gt;');
+      }
+      return str;
+    }
+
+    /**
+     * Forms highlighted html content to use with ng-bind-html
+     * Handles case when there are special charactors
+     * @param  {string} text text to format
+     * @param  {string} queryString search query
+     * @return {Object} trusted HTML object
+     */
+    $rootScope.getHighlightedHTML = function(text, query) {
+      text = text || '';
+      query = query || '';
+
+      if (!query) {
+        return $rootScope.trustAsHtml(toHTMLSpecials(text));
+      }
+
+       // convert HTML syntax charactors to their encoded value ex: < to &lt;
+      text = text.split(query).map(toHTMLSpecials);
+      query = toHTMLSpecials(query);
+      text = text.join('<span class="highlight">'+ query +'</span>');
+      
+      return $rootScope.trustAsHtml(text);
     };
 
 

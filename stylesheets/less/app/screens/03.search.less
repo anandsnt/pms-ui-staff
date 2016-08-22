@@ -15,8 +15,10 @@
         position: relative;
 
         li:not(.no-content) {
-            margin: 0;
-            border-bottom: 1px solid @grey1;
+            
+            &:not(:last-child) {
+                margin-bottom: 10px;
+            }
 
             .highlight { color: @logoPrimary; }
 
@@ -307,26 +309,44 @@
                         h2 {
                             margin-bottom: 6px;
                             em { font-weight: 700; }
+                            .calc-max-width(100, 160);
+                            display: inline-block;
+                            vertical-align: middle;
+                        }
+
+                        .information {
+                            width: 100%;
                         }
 
                         .confirmation,
+                        .invoice,
                         .arrival,
                         .departure,
                         .icon-time {
                             font-size: 14px;
                             line-height: 20px;
-                            .show;
-                            .pull-left;
+                            .nowrap();
+                            .show; 
 
                             &:not(:last-child) {
                                 margin-right: 10px;
                             }
                         }
 
-                        .confirmation {
+
+                        .invoice,
+                        .arrival,
+                        .departure,
+                        .icon-time {      
+                            .pull-left;
+                        }
+
+                        .confirmation,
+                        .invoice {
                             font-weight: 400;
                             text-transform: uppercase;
                             color: @grey3;
+                            width: 150px;
                             .nowrap();
 
                             .value {
@@ -335,6 +355,13 @@
                                 font-weight: 600;
                                 margin-left: 5px;
                             }
+                        }
+
+                        .confirmation {
+                            display:inline-block;
+                            vertical-align: middle;
+                            margin-left: 10px;
+                            margin-right: 0px; 
                         }
 
                         .arrival,
@@ -1010,67 +1037,97 @@
                     right: 0;
                 }
 
-                a,
-                .faux-anchor { position: relative; }
-
+                /* Number, Room Type & Room Status ***/
                 .room-info {
-                    width: 120px;
-                    .pull-left;
-
-                    h2 {
-                        font-size: 24px;
-                        line-height: 1;
-                        font-weight: 700;
-                        .nowrap();
-
-                        &.clean,
-                        &.inspected { color: @green; }
-
-                        &.dirty,
-                        &.clean-not-inspected { color: @red; }
-
-                        &.pickup { color: @orange; }
-
-                        &.out { color: @grey3; }
-                    }
-
-                    .room-status {
-                        font-size: 14px;
-                        line-height: 21px;
-                        .show;
-
-                        &.clean,
-                        &.inspected { color: @green; }
-
-                        &.pickup,
-                        &.clean-not-bookable  { color: @orange; }
-
-                        &.dirty { color: @red; }
-                    } 
+                    position: relative;
+                    padding: 0 80px 5px 0;
+                    margin-bottom: 10px;
+                    border-bottom: 1px solid @grey2;
                 }
 
+                h2 {
+                    font-size: 28px;
+                    line-height: 25px;
+                    font-weight: 700;
+                    .nowrap();
+
+                    &.clean,
+                    &.inspected { color: @green; }
+
+                    &.dirty,
+                    &.pickup,
+                    &.clean-not-inspected { color: @red; }
+
+                    &.out { color: @grey3; }
+                    .icons {  
+                        display:inline-block;
+                        vertical-align: middle;
+                        margin-left: 10px;
+                    }
+
+                    .number {
+                        .nowrap();
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+
+                    &.is-suite {
+                        .number {
+                           .calc-max-width(100, 35); 
+                        }
+                    }
+                }
+
+                .room-type {
+                    font-size: 14px;
+                    line-height: 20px;
+                    text-transform: uppercase;
+                    .show;
+                    .nowrap();
+                }
+
+                .room-status {
+                    position: absolute;
+                    top: 0;
+                    right: 30px;
+                    line-height: 25px;
+                    color: @grey3;
+                    .show;
+
+                    &.clean,
+                    &.inspected { color: @green; }
+
+                    &.pickup,
+                    &.clean-not-bookable  { color: @orange; }
+
+                    &.dirty { color: @red; } 
+                }
+
+                /* Reservation Status ***/
                 .reservation-status {
-                    .pull-left;
-                    .calc-width(100, 180);
+                    width: 140px;
+                    .pull-right();
+                    #flexbox > .parent(row wrap, flex-end, '', '');
 
                     .guest-status { 
-                        margin-right: 5px;
+                        margin-right: 2px;
                         background-size: 80px;
-                        .square(20px);
+                        .square(15px);
 
-                        &.check-in { background-position: 6px -75px; }
-                        &.check-out { background-position: 6px -101px; }
-                        &.late-check-out { background-position: 6px -1901px; }
-                        &.inhouse { background-position:  5px -128px; }
+                        &.check-in { background-position: 3px -78px; }
+                        &.check-out { background-position: 3px -104px; }
+                        &.late-check-out { background-position: 3px -1904px; }
+                        &.inhouse { background-position:  3px -131px; }
                     }
 
                     .current,
                     .next {
-                        font-size: 14px;
-                        line-height: 20px;
+                        font-size: 12px;
+                        line-height: 15px;
                         text-transform: uppercase;
+                        height: 15px;
+                        max-width: 70px;
                         .nowrap();
-                        .size(20px, 100%);
 
                         &.check-in { color: @green; }
                         &.check-out,
@@ -1078,56 +1135,61 @@
                         &.inhouse { color: @blue; }
                     }
 
-                    .current { margin-bottom: 5px; }
-                }
-
-                .additional-info {
-                    clear: both;
-                    width: 100%;
-                    .nowrap();
-
-                    span {
-                        font-size: 14px;
-                        line-height: 20px;
-                        text-transform: uppercase;
-                        .show;
-                        .pull-left;
-
-                        &:not(:last-child) { margin-right: 10px; }
+                    .current {
+                        margin-right: 5px; 
                     }
-
-                    .assigned { font-weight: 600; }
-                    .unassigned { color: @grey2; }
-                    .service-status { color: @grey3; }
                 }
 
+                /* Additional Info - Assigned to & Service Status ***/
+                .assigned,
+                .unassigned {
+                    font-size: 14px;
+                    line-height: 15px;
+                    text-transform: uppercase;
+                    .nowrap();
+                }
+
+                .assigned { font-weight: 600; }
+                .unassigned { color: @grey2; }
+
+                /* Service Status ***/
+                .service-status {
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    color: @grey3;
+                    background-color: @grey1;
+                    text-align: center;
+                    padding: 5px;
+                    margin-top: 5px;
+                    .box-shadow(inset 0 0 1px rgba(0,0,0,.1));
+                    #border-radius > .rounded();
+                    .show();
+
+                    strong {
+                        font-weight: 600;
+                    }
+                }
+
+                /* Tasks ***/
                 .tasks {
-                    clear: both;
-                    width: 100%;
-                    padding-top: 5px;
 
                     li {
                         position: relative;
                         font-size: 14px;
-                        line-height: 30px;
+                        line-height: 20px;
                         margin: 0;
                         font-weight: 600;
-                        border-top: 1px solid rgba(0,0,0,.1);
                         .nowrap();
                         .show;
-
-                        &:first-child {
-                            border-top: 2px solid rgba(0,0,0,.1);
-                        }
 
                         &.completed {
                             color: @grey3;
                             text-decoration: line-through;
-                            font-weight: 400;
                             text-indent: 20px;
+                            font-weight: 400;
                             background-image: @icons;
                             background-repeat: no-repeat;
-                            background-position: 0 -5851px;
+                            background-position: 0 -5856px;
 
                             @media @highdpi {
                                 background-image: @icons2x;
@@ -1137,6 +1199,7 @@
                     }
                 }
 
+                /* Occupancy & Queued Room ***/
                 .show-vacant,
                 .guest-image,
                 .icon-queued {
@@ -1633,6 +1696,8 @@
             }
 
              /* Commision Item***/
+            
+            /* Commision Item***/
             &.commision-item {
                 position: relative;
                 a {
@@ -1727,63 +1792,126 @@
     }
 }
 
-@media only screen and (min-width: 600px) { 
+@media only screen and (min-width: 768px) {  
     .search-results {
         padding: 20px 20px 10px 20px;
 
         li:not(.no-content) {
-            border-bottom: 0;
-            margin-bottom: 10px; 
+            &.mobile-pagination { .hide; }
 
-            &:last-child { margin-bottom: 0; }
+            a,
+            .faux-anchor { padding: 15px; }
 
             &.room {
-
                 .check { 
-                    top: 12.5px;
-                    right: 12.5px;
+                    top: 15px;
+                    right: 15px;
                 }
 
-                .room-info { 
-                    width: 160px;
-
-                    .room-status { font-size: 15px; }
+                a,
+                .faux-anchor { 
+                    #flexbox > .parent(row wrap, flex-start, center, '');
                 }
 
+                /* Number, Room Type & Room Status ***/
+                .room-info {
+                    padding: 0 100px 0 0;
+                    margin: 0;
+                    border: 0;
+                    max-width: 380px;
+                    .calc-width(60, 250);
+                }
+
+                h2 {
+                    line-height: 20px;
+                }
+
+                .room-status {
+                    top: 10px;
+                    font-size: 16px;
+                    line-height: 20px;
+                    width: 120px;
+                }
+
+                /* Reservation Status ***/
                 .reservation-status {
-                    margin-right: 10px;
-                    .calc-width(35, 85);
-                }
+                    width: 220px;
+                    padding-right: 20px;
+                    float: none;
+                    #flexbox > .parent('', flex-start, '', '');
 
-                .additional-info {
-                    clear: none;
-                    margin-top: 5px;
-                    .pull-left;
-                    .calc-width(65, 85);
+                    .guest-status { 
+                        margin-right: 5px;
+                        .square(20px);
+                        
+                        &.check-in { background-position: 6px -75px; }
+                        &.check-out { background-position: 6px -101px; }
+                        &.late-check-out { background-position: 6px -1901px; }
+                        &.inhouse { background-position:  5px -128px; }
+                    }
 
-                    span {
-                        float: none;
-                        font-size: 15px;
-                        line-height: 16px;
-
-                        &:not(:last-child) { margin: 0 0 5px 0; }
+                    .current,
+                    .next { 
+                        font-size: 16px;
+                        line-height: 20px;
+                        max-width: 120px;
+                        margin: 0;
+                        .size(20px, 50%);
                     }
                 }
 
+                /* Additional Info - Assigned to & Service Status ***/
+                .assigned,
+                .unassigned {
+                    font-size: 16px;
+                    line-height: 20px;
+                    .calc-width(40, 250);
+                }
+
+                /* Service Status ***/
+                .service-status {
+                    position: absolute;
+                    top: 10px;
+                    right: 100px;
+                    .size(40px, 180px);
+
+                    strong {
+                        .show();
+                    }
+                }
+
+                /* Tasks ***/
+                .tasks {
+                    clear: both;
+                    width: 100%;
+                    
+                    li {
+                        line-height: 30px;
+                        border-top: 1px solid rgba(0,0,0,.1);
+
+                        &:first-child {
+                            border-top: 2px solid rgba(0,0,0,.1);
+                        }
+
+                        &.completed {
+                            background-position: 0 -5851px;
+                        }
+                    }
+                }
+                
+                /* Occupancy & Queued Room ***/
                 .icon-queued,
                 .guest-image {
-                    top: 17.5px;
+                    top: 20px;
+                    right: 60px;
                     .square(30px);
                 }
 
                 .icon-queued {
-                    right: 60px;
                     background-position: 0 -4174px;
                 }
 
                 .guest-image {
-                    right: 60px;
-
                     .vip {
                         font-size: 9px;
                         line-height: 20px;
@@ -1792,102 +1920,9 @@
                 }
 
                 .show-vacant {
-                    top: 24px;
+                    top: 25px;
                     right: 50px;
-                    width: 60px;
                 }
-            }
-        }
-    }
-}
-
-@media only screen and (min-width: 768px) { 
-    .search-results {
-        li:not(.no-content) {
-            a,
-            .faux-anchor { padding: 15px; }
-
-            &.room {
-
-                .check { 
-                    top: 10px;
-                    right: 15px;
-                }
-
-                .room-info {
-                    margin: 0;
-                    width: 240px;
-                    .float;
-
-                    h2,
-                    .room-status {
-                        line-height: 30px;
-                        width: 50%;
-                        .pull-left;
-                    } 
-
-                    h2 { 
-                        font-size: 30px; 
-                        width: 40%;
-                    }
-
-                    .room-status { 
-                        font-size: 16px; 
-                        width: 60%;
-                    }
-                }
-
-                .reservation-status {
-                    width: 260px;
-
-                    .guest-status { 
-                        margin-right: 10px;
-                        width: 30px !important;
-                        height: 30px !important;
-                        background-size: 120px;
-
-                        &.check-in { background-position: 8px -112px; }
-                        &.check-out { background-position: 8px -152px; }
-                        &.late-check-out { background-position: 8px -2852px;}
-                        &.inhouse { background-position: 8px -192px; }
-                    }
-
-                    .current,
-                    .next { 
-                        font-size: 16px;
-                        line-height: 30px;
-                        margin: 0;
-                        .size(30px, 50%);
-                        .pull-left;
-                    }       
-                }
-
-                .additional-info {
-                    margin: 0;
-                    .calc-width(100, 600);
-
-                    span {
-                        font-size: 16px;
-                        line-height: 30px;
-                        padding-right: 20px;
-                        margin: 0;
-                        width: 50%;
-                        .nowrap();
-                        .pull-left;
-
-                        &:not(:last-child) { margin: 0; }
-
-                        &:last-child:not(:first-child) { text-align: right; }
-                    }
-                }
-
-                .icon-queued,
-                .guest-image {
-                    top: 15px;
-                    right: 65px;
-                }
-
-                .show-vacant { top: 20px; }
             }
         }
     }

@@ -381,6 +381,8 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			//Yes am first time here
 			$scope.amFirstTimeHere = true;
 
+			$scope.query = '';
+
 			//scroller and related things
 			setScrollerForMe();
 

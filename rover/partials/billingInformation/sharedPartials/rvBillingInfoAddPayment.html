@@ -1,0 +1,63 @@
+<div id="new-payment-method" class="form"  ng-controller = "rvBillingInfoAddPaymentCtrl">
+    <div style="margin-right:20" class="payment-form">
+		<div class="entry full-width" ng-hide = "showCCPage">
+			<label for="payment-type" translate>PAYMENT_TYPE</label>
+			<div class="select">
+			    <select name="payment-type" ng-model = "saveData.payment_type" id="payment-type" class="placeholder" ng-change="selectPaymentType()">
+			    <option value="" translate>SELECT_PAYMENT_TYPE</option>
+			    	<option value="{{paymentType.name}}" ng-repeat = "paymentType in availablePaymentTypes">{{paymentType.description}}</option>
+			    </select>
+			</div>
+		</div>
+
+        <!-- <div class="entry full-width" ng-hide = "saveData.payment_type != 'CC'">
+            <label for="payment-type" translate>CREDIT_CARD</label>
+            <div class="select">
+               <select name="payment-type" ng-model = "saveData.credit_card" id="payment-type" class="placeholder" >
+                <option value="" translate>SELECT_CREDIT_CARD_LABEL</option>
+                <option value="{{creditcard.cardcode}}" ng-repeat = "creditcard in ccPaymentDetails.values">{{creditcard.cardname}}</option>
+               </select>
+            </div>
+        </div> -->
+
+        <!-- Use only for Six Payments -->
+        <div class="entry" ng-show="paymentGateway === 'sixpayments' && saveData.payment_type ==='CC' && !showCCPage">
+            <label for="card-source">Card Input</label>
+            <div class="switch-button" ng-class="{'on': !isManual}">
+                <input name="card-source" id="card-source" value="card-source" type="checkbox" ng-model="isManual" ng-change="changeOnsiteCallIn()" />
+                <label class="data-off">
+                    <span class="value">C &amp; P</span>
+                    <span class="switch-icon">Manual</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">C &amp; P</span>
+                    <span class="value">Manual</span>
+                </label>
+            </div>
+        </div>
+
+        <div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-controller="RVCardOptionsCtrl"  ng-show="showCCPage"></div>
+		<!--  <div class="entry card-number-large full-width " ng-hide = "saveData.payment_type != 'CC'">
+			<label for="card-number-set1" translate>CARD_NUMBER</label>
+			<input name="card-number-set1" id="card-number-set1" ng-model = "saveData.card_number" value="" type="text" />
+		</div>
+		<div class="entry card-number-small" ng-hide = "saveData.payment_type != 'CC'">
+			<label for="card-number-set1" translate>CVV</label>
+			<input name="card-number-set1" iscroll-stop-propagation id="card-number-set1" ng-model = "saveData.cvv" value="" type="text" />
+		</div>
+		<div class="entry card-number-small " ng-hide = "saveData.payment_type != 'CC'">
+			<label for="expiry-month">Expiration date (<span>MM YY</span>)</label>
+			<input name="expiry-month" id="expiry-month" ng-model="saveData.card_expiry_month" placeholder="" value="" maxlength="2" size="2" type="text" />
+			<input name="expiry-year" id="expiry-year" ng-model="saveData.card_expiry_year" placeholder="" value="" maxlength="2" size="2" type="text" />
+		</div>
+		<div class="entry cardn-name full-width " ng-hide = "saveData.payment_type != 'CC'">
+			<label for="name-on-card" >Name on card</label>
+			<input name="name-on-card" ng-model = "saveData.name_on_card" id="name-on-card" value="" type="text" />
+		</div> -->
+
+		<div class="actions">
+			<button type="button" class="button blank" ng-click = "cancelClicked()" ng-show="paymentFlags.isAddPayment" translate>CANCEl</button>
+			<!-- <button type="button" class="button" ng-hide="showCCPage" ng-class="{'green': saveData.payment_type != '', 'grey': saveData.payment_type == ''}"  ng-disabled = "saveData.payment_type == ''" ng-click = "savePaymentDetails()" translate>ADD_PAYMENT_METHOD</button> -->
+		</div>
+    </div>
+</div>

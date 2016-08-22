@@ -18,6 +18,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 
 
 		$scope.paymentData = {};
+
 		/*
 		 * To get the payment tab payments list
 		 */
