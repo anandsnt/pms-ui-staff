@@ -1,3 +1,4 @@
+
 angular.module('reportsModule')
 .factory('RVReportUtilsFac', [
     '$rootScope',
@@ -166,7 +167,8 @@ angular.module('reportsModule')
             'INCLUDE_TAX_RATE': true,
             'INCLUDE_ADDON_RATE': true,
             'INCLUDE_ADDONS': true,
-            'INCLUDE_ADDON_REVENUE' :true
+            'INCLUDE_ADDON_REVENUE' :true,
+            'INCLUDE_ACTIONS'    : true
         };
 
         var __excludeFilterNames = {
@@ -188,9 +190,14 @@ angular.module('reportsModule')
         var __showFilterNames = {
             'SHOW_COMPANY': true,
             'SHOW_TRAVEL_AGENT': true,
+            
             // for CREDIT_CHECK_REPORT
             'INCLUDE_DUE_OUT': true,
-            'INCLUDE_INHOUSE': true
+            'INCLUDE_INHOUSE': true,
+
+            // for room ooo oos report
+            OOO: true,
+            OOS: true
         };
 
         var __chargeTypeFilterNames = {
@@ -204,8 +211,8 @@ angular.module('reportsModule')
          * @param {Object} filter The ith report's filter object
          */
         var __pushGeneralOptionData = function(report, filter, selected) {
-            var selected = typeof selected === typeof true ? selected : false;
-            var mustSend = false;
+            var selected = typeof selected === typeof true ? selected : false,
+                mustSend = false;
 
             var includeCancelled = {
                         'INCLUDE_CANCELLED' : true,
@@ -256,6 +263,11 @@ angular.module('reportsModule')
                 selected    : selected,
                 mustSend    : mustSend
             });
+
+            // if filter value is either of these, selectAll should be false
+            if ( report['title'] == reportNames['ARRIVAL'] || report['title'] == reportNames['DEPARTURE'] ) {
+                report.hasGeneralOptions.options.noSelectAll = true;
+            };
         };
 
         /**
@@ -672,6 +684,12 @@ angular.module('reportsModule')
                         .then( fillCampaignTypes );
                 }
 
+                else if ( 'FLOOR' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchFloors()
+                        .then( fillFloors );
+                }
+
                 else {
                     // no op
                 };
@@ -984,6 +1002,27 @@ angular.module('reportsModule')
                 checkAllCompleted();
             };
 
+            function fillFloors (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'FLOOR'});
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasFloorList = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'floor_number',
+                                defaultValue: 'Select Floors(s)'
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
+
             var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
                 var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
                     rateTypeListIds      = _.unique(rateTypeListIds),
@@ -1109,10 +1148,6 @@ angular.module('reportsModule')
                                 }
                             }
                         }
-
-                        console.log( '=====================' );
-                        console.log( report['title'] );
-                        console.log( report.hasByChargeGroup );
                     };
 
                     foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' }) || _.find(report['filters'], { value: 'SHOW_CHARGE_CODES' });
@@ -1473,6 +1508,39 @@ angular.module('reportsModule')
                 report['sort_fields'][4] = debit;
                 report['sort_fields'][5] = credit;
             };
+
+            // need to reorder the sort_by options
+            // for guest balance report in the following order
+            if ( report['title'] === reportNames['ROOMS_OOO_OOS'] ) {
+                var roomNo, roomType, startDate, endDate;
+
+                _.each(report['sort_fields'], function(field) {
+                    if ( !! field ) {
+                        if ( 'ROOM_NO' === field.value ) {
+                            roomNo = angular.copy(field);
+                        }
+                        if ( 'ROOM_TYPE' === field.value ) {
+                            roomType = angular.copy(field);
+                        }
+                        if ( 'START_DATE' === field.value ) {
+                            startDate = angular.copy(field);
+                        }
+                        if ( 'END_DATE' === field.value ) {
+                            endDate = angular.copy(field);
+                        }
+                    }
+                });
+
+                report['sort_fields'] = [
+                    roomNo,
+                    roomType,
+                    null,
+                    startDate,
+                    endDate,
+                    null,
+                    null
+                ];
+            };
         };
 
 
@@ -1481,10 +1549,12 @@ angular.module('reportsModule')
 
         // to process the report sort by
         factory.processSortBy = function ( report ) {
+            // adding custom name copy for easy access
+            report['sortByOptions'] = angular.copy( report['sort_fields'] );
 
             // sort by options - include sort direction
-            if ( report['sort_fields'] && report['sort_fields'].length ) {
-                _.each(report['sort_fields'], function(item, index, list) {
+            if ( report['sortByOptions'] && report['sortByOptions'].length ) {
+                _.each(report['sortByOptions'], function(item, index, list) {
 
                     if ( !! item ) {
                         item['sortDir'] = undefined;
@@ -1494,7 +1564,7 @@ angular.module('reportsModule')
 
                 // making sort by room type default
                 if ( report['title'] === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
-                    var roomType = _.find(report['sort_fields'], { 'value': 'ROOM_TYPE' });
+                    var roomType = _.find(report['sortByOptions'], { 'value': 'ROOM_TYPE' });
                     if ( !! roomType ) {
                         roomType['sortDir'] = true;
                         report['chosenSortBy'] = roomType['value'];
@@ -1503,7 +1573,7 @@ angular.module('reportsModule')
 
                 // making sort by Revenue [desc] default
                 if ( report['title'] === reportNames['COMPANY_TA_TOP_PRODUCERS'] ) {
-                    var revenue = _.find(report['sort_fields'], { 'value': 'REVENUE' });
+                    var revenue = _.find(report['sortByOptions'], { 'value': 'REVENUE' });
                     if ( !! revenue ) {
                         revenue['sortDir'] = false;
                         report['chosenSortBy'] = revenue['value'];
@@ -1512,15 +1582,12 @@ angular.module('reportsModule')
 
                 // making sort by Room Number [asc] default
                 if ( report['title'] === reportNames['CREDIT_CHECK_REPORT'] ) {
-                    var roomNo = _.find(report['sort_fields'], { 'value': 'ROOM_NO' });
+                    var roomNo = _.find(report['sortByOptions'], { 'value': 'ROOM_NO' });
                     if ( !! roomNo ) {
                         roomNo['sortDir'] = true;
                         report['chosenSortBy'] = roomNo['value'];
                     };
                 };
-
-                // adding custom name ref for easy access
-                report['sortByOptions'] = report['sort_fields'];
             }
         };
 

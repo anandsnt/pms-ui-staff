@@ -219,6 +219,10 @@
 			Campaign Types: <span>{{ appliedFilter.campaign_types.join(', ') }}</span>
 		</div>
 
+		<div ng-if="appliedFilter.floorList.length">
+			Floor(s): <span>{{ appliedFilter.floorList.join(', ') }}</span>
+		</div>
+
 
 		<!-- Never REMOVE this span -->
 		<span> &nbsp; </span>

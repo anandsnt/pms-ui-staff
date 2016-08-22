@@ -13,7 +13,7 @@
         </option>
       
       <option ng-repeat='row in list' value='{{row[valueproperty]}}' ng-show = "showOptionsIf($index)" ng-selected="ngModel == row[valueproperty]">
-        {{row[prop]}}
+        {{prefixValue ? row[valueproperty] + " " + row[prop] : row[prop]}}
       </option>
       
     </select>

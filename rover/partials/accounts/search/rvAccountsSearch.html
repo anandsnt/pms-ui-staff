@@ -70,9 +70,9 @@
             <li class="account" ng-show="!shouldShowNoResult()" ng-repeat="account in accountList" ngrepeatend ngrepeatstarted>
                 <a ng-click="gotoEditAccountConfiguration(account.id)">
                     <div class="data">
-                        <h2 ng-bind-html="getHighlightedHTML(account.posting_accounts_name)">
+                        <h2 ng-bind-html="getHighlightedHTML(account.posting_accounts_name, query)">
                         </h2>
-                        <span class="confirmation" ng-bind-html="getHighlightedHTML(account.posting_accounts_number)"></span>
+                        <span class="confirmation" ng-bind-html="getHighlightedHTML(account.posting_accounts_number, query)"></span>
                         <!-- If linked company exists: -->
                         <span class="icons icon-guest-company" ng-hide="isEmpty(account.company)">
                             {{account.company}}

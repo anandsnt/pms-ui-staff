@@ -104,7 +104,10 @@
                             {{multiSheetState.allRooms[room.room_index].current_status}}</span>
                             <!-- Red for dirty, orange for pickup, green for clean or inspected -->
                         </div>
-                        <h3>{{task.room_no}}</h3>
+                        <h3>
+                            <span class="icons icon-suite" ng-if="multiSheetState.allRooms[room.room_index].is_suite">Suite room</span>
+                            {{task.room_no}}
+                        </h3>
                         <span class="task">{{task.task_name}}</span>
                     </li>
                 </ul>
@@ -193,7 +196,10 @@
                                     {{multiSheetState.allRooms[room.room_index].current_status}}</span>
                                     <!-- Red for dirty, orange for pickup, green for clean or inspected -->
                                 </div>
-                                <h3>{{task.room_no}}</h3>
+                                <h3>
+                                    <span class="icons icon-suite" ng-if="multiSheetState.allRooms[room.room_index].is_suite">Suite room</span>
+                                    {{task.room_no}}
+                                </h3>
                                 <span class="task">{{task.task_name}}</span>
                                 <!-- If task is completed, IT SHOULD BE LOCKED AND USER SHOULD NOT BE ABLE TO MOVE IT. Also, add:-->
                                 <span class="icons icon-ok-10" ng-show="task.is_completed"></span>
