@@ -85,4 +85,10 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 	   	});
 	};
 
+	var init = function () {
+		$scope.setScroller('contractedNightsScroller');
+	};
+
+	init();
+
 }]);

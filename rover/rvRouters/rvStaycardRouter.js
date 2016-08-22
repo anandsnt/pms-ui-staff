@@ -296,7 +296,7 @@ angular.module('stayCardModule', [])
             }
         });
         $stateProvider.state('rover.reservation.staycard.upgrades', {
-            url: '/upgrades/:reservation_id/:clickedButton',
+            url: '/upgrades/:reservation_id/:clickedButton/:cannot_move_room',
             templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
             controller: 'RVUpgradesController',
             resolve: {
