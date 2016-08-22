@@ -69,6 +69,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 $scope.selectedReservation.addons = data.existing_packages;
                 setDisplayContentHeight();
                 refreshScroller();
+                $scope.isReservationDetailsFetched = true;
             };
 
 
@@ -121,6 +122,9 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $scope.mode = "RESERVATION_DETAILS";
             getSelectedReservation();
             fetchReservationDetails();
+            //set flag to show the contents of the page
+            //when all the data are loaded
+            $scope.isReservationDetailsFetched = false;
         };
         init();
 
