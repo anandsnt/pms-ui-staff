@@ -1,22 +1,18 @@
 admin.controller('ADNotificatinsListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADNotificationsListSrv','ngTableParams', '$filter', function($scope, $state,$rootScope, $stateParams, ADNotificationsListSrv, ngTableParams, $filter){
 	BaseCtrl.call(this, $scope);
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
+	//Fetch list of Notification
 	$scope.$emit("changedSelectedMenu", 0);
 	var fetchSuccess = function (data) {		
 		$scope.data = data;
 		$scope.$emit('hideLoader');
-
-		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		$scope.tableParams = new ngTableParams({
-			// show first page
 			page: 1,
-			// count per page - Need to change when on pagination implemntation
 			count: $scope.data.results.length,
 			sorting: {
 				pms_type: 'asc'
 			}
 		}, {
-			// length of data
 			total: $scope.data.results.length,
 			getData: function ($defer, params)
 			{
@@ -35,16 +31,23 @@ admin.controller('ADNotificatinsListCtrl',['$scope','$rootScope', '$state','$sta
 	var FetchNotificationsList = function() {
 		$scope.invokeApi(ADNotificationsListSrv.fetch, {}, fetchSuccess);
 	};
-	var deleteSuccess = function(data){
-		FetchNotificationsList();
-	}
 
-	var deleteFailed = function(err){
-		$scope.errorMessage = err;		
-		$scope.$emit('hideLoader');
-	}
+	$scope.getDuration = function(activates_at, expires_at){
+        var activates_at = new Date(activates_at);
+        var expires_at = new Date(expires_at);
+        var timeDiff = Math.abs(expires_at.getTime() - activates_at.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        return (diffDays-1);
+    };
 
-	$scope.deleteNotification = function(index,id){
+	$scope.deleteNotification = function(index,id){		
+		var deleteSuccess = function(data){
+			FetchNotificationsList();
+		};
+		var deleteFailed = function(err){
+			$scope.errorMessage = err;		
+			$scope.$emit('hideLoader');
+		};
 		params = {
 			id :id
 		};
@@ -54,6 +57,7 @@ admin.controller('ADNotificatinsListCtrl',['$scope','$rootScope', '$state','$sta
 	var initMe = function(){
 		FetchNotificationsList();		
 	};
+
 	initMe();
 
 

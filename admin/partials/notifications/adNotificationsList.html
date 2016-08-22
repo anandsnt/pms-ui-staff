@@ -17,8 +17,8 @@
 								</a>
 							</td>
 							<td data-title="'Message'" sortable="'message'" header-class="width-40"><span class="number"> {{notification.message}} </span></td>
-							<td data-title="'Date'" sortable="'activates_at'" header-class="width-10" ng-bind-html="notification.activates_at"></td>
-							<td data-title="'Showing Date'" header-class="width-20" ng-bind-html="notification.hotel_code"></td>							
+							<td data-title="'Date'" sortable="'activates_at'" header-class="width-20">{{notification.activates_at |date:'yyyy-MM-dd'}}</td>
+							<td data-title="'Showing Date'" header-class="width-20">{{getDuration(notification.activates_at, notification.expires_at)}}</td>							
 							<td data-title="'Delete'" class="delete" header-class="delete header-class="width-10" ">
 								<a id="165" class="icons icon-delete large-icon" ng-click="deleteNotification($index, notification.id)">Delete this user</a>				
 							</td>

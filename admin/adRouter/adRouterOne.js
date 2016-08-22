@@ -77,7 +77,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.addeditnotification', {
 			templateUrl: '/assets/partials/notifications/adNotifications.html',
 			controller: 'ADNotificationCtrl',
-			url : '/notification'
+			url : '/notification/:id/:action'			
 		});
 
 		$stateProvider.state('admin.brands', {
