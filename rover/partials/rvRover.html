@@ -13,7 +13,7 @@
 				Don't Show Again
 			</label>
 			<button class="button blank" ng-click="cancelReleaseNote(activeNotification)">Close</button>
-			<button class="button blue" ng-click="showReleaseNote(activeNotification)">View Details</button>
+			<button class="button blue" ng-click="showReleaseNote(activeNotification)" ng-show="!!activeNotification.action_source">View Details</button>
 		</div>
 	</div>	
 	<div class="ui-router-wrapper">		

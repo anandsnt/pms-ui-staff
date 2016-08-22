@@ -53,7 +53,7 @@ angular.module('sntRover').service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBa
 	    var deferred = $q.defer();
 	    //var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
 		var url = '/api/staff_notifications/'+id+'/user';
-		rvBaseWebSrvV2.getJSON(url).then(function(data) {
+		rvBaseWebSrvV2.putJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);

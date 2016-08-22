@@ -386,6 +386,7 @@ sntRover.controller('roverController',
     $scope.changeNotificationStatus = function(activeNotification){
       var successCallBack = function(data){
         $rootScope.showNotificationForCurrentUser = false;
+        $scope.$emit('hideLoader');
       };
       $scope.invokeApi(RVDashboardSrv.changeNotificationStatus, activeNotification.id, successCallBack);
     };
