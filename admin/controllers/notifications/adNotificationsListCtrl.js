@@ -1,4 +1,6 @@
-admin.controller('ADNotificatinsListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADNotificationsListSrv','ngTableParams', '$filter', function($scope, $state,$rootScope, $stateParams, ADNotificationsListSrv, ngTableParams, $filter){
+admin.controller('ADNotificatinsListCtrl',
+	['$scope','$rootScope', '$state','$stateParams', 'ADNotificationsListSrv','ngTableParams', '$filter', 
+	function($scope,  $rootScope, $state, $stateParams, ADNotificationsListSrv, ngTableParams, $filter){
 	BaseCtrl.call(this, $scope);
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 	//Fetch list of Notification
