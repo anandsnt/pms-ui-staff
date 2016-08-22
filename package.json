@@ -40,7 +40,7 @@
     "gulp-uglify": "2.0.0",
     "gulp-util": "3.0.7",
     "imagemin-optipng": "4.3.0",
-    "imagemin-pngquant": "5.0.0",
+    "imagemin-pngquant": "4.2.0",
     "jshint-html-reporter": "~0.2.0",
     "less-plugin-clean-css": "1.5.1",
     "matchdep": "~1.0.1",
