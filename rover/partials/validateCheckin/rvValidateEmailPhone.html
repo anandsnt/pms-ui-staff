@@ -8,6 +8,11 @@
 		<span class="h2 message" ng-show="!showEmail && showPhone" translate>PHONE_MISSING</span>
 		<span class="h2 message" ng-show="showEmail && !showPhone" translate>EMAIL_MISSING</span>
 		<span class="text" translate>PROVIDE_BEFORE_CHECKIN</span>
+		<div class="entry full-width" ng-show="showMobile">
+			<label for="guest-mobile">MOBILE</label>
+		    <input name="guest-mobile" id="guest-mobile" value="" type="text" autocomplete="off" ng-model="saveData.mobile" />
+		</div>
+
 		<div id="guest-phone-entry" class="entry full-width" ng-show="showPhone" >
 			<label for="guest-phone" translate>PHONE</label>
 			<input type="text" value="" name="guest-phone" id="guest-phone" autocomplete="off" ng-model="saveData.phone">
