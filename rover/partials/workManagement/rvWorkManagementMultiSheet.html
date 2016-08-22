@@ -195,6 +195,13 @@
                                                      multiSheetState.allRooms[room.room_index].current_status == 'INSPECTED'}">
                                     {{multiSheetState.allRooms[room.room_index].current_status}}</span>
                                     <!-- Red for dirty, orange for pickup, green for clean or inspected -->
+
+                                    <span ng-class="getReservationStatusClass(multiSheetState.allRooms[room.room_index])"
+                                        ng-bind="getReservationStatusValue(multiSheetState.allRooms[room.room_index])"></span>
+
+                                    <span ng-class="getCurrentStatusClass(multiSheetState.allRooms[room.room_index])">
+                                        {{ multiSheetState.allRooms[room.room_index] }}
+                                    </span>
                                 </div>
                                 <h3>
                                     <span class="icons icon-suite" ng-if="multiSheetState.allRooms[room.room_index].is_suite">Suite room</span>

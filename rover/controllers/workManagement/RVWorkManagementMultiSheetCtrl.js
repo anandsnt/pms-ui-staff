@@ -966,5 +966,59 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		};
 		var handler = $scope.$on( 'ALL_RENDER_COMPLETE', callRefreshScroll );
 		$scope.$on( '$destroy', handler );
+
+
+
+		$scope.getReservationStatusClass = function(room) {
+			switch (room.reservation_status) {
+				case 'Due out':
+				case 'Arrived / Day use / Due out':
+				case 'Arrived / Day use / Due out / Departed':
+				case 'Due out / Arrival':
+				case 'Due out / Departed':
+				case 'Arrived / Departed':
+				case 'Departed':
+					return 'guest red'
+
+				case 'Stayover':
+					return 'guest blue';
+
+				case 'Arrival':
+				case 'Arrived':
+					return 'guest green';
+
+				case 'Not Reserved':
+					return 'guest gray';
+
+				default:
+					return 'guest';
+			}
+		};
+
+		$scope.getReservationStatusValue = function(room) {
+			switch (room.reservation_status) {
+				case 'Due out':
+				case 'Arrived / Day use / Due out':
+				case 'Arrived / Day use / Due out / Departed':
+				case 'Due out / Arrival':
+				case 'Due out / Departed':
+				case 'Arrived / Departed':
+				case 'Departed':
+					return 'guest red'
+
+				case 'Stayover':
+					return 'guest blue';
+
+				case 'Arrival':
+				case 'Arrived':
+					return 'guest green';
+
+				case 'Not Reserved':
+					return 'guest gray';
+
+				default:
+					return 'guest';
+			}
+		};
 	}
 ]);
