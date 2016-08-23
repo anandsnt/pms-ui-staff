@@ -216,10 +216,13 @@ $scope.saveClick = function(){
 $scope.clickAddRoomType = function(){
 	//While addig a room type, making its max_late_checkouts defaults to 0.
 	angular.forEach($scope.upsellData.room_types,function(item, index) {
-		if(item.id === parseInt($scope.upsellData.selected_room_type)){
-			 item.max_late_checkouts = 0;
+		if (item.id === parseInt($scope.upsellData.selected_room_type)) {
+      // CICO-32613: Do not reset existing value.
+      if (!item.max_late_checkouts) {
+        item.max_late_checkouts = 0;
+      }
 		}
-    });
+  });
     //Removing the selected room type from dropdown of room type list.
     angular.forEach($scope.upsellData.room_types_list,function(item, index) {
 		if(item.value === $scope.upsellData.selected_room_type){
