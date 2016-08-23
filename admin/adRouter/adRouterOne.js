@@ -69,6 +69,17 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/hotels'
 		});
 
+		$stateProvider.state('admin.notifications', {
+			templateUrl: '/assets/partials/notifications/adNotificationsList.html',
+			controller: 'ADNotificatinsListCtrl',
+			url : '/notifications'
+		});
+		$stateProvider.state('admin.addeditnotification', {
+			templateUrl: '/assets/partials/notifications/adNotifications.html',
+			controller: 'ADNotificationCtrl',
+			url : '/notification/:id/:action'			
+		});
+
 		$stateProvider.state('admin.brands', {
 			templateUrl: '/assets/partials/brands/adBrandList.html',
 			controller: 'ADBrandCtrl',

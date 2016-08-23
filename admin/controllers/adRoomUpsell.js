@@ -114,7 +114,10 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         //While addig a room type, making its max_los defaults to 0.
         angular.forEach($scope.upsellData[n], function (item, index) {
             if (item.id === parseInt($scope.upsellData[s])) {
-              item.max_los = 0;//this makes the added room type visible in the ui
+              // CICO-32613: Do not reset existing value.
+              if (!item.max_los) {
+                item.max_los = 0;//this makes the added room type visible in the ui
+              }
             }
         });
         if (nextday){

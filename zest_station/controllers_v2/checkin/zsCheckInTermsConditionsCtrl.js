@@ -39,7 +39,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 
 		var goToDepositScreen = function() {
 			console.warn('to deposit screen: ', $stateParams.first_name);
-			$state.go('zest_station.checkInDeposit', {
+			var stateparams = {
 				'guest_email': $stateParams.guest_email,
 				'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
 				'payment_type_id': $stateParams.payment_type_id,
@@ -54,7 +54,12 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'confirmation_number': $stateParams.confirmation_number,
 				'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
 				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
-			});
+			};
+			//check if this page was invoked through pickupkey flow
+			if(!!$stateParams.pickup_key_mode){
+               	stateparams.pickup_key_mode = 'manual';
+          	}
+			$state.go('zest_station.checkInDeposit',  stateparams);
 		};
 		var goToSignaturePage = function() {
 			console.warn('current state params: @ ', $state.current.name, $stateParams);
@@ -98,6 +103,10 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
 				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 			};
+			//check if this page was invoked through pickupkey flow
+			if(!!$stateParams.pickup_key_mode){
+               	stateParams.pickup_key_mode = 'manual';
+          	}
 			$state.go('zest_station.checkInCardSwipe', stateParams);
 		};
 

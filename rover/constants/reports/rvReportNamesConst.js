@@ -42,5 +42,6 @@ angular.module('reportsModule')
 		'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': 'Financial Transactions - Adjustment Report',
 		'CREDIT_CHECK_REPORT'          : 'Credit Check Report',
 		'DEPOSIT_SUMMARY' : 'Deposit Balance Summary',
-		'ZEST_CAMPAIGN_REPORT' : 'Zest App Campaign Report'
+		'ZEST_CAMPAIGN_REPORT' : 'Zest App Campaign Report',
+		'ROOMS_OOO_OOS': 'Rooms OOO/OOS'
 	});
