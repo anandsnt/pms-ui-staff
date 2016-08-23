@@ -126,7 +126,7 @@
                                     CURRENT RATE
                                 </button>
                                 <!-- making sure that this button always hidden when borrow -->
-                                <button class="button {{room.defaultRate.buttonClass}}" ng-hide="borrowForGroups || (stateCheck.selectedStayDate.rate.id == room.defaultRate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id )) || restrictIfOverbook(room.id,room.defaultRate.id)" ng-click="handleBooking(room.id,room.defaultRate.id,$event)" translate>
+                                <button class="button {{room.defaultRate.buttonClass}}" ng-hide="room.is_suite_unavailable || borrowForGroups || (stateCheck.selectedStayDate.rate.id == room.defaultRate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id )) || restrictIfOverbook(room.id,room.defaultRate.id)" ng-click="handleBooking(room.id,room.defaultRate.id,$event)" translate>
                                     RESV_BOOK
                                 </button>
                                 <!-- making sure that this button always show when borrow -->
@@ -177,7 +177,7 @@
                                 <button ng-show="stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id) && !borrowForGroups" class="button white blue-text" ng-click="handleNoEdit($event,room.id,rate.id)">
                                     CURRENT RATE
                                 </button>
-                                <button class="button {{rate.buttonClass}}" ng-hide="!borrow && (stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)) || restrictIfOverbook(room.id,rate.id)" ng-click="handleBooking(room.id,rate.id, $event)" translate>RESV_BOOK
+                                <button class="button {{rate.buttonClass}}" ng-hide="rate.is_suite_unavailable || (!borrow && (stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id))) || restrictIfOverbook(room.id,rate.id)" ng-click="handleBooking(room.id,rate.id, $event)" translate>RESV_BOOK
                                 </button>
                             </a>
                             <div class="rate-details" ng-if="rate.showDays">
