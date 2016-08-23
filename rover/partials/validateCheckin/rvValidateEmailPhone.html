@@ -4,9 +4,13 @@
 			<span class="icons icon-close invert"></span>
 		</button>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<span class="h2 message" ng-show="showEmail && showPhone" translate>PHONE_EMAIL_MISSING</span>
-		<span class="h2 message" ng-show="!showEmail && showPhone" translate>PHONE_MISSING</span>
-		<span class="h2 message" ng-show="showEmail && !showPhone" translate>EMAIL_MISSING</span>
+		<span class="h2 message" ng-show="showEmail && showPhone && showMobile" translate>PHONE_EMAIL_MOBILE_MISSING</span>
+		<span class="h2 message" ng-show="showEmail && showPhone && !showMobile" translate>PHONE_EMAIL_MISSING</span>
+		<span class="h2 message" ng-show="showEmail && !showPhone && showMobile" translate>MOBILE_EMAIL_MISSING</span>
+		<span class="h2 message" ng-show="!showEmail && showPhone && showMobile" translate>MOBILE_PHONE_MISSING</span>
+		<span class="h2 message" ng-show="!showEmail && showPhone && !showMobile" translate>PHONE_MISSING</span>
+		<span class="h2 message" ng-show="showEmail && !showPhone && !showMobile" translate>EMAIL_MISSING</span>
+		<span class="h2 message" ng-show="!showEmail && !showPhone && showMobile" translate>MOBILE_MISSING</span>
 		<span class="text" translate>PROVIDE_BEFORE_CHECKIN</span>
 		<div class="entry full-width" ng-show="showMobile">
 			<label for="guest-mobile">MOBILE</label>

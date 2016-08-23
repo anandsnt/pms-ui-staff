@@ -57,18 +57,15 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
         }
 	$scope.validateEmailPhoneSuccessCallback = function(){
 
-		if($scope.showEmail && $scope.showPhone && $scope.showMobile){
+        if($scope.showPhone ){
 			$scope.guestCardData.contactInfo.phone = $scope.saveData.phone;
+		}
+        if($scope.showEmail){
 			$scope.guestCardData.contactInfo.email = $scope.saveData.email;
-            $scope.guestCardData.contactInfo.mobile = $scope.saveData.mobile;
-		} else if($scope.showPhone ){
-			$scope.guestCardData.contactInfo.phone = $scope.saveData.phone;
-		} else if($scope.showEmail){
-			$scope.guestCardData.contactInfo.email = $scope.saveData.email;
-		} else if($scope.showMobile){
+		}
+        if($scope.showMobile){
             $scope.guestCardData.contactInfo.mobile = $scope.saveData.mobile;
         }
-
 		$scope.$emit('hideLoader');
 		ngDialog.close();
 		$scope.goToNextView();
@@ -170,19 +167,43 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 			$scope.saveData.guest_id = $scope.guestCardData.guestId;
 	        $scope.saveData.user_id = $scope.guestCardData.userId;
 	        var isValidDataExist = false;
-			if($scope.showEmail && $scope.showPhone ){
+			if($scope.showEmail && $scope.showPhone && $scope.showMobile){
 				$scope.saveData = $scope.saveData;
-				if($scope.saveData.email !== '' || $scope.saveData.phone !== '') {
+				if($scope.saveData.email !== '' || $scope.saveData.phone !== '' || $scope.saveData.mobile !== '') {
 					isValidDataExist = true;
 				}
-			} else if($scope.showPhone){
+			} else if($scope.showPhone && $scope.showMobile){
 				var unwantedKeys = ["email"]; // remove unwanted keys for API
 				$scope.saveData = dclone($scope.saveData, unwantedKeys);
-				if($scope.saveData.phone !== '') {
+				if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
 					isValidDataExist = true;
 				}
-			} else {
-				var unwantedKeys = ["phone"]; // remove unwanted keys for API
+			} else if($scope.showEmail && $scope.showMobile){
+                var unwantedKeys = ["phone"]; // remove unwanted keys for API
+                $scope.saveData = dclone($scope.saveData, unwantedKeys);
+                if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
+                    isValidDataExist = true;
+                }
+            } else if($scope.showEmail && $scope.showPhone){
+                var unwantedKeys = ["mobile"]; // remove unwanted keys for API
+                $scope.saveData = dclone($scope.saveData, unwantedKeys);
+                if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
+                    isValidDataExist = true;
+                }
+            } else if($scope.showEmail){
+                var unwantedKeys = ["mobile", "phone"]; // remove unwanted keys for API
+                $scope.saveData = dclone($scope.saveData, unwantedKeys);
+                if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
+                    isValidDataExist = true;
+                }
+            } else if($scope.showPhone){
+                var unwantedKeys = ["mobile", "email"]; // remove unwanted keys for API
+                $scope.saveData = dclone($scope.saveData, unwantedKeys);
+                if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
+                    isValidDataExist = true;
+                }
+            } else {
+				var unwantedKeys = ["phone", "email"]; // remove unwanted keys for API
 				$scope.saveData = dclone($scope.saveData, unwantedKeys);
 				if($scope.saveData.email !== '') {
 					isValidDataExist = true;
@@ -190,7 +211,9 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 			}
 			if(isValidDataExist){  // CICO-15079 : Validation for phone/email data being blank.
 				$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.validateEmailPhoneSuccessCallback);
-			}
+			} else {
+                $scope.errorMessage = ["Please fill the fields"];
+            }
 	};
 	$scope.submitAndCheckinSuccessCallback = function(){
 		$scope.guestCardData.contactInfo.email = $scope.saveData.email;
