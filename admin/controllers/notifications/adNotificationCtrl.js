@@ -42,8 +42,12 @@ admin.controller('ADNotificationCtrl',['$scope','$rootScope', '$state','$statePa
             $scope.notification.pms_type = data.pms_type;
             $scope.notification.action_source = data.action_source;
             $scope.$emit('hideLoader');
+        };
+        var fetchFailed = function(err){
+            $scope.errorMessage = err;
+            $scope.$emit('hideLoader');
         }
-        $scope.invokeApi(ADNotificationsListSrv.fetchNotification, id, fetchSuccess);
+        $scope.invokeApi(ADNotificationsListSrv.fetchNotification, id, fetchSuccess, fetchFailed);
     }
     //return a date string in the format of yyyy-MM-dd 00:00:00 (API expects this format)
     var formatActivatesAtDate = function(date){        
@@ -61,8 +65,8 @@ admin.controller('ADNotificationCtrl',['$scope','$rootScope', '$state','$statePa
         params = {
             hotel_uuid: null,
             message: notification.message,
-            activates_at: formatActivatesAtDate(notification.activates_at),
-            expires_at: formatExpiresAtDate(notification.activates_at, notification.duration),
+            activates_at: (!!notification.activates_at)?formatActivatesAtDate(notification.activates_at):null,
+            expires_at: (!!notification.activates_at)?formatExpiresAtDate(notification.activates_at, notification.duration):null,
             action_type: "LINK",
             action_source: notification.action_source,
             pms_type: notification.pms_type,
@@ -84,16 +88,20 @@ admin.controller('ADNotificationCtrl',['$scope','$rootScope', '$state','$statePa
        $state.go('admin.notifications');
     };
     //save Notification
-    $scope.save = function(notification){       
+    $scope.save = function(notification){
+        var saveFailed = function(err){
+            $scope.errorMessage = err;
+            $scope.$emit('hideLoader');
+        }       
         if(!!notification.id){
             var params = {
                 id : $scope.notification.id,
                 params : getParams(notification)
             }
-            $scope.invokeApi(ADNotificationsListSrv.updateNotification, params, $scope.back);        
+            $scope.invokeApi(ADNotificationsListSrv.updateNotification, params, $scope.back, saveFailed);        
         }else{
             var params = getParams(notification);
-            $scope.invokeApi(ADNotificationsListSrv.createNotification, params, $scope.back);
+            $scope.invokeApi(ADNotificationsListSrv.createNotification, params, $scope.back, saveFailed);
         }
     };
     //Starts Here
