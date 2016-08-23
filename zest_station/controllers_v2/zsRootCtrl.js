@@ -129,6 +129,19 @@ sntZestStation.controller('zsRootCtrl', [
 		};
 
 		/**
+		 * [returnDateObjBasedOnDateFormat description]
+		 * @param  {[type]} dateString [description]
+		 * @return {[type]}            [description]
+		 */
+		$scope.returnDateObjBasedOnDateFormat = function(dateString){
+	        if(typeof dateString !== 'undefined'){
+	            return returnUnformatedDateObj(dateString,$scope.zestStationData.hotelDateFormat);
+	        }else{
+	            return dateString;
+	        }
+   		};
+
+		/**
 		 * Other events
 		 */
 		$scope.$on(zsEventConstants.PUT_OOS, function(event) {
