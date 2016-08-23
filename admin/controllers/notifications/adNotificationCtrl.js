@@ -54,11 +54,15 @@ admin.controller('ADNotificationCtrl',['$scope','$rootScope', '$state','$statePa
         return date + " 00:00:00";
     };
     //return a date string in the format of yyyy-MM-dd 23:59:59 (API expects this format)
-    var formatExpiresAtDate = function(activates_at, duration){        
-        var activates_at = new Date(activates_at);
-        var expires_at = new Date(activates_at.getTime() + (duration*1000 * 60 * 60 * 24));
-        expires_at = $filter('date')(tzIndependentDate(expires_at), 'yyyy-MM-dd') +" 23:59:59";
-        return expires_at;
+    var formatExpiresAtDate = function(activates_at, duration){
+        if(duration !=0){       
+            var activates_at = new Date(activates_at);
+            var expires_at = new Date(activates_at.getTime() + (duration*1000 * 60 * 60 * 24));
+            expires_at = $filter('date')(tzIndependentDate(expires_at), 'yyyy-MM-dd') +" 23:59:59";
+            return expires_at;
+        }else{
+            return null;
+        }
     };
     // return params for api.
     var getParams = function(notification){
