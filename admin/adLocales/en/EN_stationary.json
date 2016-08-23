@@ -109,4 +109,5 @@
 	"PRO_FORMA_INVOICE_BODY":"Pro Forma Invoice Body",
 	"PRO_FORMA_INVOICE_HEADER":"Pro Forma Invoice Custom Header",
 	"PRO_FORMA_INVOICE_FOOTER":"Pro Forma Invoice Custom Footer",
-	"PRO_FORMA_INVOICE":"Pro Forma Invoice"
+	"PRO_FORMA_INVOICE":"Pro Forma Invoice",
+	"PRO_FORMA_BODY_TEXT_PLACEHOLDER":"Enter Pro Forma Invoice Body"
