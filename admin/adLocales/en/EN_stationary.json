@@ -103,9 +103,10 @@
 	"CUSTOM_TEXT_HEADER" : "Custom Text Header",
 	"CUSTOM_TEXT_FOOTER" : "Custom Text Footer",
 	"CUSTOM_TEXT_HEADER_PLACE_HOLDER" : "Enter Custom Text Header",
-	"CUSTOM_TEXT_FOOTER_PLACE_HOLDER" : "Enter Custom Text Footer"
+	"CUSTOM_TEXT_FOOTER_PLACE_HOLDER" : "Enter Custom Text Footer",
 
-
-
-
-
+	"PRO_FORMA_INVOICE_SUBJECT":"Pro Forma Invoice Subject",
+	"PRO_FORMA_INVOICE_BODY":"Pro Forma Invoice Body",
+	"PRO_FORMA_INVOICE_HEADER":"Pro Forma Invoice Custom Header",
+	"PRO_FORMA_INVOICE_FOOTER":"Pro Forma Invoice Custom Footer",
+	"PRO_FORMA_INVOICE":"Pro Forma Invoice"
