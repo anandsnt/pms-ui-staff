@@ -136,12 +136,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				// print section - if its from device call cordova.
 				$scope.printRegCardData = data;
 				$scope.departDate = $scope.printRegCardData.dep_date;
-				var dep = $scope.departDate.split('-');
-				var dY = dep[2],
-					dM = (dep[1] - 1),
-					dD = dep[0];
-				var depart = new Date(dY, dM, dD);
-				$scope.departDate = depart.getTime();
+				$scope.departDate = $scope.returnDateObjBasedOnDateFormat($scope.printRegCardData.dep_date);
 				$scope.printRegCardData.terms_conditions_html = getTermsPrintable($scope.printRegCardData.terms_conditions);
 				handleBillPrint();
 			};
