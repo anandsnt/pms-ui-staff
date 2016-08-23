@@ -52,13 +52,21 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 	if(data.token!==''){
 	 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
 	 	} else {
-	 		 $scope.$emit("signingIn");
+            $scope.hasLoader = true;
+            console.log(data);
+            if(data.is_sp_admin === true){
+                //we need to show the animation before redirecting to the url, so introducing a timeout there
+                setTimeout(function(){
+                    $state.go('selectProperty');
+                }, 300);
+            } else {
+                $scope.$emit("signingIn");
+                //we need to show the animation before redirecting to the url, so introducing a timeout there
+                setTimeout(function(){
+                    $window.location.href = data.redirect_url;
+                }, 300);
 
-	 		 $scope.hasLoader = true;
-	 		 //we need to show the animation before redirecting to the url, so introducing a timeout there
-                        setTimeout(function(){
-                                $window.location.href = data.redirect_url;
-                        }, 300);
+            }
 	 	}
 	 };
 	 /*

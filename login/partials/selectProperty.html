@@ -1,0 +1,44 @@
+<div class="content" id="login">
+    <div ng-show="hasLoader" id="loading">
+        <div id="loading-spinner"></div>
+    </div>
+    <img src="/assets/images/logo.png" class="logo" alt="">
+    <span class="notice success" ng-show="errorMessage!==''">
+        <ul>
+            <li>
+                {{errorMessage}}
+            </li>
+        </ul>   
+    </span>
+    <form ng-submit="submit()" id="login-form" class="form search-form" autocomplete="off">
+        <label>Select Property</label>
+        <div class="entry search">
+            <!-- Add .visible if there is something in the input -->
+            <button class="clear-query" ng-class="{'visible': searchData!==''}" ng-click="clearQuery()">
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <button class="icons icon-search" ng-class="{'visible': searchData!==''}" ng-click="filterByQuery()">
+                Search
+            </button>
+            <input id="property-query" class="query" ng-model="searchData" placeholder="Search by Name" type="text" ng-change="filterByQuery()" autocomplete="off">
+            <!-- Scroller -->
+            <div class="property-autocomplete open" ng-show="selectedPropertyId===''">
+                <div class="wrapper">
+                    <ul class="ui-autocomplete">
+                        <li ng-repeat="property in propertyResults track by $index">
+                            <a ng-click="onSelect(property)">{{ property.name }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="action">
+            <!-- Add class .blue when user can continue -->
+            <button type="submit" name="property" class="button" ng-click=" submitProperty()" ng-class="{'blue': selectedPropertyId!=='' }">Continue</button>
+        </div>
+    </form>
+    <div class="support">
+        For questions or support please contact your hotel administrator or the StayNTouch service team at
+        <a href="mailto:support@stayntouch.com">support@stayntouch.com</a>
+    </div>
+</div>

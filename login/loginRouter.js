@@ -34,5 +34,12 @@ login.config([
 			title: 'Activate User'
 		});
 
+		$stateProvider.state('selectProperty', {
+			url: '/select',
+			templateUrl: '/assets/partials/selectProperty.html',
+			controller: 'selectPropertyCtrl',
+			title: 'Select Property'
+		});
+
 	}
 ]);
