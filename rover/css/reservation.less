@@ -233,9 +233,14 @@
       font-size:small;
   }
   .action-post-btn{//fixes an opacity transition bug in chrome
-      -webkit-transform: translateZ(0);
-      display: -webkit-box !important;
+      -webkit-transform: translateZ(0); 
   }
+  @media and (min-height:768px){
+    .action-post-btn{//fixes an opacity transition bug in chrome
+        -webkit-transform: translateZ(0); 
+    }
+  }
+
   .actions-none{
       color:#9d9d9d !important;
   }
