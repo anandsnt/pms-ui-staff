@@ -144,7 +144,6 @@
 													</strong>
 
 							                    	<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
-
 							                    	<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
 														{{row.late_checkout_time}}
 													</span>
