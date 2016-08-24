@@ -270,9 +270,39 @@ sntRover.controller('RVbillCardController',
 	* @return {Boolean}
 	*/
 	$scope.hasPermissionToChangeCharges = function() {
-		return rvPermissionSrv.getPermissionValue ('EDIT_SPLIT_DELETE_CHARGE');
+	    var split_permission = rvPermissionSrv.getPermissionValue('SPLIT_CHARGES'),
+	        edit_permission = rvPermissionSrv.getPermissionValue('EDIT_CHARGES'),
+	        delete_permission = rvPermissionSrv.getPermissionValue('DELETE_CHARGES');
+	    return (split_permission || edit_permission || delete_permission);
 	};
 
+
+	/**
+	* function to check whether the user has permission
+	* to Split charges
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToSplitCharges = function() {
+		return rvPermissionSrv.getPermissionValue ('SPLIT_CHARGES');
+	};
+
+	/**
+	* function to check whether the user has permission
+	* to Edit charges
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToEditCharges = function() {
+		return rvPermissionSrv.getPermissionValue ('EDIT_CHARGES');
+	};
+
+	/**
+	* function to check whether the user has permission
+	* to Delete charges
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToDeleteCharges = function() {
+		return rvPermissionSrv.getPermissionValue ('DELETE_CHARGES');
+	};
 
 	/**
 	* function to check whether the user has permission
