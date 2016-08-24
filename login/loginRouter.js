@@ -35,7 +35,7 @@ login.config([
 		});
 
 		$stateProvider.state('selectProperty', {
-			url: '/select',
+			url: '/property',
 			templateUrl: '/assets/partials/selectProperty.html',
 			controller: 'selectPropertyCtrl',
 			title: 'Select Property'

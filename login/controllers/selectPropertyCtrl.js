@@ -40,7 +40,6 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
             $scope.searchData = "";
             $scope.propertyResults = [];
             $scope.selectedPropertyId = "";
-            console.log($scope);
         };
 
         /*
