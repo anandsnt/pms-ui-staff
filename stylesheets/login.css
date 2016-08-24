@@ -178,14 +178,20 @@ input:focus {
 input::-webkit-input-placeholder {
   font-style: italic;
   color: #9d9d9d;
+  font-weight: 300;
+  font-size: 16px;
 }
 input::-moz-placeholder {
   font-style: italic;
   color: #9d9d9d;
+  font-weight: 300;
+  font-size: 16px;
 }
 input:input-placeholder {
   font-style: italic;
   color: #9d9d9d;
+  font-weight: 300;
+  font-size: 16px;
 }
 button {
   text-align: center;
