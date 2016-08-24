@@ -139,8 +139,21 @@ login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$state
 	  */
 	 $scope.successCallback = function(data){
 	 	$scope.hasLoader = false;
-	 	$window.location.href = data.redirect_url;
+	 	if(data.is_sp_admin === true){
+            //we need to show the animation before redirecting to the url, so introducing a timeout there
+            setTimeout(function(){
+                $state.go('selectProperty');
+            }, 300);
+        } 
+        else {
+            $scope.$emit("signingIn");
+            //we need to show the animation before redirecting to the url, so introducing a timeout there
+            setTimeout(function(){
+                $window.location.href = data.redirect_url;
+            }, 300);
+        }
 	 };
+	 
 	 $scope.failureCallBack = function(errorMessage){
 	 	$scope.hasLoader = false;
 	 	$scope.errorMessage = errorMessage;
