@@ -972,7 +972,7 @@ sntRover.controller('reservationActionsController', [
 				//Handle Success
 				function(response) {
 					$scope.$emit('hideLoader');
-					promptReinstate(response.is_available, response.is_suite);
+					promptReinstate(response.is_available, response.is_suite_room);
 				},
 				//Handle Failure
 				function(errorMessage) {
