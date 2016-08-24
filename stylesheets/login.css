@@ -32,16 +32,16 @@ li {
 /* 400 ***/
 @font-face {
   font-family: 'source_sans_pro';
-  src: url('../type/sourcesanspro-regular-webfont.eot');
-  src: url('../type/sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../type/sourcesanspro-regular-webfont.woff') format('woff'), url('../type/sourcesanspro-regular-webfont.ttf') format('truetype');
+  src: url('../assets/type/sourcesanspro-regular-webfont.eot');
+  src: url('../assets/type/sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../assets/type/sourcesanspro-regular-webfont.woff') format('woff'), url('../assets/type/sourcesanspro-regular-webfont.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 /* 600 ***/
 @font-face {
   font-family: 'source_sans_pro';
-  src: url('../type/sourcesanspro-semibold-webfont.eot');
-  src: url('../type/sourcesanspro-semibold-webfont.eot?#iefix') format('embedded-opentype'), url('../type/sourcesanspro-semibold-webfont.woff') format('woff'), url('../type/sourcesanspro-semibold-webfont.ttf') format('truetype');
+  src: url('../assets/type/sourcesanspro-semibold-webfont.eot');
+  src: url('../assets/type/sourcesanspro-semibold-webfont.eot?#iefix') format('embedded-opentype'), url('../assets/type/sourcesanspro-semibold-webfont.woff') format('woff'), url('../assets/type/sourcesanspro-semibold-webfont.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
 }
@@ -51,7 +51,7 @@ li {
 .icons {
   display: block;
   text-indent: -9999px;
-  background-image: url("../cssimg/app/app-icons.png");
+  background-image: url("../assets/cssimg/app/app-icons.png");
   background-repeat: no-repeat;
   background-color: transparent;
   border: 0;
@@ -68,7 +68,7 @@ li {
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), (min-resolution: 1.5dppx) {
   .icons {
-    background-image: url("../cssimg/app/app-icons@2x.png");
+    background-image: url("../assets/cssimg/app/app-icons@2x.png");
     background-size: 120px;
   }
 }
@@ -149,7 +149,7 @@ body {
   line-height: 1.5;
   color: #202225;
   background-color: #ff9d13;
-  background-image: url("../cssimg/texture-dark.png"), linear-gradient(to bottom, #ffb319 0%, #ff860d 100%);
+  background-image: url("../assets/cssimg/texture-dark.png"), linear-gradient(to bottom, #ffb319 0%, #ff860d 100%);
   background-repeat: repeat;
   overflow: hidden;
 }
@@ -299,7 +299,7 @@ a:active {
   width: 100%;
   height: 100%;
   background-color: #fcfcfc;
-  background-image: url("../cssimg/texture.png");
+  background-image: url("../assets/cssimg/texture.png");
   background-repeat: repeat;
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), (min-resolution: 1.5dppx) {
@@ -353,7 +353,7 @@ a:active {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     border-radius: 3px;
     background-color: #fcfcfc;
-    background-image: url("../cssimg/texture.png");
+    background-image: url("../assets/cssimg/texture.png");
     background-repeat: repeat;
   }
   .action {
