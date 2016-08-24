@@ -187,5 +187,9 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRecordTime, params, callback);
 		};
+
+		$scope.$on('reloadPage', function (data) {
+			$scope.roomDetails = data;
+		});
 	}
 ]);
