@@ -21,6 +21,7 @@ sntPay.directive('sntPayment', function() {
             formTemplateUrl : '@',//the URL of the partial to be laoded as form
             firstName: '@',//first name to be used in six pay iframe
             lastName: '@',//second name to be used in six pay iframe
+            swipedCardData: '@'
         },
         link: function(scope, element, attrs) {
             console.log("--From Payment Module Init--");

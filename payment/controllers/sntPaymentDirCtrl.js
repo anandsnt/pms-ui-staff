@@ -1,5 +1,5 @@
-angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPaymentSrv", "paymentAppEventConstants", "$location", "PAYMENT_CONFIG", "$rootScope",
-    function($scope, sntPaymentSrv, payEvntConst, $location, PAYMENT_CONFIG, $rootScope) {
+angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPaymentSrv", "paymentAppEventConstants", "$location", "PAYMENT_CONFIG", "$rootScope", "$timeout",
+    function($scope, sntPaymentSrv, payEvntConst, $location, PAYMENT_CONFIG, $rootScope, $timeout) {
 
         $scope.payment = {
             referenceText: "",
@@ -250,7 +250,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     $scope.$emit('SUCCESS_LINK_PAYMENT', {
                         response,
                         selectedPaymentType: $scope.selectedPaymentType,
-                        cardDetails : $scope.payment.tokenizedCardData
+                        cardDetails: $scope.payment.tokenizedCardData
                     });
                 }, errorMessage => {
                     $scope.$emit('ERROR_OCCURED', errorMessage);
@@ -258,7 +258,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             } else if ($scope.selectedPaymentType !== 'CC') {
                 // NOTE: This block of code handles all payment types except
                 sntPaymentSrv.savePaymentDetails({
-                    bill_number : $scope.billNumber,
+                    bill_number: $scope.billNumber,
                     reservation_id: $scope.reservationId,
                     payment_type: $scope.selectedPaymentType,
                     workstation_id: $scope.hotelConfig.workstationId
@@ -270,9 +270,26 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 }, errorMessage => {
                     $scope.$emit('ERROR_OCCURED', errorMessage);
                 });
+            } else if (!!$scope.payment.tokenizedCardData && !!$scope.payment.tokenizedCardData.apiParams.mli_token) {
+                // NOTE: credit card is selected and coming through swipe
+                sntPaymentSrv.savePaymentDetails({
+                    ...$scope.payment.tokenizedCardData.apiParams,
+                    bill_number: $scope.billNumber,
+                    reservation_id: $scope.reservationId,
+                    payment_type: $scope.selectedPaymentType,
+                    workstation_id: $scope.hotelConfig.workstationId
+                }).then(response => {
+                    $scope.$emit('SUCCESS_LINK_PAYMENT', {
+                        response,
+                        selectedPaymentType: $scope.selectedPaymentType,
+                        cardDetails: $scope.selectedCC
+                    });
+                }, errorMessage => {
+                    $scope.$emit('ERROR_OCCURED', errorMessage);
+                });
             } else { // NOTE: This is the scenario where the user has selected an existing credit card from the list
                 sntPaymentSrv.mapPaymentToReservation({
-                    bill_number : $scope.billNumber,
+                    bill_number: $scope.billNumber,
                     reservation_id: $scope.reservationId,
                     payment_type: $scope.selectedPaymentType,
                     workstation_id: $scope.hotelConfig.workstationId,
@@ -282,7 +299,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     $scope.$emit('SUCCESS_LINK_PAYMENT', {
                         response,
                         selectedPaymentType: $scope.selectedPaymentType,
-                        cardDetails : $scope.selectedCC
+                        cardDetails: $scope.selectedCC
                     });
                 }, errorMessage => {
                     $scope.$emit('ERROR_OCCURED', errorMessage);
@@ -553,7 +570,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         };
 
         $scope.$on(payEvntConst.CC_TOKEN_GENERATED, function(event, data) {
-            if ($scope.actionType === "ADD_PAYMENT_GUEST_CARD") {
+            if ($scope.actionType === "ADD_PAYMENT_GUEST_CARD" || !!data.apiParams.mli_token) {
                 $scope.payment.tokenizedCardData = data;
 
                 $scope.selectedCC = $scope.selectedCC || {};
@@ -566,6 +583,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $scope.payment.screenMode = "PAYMENT_MODE";
                 runDigestCycle();
             } else {
+                $scope.payment.tokenizedCardData = null;
                 saveCCPayment(data);
             }
         });
@@ -635,7 +653,6 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $scope.payment.isManualEntryInsideIFrame = true;
                 //Add to guestcard feature for C&P
                 $scope.payment.showAddToGuestCard = $scope.payment.isManualEntryInsideIFrame ? false : true;
-
             }
 
             var paths = sntPaymentSrv.resolvePaths($scope.hotelConfig.paymentGateway, {
@@ -645,6 +662,15 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
             $scope.payment.iFrameUrl = paths.iFrameUrl;
             $scope.paymentGatewayUIInterfaceUrl = paths.paymentGatewayUIInterfaceUrl;
+
+            /* In case there is swiped data available
+             * This scenario is possible in case of add payments in stay-card; guest-card and stay-card bill screens.
+             */
+            if ($scope.swipedCardData) {
+                $timeout(()=> {
+                    $scope.$broadcast("RENDER_SWIPED_DATA", JSON.parse($scope.swipedCardData));
+                }, 300);
+            }
 
             /**
              *

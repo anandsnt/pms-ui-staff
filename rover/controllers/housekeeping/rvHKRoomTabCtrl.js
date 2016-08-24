@@ -609,5 +609,9 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			}
 		};
 
+		$scope.$on('reloadPage', function (event, data) {
+			$scope.roomDetails = data;
+		});
+
 	}
 ]);

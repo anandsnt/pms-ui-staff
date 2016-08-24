@@ -82,13 +82,15 @@ angular.module('sntPay').service('paymentUtilSrv',
         //MLI
         else if(mliSwipeKey in object) {
             tokenDetails = {
-                ...['et2', 'ksn', 'pan', 'mli_token']
-                    .map(key => ({[key]: object[key]})),
-                
-                card_code: this.getCreditCardTypeForMLI(object.cardType)
-            }
+                credit_card: object.cardType
+            };
+            ['et2', 'ksn', 'pan', 'mli_token'].map(key => {
+                tokenDetails[key] = object[key];
+            });
         }
+
         var dateDataExist = (object.expiryMonth && object.expiryYear);
+
         return {
             ...tokenDetails,
             card_name: object.nameOnCard,

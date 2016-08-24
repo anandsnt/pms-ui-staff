@@ -1,8 +1,6 @@
 /**
  * @author Shahul Hameed
  */
-'use strict';
-
 var gulp 	  = require('gulp'),
 	rename    = {
 					'gulp-ng-annotate': 'ngAnnotate', 'gulp-angular-templatecache': 'templateCache', 

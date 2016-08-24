@@ -812,7 +812,7 @@ sntRover.controller('reservationDetailsController',
 
 			var passData = {
 				"reservationId": $scope.reservationData.reservation_card.reservation_id,
-				"userId": $scope.data.guest_details.user_id,
+				"guest_id": $scope.data.guest_details.user_id,
 				"details": {
 					"firstName": $scope.data.guest_details.first_name,
 					"lastName": $scope.data.guest_details.last_name,
@@ -829,6 +829,9 @@ sntRover.controller('reservationDetailsController',
                                         swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" &&
                                         swipedCardDataToRender.swipeFrom !== "stayCardDeposit") {
                                         console.info('doing open pmt window with pass data')
+					if (swipedCardDataToRender.swipeFrom === 'guestCard'){
+                       passData.isFromGuestCard = true;
+					}
 					$scope.openPaymentDialogModal(passData, paymentData);
 
 

@@ -2,7 +2,7 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     
     
-    <div id="content" ng-hide="isPageLoading">
+    <div id="content" ng-show="isReservationDetailsFetched">
         <h1>{{'RES_DETAIL_HEADER' |translate}}</h1>
         <div id="flex-holder">
             <!-- Calculate {maxheight} with this formula: window.height - combined heights of <h1>, <h2> and <h3> elements + 8

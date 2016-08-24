@@ -152,6 +152,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                 }
             });
 
+            $scope.$on('ERROR_OCCURED', function(event, errorMessage) {
+               $scope.errorMessage = errorMessage;
+            });
+
             /**
              * Initialization Method
              *
@@ -161,7 +165,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                 // TODO : Tell the directive that this is from a swipe
                 if (!isEmptyObject($scope.passData.details.swipedDataToRenderInScreen)) {
                     $scope.selectedPaymentType = "CC";
-                    $scope.selectedCC = $scope.passData.details.swipedDataToRenderInScreen;
+                    $scope.swipedCardData = $scope.passData.details.swipedDataToRenderInScreen;
                 }
 
                 $scope.billNumber = $scope.passData.fromBill || 1;

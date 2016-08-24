@@ -7,8 +7,8 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             var deferred = $q.defer();
             var url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
             $http.post(url, dataToSrv.postData).success(function(response) {
-                    deferred.resolve(response);
-                }.bind(this))
+                deferred.resolve(response);
+            }.bind(this))
                 .error(function(error) {
                     deferred.reject(error);
                 });
@@ -20,8 +20,8 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             var deferred = $q.defer();
             var url = '/staff/staycards/get_credit_cards.json?reservation_id=' + reservationId;
             $http.get(url).success(function(response) {
-                    deferred.resolve(response.data);
-                }.bind(this))
+                deferred.resolve(response.data);
+            }.bind(this))
                 .error(function(error) {
                     deferred.reject(error);
                 });
@@ -120,9 +120,9 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                 } else {
                     //TODO: remove below line of code and test with actual.
                     //This can be kept to mock the response
-                    
+
                     //var async_callback_url = '/sample_json/payment/six_payment_sample.json';
-                    $http.get(async_callback_url).success(function(data,status) {
+                    $http.get(async_callback_url).success(function(data, status) {
                         //if the request is still not proccesed
                         if (status === 202 || status === 102 || status === 250) {
                             setTimeout(function() {
@@ -163,7 +163,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
         service.fetchMLISessionDetails = function(sessionDetails, successCallback, failureCallback) {
 
             var callback = function(response) {
-                (response.status === "ok") ? successCallback(response): failureCallback(response);
+                (response.status === "ok") ? successCallback(response) : failureCallback(response);
             };
 
             HostedForm.updateSession(sessionDetails, callback);
@@ -202,7 +202,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             var iFrameUrlWithParams = "",
                 paymentGatewayUIInterfaceUrl = PAYMENT_CONFIG[gateWay].partial;
 
-            switch (gateWay){
+            switch (gateWay) {
                 case "MLI":
                     break;
                 case "sixpayments":
@@ -220,9 +220,9 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                     throw new Error("Payment Gateway not configured");
             }
 
-            return{
-                iFrameUrl : iFrameUrlWithParams,
-                paymentGatewayUIInterfaceUrl : paymentGatewayUIInterfaceUrl
+            return {
+                iFrameUrl: iFrameUrlWithParams,
+                paymentGatewayUIInterfaceUrl: paymentGatewayUIInterfaceUrl
             };
         };
 
@@ -235,7 +235,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             var deferred = $q.defer(),
                 url = '/api/gift_cards/balance_inquiry';
 
-            $http.post(url,{
+            $http.post(url, {
                 'card_number': cardNo
             }).success(function(response) {
                 deferred.resolve(response);
@@ -245,7 +245,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             return deferred.promise;
         };
 
-        service.savePaymentDetails = function(data){
+        service.savePaymentDetails = function(data) {
             var deferred = $q.defer();
             var url = '/staff/reservation/save_payment';
 
@@ -263,7 +263,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
          * @param data
          * @returns {deferred.promise|{then, catch, finally}}
          */
-        service.mapPaymentToReservation = function(data){
+        service.mapPaymentToReservation = function(data) {
             var deferred = $q.defer();
             var url = '/staff/reservation/link_payment';
 
@@ -281,12 +281,17 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
          * @param data
          * @returns {deferred.promise|{then, catch, finally}}
          */
-        service.addCardToGuest = function(data){
+        service.addCardToGuest = function(data) {
             var deferred = $q.defer();
             var url = 'staff/payments/save_new_payment';
 
             $http.post(url, data).success(data => {
-                deferred.resolve(data);
+                if (data.errors.length > 0) {
+                    deferred.reject(data.errors);
+                } else {
+                    deferred.resolve(data);
+                }
+
             }).error(data => {
                 deferred.reject(data);
             });
