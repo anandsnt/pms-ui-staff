@@ -166,7 +166,7 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 		 */
 		var fetchInitialDataSuccess = function (data) {
 			$scope.$emit('hideLoader');
-			$scope.$emit('reloadPage', data);
+			$scope.$broadcast('reloadPage', data);
 			$scope.roomDetails = data;
 		};
 
