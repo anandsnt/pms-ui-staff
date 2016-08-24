@@ -14,7 +14,7 @@
         <label>Select Property</label>
         <div class="entry search">
             <!-- Add .visible if there is something in the input -->
-            <button class="clear-query" ng-class="{'visible': searchData!==''}" ng-click="clearQuery()">
+            <button class="clear-query" ng-class="{'visible': searchData !== ''}" ng-click="clearQuery()">
                 <span class="icons icon-clear-search">Clear query</span>
             </button>
             <button class="icons icon-search" ng-class="{'visible': searchData!==''}" ng-click="filterByQuery()">
@@ -23,7 +23,6 @@
             <input id="property-query" class="query" ng-model="searchData" placeholder="Search by Name" type="text" ng-change="filterByQuery()" autocomplete="off">
             <!-- Scroller -->
             <div class="property-autocomplete" ng-show="selectedPropertyId === ''" ng-class="{'open': propertyResults.length > 0 }">
-            <div class="property-autocomplete" ng-show="selectedPropertyId===''">
                 <div class="wrapper">
                     <ul class="ui-autocomplete">
                         <li ng-repeat="property in propertyResults track by $index">
@@ -34,7 +33,6 @@
             </div>
         </div>
         <div class="action">
-            <!-- Add class .blue when user can continue -->
             <button type="submit" name="property" class="button" ng-click="submitProperty()" ng-class="{'blue': selectedPropertyId !== '' }">Continue</button>
         </div>
     </form>
