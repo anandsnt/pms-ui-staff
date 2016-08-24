@@ -23,10 +23,11 @@
             <input id="property-query" class="query" ng-model="searchData" placeholder="Search by Name" type="text" ng-change="filterByQuery()" autocomplete="off">
             <!-- Scroller -->
             <div class="property-autocomplete" ng-show="selectedPropertyId === ''" ng-class="{'open': propertyResults.length > 0 }">
+            <div class="property-autocomplete" ng-show="selectedPropertyId===''">
                 <div class="wrapper">
                     <ul class="ui-autocomplete">
                         <li ng-repeat="property in propertyResults track by $index">
-                            <a ng-click="onSelect(property)">{{ property.name }}</a>
+                            <a ng-click="onSelect(property)" ng-bind-html="highlight(property.name, searchData)"></a>
                         </li>
                     </ul>
                 </div>

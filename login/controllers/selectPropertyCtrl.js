@@ -8,6 +8,18 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
         $scope.$emit('hideloader');
 
         /*
+         * Function to highlight text
+         * @param text of data to be filtered
+         * @param text to be highlight
+         */
+        $scope.highlight = function(text, search) {
+            if (!search) {
+                return text;
+            }
+            return text.replace(new RegExp(search, 'gi'), '<span class="highlight">$&</span>');
+        };
+
+        /*
          * Success callback of Search property
          * @param object of data
          */
