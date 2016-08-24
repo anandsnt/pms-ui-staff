@@ -3,7 +3,7 @@
         <div id="loading-spinner"></div>
     </div>
     <img src="/assets/images/logo.png" class="logo" alt="">
-    <span class="notice success" ng-show="errorMessage!==''">
+    <span class="notice error" ng-show="errorMessage!==''">
         <ul>
             <li>
                 {{errorMessage}}
@@ -22,7 +22,7 @@
             </button>
             <input id="property-query" class="query" ng-model="searchData" placeholder="Search by Name" type="text" ng-change="filterByQuery()" autocomplete="off">
             <!-- Scroller -->
-            <div class="property-autocomplete open" ng-show="selectedPropertyId===''">
+            <div class="property-autocomplete" ng-show="selectedPropertyId === ''" ng-class="{'open': propertyResults.length > 0 }">
                 <div class="wrapper">
                     <ul class="ui-autocomplete">
                         <li ng-repeat="property in propertyResults track by $index">
@@ -34,7 +34,7 @@
         </div>
         <div class="action">
             <!-- Add class .blue when user can continue -->
-            <button type="submit" name="property" class="button" ng-click=" submitProperty()" ng-class="{'blue': selectedPropertyId!=='' }">Continue</button>
+            <button type="submit" name="property" class="button" ng-click="submitProperty()" ng-class="{'blue': selectedPropertyId !== '' }">Continue</button>
         </div>
     </form>
     <div class="support">
