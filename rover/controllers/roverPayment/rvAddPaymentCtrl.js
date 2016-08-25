@@ -57,7 +57,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                         card_code: cardDetails.card_code,
                         card_number: cardDetails.ending_with,
                         card_expiry: cardDetails.expiry_date,
-                        payment_id: response.data.id,
+                        payment_id: response.id,
                         is_swiped: cardDetails.is_swiped,
                         auth_color_code: cardDetails.auth_color_code
                     });
@@ -70,15 +70,15 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                     }
 
                     $rootScope.$broadcast('BALANCECHANGED', {
-                        "balance": response.data.reservation_balance,
+                        "balance": response.reservation_balance,
                         "confirm_no": $scope.paymentData.confirm_no
                     });
 
-                    $scope.$emit('UPDATECCATTACHEDBILLSTATUS', response.data.has_any_credit_card_attached_bill);
+                    $scope.$emit('UPDATECCATTACHEDBILLSTATUS', response.has_any_credit_card_attached_bill);
                 } else {
                     // For non CC Payments
                     $scope.paymentData.bills[billIndex].credit_card_details.payment_type = paymentType;
-                    $scope.paymentData.bills[billIndex].credit_card_details.payment_type_description = response.data.payment_type;
+                    $scope.paymentData.bills[billIndex].credit_card_details.payment_type_description = response.payment_type;
                 }
 
                 $scope.closeDialog();
@@ -93,14 +93,14 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
             var handleGuestCardAddPaymentSuccess = function(response, paymentType, cardDetails) {
                 // NOTE: For Guest Cards - ONLY CC can be added as a payment
                 $rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', {
-                    "card_code": cardDetails.apiParams.card_code,
-                    "mli_token": cardDetails.cardDisplayData.ending_with,
-                    "card_expiry": cardDetails.cardDisplayData.expiry_date,
-                    "card_name": cardDetails.apiParams.card_name,
-                    "id": response.data.id,
+                    "card_code": cardDetails.card_code,
+                    "mli_token": cardDetails.ending_with,
+                    "card_expiry": cardDetails.expiry_date,
+                    "card_name": cardDetails.card_name,
+                    "id": response.id,
                     "isSelected": true,
                     "is_primary": false,
-                    "payment_type": response.data.payment_name,
+                    "payment_type": response.payment_name,
                     "payment_type_id": 1
                 });
 
@@ -125,12 +125,12 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                     });
                 } else {
                     // For non cc payment types
-                    $scope.paymentData.reservation_card.payment_method_description = response.data.payment_type;
+                    $scope.paymentData.reservation_card.payment_method_description = response.payment_type;
                     $scope.paymentData.reservation_card.payment_method_used = paymentType;
                 }
                 // Update reservation type
-                $rootScope.$broadcast('UPDATERESERVATIONTYPE', response.data.reservation_type_id, response.data.id);
-                $scope.$emit('UPDATECCATTACHEDBILLSTATUS', response.data.has_any_credit_card_attached_bill);
+                $rootScope.$broadcast('UPDATERESERVATIONTYPE', response.reservation_type_id, response.id);
+                $scope.$emit('UPDATECCATTACHEDBILLSTATUS', response.has_any_credit_card_attached_bill);
 
                 $scope.closeDialog();
             };

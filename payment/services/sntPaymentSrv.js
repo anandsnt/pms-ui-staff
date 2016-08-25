@@ -82,7 +82,9 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             };
         };
 
-        /********************************* SIX PAY **********************************/
+        //--------------------------------------------------------------------------------------------------------------
+        //                                  SIX PAYMENTS
+        //--------------------------------------------------------------------------------------------------------------
 
         service.getSixPayCreditCardType = function(cardCode) {
             var sixCreditCardTypes = {
@@ -100,7 +102,11 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             return sixCreditCardTypes[cardCode.toUpperCase()];
         };
 
-        //SIX payment actions
+        /**
+         *
+         * @param dataToSrv
+         * @returns {deferred.promise|{then, catch, finally}}
+         */
         service.submitPaymentForChipAndPin = function(dataToSrv) {
 
             var deferred = $q.defer();
@@ -118,10 +124,10 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                     var errors = ["Request timed out. Unable to process the transaction"];
                     deferred.reject(errors);
                 } else {
-                    //TODO: remove below line of code and test with actual.
-                    //This can be kept to mock the response
-
-                    //var async_callback_url = '/sample_json/payment/six_payment_sample.json';
+                    // TODO: comment the assignment below before commits and pushes.
+                    // NOTE:This sample json helps to mock the response
+                    // For further info : https://stayntouch.atlassian.net/wiki/display/ROV/SIXPayment+Service+Design+Document
+                    // var async_callback_url = '/sample_json/payment/six_payment_sample.json';
                     $http.get(async_callback_url).success(function(data, status) {
                         //if the request is still not proccesed
                         if (status === 202 || status === 102 || status === 250) {
@@ -159,6 +165,74 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             return deferred.promise;
         };
 
+        /**
+         *
+         * @param dataToSrv
+         * @returns {deferred.promise|{then, catch, finally}}
+         */
+        service.getSixPaymentToken = function(dataToSrv) {
+
+            var deferred = $q.defer();
+            var url = '/api/cc/get_token.json';
+
+            var timeStampInSeconds = 0;
+            var incrementTimer = function() {
+                timeStampInSeconds++;
+            };
+            var refreshIntervalId = setInterval(incrementTimer, 1000);
+            var pollToTerminal = function(async_callback_url) {
+                //we will continously communicate with the terminal till
+                //the timeout set for the hotel
+                if (timeStampInSeconds >= dataToSrv.emvTimeout) {
+                    var errors = ["Request timed out. Unable to process the transaction"];
+                    deferred.reject(errors);
+                } else {
+                    // TODO: comment the assignment below before commits and pushes.
+                    // NOTE:This sample json helps to mock the response
+                    // For further info : https://stayntouch.atlassian.net/wiki/display/ROV/SIXPayment+Service+Design+Document
+                    // var async_callback_url = '/sample_json/payment/get_six_pay_token.json';
+
+                    $http.get(async_callback_url).success(function(data, status) {
+                        //if the request is still not proccesed
+                        if (status === 202 || status === 102 || status === 250) {
+                            setTimeout(function() {
+                                console.info("POLLING::-> for emv terminal response");
+                                pollToTerminal(async_callback_url);
+                            }, 5000);
+                        } else {
+                            clearInterval(refreshIntervalId);
+                            deferred.resolve(data);
+                        }
+                    }, function(data) {
+                        if (typeof data === 'undefined') {
+                            pollToTerminal(async_callback_url);
+                        } else {
+                            clearInterval(refreshIntervalId);
+                            deferred.reject(data);
+                        }
+                    });
+                }
+            };
+
+            $http.post(url, dataToSrv).success(function(response, status, headers) {
+                //202 ---> The request has been accepted for processing, but the processing has not been completed.
+                //102 ---> This code indicates that the server has received and is processing the request, but no response is available yet
+                if (status === 202 || status === 102 || status === 250) {
+                    var location_header = headers('Location');
+                    pollToTerminal(location_header);
+                } else {
+                    deferred.resolve(response);
+                }
+            }).error(function(errors, status) {
+                webserviceErrorActions(url, deferred, errors, status);
+            });
+            return deferred.promise;
+        };
+
+
+        //--------------------------------------------------------------------------------------------------------------
+        //                                  MLI
+        //--------------------------------------------------------------------------------------------------------------
         //fetch MLI session details
         service.fetchMLISessionDetails = function(sessionDetails, successCallback, failureCallback) {
 
@@ -193,6 +267,10 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
 
         };
 
+
+        //--------------------------------------------------------------------------------------------------------------
+        //                                  MLI
+        //--------------------------------------------------------------------------------------------------------------
         /**
          *
          * @param gateWay
@@ -286,7 +364,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             var url = 'staff/payments/save_new_payment';
 
             $http.post(url, data).success(data => {
-                if (data.errors.length > 0) {
+                if (data.errors && data.errors.length > 0) {
                     deferred.reject(data.errors);
                 } else {
                     deferred.resolve(data);

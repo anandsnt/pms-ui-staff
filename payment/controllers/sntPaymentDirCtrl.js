@@ -239,6 +239,29 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          *    Request Params: {reservation_id: 1348897, payment_type: "CK", workstation_id: 159, user_payment_type_id: "1171"}
          */
         $scope.saveReservationPaymentMethod = function() {
+            //check if chip and pin is selected in case of six payments
+            //the rest of actions will in paySixPayController
+            if ($scope.selectedPaymentType === "CC" && $scope.hotelConfig.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
+                var params = {
+                    workstation_id: $scope.hotelConfig.workstationId
+                };
+
+                if ($scope.actionType === "ADD_PAYMENT_GUEST_CARD") {
+                    angular.extend(params, {
+                        guest_id: $scope.guestId,
+                        add_to_guest_card: true
+                    });
+                } else {
+                    if ($scope.actionType === "ADD_PAYMENT_STAY_CARD") {
+                        params["guest_id"] = $scope.guestId;
+                    }
+                    params["reservation_id"] = $scope.reservationId;
+                }
+
+                $scope.$broadcast('INITIATE_CHIP_AND_PIN_TOKENIZATION', params);
+                return;
+            }
+
             // In case of guest card; we would be only adding credit cards
             if ($scope.actionType === "ADD_PAYMENT_GUEST_CARD") {
                 sntPaymentSrv.addCardToGuest({
@@ -247,10 +270,16 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     workstation_id: $scope.hotelConfig.workstationId,
                     user_id: $scope.guestId,
                 }).then(response => {
+                    var cardDetails = $scope.payment.tokenizedCardData;
                     $scope.$emit('SUCCESS_LINK_PAYMENT', {
-                        response,
+                        response: response.data,
                         selectedPaymentType: $scope.selectedPaymentType,
-                        cardDetails: $scope.payment.tokenizedCardData
+                        cardDetails: {
+                            "card_code": cardDetails.cardDisplayData.card_code,
+                            "ending_with": cardDetails.cardDisplayData.ending_with,
+                            "expiry_date": cardDetails.cardDisplayData.expiry_date,
+                            "card_name": cardDetails.apiParams.name_on_card
+                        }
                     });
                 }, errorMessage => {
                     $scope.$emit('ERROR_OCCURED', errorMessage);
@@ -264,7 +293,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     workstation_id: $scope.hotelConfig.workstationId
                 }).then(response => {
                     $scope.$emit('SUCCESS_LINK_PAYMENT', {
-                        response,
+                        response: response.data,
                         selectedPaymentType: $scope.selectedPaymentType
                     });
                 }, errorMessage => {
@@ -280,7 +309,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     workstation_id: $scope.hotelConfig.workstationId
                 }).then(response => {
                     $scope.$emit('SUCCESS_LINK_PAYMENT', {
-                        response,
+                        response: response.data,
                         selectedPaymentType: $scope.selectedPaymentType,
                         cardDetails: $scope.selectedCC
                     });
@@ -297,7 +326,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     add_to_guest_card: $scope.payment.addToGuestCardSelected
                 }).then(response => {
                     $scope.$emit('SUCCESS_LINK_PAYMENT', {
-                        response,
+                        response: response.data,
                         selectedPaymentType: $scope.selectedPaymentType,
                         cardDetails: $scope.selectedCC
                     });
@@ -322,7 +351,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
             //check if chip and pin is selected in case of six payments
             //the rest of actions will in paySixPayController
-            if ($scope.hotelConfig.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
+            if ($scope.selectedPaymentType === 'CC' &&
+                $scope.hotelConfig.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
                 $scope.$broadcast('INITIATE_CHIP_AND_PIN_PAYMENT', params);
                 return;
             }
@@ -649,7 +679,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             //check if card is present, if yes turn on flag
             if ($scope.hotelConfig.paymentGateway === 'sixpayments') {
                 var isCCPresent = ($scope.selectedPaymentType === "CC" &&
-                (!!$scope.selectedCC.ending_with && $scope.selectedCC.ending_with.length > 0));
+                (!!$scope.selectedCC && !!$scope.selectedCC.ending_with && $scope.selectedCC.ending_with.length > 0));
                 $scope.payment.isManualEntryInsideIFrame = true;
                 //Add to guestcard feature for C&P
                 $scope.payment.showAddToGuestCard = $scope.payment.isManualEntryInsideIFrame ? false : true;

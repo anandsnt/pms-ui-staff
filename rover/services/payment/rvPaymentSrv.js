@@ -177,15 +177,6 @@ angular.module('sntRover').service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv'
 		return deferred.promise;
 	};
 	this.chipAndPinGetToken = function(postData){
-	// 	var deferred = $q.defer();
-	// 	var url = '/api/cc/get_token.json';
-	// 	RVBaseWebSrvV2.postJSON(url, postData).then(function(data) {
-	// 		    deferred.resolve(data);
-	// 		},function(data){
-	// 		    deferred.reject(data);
-	// 		});
-	// 	return deferred.promise;
-
 		var timeStampInSeconds = 0;
         var incrementTimer = function() {
             timeStampInSeconds++;
