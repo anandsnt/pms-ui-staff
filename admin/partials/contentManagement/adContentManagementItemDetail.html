@@ -14,12 +14,16 @@
                     <h3><span translate>ITEM_LABEL</span> <span translate>DETAILS_LABEL</span></h3>
                     <em class="status"><span translate>MANDATORY_FIELDS_MESSAGE1</span> <strong>*</strong> <span translate>MANDATORY_FIELDS_MESSAGE2</span></em>
                 </div>
-                <div class="entry full-width">
+                <div class="entry">
                     <label for="item-availability"><span translate>AVAILABILITY_STATUS_LABEL</span> <strong>*</strong></label>
                     <div class="switch-button" ng-class="{'on': data.status}">
                         <input name="item-availability" ng-model="data.status" id="item-availability" value="1" type="checkbox"  />
                         <span class="switch-icon"></span>
                     </div>
+                </div>
+                <div class="entry">
+                    <label for="item-id" translate>ID</label>
+                    <input type="text" id="item-id" value="data.id" ng-model="data.id" readonly/>
                 </div>
                 <div class="entry">
                     <label for="item-name"><span translate>ITEM_NAME_LABEL</span> <strong>*</strong></label>
