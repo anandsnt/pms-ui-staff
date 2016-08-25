@@ -487,13 +487,25 @@ a:active {
   padding: 10px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-height: 220px;
+  max-height: 170px;
   z-index: 14;
   overflow: hidden;
   border-radius: 3px;
 }
+.property-autocomplete .iScrollVerticalScrollbar {
+  top: 10px;
+  right: 5px;
+  border-radius: 5px;
+  height: 90%;
+  width: 3px;
+  position: absolute;
+}
+.property-autocomplete .iScrollVerticalScrollbar .iScrollIndicator {
+  background: rgba(0, 0, 0, 0.1);
+}
 .property-autocomplete .wrapper {
   position: relative;
+  padding-bottom: 10px;
 }
 .property-autocomplete .ui-autocomplete {
   top: 0 !important;
