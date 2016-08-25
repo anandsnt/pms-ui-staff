@@ -1,0 +1,232 @@
+/*------------------------------- Themes ----------------------------------------------------*/
+
+@import "../style.less";
+html,body{
+  height:auto !important;
+  min-height:100% !important;
+}
+body{
+     background-color: #10263f;
+}
+.back-text{
+    color:#fff !important;
+}
+a,a:hover,.main-text,
+.res-date,
+.footer-sub-text,.footer-sub-text:hover,.phone-label{
+    color:#fff;
+}
+.sub-main-text{
+    color:#fff;
+}
+.header-bar{
+   background-color:#10263f;
+}
+
+.template-text,.footer-text,
+.balance-amount,.phone-text,
+.phone-text:hover,.request-text,
+.error-text {
+    color: #fff !important;
+}
+.view-bill{
+    color:#cdb402;
+}
+.sub-text,.sub-text:hover,.query-text,.query-text:hover,.light-text{
+    color: #fff !important;
+}
+.btn,.btn:hover{
+    background:#cdb402;
+    color: #10263f;
+}
+.dual-button{
+  font-size:25px;
+  font-weight:300;
+}
+.btn-template{
+  font-size:33px;
+  font-weight:300;
+  padding:4%;
+}
+.dark-button,.dark-button:hover{
+    background: #b39d01 !important;
+}
+.light-button,.light-button:hover{
+    background: #cdb402 !important;
+}
+.checkouttime1,.checkouttime1:hover{
+    background: #dec302;
+}
+.checkouttime2,.checkouttime2:hover{
+    background: #cdb402;
+}
+.checkouttime3,.checkouttime3:hover{
+    background: #b39d01;
+}
+.no-thanks,.no-thanks:hover{
+    color:#fff !important;
+    text-decoration: underline;
+    text-transform:none;
+}
+.strong-font{
+  font-weight:500;
+}
+.amount,.time{
+  font-size:30px;
+  line-height:1.2;
+}
+.down-arrow-button{
+    background-image:url('/assets/guestweb/common_images/black/down_arrow.png'); 
+}
+.right-arrow-button{
+    background-image:url('/assets/guestweb/common_images/black/right_arrow.png'); 
+}
+
+.upgrade-details .upgrades-btn {
+    background: #cdb402; 
+    p {
+      color: #10263f;
+    }
+}
+
+.proceed-to-checkin {
+      background: #cdb402;
+      color: #10263f;
+}
+.upgrades-label{
+    color:#BA7A55;
+}
+textarea.sub-text, textarea.sub-text:hover{
+  color:#5d4f45 !important;
+}
+
+/*----------------- date picker -------------------------*/
+
+.pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
+  color: #363634;
+  color: transparent;
+}
+
+.pickadate-cell .pickadate-enabled ,.pickadate-centered-heading{
+  color: #000 !important;
+}
+
+.pickadate-cell .pickadate-active {
+  background-color: #10263f !important;
+  color:#fff !important;
+}
+.pickadate-head{
+    color:#000000;
+}
+.calendar-selection {
+    color: #fff;
+}
+.pickadate-cell li:nth-child(1),
+.pickadate-cell li:nth-child(8),
+.pickadate-cell li:nth-child(15),
+.pickadate-cell li:nth-child(22),
+.pickadate-cell li:nth-child(29),
+.pickadate-cell li:nth-child(36) {
+  border-left: 1px solid #fff;
+}
+
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-enabled,
+.pickadate-cell .pickadate-outofrange-disabled {
+  background-color: #E5E5E5;
+}
+
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #ac9557;
+}
+
+
+.pickadate-cell li {
+  border: 1px solid #fff;
+}
+.pickadate a:visited, .pickadate a {
+  color: #666666;
+}
+.date-picker-header{
+  background-color: #10263f;
+}
+.calendar-back {
+  background-image: url('/assets/guestweb/common_images/back_icon.png');
+}
+
+
+.calendar-done{
+   background-image: url('/assets/guestweb/common_images/done_white.png');
+}
+
+.pickadate-prev,.pickadate-next,.pickadate-prev:hover,.pickadate-next:hover{
+  color:#cdb402 !important;
+}
+.green-button, .green-button:hover {
+    color: #fff;
+}
+.grey-terms-button, .grey-terms-button:hover {
+    color: #fff;
+}
+.date-picker-wrap {
+  background-color: #EEECE2 !important;
+}
+.date-picker-bg {
+  background: unset;
+}
+.horizontal-line-sep-mobile{
+  border-top: 1px solid #9b9b9b;
+}
+.departure-date{
+  color:#fff;
+}
+.date-text{
+  color:#fff;
+}
+.res-details-heading,.res-details-heading:hover{
+    font-size:18px !important;
+    color: #cdb402;
+}
+.logo-image {
+        margin: 3% 0px !important;
+        max-width: 174px;
+    }
+@media (max-width: 990px) {
+    .logo-image {
+        margin: 9% auto 7%;
+        max-width: 164px;
+    }
+    .back-to-checkout{
+        display:none;
+    }
+    .hide-in-desktop {
+       display: block;
+    }
+}
+@media (min-width: 990px){
+   .dual-button{
+     font-size:35px;
+    }
+}
+@media (max-width: 480px){
+  .main-text{
+    font-size:11vw;
+  }
+  .container{
+    width:100%;
+  }
+  .sub-main-text{
+     font-size:5.4vw !important;
+  }
+  .footer-text{
+     font-size:5.3vw;
+  }
+  .logo-image {
+     max-width:145px;
+  }
+  .dual-button{
+    font-size:32px;
+  }
+
+}
