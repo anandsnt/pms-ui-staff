@@ -1,12 +1,16 @@
 login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window', '$state', '$stateParams',
     function($scope, selectPropertySrv, $window, $state, $stateParams) {
+        
         BaseCtrl.call(this, $scope);
-        $scope.errorMessage = "";
-        $scope.propertyResults = [];
-        $scope.searchData = "";
-        $scope.selectedPropertyId = "";
-        $scope.$emit('hideloader');
-        $scope.setScroller('property-results');
+        var init = function(){
+            $scope.errorMessage = "";
+            $scope.propertyResults = [];
+            $scope.searchData = "";
+            $scope.selectedPropertyId = "";
+            $scope.$emit('hideloader');
+            $scope.setScroller('property-results');
+        };
+
         /*
          * Function to highlight text
          * @param text of data to be filtered
@@ -93,5 +97,6 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
             $scope.invokeApi(selectPropertySrv.setProperty, data, successCallback, failureCallBack);
         };
 
+        init();
     }
 ]);
