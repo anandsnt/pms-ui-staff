@@ -501,7 +501,7 @@ a:active {
   position: absolute;
 }
 .property-autocomplete .iScrollVerticalScrollbar .iScrollIndicator {
-  background: rgba(0, 0, 0, 0.1);
+  background: #ffb319;
 }
 .property-autocomplete .wrapper {
   position: relative;
