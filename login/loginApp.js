@@ -1,4 +1,4 @@
-var login = angular.module('login',['ui.router', 'documentTouchMovePrevent']);
+var login = angular.module('login',['ui.router', 'documentTouchMovePrevent', 'ngSanitize', 'ng-iscroll']);
 
 /*
  * Set page Titles
