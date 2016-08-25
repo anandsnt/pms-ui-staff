@@ -102,6 +102,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 
 		$scope.$on('reloadPage', function (event, data) {
 			$scope.roomDetails = data;
+			init();
 		});
 
 		$scope.changeHouseKeepingStatus = function() {
