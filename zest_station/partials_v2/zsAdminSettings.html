@@ -10,7 +10,7 @@
 </section>
 <!-- credentials entry page -->
 <section id="main" class="centered test" role="main" ng-show=" mode ===  'admin-name-mode' || mode === 'admin-password-mode'">
-    <div id="content">
+    <div id="content" class="input-field-contents">
         <h1>{{headingText |translate}}</h1>
         <h3>{{subHeadingText |translate}}</h3>
         <form method="post" class="form" click-touch='resetTime()'>
@@ -51,7 +51,7 @@
 
 <!-- Content -->
 <section id="main" class="admin-screen" role="main" ng-show="mode === 'admin-screen-active'">
-    <div id="content">
+    <div id="content" class="input-field-contents">
         <div id="textual" class="tabled-options" style="max-height: 559px;" ng-iscroll="admin-screen" ng-iscroll-delay="100" ng-init="setScroll()">
             <div class="wrapper">
                 <div class="entry with-label">

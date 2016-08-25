@@ -444,3 +444,39 @@
         height: 325px !important;
     }
 }
+/* key board style fixes */
+
+.ui-keyboard-button{
+    min-width:7em;
+    height:7em;
+    margin:1em;
+}
+
+/* small screen specific styles */
+
+@media (max-width: 1500px),(max-height: 756px) {
+   .ui-keyboard-button{
+        min-width:5em;
+        height:5em;
+        margin:0.6em;
+    }
+    #main.centered #content.input-field-contents {
+        padding-top: 3% !important;
+    }
+}
+.ui-keyboard-has-focus {
+    bottom: 7%;
+    width:100% !important;
+}
+.ui-keyboard-button span {
+    font-size: 2.6em;
+}
+#main.centered #content.input-field-contents {
+    height: 100% !important;
+    padding-top: 5%;
+    .form .input{
+        border: 3px white solid !important;
+        border-radius: 10px;
+        background: #835C85;
+    }
+}
