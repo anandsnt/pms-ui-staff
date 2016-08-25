@@ -609,7 +609,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			}
 		};
 
-		$scope.$on('reloadPage', function (data) {
+		$scope.$on('reloadPage', function (event, data) {
 			$scope.roomDetails = data;
 		});
 

@@ -100,7 +100,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 			$scope.invokeApi(RVHkRoomDetailsSrv.updateHKStatus, data, callback);
 		};
 
-		$scope.$on('reloadPage', function (data) {
+		$scope.$on('reloadPage', function (event, data) {
 			$scope.roomDetails = data;
 		});
 
