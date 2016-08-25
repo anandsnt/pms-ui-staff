@@ -122,9 +122,6 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 
 		};
 
-		$scope.guestViewStatus = getGuestStatusMapped($scope.roomDetails.reservation_status,
-			$scope.roomDetails.is_late_checkout);
-
 		// methods to switch tab
 		$scope.tabSwitch = function(tab) {
 			if (!!tab) {
@@ -167,7 +164,7 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 		var fetchInitialDataSuccess = function (data) {
 			$scope.$emit('hideLoader');
 			$scope.$broadcast('reloadPage', data);
-			$scope.roomDetails = data;
+			init(data);
 		};
 
 		var fetchInitialDataFailure = function (error) {
@@ -187,5 +184,13 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 				fetchInitialDataFailure
 			);
 		};
+
+		var init = function (data) {
+			$scope.roomDetails = data;
+			$scope.guestViewStatus = getGuestStatusMapped(data.reservation_status,
+				$scope.roomDetails.is_late_checkout);
+		};
+
+		init(roomDetailsData);
 	}
 ]);
