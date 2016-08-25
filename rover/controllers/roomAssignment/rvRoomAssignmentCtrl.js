@@ -696,7 +696,7 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.isUpsellAvailable = function(){
 		var showUpgrade = false;
-		if(($scope.reservationData.reservation_card.is_upsell_available === 'true') && ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' || $scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN')){
+		if(!$scope.reservationData.reservation_card.is_suite && (($scope.reservationData.reservation_card.is_upsell_available === 'true') && ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' || $scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'))){
 			showUpgrade = true;
 		}
 		return showUpgrade;

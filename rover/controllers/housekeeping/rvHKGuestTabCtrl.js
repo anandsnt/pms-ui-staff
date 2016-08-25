@@ -100,19 +100,14 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 			$scope.invokeApi(RVHkRoomDetailsSrv.updateHKStatus, data, callback);
 		};
 
+		$scope.$on('reloadPage', function (event, data) {
+			$scope.roomDetails = data;
+		});
+
 		$scope.changeHouseKeepingStatus = function() {
 			var success = function(data) {
 				$scope.$emit('hideLoader');
-
-				$timeout(function() {
-					$state.go('rover.housekeeping.roomDetails', {
-						id: $scope.roomDetails.id
-					}, {
-						reload: true
-					});
-
-					// $state.reload($state.current.name);
-				}, 100);
+				$scope.reloadPage();
 			};
 
 			var error = function(error) {

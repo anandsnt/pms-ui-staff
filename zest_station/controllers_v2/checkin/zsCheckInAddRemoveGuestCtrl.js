@@ -3,7 +3,8 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
     '$state',
     'zsEventConstants',
     'zsCheckinSrv',
-    function($scope, $state, zsEventConstants, zsCheckinSrv) {
+    '$stateParams',
+    function($scope, $state, zsEventConstants, zsCheckinSrv, $stateParams) {
 
         /**********************************************************************************************
          **      Expected state params -----> none           
@@ -19,7 +20,12 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
          */
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
             zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
-            $state.go('zest_station.checkInReservationDetails');
+            var stateParams = {};
+            //check if this page was invoked through pickupkey flow
+            if(!!$stateParams.pickup_key_mode){
+                stateParams.pickup_key_mode = 'manual';
+            }
+            $state.go('zest_station.checkInReservationDetails',stateParams);
         });
 
         $scope.navToPrev = function() {

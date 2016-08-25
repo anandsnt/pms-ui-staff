@@ -69,6 +69,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 $scope.selectedReservation.addons = data.existing_packages;
                 setDisplayContentHeight();
                 refreshScroller();
+                $scope.isReservationDetailsFetched = true;
             };
 
 
@@ -104,12 +105,24 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             //back button action
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
                 var reservations = zsCheckinSrv.getCheckInReservations();
+                
                 if ($scope.zestStationData.check_in_collect_nationality) {
-                    $state.go('zest_station.collectNationality', {
+                    var collectNationalityParams = {
                         'guestId': $scope.selectedReservation.guest_details[0].id,
                         'first_name': $scope.selectedReservation.guest_details[0].first_name
+                    };
+                    if(!!$stateParams.pickup_key_mode){
+                        collectNationalityParams.pickup_key_mode = 'manual';
+                    }
+                    $state.go('zest_station.collectNationality', collectNationalityParams);
+                } 
+                //check if this page was invoked through pickupkey flow
+                else if(!!$stateParams.pickup_key_mode){
+                    $state.go('zest_station.checkOutReservationSearch', {
+                        'mode': 'PICKUP_KEY'
                     });
-                } else if (reservations.length > 0) {
+                }
+                else if (reservations.length > 0) {
                     $state.go('zest_station.selectReservationForCheckIn');
                 } else {
                     $state.go('zest_station.checkInReservationSearch');
@@ -121,12 +134,19 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $scope.mode = "RESERVATION_DETAILS";
             getSelectedReservation();
             fetchReservationDetails();
+            //set flag to show the contents of the page
+            //when all the data are loaded
+            $scope.isReservationDetailsFetched = false;
         };
         init();
 
         $scope.addRemove = function() {
             setSelectedReservation();
-            $state.go('zest_station.add_remove_guests');
+            var stateParams = {};
+            if(!!$stateParams.pickup_key_mode){
+                stateParams.pickup_key_mode = 'manual';
+            }
+            $state.go('zest_station.add_remove_guests',stateParams);
         };
 
         //will need to check for ECI & Terms bypass, happy path for now
@@ -274,6 +294,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 'pre_auth_amount_for_zest_station': $scope.selectedReservation.reservation_details.pre_auth_amount_for_zest_station,
                 'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin
             };
+            //check if this page was invoked through pickupkey flow
+            if(!!$stateParams.pickup_key_mode){
+                stateParams.pickup_key_mode = 'manual';
+            }
             console.warn('to checkin terms: ', stateParams);
             $state.go('zest_station.checkInTerms', stateParams);
         };

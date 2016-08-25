@@ -158,5 +158,34 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 			}
 
 		};
+
+		/**
+		 * Alerts child scope about data change
+		 * @param  {Object} data updated room data
+		 * @return {undefined}
+		 */
+		var fetchInitialDataSuccess = function (data) {
+			$scope.$emit('hideLoader');
+			$scope.$broadcast('reloadPage', data);
+			$scope.roomDetails = data;
+		};
+
+		var fetchInitialDataFailure = function (error) {
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = error;
+		};
+
+		/**
+		 * Reload the roomDetails page.
+		 * @return {undefined}
+		 */
+		$scope.reloadPage = function () {
+			// refetch initial data
+			$scope.invokeApi(RVHkRoomDetailsSrv.fetch,
+				$scope.roomDetails.id,
+				fetchInitialDataSuccess,
+				fetchInitialDataFailure
+			);
+		};
 	}
 ]);
