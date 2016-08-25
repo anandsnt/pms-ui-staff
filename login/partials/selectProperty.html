@@ -3,7 +3,7 @@
         <div id="loading-spinner"></div>
     </div>
     <img src="/assets/images/logo.png" class="logo" alt="">
-    <span class="notice error" ng-show="errorMessage!==''">
+    <span class="notice error" ng-show="errorMessage !== ''">
         <ul>
             <li>
                 {{errorMessage}}
@@ -13,7 +13,6 @@
     <form ng-submit="submit()" id="login-form" class="form search-form" autocomplete="off">
         <label>Select Property</label>
         <div class="entry search">
-            <!-- Add .visible if there is something in the input -->
             <button class="clear-query" ng-class="{'visible': searchData !== ''}" ng-click="clearQuery()">
                 <span class="icons icon-clear-search">Clear query</span>
             </button>
@@ -21,9 +20,8 @@
                 Search
             </button>
             <input id="property-query" class="query" ng-model="searchData" placeholder="Search by Name" type="text" ng-change="filterByQuery()" autocomplete="off">
-            <!-- Scroller -->
-            <div class="property-autocomplete" ng-show="selectedPropertyId === ''" ng-class="{'open': propertyResults.length > 0 }">
-                <div class="wrapper">
+            <div class="property-autocomplete scrollable" ng-show="selectedPropertyId === ''" ng-class="{'open': propertyResults.length > 0 }" ng-iscroll="property-results" ng-iscroll-delay="300">
+                <div class="wrapper" >
                     <ul class="ui-autocomplete">
                         <li ng-repeat="property in propertyResults track by $index">
                             <a ng-click="onSelect(property)" ng-bind-html="highlight(property.name, searchData)"></a>

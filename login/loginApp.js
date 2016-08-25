@@ -1,4 +1,4 @@
-var login = angular.module('login',['ui.router', 'documentTouchMovePrevent']);
+var login = angular.module('login',['ui.router', 'documentTouchMovePrevent', 'ngSanitize', 'ng-iscroll']);
 
 /*
  * Set page Titles
@@ -51,15 +51,16 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 	localStorage.email = $scope.data.email;
 	 	if(data.token!==''){
 	 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
-	 	} else {
+	 	}
+	 	else {
             $scope.hasLoader = true;
-            console.log(data);
             if(data.is_sp_admin === true){
                 //we need to show the animation before redirecting to the url, so introducing a timeout there
                 setTimeout(function(){
                     $state.go('selectProperty');
                 }, 300);
-            } else {
+            }
+            else {
                 $scope.$emit("signingIn");
                 //we need to show the animation before redirecting to the url, so introducing a timeout there
                 setTimeout(function(){

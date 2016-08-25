@@ -6,7 +6,7 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
         $scope.searchData = "";
         $scope.selectedPropertyId = "";
         $scope.$emit('hideloader');
-
+        $scope.setScroller('property-results');
         /*
          * Function to highlight text
          * @param text of data to be filtered
@@ -26,6 +26,7 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
         var successCallBackSearchProperty = function(data) {
             $scope.propertyResults = [];
             $scope.propertyResults = data;
+            $scope.refreshScroller('property-results');
             $scope.$emit('hideLoader');
         };
 
