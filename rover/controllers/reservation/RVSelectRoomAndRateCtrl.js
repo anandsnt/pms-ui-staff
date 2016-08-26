@@ -392,7 +392,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							id: roomType.id,
 							ratesArray: [],
 							availability: roomType.availability,
-							is_suite_unavailable : $scope.reservationData.roomsMeta[roomType.id].is_suite && roomType.availability <= 0
+							isSuiteUnavailable : $scope.reservationData.roomsMeta[roomType.id].is_suite && roomType.availability <= 0
 						},
 					//Assigning 'restriction' to new param 'bestAvailableRateRestrictions' - since issue when colapse each room type
 					//CICO-29156
@@ -463,7 +463,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isCorporate: isCorporate,
 							isSuppressed: isSuppressed,
 							isMember: isMember,
-							isPromotion: isPromotion
+							isPromotion: isPromotion,
+							isDefaultRoomTypeSuiteUnavailable : $scope.reservationData.roomsMeta[rate.room_type_id].is_suite && rate.availability <= 0
 						};
 
 					rateInfo.rooms.push({
@@ -1751,7 +1752,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								numRestrictions: proccesedRestrictions.restrictionCount || 0,
 								restriction: room.restrictions,
 								buttonClass: getBookButtonStyle(proccesedRestrictions.restrictionCount || 0, rate.id, room.availability),
-								is_suite_unavailable : $scope.reservationData.roomsMeta[room.id].is_suite && room.availability <= 0
+								isSuiteUnavailable : $scope.reservationData.roomsMeta[room.id].is_suite && room.availability <= 0
 							};
 						rate.rooms.push(roomInfo);
 						$timeout(function() {
@@ -1830,7 +1831,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isSuppressed: isSuppressed,
 							isMember: isMember,
 							isPromotion: isPromotion,
-							is_suite_unavailable : room.is_suite_unavailable
+							isSuiteUnavailable : room.isSuiteUnavailable
 						};
 						if(bestAvailableRateOfSelectedRoom === rate.id){
 							rateInfo.bestAvailableRateRestrictions = rate.restrictions
