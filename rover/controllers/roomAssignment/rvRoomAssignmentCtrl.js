@@ -107,7 +107,10 @@ sntRover.controller('RVroomAssignmentController',[
 
 		angular.forEach(allAllowedRooms, function(value, key) {
 				if(isRoomSearchAllowed){
-					if(value.room_number.indexOf($scope.searchText) !== -1){
+					// convert room number to uppercase since search text is uppercase CICO-33111
+					roomNum = value.room_number.toUpperCase();
+
+					if(roomNum.indexOf($scope.searchText) !== -1){
 						$scope.filteredRooms.push(value);
 					}
 				}
