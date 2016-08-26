@@ -50,7 +50,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       "value": "perNight",
       "name": "Per Night"
     }];
-    
+
     $scope.incidentalObj = {
       'values' : [{
         "value" : "amount",
@@ -64,12 +64,12 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
         "name": "Per Night"
       }]
     };
-   
-   _.each(reservationSettingsData.prepaid_commission_charge_codes, function(chargeCode, index){     
+
+   _.each(reservationSettingsData.prepaid_commission_charge_codes, function(chargeCode, index){
       chargeCode.name = chargeCode.code +" "+chargeCode.name;
     });
 
-   _.each(reservationSettingsData.tax_transaction_codes, function(chargeCode, index){     
+   _.each(reservationSettingsData.tax_transaction_codes, function(chargeCode, index){
       chargeCode.name = chargeCode.code +" "+chargeCode.name;
     });
 
@@ -99,7 +99,22 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       $scope.invokeApi(ADReservationSettingsSrv.saveChanges, data, saveChangesSuccessCallback, saveChangesFailureCallback);
 
     };
+    /*
+     * Suite rooms toggle button actions
+     */
+    $scope.suiteRoomsSwitchClicked = function(){
+      var canSuiteDisableSuccessCallback = function(){
+        $scope.$emit('hideLoader');
+        $scope.reservationSettingsData.suite_enabled = !$scope.reservationSettingsData.suite_enabled;
+      };
+      if($scope.reservationSettingsData.suite_enabled){
+        $scope.invokeApi(ADReservationSettingsSrv.canDisableSuite, {}, canSuiteDisableSuccessCallback);
 
+      } else {
+        $scope.reservationSettingsData.suite_enabled = !$scope.reservationSettingsData.suite_enabled;
+      }
+
+    }
     init();
   }
 ]);
