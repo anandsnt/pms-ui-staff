@@ -174,10 +174,12 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             $scope.formElements     = [];
             $scope.tabIndex         = 0;
             $scope.clickedItem      = null;
-            prevTabIndex            = 0;
-            helperItems             = [];
-            helperItemsLength       = 0;
             $scope.showOptions      = false;
+
+            var prevTabIndex            = 0;
+            var helperItems             = [];
+            var helperItemsLength       = 0;
+            var ctx = 0;
 
             //CICO-9120 Need to get the scroller working!
             // This works but is a shoddy code... Revisit later 
@@ -771,7 +773,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             }            
 
             // just to create a random variable name                
-            genRandomString = function( length ) {                
+            var genRandomString = function( length ) {                
                 var possible    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
                 var temp        = '';
                 for( var i=0; i < length; i++ ) {

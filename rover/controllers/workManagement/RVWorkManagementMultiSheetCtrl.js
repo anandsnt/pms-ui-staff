@@ -179,6 +179,17 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					'room_index': draggedRoom.room_index,
 					'room_tasks': [draggedTask]
 				});
+
+				// index = calculateIndex();
+				// employee.rooms = [].concat(
+				// 		employee.rooms.slice(0, index),
+				// 		{
+				// 			'room_id': draggedRoom.room_id,
+				// 			'room_index': draggedRoom.room_index,
+				// 			'room_tasks': [draggedTask]
+				// 		},
+				// 		employee.rooms.slice(index + 1)
+				// 	);
 			};
 
 			// add the task to "only_tasks" and work_type_id to "touched_work_types"
@@ -619,6 +630,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				// push employee id into '_lastSelectedIds'
 				$scope.multiSheetState._lastSelectedIds.push( $scope.multiSheetState.assigned[foundIndex]['id'] );
 			};
+
+			console.log( $scope.multiSheetState.selectedEmployees );
 		};
 
 		/**
@@ -878,6 +891,9 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				};
 			};
 
+			$scope.clientY = 0;
+			$scope.col = undefined;
+
 			$scope.dragStart = function() {
 				timer = setInterval( scrollExec, 1 );
 			};
@@ -887,6 +903,12 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					window.clearInterval(timer);
 					timer = UNDEF;
 				};
+
+				$scope.col = undefined;
+			};
+
+			$scope.onOver = function(event, index) {
+				$scope.col = $(event.target);
 			};
 
 			$scope.userDragging = function(e) {
@@ -903,6 +925,12 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				        dragDir = UNDEF;
 				    };
 				};
+
+				$scope.clientY = e.clientY;
+
+				console.log( $scope.clientY );
+
+				var $node = $scope.col.find('.worksheet-room')
 			};
 		};
 
@@ -1038,5 +1066,49 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					return 'room';
 			}
 		}
+
+
+
+		// var fillDummyRoom = function(rooms, index) {
+		// 	return rooms;
+		// }
+
+		// var lastOverIndex;
+
+		// $scope.onOver = function(event, over) {
+		// 	var empColId = event.target.id,
+		// 		idSplit = empColId.split('-'),
+		// 		empIndex = parseInt( idSplit[0] ),
+		// 		empId = parseInt( idSplit[1] );
+
+		// 	var source, thatEmpl;
+
+		// 	if ( isNaN(empIndex) ) {
+		// 		// do nothing
+		// 	} else {
+		// 		source = $scope.multiSheetState.selectedEmployees;
+		// 		thatEmpl = source[empIndex];
+		// 	};
+
+		// 	lastOverIndex = empIndex;
+
+		// 	console.log( empIndex, empId, thatEmpl );
+		// }
+
+		// $scope.onOut = function(event, out) {
+		// 	var $out = $(out.draggable).attr('id'),
+		// 		draggedIndex = $out.split('-')[1],
+		// 		roomIndex = parseInt( $out.split('-')[2] ),
+		// 		taskIndex = parseInt( $out.split('-')[3] );
+
+		// 	var source, thatEmpl;
+		// 	if ( 'UA' !== draggedIndex ) {
+		// 		source = $scope.multiSheetState.selectedEmployees;
+		// 		thatEmpl = source[draggedIndex];
+		// 	};
+
+		// 	//console.log( draggedIndex, roomIndex, taskIndex );
+		// 	//console.log( draggedIndex, roomIndex, taskIndex );
+		// }
 	}
 ]);
