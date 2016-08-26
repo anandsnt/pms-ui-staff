@@ -434,7 +434,7 @@
 }
 
 
-@media (min-width: 1200px) {
+@media (min-height: 800px) {
     #options li .option {
         width: 250px !important;
         height: 250px !important;
@@ -445,27 +445,24 @@
     }
 }
 
-/****************************** key board style fixes ****************************/
+/********************************* key board style fixes ********************/
 
 .ui-keyboard-button{
-    min-width:7em;
-    height:7em;
-    margin:1em;
+    min-width:6em;
+    height:6em;
+    margin:0.6em;
 }
 
 /* small screen specific styles */
 
-@media (max-width: 1500px),(max-height: 756px) {
+@media (max-height: 800px) {
    .ui-keyboard-button{
         min-width:5em;
         height:5em;
-        margin:0.6em;
+        margin:0.5em;
     }
     #main.centered #content.input-field-contents {
         padding-top: 5% !important;
-    }
-    .ui-keyboard-has-focus {
-        bottom: 4% !important;
     }
 }
 .ui-keyboard-has-focus {

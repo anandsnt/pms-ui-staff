@@ -474,6 +474,7 @@ sntZestStation.controller('zsRootCtrl', [
 							$scope.zestStationData.timeOut = true;
 						}
 						$scope.runDigestCycle();
+						$scope.hideKeyboardIfUp();
 					} else {
 						//do nothing;
 					}
