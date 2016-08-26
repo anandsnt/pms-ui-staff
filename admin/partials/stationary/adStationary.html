@@ -330,6 +330,22 @@
                      <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.ar_statement_custom_text_footer" label="{{'CUSTOM_TEXT_FOOTER'| translate}} " placeholder="{{'CUSTOM_TEXT_FOOTER_PLACE_HOLDER' | translate }}"></ad-textarea>
                 </div>
             </fieldset>
+            <fieldset class="holder left">
+                <div class="form-title">
+                    <h3>
+                        <span>{{'CUSTOMIZE' | translate}}</span>
+                        {{'PRO_FORMA_INVOICE' | translate}}
+                    </h3>
+                </div>
+                <ad-toggle-button label="{{ 'SHOW_PERFORMA_INVOICE' | translate }}" is-checked="data.is_pro_forma_enabled"></ad-toggle-button>
+                <ad-textbox styleclass="full-width" value="data.pro_forma_invoice_subject" label="{{'PRO_FORMA_INVOICE_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}" ng-show="data.is_pro_forma_enabled"></ad-textbox> 
+                <div class="entry full-width" ng-show="data.is_pro_forma_enabled">
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_body" label="{{'PRO_FORMA_INVOICE_BODY'| translate}} " placeholder="{{'PRO_FORMA_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+                    <ad-textarea  rows="4" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_custom_header" label="{{'PRO_FORMA_INVOICE_HEADER'| translate}} " placeholder="{{'CUSTOM_TEXT_HEADER_PLACE_HOLDER' | translate }}"></ad-textarea>
+                     
+                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_custom_footer" label="{{'PRO_FORMA_INVOICE_FOOTER'| translate}} " placeholder="{{'CUSTOM_TEXT_FOOTER_PLACE_HOLDER' | translate }}"></ad-textarea>
+                </div>
+            </fieldset>
 
             <div class="actions float">
                 <button type="button" ng-click="goBackToPreviousState()" class="button blank" translate>CANCEL
