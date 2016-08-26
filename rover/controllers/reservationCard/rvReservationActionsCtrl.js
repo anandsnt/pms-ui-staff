@@ -225,8 +225,10 @@ sntRover.controller('reservationActionsController', [
                             ) && (
                                 $scope.guestCardData.contactInfo.email === '' ||
                                 $scope.guestCardData.contactInfo.phone === '' ||
+                                $scope.guestCardData.contactInfo.mobile === '' ||
                                 $scope.guestCardData.contactInfo.email === null ||
-                                $scope.guestCardData.contactInfo.phone === null
+                                $scope.guestCardData.contactInfo.phone === null ||
+                                $scope.guestCardData.contactInfo.mobile === null
                             )
                         ) {
                         return true;
