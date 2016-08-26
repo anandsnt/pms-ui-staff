@@ -182,21 +182,21 @@ sntRover.controller('RVroomAssignmentController',[
 	   			$scope.showMaximumOccupancyDialog(roomObject);
 			} else {
 			    if (!isAvailablityExist) {
-			        if (isOverBookPermission) {
-			            ngDialog.open({
+			    	 if (roomObject.is_suite_room || !isOverBookPermission) {
+			    	 	ngDialog.open({
+			                template: '/assets/partials/roomAssignment/rvRoomTypeNotAvailable.html',
+			                className: 'ngdialog-theme-default',
+			                scope: $scope
+			            });
+			    	 } else {
+			    	 	ngDialog.open({
 			                template: '/assets/partials/roomAssignment/rvOverBookRoom.html',
 			                controller: 'RVOverBookRoomDialogController',
 			                className: 'ngdialog-theme-default',
 			                scope: $scope
 			            });
 
-			        } else {
-			            ngDialog.open({
-			                template: '/assets/partials/roomAssignment/rvRoomTypeNotAvailable.html',
-			                className: 'ngdialog-theme-default',
-			                scope: $scope
-			            });
-			        }
+			    	 }
 			    } else {
 			        $scope.showMaximumOccupancyDialog(roomObject);
 			    }
