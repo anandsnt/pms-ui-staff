@@ -107,8 +107,12 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
         $scope.$emit('hideLoader');
         $scope.reservationSettingsData.suite_enabled = !$scope.reservationSettingsData.suite_enabled;
       };
+      var canSuiteDisableFailureCallback = function(data) {
+        $scope.errorMessage = data;
+        $scope.$emit('hideLoader');
+      };
       if($scope.reservationSettingsData.suite_enabled){
-        $scope.invokeApi(ADReservationSettingsSrv.canDisableSuite, {}, canSuiteDisableSuccessCallback);
+        $scope.invokeApi(ADReservationSettingsSrv.canDisableSuite, {}, canSuiteDisableSuccessCallback, canSuiteDisableFailureCallback);
 
       } else {
         $scope.reservationSettingsData.suite_enabled = !$scope.reservationSettingsData.suite_enabled;

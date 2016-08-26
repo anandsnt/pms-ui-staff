@@ -1,4 +1,4 @@
-admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', function($q, ADBaseWebSrvV2){
+admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv', function($q, ADBaseWebSrvV2, ADBaseWebSrv){
 
 
    /**
@@ -40,7 +40,7 @@ admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', function($q, A
 
         var deferred = $q.defer();
         var url = '/api/hotel_settings/can_disable_suite ';
-        ADBaseWebSrvV2.getJSON(url).then(function(data) {
+        ADBaseWebSrv.getJSON(url).then(function(data) {
             deferred.resolve(data);
         },function(data){
             deferred.reject(data);
