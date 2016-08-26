@@ -319,7 +319,7 @@ sntZestStation.controller('zsRootCtrl', [
 		});
 
 		$(window).resize(function(){
-			//restrcit keyboard if screen is resized
+			//restrict keyboard if screen is resized
 			//to lower height
 	    	if(window.innerHeight < 700){
 	    		$scope.hideKeyboardIfUp();
@@ -329,7 +329,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 
 		$scope.showKeyboardOnInput = function() {
-			//restrcit keyboard if screen is resized
+			//restrict keyboard if screen is resized
 			//to lower height
 			if(window.innerHeight < 700){
 				return;
@@ -355,7 +355,7 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 		};
 		$scope.showOnScreenKeyboard = function(id) {
-			//restrcit keyboard if screen is resized
+			//restrict keyboard if screen is resized
 			//to lower height
 			if(window.innerHeight < 700){
 				return;
