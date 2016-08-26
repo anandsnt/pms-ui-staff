@@ -34,6 +34,8 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         //Display greetings message based on current time
         var d = new Date();
         var time = d.getHours();
+         //Handle Notificatin releated logic.
+        initNotification(); 
         $scope.greetingsMessage = "";
         if (time < 12){
           $scope.greetingsMessage = 'GREETING_MORNING';
@@ -60,6 +62,49 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         reddirectToDefaultDashboard();
 
    };
+   /*
+   * Function to fetch release notes
+   */
+   var fetchReleaseNotes = function(){
+      //Standard parameters,As of now leave it all null
+      var params = {
+        hotel_uuid :null,
+        service_provider_uuid : null,
+        is_read: null
+      };
+      var successReleaseNotesFetch = function(data){
+        $scope.activeNotification = data.results[0];
+      };
+      $scope.invokeApi(RVDashboardSrv.fetchDashboardNotifications, params, successReleaseNotesFetch);
+    };
+  /*
+   * Function to open link in new tab
+   */
+    $scope.showReleaseNote = function(activeNotification){
+      $window.open(activeNotification.action_source, '_blank');
+    };
+  /*
+   * Function to hide release notes for current login
+   */
+    $scope.cancelReleaseNote = function(){
+      $rootScope.showNotificationForCurrentUser = false;
+    };
+  /*
+   * Function to change status, ie is_read true
+   */
+    $scope.changeNotificationStatus = function(activeNotification){
+      var successCallBack = function(data){
+        $rootScope.showNotificationForCurrentUser = false;
+        $scope.$emit('hideLoader');
+      };
+      $scope.invokeApi(RVDashboardSrv.changeNotificationStatus, activeNotification.id, successCallBack);
+    };
+  /*
+   * Function to init notification related process.
+   */
+    var initNotification = function(){
+        fetchReleaseNotes();
+    };
 
    $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error){
         $scope.errorMessage = 'Sorry the feature you are looking for is not implemented yet, or some  errors are occured!!!';
