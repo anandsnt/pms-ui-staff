@@ -1,32 +1,33 @@
 <div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
     <header class="content-title float">
         <h2 translate>M3_HEADER</h2>
-        <a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
+        <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
 
     </header>
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
-        <form class="form float" >
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <form class="form float">
             <fieldset class="holder left">
                 <div class="form-title full-width">
-                    <h3><span translate>M3_SUB_TITLE</span> </h3>
+                    <h3><span translate>M3_SUB_TITLE</span></h3>
                 </div>
                 <table>
                     <tbody>
-                        <tr>
-                            <th>
-                                <label><span translate>AFAS_ACTIVATE_INACTIVATE</span></label>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: m3Accounting.enabled }" ng-click="toggleActivation()">
-                                    <input type="checkbox">
-                                    <span class="switch-icon"></span>
-                                </div>
-                            </td>
-                        </tr>
+                    <tr>
+                        <th>
+                            <label><span translate>AFAS_ACTIVATE_INACTIVATE</span></label>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div name="active-inactive-toggle" class="switch-button single"
+                                 ng-class="{ on: m3Accounting.enabled }" ng-click="toggleActivation()">
+                                <input type="checkbox">
+                                <span class="switch-icon"></span>
+                            </div>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
 
@@ -39,10 +40,102 @@
 
             <fieldset class="holder right" ng-if="m3Accounting.enabled">
                 <div class="form-title full-width">
-                    <h3><span translate>EMAIL_RECIPIENT_FOR_EOD_EXPORTS</span> </h3>
+                    <h3><span translate>EMAIL_RECIPIENT_FOR_EOD_EXPORTS</span></h3>
                 </div>
                 <div class="entry full-width">
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="m3Accounting.emails" label = "{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" placeholder = ""></ad-textarea>
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width"
+                                 value="m3Accounting.emails"
+                                 label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}"
+                                 placeholder=""></ad-textarea>
+                </div>
+            </fieldset>
+
+            <fieldset class="holder full-width">
+                <div class="form-title">
+                    <h3>
+                        <span>Report Types</span>
+                    </h3>
+                    <em class="status">
+                        <span>Select at least one report type</span>
+                    </em>
+                </div>
+                <div class="entry has-sortable">
+                    <label class="center_align"><em class="rate_roomtype_text">Available Report Types</em></label>
+
+                    <ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true"
+                        ng-model="m3Accounting.available_reports" style="overflow-y: scroll !important;"
+                        jqyoui-droppable="{multiple:true, onOver: 'onUnSelectReport'}" data-j qyoui-options="{accept:'.selected_reports'}">
+
+                        <li ng-repeat="report in m3Accounting.available_reports"
+                            data-drag="true"
+                            ng-model="m3Accounting.available_reports"
+                            jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
+                            data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
+                            class="available-reports li-draggable"
+                            ng-click="chooseAvailableReport($index)"
+                            ng-class='{selected: chosenAvailableReports.indexOf($index) > -1}'>
+
+                            <span class="icons icon-handle"></span>
+                            <span class="icons icon-handle"></span>
+                            {{ getTitleCase(report) }}
+                        </li>
+                    </ul>
+                </div>
+                <div class="entry movers rates_mover">
+                    <span class="top_mover">
+                        <span class="icons icon-mover-right to-target"
+                              data-type="target"
+                              ng-click="selectChosen()"
+                              ng-class="{active: chosenAvailableReports.length >= 1}"
+                              data-type="source">
+                            Select Report(s)
+                        </span>
+                        <span class="icons icon-mover-left to-source"
+                              data-type="source"
+                              ng-click="unSelectChosen()"
+                              ng-class="{active: chosenSelectedReports.length >= 1}">
+                            Un-select Report(s)
+                        </span>
+                    </span>
+                    <span>
+                        <div class="green_gradient icons">
+                            <span class="active to-source green_mover icons_rates"
+                                  data-type="source"
+                                  ng-click="selectAll()">
+                                Select Report(s)
+                            </span>
+                        </div>
+                        <div class="red_gradient icons">
+                            <span class="active to-target  red_mover icons_rates"
+                                  data-type="target"
+                                  ng-click="unSelectAll()">
+                                Un-select Report(s)
+                            </span>
+                        </div>
+                    </span>
+            </div>
+                <div class="entry has-sortable">
+                    <label class="center_align">
+                        <span class="assigned_room_text">Selected Report Types</span></label>
+                    <ul class="boxes sortable ui-sortable short-list"
+                        data-type="target"
+                        data-drop="true"
+                        ng-model="m3Accounting.selected_reports"
+                        jqyoui-droppable="{multiple:true, onOver: 'onSelectReport'}"
+                        data-jqyoui-options="{accept:'.available-reports'}">
+                        <li ng-repeat="report in m3Accounting.selected_reports"
+                            ng-click="chooseSelectedReport($index)"
+                            ng-class='{selected: chosenSelectedReports.indexOf($index) > -1}'
+                            class="selected-reports li-draggable"
+                            data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
+                            data-drag="true"
+                            ng-model="m3Accounting.selected_reports"
+                            jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                            <span class="icons icon-handle"></span>
+                            <span class="icons icon-handle"></span>
+                            {{ getTitleCase(report) }}
+                        </li>
+                    </ul>
                 </div>
             </fieldset>
 
