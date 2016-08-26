@@ -19,7 +19,7 @@
             <button class="icons icon-search" ng-class="{'visible': searchData!==''}" ng-click="filterByQuery()">
                 Search
             </button>
-            <input id="property-query" class="query" ng-model="searchData" placeholder="Search by Name" type="text" ng-change="filterByQuery()" autocomplete="off">
+            <input id="property-query" class="query" ng-model="searchData" placeholder="Search by Name" type="text" ng-change="filterByQuery()" autocomplete="off" />
             <div class="property-autocomplete scrollable" ng-show="selectedPropertyId === ''" ng-class="{'open': propertyResults.length > 0 }" ng-iscroll="property-results" ng-iscroll-delay="300">
                 <div class="wrapper" >
                     <ul class="ui-autocomplete">
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="action">
-            <button type="submit" name="property" class="button" ng-click="submitProperty()" ng-class="{'blue': selectedPropertyId !== '' }">Continue</button>
+            <button type="submit" name="property" class="button" ng-click="submitProperty()" ng-disabled="(selectedPropertyId === '')" ng-class="{'blue': selectedPropertyId !== '' }">Continue</button>
         </div>
     </form>
     <div class="support">
