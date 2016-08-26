@@ -62,7 +62,9 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         reddirectToDefaultDashboard();
 
    };
-
+   /*
+   * Function to fetch release notes
+   */
    var fetchReleaseNotes = function(){
       //Standard parameters,As of now leave it all null
       var params = {
@@ -75,14 +77,21 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       };
       $scope.invokeApi(RVDashboardSrv.fetchDashboardNotifications, params, successReleaseNotesFetch);
     };
-
+  /*
+   * Function to open link in new tab
+   */
     $scope.showReleaseNote = function(activeNotification){
       $window.open(activeNotification.action_source, '_blank');
     };
-
-    $scope.cancelReleaseNote = function(activeNotification){
+  /*
+   * Function to hide release notes for current login
+   */
+    $scope.cancelReleaseNote = function(){
       $rootScope.showNotificationForCurrentUser = false;
     };
+  /*
+   * Function to change status, ie is_read true
+   */
     $scope.changeNotificationStatus = function(activeNotification){
       var successCallBack = function(data){
         $rootScope.showNotificationForCurrentUser = false;
@@ -90,6 +99,9 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       };
       $scope.invokeApi(RVDashboardSrv.changeNotificationStatus, activeNotification.id, successCallBack);
     };
+  /*
+   * Function to init notification related process.
+   */
     var initNotification = function(){
         fetchReleaseNotes();
     };
