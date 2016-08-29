@@ -86,6 +86,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
 
       var saveChangesSuccessCallback = function(data) {
         $rootScope.isHourlyRatesEnabled = !!$scope.reservationSettingsData.is_hourly_rate_on;
+        $rootScope.isSuiteRoomsAvailable = $scope.reservationSettingsData.suite_enabled;
         $scope.$emit("refreshLeftMenu");
         $scope.$emit('hideLoader');
         $scope.goBackToPreviousState();
@@ -106,7 +107,6 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       var canSuiteDisableSuccessCallback = function(){
         $scope.$emit('hideLoader');
         $scope.reservationSettingsData.suite_enabled = !$scope.reservationSettingsData.suite_enabled;
-        $rootScope.isSuiteRoomsAvailable = $scope.reservationSettingsData.suite_enabled;
       };
       var canSuiteDisableFailureCallback = function(data) {
         $scope.errorMessage = data;
@@ -117,7 +117,6 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
 
       } else {
         $scope.reservationSettingsData.suite_enabled = !$scope.reservationSettingsData.suite_enabled;
-        $rootScope.isSuiteRoomsAvailable = $scope.reservationSettingsData.suite_enabled;
       }
 
     }
