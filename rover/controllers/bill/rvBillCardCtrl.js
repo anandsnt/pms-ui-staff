@@ -914,13 +914,29 @@ sntRover.controller('RVbillCardController',
 	 	else {
 	 		$scope.isViaReviewProcess = false;
 	 	}
-	 	ngDialog.open({
-              template: '/assets/partials/pay/rvPaymentModal.html',
-              className: '',
-              controller: 'RVBillPayCtrl',
-              closeByDocument: false,
-              scope: $scope
-          });
+
+
+		 var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : {};
+
+		 /*
+		  *	CICO-6089 => Enable Direct Bill payment option for OPEN BILLS.
+		  */
+		 if ($scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "DB" &&
+			 $scope.reservationBillData.reservation_status === "CHECKEDOUT") {
+			 paymentParams.direct_bill = true;
+		 }
+
+		 $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, function(data) {
+			 // NOTE: Obtain the payment methods and then open the payment popup
+			 $scope.paymentTypes = data;
+			 ngDialog.open({
+				 template: '/assets/partials/payment/rvReservationBillPaymentPopup.html',
+				 className: '',
+				 controller: 'RVBillPayCtrl',
+				 closeByDocument: false,
+				 scope: $scope
+			 });
+		 });
 	 };
 	 $scope.clickedAddUpdateCCButton = function(){
 	 	$scope.fromViewToPaymentPopup = "billcard";

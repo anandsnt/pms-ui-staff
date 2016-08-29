@@ -1,0 +1,95 @@
+<div class="entry full-width" ng-class="{'amount': feeData.showFee}">
+    <!-- gift card -->
+    <section ng-show="selectedPaymentType === 'GIFT_CARD'">
+        <input placeholder="Enter Card number"
+               ng-model="giftCard.number"
+               maxlength="22"
+               rv-delay-textbox
+               delay="1000"
+               function-to-fire="onChangeGiftCard"
+               type="text"/>
+
+        <label ng-show="giftCard.amountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
+
+        <input ng-show="giftCard.amountAvailable"
+               ng-readonly="true"
+               ng-model="giftCard.availableBalance"
+               type="text"/>
+    </section>
+
+    <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+
+    <input ng-change="onPaymentInfoChange()"
+           ng-model="payment.amount"
+           type="text"
+           ng-disabled="!payment.isEditable"
+           class="amount"
+           ng-if="!payment.isRateSuppressed" />
+
+
+    <input type="text"
+           ng-disabled="!payment.isEditable"
+           class="amount"
+           ng-if="payment.isRateSuppressed"
+           value="{{'SUPPRESSED_RATES_TEXT' | translate}}" />
+
+    <span ng-show="feeData.showFee" class="delimiter">+</span>
+
+    <input ng-show="feeData.showFee && !payment.isRateSuppressed"
+           ng-change="onFeeOverride()"
+           ng-model="feeData.calculatedFee"
+           value="{{feeData.calculatedFee}}"
+           type="text"
+           class="fee"/>
+
+    <input ng-show="feeData.showFee && payment.isRateSuppressed"
+           value="{{'SUPPRESSED_RATES_TEXT' | translate}}"
+           type="text"
+           class="fee"/>
+
+    <span ng-show="feeData.showFee" class="delimiter">fee</span>
+
+    <span ng-show="feeData.showFee" class="total">
+          Total:
+          <strong ng-if="!payment.isRateSuppressed">
+              {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+          </strong>
+          <strong ng-if="payment.isRateSuppressed">
+              {{'SUPPRESSED_RATES_TEXT' | translate}}
+          </strong>
+        </span>
+</div>
+<!-- Reference field - use only when it exsits; This configuration is available in the Admin/Financials -->
+<div class="entry full-width reference" ng-show="isDisplayRef">
+    <label>Reference</label>
+    <input ng-model="payment.referenceText" type="text" />
+</div>
+
+<!-- Buttons -->
+<div class="actions" ng-hide="showCCPage || depositPaidSuccesFully">
+    <button type="button" class="button blank modal-close" ng-click="handleCloseDialog()" translate>
+        CANCEL
+    </button>
+    <button type="button" class="button green" click-touch="submitPayment()"
+            ng-show="!shouldHidePaymentButton() && shouldShowMakePaymentButton && !splitBillEnabled" translate>
+        MAKE PAYMENT
+    </button>
+    <button type="button" class="button green" click-touch="submitPayment()"
+            ng-show="!shouldHidePaymentButton() && shouldShowMakePaymentButton && splitBillEnabled" translate>
+        MAKE PAYMENT ({{splitePaymentDetail["completedSplitPayments"]+1}}/{{splitePaymentDetail["totalNoOfsplits"]}})
+    </button>
+    <button type="button" class="button blue" click-touch="submitPayment()"
+            ng-show="!shouldHidePaymentButton() && !shouldShowMakePaymentButton && !splitBillEnabled" translate>
+        REFUND {{currencySymbol}}{{defaultRefundAmount|number:2}}
+    </button>
+    <button type="button" ng-hide="" class="button blue" click-touch="submitPayment()"
+            ng-show="!shouldHidePaymentButton() && !shouldShowMakePaymentButton && splitBillEnabled" translate>
+        REFUND {{currencySymbol}}{{defaultRefundAmount|number:2}}
+        ({{splitePaymentDetail["completedSplitPayments"]+1}}/{{splitePaymentDetail["totalNoOfsplits"]}})
+    </button>
+</div>
+<div class="actions" ng-hide="!depositPaidSuccesFully">
+    <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>
+        CLOSE
+    </button>
+</div>

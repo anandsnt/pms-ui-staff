@@ -1,0 +1,101 @@
+<div role="dialog" id="modal" class="modal-show" ng-cloak ng-click="clearErrorMessage()"
+     ng-class="{'modal-show': !modalClosing}">
+    <!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
+    <form ng-show="!shouldShowWaiting" class="modal-content form pay-bill"
+          ng-class="{'has-card':showCreditCardInfo && !showCCPage && saveData.paymentType ==='CC','select-card':showCCPage}">
+
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+        <!-- Title when not paying from bill screen -->
+        <strong class="h2 message">
+            {{'PAY_BILL' | translate}}
+            <div class="select">
+                <!-- number of options should match the number of bills created -->
+                <select name="post-charge-to-bill" ng-model="renderData.billNumberSelected"
+                        ng-change="billNumberChanged()">
+                    <option ng-repeat="bills in billsArray"
+                            value="{{bills.bill_number}}"
+                            ng-selected="bills.bill_number == renderData.billNumberSelected">
+                        {{bills.bill_number}}
+                    </option>
+                </select>
+            </div>
+        </strong>
+        <span ng-hide="saveData.paymentType === 'GIFT_CARD'" class="text">
+                    Or enter negative amount to make a refund
+                </span>
+        <span ng-show="saveData.paymentType === 'GIFT_CARD'" class="text">
+                    No Refunds available for Gift Cards
+                </span>
+        <!-- Title when bill# is defined: <strong class="h2 message">Pay Bill #{bill num}</strong> -->
+        <div ng-show="messageOfSuccessSplitPayment!='' && splitBillEnabled" class='success success_message'
+             ng-class="{notice: messageOfSuccessSplitPayment!=''}">
+            <span ng-bind-html="messageOfSuccessSplitPayment"></span>
+        </div>
+        <div ng-show="paymentErrorMessage!='' && splitBillEnabled" ng-class="{notice: paymentErrorMessage!=''}"
+             class='error error_message' ng-switch on="paymentErrorMessage.length"
+             ng-click="clearPaymentErrorMessage()">
+            <span class="close-btn" ng-click="clearPaymentErrorMessage()"></span>
+            <span ng-bind-html="paymentErrorMessage"></span>
+        </div>
+
+        <!-- Payment Form -->
+        <div class="payment-form">
+            <!-- Split payment -->
+            <div class="entry split" ng-class="{active: splitBillEnabled }"
+                 ng-hide="depositPaidSuccesFully || saveData.paymentType === 'GIFT_CARD' || !isStandAlone">
+
+                <label class="checkbox inline" ng-class="{checked: splitBillEnabled }">
+                    <span class="icon-form icon-checkbox" ng-class="{checked: splitBillEnabled }">
+                    </span>
+                    <input id="enable-split" value="1" type="checkbox" ng-click="resetSplitPaymentDetail()"/>
+                    Split Bill Payment
+                </label>
+                <!-- 1 is selected by default and locked -->
+                <label class="only-number" ng-click="spliteButtonClicked(1)" ng-class="classForPaymentSplitButton(1)">
+                    <input name="split-bill" value="1" type="checkbox" checked/>
+                    1
+                </label>
+                <!-- Add class 'checked' when selected, 'paid' when payment is made or 'disabled' when option is not available anymore -->
+                <label class="only-number" ng-click="spliteButtonClicked(2)" ng-class="classForPaymentSplitButton(2)">
+                    <!-- Add attr 'disabled' when paid or first payment made -->
+                    <input name="split-bill" value="2" type="checkbox"/>
+                    2
+                </label>
+                <label class="only-number" ng-click="spliteButtonClicked(3)" ng-class="classForPaymentSplitButton(3)">
+                    <input name="split-bill" value="3" type="checkbox"/>
+                    3
+                </label>
+                <label class="only-number" ng-click="spliteButtonClicked(4)" ng-class="classForPaymentSplitButton(4)">
+                    <input name="split-bill" value="4" type="checkbox"/>
+                    4
+                </label>
+                <label class="only-number" ng-click="spliteButtonClicked(5)" ng-class="classForPaymentSplitButton(5)">
+                    <input name="split-bill" value="5" type="checkbox"/>
+                    5
+                </label>
+            </div>
+
+            <snt-payment
+                    hotel-config="hotelPaymentConfig"
+                    workstation-id="{{workstation_id}}"
+                    reservation-id="{{reservationBillData.reservation_id}}"
+                    bill-number="renderData.billNumberSelected"
+                    payment-types="paymentTypes"
+                    selected-payment-type="defaultPaymentTypeOfBill"
+                    selected-c-c="reservationBillData.bills[currentActiveBill || 0].credit_card_details"
+                    amount='renderData.defaultPaymentAmount'
+                    action-type="PAYMENT_RESERVATION_BILL"
+                    deposit-policy-name="{{depositPolicyName}}"
+                    is-editable='isDepositEditable'
+                    is-rate-suppressed='isReservationRateSuppressed'
+                    has-permission='hasPermissionToMakePayment()'
+                    form-template-url='/assets/partials/payment/rvReservationBillPayment.html'
+                    first-name="{{guestCardData.contactInfo.first_name}}"
+                    last-name="{{guestCardData.contactInfo.last_name}}"
+                    ng-show="!errorOccured && !depositPaidSuccesFully">
+            </snt-payment>
+        </div>
+    </form>
+
+</div>

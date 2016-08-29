@@ -147,7 +147,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          */
         $scope.showSelectedCard = function() {
             var isCCPresent = ($scope.selectedPaymentType === "CC" &&
-            (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.value)));
+            (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number || !!$scope.selectedCC.value)));
             var isManualEntry = !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl &&
                 $scope.payment.isManualEntryInsideIFrame;
 
@@ -631,6 +631,11 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             return !$scope.hotelConfig.isStandAlone && !!isGiftCardEnabled;
         };
 
+        var onAmountChange = function() {
+            $scope.payment.amount = $scope.amount || 0;
+            calculateFee();
+        };
+
         /****************** init ***********************************************/
 
         (function() {
@@ -642,13 +647,14 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
              */
             $scope.payment.isAddPaymentMode = !!$scope.actionType.match(/^ADD_PAYMENT/);
 
+            $scope.$watch('amount', onAmountChange);
+
             $scope.payment.amount = $scope.amount || 0;
             $scope.payment.isRateSuppressed = $scope.isRateSuppressed || false;
             $scope.payment.isEditable = $scope.isEditable || true;
             $scope.payment.billNumber = $scope.payment.billNumber || 1;
             $scope.payment.linkedCreditCards = $scope.linkedCreditCards || [];
 
-            $scope.onPaymentInfoChange();
 
             $scope.payment.screenMode = "PAYMENT_MODE";
             $scope.payment.addCCMode = "ADD_CARD";
@@ -708,6 +714,9 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             if (!$scope.hotelConfig.isStandAlone) {
                 changeToCardAddMode();
             }
+
+            // For initial calculation of fee and other details
+            $timeout($scope.onPaymentInfoChange, 1000);
 
             setScroller('cardsList', {'click': true, 'tap': true});
         })();
