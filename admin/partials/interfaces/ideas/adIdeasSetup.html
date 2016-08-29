@@ -24,6 +24,94 @@
                     <ad-textbox inputtype="number" value="ideaSetup.days_future" label="Future Days"></ad-textbox>
                 </div>
             </fieldset>
+            <fieldset ng-if="ideaSetup.enabled" class="holder full-width">
+                <div class="form-title">
+                    <h3>
+                        <span>Charge Groups</span>
+                    </h3>
+                    <em class="status">
+                        <span>Select at least one Charge Group</span>
+                    </em>
+                </div>
+                <div class="entry has-sortable">
+                    <label class="center_align"><em class="rate_roomtype_text">Available Charge Groups</em></label>
+
+                    <ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true"
+                        ng-model="ideaSetup.available_charge_groups" style="overflow-y: scroll !important;"
+                        jqyoui-droppable="{multiple:true, onOver: 'onUnSelectChargeGroup'}" data-j qyoui-options="{accept:'.selected_reports'}">
+
+                        <li ng-repeat="chargeGroup in ideaSetup.available_charge_groups"
+                            data-drag="true"
+                            ng-model="ideaSetup.available_charge_groups"
+                            jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
+                            data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
+                            class="available-reports li-draggable"
+                            ng-click="chooseAvailableChargeGroup($index)"
+                            ng-class='{selected: chosenAvailableChargeGroups.indexOf($index) > -1}'>
+
+                            <span class="icons icon-handle"></span>
+                            <span class="icons icon-handle"></span>
+                            {{ chargeGroup }}
+                        </li>
+                    </ul>
+                </div>
+                <div class="entry movers rates_mover">
+                    <span class="top_mover">
+                        <span class="icons icon-mover-right to-target"
+                              data-type="target"
+                              ng-click="selectChosen()"
+                              ng-class="{active: chosenAvailableChargeGroups.length >= 1}"
+                              data-type="source">
+                            Select Report(s)
+                        </span>
+                        <span class="icons icon-mover-left to-source"
+                              data-type="source"
+                              ng-click="unSelectChosen()"
+                              ng-class="{active: chosenSelectedChargeGroups.length >= 1}">
+                            Un-select Report(s)
+                        </span>
+                    </span>
+                    <span>
+                        <div class="green_gradient icons">
+                            <span class="active to-source green_mover icons_rates"
+                                  data-type="source"
+                                  ng-click="selectAll()">
+                                Select Report(s)
+                            </span>
+                        </div>
+                        <div class="red_gradient icons">
+                            <span class="active to-target  red_mover icons_rates"
+                                  data-type="target"
+                                  ng-click="unSelectAll()">
+                                Un-select Report(s)
+                            </span>
+                        </div>
+                    </span>
+                </div>
+                <div class="entry has-sortable">
+                    <label class="center_align">
+                        <span class="assigned_room_text">Selected Charge Group</span></label>
+                    <ul class="boxes sortable ui-sortable short-list"
+                        data-type="target"
+                        data-drop="true"
+                        ng-model="ideaSetup.selected_charge_groups"
+                        jqyoui-droppable="{multiple:true, onOver: 'onSelectChargeGroup'}"
+                        data-jqyoui-options="{accept:'.available-reports'}">
+                        <li ng-repeat="chargeGroup in ideaSetup.selected_charge_groups"
+                            ng-click="chooseSelectedChargeGroup($index)"
+                            ng-class='{selected: chosenSelectedChargeGroups.indexOf($index) > -1}'
+                            class="selected-reports li-draggable"
+                            data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
+                            data-drag="true"
+                            ng-model="ideaSetup.selected_charge_groups"
+                            jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                            <span class="icons icon-handle"></span>
+                            <span class="icons icon-handle"></span>
+                            {{ chargeGroup }}
+                        </li>
+                    </ul>
+                </div>
+            </fieldset>
             <ad-save-cancel-area save-action="saveSetup" cancel-action="goBackToPreviousState"></ad-save-cancel-area>
         </div>
     </section>
