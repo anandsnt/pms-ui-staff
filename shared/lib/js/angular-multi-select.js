@@ -179,7 +179,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             var prevTabIndex            = 0;
             var helperItems             = [];
             var helperItemsLength       = 0;
-            var ctx = 0;
+            var ctr = 0;
 
             //CICO-9120 Need to get the scroller working!
             // This works but is a shoddy code... Revisit later 

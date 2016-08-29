@@ -630,8 +630,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				// push employee id into '_lastSelectedIds'
 				$scope.multiSheetState._lastSelectedIds.push( $scope.multiSheetState.assigned[foundIndex]['id'] );
 			};
-
-			console.log( $scope.multiSheetState.selectedEmployees );
 		};
 
 		/**
@@ -849,53 +847,89 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		var setUpAutoScroller = function() {
 			var LEFT  = 'LEFT',
 				RIGHT = 'RIGHT',
+				TOP = 'TOP',
+				BOTTOM = 'BOTTOM',
 				UNDEF = undefined;
 
 			var dragDir    = UNDEF,
 				timer      = UNDEF,
-				dim        = UNDEF;
+				dimX       = UNDEF,
+				dimY       = UNDEF;
 
-			var getDimentions = function() {
+			var getXdimentions = function() {
 				var LEFT_OFFSET = 200,
 					COL_WIDTH   = 220,
-					TASK_OFFSET = 110;	// half of COL_WIDTH; since task inside col
+					TASK_OFFSET = 110;
 
 				var winWidth = $(window).width();
 
-				var scrollX = ($scope.multiSheetState.selectedEmployees.length * COL_WIDTH) - (winWidth - LEFT_OFFSET);
+				var scrollableX = ($scope.multiSheetState.selectedEmployees.length * COL_WIDTH) - (winWidth - LEFT_OFFSET);
 
-				dim = {
+				return {
 					screenStart : LEFT_OFFSET + TASK_OFFSET,
 					screenEnd   : winWidth - LEFT_OFFSET,
 					scrollStart : LEFT_OFFSET + TASK_OFFSET,
-					scrollEnd   : -scrollX
+					scrollEnd   : -scrollableX,
 				};
 			};
 
-			/** setup dim and update on screen change, also remove listener when required */
-			getDimentions();
-			window.addEventListener( 'resize', getDimentions, false );
+			var getYdimentions = function() {
+				var TOP_OFFSET = 280,
+					TASK_HEIGHT = 115;
+
+				var winHeight = $(window).height();
+
+				var scrollableY = ($scope.multiSheetState.selectedEmployees.length * COL_WIDTH) - (winWidth - LEFT_OFFSET);
+
+				dimY = {
+					screenStart : LEFT_OFFSET + TASK_OFFSET,
+					screenEnd   : winWidth - LEFT_OFFSET,
+					scrollStart : LEFT_OFFSET + TASK_OFFSET,
+					scrollEnd   : -scrollableX,
+				};
+			};
+
+			/** setup dimX and update on screen change, also remove listener when required */
+			dimX = getXdimentions();
+			window.addEventListener( 'resize', function() {
+				dimX = getXdimentions();
+			}, false );
 			$scope.$on('$destroy', function() {
 				window.removeEventListener('resize');
 			});
 
-			var scrollExec = function() {
+
+			$scope.clientY = 0;
+			$scope.empCol = undefined;
+			$scope.empRooms = undefined;
+
+
+			var hozScrollExec = function() {
 				var scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
 
-				if ( dragDir === LEFT && scrollInst.x !== 0 && scrollInst.x < dim.scrollStart ) {
+				if ( dragDir === LEFT && scrollInst.x !== 0 && scrollInst.x < dimX.scrollXStart ) {
 					scrollInst.scrollBy(10, 0, 1);
 				};
 
-				if ( dragDir === RIGHT && scrollInst.x > dim.scrollEnd ) {
+				if ( dragDir === RIGHT && scrollInst.x > dimX.scrollXEnd ) {
 					scrollInst.scrollBy(-10, 0, 1);
 				};
 			};
 
-			$scope.clientY = 0;
-			$scope.col = undefined;
+			var verScrollExec = function(index) {
+				var scrollInst = $scope.$parent.myScroll['assignedRoomList-' + index];
+
+				if ( dragDir === TOP && scrollInst.y !== 0 && scrollInst.y < dimX.scrollXStart ) {
+					scrollInst.scrollBy(0, 10, 1);
+				};
+
+				if ( dragDir === BOTTOM && scrollInst.y > dimX.scrollXEnd ) {
+					scrollInst.scrollBy(0, -10, 1);
+				};
+			};
 
 			$scope.dragStart = function() {
-				timer = setInterval( scrollExec, 1 );
+				timer = setInterval( hozScrollExec, 1 );
 			};
 
 			$scope.dragDrop = function() {
@@ -904,19 +938,22 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					timer = UNDEF;
 				};
 
-				$scope.col = undefined;
+				$scope.empCol = undefined;
+				$scope.empRooms = undefined;
 			};
 
-			$scope.onOver = function(event, index) {
-				$scope.col = $(event.target);
+			$scope.onOverCol = function(event, index) {
+				console.log(event);
+				$scope.empCol = $(event.target);
+				$scope.empRooms = $scope.empCol.find('.worksheet-room');
 			};
 
 			$scope.userDragging = function(e) {
-				if ( e.clientX > dim.screenEnd ) {
+				if ( e.clientX > dimX.screenXEnd ) {
 				    if ( dragDir !== RIGHT ) {
 				        dragDir = RIGHT;
 				    };
-				} else if ( e.clientX < dim.screenStart ) {
+				} else if ( e.clientX < dimX.screenXStart ) {
 				    if ( dragDir !== LEFT ) {
 				        dragDir = LEFT;
 				    };
@@ -927,10 +964,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				};
 
 				$scope.clientY = e.clientY;
-
-				console.log( $scope.clientY );
-
-				var $node = $scope.col.find('.worksheet-room')
 			};
 		};
 
