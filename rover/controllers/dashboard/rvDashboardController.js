@@ -35,7 +35,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         var d = new Date();
         var time = d.getHours();
          //Handle Notificatin releated logic.
-        initNotification(); 
+        initNotification();
         $scope.greetingsMessage = "";
         if (time < 12){
           $scope.greetingsMessage = 'GREETING_MORNING';
@@ -74,6 +74,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       };
       var successReleaseNotesFetch = function(data){
         $scope.activeNotification = data.results[0];
+        $scope.$emit('hideLoader');
       };
       $scope.invokeApi(RVDashboardSrv.fetchDashboardNotifications, params, successReleaseNotesFetch);
     };
