@@ -274,12 +274,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_40: false
 		};
 		$scope.toggleFilterItems = function(item) {
-			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
-				$scope.filterItemsToggle[item] = $scope.filterItemsToggle[item] ? false : true;
+			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
+				$scope.filterItemsToggle[item] = false;
+			}
+			
+			$scope.filterItemsToggle[item] = ! $scope.filterItemsToggle[item];
 
-				console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
-				$rootScope.$broadcast( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
-			};
+			console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
+			$rootScope.$broadcast( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
 		};
 		$scope.resetFilterItemsToggle = function() {
 			_.each($scope.filterItemsToggle, function(value, key) {
