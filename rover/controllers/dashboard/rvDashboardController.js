@@ -1,6 +1,6 @@
 
-sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes',
-                  function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state, RVWorkstationSrv, roomTypes){
+sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$window',
+                  function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $window){
 
     //setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
