@@ -66,7 +66,9 @@ module.exports = {
 			'guestweb_consciousVondelpark':[ themeCSSRoot + 'guestweb_consciousVondelpark.css'],
 			'guestweb_halcyon':[ themeCSSRoot + 'guestweb_halcyon.css'],
 			'guestweb_chancellors_house':[ themeCSSRoot + 'guestweb_chancellors_house.css'],
-			'guestweb_calvary_court':[ themeCSSRoot + 'guestweb_calvary_court.css']
+			'guestweb_calvary_court':[ themeCSSRoot + 'guestweb_calvary_court.css'],
+			'guestweb_playa_largo':[ themeCSSRoot + 'guestweb_playa_largo.css']
 		}
 	}
 }
+
