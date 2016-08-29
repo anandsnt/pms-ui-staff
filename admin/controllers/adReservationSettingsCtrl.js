@@ -106,6 +106,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       var canSuiteDisableSuccessCallback = function(){
         $scope.$emit('hideLoader');
         $scope.reservationSettingsData.suite_enabled = !$scope.reservationSettingsData.suite_enabled;
+        $rootScope.isSuiteRoomsAvailable = $scope.reservationSettingsData.suite_enabled;
       };
       var canSuiteDisableFailureCallback = function(data) {
         $scope.errorMessage = data;
@@ -116,6 +117,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
 
       } else {
         $scope.reservationSettingsData.suite_enabled = !$scope.reservationSettingsData.suite_enabled;
+        $rootScope.isSuiteRoomsAvailable = $scope.reservationSettingsData.suite_enabled;
       }
 
     }
