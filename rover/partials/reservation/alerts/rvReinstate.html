@@ -13,6 +13,6 @@
         <span class="h2 message">No Availability to Reinstate Reservation</span>
 
         <button type="button" class="button green" ng-click="reinstateNavigateRoomAndRates();">Find Rooms &amp; Rates</button>
-        <button type="button" ng-hide="!allowOverbook" class="button blue" ng-click="reinstateReservation(true)">Confirm Overbooking</button>
+        <button type="button" ng-hide="ngDialogData.isSuite || !allowOverbook" class="button blue" ng-click="reinstateReservation(true)">Confirm Overbooking</button>
     </div>
 </div>

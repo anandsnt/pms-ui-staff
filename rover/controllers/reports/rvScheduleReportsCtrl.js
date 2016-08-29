@@ -779,6 +779,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         	$scope.switchReportView($scope.reportViews[2]);
         	$scope.setViewCol( $scope.viewCols[0] );
+
+        	var reset = true;
+        	$scope.refreshReportSchedulesScroll(reset);
         }
 
         $scope.checkCanCancel = function() {
@@ -802,6 +805,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         	$scope.switchReportView( $scope.reportViews[2] );
         	$scope.setViewCol( $scope.viewCols[0] );
+
+        	var reset = true;
+        	$scope.refreshReportSchedulesScroll(reset);
 
         	$scope.closeDialog();
         }

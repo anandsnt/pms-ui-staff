@@ -74,7 +74,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
 	$scope.showUpgradeButton = function(reservationStatus,  isUpsellAvailable){
 		var showUpgrade = false;
-		if($scope.hasAnySharerCheckedin()){
+		if($scope.hasAnySharerCheckedin() || $scope.reservationData.reservation_card.is_suite || $rootScope.isHourlyRateOn){
 			return false;
 		}
 		if((isUpsellAvailable === 'true') && $scope.isFutureReservation(reservationStatus)){
