@@ -24,7 +24,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         $scope.statisticsData = dashBoarddata.dashboardStatistics;
         $scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
         $rootScope.adminRole = $scope.userDetails.user_role;
-        $scope.isIpad = navigator.userAgent.match(/iPad/i) !== null;
+        $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
 
         //update left nav bar
         $scope.$emit("updateRoverLeftMenu","dashboard");
