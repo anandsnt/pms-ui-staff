@@ -18,7 +18,7 @@
 	<div class="wrapper">
 		<div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<!-- Room assignment content -->
-		<div class="room-assignment-content" ng-class="{'has-room': !!reservationData.reservation_card.room_number && !roomAssgnment.inProgress}">
+		<div class="room-assignment-content" ng-class="{'has-room': reservationData.reservation_card.reservation_status.indexOf(['CHECKING_IN', 'RESERVED'])!=-1 && !!reservationData.reservation_card.room_number && !roomAssgnment.inProgress}">
 			<!-- Rooms listing & filters -->
 			<div class="rooms-listing">
 				<!-- Room type search + reveal filters button -->
