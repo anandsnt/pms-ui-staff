@@ -8,11 +8,11 @@
         <!-- Do Not Move toggle -->
 
 
-         <div class="move-room">
+         <div class="move-room" >
             <label for="lock-room" class="label">Do Not Move</label>
-            <div class="switch-button" ng-class="{'on': reservationData.reservation_card.cannot_move_room}">
-                <span class="switch-icon"  ng-class="{'on': reservationData.reservation_card.cannot_move_room}"></span>
-                <input id="lock-room" type="checkbox" ng-model="reservationData.reservation_card.cannot_move_room" ng-click="toggleDoNotMove()">
+            <div class="switch-button" ng-class="{'on': reservationData.reservation_card.cannot_move_room}" ng-click="toggleDoNotMove()">
+                <span class="switch-icon"  ng-class="{'on': reservationData.reservation_card.cannot_move_room}" ></span>
+                <button type="checkbox" id="lock-room" ng-model="reservationData.reservation_card.cannot_move_room" >
             </div>
         </div>
 
