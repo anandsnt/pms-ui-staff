@@ -24,7 +24,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         $scope.statisticsData = dashBoarddata.dashboardStatistics;
         $scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
         $rootScope.adminRole = $scope.userDetails.user_role;
-        $scope.isIpad = navigator.userAgent.match(/iPad/i) !== null;
+        $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
 
         //update left nav bar
         $scope.$emit("updateRoverLeftMenu","dashboard");
@@ -82,7 +82,11 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    * Function to open link in new tab
    */
     $scope.showReleaseNote = function(activeNotification){
-      $window.open(activeNotification.action_source, '_blank');
+      var url = activeNotification.action_source;
+      if (!url.match(/^https?:\/\//i)) {
+        url = 'http://' + url;
+      }
+      $window.open( url , '_blank');
     };
   /*
    * Function to hide release notes for current login
