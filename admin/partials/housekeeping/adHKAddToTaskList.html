@@ -55,10 +55,16 @@
 			<div class="entry full-width">
 			    <label for="item-type">Fo status </label>
 			    <div class="boxes">
-			        <label class="checkbox inline" ng-repeat="item in foStatusList" style="width: 46% !important">
-			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.front_office_status_ids[$index]}"></span>
-			            <input type="checkbox" ng-model="eachTaskList.front_office_status_ids[$index]">
-			            {{ item.description }}
+			    <!-- as per CICO-33166 removed front_office_status_ids and used is_occupied and is_vacant instead -->
+			        <label class="checkbox inline-width-30">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.is_occupied}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.is_occupied">
+			            Occupied
+			        </label>
+			        <label class="checkbox inline-width-30">
+			            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.is_vacant}"></span>
+			            <input type="checkbox" ng-model="eachTaskList.is_vacant">
+			            Vacant
 			        </label>
 			    </div>
 			</div>
