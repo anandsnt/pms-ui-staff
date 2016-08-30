@@ -1362,6 +1362,7 @@ angular.module('sntRover').controller('guestCardController', [
 						companyCard: $scope.reservationDetails.companyCard.id,
 						travelAgent: $scope.reservationDetails.travelAgent.id
 					});
+					$scope.navigateToRoomAndRates();
 				} else {
 					// In staycard
 					attachGroupToThisReservation(group);
@@ -1556,6 +1557,7 @@ angular.module('sntRover').controller('guestCardController', [
 						companyCard: $scope.reservationDetails.companyCard.id,
 						travelAgent: $scope.reservationDetails.travelAgent.id
 					});
+					$scope.navigateToRoomAndRates();
 				}
 
 				//staycard card attaching
