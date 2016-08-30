@@ -175,7 +175,7 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 	 $scope.data.user  = $stateParams.user;
-   $scope.data.username  = $stateParams.username;
+   	 $scope.data.username  = $stateParams.username;
 	 $scope.errorMessage = "";
 
 	 /*
@@ -192,7 +192,19 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	  */
 	 $scope.successCallback = function(data){
 	 	$scope.hasLoader = false;
-	 	$window.location.href = data.redirect_url;
+	 	if(data.is_sp_admin === true){
+            //we need to show the animation before redirecting to the url, so introducing a timeout there
+            setTimeout(function(){
+                $state.go('selectProperty');
+            }, 300);
+        } 
+        else {
+            $scope.$emit("signingIn");
+            //we need to show the animation before redirecting to the url, so introducing a timeout there
+            setTimeout(function(){
+                $window.location.href = data.redirect_url;
+            }, 300);
+        }
 	 };
 	/*
 	 * Failur callback
