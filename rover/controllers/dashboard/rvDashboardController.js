@@ -82,7 +82,11 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    * Function to open link in new tab
    */
     $scope.showReleaseNote = function(activeNotification){
-      $window.open(activeNotification.action_source, '_blank');
+      var url = activeNotification.action_source;
+      if (!url.match(/^https?:\/\//i)) {
+        url = 'http://' + url;
+      }
+      $window.open( url , '_blank');
     };
   /*
    * Function to hide release notes for current login
