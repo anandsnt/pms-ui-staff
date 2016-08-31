@@ -321,7 +321,13 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 			stateParams.key_success = status === 'success';
 			console.warn('goToNextScreen: ', stateParams);
-			$state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);
+
+			var registration_card = $scope.zestStationData.registration_card;
+			if (!registration_card.email && !registration_card.print && !registration_card.auto_print){
+				$state.go('zest_station.zsCheckinFinal');
+			} else {
+				$state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);
+			}
 		};
 
 	}
