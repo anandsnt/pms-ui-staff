@@ -145,7 +145,7 @@
 
 <table class="terms-signature">
     <tr>
-        <td colspan="2" class="terms" data-ng-bind-html="trustAsHtml(printRegCardData.terms_conditions)"></td>
+        <td ng-if="printRegistrationCardActive" colspan="2" class="terms" data-ng-bind-html="trustAsHtml(printRegCardData.terms_conditions)"></td>
     </tr>
     <tr>
         <td ng-if="reservationBillData.signature_details.is_signed === 'true'" style="text-align: left;">
