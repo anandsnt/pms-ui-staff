@@ -29,6 +29,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			$scope.selectedCountry = {
 				"id": ""
 			};
+			$scope.$emit('hideLoader');
 		};
 
 
