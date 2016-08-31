@@ -337,7 +337,7 @@ sntRover.controller('reservationActionsController', [
                         else if ($scope.roomAssignmentNeeded()) {
                                $scope.goToRoomAssignment();
 
-                        } else if ($scope.upsellNeeded()) {
+                        } else if ($scope.upsellNeeded() && !$rootScope.isHourlyRateOn && !$scope.reservationData.reservation_card.is_suite) {
                                 $scope.goToRoomUpgrades();
 
                         } else {

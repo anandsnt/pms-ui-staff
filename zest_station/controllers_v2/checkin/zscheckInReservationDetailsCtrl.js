@@ -96,40 +96,41 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }
         };
 
-
+        var onBackButtonClicked = function(event) {
+            var reservations = zsCheckinSrv.getCheckInReservations();
+            
+            if ($scope.zestStationData.check_in_collect_nationality) {
+                var collectNationalityParams = {
+                    'guestId': $scope.selectedReservation.guest_details[0].id,
+                    'first_name': $scope.selectedReservation.guest_details[0].first_name
+                };
+                if(!!$stateParams.pickup_key_mode){
+                    collectNationalityParams.pickup_key_mode = 'manual';
+                }
+                $state.go('zest_station.collectNationality', collectNationalityParams);
+            } 
+            //check if this page was invoked through pickupkey flow
+            else if(!!$stateParams.pickup_key_mode){
+                $state.go('zest_station.checkOutReservationSearch', {
+                    'mode': 'PICKUP_KEY'
+                });
+            }
+            else if (reservations.length > 0) {
+                $state.go('zest_station.selectReservationForCheckIn');
+            } else {
+                $state.go('zest_station.checkInReservationSearch');
+            }
+            //what needs to be passed back to re-init search results
+            //  if more than 1 reservation was found? else go back to input 2nd screen (confirmation, no of nites, etc..)
+        };
         var init = function() {
             //hide back button
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
             //show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             //back button action
-            $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-                var reservations = zsCheckinSrv.getCheckInReservations();
-                
-                if ($scope.zestStationData.check_in_collect_nationality) {
-                    var collectNationalityParams = {
-                        'guestId': $scope.selectedReservation.guest_details[0].id,
-                        'first_name': $scope.selectedReservation.guest_details[0].first_name
-                    };
-                    if(!!$stateParams.pickup_key_mode){
-                        collectNationalityParams.pickup_key_mode = 'manual';
-                    }
-                    $state.go('zest_station.collectNationality', collectNationalityParams);
-                } 
-                //check if this page was invoked through pickupkey flow
-                else if(!!$stateParams.pickup_key_mode){
-                    $state.go('zest_station.checkOutReservationSearch', {
-                        'mode': 'PICKUP_KEY'
-                    });
-                }
-                else if (reservations.length > 0) {
-                    $state.go('zest_station.selectReservationForCheckIn');
-                } else {
-                    $state.go('zest_station.checkInReservationSearch');
-                }
-                //what needs to be passed back to re-init search results
-                //  if more than 1 reservation was found? else go back to input 2nd screen (confirmation, no of nites, etc..)
-            });
+            $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
+            $scope.$emit('hideLoader');
             //starting mode
             $scope.mode = "RESERVATION_DETAILS";
             getSelectedReservation();

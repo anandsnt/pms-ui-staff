@@ -71,7 +71,22 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
          * Initialization stuffs
          * @return {undefined}
          */
-        var initializeMe = function () {
+        var initializeMe = function() {
+            /**
+             * CICO-33067
+             * After exactonline authorization, the application would be redirected to
+             * the exactonline settings page directly. In such a case, the previousState wont be set,
+             * also the selectedMenu wont be set.
+             */
+            if(!$rootScope.previousState) {
+                $rootScope.previousState = "admin.backOfficeSetup";
+                var interfacesMenuIndex = _.indexOf($scope.data.menus,
+                    _.findWhere($scope.data.menus, {
+                        menu_id: 9, // 9 is ID returned by API for the Interfaces Menu
+                    }));
+                $scope.$emit("changedSelectedMenu", interfacesMenuIndex);
+            }
+
             $scope.exactOnlineSetup = exactOnlineSetupValues;
             $scope.journals = journalsList;
             $scope.balancingAccounts = balancingAccounts;

@@ -21,6 +21,9 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
         BaseCtrl.call(this, $scope);
 
         $scope.selectReservation = function(reservation) {
+
+            $scope.$emit('showLoader');
+
             var selectedReservation = [];
             selectedReservation.push(reservation);
             zsCheckinSrv.setSelectedCheckInReservation(selectedReservation);
@@ -84,6 +87,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             getCheckInReservations();
             initPagination();
             listReservations();
+            $scope.$emit('hideLoader');
         };
         init();
     }

@@ -98,6 +98,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 					$scope.mode = 'NO_MATCH';
 					$scope.callBlurEventForIpad();
 				} else if (data.results.length == 1) {
+					$scope.$emit('showLoader');
 					zsCheckinSrv.setSelectedCheckInReservation(data.results);
 					var primaryGuest = _.find(data.results[0].guest_details, function(guest_detail) {
 						return guest_detail.is_primary === true;
