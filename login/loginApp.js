@@ -1,4 +1,4 @@
-var login = angular.module('login',['ui.router', 'documentTouchMovePrevent']);
+var login = angular.module('login',['ui.router', 'documentTouchMovePrevent', 'ngSanitize', 'ng-iscroll']);
 
 /*
  * Set page Titles
@@ -51,14 +51,23 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 	localStorage.email = $scope.data.email;
 	 	if(data.token!==''){
 	 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
-	 	} else {
-	 		 $scope.$emit("signingIn");
+	 	}
+	 	else {
+            $scope.hasLoader = true;
+            if(data.is_sp_admin === true){
+                //we need to show the animation before redirecting to the url, so introducing a timeout there
+                setTimeout(function(){
+                    $state.go('selectProperty');
+                }, 300);
+            }
+            else {
+                $scope.$emit("signingIn");
+                //we need to show the animation before redirecting to the url, so introducing a timeout there
+                setTimeout(function(){
+                    $window.location.href = data.redirect_url;
+                }, 300);
 
-	 		 $scope.hasLoader = true;
-	 		 //we need to show the animation before redirecting to the url, so introducing a timeout there
-                        setTimeout(function(){
-                                $window.location.href = data.redirect_url;
-                        }, 300);
+            }
 	 	}
 	 };
 	 /*
@@ -131,8 +140,21 @@ login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$state
 	  */
 	 $scope.successCallback = function(data){
 	 	$scope.hasLoader = false;
-	 	$window.location.href = data.redirect_url;
+	 	if(data.is_sp_admin === true){
+            //we need to show the animation before redirecting to the url, so introducing a timeout there
+            setTimeout(function(){
+                $state.go('selectProperty');
+            }, 300);
+        } 
+        else {
+            $scope.$emit("signingIn");
+            //we need to show the animation before redirecting to the url, so introducing a timeout there
+            setTimeout(function(){
+                $window.location.href = data.redirect_url;
+            }, 300);
+        }
 	 };
+	 
 	 $scope.failureCallBack = function(errorMessage){
 	 	$scope.hasLoader = false;
 	 	$scope.errorMessage = errorMessage;
@@ -153,7 +175,7 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 	 $scope.data.user  = $stateParams.user;
-   $scope.data.username  = $stateParams.username;
+   	 $scope.data.username  = $stateParams.username;
 	 $scope.errorMessage = "";
 
 	 /*
@@ -170,7 +192,19 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	  */
 	 $scope.successCallback = function(data){
 	 	$scope.hasLoader = false;
-	 	$window.location.href = data.redirect_url;
+	 	if(data.is_sp_admin === true){
+            //we need to show the animation before redirecting to the url, so introducing a timeout there
+            setTimeout(function(){
+                $state.go('selectProperty');
+            }, 300);
+        } 
+        else {
+            $scope.$emit("signingIn");
+            //we need to show the animation before redirecting to the url, so introducing a timeout there
+            setTimeout(function(){
+                $window.location.href = data.redirect_url;
+            }, 300);
+        }
 	 };
 	/*
 	 * Failur callback

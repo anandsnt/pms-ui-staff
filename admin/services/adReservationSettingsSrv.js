@@ -1,4 +1,4 @@
-admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', function($q, ADBaseWebSrvV2){
+admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv', function($q, ADBaseWebSrvV2, ADBaseWebSrv){
 
 
    /**
@@ -32,5 +32,20 @@ admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', function($q, A
 		});
 		return deferred.promise;
 	};
+    /**
+    * Service function to update reservation settings
+    * @return {object} status of update
+    */
+    this.canDisableSuite = function(data){
+
+        var deferred = $q.defer();
+        var url = '/api/hotel_settings/can_disable_suite ';
+        ADBaseWebSrv.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 
 }]);

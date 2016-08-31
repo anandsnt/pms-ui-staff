@@ -1032,6 +1032,8 @@ sntRover.factory('RVReportParserFac', [
                                     {
                                         rowspan: eachAry.length,
                                         isMainRow: true,
+                                        // if there is only one entry!!
+                                        className: k === i ? 'row-break' : '',
                                     }
                                 )
                             );

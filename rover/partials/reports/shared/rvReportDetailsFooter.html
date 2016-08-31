@@ -8,7 +8,20 @@
 			From: <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> To: <span>{{ appliedFilter.toDate | date:dateFormat }}</span>
 		</div>
 
+		<!-- chosen addonGroups -->
+        <div ng-if="appliedFilter.addonGroups.length">
+            Add-On Groups: <span>{{ appliedFilter.addonGroups.join(', ') }}</span>
+        </div>
 
+        <!-- chosen addons -->
+        <div ng-if="appliedFilter.addons.length">
+            Add-Ons: <span>{{ appliedFilter.addons.join(', ') }}</span>
+        </div>
+
+        <!-- chosen reservationStatus -->
+        <div ng-if="appliedFilter.reservationStatus.length">
+            Reservation Status: <span>{{ appliedFilter.reservationStatus.join(', ') }}</span>
+        </div>
 
 		<!-- cancel date range -->
 		<div ng-if="appliedFilter.cancelFromDate || appliedFilter.cancelToDate">
@@ -158,6 +171,13 @@
 		<!-- chosen origins -->
 		<div ng-if="appliedFilter.origins.length">
 			Origins: <span>{{ appliedFilter.origins.join(', ') }}</span>
+		</div>
+
+
+
+		<!-- chosen origins -->
+		<div ng-if="appliedFilter.origins.length">
+			URLs: <span>{{ appliedFilter.origin_urls.join(', ') }}</span>
 		</div>
 
 

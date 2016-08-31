@@ -1275,7 +1275,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				var touch         = e.touches ? e.touches[0] : e,
 					diff          = 0,
 					addTransition = '-webkit-transform 0.3s',
-					translateZero = genTranslate();
+					translateZero = genTranslate(0, 0, 0);
 
 				var commonEx = function() {
 					if ( pulling ) {
