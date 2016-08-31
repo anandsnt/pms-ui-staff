@@ -941,7 +941,7 @@ angular.module('sntRover')
                 $scope.priceDetailsCopy = {...$scope.priceDetails};
             }
 
-            if(dialogData.rate.based_on_rate_id) {
+            if(dialogData.rate.based_on_rate_id && !dialogData.rate.is_copied) {
                 $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
                 var parentRate = _.findWhere(dialogData.rates, {id:dialogData.rate.based_on_rate_id})
                 if(parentRate) {
