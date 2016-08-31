@@ -2252,12 +2252,13 @@ sntRover.controller('RVbillCardController',
 
 	$scope.printRegistrationCard = function() {
 		scrollToTop();
-		$scope.printRegistrationCardActive = true;
+		
 		var sucessCallback = function(data) {
 
 			$scope.isPrintRegistrationCard = true;
 
 			$scope.$emit('hideLoader');
+			$scope.printRegistrationCardActive = true;
 			$scope.printRegCardData = data;
 			$scope.errorMessage = "";
 
