@@ -2252,7 +2252,7 @@ sntRover.controller('RVbillCardController',
 
 	$scope.printRegistrationCard = function() {
 		scrollToTop();
-
+		$scope.printRegistrationCardActive = true;
 		var sucessCallback = function(data) {
 
 			$scope.isPrintRegistrationCard = true;
@@ -2302,7 +2302,7 @@ sntRover.controller('RVbillCardController',
 				// CICO-9569 to solve the hotel logo issue
 				$("header .logo").removeClass('logo-hide');
 				$("header .h2").addClass('text-hide');
-
+				$scope.printRegistrationCardActive = false;
 				// remove the orientation after similar delay
 		    	removePrintOrientation();
 		    }, 200);
