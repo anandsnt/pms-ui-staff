@@ -2299,11 +2299,10 @@ sntRover.controller('RVbillCardController',
 		    */
 		    $timeout(function() {
 
-
+		    	$scope.printRegistrationCardActive = false;
 				// CICO-9569 to solve the hotel logo issue
 				$("header .logo").removeClass('logo-hide');
 				$("header .h2").addClass('text-hide');
-				$scope.printRegistrationCardActive = false;
 				// remove the orientation after similar delay
 		    	removePrintOrientation();
 		    }, 200);
