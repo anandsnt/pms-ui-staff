@@ -267,8 +267,14 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			if ($scope.zestStationData.registration_card.auto_print) {
 				$scope.clickedPrint();
 			} else {
+				var registration_card = $scope.zestStationData.registration_card;
+				if (!registration_card.email && !registration_card.print && !registration_card.auto_print){
+					$state.go('zest_station.zsCheckinFinal');
+				}
 				$scope.mode = "DELIVERY_OPTIONS_MODE";
 			}
+
+
 		}();
 
 	}
