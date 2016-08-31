@@ -8,7 +8,7 @@
 		<strong class="title" ng-if="!each.name"><a ng-click="gotoStayCard(each)">Pending</a></strong>
 		<span class="confirmation">{{ each.confirm_no }}</span>
 		<span ng-if="each.is_vip">&#8226; <span class="vip">VIP</span></span>
-		<span ng-if="each.addtional_children_counts || each.addtional_adults_counts">&#8226; <span class="guests">
+		<span ng-if="each.addtional_children_counts && each.addtional_adults_counts">&#8226; <span class="guests">
 		<!-- modified as per CICO-30824 comments -->
 		{{ each.addtional_children_counts + each.addtional_adults_counts }} guest(s)</span></span>
 	</td>
