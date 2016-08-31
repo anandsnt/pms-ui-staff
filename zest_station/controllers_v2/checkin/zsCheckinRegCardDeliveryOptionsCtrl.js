@@ -267,11 +267,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			if ($scope.zestStationData.registration_card.auto_print) {
 				$scope.clickedPrint();
 			} else {
-				
 				$scope.mode = "DELIVERY_OPTIONS_MODE";
 			}
-
-
 		}();
 
 	}
