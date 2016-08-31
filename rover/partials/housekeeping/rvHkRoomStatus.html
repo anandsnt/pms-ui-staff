@@ -9,8 +9,8 @@
 </div>
 
 <div id="pull-load-next" ng-hide="filterOpen">
-  <span id="load-icon"></span>
   <span id="load-text" translate>PULL_LOAD</span>
+  <span id="load-icon"></span>
 </div>
 
 <!-- Search form -->
@@ -132,7 +132,10 @@
             <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })"> <!-- Add  class="with-image" if room is occupied -->
 
                 <div class="room-info" ng-class="{ 'on-hold': room.is_on_hold }">
-                    <h2 class="{{ room.roomStatusClass }}" bo-text="room.room_no"></h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
+                    <h2 class="{{ room.roomStatusClass }}">
+                        <span bo-text="room.room_no"></span>
+                        <span class="icons icon-suite" ng-show="room.is_suite">Suite Room</span>
+                    </h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
                     <span class="room-type">{{room.room_type.name}}</span>
                     <span class="room-status {{ room.roomStatusClass }}">{{room.hk_status.value}}</span>
                 </div>
@@ -156,11 +159,13 @@
                 <!-- Show only if room is assigned -->
                 <span class="{{room.assigned_staff.class}}" >{{room.assigned_staff.name}}</span>
                 <!-- Show only if room is not in service -->
-                <span class="service-status" bo-if="isStandAlone && !isHourlyRateOn && room.ooOsTitle">
-                    {{room.ooOsTitle}} until <strong>{{room.service_status.end_date}}</strong>
-                </span>
-                <span class="service-status" bo-if="isStandAlone && isHourlyRateOn && room.ooOsTitle">
-                    {{room.ooOsTitle}} until <strong>{{room.service_status.end_date}} {{room.service_status.end_time}}</strong>
+                <span ng-show="isStandAlone && room.ooOsTitle">
+                    <span class="service-status" ng-hide="isHourlyRateOn">
+                        {{room.ooOsTitle}} until <strong>{{room.service_status.end_date}}</strong>
+                    </span>
+                    <span class="service-status" ng-show="isHourlyRateOn">
+                        {{room.ooOsTitle}} until <strong>{{room.service_status.end_date}} {{room.service_status.end_time}}</strong>
+                    </span>
                 </span>
 
                 <!-- Show only if room is occupied -->

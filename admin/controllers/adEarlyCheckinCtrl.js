@@ -60,7 +60,10 @@ $scope.clickExcludeRoomType = function(){
   //While addig a room type, making its max_late_checkins defaults to 0.
   angular.forEach($scope.upsellData.room_types,function(item, index) {
       if(parseInt(item.id) === parseInt($scope.upsellData.selected_room_type)){
-         item.max_early_checkins = 0;
+        // CICO-32613: Do not reset existing value.
+        if (!item.max_early_checkins) {
+            item.max_early_checkins = 0;
+        }
       }
   });
     //Removing the selected room type from dropdown of room type list.

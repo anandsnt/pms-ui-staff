@@ -323,6 +323,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			});
 		};
 
+		service.fetchFloors = function() {
+			return callApi({
+				name: 'houseFloors',
+				method: 'getJSON',
+				url: 'api/floors.json',
+				resKey: 'floors'
+			})
+		}
+
 		return service;
 	}
 ]);

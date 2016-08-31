@@ -162,6 +162,13 @@
 
 
 
+		<!-- chosen origins -->
+		<div ng-if="appliedFilter.origins.length">
+			URLs: <span>{{ appliedFilter.origin_urls.join(', ') }}</span>
+		</div>
+
+
+
 		<!-- chosen guarantees -->
 		<div ng-if="appliedFilter.guarantees.length">
 			Guarantee Types: <span>{{ appliedFilter.guarantees.join(', ') }}</span>
@@ -217,6 +224,10 @@
 
 		<div ng-if="appliedFilter.campaign_types.length">
 			Campaign Types: <span>{{ appliedFilter.campaign_types.join(', ') }}</span>
+		</div>
+
+		<div ng-if="appliedFilter.floorList.length">
+			Floor(s): <span>{{ appliedFilter.floorList.join(', ') }}</span>
 		</div>
 
 

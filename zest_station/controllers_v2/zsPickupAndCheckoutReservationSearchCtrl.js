@@ -6,7 +6,9 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 	'zsCheckoutSrv',
 	'$stateParams',
 	'$timeout',
-	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams, $timeout) {
+	'zsCheckinSrv',
+	'zsGeneralSrv',
+	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams, $timeout, zsCheckinSrv, zsGeneralSrv) {
 
 
 		//This controller is used for searching reservation using last name
@@ -74,6 +76,41 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			$state.go('zest_station.home');
 		};
 
+		var generalFailureActions = function() {
+			$scope.mode = 'NO_MATCH';
+			$scope.callBlurEventForIpad();
+		};
+
+		var fetchReservationDetailsForCheckingIn = function(reservation_id){
+			
+		var goToCheckinFlow = function(response) {
+				zsCheckinSrv.setSelectedCheckInReservation(response.results);
+				var primaryGuest = _.find(response.results[0].guest_details, function(guest_detail) {
+					return guest_detail.is_primary === true;
+				});
+
+				if ($scope.zestStationData.check_in_collect_nationality) {
+					$state.go('zest_station.collectNationality', {
+						'guestId': primaryGuest.id,
+						'first_name': primaryGuest.first_name,
+						'pickup_key_mode': 'manual'
+					});
+				} else {
+					$state.go('zest_station.checkInReservationDetails', {
+						'first_name': primaryGuest.first_name,
+						'pickup_key_mode': 'manual'
+					});
+				}
+			};
+
+			var options = {
+				params: {'reservation_id':reservation_id},
+				successCallBack: goToCheckinFlow,
+				failureCallBack: generalFailureActions
+			};
+			$scope.callAPI(zsGeneralSrv.fetchCheckinReservationDetails, options);
+		};
+
 		var searchReservation = function() {
 			var checkoutVerificationSuccess = function(data) {
 				if (data.is_checked_out) {
@@ -86,26 +123,37 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 					};
 					$state.go('zest_station.pickUpKeyDispense', stateParams);
 				} else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY' && !data.is_checked_in){
-					checkoutVerificationCallBack();
+					if(data.guest_arriving_today){
+						//go to Checkin flow -- CICO-32703
+						fetchReservationDetailsForCheckingIn(data.reservation_id);
+					}
+					else{
+						generalFailureActions();
+					}
 				} else {
-					var stateParams = {
-						"from": "searchByName",
-						"reservation_id": data.reservation_id,
-						"email": data.email,
-						"guest_detail_id": data.guest_detail_id,
-						"has_cc": data.has_cc,
-						"first_name": data.first_name,
-						"last_name": data.last_name,
-						"days_of_stay": data.days_of_stay,
-						"hours_of_stay": data.hours_of_stay
-					};
-					$state.go('zest_station.checkoutReservationBill', stateParams);
+					//checkout is allowed only if guest is departing 
+					//on the bussiness day
+					if(data.is_departing_today){
+						var stateParams = {
+							"from": "searchByName",
+							"reservation_id": data.reservation_id,
+							"email": data.email,
+							"guest_detail_id": data.guest_detail_id,
+							"has_cc": data.has_cc,
+							"first_name": data.first_name,
+							"last_name": data.last_name,
+							"days_of_stay": data.days_of_stay,
+							"hours_of_stay": data.hours_of_stay
+							};
+						$state.go('zest_station.checkoutReservationBill', stateParams);
+					}
+					else{
+						generalFailureActions();
+					}
+					
 				}
 			};
-			var checkoutVerificationCallBack = function() {
-				$scope.mode = 'NO_MATCH';
-				$scope.callBlurEventForIpad();
-			};
+			
 			var params = {
 				"last_name": $scope.reservationParams.last_name,
 				"room_no": $scope.reservationParams.room_no + ''.replace(/\-/g, '') //adding '' to for non-str values
@@ -117,7 +165,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			var options = {
 				params: params,
 				successCallBack: checkoutVerificationSuccess,
-				failureCallBack: checkoutVerificationCallBack
+				failureCallBack: generalFailureActions
 			};
 			$scope.callAPI(zsCheckoutSrv.findReservation, options);
 		};

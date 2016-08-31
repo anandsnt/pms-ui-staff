@@ -129,6 +129,19 @@ sntZestStation.controller('zsRootCtrl', [
 		};
 
 		/**
+		 * [returnDateObjBasedOnDateFormat description]
+		 * @param  {[type]} dateString [description]
+		 * @return {[type]}            [description]
+		 */
+		$scope.returnDateObjBasedOnDateFormat = function(dateString){
+	        if(typeof dateString !== 'undefined'){
+	            return returnUnformatedDateObj(dateString,$scope.zestStationData.hotelDateFormat);
+	        }else{
+	            return dateString;
+	        }
+   		};
+
+		/**
 		 * Other events
 		 */
 		$scope.$on(zsEventConstants.PUT_OOS, function(event) {
@@ -305,8 +318,22 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.useNavIcons = false;
 		});
 
+		$(window).resize(function(){
+			//restrict keyboard if screen is resized
+			//to lower height
+	    	if(window.innerHeight < 700){
+	    		$scope.hideKeyboardIfUp();
+	    		$scope.runDigestCycle();
+	    	}		      
+		});
+
 
 		$scope.showKeyboardOnInput = function() {
+			//restrict keyboard if screen is resized
+			//to lower height
+			if(window.innerHeight < 700){
+				return;
+			}
 			var frameBody = $("#booking_iframe").contents().find("body");
 			frameBody.focus(function() {
 				console.log('iframe focus')
@@ -328,6 +355,11 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 		};
 		$scope.showOnScreenKeyboard = function(id) {
+			//restrict keyboard if screen is resized
+			//to lower height
+			if(window.innerHeight < 700){
+				return;
+			}
 			$scope.lastKeyboardId = id;
 			//pull up the virtual keyboard (snt) theme... if chrome & fullscreen
 			var isTouchDevice = 'ontouchstart' in document.documentElement,
@@ -461,6 +493,7 @@ sntZestStation.controller('zsRootCtrl', [
 							$scope.zestStationData.timeOut = true;
 						}
 						$scope.runDigestCycle();
+						$scope.hideKeyboardIfUp();
 					} else {
 						//do nothing;
 					}

@@ -235,8 +235,6 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.hasNoTotals = false;
                     setTotalsForReport(totals);//refreshes Totals
 					break;
-				case reportNames['CHECKIN_NOW_OR_LATER']:
-					break;
 
 				default:
 					break;
@@ -375,6 +373,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['ROOM_UPSELL']:
 				case reportNames['MOBILE_CHECKIN']:
 				case reportNames['MOBILE_CHECKIN_NOW']:
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 4;
+					break;
+
+				case reportNames['ROOMS_OOO_OOS']:
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
 					break;
@@ -523,7 +526,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 				'checkNote'       : $scope.chosenReport.chosenOptions['include_notes'],
 				'checkGuest'      : $scope.chosenReport.chosenOptions['show_guests'],
 				'checkCancel'     : $scope.chosenReport.chosenOptions['include_cancelled'] || $scope.chosenReport.chosenOptions['include_cancelled'],
-				'checkRateAdjust' : $scope.chosenReport.chosenOptions['show_rate_adjustments_only']
+				'checkRateAdjust' : $scope.chosenReport.chosenOptions['show_rate_adjustments_only'],
+				'chosenSortBy'    : $scope.chosenReport.chosenSortBy
 			};
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions, $scope.$parent.resultsTotalRow) );
 			// if there are any results
@@ -637,6 +641,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/creditCheckReport/rvCreditCheckReport.html';
+					break;
+
+				case reportNames['ROOMS_OOO_OOS']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/roomOooOosReport/rvRoomOooOosReport.html';
 					break;
 
 				default:

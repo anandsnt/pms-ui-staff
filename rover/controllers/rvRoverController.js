@@ -363,21 +363,22 @@ sntRover.controller('roverController',
         setupLeftMenu();
     });
 
+    
+
     $scope.init = function() {
         BaseCtrl.call(this, $scope);
         $rootScope.adminRole = '';
-
         $scope.selectedMenuIndex = 0;
         $scope.formMenu();
 
         // if menu is open, close it
         $scope.isMenuOpen();
-        $scope.menuOpen = false;
-
+        $scope.menuOpen = false;        
+        $rootScope.showNotificationForCurrentUser = true;           
     };
 
     $scope.init();
-
+    
     /*
      * update selected menu class
      */

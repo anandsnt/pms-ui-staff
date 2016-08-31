@@ -270,15 +270,18 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_36: false,
 			item_37: false,
 			item_38: false,
-			item_39: false
+			item_39: false,
+			item_40: false
 		};
 		$scope.toggleFilterItems = function(item) {
-			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
-				$scope.filterItemsToggle[item] = $scope.filterItemsToggle[item] ? false : true;
+			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
+				$scope.filterItemsToggle[item] = false;
+			}
+			
+			$scope.filterItemsToggle[item] = ! $scope.filterItemsToggle[item];
 
-				console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
-				$rootScope.$broadcast( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
-			};
+			console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
+			$rootScope.$broadcast( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
 		};
 		$scope.resetFilterItemsToggle = function() {
 			_.each($scope.filterItemsToggle, function(value, key) {
@@ -1049,7 +1052,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'guestOrAccount': [],
 					'chargeTypes': [],
 					'users': [],
-					'campaign_types': []
+					'campaign_types': [],
+					'floorList': []
 				};
 			};
 
@@ -1753,6 +1757,29 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					// in case if all sources are selected
 					if ( changeAppliedFilter && report['hasCampaignTypes']['data'].length === selected.length ) {
 						$scope.appliedFilter.campaign_types = ['All Campaigns'];
+					};
+				};
+			};
+
+			// 
+			if ( report.hasOwnProperty('hasFloorList') ) {
+				selected = _.where( report['hasFloorList']['data'], { selected: true } );
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['CAMPAIGN_TYPES'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(source) {
+						params[key].push( source.value );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.floorList.push( source.name );
+						};
+					});
+
+					// in case if all sources are selected
+					if ( changeAppliedFilter && report['hasFloorList']['data'].length === selected.length ) {
+						$scope.appliedFilter.floorList = ['All Floors'];
 					};
 				};
 			};
