@@ -4,12 +4,14 @@ sntRover.controller('RVComparisonReportCtrl', [
 	'$filter',
 	'RVReportUtilsFac',
 	'RVReportMsgsConst',
+	'$timeout',
 	function(
 		$rootScope,
 		$scope,
 		$filter, 
 		reportUtils,
-		reportMsgs
+		reportMsgs,
+		$timeout
 	) {
 
 		var currencySymbol = $rootScope.currencySymbol;
