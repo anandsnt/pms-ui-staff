@@ -91,6 +91,26 @@ sntRover.controller('rvBillCardPopupCtrl',
 
 	};
 
+	/*
+	 * API call edit charge description
+	 */
+	$scope.editChargeDescription = function(newDescription) {
+
+	    var newData = {
+	        "updatedDate": {
+	            "new_description": newDescription
+	        },
+	        "id": $scope.selectedTransaction.id
+	    };
+
+	    var transactionEditSuccessCallback = function(data) {
+	        hideLoaderAndClosePopup();
+	        refreshListWithData(data);
+	    };
+	    $scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback, failureCallBack);
+
+	};
+
 
 /*----------------------------edit charge drop down implementation--------------------------------------*/
 	$scope.chargecodeData = {};

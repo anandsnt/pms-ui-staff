@@ -2,6 +2,7 @@
 <form method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form edit-charge">
     <button class="modal-close" type="button"  ng-click="callActionsPopupAction('close')"  id="modal-close"><span class="icons icon-close invert"></span></button>
     <fieldset id="charge-options" class="actions">
+        <button type="button" class="button purple" ng-click="callActionsPopupAction('custom_description')" ng-hide="hideRemoveAndEdit" translate>CUSTOM_DESCRIPTION</button>
         <button type="button" class="button red" ng-click="callActionsPopupAction('remove')" ng-hide="hideRemoveAndEdit" translate>REMOVE_CHARGE</button>
         <button type="button" class="button blue" ng-click="callActionsPopupAction('split')" translate>SPLIT_CHARGE</button>
         <button type="button" class="button brand-colors" ng-click="callActionsPopupAction('edit')" ng-hide="hideRemoveAndEdit" translate>EDIT_CHARGE</button> 
