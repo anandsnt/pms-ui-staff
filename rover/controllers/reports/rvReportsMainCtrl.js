@@ -1766,14 +1766,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				selected = _.where( report['hasFloorList']['data'], { selected: true } );
 
 				if ( selected.length > 0 ) {
-					key         = reportParams['CAMPAIGN_TYPES'];
+					key         = reportParams['FLOOR'];
 					params[key] = [];
 					/**/
 					_.each(selected, function(source) {
-						params[key].push( source.value );
+						params[key].push( source.floor_number );
 						/**/
 						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.floorList.push( source.name );
+							$scope.appliedFilter.floorList.push( source.floor_number );
 						};
 					});
 
