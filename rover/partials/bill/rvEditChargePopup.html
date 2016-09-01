@@ -1,0 +1,20 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
+    <form method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form edit-charge" ng-click="clearErrorMessage()">
+        <button class="modal-close" type="button"  ng-click="callActionsPopupAction('close')"  id="modal-close"><span class="icons icon-close invert"></span></button>
+
+        <fieldset id="edit-charge" name="edit-charge" class="edit-charge">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <span class="h2 message" translate>EDIT_CHARGE</span>
+            <span class="text">{{selectedTransaction.desc}} </span>
+            <!-- Edit description field -->
+            <div id="edit-amount" class="entry full-width">
+                <label for="new-description" translate>NEW_DESCRIPTION</label>
+                <input name="new-description" id="new-description" placeholder="{{'PLACEHOLDER_NEW_DESCRIPTION' | translate}}" ng-model="newDescription" type="text" />
+            </div>
+            <div>
+                <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editChargeDescription(newDescription)" translate>SAVE_NEW</button>
+                <button type="button" class="button blank guest-bill-edit-buttons" ng-click="callActionsPopupAction('close')" translate>CANCEL</button> 
+            </div>
+        </fieldset>
+    </form>
+</div>

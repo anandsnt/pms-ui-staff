@@ -574,12 +574,14 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.callActionsPopupAction = function(action) {
 
 			ngDialog.close();
-			if (action === "remove") {
-				$scope.openRemoveChargePopup();
+			if (action === "custom_description") {
+			    $scope.openEditChargeDescPopup();
+			} else if (action === "remove") {
+			    $scope.openRemoveChargePopup();
 			} else if (action === "split") {
-				$scope.openSplitChargePopup();
+			    $scope.openSplitChargePopup();
 			} else if (action === "edit") {
-				$scope.openEditChargePopup();
+			    $scope.openEditChargePopup();
 			};
 
 		};
@@ -597,6 +599,18 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				className: '',
 				scope: $scope
 			});
+		};
+
+		/*
+		 * open popup for edit charge code
+		 */
+		$scope.openEditChargeDescPopup = function(){
+			ngDialog.open({
+	    		template: '/assets/partials/bill/rvEditChargePopup.html',
+	    		controller:'RVAccountTransactionsPopupCtrl',
+	    		className: '',
+	    		scope: $scope
+	    	});
 		};
 
 		/*
