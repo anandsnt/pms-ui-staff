@@ -3,27 +3,16 @@ sntRover.controller('RVComparisonReportCtrl', [
 	'$scope',
 	'$filter',
 	'RVReportUtilsFac',
-	function($rootScope, $scope, $filter, reportUtils) {
+	'RVReportMsgsConst',
+	function(
+		$rootScope,
+		$scope,
+		$filter, 
+		reportUtils,
+		reportMsgs
+	) {
 
 		var currencySymbol = $rootScope.currencySymbol;
-
-
-		init();
-
-		// re-render must be initiated before for taks like printing.
-		// thats why timeout time is set to min value 50ms
-		$scope.$on('report.submit', function() {
-			init();
-		});
-		$scope.$on('report.printing', function() {
-			init();
-		});
-		$scope.$on('report.updated', function() {
-			init();
-		});
-		$scope.$on('report.page.changed', function() {
-			init();
-		});
 
 		function init () {
 			var results = $scope.$parent.results,
@@ -75,5 +64,23 @@ sntRover.controller('RVComparisonReportCtrl', [
 
 			return entry;
 		};
+
+		init();
+
+		// re-render must be initiated before for taks like printing.
+		// thats why timeout time is set to min value 50ms
+		var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], function(){ 
+			$timeout(function(){
+				init();
+			}, 50);
+		});
+		var reportPrinting    = $scope.$on(reportMsgs['REPORT_PRINTING'], init);
+		var reportUpdated     = $scope.$on(reportMsgs['REPORT_UPDATED'], init);
+		var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], init);
+
+		$scope.$on('$destroy', reportSubmited);
+		$scope.$on('$destroy', reportUpdated);
+		$scope.$on('$destroy', reportPrinting);
+		$scope.$on('$destroy', reportPageChanged);
     }
 ]);
