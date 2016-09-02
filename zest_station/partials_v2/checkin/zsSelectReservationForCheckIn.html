@@ -13,7 +13,7 @@
                 <div class="details" touch-press="selectReservation(reservation)">
                     <strong class="name">{{reservation.guest_details[0].last_name}}, {{reservation.guest_details[0].first_name}}</strong>
                     <div class="date">
-                        {{reservation.arrival_date | date:dateFormat}} ({{reservation.stay_dates.length-1}} {{hoursNights}})
+                        {{reservation.departure_date | date:dateFormat}} ({{reservation.stay_dates.length-1}} {{'FIND_RESERVATION_HOURLY_NIGHTLY' |translate}})
                         <!--span>{{reservation.room_type}}</span-->
                         <span>{{reservation.stay_dates[0].room_type}}</span>
                     </div>
