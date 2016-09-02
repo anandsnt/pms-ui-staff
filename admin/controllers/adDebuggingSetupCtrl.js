@@ -8,6 +8,7 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
   $scope.successMessage = '';
   $scope.isLoading = true;
   $scope.selectedDevice = "";
+  $scope.selectedIndex = "";
   $scope.searchText = "";
   BaseCtrl.call(this, $scope);
 
@@ -32,12 +33,20 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
       if($scope.searchText == '')
         return true;
       var searchRegExp = new RegExp($scope.searchText.toLowerCase());
-      if(value.device_name != undefined && value.device_name != null && value.device_name != "")
-        return searchRegExp.test(value.device_uid.toLowerCase()) || searchRegExp.test(value.device_name.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase()) || searchRegExp.test(value.device_version.toLowerCase());
-      else if(value.device_version != undefined && value.device_version != null && value.device_version != "")
-        return searchRegExp.test(value.device_uid.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase()) || searchRegExp.test(value.device_version.toLowerCase());
-      else
-        return searchRegExp.test(value.device_uid.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase());
+      // if(value.device_name != undefined && value.device_name != null && value.device_name != "")
+      //   return searchRegExp.test(value.device_uid.toLowerCase()) || searchRegExp.test(value.device_name.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase()) || searchRegExp.test(value.device_version.toLowerCase());
+      // else if(value.device_version != undefined && value.device_version != null && value.device_version != "")
+      //   return searchRegExp.test(value.device_uid.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase()) || searchRegExp.test(value.device_version.toLowerCase());
+      // else
+      //   return searchRegExp.test(value.device_uid.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase());
+   
+      for(var key in value) {
+        if(value[key] != null && value.[key] != "" && typeof value.[key] != 'undefined' && searchRegExp.test(value[key].toLowerCase())){
+            return true;
+        }
+      }
+      return false;
+
    };
 
   $scope.fetchDeviceDebugSetup = function(){
@@ -85,8 +94,9 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
     var saveDebugSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
         $scope.$emit('hideLoader');
+        $scope.deviceList[$scope.selectedIndex] = $scope.selectedDevice;
         $scope.selectedDevice = "";
-
+        $scope.selectedIndex = "";
   };
   var unwantedKeys = ["app_version", "device_type", "logging_start_time", "logging_end_time"];
   var saveData = dclone($scope.selectedDevice, unwantedKeys);
@@ -113,11 +123,15 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
     $scope.selectedDevice.logging_end_time = new Date(new Date().getTime() + (hours * 1000 *60 *60)).toLocaleString();
   }
 
-  $scope.selectDevice = function(event, device){
+  $scope.selectDevice = function(event, device, index){
     if($scope.selectedDevice !== "" && $scope.selectedDevice.device_uid == device.device_uid)
       $scope.selectedDevice = "";
-    else
-      $scope.selectedDevice = device;
+      $scope.selectedIndex = "";
+    else{
+      $scope.selectedIndex = index;
+      $scope.selectedDevice = dclone(device, []);
+    }
+      
   }
 
   var setHoursList = function(){
