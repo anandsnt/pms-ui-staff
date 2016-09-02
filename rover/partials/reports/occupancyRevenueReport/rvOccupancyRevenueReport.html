@@ -25,7 +25,7 @@
                                     <li ng-repeat="market in markets.data" ng-show="market.selected">
                                         <em>{{ market.name }}</em>
                                     </li>
-                                    <li ng-show="markets.selectAll">
+                                    <li ng-show="markets.options.selectAll">
                                         <em>Unassigned</em>
                                     </li>
                                     <!-- .. repeat for all market codes -->
@@ -38,13 +38,13 @@
                                     <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
 
                                     <li>RevPar</li>
-                                    <li >ADR (Incl. Comp.)</li>
-                                    <li >ADR (Excl. Comp.)</li>
+                                    <li>ADR (Incl. Comp.)</li>
+                                    <li>ADR (Excl. Comp.)</li>
 
                                     <li ng-repeat="market in markets.data" ng-show="market.selected">
                                         <em>{{ market.name }}</em>
                                     </li>
-                                    <li ng-show="markets.selectAll">
+                                    <li ng-show="markets.options.selectAll">
                                         <em>Unassigned</em>
                                     </li>
                                     <!-- .. repeat for all markets -->
@@ -87,7 +87,7 @@
                                                             {{absoulte(getMarketOccupancyValue(outerIndex,$index)) | number:0}}
                                                     </td>
                                             </tr>
-                                            <tr ng-show="markets.selectAll" ng-init="outerIndex = markets.data.length">
+                                            <tr ng-show="markets.options.selectAll" ng-init="outerIndex = markets.data.length">
                                                 <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">
                                                     {{ absoulte(getMarketOccupancyValue(outerIndex, $index)) | number : 0 }}
                                                 </td>
@@ -110,7 +110,7 @@
                                                             {{ absoulte(getMarketRevenueValue(outerIndex,$index)) | currency:currencySymbol:2 }}
                                                     </td>
                                             </tr>
-                                            <tr ng-show="markets.selectAll" ng-init="outerIndex = markets.data.length">
+                                            <tr ng-show="markets.options.selectAll" ng-init="outerIndex = markets.data.length">
                                                 <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">
                                                     {{ absoulte(getMarketRevenueValue(outerIndex, $index)) | currency:currencySymbol:2 }}
                                                 </td>
