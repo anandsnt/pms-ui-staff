@@ -109,15 +109,15 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             };
 
             var afterBlackListValidation = function(){
-                    var options = {
-                        params: {
-                            'guest_id': $stateParams.guest_id,
-                            'email': $scope.email
-                        },
-                        successCallBack: updateComplete,
-                        failureCallBack: updateGuestEmailFailed
-                    };
-                    $scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
+                var options = {
+                    params: {
+                        'guest_id': $stateParams.guest_id,
+                        'email': $scope.email
+                    },
+                    successCallBack: updateComplete,
+                    failureCallBack: updateGuestEmailFailed
+                };
+                $scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
             };
             var onBlackListedEmailFound = function(){
                 setInvalidEmailMode();    

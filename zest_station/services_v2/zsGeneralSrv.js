@@ -180,14 +180,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             zsBaseWebSrv.getJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
-                if (!data){
-                    if (data.black_listed_email){
-                        deferred.reject(data);
-                    }
-                } else {
-                    deferred.reject(data);    
-                }
-                
+                deferred.reject(data);    
             });
             return deferred.promise;
         };
