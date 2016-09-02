@@ -67,29 +67,28 @@
 
 <!-- Buttons -->
 <div class="actions" ng-hide="showCCPage || depositPaidSuccesFully">
-    <button type="button" class="button blank modal-close" ng-click="handleCloseDialog()" translate>
-        CANCEL
+    <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
+        CANCEL {{shouldShowMakePaymentButton}}
     </button>
     <button type="button" class="button green" click-touch="submitPayment()"
-            ng-show="!shouldHidePaymentButton() && shouldShowMakePaymentButton && !splitBillEnabled" translate>
+            ng-show="!shouldHidePaymentButton() && !isRefund() && !splitBillEnabled">
         MAKE PAYMENT
     </button>
     <button type="button" class="button green" click-touch="submitPayment()"
-            ng-show="!shouldHidePaymentButton() && shouldShowMakePaymentButton && splitBillEnabled" translate>
-        MAKE PAYMENT ({{splitePaymentDetail["completedSplitPayments"]+1}}/{{splitePaymentDetail["totalNoOfsplits"]}})
+            ng-show="!shouldHidePaymentButton() && !isRefund() && splitBillEnabled">
+        MAKE PAYMENT ({{ completedSplitPayments + 1 }}/{{ numSplits }})
     </button>
     <button type="button" class="button blue" click-touch="submitPayment()"
-            ng-show="!shouldHidePaymentButton() && !shouldShowMakePaymentButton && !splitBillEnabled" translate>
-        REFUND {{currencySymbol}}{{defaultRefundAmount|number:2}}
+            ng-show="!shouldHidePaymentButton() && isRefund() && !splitBillEnabled">
+        REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
     </button>
-    <button type="button" ng-hide="" class="button blue" click-touch="submitPayment()"
-            ng-show="!shouldHidePaymentButton() && !shouldShowMakePaymentButton && splitBillEnabled" translate>
-        REFUND {{currencySymbol}}{{defaultRefundAmount|number:2}}
-        ({{splitePaymentDetail["completedSplitPayments"]+1}}/{{splitePaymentDetail["totalNoOfsplits"]}})
+    <button type="button" class="button blue" click-touch="submitPayment()"
+            ng-show="!shouldHidePaymentButton() && isRefund() && splitBillEnabled">
+        REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }} ({{ completedSplitPayments + 1}}/{{ numSplits }})
     </button>
 </div>
 <div class="actions" ng-hide="!depositPaidSuccesFully">
-    <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>
+    <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="closeThePopup()" translate>
         CLOSE
     </button>
 </div>

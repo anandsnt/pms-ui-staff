@@ -83,7 +83,7 @@
                     bill-number="renderData.billNumberSelected"
                     payment-types="paymentTypes"
                     selected-payment-type="defaultPaymentTypeOfBill"
-                    selected-c-c="reservationBillData.bills[currentActiveBill || 0].credit_card_details"
+                    selected-c-c="reservationBillData.bills[currentActiveBill || 0].selectedCC"
                     amount='renderData.defaultPaymentAmount'
                     action-type="PAYMENT_RESERVATION_BILL"
                     deposit-policy-name="{{depositPolicyName}}"
@@ -93,6 +93,9 @@
                     form-template-url='/assets/partials/payment/rvReservationBillPayment.html'
                     first-name="{{guestCardData.contactInfo.first_name}}"
                     last-name="{{guestCardData.contactInfo.last_name}}"
+                    split-bill-enabled = "splitBillEnabled"
+                    num-splits="splitePaymentDetail.totalNoOfsplits"
+                    completed-split-payments="splitePaymentDetail.completedSplitPayments"
                     ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
         </div>

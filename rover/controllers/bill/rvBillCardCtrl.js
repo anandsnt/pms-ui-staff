@@ -2347,7 +2347,7 @@ sntRover.controller('RVbillCardController',
 	};
 
 
-	 $scope.$on('PAYMENT_SUCCESS', function(event,data) {
+	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event,data) {
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 	 	var billCount = $scope.reservationBillData.bills.length;
 		$scope.isRefreshOnBackToStaycard = true;

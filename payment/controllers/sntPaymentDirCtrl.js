@@ -55,9 +55,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 //set up params for API
                 var params = {
                     "postData": {
-                        "bill_number": $scope.payment.billNumber,
+                        "bill_number": $scope.billNumber,
                         "payment_type": $scope.selectedPaymentType,
-                        "amount": $scope.payment.amount
+                        "amount": $scope.payment.amount,
+                        "is_split_payment": $scope.splitBillEnabled && $scope.numSplits > 1
                     },
                     "reservation_id": $scope.reservationId
                 };
@@ -481,7 +482,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     $scope.payment.showAddToGuestCard = $scope.payment.isManualEntryInsideIFrame ? false : true;
                     refreshIFrame();
                 } else {
-                    changeToCardAddMode();
+                    // In case no card has been selected yet, move to add card mode
+                    !$scope.showSelectedCard() && changeToCardAddMode();
                 }
             } else {
                 $scope.payment.showAddToGuestCard = false;
@@ -619,6 +621,14 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         });
 
         /**
+         * Method to find if a refund is happening
+         * @returns {boolean}
+         */
+        $scope.isRefund = function() {
+            return $scope.payment.amount < 0;
+        };
+
+        /**
          * The gift card toggle to be shown only for connected hotels and IFF
          * Gift card is enabled as a payment type
          * @returns {boolean}
@@ -652,7 +662,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $scope.payment.amount = $scope.amount || 0;
             $scope.payment.isRateSuppressed = $scope.isRateSuppressed || false;
             $scope.payment.isEditable = $scope.isEditable || true;
-            $scope.payment.billNumber = $scope.payment.billNumber || 1;
+            $scope.billNumber = $scope.billNumber || 1;
             $scope.payment.linkedCreditCards = $scope.linkedCreditCards || [];
 
 

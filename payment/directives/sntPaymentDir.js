@@ -1,7 +1,7 @@
 sntPay.directive('sntPayment', function() {
     return {
         restrict: 'E',
-        transclude: 'true',
+        transclude: true,
         scope: {
             hotelConfig: '=',//hotel settings related
             paymentTypes: '=',//the payment types present
@@ -21,7 +21,10 @@ sntPay.directive('sntPayment', function() {
             formTemplateUrl : '@',//the URL of the partial to be laoded as form
             firstName: '@',//first name to be used in six pay iframe
             lastName: '@',//second name to be used in six pay iframe
-            swipedCardData: '@'
+            swipedCardData: '@',
+            splitBillEnabled: '=',
+            numSplits: '=',
+            completedSplitPayments: '='
         },
         link: function(scope, element, attrs) {
             console.log("--From Payment Module Init--");

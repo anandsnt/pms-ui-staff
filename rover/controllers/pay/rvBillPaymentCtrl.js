@@ -34,6 +34,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.shouldShowMakePaymentButton = true;
 		$scope.splitSelected = false;
 		$scope.disableMakePaymentButton = false;
+		$scope.splitBillEnabled = false;
 	};
 
 	var startingAmount = 0;
@@ -173,6 +174,11 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
 	};
+
+	/**
+	 * Listen to cancel event
+     */
+	$scope.$on("CLOSE_DIALOG", $scope.handleCloseDialog);
 
 	/*
 	* Show guest credit card list
@@ -449,8 +455,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			splitAmount:0,
 			carryAmount:0
 		};
-		$scope.messageOfSuccessSplitPayment
-		='';
+		$scope.messageOfSuccessSplitPayment = '';
 		$scope.paymentErrorMessage ='';
 		//reset value
 		if(!$scope.splitBillEnabled){
@@ -638,7 +643,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	var paymentFinalDetails = {};
 
 	var processeRestOfPaymentOperations  = function(){
-		$scope.$emit('PAYMENT_SUCCESS',paymentFinalDetails);
+		$scope.$emit('BILL_PAYMENT_SUCCESS',paymentFinalDetails);
 		updateSplitPaymentDetail();
 		updateSuccessMessage();
 		updateDefaultPaymentAmount();
@@ -700,7 +705,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	/*
 	* Failure call back of submitpayment
 	*/
-	var failedPayment = function(data){
+	var failedPayment = function(e, data){
 		// CICO-23196 : Enable MAKE PAYMENT button on error.
 		$scope.disableMakePaymentButton = false;
 		$scope.$emit("hideLoader");
@@ -1048,5 +1053,27 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			   		};
 		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data,paymentMapSuccess,paymentMapError);
 	};
+
+	var listenerPaymentSuccess = $scope.$on("PAYMENT_SUCCESS", successPayment);
+
+	var listenerPaymentFailure = $scope.$on("PAYMENT_FAILED", failedPayment);
+
+	(function(){
+		_.each($scope.reservationBillData.bills, function(billData) {
+			var cardDetails = billData.credit_card_details;
+			billData.selectedCC = {
+				card_code: cardDetails.card_code,
+				ending_with: cardDetails.card_number,
+				expiry_date: cardDetails.card_expiry,
+				fees_information: cardDetails.fees_information,
+				holder_name: cardDetails.card_name,
+				is_credit_card: cardDetails.payment_type === "CC",
+				value: cardDetails.payment_id
+			}
+		});
+	})();
+
+	$scope.$on('$destroy', listenerPaymentFailure);
+	$scope.$on('$destroy', listenerPaymentSuccess);
 
 }]);
