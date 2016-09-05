@@ -1311,7 +1311,8 @@
             &.deposit-reports,
             &.balance-reports,
             &.log-table,
-            &.card-authorization-check-reports {
+            &.card-authorization-check-reports.
+            &.not-occupied-rooms-reports {
                 th {
                     line-height: 35px;
                     height: 45px;
@@ -1401,6 +1402,27 @@
 
                     &.entity-name {
                         width: 200px;
+                    }
+                }
+            }
+
+            &.not-occupied-rooms-reports {
+                table-layout: fixed;
+
+                thead {
+                    th {
+
+                        &.number {
+                            width:150px;
+                        }
+
+                        &.date {
+                            width: 200px;
+                        }
+
+                        &.days {
+                            width: 100px;
+                        }
                     }
                 }
             }
