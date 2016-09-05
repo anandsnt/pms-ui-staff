@@ -2034,6 +2034,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.$on('cardChanged', function(event, cardIds) {
 				$scope.reservationData.company.id = cardIds.companyCard;
 				$scope.reservationData.travelAgent.id = cardIds.travelAgent;
+				//CICO-32856
+				$stateParams.travel_agent_id = cardIds.travelAgent;
+				$stateParams.company_id = cardIds.companyCard;
 				reInitialize();
 				// Call the availability API and rerun the init method
 			});
