@@ -2329,10 +2329,6 @@ angular.module('sntRover')
 		//CICO-11718
 		// trigger call
 		$scope.clickedOnRoomType();
-
-		setTimeout(function() {
-			$vault.remove('searchReservationData');
-		}, 10);
 	};
 
 	/**
