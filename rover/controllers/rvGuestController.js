@@ -1639,6 +1639,7 @@ angular.module('sntRover').controller('guestCardController', [
 
 		// On selecting comapny card
 		$scope.selectCompany = function(company, useCardRate) {
+			$scope.closeDialog();
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				$scope.reservationData.company.id = company.id;
@@ -1656,6 +1657,8 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.reservationDetails.companyCard.id = company.id;
 				$scope.initCompanyCard(company);
 				$scope.viewState.isAddNewCard = false;
+				//CICO-32856
+				$scope.navigateToRoomAndRates();
 			} else {
 				if (!$scope.reservationDetails.companyCard.futureReservations || $scope.reservationDetails.companyCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('company', company, false, useCardRate);
@@ -1666,6 +1669,7 @@ angular.module('sntRover').controller('guestCardController', [
 		};
 		// On selecting travel agent card
 		$scope.selectTravelAgent = function(travelAgent, useCardRate) {
+			$scope.closeDialog();
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				// Update main reservation scope
@@ -1684,6 +1688,8 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.reservationDetails.travelAgent.id = travelAgent.id;
 				$scope.initTravelAgentCard(travelAgent);
 				$scope.viewState.isAddNewCard = false;
+				//CICO-32856
+				$scope.navigateToRoomAndRates();
 			} else {
 				if (!$scope.reservationDetails.travelAgent.futureReservations || $scope.reservationDetails.travelAgent.futureReservations <= 0) {
 					$scope.replaceCardCaller('travel_agent', travelAgent, false, useCardRate);
