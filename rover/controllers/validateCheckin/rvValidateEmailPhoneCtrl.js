@@ -153,7 +153,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 			$scope.goToRoomAssignment();
                         $scope.emitPutGuestInQueue();
 
-		} else if ($scope.upsellNeeded() && !$scope.checkGuestInFromQueue){
+		} else if ($scope.upsellNeeded() && !$scope.checkGuestInFromQueue && !$scope.reservationData.reservation_card.is_suite){
 			//TO DO : GO TO ROOM UPGRAFED VIEW
 			  $scope.goToUpgrades();
                           $scope.emitPutGuestInQueue();
