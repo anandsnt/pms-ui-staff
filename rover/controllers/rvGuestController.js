@@ -19,7 +19,7 @@ angular.module('sntRover').controller('guestCardController', [
 
 		var initReservation = function() {
 			var fromVault = $vault.get('searchReservationData');
-			var vaultParsed = JSON.parse( fromVault ) || {};
+			var vaultParsed = !!fromVault ? JSON.parse( fromVault ) : {};
 
 			if ( !! fromVault ) {
 				$scope.searchData.guestCard.guestFirstName = vaultParsed.guestFirstName;
