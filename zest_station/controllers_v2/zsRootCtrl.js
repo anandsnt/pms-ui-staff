@@ -133,13 +133,13 @@ sntZestStation.controller('zsRootCtrl', [
 		 * @param  {[type]} dateString [description]
 		 * @return {[type]}            [description]
 		 */
-		$scope.returnDateObjBasedOnDateFormat = function(dateString){
-	        if(typeof dateString !== 'undefined'){
-	            return returnUnformatedDateObj(dateString,$scope.zestStationData.hotelDateFormat);
-	        }else{
-	            return dateString;
-	        }
-   		};
+		$scope.returnDateObjBasedOnDateFormat = function(dateString) {
+			if (typeof dateString !== 'undefined') {
+				return returnUnformatedDateObj(dateString, $scope.zestStationData.hotelDateFormat);
+			} else {
+				return dateString;
+			}
+		};
 
 		/**
 		 * Other events
@@ -318,20 +318,20 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.useNavIcons = false;
 		});
 
-		$(window).resize(function(){
+		$(window).resize(function() {
 			//restrict keyboard if screen is resized
 			//to lower height
-	    	if(window.innerHeight < 700){
-	    		$scope.hideKeyboardIfUp();
-	    		$scope.runDigestCycle();
-	    	}		      
+			if (window.innerHeight < 700) {
+				$scope.hideKeyboardIfUp();
+				$scope.runDigestCycle();
+			}
 		});
 
 
 		$scope.showKeyboardOnInput = function() {
 			//restrict keyboard if screen is resized
 			//to lower height
-			if(window.innerHeight < 700){
+			if (window.innerHeight < 700) {
 				return;
 			}
 			var frameBody = $("#booking_iframe").contents().find("body");
@@ -357,7 +357,7 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.showOnScreenKeyboard = function(id) {
 			//restrict keyboard if screen is resized
 			//to lower height
-			if(window.innerHeight < 700){
+			if (window.innerHeight < 700) {
 				return;
 			}
 			$scope.lastKeyboardId = id;
@@ -552,8 +552,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 			if (!!response.RVCardReadPAN) {
 				$scope.$broadcast('SWIPE_ACTION', response);
-			}
-			else if (response.Command === 'cmd_insert_key_card') {
+			} else if (response.Command === 'cmd_insert_key_card') {
 
 				//check if the UID is valid
 				//if so find reservation using that
@@ -919,7 +918,7 @@ sntZestStation.controller('zsRootCtrl', [
 			console.log(' -:- Station Settings -:- ', setting);
 			console.log('');
 			logSetting('  - Hourly Hotel Mode  :  ', $scope.zestStationData.isHourlyRateOn);
-			
+
 			console.log('  - Payment Gateway    :  ', setting.paymentGateway);
 			console.log('  - Key Writer         :  ', setting.keyWriter);
 			console.log('  - CC Reader          :  ', setting.ccReader);
@@ -1047,7 +1046,7 @@ sntZestStation.controller('zsRootCtrl', [
 				optimizeTouchEventsForChromeApp();
 			}
 			//initCardReadTest(); //debugging, comment out when done
-			
+
 			//flag to check if default language was set or not
 			$scope.zestStationData.IsDefaultLanguageSet = false;
 		}();
