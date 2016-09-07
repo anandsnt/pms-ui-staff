@@ -83,7 +83,29 @@
 				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "showPaymentOption()">{{'NEW_PAYMENT' | translate}}</button>
 
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
-				<div id = "newpaymentview"  ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
+				<div ng-controller="rvRoutesAddPaymentCtrl"
+					 class="payment-form"
+					 ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null">
+					<!--ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"-->
+					<snt-payment
+							hotel-config="hotelPaymentConfig"
+							workstation-id="{{workstation_id}}"
+							reservation-id="{{reservationData.reservation_id}}"
+							bill-number="renderData.billNumberSelected"
+							payment-types="availablePaymentTypes"
+							selected-payment-type="selectedPayment"
+							selected-c-c="renderAddedPayment"
+							amount='renderData.defaultPaymentAmount'
+							action-type="ADD_ROUTE_PAYMENT"
+							deposit-policy-name="{{depositPolicyName}}"
+							is-editable='isDepositEditable'
+							is-rate-suppressed='isReservationRateSuppressed'
+							has-permission='hasPermissionToMakePayment()'
+							form-template-url='/assets/partials/payment/rvRoutesAddPaymentPartial.html'
+							first-name="{{guestCardData.contactInfo.first_name}}"
+							last-name="{{guestCardData.contactInfo.last_name}}">
+					</snt-payment>
+				</div>
 
 				<div ng-hide="isHourlyRateOn || billingEntity === 'GROUP_DEFAULT_BILLING' || selectedEntity.entity_type === 'HOUSE' || selectedEntity.entity_type === 'GROUP'" ng-show="selectedEntity.entity_type === 'RESERVATION' || selectedEntity.entity_type === 'TRAVEL_AGENT' || selectedEntity.entity_type === 'COMPANY_CARD' || billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'">
 					<!-- Posting Amount -->

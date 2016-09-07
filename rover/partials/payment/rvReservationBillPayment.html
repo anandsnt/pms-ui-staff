@@ -22,13 +22,13 @@
     <input ng-change="onPaymentInfoChange()"
            ng-model="payment.amount"
            type="text"
-           ng-disabled="!payment.isEditable"
+           ng-disabled="!payment.isEditable || splitBillEnabled"
            class="amount"
            ng-if="!payment.isRateSuppressed" />
 
 
     <input type="text"
-           ng-disabled="!payment.isEditable"
+           ng-disabled="!payment.isEditable || splitBillEnabled"
            class="amount"
            ng-if="payment.isRateSuppressed"
            value="{{'SUPPRESSED_RATES_TEXT' | translate}}" />

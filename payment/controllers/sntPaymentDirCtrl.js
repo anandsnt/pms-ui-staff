@@ -474,6 +474,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 name: $scope.selectedPaymentType
             });
 
+            $scope.$emit("PAYMENT_TYPE_CHANGED", $scope.selectedPaymentType);
+
             //If the changed payment type is CC and payment gateway is MLI show CC addition options
             //If there are attached cards, show them first
             if (!!selectedPaymentType && selectedPaymentType.name === "CC") {
@@ -561,7 +563,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             var creditCardTypes = _.find($scope.paymentTypes, {
                 name: 'CC'
             });
-            return creditCardTypes.values;
+            return creditCardTypes && creditCardTypes.values || [];
         };
 
         //save CC
@@ -658,6 +660,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $scope.payment.isAddPaymentMode = !!$scope.actionType.match(/^ADD_PAYMENT/);
 
             $scope.$watch('amount', onAmountChange);
+
+            $scope.$watch('paymentTypes', ()=>{
+                $scope.payment.creditCardTypes = getCrediCardTypesList();
+            });
 
             $scope.payment.amount = $scope.amount || 0;
             $scope.payment.isRateSuppressed = $scope.isRateSuppressed || false;

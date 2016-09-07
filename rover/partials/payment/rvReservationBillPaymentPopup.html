@@ -2,7 +2,7 @@
      ng-class="{'modal-show': !modalClosing}">
     <!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
     <form ng-show="!shouldShowWaiting" class="modal-content form pay-bill"
-          ng-class="{'has-card':showCreditCardInfo && !showCCPage && saveData.paymentType ==='CC','select-card':showCCPage}">
+          ng-class="{'select-card':showCreditCardInfo && !showCCPage && saveData.paymentType ==='CC','select-card':showCCPage}">
 
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 

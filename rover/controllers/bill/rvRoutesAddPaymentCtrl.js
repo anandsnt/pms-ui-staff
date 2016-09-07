@@ -171,4 +171,9 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			$scope.showCCPage = false;
 			$scope.swippedCard = false;
 		});
+
+		$scope.$on("PAYMENT_TYPE_CHANGED", function(event, paymentType){
+			$scope.saveData.payment_type = paymentType;
+			$scope.selectPaymentType();
+		});
 }]);
