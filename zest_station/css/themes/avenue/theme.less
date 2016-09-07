@@ -1,0 +1,109 @@
+/* StayNTouch | Zoku Kiosk styles */
+
+/* 1. COLORS
+==========================================================*/
+	@brandColor:			#c0936b;
+	
+	@textColor: 			@white;
+	@backgroundColor: 		@black;
+	
+	@actionColor: 			@white;
+	@actionBackground: 		@brandColor;
+	
+	@inputBackground: 		#707070;
+	@transparentColor: 		rgba(255,255,255,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+	@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+	@background: url("../css/themes/avenue/background.png") no-repeat;
+	@backgroundSize: 		cover;
+	
+
+	@headerIconsColor: 		@white;
+	@headerIconsActive:		@brandColor;
+
+	.icons { 
+		&.icon-create-key {
+			fill: @white;
+			stroke: @white;
+		}
+
+		&.icon-no-print { stroke: @white; }
+
+		&.icon-oos {
+			fill: @white;
+		}
+	}
+
+/* 4. LAYOUT
+==========================================================*/
+	
+	#avenue {
+
+		.button:not(.transparent):not(.blank):not(.option) {
+			background: fade(@actionBackground, 80%);
+		}
+
+		#options li.break {
+			&:after,
+			&:before {
+				width: 4px;
+				border-radius:4px;
+				left: calc( 50% - 2px);
+			}
+		}
+
+		#logo {
+			.logo {
+				width:275px;
+				height: auto;
+			}
+		}
+
+		#actions {
+			&.pull-right {
+				p {
+					strong {
+						font-size: 18px;
+						font-weight: 400;
+						color: @white;
+					}
+					color: #dedfdc
+				}
+			}
+		}
+
+		#header {
+			.button {
+				.icons {
+					fill: #c6c6c6;
+				}
+			}
+		}
+		
+		#options {
+			.icons {
+				fill: @white;
+			}
+		}
+
+		#guests {
+			.button {
+				color: @white;
+				background-color: @black;
+			}
+		}
+
+		#textual,
+		.popup {
+			.icons {
+				fill: @white;
+			}
+		}
+
+		
+	}
