@@ -40,7 +40,12 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		var focuInputField = function(elementId) {
 			$timeout(function() {
 				if (!$scope.isIpad) {
-					document.getElementById(elementId).focus();
+					if (elementId !== 'departure-date'){
+						document.getElementById(elementId).focus();
+					} else if (elementId === 'departure-date'){
+						document.getElementById(elementId).click();
+					}
+					
 				} else {
 					$scope.callBlurEventForIpad();
 				}
