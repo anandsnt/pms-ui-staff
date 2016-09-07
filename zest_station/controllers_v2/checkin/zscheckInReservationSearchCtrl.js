@@ -365,6 +365,13 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 					$scope.mode = 'CHOOSE_OPTIONS';
 				} else if ($scope.mode === 'LAST_NAME_ENTRY') {
 					$state.go('zest_station.home');
+				} else if ($scope.mode === 'FIND_BY_DATE') {
+					$scope.showDatePick = false;
+					$timeout(function() {
+						$scope.mode = 'LAST_NAME_ENTRY';
+						focuInputField('last-name');
+					},100);
+					
 				} else {
 					$scope.mode = 'LAST_NAME_ENTRY';
 					focuInputField('last-name');
