@@ -19,6 +19,19 @@ angular.module('sntRover').controller('RVUpgradesCtrl',['$scope','$state', '$sta
 	// currently used for group reservation
 	var wanted_to_forcefully_assign = false;
 
+	$scope.reservationData = $scope.$parent.reservation;
+
+	/**
+	* function to decide whether or not to show the upgrades
+	*/
+	$scope.isUpsellAvailable = function(){
+		var showUpgrade = false;
+		if($scope.upgradesList.length > 0 && !$scope.reservationData.reservation_card.is_suite && (($scope.reservationData.reservation_card.is_upsell_available === 'true') && ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' || $scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'))){
+			showUpgrade = true;
+		}
+		return showUpgrade;
+	};
+
 	/**
 	 * Utility function to check if a room can be assigned
 	 * @params {Object} room
@@ -56,6 +69,7 @@ angular.module('sntRover').controller('RVUpgradesCtrl',['$scope','$state', '$sta
 			roomType.upgrade_room_number = roomToUpgrade.room_number;
 			roomType.donot_move_room = roomToUpgrade.donot_move_room;
 			$scope.upgradesList.push(roomType)
+			$scope.isUpsellAvailable();
 		});
 
 		$scope.setUpgradesDescriptionInitialStatuses();

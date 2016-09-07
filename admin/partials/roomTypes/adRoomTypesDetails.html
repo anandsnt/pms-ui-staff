@@ -51,7 +51,7 @@
 
 			<ad-checkbox hide="{{ !isRoomStatusImportPerRoomTypeOn || isStandAlone }}" div-class="full-width" is-checked="roomTypeData.is_room_type_ows_request_per_status_type" label="{{ 'SEND_INTERFACE_REQUEST' | translate }}"></ad-checkbox>
 
-			<div class="entry full-width" ng-class="{'hidden': !roomTypeData.is_suite || !isSuiteRoomsAvailable || isHourlyRatesEnabled}">
+			<div class="entry full-width" ng-class="{'hidden': !roomTypeData.is_suite || !isSuiteRoomsAvailable }">
 		        <ul class="room-type-list">
 		            <li ng-repeat="roomTypes in availableRoomTypes">
 		                <span class="room-type-name">{{roomTypes.name}}</span>

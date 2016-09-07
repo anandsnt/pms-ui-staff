@@ -198,7 +198,7 @@
 					<ad-toggle-button label="{{'ADDONS_FOR_RESERVATIONS' | translate}}" is-checked="reservationSettingsData.is_addon_on" ></ad-toggle-button>
 					<ad-toggle-button label="Item Inventory" is-checked="reservationSettingsData.is_item_inventory_on" ></ad-toggle-button>
 
-					<div class="entry">
+					<div class="entry" ng-show="isStandAlone && !isHourlyRatesEnabled">
 						<label>Suite Rooms</label>
 						<div  class="switch-button single" ng-class="{ on :reservationSettingsData.suite_enabled }">
 							<input type="checkbox"  name="upsell-rooms" id="upsell-rooms" ng-click="suiteRoomsSwitchClicked($index)">

@@ -600,6 +600,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
             return (addonCount * quantity);
         };
 
+        //CICO-32856
+        $scope.$on('cardChanged', function(event, cardIds) {
+            setBackButton();
+        });
+
         initController();
     }
 ]);

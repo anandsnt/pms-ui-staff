@@ -1345,15 +1345,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				}
 			};
 
-			// reset 'chosenOptions' and generate params for selected options
+			// reset and generate params for selected options
 			if ( report['hasGeneralOptions']['data'].length ) {
-				report.chosenOptions = {};
 				/**/
 				_.each(report['hasGeneralOptions']['data'], function(each) {
 					if ( each.selected ) {
 						key                             = each.paramKey;
 						params[key]                     = true;
-						report.chosenOptions[key] = true;
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.options.push( each.description );
@@ -1766,14 +1764,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				selected = _.where( report['hasFloorList']['data'], { selected: true } );
 
 				if ( selected.length > 0 ) {
-					key         = reportParams['CAMPAIGN_TYPES'];
+					key         = reportParams['FLOOR'];
 					params[key] = [];
 					/**/
 					_.each(selected, function(source) {
-						params[key].push( source.value );
+						params[key].push( source.floor_number );
 						/**/
 						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.floorList.push( source.name );
+							$scope.appliedFilter.floorList.push( source.floor_number );
 						};
 					});
 
