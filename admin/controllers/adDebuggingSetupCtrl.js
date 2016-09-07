@@ -41,7 +41,7 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
       //   return searchRegExp.test(value.device_uid.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase());
    
       for(var key in value) {
-        if(value[key] != null && value.[key] != "" && typeof value.[key] != 'undefined' && searchRegExp.test(value[key].toLowerCase())){
+        if(value[key] != null && value[key] != "" && typeof value[key] != 'undefined' && searchRegExp.test(value[key].toLowerCase())){
             return true;
         }
       }
@@ -124,10 +124,10 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
   }
 
   $scope.selectDevice = function(event, device, index){
-    if($scope.selectedDevice !== "" && $scope.selectedDevice.device_uid == device.device_uid)
+    if($scope.selectedDevice !== "" && $scope.selectedDevice.device_uid == device.device_uid){
       $scope.selectedDevice = "";
       $scope.selectedIndex = "";
-    else{
+    }else{
       $scope.selectedIndex = index;
       $scope.selectedDevice = dclone(device, []);
     }
