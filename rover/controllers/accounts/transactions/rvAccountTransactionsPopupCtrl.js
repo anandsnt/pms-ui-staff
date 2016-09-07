@@ -118,7 +118,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	    var editData = {
 	        "updatedDate": {
-	            "new_description": newDescription
+	            "custom_charge_description": newDescription
 	        },
 	        "id": $scope.selectedTransaction.id
 	    };

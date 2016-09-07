@@ -485,6 +485,16 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		/**
 		* function to check whether the user has permission
+		* to Edit charge code description.
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToEditChargeCodeDescription = function() {
+			//return rvPermissionSrv.getPermissionValue ('EDIT_CHARGECODE_DESCRIPTION');
+			return true;
+		};
+
+		/**
+		* function to check whether the user has permission
 		* to Split charges
 		* @return {Boolean}
 		*/
