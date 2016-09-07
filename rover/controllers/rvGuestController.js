@@ -1,6 +1,6 @@
 angular.module('sntRover').controller('guestCardController', [
-	'$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv',
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv) {
+	'$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault',
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault) {
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -18,6 +18,16 @@ angular.module('sntRover').controller('guestCardController', [
 		BaseCtrl.call(this, $scope);
 
 		var initReservation = function() {
+			var fromVault = $vault.get('searchReservationData');
+			var vaultParsed = !!fromVault ? JSON.parse( fromVault ) : {};
+
+			if ( !! fromVault ) {
+				$scope.searchData.guestCard.guestFirstName = vaultParsed.guestFirstName;
+				$scope.searchData.guestCard.guestLastName = vaultParsed.guestLastName;
+
+				$vault.remove('searchReservationData');
+			}
+
 			if (!$scope.reservationData.isSameCard || !$scope.otherData.reservationCreated) {
 				// open search list card if any of the search fields are entered on main screen
 				var searchData = $scope.reservationData;
@@ -1639,6 +1649,7 @@ angular.module('sntRover').controller('guestCardController', [
 
 		// On selecting comapny card
 		$scope.selectCompany = function(company, useCardRate) {
+			$scope.closeDialog();
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				$scope.reservationData.company.id = company.id;
@@ -1656,6 +1667,8 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.reservationDetails.companyCard.id = company.id;
 				$scope.initCompanyCard(company);
 				$scope.viewState.isAddNewCard = false;
+				//CICO-32856
+				$scope.navigateToRoomAndRates();
 			} else {
 				if (!$scope.reservationDetails.companyCard.futureReservations || $scope.reservationDetails.companyCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('company', company, false, useCardRate);
@@ -1666,6 +1679,7 @@ angular.module('sntRover').controller('guestCardController', [
 		};
 		// On selecting travel agent card
 		$scope.selectTravelAgent = function(travelAgent, useCardRate) {
+			$scope.closeDialog();
 			//CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
 				// Update main reservation scope
@@ -1684,6 +1698,8 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.reservationDetails.travelAgent.id = travelAgent.id;
 				$scope.initTravelAgentCard(travelAgent);
 				$scope.viewState.isAddNewCard = false;
+				//CICO-32856
+				$scope.navigateToRoomAndRates();
 			} else {
 				if (!$scope.reservationDetails.travelAgent.futureReservations || $scope.reservationDetails.travelAgent.futureReservations <= 0) {
 					$scope.replaceCardCaller('travel_agent', travelAgent, false, useCardRate);

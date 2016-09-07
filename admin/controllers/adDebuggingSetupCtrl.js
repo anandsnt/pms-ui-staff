@@ -85,7 +85,7 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
     var saveDebugSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
         $scope.$emit('hideLoader');
-
+        $scope.selectedDevice = "";
 
   };
   var unwantedKeys = ["app_version", "device_type", "logging_start_time", "logging_end_time"];
