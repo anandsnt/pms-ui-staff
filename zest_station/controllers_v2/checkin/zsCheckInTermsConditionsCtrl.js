@@ -8,7 +8,8 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 	'$stateParams',
 	'$timeout',
 	'$sce',
-	function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $stateParams, $timeout, $sce) {
+	'zsUtilitySrv',
+	function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $stateParams, $timeout, $sce, zsUtilitySrv) {
 
 		/**********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -36,10 +37,63 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			$scope.setScreenIcon('bed');
 		};
 
+		/**
+		 * [checkIfEmailIsBlackListedOrValid description]
+		 * @return {[type]} [description]
+		 */
+		var checkIfEmailIsBlackListedOrValid = function() {
+            return ($stateParams.guest_email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail($stateParams.guest_email));
+        };
+		/**
+         * [afterGuestCheckinCallback description]
+         * @param  {[type]} response [description]
+         * @return {[type]}          [description]
+         */
+        var afterGuestCheckinCallback = function(response) {
+            //if email is valid and is not blacklisted
+            var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid();
+            console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams)
+            var stateParams = {
+                'guest_id': $stateParams.guest_id,
+                'reservation_id': $stateParams.reservation_id,
+                'room_no': $stateParams.room_no,
+                'first_name': $stateParams.first_name
+            };
+
+            console.info('haveValidGuestEmail: ', haveValidGuestEmail);
+            if (haveValidGuestEmail) {
+                stateParams.email = $stateParams.email;
+                $state.go('zest_station.checkinKeyDispense', stateParams);
+            } else {
+                console.warn('to email collection: ', stateParams)
+                $state.go('zest_station.checkInEmailCollection', stateParams);
+            }
+
+        };
+
+        var checkInGuest = function() {
+            var signature = $scope.signatureData;
+            var checkinParams = {
+                'reservation_id': $stateParams.reservation_id,
+                'workstation_id': $scope.zestStationData.set_workstation_id,
+                "authorize_credit_card": false,
+                "do_not_cc_auth": false,
+                "is_promotions_and_email_set": false,
+                "no_post": "",
+                "is_kiosk": true,
+                'signature': signature
+            };
+            var options = {
+                params: checkinParams,
+                successCallBack: afterGuestCheckinCallback
+            };
+            $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+        };
+
 
 		var goToDepositScreen = function() {
 			console.warn('to deposit screen: ', $stateParams.first_name);
-			$state.go('zest_station.checkInDeposit', {
+			var stateparams = {
 				'guest_email': $stateParams.guest_email,
 				'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
 				'payment_type_id': $stateParams.payment_type_id,
@@ -52,22 +106,17 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'mode': 'DEPOSIT',
 				'balance_amount': $stateParams.balance_amount,
 				'confirmation_number': $stateParams.confirmation_number,
-				'pre_auth_amount_at_checkin': $stateParams.pre_auth_amount_at_checkin,
+				'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
 				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
-			});
-		};
-		var goToSignaturePage = function() {
-			console.warn('current state params: @ ', $state.current.name, $stateParams);
-			var stateParams = {
-				'email': $stateParams.guest_email,
-				'reservation_id': $stateParams.reservation_id,
-				'room_no': $stateParams.room_no,
-				'guest_id': $stateParams.guest_id,
-				'first_name': $stateParams.first_name,
-				'guest_email_blacklisted': $stateParams.guest_email_blacklisted
 			};
-			$state.go('zest_station.checkInSignature', stateParams);
+			//check if this page was invoked through pickupkey flow
+			if(!!$stateParams.pickup_key_mode){
+               	stateparams.pickup_key_mode = 'manual';
+          	}
+			$state.go('zest_station.checkInDeposit',  stateparams);
 		};
+		
+
 		var depositAmount = function() {
 			if ($stateParams.deposit_amount) {
 				return Math.ceil(parseFloat($stateParams.deposit_amount));
@@ -95,21 +144,24 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'first_name': $stateParams.first_name,
 				'mode': 'CREDIT_CARD_AUTH',
 				'balance_amount': $stateParams.balance_amount,
-				'pre_auth_amount_at_checkin': $stateParams.pre_auth_amount_at_checkin,
+				'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
 				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 			};
+			//check if this page was invoked through pickupkey flow
+			if(!!$stateParams.pickup_key_mode){
+               	stateParams.pickup_key_mode = 'manual';
+          	}
 			$state.go('zest_station.checkInCardSwipe', stateParams);
 		};
 
 		var nextPageActions = function(byPassCC) {
-			var deposit = depositRequired();
-			var needToAddCC = true; //to be done
-			if (deposit) {
+			//check if depsoit is to be paid
+			if (depositRequired()) {
 				goToDepositScreen();
 			} else if (!byPassCC) {
 				goToCreditCardAuthScreen();
 			} else {
-				goToSignaturePage();
+				checkInGuest();//bye pass CC
 			}
 		};
 

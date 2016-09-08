@@ -6,7 +6,8 @@ angular.module('sntRover').service('RVValidateCheckinSrv',['$http', '$q', 'RVBas
 		var dataToPost = {
 			"email": data.email,
 			"guest_id":data.guest_id,
-			"phone":data.phone
+			"phone":data.phone,
+			"mobile": data.mobile
 		};
 		rvBaseWebSrvV2.putJSON(url, dataToPost).then(function(data) {
 			    deferred.resolve(data);

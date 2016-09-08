@@ -269,10 +269,41 @@ sntRover.controller('RVbillCardController',
 	* to Edit/Split/Move/Delete charges
 	* @return {Boolean}
 	*/
-	$scope.hasPermissionToChangeCharges = function() {
-		return rvPermissionSrv.getPermissionValue ('EDIT_SPLIT_DELETE_CHARGE');
+	var hasPermissionToChangeCharges = function(type) {
+		//hide edit and remove options in case type is  payment
+		var hasRemoveAndEditPermission  = (type !== "PAYMENT") ? true : false;
+	    var split_permission = rvPermissionSrv.getPermissionValue('SPLIT_CHARGES'),
+	        edit_permission = rvPermissionSrv.getPermissionValue('EDIT_CHARGES'),
+	        delete_permission = rvPermissionSrv.getPermissionValue('DELETE_CHARGES');
+	    return ((hasRemoveAndEditPermission && (edit_permission || delete_permission)) || split_permission);
 	};
 
+	/**
+	* function to check whether the user has permission
+	* to Split charges
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToSplitCharges = function() {
+		return rvPermissionSrv.getPermissionValue ('SPLIT_CHARGES');
+	};
+
+	/**
+	* function to check whether the user has permission
+	* to Edit charges
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToEditCharges = function() {
+		return rvPermissionSrv.getPermissionValue ('EDIT_CHARGES');
+	};
+
+	/**
+	* function to check whether the user has permission
+	* to Delete charges
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToDeleteCharges = function() {
+		return rvPermissionSrv.getPermissionValue ('DELETE_CHARGES');
+	};
 
 	/**
 	* function to check whether the user has permission
@@ -326,7 +357,7 @@ sntRover.controller('RVbillCardController',
 	$scope.showEditChargeButton = function(feesType){
 		return ($rootScope.isStandAlone &&
 				feesType!== 'TAX' &&
-				$scope.hasPermissionToChangeCharges());
+				hasPermissionToChangeCharges(feesType));
 	};
 
 	// Refresh registration-content scroller.
@@ -2221,12 +2252,13 @@ sntRover.controller('RVbillCardController',
 
 	$scope.printRegistrationCard = function() {
 		scrollToTop();
-
+		
 		var sucessCallback = function(data) {
 
 			$scope.isPrintRegistrationCard = true;
 
 			$scope.$emit('hideLoader');
+			$scope.printRegistrationCardActive = true;
 			$scope.printRegCardData = data;
 			$scope.errorMessage = "";
 
@@ -2267,11 +2299,10 @@ sntRover.controller('RVbillCardController',
 		    */
 		    $timeout(function() {
 
-
+		    	$scope.printRegistrationCardActive = false;
 				// CICO-9569 to solve the hotel logo issue
 				$("header .logo").removeClass('logo-hide');
 				$("header .h2").addClass('text-hide');
-
 				// remove the orientation after similar delay
 		    	removePrintOrientation();
 		    }, 200);

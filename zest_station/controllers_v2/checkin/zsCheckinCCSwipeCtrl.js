@@ -98,11 +98,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
                     'first_name': $stateParams.first_name,
                     'balance_amount': $stateParams.balance_amount,
-                    'pre_auth_amount_at_checkin': $stateParams.pre_auth_amount_at_checkin,
+                    'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
                     'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
                 };
-
-
+                //check if this page was invoked through pickupkey flow
+                if(!!$stateParams.pickup_key_mode){
+                    stateParams.pickup_key_mode = 'manual';
+                }
                 //need to go to [ last viewed ] screen, terms&conditions may be turned off...
                 $state.go('zest_station.checkInTerms', stateParams);
             }
@@ -404,7 +406,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         var fetchNonDepositAuthorizationForCheckin = function() {
             var authAtCheckinRequired = $stateParams.authorize_cc_at_checkin,
-                authCCAmount = $stateParams.pre_auth_amount_at_checkin;
+                authCCAmount = $stateParams.pre_auth_amount_for_zest_station;
 
             getCCAuthorization(authAtCheckinRequired, authCCAmount, true);
         };
@@ -419,7 +421,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
              * we'll log the auth amount from when the deposit started so we can compare the two values
              */
             var needToAuthorizeAtCheckin = $stateParams.authorize_cc_at_checkin,
-                authCCAmount = $stateParams.pre_auth_amount_at_checkin;
+                authCCAmount = $stateParams.pre_auth_amount_for_zest_station;
             console.log(' :: fetchRemainingAuthForCheckinAfterDeposit ::', needToAuthorizeAtCheckin);
             console.log(' :: last auth amount :: ', authCCAmount);
             getCCAuthAfterDeposit(needToAuthorizeAtCheckin, authCCAmount, true);
@@ -440,7 +442,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     needToAuthorizeAtCheckin = true;
 
                 } else {
-                    amount = response.data.reservation_card.pre_auth_amount_at_checkin;
+                    amount = response.data.reservation_card.pre_auth_amount_for_zest_station;
                     needToAuthorizeAtCheckin = response.data.reservation_card.authorize_cc_at_checkin;
 
                 }

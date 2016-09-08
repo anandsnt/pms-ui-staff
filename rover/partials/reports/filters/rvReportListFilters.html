@@ -387,6 +387,12 @@
     data="uiChosenReport.hasOriginsList.data"
     options="uiChosenReport.hasOriginsList.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasFloorList && uiChosenReport.hasFloorList.data.length"
+    label="Floor"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasFloorList.data"
+    options="uiChosenReport.hasFloorList.options"></multi-option-selection>
+
 <div class="entry" ng-show="uiChosenReport.hasMinRevenue">
     <label>Minimum Revenue</label>
     <input ng-model="uiChosenReport.hasMinRevenue.data" value="" placeholder="Enter Value" type="number" limit-input-range="{'from': 0}" />

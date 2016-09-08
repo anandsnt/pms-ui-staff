@@ -47,7 +47,8 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             room_type_id: $scope.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
                             adults: $scope.reservationData.tabs[$scope.viewState.currentTab].numAdults,
                             children: $scope.reservationData.tabs[$scope.viewState.currentTab].numChildren,
-                            promotion_id : $scope.reservationData.promotionId
+                            promotion_id : $scope.reservationData.promotionId,
+                            allotment_id: $scope.reservationData.allotment.id
 
                         }
                     };
@@ -598,6 +599,11 @@ sntRover.controller('RVReservationAddonsCtrl', [
             var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
             return (addonCount * quantity);
         };
+
+        //CICO-32856
+        $scope.$on('cardChanged', function(event, cardIds) {
+            setBackButton();
+        });
 
         initController();
     }

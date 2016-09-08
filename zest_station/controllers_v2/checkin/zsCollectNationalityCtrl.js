@@ -29,6 +29,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			$scope.selectedCountry = {
 				"id": ""
 			};
+			$scope.$emit('hideLoader');
 		};
 
 
@@ -40,7 +41,13 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 			var reservations = zsCheckinSrv.getCheckInReservations();
 			$state.go('zest_station.checkInReservationSearch');
-			if (reservations.length > 0) {
+			//check if this page was invoked through pickupkey flow
+			if(!!$stateParams.pickup_key_mode){
+				$state.go('zest_station.checkOutReservationSearch', {
+					'mode': 'PICKUP_KEY'
+				});
+            }
+			else if (reservations.length > 0) {
 				$state.go('zest_station.selectReservationForCheckIn');
 			} else {
 				$state.go('zest_station.checkInReservationSearch');

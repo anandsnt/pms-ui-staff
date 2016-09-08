@@ -19,6 +19,19 @@ angular.module('sntRover').controller('RVUpgradesCtrl',['$scope','$state', '$sta
 	// currently used for group reservation
 	var wanted_to_forcefully_assign = false;
 
+	$scope.reservationData = $scope.$parent.reservation;
+
+	/**
+	* function to decide whether or not to show the upgrades
+	*/
+	$scope.isUpsellAvailable = function(){
+		var showUpgrade = false;
+		if($scope.upgradesList.length > 0 && !$scope.reservationData.reservation_card.is_suite && (($scope.reservationData.reservation_card.is_upsell_available === 'true') && ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' || $scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'))){
+			showUpgrade = true;
+		}
+		return showUpgrade;
+	};
+
 	/**
 	 * Utility function to check if a room can be assigned
 	 * @params {Object} room
@@ -54,7 +67,9 @@ angular.module('sntRover').controller('RVUpgradesCtrl',['$scope','$state', '$sta
 				roomToUpgrade	 = _.filter(roomsInRoomType, isRoomReadyToAssign)[0];
 
 			roomType.upgrade_room_number = roomToUpgrade.room_number;
+			roomType.donot_move_room = roomToUpgrade.donot_move_room;
 			$scope.upgradesList.push(roomType)
+			$scope.isUpsellAvailable();
 		});
 
 		$scope.setUpgradesDescriptionInitialStatuses();
@@ -68,30 +83,40 @@ angular.module('sntRover').controller('RVUpgradesCtrl',['$scope','$state', '$sta
 	* function to check occupancy for the reservation
 	*/
 	$scope.showMaximumOccupancyDialog = function(index){
-		var showOccupancyMessage = false;
-		if($scope.upgradesList[index].room_max_occupancy !== "" && $scope.reservation_occupancy !== null){
-				if(parseInt($scope.upgradesList[index].room_max_occupancy) < $scope.reservation_occupancy){
-					showOccupancyMessage = true;
-					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_max_occupancy);
-			}
-		}else if($scope.upgradesList[index].room_type_max_occupancy !== "" && $scope.reservation_occupancy !== null){
-				if(parseInt($scope.upgradesList[index].room_type_max_occupancy) < $scope.reservation_occupancy){
-					showOccupancyMessage = true;
-					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_type_max_occupancy);
+		if($scope.isRoomLockedForThisReservation === "true" || $scope.upgradesList[index].donot_move_room){
+			ngDialog.open({
+                template: '/assets/partials/roomAssignment/rvRoomLocked.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+		} else {
+			var showOccupancyMessage = false;
+			if($scope.upgradesList[index].room_max_occupancy !== "" && $scope.reservation_occupancy !== null){
+					if(parseInt($scope.upgradesList[index].room_max_occupancy) < $scope.reservation_occupancy){
+						showOccupancyMessage = true;
+						$scope.max_occupancy = parseInt($scope.upgradesList[index].room_max_occupancy);
 				}
+			}else if($scope.upgradesList[index].room_type_max_occupancy !== "" && $scope.reservation_occupancy !== null){
+					if(parseInt($scope.upgradesList[index].room_type_max_occupancy) < $scope.reservation_occupancy){
+						showOccupancyMessage = true;
+						$scope.max_occupancy = parseInt($scope.upgradesList[index].room_type_max_occupancy);
+					}
+			}
+
+			$scope.selectedUpgradeIndex = index;
+			if(showOccupancyMessage){
+				ngDialog.open({
+	                  template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
+	                  controller: 'rvMaximumOccupancyDialogController',
+	                  className: 'ngdialog-theme-default',
+	                  scope: $scope
+	                });
+			}else{
+				$scope.selectUpgrade();
+			}
+
 		}
 
-		$scope.selectedUpgradeIndex = index;
-		if(showOccupancyMessage){
-			ngDialog.open({
-                  template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
-                  controller: 'rvMaximumOccupancyDialogController',
-                  className: 'ngdialog-theme-default',
-                  scope: $scope
-                });
-		}else{
-			$scope.selectUpgrade();
-		}
 
 
 	};

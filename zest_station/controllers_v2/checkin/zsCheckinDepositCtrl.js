@@ -35,11 +35,15 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 				'guest_email': $stateParams.guest_email,
 				'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
 				'balance_amount': $stateParams.balance_amount,
-				'pre_auth_amount_at_checkin': $stateParams.pre_auth_amount_at_checkin,
+				'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
 				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin,
 				'deposit_amount': $stateParams.deposit_amount,
 				'confirmation_number': $stateParams.confirmation_number
 			};
+			//check if this page was invoked through pickupkey flow
+			if(!!$stateParams.pickup_key_mode){
+               	stateParams.pickup_key_mode = 'manual';
+          	}
 			console.info('to card swipe ctrl params: ', stateParams)
 			$state.go('zest_station.checkInCardSwipe', stateParams);
 		};
@@ -76,9 +80,13 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 						'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
 						'first_name': $stateParams.first_name,
 						'balance_amount': $stateParams.balance_amount,
-						'pre_auth_amount_at_checkin': $stateParams.pre_auth_amount_at_checkin,
+						'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
 						'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 					}
+					//check if this page was invoked through pickupkey flow
+					if(!!$stateParams.pickup_key_mode){
+               			stateParams.pickup_key_mode = 'manual';
+          			}
 					$state.go('zest_station.checkInTerms', stateParams);
 				}
 			});

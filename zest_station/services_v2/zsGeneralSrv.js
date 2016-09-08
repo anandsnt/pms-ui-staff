@@ -110,6 +110,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             } else return true;
         };
 
+
         this.isValidEmail = function(email) {
             if (email === '') {
                 return false;
@@ -168,6 +169,22 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+
+
+        this.emailIsBlackListed = function(data) {
+            //send email address as string, returns true/false depending on if the domain was found to be blacklisted
+            //in settings/zest//email blacklist
+            var deferred = $q.defer();
+            var url = '/api/black_listed_emails';
+
+            zsBaseWebSrv.getJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);    
+            });
+            return deferred.promise;
+        };
+
         this.fetchHotelTime = function() {
             var deferred = $q.defer(),
                 url = '/api/hotel_current_time.json';
@@ -323,6 +340,18 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 url = 'api/users/check_if_admin';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchCheckinReservationDetails = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/reservations?reservation_id=' + params.reservation_id;
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
