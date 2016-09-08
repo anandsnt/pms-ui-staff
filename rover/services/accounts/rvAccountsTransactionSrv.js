@@ -80,13 +80,32 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var deferred = $q.defer();
 			var trasactionId = data.id;
 			var updatedDate  = data.updatedDate;
-			var url = 'api/financial_transactions/'+trasactionId+'/save_custom_description';
+			var url = 'api/financial_transactions/'+trasactionId;
 			rvBaseWebSrvV2.putJSON(url, updatedDate).then(function(data) {
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
 			});
 
+			return deferred.promise;
+		};
+
+		/*
+		 * Service function to edit charge code description
+		 * @method POST
+		 * @param {object} data
+		 * @return {object} defer promise
+		 */
+
+		this.transactionEditChargeDescription = function(params){
+
+			var deferred = $q.defer();
+			var url = 'api/financial_transactions/'+ params.id +'/save_custom_description';
+			rvBaseWebSrvV2.postJSON(url, params.postData ).then(function(data) {
+			   	 deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});
 			return deferred.promise;
 		};
 

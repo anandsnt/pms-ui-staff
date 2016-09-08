@@ -117,7 +117,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	$scope.editChargeDescription = function(newDescription) {
 
 	    var editData = {
-	        "updatedDate": {
+	        "postData": {
 	            "custom_charge_description": newDescription
 	        },
 	        "id": $scope.selectedTransaction.id
@@ -128,7 +128,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 			loader: 			'NONE',
 			successCallBack: 	hideLoaderAndClosePopup
 		};
-		$scope.callAPI (rvAccountTransactionsSrv.transactionEdit, options);
+		$scope.callAPI (rvAccountTransactionsSrv.transactionEditChargeDescription, options);
 
 	};
 

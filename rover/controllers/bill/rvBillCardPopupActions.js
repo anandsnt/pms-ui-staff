@@ -106,8 +106,8 @@ sntRover.controller('rvBillCardPopupCtrl',
 	$scope.editChargeDescription = function(newDescription) {
 
 	    var newData = {
-	        "updatedDate": {
-	            "new_description": newDescription
+	        "postData": {
+	            "custom_charge_description": newDescription
 	        },
 	        "id": $scope.selectedTransaction.id
 	    };
@@ -116,7 +116,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	        hideLoaderAndClosePopup();
 	        refreshListWithData(data);
 	    };
-	    $scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback, failureCallBack);
+	    $scope.invokeApi(RVBillCardSrv.transactionEditChargeDescription, newData, transactionEditSuccessCallback, failureCallBack);
 
 	};
 
