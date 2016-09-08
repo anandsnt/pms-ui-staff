@@ -314,24 +314,24 @@ sntZestStation.controller('zsAdminCtrl', [
             }
         };
         $scope.debugToggleCount = 0;
-        $scope.toggleDebugMode = function(){
+        $scope.toggleDebugMode = function() {
             //in develop or production, implementations may want to demo a template,
             //this will allow them to set any template into demo mode and go through the steps of a demo mode
             // which will [ simulate CreditCard swipe & Key creation ], but will check in a reservation
-            $scope.debugToggleCount++;  
-            $timeout(function(){
-                if ($scope.debugToggleCount > 3){
+            $scope.debugToggleCount++;
+            $timeout(function() {
+                if ($scope.debugToggleCount > 3) {
                     $scope.showDebugModeOption = true;
                     //refresh view 
                     $scope.runDigestCycle();
                     //resize the view scroller so user can scroll to see demo mode
                     $timeout(refreshScroller, 500);
                     //reset the count
-                    $timeout(function(){
+                    $timeout(function() {
                         $scope.debugToggleCount = 0;
-                    },3000);
-                } 
-            },2000);
+                    }, 3000);
+                }
+            }, 2000);
         };
 
         $scope.showDebugModeOption = false;
@@ -366,7 +366,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 refreshScroller(); //maybe need to update layout, but this works to fix scroll issue on admin after page load
             }, 1000);
             $scope.setScreenIcon('checkin');
-            if ($scope.zestStationData.theme === 'snt'){
+            if ($scope.zestStationData.theme === 'snt') {
                 $scope.showDebugModeOption = true;
             }
 
