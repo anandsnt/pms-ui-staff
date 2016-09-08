@@ -369,37 +369,7 @@ sntRover.controller('roverController',
         setupLeftMenu();
     });
 
-    var fetchReleaseNotes = function(){
-      //Standard parameters,As of now leave it all null
-      var params = {
-        hotel_uuid :null,
-        service_provider_uuid : null,
-        is_read: null
-      };
-      var successReleaseNotesFetch = function(data){
-        $scope.activeNotification = data.results[0];
-      };
-      $scope.invokeApi(RVDashboardSrv.fetchDashboardNotifications, params, successReleaseNotesFetch);
-    };
-
-    $scope.showReleaseNote = function(activeNotification){
-      $window.open(activeNotification.action_source, '_blank');
-    };
-
-    $scope.cancelReleaseNote = function(activeNotification){
-      $rootScope.showNotificationForCurrentUser = false;
-    };
-    $scope.changeNotificationStatus = function(activeNotification){
-      var successCallBack = function(data){
-        $rootScope.showNotificationForCurrentUser = false;
-        $scope.$emit('hideLoader');
-      };
-      $scope.invokeApi(RVDashboardSrv.changeNotificationStatus, activeNotification.id, successCallBack);
-    };
-    var initNotification = function(){
-        $rootScope.showNotificationForCurrentUser = true;
-        fetchReleaseNotes();
-    };
+    
 
     $scope.init = function() {
         BaseCtrl.call(this, $scope);
@@ -409,6 +379,7 @@ sntRover.controller('roverController',
 
         // if menu is open, close it
         $scope.isMenuOpen();
+
         $scope.menuOpen = false;
 
         $rootScope.hotelPaymentConfig = {
@@ -420,8 +391,9 @@ sntRover.controller('roverController',
             isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled
         };
 
-        //Handle Notificatin releated logic.
-        initNotification();
+        $scope.menuOpen = false;        
+        $rootScope.showNotificationForCurrentUser = true;           
+
     };
 
     $scope.init();

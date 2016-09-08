@@ -278,6 +278,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['DEPOSIT_REPORT']:
 				case reportNames['RESERVATIONS_BY_USER']:
 				case reportNames['ZEST_CAMPAIGN_REPORT']:
+				case reportNames['ADDON_FORECAST']:
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
 					break;

@@ -64,8 +64,8 @@
 	                    <label translate>MAX_NUMBER_OF_NIGHTS</label>
 	                    <div class=" select-col col1-2 ">
 	                        <input type="text"  placeholder="{{'PLACEHOLDER_MAX_NUMBER_OF_NIGHTS' | translate }}" name=""  class="col1-3"
-							ng-model="reservationSettingsData.cc_authorization_at_checkin_nights"style="margin-top: 0; width: 200px;"/> 
-							
+							ng-model="reservationSettingsData.cc_authorization_at_checkin_nights"style="margin-top: 0; width: 200px;"/>
+
 						</div>
 					</div>
 					<div ng-show="true" class="entry full-width" >
@@ -104,7 +104,7 @@
 	                    <div class=" select-col col1-2 ">
 	                    	<input type="text"  placeholder="{{'PLACEHOLDER_MAX_NUMBER_OF_NIGHTS' | translate }}" name=""  class="col1-3"
 							ng-model="reservationSettingsData.cc_authorization_for_stay_extension_nights" style="margin-top: 0; width: 200px;"/>
-							
+
 						</div>
 					</div>
 					<div ng-show="true" class="entry full-width" >
@@ -142,7 +142,7 @@
 	                    <label translate>MAX_NUMBER_OF_NIGHTS</label>
 	                    <div class=" select-col col1-2 ">
 	                        <input type="text"  placeholder="{{'PLACEHOLDER_MAX_NUMBER_OF_NIGHTS' | translate }}" name=""  class="col1-3"
-							ng-model="reservationSettingsData.cc_authorization_at_eod_nights" style="margin-top: 0; width: 200px;"/>							
+							ng-model="reservationSettingsData.cc_authorization_at_eod_nights" style="margin-top: 0; width: 200px;"/>
 						</div>
 					</div>
 					<div ng-show="true" class="entry full-width" >
@@ -197,6 +197,15 @@
 					<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on" ></ad-toggle-button>
 					<ad-toggle-button label="{{'ADDONS_FOR_RESERVATIONS' | translate}}" is-checked="reservationSettingsData.is_addon_on" ></ad-toggle-button>
 					<ad-toggle-button label="Item Inventory" is-checked="reservationSettingsData.is_item_inventory_on" ></ad-toggle-button>
+
+					<div class="entry" ng-show="isStandAlone && !isHourlyRatesEnabled">
+						<label>Suite Rooms</label>
+						<div  class="switch-button single" ng-class="{ on :reservationSettingsData.suite_enabled }">
+							<input type="checkbox"  name="upsell-rooms" id="upsell-rooms" ng-click="suiteRoomsSwitchClicked($index)">
+							<span class="switch-icon"></span>
+						</div>
+					</div>
+
 				</fieldset>
 				<fieldset class="holder right  margin-bottom-20-important" ng-if="isStandAlone">
 

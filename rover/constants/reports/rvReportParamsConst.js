@@ -52,5 +52,6 @@ angular.module('reportsModule')
         'RATE_ID'                : 'rate_id',
         'ORIGIN_VALUES'          : 'origin',
         'ORIGIN_URLS'            : 'urls',
-        'CAMPAIGN_TYPES'         : 'campaign_types'
+        'CAMPAIGN_TYPES'         : 'campaign_types',
+        'FLOOR'           : 'floor'
     });

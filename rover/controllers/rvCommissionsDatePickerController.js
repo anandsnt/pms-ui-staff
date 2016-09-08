@@ -1,10 +1,11 @@
 sntRover.controller('RVCommissionsDatePickerController',['$scope','$rootScope','ngDialog','dateFilter',function($scope,$rootScope,ngDialog,dateFilter){
 
+    var businessDate = tzIndependentDate($rootScope.businessDate);
     if($scope.clickedOn === 'FROM'){
-        $scope.date = $scope.filterData.fromDate;
+        $scope.date = !!$scope.filterData.fromDate ? $scope.filterData.fromDate : businessDate;
     }
     else if($scope.clickedOn === 'TO'){
-        $scope.date = $scope.filterData.toDate;
+        $scope.date = !!$scope.filterData.toDate ? $scope.filterData.toDate : businessDate;
     }
 
     $scope.setUpData = function(){

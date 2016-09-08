@@ -9,8 +9,8 @@
 </div>
 
 <div id="pull-load-next" ng-hide="filterOpen">
-  <span id="load-icon"></span>
   <span id="load-text" translate>PULL_LOAD</span>
+  <span id="load-icon"></span>
 </div>
 
 <!-- Search form -->
@@ -160,6 +160,7 @@
                 <span class="{{room.assigned_staff.class}}" >{{room.assigned_staff.name}}</span>
                 <!-- Show only if room is not in service -->
                 <span ng-show="isStandAlone && room.ooOsTitle">
+                    <span> &nbsp; </span> <!-- for print spacing issues -->
                     <span class="service-status" ng-hide="isHourlyRateOn">
                         {{room.ooOsTitle}} until <strong>{{room.service_status.end_date}}</strong>
                     </span>

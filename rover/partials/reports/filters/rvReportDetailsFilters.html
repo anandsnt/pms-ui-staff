@@ -649,12 +649,53 @@
         </a>
         <div class="report-col settings-content" ng-show="chosenReport.hasFloorList && chosenReport.hasFloorList.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_40 }">
             <multi-option-selection 
-            label="Campaign Type(s)"
+            label="Floor"
             on-update="refreshFilterScroll"
             report="chosenReport"
             data="chosenReport.hasFloorList.data"
             options="chosenReport.hasFloorList.options"></multi-option-selection>
-        </div>        
+        </div>
+
+
+        <a href=""
+            class="settings-title toggle has-arrow"
+            ng-show="chosenReport.hasOriginFilter && chosenReport.hasOriginFilter.data.length"
+            ng-class="{ 'active': filterItemsToggle.item_41 }"
+            ng-click="toggleFilterItems('item_41')"
+        >
+            <span class="title">Origin(s)</span>
+        </a>
+        <div class="report-col settings-content"
+            ng-show="chosenReport.hasOriginFilter && chosenReport.hasOriginFilter.data.length"
+            ng-class="{ 'hidden': !filterItemsToggle.item_41 }"
+        >
+            <multi-option-selection ng-show="chosenReport.hasOriginFilter && chosenReport.hasOriginFilter.data.length"
+                label="Origin(s)"
+                on-update="refreshFilterScroll"
+                report="chosenReport"
+                data="chosenReport.hasOriginFilter.data"
+                options="chosenReport.hasOriginFilter.options"
+                affects-filter="chosenReport.hasOriginFilter.affectsFilter"></multi-option-selection>
+        </div>
+        <!-- related options -->
+        <a href=""
+            class="settings-title toggle has-arrow"
+            ng-show="chosenReport.hasOriginFilter && chosenReport.hasURLsList.data.length"
+            ng-class="{ 'active': filterItemsToggle.item_42 }"
+            ng-click="toggleFilterItems('item_42')"
+        >
+            <span class="title">URL(s)</span>
+        </a>
+        <div class="report-col settings-content"
+            ng-show="chosenReport.hasOriginFilter && chosenReport.hasURLsList.data.length"
+            ng-class="{ 'hidden': !filterItemsToggle.item_42 }"
+        >
+            <multi-option-selection ng-show="chosenReport.hasOriginFilter && chosenReport.hasURLsList.data.length"
+                label="URL(s)"
+                on-update="refreshFilterScroll"
+                data="chosenReport.hasURLsList.data"
+                options="chosenReport.hasURLsList.options"></multi-option-selection> 
+        </div>
 
     </div>
 

@@ -107,7 +107,10 @@ sntRover.controller('RVroomAssignmentController',[
 
 		angular.forEach(allAllowedRooms, function(value, key) {
 				if(isRoomSearchAllowed){
-					if(value.room_number.indexOf($scope.searchText) !== -1){
+					// convert room number to uppercase since search text is uppercase CICO-33111
+					roomNum = value.room_number.toUpperCase();
+
+					if(roomNum.indexOf($scope.searchText) !== -1){
 						$scope.filteredRooms.push(value);
 					}
 				}
@@ -179,21 +182,21 @@ sntRover.controller('RVroomAssignmentController',[
 	   			$scope.showMaximumOccupancyDialog(roomObject);
 			} else {
 			    if (!isAvailablityExist) {
-			        if (isOverBookPermission) {
-			            ngDialog.open({
+			    	 if (roomObject.is_suite_room || !isOverBookPermission) {
+			    	 	ngDialog.open({
+			                template: '/assets/partials/roomAssignment/rvRoomTypeNotAvailable.html',
+			                className: 'ngdialog-theme-default',
+			                scope: $scope
+			            });
+			    	 } else {
+			    	 	ngDialog.open({
 			                template: '/assets/partials/roomAssignment/rvOverBookRoom.html',
 			                controller: 'RVOverBookRoomDialogController',
 			                className: 'ngdialog-theme-default',
 			                scope: $scope
 			            });
 
-			        } else {
-			            ngDialog.open({
-			                template: '/assets/partials/roomAssignment/rvRoomTypeNotAvailable.html',
-			                className: 'ngdialog-theme-default',
-			                scope: $scope
-			            });
-			        }
+			    	 }
 			    } else {
 			        $scope.showMaximumOccupancyDialog(roomObject);
 			    }
@@ -692,15 +695,17 @@ sntRover.controller('RVroomAssignmentController',[
 		return ($scope.reservationData.reservation_card.total_nights === 1)?$filter('translate')('NIGHT_LABEL'):$filter('translate')('NIGHTS_LABEL');
 	};
 	/**
+	* Moved this function to RVUpgradesCtrl#26 to fix CICO-33338
 	* function to decide whether or not to show the upgrades
 	*/
-	$scope.isUpsellAvailable = function(){
-		var showUpgrade = false;
-		if(($scope.reservationData.reservation_card.is_upsell_available === 'true') && ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' || $scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN')){
-			showUpgrade = true;
-		}
-		return showUpgrade;
-	};
+	// $scope.isUpsellAvailable = function(){
+	// 	var showUpgrade = false;
+	// 	if(!$scope.reservationData.reservation_card.is_suite && (($scope.reservationData.reservation_card.is_upsell_available === 'true') && ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' || $scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'))){
+	// 		showUpgrade = true;
+	// 	}
+	// 	return showUpgrade;
+	// };
+
 	/**
 	* function to add the predefined filters to the filterlist
 	*/

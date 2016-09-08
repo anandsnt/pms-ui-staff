@@ -9,6 +9,7 @@
 	
 	"ROOM_STATUS": "Room Status",
 	"ENTER_ROOM_NUMBER": "Enter Room Number",
+	"SEARCH_BY_ROOM_NO": "Search by Room No.",
 	"FILTER_ROOMS": "Filter rooms",
 	"CLEAR_QUERY": "Clear query",
 	"CLEAR": "Clear",
@@ -49,15 +50,18 @@
 	"HK_FROM": "From",
 	"HK_TO": "To",
 
-	"PULL_REFRESH": "Pull down to refresh...",
-	"RELEASE_REFRESH": "Release to refresh...",
-	"PULL_LOAD_NEXT": "Pull up to load next page...",
-	"RELEASE_LOAD_NEXT": "Release to load next page...",
-	"PULL_LOAD_PREV": "Pull down to load previous page...",
-	"RELEASE_LOAD_PREV": "Release to load previous page...",
+	"PULL_REFRESH": "Pull down to refresh page",
+	"RELEASE_REFRESH": "Release to refresh page",
+	"PULL_LOAD_NEXT": "Pull up to load next page",
+	"RELEASE_LOAD_NEXT": "Release to load next page",
+	"PULL_LOAD_PREV": "Pull down to load previous page",
+	"RELEASE_LOAD_PREV": "Release to load previous page",
+
 	"ROOM_TYPE_FILTER_TITLE": "Room Type",
 
 	"SELECT_WORK_TYPE" : "Select a Work Type",
+	"WORK_TYPE": "Work Type",
+	"ALL_WORK_TYPES": "All Work Types",
 	"OO" : "Out of Order",
 	"OS" : "Out of Service",
 	"FIND_ROOM_MAID" : "Find Room or Employee",
@@ -86,4 +90,7 @@
 	"STAYOVERS" : "Stayovers",
 	"COMPLETED" : "Completed",
 	"NO_EMPLOYEES_SELECTED" : "No employees selected.",
-	"SELECT_EMPLOYEES_TO_ASSIGN" : "Select employees to assign rooms."
+	"SELECT_EMPLOYEES_TO_ASSIGN" : "Select employees to assign rooms.",
+	"WEB_IN_PROGRESS_HOUSE_KEEPING": "Web Booking In Progress. OOO/OOS request can not be completed"
+
+

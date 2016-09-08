@@ -130,22 +130,30 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 					else{
 						generalFailureActions();
 					}
-					
 				} else {
-					var stateParams = {
-						"from": "searchByName",
-						"reservation_id": data.reservation_id,
-						"email": data.email,
-						"guest_detail_id": data.guest_detail_id,
-						"has_cc": data.has_cc,
-						"first_name": data.first_name,
-						"last_name": data.last_name,
-						"days_of_stay": data.days_of_stay,
-						"hours_of_stay": data.hours_of_stay
-					};
-					$state.go('zest_station.checkoutReservationBill', stateParams);
+					//checkout is allowed only if guest is departing 
+					//on the bussiness day
+					if(data.is_departing_today){
+						var stateParams = {
+							"from": "searchByName",
+							"reservation_id": data.reservation_id,
+							"email": data.email,
+							"guest_detail_id": data.guest_detail_id,
+							"has_cc": data.has_cc,
+							"first_name": data.first_name,
+							"last_name": data.last_name,
+							"days_of_stay": data.days_of_stay,
+							"hours_of_stay": data.hours_of_stay
+							};
+						$state.go('zest_station.checkoutReservationBill', stateParams);
+					}
+					else{
+						generalFailureActions();
+					}
+					
 				}
 			};
+			
 			var params = {
 				"last_name": $scope.reservationParams.last_name,
 				"room_no": $scope.reservationParams.room_no + ''.replace(/\-/g, '') //adding '' to for non-str values

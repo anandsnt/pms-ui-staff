@@ -11,6 +11,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.newPaymentInfo.addToGuestCard = false;
 		$scope.renderData.billNumberSelected = '';
 		$scope.renderData.defaultPaymentAmount = '';
+		$scope.copyOfdefaultPaymentAmount = '';
 		$scope.defaultRefundAmount = 0;
 		//We are passing $scope from bill to this modal
 		$scope.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
@@ -459,7 +460,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.paymentErrorMessage ='';
 		//reset value
 		if(!$scope.splitBillEnabled){
-			$scope.renderData.defaultPaymentAmount = angular.copy(startingAmount );
+			$scope.renderData.defaultPaymentAmount = angular.copy( $scope.copyOfdefaultPaymentAmount );
 			$scope.splitSelected = false;
 		};
 	};
@@ -546,6 +547,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		};
 
 		$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
+		$scope.copyOfdefaultPaymentAmount      = parseFloat(defaultAmount).toFixed(2);
 		$scope.splitePaymentDetail["totalAmount"] = parseFloat(defaultAmount).toFixed(2);
 		$scope.defaultRefundAmount = (-1)*parseFloat($scope.renderData.defaultPaymentAmount);
 

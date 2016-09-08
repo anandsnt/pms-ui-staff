@@ -669,10 +669,10 @@ Padding for the ows error popup
 
 #pull-refresh-page {
   padding: 10px;
-  position:   absolute;
+  position: absolute;
   left: 0;
   right: 0;
-  top: 60px;
+  top: 40px;
   text-align: center;
   display: none;
 
@@ -680,29 +680,25 @@ Padding for the ows error popup
     display: block;
   }
 
-  &.has-options {
-    top: 120px;
-  }
-
   #refresh-icon {
-    background: url(/assets/app/pull-refresh.png) 0 0 no-repeat;
+    background: @arrowDownTrans center no-repeat;
+    background-size: 14px;
     width: 14px;
-    height: 20px;
-    display: inline-block;
-    background-size: 14px 20px;
+    height: 14px;
+    display: block;
+    margin: 0 auto 5px;
     -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+
     &.rotate {
       -webkit-transform: rotateZ(180deg);
+      transform: rotateZ(180deg);
     }
   }
 
   #refresh-text {
-    display: inline-block;
-    height: 20px;
-    line-height: 20px;
-    position: relative;
-    top: -5px;
-    padding-left: 10px;
+    display: block;
+    line-height: 1;
   }
 }
 
@@ -711,7 +707,7 @@ Padding for the ows error popup
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -50px;
+  bottom: -80px;
   text-align: center;
   display: none;
 
@@ -720,24 +716,24 @@ Padding for the ows error popup
   }
 
   #load-icon {
-    background: url(/assets/app/pull-load.png) 0 0 no-repeat;
+    background: @arrowUpTrans center no-repeat;
+    background-size: 14px;
     width: 14px;
-    height: 20px;
-    display: inline-block;
-    background-size: 14px 20px;
+    height: 14px;
+    display: block;
+    margin: 5px auto 0;
     -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+
     &.rotate {
       -webkit-transform: rotateZ(180deg);
+      transform: rotateZ(180deg);
     }
   }
 
   #load-text {
-    display: inline-block;
-    height: 20px;
-    line-height: 20px;
-    position: relative;
-    top: -5px;
-    padding-left: 10px;
+    display: block;
+    line-height: 1;
   }
 }
 
