@@ -18,17 +18,11 @@ this.initScreenKeyboardListener = function(from, id, show) {
   var focused = $('#' + id);
   var defaultLayout, shift, zestStationNonPasswordField;
   isPasswordField = function(i) {
-    if (i && i.indexOf('pass') != -1) {
-      return true;
-    } else return false;
+    return (i && i.indexOf('pass') != -1);
   };
 
   isNumOfDaysField = function(i) {
-    if (i && i.indexOf('no-of-nights') != -1) {
-      return true;
-    } else {
-      return false;
-    }
+    return (i && i.indexOf('no-of-nights') != -1);
   };
 
   if (from === 'login' || isPasswordField(id)) {
