@@ -521,13 +521,42 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// with additional user selected options
 			// the API parser will look throught the report name
 			// to make sure API that doesnt requires any parsing will be returned with any parse
+			var checkGeneralOptions = (function() {
+				var retObj = {
+					include_actions            : false,
+					include_notes              : false,
+					show_guests                : false,
+					include_cancelled          : false,
+					show_rate_adjustments_only : false
+				};
+
+				_.each($scope.chosenReport.hasGeneralOptions.data, function(each) {
+					if ( each.paramKey === 'include_actions' && each.selected ) {
+						retObj.include_actions = true
+					}
+					if ( each.paramKey === 'include_notes' && each.selected ) {
+						retObj.include_notes = true
+					}
+					if ( each.paramKey === 'show_guests' && each.selected ) {
+						retObj.show_guests = true
+					}
+					if ( each.paramKey === 'include_cancelled' && each.selected ) {
+						retObj.include_cancelled = true
+					}
+					if ( each.paramKey === 'show_rate_adjustments_only' && each.selected ) {
+						retObj.show_rate_adjustments_only = true
+					}
+				});
+
+				return retObj;
+			})();
 			var parseAPIoptions = {
 				'groupedByKey'    : $scope.$parent.reportGroupedBy,
-				'checkAction'     : $scope.chosenReport.chosenOptions['include_actions'],
-				'checkNote'       : $scope.chosenReport.chosenOptions['include_notes'],
-				'checkGuest'      : $scope.chosenReport.chosenOptions['show_guests'],
-				'checkCancel'     : $scope.chosenReport.chosenOptions['include_cancelled'] || $scope.chosenReport.chosenOptions['include_cancelled'],
-				'checkRateAdjust' : $scope.chosenReport.chosenOptions['show_rate_adjustments_only'],
+				'checkAction'     : checkGeneralOptions.include_actions,
+				'checkNote'       : checkGeneralOptions.include_notes,
+				'checkGuest'      : checkGeneralOptions.show_guests,
+				'checkCancel'     : checkGeneralOptions.include_cancelled,
+				'checkRateAdjust' : checkGeneralOptions.show_rate_adjustments_only,
 				'chosenSortBy'    : $scope.chosenReport.chosenSortBy
 			};
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions, $scope.$parent.resultsTotalRow) );
