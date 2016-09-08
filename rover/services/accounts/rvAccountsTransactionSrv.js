@@ -80,7 +80,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var deferred = $q.defer();
 			var trasactionId = data.id;
 			var updatedDate  = data.updatedDate;
-			var url = 'api/financial_transactions/'+trasactionId;
+			var url = 'api/financial_transactions/'+trasactionId+'/save_custom_description';
 			rvBaseWebSrvV2.putJSON(url, updatedDate).then(function(data) {
 			   	 deferred.resolve(data);
 			},function(data){
