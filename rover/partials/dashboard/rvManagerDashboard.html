@@ -24,7 +24,7 @@ ng-show="showDashboard" ng-click="clearErrorMessage()">
 	<div class="release-notes_hide">
 		<label class="checkbox inline">
 			<span class="icon-form icon-checkbox"></span>
-			<input type="checkbox" value="1" />
+			<input type="checkbox" value="1" ng-click="changeNotificationStatus(activeNotification)" />
 			Don't Show Again
 		</label>
 	</div>
