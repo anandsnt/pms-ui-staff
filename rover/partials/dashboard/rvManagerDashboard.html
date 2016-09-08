@@ -19,7 +19,7 @@ ng-show="showDashboard" ng-click="clearErrorMessage()">
 
 	</div>
 </section>
-<div class="release-notes note" ng-if="!!activeNotification && showNotificationForCurrentUser && !isIpad">
+<div class="release-notes note" ng-if="!!activeNotification && showNotificationForCurrentUser">
 		<span class="release-notes_text">
 		{{activeNotification.message}}
 		</span>
