@@ -97,7 +97,8 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         var fetchEodLogSuccess = function(data){
             $scope.eodLogDetails = data.eod_processes;
             $scope.nextEodRunTime = data.eod_process_time;
-                      
+            $scope.lastEodRunInHours = data.last_eod_run_in_hours;
+            $scope.lastEodRunInMinutes = data.last_eod_run_in_minutes;                      
             $rootScope.$broadcast('hideLoader');
             $timeout(function() {
                 refreshScroller();           
@@ -107,6 +108,9 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             $rootScope.$broadcast('hideLoader');
         };
         $scope.invokeApi(RVEndOfDayModalSrv.fetchLog,data,fetchEodLogSuccess,fetchEodLogFailure);
+    };
+    $scope.isLastEodRunWithin18Hr = function(){
+        return !isNaN($scope.lastEodRunInHours);
     };
     /*
     * Show date picker
