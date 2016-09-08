@@ -150,7 +150,7 @@
                 >
                     <div class="wrapper">
                         <ul class="worksheet-room"
-                            ng-repeat="(roomIndex, room) in employee.rooms">
+                            ng-repeat="(roomIndex, room) in employee.rooms track by $index">
                             <li class="worksheet-task"
                                 id="assigned-{{ empIndex }}-{{ roomIndex }}-{{ $index }}"
                                 iscroll-stop-propagation

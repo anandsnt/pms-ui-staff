@@ -170,26 +170,35 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				employee = $scope.multiSheetState.selectedEmployees[empIndex];
 
 			var hasRoom = _.find(employee.rooms, { 'room_id': draggedRoom.room_id });
-			
-			// new logic to implement
-            // if user does not have the room
-            // inset new entry at the correct index
-            // ..
-            // if user has the room AND
-            // the room is at correct index
-            // follow the current way
-            // ..
-            // else move the room to correct index
-            // and insert the new task
+			var hasRoomIndex = _.indexOf(employee.rooms, { 'room_id': draggedRoom.room_id });
+
 			if ( !! hasRoom ) {
-				hasRoom.room_tasks.push(draggedTask);
+				hasRoom.room_tasks.push( draggedTask );
 			} else {
-				employee.rooms.push({
-					'room_id': draggedRoom.room_id,
-					'room_index': draggedRoom.room_index,
-					'room_tasks': [draggedTask]
-				});
-			};
+				if ( $scope.dropIndex === 0 ) {
+					employee.rooms.unshift({
+						'room_id': draggedRoom.room_id,
+						'room_index': draggedRoom.room_index,
+						'room_tasks': [draggedTask]
+					})
+				} else if ( $scope.dropIndex === employee.rooms - 1 ) {
+					employee.rooms.push({
+						'room_id': draggedRoom.room_id,
+						'room_index': draggedRoom.room_index,
+						'room_tasks': [draggedTask]
+					})
+				} else {
+					employee.rooms = [].concat(
+							employee.rooms.slice( 0, $scope.dropIndex ),
+							{
+								'room_id': draggedRoom.room_id,
+								'room_index': draggedRoom.room_index,
+								'room_tasks': [draggedTask]
+							},
+							employee.rooms.slice( $scope.dropIndex + 1 )
+						);
+				}
+			}			
 
 			// add the task to "only_tasks" and work_type_id to "touched_work_types"
 			employee.only_tasks.push(draggedTask);
@@ -1037,7 +1046,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				base.checkOnOver = function(room, index) {
 					var $thisRoom = $(room),
 						$nextRoom = $thisRoom.next('.worksheet-room'),
-						nextIndex = index + 1;
+						nextIndex = index + 1,
+						prevIndex = index - 1;
 
 					var TOP_OFFSET = 280,
 						ROOM_MARGIN = 20;
@@ -1063,19 +1073,22 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					if ( y >= top && y <= mid ) {
 						return {
 							method: 'BEFORE',
-							node: $thisRoom
+							node: $thisRoom,
+							index: prevIndex
 						}
 					} else if ( y >= mid && y <= bot ) {
 						return {
 							method: 'AFTER',
-							node: $thisRoom
+							node: $thisRoom,
+							index: nextIndex
 						}
 					} else if ( $nextRoom.length ) {
 						return this.checkOnOver( $nextRoom, nextIndex );
 					} else {
 						return {
 							method: 'AFTER',
-							node: $thisRoom
+							node: $thisRoom,
+							index: nextIndex
 						}
 					}
 				}.bind(base);
@@ -1083,7 +1096,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				base.addPlaceholder = function() {
 					var $col = this.getEmpCol(),
 						firstRoom,
-						index = 0;
+						index = 0,
+						returnIndex = 0;
+
+					var $placeholder = $('<div class="worksheet-room placeholder">Drop Here</div>');
 
 					if ( $col === undefined ) {
 						return;
@@ -1095,24 +1111,31 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					firstRoom = $col.find('.worksheet-room')[0];
 
 					if ( firstRoom === undefined ) {
-						$col.append( '<h2 class="placeholder">PLACEHOLDER</h2>' );
+						returnIndex = 0;
+						$col.find('.wrapper')
+							.append( $placeholder );
 					} else {
-						var that = this.checkOnOver(firstRoom, index);
+						var onOverData = this.checkOnOver(firstRoom, index);
 
-						switch( that.method ) {
+						switch( onOverData.method ) {
 							case 'BEFORE':
-								$('<h2 class="placeholder">PLACEHOLDER</h2>').insertBefore( that.node  );
+								$placeholder.insertBefore( onOverData.node  );
 								break;
 
 							case 'AFTER':
-								$('<h2 class="placeholder">PLACEHOLDER</h2>').insertAfter( that.node );
+								$placeholder.insertAfter( onOverData.node );
 								break;
 
 							default:
-								$col.append( '<h2 class="placeholder">PLACEHOLDER</h2>' );
+								$col.find('.wrapper')
+									.append( $placeholder );
 								break;
-						}
+						};
+
+						returnIndex = onOverData.index;
 					}
+
+					return returnIndex;
 				}.bind(base);
 
 				return base;
@@ -1206,6 +1229,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.dragStart = function() {
 				orderState.startDragging();
 				timer = setInterval( checkHozScrollBy, 1 );
+				$scope.dropIndex = undefined;
 			};
 
 			$scope.dragDrop = function() {
@@ -1220,7 +1244,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			$scope.onOverCol = function(event, index) {
 				orderState.updateEmpCol( $(event.target) );
-				orderState.addPlaceholder();
+				$scope.dropIndex = orderState.addPlaceholder();
 			};
 
 			$scope.userDragging = function(e) {
@@ -1239,8 +1263,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				};
 
 				orderState.updateClientY(e.clientY);
-				// orderState.addPlaceholder();
-				throttledPlaceholder();
+				$scope.dropIndex = orderState.addPlaceholder();
+				//$scope.dropIndex = throttledPlaceholder();
 			};
 		};
 
