@@ -170,7 +170,17 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				employee = $scope.multiSheetState.selectedEmployees[empIndex];
 
 			var hasRoom = _.find(employee.rooms, { 'room_id': draggedRoom.room_id });
-
+			
+			// new logic to implement
+            // if user does not have the room
+            // inset new entry at the correct index
+            // ..
+            // if user has the room AND
+            // the room is at correct index
+            // follow the current way
+            // ..
+            // else move the room to correct index
+            // and insert the new task
 			if ( !! hasRoom ) {
 				hasRoom.room_tasks.push(draggedTask);
 			} else {
@@ -179,17 +189,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					'room_index': draggedRoom.room_index,
 					'room_tasks': [draggedTask]
 				});
-
-				// index = calculateIndex();
-				// employee.rooms = [].concat(
-				// 		employee.rooms.slice(0, index),
-				// 		{
-				// 			'room_id': draggedRoom.room_id,
-				// 			'room_index': draggedRoom.room_index,
-				// 			'room_tasks': [draggedTask]
-				// 		},
-				// 		employee.rooms.slice(index + 1)
-				// 	);
 			};
 
 			// add the task to "only_tasks" and work_type_id to "touched_work_types"
@@ -932,59 +931,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			}
 		}
 
-		var state = function() {
-			var isDragging = false;
-
-			var isDraggingReducer = function(state, action) {
-				var stateX = state === undefined ? false : state;
-
-				switch (action.type) {
-					case 'IS_DRAGGING':
-						return true;
-
-					case 'IS_NOT_DRAGGING':
-						return false;
-
-					default:
-						return stateX;
-				}
-			};
-
-			var isScrollingReducer = function(state, action) {
-				var stateX = state === undefined ? false : state;
-
-				switch (action.type) {
-					case 'IS_SCROLLING':
-						return true;
-
-					case 'IS_NOT_SCROLLING':
-						return false;
-
-					default:
-						return stateX;
-				}
-			};
-
-			var rootReducer = function(action) {
-
-			}
-
-			return {
-				createStore: function() {
-
-				},
-				getState: function() {
-					return {
-						isDragging: isDragging
-					}
-				},
-				dispatch: function(action) {
-					rootReducer(action);
-				}
-			}
-		}
-
-
 		var setUpAutoScroller = function() {
 			var LEFT  = 'LEFT',
 				RIGHT = 'RIGHT',
@@ -1337,49 +1283,5 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		};
 
 		init();
-
-
-
-		// var fillDummyRoom = function(rooms, index) {
-		// 	return rooms;
-		// }
-
-		// var lastOverIndex;
-
-		// $scope.onOver = function(event, over) {
-		// 	var empColId = event.target.id,
-		// 		idSplit = empColId.split('-'),
-		// 		empIndex = parseInt( idSplit[0] ),
-		// 		empId = parseInt( idSplit[1] );
-
-		// 	var source, thatEmpl;
-
-		// 	if ( isNaN(empIndex) ) {
-		// 		// do nothing
-		// 	} else {
-		// 		source = $scope.multiSheetState.selectedEmployees;
-		// 		thatEmpl = source[empIndex];
-		// 	};
-
-		// 	lastOverIndex = empIndex;
-
-		// 	console.log( empIndex, empId, thatEmpl );
-		// }
-
-		// $scope.onOut = function(event, out) {
-		// 	var $out = $(out.draggable).attr('id'),
-		// 		draggedIndex = $out.split('-')[1],
-		// 		roomIndex = parseInt( $out.split('-')[2] ),
-		// 		taskIndex = parseInt( $out.split('-')[3] );
-
-		// 	var source, thatEmpl;
-		// 	if ( 'UA' !== draggedIndex ) {
-		// 		source = $scope.multiSheetState.selectedEmployees;
-		// 		thatEmpl = source[draggedIndex];
-		// 	};
-
-		// 	//console.log( draggedIndex, roomIndex, taskIndex );
-		// 	//console.log( draggedIndex, roomIndex, taskIndex );
-		// }
 	}
 ]);
