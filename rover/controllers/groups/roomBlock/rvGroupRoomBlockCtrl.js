@@ -464,6 +464,40 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			$scope.bookingDataChanging();
 		};
 
+		$scope.fetchCurrentSetOfRoomBlockData = function() {
+			//for pagination in group room block CICO-20097
+			var groupStartDate = $scope.groupConfigData.summary.block_from,
+			groupEndDate   = $scope.groupConfigData.summary.block_to;
+
+			// check lower  bound
+			if (groupStartDate > $scope.timeLineStartDate) {
+				$scope.timeLineStartDate = new tzIndependentDate(groupStartDate);
+			}
+
+			// 14 days are shown by default.
+			$scope.timeLineEndDate = new tzIndependentDate($scope.timeLineStartDate);
+			$scope.timeLineEndDate.setDate($scope.timeLineStartDate.getDate() + 14);
+
+			// check upper bound
+			if ($scope.timeLineStartDate > groupEndDate) {
+				$scope.timeLineStartDate = new tzIndependentDate(groupEndDate);
+			}
+			if ($scope.timeLineEndDate > groupEndDate) {
+				$scope.timeLineEndDate = new tzIndependentDate(groupEndDate);
+			}
+
+			var options = {
+				start_date: formatDateForAPI($scope.timeLineStartDate),
+				end_date: formatDateForAPI($scope.timeLineEndDate)
+			}
+			$scope.fetchRoomBlockGridDetails(options);
+        }
+
+        var formatDateForAPI = function(date) {
+			return $filter('date')(date, $rootScope.dateFormatForAPI)
+		};
+
+
 		/**
 		 * when the booking data changing
 		 * @return undefined
@@ -734,7 +768,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			//as per CICO-16087, we have to refetch the occupancy and availability after saving
 			//so, callinng the API again
-			$scope.fetchRoomBlockGridDetails();
+			$scope.fetchCurrentSetOfRoomBlockData();
 		};
 
 		/**
@@ -1130,7 +1164,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		}
 
 		var successCallBackOfSaveNewRoomTypesAndRates = function () {
-			$scope.fetchRoomBlockGridDetails();
+			$scope.fetchCurrentSetOfRoomBlockData();
 		};
 
 		/**
@@ -1191,6 +1225,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			_.each(data.results, function(eachRoomType) {
 				_.each(eachRoomType.dates, function(dateData) {
 					dateData.old_total = $scope.getTotalBookedOfIndividualRoomType(dateData);
+				//need to keep track of old single,double and triple values
 				});
 			});
 
@@ -1211,9 +1246,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 		/**
 		 * To fetch room block details
+		 * @param {object} [paginationOptions] [pagination options]
 		 * @return {undefined}
 		 */
-		$scope.fetchRoomBlockGridDetails = function() {
+		$scope.fetchRoomBlockGridDetails = function(paginationOptions) {
 			var hasNeccessaryPermission = (hasPermissionToCreateRoomBlock() &&
 				hasPermissionToEditRoomBlock());
 
@@ -1221,9 +1257,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				return;
 			}
 
-			var params = {
+			var params = _.extend(paginationOptions, {
 				group_id: $scope.groupConfigData.summary.group_id
-			};
+			});
 
 			var options = {
 				params: params,
@@ -1257,33 +1293,12 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
          * @return {[type]} [description]
          */
         var callInitialAPIs = function() {
-        	var hasNeccessaryPermission = (hasPermissionToCreateRoomBlock() &&
-				hasPermissionToEditRoomBlock());
+			//default start date
+			$scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
 
-			if (!hasNeccessaryPermission) {
-				$scope.errorMessage = ['Sorry, You dont have enough permission to proceed!!'];
-				return;
-			}
-			if(!$scope.groupConfigData.summary || !$scope.groupConfigData.summary.group_id) {
-				$scope.switchTabTo('SUMMARY');
-			} else {
-				var paramsForRoomBlockDetails = {
-					group_id: $scope.groupConfigData.summary.group_id
-				};
+			// call API. date range end will be calculated in next function.
+			$scope.fetchCurrentSetOfRoomBlockData();
 
-	            var promises = [];
-	            //we are not using our normal API calling since we have multiple API calls needed
-	            $scope.$emit('showLoader');
-
-	            promises.push(rvGroupConfigurationSrv
-	                .getRoomBlockGridDetails(paramsForRoomBlockDetails)
-	                .then(successCallBackOfFetchRoomBlockGridDetails)
-	            );
-
-	            //Lets start the processing
-	            $q.all(promises)
-	                .then(successFetchOfAllReqdForRoomBlock, failedToFetchOfAllReqdForRoomBlock);
-			}
         };
 
 		/**
@@ -1316,7 +1331,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			summaryMemento = _.extend({}, $scope.groupConfigData.summary);
 			//to prevent from initial API calling and only exectutes when group from_date, to_date,status updaet success
 			if ($scope.hasBlockDataUpdated) {
-				$scope.fetchRoomBlockGridDetails();
+				$scope.fetchCurrentSetOfRoomBlockData();
 			}
 		});
 

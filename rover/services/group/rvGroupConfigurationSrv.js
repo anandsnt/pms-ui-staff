@@ -94,7 +94,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			var deferred = $q.defer(),
 				url = '/api/groups/' + param.group_id + '/inventories';
 
-			rvBaseWebSrvV2.getJSON(url).then(
+			rvBaseWebSrvV2.getJSON(url, param).then(
 				function(data) {
 					deferred.resolve(data);
 				},
