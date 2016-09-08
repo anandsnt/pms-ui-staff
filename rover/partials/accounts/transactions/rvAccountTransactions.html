@@ -210,8 +210,7 @@
                                             </span>
                                         </td>
                                         <td class="description">
-                                            <span class="charge icons edited" ng-if="feesData.is_description_edited" ></span>
-                                            <span >
+                                            <span class="charge" ng-class="{ 'icons edited' : feesData.is_description_edited }">
                                                 {{feesData.description}}
                                                 <br />
                                             </span>
