@@ -24,7 +24,9 @@ sntPay.directive('sntPayment', function() {
             swipedCardData: '@',
             splitBillEnabled: '=',
             numSplits: '=',
-            completedSplitPayments: '='
+            completedSplitPayments: '=',
+            notifyNewCard: "=",
+            fetchLinkedCards: "="
         },
         link: function(scope, element, attrs) {
             console.log("--From Payment Module Init--");

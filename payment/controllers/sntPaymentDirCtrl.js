@@ -41,14 +41,6 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             },
             /**
              *
-             */
-            runDigestCycle = function() {
-                if (!$scope.$$phase) {
-                    $scope.$digest();
-                }
-            },
-            /**
-             *
              * @returns {{postData: {bill_number: number, payment_type: string, amount: number}, reservation_id: (*|string)}}
              */
             intiateSubmitPaymentParams = function() {
@@ -214,6 +206,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         };
 
         /********************* Payment Actions *****************************/
+
+        $scope.cancelAction = function(arg) {
+            $scope.$emit('PAYMENT_ACTION_CANCELLED', arg);
+        };
 
         $scope.closeThePopup = function() {
             $scope.$emit('CLOSE_DIALOG');
@@ -526,7 +522,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             // Below is the original condition
             // TODO: Find why toggles was hidden in case of hasAccompanyGuest
             // return $scope.isFromGuestCard  || $scope.hasAccompanyguest || ($scope.cardsList && $scope.cardsList.length === 0)
-            return $scope.actionType === "ADD_PAYMENT_GUEST_CARD" || !existingCardsPresent();
+            return $scope.actionType === "ADD_PAYMENT_GUEST_CARD" || $scope.actionType === "ADD_ROUTE_PAYMENT" || !existingCardsPresent();
         };
         //list the existing cards for the reservation
         var onFetchLinkedCreditCardListSuccess = function(data) {
@@ -587,7 +583,6 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $scope.errorMessage = errorMessage;
             };
 
-
             $scope.$emit('showLoader');
             sntPaymentSrv.savePaymentDetails(cardDetails.apiParams).then(function(response) {
                     if (response.status === "success") {
@@ -604,21 +599,22 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         };
 
         $scope.$on(payEvntConst.CC_TOKEN_GENERATED, function(event, data) {
-            if ($scope.actionType === "ADD_PAYMENT_GUEST_CARD" || !!data.apiParams.mli_token) {
-                $scope.payment.tokenizedCardData = data;
+            var paymentData = data.paymentData;
+
+            if ($scope.actionType === "ADD_PAYMENT_GUEST_CARD" || !!paymentData.apiParams.mli_token) {
+                $scope.payment.tokenizedCardData = paymentData;
 
                 $scope.selectedCC = $scope.selectedCC || {};
 
-                $scope.selectedCC.card_code = data.cardDisplayData.card_code;
-                $scope.selectedCC.ending_with = data.cardDisplayData.ending_with;
-                $scope.selectedCC.expiry_date = data.cardDisplayData.expiry_date;
-                $scope.selectedCC.holder_name = data.apiParams.name_on_card;
+                $scope.selectedCC.card_code = paymentData.cardDisplayData.card_code;
+                $scope.selectedCC.ending_with = paymentData.cardDisplayData.ending_with;
+                $scope.selectedCC.expiry_date = paymentData.cardDisplayData.expiry_date;
+                $scope.selectedCC.holder_name = paymentData.apiParams.name_on_card;
 
                 $scope.payment.screenMode = "PAYMENT_MODE";
-                runDigestCycle();
             } else {
                 $scope.payment.tokenizedCardData = null;
-                saveCCPayment(data);
+                saveCCPayment(paymentData);
             }
         });
 
@@ -652,6 +648,9 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
         (function() {
             $scope.actionType = $scope.actionType || 'DEFAULT';
+            if ($scope.fetchLinkedCards !== false) {
+                $scope.fetchLinkedCards = true;
+            }
 
             /**
              * NOTE: action types for add payment have to be named with ADD_PAYMENT (case-sensitive)
@@ -661,7 +660,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
             $scope.$watch('amount', onAmountChange);
 
-            $scope.$watch('paymentTypes', ()=>{
+            $scope.$watch('paymentTypes', ()=> {
                 $scope.payment.creditCardTypes = getCrediCardTypesList();
             });
 
@@ -694,7 +693,9 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
             $scope.currencySymbol = $scope.hotelConfig.currencySymbol;
 
-            fetchAttachedCreditCards();
+            if($scope.fetchLinkedCards){
+                fetchAttachedCreditCards();
+            }
 
             $scope.$emit('SET_SCROLL_FOR_EXISTING_CARDS');
 

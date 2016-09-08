@@ -1,0 +1,13 @@
+<div class="actions">
+    <button type="button"
+            class="button blank"
+            ng-click = "cancelAction()"
+            translate>
+        CANCEL
+    </button>
+    <button type="button" class="button green"
+            ng-show="selectedPaymentType == 'CC'"
+            ng-click="saveReservationPaymentMethod();">
+        ADD CARD
+    </button>
+</div>

@@ -122,14 +122,14 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 				}
 			}
 			$scope.refreshScroller('newpaymentview');
-			if($scope.paymentGateway !== 'sixpayments'){
+			// if($scope.paymentGateway !== 'sixpayments'){
 				$scope.showCCPage = ($scope.saveData.payment_type === "CC") ? true: false;
 				$scope.swippedCard = ($scope.saveData.payment_type === "CC") ? true: false;
 				$scope.saveData.newPaymentFormVisible = ($scope.saveData.payment_type === "CC") ? true: false;
 				$scope.addmode =($scope.saveData.payment_type === "CC" &&  $scope.cardsList.length === 0) ? true: false;
-			} else {
-				$scope.isManual = false;
-			}
+			// } else {
+			// 	$scope.isManual = false;
+			// }
 		};
 
 		$scope.changeOnsiteCallIn = function(){
@@ -150,6 +150,16 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			$scope.saveData.newPaymentFormVisible = false;
 			$scope.paymentAdded(tokenDetails);
 		});
+
+		$scope.$on("SUCCESS_LINK_PAYMENT", function(event, params){
+			$scope.showCCPage = false;
+			$scope.swippedCard = false;
+			$scope.addmode = false;
+			$scope.saveData.newPaymentFormVisible = false;
+			console.log(params);
+			$scope.onSaveNewCard(params);
+		});
+
 		$scope.$on("RENDER_DATA_ON_BILLING_SCREEN", function(e, swipedCardDataToRender){
 			$scope.showCCPage 						 = true;
 			$scope.addmode                 			 = true;
@@ -176,4 +186,16 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			$scope.saveData.payment_type = paymentType;
 			$scope.selectPaymentType();
 		});
+
+		$scope.$on("PAYMENT_ACTION_CANCELLED", $scope.cancelClicked);
+
+	(function() {
+		$scope.billNumber = $scope.getSelectedBillNumber();
+		$scope.$watch("selectedEntity.to_bill", function() {
+			$scope.billNumber = $scope.getSelectedBillNumber();
+		});
+		$scope.$watch("bills", function() {
+			$scope.billNumber = $scope.getSelectedBillNumber();
+		})
+	})();
 }]);

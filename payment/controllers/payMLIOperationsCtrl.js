@@ -38,7 +38,11 @@ angular.module('sntPay').controller('payMLIOperationsController',
              */
             var notifyParent = function(tokenDetails) {
                 var paymentData = util.formCCTokenGeneratedParams({...$scope.cardData, ...tokenDetails});
-                $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, paymentData);
+                $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, {
+                    paymentData,
+                    tokenDetails,
+                    cardData: $scope.cardData
+                });
             };
 
             /**
@@ -64,7 +68,11 @@ angular.module('sntPay').controller('payMLIOperationsController',
                     ...swipedCardData,
                     ...swipedCardDataToSave
                 });
-                $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, paymentData);
+                $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, {
+                    paymentData,
+                    cardData: $scope.cardData,
+                    tokenDetails: swipedCardData
+                });
             };
 
             /**
@@ -110,7 +118,6 @@ angular.module('sntPay').controller('payMLIOperationsController',
             };
 
             $scope.$on("RENDER_SWIPED_DATA", function(e, data) {
-                console.log(data);
                 renderDataFromSwipe(e, data);
             });
 

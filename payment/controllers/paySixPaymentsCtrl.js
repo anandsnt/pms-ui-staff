@@ -33,7 +33,11 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
                     expiry_date: cardDetails.expiryDate
                 }
             };
-            $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, paymentData);
+            $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, {
+                paymentData,
+                tokenDetails,
+                cardData: cardDetails
+            });
         };
 
 

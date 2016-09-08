@@ -1,4 +1,9 @@
 sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'rvPermissionSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, rvPermissionSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv){
+
+    $scope.routeDetailsState = {
+        newCard: null
+    };
+
 	BaseCtrl.call(this, $scope);
 	$scope.isAddPayment = false;
     $scope.chargeCodeToAdd = "";
@@ -125,6 +130,25 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 		$scope.renderAddedPayment.cardExpiry = swipedCardDataToSave.cardExpiryMonth+"/"+swipedCardDataToSave.cardExpiryYear;
 		$scope.renderAddedPayment.endingWith = swipedCardDataToSave.cardNumber.slice(-4);
      };
+
+
+    $scope.onSaveNewCard = function(data) {
+        $scope.selectedEntity.selected_payment = "";
+        $scope.cardData = data.cardDetails;
+        $scope.renderAddedPayment = {};
+        $scope.renderAddedPayment.payment_type = "CC";
+        $scope.isAddPayment = false;
+        $scope.showPayment  = true;
+
+        $scope.renderAddedPayment.creditCardType = data.cardDetails.card_code;
+        $scope.renderAddedPayment.cardExpiry = data.cardDetails.expiry_date;
+        $scope.renderAddedPayment.endingWith = data.cardDetails.ending_with;
+        /**
+         * This value is updated to proceed in a different workflow IFF a new card has been selected
+         */
+        $scope.routeDetailsState.newCard = data.cardDetails.expiry_date + data.cardDetails.ending_with + data.cardDetails.card_code;
+    };
+
     /**
     * function to show the add payment view
     */
@@ -677,7 +701,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             if($scope.selectedEntity.to_bill === 'new'){
                 $scope.createNewBill();
             }
-            else if( $scope.saveData.payment_type !== null && $scope.saveData.payment_type !== "" && !$scope.isShownExistingCCPayment){
+            else if( $scope.saveData.payment_type !== null && $scope.saveData.payment_type !== "" && !$scope.isShownExistingCCPayment && !$scope.routeDetailsState.newCard){
                 $scope.savePayment();
             }
             else{
