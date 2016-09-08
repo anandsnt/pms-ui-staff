@@ -759,9 +759,6 @@ sntZestStation.controller('zsRootCtrl', [
 				setWorkStationForAdmin();
 			};
 			var onFail = function(response) {
-				if ($scope.timeStopped) {
-					return;
-				}
 				console.warn('fetching workstation list failed:', response);
 				$scope.$emit(zsEventConstants.PUT_OOS);
 			};
