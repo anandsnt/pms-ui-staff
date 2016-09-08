@@ -23,12 +23,29 @@ this.initScreenKeyboardListener = function(from, id, show) {
     } else return false;
   };
 
+  isNumOfDaysField = function(i) {
+    if (i && i.indexOf('no-of-nights') != -1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   if (from === 'login' || isPasswordField(id)) {
     defaultLayout = 'default';
     shift = '{shift}';
     zestStationNonPasswordField = false;
+    zestStationNumDaysField = false;
+    
+  } else if (isNumOfDaysField(id)){
+    zestStationNonPasswordField = true;
+    zestStationNumDaysField = true;
+
+    defaultLayout = 'station_num_keyboard';
+    shift = '';
   } else {
     zestStationNonPasswordField = true;
+    zestStationNumDaysField = false;
     defaultLayout = 'station_keyboard';
     shift = '';
   }
@@ -61,6 +78,9 @@ this.initScreenKeyboardListener = function(from, id, show) {
         "A S D F G H J K L ' @",
         'Z X C V B N M . +',
         shift + ' {space} _ - .com'
+      ],
+      'station_num_keyboard': [
+        '1 2 3 4 5 6 7 8 9 0 {bksp}'
       ],
       'shift': [ //zest station on screen is always caps,default to this
         '! @ # $ % ^ & * ( )',
@@ -244,11 +264,15 @@ this.initScreenKeyboardListener = function(from, id, show) {
     }
   };
 
-
-  if (zestStationNonPasswordField) {
+  if (zestStationNonPasswordField && !zestStationNumDaysField) {
+    //custom keyboard for zest station
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard;
+    $('.ui-keyboard').removeClass('top-align-keyboard');
+  } else if (zestStationNumDaysField){
+    //number of days keyboard, only number input with backspace button
+    keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_num_keyboard;
+    $('.ui-keyboard').addClass('top-align-keyboard');
   }
-
   $(focused).keyboard(keyboardOptions);
 
 
