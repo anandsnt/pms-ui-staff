@@ -489,8 +489,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		* @return {Boolean}
 		*/
 		$scope.hasPermissionToEditChargeCodeDescription = function() {
-			//return rvPermissionSrv.getPermissionValue ('EDIT_CHARGECODE_DESCRIPTION');
-			return true;
+			return rvPermissionSrv.getPermissionValue ('EDIT_CHARGECODE_DESCRIPTION');
 		};
 
 		/**
