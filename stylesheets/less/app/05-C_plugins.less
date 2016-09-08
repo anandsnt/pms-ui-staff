@@ -6563,6 +6563,19 @@
                     }
                 }
             }
+
+            /* Release Notes Full Screen ***/
+            &.release-notes-popup {
+                .square(100%);
+
+                iframe {
+                    .square(100%);
+                }
+
+                @media only screen and (min-width: 600px) {
+                    .square(640px);
+                }
+            }
         }
     }
 
