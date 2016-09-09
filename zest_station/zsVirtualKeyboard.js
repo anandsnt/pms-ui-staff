@@ -16,13 +16,13 @@ this.initScreenKeyboardListener = function(from, id, show) {
   $.keyboard.language.love = $.extend($.keyboard.language.en);
 
   var focused = $('#' + id);
-  var defaultLayout, shift, zestStationNonPasswordField;
+  var defaultLayout, shift, zestStationNonPasswordField, zestStationNumDaysField;
   isPasswordField = function(i) {
-    return (i && i.indexOf('pass') != -1);
+    return (i && i.indexOf('pass') !== -1);
   };
 
   isNumOfDaysField = function(i) {
-    return (i && i.indexOf('no-of-nights') != -1);
+    return (i && i.indexOf('no-of-nights') !== -1);
   };
 
   if (from === 'login' || isPasswordField(id)) {
