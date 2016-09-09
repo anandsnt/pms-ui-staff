@@ -425,6 +425,16 @@ sntZestStation.controller('zsRootCtrl', [
 					qr_arrow: iconBasePath + '/qr-arrow.svg'
 				}
 			};
+			console.warn('-----------------');
+			console.info($scope.zestStationData.key_create_file_uploaded);
+			console.warn('-----------------');
+			var keyCreateIconUploadedData = $scope.zestStationData.key_create_file_uploaded;
+			if (!keyCreateIconUploadedData){
+				$scope.zestStationData.createKeyImageAvailable = false;
+			} else if (keyCreateIconUploadedData.length > 0){
+				$scope.zestStationData.createKeyImageAvailable = true;
+				$scope.icons.createkey = keyCreateIconUploadedData;
+			}
 		};
 
 		/********************************************************************************
