@@ -146,96 +146,129 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			// yeah, the wording is totally confusing :S
 
 			var dragged = $(dropped.draggable).attr('id'),
-				draggedIndex = dragged.split('-')[1],
-				roomIndex = parseInt( dragged.split('-')[2] ),
-				taskIndex = parseInt( dragged.split('-')[3] );
+				fromEmpIndex = dragged.split('-')[1],
+				fromRoomIndex = parseInt( dragged.split('-')[2] ),
+				fromTaskIndex = parseInt( dragged.split('-')[3] );
 
-			var source, thatEmpl;
+			var source, fromEmp;
 
 			var draggedRoom, draggedTask;
 
-			if ( 'UA' === draggedIndex ) {
+			if ( 'UA' === fromEmpIndex ) {
 				source = $scope.multiSheetState.unassignedFiltered;
-				draggedRoom = source[roomIndex];
-				draggedTask = draggedRoom['room_tasks'][taskIndex];
+				draggedRoom = source[fromRoomIndex];
+				draggedTask = draggedRoom['room_tasks'][fromTaskIndex];
 			} else {
 				source = $scope.multiSheetState.selectedEmployees;
-				thatEmpl = source[draggedIndex];
-				draggedRoom = thatEmpl['rooms'][roomIndex];
-				draggedTask = draggedRoom['room_tasks'][taskIndex];
+				fromEmp = source[fromEmpIndex];
+				draggedRoom = fromEmp['rooms'][fromRoomIndex];
+				draggedTask = draggedRoom['room_tasks'][fromTaskIndex];
 			};
 
 			var dropped  = $(event.target).attr('id'),
-				empIndex = parseInt( dropped.split('-')[0] ),
-				employee = $scope.multiSheetState.selectedEmployees[empIndex];
+				toEmpIndex = parseInt( dropped.split('-')[0] ),
+				toEmp = $scope.multiSheetState.selectedEmployees[toEmpIndex];
 
-			var hasRoom = _.find(employee.rooms, { 'room_id': draggedRoom.room_id });
-			var hasRoomIndex = _.indexOf(employee.rooms, { 'room_id': draggedRoom.room_id });
+			var hasRoom = _.find(toEmp.rooms, { 'room_id': draggedRoom.room_id });
+			var hasRoomIndex = _.findIndex(toEmp.rooms, { 'room_id': draggedRoom.room_id });
+			var roomCopy;
+
+			function move(array, from, to) {
+				if( to === from ) return;
+
+				var target = array[from];                         
+				var increment = to < from ? -1 : 1;
+
+				for(var k = from; k != to; k += increment){
+				array[k] = array[k + increment];
+				}
+				array[to] = target;
+				return array;
+			}
 
 			if ( !! hasRoom ) {
-				hasRoom.room_tasks.push( draggedTask );
+				roomCopy = angular.copy(toEmp.rooms);
+				
+				// only insert if this task doesnt exist already
+				if ( ! _.find(hasRoom.room_tasks, { 'id': draggedTask.id }) ) {
+					roomCopy[hasRoomIndex].room_tasks.push( draggedTask );
+				}
+
+				if ( hasRoomIndex > $scope.dropIndex ) {
+					move(roomCopy, hasRoomIndex, $scope.dropIndex);
+				} else {
+					if ( $scope.dropIndex === 0 ) {
+						move(roomCopy, hasRoomIndex, $scope.dropIndex)
+					} else {
+						move(roomCopy, hasRoomIndex, $scope.dropIndex - 1);
+					}
+				}
+
+				toEmp.rooms = roomCopy;
 			} else {
 				if ( $scope.dropIndex === 0 ) {
-					employee.rooms.unshift({
+					toEmp.rooms.unshift({
 						'room_id': draggedRoom.room_id,
 						'room_index': draggedRoom.room_index,
 						'room_tasks': [draggedTask]
 					})
-				} else if ( $scope.dropIndex === employee.rooms - 1 ) {
-					employee.rooms.push({
+				} else if ( $scope.dropIndex === toEmp.rooms - 1 ) {
+					toEmp.rooms.push({
 						'room_id': draggedRoom.room_id,
 						'room_index': draggedRoom.room_index,
 						'room_tasks': [draggedTask]
 					})
 				} else {
-					employee.rooms = [].concat(
-							employee.rooms.slice( 0, $scope.dropIndex ),
+					toEmp.rooms = [].concat(
+							toEmp.rooms.slice( 0, $scope.dropIndex ),
 							{
 								'room_id': draggedRoom.room_id,
 								'room_index': draggedRoom.room_index,
 								'room_tasks': [draggedTask]
 							},
-							employee.rooms.slice( $scope.dropIndex + 1 )
-						);
+							toEmp.rooms.slice( $scope.dropIndex )
+						)
 				}
-			}			
+			}
 
-			// add the task to "only_tasks" and work_type_id to "touched_work_types"
-			employee.only_tasks.push(draggedTask);
-			employee.touched_work_types.push( draggedTask.work_type_id );
-			employee.touched_work_types = _.uniq( _.flatten(employee.touched_work_types) );
+			if ( parseInt(fromEmpIndex) !== toEmpIndex ) {
+				// add the task to "only_tasks" and work_type_id to "touched_work_types"
+				toEmp.only_tasks.push(draggedTask);
+				toEmp.touched_work_types.push( draggedTask.work_type_id );
+				toEmp.touched_work_types = _.uniq( _.flatten(toEmp.touched_work_types) );
 
-			// if task removed from an employee =>
-			// remove the task from "only_tasks"
-			// and if the "work_type_id" in the removed task is not avail
-			// on employee's "room_tasks" anymore then remove it from "touched_work_types"
-			var inOnlyTask, hasOtherTaskWithSameWtid;
-			if ( 'UA' !== draggedIndex ) {
-				// that task with matches the id and room id of dragged task
-				inOnlyTask = _.findIndex(thatEmpl.only_tasks, function(task) {
-					return task.id === draggedTask.id && task.room_id === draggedTask.room_id
-				});
+				// if task removed from an toEmp =>
+				// remove the task from "only_tasks"
+				// and if the "work_type_id" in the removed task is not avail
+				// on toEmp's "room_tasks" anymore then remove it from "touched_work_types"
+				var inOnlyTask, hasOtherTaskWithSameWtid;
+				if ( 'UA' !== fromEmpIndex ) {
+					// that task with matches the id and room id of dragged task
+					inOnlyTask = _.findIndex(fromEmp.only_tasks, function(task) {
+						return task.id === draggedTask.id && task.room_id === draggedTask.room_id
+					});
 
-				if ( inOnlyTask > -1 ) {
-					thatEmpl.only_tasks.splice(inOnlyTask, 1);
+					if ( inOnlyTask > -1 ) {
+						fromEmp.only_tasks.splice(inOnlyTask, 1);
+					};
+
+					hasOtherTaskWithSameWtid = _.find(fromEmp.only_tasks, { work_type_id: draggedTask.work_type_id });
+					if ( ! hasOtherTaskWithSameWtid ) {
+						fromEmp.touched_work_types = _.without(fromEmp.touched_work_types, draggedTask.work_type_id);
+					};
 				};
 
-				hasOtherTaskWithSameWtid = _.find(thatEmpl.only_tasks, { work_type_id: draggedTask.work_type_id });
-				if ( ! hasOtherTaskWithSameWtid ) {
-					thatEmpl.touched_work_types = _.without(thatEmpl.touched_work_types, draggedTask.work_type_id);
+
+				// remove task from draggedRoom
+				draggedRoom['room_tasks'].splice(fromTaskIndex, 1);
+
+				// if the room was dragged off an fromEmp and
+				// if there are no more tasks in the room's room_tasks
+				// remove the room iself!
+				if ( 'UA' !== fromEmpIndex && ! draggedRoom['room_tasks'].length ) {
+					fromEmp['rooms'].splice(fromRoomIndex, 1);
 				};
-			};
-
-
-			// remove task from draggedRoom
-			draggedRoom['room_tasks'].splice(taskIndex, 1);
-
-			// if the room was dragged off an employee and
-			// if there are no more tasks in the room's room_tasks
-			// remove the room iself!
-			if ( 'UA' !== draggedIndex && ! draggedRoom['room_tasks'].length ) {
-				thatEmpl['rooms'].splice(roomIndex, 1);
-			};
+			}
 
 			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
 
@@ -1044,53 +1077,71 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				);
 
 				base.checkOnOver = function(room, index) {
-					var $thisRoom = $(room),
-						$nextRoom = $thisRoom.next('.worksheet-room'),
-						nextIndex = index + 1,
-						prevIndex = index - 1;
+					var $thisRoom, $nextRoom, nextIndex;
 
-					var TOP_OFFSET = 280,
-						ROOM_MARGIN = 20;
+					var TOP_OFFSET = 280, ROOM_MARGIN = 20;
 
-					var roomHeight = $thisRoom.height(),
-						height = this.getTotalHeight(),
-						top,
-						mid,
-						bot;
+					var roomHeight, prevHeight, top, mid, bot, clienty;
 
-					if ( index === 0 ) {
-						top = TOP_OFFSET + height;
-					} else {
-						top = height;
+					var retObj;
+
+					$thisRoom = $(room);
+					$nextRoom = $thisRoom.next('.worksheet-room');
+					nextIndex = index + 1;
+					if ( $nextRoom.hasClass('.placeholder')  ) {
+						$nextRoom = $thisRoom.next('.worksheet-room').next('.worksheet-room')
 					}
-					mid = top + roomHeight / 2,
+
+					roomHeight = $thisRoom.height();
+					prevHeight = this.getTotalHeight();
+					/**/
+					if ( index === 0 ) {
+						top = TOP_OFFSET + prevHeight;
+					} else {
+						top = prevHeight;
+					}
+					mid = top + roomHeight / 2;
 					bot = top + roomHeight + ROOM_MARGIN;
+					/**/
+					this.setTotalHeight( prevHeight + roomHeight );
 
-					this.setTotalHeight( height + roomHeight );
+					clienty = this.getClientY();
 
-					var y = this.getClientY();
-
-					if ( y >= top && y <= mid ) {
-						return {
+					if ( clienty < top ) {
+						retObj = {
 							method: 'BEFORE',
 							node: $thisRoom,
-							index: prevIndex
+							index: index
 						}
-					} else if ( y >= mid && y <= bot ) {
-						return {
-							method: 'AFTER',
-							node: $thisRoom,
-							index: nextIndex
+					} else if ( clienty > bot ) {
+						if ( $nextRoom.length ) {
+							retObj = this.checkOnOver( $nextRoom, nextIndex );
+						} else {
+							retObj = {
+								method: 'AFTER',
+								node: $thisRoom,
+								index: nextIndex
+							}
 						}
-					} else if ( $nextRoom.length ) {
-						return this.checkOnOver( $nextRoom, nextIndex );
 					} else {
-						return {
-							method: 'AFTER',
-							node: $thisRoom,
-							index: nextIndex
+						if ( clienty < mid ) {
+							retObj = {
+								method: 'BEFORE',
+								node: $thisRoom,
+								index: index
+							}
+						} else {
+							retObj = {
+								method: 'AFTER',
+								node: $thisRoom,
+								index: nextIndex
+							}
 						}
 					}
+
+					console.log( retObj );
+
+					return retObj;
 				}.bind(base);
 
 				base.addPlaceholder = function() {
@@ -1193,13 +1244,13 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			var checkHozScrollBy = function() {
 				var scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
 
-				if ( dragDir === LEFT && scrollInst.x !== 0 && scrollInst.x < dimX.scrollXStart ) {
+				if ( dragDir === LEFT && scrollInst.x !== 0 && scrollInst.x < dimX.scrollStart ) {
 					scrollInst.scrollBy(10, 0, 1);
 					orderState.startScrolling();
 					return;
 				};
 
-				if ( dragDir === RIGHT && scrollInst.x > dimX.scrollXEnd ) {
+				if ( dragDir === RIGHT && scrollInst.x > dimX.scrollEnd ) {
 					scrollInst.scrollBy(-10, 0, 1);
 					orderState.startScrolling();
 					return;
@@ -1221,6 +1272,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				if ( dragDir === BOTTOM && scrollInst.y > dimX.scrollXEnd ) {
 					scrollInst.scrollBy(0, -10, 1);
 				};
+
+				$scope.dropIndex = orderState.addPlaceholder();
 			};
 
 			var throttledPlaceholder = _.throttle(orderState.addPlaceholder, 1000, { leading: false });
@@ -1248,11 +1301,11 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			};
 
 			$scope.userDragging = function(e) {
-				if ( e.clientX > dimX.screenXEnd ) {
+				if ( e.clientX > dimX.screenEnd ) {
 				    if ( dragDir !== RIGHT ) {
 				        dragDir = RIGHT;
 				    };
-				} else if ( e.clientX < dimX.screenXStart ) {
+				} else if ( e.clientX < dimX.screenStart ) {
 				    if ( dragDir !== LEFT ) {
 				        dragDir = LEFT;
 				    };
@@ -1264,7 +1317,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 				orderState.updateClientY(e.clientY);
 				$scope.dropIndex = orderState.addPlaceholder();
-				//$scope.dropIndex = throttledPlaceholder();
 			};
 		};
 
