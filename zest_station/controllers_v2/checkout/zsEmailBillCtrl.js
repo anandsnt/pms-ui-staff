@@ -89,30 +89,30 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		};
 
 
-        var checkIfEmailIsBlacklisted = function(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure){
-            var blacklistCheckOptions = {
-                params: {
-                    'email': $scope.email
-                },
-                successCallBack: function(data){
-                    //onSuccess, 
-                    if (!data.black_listed_email){
-                        afterBlackListValidation();
+		var checkIfEmailIsBlacklisted = function(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure) {
+			var blacklistCheckOptions = {
+				params: {
+					'email': $scope.email
+				},
+				successCallBack: function(data) {
+					//onSuccess, 
+					if (!data.black_listed_email) {
+						afterBlackListValidation();
 
-                    } else{
-                        console.warn('email is black listed, request different email address');
-                        onBlackListedEmailFound();
-                    };
-                },
-                failureCallBack: onValidationAPIFailure
-            };
-            $scope.callAPI(zsGeneralSrv.emailIsBlackListed, blacklistCheckOptions);
-        }
+					} else {
+						console.warn('email is black listed, request different email address');
+						onBlackListedEmailFound();
+					};
+				},
+				failureCallBack: onValidationAPIFailure
+			};
+			$scope.callAPI(zsGeneralSrv.emailIsBlackListed, blacklistCheckOptions);
+		}
 
 		var callSaveEmail = function() {
 			$scope.callBlurEventForIpad();
-			
-			var afterBlackListValidation = function(){
+
+			var afterBlackListValidation = function() {
 				var params = {
 					"guest_detail_id": $stateParams.guest_detail_id,
 					"email": $scope.email
@@ -129,19 +129,19 @@ sntZestStation.controller('zsEmailBillCtrl', [
 				$scope.callAPI(zsCheckoutSrv.saveEmail, options);
 			};
 
-            var onBlackListedEmailFound = function(){
-                $scope.emailError = true;   
-            };
-            var onValidationAPIFailure = function(){
-                updateGuestEmailFailed();
-            };
-            //
-            //future story, enable black-list check here
-            //
-            //checks if new email is blacklisted, if so, set invalid email mode
-            //otherwise, continue updating guest email
-            //checkIfEmailIsBlacklisted(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure);
-            afterBlackListValidation();
+			var onBlackListedEmailFound = function() {
+				$scope.emailError = true;
+			};
+			var onValidationAPIFailure = function() {
+				updateGuestEmailFailed();
+			};
+			//
+			//future story, enable black-list check here
+			//
+			//checks if new email is blacklisted, if so, set invalid email mode
+			//otherwise, continue updating guest email
+			//checkIfEmailIsBlacklisted(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure);
+			afterBlackListValidation();
 
 
 		};

@@ -1530,7 +1530,7 @@ sntRover.controller('RVbillCardController',
                     "card_expiry": cardExpiry,
                     "credit_card" : swipedTrackDataForCheckin.RVCardReadCardType,
                     "do_not_cc_auth" : true,
-                    "no_post" : ($scope.reservationBillData.roomChargeEnabled === "") ? "": !$scope.reservationBillData.roomChargeEnabled,
+                    "no_post" : ($scope.reservationBillData.roomChargeEnabled === "") ? false: !$scope.reservationBillData.roomChargeEnabled,
                     "add_to_guest_card" : addToGuest
             };
             //CICO-12554 indicator if the track data is encrypted or not
@@ -1554,7 +1554,7 @@ sntRover.controller('RVbillCardController',
                 "signature" : signatureData,
                 "reservation_id" : $scope.reservationBillData.reservation_id,
                 "do_not_cc_auth" : $scope.do_not_cc_auth,
-                "no_post" : ($scope.reservationBillData.roomChargeEnabled === "") ? "": !$scope.reservationBillData.roomChargeEnabled
+                "no_post" : ($scope.reservationBillData.roomChargeEnabled === "") ? false: !$scope.reservationBillData.roomChargeEnabled
             };
             return data;
         };
@@ -2276,7 +2276,7 @@ sntRover.controller('RVbillCardController',
 
 	$scope.printRegistrationCard = function() {
 		scrollToTop();
-		
+
 		var sucessCallback = function(data) {
 
 			$scope.isPrintRegistrationCard = true;
