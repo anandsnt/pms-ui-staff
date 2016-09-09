@@ -390,9 +390,8 @@ sntZestStation.controller('zsRootCtrl', [
 				return false;
 			}
 		};
-		$scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons) {
+		$scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
 			var iconBasePath = (!useCommonIcons ? iconsPath : commonIconsPath);
-
 			$scope.activeScreenIcon = 'bed';
 			$scope.icons = {
 				url: {
@@ -425,6 +424,13 @@ sntZestStation.controller('zsRootCtrl', [
 					qr_arrow: iconBasePath + '/qr-arrow.svg'
 				}
 			};
+
+			if (diffHomeIconsOnly){
+				$scope.icons.url.checkin  = iconsPath + '/checkin.svg';
+				$scope.icons.url.checkout = iconsPath + '/checkout.svg';
+				$scope.icons.url.key 	  = iconsPath + '/key.svg';
+				$scope.icons.url.logo 	  = iconsPath + '/logo-print.svg';
+			};
 		};
 
 		/********************************************************************************
@@ -446,7 +452,6 @@ sntZestStation.controller('zsRootCtrl', [
 		 **/
 		$scope.$on('updateIconPath', function(evt, theme) {
 			var commonIconsPath = '/assets/zest_station/css/icons/default';
-
 			if (theme === 'yotel') {
 				$scope.$emit('DONT_USE_NAV_ICONS');
 				$scope.theme = theme;
@@ -458,6 +463,11 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.theme = theme;
 				$scope.iconsPath = '/assets/zest_station/css/icons/conscious';
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
+			} else if (theme === 'Avenue') {
+				$scope.theme = theme;
+				$scope.iconsPath = '/assets/zest_station/css/icons/avenue';
+				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true);//last arg, is to only show different icons on Home, other icons use default
+
 			} else {
 				$scope.iconsPath = commonIconsPath;
 			}
