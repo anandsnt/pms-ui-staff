@@ -170,10 +170,10 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		 */
 		var localEncodingSuccsess = function(response) {
 			if ($scope.inDemoMode()) {
-				setTimeout(function(){
+				setTimeout(function() {
 					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
 					dispenseKey();
-				},2000);
+				}, 2000);
 
 			} else {
 				if (response.key_info && response.key_info[0]) {
@@ -210,9 +210,9 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 				"reservation_id": $scope.selectedReservation.reservationId
 			};
 
-			if (keyNo){
+			if (keyNo) {
 				params.key = keyNo;
-				if (keyNo === 2){
+				if (keyNo === 2) {
 					params.is_additional = true;
 				}
 			};
@@ -227,11 +227,11 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 
 			if ($scope.inDemoMode()) {
-				setTimeout(function(){
+				setTimeout(function() {
 					onResponseSuccess({
 						'status': 'success'
 					});
-				},1200);
+				}, 1200);
 			} else {
 				if ($scope.writeLocally()) {
 					console.log('write locally');
@@ -257,8 +257,6 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 			}
 		};
-
-
 
 
 
@@ -323,7 +321,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			console.warn('goToNextScreen: ', stateParams);
 			//check if a registration card delivery option is present (from Admin>Station>Check-in), if none are checked, go directly to final screen
 			var registration_card = $scope.zestStationData.registration_card;
-			if (!registration_card.email && !registration_card.print && !registration_card.auto_print){
+			if (!registration_card.email && !registration_card.print && !registration_card.auto_print) {
 				$state.go('zest_station.zsCheckinFinal');
 			} else {
 				$state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);

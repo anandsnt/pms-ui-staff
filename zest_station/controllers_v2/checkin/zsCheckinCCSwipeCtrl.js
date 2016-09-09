@@ -36,8 +36,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             //we should not go to the error page, ie. on card swipe failure, or timeout, if user has
             //skipped the page, then ignore going to error screen
             //*used for develop and release environment where we are testing other screens
-            var debuggingCardPmt = $scope.debuggingCardPayment(true);//pass true if the button is being called to continue
-            console.info('debuggingCardPmt: ',debuggingCardPmt)
+            var debuggingCardPmt = $scope.debuggingCardPayment(true); //pass true if the button is being called to continue
+            console.info('debuggingCardPmt: ', debuggingCardPmt)
             if (!debuggingCardPmt) {
                 return;
             }
@@ -102,7 +102,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
                 };
                 //check if this page was invoked through pickupkey flow
-                if(!!$stateParams.pickup_key_mode){
+                if (!!$stateParams.pickup_key_mode) {
                     stateParams.pickup_key_mode = 'manual';
                 }
                 //need to go to [ last viewed ] screen, terms&conditions may be turned off...
@@ -122,7 +122,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         };
 
-        var onFethMLIFailure = function(response){
+        var onFethMLIFailure = function(response) {
             console.warn(response);
             $scope.$emit('hideLoader');
             goToSwipeError();
@@ -183,7 +183,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     'status': 'success'
                 });
             } else {
-                $scope.invokeApi(zsGeneralSrv.tokenize, getTokenFrom, onFetchMLITokenResponse,onFethMLIFailure);
+                $scope.invokeApi(zsGeneralSrv.tokenize, getTokenFrom, onFetchMLITokenResponse, onFethMLIFailure);
             }
 
         };
@@ -261,7 +261,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 //ingenico/infinea
                 data = response.data;
                 data.token = response.token;
-            }else{
+            } else {
                 //MLI desktop swipe
                 data = response;
             };
@@ -337,10 +337,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var initWsSwipe = function() {
-            if ($scope.inDemoMode()){
-                setTimeout(function(){
+            if ($scope.inDemoMode()) {
+                setTimeout(function() {
                     goToCardSign();
-                },2000);
+                }, 2000);
                 return;
             }
 
@@ -363,10 +363,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
 
         var initiateiPadCardReader = function() {
-            if ($scope.inDemoMode()){
-                setTimeout(function(){
+            if ($scope.inDemoMode()) {
+                setTimeout(function() {
                     goToCardSign();
-                },2000);
+                }, 2000);
                 return;
             }
 
@@ -491,9 +491,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         var getCCAuthorization = function(authAtCheckinRequired, amount, isEmv) {
             console.info('getCCAuthorization: ', arguments);
-            if (authAtCheckinRequired === 'true'){
+            if (authAtCheckinRequired === 'true') {
                 authAtCheckinRequired = true;
-            } else if(authAtCheckinRequired === 'false') {
+            } else if (authAtCheckinRequired === 'false') {
                 authAtCheckinRequired = false;
             }
             if (!authAtCheckinRequired) {
@@ -539,9 +539,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 atCardSwipe = atCardSwipeScreen();
 
             if ((inDemo && atCardSwipe) || debuggingCardPmt) {
-                console.info('inDemo: ',inDemo);
-                console.info('atCardSwipe: ',atCardSwipe);
-                console.warn('debuggingCardPayment: ',debuggingCardPmt);
+                console.info('inDemo: ', inDemo);
+                console.info('atCardSwipe: ', atCardSwipe);
+                console.warn('debuggingCardPayment: ', debuggingCardPmt);
                 onSuccessCaptureAuth({
                     'status': 'success'
                 });
@@ -658,7 +658,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             //then depending on the swipe configuration, initialize the device
             if (!sixPay) { //mli
                 console.info('mli')
-                //socket = Sankyo
+                    //socket = Sankyo
                 if (swipeFromSocket()) {
                     console.log('init websocket swipe');
                     initWsSwipe();

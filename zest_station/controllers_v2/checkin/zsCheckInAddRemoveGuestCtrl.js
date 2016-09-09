@@ -22,10 +22,10 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
             var stateParams = {};
             //check if this page was invoked through pickupkey flow
-            if(!!$stateParams.pickup_key_mode){
+            if (!!$stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
-            $state.go('zest_station.checkInReservationDetails',stateParams);
+            $state.go('zest_station.checkInReservationDetails', stateParams);
         });
 
         $scope.navToPrev = function() {
