@@ -5,7 +5,7 @@
             <div ng-show="selectedDevice == ''" class="entry table-search">
                     <span class="search-text">Search</span>
                     <span class="icons icon-search" name="submit" type="submit"></span>
-                    <input placeholder="Search by UDID, device name, type, application, versions etc.." autocomplete="off" type="text" ng-model="searchText" class="search-hotel">
+                    <input placeholder="Search by User, device name, type, application, versions etc.." autocomplete="off" type="text" ng-model="searchText" class="search-hotel">
                 </div>
         </header>
         <section class="content-scroll">
@@ -41,7 +41,7 @@
                     <tbody>
                         <tr ng-repeat="device in $data | filter:filterDevices" >                        
                             
-                            <td ng-click="selectDevice($event, device)" ng-hide="device.device_uid === selectedDevice.device_uid">
+                            <td ng-click="selectDevice($event, device, $index)" ng-hide="device.device_uid === selectedDevice.device_uid">
                                 {{device.device_name}}
                             </td>
                             <td ng-click="selectDevice($event, device)" ng-hide="device.device_uid === selectedDevice.device_uid" >

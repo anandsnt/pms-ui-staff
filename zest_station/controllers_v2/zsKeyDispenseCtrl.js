@@ -68,10 +68,10 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				//"is_kiosk": true
 			};
 			if ($scope.makingKey === 1) {
-                postParams.is_additional = false;
-            } else {
-                postParams.is_additional = true;
-            }
+				postParams.is_additional = false;
+			} else {
+				postParams.is_additional = true;
+			}
 
 			if (typeof cardInfo !== 'undefined') {
 				postParams.card_info = cardInfo;

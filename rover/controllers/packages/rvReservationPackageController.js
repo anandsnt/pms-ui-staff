@@ -75,7 +75,7 @@ sntRover.controller('RVReservationPackageController',
 	};
 
 	//Get addon count
-        $scope.getAddonCount = function(amountType, postType,postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly) {
+        $scope.getAddonCount = function(amountType, postType,postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
             if(!postingRythm) {
                 if(postType ==='WEEK') {
                     postingRythm = 7;
@@ -87,7 +87,7 @@ sntRover.controller('RVReservationPackageController',
             }
             amountType = amountType.toUpperCase();
             var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
-            return addonCount;
+            return (addonCount * quantity);
         };
 
 }
