@@ -463,7 +463,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.theme = theme;
 				$scope.iconsPath = '/assets/zest_station/css/icons/conscious';
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
-			} else if (theme === 'Avenue') {
+			} else if (theme === 'avenue') {
 				$scope.theme = theme;
 				$scope.iconsPath = '/assets/zest_station/css/icons/avenue';
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true);//last arg, is to only show different icons on Home, other icons use default
