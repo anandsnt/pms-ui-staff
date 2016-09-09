@@ -144,7 +144,7 @@
                 </div>
                 <div id="{{ empIndex }}-{{ employee.id }}" class="worksheet-content scrollable"
                     data-drop="true"
-                    jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)', onOver:'onOverCol(event, empIndex)'}"
+                    jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}"
                     data-jqyoui-options="{accept: '#assigned-rooms .worksheet-task, #unassigned-rooms .worksheet-task'}"
                     ng-iscroll="assignedRoomList-{{$index}}"
                 >

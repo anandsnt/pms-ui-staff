@@ -171,7 +171,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			var hasRoom = _.find(toEmp.rooms, { 'room_id': draggedRoom.room_id });
 			var hasRoomIndex = _.findIndex(toEmp.rooms, { 'room_id': draggedRoom.room_id });
-			var roomCopy;
+			var roomCopy = [];
 
 			function move(array, from, to) {
 				if( to === from ) return;
@@ -445,6 +445,14 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			lastSaveConfig = config || null;
 			if ($scope.multiSheetState.selectedEmployees.length) {
+
+				// apply order key as is the rooms array index
+				_.each($scope.multiSheetState.assigned, function(item) {
+					_.each(item.rooms, function(room, index) {
+						room.order = index + 1;
+					})
+				});
+
 				var options = {
 					successCallBack: saveMultiSheetSuccessCallBack,
 					failureCallBack: saveMultiSheetFailureCallBack,
@@ -1018,36 +1026,18 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				}
 
 				var clientYReducer = function() {
-					var clientY = 0;
+					var clientX = 0,
+						clientY = 0;
 					return {
-						getClientY: function() {
-							return clientY;
+						getClientPos: function() {
+							return {
+								x: clientX,
+								y: clientY
+							};
 						},
-						updateClientY: function(value) {
-							clientY = value;
-						}
-					}
-				}
-
-				var empColReducer = function() {
-					var $empCol = undefined;
-					return {
-						getEmpCol: function() {
-							return $empCol;
-						},
-						removePlaceholder: function() {
-							if ( $empCol !== undefined ) {
-								var $placeholder = $empCol.find('.placeholder');
-								$placeholder.remove();
-							}
-						},
-						updateEmpCol: function($node) {
-							this.removePlaceholder();
-							$empCol = $node;
-						},
-						removeEmpCol: function() {
-							this.removePlaceholder();
-							$empCol = undefined;
+						updateClientPos: function(x, y) {
+							clientX = x;
+							clientY = y;
 						}
 					}
 				}
@@ -1072,9 +1062,46 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					dragReducer(),
 					scrollReducer(),
 					clientYReducer(),
-					empColReducer(),
 					totalHeightReducer()
 				);
+
+				base.removePlaceholder = function() {
+					var $placeholder;
+
+					if ( !! this.$empNode ) {
+						$placeholder = this.$empNode.find('.placeholder');
+						$placeholder.remove();
+					}
+				}.bind(base);
+
+				base.findCurrEmpCol = function() {
+					var clientx = this.getClientPos().x;
+
+					var scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
+					var scrollInstX = scrollInst.x;
+
+					var LEFT_OFFSET = 20;
+					var COL_WIDTH   = 220;
+
+					var currX = clientx - (LEFT_OFFSET + scrollInstX);
+					var colIndex;
+					var selectedEmp;
+					var $placeholder;
+
+					this.removePlaceholder();
+
+					if ( currX < 0 ) {
+						this.$empNode = undefined;
+					} else {
+						colIndex = Math.floor(currX / COL_WIDTH);
+						colIndex = colIndex !== 0 ? colIndex - 1 : colIndex;
+
+						selectedEmp = $scope.multiSheetState.selectedEmployees[colIndex];
+						this.$empNode = $( '#' + colIndex + '-' + selectedEmp.id );
+					}
+
+					return this.$empNode;
+				}.bind(base);
 
 				base.checkOnOver = function(room, index) {
 					var $thisRoom, $nextRoom, nextIndex;
@@ -1105,19 +1132,19 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					/**/
 					this.setTotalHeight( prevHeight + roomHeight );
 
-					clienty = this.getClientY();
+					clienty = this.getClientPos().y;
 
 					if ( clienty < top ) {
-						retObj = {
+						return {
 							method: 'BEFORE',
 							node: $thisRoom,
 							index: index
 						}
 					} else if ( clienty > bot ) {
 						if ( $nextRoom.length ) {
-							retObj = this.checkOnOver( $nextRoom, nextIndex );
+							return this.checkOnOver( $nextRoom, nextIndex );
 						} else {
-							retObj = {
+							return {
 								method: 'AFTER',
 								node: $thisRoom,
 								index: nextIndex
@@ -1125,27 +1152,23 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 						}
 					} else {
 						if ( clienty < mid ) {
-							retObj = {
+							return {
 								method: 'BEFORE',
 								node: $thisRoom,
 								index: index
 							}
 						} else {
-							retObj = {
+							return {
 								method: 'AFTER',
 								node: $thisRoom,
 								index: nextIndex
 							}
 						}
 					}
-
-					console.log( retObj );
-
-					return retObj;
 				}.bind(base);
 
 				base.addPlaceholder = function() {
-					var $col = this.getEmpCol(),
+					var $col = this.findCurrEmpCol(),
 						firstRoom,
 						index = 0,
 						returnIndex = 0;
@@ -1186,6 +1209,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 						returnIndex = onOverData.index;
 					}
 
+					$scope.dropIndex = returnIndex;
 					return returnIndex;
 				}.bind(base);
 
@@ -1272,11 +1296,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				if ( dragDir === BOTTOM && scrollInst.y > dimX.scrollXEnd ) {
 					scrollInst.scrollBy(0, -10, 1);
 				};
-
-				$scope.dropIndex = orderState.addPlaceholder();
 			};
-
-			var throttledPlaceholder = _.throttle(orderState.addPlaceholder, 1000, { leading: false });
 
 			// once the user starts dragging 
 			$scope.dragStart = function() {
@@ -1287,7 +1307,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			$scope.dragDrop = function() {
 				orderState.stopDragging();
-				orderState.removeEmpCol();
+				orderState.removePlaceholder();
 
 				if ( !! timer ) {
 					window.clearInterval(timer);
@@ -1295,11 +1315,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				};
 			};
 
-			$scope.onOverCol = function(event, index) {
-				orderState.updateEmpCol( $(event.target) );
-				$scope.dropIndex = orderState.addPlaceholder();
-			};
-
+			var addPlaceholderDebounced = _.throttle(orderState.addPlaceholder, 500);
 			$scope.userDragging = function(e) {
 				if ( e.clientX > dimX.screenEnd ) {
 				    if ( dragDir !== RIGHT ) {
@@ -1315,8 +1331,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				    };
 				};
 
-				orderState.updateClientY(e.clientY);
-				$scope.dropIndex = orderState.addPlaceholder();
+				orderState.updateClientPos(e.clientX, e.clientY);
+				addPlaceholderDebounced();
 			};
 		};
 
