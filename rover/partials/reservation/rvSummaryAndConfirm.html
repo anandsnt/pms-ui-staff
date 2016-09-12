@@ -21,10 +21,13 @@
                 </ul>
                 <div class="stay-dates">
                     <div class="check-in-dates">
-                        <span class="guest-status small-icon check-in">check-in</span> {{getSimplifiedDayName(reservationData.arrivalDate)}}, {{reservationData.arrivalDate | date:dateFormat}}
+                        <span class="guest-status small-icon check-in">check-in</span>
+                        {{getSimplifiedDayName(reservationData.arrivalDate)}}, {{reservationData.arrivalDate |
+                        date:dateFormat}}
                         <div class="check-data icons icon-time time-in">
                             <div class="select hour">
-                                <select iscroll-stop-propagation name="check-in" class="placeholder" ng-model="reservationData.checkinTime.hh">
+                                <select iscroll-stop-propagation name="check-in" class="placeholder"
+                                        ng-model="reservationData.checkinTime.hh">
                                     <option value="" selected>HH</option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
@@ -41,7 +44,8 @@
                                 </select>
                             </div>
                             <div class="select minutes">
-                                <select iscroll-stop-propagation name="check-in" class="placeholder" ng-model="reservationData.checkinTime.mm">
+                                <select iscroll-stop-propagation name="check-in" class="placeholder"
+                                        ng-model="reservationData.checkinTime.mm">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -49,7 +53,8 @@
                                 </select>
                             </div>
                             <div class="select ampm">
-                                <select iscroll-stop-propagation name="check-in" class="placeholder" ng-model="reservationData.checkinTime.ampm">
+                                <select iscroll-stop-propagation name="check-in" class="placeholder"
+                                        ng-model="reservationData.checkinTime.ampm">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>
@@ -57,10 +62,13 @@
                         </div>
                     </div>
                     <div class="check-out-dates">
-                        <span class="guest-status small-icon check-out">check-out</span> {{getSimplifiedDayName(reservationData.departureDate)}}, {{reservationData.departureDate | date:dateFormat}}
+                        <span class="guest-status small-icon check-out">check-out</span>
+                        {{getSimplifiedDayName(reservationData.departureDate)}}, {{reservationData.departureDate |
+                        date:dateFormat}}
                         <div class="check-data icons icon-time time-out">
                             <div class="select hour">
-                                <select iscroll-stop-propagation name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.hh">
+                                <select iscroll-stop-propagation name="check-out" class="placeholder"
+                                        ng-model="reservationData.checkoutTime.hh">
                                     <option value="" selected>HH</option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
@@ -77,7 +85,8 @@
                                 </select>
                             </div>
                             <div class="select minutes">
-                                <select iscroll-stop-propagation name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.mm">
+                                <select iscroll-stop-propagation name="check-out" class="placeholder"
+                                        ng-model="reservationData.checkoutTime.mm">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -85,7 +94,8 @@
                                 </select>
                             </div>
                             <div class="select ampm">
-                                <select iscroll-stop-propagation name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.ampm">
+                                <select iscroll-stop-propagation name="check-out" class="placeholder"
+                                        ng-model="reservationData.checkoutTime.ampm">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>
@@ -94,7 +104,8 @@
                     </div>
                 </div>
                 <!-- This here is dynamic content, depending on actual room booked -->
-                <div class="rooms" ng-repeat="room in reservationData.rooms track by $index" ng-init="roomIndex = $index ; showAccompanyingGuests = false">
+                <div class="rooms" ng-repeat="room in reservationData.rooms track by $index"
+                     ng-init="roomIndex = $index ; showAccompanyingGuests = false">
                     <div class="title">
                         <span translate>ROOM</span> {{room.roomNumber}}
                         <div class="count">
@@ -140,31 +151,45 @@
                                 <span translate>EACH</span>
                             <span class="total">INCL</span>
                             </span>
-                        </li>      
-                       <!--  <li ng-repeat='addon in room.inclusiveAddons'>
-                            <em>{{addon.name}}</em>
-                            <span class="price">
-                                {{currencySymbol}}{{ addon.amount | number : 2}}
-                                <span translate>EACH</span>
-                                <span class="total">INCL</span>
-                            </span>
-                        </li>   -->                   
+                        </li>
+                        <!--  <li ng-repeat='addon in room.inclusiveAddons'>
+                             <em>{{addon.name}}</em>
+                             <span class="price">
+                                 {{currencySymbol}}{{ addon.amount | number : 2}}
+                                 <span translate>EACH</span>
+                                 <span class="total">INCL</span>
+                             </span>
+                         </li>   -->
                     </ul>
                     <div class="actions">
-                        <button type="button" class="button white blue-text" ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}" ng-disabled="!room.confirm_no && !reservationData.confirmNum" ng-click="openBillingInformation(room.confirm_no)">{{getBillingInfoTitle()}}</button>
-                            <button type="button" class="button white brand-text" ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}" ng-disabled="!room.confirm_no && !reservationData.confirmNum" ng-click="setDemographics(false, $index)">Demographics</button>
+                        <button type="button" class="button white blue-text"
+                                ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}"
+                                ng-disabled="!room.confirm_no && !reservationData.confirmNum"
+                                ng-click="openBillingInformation(room.confirm_no)">{{getBillingInfoTitle()}}
+                        </button>
+                        <button type="button" class="button white brand-text"
+                                ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}"
+                                ng-disabled="!room.confirm_no && !reservationData.confirmNum"
+                                ng-click="setDemographics(false, $index)">Demographics
+                        </button>
                     </div>
-                    <button class="add-new-button" ng-click="showAccompanyingGuests = !showAccompanyingGuests; addGuests(room);" ng-hide="showAccompanyingGuests">+ Accompanying Guest</button>
+                    <button class="add-new-button"
+                            ng-click="showAccompanyingGuests = !showAccompanyingGuests; addGuests(room);"
+                            ng-hide="showAccompanyingGuests">+ Accompanying Guest
+                    </button>
                     <form class="form" ng-show="showAccompanyingGuests">
                         <!-- Remove class hidden when button above clicked -->
                         <div class="entry" ng-repeat="guest in room.accompanying_guest_details">
                             <label>Accompanying guest {{$index + 1}}</label>
-                            <input placeholder="First Name" type="text" ng-model="guest.first_name" />
-                            <input placeholder="Last Name" type="text" ng-model="guest.last_name" />
+                            <input placeholder="First Name" type="text" ng-model="guest.first_name"/>
+                            <input placeholder="Last Name" type="text" ng-model="guest.last_name"/>
                         </div>
                         <div class="actions">
-                        <!-- CICO-16940 1. Rename cancel as close 2. Save accompanying guests on close -->
-                            <button type="button" class="button blank" ng-click="showAccompanyingGuests = !showAccompanyingGuests; saveAccompanyingGuests(room, roomIndex);">close</button>
+                            <!-- CICO-16940 1. Rename cancel as close 2. Save accompanying guests on close -->
+                            <button type="button" class="button blank"
+                                    ng-click="showAccompanyingGuests = !showAccompanyingGuests; saveAccompanyingGuests(room, roomIndex);">
+                                close
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -177,148 +202,56 @@
 
                     <li>
                         <span class="label" translate>TOTAL_TAX</span>
-                        <label ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{reservationData.totalTax | number : 2}}</label>
+                        <label ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{reservationData.totalTax
+                            | number : 2}}</label>
                         <label ng-if="reservationData.isRoomRateSuppressed">SR</label>
                     </li>
                     <li>
                         <span class="label" translate>TOTAL_STAY_COST</span>
-                        <label ng-if="!reservationData.isRoomRateSuppressed"><strong>{{currencySymbol}}{{reservationData.totalStayCost | number : 2}}</strong>
+                        <label ng-if="!reservationData.isRoomRateSuppressed"><strong>{{currencySymbol}}{{reservationData.totalStayCost
+                            | number : 2}}</strong>
                         </label>
                         <label ng-if="reservationData.isRoomRateSuppressed">SR</label>
                     </li>
                 </ul>
             </div>
         </div>
-        <form class="form payment-info" ng-show="reservationData.paymentType.type.value=== 'CC' && showCCPage" ng-click="clearErrorMessage()">
+        <form class="form payment-info" ng-click="clearErrorMessage()">
             <div class="wrapper">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-                <div id="set-payment" class="payment-form for-reservation">
-                    <!-- <div class="entry full-width"> -->
-                    <!-- Credit card options - hidden until CC set as payment type -->
-                    <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"></div>
-                    <!-- </div> -->
-                </div>
-            </div>
-        </form>
-        <form class="form payment-info scrollable" ng-iscroll='paymentInfo' ng-hide="(reservationData.paymentType.type.value === 'CC') && showCCPage" ng-click="clearErrorMessage()">
-            <div class="wrapper" style="height:120%;">
-                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-                <div id="set-payment" class="payment-form for-reservation">
-                    
-                    
-                    <div class="entry full-width" ng-hide="hidePaymentSelection()">
-                        <span ng-hide="true">{{reservationData.paymentType}}</span>
-                        <label for="payment-type" translate>PAYMENT_TYPE</label>
-                        <div class="select">
-
-                            <select class="placeholder" ng-model="reservationData.paymentType.type.value" ng-change="changePaymentType('create res. summary deposit')" iscroll-stop-propagation>
-                                <option value="" translate>SELECT_PAYMENT_TYPE</option>
-                                <option ng-selected="paymentTypes.value == reservationData.paymentType.type.value" 
-                                        value="{{paymentTypes.value}}" ng-repeat="paymentTypes in reservationData.paymentMethods">{{paymentTypes.description}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    
-                    
-                    
-                    <!-- Card Input type - output only if Six Payments and payment type is CC -->
-                    <div class="entry" ng-show="showCardInputType()">
-                        <label for="card-source">Card Input</label>
-                        <div class="switch-button" ng-class="{'on': !isManual}">
-                            <input name="card-source" id="card-source" value="card-source" type="checkbox" ng-model="isManual" ng-change="changeOnsiteCallIn()" />
-                            <label class="data-off">
-                                <span class="value">C &amp; P</span>
-                                <span class="switch-icon">Manual</span>
-                            </label>
-                            <label class="data-on">
-                                <span class="switch-icon">C &amp; P</span>
-                                <span class="value">Manual</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="entry full-width" id="selected-card" ng-show="showSelectedCreditCardButton()" ng-click="changePaymentType()">
-                        <label>Credit Card (<span>Tap to change</span>)</label>
-                        
-                        <label class="active-item item-payment" id="pay-with-amex">
-                            <figure class="card-logo">
-                                <img ng-src="/assets/images/{{renderData.creditCardType}}.png" alt="">
-                            </figure>
-                            <span class="number">Ending with 
-                                <span class="value number">{{renderData.endingWith}}</span>
-                            </span>
-                            <span class="date">Date 
-                                <span class="value date">{{renderData.cardExpiry}}</span>
-                                <span ng-show="renderData.isSwiped" class="icons icon-swiped swiped-card"></span>
-                            </span>
-
-                        </label>
-                    </div>
-
-                    <!-- Credit card options - hidden until CC set as payment type -->
-                    <!-- <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-show="reservationData.paymentType.type.value=== 'CC' && showCCPage"></div> -->
-
-                    <div class="entry full-width" ng-show="isNewCardAdded">
-                        <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': addtoGuestCard}">
-                            <span class="icon-form icon-checkbox" ng-class="{'checked': addToGuestCard}"></span>
-                            <input ng-model="addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" /> {{'ADD_TO_GUEST_CARD' | translate}}
-                        </label>
-                    </div>
-
-                    <!-- Use only if deposit is required -->
-                    <div class="notice deposit" ng-if="depositData.isDepositRequired && reservationData.isValidDeposit" ng-hide="depositData.attempted || showCCPage">
-                        <p>Deposit required: <strong>{{depositData.description}}</strong>.</p>
-                        <div class="entry card-number" ng-show="reservationData.paymentType.type.value === 'GIFT_CARD'" ng-hide="reservationData.paymentType.type.value !== 'GIFT_CARD' || depositData.attempted || !depositData.isDepositRequired || !isDepositEditable">
-                            <label for="card-number">Card number (<span>No spaces</span>)</label>
-                               <input ng-show="isGiftCard" name="card-number" id="card-number" placeholder="Enter Card number" ng-model="cardData.cardNumber" maxlength="22" type="text" ng-change="cardNumberInput(cardData.cardNumber, this)" />
-                        </div>
-
-                        <div class="entry card-number" ng-show="reservationData.paymentType.type.value === 'GIFT_CARD'" ng-hide="reservationData.paymentType.type.value !== 'GIFT_CARD' || depositData.attempted || !depositData.isDepositRequired || !isDepositEditable">
-                            <label ng-show="isGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
-                            <input ng-show="isGiftCard && giftCardAmountAvailable" ng-hide="!giftCardAmountAvailable"  name="giftCardAmount" id="amount" ng-readonly="true" ng-model="giftCardAvailableBalance" type="text" class="amount" value="{{ giftCardAvailableBalance }}"/>
-                        </div>
-                        
-                        <!-- Payment fields -->
-                        <div ng-include="'/assets/partials/reservation/rvPaymentFields.html'"></div>
-                        <!-- Buttons - remove class "hidden" when payment type is defined-->
-                        <div class="actions" ng-show="!!reservationData.paymentType.type.value">
-                            <button type="button" class="button blue" ng-click="onPayDepositLater()">Pay deposit later</button>
-                            <button type="button" class="button green" ng-click="payDeposit()" ng-hide="hideMakePayment()">Pay deposit now</button>
-                        </div>
-                    </div>
-
-                    <!-- Deposit paid succesfully -->
-                    <div class="feedback no-top-border" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted && !depositData.depositAttemptFailure">
-                        <div class="notice success">Deposit paid</div>
-                        <ul class="transaction">
-                            <li ng-show="depositData.authorizationCode!==''">Your Authorize code is: <span class="auth">{{depositData.authorizationCode}}</span>
-                            </li>
-                            <li ng-if="isShowFees()">Amount paid: <span class="value">{{currencySymbol}}{{reservationData.depositAmount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
-                            </span>
-                            </li>
-                            <li ng-if="!isShowFees()">Amount paid: <span class="value">{{currencySymbol}}{{reservationData.depositAmount}}
-                             </span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Deposit payment failed -->
-                    <div class="feedback deposit-failed" ng-if="depositData.isDepositRequired" ng-show="depositData.attempted && depositData.depositAttemptFailure">
-                        <!-- <div class="notice error">Payment failed. Try again or change payment method.</div> -->
-                        <div class="notice error">{{paymentErrorMessage}}</div>
-                         <!-- Show when deposit payment fails  -->
-                        <button type="button" class="button blue" ng-show="depositData.depositAttemptFailure" ng-click="tryAgain()">Try Again</button>
-                    </div>
-
+                <div id="set-payment" class="payment-form for-reservation" ng-if="!!reservationData.reservationId">
+                    <snt-payment
+                            hotel-config="hotelPaymentConfig"
+                            workstation-id="{{workstation_id}}"
+                            reservation-id="{{reservationData.reservationId}}"
+                            deposit-policy-name="{{depositData.description}}"
+                            bill-number="billNumber"
+                            payment-types="reservationData.paymentMethods"
+                            selected-payment-type=""
+                            selected-c-c="renderData"
+                            amount='reservationData.depositAmount'
+                            action-type="DEPOSIT_PAYMENT_RES_SUMMARY"
+                            is-editable='isDepositEditable'
+                            is-rate-suppressed='isReservationRateSuppressed'
+                            has-permission='hasPermissionToMakePayment()'
+                            form-template-url='/assets/partials/payment/rvReservationSummaryDepositPartial.html'
+                            first-name="{{guestCardData.contactInfo.first_name}}"
+                            last-name="{{guestCardData.contactInfo.last_name}}">
+                    </snt-payment>
                     <div class="actions" ng-hide="showCCPage">
-                        <button type="button" ng-disabled="!reservationData.guest.id && !reservationData.company.id && !reservationData.travelAgent.id" class="button blank" ng-click="cancelReservation()">Cancel Reservation</button>
+                        <button type="button"
+                                ng-disabled="!reservationData.reservationId"
+                                class="button blank" ng-click="cancelReservation()">
+                            Cancel Reservation
+                        </button>
                         <!-- Show when deposit paid succesfully. If deposit not required, then show when payment method added  -->
                         <!-- <button type="button" class="button" ng-class="{'grey':isContinueDisabled(),'green':!isContinueDisabled()}" ng-disabled="isContinueDisabled()" ng-click="proceedCreatingReservation()">Continue</button> -->
-                        <button type="button" class="button" ng-class="{'grey':isContinueDisabled(),'green':!isContinueDisabled()}" ng-disabled="isContinueDisabled()" ng-click="clickedContinueButton()">Continue</button>
+                        <button type="button" class="button"
+                                ng-class="{'grey':isContinueDisabled(),'green':!isContinueDisabled()}"
+                                ng-disabled="isContinueDisabled()" ng-click="clickedContinueButton()">Continue
+                        </button>
                     </div>
                 </div>
-
             </div>
         </form>
     </div>

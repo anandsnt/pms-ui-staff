@@ -1,0 +1,78 @@
+<div class="notice deposit">
+    <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
+
+    <div class="entry full-width deposit-amount"
+         ng-class="{'amount': feeData.showFee}">
+
+        <div class="entry card-number"
+             ng-show="selectedPaymentType === 'GIFT_CARD'">
+            <label>Card number (<span>No spaces</span>)</label>
+            <input placeholder="Enter Card number"
+                   ng-model="giftCard.number"
+                   maxlength="22"
+                   rv-delay-textbox
+                   delay="1000"
+                   function-to-fire="onChangeGiftCard"
+                   type="text"/>
+            <label ng-show="giftCard.amountAvailable"> Available Card Balance({{currencySymbol}}) </label>
+            <input ng-show="giftCard.amountAvailable"
+                   ng-readonly="true"
+                   ng-model="giftCard.availableBalance"
+                   type="text"/>
+        </div>
+        <div class="entry full-width">
+            <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+
+            <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
+            <input ng-change="onPaymentInfoChange()"
+                   ng-model="payment.amount"
+                   type="text"
+                   ng-disabled="!payment.isEditable"
+                   class="amount"
+                   ng-if="!payment.isRateSuppressed"/>
+            <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
+            <input type="text"
+                   ng-disabled="!payment.isEditable"
+                   class="amount"
+                   ng-if="payment.isRateSuppressed"
+                   value="{{'SUPPRESSED_RATES_TEXT' | translate}}"/>
+
+            <span ng-show="feeData.showFee" class="delimiter">+</span>
+
+            <input ng-show="feeData.showFee && !payment.isRateSuppressed"
+                   ng-change="onFeeOverride()"
+                   ng-model="feeData.calculatedFee"
+                   value="{{feeData.calculatedFee}}"
+                   type="text"
+                   class="fee"/>
+
+            <input ng-show="feeData.showFee && payment.isRateSuppressed"
+                   value="{{'SUPPRESSED_RATES_TEXT' | translate}}"
+                   type="text"
+                   class="fee"/>
+
+            <span ng-show="feeData.showFee" class="delimiter">fee</span>
+
+            <span ng-show="feeData.showFee" class="total">
+          Total:
+          <strong ng-if="!payment.isRateSuppressed">
+              {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+          </strong>
+          <strong ng-if="payment.isRateSuppressed">
+              {{'SUPPRESSED_RATES_TEXT' | translate}}
+          </strong>
+        </span>
+        </div>
+    </div>
+
+    <div class="entry full-width reference" ng-show="isDisplayRef">
+        <label>Reference</label>
+        <input ng-model="payment.referenceText" type="text"/>
+    </div>
+
+    <div class="actions" ng-show="!!selectedPaymentType">
+        <button type="button" class="button blue" ng-click="payLater()">Pay deposit later</button>
+        <button type="button" class="button green" ng-click="submitPayment()" ng-hide="shouldHidePaymentButton()">Pay deposit now</button>
+    </div>
+
+</div>

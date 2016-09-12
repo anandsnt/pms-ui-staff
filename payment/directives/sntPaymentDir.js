@@ -5,7 +5,7 @@ sntPay.directive('sntPayment', function() {
         scope: {
             hotelConfig: '=',//hotel settings related
             paymentTypes: '=',//the payment types present
-            selectedPaymentType: '=',//selected initial payment type
+            selectedPaymentType: '=?',//selected initial payment type
             reservationId: '@',
             guestId: '@',
             billNumber: '=',
@@ -23,10 +23,9 @@ sntPay.directive('sntPayment', function() {
             lastName: '@',//second name to be used in six pay iframe
             swipedCardData: '@',
             splitBillEnabled: '=',
-            numSplits: '=',
-            completedSplitPayments: '=',
-            notifyNewCard: "=",
-            fetchLinkedCards: "="
+            numSplits: '=?',
+            completedSplitPayments: '=?',
+            fetchLinkedCards: "=?"
         },
         link: function(scope, element, attrs) {
             console.log("--From Payment Module Init--");

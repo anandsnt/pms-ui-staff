@@ -702,7 +702,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             $scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email !== null && $scope.reservationData.guest.email !== "") ? true : false;
             $scope.otherData.isGuestAdditionalEmailChecked = false;
-            $scope.reservationData.paymentMethods = [];
+            $scope.reservationData.paymentMethods = paymentMethods;
             $scope.data.MLIData = {};
             $scope.isGuestEmailAlreadyExists = ($scope.reservationData.guest.email !== null && $scope.reservationData.guest.email !== "") ? true : false;
             $scope.heading = "Guest Details & Payment";
@@ -721,7 +721,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 'tap': true
             });
 
-            fetchPaymentMethods();
+            // fetchPaymentMethods();
             refreshScrolls();
         };
 

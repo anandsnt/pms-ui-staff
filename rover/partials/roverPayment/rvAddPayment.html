@@ -26,6 +26,7 @@
             <snt-payment
                     hotel-config="hotelPaymentConfig"
                     reservation-id="{{passData.reservationId}}"
+                    fetch-linked-cards="!isFromGuestCard"
                     guest-id="{{passData.guest_id}}"
                     workstation-id = "{{workstation_id}}"
                     bill-number="billNumber"

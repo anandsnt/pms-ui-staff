@@ -169,7 +169,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          */
         var changeToCardAddMode = function() {
             $scope.payment.screenMode = "CARD_ADD_MODE";
-            $scope.payment.addCCMode = existingCardsPresent() ? "EXISTING_CARDS" : "ADD_CARD";
+            $scope.payment.addCCMode = existingCardsPresent() && !$scope.swipedCardData ? "EXISTING_CARDS" : "ADD_CARD";
             $scope.$broadcast('RESET_CARD_DETAILS');
             refreshScroller('cardsList');
         };
