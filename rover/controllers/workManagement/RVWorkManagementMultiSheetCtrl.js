@@ -988,8 +988,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				BOTTOM = 'BOTTOM',
 				UNDEF = undefined;
 
-			var dragDir    = UNDEF,
-				timer      = UNDEF,
+			var hozDragDir = UNDEF,
+				verDragDir = UNDEF,
+				hozTimer   = UNDEF,
+				verTimer   = UNDEF,
 				dimX       = UNDEF,
 				dimY       = UNDEF;
 
@@ -1022,7 +1024,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					}
 				};
 
-				base.findCurrEmpCol = function() {
+				base.findCurrCol = function() {
 					var clientx = this.getClientPos().x;
 
 					var scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
@@ -1033,17 +1035,27 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 					var currX = clientx - (LEFT_OFFSET + scrollInstX);
 					var colIndex;
-					var selectedEmp;
-					var $placeholder;
-
-					this.removePlaceholder();
 
 					if ( currX < 0 ) {
-						$empNode = undefined;
+						colIndex = undefined;
 					} else {
 						colIndex = Math.floor(currX / COL_WIDTH);
 						colIndex = colIndex !== 0 ? colIndex - 1 : colIndex;
+					}
 
+					return colIndex;
+				}
+
+				base.findCurrColEmp = function() {
+					var colIndex, selectedEmp;
+
+					this.removePlaceholder();
+
+					colIndex = this.findCurrCol();
+
+					if ( ! colIndex ) {
+						$empNode = undefined;
+					} else {
 						selectedEmp = $scope.multiSheetState.selectedEmployees[colIndex];
 						$empNode = $( '#' + colIndex + '-' + selectedEmp.id );
 					}
@@ -1114,7 +1126,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				}.bind(base);
 
 				base.addPlaceholder = function() {
-					var $col = this.findCurrEmpCol(),
+					var $col = this.findCurrColEmp(),
 						firstRoom,
 						index = 0,
 						prevHeight = 0;
@@ -1184,21 +1196,32 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				var TOP_OFFSET = 280,
 					TASK_HEIGHT = 115;	// This is highly relative
 
+				var TOP_OFFSET = 280, ROOM_MARGIN = 20;
+
 				var winHeight = $(window).height();
 
 				var scrollableY = ($scope.multiSheetState.selectedEmployees.length * COL_WIDTH) - (winWidth - LEFT_OFFSET);
 
-				return {
-					screenStart : LEFT_OFFSET + TASK_OFFSET,
-					screenEnd   : winWidth - LEFT_OFFSET,
-					scrollStart : LEFT_OFFSET + TASK_OFFSET,
-					scrollEnd   : -scrollableX,
-				};
+				var currColIndex = orderState.findCurrCol();
+
+				scrollableY = $scope.multiSheetState.selectedEmployees[currColIndex].rooms
+
+				if ( !! currColIndex ) {
+					return {
+						screenStart : LEFT_OFFSET + TASK_OFFSET,
+						screenEnd   : winWidth - LEFT_OFFSET,
+						scrollStart : LEFT_OFFSET + TASK_OFFSET,
+						scrollEnd   : -scrollableX,
+					};
+				} else {
+					return {};
+				}
 			};
 
 			// setup dimX and update on screen change, also remove listener when scope dies 
 			var dimxOnResize = function() {
 				dimX = getXdimentions();
+				dimY = getYdimentions();
 			};
 			dimxOnResize();
 			window.addEventListener( 'resize', dimxOnResize, false );
@@ -1212,12 +1235,12 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			var checkHozScrollBy = function() {
 				var scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
 
-				if ( dragDir === LEFT && scrollInst.x !== 0 && scrollInst.x < dimX.scrollStart ) {
+				if ( hozDragDir === LEFT && scrollInst.x !== 0 && scrollInst.x < dimX.scrollStart ) {
 					scrollInst.scrollBy(10, 0, 1);
 					return;
 				};
 
-				if ( dragDir === RIGHT && scrollInst.x > dimX.scrollEnd ) {
+				if ( hozDragDir === RIGHT && scrollInst.x > dimX.scrollEnd ) {
 					scrollInst.scrollBy(-10, 0, 1);
 					return;
 				};
@@ -1226,47 +1249,62 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			// call this method when we need to scroll a particular
 			// employee column vertically when user is dragging a 
 			// task outside the visible screen
-			var callVerScrollBy = function(index) {
-				var scrollInst = $scope.$parent.myScroll['assignedRoomList-' + index];
+			var callVerScrollBy = function() {
+				var scrollInst;
+				var currColIndex = orderState.findCurrCol();
 
-				if ( dragDir === TOP && scrollInst.y !== 0 && scrollInst.y < dimX.scrollXStart ) {
+				if ( ! currColIndex ) {
+					return;
+				}
+
+				scrollInst = $scope.$parent.myScroll['assignedRoomList-' + currColIndex];
+
+				if ( verDragDir === TOP && scrollInst.y !== 0 && scrollInst.y < dimX.scrollXStart ) {
 					scrollInst.scrollBy(0, 10, 1);
 				};
 
-				if ( dragDir === BOTTOM && scrollInst.y > dimX.scrollXEnd ) {
+				if ( verDragDir === BOTTOM && scrollInst.y > dimX.scrollXEnd ) {
 					scrollInst.scrollBy(0, -10, 1);
 				};
 			};
 
 			// once the user starts dragging 
 			$scope.dragStart = function() {
-				timer = setInterval( checkHozScrollBy, 1 );
+				hozTimer = setInterval( checkHozScrollBy, 1 );
+				verTimer = setInterval( callVerScrollBy, 1 );
 				$scope.dropIndex = undefined;
 			};
 
 			$scope.dragDrop = function() {
 				orderState.removePlaceholder();
 
-				if ( !! timer ) {
-					window.clearInterval(timer);
-					timer = UNDEF;
+				if ( !! hozTimer ) {
+					window.clearInterval(hozTimer);
+					hozTimer = UNDEF;
+				};
+
+				if ( !! verTimer ) {
+					window.clearInterval(verTimer);
+					verTimer = UNDEF;
 				};
 			};
 
 			var addPlaceholderDebounced = _.throttle(orderState.addPlaceholder, 100);
 			$scope.userDragging = function(e) {
 				if ( e.clientX > dimX.screenEnd ) {
-				    if ( dragDir !== RIGHT ) {
-				        dragDir = RIGHT;
-				    };
+				    hozDragDir = RIGHT;
 				} else if ( e.clientX < dimX.screenStart ) {
-				    if ( dragDir !== LEFT ) {
-				        dragDir = LEFT;
-				    };
+				    hozDragDir = LEFT;
 				} else {
-				    if ( dragDir !== UNDEF ) {
-				        dragDir = UNDEF;
-				    };
+				    hozDragDir = UNDEF;
+				};
+
+				if ( e.clientY > dimY.screenEnd ) {
+					verDragDir = BOTTOM;
+				} else if ( e.clientY < dimY.screenStart ) {
+					verDragDir = TOP;
+				} else {
+				    verDragDir = UNDEF;
 				};
 
 				orderState.updateClientPos(e.clientX, e.clientY);
