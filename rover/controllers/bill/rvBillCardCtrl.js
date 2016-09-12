@@ -272,10 +272,20 @@ sntRover.controller('RVbillCardController',
 	var hasPermissionToChangeCharges = function(type) {
 		//hide edit and remove options in case type is  payment
 		var hasRemoveAndEditPermission  = (type !== "PAYMENT") ? true : false;
-	    var split_permission = rvPermissionSrv.getPermissionValue('SPLIT_CHARGES'),
-	        edit_permission = rvPermissionSrv.getPermissionValue('EDIT_CHARGES'),
-	        delete_permission = rvPermissionSrv.getPermissionValue('DELETE_CHARGES');
-	    return ((hasRemoveAndEditPermission && (edit_permission || delete_permission)) || split_permission);
+	    var splitPermission = rvPermissionSrv.getPermissionValue('SPLIT_CHARGES'),
+	    	editChargeCodeDescription = $scope.hasPermissionToEditChargeCodeDescription(),
+	        editPermission = rvPermissionSrv.getPermissionValue('EDIT_CHARGES'),
+	        deletePermission = rvPermissionSrv.getPermissionValue('DELETE_CHARGES');
+	    return ((hasRemoveAndEditPermission && (editPermission || deletePermission)) || splitPermission || editChargeCodeDescription);
+	};
+
+	/**
+	* function to check whether the user has permission
+	* to Edit charge code description.
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToEditChargeCodeDescription = function() {
+		return rvPermissionSrv.getPermissionValue ('EDIT_CHARGECODE_DESCRIPTION');
 	};
 
 	/**
@@ -2117,6 +2127,18 @@ sntRover.controller('RVbillCardController',
     	});
 	};
 
+	/*
+	 * open popup for edit charge code
+	 */
+	$scope.openEditChargeDescPopup = function(){
+		ngDialog.open({
+    		template: '/assets/partials/bill/rvEditChargePopup.html',
+    		controller:'rvBillCardPopupCtrl',
+    		className: '',
+    		scope: $scope
+    	});
+	};
+
   /*
 	 * open popup for edit transaction
 	 */
@@ -2141,14 +2163,16 @@ sntRover.controller('RVbillCardController',
 	$scope.callActionsPopupAction = function(action){
 
 		ngDialog.close();
-		if(action ==="remove"){
-			$scope.openRemoveChargePopup();
-		}
-		else if(action ==="split"){
-			$scope.openSplitChargePopup();
-		}else if(action === "edit"){
-			$scope.openEditChargePopup();
+		if (action === "custom_description") {
+			$scope.openEditChargeDescPopup();
+		} else if (action === "remove") {
+		    $scope.openRemoveChargePopup();
+		} else if (action === "split") {
+		    $scope.openSplitChargePopup();
+		} else if (action === "edit") {
+		    $scope.openEditChargePopup();
 		};
+
 
 	};
 
