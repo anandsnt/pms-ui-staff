@@ -12,7 +12,7 @@
         <span class="label">Assigned To</span>
         {{selectedAction.assigned_to.name}}
     </div>
-    <div class="info created" ng-hide="!isTrace(selectedAction.action_task_type) && !isMessage(selectedAction.action_task_type)" >
+    <div class="info" ng-hide="!isTrace(selectedAction.action_task_type) && !isMessage(selectedAction.action_task_type)" ng-class="{'created' : !!selectedAction.assigned_to.name}">
         <span class="label" ng-if="!selectedAction.created_by_null">Created By</span>
         <span class="label" ng-if="selectedAction.created_by_null">Created </span>
         {{selectedAction.created_by.name}} {{selectedAction.created_at_date}} &#8226; {{selectedAction.created_at_time}}
