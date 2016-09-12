@@ -146,77 +146,129 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			// yeah, the wording is totally confusing :S
 
 			var dragged = $(dropped.draggable).attr('id'),
-				draggedIndex = dragged.split('-')[1],
-				roomIndex = parseInt( dragged.split('-')[2] ),
-				taskIndex = parseInt( dragged.split('-')[3] );
+				fromEmpIndex = dragged.split('-')[1],
+				fromRoomIndex = parseInt( dragged.split('-')[2] ),
+				fromTaskIndex = parseInt( dragged.split('-')[3] );
 
-			var source, thatEmpl;
+			var source, fromEmp;
 
 			var draggedRoom, draggedTask;
 
-			if ( 'UA' === draggedIndex ) {
+			if ( 'UA' === fromEmpIndex ) {
 				source = $scope.multiSheetState.unassignedFiltered;
-				draggedRoom = source[roomIndex];
-				draggedTask = draggedRoom['room_tasks'][taskIndex];
+				draggedRoom = source[fromRoomIndex];
+				draggedTask = draggedRoom['room_tasks'][fromTaskIndex];
 			} else {
 				source = $scope.multiSheetState.selectedEmployees;
-				thatEmpl = source[draggedIndex];
-				draggedRoom = thatEmpl['rooms'][roomIndex];
-				draggedTask = draggedRoom['room_tasks'][taskIndex];
+				fromEmp = source[fromEmpIndex];
+				draggedRoom = fromEmp['rooms'][fromRoomIndex];
+				draggedTask = draggedRoom['room_tasks'][fromTaskIndex];
 			};
 
 			var dropped  = $(event.target).attr('id'),
-				empIndex = parseInt( dropped.split('-')[0] ),
-				employee = $scope.multiSheetState.selectedEmployees[empIndex];
+				toEmpIndex = parseInt( dropped.split('-')[0] ),
+				toEmp = $scope.multiSheetState.selectedEmployees[toEmpIndex];
 
-			var hasRoom = _.find(employee.rooms, { 'room_id': draggedRoom.room_id });
+			var hasRoom = _.find(toEmp.rooms, { 'room_id': draggedRoom.room_id });
+			var hasRoomIndex = _.findIndex(toEmp.rooms, { 'room_id': draggedRoom.room_id });
+			var roomCopy = [];
+
+			function move(array, from, to) {
+				if( to === from ) return;
+
+				var target = array[from];                         
+				var increment = to < from ? -1 : 1;
+
+				for(var k = from; k != to; k += increment){
+				array[k] = array[k + increment];
+				}
+				array[to] = target;
+				return array;
+			}
 
 			if ( !! hasRoom ) {
-				hasRoom.room_tasks.push(draggedTask);
+				roomCopy = angular.copy(toEmp.rooms);
+				
+				// only insert if this task doesnt exist already
+				if ( ! _.find(hasRoom.room_tasks, { 'id': draggedTask.id }) ) {
+					roomCopy[hasRoomIndex].room_tasks.push( draggedTask );
+				}
+
+				if ( hasRoomIndex > $scope.dropIndex ) {
+					move(roomCopy, hasRoomIndex, $scope.dropIndex);
+				} else {
+					if ( $scope.dropIndex === 0 ) {
+						move(roomCopy, hasRoomIndex, $scope.dropIndex)
+					} else {
+						move(roomCopy, hasRoomIndex, $scope.dropIndex - 1);
+					}
+				}
+
+				toEmp.rooms = roomCopy;
 			} else {
-				employee.rooms.push({
-					'room_id': draggedRoom.room_id,
-					'room_index': draggedRoom.room_index,
-					'room_tasks': [draggedTask]
-				});
-			};
+				if ( $scope.dropIndex === 0 ) {
+					toEmp.rooms.unshift({
+						'room_id': draggedRoom.room_id,
+						'room_index': draggedRoom.room_index,
+						'room_tasks': [draggedTask]
+					})
+				} else if ( $scope.dropIndex === toEmp.rooms - 1 ) {
+					toEmp.rooms.push({
+						'room_id': draggedRoom.room_id,
+						'room_index': draggedRoom.room_index,
+						'room_tasks': [draggedTask]
+					})
+				} else {
+					toEmp.rooms = [].concat(
+							toEmp.rooms.slice( 0, $scope.dropIndex ),
+							{
+								'room_id': draggedRoom.room_id,
+								'room_index': draggedRoom.room_index,
+								'room_tasks': [draggedTask]
+							},
+							toEmp.rooms.slice( $scope.dropIndex )
+						)
+				}
+			}
 
-			// add the task to "only_tasks" and work_type_id to "touched_work_types"
-			employee.only_tasks.push(draggedTask);
-			employee.touched_work_types.push( draggedTask.work_type_id );
-			employee.touched_work_types = _.uniq( _.flatten(employee.touched_work_types) );
+			if ( parseInt(fromEmpIndex) !== toEmpIndex ) {
+				// add the task to "only_tasks" and work_type_id to "touched_work_types"
+				toEmp.only_tasks.push(draggedTask);
+				toEmp.touched_work_types.push( draggedTask.work_type_id );
+				toEmp.touched_work_types = _.uniq( _.flatten(toEmp.touched_work_types) );
 
-			// if task removed from an employee =>
-			// remove the task from "only_tasks"
-			// and if the "work_type_id" in the removed task is not avail
-			// on employee's "room_tasks" anymore then remove it from "touched_work_types"
-			var inOnlyTask, hasOtherTaskWithSameWtid;
-			if ( 'UA' !== draggedIndex ) {
-				// that task with matches the id and room id of dragged task
-				inOnlyTask = _.findIndex(thatEmpl.only_tasks, function(task) {
-					return task.id === draggedTask.id && task.room_id === draggedTask.room_id
-				});
+				// if task removed from an toEmp =>
+				// remove the task from "only_tasks"
+				// and if the "work_type_id" in the removed task is not avail
+				// on toEmp's "room_tasks" anymore then remove it from "touched_work_types"
+				var inOnlyTask, hasOtherTaskWithSameWtid;
+				if ( 'UA' !== fromEmpIndex ) {
+					// that task with matches the id and room id of dragged task
+					inOnlyTask = _.findIndex(fromEmp.only_tasks, function(task) {
+						return task.id === draggedTask.id && task.room_id === draggedTask.room_id
+					});
 
-				if ( inOnlyTask > -1 ) {
-					thatEmpl.only_tasks.splice(inOnlyTask, 1);
+					if ( inOnlyTask > -1 ) {
+						fromEmp.only_tasks.splice(inOnlyTask, 1);
+					};
+
+					hasOtherTaskWithSameWtid = _.find(fromEmp.only_tasks, { work_type_id: draggedTask.work_type_id });
+					if ( ! hasOtherTaskWithSameWtid ) {
+						fromEmp.touched_work_types = _.without(fromEmp.touched_work_types, draggedTask.work_type_id);
+					};
 				};
 
-				hasOtherTaskWithSameWtid = _.find(thatEmpl.only_tasks, { work_type_id: draggedTask.work_type_id });
-				if ( ! hasOtherTaskWithSameWtid ) {
-					thatEmpl.touched_work_types = _.without(thatEmpl.touched_work_types, draggedTask.work_type_id);
+
+				// remove task from draggedRoom
+				draggedRoom['room_tasks'].splice(fromTaskIndex, 1);
+
+				// if the room was dragged off an fromEmp and
+				// if there are no more tasks in the room's room_tasks
+				// remove the room iself!
+				if ( 'UA' !== fromEmpIndex && ! draggedRoom['room_tasks'].length ) {
+					fromEmp['rooms'].splice(fromRoomIndex, 1);
 				};
-			};
-
-
-			// remove task from draggedRoom
-			draggedRoom['room_tasks'].splice(taskIndex, 1);
-
-			// if the room was dragged off an employee and
-			// if there are no more tasks in the room's room_tasks
-			// remove the room iself!
-			if ( 'UA' !== draggedIndex && ! draggedRoom['room_tasks'].length ) {
-				thatEmpl['rooms'].splice(roomIndex, 1);
-			};
+			}
 
 			// THE ABOVE CODE COULD BETTER BE HIDDEN IN SERVICE
 
@@ -393,6 +445,14 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			lastSaveConfig = config || null;
 			if ($scope.multiSheetState.selectedEmployees.length) {
+
+				// apply order key as is the rooms array index
+				_.each($scope.multiSheetState.assigned, function(item) {
+					_.each(item.rooms, function(room, index) {
+						room.order = index + 1;
+					})
+				});
+
 				var options = {
 					successCallBack: saveMultiSheetSuccessCallBack,
 					failureCallBack: saveMultiSheetFailureCallBack,
@@ -832,90 +892,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			};
 		};
 
-
-		var setUpAutoScroller = function() {
-			var LEFT  = 'LEFT',
-				RIGHT = 'RIGHT',
-				UNDEF = undefined;
-
-			var dragDir    = UNDEF,
-				timer      = UNDEF,
-				dim        = UNDEF;
-
-			var getDimentions = function() {
-				var LEFT_OFFSET = 200,
-					COL_WIDTH   = 220,
-					TASK_OFFSET = 110;	// half of COL_WIDTH; since task inside col
-
-				var winWidth = $(window).width();
-
-				var scrollX = ($scope.multiSheetState.selectedEmployees.length * COL_WIDTH) - (winWidth - LEFT_OFFSET);
-
-				dim = {
-					screenStart : LEFT_OFFSET + TASK_OFFSET,
-					screenEnd   : winWidth - LEFT_OFFSET,
-					scrollStart : LEFT_OFFSET + TASK_OFFSET,
-					scrollEnd   : -scrollX
-				};
-			};
-
-			/** setup dim and update on screen change, also remove listener when required */
-			getDimentions();
-			window.addEventListener( 'resize', getDimentions, false );
-			$scope.$on('$destroy', function() {
-				window.removeEventListener('resize');
-			});
-
-			var scrollExec = function() {
-				var scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
-
-				if ( dragDir === LEFT && scrollInst.x !== 0 && scrollInst.x < dim.scrollStart ) {
-					scrollInst.scrollBy(10, 0, 1);
-				};
-
-				if ( dragDir === RIGHT && scrollInst.x > dim.scrollEnd ) {
-					scrollInst.scrollBy(-10, 0, 1);
-				};
-			};
-
-			$scope.dragStart = function() {
-				timer = setInterval( scrollExec, 1 );
-			};
-
-			$scope.dragDrop = function() {
-				if ( !! timer ) {
-					window.clearInterval(timer);
-					timer = UNDEF;
-				};
-			};
-
-			$scope.userDragging = function(e) {
-				if ( e.clientX > dim.screenEnd ) {
-				    if ( dragDir !== RIGHT ) {
-				        dragDir = RIGHT;
-				    };
-				} else if ( e.clientX < dim.screenStart ) {
-				    if ( dragDir !== LEFT ) {
-				        dragDir = LEFT;
-				    };
-				} else {
-				    if ( dragDir !== UNDEF ) {
-				        dragDir = UNDEF;
-				    };
-				};
-			};
-		};
-
-		var checkAutoScroll = function() {
-			if (!!$scope.getScroller('worksheetHorizontal')) {
-				setUpAutoScroller();
-			} else {
-				setTimeout(checkAutoScroll, 100);
-			};
-		};
-
-
-
 		var initializeVariables = function() {
 			$scope.dateSelected = $scope.multiSheetState.selectedDate;
 			$scope.workTypeSelected = $scope.multiSheetState.header.work_type_id;
@@ -926,6 +902,383 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				grouping: 'room',
 				sort: 'asc',
 				employees: 1
+			};
+		};
+
+		var callRefreshScroll = function() {
+			refreshScrollers();
+		};
+		var handler = $scope.$on( 'ALL_RENDER_COMPLETE', callRefreshScroll );
+		$scope.$on( '$destroy', handler );
+
+		$scope.getReservationStatusClass = function(room) {
+			switch (room.reservation_status) {
+				case 'Due out':
+				case 'Arrived / Day use / Due out':
+				case 'Arrived / Day use / Due out / Departed':
+				case 'Due out / Arrival':
+				case 'Due out / Departed':
+				case 'Arrived / Departed':
+				case 'Departed':
+					return 'guest red'
+
+				case 'Stayover':
+					return 'guest blue';
+
+				case 'Arrival':
+				case 'Arrived':
+					return 'guest green';
+
+				case 'Not Reserved':
+					return 'guest gray';
+
+				default:
+					return 'guest';
+			}
+		};
+
+		$scope.getReservationStatusValue = function(room) {
+			switch (room.reservation_status) {
+				case 'Due out / Departed':
+				case 'Arrived / Day use / Due out / Departed':
+				case 'Arrived / Departed':
+				case 'Departed':
+					return 'OUT';
+
+				case 'Due out':
+				case 'Arrived / Day use / Due out':
+				case 'Due out / Arrival':
+					return room.checkout_time;
+
+				case 'Stayover':
+					return 'STAYOVER';
+
+				case 'Arrived':
+					return 'IN';
+
+				case 'Arrival':
+					return room.checkin_time;
+
+				default:
+					return 'default';
+			}
+		};
+
+		$scope.getCurrentStatusClass = function(room) {
+			switch (room.current_status) {
+				case 'DIRTY':
+					return 'room red'
+
+				case 'PICKUP':
+					return 'room orange';
+
+				case 'CLEAN':
+				case 'INSPECTED':
+					return 'room green';
+
+				default:
+					return 'room';
+			}
+		}
+
+		var setUpAutoScroller = function() {
+			var LEFT  = 'LEFT',
+				RIGHT = 'RIGHT',
+				TOP = 'TOP',
+				BOTTOM = 'BOTTOM',
+				UNDEF = undefined;
+
+			var dragDir    = UNDEF,
+				timer      = UNDEF,
+				dimX       = UNDEF,
+				dimY       = UNDEF;
+
+			// to drop the room/task based on the order
+			var orderState = (function() {
+				var base = {};
+
+				var clientX = 0,
+					clientY = 0,
+					$empNode = undefined;
+
+				base.getClientPos = function() {
+					return {
+						x: clientX,
+						y: clientY
+					};
+				};
+				/**/
+				base.updateClientPos = function(x, y) {
+					clientX = x;
+					clientY = y;
+				};
+
+				base.removePlaceholder = function() {
+					var $placeholder;
+
+					if ( !! $empNode ) {
+						$placeholder = $empNode.find('.placeholder');
+						$placeholder.remove();
+					}
+				};
+
+				base.findCurrEmpCol = function() {
+					var clientx = this.getClientPos().x;
+
+					var scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
+					var scrollInstX = scrollInst.x;
+
+					var LEFT_OFFSET = 20;
+					var COL_WIDTH   = 220;
+
+					var currX = clientx - (LEFT_OFFSET + scrollInstX);
+					var colIndex;
+					var selectedEmp;
+					var $placeholder;
+
+					this.removePlaceholder();
+
+					if ( currX < 0 ) {
+						$empNode = undefined;
+					} else {
+						colIndex = Math.floor(currX / COL_WIDTH);
+						colIndex = colIndex !== 0 ? colIndex - 1 : colIndex;
+
+						selectedEmp = $scope.multiSheetState.selectedEmployees[colIndex];
+						$empNode = $( '#' + colIndex + '-' + selectedEmp.id );
+					}
+
+					return $empNode;
+				}.bind(base);
+
+				base.checkOnOver = function(room, index, prevHeight) {
+					var $thisRoom, $nextRoom, nextIndex;
+
+					var TOP_OFFSET = 280, ROOM_MARGIN = 20;
+
+					var roomHeight, nextHeight, top, mid, bot, clienty;
+
+					var retObj;
+
+					$thisRoom = $(room);
+					$nextRoom = $thisRoom.next('.worksheet-room');
+					nextIndex = index + 1;
+					if ( $nextRoom.hasClass('.placeholder')  ) {
+						$nextRoom = $thisRoom.next('.worksheet-room').next('.worksheet-room')
+					}
+
+					roomHeight = $thisRoom.height();
+					/**/
+					if ( index === 0 ) {
+						top = TOP_OFFSET;
+					} else {
+						top = prevHeight;
+					}
+					mid = top + roomHeight / 2;
+					bot = top + roomHeight + ROOM_MARGIN;
+					nextHeight = top + roomHeight;
+
+					clienty = this.getClientPos().y;
+
+					if ( clienty < top && index === 0 ) {
+						return {
+							method: 'BEFORE',
+							node: $thisRoom,
+							index: index
+						}
+					} else if ( clienty > bot ) {
+						if ( $nextRoom.length ) {
+							return this.checkOnOver($nextRoom, nextIndex, nextHeight);
+						} else {
+							return {
+								method: 'AFTER',
+								node: $thisRoom,
+								index: nextIndex
+							}
+						}
+					} else {
+						if ( clienty < mid && clienty >= top ) {
+							return {
+								method: 'BEFORE',
+								node: $thisRoom,
+								index: index
+							}
+						} else {
+							return {
+								method: 'AFTER',
+								node: $thisRoom,
+								index: nextIndex
+							}
+						}
+					}
+				}.bind(base);
+
+				base.addPlaceholder = function() {
+					var $col = this.findCurrEmpCol(),
+						firstRoom,
+						index = 0,
+						prevHeight = 0;
+
+					var $placeholder = $('<div class="worksheet-room placeholder">Drop Here</div>');
+
+					this.removePlaceholder();
+
+					if ( $col === undefined ) {
+						return;
+					} else {
+						firstRoom = $col.find('.worksheet-room')[0];
+
+						if ( firstRoom === undefined ) {
+							$col.find('.wrapper')
+								.append( $placeholder );
+
+							$scope.dropIndex = 0
+						} else {
+							var onOverData = this.checkOnOver(firstRoom, index, prevHeight);
+
+							switch( onOverData.method ) {
+								case 'BEFORE':
+									$placeholder.insertBefore( onOverData.node  );
+									break;
+
+								case 'AFTER':
+									$placeholder.insertAfter( onOverData.node );
+									break;
+
+								default:
+									$col.find('.wrapper')
+										.append( $placeholder );
+									break;
+							};
+
+							$scope.dropIndex = onOverData.index;
+						}
+					}
+				}.bind(base);
+
+				return base;
+			})();
+
+
+			// get the dimentions for horizontal related calculations
+			var getXdimentions = function() {
+				var LEFT_OFFSET = 200,
+					COL_WIDTH   = 220,
+					TASK_OFFSET = 110;
+
+				var winWidth = $(window).width();
+
+				var scrollableX = ($scope.multiSheetState.selectedEmployees.length * COL_WIDTH) - (winWidth - LEFT_OFFSET);
+
+				return {
+					screenStart : LEFT_OFFSET + TASK_OFFSET,
+					screenEnd   : winWidth - LEFT_OFFSET,
+					scrollStart : LEFT_OFFSET + TASK_OFFSET,
+					scrollEnd   : -scrollableX,
+				};
+			};
+
+			// get the dimentions for vertical related calculations
+			// to be depricated, need to salvage few things from this
+			var getYdimentions = function() {
+				var TOP_OFFSET = 280,
+					TASK_HEIGHT = 115;	// This is highly relative
+
+				var winHeight = $(window).height();
+
+				var scrollableY = ($scope.multiSheetState.selectedEmployees.length * COL_WIDTH) - (winWidth - LEFT_OFFSET);
+
+				return {
+					screenStart : LEFT_OFFSET + TASK_OFFSET,
+					screenEnd   : winWidth - LEFT_OFFSET,
+					scrollStart : LEFT_OFFSET + TASK_OFFSET,
+					scrollEnd   : -scrollableX,
+				};
+			};
+
+			// setup dimX and update on screen change, also remove listener when scope dies 
+			var dimxOnResize = function() {
+				dimX = getXdimentions();
+			};
+			dimxOnResize();
+			window.addEventListener( 'resize', dimxOnResize, false );
+			$scope.$on('$destroy', function() {
+				window.removeEventListener( 'resize', dimxOnResize );
+			});
+
+			// call this method when we need to scroll the tm screen
+			// horzontally while the user is dragging a task outside
+			// the visible screen
+			var checkHozScrollBy = function() {
+				var scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
+
+				if ( dragDir === LEFT && scrollInst.x !== 0 && scrollInst.x < dimX.scrollStart ) {
+					scrollInst.scrollBy(10, 0, 1);
+					return;
+				};
+
+				if ( dragDir === RIGHT && scrollInst.x > dimX.scrollEnd ) {
+					scrollInst.scrollBy(-10, 0, 1);
+					return;
+				};
+			};
+
+			// call this method when we need to scroll a particular
+			// employee column vertically when user is dragging a 
+			// task outside the visible screen
+			var callVerScrollBy = function(index) {
+				var scrollInst = $scope.$parent.myScroll['assignedRoomList-' + index];
+
+				if ( dragDir === TOP && scrollInst.y !== 0 && scrollInst.y < dimX.scrollXStart ) {
+					scrollInst.scrollBy(0, 10, 1);
+				};
+
+				if ( dragDir === BOTTOM && scrollInst.y > dimX.scrollXEnd ) {
+					scrollInst.scrollBy(0, -10, 1);
+				};
+			};
+
+			// once the user starts dragging 
+			$scope.dragStart = function() {
+				timer = setInterval( checkHozScrollBy, 1 );
+				$scope.dropIndex = undefined;
+			};
+
+			$scope.dragDrop = function() {
+				orderState.removePlaceholder();
+
+				if ( !! timer ) {
+					window.clearInterval(timer);
+					timer = UNDEF;
+				};
+			};
+
+			var addPlaceholderDebounced = _.throttle(orderState.addPlaceholder, 100);
+			$scope.userDragging = function(e) {
+				if ( e.clientX > dimX.screenEnd ) {
+				    if ( dragDir !== RIGHT ) {
+				        dragDir = RIGHT;
+				    };
+				} else if ( e.clientX < dimX.screenStart ) {
+				    if ( dragDir !== LEFT ) {
+				        dragDir = LEFT;
+				    };
+				} else {
+				    if ( dragDir !== UNDEF ) {
+				        dragDir = UNDEF;
+				    };
+				};
+
+				orderState.updateClientPos(e.clientX, e.clientY);
+				addPlaceholderDebounced();
+			};
+		};
+
+		var checkAutoScroll = function() {
+			if (!!$scope.getScroller('worksheetHorizontal')) {
+				setUpAutoScroller();
+			} else {
+				setTimeout(checkAutoScroll, 100);
 			};
 		};
 
@@ -960,11 +1313,5 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		};
 
 		init();
-
-		var callRefreshScroll = function() {
-			refreshScrollers();
-		};
-		var handler = $scope.$on( 'ALL_RENDER_COMPLETE', callRefreshScroll );
-		$scope.$on( '$destroy', handler );
 	}
 ]);
