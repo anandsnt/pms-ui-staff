@@ -271,12 +271,13 @@ sntRover.controller('reservationActionsController', [
                 	var reservationStatus = $scope.reservationData.reservation_card.reservation_status
                 	var isUpgradeAvaiable = ($scope.reservationData.reservation_card.is_upsell_available === "true") &&
                 							 (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
-
+                        cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number!=="";
                     $state.go("rover.reservation.staycard.roomassignment", {
                             "reservation_id": $scope.reservationData.reservation_card.reservation_id,
                             "room_type": $scope.reservationData.reservation_card.room_type_code,
                             "clickedButton": "checkinButton",
-                            "upgrade_available" : isUpgradeAvaiable
+                            "upgrade_available" : isUpgradeAvaiable,
+                            "cannot_move_room" : cannotMoveState
                     });
                 };
                 $scope.goToBillCard = function(){
