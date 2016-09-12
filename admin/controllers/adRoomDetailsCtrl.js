@@ -12,6 +12,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 
 	var roomId = $stateParams.roomId;
 	$scope.isSuite = false;
+	$scope.availableComponentRooms = [];
 
 	if(roomId){
 		//if roomnumber is null returning to room list
@@ -30,7 +31,27 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 		}
 	};
 
-	$scope.roomTypeChanged = function(value) {
+	$scope.roomTypeChanged = function(value) { 
+
+		var fetchSuccessOfComponentRooms = function(data){
+			$scope.$emit('hideLoader');	
+			// console.log(data.rooms)		
+			angular.forEach(data,function(item) {
+				angular.forEach(item.rooms,function(roomItem) {
+					var h =_.findWhere($scope.data.room_types, {value: item.id});
+					console.log(h)
+					roomItem.room_type_name = (_.findWhere($scope.data.room_types, {value: (item.id).toString()})).name;	
+				});
+				
+				          
+	        });
+	        $scope.availableComponentRooms = data;
+		};
+		var fetchFailedOfComponentRooms = function(data){
+			$scope.$emit('hideLoader');
+			console.log(data)
+
+		};
 
 		if( $scope.isStandAlone && !$rootScope.isHourlyRatesEnabled ) {
 			if ($scope.editMode){
@@ -59,6 +80,10 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 			}
 			else{
 				$scope.isSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite;
+			
+				if($scope.isSuite){
+					$scope.invokeApi(ADRoomSrv.getComponentRoomTypes, {'suite_room_type_id': value}, fetchSuccessOfComponentRooms, fetchFailedOfComponentRooms);
+				}
 			}
 		}
 	};

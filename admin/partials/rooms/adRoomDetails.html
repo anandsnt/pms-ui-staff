@@ -32,6 +32,37 @@
 
 
 				<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_ROOM_TYPE' | translate }}"label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id' on-change="roomTypeChanged"></ad-dropdown>
+				
+				<div class="entry full-width" ng-show="shouldShowAddSuiteRooms()">
+					<ul class="entry-list">
+						<li ng-repeat="componentRooms in availableComponentRooms">
+							<label class="entry-list-label">{{componentRooms.room_type_name}} [Total configurable count: {{componentRooms.total_configurable_rooms}}]</label>
+							<div class="select entry-list-input">								
+								<select ng-change="selectedConfiguredRoom()">
+									<option value="{{rooms.id}}" ng-repeat="rooms in componentRooms.rooms">{{rooms.room_no}}</option>		
+								</select>
+							</div>
+						</li>						
+					</ul>
+
+					<label for="select-option1" class="ng-binding">Room Numbers
+					</label>
+
+					<div class="boxes">
+
+						<div class="room-box">
+							<input type="hidden" name="radio-option" value="{room-number}" class="box ng-pristine ng-valid" >
+							{room-number}
+							<span class="room-no-type">{room-type}</span>
+							<div class="del-no-box" ng-click="deleteRoomNumber($index)" ng-show="option.name != ''">
+								<a class="icons icon-delete"></a>
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
 
 				<div class="entry full-width" ng-show="shouldShowAddSuiteRooms()">
 					<label for="select-option1">
