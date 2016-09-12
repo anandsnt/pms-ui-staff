@@ -4,7 +4,8 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
     'zsEventConstants',
     'zsCheckinSrv',
     '$stateParams',
-    function($scope, $state, zsEventConstants, zsCheckinSrv, $stateParams) {
+    '$timeout',
+    function($scope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $timeout) {
 
         /**********************************************************************************************
          **      Expected state params -----> none           
@@ -37,6 +38,16 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             zsCheckinSrv.setSelectedCheckInReservation([]);
         };
 
+        var focusInputField = function(elementId) {
+            $timeout(function() {
+                if ($scope.isIpad){
+                    $scope.callBlurEventForIpad();
+                }
+                document.getElementById(elementId).focus();
+                document.getElementById(elementId).click();
+            }, 300);
+
+        };
         $scope.init = function() {
             $scope.addGuestsHeading = 'ADDTL_RESIDENTS';
             $scope.guest = {};
@@ -46,6 +57,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         $scope.addAGuest = function() {
             $scope.AddGuestMode = true;
             $scope.headingText = 'ENTER_FIRST';
+            focusInputField('add-guest-name');
         };
         $scope.NameEntered = function() {
             if ($scope.guest.Name === "") {
@@ -66,6 +78,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 $scope.guest.firstNameEntered = false;
                 $scope.callBlurEventForIpad();
             };
+            focusInputField('add-guest-name');
         };
         $scope.removeGuest = function(toDeleteId) {
             //for API
