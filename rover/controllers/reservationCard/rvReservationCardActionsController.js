@@ -865,6 +865,12 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                return true;
            } else return false;
         };
+        $scope.isMessage = function(v){
+           var str = 'MESSAGE';
+           if ($scope.eitherString(str, v)){//checks all cases upper/lower/first letter cap
+               return true;
+           } else return false;
+        };
 
         $scope.fetchActionsList = function(){
             $scope.fetchDepartments();//store this to use in assignments of department

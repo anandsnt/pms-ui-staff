@@ -1098,7 +1098,13 @@
             &.edit-charge {
                 width: 360px;
 
+                .h2 {
+                    margin-bottom: 10px;
+                }
+                
                 .text {
+                    font-size: 14px;
+
                     strong { .show; }
                 }
 
@@ -6561,6 +6567,19 @@
                         width:40%;
                         display: inline-block;
                     }
+                }
+            }
+
+            /* Release Notes Full Screen ***/
+            &.release-notes-popup {
+                .square(100%);
+
+                iframe {
+                    .square(100%);
+                }
+
+                @media only screen and (min-width: 600px) {
+                    .square(640px);
                 }
             }
         }
