@@ -27,6 +27,18 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          * 2.EMAIL_INVLAID_MODE
          */
 
+         
+        var focusInputField = function(elementId) {
+            $timeout(function() {
+                if ($scope.isIpad){
+                    $scope.callBlurEventForIpad();
+                }
+                document.getElementById(elementId).focus();
+                document.getElementById(elementId).click();
+            }, 300);
+
+        };
+         
         /**
          * [initializeMe description]
          */
@@ -37,13 +49,16 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.email = "";
             $scope.mode = "EMAIL_ENTRY_MODE";
+            focusInputField('email-entry');
         }();
+
         /**
          * [reEnterText description]
          * @return {[type]} [description]
          */
         $scope.reEnterText = function() {
             $scope.mode = "EMAIL_ENTRY_MODE";
+            focusInputField('email-entry');
         };
         /*
          * after validating email syntax, need to check the email against the hotel's black list
