@@ -60,6 +60,8 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             focusInputField('add-guest-name');
         };
         $scope.NameEntered = function() {
+            document.getElementById('add-guest-name').blur();
+
             if ($scope.guest.Name === "") {
                 return;
             } else if (!$scope.guest.firstNameEntered) {
@@ -67,7 +69,13 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 $scope.guest.firstName = $scope.guest.Name;
                 $scope.guest.Name = "";
                 $scope.headingText = 'ENTER_LAST';
-                $scope.callBlurEventForIpad();
+                if ($scope.isIpad){
+                    $scope.callBlurEventForIpad();
+                } else {
+                    $timeout(function(){
+                        focusInputField('add-guest-name');
+                    },300);
+                }
             } else {
                 $scope.guest.lastName = $scope.guest.Name;
                 $scope.guest.Name = "";
@@ -76,9 +84,15 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 //this needs to reset..the above code needs to be changed in future
                 //seems confusing
                 $scope.guest.firstNameEntered = false;
-                $scope.callBlurEventForIpad();
+                if ($scope.isIpad){
+                    $scope.callBlurEventForIpad();
+                } else {
+                    $timeout(function(){
+                        focusInputField('add-guest-name');
+                    },300);
+
+                }
             };
-            focusInputField('add-guest-name');
         };
         $scope.removeGuest = function(toDeleteId) {
             //for API
