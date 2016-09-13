@@ -22,13 +22,13 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		var focuInputField = function(elementId) {
+		var focusInputField = function(elementId) {
 			$timeout(function() {
-				if (!$scope.isIpad) {
-					document.getElementById(elementId).focus();
-				} else {
+				if ($scope.isIpad){
 					$scope.callBlurEventForIpad();
 				}
+				document.getElementById(elementId).focus();
+				document.getElementById(elementId).click();
 			}, 300);
 
 		};
@@ -67,6 +67,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			}
 			//starting mode
 			$scope.mode = "LAST_NAME_ENTRY";
+			focusInputField("last-name");
 			//debugWithReservation();//debugging, comment out before deploying
 		};
 		init();
@@ -181,7 +182,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			} else {
 				if ($scope.reservationParams.last_name.length > 0) {
 					$scope.mode = "ROOM_NUMBER_ENTRY";
-					focuInputField("room-number");
+					focusInputField("room-number");
 				} else {
 					return;
 				};
@@ -198,10 +199,10 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		$scope.reEnterText = function(type) {
 			if (type === "room") {
 				$scope.mode = "ROOM_NUMBER_ENTRY";
-				focuInputField("room-number");
+				focusInputField("room-number");
 			} else {
 				$scope.mode = "LAST_NAME_ENTRY";
-				focuInputField("last-name");
+				focusInputField("last-name");
 			}
 		};
 
