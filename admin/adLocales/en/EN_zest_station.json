@@ -78,6 +78,7 @@
 "MLI_DESKTOP_SWIPE_CHROME":"MLI Desktop Swipe - Chrome Only - Merchantlink Processor",
 "INFINEA_INGENICO_CC_IPAD":"Infinea/ Ingenico - ipad Only - Merchantlink Processor",
 "KEY_CREATION_METHOD":"Key creation method",
+"KEY_CREATION_IMAGE":"Create Key In Progress Image",
 "REMOTE_ENCODING_CHROME_IPAD":"Remote Encoding - Chrome or iPad - Ving, Salto, Saflok",
 "SANKYO_ENCODING":"Sankyo Encoding - Chrome only - Atlas (Saflok) only - Uses websocket",
 "INGENICO_INFINEA_KEY":"Infinea/Ingenico - iPad Only - Ving, Salto, Saflok"

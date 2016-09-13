@@ -638,7 +638,17 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
 			data.user_id = $scope.passData.userId;
 			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, addToGuestCardOnSwipe);
 		} else {
-			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successSwipePayment);
+			// CICO-33543
+			// should not call save payment for overlay --> !standalone and during checkin
+			if($rootScope.isStandAlone || !$scope.passData.details.isClickedCheckin) {
+				$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successSwipePayment);
+			} else {
+				// NOTE: In case of swipes for checkin in overlays, the card is added on the checkin request;
+				// continuing with the workflow - i.e. update card details in the bill view
+				successSwipePayment({
+					id: null
+				});
+			}
 		}
 
 	};
