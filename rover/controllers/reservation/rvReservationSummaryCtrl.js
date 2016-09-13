@@ -915,7 +915,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             if ($scope.reservationData.paymentType.type.value !== null) {
                 angular.forEach($scope.reservationData.paymentMethods, function(item) {
-                    if ($scope.reservationData.paymentType.type.value === item.value) {
+                    if ($scope.reservationData.paymentType.type.value === item.name) {
                         if ($scope.reservationData.paymentType.type.value === "CC") {
                             postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
                         } else {
@@ -923,14 +923,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                         }
                     }
                 });
-                postData.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear === "" || $scope.reservationData.paymentType.ccDetails.expYear === "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
-                $scope.reservationData.paymentType.ccDetails.expMonth + "-01";
-                postData.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
             }
 
             $scope.errorMessage = [];
 
-            console.log( $scope.reservationData.reservationId );
             var check = function() {
                 if ( ! $scope.reservationData.reservationId ) {
                     setTimeout(check, 100);
@@ -944,19 +940,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 }
             }
             check();
-
-            // THE BELOW CODE IS SHIT!
-            // if (typeof index === 'undefined') {
-            //     // TO HANDLE OVERRIDE ALL SCENARIO
-            //     _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
-            //         postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
-            //         promises.push(RVReservationSummarySrv.updateReservation(postData));
-            //     });
-            // } else {
-            //     postData.reservationId = reservationId;
-            //     promises.push(RVReservationSummarySrv.updateReservation(postData));
-            // }
-            // $q.all(promises).then(updateSuccess, updateFailure);
         };
 
         $scope.onPayDepositLater = function(){
@@ -1626,6 +1609,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 }, onupdateSuccess, onUpdateFailure);
             }
         };
+
+
+        $scope.$on("PAY_LATER", function(e, data) {
+            $scope.reservationData.paymentType.ccDetails = data.cardDetails;
+            $scope.reservationData.selectedPaymentId = data.cardDetails.value;
+            $scope.reservationData.paymentType.type.value = data.paymentType;
+            savePayment($scope.confirmReservation);
+        });
 
         $scope.init();
     }

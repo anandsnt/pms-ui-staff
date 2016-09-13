@@ -216,7 +216,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         };
 
         $scope.payLater = function() {
-            $scope.$emit('PAY_LATER');
+            $scope.$emit('PAY_LATER', {
+                paymentType: $scope.selectedPaymentType,
+                cardDetails: $scope.selectedCC
+            });
         };
 
         /**
@@ -693,7 +696,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
             $scope.currencySymbol = $scope.hotelConfig.currencySymbol;
 
-            if($scope.fetchLinkedCards){
+            if ($scope.fetchLinkedCards) {
                 fetchAttachedCreditCards();
             }
 
