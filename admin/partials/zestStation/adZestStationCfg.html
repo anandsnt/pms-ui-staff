@@ -179,6 +179,23 @@
                         <input type="radio" value="ingenico_infinea_key" ng-model="zestSettings.kiosk_key_creation_method">{{ 'INGENICO_INFINEA_KEY' | translate}}
                     </label>
                 </div>
+                <!-- Upload image for Key Creation In Progress Screen -->
+                <label translate>KEY_CREATION_IMAGE </label>
+                        <div class="entry">
+                    <div class="file-upload" ng-class="{'with-remove-file-area':hasKeyImageFileUpdatedOrUploading('keyCreate')}">
+                        <span class="input" ng-show="hasKeyImageFileUpdatedOrUploading('keyCreate')">File Attached</span>
+                        <span class="input" ng-show="!hasKeyImageFileUpdatedOrUploading('keyCreate')">Choose file..</span>
+                        <input type="file" ng-model="zestSettings.key_create_file_uploaded" accept="*" app-filereader emit-data="key_create_file_uploaded" />
+                        <button type="button" class="button brand-colors">
+                            Attach file
+                        </button>
+                    </div>
+                    <button ng-show="hasKeyImageFileUpdatedOrUploading('keyCreate')" type="button" class="button brand-colors with-remove-file" ng-click="zestSettings.key_create_file_uploaded = ''">
+                            Remove file
+                        </button>
+                        
+                </div>
+
             </fieldset>
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
