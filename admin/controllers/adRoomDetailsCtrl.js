@@ -49,6 +49,8 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 	        });
 	        $scope.availableComponentRooms = data;
 	        $scope.availableComponentRoomsArray = angular.copy($scope.availableComponentRooms);
+
+
 		};
 		var fetchFailedOfComponentRooms = function(data){
 			$scope.$emit('hideLoader');
@@ -79,6 +81,9 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 						$scope.data.room_type_id = $scope.selectedRoomTypeId;
 						$('.content-scroll').animate({scrollTop: 0}, 'fast');
 					}, 500);
+				}
+				if($scope.isSuite){
+					$scope.invokeApi(ADRoomSrv.getComponentRoomTypes, {'suite_room_type_id': value}, fetchSuccessOfComponentRooms, fetchFailedOfComponentRooms);
 				}
 			}
 			else{
@@ -117,14 +122,22 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
      * To handle individual deletion of Suite rooms
      */
     $scope.deleteRoomNumber = function(index) {
-    	
 
     	var selectedRoomTypeIndex = _.findIndex($scope.availableComponentRooms, {"id": $scope.data.suite_rooms[index].room_type_id});
+    	
+    	if ($scope.editMode){ 
 
-    	var selectedRoomIndex = _.findIndex($scope.availableComponentRoomsArray[selectedRoomTypeIndex].rooms, {"room_no": $scope.data.suite_rooms[index].room_number});
+    		$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.push({"id": $scope.data.suite_rooms[index].id, "room_no": $scope.data.suite_rooms[index].room_number});
+
+	    } else {
+	    	
+
+	    	var selectedRoomIndex = _.findIndex($scope.availableComponentRoomsArray[selectedRoomTypeIndex].rooms, {"room_no": $scope.data.suite_rooms[index].room_number});
+			
+			$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.push($scope.availableComponentRoomsArray[selectedRoomTypeIndex].rooms[selectedRoomIndex]);
 		
-		$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.push($scope.availableComponentRoomsArray[selectedRoomTypeIndex].rooms[selectedRoomIndex]);
 
+		}
 		$scope.data.suite_rooms.splice(index, 1);
 	
     };
@@ -141,6 +154,13 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 		$scope.roomNumber = $scope.data.room_number;
 		$scope.selectedRoomTypeId = data.room_type_id;
 		$scope.roomTypeChanged(data.room_type_id);
+		if ($scope.editMode){ 
+			angular.forEach($scope.data.suite_rooms,function(suiteRoomItem) {
+				var roomData =_.findWhere($scope.data.room_types, {value: suiteRoomItem.room_type_id});
+				suiteRoomItem.room_type_name = roomData.name;				
+			});
+		}
+		
 		/*
 		* adding the selected attribute on room feature here
 		* which will be used in template for adding class if it the selected attribute is true
@@ -325,9 +345,9 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 		$scope.errorMessage = errorMessage;
 	};
 
-	$scope.selectedConfiguredRoom = function(selectedItem, roomTypeId){
+	$scope.selectedConfiguredRoom = function(selectedItem, roomTypeId, roomTypeName){
 
-		$scope.data.suite_rooms.push({'room_number':selectedItem, 'room_type_id': roomTypeId});
+		$scope.data.suite_rooms.push({'room_number':selectedItem, 'room_type_id': roomTypeId, "room_type_name" : roomTypeName});
 
 		var selectedRoomTypeIndex = _.findIndex($scope.availableComponentRooms, {id: roomTypeId});
 		$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.splice(_.findIndex($scope.availableComponentRooms[selectedRoomTypeIndex].rooms, {'room_no':selectedItem}), 1)

@@ -38,52 +38,48 @@
 						<li ng-repeat="componentRooms in availableComponentRooms">
 							<label class="entry-list-label">{{componentRooms.room_type_name}} [Total configurable count: {{componentRooms.total_configurable_rooms}}]</label>
 							<div class="select entry-list-input">								
-								<select ng-change="selectedConfiguredRoom(componentRooms.selected_room_number, componentRooms.id)" ng-model="componentRooms.selected_room_number">
+								<select ng-change="selectedConfiguredRoom(componentRooms.selected_room_number, componentRooms.id, componentRooms.room_type_name )" ng-model="componentRooms.selected_room_number">
 									<option value="{{rooms.room_no}}" ng-repeat="rooms in componentRooms.rooms">{{rooms.room_no}}</option>		
 								</select>
 							</div>
 						</li>						
 					</ul>
 
-					<!-- <label for="select-option1" class="ng-binding">Room Numbers
+					<label for="select-option1">
+						{{'ROOM_NUMBERS' |translate}}
 					</label>
-
+					<!-- <div class="boxes">
+						<div class="room-box" ng-repeat="number in data.suite_rooms">
+							<input type="hidden"  name="radio-option" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="dropdown" class="box" ng-model="number.room_number">
+							<span class="room-no-type">{{number.room_type_name}}</span>
+							<div class="del-no-box" ng-click="deleteRoomNumber($index)" ng-show="option.name != ''">
+								<a class="icons icon-delete" ></a>
+							</div>
+						</div>
+						
+					</div> -->
 					<div class="boxes">
 
-						<div class="room-box">
-							<input type="hidden" name="radio-option" value="{room-number}" class="box ng-pristine ng-valid" >
-							{room-number}
-							<span class="room-no-type">{room-type}</span>
+						<div class="room-box" ng-repeat="number in data.suite_rooms">
+							<input type="hidden" name="radio-option" class="box ng-pristine ng-valid" >
+							{{number.room_number}}
+							<span class="room-no-type">{{number.room_type_name}}</span>
 							<div class="del-no-box" ng-click="deleteRoomNumber($index)" ng-show="option.name != ''">
 								<a class="icons icon-delete"></a>
 							</div>
 
 						</div>
 
-					</div> -->
-
-				</div>
-
-				<div class="entry full-width" ng-show="shouldShowAddSuiteRooms()">
-					<label for="select-option1">
-						{{'ROOM_NUMBERS' |translate}}
-					</label>
-					<div class="boxes">
-						<div class="room-no-box" ng-repeat="number in data.suite_rooms">
-							<input type="text"  name="radio-option" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="dropdown" class="box" ng-model="number.room_number">
-
-							<div class="del-no-box" ng-click="deleteRoomNumber($index)" ng-show="option.name != ''">
-								<a class="icons icon-delete" ></a>
-							</div>
-						</div>
-						<div>
-							<label data-type="newspaper" class="add-new-checkbox inline" ng-click="showNewRoomNumber()" style="width: 24% !important; top: 20px; margin-bottom: 30px; ">
-								<span class="icons icon-add"></span>
-								{{'ADD_ROOM' | translate}}
-							</label>
-						</div>
 					</div>
+			
+
+
+
 				</div>
+
+				<!-- <div class="entry full-width" ng-show="shouldShowAddSuiteRooms()">
+
+				</div> -->
 
 				<div class="entry full-width">
 					<label for="room-picture">
