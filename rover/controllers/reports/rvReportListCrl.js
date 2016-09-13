@@ -63,6 +63,9 @@ sntRover.controller('RVReportListCrl', [
                 // unfortunately this is not sent from server
                 reportUtils.addIncludeUserFilter( report[i] );
 
+                //add rates filter for needed reports
+                reportUtils.addIncludeRatesFilter( report[i] );
+
                 setupDates.init( report[i] );
                 _.each(report[i]['filters'], function(filter) {
                     setupDates.execFilter( report[i], filter );
