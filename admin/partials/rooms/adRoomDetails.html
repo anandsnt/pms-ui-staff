@@ -38,14 +38,14 @@
 						<li ng-repeat="componentRooms in availableComponentRooms">
 							<label class="entry-list-label">{{componentRooms.room_type_name}} [Total configurable count: {{componentRooms.total_configurable_rooms}}]</label>
 							<div class="select entry-list-input">								
-								<select ng-change="selectedConfiguredRoom()">
-									<option value="{{rooms.id}}" ng-repeat="rooms in componentRooms.rooms">{{rooms.room_no}}</option>		
+								<select ng-change="selectedConfiguredRoom(componentRooms.selected_room_number, componentRooms.id)" ng-model="componentRooms.selected_room_number">
+									<option value="{{rooms.room_no}}" ng-repeat="rooms in componentRooms.rooms">{{rooms.room_no}}</option>		
 								</select>
 							</div>
 						</li>						
 					</ul>
 
-					<label for="select-option1" class="ng-binding">Room Numbers
+					<!-- <label for="select-option1" class="ng-binding">Room Numbers
 					</label>
 
 					<div class="boxes">
@@ -60,7 +60,7 @@
 
 						</div>
 
-					</div>
+					</div> -->
 
 				</div>
 

@@ -13,6 +13,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 	var roomId = $stateParams.roomId;
 	$scope.isSuite = false;
 	$scope.availableComponentRooms = [];
+	$scope.availableComponentRoomsArray = [];
 
 	if(roomId){
 		//if roomnumber is null returning to room list
@@ -27,7 +28,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
      */
 	$scope.showNewRoomNumber = function() {
 		if($scope.data.suite_rooms.length == 0 || _.last($scope.data.suite_rooms).room_number !== "") {
-			$scope.data.suite_rooms.push({'room_number':''});
+			$scope.data.suite_rooms.push({'room_number':'', 'room_type_id': ''});
 		}
 	};
 
@@ -38,14 +39,16 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 			// console.log(data.rooms)		
 			angular.forEach(data,function(item) {
 				angular.forEach(item.rooms,function(roomItem) {
-					var h =_.findWhere($scope.data.room_types, {value: item.id});
-					console.log(h)
-					roomItem.room_type_name = (_.findWhere($scope.data.room_types, {value: (item.id).toString()})).name;	
+					var roomData =_.findWhere($scope.data.room_types, {value: item.id});
+		
+					item.room_type_name = roomData.name;
+					item.selected_room_number = "";	
 				});
 				
 				          
 	        });
 	        $scope.availableComponentRooms = data;
+	        $scope.availableComponentRoomsArray = angular.copy($scope.availableComponentRooms);
 		};
 		var fetchFailedOfComponentRooms = function(data){
 			$scope.$emit('hideLoader');
@@ -114,7 +117,16 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
      * To handle individual deletion of Suite rooms
      */
     $scope.deleteRoomNumber = function(index) {
-    	$scope.data.suite_rooms.splice(index, 1);
+    	
+
+    	var selectedRoomTypeIndex = _.findIndex($scope.availableComponentRooms, {"id": $scope.data.suite_rooms[index].room_type_id});
+
+    	var selectedRoomIndex = _.findIndex($scope.availableComponentRoomsArray[selectedRoomTypeIndex].rooms, {"room_no": $scope.data.suite_rooms[index].room_number});
+		
+		$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.push($scope.availableComponentRoomsArray[selectedRoomTypeIndex].rooms[selectedRoomIndex]);
+
+		$scope.data.suite_rooms.splice(index, 1);
+	
     };
 
 
@@ -312,5 +324,14 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = errorMessage;
 	};
+
+	$scope.selectedConfiguredRoom = function(selectedItem, roomTypeId){
+
+		$scope.data.suite_rooms.push({'room_number':selectedItem, 'room_type_id': roomTypeId});
+
+		var selectedRoomTypeIndex = _.findIndex($scope.availableComponentRooms, {id: roomTypeId});
+		$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.splice(_.findIndex($scope.availableComponentRooms[selectedRoomTypeIndex].rooms, {'room_no':selectedItem}), 1)
+	}
+
 
 }]);
