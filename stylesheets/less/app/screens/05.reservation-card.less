@@ -562,6 +562,13 @@
                 color: @grey3;
                 margin: 0;
                 .pull-right; 
+
+                &.payment-hold {
+                    float: none;
+                    display: inline-block;
+                    line-height: 15px;
+                    margin-left: 5px;
+                }
             }
 
             strong { font-weight: 600; }
@@ -598,7 +605,8 @@
                     height: 18px;
                 }
 
-                .move-room {
+                .move-room,
+                .block-input {
                     position: relative;
                     overflow: visible;
                     .pull-right;
