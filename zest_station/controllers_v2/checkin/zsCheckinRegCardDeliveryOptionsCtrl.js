@@ -200,6 +200,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 */
 		$scope.editEmailAddress = function() {
 			$scope.mode = "EMAIL_ENTRY_MODE";
+			$scope.focusInputField('input_text');
 		};
 		/**
 		 * [updateGuestEmail description]
