@@ -163,66 +163,33 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess);
     };
 
-    var makeTextFile = function (text) {
-        //just makes a downloadable text file blob
-        var data = new Blob([text], {type: 'text/plain'});
-        // If we are replacing a previously generated file we need to
-        // manually revoke the object URL to avoid memory leaks.
-
-        //textFile ref can be used if doing a temp storage of a downloaded file, not needed at this point
-       // if (textFile !== null) {
-        //  window.URL.revokeObjectURL(textFile);
-        //}
-        var textFile = window.URL.createObjectURL(data);
-        return textFile;
-    };
-
-    $scope.downloadPromptFileName = '';
-    var downloadLangFile = function(lang, dataFile){
-        //make json file into a downloadable string
-        var dataStr = JSON.stringify(dataFile);
-        var link;
-
-        if($scope.isChrome){
-            link = document.getElementById(lang+'-download-link');//ie. en-download-link
-            link.href = makeTextFile(dataStr);
-            link.click();//auto init the actual download link(url)
-        } else {
-             //in safari it should just open in new window if clicked
-             $timeout(function(){
-                $scope.downloadPromptFileName = lang+'.json';
-                link = document.getElementById('download-link-popup');//ie. en-download-link
-                link.href = makeTextFile(dataStr);
-             },500);
-             ngDialog.open({
-                template: '/assets/partials/zestStation/adZestStationLanguageFile.html',
-                className: 'ngdialog-theme-default single-calendar-modal',
-                scope: $scope,
-                closeByDocument: true
-            });
-        }
-    };
     $scope.closePrompt = function(){
         ngDialog.close();
     };
-
+    $scope.downloadPromptFileName = '';
     $scope.downloadLang = function(lang){
-        var onSuccess = function(dataFile){
-            $scope.$emit('hideLoader');
-            downloadLangFile(lang, dataFile);
-        }
-
-        var onFailure = function(dataFile){
-            //TODO, add errorMessage to this controller
-            $scope.$emit('hideLoader');
-        };
-
-        $scope.invokeApi(ADZestStationSrv.fetchLangFile, {'lang':lang}, onSuccess, onFailure);
+         $timeout(function(){
+            $scope.downloadPromptFileName = lang+'.json';
+            var link = document.getElementById('download-link-popup');//ie. en-download-link
+            link.href = 'staff/locales/download/'+lang+'.json';
+         },500);
+         ngDialog.open({
+            template: '/assets/partials/zestStation/adZestStationLanguageFile.html',
+            className: 'ngdialog-theme-default single-calendar-modal',
+            scope: $scope,
+            closeByDocument: true
+        });
     };
+    $scope.saveAsText = '';
     $scope.isChrome = (window.navigator.userAgent.toLowerCase().indexOf("chrome") !== -1);
 
     $scope.init = function() {
         fetchSettings();
+        if ($scope.isChrome){
+            $scope.saveAsText = 'Save-As';
+        } else {
+            $scope.saveAsText = 'Download Linked File As';
+        }
     };
 
     $scope.init();
