@@ -38,16 +38,6 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             zsCheckinSrv.setSelectedCheckInReservation([]);
         };
 
-        var focusInputField = function(elementId) {
-            $timeout(function() {
-                if ($scope.isIpad){
-                    $scope.callBlurEventForIpad();
-                }
-                document.getElementById(elementId).focus();
-                document.getElementById(elementId).click();
-            }, 300);
-
-        };
         $scope.init = function() {
             $scope.addGuestsHeading = 'ADDTL_RESIDENTS';
             $scope.guest = {};
@@ -57,7 +47,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         $scope.addAGuest = function() {
             $scope.AddGuestMode = true;
             $scope.headingText = 'ENTER_FIRST';
-            focusInputField('add-guest-name');
+            $scope.focusInputField('add-guest-name');
         };
         $scope.NameEntered = function() {
             document.getElementById('add-guest-name').blur();
@@ -73,7 +63,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                     $scope.callBlurEventForIpad();
                 } else {
                     $timeout(function(){
-                        focusInputField('add-guest-name');
+                        $scope.focusInputField('add-guest-name');
                     },300);
                 }
             } else {
@@ -88,7 +78,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                     $scope.callBlurEventForIpad();
                 } else {
                     $timeout(function(){
-                        focusInputField('add-guest-name');
+                        $scope.focusInputField('add-guest-name');
                     },300);
 
                 }

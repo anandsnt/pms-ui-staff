@@ -651,8 +651,19 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  Chrome App Communication code  
 		 *  ends here
 		 ********************************************************************************/
+		 //
+		 //$scope.focusInputField is to set focus to an input field which will auto-prompt keyboard on chromeapp
+		 //
+        $scope.focusInputField = function(elementId) {
+            $timeout(function() {
+                if ($scope.isIpad){
+                    $scope.callBlurEventForIpad();
+                }
+                document.getElementById(elementId).focus();
+                document.getElementById(elementId).click();
+            }, 300);
 
-
+        };
 
 		/********************************************************************************
 		 *  Work station code  
