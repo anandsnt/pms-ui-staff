@@ -624,7 +624,7 @@
                         .pull-left;
 
                         &.on {
-                            .gradient(@redEnd, @redStart);
+                            .gradient(@greenEnd, @greenStart);
                             .switch-icon { left: 12px; }
                         }
                     }
@@ -655,6 +655,17 @@
                     input[type="checkbox"] {
                         line-height: 18px;
                         min-height: 18px;
+                    }
+                }
+
+                .move-room  {
+                         
+                    .switch-button {
+                         
+                        &.on {
+                            .gradient(@redEnd, @redStart);
+                            .switch-icon { left: 12px; }
+                        }
                     }
                 }
             }
