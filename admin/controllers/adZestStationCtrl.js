@@ -65,7 +65,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
     $scope.hasKeyImageFileUpdatedOrUploading = function(name){
         if ($scope.zestSettings && $scope.zestSettings.key_create_file_uploaded){
-            if ($scope.zestSettings.key_create_file_uploaded !== ''){return true;}
+            if ($scope.zestSettings.key_create_file_uploaded !== '' && $scope.zestSettings.key_create_file_uploaded !== 'false'){return true;}
             return false;
         } else return false;
     };
