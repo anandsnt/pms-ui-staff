@@ -222,6 +222,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             });
         };
 
+        $scope.continueAction = function(arg) {
+            $scope.$emit('PAYMENT_ACTION_CONTINUE', arg);
+        };
+
         /**
          * This method  is used adding a payment method
          * Places of use are

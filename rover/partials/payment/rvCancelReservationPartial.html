@@ -1,0 +1,104 @@
+<section ng-if="!paymentAttempted && !isPaymentFailure">
+    <div class="entry full-width" ng-class="{'amount': feeData.showFee}">
+
+        <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+
+        <input ng-change="onPaymentInfoChange()"
+               ng-model="payment.amount"
+               disabled="true"
+               type="text"
+               class="amount"
+               ng-if="!payment.isRateSuppressed"/>
+
+
+        <input type="text"
+               disabled="true"
+               class="amount"
+               ng-if="payment.isRateSuppressed"
+               value="{{'SUPPRESSED_RATES_TEXT' | translate}}"/>
+
+        <span ng-show="feeData.showFee" class="delimiter">+</span>
+
+        <input ng-show="feeData.showFee && !payment.isRateSuppressed"
+               ng-change="onFeeOverride()"
+               ng-model="feeData.calculatedFee"
+               value="{{feeData.calculatedFee}}"
+               type="text"
+               class="fee"/>
+
+        <input ng-show="feeData.showFee && payment.isRateSuppressed"
+               value="{{'SUPPRESSED_RATES_TEXT' | translate}}"
+               type="text"
+               class="fee"/>
+
+        <span ng-show="feeData.showFee" class="delimiter">fee</span>
+
+        <span ng-show="feeData.showFee" class="total">
+          Total:
+          <strong ng-if="!payment.isRateSuppressed">
+              {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+          </strong>
+          <strong ng-if="payment.isRateSuppressed">
+              {{'SUPPRESSED_RATES_TEXT' | translate}}
+          </strong>
+        </span>
+    </div>
+
+    <!-- Reference field - use only when it exsits; This configuration is available in the Admin/Financials -->
+    <div class="entry full-width reference" ng-show="isDisplayRef">
+        <label>Reference</label>
+        <input ng-model="payment.referenceText" type="text"/>
+    </div>
+
+    <div class="entry full-width"
+         ng-show="!showCCPage && cancellationData.paymentType ==='CC' && (paymentGateway !== 'sixpayments' || isManual) && newCardAdded && !depositPaidSuccesFully">
+        <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': cancellationData.addToGuestCard}">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': cancellationData.addToGuestCard}"></span>
+            <input ng-model="cancellationData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox"/>
+            {{'ADD_TO_GUEST_CARD' | translate}}
+        </label>
+    </div>
+
+</section>
+
+<!-- Success feedback -->
+<div class="feedback" ng-show="paymentAttempted && !isPaymentFailure">
+    <div class="notice success">Amount paid!</div>
+    <ul class="transaction">
+        <li ng-show="!!payment.authorizationCode">
+            Your Authorize code is: <span class="auth">{{payment.authorizationCode}}</span>
+        </li>
+        <li ng-if="feeData.showFee">
+            Amount paid: <span class="value">{{currencySymbol}}{{payment.amount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                        </span>
+        </li>
+        <li ng-if="!feeData.showFee">
+            Amount paid: <span class="value">{{currencySymbol}}{{payment.amount}}
+                        </span>
+        </li>
+    </ul>
+</div>
+
+<!-- Buttons -->
+<div class="actions" ng-hide="paymentAttempted && !isPaymentFailure">
+    <button type="button"
+            class="button blank modal-close"
+            ng-click="closeThePopup()">
+        Close
+    </button>
+    <button type="button"
+            ng-disabled="!selectedPaymentType"
+            ng-class="{'grey': !selectedPaymentType}"
+            class="button green"
+            click-touch="submitPayment()">
+        Make Payment
+    </button>
+</div>
+<div class="actions" ng-show="paymentAttempted && !isPaymentFailure">
+    <button type="button"
+            class="button blank modal-close"
+            ng-click="continueAction(true)"
+            translate>
+        CANCEL_RESERVATION
+    </button>
+</div>
