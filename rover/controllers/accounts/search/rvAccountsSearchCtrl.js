@@ -152,20 +152,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		};
 
 		/**
-		 * Forms highlighted html content to use with ng-bind-html
-		 * Handles case when there are special charactors
-		 * @param  {string} input text to format
-		 * @return {Object} trusted HTML object
-		 */
-		$scope.getHighlightedHTML = function(input) {
-			var text  = $scope.escapeNull(input),
-				query = $scope.query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"); // escape specials
-				regEx = new RegExp(query, 'gi');
-
-			return $rootScope.trustAsHtml(text.replace(regEx, '<span class="highlight">$&</span>'));
-		};
-
-		/**
 		* to Search for accounts
 		* @return - None
 		*/

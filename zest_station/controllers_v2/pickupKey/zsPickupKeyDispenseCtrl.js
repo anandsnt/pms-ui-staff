@@ -49,6 +49,13 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 			}
 		});
 
+		//handling style in ctrl, so as not to mess up style sheet
+		//this is a small style addition
+		var marginTop = $scope.zestStationData.show_room_number ? '40px' : '0px';
+		$scope.doneButtonStyle = {
+			'margin-top': marginTop
+		};
+
 		$scope.reEncodeKey = function() {
 			$scope.mode = "DISPENSE_KEY_MODE";
 		};
@@ -157,12 +164,12 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 */
 		var localEncodingSuccsess = function(response) {
 			if ($scope.inDemoMode()) {
-				setTimeout(function(){
+				setTimeout(function() {
 					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
 					dispenseKey();
 
 					$scope.runDigestCycle();
-				},2000);
+				}, 2000);
 
 			} else {
 				if (response !== null && response.key_info && response.key_info[0]) {
@@ -202,9 +209,9 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 				"reservation_id": $scope.selectedReservation.reservationId
 			};
 
-			if (keyNo){
+			if (keyNo) {
 				params.key = keyNo;
-				if (keyNo === 2){
+				if (keyNo === 2) {
 					params.is_additional = true;
 				}
 			};
@@ -219,11 +226,11 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
 
 			if ($scope.inDemoMode()) {
-				setTimeout(function(){
+				setTimeout(function() {
 					onResponseSuccess({
 						'status': 'success'
 					});
-				},1200);
+				}, 1200);
 			} else {
 				if ($scope.writeLocally()) {
 					console.log('write locally');

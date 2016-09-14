@@ -235,8 +235,6 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.hasNoTotals = false;
                     setTotalsForReport(totals);//refreshes Totals
 					break;
-				case reportNames['CHECKIN_NOW_OR_LATER']:
-					break;
 
 				default:
 					break;
@@ -280,6 +278,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['DEPOSIT_REPORT']:
 				case reportNames['RESERVATIONS_BY_USER']:
 				case reportNames['ZEST_CAMPAIGN_REPORT']:
+				case reportNames['ADDON_FORECAST']:
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
 					break;
@@ -375,6 +374,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['ROOM_UPSELL']:
 				case reportNames['MOBILE_CHECKIN']:
 				case reportNames['MOBILE_CHECKIN_NOW']:
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 4;
+					break;
+
+				case reportNames['ROOMS_OOO_OOS']:
 					$scope.leftColSpan = 3;
 					$scope.rightColSpan = 4;
 					break;
@@ -517,12 +521,43 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// with additional user selected options
 			// the API parser will look throught the report name
 			// to make sure API that doesnt requires any parsing will be returned with any parse
+			var checkGeneralOptions = (function() {
+				var retObj = {
+					include_actions            : false,
+					include_notes              : false,
+					show_guests                : false,
+					include_cancelled          : false,
+					show_rate_adjustments_only : false
+				};
+
+				_.each($scope.chosenReport.hasGeneralOptions.data, function(each) {
+					if ( each.paramKey === 'include_actions' && each.selected ) {
+						retObj.include_actions = true
+					}
+					if ( each.paramKey === 'include_notes' && each.selected ) {
+						retObj.include_notes = true
+					}
+					if ( each.paramKey === 'show_guests' && each.selected ) {
+						retObj.show_guests = true
+					}
+					if ( each.paramKey === 'include_cancelled' && each.selected ) {
+						retObj.include_cancelled = true
+					}
+					if ( each.paramKey === 'show_rate_adjustments_only' && each.selected ) {
+						retObj.show_rate_adjustments_only = true
+					}
+				});
+
+				return retObj;
+			})();
 			var parseAPIoptions = {
 				'groupedByKey'    : $scope.$parent.reportGroupedBy,
-				'checkNote'       : $scope.chosenReport.chosenOptions['include_notes'],
-				'checkGuest'      : $scope.chosenReport.chosenOptions['show_guests'],
-				'checkCancel'     : $scope.chosenReport.chosenOptions['include_cancelled'] || $scope.chosenReport.chosenOptions['include_cancelled'],
-				'checkRateAdjust' : $scope.chosenReport.chosenOptions['show_rate_adjustments_only']
+				'checkAction'     : checkGeneralOptions.include_actions,
+				'checkNote'       : checkGeneralOptions.include_notes,
+				'checkGuest'      : checkGeneralOptions.show_guests,
+				'checkCancel'     : checkGeneralOptions.include_cancelled,
+				'checkRateAdjust' : checkGeneralOptions.show_rate_adjustments_only,
+				'chosenSortBy'    : $scope.chosenReport.chosenSortBy
 			};
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions, $scope.$parent.resultsTotalRow) );
 			// if there are any results
@@ -636,6 +671,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
 					$scope.detailsTemplateUrl = '/assets/partials/reports/creditCheckReport/rvCreditCheckReport.html';
+					break;
+
+				case reportNames['ROOMS_OOO_OOS']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/roomOooOosReport/rvRoomOooOosReport.html';
 					break;
 
 				default:
@@ -976,44 +1017,55 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// add the orientation
 			addPrintOrientation();
 
-			/*
-			*	======[ READY TO PRINT ]======
-			*/
+			/**
+			 * CICO-32471: icons are background image they are loaded async after render
+			 * solving this issue by adding an img tag and waiting for it to load (< 100kb)
+			 * this is taken from  Groups->rooming list print.
+			 */
+			var bg  = $('#print-orientation').css('background-image'),
+				src = bg.replace(/(^url\()|(\)$|[\"\'])/g, ''),
+				img = $('<img>').attr('src', src);
 
-			// this will show the popup with full report
-		    $timeout(function() {
+			img.on('load', function () {
+				// unbinding the events & removing the elements inorder to prevent memory leaks
+				$(this).off('load');
+				$(this).remove();
 
-		    	/*
-		    	*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-		    	*/
+				// this will show the popup with full report
+				$timeout(function() {
 
-		        $window.print();
-		        if ( sntapp.cordovaLoaded ) {
-		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-		        };
-		    }, 1000);
+					/*
+					 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+					 */
 
-		    /*
-		    *	======[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]======
-		    */
+				    $window.print();
+				    if ( sntapp.cordovaLoaded ) {
+				        cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+				    };
+				}, 1000);
+
+				/*
+				 *	======[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]======
+				 */
 
 
-		    // in background we need to keep the report with its original state
-		    $timeout(function() {
+				// in background we need to keep the report with its original state
+				$timeout(function() {
 
-		    	// remove the orientation
-				removePrintOrientation();
+					// remove the orientation
+					removePrintOrientation();
 
-				// If a specific report ctrl has created a pre-print 'afterPrint' method
-				// to get clear/remove anything after print
-				// READ MORE: rvReportsMainCtrl:L#:61-75
-				if ( 'function' == typeof $scope.printOptions.afterPrint ) {
-					$scope.printOptions.afterPrint();
-				};
+					// If a specific report ctrl has created a pre-print 'afterPrint' method
+					// to get clear/remove anything after print
+					// READ MORE: rvReportsMainCtrl:L#:61-75
+					if ( 'function' == typeof $scope.printOptions.afterPrint ) {
+						$scope.printOptions.afterPrint();
+					};
 
-		        // load the report with the original page
-		        $scope.fetchNextPage( $scope.returnToPage );
-		    }, 2000);
+				    // load the report with the original page
+				    $scope.fetchNextPage( $scope.returnToPage );
+				}, 2000);
+            });
 		};
 
 		$scope.emailReport = function() {

@@ -1,7 +1,8 @@
 <div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
 
 <!-- Removed the animation class added while drawer menu open/close as it may be conflicting with ui-view animations -->
-<div class="container" ng-click="closeDrawerMenu()" ng-class="{ 'return-back': returnBack }" ng-show="!kiosk">
+<div class="container" ng-click="closeDrawerMenu()" ng-class="{ 'return-back': returnBack}" ng-show="!kiosk">
+	
 	<div class="ui-router-wrapper">		
 		<div ui-view class="main-view"></div>
 	</div>

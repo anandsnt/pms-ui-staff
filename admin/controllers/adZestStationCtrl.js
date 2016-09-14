@@ -62,6 +62,13 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             return false;
         } else return false;
     };
+
+    $scope.hasKeyImageFileUpdatedOrUploading = function(name){
+        if ($scope.zestSettings && $scope.zestSettings.key_create_file_uploaded){
+            if ($scope.zestSettings.key_create_file_uploaded !== ''){return true;}
+            return false;
+        } else return false;
+    };
     
     var getEnabledLanguages = function(){
         if (!$scope.zestSettings.zest_lang){return null;};

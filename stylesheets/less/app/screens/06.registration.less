@@ -885,6 +885,10 @@
                         padding: 0 10px;
                         font-weight: 600;
 
+                        &.description {
+                            padding: 0 10px 0 30px;
+                        }
+
                         .sort {
                             position: relative;
                             cursor: pointer;
@@ -929,13 +933,40 @@
                         .select { width: 60px; }
 
                         &.description {
-                            padding: 0 10px;
+                            font-style: normal;
+                            padding: 0 10px 0 30px;
+                            position: relative;
 
-                            span { 
-                                line-height: 16px;
-                                .show; 
+                            .charge,
+                            .adjusted,
+                            .reference {
+                                line-height: 1;
+                                .show();
+                            }
 
-                                &.reference { color: @grey3; }
+                            .edited {
+                                padding-left: 14px;
+                                background-position: 0 -4000px;
+                            }
+
+                            .reference {
+                                color: @grey3;
+                            }
+
+                            .adjusted {
+                                em {
+                                    color: darken(@yellow, 10);
+                                }
+                            }
+
+                            &.icon-edit-10 {
+                                display: inline-block;
+                                background-position: 2px -4000px;
+                                position: absolute;
+                                top:0;
+                                left:0;
+                                bottom:0;
+                                margin: auto 0;
                             }
                         }
 
@@ -985,7 +1016,7 @@
 
                     &.pagination {
                         td {
-                            
+                            .numbers-pagination, 
                             .search-pagination {
                                 position: static;
                                 left: auto;

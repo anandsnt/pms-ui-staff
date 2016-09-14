@@ -184,7 +184,10 @@
             <span class="icons icon-clear-search">Clear query</span>
         </button>
         <input ng-show="uiChosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
-        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
+        
+        <input ng-show="uiChosenReport.hasSysDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
+
+        <input ng-show="!uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
     </div>
 </div>
 
@@ -383,6 +386,12 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasOriginsList.data"
     options="uiChosenReport.hasOriginsList.options"></multi-option-selection>
+
+<multi-option-selection ng-show="uiChosenReport.hasFloorList && uiChosenReport.hasFloorList.data.length"
+    label="Floor"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasFloorList.data"
+    options="uiChosenReport.hasFloorList.options"></multi-option-selection>
 
 <div class="entry" ng-show="uiChosenReport.hasMinRevenue">
     <label>Minimum Revenue</label>

@@ -3,7 +3,9 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
     '$state',
     'zsEventConstants',
     'zsCheckinSrv',
-    function($scope, $state, zsEventConstants, zsCheckinSrv) {
+    '$stateParams',
+    '$timeout',
+    function($scope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $timeout) {
 
         /**********************************************************************************************
          **      Expected state params -----> none           
@@ -19,7 +21,12 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
          */
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
             zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
-            $state.go('zest_station.checkInReservationDetails');
+            var stateParams = {};
+            //check if this page was invoked through pickupkey flow
+            if (!!$stateParams.pickup_key_mode) {
+                stateParams.pickup_key_mode = 'manual';
+            }
+            $state.go('zest_station.checkInReservationDetails', stateParams);
         });
 
         $scope.navToPrev = function() {
@@ -31,6 +38,16 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             zsCheckinSrv.setSelectedCheckInReservation([]);
         };
 
+        var focusInputField = function(elementId) {
+            $timeout(function() {
+                if ($scope.isIpad){
+                    $scope.callBlurEventForIpad();
+                }
+                document.getElementById(elementId).focus();
+                document.getElementById(elementId).click();
+            }, 300);
+
+        };
         $scope.init = function() {
             $scope.addGuestsHeading = 'ADDTL_RESIDENTS';
             $scope.guest = {};
@@ -40,8 +57,11 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         $scope.addAGuest = function() {
             $scope.AddGuestMode = true;
             $scope.headingText = 'ENTER_FIRST';
+            focusInputField('add-guest-name');
         };
         $scope.NameEntered = function() {
+            document.getElementById('add-guest-name').blur();
+
             if ($scope.guest.Name === "") {
                 return;
             } else if (!$scope.guest.firstNameEntered) {
@@ -49,7 +69,13 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 $scope.guest.firstName = $scope.guest.Name;
                 $scope.guest.Name = "";
                 $scope.headingText = 'ENTER_LAST';
-                $scope.callBlurEventForIpad();
+                if ($scope.isIpad){
+                    $scope.callBlurEventForIpad();
+                } else {
+                    $timeout(function(){
+                        focusInputField('add-guest-name');
+                    },300);
+                }
             } else {
                 $scope.guest.lastName = $scope.guest.Name;
                 $scope.guest.Name = "";
@@ -58,7 +84,14 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 //this needs to reset..the above code needs to be changed in future
                 //seems confusing
                 $scope.guest.firstNameEntered = false;
-                $scope.callBlurEventForIpad();
+                if ($scope.isIpad){
+                    $scope.callBlurEventForIpad();
+                } else {
+                    $timeout(function(){
+                        focusInputField('add-guest-name');
+                    },300);
+
+                }
             };
         };
         $scope.removeGuest = function(toDeleteId) {

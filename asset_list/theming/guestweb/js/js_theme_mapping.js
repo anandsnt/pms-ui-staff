@@ -26,7 +26,7 @@ module.exports = {
 			'guestweb_zoku' 		: [ themeJsRoot + 'app_router_zoku.js',zestRootJS],
 			'guestweb_fontainebleau' 	: [ themeJsRoot + 'app_router_fontainebleau.js'],
 			'guestweb_great_wolf' 		: [ themeJsRoot + 'app_router_great_wolf.js'],
-			'guestweb_knickerbocker' 	: [ themeJsRoot + 'app_router_knickerbocker.js'],
+			'guestweb_knickerbocker' 	: [ themeJsRoot + 'app_router_common.js'],
 			'guestweb_margaritaville' 	: [ themeJsRoot + 'app_router_margaritaville.js'],
 			'guestweb' 	: [ themeJsRoot + 'app_router_carlyle.js'],
 			'guestweb_galleria' 	: [ themeJsRoot + 'app_router_galleria.js'],
@@ -67,7 +67,11 @@ module.exports = {
 			'guestweb_covington':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_consciousVondelpark':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_halcyon':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_chancellors_house':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_chancellors_house':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_calvary_court':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_playa_largo':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_rivington':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_hewing':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }

@@ -7,6 +7,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     resolve: {
       exactOnlineSetupValues: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
         return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
+      }],
+      journalsList : ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
+        return adExactOnlineSetupSrv.fetchJournalsList();
+      }],
+      balancingAccounts : ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
+        return adExactOnlineSetupSrv.fetchBalancingAccounts();
       }]
     }
   });
@@ -81,6 +87,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     resolve: {
       windsurferCRSSetupValues: ['adWindsurferCRSSetupSrv', function(adWindsurferCRSSetupSrv) {
         return adWindsurferCRSSetupSrv.fetchWindsurferCRSConfiguration();
+      }]
+    }
+  });
+
+  $stateProvider.state('admin.travelClickSetup', {
+    templateUrl: '/assets/partials/interfaces/TravelClick/adTravelClickCRSSetup.html',
+    controller: 'adTravelClickCRSSetupCtrl',
+    url : '/travelclick/setup',
+    resolve: {
+      CRSConfig: ['adTravelClickCRSSetupSrv', function(adTravelClickCRSSetupSrv) {
+        return adTravelClickCRSSetupSrv.fetchCRSConfiguration();
       }]
     }
   });

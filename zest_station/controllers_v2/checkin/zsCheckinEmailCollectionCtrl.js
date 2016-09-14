@@ -27,6 +27,18 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          * 2.EMAIL_INVLAID_MODE
          */
 
+         
+        var focusInputField = function(elementId) {
+            $timeout(function() {
+                if ($scope.isIpad){
+                    $scope.callBlurEventForIpad();
+                }
+                document.getElementById(elementId).focus();
+                document.getElementById(elementId).click();
+            }, 300);
+
+        };
+         
         /**
          * [initializeMe description]
          */
@@ -37,18 +49,50 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.email = "";
             $scope.mode = "EMAIL_ENTRY_MODE";
+            focusInputField('email-entry');
         }();
+
         /**
          * [reEnterText description]
          * @return {[type]} [description]
          */
         $scope.reEnterText = function() {
             $scope.mode = "EMAIL_ENTRY_MODE";
+            focusInputField('email-entry');
         };
+        /*
+         * after validating email syntax, need to check the email against the hotel's black list
+         * - settings/zest/email blacklist
+         * if the email is validated as non-blacklisted, then proceed to next function
+         */
+        var checkIfEmailIsBlacklisted = function(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure) {
+            var blacklistCheckOptions = {
+                params: {
+                    'email': $scope.email
+                },
+                successCallBack: function(data) {
+                    //onSuccess, 
+                    if (!data.black_listed_email) {
+                        afterBlackListValidation();
+
+                    } else {
+                        console.warn('email is black listed, request different email address');
+                        onBlackListedEmailFound();
+                    };
+                },
+                failureCallBack: onValidationAPIFailure
+            };
+            $scope.callAPI(zsGeneralSrv.emailIsBlackListed, blacklistCheckOptions);
+        }
+
+
         /**
          * [updateGuestEmail description]
          * @return {[type]} [description]
          */
+        var setInvalidEmailMode = function() {
+            $scope.mode = "EMAIL_INVLAID_MODE";
+        };
         var updateGuestEmail = function() {
             var updateComplete = function(response) {
                 console.info('updateGuestEmail :: updateComplete: ', response);
@@ -79,15 +123,26 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                 $state.go('zest_station.speakToStaff', stateParams);
             };
 
-            var options = {
-                params: {
-                    'guest_id': $stateParams.guest_id,
-                    'email': $scope.email
-                },
-                successCallBack: updateComplete,
-                failureCallBack: updateGuestEmailFailed
+            var afterBlackListValidation = function() {
+                var options = {
+                    params: {
+                        'guest_id': $stateParams.guest_id,
+                        'email': $scope.email
+                    },
+                    successCallBack: updateComplete,
+                    failureCallBack: updateGuestEmailFailed
+                };
+                $scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
             };
-            $scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
+            var onBlackListedEmailFound = function() {
+                setInvalidEmailMode();
+            };
+            var onValidationAPIFailure = function() {
+                updateGuestEmailFailed();
+            };
+            //checks if new email is blacklisted, if so, set invalid email mode
+            //otherwise, continue updating guest email
+            checkIfEmailIsBlacklisted(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure);
         };
         /**
          * [goToNext description]
@@ -98,7 +153,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             if (isValidEmail) {
                 updateGuestEmail();
             } else {
-                $scope.mode = "EMAIL_INVLAID_MODE";
+                setInvalidEmailMode();
                 $scope.callBlurEventForIpad();
             };
         };

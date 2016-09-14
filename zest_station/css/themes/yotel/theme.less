@@ -432,3 +432,66 @@
     color: #d8d8d8;
     z-index: 999;
 }
+
+
+@media (min-height: 800px) {
+    #options li .option {
+        width: 250px !important;
+        height: 250px !important;
+    }
+    #options.large-icons li .option {
+        width: 325px !important;
+        height: 325px !important;
+    }
+}
+
+/********************************* key board style fixes ********************/
+
+.ui-keyboard-button{
+    min-width:6em;
+    height:6em;
+    margin:0.6em;
+}
+
+/* small screen specific styles */
+
+@media (max-height: 800px) {
+   .ui-keyboard-button{
+        min-width:4.5em;
+        height:4.4em;
+        margin:0.4em;
+    }
+    #main.centered #content.input-field-contents {
+        padding-top: 5% !important;
+    }
+}
+.ui-keyboard-has-focus {
+    bottom: 7%;
+    width:100% !important;
+}
+.ui-keyboard-button span {
+    font-size: 2.6em;
+}
+#main.centered #content.input-field-contents {
+    height: 100% !important;
+    padding-top: 7%;
+    .form .input{
+        border: 3px white solid !important;
+        border-radius: 10px;
+        background: #835C85;
+    }
+}
+
+
+/******** aligns keyboard to the top of the div *******/
+.top-align-keyboard{
+    bottom: 54% !important;
+    right:9%;
+}
+
+
+
+
+
+
+

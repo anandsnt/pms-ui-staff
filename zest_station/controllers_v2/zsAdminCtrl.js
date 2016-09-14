@@ -28,6 +28,16 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.refreshScroller('admin-screen');
         };
 
+        var focusInputField = function(elementId) {
+            $timeout(function() {
+                if ($scope.isIpad){
+                    $scope.callBlurEventForIpad();
+                }
+                document.getElementById(elementId).focus();
+                document.getElementById(elementId).click();
+            }, 300);
+
+        };
         /**
          * printer name convention has something like IPP://somename..
          * so lets pull out that IPP:// from the display to user, so they will see its
@@ -94,6 +104,8 @@ sntZestStation.controller('zsAdminCtrl', [
                     $scope.adminLoginError = true;
                     $scope.subHeadingText = 'ADMIN_LOGIN_ERROR';
                     console.warn('invalid admin login');
+                    //prompt screen keyboard depending on the device, ios should call blur first for smooth transition
+                    focusInputField('password_text');
                 }
             };
             var onFail = function(response) {
@@ -101,6 +113,8 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.adminLoginError = true;
                 $scope.subHeadingText = 'ADMIN_LOGIN_ERROR';
                 console.warn('failed admin login attempt');
+                //prompt screen keyboard depending on the device, ios should call blur first for smooth transition
+                focusInputField('password_text');
             };
 
             var options = {
@@ -139,6 +153,8 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.headingText = 'Admin Username'; //TODO: need to move this out to a tag.
             $scope.passwordField = false;
             showNavButtons();
+            focusInputField('input_text');
+            
         };
         /**
          *  Input field button actions
@@ -153,7 +169,8 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.mode = "admin-password-mode";
                 $scope.headingText = 'Admin Password'; //TODO: need to move this out to a tag.
                 $scope.passwordField = true;
-                $scope.callBlurEventForIpad();
+                //prompt screen keyboard depending on the device, ios should call blur first for smooth transition
+                focusInputField('password_text');
             } else {
                 //user has entered password
                 $scope.adminLoginError = false;
@@ -314,24 +331,24 @@ sntZestStation.controller('zsAdminCtrl', [
             }
         };
         $scope.debugToggleCount = 0;
-        $scope.toggleDebugMode = function(){
+        $scope.toggleDebugMode = function() {
             //in develop or production, implementations may want to demo a template,
             //this will allow them to set any template into demo mode and go through the steps of a demo mode
             // which will [ simulate CreditCard swipe & Key creation ], but will check in a reservation
-            $scope.debugToggleCount++;  
-            $timeout(function(){
-                if ($scope.debugToggleCount > 3){
+            $scope.debugToggleCount++;
+            $timeout(function() {
+                if ($scope.debugToggleCount > 3) {
                     $scope.showDebugModeOption = true;
                     //refresh view 
                     $scope.runDigestCycle();
                     //resize the view scroller so user can scroll to see demo mode
                     $timeout(refreshScroller, 500);
                     //reset the count
-                    $timeout(function(){
+                    $timeout(function() {
                         $scope.debugToggleCount = 0;
-                    },3000);
-                } 
-            },2000);
+                    }, 3000);
+                }
+            }, 2000);
         };
 
         $scope.showDebugModeOption = false;
@@ -366,7 +383,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 refreshScroller(); //maybe need to update layout, but this works to fix scroll issue on admin after page load
             }, 1000);
             $scope.setScreenIcon('checkin');
-            if ($scope.zestStationData.theme === 'snt'){
+            if ($scope.zestStationData.theme === 'snt') {
                 $scope.showDebugModeOption = true;
             }
 
