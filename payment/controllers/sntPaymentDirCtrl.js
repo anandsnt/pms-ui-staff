@@ -378,6 +378,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $scope.$emit('showLoader');
 
             sntPaymentSrv.submitPayment(params).then(response => {
+                    $scope.paymentAttempted = true;
+                    $scope.isPaymentFailure = false;
+                    $scope.payment.authorizationCode = response.authorization_code;
+
                     response.amountPaid = $scope.payment.amount;
                     response.authorizationCode = response.authorization_code;
                     // NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
@@ -397,7 +401,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     $scope.$emit('PAYMENT_SUCCESS', response);
                     $scope.$emit('hideLoader');
                 }, errorMessage => {
+                    $scope.paymentAttempted = true;
+                    $scope.isPaymentFailure = true;
 
+                    $scope.paymentErrorMessage = errorMessage[0];
                     console.log("payment failed" + errorMessage);
                     $scope.$emit('PAYMENT_FAILED', errorMessage);
                     $scope.$emit('hideLoader');

@@ -227,7 +227,7 @@
                             deposit-policy-name="{{depositData.description}}"
                             bill-number="billNumber"
                             payment-types="reservationData.paymentMethods"
-                            selected-payment-type=""
+                            selected-payment-type="reservationData.paymentType.type.value"
                             selected-c-c="renderData"
                             amount='reservationData.depositAmount'
                             action-type="DEPOSIT_PAYMENT_RES_SUMMARY"

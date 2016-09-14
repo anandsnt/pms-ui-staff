@@ -1,59 +1,60 @@
 <div class="notice deposit">
-    <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
+    <section ng-if="!paymentAttempted">
+        <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
 
-    <div class="entry full-width deposit-amount"
-         ng-class="{'amount': feeData.showFee}">
+        <div class="entry full-width deposit-amount"
+             ng-class="{'amount': feeData.showFee}">
 
-        <div class="entry card-number"
-             ng-show="selectedPaymentType === 'GIFT_CARD'">
-            <label>Card number (<span>No spaces</span>)</label>
-            <input placeholder="Enter Card number"
-                   ng-model="giftCard.number"
-                   maxlength="22"
-                   rv-delay-textbox
-                   delay="1000"
-                   function-to-fire="onChangeGiftCard"
-                   type="text"/>
-            <label ng-show="giftCard.amountAvailable"> Available Card Balance({{currencySymbol}}) </label>
-            <input ng-show="giftCard.amountAvailable"
-                   ng-readonly="true"
-                   ng-model="giftCard.availableBalance"
-                   type="text"/>
-        </div>
-        <div class="entry full-width">
-            <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+            <div class="entry card-number"
+                 ng-show="selectedPaymentType === 'GIFT_CARD'">
+                <label>Card number (<span>No spaces</span>)</label>
+                <input placeholder="Enter Card number"
+                       ng-model="giftCard.number"
+                       maxlength="22"
+                       rv-delay-textbox
+                       delay="1000"
+                       function-to-fire="onChangeGiftCard"
+                       type="text"/>
+                <label ng-show="giftCard.amountAvailable"> Available Card Balance({{currencySymbol}}) </label>
+                <input ng-show="giftCard.amountAvailable"
+                       ng-readonly="true"
+                       ng-model="giftCard.availableBalance"
+                       type="text"/>
+            </div>
+            <div class="entry full-width">
+                <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
 
-            <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
-            <input ng-change="onPaymentInfoChange()"
-                   ng-model="payment.amount"
-                   type="text"
-                   ng-disabled="!payment.isEditable"
-                   class="amount"
-                   ng-if="!payment.isRateSuppressed"/>
-            <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
-            <input type="text"
-                   ng-disabled="!payment.isEditable"
-                   class="amount"
-                   ng-if="payment.isRateSuppressed"
-                   value="{{'SUPPRESSED_RATES_TEXT' | translate}}"/>
+                <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
+                <input ng-change="onPaymentInfoChange()"
+                       ng-model="payment.amount"
+                       type="text"
+                       ng-disabled="!payment.isEditable"
+                       class="amount"
+                       ng-if="!payment.isRateSuppressed"/>
+                <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
+                <input type="text"
+                       ng-disabled="!payment.isEditable"
+                       class="amount"
+                       ng-if="payment.isRateSuppressed"
+                       value="{{'SUPPRESSED_RATES_TEXT' | translate}}"/>
 
-            <span ng-show="feeData.showFee" class="delimiter">+</span>
+                <span ng-show="feeData.showFee" class="delimiter">+</span>
 
-            <input ng-show="feeData.showFee && !payment.isRateSuppressed"
-                   ng-change="onFeeOverride()"
-                   ng-model="feeData.calculatedFee"
-                   value="{{feeData.calculatedFee}}"
-                   type="text"
-                   class="fee"/>
+                <input ng-show="feeData.showFee && !payment.isRateSuppressed"
+                       ng-change="onFeeOverride()"
+                       ng-model="feeData.calculatedFee"
+                       value="{{feeData.calculatedFee}}"
+                       type="text"
+                       class="fee"/>
 
-            <input ng-show="feeData.showFee && payment.isRateSuppressed"
-                   value="{{'SUPPRESSED_RATES_TEXT' | translate}}"
-                   type="text"
-                   class="fee"/>
+                <input ng-show="feeData.showFee && payment.isRateSuppressed"
+                       value="{{'SUPPRESSED_RATES_TEXT' | translate}}"
+                       type="text"
+                       class="fee"/>
 
-            <span ng-show="feeData.showFee" class="delimiter">fee</span>
+                <span ng-show="feeData.showFee" class="delimiter">fee</span>
 
-            <span ng-show="feeData.showFee" class="total">
+                <span ng-show="feeData.showFee" class="total">
           Total:
           <strong ng-if="!payment.isRateSuppressed">
               {{currencySymbol}}{{feeData.totalOfValueAndFee}}
@@ -62,17 +63,51 @@
               {{'SUPPRESSED_RATES_TEXT' | translate}}
           </strong>
         </span>
+            </div>
         </div>
+
+        <div class="entry full-width reference" ng-show="isDisplayRef">
+            <label>Reference</label>
+            <input ng-model="payment.referenceText" type="text"/>
+        </div>
+
+        <div class="actions" ng-show="!!selectedPaymentType">
+            <button type="button" class="button blue" ng-click="payLater()">Pay deposit later</button>
+            <button type="button" class="button green" ng-click="submitPayment()" ng-hide="shouldHidePaymentButton()">
+                Pay
+                deposit now
+            </button>
+        </div>
+    </section>
+
+    <!-- Deposit paid succesfully -->
+    <div class="feedback no-top-border" ng-show="paymentAttempted && !isPaymentFailure">
+        <div class="notice success">Deposit paid</div>
+        <ul class="transaction">
+            <li ng-show="!!payment.authorizationCode">
+                Your Authorize code is: <span class="auth">{{payment.authorizationCode}}</span>
+            </li>
+            <li ng-if="feeData.showFee">
+                Amount paid:
+                <span class="value">
+                    {{currencySymbol}}{{payment.amount}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
+                </span>
+            </li>
+            <li ng-if="!feeData.showFee">
+                Amount paid:
+                <span class="value">
+                    {{currencySymbol}}{{payment.amount}}
+                </span>
+            </li>
+        </ul>
     </div>
 
-    <div class="entry full-width reference" ng-show="isDisplayRef">
-        <label>Reference</label>
-        <input ng-model="payment.referenceText" type="text"/>
-    </div>
-
-    <div class="actions" ng-show="!!selectedPaymentType">
-        <button type="button" class="button blue" ng-click="payLater()">Pay deposit later</button>
-        <button type="button" class="button green" ng-click="submitPayment()" ng-hide="shouldHidePaymentButton()">Pay deposit now</button>
+    <!-- Deposit payment failed -->
+    <div class="feedback deposit-failed" ng-show="paymentAttempted && isPaymentFailure">
+        <!-- <div class="notice error">Payment failed. Try again or change payment method.</div> -->
+        <div class="notice error">{{paymentErrorMessage}}</div>
+        <!-- Show when deposit payment fails  -->
+        <button type="button" class="button blue" ng-click="submitPayment()">Try Again</button>
     </div>
 
 </div>
