@@ -65,7 +65,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
     $scope.hasKeyImageFileUpdatedOrUploading = function(name){
         if ($scope.zestSettings && $scope.zestSettings.key_create_file_uploaded){
-            if ($scope.zestSettings.key_create_file_uploaded !== '' && $scope.zestSettings.key_create_file_uploaded !== 'false'){return true;}
+            if ($scope.zestSettings.key_create_file_uploaded !== '' && $scope.zestSettings.key_create_file_uploaded !== 'false' && $scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') === -1){return true;}
             return false;
         } else return false;
     };
@@ -149,6 +149,11 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     };
 
     $scope.saveSettings = function() {
+        ///handling for the api for now, api has some issue with the default image setting back to snt logo...
+        //api dev should resolve this at some point
+        if ($scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') !== -1){
+            $scope.zestSettings.key_create_file_uploaded = 'false';
+        }
         var saveSuccess = function() {
             $scope.zestSettings.zest_lang = angular.copy(zestLanguageDataCopy);
             $scope.successMessage = 'Success';
