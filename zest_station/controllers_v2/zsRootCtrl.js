@@ -191,7 +191,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$rootScope.emvTimeout = !!$scope.zestStationData.hotelSettings.emv_timeout ? $scope.zestStationData.hotelSettings.emv_timeout : 60;
 				$scope.zestStationData.mliMerchantId = data.mli_merchant_id;
 				configureSwipeSettings();
-				logStationSettings();
+				//logStationSettings();
 			};
 			var options = {
 				params: {},
@@ -225,13 +225,6 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.zestStationData.ccReader = 'local'; //mli + local - ingenico/infinea
 			} else { //sankyo_websocket
 				$scope.zestStationData.ccReader = 'websocket';
-			}
-			var keyCreateIconUploadedData = $scope.zestStationData.key_create_file_uploaded;
-			if (!keyCreateIconUploadedData){
-				$scope.zestStationData.createKeyImageAvailable = false;
-			} else if (keyCreateIconUploadedData.length > 0){
-				$scope.zestStationData.createKeyImageAvailable = true;
-				$scope.icons.createkey = keyCreateIconUploadedData;
 			}
 			changeIconsIfDemo();
 		};
@@ -400,6 +393,10 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
 			var iconBasePath = (!useCommonIcons ? iconsPath : commonIconsPath);
 			$scope.activeScreenIcon = 'bed';
+			if ( $scope.zestStationData.key_create_file_uploaded.indexOf('/logo.png') !== -1 ){
+				$scope.zestStationData.key_create_file_uploaded = '';	
+			}
+			
 			$scope.icons = {
 				url: {
 
@@ -425,7 +422,7 @@ sntZestStation.controller('zsRootCtrl', [
 					moon: iconBasePath + '/moon.svg',
 					qr: iconBasePath + '/qr-scan.svg',
 					qr_noarrow: iconBasePath + '/qr-scan_noarrow.svg',
-					createkey: iconBasePath + '/create-key.svg',
+					createkey: iconBasePath + ($scope.zestStationData.key_create_file_uploaded.length > 0) ? $scope.zestStationData.key_create_file_uploaded : '',
 					logo: iconBasePath + '/print_logo.svg',
 					watch: iconBasePath + '/watch.svg',
 					qr_arrow: iconBasePath + '/qr-arrow.svg'
