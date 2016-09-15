@@ -22,7 +22,7 @@
     <div id="content">
         <h1 translate>MAKE_KEY</h1>
         <h2 translate>MAKE_KEY_MSG</h2>
-        <div id="keys" ng-show="zestStationData.keyWriter == 'websocket' && zestStationData.createKeyImageAvailable">
+        <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
             <img src="{{icons.url.createkey}}">
         </div>
         <div id="keys" ng-show="icmp">
@@ -38,7 +38,7 @@
     <div id="content">
         <h1 translate>MAKE_FIRST_KEY</h1>
         <h2 translate>MAKE_FIRST_KEY_SUB</h2>
-        <div id="keys" ng-show="zestStationData.keyWriter == 'websocket' && zestStationData.createKeyImageAvailable">
+        <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
             <img src="{{icons.url.createkey}}">
         </div>
         <div id="keys" ng-show="icmp">
@@ -54,7 +54,7 @@
     <div id="content">
         <h1 translate>MADE_FIRST_KEY_MSG</h1>
         <h2 translate>MADE_FIRST_KEY_MSG_SUB</h2>
-         <div id="keys" ng-show="zestStationData.keyWriter == 'websocket' && zestStationData.createKeyImageAvailable">
+        <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
             <img src="{{icons.url.createkey}}">
         </div>
         <div id="keys" ng-show="icmp">
