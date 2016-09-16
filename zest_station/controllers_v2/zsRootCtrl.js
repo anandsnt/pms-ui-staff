@@ -191,7 +191,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$rootScope.emvTimeout = !!$scope.zestStationData.hotelSettings.emv_timeout ? $scope.zestStationData.hotelSettings.emv_timeout : 60;
 				$scope.zestStationData.mliMerchantId = data.mli_merchant_id;
 				configureSwipeSettings();
-				logStationSettings();
+				//logStationSettings();
 			};
 			var options = {
 				params: {},
@@ -393,6 +393,10 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
 			var iconBasePath = (!useCommonIcons ? iconsPath : commonIconsPath);
 			$scope.activeScreenIcon = 'bed';
+			if ( $scope.zestStationData.key_create_file_uploaded.indexOf('/logo.png') !== -1 ){
+				$scope.zestStationData.key_create_file_uploaded = '';	
+			}
+			
 			$scope.icons = {
 				url: {
 
@@ -418,7 +422,7 @@ sntZestStation.controller('zsRootCtrl', [
 					moon: iconBasePath + '/moon.svg',
 					qr: iconBasePath + '/qr-scan.svg',
 					qr_noarrow: iconBasePath + '/qr-scan_noarrow.svg',
-					createkey: iconBasePath + '/create-key.svg',
+					createkey: iconBasePath + ($scope.zestStationData.key_create_file_uploaded.length > 0) ? $scope.zestStationData.key_create_file_uploaded : '',
 					logo: iconBasePath + '/print_logo.svg',
 					watch: iconBasePath + '/watch.svg',
 					qr_arrow: iconBasePath + '/qr-arrow.svg'
@@ -647,8 +651,19 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  Chrome App Communication code  
 		 *  ends here
 		 ********************************************************************************/
+		 //
+		 //$scope.focusInputField is to set focus to an input field which will auto-prompt keyboard on chromeapp
+		 //
+        $scope.focusInputField = function(elementId) {
+            $timeout(function() {
+                if ($scope.isIpad){
+                    $scope.callBlurEventForIpad();
+                }
+                document.getElementById(elementId).focus();
+                document.getElementById(elementId).click();
+            }, 300);
 
-
+        };
 
 		/********************************************************************************
 		 *  Work station code  
