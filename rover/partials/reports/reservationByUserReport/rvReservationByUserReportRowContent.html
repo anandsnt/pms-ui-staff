@@ -37,7 +37,8 @@
 
 <!-- Left blank intentionally -->
 <td ng-if="each.isGuestData"></td>
-
+<td ng-if="each.isGuestData"></td>
+<td ng-if="each.isGuestData"></td>
 <!-- guest data - company, travel agent & group name -->
 <td ng-if="each.isGuestData" class="secondary guest-info">
     <span ng-if="each.company_name" class="icons icon-guest-company">{{ each.company_name }}</span>
@@ -59,7 +60,7 @@
 
 
 <!-- cancel reason -->
-<td ng-if="each.isAdjustData" class="secondary notes" colspan="5">
+<td ng-if="each.isAdjustData" class="secondary notes" colspan="6">
     <strong>Adjustment Reason</strong>
     <p ng-repeat="reason in each.reasons">{{ reason }}</p>
 </td>

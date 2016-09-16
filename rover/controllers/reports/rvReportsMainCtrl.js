@@ -271,7 +271,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_37: false,
 			item_38: false,
 			item_39: false,
-			item_40: false
+			item_40: false,
+			item_41: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -1946,6 +1947,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.totalCount = response.total_count || 0;
 				$scope.currCount = response.results ? response.results.length : 0;
 			};
+			
 
 			var sucssCallback = function(response) {
 				var msg = '';
