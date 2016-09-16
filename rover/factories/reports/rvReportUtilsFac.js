@@ -334,21 +334,7 @@ angular.module('reportsModule')
                     break;
             };
         };
-
-        factory.addIncludeRatesFilter = function( report ) {
-            switch ( report['title'] ) {                
-                case reportNames['RESERVATIONS_BY_USER']:
-                    report['filters'].push({
-                        'value': "RATE_CODE",
-                        'description': "Include Rates"
-                    });
-                    break;
-
-                default:
-                    // no op
-                    break;
-            };
-        };
+        
 
         /**
          * Process the filters and create proper DS to show and play in UI
