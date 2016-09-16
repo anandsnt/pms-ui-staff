@@ -48,38 +48,17 @@
 					<label for="select-option1">
 						{{'ROOM_NUMBERS' |translate}}
 					</label>
-					<!-- <div class="boxes">
-						<div class="room-box" ng-repeat="number in data.suite_rooms">
-							<input type="hidden"  name="radio-option" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="dropdown" class="box" ng-model="number.room_number">
-							<span class="room-no-type">{{number.room_type_name}}</span>
-							<div class="del-no-box" ng-click="deleteRoomNumber($index)" ng-show="option.name != ''">
-								<a class="icons icon-delete" ></a>
-							</div>
-						</div>
-						
-					</div> -->
 					<div class="boxes">
-
-						<div class="room-box" ng-repeat="number in data.suite_rooms">
+						<div class="room-box room-box-large" ng-repeat="number in data.suite_rooms">
 							<input type="hidden" name="radio-option" class="box ng-pristine ng-valid" >
 							{{number.room_number}}
 							<span class="room-no-type">{{number.room_type_name}}</span>
 							<div class="del-no-box" ng-click="deleteRoomNumber($index)" ng-show="option.name != ''">
 								<a class="icons icon-delete"></a>
 							</div>
-
 						</div>
-
 					</div>
-			
-
-
-
 				</div>
-
-				<!-- <div class="entry full-width" ng-show="shouldShowAddSuiteRooms()">
-
-				</div> -->
 
 				<div class="entry full-width">
 					<label for="room-picture">
