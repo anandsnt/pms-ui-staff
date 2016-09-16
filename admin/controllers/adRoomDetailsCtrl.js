@@ -38,14 +38,10 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 			$scope.$emit('hideLoader');	
 			// console.log(data.rooms)		
 			angular.forEach(data,function(item) {
-				angular.forEach(item.rooms,function(roomItem) {
-					var roomData =_.findWhere($scope.data.room_types, {value: item.id});
-		
-					item.room_type_name = roomData.name;
-					item.selected_room_number = "";	
-				});
-				
-				          
+				var roomData =_.findWhere($scope.data.room_types, {value: item.id});
+	
+				item.room_type_name = roomData.name;
+				item.selected_room_number = "";					          
 	        });
 	        $scope.availableComponentRooms = data;
 	        $scope.availableComponentRoomsArray = angular.copy($scope.availableComponentRooms);
