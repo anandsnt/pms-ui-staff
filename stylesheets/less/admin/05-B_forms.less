@@ -738,6 +738,19 @@
             right:5px;
             margin: auto;
         }
+
+        &.room-box-large {
+            width: 100%;
+
+            @media screen and (min-width:768px) and (max-width:1024px){
+                width: 45%;
+                margin-right: 3%;
+
+                &:last-child(2n){
+                    margin-right:0;
+                }
+            }
+        }
     }
 
     .room-no-type {
