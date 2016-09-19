@@ -783,11 +783,12 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					if ( !! hasThisWorkType ) {
 						allTaskInThisWorkType = _.where(art.only_tasks, { 'work_type_id': workTypeId });
 
-						_.each(allTaskInThisWorkType, function(eachTask) {
+						_.each(allTaskInThisWorkType, function(eachTask, index) {
 							newTask = $.extend(
 									{},
 									{ 'id': eachTask.id },
-									{ 'room_id': eachTask.room_id }
+									{ 'room_id': eachTask.room_id },
+									{ 'order': index + 1 }
 								);
 
 							newAssignment
