@@ -1020,7 +1020,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     };
                 };
                 /**/
-                base.updateClientPos = function(x, y) {
+                base.setClientPos = function(x, y) {
                     clientX = x;
                     clientY = y;
                 };
@@ -1052,17 +1052,17 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                         colIndex = Math.floor(currX / COL_WIDTH);
                         colIndex = colIndex !== 0 ? colIndex - 1 : colIndex;
                     }
-
+                    
                     return colIndex;
                 }
 
-                base.findCurrEmpCol = function() {
+                base.findCurrColNode = function() {
                     var colIndex = this.findCurrCol(),
                     	selectedEmp;
 
                     this.removePlaceholder();
 
-                    if ( colIndex > 0 ) {
+                    if ( colIndex > -1 ) {
                     	selectedEmp = $scope.multiSheetState.selectedEmployees[colIndex];
                         $empNode = $( '#' + colIndex + '-' + selectedEmp.id );
                     } else {                    
@@ -1072,7 +1072,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     return $empNode;
                 }.bind(base);
 
-                base.checkOnOver = function(room, index, prevHeight) {
+                base.checkOnOverRoom = function(room, index, prevHeight) {
                     var $thisRoom, $nextRoom, nextIndex;
 
                     var TOP_OFFSET = 280, ROOM_MARGIN = 20;
@@ -1109,7 +1109,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                         }
                     } else if ( clienty > bot ) {
                         if ( $nextRoom.length ) {
-                            return this.checkOnOver($nextRoom, nextIndex, nextHeight);
+                            return this.checkOnOverRoom($nextRoom, nextIndex, nextHeight);
                         } else {
                             return {
                                 method: 'AFTER',
@@ -1135,7 +1135,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 }.bind(base);
 
                 base.addPlaceholder = function() {
-                    var $col = this.findCurrEmpCol(),
+                    var $col = this.findCurrColNode(),
                         firstRoom,
                         index = 0,
                         prevHeight = 0;
@@ -1155,7 +1155,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
                             $scope.dropIndex = 0
                         } else {
-                            var onOverData = this.checkOnOver(firstRoom, index, prevHeight);
+                            var onOverData = this.checkOnOverRoom(firstRoom, index, prevHeight);
 
                             switch( onOverData.method ) {
                                 case 'BEFORE':
@@ -1232,7 +1232,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 }
                 /**/
                 var scrollTowardsHozEnd = function () {
-                	console.log( hozScrollInst.x );
                     return dragDir === RIGHT && hozScrollInst.x > hozScrollInst.maxScrollX;
                 }
 
@@ -1295,7 +1294,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 
                 // ask orderState to get a load of latest clientX and clientY
                 // throttle the calls to addplaceholder
-                orderState.updateClientPos(e.clientX, e.clientY);
+                orderState.setClientPos(e.clientX, e.clientY);
                 addPlaceholderThrottled();
                 
                 // Priority for detect for horizontal scroll requirement
