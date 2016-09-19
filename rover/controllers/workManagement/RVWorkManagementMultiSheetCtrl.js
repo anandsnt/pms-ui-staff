@@ -446,13 +446,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			lastSaveConfig = config || null;
 			if ($scope.multiSheetState.selectedEmployees.length) {
 
-				// apply order key as is the rooms array index
-				_.each($scope.multiSheetState.assigned, function(item) {
-					_.each(item.rooms, function(room, index) {
-						room.order = index + 1;
-					})
-				});
-
 				var options = {
 					successCallBack: saveMultiSheetSuccessCallBack,
 					failureCallBack: saveMultiSheetFailureCallBack,
@@ -461,6 +454,15 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 						date: (config && config.date) || $scope.multiSheetState.selectedDate
 					}
 				}
+
+				// now assign room "order" to the tasks inside "only_tasks" based on their index in "rooms"
+				_.each($scope.multiSheetState.assigned, function(emp) {
+					_.each(emp.only_tasks, function(task) {
+						var roomIndex = _.findIndex(emp.rooms, { room_id: task.room_id });
+
+						task.order = roomIndex + 1;
+					});
+				});
 
 				$scope.callAPI(RVWorkManagementSrv.saveWorkSheets, options);
 
@@ -1274,13 +1276,22 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 }
             };
 
+            var draggedItem;
+
             // once the user starts dragging 
-            $scope.dragStart = function() {
+            $scope.dragStart = function(event) {
+            	console.log(arguments);
+
+            	draggedItem = $(event.target).parent();
+            	draggedItem.hide();
+
                 timer = setInterval( checkScrollBy, 1 );
                 $scope.dropIndex = undefined;
             };
 
             $scope.dragDrop = function() {
+            	draggedItem.show();
+
                 orderState.removePlaceholder();
 
                 if ( !! timer ) {
