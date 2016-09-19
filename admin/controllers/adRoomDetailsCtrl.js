@@ -345,11 +345,15 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 
 	$scope.selectedConfiguredRoom = function(selectedItem, roomTypeId, roomTypeName){
 
-		$scope.data.suite_rooms.push({'room_number':selectedItem, 'room_type_id': roomTypeId, "room_type_name" : roomTypeName});
+			if(selectedItem !== ""){
+				$scope.data.suite_rooms.push({'room_number':selectedItem, 'room_type_id': roomTypeId, "room_type_name" : roomTypeName});
 
-		var selectedRoomTypeIndex = _.findIndex($scope.availableComponentRooms, {id: roomTypeId});
-		$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.splice(_.findIndex($scope.availableComponentRooms[selectedRoomTypeIndex].rooms, {'room_no':selectedItem}), 1)
-	}
+				var selectedRoomTypeIndex = _.findIndex($scope.availableComponentRooms, {id: roomTypeId});
+				$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.splice(_.findIndex($scope.availableComponentRooms[selectedRoomTypeIndex].rooms, {'room_no':selectedItem}), 1)
+		
+			}
+
+		}
 
 
 }]);
