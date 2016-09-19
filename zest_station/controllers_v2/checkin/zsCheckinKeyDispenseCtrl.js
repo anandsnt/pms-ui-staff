@@ -262,8 +262,12 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 		$scope.readyForUserToPressMakeKey = true;
 		var initMakeKey = function() {
-			console.info('waiting on user to press make key, which will start key create')
-
+			if ($scope.zestStationData.keyWriter === 'websocket'){
+				$scope.remoteEncoding = false;
+				console.info('starting key create with Sankyo...');
+			} else {
+				console.info('waiting on user to press make key, which will start key create here...');
+			}
 			if ($scope.noOfKeysSelected === 1) {
 				$scope.mode = 'SOLO_KEY_CREATION_IN_PROGRESS_MODE';
 			} else if (noOfKeysCreated === 0) {
@@ -272,13 +276,15 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			} else {
 				//do nothing
 			}
-			if ($scope.remoteEncoding) {
+			if (($scope.remoteEncoding || $scope.zestStationData.keyWriter === 'local') && $scope.zestStationData.keyWriter !== 'websocket') {
 				$scope.readyForUserToPressMakeKey = true;
+				if ($scope.zestStationData.keyWriter === 'local') {
+					console.warn('local encoder')
+					$scope.localWriter = true; //icmp (ingenico) or infinea device
+				}
 			} else {
 				startMakingKey();
 			}
-
-
 
 		};
 		$scope.onReadyToPrintKey = function(keyNo) {
