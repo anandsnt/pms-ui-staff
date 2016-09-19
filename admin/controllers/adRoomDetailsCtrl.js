@@ -32,7 +32,9 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 		}
 	};
 
-	$scope.roomTypeChanged = function(value) { 
+	$scope.roomTypeChanged = function(value) {
+
+		$scope.data.suite_rooms = [];
 
 		var fetchSuccessOfComponentRooms = function(data){
 			$scope.$emit('hideLoader');	
