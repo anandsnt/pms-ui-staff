@@ -272,7 +272,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 			} else {
 				//do nothing
 			}
-			if (($scope.remoteEncoding || $scope.zestStationData.keyWriter === 'local') && $scope.zestStationData.keyWriter !== 'websocket') {
+			if ($scope.remoteEncoding || $scope.zestStationData.keyWriter === 'local') {
 				$scope.readyForUserToPressMakeKey = true;
 				if ($scope.zestStationData.keyWriter === 'local') {
 					console.warn('local encoder')
