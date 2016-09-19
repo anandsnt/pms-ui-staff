@@ -4,7 +4,7 @@ sntRover.controller('RVEndOfDayController', ['$scope','ngDialog','$rootScope','$
     var init =function(){    	
     };
     $scope.hasPermissionToRunEOD = function(){
-		return (rvPermissionSrv.getPermissionValue("EOD"));
+		return (rvPermissionSrv.getPermissionValue("OVERRIDE_BUSINESS_DATE_CHANGE"));
 	};
     $scope.setHeadingTitle = function(heading) {
 			$scope.heading = heading;

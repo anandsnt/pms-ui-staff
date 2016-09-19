@@ -98,7 +98,8 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             $scope.eodLogDetails = data.eod_processes;
             $scope.nextEodRunTime = data.eod_process_time;
             $scope.lastEodRunInHours = data.last_eod_run_in_hours;
-            $scope.lastEodRunInMinutes = data.last_eod_run_in_minutes;                      
+            $scope.lastEodRunInMinutes = data.last_eod_run_in_minutes;
+            $scope.show18HrMessages = !isNaN(data.last_eod_run_in_minutes);
             $rootScope.$broadcast('hideLoader');
             $timeout(function() {
                 refreshScroller();           
@@ -123,6 +124,27 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             //controller :'RVEndOfDayProcessController',
             scope: $scope
         });
+    };
+    /*
+    * returning class name for Button.
+    */
+    $scope.getClassForEODButton = function(){        
+        if(!$scope.show18HrMessages){
+            return "green";
+        };
+        if($scope.show18HrMessages&&$scope.hasPermissionToRunEOD()){
+            return "yellow";
+        }else{
+            return "grey";
+        }        
+    };
+    
+    $scope.disableEODButton = function(){
+        return !($scope.show18HrMessages&&$scope.hasPermissionToRunEOD())
+    }
+    
+    $scope.updateStatus = function(){
+        fetchEodLogOfSelectedDate();
     };
 
     $scope.setSelectedDateToBussinessDate = function(){
