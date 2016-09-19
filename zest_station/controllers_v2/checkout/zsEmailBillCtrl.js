@@ -37,11 +37,15 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			//if user already has email provide two options
 			//else prompt for email entry
 			$scope.mode = !!$scope.email ? "EMAIL_BILL_GUEST_OPTIONS" : "EMAIL_BILL_EDIT_MODE";
+			if ($scope.mode === 'EMAIL_BILL_EDIT_MODE'){
+				$scope.focusInputField("email_text");
+			};
 
 		}();
 
 		$scope.editEmailAddress = function() {
 			$scope.mode = "EMAIL_BILL_EDIT_MODE";
+			$scope.focusInputField("email_text");
 		};
 
 		$scope.navToHome = function() {
@@ -131,6 +135,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 
 			var onBlackListedEmailFound = function() {
 				$scope.emailError = true;
+				$scope.focusInputField("email_text");
 			};
 			var onValidationAPIFailure = function() {
 				updateGuestEmailFailed();
@@ -165,7 +170,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		};
 
 		$scope.reTypeEmail = function() {
-			$scope.mode = "EMAIL_BILL_EDIT_MODE";
+			$scope.editEmailAddress();
 			$scope.emailError = false;
 		};
 

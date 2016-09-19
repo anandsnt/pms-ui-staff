@@ -37,21 +37,6 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		zsCheckinSrv.setCheckInReservations([]);
 
 
-		var focuInputField = function(elementId) {
-			$timeout(function() {
-				if (!$scope.isIpad) {
-					if (elementId !== 'departure-date'){
-						document.getElementById(elementId).focus();
-					} else if (elementId === 'departure-date'){
-						document.getElementById(elementId).click();
-					}
-					
-				} else {
-					$scope.callBlurEventForIpad();
-				}
-			}, 300);
-
-		};
 
 		var setupSeperatorBetweenOptions = function() {
 			//show/hide seperator between departure date and no of nights
@@ -73,22 +58,22 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 		$scope.findByDate = function() {
 			$scope.mode = 'FIND_BY_DATE';
-			focuInputField("departure-date");
+			$scope.focusInputField("departure-date");
 			$scope.resetTime();
 		};
 		$scope.findByNoOfNights = function() {
 			$scope.mode = 'NO_OF_NIGHTS_MODE';
-			focuInputField("no-of-nights");
+			$scope.focusInputField("no-of-nights");
 			$scope.resetTime();
 		};
 		$scope.findByEmail = function() {
 			$scope.mode = "EMAIL_ENTRY_MODE";
-			focuInputField("guest-email");
+			$scope.focusInputField("guest-email");
 			$scope.resetTime();
 		};
 		$scope.findByConfirmation = function() {
 			$scope.mode = 'CONFIRM_NO_MODE';
-			focuInputField("conf-number");
+			$scope.focusInputField("conf-number");
 			$scope.resetTime();
 		};
 
@@ -179,7 +164,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			) {
 				if ($scope.zestStationData.kiosk_validate_first_name) {
 					$scope.mode = 'FIRST_NAME_ENTRY_MODE';
-					focuInputField("first-name");
+					$scope.focusInputField("first-name");
 				} else {
 
 					searchReservation(SetUpSearchParams());
@@ -187,7 +172,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			} else {
 				if ($scope.zestStationData.kiosk_validate_first_name) {
 					$scope.mode = 'FIRST_NAME_ENTRY_MODE';
-					focuInputField("first-name");
+					$scope.focusInputField("first-name");
 				} else {
 					$scope.mode = $scope.reservationParams.last_name.length > 0 ? "CHOOSE_OPTIONS" : $scope.mode;
 					$scope.callBlurEventForIpad();
@@ -263,19 +248,19 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		$scope.reEnterText = function(type) {
 			if (type === 'name') {
 				$scope.mode = "LAST_NAME_ENTRY";
-				focuInputField("last-name");
+				$scope.focusInputField("last-name");
 			} else if ($scope.reservationParams.no_of_nights.length > 0) {
 				$scope.mode = 'NO_OF_NIGHTS_MODE';
-				focuInputField("no-of-nights");
+				$scope.focusInputField("no-of-nights");
 			} else if ($scope.reservationParams.alt_confirmation_number.length > 0) {
 				$scope.mode = 'CONFIRM_NO_MODE';
-				focuInputField("conf-number");
+				$scope.focusInputField("conf-number");
 			} else if ($scope.reservationParams.email.length > 0) {
 				$scope.mode = "EMAIL_ENTRY_MODE";
-				focuInputField("guest-email");
+				$scope.focusInputField("guest-email");
 			} else if ($scope.reservationParams.date.length > 0) {
 				$scope.mode = "FIND_BY_DATE";
-				focuInputField("departure-date");
+				$scope.focusInputField("departure-date");
 			} else {
 				return;
 			};
@@ -348,6 +333,28 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				'date': ''
 			};
 		};
+		var onBackClicked = function(event) {
+			if ($scope.mode === 'NO_MATCH') {
+				$scope.reservationParams.alt_confirmation_number = '';
+				$scope.reservationParams.email = '';
+				$scope.reservationParams.date = '';
+				$scope.reservationParams.no_of_nights = '';
+				$scope.mode = 'CHOOSE_OPTIONS';
+			} else if ($scope.mode === 'LAST_NAME_ENTRY') {
+				$state.go('zest_station.home');
+			} else if ($scope.mode === 'FIND_BY_DATE') {
+				$scope.showDatePick = false;
+				$timeout(function() {
+					$scope.mode = 'LAST_NAME_ENTRY';
+					$scope.focusInputField('last-name');
+				},100);
+				
+			} else {
+				$scope.mode = 'LAST_NAME_ENTRY';
+				$scope.focusInputField('last-name');
+			};
+
+		};
 
 		var init = function() {
 			$scope.hideKeyboardIfUp();
@@ -356,34 +363,13 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			//show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			//back button action
-			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-				if ($scope.mode === 'NO_MATCH') {
-					$scope.reservationParams.alt_confirmation_number = '';
-					$scope.reservationParams.email = '';
-					$scope.reservationParams.date = '';
-					$scope.reservationParams.no_of_nights = '';
-					$scope.mode = 'CHOOSE_OPTIONS';
-				} else if ($scope.mode === 'LAST_NAME_ENTRY') {
-					$state.go('zest_station.home');
-				} else if ($scope.mode === 'FIND_BY_DATE') {
-					$scope.showDatePick = false;
-					$timeout(function() {
-						$scope.mode = 'LAST_NAME_ENTRY';
-						focuInputField('last-name');
-					},100);
-					
-				} else {
-					$scope.mode = 'LAST_NAME_ENTRY';
-					focuInputField('last-name');
-				};
-
-			});
+			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackClicked);
 			//starting mode
 			$scope.showDatePick = false;
 			setDateOptions();
 			setReservationParams();
 			$scope.mode = 'LAST_NAME_ENTRY';
-			focuInputField('last-name');
+			$scope.focusInputField('last-name');
 			$scope.setScreenIcon('checkin');
 		};
 		init();

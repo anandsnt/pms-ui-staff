@@ -22,16 +22,6 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-		var focuInputField = function(elementId) {
-			$timeout(function() {
-				if (!$scope.isIpad) {
-					document.getElementById(elementId).focus();
-				} else {
-					$scope.callBlurEventForIpad();
-				}
-			}, 300);
-
-		};
 		var debugWithReservation = function() {
 			//use this to quickly go through last name + room number and debug keys faster
 			//just replace the below params for whichever reservation you want to use
@@ -67,6 +57,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			}
 			//starting mode
 			$scope.mode = "LAST_NAME_ENTRY";
+			$scope.focusInputField("last-name");
 			//debugWithReservation();//debugging, comment out before deploying
 		};
 		init();
@@ -181,7 +172,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			} else {
 				if ($scope.reservationParams.last_name.length > 0) {
 					$scope.mode = "ROOM_NUMBER_ENTRY";
-					focuInputField("room-number");
+					$scope.focusInputField("room-number");
 				} else {
 					return;
 				};
@@ -198,10 +189,10 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		$scope.reEnterText = function(type) {
 			if (type === "room") {
 				$scope.mode = "ROOM_NUMBER_ENTRY";
-				focuInputField("room-number");
+				$scope.focusInputField("room-number");
 			} else {
 				$scope.mode = "LAST_NAME_ENTRY";
-				focuInputField("last-name");
+				$scope.focusInputField("last-name");
 			}
 		};
 
