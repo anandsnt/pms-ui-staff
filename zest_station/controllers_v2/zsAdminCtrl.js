@@ -94,6 +94,8 @@ sntZestStation.controller('zsAdminCtrl', [
                     $scope.adminLoginError = true;
                     $scope.subHeadingText = 'ADMIN_LOGIN_ERROR';
                     console.warn('invalid admin login');
+                    //prompt screen keyboard depending on the device, ios should call blur first for smooth transition
+                    $scope.focusInputField('password_text');
                 }
             };
             var onFail = function(response) {
@@ -101,6 +103,8 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.adminLoginError = true;
                 $scope.subHeadingText = 'ADMIN_LOGIN_ERROR';
                 console.warn('failed admin login attempt');
+                //prompt screen keyboard depending on the device, ios should call blur first for smooth transition
+                $scope.focusInputField('password_text');
             };
 
             var options = {
@@ -139,6 +143,8 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.headingText = 'Admin Username'; //TODO: need to move this out to a tag.
             $scope.passwordField = false;
             showNavButtons();
+            $scope.focusInputField('input_text');
+            
         };
         /**
          *  Input field button actions
@@ -153,7 +159,8 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.mode = "admin-password-mode";
                 $scope.headingText = 'Admin Password'; //TODO: need to move this out to a tag.
                 $scope.passwordField = true;
-                $scope.callBlurEventForIpad();
+                //prompt screen keyboard depending on the device, ios should call blur first for smooth transition
+                $scope.focusInputField('password_text');
             } else {
                 //user has entered password
                 $scope.adminLoginError = false;

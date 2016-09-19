@@ -27,6 +27,8 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          * 2.EMAIL_INVLAID_MODE
          */
 
+        
+         
         /**
          * [initializeMe description]
          */
@@ -37,13 +39,16 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.email = "";
             $scope.mode = "EMAIL_ENTRY_MODE";
+            $scope.focusInputField('email-entry');
         }();
+
         /**
          * [reEnterText description]
          * @return {[type]} [description]
          */
         $scope.reEnterText = function() {
             $scope.mode = "EMAIL_ENTRY_MODE";
+            $scope.focusInputField('email-entry');
         };
         /*
          * after validating email syntax, need to check the email against the hotel's black list
