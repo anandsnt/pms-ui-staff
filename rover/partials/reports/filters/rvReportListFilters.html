@@ -351,6 +351,12 @@
     data="uiChosenReport.hasGuestOrAccountFilter.data"
     options="uiChosenReport.hasGuestOrAccountFilter.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasCompletionStatus && uiChosenReport.hasCompletionStatus.data.length"
+    label="Completion Status"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasCompletionStatus.data"
+    options="uiChosenReport.hasCompletionStatus.options"></multi-option-selection>
+
 <div class="entry" ng-show="uiChosenReport.sortByOptions">
     <label>Sort By</label>
     <div class="select">

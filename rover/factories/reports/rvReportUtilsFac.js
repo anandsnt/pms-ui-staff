@@ -328,6 +328,11 @@ angular.module('reportsModule')
                         'description': "Include User Names"
                     });
                     break;
+                case reportNames['ACTIONS_MANAGER']:
+                    report['filters'].push({
+                        'value': "INCLUDE_COMPLETION_STATUS",
+                        'description': "Include Completion status"
+                    });
 
                 default:
                     // no op
@@ -690,8 +695,11 @@ angular.module('reportsModule')
                         .then( fillFloors );
                 }
 
-                else {
-                    // no op
+                else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled){
+                    //requested++;
+                    fillCompletionStatus();
+                } else {
+                    //no op
                 };
             });
 
@@ -855,6 +863,30 @@ angular.module('reportsModule')
 
                 completed++;
                 checkAllCompleted();
+            };
+
+            function fillCompletionStatus(){
+                customData = [
+                                {id: 1, status: "UNASSIGNED", selected: true},
+                                {id: 2, status: "ASSIGNED", selected: true},
+                                {id: 3,  status: "COMPLETED", selected: true}
+                            ];
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_COMPLETION_STATUS' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasCompletionStatus = {
+                            data: customData,
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'status',
+                                defaultValue: 'Select Status'
+                            }
+                        }
+                    };
+                });
             };
 
             function fillRateCodeList (data) {
