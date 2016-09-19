@@ -620,7 +620,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			var commonScrollerOptions = {
 				tap: true,
 				preventDefault: false,
-				probeType: 3
+				probeType: 3,
+				bounce: false
 			};
 			var horizontal = _.extend({
 				scrollX: true,
@@ -635,9 +636,21 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.setScroller("multiSelectPrintPopup", commonScrollerOptions);
 			$scope.setScroller("worksheetHorizontal", horizontal);
 
-			for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
-				$scope.setScroller('assignedRoomList-'+i, vertical);
-			};
+			var addVerScroller = function(index, length, scrollObj) {
+				var nextIndex = index + 1;
+
+				$scope.setScroller('assignedRoomList-' + index, scrollObj);
+
+				if ( nextIndex < length ) {
+					addVerScroller(nextIndex, length, scrollObj);
+				}
+			}
+			/**/
+			addVerScroller(0, $scope.multiSheetState.selectedEmployees.length, vertical);
+			/**/
+			// for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
+			// 	$scope.setScroller('assignedRoomList-'+i, vertical);
+			// };
 		};
 
 		var refreshScrollers = function() {
@@ -1219,10 +1232,11 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 }
                 /**/
                 var scrollTowardsHozStart = function () {
-                    return dragDir === LEFT && hozScrollInst.x !== 0 && hozScrollInst.x < dim.scrollStart.x;
+                    return dragDir === LEFT && hozScrollInst.x < 0;
                 }
                 /**/
                 var scrollTowardsHozEnd = function () {
+                	console.log( hozScrollInst.x );
                     return dragDir === RIGHT && hozScrollInst.x > hozScrollInst.maxScrollX;
                 }
 
@@ -1235,7 +1249,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 }
                 /**/
                 var scrollTowardsVerStart = function() {
-                    return dragDir === TOP && verScrollInst.y !== 0 && verScrollInst.y < dim.scrollStart.y;
+                    return dragDir === TOP && verScrollInst.y < 0
                 }
                 /**/
                 var scrollTowardsVerEnd = function () {
