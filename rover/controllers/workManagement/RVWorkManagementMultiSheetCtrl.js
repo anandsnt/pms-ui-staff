@@ -1197,10 +1197,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     screenEnd: {
                         x: winWidth - LEFT_OFFSET,
                         y: winHeight - TASK_OFFSET
-                    },
-                    scrollStart: {
-                        x: LEFT_OFFSET + TASK_OFFSET,
-                        y: TOP_OFFSET + TASK_OFFSET,
                     }
                 };
             }
@@ -1270,9 +1266,9 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
                         if ( hasVerScroll() ) {
                             if ( scrollTowardsVerStart() ) {
-                                verScrollInst.scrollBy(0, -10, 1);
-                            } else if ( scrollTowardsVerEnd() ) {
                                 verScrollInst.scrollBy(0, 10, 1);
+                            } else if ( scrollTowardsVerEnd() ) {
+                                verScrollInst.scrollBy(0, -10, 1);
                             }
                         }
                     }
