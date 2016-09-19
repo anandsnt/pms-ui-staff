@@ -12,7 +12,7 @@
                 <input name="new-description" id="new-description" placeholder="{{'PLACEHOLDER_NEW_DESCRIPTION' | translate}}" ng-model="newDescription" type="text" />
             </div>
             <div>
-                <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editChargeDescription(newDescription)" translate>SAVE_NEW</button>
+                <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-class="{'grey': newDescription === '' || newDescription == null }" ng-disabled="newDescription === '' || newDescription == null "  ng-click="editChargeDescription(newDescription)" translate>SAVE_NEW</button>
                 <button type="button" class="button blank guest-bill-edit-buttons" ng-click="callActionsPopupAction('close')" translate>CANCEL</button> 
             </div>
         </fieldset>
