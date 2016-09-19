@@ -823,7 +823,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.showConfirmation = function(reservationStatus) {
 			var showResendConfirmationFlag = false;
 			if ($rootScope.isStandAlone && $rootScope.sendConfirmationLetter) {
-				if (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN') {
+				if (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN' || reservationStatus === 'CHECKEDIN' || reservationStatus === 'CHECKING_OUT') {
 					showResendConfirmationFlag = true;
 				}
 			}
