@@ -104,7 +104,7 @@
         <form method="post" class="form">
             <div class="entry input">
                 <!--div ng-include="icons.url.moon"></div--><!-- input text icon placeholder, if needed in future -->
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('no-of-nights')" click-touch="showOnScreenKeyboard('no-of-nights')" ng-model="reservationParams.no_of_nights" enter-press="noOfNightsEntered()" id="no-of-nights" touch-press/>
+                <input type="tel" placeholder="" ng-focus="showOnScreenKeyboard('no-of-nights')" click-touch="showOnScreenKeyboard('no-of-nights')" ng-model="reservationParams.no_of_nights" enter-press="noOfNightsEntered()" id="no-of-nights" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="noOfNightsEntered()">Next</button>
