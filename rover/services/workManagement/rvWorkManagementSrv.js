@@ -746,14 +746,14 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 				var touched = art.touched_work_types;
 
 				_.each(touched, function(wtid) {
-					var hasWorkType = _.find(complied.work_types, { id: wtid });
+					var hasWorkType = _.find(complied.work_types, { id: wtid }),
+						newWorkType;
 
 					if ( ! hasWorkType ) {
-						var newWorkType = $.extend(
-								{},
-								{ 'id': wtid },
-								{ 'assignments': [] }
-							);
+						newWorkType = {
+							id          : wtid,
+							assignments : []
+						}
 
 						complied
 							.work_types
@@ -766,7 +766,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 			// PASS 2
 			// dwad
-			_.each(complied.work_types, function(cwt, index) {
+			_.each(complied.work_types, function(cwt, workTypesIndex) {
 				workTypeId = cwt.id;
 
 				_.each(assignedRoomTasks, function(art) {
@@ -774,22 +774,20 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 						return workTypeId == id;
 					});
 
-					newAssignment = $.extend(
-							{},
-							{ 'employee_id': art.id },
-							{ 'tasks': [] }
-						);
+					newAssignment = {
+						employee_id : art.id,
+						tasks       : [],
+					}
 
 					if ( !! hasThisWorkType ) {
 						allTaskInThisWorkType = _.where(art.only_tasks, { 'work_type_id': workTypeId });
 
 						_.each(allTaskInThisWorkType, function(eachTask, index) {
-							newTask = $.extend(
-									{},
-									{ 'id': eachTask.id },
-									{ 'room_id': eachTask.room_id },
-									{ 'order': index + 1 }
-								);
+							newTask = {
+								id      : eachTask.id,
+								room_id : eachTask.room_id,
+								order   : eachTask.order
+							}
 
 							newAssignment
 								.tasks
@@ -798,7 +796,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					};
 
 					complied
-						.work_types[index]
+						.work_types[workTypesIndex]
 						.assignments
 						.push( newAssignment );
 				});
