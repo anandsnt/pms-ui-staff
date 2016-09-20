@@ -60,6 +60,12 @@
                 Save
             </button>
         </div>
+        <div class="entry date">
+            <label for="allotment-start-view" translate>GO_TO_DATE</label>
+            <input id="allotment-start-date" class="datepicker"
+                ui-date="timeLineStartDateOptions"
+                rv-set-textbox-value listen-this="timeLineStartDate | date:dateFormat" readonly />
+        </div>
         <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}">
             <!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
             <label for="group-total-rooms" translate>TOTAL_ROOMS</label>

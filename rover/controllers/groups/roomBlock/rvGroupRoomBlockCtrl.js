@@ -517,6 +517,14 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			return $filter('date')(date, $rootScope.dateFormatForAPI)
 		};
 
+		/**
+		 * Function to fire when user selects date
+		 * @return {undefined}
+		 */
+		$scope.onTimeLineStartDatePicked = function(date, datePickerObj) {
+			$scope.timeLineStartDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+			$scope.fetchCurrentSetOfRoomBlockData();
+		};
 
 		/**
 		 * when the booking data changing
@@ -705,6 +713,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			//referring data model -> from group summary
 			var refData = $scope.groupConfigData.summary;
 
+			//default to goto date
+			$scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
+			$scope.timeLineEndDate = new tzIndependentDate(refData.block_to);
+
 			//if from date is not null from summary screen, we are setting it as busines date
 			if (!$scope.isEmpty(refData.block_from.toString())) {
 				$scope.startDate = refData.block_from;
@@ -735,6 +747,17 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				minDate: ($scope.startDate !== '') ? new tzIndependentDate($scope.startDate): new tzIndependentDate($rootScope.businessDate),
 				disabled: shouldDisableEndDatePicker(),
 				onSelect: onEndDatePicked
+			}, commonDateOptions);
+
+			//setting max date of goto date
+			var maxDate = new tzIndependentDate(refData.block_to);
+			maxDate.setDate(maxDate.getDate()-1);
+
+			//date picker options - Goto Date
+			$scope.timeLineStartDateOptions = _.extend({
+				minDate: refData.block_from,
+				maxDate: maxDate,
+				onSelect: $scope.onTimeLineStartDatePicked,
 			}, commonDateOptions);
 		};
 
@@ -1243,6 +1266,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			//we need indivual room type total bookings of each date initially,
 			//we are using this for overbooking calculation
 			_.each(data.results, function(eachRoomType) {
+				eachRoomType.start_date = formatDateForAPI($scope.timeLineStartDate);
 				_.each(eachRoomType.dates, function(dateData) {
 					dateData.old_total = $scope.getTotalBookedOfIndividualRoomType(dateData);
 				//need to keep track of old single,double and triple values
