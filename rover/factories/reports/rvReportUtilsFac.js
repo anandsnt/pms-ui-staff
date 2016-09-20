@@ -258,6 +258,7 @@ angular.module('reportsModule')
             };
 
             report['hasGeneralOptions']['data'].push({
+                id          : filter.value.toLowerCase(),
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
                 selected    : selected,
@@ -266,6 +267,12 @@ angular.module('reportsModule')
 
             // if filter value is either of these, selectAll should be false
             if ( report['title'] == reportNames['ARRIVAL'] || report['title'] == reportNames['DEPARTURE'] ) {
+                report.hasGeneralOptions.options.noSelectAll = true;
+            };
+
+            // when 'SHOW_RATE_ADJUSTMENTS_ONLY' is selected other should not be and vice versa
+            if ( report['title'] == reportNames['RESERVATIONS_BY_USER'] && filter.value == 'SHOW_RATE_ADJUSTMENTS_ONLY' ) {
+                report.hasGeneralOptions.options.selectiveSingleSelectKey = filter.value.toLowerCase();
                 report.hasGeneralOptions.options.noSelectAll = true;
             };
         };
@@ -943,7 +950,6 @@ angular.module('reportsModule')
                                 name: 'hasURLsList',
                                 process: function(filter, selectedItems) {
                                     var hasUrl = _.find(selectedItems, { value: 'URL' });
-                                    console.log(!hasUrl);
                                     filter.updateData(!hasUrl);
                                 }
                             }
