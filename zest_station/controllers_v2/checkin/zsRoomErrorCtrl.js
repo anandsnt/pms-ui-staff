@@ -23,8 +23,8 @@ sntZestStation.controller('zsRoomErrorCtrl', [
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			//show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			console.log('$stateParams for room error: ',$stateParams);
-			if (typeof $stateParams.unavailable !== typeof undefined){
+			console.log('$stateParams for room error: ', $stateParams);
+			if (typeof $stateParams.unavailable !== typeof undefined) {
 				$scope.unavailable = $stateParams.unavailable;
 			};
 		}();
