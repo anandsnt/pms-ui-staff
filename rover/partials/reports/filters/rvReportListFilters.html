@@ -184,7 +184,7 @@
             <span class="icons icon-clear-search">Clear query</span>
         </button>
         <input ng-show="uiChosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
-        
+
         <input ng-show="uiChosenReport.hasSysDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
 
         <input ng-show="!uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
@@ -350,12 +350,16 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasGuestOrAccountFilter.data"
     options="uiChosenReport.hasGuestOrAccountFilter.options"></multi-option-selection>
-
 <multi-option-selection ng-show="uiChosenReport.hasCompletionStatus && uiChosenReport.hasCompletionStatus.data.length"
     label="Completion Status"
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasCompletionStatus.data"
     options="uiChosenReport.hasCompletionStatus.options"></multi-option-selection>
+<multi-option-selection ng-show="uiChosenReport.hasDepartments && uiChosenReport.hasDepartments.data.length"
+    label="Department Assigned"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasDepartments.data"
+    options="uiChosenReport.hasDepartments.options"></multi-option-selection>
 
 <div class="entry" ng-show="uiChosenReport.sortByOptions">
     <label>Sort By</label>

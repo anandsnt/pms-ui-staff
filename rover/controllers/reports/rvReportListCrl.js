@@ -80,6 +80,7 @@ sntRover.controller('RVReportListCrl', [
                     'chargeCodes'      : $scope.$parent.chargeCodes,
                     'addons'           : $scope.$parent.addons,
                     'reservationStatus': $scope.$parent.reservationStatus,
+                    'assigned_departments': $scope.$parent.assigned_departments,
                     'activeUserList'   : $scope.$parent.activeUserList
                 });
 
@@ -173,7 +174,7 @@ sntRover.controller('RVReportListCrl', [
         //removing event listners when scope is destroyed
         $scope.$on( '$destroy', serveRefresh );
 
-        
+
     }
 
 ]);

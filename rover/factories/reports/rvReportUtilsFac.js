@@ -190,7 +190,7 @@ angular.module('reportsModule')
         var __showFilterNames = {
             'SHOW_COMPANY': true,
             'SHOW_TRAVEL_AGENT': true,
-            
+
             // for CREDIT_CHECK_REPORT
             'INCLUDE_DUE_OUT': true,
             'INCLUDE_INHOUSE': true,
@@ -332,7 +332,11 @@ angular.module('reportsModule')
                     report['filters'].push({
                         'value': "INCLUDE_COMPLETION_STATUS",
                         'description': "Include Completion status"
+                    }, {
+                        'value': "INCLUDE_DEPARTMENTS",
+                        'description': "Include Departments"
                     });
+
 
                 default:
                     // no op
@@ -693,9 +697,11 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchFloors()
                         .then( fillFloors );
-                }
-
-                else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled){
+                } else if ( 'INCLUDE_DEPARTMENTS' === filter.value && ! filter.filled){
+                    requested++;
+                    reportsSubSrv.fetchDepartments()
+                        .then( fillDepartments );
+                } else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled){
                     //requested++;
                     fillCompletionStatus();
                 } else {
@@ -867,9 +873,9 @@ angular.module('reportsModule')
 
             function fillCompletionStatus(){
                 customData = [
-                                {id: 1, status: "UNASSIGNED", selected: true},
-                                {id: 2, status: "ASSIGNED", selected: true},
-                                {id: 3,  status: "COMPLETED", selected: true}
+                                {id: "UNASSIGNED", status: "UNASSIGNED", selected: true},
+                                {id: "ASSIGNED", status: "ASSIGNED", selected: true},
+                                {id: "COMPLETED",  status: "COMPLETED", selected: true}
                             ];
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_COMPLETION_STATUS' });
@@ -888,6 +894,35 @@ angular.module('reportsModule')
                     };
                 });
             };
+
+            function fillDepartments(data){
+                var foundFilter,
+                    customData;
+
+                    _.each(data, function(departmentData) {
+                      departmentData.id = departmentData.value;
+                    });
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_DEPARTMENTS' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasDepartments = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'name',
+                                defaultValue: 'Select Department'
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
 
             function fillRateCodeList (data) {
                 data[0].selected = true;
