@@ -48,7 +48,14 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 	  	sessionStorage.removeItem(key);
 	 	}
 
-	 	localStorage.email = $scope.data.email;
+		// CICO-33556: handle a case when browser doesn't allo setting item
+		// Safari, in Private Browsing Mode, handles QuotaExceededError
+		try {
+			localStorage.email = $scope.data.email;
+		} catch(e) {
+			console.log('ignoring a problem occured while setting item using localStorage');
+		}
+	 	
 	 	if(data.token!==''){
 	 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
 	 	}
