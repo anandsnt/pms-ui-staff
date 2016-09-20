@@ -341,6 +341,7 @@ angular.module('reportsModule')
                     break;
             };
         };
+        
 
         /**
          * Process the filters and create proper DS to show and play in UI
@@ -440,7 +441,7 @@ angular.module('reportsModule')
 
                 if(filter.value === 'RATE_CODE') {
                     report['hasRateCodeFilter'] = filter;
-                };
+                };                
 
                 if(filter.value === 'ROOM_TYPE') {
                     report['hasRoomTypeFilter'] = filter;
@@ -637,7 +638,7 @@ angular.module('reportsModule')
                         .then( fillRateTypesAndRateList );
                 }
 
-                else if ('RATE_CODE' === filter.value && ! filter.filled ) {
+                else if (('RATE_CODE' === filter.value && ! filter.filled)) {
                     requested++;
                     reportsSubSrv.fetchRateCode()
                         .then( fillRateCodeList );
@@ -875,13 +876,15 @@ angular.module('reportsModule')
                             data: angular.copy( data ),
                             options: {
                                 hasSearch: true,
-                                selectAll: false,
-                                singleSelect: true,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
+                                singleSelect: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? false : true,
                                 key: 'description',
                                 defaultValue: 'Select Rate'
                             }
                         }
-                    };
+                    };                    
+
+
                 });
 
                 completed++;
