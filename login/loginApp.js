@@ -60,9 +60,6 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 		 	if(data.token!==''){
 		 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
 		 	}
-		 	if(data.token!==''){
-		 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
-		 	}
 		 	else {
 	            $scope.hasLoader = true;
 	            if(data.is_sp_admin === true){
