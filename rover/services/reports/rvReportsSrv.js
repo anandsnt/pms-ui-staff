@@ -159,7 +159,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			var shallWeResolve = function() {
 				var payloadCount = _.keys( payload ).length;
-				if ( payloadCount === 3 ) {
+				if ( payloadCount === 4 ) {
 					deferred.resolve( payload );
 				}
 			};
@@ -182,6 +182,9 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			subSrv.fetchTimePeriods()
 				.then( success.bind(null, 'scheduleTimePeriods'), failed.bind(null, 'scheduleTimePeriods', []) );
+
+			subSrv.fetchSchedulableReports()
+				.then( success.bind(null, 'schedulableReports'), failed.bind(null, 'schedulableReports', []) );
 
 			return deferred.promise;
 		};
@@ -223,6 +226,45 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			return deferred.promise;
 		};
+
+		service.createSchedule = function(params) {
+			var deferred = $q.defer(),
+				url = 'admin/export_schedules/';
+
+			var success = function(data) {
+				deferred.resolve(data);
+			};
+
+			var failed = function(error) {
+				deferred.reject( error );
+			};
+
+			rvBaseWebSrvV2
+				.postJSON( url, params )
+				.then( success, failed );
+
+			return deferred.promise;
+		};
+
+		service.deleteSchedule = function(params) {
+			var deferred = $q.defer(),
+				url = 'admin/export_schedules/' + params.id;
+
+			var success = function(data) {
+				deferred.resolve(data);
+			};
+
+			var failed = function(error) {
+				deferred.reject( error );
+			};
+
+			rvBaseWebSrvV2
+				.deleteJSON( url )
+				.then( success, failed );
+
+			return deferred.promise;
+		};
+		
 
 		return service;
 	}

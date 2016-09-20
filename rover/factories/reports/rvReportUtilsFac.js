@@ -1,3 +1,4 @@
+
 angular.module('reportsModule')
 .factory('RVReportUtilsFac', [
     '$rootScope',
@@ -166,7 +167,8 @@ angular.module('reportsModule')
             'INCLUDE_TAX_RATE': true,
             'INCLUDE_ADDON_RATE': true,
             'INCLUDE_ADDONS': true,
-            'INCLUDE_ADDON_REVENUE' :true
+            'INCLUDE_ADDON_REVENUE' :true,
+            'INCLUDE_ACTIONS'    : true
         };
 
         var __excludeFilterNames = {
@@ -188,9 +190,14 @@ angular.module('reportsModule')
         var __showFilterNames = {
             'SHOW_COMPANY': true,
             'SHOW_TRAVEL_AGENT': true,
+            
             // for CREDIT_CHECK_REPORT
             'INCLUDE_DUE_OUT': true,
-            'INCLUDE_INHOUSE': true
+            'INCLUDE_INHOUSE': true,
+
+            // for room ooo oos report
+            OOO: true,
+            OOS: true
         };
 
         var __chargeTypeFilterNames = {
@@ -204,8 +211,8 @@ angular.module('reportsModule')
          * @param {Object} filter The ith report's filter object
          */
         var __pushGeneralOptionData = function(report, filter, selected) {
-            var selected = typeof selected === typeof true ? selected : false;
-            var mustSend = false;
+            var selected = typeof selected === typeof true ? selected : false,
+                mustSend = false;
 
             var includeCancelled = {
                         'INCLUDE_CANCELLED' : true,
@@ -251,11 +258,23 @@ angular.module('reportsModule')
             };
 
             report['hasGeneralOptions']['data'].push({
+                id          : filter.value.toLowerCase(),
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
                 selected    : selected,
                 mustSend    : mustSend
             });
+
+            // if filter value is either of these, selectAll should be false
+            if ( report['title'] == reportNames['ARRIVAL'] || report['title'] == reportNames['DEPARTURE'] ) {
+                report.hasGeneralOptions.options.noSelectAll = true;
+            };
+
+            // when 'SHOW_RATE_ADJUSTMENTS_ONLY' is selected other should not be and vice versa
+            if ( report['title'] == reportNames['RESERVATIONS_BY_USER'] && filter.value == 'SHOW_RATE_ADJUSTMENTS_ONLY' ) {
+                report.hasGeneralOptions.options.selectiveSingleSelectKey = filter.value.toLowerCase();
+                report.hasGeneralOptions.options.noSelectAll = true;
+            };
         };
 
         /**
@@ -322,6 +341,7 @@ angular.module('reportsModule')
                     break;
             };
         };
+        
 
         /**
          * Process the filters and create proper DS to show and play in UI
@@ -421,7 +441,7 @@ angular.module('reportsModule')
 
                 if(filter.value === 'RATE_CODE') {
                     report['hasRateCodeFilter'] = filter;
-                };
+                };                
 
                 if(filter.value === 'ROOM_TYPE') {
                     report['hasRoomTypeFilter'] = filter;
@@ -618,7 +638,7 @@ angular.module('reportsModule')
                         .then( fillRateTypesAndRateList );
                 }
 
-                else if ('RATE_CODE' === filter.value && ! filter.filled ) {
+                else if (('RATE_CODE' === filter.value && ! filter.filled)) {
                     requested++;
                     reportsSubSrv.fetchRateCode()
                         .then( fillRateCodeList );
@@ -670,6 +690,12 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchCampaignTypes()
                         .then( fillCampaignTypes );
+                }
+
+                else if ( 'FLOOR' === filter.value && ! filter.filled ) {
+                    requested++;
+                    reportsSubSrv.fetchFloors()
+                        .then( fillFloors );
                 }
 
                 else {
@@ -850,13 +876,15 @@ angular.module('reportsModule')
                             data: angular.copy( data ),
                             options: {
                                 hasSearch: true,
-                                selectAll: false,
-                                singleSelect: true,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
+                                singleSelect: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? false : true,
                                 key: 'description',
                                 defaultValue: 'Select Rate'
                             }
                         }
-                    };
+                    };                    
+
+
                 });
 
                 completed++;
@@ -922,7 +950,6 @@ angular.module('reportsModule')
                                 name: 'hasURLsList',
                                 process: function(filter, selectedItems) {
                                     var hasUrl = _.find(selectedItems, { value: 'URL' });
-                                    console.log(!hasUrl);
                                     filter.updateData(!hasUrl);
                                 }
                             }
@@ -983,6 +1010,27 @@ angular.module('reportsModule')
                 completed++;
                 checkAllCompleted();
             };
+
+            function fillFloors (data) {
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'FLOOR'});
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasFloorList = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'floor_number',
+                                defaultValue: 'Select Floors(s)'
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
 
             var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
                 var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
@@ -1109,10 +1157,6 @@ angular.module('reportsModule')
                                 }
                             }
                         }
-
-                        console.log( '=====================' );
-                        console.log( report['title'] );
-                        console.log( report.hasByChargeGroup );
                     };
 
                     foundCC = _.find(report['filters'], { value: 'INCLUDE_CHARGE_CODE' }) || _.find(report['filters'], { value: 'SHOW_CHARGE_CODES' });
@@ -1473,6 +1517,39 @@ angular.module('reportsModule')
                 report['sort_fields'][4] = debit;
                 report['sort_fields'][5] = credit;
             };
+
+            // need to reorder the sort_by options
+            // for guest balance report in the following order
+            if ( report['title'] === reportNames['ROOMS_OOO_OOS'] ) {
+                var roomNo, roomType, startDate, endDate;
+
+                _.each(report['sort_fields'], function(field) {
+                    if ( !! field ) {
+                        if ( 'ROOM_NO' === field.value ) {
+                            roomNo = angular.copy(field);
+                        }
+                        if ( 'ROOM_TYPE' === field.value ) {
+                            roomType = angular.copy(field);
+                        }
+                        if ( 'START_DATE' === field.value ) {
+                            startDate = angular.copy(field);
+                        }
+                        if ( 'END_DATE' === field.value ) {
+                            endDate = angular.copy(field);
+                        }
+                    }
+                });
+
+                report['sort_fields'] = [
+                    roomNo,
+                    roomType,
+                    null,
+                    startDate,
+                    endDate,
+                    null,
+                    null
+                ];
+            };
         };
 
 
@@ -1481,10 +1558,12 @@ angular.module('reportsModule')
 
         // to process the report sort by
         factory.processSortBy = function ( report ) {
+            // adding custom name copy for easy access
+            report['sortByOptions'] = angular.copy( report['sort_fields'] );
 
             // sort by options - include sort direction
-            if ( report['sort_fields'] && report['sort_fields'].length ) {
-                _.each(report['sort_fields'], function(item, index, list) {
+            if ( report['sortByOptions'] && report['sortByOptions'].length ) {
+                _.each(report['sortByOptions'], function(item, index, list) {
 
                     if ( !! item ) {
                         item['sortDir'] = undefined;
@@ -1494,7 +1573,7 @@ angular.module('reportsModule')
 
                 // making sort by room type default
                 if ( report['title'] === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
-                    var roomType = _.find(report['sort_fields'], { 'value': 'ROOM_TYPE' });
+                    var roomType = _.find(report['sortByOptions'], { 'value': 'ROOM_TYPE' });
                     if ( !! roomType ) {
                         roomType['sortDir'] = true;
                         report['chosenSortBy'] = roomType['value'];
@@ -1503,7 +1582,7 @@ angular.module('reportsModule')
 
                 // making sort by Revenue [desc] default
                 if ( report['title'] === reportNames['COMPANY_TA_TOP_PRODUCERS'] ) {
-                    var revenue = _.find(report['sort_fields'], { 'value': 'REVENUE' });
+                    var revenue = _.find(report['sortByOptions'], { 'value': 'REVENUE' });
                     if ( !! revenue ) {
                         revenue['sortDir'] = false;
                         report['chosenSortBy'] = revenue['value'];
@@ -1512,15 +1591,12 @@ angular.module('reportsModule')
 
                 // making sort by Room Number [asc] default
                 if ( report['title'] === reportNames['CREDIT_CHECK_REPORT'] ) {
-                    var roomNo = _.find(report['sort_fields'], { 'value': 'ROOM_NO' });
+                    var roomNo = _.find(report['sortByOptions'], { 'value': 'ROOM_NO' });
                     if ( !! roomNo ) {
                         roomNo['sortDir'] = true;
                         report['chosenSortBy'] = roomNo['value'];
                     };
                 };
-
-                // adding custom name ref for easy access
-                report['sortByOptions'] = report['sort_fields'];
             }
         };
 

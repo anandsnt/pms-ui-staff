@@ -232,12 +232,15 @@
 					</span>
 				</td>
 				<td class="description">
-					<span ng-repeat="description in feesData.description">
+					<span ng-repeat="description in feesData.description" class="charge" ng-class="{ 'icons edited' : feesData.is_description_edited }">
 						{{description.fees_desc}}
 						<br />
 					</span>
 					<span ng-show="feesData.reference_text != ''" class="reference">
 						{{feesData.reference_text}}
+					</span>
+					<span class="adjusted" ng-show="feesData.adjustment_reason && feesData.adjustment_reason !=''">
+						<em>{{'ADJUSTMENT' | translate}}</em> - {{feesData.adjustment_reason}}
 					</span>
 				</td>
 				<td>

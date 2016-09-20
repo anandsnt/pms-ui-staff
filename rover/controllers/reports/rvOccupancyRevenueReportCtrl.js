@@ -155,8 +155,6 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		$scope.getMarketOccupancyValue = function(marketIndex, columnIndex) {
 			var candidate = $scope.results.market_room_number[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
 
-			console.log(candidate)
-
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
 					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
@@ -206,10 +204,12 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			// since we moved these from main controller
 			$scope.markets = chosenReport.hasMarketsList;
 
+			// deep check if we have these flags choosen by the user
+			var hasIncludeLastYear = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_last_year' });
+			$scope.chosenLastYear = !! hasIncludeLastYear ? hasIncludeLastYear.selected : false;
 
-			// UPDATE: keep a quick ref to flags way up in the sky
-			$scope.chosenLastYear = chosenReport.chosenOptions.include_last_year;
-			$scope.chosenVariance = chosenReport.chosenOptions.include_variance;
+			var hasIncludeVariance = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_variance' });
+			$scope.chosenVariance = !! hasIncludeVariance ? hasIncludeVariance.selected : false;
 
 			$scope.selectedDays = [];
 			for (; ms <= last; ms += step) {

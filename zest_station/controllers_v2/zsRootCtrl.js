@@ -129,6 +129,19 @@ sntZestStation.controller('zsRootCtrl', [
 		};
 
 		/**
+		 * [returnDateObjBasedOnDateFormat description]
+		 * @param  {[type]} dateString [description]
+		 * @return {[type]}            [description]
+		 */
+		$scope.returnDateObjBasedOnDateFormat = function(dateString) {
+			if (typeof dateString !== 'undefined') {
+				return returnUnformatedDateObj(dateString, $scope.zestStationData.hotelDateFormat);
+			} else {
+				return dateString;
+			}
+		};
+
+		/**
 		 * Other events
 		 */
 		$scope.$on(zsEventConstants.PUT_OOS, function(event) {
@@ -155,11 +168,11 @@ sntZestStation.controller('zsRootCtrl', [
 
 		//$scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
 		$scope.isIpad = (zestSntApp.cordovaLoaded && iphoneOrIpad);
-			/**
-			 * This is workaround till we find how to detect if app
-			 *  is invoked from chrome app, we will be hidding this tag from chrome app and
-			 *  checking that to distinguish if app was launched using chrome app or not 
-			 * */
+		/**
+		 * This is workaround till we find how to detect if app
+		 *  is invoked from chrome app, we will be hidding this tag from chrome app and
+		 *  checking that to distinguish if app was launched using chrome app or not 
+		 * */
 		var CheckIfItsChromeApp = function() {
 			$scope.inChromeApp = $("#hideFromChromeApp").css("visibility") === 'hidden';
 			console.info(":: is in chrome app ->" + $scope.inChromeApp);
@@ -178,7 +191,7 @@ sntZestStation.controller('zsRootCtrl', [
 				$rootScope.emvTimeout = !!$scope.zestStationData.hotelSettings.emv_timeout ? $scope.zestStationData.hotelSettings.emv_timeout : 60;
 				$scope.zestStationData.mliMerchantId = data.mli_merchant_id;
 				configureSwipeSettings();
-				logStationSettings();
+				//logStationSettings();
 			};
 			var options = {
 				params: {},
@@ -305,8 +318,22 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.useNavIcons = false;
 		});
 
+		$(window).resize(function() {
+			//restrict keyboard if screen is resized
+			//to lower height
+			if (window.innerHeight < 700) {
+				$scope.hideKeyboardIfUp();
+				$scope.runDigestCycle();
+			}
+		});
+
 
 		$scope.showKeyboardOnInput = function() {
+			//restrict keyboard if screen is resized
+			//to lower height
+			if (window.innerHeight < 700) {
+				return;
+			}
 			var frameBody = $("#booking_iframe").contents().find("body");
 			frameBody.focus(function() {
 				console.log('iframe focus')
@@ -316,35 +343,48 @@ sntZestStation.controller('zsRootCtrl', [
 			var focused = $('#' + $scope.lastKeyboardId);
 			if ($(focused)) {
 				if ($(focused).getkeyboard()) {
-            		if ($(focused).getkeyboard().isOpen){
-            			try {
+					if ($(focused).getkeyboard().isOpen) {
+						try {
 							$(focused).getkeyboard().accept(true);
-            			} catch(err){
-            				console.warn($(focused).getkeyboard())
-            			}
-						
+						} catch (err) {
+							console.warn($(focused).getkeyboard())
+						}
+
 					}
 				}
 			}
 		};
 		$scope.showOnScreenKeyboard = function(id) {
-			$scope.lastKeyboardId = id;
-			//pull up the virtual keyboard (snt) theme... if chrome & fullscreen
-			var isTouchDevice = 'ontouchstart' in document.documentElement,
-				agentString = window.navigator.userAgent;
-			var themeUsesKeyboard = false;
-			if ($scope.theme === 'yotel' || !$scope.theme) {
-				themeUsesKeyboard = true;
-			}
-			var shouldShowKeyboard = (typeof chrome) &&
-				(agentString.toLowerCase().indexOf('window') !== -1) &&
-				isTouchDevice &&
-				$scope.inChromeApp && themeUsesKeyboard;
-			if (shouldShowKeyboard) {
+			//in console, allow debugging to test out keyboard in any browser
+			if (zestSntApp.virtualKeyBoardEnabled){
 				if (id) {
 					new initScreenKeyboardListener('station', id, true);
 				}
+			} else {
+				//restrict keyboard if screen is resized
+				//to lower height
+				if (window.innerHeight < 700) {
+					return;
+				}
+				$scope.lastKeyboardId = id;
+				//pull up the virtual keyboard (snt) theme... if chrome & fullscreen
+				var isTouchDevice = 'ontouchstart' in document.documentElement,
+					agentString = window.navigator.userAgent;
+				var themeUsesKeyboard = false;
+				if ($scope.theme === 'yotel' || !$scope.theme) {
+					themeUsesKeyboard = true;
+				}
+				var shouldShowKeyboard = (typeof chrome) &&
+					(agentString.toLowerCase().indexOf('window') !== -1) &&
+					isTouchDevice &&
+					$scope.inChromeApp && themeUsesKeyboard;
+				if (shouldShowKeyboard) {
+					if (id) {
+						new initScreenKeyboardListener('station', id, true);
+					}
+				}
 			}
+
 		};
 		/**
 		 * SVGs are ng-included inside HTML
@@ -354,36 +394,54 @@ sntZestStation.controller('zsRootCtrl', [
 			//also attaching this to navigation, yotel has text back & cancel, instead of svg icons for back and close;
 			if ($scope.zestStationData.theme === 'yotel') {
 				return true;
-			} else return false;
+			} else {
+				return false;
+			}
 		};
-		$scope.setSvgsToBeLoaded = function(iconsPath) {
+		$scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
+			var iconBasePath = (!useCommonIcons ? iconsPath : commonIconsPath);
 			$scope.activeScreenIcon = 'bed';
+			if ( $scope.zestStationData.key_create_file_uploaded.indexOf('/logo.png') !== -1 ){
+				$scope.zestStationData.key_create_file_uploaded = '';	
+			}
+			
 			$scope.icons = {
 				url: {
+
 					active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
-					key: iconsPath + '/key.svg',
-					date: iconsPath + '/date.svg',
-					checkin: iconsPath + '/checkin.svg',
-					checkout: iconsPath + '/checkout.svg',
-					oos: iconsPath + '/oos.svg',
-					staff: iconsPath + '/staff.svg',
-					email: iconsPath + '/email.svg',
-					pen: iconsPath + '/pen.svg',
-					creditcard: iconsPath + '/creditcard.svg',
-					keyboard: iconsPath + '/keyboard.svg',
-					noprint: iconsPath + '/no-print.svg',
-					print: iconsPath + '/print.svg',
-					confirmation: iconsPath + '/confirmation.svg',
-					moon: iconsPath + '/moon.svg',
-					back: iconsPath + '/back.svg',
-					close: iconsPath + '/close.svg',
-					qr: iconsPath + '/qr-scan.svg',
-					qr_noarrow: iconsPath + '/qr-scan_noarrow.svg',
-					createkey: iconsPath + '/create-key.svg',
-					logo: iconsPath + '/print_logo.svg',
-					watch: iconsPath + '/watch.svg',
-					qr_arrow: iconsPath + '/qr-arrow.svg'
+
+					checkin: iconBasePath + '/checkin.svg',
+					checkout: iconBasePath + '/checkout.svg',
+					key: iconBasePath + '/key.svg',
+
+					oos: iconBasePath + '/oos.svg',
+					back: iconBasePath + '/back.svg',
+					close: iconBasePath + '/close.svg',
+
+					date: iconBasePath + '/date.svg',
+					staff: iconBasePath + '/staff.svg',
+					email: iconBasePath + '/email.svg',
+					pen: iconBasePath + '/pen.svg',
+					creditcard: iconBasePath + '/creditcard.svg',
+					keyboard: iconBasePath + '/keyboard.svg',
+					noprint: iconBasePath + '/no-print.svg',
+					print: iconBasePath + '/print.svg',
+					confirmation: iconBasePath + '/confirmation.svg',
+					moon: iconBasePath + '/moon.svg',
+					qr: iconBasePath + '/qr-scan.svg',
+					qr_noarrow: iconBasePath + '/qr-scan_noarrow.svg',
+					createkey: iconBasePath + ($scope.zestStationData.key_create_file_uploaded.length > 0) ? $scope.zestStationData.key_create_file_uploaded : '',
+					logo: iconBasePath + '/print_logo.svg',
+					watch: iconBasePath + '/watch.svg',
+					qr_arrow: iconBasePath + '/qr-arrow.svg'
 				}
+			};
+
+			if (diffHomeIconsOnly){
+				$scope.icons.url.checkin  = iconsPath + '/checkin.svg';
+				$scope.icons.url.checkout = iconsPath + '/checkout.svg';
+				$scope.icons.url.key 	  = iconsPath + '/key.svg';
+				$scope.icons.url.logo 	  = iconsPath + '/logo-print.svg';
 			};
 		};
 
@@ -405,15 +463,25 @@ sntZestStation.controller('zsRootCtrl', [
 		 * get paths for theme based Icon files
 		 **/
 		$scope.$on('updateIconPath', function(evt, theme) {
+			var commonIconsPath = '/assets/zest_station/css/icons/default';
 			if (theme === 'yotel') {
 				$scope.$emit('DONT_USE_NAV_ICONS');
 				$scope.theme = theme;
 				$scope.iconsPath = '/assets/zest_station/css/icons/yotel';
-				$scope.setSvgsToBeLoaded($scope.iconsPath);
+				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, false);
 			} else if (theme === 'fontainebleau') {
 				//nothing else
+			} else if (theme === 'conscious') {
+				$scope.theme = theme;
+				$scope.iconsPath = '/assets/zest_station/css/icons/conscious';
+				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
+			} else if (theme === 'avenue') {
+				$scope.theme = theme;
+				$scope.iconsPath = '/assets/zest_station/css/icons/avenue';
+				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true);//last arg, is to only show different icons on Home, other icons use default
+
 			} else {
-				$scope.iconsPath = '/assets/zest_station/css/icons/default';
+				$scope.iconsPath = commonIconsPath;
 			}
 		});
 
@@ -447,6 +515,7 @@ sntZestStation.controller('zsRootCtrl', [
 							$scope.zestStationData.timeOut = true;
 						}
 						$scope.runDigestCycle();
+						$scope.hideKeyboardIfUp();
 					} else {
 						//do nothing;
 					}
@@ -481,6 +550,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 
 		$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+			$scope.hideKeyboardIfUp();
 			console.info("\ngoing to----->" + from.name);
 			console.info("to stateparams" + toParams);
 			console.info(toParams);
@@ -502,13 +572,8 @@ sntZestStation.controller('zsRootCtrl', [
 			console.info("Websocket:-> uid=" + response.UID + "--" + "Websocket:-> response code:" + response.ResponseCode);
 			console.info("Websocket: msg ->" + msg + "--" + "Websocket: Command ->" + cmd);
 
-			if (!response.Command && response.RVCardReadPAN) {
-				response.Command = 'cmd_observe_for_swipe';
-			}
-
-			if (response.Command === 'cmd_observe_for_swipe') {
+			if (!!response.RVCardReadPAN) {
 				$scope.$broadcast('SWIPE_ACTION', response);
-
 			} else if (response.Command === 'cmd_insert_key_card') {
 
 				//check if the UID is valid
@@ -594,8 +659,19 @@ sntZestStation.controller('zsRootCtrl', [
 		 *  Chrome App Communication code  
 		 *  ends here
 		 ********************************************************************************/
+		 //
+		 //$scope.focusInputField is to set focus to an input field which will auto-prompt keyboard on chromeapp
+		 //
+        $scope.focusInputField = function(elementId) {
+            $timeout(function() {
+                if ($scope.isIpad){
+                    $scope.callBlurEventForIpad();
+                }
+                document.getElementById(elementId).focus();
+                document.getElementById(elementId).click();
+            }, 300);
 
-
+        };
 
 		/********************************************************************************
 		 *  Work station code  
@@ -715,9 +791,6 @@ sntZestStation.controller('zsRootCtrl', [
 				setWorkStationForAdmin();
 			};
 			var onFail = function(response) {
-				if ($scope.timeStopped) {
-					return;
-				}
 				console.warn('fetching workstation list failed:', response);
 				$scope.$emit(zsEventConstants.PUT_OOS);
 			};
@@ -875,19 +948,21 @@ sntZestStation.controller('zsRootCtrl', [
 			console.log('-');
 			console.log('-:-');
 			//zest-station general settings
-			console.log(' -:- Station Settings -:- ');
+			console.log(' -:- Station Settings -:- ', setting);
 			console.log('');
-			console.log('  - Payment Gateway     :  ', setting);
-			console.log('  - Key Writer          :  ', setting.keyWriter);
-			console.log('  - CC Reader           :  ', setting.ccReader);
-			logSetting('  - Idle Timer          :  ', setting.idle_timer.enabled);
+			logSetting('  - Hourly Hotel Mode  :  ', $scope.zestStationData.isHourlyRateOn);
+
+			console.log('  - Payment Gateway    :  ', setting.paymentGateway);
+			console.log('  - Key Writer         :  ', setting.keyWriter);
+			console.log('  - CC Reader          :  ', setting.ccReader);
+			logSetting('  - Idle Timer         :  ', setting.idle_timer.enabled);
 			console.log('    -> Prompt  : ', (setting.idle_timer.prompt), 'sec ');
 			console.log('    -> Home    : ', (setting.idle_timer.max), 'sec ');
 			console.log('');
-			console.log('  - Chrome App ID       :  ', setting.chrome_app_id);
-			console.log('  - Bussiness Date      :  ', setting.bussinessDate);
-			console.log('  - Check-in Time       :  ', setting.check_in_time.hour + ':' + setting.check_in_time.minute + ' - ' + setting.check_in_time.primetime);
-			console.log('  - Check-out Time      :  ', setting.check_out_time.hour + ':' + setting.check_out_time.minute + ' - ' + setting.check_out_time.primetime);
+			console.log('  - Chrome App ID      :  ', setting.chrome_app_id);
+			console.log('  - Bussiness Date     :  ', setting.bussinessDate);
+			console.log('  - Check-in Time      :  ', setting.check_in_time.hour + ':' + setting.check_in_time.minute + ' - ' + setting.check_in_time.primetime);
+			console.log('  - Check-out Time     :  ', setting.check_out_time.hour + ':' + setting.check_out_time.minute + ' - ' + setting.check_out_time.primetime);
 			//check-in
 			console.log('');
 			console.log('  - Check-In Settings - ');
@@ -926,7 +1001,7 @@ sntZestStation.controller('zsRootCtrl', [
 			console.log('');
 			logSetting('  - Datalogic           :  ', setting.qr_scanner_datalogic);
 			logSetting('  - Samsotech           :  ', setting.qr_scanner_samsotech);
-			console.log('  - Arrow Direction     :  ', setting.qr_scanner_arrow_direction);
+			console.log('  - Arrow Direction    :  ', setting.qr_scanner_arrow_direction);
 			console.log('');
 			console.log(' -:-- - - - - - - - --:- ');
 			console.log('-:-');
@@ -952,14 +1027,14 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 		};
 
-		var optimizeTouchEventsForChromeApp = function(){
-			var optimizeTouch = function(e){
+		var optimizeTouchEventsForChromeApp = function() {
+			var optimizeTouch = function(e) {
 
-				if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SPAN' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'DIV'){
+				if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SPAN' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'DIV') {
 					console.log('hide keyboard if up');
 					$scope.hideKeyboardIfUp();
-				} else if (e.target.tagName == 'BUTTON' || e.target.tagName === 'DIV' || e.target.tagName === 'BTN'){
-					if (e.target.className.indexOf('keyboard') != -1){
+				} else if (e.target.tagName == 'BUTTON' || e.target.tagName === 'DIV' || e.target.tagName === 'BTN') {
+					if (e.target.className.indexOf('keyboard') != -1) {
 						console.warn('button or div with keyboard el');
 					} else {
 						console.log('hide keyboard if up');
@@ -969,10 +1044,10 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 
 			var el = window.document;
-			  el.addEventListener("touchstart", optimizeTouch, false);
-			  el.addEventListener("touchend", optimizeTouch, false);
-			  el.addEventListener("touchcancel", optimizeTouch, false);
-			  el.addEventListener("touchmove", optimizeTouch, false);
+			el.addEventListener("touchstart", optimizeTouch, false);
+			el.addEventListener("touchend", optimizeTouch, false);
+			el.addEventListener("touchcancel", optimizeTouch, false);
+			el.addEventListener("touchmove", optimizeTouch, false);
 		}
 
 
@@ -1000,10 +1075,13 @@ sntZestStation.controller('zsRootCtrl', [
 			getAdminWorkStations();
 			$scope.zestStationData.bussinessDate = hotelTimeData.business_date;
 			zestSntApp.setBrowser();
-			if ($scope.inChromeApp){
-				optimizeTouchEventsForChromeApp();	
+			if ($scope.inChromeApp) {
+				optimizeTouchEventsForChromeApp();
 			}
 			//initCardReadTest(); //debugging, comment out when done
+
+			//flag to check if default language was set or not
+			$scope.zestStationData.IsDefaultLanguageSet = false;
 		}();
 	}
 ]);

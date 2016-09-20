@@ -62,7 +62,7 @@ sntRover.controller('RVbillCardController',
 	$scope.saveData = {};
 	$scope.signatureData = "";
 	$scope.saveData.promotions = !!reservationBillData.is_promotions_and_email_set ? true : false;
-	$scope.saveData.termsAndConditions = false;
+	$scope.saveData.termsAndConditions = $scope.reservation.reservation_card.is_pre_checkin ? $scope.reservation.reservation_card.is_pre_checkin : false;
 	$scope.reviewStatusArray = [];
 	$scope.isAllBillsReviewed = false;
 	$scope.saveData.isEarlyDepartureFlag = false;
@@ -269,10 +269,51 @@ sntRover.controller('RVbillCardController',
 	* to Edit/Split/Move/Delete charges
 	* @return {Boolean}
 	*/
-	$scope.hasPermissionToChangeCharges = function() {
-		return rvPermissionSrv.getPermissionValue ('EDIT_SPLIT_DELETE_CHARGE');
+	var hasPermissionToChangeCharges = function(type) {
+		//hide edit and remove options in case type is  payment
+		var hasRemoveAndEditPermission  = (type !== "PAYMENT") ? true : false;
+	    var splitPermission = rvPermissionSrv.getPermissionValue('SPLIT_CHARGES'),
+	    	editChargeCodeDescription = $scope.hasPermissionToEditChargeCodeDescription(),
+	        editPermission = rvPermissionSrv.getPermissionValue('EDIT_CHARGES'),
+	        deletePermission = rvPermissionSrv.getPermissionValue('DELETE_CHARGES');
+	    return ((hasRemoveAndEditPermission && (editPermission || deletePermission)) || splitPermission || editChargeCodeDescription);
 	};
 
+	/**
+	* function to check whether the user has permission
+	* to Edit charge code description.
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToEditChargeCodeDescription = function() {
+		return rvPermissionSrv.getPermissionValue ('EDIT_CHARGECODE_DESCRIPTION');
+	};
+
+	/**
+	* function to check whether the user has permission
+	* to Split charges
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToSplitCharges = function() {
+		return rvPermissionSrv.getPermissionValue ('SPLIT_CHARGES');
+	};
+
+	/**
+	* function to check whether the user has permission
+	* to Edit charges
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToEditCharges = function() {
+		return rvPermissionSrv.getPermissionValue ('EDIT_CHARGES');
+	};
+
+	/**
+	* function to check whether the user has permission
+	* to Delete charges
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToDeleteCharges = function() {
+		return rvPermissionSrv.getPermissionValue ('DELETE_CHARGES');
+	};
 
 	/**
 	* function to check whether the user has permission
@@ -326,7 +367,7 @@ sntRover.controller('RVbillCardController',
 	$scope.showEditChargeButton = function(feesType){
 		return ($rootScope.isStandAlone &&
 				feesType!== 'TAX' &&
-				$scope.hasPermissionToChangeCharges());
+				hasPermissionToChangeCharges(feesType));
 	};
 
 	// Refresh registration-content scroller.
@@ -433,7 +474,7 @@ sntRover.controller('RVbillCardController',
 	    if($scope.clickedButton === "checkinButton" && !isAlreadyShownPleaseSwipeForCheckingIn){
 	     	isAlreadyShownPleaseSwipeForCheckingIn = true;
 	     	setTimeout(function(){
-	     		if($scope.reservationBillData.is_disabled_cc_swipe === "false" || $scope.reservationBillData.is_disabled_cc_swipe === "" || $scope.reservationBillData.is_disabled_cc_swipe === null){
+	     		if(($scope.reservationBillData.is_disabled_cc_swipe === "false" || $scope.reservationBillData.is_disabled_cc_swipe === "" || $scope.reservationBillData.is_disabled_cc_swipe === null) && !$scope.reservation.reservation_card.is_pre_checkin){
 	     			$scope.openPleaseSwipe();
 	     		}
 
@@ -1402,7 +1443,7 @@ sntRover.controller('RVbillCardController',
 
 	// CICO-17266 Considering Billing info details before Auth..
 	var showPreAuthPopupWithBillingInfo = function(data){
-		
+
 		$scope.clickedIncidentalsOnly = function(){
 			// @params : data , isCheckinWithoutAuth: false
 			data.is_cc_authorize_for_incidentals = true;
@@ -1489,7 +1530,7 @@ sntRover.controller('RVbillCardController',
                     "card_expiry": cardExpiry,
                     "credit_card" : swipedTrackDataForCheckin.RVCardReadCardType,
                     "do_not_cc_auth" : true,
-                    "no_post" : ($scope.reservationBillData.roomChargeEnabled === "") ? "": !$scope.reservationBillData.roomChargeEnabled,
+                    "no_post" : ($scope.reservationBillData.roomChargeEnabled === "") ? false: !$scope.reservationBillData.roomChargeEnabled,
                     "add_to_guest_card" : addToGuest
             };
             //CICO-12554 indicator if the track data is encrypted or not
@@ -1513,7 +1554,7 @@ sntRover.controller('RVbillCardController',
                 "signature" : signatureData,
                 "reservation_id" : $scope.reservationBillData.reservation_id,
                 "do_not_cc_auth" : $scope.do_not_cc_auth,
-                "no_post" : ($scope.reservationBillData.roomChargeEnabled === "") ? "": !$scope.reservationBillData.roomChargeEnabled
+                "no_post" : ($scope.reservationBillData.roomChargeEnabled === "") ? false: !$scope.reservationBillData.roomChargeEnabled
             };
             return data;
         };
@@ -1542,7 +1583,7 @@ sntRover.controller('RVbillCardController',
 
 		var errorMsg = "", signatureData = $scope.getSignature();
 
-		if($scope.signatureNeeded(signatureData)){
+		if($scope.signatureNeeded(signatureData) && !$scope.reservation.reservation_card.is_pre_checkin){
 			errorMsg = "Signature is missing";
 			$scope.showErrorPopup(errorMsg);
 
@@ -2086,6 +2127,18 @@ sntRover.controller('RVbillCardController',
     	});
 	};
 
+	/*
+	 * open popup for edit charge code
+	 */
+	$scope.openEditChargeDescPopup = function(){
+		ngDialog.open({
+    		template: '/assets/partials/bill/rvEditChargePopup.html',
+    		controller:'rvBillCardPopupCtrl',
+    		className: '',
+    		scope: $scope
+    	});
+	};
+
   /*
 	 * open popup for edit transaction
 	 */
@@ -2110,14 +2163,16 @@ sntRover.controller('RVbillCardController',
 	$scope.callActionsPopupAction = function(action){
 
 		ngDialog.close();
-		if(action ==="remove"){
-			$scope.openRemoveChargePopup();
-		}
-		else if(action ==="split"){
-			$scope.openSplitChargePopup();
-		}else if(action === "edit"){
-			$scope.openEditChargePopup();
+		if (action === "custom_description") {
+			$scope.openEditChargeDescPopup();
+		} else if (action === "remove") {
+		    $scope.openRemoveChargePopup();
+		} else if (action === "split") {
+		    $scope.openSplitChargePopup();
+		} else if (action === "edit") {
+		    $scope.openEditChargePopup();
 		};
+
 
 	};
 
@@ -2227,6 +2282,7 @@ sntRover.controller('RVbillCardController',
 			$scope.isPrintRegistrationCard = true;
 
 			$scope.$emit('hideLoader');
+			$scope.printRegistrationCardActive = true;
 			$scope.printRegCardData = data;
 			$scope.errorMessage = "";
 
@@ -2267,11 +2323,10 @@ sntRover.controller('RVbillCardController',
 		    */
 		    $timeout(function() {
 
-
+		    	$scope.printRegistrationCardActive = false;
 				// CICO-9569 to solve the hotel logo issue
 				$("header .logo").removeClass('logo-hide');
 				$("header .h2").addClass('text-hide');
-
 				// remove the orientation after similar delay
 		    	removePrintOrientation();
 		    }, 200);
@@ -2525,7 +2580,7 @@ sntRover.controller('RVbillCardController',
     * Checks whether the amount needs to show or not
     */
     $scope.isBalanceShown = function(is_rate_suppressed) {
-    	return (!is_rate_suppressed || $scope.isSRViewRateBtnClicked); 
+    	return (!is_rate_suppressed || $scope.isSRViewRateBtnClicked);
     };
 
 

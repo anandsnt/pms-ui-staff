@@ -30,12 +30,13 @@
 		&.icon-actions { background-position: 0 -750px; }
 		&.icon-notes { background-position: 0 -810px; }
 		&.icon-allotments { background-position: 0 -870px; }
-		&.icon-settings { background-position: 0 -930px; } 
+		&.icon-settings { background-position: 0 -930px; }
         &.icon-layers { background-position: 0 -990px; }
+        &.icon-alert { background-position: 0 -1050px; } 
 
-		@media only screen and (min-width: 600px) { 
+		@media only screen and (min-width: 600px) {
 			background-size: 125px;
-			.size(120px, 125px); 
+			.size(120px, 125px);
 
 			&.icon-search { background-position: 0 0; }
 			&.icon-room { background-position: 0 -120px; }
@@ -55,6 +56,7 @@
 			&.icon-allotments { background-position: 0 -1800px; }
 			&.icon-settings { background-position: 0 -1920px; }
             &.icon-layers { background-position: 0 -2040px; }
+            &.icon-alert { background-position: 0 -2160px; }  
 		}
 
 		@media @highdpi { background-image: @iconNoContent2x; }
@@ -115,7 +117,7 @@
 			background-size: 120px;
 		}
 	}
-	
+
 /* Icons before Text 			==================================*/
 	.icon-before-text {
 		position: relative;
@@ -159,8 +161,8 @@
 				.show;
 			}
 			&.icon-popup-alert { background-position: 2px -6395px; }
-			&.icon-popup-success { 
-				background-position: 2px -7540px; 
+			&.icon-popup-success {
+				background-position: 2px -7540px;
 
 				&.white { background-position: 2px -7600px; }
 			}
@@ -191,8 +193,8 @@
 				.square(40px);
 
 				&.late-check-out { background-position: 10px -2853px; }
-				&.queued-rooms { 
-					background-position: 5px -2778px; 
+				&.queued-rooms {
+					background-position: 5px -2778px;
 					background-size: 80px;
 				}
 			}
@@ -201,17 +203,17 @@
 				padding-top: 35px;
 				height: 60px;
 
-				&.icon-grid { 
+				&.icon-grid {
 					background-position: 19px -4520px;
 					&.active { background-position: 19px -4580px; }
 				}
 
-				&.icon-graph { 
+				&.icon-graph {
 					background-position: 18px -4635px;
 					&.active { background-position: 18px -4695px; }
 				}
 
-				&.icon-dual { 
+				&.icon-dual {
 					background-position: 18px -4755px;
 					&.active { background-position: 18px -4815px; }
 				}
@@ -247,16 +249,16 @@
                     &.icon-hk-log {
                         background-size: 120px;
                     }
-                    
+
                     &.icon-hk-guest { background-position: 50% -4880px; }
                     &.icon-hk-work { background-position: 50% -5000px; }
                     &.icon-hk-room { background-position: 50% -5120px; }
                     &.icon-hk-log { background-position: 50% -9916px; }
 				}
 
-				&.only-icon { 
+				&.only-icon {
 					padding-top: 0;
-					.hide-text; 
+					.hide-text;
 				}
 			}
 
@@ -280,12 +282,19 @@
 
 			&.icon-notes { background-position: 0 -8980px; }
 
-			&.icon-queued { 
+			&.icon-queued {
 				background-position: 0px -4179px;
 				background-color: transparent;
 				.hide-text;
 	            .square(40px);
 			}
+
+			&.icon-suite {
+                .hide-text;
+                background-position: 0px -10237px;
+                .size(20px, 25px);
+            }
+
 
 		/* Reservation - Display ***/
 			&.icon-company { background-position: 15px -3448px; }
@@ -300,17 +309,17 @@
 			&.icon-email { background-position: 0 -1058px; }
 			&.icon-print { background-position: 0 -1120px; }
 			&.icon-pencil { background-position: 0 -1180px; }
-			&.icon-wallet { background-position: 0 -1240px; }	
-			&.icon-save { background-position: 0 -3280px; }	
-			&.icon-addons { background-position: 0 -6280px; }	
+			&.icon-wallet { background-position: 0 -1240px; }
+			&.icon-save { background-position: 0 -3280px; }
+			&.icon-addons { background-position: 0 -6280px; }
 			&.icon-charge { background-position: 4px -6340px; }
 			&.icon-move { background-position: -1px -6459px; }
 			&.icon-cc { background-position: 0 -7480px; }
 
-			&.icon-trash { 
+			&.icon-trash {
 				.square(20px);
 				.hide-text;
-				background-position: 0 -1660px; 
+				background-position: 0 -1660px;
 
 				&.invert { background-position: 2px -3160px; }
 			}
@@ -326,7 +335,7 @@
 			&.icon-filter { background-position: 0 -1300px; }
 			&.icon-filter.active { background-position: 0 -1360px; }
 
-			&.time { 
+			&.time {
 				.square(30px);
 				.hide-text;
 
@@ -337,7 +346,7 @@
 
 			&.icon-time {
 				background-position: 0 -8918px;
-				
+
 				&.time-in { background-position: 10px -4050px; }
 				&.time-out { background-position: 10px -4110px; }
 			}
@@ -346,10 +355,10 @@
 
 			&.icon-invoice { background-position: 2px -9160px; }
 
-			&.icon-hold { 
-                background-position: 0px -9220px; 
+			&.icon-hold {
+                background-position: 0px -9220px;
                 &.red {
-                    background-position: 0px -9340px; 
+                    background-position: 0px -9340px;
                 }
             }
 
@@ -370,7 +379,7 @@
 
 			&.icon-authenticated { background-position: 5px -6753px; }
 			&.icon-authentication-failed { background-position: 5px -6873px; }
-			
+
 			&.icon-cc-authorization {
 				background-position: 5px -6510px;
 				.square(50px);
@@ -401,6 +410,7 @@
 			&.icon-diary-edit-reservation { background-position: 0 -6038px; }
 			&.icon-diary-ooo { background-position: 0 -6098px; }
 			&.icon-diary-oos { background-position: 0 -6158px; }
+			&.icon-diary-lock { background-position: 0 -9100px; }
 
 		/* Social Lobby ***/
 			&.icon-show-conversations {
@@ -430,7 +440,7 @@
 				background-position: 5px -2075px;
 			}
 
-			&.icon-lobby-activity { 
+			&.icon-lobby-activity {
 				background-position: 12px -1712px;
 				&.active { background-position: 12px -1770px; }
 			}
@@ -440,7 +450,7 @@
 				&.active { background-position: 15px -1890px; }
 			}
 
-			&.icon-messages-guests { 
+			&.icon-messages-guests {
 				background-position: 15px -2310px;
 				&.active { background-position: 15px -2370px; }
 			}
@@ -450,12 +460,12 @@
 				&.active { background-position: 15px -2490px; }
 			}
 
-			&.icon-messages-guests2 { 
+			&.icon-messages-guests2 {
                 background-position: 13px -9572px;
                 &.active { background-position: 13px -9512px; }
             }
-            
-            &.icon-messages-group { 
+
+            &.icon-messages-group {
                 background-position: 14px -9450px;
                 &.active { background-position: 14px -9390px; }
             }
@@ -528,7 +538,7 @@
 
 		/* Actions ***/
 			&.icon-action {
-				
+
 				&.icon-unassigned { background-position: 8px -7120px; }
 				&.icon-assigned { background-position: 8px -7240px; }
 				&.icon-completed { background-position: 8px -7360px; }
@@ -541,6 +551,14 @@
 					&.icon-specials { background-position: 8px -8620px; }
 				}
 			}
+
+			&.icon-action-report {
+                .square(16px);
+
+                &.icon-unassigned { background-position: 0 -10060px; }
+                &.icon-assigned { background-position: 0 -10120px; }
+                &.icon-completed { background-position: 0 -10180px; }
+            }
 
 		/* Rotations */
 		&.rotate-down {
@@ -571,15 +589,15 @@
 		&.prev-view { background-image: @arrowLeft; }
 
 		&.toggle,
-		&.toggle-filter { 
-			background-image: @arrowDown; 
-			
+		&.toggle-filter {
+			background-image: @arrowDown;
+
 			&.settings-title { background-image: @arrowDownTrans; }
 		}
 
 		&.toggle.active,
-		&.toggle-filter.active { 
-			background-image: @arrowUp; 
+		&.toggle-filter.active {
+			background-image: @arrowUp;
 
 			&.settings-title { background-image: @arrowUpTrans; }
 		}
@@ -593,17 +611,17 @@
 			&.prev-view { background-image: @arrowLeft2x; background-size: 14px 14px; }
 
 			&.toggle,
-			&.toggle-filter { 
-				background-image: @arrowDown2x; 
-				background-size: 14px 14px; 
+			&.toggle-filter {
+				background-image: @arrowDown2x;
+				background-size: 14px 14px;
 
 				&.settings-title { background-image: @arrowDownTrans2x; }
 			}
 
 			&.toggle.active,
-			&.toggle-filter.active { 
-				background-image: @arrowUp2x; 
-				background-size: 14px 14px; 
+			&.toggle-filter.active {
+				background-image: @arrowUp2x;
+				background-size: 14px 14px;
 
 				&.settings-title { background-image: @arrowUpTrans2x; }
 			}
@@ -615,11 +633,11 @@
         background-repeat: no-repeat;
         border: 0;
         .show;
-        background-image: @success; 
-        background-size: 11px 10px; 
+        background-image: @success;
+        background-size: 11px 10px;
 
         @media @highdpi {
-             background-image: @success2x; 
+             background-image: @success2x;
         }
     }
 
@@ -661,7 +679,7 @@
 			background-size: 30px;
 		}
 	}
-	
+
 /* Tabs icons			==================================*/
 	.icons-tabs {
 		background-image: @iconsTabs;
@@ -676,7 +694,7 @@
 			&.active {
 				background-position: 50% -70px;
 
-				a { 
+				a {
 					background-image: @arrowsTabs;
 					background-repeat: no-repeat;
 					background-position: 100% -40px;
@@ -708,7 +726,7 @@
 			&.icon-reservation {
 				&.ui-tabs-active,
 				&.active {
-					a { 
+					a {
 						background-image: @arrowsTabs2x;
 						background-size: 120px;
 					}
@@ -736,7 +754,7 @@
 		&:hover,
 		&:active { background-position: 10px -1527px; }
 
-		@media @highdpi { 
+		@media @highdpi {
 			background-image: @icons2x;
 			background-size: 120px;
 		}
@@ -749,7 +767,7 @@
 			text-indent: 0;
 			line-height: 40px;
 			vertical-align: middle;
-			font-weight: 600;	
+			font-weight: 600;
 			width: auto;
 			padding: 0 20px 0 40px;
 			background-color: @white;
@@ -764,7 +782,7 @@
 /* Misc					==================================*/
 	.vip {
 		font-size: 9px;
-        line-height: 16px;                  
+        line-height: 16px;
 		font-weight: 700;
 		text-transform: uppercase;
 		text-align: center;
@@ -791,20 +809,20 @@
 			background-repeat: no-repeat, repeat;
 
 			&:hover,
-			&:active { 
-				.gradient-with-image(@arrowWhiteRight, @greenEnd, @greenStart); 
+			&:active {
+				.gradient-with-image(@arrowWhiteRight, @greenEnd, @greenStart);
 				background-position: 92% 55%, 0 0;
 				background-repeat: no-repeat, repeat;
 			}
 
-			@media @highdpi { 
-				.gradient-with-image(@arrowWhiteRight2x, @greenEnd, @greenStart); 
-				background-size: 14px 14px, 100%, 100%; 
+			@media @highdpi {
+				.gradient-with-image(@arrowWhiteRight2x, @greenEnd, @greenStart);
+				background-size: 14px 14px, 100%, 100%;
 				background-repeat: no-repeat, repeat;
 			}
-		}		
+		}
 	}
-	
+
 	.search-indicator {
 		background: @white @icons no-repeat;
 		background-position: 4px -3875px;
@@ -902,8 +920,8 @@
 		.show;
 
 		&.icon-mover-right {
-			background-position: 13px -788px; 
-			
+			background-position: 13px -788px;
+
 			&:hover,
 			&:active { background-position: 13px -888px; }
 		}
@@ -963,7 +981,7 @@
 		&.bg-red { background-color: @red; }
 		&.bg-blue { background-color: @blue; }
 		&.bg-grey { background-color: @grey3; }
-		&.bg-violet { background-color: @purpleStart; } 
+		&.bg-violet { background-color: @purpleStart; }
 		&.bg-green { background-color: @green; }
 		&.bg-drk { background-color: @black; }
 		&.bg-blue-dark { background-color: @darkBlue;}

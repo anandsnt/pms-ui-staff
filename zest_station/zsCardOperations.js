@@ -31,28 +31,28 @@ var CardOperation = function() {
 		} else if (action === null) {
 			return false;
 		} else {
-				if (cordova) {
+			if (cordova) {
 				//calling cordova service
-					cordova.exec(
-						// if success call back require any parameters
-						function(data) {
-							successCallBack(data);
-							that.callRecursively(options);
-						},
-						// if failure/error call back require any parameters
-						function(error) {
-							failureCallBack(error);
-							that.callRecursively(options);
-						},
+				cordova.exec(
+					// if success call back require any parameters
+					function(data) {
+						successCallBack(data);
+						that.callRecursively(options);
+					},
+					// if failure/error call back require any parameters
+					function(error) {
+						failureCallBack(error);
+						that.callRecursively(options);
+					},
 
-						// service name
-						service,
-						// function name
-						action,
-						// arguments to native
-						arguments
-					);
-				}
+					// service name
+					service,
+					// function name
+					action,
+					// arguments to native
+					arguments
+				);
+			}
 		}
 	};
 

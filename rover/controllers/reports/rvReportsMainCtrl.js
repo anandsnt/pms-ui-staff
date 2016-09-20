@@ -42,6 +42,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.codeSettings   = payload.codeSettings;
 		$scope.activeUserList = payload.activeUserList;
 		$scope.schedulesList = [];
+		$scope.schedulableReports = [];
 
 		$scope.showReportDetails = false;
 
@@ -59,12 +60,22 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			});
 		})();
 		/**/
-		var refreshScroll = function() {
+		var refreshScroll = function( noReset ) {
 			$scope.refreshScroller(FULL_REPORT_SCROLL);
-			if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
+
+			if ( !! noReset ) {
+				return;
+			} else if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
 			    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo(0, 0, 100);
 			}
 		};
+		$scope.scrollToLast = function() {
+			setTimeout(function() {
+				if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
+				    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo($scope.myScroll[FULL_REPORT_SCROLL].maxScrollX, 0, 299);
+				}
+			}, 300);
+		}
 		/**/
 		$scope.viewCols = [1, 2, 3, 4];
 		var _currentViewCol = $scope.viewCols[0];
@@ -74,15 +85,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.isViewCol = function(value) {
 			return value === _currentViewCol;
 		};
-		$scope.setViewCol = function(value) {
+		$scope.setViewCol = function(value, noReset) {
 			_currentViewCol = value;
-			refreshScroll();
+			refreshScroll(noReset);
 		};
 
 
 
 		/** Report views managing area */
-		$scope.reportViews = ['ALL_REPORT', 'SCHEDULE_REPORT'];
+		$scope.reportViews = ['ALL_REPORT', 'SCHEDULED_REPORT', 'SCHEDULED_A_REPORT'];
 		var _selectedReportView = $scope.reportViews[0];
 		/**/
 		$scope.isReportView = function(name) {
@@ -118,7 +129,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		        title, i, j;
 
 		    $scope.setViewCol( $scope.viewCols[0] );
-		    source = $scope.isReportView( $scope.reportViews[0] ) ? $scope.reportList : $scope.schedulesList;
+
+		    if ( $scope.isReportView($scope.reportViews[0]) ) {
+		    	source = $scope.reportList;
+		    } else if ( $scope.isReportView($scope.reportViews[0]) ) {
+		    	source = $scope.schedulesList;
+		    } else {
+		    	source = $scope.schedulableReports;
+		    }
 
 		    if ( query.length < 3 ) {
 		        for (i = 0, j = source.length; i < j; i++) {
@@ -252,15 +270,19 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_36: false,
 			item_37: false,
 			item_38: false,
-			item_39: false
+			item_39: false,
+			item_40: false,
+			item_41: false
 		};
 		$scope.toggleFilterItems = function(item) {
-			if ( $scope.filterItemsToggle.hasOwnProperty(item) ) {
-				$scope.filterItemsToggle[item] = $scope.filterItemsToggle[item] ? false : true;
+			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
+				$scope.filterItemsToggle[item] = false;
+			}
+			
+			$scope.filterItemsToggle[item] = ! $scope.filterItemsToggle[item];
 
-				console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
-				$rootScope.$broadcast( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
-			};
+			console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
+			$rootScope.$broadcast( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
 		};
 		$scope.resetFilterItemsToggle = function() {
 			_.each($scope.filterItemsToggle, function(value, key) {
@@ -774,6 +796,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	});
         };
 
+        //Get the selected rates id
+        var getRatesListToShow = function(item) {        	
+        	var listedRates 		= item.hasRateCodeFilter.data,
+        		selectedRates 		= _.where(listedRates, {selected: true}),
+        		selectedRateIds 	= _.pluck(selectedRates, "id");
+        	return selectedRateIds;
+        };
+
         $scope.shouldShowThisRate = function(rate, item) {
         	var listedRateTypes 		= item.hasRateTypeFilter.data,
         		selectedRateTypes 		= _.where(listedRateTypes, {selected: true}),
@@ -1031,7 +1061,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'guestOrAccount': [],
 					'chargeTypes': [],
 					'users': [],
-					'campaign_types': []
+					'campaign_types': [],
+					'floorList': []
 				};
 			};
 
@@ -1163,6 +1194,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
 			};
 
+			/*if (!!report.hasRatesCodeFilter) {
+				key = reportParams['RATE_IDS'];
+				params[key] = getRatesListToShow(report);                
+			};*/
+
+			
+
 			// for restriction list
 			if (!!report.hasRestrictionListFilter) {
 				params[reportParams['RESTRICTION_IDS']] = _.pluck(_.where(report.hasRestrictionListFilter.data,{ selected: true }), "id");
@@ -1170,10 +1208,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			// for rate code
 			if (!!report.hasRateCodeFilter) {
-				var selectedRateCode = _.findWhere(report.hasRateCodeFilter.data,{ selected: true });
-				if(selectedRateCode) {
-					params[reportParams['RATE_ID']] = selectedRateCode.id;
+				if(report.hasRateCodeFilter.options.singleSelect) {
+					var selectedRateCode = _.findWhere(report.hasRateCodeFilter.data,{ selected: true });
+					if(selectedRateCode) {
+						params[reportParams['RATE_ID']] = selectedRateCode.id;
+					}
+				} else {
+					key = reportParams['RATE_IDS'];
+					params[key] = getRatesListToShow(report); 
 				}
+				
 			};
 
 			// for room type filter
@@ -1323,15 +1367,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				}
 			};
 
-			// reset 'chosenOptions' and generate params for selected options
+			// reset and generate params for selected options
 			if ( report['hasGeneralOptions']['data'].length ) {
-				report.chosenOptions = {};
 				/**/
 				_.each(report['hasGeneralOptions']['data'], function(each) {
 					if ( each.selected ) {
 						key                             = each.paramKey;
 						params[key]                     = true;
-						report.chosenOptions[key] = true;
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.options.push( each.description );
@@ -1739,6 +1781,29 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				};
 			};
 
+			// 
+			if ( report.hasOwnProperty('hasFloorList') ) {
+				selected = _.where( report['hasFloorList']['data'], { selected: true } );
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['FLOOR'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(source) {
+						params[key].push( source.floor_number );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.floorList.push( source.floor_number );
+						};
+					});
+
+					// in case if all sources are selected
+					if ( changeAppliedFilter && report['hasFloorList']['data'].length === selected.length ) {
+						$scope.appliedFilter.floorList = ['All Floors'];
+					};
+				};
+			};
+
 			// has min revenue
 			if ( report.hasOwnProperty('hasMinRevenue') && !!report.hasMinRevenue.data ) {
 				key         = report.hasMinRevenue.value.toLowerCase();
@@ -1882,6 +1947,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.totalCount = response.total_count || 0;
 				$scope.currCount = response.results ? response.results.length : 0;
 			};
+			
 
 			var sucssCallback = function(response) {
 				var msg = '';

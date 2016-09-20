@@ -1306,21 +1306,22 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			if (activeTab !== 'SUMMARY') {
 				return;
 			}
+			if(!$scope.isInAddMode()) {
+				$scope.$emit("FETCH_SUMMARY");
 
-			$scope.$emit("FETCH_SUMMARY");
+				//to date picker will be in disabled in move mode
+				//in order to fix the issue of keeping that state even after coming back to this
+				//tab after going to some other tab
+				setDatePickerOptions();
 
-			//to date picker will be in disabled in move mode
-			//in order to fix the issue of keeping that state even after coming back to this
-			//tab after going to some other tab
-			setDatePickerOptions();
+				initializeChangeDateActions ();
 
-			initializeChangeDateActions ();
+				//we are resetting the API call in progress check variable
+				$scope.isUpdateInProgress = false;
 
-			//we are resetting the API call in progress check variable
-			$scope.isUpdateInProgress = false;
-
-			//we have to refresh this data on tab siwtch
-			$scope.computeSegment();
+				//we have to refresh this data on tab siwtch
+				$scope.computeSegment();
+			}
 		});
 
 		/**

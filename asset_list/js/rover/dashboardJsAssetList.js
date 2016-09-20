@@ -44,6 +44,7 @@ module.exports = {
 
 				roverRoot + 'filters/roundFilter.js',
 				roverRoot + 'filters/highlightWordsFilter.js',
+				roverRoot + 'filters/rvTrustAsResourceUrl.js',
 
 				controllerRoot + 'rvTopCtrl.js',
 				controllerRoot + 'rvRoverController.js',
@@ -68,7 +69,8 @@ module.exports = {
 				serviceRoot + 'availability/rvAvailabilitySrv.js',
 				serviceRoot + 'workstation/workstationSrv.js',
 				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
-				directiveRoot + 'Outside Click handler/outsideClickDirective.js'
+				directiveRoot + 'Outside Click handler/outsideClickDirective.js',
+				directiveRoot + 'pagination/*.js'
 			]
 		};
 

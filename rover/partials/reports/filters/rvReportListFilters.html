@@ -61,11 +61,6 @@
     data="uiChosenReport.hasRoomTypeFilter.data"
     options="uiChosenReport.hasRoomTypeFilter.options"></multi-option-selection>
 
-<multi-option-selection ng-show="uiChosenReport.hasRateCodeFilter && uiChosenReport.hasRateCodeFilter.data.length"
-    label="Rate"
-    on-update="refreshFilterScroll"
-    data="uiChosenReport.hasRateCodeFilter.data"
-    options="uiChosenReport.hasRateCodeFilter.options"></multi-option-selection>
 
 <multi-option-selection ng-show="uiChosenReport.hasRestrictionListFilter && uiChosenReport.hasRestrictionListFilter.data.length"
     label="Restriction"
@@ -184,7 +179,10 @@
             <span class="icons icon-clear-search">Clear query</span>
         </button>
         <input ng-show="uiChosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptions" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
-        <input ng-show="!uiChosenReport.hasDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
+        
+        <input ng-show="uiChosenReport.hasSysDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsTillYesterday" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
+
+        <input ng-show="!uiChosenReport.hasDateLimit && !uiChosenReport.hasSysDateLimit" type="text" class="datepicker" ui-date="untilDateOptionsNoLimit" ng-model="uiChosenReport.singleValueDate" ng-change="dateChanged(uiChosenReport, 'hasSingleDateFilter')" placeholder="Select Date" readonly>
     </div>
 </div>
 
@@ -366,6 +364,12 @@
     </div>
 </div>
 
+<multi-option-selection ng-show="uiChosenReport.hasRateCodeFilter && uiChosenReport.hasRateCodeFilter.data.length"
+    label="Rate"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasRateCodeFilter.data"
+    options="uiChosenReport.hasRateCodeFilter.options"></multi-option-selection>
+
 <multi-option-selection ng-show="uiChosenReport.hasMarketsList && uiChosenReport.hasMarketsList.data.length"
     label="Market(s)"
     on-update="refreshFilterScroll"
@@ -383,6 +387,12 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasOriginsList.data"
     options="uiChosenReport.hasOriginsList.options"></multi-option-selection>
+
+<multi-option-selection ng-show="uiChosenReport.hasFloorList && uiChosenReport.hasFloorList.data.length"
+    label="Floor"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasFloorList.data"
+    options="uiChosenReport.hasFloorList.options"></multi-option-selection>
 
 <div class="entry" ng-show="uiChosenReport.hasMinRevenue">
     <label>Minimum Revenue</label>

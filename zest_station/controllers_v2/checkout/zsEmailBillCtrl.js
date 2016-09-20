@@ -5,7 +5,8 @@ sntZestStation.controller('zsEmailBillCtrl', [
 	'zsEventConstants',
 	'zsUtilitySrv',
 	'zsCheckoutSrv',
-	function($scope, $stateParams, $state, zsEventConstants, zsUtilitySrv, zsCheckoutSrv) {
+	'zsGeneralSrv',
+	function($scope, $stateParams, $state, zsEventConstants, zsUtilitySrv, zsCheckoutSrv, zsGeneralSrv) {
 
 		/***********************************************************************************************
 		 **		Expected state params -----> printopted, reservation_id, email and guest_detail_id			  
@@ -36,11 +37,15 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			//if user already has email provide two options
 			//else prompt for email entry
 			$scope.mode = !!$scope.email ? "EMAIL_BILL_GUEST_OPTIONS" : "EMAIL_BILL_EDIT_MODE";
+			if ($scope.mode === 'EMAIL_BILL_EDIT_MODE'){
+				$scope.focusInputField("email_text");
+			};
 
 		}();
 
 		$scope.editEmailAddress = function() {
 			$scope.mode = "EMAIL_BILL_EDIT_MODE";
+			$scope.focusInputField("email_text");
 		};
 
 		$scope.navToHome = function() {
@@ -65,6 +70,8 @@ sntZestStation.controller('zsEmailBillCtrl', [
 
 		$scope.sendEmail = function() {
 			$scope.callBlurEventForIpad();
+			//future story, add black-list check here
+
 			var sendBillSuccess = function(response) {
 				$scope.emailSent = true;
 				$scope.mode = 'GUEST_BILL_EMAIL_SENT';
@@ -85,21 +92,63 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			$scope.callAPI(zsCheckoutSrv.sendBill, options);
 		};
 
+
+		var checkIfEmailIsBlacklisted = function(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure) {
+			var blacklistCheckOptions = {
+				params: {
+					'email': $scope.email
+				},
+				successCallBack: function(data) {
+					//onSuccess, 
+					if (!data.black_listed_email) {
+						afterBlackListValidation();
+
+					} else {
+						console.warn('email is black listed, request different email address');
+						onBlackListedEmailFound();
+					};
+				},
+				failureCallBack: onValidationAPIFailure
+			};
+			$scope.callAPI(zsGeneralSrv.emailIsBlackListed, blacklistCheckOptions);
+		}
+
 		var callSaveEmail = function() {
 			$scope.callBlurEventForIpad();
-			var params = {
-				"guest_detail_id": $stateParams.guest_detail_id,
-				"email": $scope.email
+
+			var afterBlackListValidation = function() {
+				var params = {
+					"guest_detail_id": $stateParams.guest_detail_id,
+					"email": $scope.email
+				};
+				var emailSaveSuccess = function() {
+					$scope.mode = "EMAIL_BILL_GUEST_OPTIONS";
+				};
+				var options = {
+					params: params,
+					successCallBack: emailSaveSuccess,
+					failureCallBack: failureCallBack
+				};
+
+				$scope.callAPI(zsCheckoutSrv.saveEmail, options);
 			};
-			var emailSaveSuccess = function() {
-				$scope.mode = "EMAIL_BILL_GUEST_OPTIONS";
+
+			var onBlackListedEmailFound = function() {
+				$scope.emailError = true;
+				$scope.focusInputField("email_text");
 			};
-			var options = {
-				params: params,
-				successCallBack: emailSaveSuccess,
-				failureCallBack: failureCallBack
+			var onValidationAPIFailure = function() {
+				updateGuestEmailFailed();
 			};
-			$scope.callAPI(zsCheckoutSrv.saveEmail, options);
+			//
+			//future story, enable black-list check here
+			//
+			//checks if new email is blacklisted, if so, set invalid email mode
+			//otherwise, continue updating guest email
+			//checkIfEmailIsBlacklisted(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure);
+			afterBlackListValidation();
+
+
 		};
 
 		/**
@@ -121,7 +170,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 		};
 
 		$scope.reTypeEmail = function() {
-			$scope.mode = "EMAIL_BILL_EDIT_MODE";
+			$scope.editEmailAddress();
 			$scope.emailError = false;
 		};
 

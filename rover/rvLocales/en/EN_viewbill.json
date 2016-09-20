@@ -1,5 +1,5 @@
-    
-    
+
+
     "ROOM": "room",
     "NIGHTS": "nights",
     "NIGHT": "night",
@@ -25,7 +25,7 @@
     "LOCATION": "Location",
     "GUEST_BALANCE": "Guest Balance",
     "AS_OF" : "As of",
-    "SIGNED" : "Signed", 
+    "SIGNED" : "Signed",
     "DESCRIPTION" : "Description",
     "CREDITS" : "Credits",
     "STAY_FEES_AS_OF": "Stay fees (as of",
@@ -48,9 +48,13 @@
     "COMPLETE_CHECKIN" : "Complete checkin",
     "COMPLETE_ADD_TO_QUEUE" : "Add to queue",
     "CLEAR_SIGNATURE": "Clear signature",
+    "PHONE_EMAIL_MOBILE_MISSING" : "Mobile, Phone &amp; e-mail missing!",
+    "MOBILE_EMAIL_MISSING" : "Mobile &amp; e-mail missing!",
     "PHONE_EMAIL_MISSING" : "Phone &amp; e-mail missing!",
+    "MOBILE_PHONE_MISSING" : "Mobile &amp; Phone missing!",
     "PHONE_MISSING" : "Phone missing!",
     "EMAIL_MISSING" : "E-mail missing!",
+    "MOBILE_MISSING" : "Mobile missing!",
     "PROVIDE_BEFORE_CHECKIN" : "Ask the guest to provide them before check in",
     "PHONE" : "Phone",
     "EMAIL" : "E-mail",
@@ -61,18 +65,18 @@
     "ASK_GUEST_TO_PROVIDE_EMAIL" : "Ask the guest to provide email",
     "SUBMIT": "Submit",
     "KEY_NOT_PRINTED": "Keys not printed",
-    
+
     "CHECK_OUT_WITHOUT_SETTLEMENT" : "Check Out Without Settlement",
     "ACCEPT_CHARGE_TEXT" : "By checking this box you hereby Accept the Charges",
     "REVIEW_BILL": "Review Bill",
     "AND_CONTINUE": "and Continue",
     "AND_COMPLETE_CHECKOUT" : "and Complete checkout",
-    
+
     "PLEASE_ASK_THE_GUEST_FOR_EMAIL" : "Please ask the guest to provide email before checkout",
 	"EMAIL" : "E-mail",
 	"SUBMIT_AND_GOTO_CHECKOUT" : "Submit and go to check out",
 	"IGNORE_AND_GOTO_CHECKOUT" : "Ignore and proceed with checkout",
-	
+
 	"EARLY_DEPARTURE" : "Early Departure:",
 	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
 	"OK" : "Ok",
@@ -173,6 +177,7 @@
     "GROSS" : "Gross",
     "NET" : "Net",
     "TAX" : "Tax",
-    "TOTAL" : "Total"
+    "TOTAL" : "Total",
+    "ADJUSTMENT" : "Adjustment"
 
 

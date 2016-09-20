@@ -1,8 +1,9 @@
 <div class="invoice-logo envelope">
     <img ng-src="{{printData.hotel_logo}}" alt="" />
     <h1>{{printData.hotel_name}}</h1>
-    <span ng-bind-html="printData.hotel_address"></span>
-    <span class="type" translate>INVOICE</span>
+    <span ng-bind-html="printData.hotel_address" ng-if="printData.show_hotel_address"></span>
+    <span class="type" ng-if="!printData.is_proforma_invoice"translate>INVOICE</span>
+    <span class="type" ng-if="printData.is_proforma_invoice" translate>PRO FORMA INVOICE</span>
 </div>
 
 <!-- Case 1: Guest Bill -->

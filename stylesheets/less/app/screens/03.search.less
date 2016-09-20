@@ -309,26 +309,44 @@
                         h2 {
                             margin-bottom: 6px;
                             em { font-weight: 700; }
+                            .calc-max-width(100, 160);
+                            display: inline-block;
+                            vertical-align: middle;
+                        }
+
+                        .information {
+                            width: 100%;
                         }
 
                         .confirmation,
+                        .invoice,
                         .arrival,
                         .departure,
                         .icon-time {
                             font-size: 14px;
                             line-height: 20px;
-                            .show;
-                            .pull-left;
+                            .nowrap();
+                            .show; 
 
                             &:not(:last-child) {
                                 margin-right: 10px;
                             }
                         }
 
-                        .confirmation {
+
+                        .invoice,
+                        .arrival,
+                        .departure,
+                        .icon-time {      
+                            .pull-left;
+                        }
+
+                        .confirmation,
+                        .invoice {
                             font-weight: 400;
                             text-transform: uppercase;
                             color: @grey3;
+                            width: 150px;
                             .nowrap();
 
                             .value {
@@ -337,6 +355,13 @@
                                 font-weight: 600;
                                 margin-left: 5px;
                             }
+                        }
+
+                        .confirmation {
+                            display:inline-block;
+                            vertical-align: middle;
+                            margin-left: 10px;
+                            margin-right: 0px; 
                         }
 
                         .arrival,
@@ -620,6 +645,24 @@
                         .room-number { 
                             margin-right: 10px;
                             line-height: 50px; 
+                        }
+
+                        .icon-suite,
+                        .room-icons {
+                            position: absolute;
+                            right: 0;
+                            top: 0;
+                            bottom: 0;
+                            margin: auto;
+                        }
+
+                        .room-icons {
+                            height: 50px;
+
+                            .icon-suite,
+                            .icon-queued {
+                                position: static;
+                            }
                         }
                     }
                 }
@@ -926,15 +969,31 @@
                         .pull-left;
                     }
 
-                    .icon-queued {
+                    .reservation-status {
+                        position: relative;
+                        padding-top: 10px;
+                        width: 40px;
+                        .pull-left;
+                    }
+
+                    .room-icons {
                         position: absolute;
                         top: 10px;
                         right: 0;
-                        background-position: 0 -3480px; 
+                    }
+
+                    .icon-queued,
+                    .icon-suite {
+                        float:left;
+                    }
+                     
+
+                    .icon-queued { 
+                        margin-left: 5px;
+                        background-position: 4px -3480px; 
                         background-size: 100px;
                         .size(20px, 30px);
                     }
-
                   
                     .room-info {
                         padding-top: 12px;
@@ -1000,7 +1059,9 @@
                     margin-bottom: 0;
                 }
 
-                .pull-msg { color: @grey3; }
+                .pull-msg {
+                    color: @grey3;
+                }
             }
 
             &.room {
@@ -1034,6 +1095,23 @@
                     &.clean-not-inspected { color: @red; }
 
                     &.out { color: @grey3; }
+                    .icons {  
+                        display:inline-block;
+                        vertical-align: middle;
+                        margin-left: 10px;
+                    }
+
+                    .number {
+                        .nowrap();
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+
+                    &.is-suite {
+                        .number {
+                           .calc-max-width(100, 35); 
+                        }
+                    }
                 }
 
                 .room-type {

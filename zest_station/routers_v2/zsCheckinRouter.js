@@ -9,7 +9,7 @@ sntZestStation.config(['$stateProvider',
                 
         //checkin reservation details 
         $stateProvider.state('zest_station.checkInReservationDetails', {
-			url: '/checkInReservationDetails',
+			url: '/checkInReservationDetails/:pickup_key_mode',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinReservationDetails.html',
 			controller: 'zsCheckInReservationDetailsCtrl'
 		});
@@ -21,7 +21,7 @@ sntZestStation.config(['$stateProvider',
 		});
 		//select nationality
 		$stateProvider.state('zest_station.collectNationality', {
-            url         : '/collect_nationality/:guestId/',
+            url         : '/collect_nationality/:guestId/:pickup_key_mode',
             templateUrl : '/assets/partials_v2/checkin/zsCollectNationality.html',
             controller  : 'zsCollectNationalityCtrl',
             resolve: {
@@ -35,7 +35,7 @@ sntZestStation.config(['$stateProvider',
         });
 
 		$stateProvider.state('zest_station.add_remove_guests', {
-			url: '/checkInAddRemoveGuest',
+			url: '/checkInAddRemoveGuest/:pickup_key_mode',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckInAddRemoveGuest.html',
 			controller: 'zsCheckInAddRemoveGuestCtrl'
 		});
@@ -48,19 +48,19 @@ sntZestStation.config(['$stateProvider',
                 
 		//checking credit card swipe                 
       	$stateProvider.state('zest_station.checkInCardSwipe', {
-			url: '/checkInReservationCard/:mode/:first_name/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:payment_type_id/:deposit_amount/:balance_amount/:pre_auth_amount_at_checkin/:authorize_cc_at_checkin/:confirmation_number',
+			url: '/checkInReservationCard/:mode/:first_name/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:payment_type_id/:deposit_amount/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinCCSwipe.html',
 			controller: 'zsCheckinCCSwipeCtrl'
 		});
 		//terms and conditions                
       	$stateProvider.state('zest_station.checkInTerms', {
-			url: '/checkInTermsAndConditions/:guest_id/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name/:balance_amount/:pre_auth_amount_at_checkin/:authorize_cc_at_checkin/:confirmation_number',
+			url: '/checkInTermsAndConditions/:guest_id/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinTermsConditions.html',
 			controller: 'zsCheckInTermsConditionsCtrl'
 		});
 		//reservation deposit                
       	$stateProvider.state('zest_station.checkInDeposit', {
-			url: '/checkInReservationDeposit/:reservation_id/:mode/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:guest_id/:balance_amount/:pre_auth_amount_at_checkin/:authorize_cc_at_checkin/:confirmation_number/:first_name',
+			url: '/checkInReservationDeposit/:reservation_id/:mode/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:guest_id/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:first_name/:pickup_key_mode',
 			templateUrl: '/assets/partials_v2/checkin/zsCheckinDeposit.html',
 			controller: 'zsCheckinDepositCtrl'
 		});

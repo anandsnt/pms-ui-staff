@@ -3,7 +3,7 @@
 <section id="dashboard" class="content scrollable" role = "main"
 ng-iscroll='dashboard_scroller' ng-iscroll-delay="100"
 ng-show="showDashboard" ng-click="clearErrorMessage()">
-	<div class="wrapper" data-ng-init="pageLoaded()">
+	<div class="wrapper" data-ng-init="pageLoaded()" ng-class="{'has-release-notes' : !!activeNotification && showNotificationForCurrentUser && !isIpad }">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbGreetingMessageSection.html'"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbGuestsSection.html'"></div>
@@ -19,5 +19,22 @@ ng-show="showDashboard" ng-click="clearErrorMessage()">
 
 	</div>
 </section>
+
+<div class="release-notes" ng-if="!!activeNotification && showNotificationForCurrentUser">
+	<div class="release-notes_hide">
+		<label class="checkbox inline">
+			<span class="icon-form icon-checkbox"></span>
+			<input type="checkbox" value="1" ng-click="changeNotificationStatus(activeNotification)" />
+			Don't Show Again
+		</label>
+	</div>
+	<div class="release-notes_content">
+		<strong class="release-notes_text">{{activeNotification.message}}</strong>
+		<div class="release-notes_action">
+			<button class="button blank" ng-click="cancelReleaseNote(activeNotification)">Close</button>
+			<a class="button blue" target="_blank" ng-click="showReleaseNote(activeNotification)" ng-show="!!activeNotification.action_source">View Details</a>
+		</div>
+	</div>
+</div>	
 
 

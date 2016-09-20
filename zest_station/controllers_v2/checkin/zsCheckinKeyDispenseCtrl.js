@@ -170,10 +170,10 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 		 */
 		var localEncodingSuccsess = function(response) {
 			if ($scope.inDemoMode()) {
-				setTimeout(function(){
+				setTimeout(function() {
 					$scope.mode = $scope.noOfKeysSelected === 1 ? 'SOLO_KEY_CREATION_IN_PROGRESS_MODE' : 'KEY_ONE_CREATION_IN_PROGRESS_MODE';
 					dispenseKey();
-				},2000);
+				}, 2000);
 
 			} else {
 				if (response.key_info && response.key_info[0]) {
@@ -210,9 +210,9 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 				"reservation_id": $scope.selectedReservation.reservationId
 			};
 
-			if (keyNo){
+			if (keyNo) {
 				params.key = keyNo;
-				if (keyNo === 2){
+				if (keyNo === 2) {
 					params.is_additional = true;
 				}
 			};
@@ -227,11 +227,11 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 
 			if ($scope.inDemoMode()) {
-				setTimeout(function(){
+				setTimeout(function() {
 					onResponseSuccess({
 						'status': 'success'
 					});
-				},1200);
+				}, 1200);
 			} else {
 				if ($scope.writeLocally()) {
 					console.log('write locally');
@@ -260,12 +260,14 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 
 
-
-
 		$scope.readyForUserToPressMakeKey = true;
 		var initMakeKey = function() {
-			console.info('waiting on user to press make key, which will start key create')
-
+			if ($scope.zestStationData.keyWriter === 'websocket'){
+				$scope.remoteEncoding = false;
+				console.info('starting key create with Sankyo...');
+			} else {
+				console.info('waiting on user to press make key, which will start key create here...');
+			}
 			if ($scope.noOfKeysSelected === 1) {
 				$scope.mode = 'SOLO_KEY_CREATION_IN_PROGRESS_MODE';
 			} else if (noOfKeysCreated === 0) {
@@ -274,13 +276,15 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			} else {
 				//do nothing
 			}
-			if ($scope.remoteEncoding) {
+			if ($scope.remoteEncoding || $scope.zestStationData.keyWriter === 'local') {
 				$scope.readyForUserToPressMakeKey = true;
+				if ($scope.zestStationData.keyWriter === 'local') {
+					console.warn('local encoder')
+					$scope.localWriter = true; //icmp (ingenico) or infinea device
+				}
 			} else {
 				startMakingKey();
 			}
-
-
 
 		};
 		$scope.onReadyToPrintKey = function(keyNo) {
@@ -321,7 +325,13 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 
 			stateParams.key_success = status === 'success';
 			console.warn('goToNextScreen: ', stateParams);
-			$state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);
+			//check if a registration card delivery option is present (from Admin>Station>Check-in), if none are checked, go directly to final screen
+			var registration_card = $scope.zestStationData.registration_card;
+			if (!registration_card.email && !registration_card.print && !registration_card.auto_print) {
+				$state.go('zest_station.zsCheckinFinal');
+			} else {
+				$state.go('zest_station.zsCheckinBillDeliveryOptions', stateParams);
+			}
 		};
 
 	}

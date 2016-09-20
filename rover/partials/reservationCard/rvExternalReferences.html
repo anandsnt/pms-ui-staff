@@ -1,5 +1,5 @@
 <div class="block-wrapper">
-    <a ng-click="toggleDetails()" class="block-title toggle has-arrow">External Reference Numbers</a>
+    <a ng-click="toggleDetails()" ng-class="{'active': stateExternalRef.viewDetails}" class="block-title toggle has-arrow">External Reference Numbers</a>
     <div ng-class="{'hidden': !stateExternalRef.viewDetails}">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- Remove class hidden when 'a.toggle' is clicked -->
