@@ -25,7 +25,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		var summaryMemento;
 		var update_existing_reservations_rate = false;
 		var roomsAndRatesSelected;
-
+		var timeLineScrollEndReached = false;
 		/**
 		 * util function to check whether a string is empty
 		 * @param {String/Object}
@@ -462,6 +462,26 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			});
 			//we chnged something
 			$scope.bookingDataChanging();
+		};
+
+		/**
+		 * Return true when user reaches end of horizontal scroll.
+		 * @return {Boolean}
+		 */
+		$scope.shouldShowLoadNextSetButton = function() {
+			var nextStart = new tzIndependentDate($scope.timeLineStartDate);
+					nextStart.setDate(nextStart.getDate() + 14);
+			var hasNextSet = nextStart < $scope.groupConfigData.summary.block_to;
+
+			return timeLineScrollEndReached && hasNextSet;
+		};
+
+		/**
+		 * function to load next 14 days data.
+		 */
+		$scope.fetchNextSetOfRoomBlockData = function() {
+			$scope.timeLineStartDate.setDate($scope.timeLineStartDate.getDate() + 14);
+			$scope.fetchCurrentSetOfRoomBlockData();
 		};
 
 		$scope.fetchCurrentSetOfRoomBlockData = function() {
@@ -1250,6 +1270,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return {undefined}
 		 */
 		$scope.fetchRoomBlockGridDetails = function(paginationOptions) {
+			paginationOptions = paginationOptions || {};
 			var hasNeccessaryPermission = (hasPermissionToCreateRoomBlock() &&
 				hasPermissionToEditRoomBlock());
 
@@ -1499,6 +1520,18 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 					clearTimer();
 
 					block.scrollTo(xPos, block.y);
+					// check if edge reached next button
+					if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ){
+						if (!timeLineScrollEndReached){
+								timeLineScrollEndReached = true;
+								runDigestCycle();
+							}
+						} else {
+							if (timeLineScrollEndReached){
+								timeLineScrollEndReached = false;
+								runDigestCycle();
+						}
+					}
 				});
 				$scope.$parent.myScroll[BLOCK_SCROLL].on('scroll', function() {
 					var yPos = this.y;
@@ -1513,7 +1546,18 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 						$scope.$parent.myScroll[RATE_TIMELINE].scrollTo(xPos, 0);
 						$scope.$parent.myScroll[BLOCK_SCROLL].scrollTo(0, yPos);
-
+					// check if edge reached next button
+					if (Math.abs(this.maxScrollX) - Math.abs(this.x) <= 150 ){
+						if (!timeLineScrollEndReached){
+								timeLineScrollEndReached = true;
+								runDigestCycle();
+							}
+						} else {
+							if (timeLineScrollEndReached){
+								timeLineScrollEndReached = false;
+								runDigestCycle();
+						}
+					}
 
 				});
 			} else {

@@ -89,6 +89,13 @@
     </div>
     <div id="group-room-block-content" class="tab-details">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <!-- Load next 14 days, remove class "hidden" when user reaches end of horizontal scroll -->
+        <button type="button" class="next-dates"
+            ng-class="{ 'hidden': !shouldShowLoadNextSetButton() }"
+            ng-click="fetchNextSetOfRoomBlockData()">
+            {{'ALLOTMENT_NEXT_SET' | translate}}
+            <span class="has-arrow next-view"></span>
+        </button>
         <!-- If new group and/or room block have not been set: -->
         <div class="no-content" ng-hide="shouldHideAddRoomsButton()">
             <div class="info">
