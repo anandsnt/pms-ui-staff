@@ -258,6 +258,7 @@ angular.module('reportsModule')
             };
 
             report['hasGeneralOptions']['data'].push({
+                id          : filter.value.toLowerCase(),
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
                 selected    : selected,
@@ -266,6 +267,12 @@ angular.module('reportsModule')
 
             // if filter value is either of these, selectAll should be false
             if ( report['title'] == reportNames['ARRIVAL'] || report['title'] == reportNames['DEPARTURE'] ) {
+                report.hasGeneralOptions.options.noSelectAll = true;
+            };
+
+            // when 'SHOW_RATE_ADJUSTMENTS_ONLY' is selected other should not be and vice versa
+            if ( report['title'] == reportNames['RESERVATIONS_BY_USER'] && filter.value == 'SHOW_RATE_ADJUSTMENTS_ONLY' ) {
+                report.hasGeneralOptions.options.selectiveSingleSelectKey = filter.value.toLowerCase();
                 report.hasGeneralOptions.options.noSelectAll = true;
             };
         };
@@ -334,6 +341,7 @@ angular.module('reportsModule')
                     break;
             };
         };
+        
 
         /**
          * Process the filters and create proper DS to show and play in UI
@@ -433,7 +441,7 @@ angular.module('reportsModule')
 
                 if(filter.value === 'RATE_CODE') {
                     report['hasRateCodeFilter'] = filter;
-                };
+                };                
 
                 if(filter.value === 'ROOM_TYPE') {
                     report['hasRoomTypeFilter'] = filter;
@@ -630,7 +638,7 @@ angular.module('reportsModule')
                         .then( fillRateTypesAndRateList );
                 }
 
-                else if ('RATE_CODE' === filter.value && ! filter.filled ) {
+                else if (('RATE_CODE' === filter.value && ! filter.filled)) {
                     requested++;
                     reportsSubSrv.fetchRateCode()
                         .then( fillRateCodeList );
@@ -868,13 +876,15 @@ angular.module('reportsModule')
                             data: angular.copy( data ),
                             options: {
                                 hasSearch: true,
-                                selectAll: false,
-                                singleSelect: true,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
+                                singleSelect: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? false : true,
                                 key: 'description',
                                 defaultValue: 'Select Rate'
                             }
                         }
-                    };
+                    };                    
+
+
                 });
 
                 completed++;
@@ -940,7 +950,6 @@ angular.module('reportsModule')
                                 name: 'hasURLsList',
                                 process: function(filter, selectedItems) {
                                     var hasUrl = _.find(selectedItems, { value: 'URL' });
-                                    console.log(!hasUrl);
                                     filter.updateData(!hasUrl);
                                 }
                             }
