@@ -86,6 +86,26 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		};
 
 		/**
+		 * Mass update of room block
+		 * @return {Promise}
+		 */
+		this.saveMassUpdate = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/groups/save_bulk_inventories';
+
+
+			rvBaseWebSrvV2.postJSON(url, params).then(
+				function(data) {
+					deferred.resolve(data);
+				},
+				function(errorMessage) {
+					deferred.reject(errorMessage);
+				}
+			);
+
+			return deferred.promise;
+		};
+		/**
 		 * Function to get Room Block Grid Details
 		 * @param {param} -group id
 		 * @return {Promise} -

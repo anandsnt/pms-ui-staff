@@ -60,7 +60,7 @@
                 Save
             </button>
         </div>
-        <div class="entry date">
+        <div class="entry date" ng-show="shouldShowRoomBlockActions()">
             <label for="allotment-start-view" translate>GO_TO_DATE</label>
             <input id="allotment-start-date" class="datepicker"
                 ui-date="timeLineStartDateOptions"
@@ -119,6 +119,7 @@
         <div class="room-block-actions" ng-show="shouldShowRoomsRates()">
             <button type="button" class="button green"
                 tabindex="-1"
+                ng-show = "shouldShowSaveButton()"
                 ng-click = "clickedOnSaveButton()"
                 ng-class="{'hidden': !shouldShowSaveButton()}"
                 translate>
@@ -127,6 +128,7 @@
             <!-- Hidden until change is made in the grid -->
             <button type="button" class="button red hidden"
                 tabindex="-1"
+                ng-show = "shouldShowDiscardButton()"
                 ng-click = "clickedOnDiscardButton()"
                 ng-class="{'hidden': !shouldShowDiscardButton()}"
                 translate>
