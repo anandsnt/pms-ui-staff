@@ -6574,8 +6574,14 @@
             &.release-notes-popup {
                 .square(100%);
 
-                iframe {
+                .iframe-scroll {
+                    -webkit-overflow-scrolling: touch;
+                    overflow-y: auto;
                     .square(100%);
+                }
+
+                iframe {
+                    .size(98%, 100%);
                 }
 
                 @media only screen and (min-width: 600px) {

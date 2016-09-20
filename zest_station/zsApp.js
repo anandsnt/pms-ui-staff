@@ -109,6 +109,7 @@ var GlobalZestStationApp = function() {
     this.fetchFailedOfCordovaPlugins = function(errorMessage) {
         that.cordovaLoaded = false;
     };
+    this.virtualKeyBoardEnabled = false;
 
     this.enableCardSwipeDebug = function(toggle) {
         console.log('pass true to enable, false or no arg to disable cardSwipeDebug');

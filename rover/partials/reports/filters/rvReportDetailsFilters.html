@@ -544,6 +544,16 @@
                 options="chosenReport.hasRateFilter.options"></multi-option-selection>
         </div>
 
+        <!-- item_41: Rate Code -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasRateCodeFilter && chosenReport.hasRateCodeFilter.data.length" ng-class="{'active': filterItemsToggle.item_41}" ng-click="toggleFilterItems('item_41')">
+            <span class="title">Rates</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasRateCodeFilter && chosenReport.hasRateCodeFilter.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_41 }">
+            <multi-option-selection label="Rates"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasRateCodeFilter.data"
+                options="chosenReport.hasRateCodeFilter.options"></multi-option-selection>
+        </div>  
 
 
         <!-- item_16: charge groups -->
