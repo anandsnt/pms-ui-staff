@@ -446,13 +446,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			lastSaveConfig = config || null;
 			if ($scope.multiSheetState.selectedEmployees.length) {
 
-				// apply order key as is the rooms array index
-				_.each($scope.multiSheetState.assigned, function(item) {
-					_.each(item.rooms, function(room, index) {
-						room.order = index + 1;
-					})
-				});
-
 				var options = {
 					successCallBack: saveMultiSheetSuccessCallBack,
 					failureCallBack: saveMultiSheetFailureCallBack,
@@ -461,6 +454,15 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 						date: (config && config.date) || $scope.multiSheetState.selectedDate
 					}
 				}
+
+				// now assign room "order" to the tasks inside "only_tasks" based on their index in "rooms"
+				_.each($scope.multiSheetState.assigned, function(emp) {
+					_.each(emp.only_tasks, function(task) {
+						var roomIndex = _.findIndex(emp.rooms, { room_id: task.room_id });
+
+						task.order = roomIndex + 1;
+					});
+				});
 
 				$scope.callAPI(RVWorkManagementSrv.saveWorkSheets, options);
 
@@ -620,7 +622,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			var commonScrollerOptions = {
 				tap: true,
 				preventDefault: false,
-				probeType: 3
+				probeType: 3,
+				bounce: false
 			};
 			var horizontal = _.extend({
 				scrollX: true,
@@ -635,9 +638,21 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.setScroller("multiSelectPrintPopup", commonScrollerOptions);
 			$scope.setScroller("worksheetHorizontal", horizontal);
 
-			for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
-				$scope.setScroller('assignedRoomList-'+i, vertical);
-			};
+			var addVerScroller = function(index, length, scrollObj) {
+				var nextIndex = index + 1;
+
+				$scope.setScroller('assignedRoomList-' + index, scrollObj);
+
+				if ( nextIndex < length ) {
+					addVerScroller(nextIndex, length, scrollObj);
+				}
+			}
+			/**/
+			addVerScroller(0, $scope.multiSheetState.selectedEmployees.length, vertical);
+			/**/
+			// for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
+			// 	$scope.setScroller('assignedRoomList-'+i, vertical);
+			// };
 		};
 
 		var refreshScrollers = function() {
@@ -982,297 +997,337 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		}
 
 		var setUpAutoScroller = function() {
-			var LEFT  = 'LEFT',
-				RIGHT = 'RIGHT',
-				TOP = 'TOP',
-				BOTTOM = 'BOTTOM',
-				UNDEF = undefined;
+            var LEFT  = 'LEFT',
+                RIGHT = 'RIGHT',
+                TOP = 'TOP',
+                BOTTOM = 'BOTTOM',
+                UNDEF = undefined;
 
-			var dragDir    = UNDEF,
-				timer      = UNDEF,
-				dimX       = UNDEF,
-				dimY       = UNDEF;
+            var dragDir    = UNDEF,
+                timer      = UNDEF,
+                dim        = UNDEF;
 
-			// to drop the room/task based on the order
-			var orderState = (function() {
-				var base = {};
+            // to drop the room/task based on the order
+            var orderState = (function() {
+                var base = {};
 
-				var clientX = 0,
-					clientY = 0,
-					$empNode = undefined;
+                var clientX = 0,
+                    clientY = 0,
+                    $empNode = undefined;
 
-				base.getClientPos = function() {
-					return {
-						x: clientX,
-						y: clientY
-					};
-				};
-				/**/
-				base.updateClientPos = function(x, y) {
-					clientX = x;
-					clientY = y;
-				};
+                base.getClientPos = function() {
+                    return {
+                        x: clientX,
+                        y: clientY
+                    };
+                };
+                /**/
+                base.setClientPos = function(x, y) {
+                    clientX = x;
+                    clientY = y;
+                };
 
-				base.removePlaceholder = function() {
-					var $placeholder;
+                base.removePlaceholder = function() {
+                    var $placeholder;
 
-					if ( !! $empNode ) {
-						$placeholder = $empNode.find('.placeholder');
-						$placeholder.remove();
-					}
-				};
+                    if ( !! $empNode ) {
+                        $placeholder = $empNode.find('.placeholder');
+                        $placeholder.remove();
+                    }
+                };
+                
+                base.findCurrCol = function() {
+                    var clientx = this.getClientPos().x;
 
-				base.findCurrEmpCol = function() {
-					var clientx = this.getClientPos().x;
+                    var scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
+                    var scrollInstX = scrollInst.x;
 
-					var scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
-					var scrollInstX = scrollInst.x;
+                    var LEFT_OFFSET = 20;
+                    var COL_WIDTH   = 220;
 
-					var LEFT_OFFSET = 20;
-					var COL_WIDTH   = 220;
+                    var currX = clientx - (LEFT_OFFSET + scrollInstX);
+                    var colIndex;
 
-					var currX = clientx - (LEFT_OFFSET + scrollInstX);
-					var colIndex;
-					var selectedEmp;
-					var $placeholder;
+                    if ( currX < 0 ) {
+                        colIndex = -1;
+                    } else {
+                        colIndex = Math.floor(currX / COL_WIDTH);
+                        colIndex = colIndex !== 0 ? colIndex - 1 : colIndex;
+                    }
+                    
+                    return colIndex;
+                }
 
-					this.removePlaceholder();
+                base.findCurrColNode = function() {
+                    var colIndex = this.findCurrCol(),
+                    	selectedEmp;
 
-					if ( currX < 0 ) {
-						$empNode = undefined;
-					} else {
-						colIndex = Math.floor(currX / COL_WIDTH);
-						colIndex = colIndex !== 0 ? colIndex - 1 : colIndex;
+                    this.removePlaceholder();
 
-						selectedEmp = $scope.multiSheetState.selectedEmployees[colIndex];
-						$empNode = $( '#' + colIndex + '-' + selectedEmp.id );
-					}
+                    if ( colIndex > -1 ) {
+                    	selectedEmp = $scope.multiSheetState.selectedEmployees[colIndex];
+                        $empNode = $( '#' + colIndex + '-' + selectedEmp.id );
+                    } else {                    
+                        $empNode = undefined;
+                    }
 
-					return $empNode;
-				}.bind(base);
+                    return $empNode;
+                }.bind(base);
 
-				base.checkOnOver = function(room, index, prevHeight) {
-					var $thisRoom, $nextRoom, nextIndex;
+                base.checkOnOverRoom = function(room, index, prevHeight) {
+                    var $thisRoom, $nextRoom, nextIndex;
 
-					var TOP_OFFSET = 280, ROOM_MARGIN = 20;
+                    var TOP_OFFSET = 280, ROOM_MARGIN = 20;
 
-					var roomHeight, nextHeight, top, mid, bot, clienty;
+                    var roomHeight, nextHeight, top, mid, bot, clienty;
 
-					var retObj;
+                    var retObj;
 
-					$thisRoom = $(room);
-					$nextRoom = $thisRoom.next('.worksheet-room');
-					nextIndex = index + 1;
-					if ( $nextRoom.hasClass('.placeholder')  ) {
-						$nextRoom = $thisRoom.next('.worksheet-room').next('.worksheet-room')
-					}
+                    $thisRoom = $(room);
+                    $nextRoom = $thisRoom.next('.worksheet-room');
+                    nextIndex = index + 1;
+                    if ( $nextRoom.hasClass('.placeholder')  ) {
+                        $nextRoom = $thisRoom.next('.worksheet-room').next('.worksheet-room')
+                    }
 
-					roomHeight = $thisRoom.height();
-					/**/
-					if ( index === 0 ) {
-						top = TOP_OFFSET;
-					} else {
-						top = prevHeight;
-					}
-					mid = top + roomHeight / 2;
-					bot = top + roomHeight + ROOM_MARGIN;
-					nextHeight = top + roomHeight;
+                    roomHeight = $thisRoom.height();
+                    /**/
+                    if ( index === 0 ) {
+                        top = TOP_OFFSET;
+                    } else {
+                        top = prevHeight;
+                    }
+                    mid = top + roomHeight / 2;
+                    bot = top + roomHeight + ROOM_MARGIN;
+                    nextHeight = top + roomHeight;
 
-					clienty = this.getClientPos().y;
+                    clienty = this.getClientPos().y;
 
-					if ( clienty < top && index === 0 ) {
-						return {
-							method: 'BEFORE',
-							node: $thisRoom,
-							index: index
-						}
-					} else if ( clienty > bot ) {
-						if ( $nextRoom.length ) {
-							return this.checkOnOver($nextRoom, nextIndex, nextHeight);
-						} else {
-							return {
-								method: 'AFTER',
-								node: $thisRoom,
-								index: nextIndex
-							}
-						}
-					} else {
-						if ( clienty < mid && clienty >= top ) {
-							return {
-								method: 'BEFORE',
-								node: $thisRoom,
-								index: index
-							}
-						} else {
-							return {
-								method: 'AFTER',
-								node: $thisRoom,
-								index: nextIndex
-							}
-						}
-					}
-				}.bind(base);
+                    if ( clienty < top && index === 0 ) {
+                        return {
+                            method: 'BEFORE',
+                            node: $thisRoom,
+                            index: index
+                        }
+                    } else if ( clienty > bot ) {
+                        if ( $nextRoom.length ) {
+                            return this.checkOnOverRoom($nextRoom, nextIndex, nextHeight);
+                        } else {
+                            return {
+                                method: 'AFTER',
+                                node: $thisRoom,
+                                index: nextIndex
+                            }
+                        }
+                    } else {
+                        if ( clienty < mid && clienty >= top ) {
+                            return {
+                                method: 'BEFORE',
+                                node: $thisRoom,
+                                index: index
+                            }
+                        } else {
+                            return {
+                                method: 'AFTER',
+                                node: $thisRoom,
+                                index: nextIndex
+                            }
+                        }
+                    }
+                }.bind(base);
 
-				base.addPlaceholder = function() {
-					var $col = this.findCurrEmpCol(),
-						firstRoom,
-						index = 0,
-						prevHeight = 0;
+                base.addPlaceholder = function() {
+                    var $col = this.findCurrColNode(),
+                        firstRoom,
+                        index = 0,
+                        prevHeight = 0;
 
-					var $placeholder = $('<div class="worksheet-room placeholder">Drop Here</div>');
+                    var $placeholder = $('<div class="worksheet-room placeholder">Drop Here</div>');
 
-					this.removePlaceholder();
+                    this.removePlaceholder();
 
-					if ( $col === undefined ) {
-						return;
-					} else {
-						firstRoom = $col.find('.worksheet-room')[0];
+                    if ( $col === undefined ) {
+                        return;
+                    } else {
+                        firstRoom = $col.find('.worksheet-room')[0];
 
-						if ( firstRoom === undefined ) {
-							$col.find('.wrapper')
-								.append( $placeholder );
+                        if ( firstRoom === undefined ) {
+                            $col.find('.wrapper')
+                                .append( $placeholder );
 
-							$scope.dropIndex = 0
-						} else {
-							var onOverData = this.checkOnOver(firstRoom, index, prevHeight);
+                            $scope.dropIndex = 0
+                        } else {
+                            var onOverData = this.checkOnOverRoom(firstRoom, index, prevHeight);
 
-							switch( onOverData.method ) {
-								case 'BEFORE':
-									$placeholder.insertBefore( onOverData.node  );
-									break;
+                            switch( onOverData.method ) {
+                                case 'BEFORE':
+                                    $placeholder.insertBefore( onOverData.node  );
+                                    break;
 
-								case 'AFTER':
-									$placeholder.insertAfter( onOverData.node );
-									break;
+                                case 'AFTER':
+                                    $placeholder.insertAfter( onOverData.node );
+                                    break;
 
-								default:
-									$col.find('.wrapper')
-										.append( $placeholder );
-									break;
-							};
+                                default:
+                                    $col.find('.wrapper')
+                                        .append( $placeholder );
+                                    break;
+                            };
 
-							$scope.dropIndex = onOverData.index;
-						}
-					}
-				}.bind(base);
+                            $scope.dropIndex = onOverData.index;
+                        }
+                    }
+                }.bind(base);
 
-				return base;
-			})();
+                return base;
+            })();
+            
+            var getDimentions = function() {
+                var LEFT_OFFSET = 200,
+                    TOP_OFFSET  = 280,
+                    COL_WIDTH   = 220,
+                    TASK_OFFSET = 110;
 
+                var winWidth = $(window).width(),
+                    winHeight = $(window).height();
+                
+                return {                
+                    screenStart: {
+                        x: LEFT_OFFSET + TASK_OFFSET,
+                        y: TOP_OFFSET + TASK_OFFSET
+                    },
+                    screenEnd: {
+                        x: winWidth - LEFT_OFFSET,
+                        y: winHeight - TASK_OFFSET
+                    }
+                };
+            }
+            
+            // setup dim and update on screen change, also remove listener when scope dies 
+            var dimOnResize = function() {
+                dim = getDimentions();
+            };
+            dimOnResize();
+            window.addEventListener( 'resize', dimOnResize, false );
+            $scope.$on('$destroy', function() {
+                window.removeEventListener( 'resize', dimOnResize );
+            });
 
-			// get the dimentions for horizontal related calculations
-			var getXdimentions = function() {
-				var LEFT_OFFSET = 200,
-					COL_WIDTH   = 220,
-					TASK_OFFSET = 110;
+            // call this method when we need to scroll the tm screen
+            // horzontally while the user is dragging a task outside the visible screen
+            // vertically for similar case
+            var checkScrollBy = function() {
+                var hozScrollInst = $scope.$parent.myScroll['worksheetHorizontal'],
+                    verScrollInst = undefined,
+                    colIndex = -1;
 
-				var winWidth = $(window).width();
+                var isHozCheckRequired = function () {
+                    return dragDir === LEFT || dragDir === RIGHT;
+                }
+                /**/
+                var hasHozScroll = function() {
+                    return !! hozScrollInst.hasHorizontalScroll;
+                }
+                /**/
+                var scrollTowardsHozStart = function () {
+                    return dragDir === LEFT && hozScrollInst.x < 0;
+                }
+                /**/
+                var scrollTowardsHozEnd = function () {
+                    return dragDir === RIGHT && hozScrollInst.x > hozScrollInst.maxScrollX;
+                }
 
-				var scrollableX = ($scope.multiSheetState.selectedEmployees.length * COL_WIDTH) - (winWidth - LEFT_OFFSET);
+                var isVerCheckRequired = function () {
+                    return dragDir === TOP || dragDir === BOTTOM;
+                }
+                /**/
+                var hasVerScroll = function() {
+                    return !! verScrollInst && !! verScrollInst.hasVerticalScroll;
+                }
+                /**/
+                var scrollTowardsVerStart = function() {
+                    return dragDir === TOP && verScrollInst.y < 0
+                }
+                /**/
+                var scrollTowardsVerEnd = function () {
+                    return dragDir === BOTTOM && verScrollInst.y > verScrollInst.maxScrollY;
+                }
 
-				return {
-					screenStart : LEFT_OFFSET + TASK_OFFSET,
-					screenEnd   : winWidth - LEFT_OFFSET,
-					scrollStart : LEFT_OFFSET + TASK_OFFSET,
-					scrollEnd   : -scrollableX,
-				};
-			};
+                if ( isHozCheckRequired() && hasHozScroll() ) {
+                    if ( scrollTowardsHozStart() ) {
+                        hozScrollInst.scrollBy(10, 0, 1);
+                    } else if ( scrollTowardsHozEnd() ) {
+                        hozScrollInst.scrollBy(-10, 0, 1);
+                    }
+                } else if ( isVerCheckRequired() ) {
+                    colIndex = orderState.findCurrCol();
 
-			// get the dimentions for vertical related calculations
-			// to be depricated, need to salvage few things from this
-			var getYdimentions = function() {
-				var TOP_OFFSET = 280,
-					TASK_HEIGHT = 115;	// This is highly relative
+                    if ( colIndex > -1 ) {
+                        verScrollInst = $scope.getScroller('assignedRoomList-' + colIndex);
 
-				var winHeight = $(window).height();
+                        if ( hasVerScroll() ) {
+                            if ( scrollTowardsVerStart() ) {
+                                verScrollInst.scrollBy(0, 10, 1);
+                            } else if ( scrollTowardsVerEnd() ) {
+                                verScrollInst.scrollBy(0, -10, 1);
+                            }
+                        }
+                    }
+                }
+            };
 
-				var scrollableY = ($scope.multiSheetState.selectedEmployees.length * COL_WIDTH) - (winWidth - LEFT_OFFSET);
+            var draggedItem;
 
-				return {
-					screenStart : LEFT_OFFSET + TASK_OFFSET,
-					screenEnd   : winWidth - LEFT_OFFSET,
-					scrollStart : LEFT_OFFSET + TASK_OFFSET,
-					scrollEnd   : -scrollableX,
-				};
-			};
+            // once the user starts dragging 
+            $scope.dragStart = function(event) {
+            	console.log(arguments);
 
-			// setup dimX and update on screen change, also remove listener when scope dies 
-			var dimxOnResize = function() {
-				dimX = getXdimentions();
-			};
-			dimxOnResize();
-			window.addEventListener( 'resize', dimxOnResize, false );
-			$scope.$on('$destroy', function() {
-				window.removeEventListener( 'resize', dimxOnResize );
-			});
+            	draggedItem = $(event.target).parent();
+            	draggedItem.hide();
 
-			// call this method when we need to scroll the tm screen
-			// horzontally while the user is dragging a task outside
-			// the visible screen
-			var checkHozScrollBy = function() {
-				var scrollInst = $scope.$parent.myScroll['worksheetHorizontal'];
+                timer = setInterval( checkScrollBy, 1 );
+                $scope.dropIndex = undefined;
+            };
 
-				if ( dragDir === LEFT && scrollInst.x !== 0 && scrollInst.x < dimX.scrollStart ) {
-					scrollInst.scrollBy(10, 0, 1);
-					return;
-				};
+            $scope.dragDrop = function() {
+            	draggedItem.show();
 
-				if ( dragDir === RIGHT && scrollInst.x > dimX.scrollEnd ) {
-					scrollInst.scrollBy(-10, 0, 1);
-					return;
-				};
-			};
+                orderState.removePlaceholder();
 
-			// call this method when we need to scroll a particular
-			// employee column vertically when user is dragging a 
-			// task outside the visible screen
-			var callVerScrollBy = function(index) {
-				var scrollInst = $scope.$parent.myScroll['assignedRoomList-' + index];
+                if ( !! timer ) {
+                    window.clearInterval(timer);
+                    timer = UNDEF;
+                };
+            };
 
-				if ( dragDir === TOP && scrollInst.y !== 0 && scrollInst.y < dimX.scrollXStart ) {
-					scrollInst.scrollBy(0, 10, 1);
-				};
-
-				if ( dragDir === BOTTOM && scrollInst.y > dimX.scrollXEnd ) {
-					scrollInst.scrollBy(0, -10, 1);
-				};
-			};
-
-			// once the user starts dragging 
-			$scope.dragStart = function() {
-				timer = setInterval( checkHozScrollBy, 1 );
-				$scope.dropIndex = undefined;
-			};
-
-			$scope.dragDrop = function() {
-				orderState.removePlaceholder();
-
-				if ( !! timer ) {
-					window.clearInterval(timer);
-					timer = UNDEF;
-				};
-			};
-
-			var addPlaceholderDebounced = _.throttle(orderState.addPlaceholder, 100);
-			$scope.userDragging = function(e) {
-				if ( e.clientX > dimX.screenEnd ) {
-				    if ( dragDir !== RIGHT ) {
-				        dragDir = RIGHT;
-				    };
-				} else if ( e.clientX < dimX.screenStart ) {
-				    if ( dragDir !== LEFT ) {
-				        dragDir = LEFT;
-				    };
-				} else {
-				    if ( dragDir !== UNDEF ) {
-				        dragDir = UNDEF;
-				    };
-				};
-
-				orderState.updateClientPos(e.clientX, e.clientY);
-				addPlaceholderDebounced();
-			};
-		};
+            var addPlaceholderThrottled = _.throttle(orderState.addPlaceholder, 100);
+            $scope.userDragging = function(e) {
+                
+                // ask orderState to get a load of latest clientX and clientY
+                // throttle the calls to addplaceholder
+                orderState.setClientPos(e.clientX, e.clientY);
+                addPlaceholderThrottled();
+                
+                // Priority for detect for horizontal scroll requirement
+                // only if the check are not positive we check for vertical scrolls
+                if ( e.clientX > dim.screenEnd.x ) {
+                    dragDir = RIGHT;
+                    return;
+                } else if ( e.clientX < dim.screenStart.x ) {
+                    dragDir = LEFT;
+                    return;
+                } else if ( e.clientY < dim.screenEnd.y ) {
+                    dragDir = BOTTOM;
+                    return;
+                } else if ( e.clientY > dim.screenStart.y ) {
+                    dragDir = TOP;
+                    return;
+                } else {
+                    dragDir = UNDEF;
+                    return;
+                }
+            };
+        };
 
 		var checkAutoScroll = function() {
 			if (!!$scope.getScroller('worksheetHorizontal')) {
