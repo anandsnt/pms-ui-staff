@@ -368,6 +368,12 @@
 /* Modal window             ==============================*/
     #modal,
     .inline-modal {
+        width: 100%;
+        
+        @media only screen and (min-width: 600px) {
+            width: auto;
+        }
+
         .modal-content {
 
             /* Alert ***/
@@ -6577,7 +6583,8 @@
                 .iframe-scroll {
                     -webkit-overflow-scrolling: touch;
                     overflow-y: auto;
-                    .square(100%);
+                    width: 100%;
+                    height: 100% !important;
                 }
 
                 iframe {
