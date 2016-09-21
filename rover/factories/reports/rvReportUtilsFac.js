@@ -257,6 +257,10 @@ angular.module('reportsModule')
                 selected = true;
             };
 
+            if ( report['title'] == reportNames['RESERVATIONS_BY_USER'] && filter.value === 'INCLUDE_BOTH') {
+                selected = true;
+            }
+
             report['hasGeneralOptions']['data'].push({
                 id          : filter.value.toLowerCase(),
                 paramKey    : filter.value.toLowerCase(),
