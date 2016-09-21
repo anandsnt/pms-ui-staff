@@ -102,6 +102,7 @@
             <tr ng-repeat="item in printData.charge_details_list">
                 <td>{{item.date | date:dateFormat}}</td>
                 <td class="description">
+                    <strong>{{item.item_description}}</strong>
                     <span>{{item.description}}</span>
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
                 </td>
@@ -112,6 +113,7 @@
             <tr ng-repeat="item in printData.credit_details_list">
                 <td>{{item.date | date:dateFormat}}</td>
                 <td class="description">
+                    <strong>{{item.item_description}}</strong>
                     <span>{{item.description}}</span>
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
                 </td>
