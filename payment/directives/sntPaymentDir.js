@@ -7,7 +7,7 @@ sntPay.directive('sntPayment', function() {
             paymentTypes: '=',//the payment types present
             selectedPaymentType: '=?',//selected initial payment type
             reservationId: '@',
-            billId: '@',
+            billId: '=?',
             accountId:'@',
             guestId: '@',
             billNumber: '=',
