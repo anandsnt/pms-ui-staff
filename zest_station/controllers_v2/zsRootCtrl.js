@@ -355,28 +355,36 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 		};
 		$scope.showOnScreenKeyboard = function(id) {
-			//restrict keyboard if screen is resized
-			//to lower height
-			if (window.innerHeight < 700) {
-				return;
-			}
-			$scope.lastKeyboardId = id;
-			//pull up the virtual keyboard (snt) theme... if chrome & fullscreen
-			var isTouchDevice = 'ontouchstart' in document.documentElement,
-				agentString = window.navigator.userAgent;
-			var themeUsesKeyboard = false;
-			if ($scope.theme === 'yotel' || !$scope.theme) {
-				themeUsesKeyboard = true;
-			}
-			var shouldShowKeyboard = (typeof chrome) &&
-				(agentString.toLowerCase().indexOf('window') !== -1) &&
-				isTouchDevice &&
-				$scope.inChromeApp && themeUsesKeyboard;
-			if (shouldShowKeyboard) {
+			//in console, allow debugging to test out keyboard in any browser
+			if (zestSntApp.virtualKeyBoardEnabled){
 				if (id) {
 					new initScreenKeyboardListener('station', id, true);
 				}
+			} else {
+				//restrict keyboard if screen is resized
+				//to lower height
+				if (window.innerHeight < 700) {
+					return;
+				}
+				$scope.lastKeyboardId = id;
+				//pull up the virtual keyboard (snt) theme... if chrome & fullscreen
+				var isTouchDevice = 'ontouchstart' in document.documentElement,
+					agentString = window.navigator.userAgent;
+				var themeUsesKeyboard = false;
+				if ($scope.theme === 'yotel' || !$scope.theme) {
+					themeUsesKeyboard = true;
+				}
+				var shouldShowKeyboard = (typeof chrome) &&
+					(agentString.toLowerCase().indexOf('window') !== -1) &&
+					isTouchDevice &&
+					$scope.inChromeApp && themeUsesKeyboard;
+				if (shouldShowKeyboard) {
+					if (id) {
+						new initScreenKeyboardListener('station', id, true);
+					}
+				}
 			}
+
 		};
 		/**
 		 * SVGs are ng-included inside HTML
