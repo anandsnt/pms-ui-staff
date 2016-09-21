@@ -44,7 +44,7 @@
                     "sorting-desc" when DESC sorting -->
                 <tr>
                     <th ng-repeat="sortBy in chosenReport.sortByOptions track by $index" class="{{ sortBy.description | lowercase }}" colspan="{{ sortBy.colspan }}">
-                        <span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)">{{ sortBy.description }}</span>
+                        <span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)">{{sortBy.sortDir}}{{ sortBy.description }}</span>
                     </th>
                 </tr>
             </thead>

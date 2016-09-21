@@ -78,15 +78,28 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       };
       $scope.invokeApi(RVDashboardSrv.fetchDashboardNotifications, params, successReleaseNotesFetch);
     };
+ /*
+   * Function to close release notes
+   */
+    $scope.closeReleaseNote = function(){
+      ngDialog.close(); //close any existing popups
+    }
   /*
    * Function to open link in new tab
    */
     $scope.showReleaseNote = function(activeNotification){
-      var url = activeNotification.action_source;
-      if (!url.match(/^https?:\/\//i)) {
-        url = 'http://' + url;
-      }
-      $window.open( url , '_blank');
+        var url = activeNotification.action_source;
+        if (!url.match(/^https?:\/\//i)) {
+          url = 'http://' + url+'?from=rover';
+        }
+        $scope.releaseActionSource = url;
+        ngDialog.close(); //close any existing popups
+        ngDialog.open({
+          template: '/assets/partials/dashboard/rvReleaseNotificationPopup.html',
+          className: '',
+          controller: '',
+          scope: $scope,
+        });
     };
   /*
    * Function to hide release notes for current login

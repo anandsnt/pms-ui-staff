@@ -885,6 +885,10 @@
                         padding: 0 10px;
                         font-weight: 600;
 
+                        &.description {
+                            padding: 0 10px 0 30px;
+                        }
+
                         .sort {
                             position: relative;
                             cursor: pointer;
@@ -930,6 +934,8 @@
 
                         &.description {
                             font-style: normal;
+                            padding: 0 10px 0 30px;
+                            position: relative;
 
                             .charge,
                             .adjusted,
@@ -951,6 +957,16 @@
                                 em {
                                     color: darken(@yellow, 10);
                                 }
+                            }
+
+                            &.icon-edit-10 {
+                                display: inline-block;
+                                background-position: 2px -4000px;
+                                position: absolute;
+                                top:0;
+                                left:0;
+                                bottom:0;
+                                margin: auto 0;
                             }
                         }
 

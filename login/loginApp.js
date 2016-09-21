@@ -36,46 +36,70 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	 $scope.errorMessage = "";
 	 $scope.successMessage = "";
 	 $scope.errorMessage = resetSrv.getErrorMessage();
+
 	 /*
 	  * successCallback of login action
 	  * @param {object} status of login and data
 	  */
 	 $scope.successCallback = function(data){
-	 	//Clear all session storage contents. We are starting a new session.
-	 	var i = sessionStorage.length;
-	 	while(i--) {
-	 	  	var key = sessionStorage.key(i);
-	 	  	sessionStorage.removeItem(key);
-	 	}
 
-		// CICO-33556: handle a case when browser doesn't allo setting item
-		// Safari, in Private Browsing Mode, handles QuotaExceededError
-		try {
-			localStorage.email = $scope.data.email;
-		} catch(e) {
-			console.log('ignoring a problem occured while setting item using localStorage');
-		}
+	 	var navigateToRover = function(){
+	 		//Clear all session storage contents. We are starting a new session.
+        	var i = sessionStorage.length;
+		 	while(i--) {
+		 	  	var key = sessionStorage.key(i);
+		 	  	sessionStorage.removeItem(key);
+		 	}
+
+			try {
+				localStorage.email = $scope.data.email;
+			} catch(e) {
+				console.log('ignoring a problem occured while setting item using localStorage');
+			}
+
+		 	if(data.token!==''){
+		 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
+		 	}
+		 	else {
+	            $scope.hasLoader = true;
+	            if(data.is_sp_admin === true){
+	                //we need to show the animation before redirecting to the url, so introducing a timeout there
+	                setTimeout(function(){
+	                    $state.go('selectProperty');
+	                }, 300);
+	            }
+	            else {
+	                $scope.$emit("signingIn");
+	                //we need to show the animation before redirecting to the url, so introducing a timeout there
+	                setTimeout(function(){
+	                    $window.location.href = data.redirect_url;
+	                }, 300);
+
+	            }
+		 	}
+        }
 	 	
-	 	if(data.token!==''){
-	 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
-	 	}
-	 	else {
-            $scope.hasLoader = true;
-            if(data.is_sp_admin === true){
-                //we need to show the animation before redirecting to the url, so introducing a timeout there
-                setTimeout(function(){
-                    $state.go('selectProperty');
-                }, 300);
-            }
-            else {
-                $scope.$emit("signingIn");
-                //we need to show the animation before redirecting to the url, so introducing a timeout there
-                setTimeout(function(){
-                    $window.location.href = data.redirect_url;
-                }, 300);
-
-            }
-	 	}
+        if(sntapp.loginUpdate != null){
+	        /**
+	        * Passing user Login ID to native, for debugging on ipads
+	        */
+	        var args = [];
+	        args.push($scope.data.email);        
+	        var options = {
+	          //Cordova write success callback
+	          'successCallBack': navigateToRover,
+	          'failureCallBack': navigateToRover,
+	          arguments: args
+	        }; 
+	        sntapp.loginUpdate.setUserId(options); 
+	        /**END
+        	* Passing user login to native, for debugging  */
+        }else{
+        	/**
+	        * There is no native component, so just move to rover without passing Login ID.
+	        */
+        	navigateToRover();    
+        }
 	 };
 	 /*
 	  * Failure call back of login
