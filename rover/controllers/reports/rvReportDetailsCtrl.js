@@ -114,6 +114,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isBalanceReport = false;
 			$scope.isDepositBalanceReport = false;
 			$scope.isCancellationReport = false;
+			$scope.isActionsManager = false;
 
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
@@ -236,7 +237,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                     setTotalsForReport(totals);//refreshes Totals
 					break;
 				case reportNames['ACTIONS_MANAGER']:
-                    $scope.isBalanceReport = true;
+                    $scope.isActionsManager = true;
 					break;
 
 				default:
