@@ -51,7 +51,12 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 		 	  	sessionStorage.removeItem(key);
 		 	}
 
-		 	localStorage.email = $scope.data.email;
+			try {
+				localStorage.email = $scope.data.email;
+			} catch(e) {
+				console.log('ignoring a problem occured while setting item using localStorage');
+			}
+
 		 	if(data.token!==''){
 		 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
 		 	}
