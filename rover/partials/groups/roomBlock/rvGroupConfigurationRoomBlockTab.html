@@ -99,7 +99,7 @@
         <button type="button" class="next-dates"
             ng-class="{ 'hidden': !shouldShowLoadNextSetButton() }"
             ng-click="fetchNextSetOfRoomBlockData()">
-            {{'ALLOTMENT_NEXT_SET' | translate}}
+            {{'GROUP_NEXT_SET' | translate}}
             <span class="has-arrow next-view"></span>
         </button>
         <!-- If new group and/or room block have not been set: -->
@@ -119,7 +119,6 @@
         <div class="room-block-actions" ng-show="shouldShowRoomsRates()">
             <button type="button" class="button green"
                 tabindex="-1"
-                ng-show = "shouldShowSaveButton()"
                 ng-click = "clickedOnSaveButton()"
                 ng-class="{'hidden': !shouldShowSaveButton()}"
                 translate>
@@ -128,7 +127,6 @@
             <!-- Hidden until change is made in the grid -->
             <button type="button" class="button red hidden"
                 tabindex="-1"
-                ng-show = "shouldShowDiscardButton()"
                 ng-click = "clickedOnDiscardButton()"
                 ng-class="{'hidden': !shouldShowDiscardButton()}"
                 translate>

@@ -29,8 +29,6 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		var timeLineScrollEndReached = false,
 			massUpdateOverbookingOccurs = false,
 			lastCalledMassUpdateConfig = null;
-		$scope.overBookingMessage = '';
-		$scope.showSaveButton = true;
 
 		/**
 		 * util function to check whether a string is empty
@@ -510,6 +508,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * end date for mass update.
 		 */
 		$scope.showMassUpdateEndDateConfirmation = function(data) {
+			$scope.overBookingMessage = '';
+			setDatePickers();
+
 			ngDialog.open({
 				template: '/assets/partials/groups/roomBlock/rvGroupConfirmMassUpdatePopup.html',
 				scope: $scope,
@@ -814,7 +815,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			}, commonDateOptions);
 
 			//setting max date of goto date
-			var maxDate = new tzIndependentDate(refData.block_to);
+			var maxDate = refData.block_to;
 			maxDate.setDate(maxDate.getDate()-1);
 
 			//date picker options - Goto Date
