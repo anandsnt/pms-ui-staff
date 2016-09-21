@@ -1267,9 +1267,9 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
                         if ( hasVerScroll() ) {
                             if ( scrollTowardsVerStart() ) {
-                                verScrollInst.scrollBy(0, 10, 1);
+                                verScrollInst.scrollBy(0, -5, 1);
                             } else if ( scrollTowardsVerEnd() ) {
-                                verScrollInst.scrollBy(0, -10, 1);
+                                verScrollInst.scrollBy(0, 5, 1);
                             }
                         }
                     }
@@ -1300,12 +1300,13 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 };
             };
 
-            var addPlaceholderThrottled = _.throttle(orderState.addPlaceholder, 100);
+            var addPlaceholderThrottled = _.throttle(orderState.addPlaceholder, 1000, {leading: false});
             $scope.userDragging = function(e) {
                 
                 // ask orderState to get a load of latest clientX and clientY
                 // throttle the calls to addplaceholder
                 orderState.setClientPos(e.clientX, e.clientY);
+                orderState.removePlaceholder();
                 addPlaceholderThrottled();
                 
                 // Priority for detect for horizontal scroll requirement
