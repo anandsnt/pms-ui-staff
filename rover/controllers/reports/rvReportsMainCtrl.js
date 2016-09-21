@@ -271,7 +271,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_37: false,
 			item_38: false,
 			item_39: false,
-			item_40: false
+			item_40: false,
+			item_41: false,
+			item_42: false,
+			item_43: false,
+			item_44: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -795,6 +799,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	});
         };
 
+        //Get the selected rates id
+        var getRatesListToShow = function(item) {
+        	var listedRates 		= item.hasRateCodeFilter.data,
+        		selectedRates 		= _.where(listedRates, {selected: true}),
+        		selectedRateIds 	= _.pluck(selectedRates, "id");
+        	return selectedRateIds;
+        };
+
         $scope.shouldShowThisRate = function(rate, item) {
         	var listedRateTypes 		= item.hasRateTypeFilter.data,
         		selectedRateTypes 		= _.where(listedRateTypes, {selected: true}),
@@ -1187,6 +1199,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
 			};
 
+			/*if (!!report.hasRatesCodeFilter) {
+				key = reportParams['RATE_IDS'];
+				params[key] = getRatesListToShow(report);
+			};*/
+
+
+
 			// for restriction list
 			if (!!report.hasRestrictionListFilter) {
 				params[reportParams['RESTRICTION_IDS']] = _.pluck(_.where(report.hasRestrictionListFilter.data,{ selected: true }), "id");
@@ -1194,10 +1213,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			// for rate code
 			if (!!report.hasRateCodeFilter) {
-				var selectedRateCode = _.findWhere(report.hasRateCodeFilter.data,{ selected: true });
-				if(selectedRateCode) {
-					params[reportParams['RATE_ID']] = selectedRateCode.id;
+				if(report.hasRateCodeFilter.options.singleSelect) {
+					var selectedRateCode = _.findWhere(report.hasRateCodeFilter.data,{ selected: true });
+					if(selectedRateCode) {
+						params[reportParams['RATE_ID']] = selectedRateCode.id;
+					}
+				} else {
+					key = reportParams['RATE_IDS'];
+					params[key] = getRatesListToShow(report);
 				}
+
 			};
 
 			// for room type filter
@@ -1974,6 +1999,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.totalCount = response.total_count || 0;
 				$scope.currCount = response.results ? response.results.length : 0;
 			};
+
 
 			var sucssCallback = function(response) {
 				var msg = '';
