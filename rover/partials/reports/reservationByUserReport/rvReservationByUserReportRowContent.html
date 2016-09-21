@@ -9,7 +9,11 @@
     <span ng-if="each.is_vip">&#8226; <span class="data vip">VIP</span></span>
 </td>
 <td ng-if="each.isReport"> 
-    <span class="data status">{{each.status}}</span>
+    <span class="data status" ng-if="each.status === 'NOSHOW'">NO SHOW</span>
+    <span class="data status" ng-if="each.status === 'CHECKEDIN'">CHECKED IN</span>
+    <span class="data status" ng-if="each.status === 'CHECKEDOUT'">CHECKED OUT</span>
+    <span class="data status" ng-if="each.status === 'PRE_CHECKIN'">PRE CHECKIN</span>
+    <span class="data status" ng-if="each.status != 'NOSHOW' && each.status != 'CHECKEDIN' && each.status != 'CHECKEDOUT' && each.status != 'PRE_CHECKIN'">{{each.status}}</span>
 </td>
 <td ng-if="each.isReport" class="date" ng-class="{'hour': !!each.total_hours, 'guarantee': !!each.guarantee_type}">
     <span class="guest-status check-in">check-in</span>
