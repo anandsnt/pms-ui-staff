@@ -1,0 +1,34 @@
+/* StayNTouch | Kiosk styles */
+
+/* 0. THEME
+==========================================================*/
+	@import "themes/epik/theme.less";
+
+
+/* 1. ROOT
+==========================================================*/
+	@import "less/reset.less";
+	@import "less/variables.less";
+	@import "less/mixins.less";
+
+/* 2. GRAPHICS & TYPE
+==========================================================*/
+	@import "less/typography.less";
+
+
+
+/* 3. PATTERNS
+==========================================================*/
+	@import "less/forms.less";
+ 
+/* 4. LAYOUTS
+==========================================================*/
+	@media not print {
+        @import "less/layout.less";
+    }
+
+/* 5. MEDIA
+==========================================================*/
+    @media only print {
+        @import "less/print.less"; 
+    }

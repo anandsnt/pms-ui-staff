@@ -29,8 +29,11 @@ sntZestStation.controller('zsRootCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
-
 		$scope.cssMappings = cssMappings;
+		//logo depending on zest Web / Station theme
+		$scope.getThemeUrl = function(){
+			return zestStationSettings.themeLogoPath;
+		};
 
 		//in order to prevent url change or fresh url entering with states
 		var routeChange = function(event, newURL) {

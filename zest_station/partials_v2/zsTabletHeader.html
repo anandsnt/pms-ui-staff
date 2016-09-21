@@ -4,9 +4,10 @@
         <span ng-hide="useNavIcons" translate>NAV_BACK</span>
         <div ng-show="useNavIcons" ng-include="icons.url.back"></div>
     </button>
-    <!-- Hotel logo  !this needs to be swappable between hotels-->
     <div id="logo">
+        <ng-include src="getThemeUrl()"></ng-include>
     </div>
+    <!--<div ng-include='zestStationSettings.themeLogoPath'></div-->
     <!-- Close button, if applicable -->
     
     <button type="button" id="close-button" class="button blank" click-touch='clickedOnCloseButton()' ng-hide="hideCloseButton">

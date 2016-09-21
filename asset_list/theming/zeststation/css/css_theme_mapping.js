@@ -7,6 +7,7 @@ module.exports = {
 			'zoku': [themeCSSRoot + 'zoku.less'],
 			'fontainebleau': [themeCSSRoot + 'fontainebleau.less'],
 			'yotel': [themeCSSRoot + 'yotel.less'],
+			'epik': [themeCSSRoot + 'epik.less'],
 			'snt': [themeCSSRoot + 'snt.less']
 
 		}
