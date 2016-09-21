@@ -1,0 +1,83 @@
+<div class="entry full-width" ng-class="{'amount': feeData.showFee}"
+     ng-hide="paymentAttempted && !isPaymentFailure">
+
+    <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+
+    <input ng-change="onPaymentInfoChange()"
+           ng-model="payment.amount"
+           type="text"
+           class="amount"/>
+
+    <span ng-show="feeData.showFee" class="delimiter">+</span>
+
+    <input ng-show="feeData.showFee"
+           ng-change="onFeeOverride()"
+           ng-model="feeData.calculatedFee"
+           value="{{feeData.calculatedFee}}"
+           type="text"
+           class="fee"/>
+
+
+    <span ng-show="feeData.showFee" class="delimiter">fee</span>
+
+    <span ng-show="feeData.showFee" class="total">
+          Total:
+          <strong ng-if="!payment.isRateSuppressed">
+              {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+          </strong>
+    </span>
+</div>
+
+<!-- Reference field - use only when it exsits; This configuration is available in the Admin/Financials -->
+<div class="entry full-width reference"
+     ng-show="!paymentAttempted && isPaymentFailure && isDisplayRef">
+    <label>Reference</label>
+    <input ng-model="payment.referenceText" type="text"/>
+</div>
+
+<!-- Success feedback -->
+<div class="feedback" ng-show="paymentAttempted && !isPaymentFailure">
+    <div class="notice success">Amount paid!</div>
+    <ul class="transaction">
+        <li ng-show="!!payment.authorizationCode">
+            Your Authorize code is: <span class="auth">{{payment.authorizationCode}}</span>
+        </li>
+        <li ng-if="feeData.showFee">
+            Amount paid:
+            <span class="value">
+                {{currencySymbol}}{{payment.amount |number:2}} + {{currencySymbol}}{{feeData.calculatedFee|number:2}} fee
+            </span>
+        </li>
+        <li ng-if="!feeData.showFee">
+            Amount paid:
+            <span class="value">
+                {{currencySymbol}}{{payment.amount}}
+            </span>
+        </li>
+    </ul>
+</div>
+
+<!-- Fail feedback -->
+<div class="feedback" ng-show="isPaymentFailure">
+    <div class="notice error">Payment failed. Try again or change payment method.</div>
+</div>
+
+<!-- Buttons -->
+<div class="actions" ng-hide="paymentAttempted && !isPaymentFailure">
+    <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
+        CANCEL
+    </button>
+    <button type="button" class="button green" click-touch="submitPayment()"
+            ng-show="!shouldHidePaymentButton() && !isRefund()">
+        MAKE PAYMENT
+    </button>
+    <button type="button" class="button blue" click-touch="submitPayment()"
+            ng-show="!shouldHidePaymentButton() && isRefund()">
+        REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
+    </button>
+</div>
+<div class="actions" ng-show="paymentAttempted && !isPaymentFailure">
+    <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
+        CLOSE
+    </button>
+</div>

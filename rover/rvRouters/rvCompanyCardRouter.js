@@ -18,7 +18,10 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
             controller: 'companyCardDetailsController',
             resolve: {
-                comapanycardDetailsAssets: function(jsMappings) {
+                loadPaymentModule: function (jsMappings) {
+                    return jsMappings.loadPaymentModule();
+                },
+                comapanycardDetailsAssets: function(jsMappings, loadPaymentModule) {
                     return jsMappings.fetchAssets(['rover.companycarddetails', 'directives', 'highcharts'], ['highcharts-ng']);
                 }
             }

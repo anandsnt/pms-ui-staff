@@ -50,9 +50,11 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                         "bill_number": $scope.billNumber,
                         "payment_type": $scope.selectedPaymentType,
                         "amount": $scope.payment.amount,
-                        "is_split_payment": $scope.splitBillEnabled && $scope.numSplits > 1
+                        "is_split_payment": $scope.splitBillEnabled && $scope.numSplits > 1,
+                        "workstation_id" : $scope.hotelConfig.workstationId
                     },
-                    "reservation_id": $scope.reservationId
+                    "reservation_id": $scope.reservationId,
+                    "bill_id": $scope.billId
                 };
 
                 if ($scope.payment.showAddToGuestCard) {
@@ -320,7 +322,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 }, errorMessage => {
                     $scope.$emit('ERROR_OCCURED', errorMessage);
                 });
-            } else { // NOTE: This is the scenario where the user has selected an existing credit card from the list
+            } else if (!!$scope.reservationId) { // NOTE: This is the scenario where the user has selected an existing credit card from the list
                 sntPaymentSrv.mapPaymentToReservation({
                     bill_number: $scope.billNumber,
                     reservation_id: $scope.reservationId,
@@ -336,6 +338,11 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     });
                 }, errorMessage => {
                     $scope.$emit('ERROR_OCCURED', errorMessage);
+                });
+            } else if (!!$scope.accountId) {
+                $scope.$emit('SUCCESS_LINK_PAYMENT', {
+                    selectedPaymentType: $scope.selectedPaymentType,
+                    cardDetails: $scope.selectedCC
                 });
             }
         };
@@ -517,6 +524,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         $scope.cancelCardSelection = function() {
             $scope.payment.screenMode = "PAYMENT_MODE";
             $scope.selectedPaymentType = "";
+            $scope.$emit("PAYMENT_TYPE_CHANGED", $scope.selectedPaymentType);
             $scope.selectedCC = {};
             calculateFee();
         };
@@ -578,27 +586,31 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
         //save CC
         var saveCCPayment = function(cardDetails) {
-            var onSaveSuccess = function(response) {
-
-                $scope.selectedCC = $scope.selectedCC || {};
-
-                $scope.selectedCC.value = response.data.id;
-                $scope.selectedCC.card_code = cardDetails.cardDisplayData.card_code;
-                $scope.selectedCC.ending_with = cardDetails.cardDisplayData.ending_with;
-                $scope.selectedCC.expiry_date = cardDetails.cardDisplayData.expiry_date;
-                $scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;
-
-                $scope.payment.screenMode = "PAYMENT_MODE";
-                calculateFee();
-                showAddtoGuestCardBox();
-            };
-
-            var onSaveFailure = function(errorMessage) {
-                $scope.errorMessage = errorMessage;
-            };
-
             $scope.$emit('showLoader');
-            sntPaymentSrv.savePaymentDetails(cardDetails.apiParams).then(function(response) {
+            var params = angular.copy(cardDetails.apiParams),
+                onSaveSuccess = function(response) {
+
+                    $scope.selectedCC = $scope.selectedCC || {};
+
+                    $scope.selectedCC.value = response.data.id;
+                    $scope.selectedCard = $scope.selectedCC.value;
+                    $scope.selectedCC.card_code = cardDetails.cardDisplayData.card_code;
+                    $scope.selectedCC.ending_with = cardDetails.cardDisplayData.ending_with;
+                    $scope.selectedCC.expiry_date = cardDetails.cardDisplayData.expiry_date;
+                    $scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;
+
+                    $scope.payment.screenMode = "PAYMENT_MODE";
+                    calculateFee();
+                    showAddtoGuestCardBox();
+                }, onSaveFailure = function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                };
+
+            if (!!$scope.accountId) {
+                params["account_id"] = $scope.accountId;
+            }
+
+            sntPaymentSrv.savePaymentDetails(params).then(function(response) {
                     if (response.status === "success") {
                         onSaveSuccess(response);
                     } else {
@@ -612,14 +624,53 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 });
         };
 
+        /**
+         * This metod is used for saving a credit card in the AR Transactions Tab
+         * @param cardDetails
+         */
+        var addBillPayment = function(cardDetails) {
+            $scope.$emit('showLoader');
+            var params = angular.copy(cardDetails.apiParams),
+                onSaveSuccess = function(response) {
+
+                    $scope.selectedCC = $scope.selectedCC || {};
+
+                    $scope.selectedCC.value = response.id;
+                    $scope.selectedCard = $scope.selectedCC.value;
+                    $scope.selectedCC.card_code = cardDetails.cardDisplayData.card_code;
+                    $scope.selectedCC.ending_with = cardDetails.cardDisplayData.ending_with;
+                    $scope.selectedCC.expiry_date = cardDetails.cardDisplayData.expiry_date;
+                    $scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;
+
+                    $scope.payment.screenMode = "PAYMENT_MODE";
+                    calculateFee();
+                }, onSaveFailure = function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                };
+
+            // NOTE: This API is very similar to that of the one called through sntPaymentSrv.savePaymentDetails
+            sntPaymentSrv.addBillPaymentMethod({
+                billId: $scope.billId,
+                payLoad: {
+                    ...params,
+                    workstation_id: $scope.hotelConfig.workstationId
+                }
+            }).then(function(response) {
+                    onSaveSuccess(response);
+                    $scope.$emit('hideLoader');
+                },
+                function(errorMessage) {
+                    onSaveFailure(errorMessage);
+                    $scope.$emit('hideLoader');
+                });
+        };
+
         $scope.$on(payEvntConst.CC_TOKEN_GENERATED, function(event, data) {
             var paymentData = data.paymentData;
 
             if ($scope.actionType === "ADD_PAYMENT_GUEST_CARD" || !!paymentData.apiParams.mli_token) {
                 $scope.payment.tokenizedCardData = paymentData;
-
                 $scope.selectedCC = $scope.selectedCC || {};
-
                 $scope.selectedCC.card_code = paymentData.cardDisplayData.card_code;
                 $scope.selectedCC.ending_with = paymentData.cardDisplayData.ending_with;
                 $scope.selectedCC.expiry_date = paymentData.cardDisplayData.expiry_date;
@@ -628,6 +679,12 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $scope.payment.screenMode = "PAYMENT_MODE";
             } else {
                 $scope.payment.tokenizedCardData = null;
+            }
+            //TODO: APIs have to be evaluated in this add payment workflow!
+            if ($scope.actionType === "AR_SUBMIT_PAYMENT") {
+                addBillPayment(paymentData);
+            }
+            else if ($scope.actionType !== "ADD_PAYMENT_GUEST_CARD") {
                 saveCCPayment(paymentData);
             }
         });

@@ -7,22 +7,23 @@ sntPay.directive('sntPayment', function() {
             paymentTypes: '=',//the payment types present
             selectedPaymentType: '=?',//selected initial payment type
             reservationId: '@',
+            billId: '@',
+            accountId:'@',
             guestId: '@',
             billNumber: '=',
-            billId : '@',
             amount: '=',//amount to pay
-            selectedCC: '=',//selected CC details
+            selectedCC: '=?',//selected CC details
             actionType: '@',
             depositPolicyName: '@',
-            isEditable : '=',//is the amount editable
-            isRateSuppressed: '=',
+            isEditable : '=?',//is the amount editable
+            isRateSuppressed: '=?',
             workstationId : "@",
-            hasPermission : '=',//has permission to amke payment
+            hasPermission : '=?',//has permission to amke payment
             formTemplateUrl : '@',//the URL of the partial to be laoded as form
-            firstName: '@',//first name to be used in six pay iframe
-            lastName: '@',//second name to be used in six pay iframe
+            firstName: '@?',//first name to be used in six pay iframe
+            lastName: '@?',//second name to be used in six pay iframe
             swipedCardData: '@',
-            splitBillEnabled: '=',
+            splitBillEnabled: '=?',
             numSplits: '=?',
             completedSplitPayments: '=?',
             fetchLinkedCards: "=?"

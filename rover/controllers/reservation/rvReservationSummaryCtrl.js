@@ -1500,9 +1500,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 swipedCardData.token = tokenValue;
                 var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
                 $scope.reservationData.paymentType.type.value = "CC";
-                $scope.showCCPage = true;
-                $scope.addmode = true;
-                $scope.swippedCard = true;
+                // $scope.showCCPage = true;
+                // $scope.addmode = true;
+                // $scope.swippedCard = true;
 
                 $scope.newPaymentInfo = {
                     "tokenDetails": {

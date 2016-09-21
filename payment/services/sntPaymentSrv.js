@@ -4,8 +4,16 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
 
         service.submitPayment = function(dataToSrv) {
 
-            var deferred = $q.defer();
-            var url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
+            var deferred = $q.defer(),
+                url = "";
+            if (!!dataToSrv.reservation_id) {
+                url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
+            } else {
+                url = 'api/bills/' + dataToSrv.bill_id + '/submit_payment';
+                //TODO: clean up the above API so that the requests might be consistent
+                dataToSrv.postData.payment_method_id = dataToSrv.postData.payment_type_id;
+            }
+
             $http.post(url, dataToSrv.postData).success(function(response) {
                 deferred.resolve(response);
             }.bind(this))
@@ -334,6 +342,18 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             });
             return deferred.promise;
 
+        };
+
+        service.addBillPaymentMethod = function(data) {
+            var deferred = $q.defer();
+            var url = '/api/bills/' + data.billId + '/add_payment_method';
+
+            $http.post(url, data.payLoad).success(data => {
+                deferred.resolve(data);
+            }).error(data => {
+                deferred.reject(data);
+            });
+            return deferred.promise;
         };
 
         /**

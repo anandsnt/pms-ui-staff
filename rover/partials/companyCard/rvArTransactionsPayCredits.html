@@ -1,5 +1,6 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-click="clearErrorMessage()" ng-cloak>
-    <form ng-show="!shouldShowWaiting" method="post" action="pay-bill" id="pay-bill" name="pay-bill" class="modal-content form pay-bill" ng-class="{'has-card':showCreditCardInfo && !showCCPage && saveData.paymentType ==='CC','select-card':showCCPage}">
+    <form ng-show="!shouldShowWaiting" method="post" action="pay-bill" id="pay-bill" name="pay-bill" class="modal-content form pay-bill"
+          ng-class="{'select-card':showCCPage}">
         <button id="modal-close" type="button" class="modal-close" ng-click="handleCloseDialog()"><span class="icons icon-close invert"></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- Title when not paying from bill screen -->
@@ -8,87 +9,18 @@
         </strong>
 
         <div class="payment-form">
-
-            <!-- Payment type -->
-                <div id="payment-type" class="entry full-width" ng-hide="showCCPage">
-                    <label for="payment-type" translate>PAYMENT_TYPE</label>
-                    <div class="select">
-                        <select id="payment-options" ng-model="saveData.paymentType"  name="payment-options" ng-change="paymentTypeChanged()">
-                            <option value="" translate>SELECT_PAYMENT_TYPE</option>
-                            <option ng-repeat="paymentData in renderData.paymentTypes" value="{{paymentData.name}}" ng-selected="paymentData.name == defaultPaymentTypeOfBill">{{paymentData.description}}</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- Existing / new CC - Hide everything else when showing this. Output only if payment type is CC, hide if Card input type is set to C&P -->
-              <div ng-controller="RVCardOptionsCtrl" ng-include="'/assets/partials/roverPayment/rvCardOptions.html'"  ng-show="showCCPage"></div>
-
-               <!-- Card Input type - output only if Six Payments and payment type is CC -->
-                <!-- Use only for Six Payments -->
-                <div class="entry" ng-show="paymentGateway === 'sixpayments' && saveData.paymentType ==='CC' && !showCCPage">
-                        <div ng-include="'/assets/partials/payment/rvSixPayCardInput.html'"></div>
-                </div>
-
-              <!-- Selected card - Show when card is selected/added-->
-            <div id="selected-card" class="entry full-width" ng-show="showSelectedCreditCardButton()" ng-click="showCardAddmode()">
-                <label>{{'CREDIT_CARD' | translate}} (<span translate>TAP_TO_CHANGE</span>)</label>
-                <label class="active-item item-payment">
-                    <figure class="card-logo">
-                        <img src="/assets/images/{{defaultPaymentTypeCard}}.png" alt="" />
-                    </figure>
-                    <span class="number">{{'ENDING_WITH' | translate}} <span class="value number">{{defaultPaymentTypeCardNumberEndingWith}}</span></span>
-                    <span class="date">{{'DATE' | translate}} <span class="value date">{{defaultPaymentTypeCardExpiry}}</span></span>
-                </label>
-            </div>
-            <!-- Fields -->
-            <div class="entry full-width" ng-hide="showCCPage || depositPaidSuccesFully" ng-class="{'amount': isShowFees()}">
-                <label for="amount">{{'AMOUNT_TO_PAY' | translate}} (<span>{{currencySymbol}}</span>)</label>
-                <input ng-keyup="calculateFee()" value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" class="amount" ng-disabled="splitSelected"/>
-                <span ng-show="isShowFees()" class="delimiter">+</span>
-                <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(renderData.defaultPaymentAmount)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
-                <span ng-show="isShowFees()" class="delimiter">fee</span>
-                <span  ng-show="isShowFees()" class="total">
-                    Total:
-                    <strong id="total-deposit-amount">
-                        {{currencySymbol}}{{feeData.totalOfValueAndFee}}
-                    </strong>
-                </span>
-            </div>
-            <div class="entry full-width reference" ng-show="!showCCPage &&referenceTextAvailable && !depositPaidSuccesFully">
-                <label for="reference">Reference</label>
-                <input name="reference" id="reference" ng-model="renderData.referanceText" type="text" />
-            </div>
-            <!-- Success feedback -->
-            <div class="feedback" ng-show="!showCCPage && depositPaidSuccesFully">
-                <div class="notice success">Amount paid!</div>
-                <ul class="transaction">
-                    <li ng-show="authorizedCode !==''">
-                        Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
-                    </li>
-                    <li ng-if="isShowFees()">
-                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount |number:2}} + {{currencySymbol}}{{feeData.calculatedFee|number:2}} fee
-                        </span>
-                    </li>
-                    <li ng-if="!isShowFees()">
-                        Amount paid: <span class="value">{{currencySymbol}}{{renderData.defaultPaymentAmount}}
-                        </span>
-                    </li>
-                </ul>
-            </div>
-            <!-- Fail feedback -->
-            <div class="feedback" ng-show="errorOccured">
-                <div class="notice error">Payment failed. Try again or change payment method.</div>
-            </div>
-            <!-- Buttons -->
-            <div class="actions" ng-hide="showCCPage || depositPaidSuccesFully">
-                 <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CANCEL</button>
-                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" click-touch="submitPayment()" ng-show="shouldShowMakePaymentButton&&!splitBillEnabled"translate>MAKE PAYMENT</button>
-                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'green':!disableMakePayment()}" class="button" click-touch="submitPayment()" ng-show="shouldShowMakePaymentButton&&splitBillEnabled"  translate>MAKE PAYMENT ({{splitePaymentDetail["completedSplitPayments"]+1}}/{{splitePaymentDetail["totalNoOfsplits"]}})</button>
-                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'blue':!disableMakePayment()}" class="button" click-touch="submitPayment()" ng-show="!shouldShowMakePaymentButton&&!splitBillEnabled" translate>REFUND {{currencySymbol}}{{defaultRefundAmount|number:2}}</button>
-                 <button type="button" id="pay" ng-disabled="disableMakePayment()" ng-class="{'grey':disableMakePayment(),'blue':!disableMakePayment()}" class="button" click-touch="submitPayment()" ng-show="!shouldShowMakePaymentButton&&splitBillEnabled" translate>REFUND {{currencySymbol}}{{defaultRefundAmount|number:2}} ({{splitePaymentDetail["completedSplitPayments"]+1}}/{{splitePaymentDetail["totalNoOfsplits"]}})</button>
-            </div>
-             <div class="actions" ng-hide="!depositPaidSuccesFully">
-                <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()" translate>CLOSE</button>
-             </div>
+            <snt-payment
+                    hotel-config="hotelPaymentConfig"
+                    workstation-id="{{workstation_id}}"
+                    bill-id="{{arTransactionDetails.company_or_ta_bill_id}}"
+                    payment-types="renderData.paymentTypes"
+                    selected-payment-type="saveData.paymentType"
+                    bill-number="billNumber"
+                    amount='renderData.defaultPaymentAmount'
+                    action-type="AR_SUBMIT_PAYMENT"
+                    has-permission='hasPermissionToMakePayment()'
+                    form-template-url='/assets/partials/payment/rvARPaymentPartial.html'>
+            </snt-payment>
         </div>
     </form>
     <div ng-show="shouldShowWaiting" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
