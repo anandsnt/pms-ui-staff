@@ -1,5 +1,6 @@
-<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-click="clearErrorMessage()" ng-cloak>
-    <form ng-show="!shouldShowWaiting && !showArSelection"
+<div role="dialog" id="modal" class="modal-show"
+     ng-class="{'modal-show': !modalClosing}" ng-click="clearErrorMessage()" ng-cloak>
+    <form ng-show="!showArSelection"
           class="modal-content form pay-bill"
           ng-class="{'select-card':showCCPage}">
 
@@ -28,17 +29,12 @@
                     bill-number="renderData.billNumberSelected"
                     amount='renderData.defaultPaymentAmount'
                     action-type="GROUP_SUBMIT_PAYMENT"
+                    posting-account-id="accountConfigData.summary.posting_account_id"
                     has-permission='hasPermissionToMakePayment()'
                     form-template-url='/assets/partials/payment/rvAccountPaymentPartial.html'>
             </snt-payment>
         </div>
     </form>
-    <div ng-show="shouldShowWaiting && !showArSelection" class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
-		<div class="centeralign alert-box">
-			WAITING FOR PAYMENT COMPLETION 
-		</div>
-		<div class="waiting-payment">&nbsp;</div>
-	</div>
     <div class="modal-content confirmation" ng-show="showArSelection">
             <span class="h2 message">Post Payment To</span>
             <div class="actions">

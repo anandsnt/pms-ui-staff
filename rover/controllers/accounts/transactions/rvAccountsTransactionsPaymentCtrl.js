@@ -376,23 +376,11 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
 
         // select to which AR account payment has to be done
         $scope.selectArAccount = function(type) {
-            if (type === "company") {
-                if ($scope.ArDetails.company_ar_attached) {
-                    proceedPayment("company");
-                }
-                else {
-                    showCreateArAccountPopup($scope.ArDetails.company_id, "company");
-                }
-            }
-            else {
-                if ($scope.ArDetails.travel_agent_ar_attached) {
-                    proceedPayment("travel_agent");
-                }
-                else {
-                    showCreateArAccountPopup($scope.ArDetails.travel_agent_id, "travel_agent");
-                }
-            }
-            ;
+            $scope.$broadcast("CONTINUE_DIRECT_BILL_PAYMENT", {
+                ar_type : type,
+                arDetails :$scope.ArDetails
+            });
+            $scope.showArSelection = false;
         };
 
         $scope.showErrorPopup = function(errorMessage) {
@@ -488,6 +476,11 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
 
         $scope.$on("PAYMENT_FAILED", function(e, response) {
             failurePayment(response);
+        });
+
+        $scope.$on("SHOW_AR_SELECTION", function(e, arDetails) {
+            $scope.ArDetails = arDetails;
+            $scope.showArSelection = true;
         });
 
         (function() {

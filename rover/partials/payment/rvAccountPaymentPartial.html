@@ -84,11 +84,11 @@
     <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
         CANCEL
     </button>
-    <button type="button" class="button green" click-touch="submitPayment()"
+    <button type="button" class="button green" click-touch="submitAccountPayment()"
             ng-show="!shouldHidePaymentButton() && !isRefund()">
         MAKE PAYMENT
     </button>
-    <button type="button" class="button blue" click-touch="submitPayment()"
+    <button type="button" class="button blue" click-touch="submitAccountPayment()"
             ng-show="!shouldHidePaymentButton() && isRefund()">
         REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
     </button>

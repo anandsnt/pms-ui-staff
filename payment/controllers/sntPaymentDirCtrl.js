@@ -1,5 +1,5 @@
-angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPaymentSrv", "paymentAppEventConstants", "$location", "PAYMENT_CONFIG", "$rootScope", "$timeout",
-    function($scope, sntPaymentSrv, payEvntConst, $location, PAYMENT_CONFIG, $rootScope, $timeout) {
+angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPaymentSrv", "paymentAppEventConstants", "$location", "PAYMENT_CONFIG", "$rootScope", "$timeout", "ngDialog", "$filter",
+    function($scope, sntPaymentSrv, payEvntConst, $location, PAYMENT_CONFIG, $rootScope, $timeout, ngDialog, $filter) {
 
         $scope.payment = {
             referenceText: "",
@@ -26,6 +26,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             availableBalance: null
         };
 
+        $scope.errorMessage = "";
+
         //--------------------------------------------------------------------------------------------------------------
         var timeOutForScrollerRefresh = 300,
             defaultScrollerOptions = {
@@ -43,15 +45,17 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
              *
              * @returns {{postData: {bill_number: number, payment_type: string, amount: number}, reservation_id: (*|string)}}
              */
-            intiateSubmitPaymentParams = function() {
+            intiateSubmitPaymentParams = function(payLoad) {
+                payLoad = payLoad || {};
                 //set up params for API
                 var params = {
                     "postData": {
+                        ...payLoad,
                         "bill_number": $scope.billNumber,
                         "payment_type": $scope.selectedPaymentType,
                         "amount": $scope.payment.amount,
                         "is_split_payment": $scope.splitBillEnabled && $scope.numSplits > 1,
-                        "workstation_id" : $scope.hotelConfig.workstationId
+                        "workstation_id": $scope.hotelConfig.workstationId
                     },
                     "reservation_id": $scope.reservationId,
                     "bill_id": $scope.billId
@@ -347,10 +351,92 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             }
         };
 
+        let promptCreateAR = function(params) {
+            // $scope.closeThePopup();
+            $timeout(()=> {
+                ngDialog.open({
+                    template: '/assets/partials/payCreateARPopup.html',
+                    controller: 'payCreateARPopupCtrl',
+                    className: '',
+                    scope: $scope,
+                    data: JSON.stringify(params)
+                });
+            }, 0);
+        };
+
+        $scope.$on("NEW_AR_ACCOUNT_CREATED", ()=> {
+            $scope.submitPayment({
+                is_new_ar_account: true
+            });
+        });
+
+        $scope.$on("CONTINUE_DIRECT_BILL_PAYMENT", (e, data)=>{
+            var arDetails = data.arDetails;
+            if(data.ar_type === "company"){
+                arDetails.company_ar_attached ? $scope.submitPayment({
+                    "ar_type": "company"
+                }) : promptCreateAR({
+                    account_id: arDetails.company_id,
+                    is_auto_assign_ar_numbers: arDetails.is_auto_assign_ar_numbers
+                });
+            }else if(data.ar_type === "travel_agent"){
+                arDetails.travel_agent_ar_attached ? $scope.submitPayment({
+                    "ar_type": "travel_agent"
+                }) : promptCreateAR({
+                    account_id: arDetails.travel_agent_id,
+                    is_auto_assign_ar_numbers: arDetails.is_auto_assign_ar_numbers
+                });
+            }
+        });
+
+        /**
+         * This method checks if the selected payment type is Direct Bill
+         * In case the payment type is direct bill;
+         *  then there MUST be an added Company or Travel Agent Card with an AR Account
+         */
+        $scope.submitAccountPayment = function() {
+            if ($scope.payment.amount === '' || $scope.payment.amount === null) {
+                var errorMessage = ["Please enter amount"];
+                $scope.$emit('ERROR_OCCURED', errorMessage);
+                return;
+            }
+
+            if ($scope.selectedPaymentType === "DB") {
+                // TODO: Check if AR account is present
+                sntPaymentSrv.checkARStatus($scope.postingAccountId).then(data=> {
+                    if (data.company_present && data.travel_agent_present) {
+                        $scope.$emit("SHOW_AR_SELECTION", data);
+                    } else if (data.company_present) {
+                        data.company_ar_attached ? $scope.submitPayment({
+                            "ar_type": "company"
+                        }) : promptCreateAR({
+                            account_id: data.company_id,
+                            is_auto_assign_ar_numbers: data.is_auto_assign_ar_numbers
+                        });
+                    } else if (data.travel_agent_present) {
+                        data.travel_agent_ar_attached ? $scope.submitPayment({
+                            "ar_type": "travel_agent"
+                        }) : promptCreateAR({
+                            account_id: data.travel_agent_id,
+                            is_auto_assign_ar_numbers: data.is_auto_assign_ar_numbers
+                        });
+                    } else {
+                        $scope.errorMessage = [$filter('translate')('ACCOUNT_ID_NIL_MESSAGE_PAYMENT')];
+                    }
+                }, errorMessage => {
+                    console.log("payment failed" + errorMessage);
+                    $scope.$emit('PAYMENT_FAILED', errorMessage);
+                    $scope.$emit('hideLoader');
+                })
+            } else {
+                $scope.submitPayment();
+            }
+        };
+
         /**
          *
          */
-        $scope.submitPayment = function() {
+        $scope.submitPayment = function(payLoad) {
 
             if ($scope.payment.amount === '' || $scope.payment.amount === null) {
                 var errorMessage = ["Please enter amount"];
@@ -358,7 +444,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 return;
             }
 
-            var params = intiateSubmitPaymentParams();
+            var params = intiateSubmitPaymentParams(payLoad);
 
             //check if chip and pin is selected in case of six payments
             //the rest of actions will in paySixPayController

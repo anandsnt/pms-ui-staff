@@ -397,5 +397,31 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             return deferred.promise;
         };
 
+
+        service.checkARStatus = function(postingAccountId) {
+            var deferred = $q.defer();
+            var url = 'api/posting_accounts/' + postingAccountId + '/is_ar_account_attached';
+
+            $http.get(url).success(data => {
+                deferred.resolve(data);
+            }).error(data => {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        service.saveARDetails = function(data) {
+            var deferred = $q.defer();
+            var url = 'api/accounts/save_ar_details';
+            $http.post(url,data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data.data);
+            });
+            return deferred.promise;
+        };
+
+
     }
 ]);
