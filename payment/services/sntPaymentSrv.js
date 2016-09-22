@@ -118,7 +118,13 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
         service.submitPaymentForChipAndPin = function(dataToSrv) {
 
             var deferred = $q.defer();
-            var url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
+            if (!!dataToSrv.reservation_id) {
+                url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
+            } else {
+                url = 'api/bills/' + dataToSrv.bill_id + '/submit_payment';
+                //TODO: clean up the above API so that the requests might be consistent
+                dataToSrv.postData.payment_method_id = dataToSrv.postData.payment_type_id;
+            }
 
             var timeStampInSeconds = 0;
             var incrementTimer = function() {

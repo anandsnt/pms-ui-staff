@@ -58,6 +58,7 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
                     if ($scope.feeData) {
                         response.feePaid = $scope.feeData.calculatedFee;
                     }
+                    $scope.selectedCC = $scope.selectedCC || {};
 
                     $scope.selectedCC.value = response.payment_method.id;
                     $scope.selectedCC.card_code = response.payment_method.card_type;
@@ -71,7 +72,7 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
                     }
                     $scope.$emit("HIDE_SIX_PAY_LOADER");
                     $timeout(()=> {
-                        $scope.$emit('PAYMENT_SUCCESS', response);
+                        $scope.onPaymentSuccess(response);
                     }, 700);
 
                 },

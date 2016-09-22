@@ -370,16 +370,16 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             });
         });
 
-        $scope.$on("CONTINUE_DIRECT_BILL_PAYMENT", (e, data)=>{
+        $scope.$on("CONTINUE_DIRECT_BILL_PAYMENT", (e, data)=> {
             var arDetails = data.arDetails;
-            if(data.ar_type === "company"){
+            if (data.ar_type === "company") {
                 arDetails.company_ar_attached ? $scope.submitPayment({
                     "ar_type": "company"
                 }) : promptCreateAR({
                     account_id: arDetails.company_id,
                     is_auto_assign_ar_numbers: arDetails.is_auto_assign_ar_numbers
                 });
-            }else if(data.ar_type === "travel_agent"){
+            } else if (data.ar_type === "travel_agent") {
                 arDetails.travel_agent_ar_attached ? $scope.submitPayment({
                     "ar_type": "travel_agent"
                 }) : promptCreateAR({
@@ -475,27 +475,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $scope.$emit('showLoader');
 
             sntPaymentSrv.submitPayment(params).then(response => {
-                    $scope.paymentAttempted = true;
-                    $scope.isPaymentFailure = false;
-                    $scope.payment.authorizationCode = response.authorization_code;
-
-                    response.amountPaid = $scope.payment.amount;
-                    response.authorizationCode = response.authorization_code;
-                    // NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
-                    if ($scope.feeData) {
-                        response.feePaid = $scope.feeData.calculatedFee;
-                    }
-
-                    if ($scope.selectedPaymentType === "CC") {
-                        response.cc_details = angular.copy($scope.selectedCC);
-                    }
-
-                    if ($scope.payment.showAddToGuestCard) {
-                        //check if add to guest card was selected
-                        response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
-                    }
-
-                    $scope.$emit('PAYMENT_SUCCESS', response);
+                    $scope.onPaymentSuccess(response);
                     $scope.$emit('hideLoader');
                 }, errorMessage => {
                     $scope.paymentAttempted = true;
@@ -799,6 +779,37 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         var onAmountChange = function() {
             $scope.payment.amount = $scope.amount || 0;
             calculateFee();
+        };
+
+        $scope.onPaymentSuccess = function(response) {
+            $scope.paymentAttempted = true;
+            $scope.isPaymentFailure = false;
+            $scope.payment.authorizationCode = response.authorization_code;
+
+            response.amountPaid = $scope.payment.amount;
+            response.authorizationCode = response.authorization_code;
+            // NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
+            if ($scope.feeData) {
+                response.feePaid = $scope.feeData.calculatedFee;
+            }
+
+            if ($scope.selectedPaymentType === "CC") {
+                response.cc_details = angular.copy($scope.selectedCC);
+            }
+
+            if ($scope.payment.showAddToGuestCard) {
+                //check if add to guest card was selected
+                response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
+            }
+
+            $scope.$emit('PAYMENT_SUCCESS', response);
+        };
+
+        $scope.showSixPaymentsModeSelection = function() {
+            return $scope.hotelConfig.paymentGateway === 'sixpayments' &&
+                $scope.selectedPaymentType === 'CC' &&
+                $scope.payment.screenMode === 'PAYMENT_MODE' &&
+                (!$scope.paymentAttempted || $scope.isPaymentFailure);
         };
 
         /****************** init ***********************************************/
