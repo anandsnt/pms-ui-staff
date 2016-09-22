@@ -204,6 +204,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			delete params.alt_confirmation_number;
 			delete params.email;
 			delete params.date;
+			if (params.no_of_nights === ''){
+				return;
+			}
 			searchReservation(params);
 			$scope.resetTime();
 		};
@@ -215,6 +218,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			delete params.no_of_nights;
 			delete params.email;
 			delete params.date;
+			if (params.alt_confirmation_number === ''){
+				return;
+			}
 			searchReservation(params);
 			$scope.resetTime();
 		};
@@ -225,6 +231,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			delete params.no_of_nights;
 			delete params.alt_confirmation_number;
 			delete params.date;
+			if (params.email === ''){
+				return;
+			}
 			searchReservation(params);
 			$scope.resetTime();
 		};
@@ -237,6 +246,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			delete params.email;
 			params.dep_date = angular.copy(params.date);
 			delete params.date;
+			if (params.dep_date === ''){
+				return;
+			}
 			searchReservation(params);
 			$scope.resetTime();
 		};
