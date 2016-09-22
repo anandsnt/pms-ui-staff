@@ -247,6 +247,13 @@
 			Rates: <span>{{ appliedFilter.rates.join(', ') }}</span>
 		</div>
 
+		<div ng-if="appliedFilter.assigned_departments.length">
+			Departments: <span>{{ appliedFilter.assigned_departments.join(', ') }}</span>
+		</div>
+		<div ng-if="appliedFilter.completion_status.length">
+			Departments: <span>{{ appliedFilter.completion_status.join(', ') }}</span>
+		</div>
+
 
 		<!-- Never REMOVE this span -->
 		<span> &nbsp; </span>
