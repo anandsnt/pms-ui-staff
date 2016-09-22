@@ -143,8 +143,12 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     };
     
     $scope.disableEODButton = function(){
-        return !($scope.hasPermissionToRunEOD())
-    }
+        if($scope.isLastEodRunWithin18Hr()){
+            return !($scope.hasPermissionToRunEOD());
+        }else{
+            return false;
+        }        
+    };
     
     $scope.updateStatus = function(){
         //we are fetching eod login, flag to handle update status

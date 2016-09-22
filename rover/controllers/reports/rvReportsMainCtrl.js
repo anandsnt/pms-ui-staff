@@ -144,7 +144,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		        }
 		        return;
 		    }
-		    
+
 		    for (i = 0, j = source.length; i < j; i++) {
 				if ( !! $scope.uiChosenReport ) {
 				    $scope.uiChosenReport.uiChosen = false;
@@ -271,13 +271,17 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_37: false,
 			item_38: false,
 			item_39: false,
-			item_40: false
+			item_40: false,
+			item_41: false,
+			item_42: false,
+			item_43: false,
+			item_44: false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
 				$scope.filterItemsToggle[item] = false;
 			}
-			
+
 			$scope.filterItemsToggle[item] = ! $scope.filterItemsToggle[item];
 
 			console.info( reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'] );
@@ -350,7 +354,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		// with added limits to yesterday (BD - 1)
 		$scope.fromDateOptionsTillYesterday = angular.extend({
 			maxDate: function() {
-				var currentDate = new tzIndependentDate($rootScope.businessDate);				
+				var currentDate = new tzIndependentDate($rootScope.businessDate);
 				currentDate.setDate(currentDate.getDate() - 1);
 				return $filter('date')(currentDate, $rootScope.dateFormat);
 			}(),
@@ -742,7 +746,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         		selectedRates 	= _.where(showingRateList, {selected: true});
 
 			item.hasRateFilter.selectAll = false;
-            
+
         	if(showingRateList.length === selectedRates.length && showingRateList.length !== 0) {
         		item.hasRateFilter.title = 'All Selected';
         		item.hasRateFilter.selectAll = true;
@@ -764,7 +768,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.myScroll['report-list-scroll'].refresh();
 				$scope.myScroll && $scope.myScroll['report-filter-sidebar-scroll'] && $scope.myScroll['report-filter-sidebar-scroll'].refresh();
 			}, 200);
-        }; 
+        };
         $scope.rateChanged = function(item) {
         	formTitleAndToggleSelectAllForRateDropDown(item);
         	refreshScroller();
@@ -777,8 +781,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	_.each(item.hasRateFilter.data, function(rateType) {
         		rateType.selected = item.hasRateFilter.selectAll;
         	});
-			formTitleAndToggleSelectAllForRateDropDown(item); 
-        	refreshScroller();      	
+			formTitleAndToggleSelectAllForRateDropDown(item);
+        	refreshScroller();
         };
 
         var getSelectedRateTypes = function(item) {
@@ -795,6 +799,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	});
         };
 
+
+        //Get the selected rates 
+        var getRatesListToShow = function(item) { 
+        	var listedRates 		= item.hasRateCodeFilter.data,
+        		selectedRates 		= _.where(listedRates, {selected: true});        		
+        	return selectedRates;
+        };
+
         $scope.shouldShowThisRate = function(rate, item) {
         	var listedRateTypes 		= item.hasRateTypeFilter.data,
         		selectedRateTypes 		= _.where(listedRateTypes, {selected: true}),
@@ -805,9 +817,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.getRates = function(item) {
         	//if all selected from rate type drop down
         	var wantedToShowAllRates = item.hasRateTypeFilter.selectAll;
-        	
-        	if( wantedToShowAllRates ) { 
-        		return item.hasRateFilter.data; 
+
+        	if( wantedToShowAllRates ) {
+        		return item.hasRateFilter.data;
         	}
 
         	return getRateListToShow(item);
@@ -1053,7 +1065,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'chargeTypes': [],
 					'users': [],
 					'campaign_types': [],
-					'floorList': []
+					'floorList': [],
+					'rates' : [],
+					'assigned_departments': [],
+					'status' : []
 				};
 			};
 
@@ -1180,10 +1195,17 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     var selectedCustomRates = _.pluck(_.where(getRateListToShow(report),{selected: true, id: null}), "group_id");
                     if ( selectedCustomRates.length > 0 ){
                         params[key] = _.without(params[key],null); //remove null entries in the rate_ids array (null entries would be there if custom rates were selected)
-                        params['custom_rate_group_ids'] = selectedCustomRates; 
-                    }  
+                        params['custom_rate_group_ids'] = selectedCustomRates;
+                    }
                 }
 			};
+
+			/*if (!!report.hasRatesCodeFilter) {
+				key = reportParams['RATE_IDS'];
+				params[key] = getRatesListToShow(report);
+			};*/
+
+
 
 			// for restriction list
 			if (!!report.hasRestrictionListFilter) {
@@ -1192,10 +1214,32 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			// for rate code
 			if (!!report.hasRateCodeFilter) {
-				var selectedRateCode = _.findWhere(report.hasRateCodeFilter.data,{ selected: true });
-				if(selectedRateCode) {
-					params[reportParams['RATE_ID']] = selectedRateCode.id;
+				if(report.hasRateCodeFilter.options.singleSelect) {
+					var selectedRateCode = _.findWhere(report.hasRateCodeFilter.data,{ selected: true });
+					if(selectedRateCode) {
+						params[reportParams['RATE_ID']] = selectedRateCode.id;
+					}
+				} else {
+					key = reportParams['RATE_IDS'];
+					var selectedRates = getRatesListToShow(report);
+					if(selectedRates.length > 0) {
+						params[key] = [];
+						_.each(selectedRates, function(rate) {
+							params[key].push( rate.id );							
+							if ( changeAppliedFilter ) {
+								$scope.appliedFilter.rates.push( rate.description );
+							};
+						});
+
+						// in case if all rates are selected
+						if ( changeAppliedFilter && report.hasRateCodeFilter.data.length === params[reportParams['RATE_IDS']].length ) {
+							$scope.appliedFilter.rates = ['All Rates'];
+						};
+					}
+										
 				}
+				
+
 			};
 
 			// for room type filter
@@ -1416,7 +1460,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					if ( each.selected ) {
 						key         = each.paramKey;
 						params[key] = true;
-						
+
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.display.push( each.description );
 						};
@@ -1459,7 +1503,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				/* Note: Using the ui value here */
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['companyTaGroup'] = report.uiChosenIncludeCompanyTaGroup;
-				};		
+				};
 			};
 
 			// selected markets
@@ -1613,7 +1657,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						/**/
 						if ( changeAppliedFilter ) {
 							$scope.appliedFilter.holdStatuses.push( status.description );
-						};		
+						};
 					});
 
 					// in case if all charge code is selected
@@ -1691,6 +1735,53 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					};
 				};
 			};
+
+
+			// include departments
+			if ( report.hasOwnProperty('hasDepartments') ) {
+				selected = _.where(report['hasDepartments']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['ASSIGNED_DEPARTMENTS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(each) {
+						params[key].push( each.id.toString() );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.assigned_departments.push( each.id );
+						};
+					});
+
+					// in case if all reservation status are selected
+					if ( changeAppliedFilter && report['hasDepartments']['data'].length === selected.length ) {
+						$scope.appliedFilter.assigned_departments = ['All Departments'];
+					};
+				};
+			};
+			// include departments
+			if ( report.hasOwnProperty('hasCompletionStatus') ) {
+				selected = _.where(report['hasCompletionStatus']['data'], { selected: true });
+
+				if ( selected.length > 0 ) {
+					key         = reportParams['COMPLETION_STATUS'];
+					params[key] = [];
+					/**/
+					_.each(selected, function(each) {
+						params[key].push( each.id.toString() );
+						/**/
+						if ( changeAppliedFilter ) {
+							$scope.appliedFilter.status.push( each.id );
+						};
+					});
+
+					// in case if all reservation status are selected
+					if ( changeAppliedFilter && report['hasDepartments']['data'].length === selected.length ) {
+						$scope.appliedFilter.status = ['All Reservation Status'];
+					};
+				};
+			};
+
 			// selected origin
 			if ( report.hasOwnProperty('hasOriginFilter') ) {
 				selected = _.where( report['hasOriginFilter']['data'], { selected: true } );
@@ -1759,7 +1850,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				};
 			};
 
-			// 
+			//
 			if ( report.hasOwnProperty('hasFloorList') ) {
 				selected = _.where( report['hasFloorList']['data'], { selected: true } );
 
@@ -1789,7 +1880,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				/* Note: Using the ui value here */
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['hasMinRevenue'] = report.hasMinRevenue.data;
-				};		
+				};
 			};
 
 			// has min room nights
@@ -1799,7 +1890,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				/* Note: Using the ui value here */
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['hasMinRoomNights'] = report.hasMinRoomNights.data;
-				};		
+				};
 			};
 
 			// need to reset the "group by" if any new filter has been applied
@@ -1851,8 +1942,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.shouldShowExportButton = function(report) {
 			var chosenReport = report || reportsSrv.getChoosenReport();
 			return !_.isUndefined(chosenReport) && !_.isEmpty(chosenReport) && chosenReport.display_export_button;
-		}; 
-		
+		};
+
 		$scope.exportCSV = function(report) {
 			var chosenReport = report || reportsSrv.getChoosenReport(),
 				loadPage = 1,
@@ -1925,6 +2016,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.totalCount = response.total_count || 0;
 				$scope.currCount = response.results ? response.results.length : 0;
 			};
+
 
 			var sucssCallback = function(response) {
 				var msg = '';
@@ -2227,9 +2319,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				my: 'left bottom',
 				at: 'right+20 bottom',
 				collision: 'flip'
-			}		
+			}
 		}, autoCompleteForCompTa);
-		
+
 
 
 
