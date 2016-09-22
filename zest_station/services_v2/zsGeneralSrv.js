@@ -27,7 +27,6 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 url = '/api/hotel_settings/kiosk';
 
             zsBaseWebSrv.getJSON(url).then(function(data) {
-                console.warn(data);
                 //fetch hotel theme and set variable to this controller,
                 //then resolve the fetch settings
                 that.fetchHotelTheme(data, deferred);
@@ -51,7 +50,6 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     theme = 'epik';
                 }
                 that.hotelTheme = theme.toLowerCase();
-                console.log('that.hotelTheme; ',that.hotelTheme);
                 resolveData.themeLogoPath = 'assets/zest_station/css/themes/'+that.hotelTheme+'/logo.svg';
                 //resolves this.fetchSetting()
                 deferred.resolve(resolveData);

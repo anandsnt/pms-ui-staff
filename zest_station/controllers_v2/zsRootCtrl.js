@@ -393,7 +393,7 @@ sntZestStation.controller('zsRootCtrl', [
 				return false;
 			}
 		};
-		$scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons) {
+		$scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
 			var iconBasePath = (!useCommonIcons ? iconsPath : commonIconsPath);
 
 			$scope.activeScreenIcon = 'bed';
@@ -428,6 +428,15 @@ sntZestStation.controller('zsRootCtrl', [
 					qr_arrow: iconBasePath + '/qr-arrow.svg'
 				}
 			};
+
+			if (diffHomeIconsOnly){
+				$scope.icons.url.checkin  = iconsPath + '/checkin.svg';
+				$scope.icons.url.checkout = iconsPath + '/checkout.svg';
+				$scope.icons.url.key 	  = iconsPath + '/key.svg';
+				if ($scope.zestStationData.theme !== 'epik'){
+					$scope.icons.url.logo 	  = iconsPath + '/logo-print.svg';	
+				}
+			};
 		};
 
 		/********************************************************************************
@@ -457,6 +466,11 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, false);
 			} else if (theme === 'fontainebleau') {
 				//nothing else
+			} else if (theme === 'epik'){
+				$scope.theme = theme;
+				$scope.iconsPath = '/assets/zest_station/css/icons/avenue';//uses the same home icons as avenue
+				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true);//last arg, is to only show different icons on Home, other icons use default
+
 			} else if (theme === 'conscious') {
 				$scope.theme = theme;
 				$scope.iconsPath = '/assets/zest_station/css/icons/conscious';
@@ -464,6 +478,7 @@ sntZestStation.controller('zsRootCtrl', [
 			} else {
 				$scope.iconsPath = commonIconsPath;
 			}
+
 		});
 
 		/********************************************************************************
