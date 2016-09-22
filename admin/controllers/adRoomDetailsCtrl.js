@@ -32,16 +32,18 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 		}
 	};
 
-	$scope.roomTypeChanged = function(value) { 
+	$scope.roomTypeChanged = function(value) {
+
+
 
 		var fetchSuccessOfComponentRooms = function(data){
-			$scope.$emit('hideLoader');	
-			// console.log(data.rooms)		
+			$scope.$emit('hideLoader');
+			// console.log(data.rooms)
 			angular.forEach(data,function(item) {
 				var roomData =_.findWhere($scope.data.room_types, {value: item.id});
-	
+
 				item.room_type_name = roomData.name;
-				item.selected_room_number = "";					          
+				item.selected_room_number = "";
 	        });
 	        $scope.availableComponentRooms = data;
 	        $scope.availableComponentRoomsArray = angular.copy($scope.availableComponentRooms);
@@ -60,12 +62,15 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 				var isNewTypeSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite,
 					isOldTypeSuite = _.findWhere($scope.data.room_types,{"value": $scope.selectedRoomTypeId}).is_suite
 				if (isNewTypeSuite && isOldTypeSuite) {
+
 					$scope.isSuite = true;
-					$scope.selectedRoomTypeId = $scope.data.room_type_id
+					$scope.selectedRoomTypeId = $scope.data.room_type_id;
+					if(oldRoomTypeId != value)
+						$scope.data.suite_rooms = [];
 				}
 				else if(isNewTypeSuite || isOldTypeSuite) {
 					var message = [];
-					if (isNewTypeSuite){					
+					if (isNewTypeSuite){
 						message = ["Regular room type cannot be changed to suite room type"];
 					}
 					else {
@@ -83,8 +88,10 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 				}
 			}
 			else{
+
+				$scope.data.suite_rooms = [];
 				$scope.isSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite;
-			
+
 				if($scope.isSuite){
 					$scope.invokeApi(ADRoomSrv.getComponentRoomTypes, {'suite_room_type_id': value}, fetchSuccessOfComponentRooms, fetchFailedOfComponentRooms);
 				}
@@ -120,22 +127,22 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
     $scope.deleteRoomNumber = function(index) {
 
     	var selectedRoomTypeIndex = _.findIndex($scope.availableComponentRooms, {"id": $scope.data.suite_rooms[index].room_type_id});
-    	
-    	if ($scope.editMode){ 
+
+    	if ($scope.editMode){
 
     		$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.push({"id": $scope.data.suite_rooms[index].id, "room_no": $scope.data.suite_rooms[index].room_number});
 
 	    } else {
-	    	
+
 
 	    	var selectedRoomIndex = _.findIndex($scope.availableComponentRoomsArray[selectedRoomTypeIndex].rooms, {"room_no": $scope.data.suite_rooms[index].room_number});
-			
+
 			$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.push($scope.availableComponentRoomsArray[selectedRoomTypeIndex].rooms[selectedRoomIndex]);
-		
+
 
 		}
 		$scope.data.suite_rooms.splice(index, 1);
-	
+
     };
 
 
@@ -143,20 +150,22 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 	* Success function of room details fetch
 	* Doing the operatios on data here
 	*/
+	var oldRoomTypeId = "";
 	var fetchSuccessOfRoomDetails = function(data){
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 		$scope.floors = data.floors;
 		$scope.roomNumber = $scope.data.room_number;
-		$scope.selectedRoomTypeId = data.room_type_id;
+		$scope.selectedRoomTypeId =  data.room_type_id;
+		oldRoomTypeId = $scope.selectedRoomTypeId;
 		$scope.roomTypeChanged(data.room_type_id);
-		if ($scope.editMode){ 
+		if ($scope.editMode){
 			angular.forEach($scope.data.suite_rooms,function(suiteRoomItem) {
 				var roomData =_.findWhere($scope.data.room_types, {value: suiteRoomItem.room_type_id});
-				suiteRoomItem.room_type_name = roomData.name;				
+				suiteRoomItem.room_type_name = roomData.name;
 			});
 		}
-		
+
 		/*
 		* adding the selected attribute on room feature here
 		* which will be used in template for adding class if it the selected attribute is true
@@ -343,11 +352,15 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 
 	$scope.selectedConfiguredRoom = function(selectedItem, roomTypeId, roomTypeName){
 
-		$scope.data.suite_rooms.push({'room_number':selectedItem, 'room_type_id': roomTypeId, "room_type_name" : roomTypeName});
+			if(selectedItem !== ""){
+				$scope.data.suite_rooms.push({'room_number':selectedItem, 'room_type_id': roomTypeId, "room_type_name" : roomTypeName});
 
-		var selectedRoomTypeIndex = _.findIndex($scope.availableComponentRooms, {id: roomTypeId});
-		$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.splice(_.findIndex($scope.availableComponentRooms[selectedRoomTypeIndex].rooms, {'room_no':selectedItem}), 1)
-	}
+				var selectedRoomTypeIndex = _.findIndex($scope.availableComponentRooms, {id: roomTypeId});
+				$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.splice(_.findIndex($scope.availableComponentRooms[selectedRoomTypeIndex].rooms, {'room_no':selectedItem}), 1)
+		     	$scope.availableComponentRooms[selectedRoomTypeIndex].selected_room_number = "";
+			}
+
+		}
 
 
 }]);

@@ -1311,6 +1311,7 @@
             &.deposit-reports,
             &.balance-reports,
             &.log-table,
+            &.action-manager-reports,
             &.card-authorization-check-reports {
                 th {
                     line-height: 35px;
@@ -1597,6 +1598,49 @@
                         }
                     }
                 }                    
+            }
+
+            &.action-manager-reports {
+                table-layout: fixed;
+
+                thead {
+                    th {
+                        &.department {
+                            width: 150px;
+                        }
+
+                        &.date {
+                            width: 100px;
+                        }
+
+                        &.status {
+                            width:120px;
+                        }
+
+                        &.guest {
+                            width:250px;
+                        }
+                    }
+                }
+                tr {
+
+                    td {
+
+                        .status {
+                            &.unassigned {
+                                color: @red;
+                            }
+
+                            &.assigned {
+                                color: @orangeStart;
+                            }
+
+                            &.completed {
+                                color: @green;
+                            }
+                        }
+                    }
+                }
             }
 
             &.log-reports {

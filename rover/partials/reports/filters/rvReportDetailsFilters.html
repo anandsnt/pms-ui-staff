@@ -148,7 +148,7 @@
                 </div>
             </div>
         </div>
-        
+
 
 
 
@@ -277,7 +277,7 @@
                 </div>
             </div>
         </div>
-        
+
 
 
 
@@ -438,6 +438,11 @@
         </div>
 
 
+        <multi-option-selection ng-show="uiChosenReport.hasDepartments && uiChosenReport.hasDepartments.data.length"
+            label="Department Assigned"
+            on-update="refreshFilterScroll"
+            data="uiChosenReport.hasDepartments.data"
+            options="uiChosenReport.hasDepartments.options"></multi-option-selection>
         <!-- item_13: Sort by -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.sortByOptions" ng-class="{'active': filterItemsToggle.item_13}" ng-click="toggleFilterItems('item_13')">
             <span class="title">Sort by</span>
@@ -544,6 +549,16 @@
                 options="chosenReport.hasRateFilter.options"></multi-option-selection>
         </div>
 
+        <!-- item_41: Rate Code -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasRateCodeFilter && chosenReport.hasRateCodeFilter.data.length" ng-class="{'active': filterItemsToggle.item_41}" ng-click="toggleFilterItems('item_41')">
+            <span class="title">Rates</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasRateCodeFilter && chosenReport.hasRateCodeFilter.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_41 }">
+            <multi-option-selection label="Rates"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasRateCodeFilter.data"
+                options="chosenReport.hasRateCodeFilter.options"></multi-option-selection>
+        </div>
 
 
         <!-- item_16: charge groups -->
@@ -635,7 +650,7 @@
             <span class="title">Campaign Type(s)</span>
         </a>
         <div class="report-col settings-content" ng-show="chosenReport.hasCampaignTypes && chosenReport.hasCampaignTypes.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_39 }">
-            <multi-option-selection 
+            <multi-option-selection
             label="Campaign Type(s)"
             on-update="refreshFilterScroll"
             report="chosenReport"
@@ -647,8 +662,8 @@
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasFloorList && chosenReport.hasFloorList.data.length" ng-class="{ 'active': filterItemsToggle.item_40 }" ng-click="toggleFilterItems('item_40')">
             <span class="title">Floor</span>
         </a>
-        <div class="report-col settings-content" ng-show="chosenReport.hasFloorList && chosenReport.hasFloorList.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_40 }">
-            <multi-option-selection 
+        <div class="report-col settings-content" ng-show="chosenReport.hasFloorList && chosenReport.hasFloorList.data.length" >
+            <multi-option-selection
             label="Floor"
             on-update="refreshFilterScroll"
             report="chosenReport"
@@ -694,7 +709,30 @@
                 label="URL(s)"
                 on-update="refreshFilterScroll"
                 data="chosenReport.hasURLsList.data"
-                options="chosenReport.hasURLsList.options"></multi-option-selection> 
+                options="chosenReport.hasURLsList.options"></multi-option-selection>
+        </div>
+
+
+        <!-- item_43: Completion Status -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasCompletionStatus && chosenReport.hasCompletionStatus.data.length" ng-class="{'active': filterItemsToggle.item_43}" ng-click="toggleFilterItems('item_43')">
+            <span class="title">Completion Status</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasCompletionStatus && chosenReport.hasCompletionStatus.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_43 }">
+            <multi-option-selection label="Completion Status"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasCompletionStatus.data"
+                options="chosenReport.hasCompletionStatus.options"></multi-option-selection>
+        </div>
+
+        <!-- item_44: Departments -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasDepartments && chosenReport.hasDepartments.data.length" ng-class="{'active': filterItemsToggle.item_44}" ng-click="toggleFilterItems('item_44')">
+            <span class="title">Departments</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasDepartments && chosenReport.hasDepartments.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_44 }">
+            <multi-option-selection label="Completion Status"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasDepartments.data"
+                options="chosenReport.hasDepartments.options"></multi-option-selection>
         </div>
 
     </div>

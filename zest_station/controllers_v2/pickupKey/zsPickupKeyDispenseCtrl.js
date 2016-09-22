@@ -258,8 +258,12 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
 
 		var initMakeKey = function() {
-			console.info('waiting on user to press make key, which will start key create here...')
-
+			if ($scope.zestStationData.keyWriter === 'websocket'){
+				$scope.remoteEncoding = false;
+				console.info('starting key create with Sankyo...');
+			} else {
+				console.info('waiting on user to press make key, which will start key create here...');
+			}
 			if ($scope.noOfKeysSelected === 1) {
 				$scope.mode = 'SOLO_KEY_CREATION_IN_PROGRESS_MODE';
 			} else if (noOfKeysCreated === 0) {

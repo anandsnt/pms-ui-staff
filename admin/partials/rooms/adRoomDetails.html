@@ -39,6 +39,7 @@
 							<label class="entry-list-label">{{componentRooms.room_type_name}} [Total configurable count: {{componentRooms.total_configurable_rooms}}]</label>
 							<div class="select entry-list-input">								
 								<select ng-change="selectedConfiguredRoom(componentRooms.selected_room_number, componentRooms.id, componentRooms.room_type_name )" ng-model="componentRooms.selected_room_number">
+									<option value="">Room No</option>
 									<option value="{{rooms.room_no}}" ng-repeat="rooms in componentRooms.rooms">{{rooms.room_no}}</option>		
 								</select>
 							</div>

@@ -55,16 +55,26 @@
             </div>
         </div>
         <div class="no-content" ng-show="isSameSelectedAndBussiness()">
-        <div class="info">
-        <span class="icon-no-content icon-settings"></span>
-        <strong class="h1">End of Day</strong>
-        <span class="h2">
-            This will close the business day for 
-            <strong class="red">{{businessDate | date : dateFormat}}</strong>
-            and change the business date to 
-            <strong class="green">{{nextBusinessDate | date : dateFormat}}</strong>
-        </span>
-            <button type="submit" class="button" ng-click="openEndOfDayPopup()" ng-class="{'green':!isBussinessDateChanging , 'grey':isBussinessDateChanging}" ng-disabled="isBussinessDateChanging">Start End Of Day</button>
+            <div class="info" ng-show="!isBussinessDateChanging">                
+                <span class="icon-no-content icon-alert" ng-show="isLastEodRunWithin18Hr()"></span>
+                <strong class="h1 alert" ng-show="isLastEodRunWithin18Hr()">Business Date has been changed {{lastEodRunInHours}} hours and {{lastEodRunInMinutes}} minutes ago</strong>
+                <!-- <span class="icon-no-content icon-settings"></span> -->
+                <strong class="h1" ng-hide="isLastEodRunWithin18Hr()">End of Day</strong>
+                <span class="h2">
+                    This will close the business day for 
+                    <strong class="red">{{businessDate | date : dateFormat}}</strong>
+                    and change the business date to 
+                    <strong class="green">{{nextBusinessDate | date : dateFormat}}</strong>
+                </span>
+                <button type="submit" class="button" ng-click="openEndOfDayPopup()" ng-class="getClassForEODButton()" ng-disabled="disableEODButton()">Start End Of Day</button>
+            </div>
+            <div class="info" ng-show="isBussinessDateChanging">
+                <strong class="h1" ng-hide="isLastEodRunWithin18Hr()">End of Day</strong>
+                <span class="h2">
+                    EOD is running, changing Business Date to                   
+                    <strong class="green">{{nextBusinessDate | date : dateFormat}}</strong>
+                </span>
+                <button type="submit" class="button green" ng-click="updateStatus()">Refresh</button>
             </div>
         </div>
     </div>

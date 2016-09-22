@@ -41,7 +41,7 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
       //   return searchRegExp.test(value.device_uid.toLowerCase()) || searchRegExp.test(value.application.toLowerCase()) || searchRegExp.test(value.device_type.toLowerCase());
    
       for(var key in value) {
-        if(value[key] != null && value[key] != "" && typeof value[key] != 'undefined' && searchRegExp.test(value[key].toLowerCase())){
+        if(value[key] != null && value[key] != "" && typeof value[key] == 'string' && searchRegExp.test((value[key]).toLowerCase())){
             return true;
         }
       }
@@ -129,7 +129,8 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
       $scope.selectedIndex = "";
     }else{
       $scope.selectedIndex = index;
-      $scope.selectedDevice = dclone(device, []);
+      $scope.selectedDevice = device;
+      $scope.selectedDevice.hours_log_enabled = $scope.selectedDevice.hours_log_enabled == "" ? 4 : $scope.selectedDevice.hours_log_enabled;
     }
       
   }
