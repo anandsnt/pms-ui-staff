@@ -609,9 +609,26 @@ sntRover.controller('roverController',
       }
     };
 
-      setTimeout(function() {
-          $scope.initiateCardReader();
-      }, 2000);
+
+
+    /*
+     * Start Card reader now!.
+     */
+    if ($rootScope.paymentGateway !== "sixpayments") {
+  		/* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
+       * desktopSwipeEnabled flag is true
+      */
+      if($rootScope.desktopSwipeEnabled && !rvUtilSrv.checkDevice.any()){
+        $rootScope.isDesktopUUIDServiceInvoked = true;
+  			initiateDesktopCardReader();
+  		}
+      else {
+       	//Time out is to call set Browser
+  			setTimeout(function() {
+  			  $scope.initiateCardReader();
+  			}, 2000);
+  		}
+    }
 
     //If desktopSwipe is not enabled, we have to invoke the desktopUUID service like below
     if(!$rootScope.isDesktopUUIDServiceInvoked &&  !rvUtilSrv.checkDevice.any()) {

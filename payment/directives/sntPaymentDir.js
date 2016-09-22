@@ -10,6 +10,8 @@ sntPay.directive('sntPayment', function() {
             postingAccountId: '=?',
             billId: '=?',
             accountId:'@',
+            groupId: '@',
+            allotmentId: '@',
             guestId: '@',
             billNumber: '=',
             amount: '=',//amount to pay

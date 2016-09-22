@@ -266,6 +266,9 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                         params["guest_id"] = $scope.guestId;
                     }
                     params["reservation_id"] = $scope.reservationId;
+                    params["account_id"] = $scope.accountId;
+                    params["group_id"] = $scope.groupId;
+                    params["allotment_id"] = $scope.allotmentId;
                 }
 
                 $scope.$broadcast('INITIATE_CHIP_AND_PIN_TOKENIZATION', params);
@@ -309,6 +312,11 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 }, errorMessage => {
                     $scope.$emit('ERROR_OCCURED', errorMessage);
                 });
+            } else if (!!$scope.accountId || !!$scope.groupId || !!$scope.allotmentId) {
+                $scope.$emit('SUCCESS_LINK_PAYMENT', {
+                    selectedPaymentType: $scope.selectedPaymentType,
+                    cardDetails: $scope.selectedCC
+                });
             } else if (!!$scope.payment.tokenizedCardData && !!$scope.payment.tokenizedCardData.apiParams.mli_token) {
                 // NOTE: credit card is selected and coming through swipe
                 sntPaymentSrv.savePaymentDetails({
@@ -342,11 +350,6 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     });
                 }, errorMessage => {
                     $scope.$emit('ERROR_OCCURED', errorMessage);
-                });
-            } else if (!!$scope.accountId) {
-                $scope.$emit('SUCCESS_LINK_PAYMENT', {
-                    selectedPaymentType: $scope.selectedPaymentType,
-                    cardDetails: $scope.selectedCC
                 });
             }
         };
@@ -666,6 +669,9 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     $scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;
 
                     $scope.payment.screenMode = "PAYMENT_MODE";
+
+                    $scope.$emit("PAYMENT_SAVE_CARD_SUCCESS");
+
                     calculateFee();
                     showAddtoGuestCardBox();
                 }, onSaveFailure = function(errorMessage) {
@@ -674,6 +680,12 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
             if (!!$scope.accountId) {
                 params["account_id"] = $scope.accountId;
+            }
+            if (!!$scope.groupId) {
+                params["group_id"] = $scope.groupId;
+            }
+            if (!!$scope.allotmentId) {
+                params["allotment_id"] = $scope.allotmentId;
             }
 
             sntPaymentSrv.savePaymentDetails(params).then(function(response) {
