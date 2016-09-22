@@ -468,7 +468,7 @@ sntZestStation.controller('zsRootCtrl', [
 				//nothing else
 			} else if (theme === 'epik'){
 				$scope.theme = theme;
-				$scope.iconsPath = '/assets/zest_station/css/icons/avenue';//uses the same home icons as avenue
+				$scope.iconsPath = '/assets/zest_station/css/icons/epik';//uses the same home icons as avenue
 				$scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true);//last arg, is to only show different icons on Home, other icons use default
 
 			} else if (theme === 'conscious') {
