@@ -374,6 +374,25 @@
         }
 
         &.find-user { width: auto; }
+
+        .autocomplete-result {
+            position: relative;
+            padding: 10px 20px 10px 20px;
+            font-size: 18px;
+            line-height: 30px;
+            font-weight: 600;
+            color: @textColor;
+            .show;
+
+            .highlight { color: @logoPrimary; }
+ 
+            .location {
+                display: block;
+                font-size: 12px;
+                font-weight: normal;
+                line-height: 14px;
+            } 
+        }
     }
 
     .ui-helper-hidden-accessible { .hide; }
