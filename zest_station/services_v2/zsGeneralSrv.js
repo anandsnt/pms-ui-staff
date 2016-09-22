@@ -47,7 +47,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     theme = (hotelDetails && hotelDetails.name).toLowerCase();
                 }
                 if (!that.isThemeConfigured(theme)){
-                    theme = 'epik';
+                    theme = 'snt';
                 }
                 that.hotelTheme = theme.toLowerCase();
                 resolveData.themeLogoPath = 'assets/zest_station/css/themes/'+that.hotelTheme+'/logo.svg';
