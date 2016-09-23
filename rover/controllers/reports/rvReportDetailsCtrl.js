@@ -93,7 +93,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 				headers         = $scope.$parent.headers,
 				subHeaders      = $scope.$parent.subHeaders,
 				results         = $scope.$parent.results,
-				resultsTotalRow = $scope.$parent.resultsTotalRow;
+				resultsTotalRow = $scope.$parent.resultsTotalRow,
+				totalCount      = $scope.$parent.totalCount;
 
 
 			$scope.chosenReport = reportsSrv.getChoosenReport();
@@ -490,7 +491,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 						'revenue' : totals[1]['value']
 					};
 					break;
-
 				default:
 					// no op
 			};
