@@ -232,6 +232,7 @@
 					</span>
 				</td>
 				<td class="description">
+					<strong ng-repeat="description in feesData.description">{{description.item_description}}</strong>
 					<span ng-repeat="description in feesData.description" class="charge" ng-class="{ 'icons edited' : feesData.is_description_edited }">
 						{{description.fees_desc}}
 						<br />
