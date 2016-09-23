@@ -763,16 +763,21 @@ sntRover.controller('RVroomAssignmentController',[
 			};
 
 		//Iterating each room for filter.
-		rooms.forEach(function(room){
+		rooms.forEach(function (room) {
 			var isRoomIncluded = false;
+			var isReady = room.room_status === "READY";
+			var isVacant = room.fo_status === "VACANT";
+			var isPreassigned = room.is_preassigned;
+			var isLocked = room.donot_move_room;
+
 			//Checking whether the room is to be displyed.
-			if(room.room_status === "READY" && room.fo_status === "VACANT" && !room.is_preassigned){
-				if(room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED"){
+			if (isReady && isVacant && !isPreassigned && !isLocked) {
+				if (room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED") {
 					isRoomIncluded = true;
-				}else if(room.checkin_inspected_only === "false"){
+				} else if (room.checkin_inspected_only === "false") {
 					isRoomIncluded = true;
-				};
-			};
+				}
+			}
 
 			// CICO-9063, CICO-30640 show rooms regardless of hk status (excluded ooo) for future reservations.
 			if($scope.reservationData.reservation_card.reservation_status === 'RESERVED' && !room.is_preassigned){
@@ -862,6 +867,11 @@ sntRover.controller('RVroomAssignmentController',[
 				$scope.rooms[i].room_features.push(-101);
 			}
 			if($scope.rooms[i].is_preassigned) {
+				$scope.rooms[i].room_features.push(-102);
+			}
+			// CICO-34005: show locked rooms only if this filter is on.
+			// even if it is shown user will not be able to assign
+			if($scope.rooms[i].donot_move_room) {
 				$scope.rooms[i].room_features.push(-102);
 			}
 			if($scope.rooms[i].fo_status === "VACANT" && $scope.rooms[i].room_ready_status === "CLEAN" && $scope.rooms[i].checkin_inspected_only === "true")
