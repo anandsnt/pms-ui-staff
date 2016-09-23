@@ -44,6 +44,7 @@ module.exports = {
 
 				roverRoot + 'filters/roundFilter.js',
 				roverRoot + 'filters/highlightWordsFilter.js',
+				roverRoot + 'filters/rvTrustAsResourceUrl.js',
 
 				controllerRoot + 'rvTopCtrl.js',
 				controllerRoot + 'rvRoverController.js',
