@@ -265,10 +265,18 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     if ($scope.actionType === "ADD_PAYMENT_STAY_CARD") {
                         params["guest_id"] = $scope.guestId;
                     }
-                    params["reservation_id"] = $scope.reservationId;
-                    params["account_id"] = $scope.accountId;
-                    params["group_id"] = $scope.groupId;
-                    params["allotment_id"] = $scope.allotmentId;
+                    if (!!$scope.reservationId) {
+                        params["reservation_id"] = $scope.reservationId;
+                    }
+                    if (!!$scope.accountId) {
+                        params["account_id"] = $scope.accountId;
+                    }
+                    if (!!$scope.groupId) {
+                        params["group_id"] = $scope.groupId;
+                    }
+                    if (!!$scope.allotmentId) {
+                        params["allotment_id"] = $scope.allotmentId;
+                    }
                 }
 
                 $scope.$broadcast('INITIATE_CHIP_AND_PIN_TOKENIZATION', params);
