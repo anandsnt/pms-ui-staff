@@ -179,3 +179,8 @@
     <!-- Hide if not showing Group -->
     <li>Total Deposit Balance<span class="green">{{summaryCounts.total_deposit_balance | currency:currencySymbol:2 }}</span></li>
 </ul>
+<!-- Web check in -->
+<ul ng-if="isThisReport( 'ACTIONS_MANAGER' )" class="totals">
+    <li>Total Actions<span>{{ totalCount}}</span></li>
+
+</ul>
