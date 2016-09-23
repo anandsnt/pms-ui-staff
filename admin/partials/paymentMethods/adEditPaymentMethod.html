@@ -10,12 +10,12 @@
 				<ad-checkbox is-disabled="editData.value == 'CC'" is-checked="editData.is_offline" label="{{ 'OFFLINE' | translate}}" div-class="full-width"></ad-checkbox>
 			</div>
 			<ad-dropdown ng-if="!editData.isEditCC" list="data.reservation_types" selected-id='editData.linked_reservation_type_id' selbox-class="placeholder" div-class="full-width" label="{{'LINKED_RESERVATION_TYPE' | translate}}"></ad-dropdown>
-			
+
 			<!-- the ad-dropdown directive is using ng-repeat, which
 			    has to be changed to ng-options. Now editing directive will be a bad idea as it may break existing dropdowns.So adding entire tags for dropdown for now
 		     -->
 			<div class='entry full-width'  ng-if="editData.is_cc && editData.allow_cc_processors_per_payment_methods">
-			  <label>{{'CREDIT_CARD_PROCESSOR' | translate}}</label>			  
+			  <label>{{'CREDIT_CARD_PROCESSOR' | translate}}</label>
 			  <div class='select'>
 			    <select  ng-options="row.value as row.name for row in data.custom_cc_processors" ng-model="editData.custom_cc_processor_id">
 			    </select>
@@ -31,6 +31,7 @@
 			<ad-checkbox is-disabled="editData.value == 'CC'" is-checked="editData.is_web_only" label="{{ 'WEB_ONLY' | translate}}" div-class="full-width" change="webOnlyChanged()"></ad-checkbox>
 
 			<ad-checkbox is-disabled="editData.value == 'CC'" is-checked="editData.is_display_reference" label="{{ 'DISPLAY_REFERENCE' | translate}}" div-class="full-width"></ad-checkbox>
+			<ad-checkbox is-disabled="editData.value == 'CC'" is-checked="editData.allow_post_with_no_credit" label="{{ 'ALLOW_POST_WITH_NO_CREDIT' | translate}}" div-class="full-width"></ad-checkbox>
 		</fieldset>
 		<div class='actions float'>
 			<button class='button blank edit-data-inline' id='cancel' type='button' ng-click="clickCancel()" translate>

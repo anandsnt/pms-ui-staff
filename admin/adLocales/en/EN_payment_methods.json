@@ -7,4 +7,5 @@
 	"ROVER_ONLY":"Rover Payments Only",
 	"WEB_ONLY":"Web Payments Only",
 	"DISPLAY_REFERENCE":"Display Reference",
-	"CREDIT_CARD_PROCESSOR": "Custom Credit Card Processor"
+	"CREDIT_CARD_PROCESSOR": "Custom Credit Card Processor",
+    "ALLOW_POST_WITH_NO_CREDIT": "Allow post with no credit"
