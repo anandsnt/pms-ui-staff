@@ -93,7 +93,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 				headers         = $scope.$parent.headers,
 				subHeaders      = $scope.$parent.subHeaders,
 				results         = $scope.$parent.results,
-				resultsTotalRow = $scope.$parent.resultsTotalRow;
+				resultsTotalRow = $scope.$parent.resultsTotalRow,
+				totalCount      = $scope.$parent.totalCount;
 
 
 			$scope.chosenReport = reportsSrv.getChoosenReport();
@@ -238,6 +239,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 				case reportNames['ACTIONS_MANAGER']:
                     $scope.isActionsManager = true;
+                    setTotalsForReport(totalCount);//refreshes Totals
 					break;
 
 				default:
@@ -489,6 +491,14 @@ sntRover.controller('RVReportDetailsCtrl', [
 						'rooms'   : totals[0]['value'],
 						'revenue' : totals[1]['value']
 					};
+					break;
+				case reportNames['ACTIONS_MANAGER']:
+					// $scope.$parent.summaryCounts = {
+					// 	'rooms'   : totals[0]['value'],
+					// 	'revenue' : totals[1]['value']
+					// };
+					console.log("----")
+					console.log(totals)
 					break;
 
 				default:
