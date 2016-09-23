@@ -53,7 +53,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                         ...payLoad,
                         "bill_number": $scope.billNumber,
                         "payment_type": $scope.selectedPaymentType,
-                        "amount": $scope.payment.amount,
+                        "amount": $scope.payment.amount.toString().replace(/,/g,""),
                         "is_split_payment": $scope.splitBillEnabled && $scope.numSplits > 1,
                         "workstation_id": $scope.hotelConfig.workstationId
                     },
@@ -137,7 +137,9 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          * @returns {boolean}
          */
         $scope.shouldHidePaymentButton = function() {
-            return !$scope.selectedPaymentType || !$scope.hasPermission || $scope.isGCBalanceShort();
+            return !$scope.splitBillEnabled && (!$scope.selectedPaymentType || !$scope.hasPermission ||
+                $scope.isGCBalanceShort() ||
+                ($scope.paymentAttempted && !$scope.isPaymentFailure));
         };
 
         /**
@@ -159,7 +161,9 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          */
         var showAddtoGuestCardBox = function() {
             //this need to be set to true only if new card is added
-            $scope.payment.showAddToGuestCard = true;
+            if (!!$scope.reservationId) {
+                $scope.payment.showAddToGuestCard = true;
+            }
         };
 
         /**

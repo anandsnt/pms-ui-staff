@@ -377,10 +377,12 @@ sntRover.controller('RVDepositBalanceCtrl', [
 
         $scope.$on("PAYMENT_SUCCESS", function(event, data) {
             onPaymentSuccess(data);
+            refreshPaymentScroll();
         });
 
         $scope.$on("PAYMENT_FAILED", function(event, errorMessage) {
             onPaymentFailure(errorMessage);
+            refreshPaymentScroll();
         });
 
         //Listen to swipe events

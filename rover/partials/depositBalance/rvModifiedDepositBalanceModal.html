@@ -123,39 +123,22 @@
 					<snt-payment
 							hotel-config="hotelPaymentConfig"
 							reservation-id="{{reservationData.reservation_card.reservation_id}}"
+                            bill-id="depositBalanceData.primary_bill_id"
 							bill-number="billNumber"
 							payment-types="passData.details.paymentTypes"
 							selected-payment-type="depositBalanceMakePaymentData.payment_type"
 							selected-c-c="depositDetails.attached_card"
 							amount='depositBalanceMakePaymentData.amount'
-							action-type="DEPOSIT_BALANCE_STAYCARD"
+							action-type="DEPOSIT_BALANCE_PAYMENT"
 							deposit-policy-name="{{depositPolicyName}}"
 							workstation-id = "{{workstation_id}}"
 							is-editable='isDepositEditable'
 							is-rate-suppressed='isReservationRateSuppressed'
 							has-permission='hasPermissionToMakePayment()'
-							form-template-url='/assets/partials/staycard/rvStaycardDepositBalancePopup.html'
+							form-template-url='/assets/partials/payment/rvDepositBalancePartial.html'
 							first-name="{{passData.details.firstName}}"
-							last-name="{{passData.details.lastName}}"
-							ng-show="!errorOccured && !depositPaidSuccesFully">
+							last-name="{{passData.details.lastName}}">
 					</snt-payment>
-				<!-- Reference field - use only when it exsits -->
-			     <div class="feedback no-top-border" ng-show="shouldShowMakePaymentScreen && depositPaidSuccesFully">
-	                <div class="notice success">Deposit paid!</div>
-	                <ul class="transaction">
-	                    <li ng-hide="authorizedCode.length === 0">
-	                        Your Authorize code is: <span class="auth" >{{authorizedCode}}</span>
-	                    </li>
-	                    <li ng-if="isShowFees()">
-                        Amount paid: <span class="value">{{currencySymbol}}{{depositBalanceMakePaymentData.amount | number:2 }} + {{currencySymbol}}{{feeData.calculatedFee}} fee
-                        </span>
-	                    </li>
-	                    <li ng-if="!isShowFees()">
-	                        Amount paid: <span class="value">{{currencySymbol}}{{depositBalanceMakePaymentData.amount | number:2 }}
-	                        </span>
-	                    </li>
-	                </ul>
-	            </div>
                 </div>
 			</div>
 		</fieldset>
