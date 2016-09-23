@@ -244,7 +244,7 @@ angular.module('reportsModule')
             };
 
             // if filter value is either of these, must include when report submit
-            if ( report['title'] == reportNames['FORECAST_GUEST_GROUPS'] ) {
+            if ( report['title'] == reportNames['FORECAST_GUEST_GROUPS'] && filter.value === 'EXCLUDE_NON_GTD' ) {
                 selected = true;
             };
 
