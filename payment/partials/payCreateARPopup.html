@@ -1,0 +1,41 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <form class="modal-content form new-content">
+        <strong class="h2 message ng-scope" translate>AR_ACCOUNT_NIL</strong>
+        <section ng-hide="showARNumberInput">
+            <div class="ng-scope" ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div class="modal-content form warning ar-popup-content">
+                <label class="ng-scope" translate>AR_ACCOUNT_NOT_CREATED</label>
+                <!-- <strong class="ng-scope" translate>AR_ACCOUNT_NOT_CREATED</strong> -->
+            </div>
+            <div class="actions float">
+                <button class="button blank modal-close" ng-click="closeThisDialog()" type="button"
+                        translate>CANCEL
+                </button>
+                <button class="button green modal-close" ng-click="onClickCreate()"
+                        type="button" translate>
+                    CREATE_AR_ACCOUNT
+                </button>
+            </div>
+        </section>
+        <section ng-show="showARNumberInput">
+            <div class="ng-scope" ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div class="entry full-width">
+                <label class="ng-scope" translate>
+                    ENTER_AR_ACCOUNT_NUMBER
+                </label>
+                <input type="text" name="ar-account-no"
+                       placeholder="{{ENTER_AR_ACCOUNT_NUMBER | translate}}" value="" ng-model="ar_number">
+            </div>
+            <div class="actions float">
+                <button class="button blank modal-close ng-scope" ng-click="cancelButtonClick()"
+                        type="button" translate>
+                    CANCEL
+                </button>
+                <button class="button green modal-close ng-scope" ng-click="createAccountReceivable()"
+                        type="button" translate>
+                    CREATE
+                </button>
+            </div>
+        </section>
+    </form>
+</div>
