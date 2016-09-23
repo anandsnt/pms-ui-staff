@@ -65,18 +65,18 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
         return that.ws;
     };
 
-    this.returnWebSocketObject = function(){
+    this.returnWebSocketObject = function() {
         return that.ws;
     };
 
-    this.closeWebSocket = function(){
+    this.closeWebSocket = function() {
         that.ws.close();
     };
 
     console.info('--> Connecting WebSocket...');
     setTimeout(function() {
-        console.info('[:: Connecting ... .. .  ::]');
-        that.connect();
-    },
-    wsConfig['connect_delay']);
+            console.info('[:: Connecting ... .. .  ::]');
+            that.connect();
+        },
+        wsConfig['connect_delay']);
 }

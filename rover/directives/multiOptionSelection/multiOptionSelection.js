@@ -22,14 +22,6 @@ sntRover
 					$timeout($scope.onUpdate, 150);
 				};
 
-				$scope.toggleSelectAll = function() {
-					var options = $scope.options || {};
-					options.selectAll = ! options.selectAll;
-
-					updateData( 'selected', options.selectAll );
-					updateSelectedValue();
-				};
-
 				$scope.clearSearch = function() {
 					$scope.search = '';
 					$scope.onSearchChange();
@@ -49,18 +41,51 @@ sntRover
 					});
 				};
 
+				$scope.toggleSelectAll = function() {
+					var options = $scope.options || {};
+					options.selectAll = ! options.selectAll;
+
+					updateData( 'selected', options.selectAll );
+					updateSelectedValue();
+				};
+
 				$scope.toggleSelection = function(item) {
+					var options = $scope.options || {};
+
 					item.selected = ! item.selected;
 
-					// if item got selected and only single select is set
+					// if in this set any one item can be choosen at a time
+					var isSingleSelect = function() {
+						return item.selected && !! options.singleSelect
+					};
+
+					// if in this set if a particular item is selected, that should only be selected
+					var isSelectiveSingleSelect = function() {
+						return item.selected && (options.selectiveSingleSelectKey === item.id)
+					};
+
+					var checkUnselectSelectiveSingleSelect = function() {
+						var thatItem;
+
+						if ( !! options.selectiveSingleSelectKey ) {
+							thatItem = _.find($scope.data, { id: options.selectiveSingleSelectKey });
+							thatItem.selected = false;
+						}
+					}
+
 					// unselect others
-					var options = $scope.options || {};
-					if ( item.selected && options.singleSelect ) {
+					var unSelectOthers = function() {
 						_.each($scope.data, function(each) {
 							if(each.id !== item.id) {
 								each.selected = false;
 							}
 						});
+					};
+
+					if ( isSingleSelect() || isSelectiveSingleSelect() ) {
+						unSelectOthers();
+					} else {
+						checkUnselectSelectiveSingleSelect();
 					}
 
 					updateSelectedValue();

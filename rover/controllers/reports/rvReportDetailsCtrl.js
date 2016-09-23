@@ -84,7 +84,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                     }
                     totalsForReport.push(v);
                   });
-                $scope.resultsTotalRow = totalsForReport;  
+                $scope.resultsTotalRow = totalsForReport;
         };
 
 		// common methods to do things after fetch report
@@ -114,6 +114,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isBalanceReport = false;
 			$scope.isDepositBalanceReport = false;
 			$scope.isCancellationReport = false;
+			$scope.isActionsManager = false;
 
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
@@ -235,6 +236,9 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.hasNoTotals = false;
                     setTotalsForReport(totals);//refreshes Totals
 					break;
+				case reportNames['ACTIONS_MANAGER']:
+                    $scope.isActionsManager = true;
+					break;
 
 				default:
 					break;
@@ -277,6 +281,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['IN_HOUSE_GUEST']:
 				case reportNames['DEPOSIT_REPORT']:
 				case reportNames['RESERVATIONS_BY_USER']:
+					$scope.leftColSpan = 3;
+					$scope.rightColSpan = 3;
+					break;
 				case reportNames['ZEST_CAMPAIGN_REPORT']:
 				case reportNames['ADDON_FORECAST']:
 					$scope.leftColSpan = 3;
@@ -763,6 +770,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 				// FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT report row
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
 					template = '/assets/partials/reports/financialTransactionsAdjustmentReport/reportRow.html';
+					break;
+
+				case reportNames['ACTIONS_MANAGER']:
+					template = '/assets/partials/reports/actionManager/reportRow.html';
 					break;
 
 				// Default report row

@@ -83,26 +83,11 @@
                         jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'dragStart()', onStop:'dragDrop()', onDrag:'userDragging()'}"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task'}">
                         <div class="info">
-                            <!-- To Do: Improve this logic/move to controller -->
-                            <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Due out'">DUE OUT</span>
-                            <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Arrived / Day use / Due out'">DUE OUT</span>
-                            <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Arrived / Day use / Due out / Departed'">DEPARTED</span>
-                            <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Due out / Arrival'">DUE OUT</span>
-                            <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Due out / Departed'">DEPARTED</span>
-                            <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Arrived / Departed'">DEPARTED</span>
-                            <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Departed'">OUT</span>
-                            <span class="guest blue" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Stayover'">STAYOVER</span>
-                            <span class="guest green" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Arrival'">ARRIVAL</span>
-                            <span class="guest green" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Arrived'">IN</span>
-                            <span class="guest grey" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Not Reserved'">UNASSIGNED</span>
-                            <!-- Grey for unassigned or not reserved, red for out or checkout time, blue for stayover -->
-                            <span class="room" ng-class="{
-                                            'red': multiSheetState.allRooms[room.room_index].current_status == 'DIRTY',
-                                            'orange': multiSheetState.allRooms[room.room_index].current_status == 'PICKUP',
-                                            'green' : multiSheetState.allRooms[room.room_index].current_status == 'CLEAN' ||
-                                             multiSheetState.allRooms[room.room_index].current_status == 'INSPECTED'}">
-                            {{multiSheetState.allRooms[room.room_index].current_status}}</span>
-                            <!-- Red for dirty, orange for pickup, green for clean or inspected -->
+                            <span ng-class="getReservationStatusClass(multiSheetState.allRooms[room.room_index])"
+                                ng-bind="getReservationStatusValue(multiSheetState.allRooms[room.room_index])"></span>
+                            <span ng-class="getCurrentStatusClass(multiSheetState.allRooms[room.room_index])">
+                                {{ multiSheetState.allRooms[room.room_index].current_status }}
+                            </span>
                         </div>
                         <h3>
                             <span class="icons icon-suite" ng-if="multiSheetState.allRooms[room.room_index].is_suite">Suite room</span>
@@ -161,10 +146,11 @@
                     data-drop="true"
                     jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}"
                     data-jqyoui-options="{accept: '#assigned-rooms .worksheet-task, #unassigned-rooms .worksheet-task'}"
-                    ng-iscroll="assignedRoomList-{{$index}}"> <!-- Vertical scroll here -->
+                    ng-iscroll="assignedRoomList-{{$index}}"
+                >
                     <div class="wrapper">
                         <ul class="worksheet-room"
-                            ng-repeat="(roomIndex, room) in employee.rooms">
+                            ng-repeat="(roomIndex, room) in employee.rooms track by $index">
                             <li class="worksheet-task"
                                 id="assigned-{{ empIndex }}-{{ roomIndex }}-{{ $index }}"
                                 iscroll-stop-propagation
@@ -176,25 +162,9 @@
                                 data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content .for-lone-task', cancel: '.completed-task'}"
                                 emit-when="{event: 'ALL_RENDER_COMPLETE', condition: ($parent.$parent.$last && $parent.$last && $last)}">
                                 <div class="info">
-                                    <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Due out'">DUE OUT</span>
-                                    <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Arrived / Day use / Due out'">DUE OUT</span>
-                                    <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Arrived / Day use / Due out / Departed'">DEPARTED</span>
-                                    <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Due out / Arrival'">DUE OUT</span>
-                                    <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Due out / Departed'">DEPARTED</span>
-                                    <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Arrived / Departed'">DEPARTED</span>
-                                    <span class="guest red" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Departed'">OUT</span>
-                                    <span class="guest blue" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Stayover'">STAYOVER</span>
-                                    <span class="guest green" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Arrival'">ARRIVAL</span>
-                                    <span class="guest green" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Arrived'">IN</span>
-                                    <span class="guest grey" ng-if="multiSheetState.allRooms[room.room_index].reservation_status == 'Not Reserved'">UNASSIGNED</span>
-                                    <!-- Grey for unassigned or not reserved, red for out or checkout time, blue for stayover -->
-                                    <span class="room" ng-class="{
-                                                    'red': multiSheetState.allRooms[room.room_index].current_status == 'DIRTY',
-                                                    'orange': multiSheetState.allRooms[room.room_index].current_status == 'PICKUP',
-                                                    'green' : multiSheetState.allRooms[room.room_index].current_status == 'CLEAN' ||
-                                                     multiSheetState.allRooms[room.room_index].current_status == 'INSPECTED'}">
-                                    {{multiSheetState.allRooms[room.room_index].current_status}}</span>
-                                    <!-- Red for dirty, orange for pickup, green for clean or inspected -->
+                                    <span ng-class="getReservationStatusClass(multiSheetState.allRooms[room.room_index])"
+                                        ng-bind="getReservationStatusValue(multiSheetState.allRooms[room.room_index])"></span>
+                                    <span ng-class="getCurrentStatusClass(multiSheetState.allRooms[room.room_index])">{{ multiSheetState.allRooms[room.room_index].current_status }}</span>
                                 </div>
                                 <h3>
                                     <span class="icons icon-suite" ng-if="multiSheetState.allRooms[room.room_index].is_suite">Suite room</span>
