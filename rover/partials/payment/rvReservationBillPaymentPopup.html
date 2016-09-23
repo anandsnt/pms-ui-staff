@@ -98,6 +98,11 @@
                     completed-split-payments="splitePaymentDetail.completedSplitPayments"
                     ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
+            <div class="actions" ng-hide="!depositPaidSuccesFully">
+                <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="closeDialog()" translate>
+                    CLOSE
+                </button>
+            </div>
         </div>
     </form>
 

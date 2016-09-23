@@ -87,8 +87,3 @@
         REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }} ({{ completedSplitPayments + 1}}/{{ numSplits }})
     </button>
 </div>
-<div class="actions" ng-hide="!depositPaidSuccesFully">
-    <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="closeThePopup()" translate>
-        CLOSE
-    </button>
-</div>
