@@ -53,5 +53,7 @@ angular.module('reportsModule')
         'ORIGIN_VALUES'          : 'origin',
         'ORIGIN_URLS'            : 'urls',
         'CAMPAIGN_TYPES'         : 'campaign_types',
-        'FLOOR'           : 'floor'
+        'FLOOR'           : 'floor',
+        'ASSIGNED_DEPARTMENTS' : 'assigned_departments',
+        'COMPLETION_STATUS' : 'status'
     });

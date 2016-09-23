@@ -10,7 +10,7 @@
 
 <div ng-hide="hasNoResults" id="report-content" class="report-content scrollable" ng-class="{ 'no-totals': hasNoTotals, 'no-sorting': hasNoSorting, 'with-pagination': (!disablePrevBtn || !disableNextBtn) }" ng-iscroll="report-details-scroll">
     <div class="wrapper">
-        <table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport, 'transaction-reports': isTransactionReport, 'deposit-reports': isDepositReport, 'condensed-print': isCondensedPrint, 'balance-reports': isBalanceReport, 'cancellation-report': isCancellationReport}">
+        <table ng-class="{ 'guest-reports': isGuestReport, 'large-grid': isLargeReport, 'log-reports': isLogReport, 'transaction-reports': isTransactionReport, 'deposit-reports': isDepositReport, 'condensed-print': isCondensedPrint, 'balance-reports': isBalanceReport, 'cancellation-report': isCancellationReport, 'action-manager-reports' : isActionsManager}">
             <!-- Reports table header -->
             <thead ng-if="!!headers.length">
                 <tr>
@@ -44,7 +44,7 @@
                     "sorting-desc" when DESC sorting -->
                 <tr>
                     <th ng-repeat="sortBy in chosenReport.sortByOptions track by $index" class="{{ sortBy.description | lowercase }}" colspan="{{ sortBy.colspan }}">
-                        <span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)">{{ sortBy.description }}</span>
+                        <span class="sort" ng-class="{'sorting-asc': (sortBy.sortDir === true), 'sorting-desc': (sortBy.sortDir === false)}" ng-click="sortResultBy(sortBy)">{{sortBy.sortDir}}{{ sortBy.description }}</span>
                     </th>
                 </tr>
             </thead>
