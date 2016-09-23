@@ -60,6 +60,12 @@
                 Save
             </button>
         </div>
+        <div class="entry date" ng-show="shouldShowRoomBlockActions()">
+            <label for="allotment-start-view" translate>GO_TO_DATE</label>
+            <input id="allotment-start-date" class="datepicker"
+                ui-date="timeLineStartDateOptions"
+                rv-set-textbox-value listen-this="timeLineStartDate | date:dateFormat" readonly />
+        </div>
         <div class="entry" ng-class="{'hidden': shouldHideRoomsAndPickUpArea()}">
             <!-- Add class "hidden" to hide when it's a new group and/or start & end dates have not been defined -->
             <label for="group-total-rooms" translate>TOTAL_ROOMS</label>
@@ -89,6 +95,13 @@
     </div>
     <div id="group-room-block-content" class="tab-details">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <!-- Load next 14 days, remove class "hidden" when user reaches end of horizontal scroll -->
+        <button type="button" class="next-dates"
+            ng-class="{ 'hidden': !shouldShowLoadNextSetButton() }"
+            ng-click="fetchNextSetOfRoomBlockData()">
+            {{'GROUP_NEXT_SET' | translate}}
+            <span class="has-arrow next-view"></span>
+        </button>
         <!-- If new group and/or room block have not been set: -->
         <div class="no-content" ng-hide="shouldHideAddRoomsButton()">
             <div class="info">

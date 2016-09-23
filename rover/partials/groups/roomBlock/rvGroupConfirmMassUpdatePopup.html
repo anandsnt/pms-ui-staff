@@ -1,0 +1,28 @@
+<div id="modal" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <div class="modal-content form new-worksheet">
+        <button id="modal-close" type="button" ng-click="closeDialog()" class="modal-close"><span class="icons icon-close invert"></span></button>
+        <span class="message h2" translate>SELECT_END_DATE</span>
+        <span class="notice" ng-if="overBookingMessage !=''" translate>
+            {{overBookingMessage | translate}}
+        </span>
+        <div class="entry full-width has-datepicker">
+            <input id="end-date" class="datepicker"
+                ui-date="massUpdateEndDateOptions"
+                rv-set-textbox-value listen-this="massUpdateEndDate | date:dateFormat" readonly />
+        </div>
+        <div class="actions">
+            <button type="button" class="button"
+                ng-click="clickedOnMassUpdateSaveButton(ngDialogData)"
+                ng-disabled="disableButtons"
+                ng-class="{ 'grey': disableButtons,
+                            'green': !disableButtons
+                          }"
+                translate>SAVE
+            </button>
+            <button type="button" class="button blank"
+                ng-click="closeDialog()"
+                translate>CANCEL
+            </button>
+        </div>
+    </div>
+</div>
