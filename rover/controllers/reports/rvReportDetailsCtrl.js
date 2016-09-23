@@ -239,7 +239,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 				case reportNames['ACTIONS_MANAGER']:
                     $scope.isActionsManager = true;
-                    setTotalsForReport(totalCount);//refreshes Totals
 					break;
 
 				default:
