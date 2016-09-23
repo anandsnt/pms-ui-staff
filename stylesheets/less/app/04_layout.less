@@ -3089,41 +3089,97 @@ body { overflow: hidden; }
 /* Release Notes            ==============================*/
 @media not print {
     .has-release-notes {
+        padding-bottom: 130px !important;
+    }
+
+    .release-notes {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        padding: 0 10px 10px 10px;
+        z-index: 9990; 
+        background: lighten(@yellow, 30);
+        .box-shadow(0 -1px 2px rgba(0,0,0,.15));
+        .size(130px, 100%);
+        .show();
+    }
+
+    .release-notes_hide {
+        text-align: center;
+        .box-shadow(0 1px 0 rgba(0,0,0,.15));
+
+        .checkbox.inline {
+            font-size: 14px;
+            text-transform: uppercase;
+            width: 50%;
+            margin: 0 auto;
+        }
+    }
+
+    .release-notes_text {
+        font-weight: 600;
+        text-transform: uppercase;
+        line-height: 40px;
+        text-align: center;
+        color: darken(@yellow, 20);
+        .nowrap();
+        .show();
+    }
+
+    .release-notes_action {
+        #flexbox > .parent(row wrap, '', '', '');
+
+        .button {
+            .calc-width(50, 5); 
+        }
+
+        .button.blank {
+            margin-right: 10px;
+        }
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .has-release-notes {
         padding-bottom: 80px !important;
     }
 
     .release-notes {
-       display: block;
-       position: fixed;
-       bottom:0;
-       left:0;
-       width: 100%;
-       padding: 10px 20px;
-       z-index: 998; 
-       background: lighten(@yellow, 30);
-       border-top: 1px solid darken(@yellow, 5);
-       .float;
+        padding: 10px;
+        height: 60px;
+        #flexbox > .parent(row wrap, '', '', '');
+    }
 
-        .release-notes_text {
-            .pull-left;
-            .nowrap();
-            font-size: 18px;
-            font-weight: 600;
-            color: darken(@yellow, 15);
-            .calc-width(100, 415);
-            line-height: 40px;
+    .release-notes_hide {
+        margin-right: 20px;
+        padding-right: 20px;
+        width: 180px;
+        .box-shadow(1px 0 0 rgba(0,0,0,.15));
+
+        .checkbox.inline {
+            width: 100%;
+            margin: 0;
         }
+    }
 
-        .release-notes_action {
-            text-transform: uppercase;
-            .pull-right;
+    .release-notes_text {
+        font-size: 18px;
+        text-transform: none;
+        text-align: left;
+        .calc-max-width(100, 260);
+    }
 
-            label.checkbox {
-                margin-bottom:0;
-                padding-right: 15px; 
-                margin-right: 5px;
-                border-right: 1px solid @yellow
-            }
+    .release-notes_content {
+        .calc-width(100, 200);
+        #flexbox > .parent(row wrap, '', '', '');
+    }
+
+    .release-notes_action {
+        margin-left: auto;
+        width: 240px;
+
+        .button {
+            width: auto;
         }
     }
 }

@@ -368,6 +368,12 @@
 /* Modal window             ==============================*/
     #modal,
     .inline-modal {
+        width: 100%;
+        
+        @media only screen and (min-width: 600px) {
+            width: auto;
+        }
+
         .modal-content {
 
             /* Alert ***/
@@ -6561,6 +6567,26 @@
                         width:40%;
                         display: inline-block;
                     }
+                }
+            }
+
+            /* Release Notes Full Screen ***/
+            &.release-notes-popup {
+                .square(100%);
+
+                .iframe-scroll {
+                    -webkit-overflow-scrolling: touch;
+                    overflow-y: auto;
+                    width: 100%;
+                    height: 100% !important;
+                }
+
+                iframe {
+                    .size(98%, 100%);
+                }
+
+                @media only screen and (min-width: 600px) {
+                    .square(640px);
                 }
             }
         }
