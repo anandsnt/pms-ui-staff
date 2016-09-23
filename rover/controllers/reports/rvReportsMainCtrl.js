@@ -799,12 +799,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	});
         };
 
-        //Get the selected rates id
+
+        //Get the selected rates
         var getRatesListToShow = function(item) {
         	var listedRates 		= item.hasRateCodeFilter.data,
-        		selectedRates 		= _.where(listedRates, {selected: true}),
-        		selectedRateIds 	= _.pluck(selectedRates, "id");
-        	return selectedRateIds;
+        		selectedRates 		= _.where(listedRates, {selected: true});
+        	return selectedRates;
         };
 
         $scope.shouldShowThisRate = function(rate, item) {
@@ -1066,8 +1066,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					'users': [],
 					'campaign_types': [],
 					'floorList': [],
+					'rates' : [],
 					'assigned_departments': [],
-					'status' : []
+					'completion_status' : []
 				};
 			};
 
@@ -1220,8 +1221,24 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					}
 				} else {
 					key = reportParams['RATE_IDS'];
-					params[key] = getRatesListToShow(report);
+					var selectedRates = getRatesListToShow(report);
+					if(selectedRates.length > 0) {
+						params[key] = [];
+						_.each(selectedRates, function(rate) {
+							params[key].push( rate.id );
+							if ( changeAppliedFilter ) {
+								$scope.appliedFilter.rates.push( rate.description );
+							};
+						});
+
+						// in case if all rates are selected
+						if ( changeAppliedFilter && report.hasRateCodeFilter.data.length === params[reportParams['RATE_IDS']].length ) {
+							$scope.appliedFilter.rates = ['All Rates'];
+						};
+					}
+
 				}
+
 
 			};
 
@@ -1732,7 +1749,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						params[key].push( each.id.toString() );
 						/**/
 						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.assigned_departments.push( each.id );
+							$scope.appliedFilter.assigned_departments.push( each.name );
 						};
 					});
 
@@ -1754,13 +1771,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 						params[key].push( each.id.toString() );
 						/**/
 						if ( changeAppliedFilter ) {
-							$scope.appliedFilter.status.push( each.id );
+							$scope.appliedFilter.completion_status.push( each.id );
 						};
 					});
 
 					// in case if all reservation status are selected
-					if ( changeAppliedFilter && report['hasDepartments']['data'].length === selected.length ) {
-						$scope.appliedFilter.status = ['All Reservation Status'];
+					if ( changeAppliedFilter && report['hasCompletionStatus']['data'].length === selected.length ) {
+						$scope.appliedFilter.completion_status = ['All Status'];
 					};
 				};
 			};

@@ -1013,7 +1013,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
                 var clientX = 0,
                     clientY = 0,
-                    $empNode = undefined;
+                    $empNode = undefined,
+                    $lastEmpNode = undefined;
 
                 base.getClientPos = function() {
                     return {
@@ -1027,12 +1028,28 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     clientY = y;
                 };
 
-                base.removePlaceholder = function() {
-                    var $placeholder;
+                base.removePlaceholder = function(delayed) {
+                    var $node, $placeholder;
+
+                    var remove = function() {
+                    	if ( !! $node ) {
+                    	    $placeholder = $node.find('.placeholder');
+                    	    $placeholder.remove();
+                    	}
+                    }
 
                     if ( !! $empNode ) {
-                        $placeholder = $empNode.find('.placeholder');
-                        $placeholder.remove();
+                    	$node = $empNode;
+                    } else if ( !! $lastEmpNode ) {
+                    	$node = $lastEmpNode;
+                    } else {
+                    	$node = undefined;
+                    }
+
+                    if ( delayed ) {
+                    	setTimeout( remove, 10 );
+                    } else {
+                    	remove();
                     }
                 };
                 
@@ -1064,6 +1081,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
                     this.removePlaceholder();
 
+                    $lastEmpNode = $empNode;
                     if ( colIndex > -1 ) {
                     	selectedEmp = $scope.multiSheetState.selectedEmployees[colIndex];
                         $empNode = $( '#' + colIndex + '-' + selectedEmp.id );
@@ -1087,7 +1105,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     $nextRoom = $thisRoom.next('.worksheet-room');
                     nextIndex = index + 1;
                     if ( $nextRoom.hasClass('.placeholder')  ) {
-                        $nextRoom = $thisRoom.next('.worksheet-room').next('.worksheet-room')
+                        this.addPlaceholder();
                     }
 
                     roomHeight = $thisRoom.height();
@@ -1184,9 +1202,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             
             var getDimentions = function() {
                 var LEFT_OFFSET = 200,
-                    TOP_OFFSET  = 280,
+                    TOP_OFFSET  = 260,
                     COL_WIDTH   = 220,
-                    TASK_OFFSET = 110;
+                    TASK_OFFSET = 110,
+                    AVG_TASK_HEIGHT = 100;
 
                 var winWidth = $(window).width(),
                     winHeight = $(window).height();
@@ -1194,11 +1213,11 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 return {                
                     screenStart: {
                         x: LEFT_OFFSET + TASK_OFFSET,
-                        y: TOP_OFFSET + TASK_OFFSET
+                        y: TOP_OFFSET + AVG_TASK_HEIGHT,
                     },
                     screenEnd: {
                         x: winWidth - LEFT_OFFSET,
-                        y: winHeight - TASK_OFFSET
+                        y: winHeight - AVG_TASK_HEIGHT
                     }
                 };
             }
@@ -1208,6 +1227,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 dim = getDimentions();
             };
             dimOnResize();
+            console.log( dim );
             window.addEventListener( 'resize', dimOnResize, false );
             $scope.$on('$destroy', function() {
                 window.removeEventListener( 'resize', dimOnResize );
@@ -1267,9 +1287,9 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
                         if ( hasVerScroll() ) {
                             if ( scrollTowardsVerStart() ) {
-                                verScrollInst.scrollBy(0, 10, 1);
+                                verScrollInst.scrollBy(0, 8, 1);
                             } else if ( scrollTowardsVerEnd() ) {
-                                verScrollInst.scrollBy(0, -10, 1);
+                                verScrollInst.scrollBy(0, -8, 1);
                             }
                         }
                     }
@@ -1280,8 +1300,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
             // once the user starts dragging 
             $scope.dragStart = function(event) {
-            	console.log(arguments);
-
             	draggedItem = $(event.target).parent();
             	draggedItem.hide();
 
@@ -1290,9 +1308,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             };
 
             $scope.dragDrop = function() {
-            	draggedItem.show();
+            	var delayed = true;
 
-                orderState.removePlaceholder();
+            	draggedItem.show();
+                orderState.removePlaceholder(delayed);
 
                 if ( !! timer ) {
                     window.clearInterval(timer);
@@ -1300,7 +1319,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 };
             };
 
-            var addPlaceholderThrottled = _.throttle(orderState.addPlaceholder, 100);
+            var addPlaceholderThrottled = _.throttle(orderState.addPlaceholder, 250, {leading: true, trailing: false});
             $scope.userDragging = function(e) {
                 
                 // ask orderState to get a load of latest clientX and clientY
@@ -1316,10 +1335,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 } else if ( e.clientX < dim.screenStart.x ) {
                     dragDir = LEFT;
                     return;
-                } else if ( e.clientY < dim.screenEnd.y ) {
+                } else if ( e.clientY > dim.screenEnd.y ) {
                     dragDir = BOTTOM;
                     return;
-                } else if ( e.clientY > dim.screenStart.y ) {
+                } else if ( e.clientY < dim.screenStart.y ) {
                     dragDir = TOP;
                     return;
                 } else {

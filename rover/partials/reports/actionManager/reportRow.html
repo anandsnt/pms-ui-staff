@@ -2,7 +2,7 @@
     <td class="name">
         <strong>{{item.department}}</strong>
     </td>
-    <td>{{item.due_at_str}}</td>
+    <td>{{item.due_at_date}} <br/> {{item.due_at_time}}</td>
     <td>{{item.full_name}} <br/> {{item.room_no}}</td>
     <td>{{item.description}}</td>
     <td><span class="status" ng-class="{'unassigned': item.status === 'UNASSIGNED', 'completed': item.status === 'COMPLETED', 'assigned': item.status === 'ASSIGNED'}">{{item.status}}</span></td>
