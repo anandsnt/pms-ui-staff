@@ -492,15 +492,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 						'revenue' : totals[1]['value']
 					};
 					break;
-				case reportNames['ACTIONS_MANAGER']:
-					// $scope.$parent.summaryCounts = {
-					// 	'rooms'   : totals[0]['value'],
-					// 	'revenue' : totals[1]['value']
-					// };
-					console.log("----")
-					console.log(totals)
-					break;
-
 				default:
 					// no op
 			};
