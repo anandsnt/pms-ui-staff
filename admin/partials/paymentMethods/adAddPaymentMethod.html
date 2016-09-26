@@ -22,13 +22,14 @@
 					<ad-checkbox is-checked="addData.is_offline" label="{{ 'OFFLINE' | translate}}" div-class="full-width"></ad-checkbox>
 				</div>
 				<ad-dropdown ng-hide="addData.is_cc" list="data.reservation_types" selected-id='addData.linked_reservation_type_id' selbox-class="placeholder" div-class="full-width" label="{{'LINKED_RESERVATION_TYPE' | translate}}"></ad-dropdown>
-				
+
 				<ad-dropdown ng-show="addData.is_cc && data.allow_cc_processors_per_payment_methods" list="data.custom_cc_processors" selected-id='addData.custom_cc_processor_id' selbox-class="placeholder" div-class="full-width" label="{{'CREDIT_CARD_PROCESSOR' | translate}}"></ad-dropdown>
 			</fieldset>
 			<fieldset class='holder right'>
 				<ad-checkbox is-checked="addData.is_rover_only" label="{{ 'ROVER_ONLY' | translate}}" div-class="full-width" change="roverOnlyChanged()"></ad-checkbox>
 				<ad-checkbox is-checked="addData.is_web_only" label="{{ 'WEB_ONLY' | translate}}" div-class="full-width" change="webOnlyChanged()"></ad-checkbox>
 				<ad-checkbox is-checked="addData.is_display_reference" label="{{ 'DISPLAY_REFERENCE' | translate}}" div-class="full-width"></ad-checkbox>
+				<ad-checkbox is-disabled="addData.value == 'CC'" is-checked="addData.allow_post_with_no_credit" label="{{ 'ALLOW_POST_WITH_NO_CREDIT' | translate}}" div-class="full-width"></ad-checkbox>
 			</fieldset>
 			<div class='actions float'>
 				<button class='button blank edit-data-inline' id='cancel' type='button' ng-click="clickCancel()" translate>
