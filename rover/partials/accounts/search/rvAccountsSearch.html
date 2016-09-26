@@ -33,17 +33,14 @@
             <label for="account-status">Account Status</label>
             <select id="account-status" ng-model="status" 
                 ng-change= "search()"
-                ng-class="{'placeholder': status == ''}"> <!-- Add class="placeholder" if val="" is selected -->
+                ng-class="{'placeholder': status == ''}"> 
                 <option value="" translate>ALL_ACCOUNTS</option>
                 <option value="OPEN" translate>ACCOUNTS_OPEN</option>
                 <option value="CLOSED" translate>ACCOUNTS_CLOSED</option>
             </select>
         </div>
-        <!-- Remove .checked if not checked -->
         <label class="checkbox inline" ng-class="{'checked':isNonZero}">
-            <!-- Remove .checked if not checked -->
             <span class="icon-form icon-checkbox" ng-class="{'checked':isNonZero}"></span>
-            <!-- Remove checked="checked" if not checked -->
             <input type="checkbox" checked="checked" value="{value}" ng-model="isNonZero" ng-change= "search()">
             Non-Zero Balance
         </label>
