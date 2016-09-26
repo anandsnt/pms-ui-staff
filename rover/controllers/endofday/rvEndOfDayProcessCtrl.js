@@ -16,8 +16,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         fetchEodLogOfSelectedDate();
     };
     var setTitle = function() {
-            var title = $filter('translate')('END_OF_DAY');
-            $scope.setHeadingTitle(title);
+        $scope.setHeadingTitle('End of Day');
     };
     /*
     * Function to get day, month and Year from Date(Date format is kept yyyy/mm/dd);
