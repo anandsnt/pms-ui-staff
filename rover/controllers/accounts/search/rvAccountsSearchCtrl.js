@@ -146,7 +146,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 				status		: $scope.status,
 				to_date		: $scope.toDate,
 				per_page 	: $scope.perPage,
-				page  		: $scope.page,
+				page  		: 1,
 				account_type: $scope.accountType,
 				is_non_zero : $scope.isNonZero
 			};
