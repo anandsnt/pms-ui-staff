@@ -72,6 +72,7 @@ module.exports = {
 			'guestweb_playa_largo':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_rivington':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_hewing':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_sombrero':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_beverly_hills':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
