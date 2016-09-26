@@ -179,7 +179,11 @@
                 <div bo-if="!room.is_queued && !room.is_occupied" class="show-vacant">VACANT</div>
 
                 <!-- Show only if room is queued -->
-                <span bo-if="room.is_queued" class="icons icon-queued">VACANT</span>
+                <div bo-if="room.is_queued" class="icons icon-queued has-time">
+                    Queued
+                    <span class="time">{time | exp: 1h or 20m }</span>
+                </div>
+
                 <!-- IF VIEW BY TASK, ADD THIS: -->
                 <ul class="tasks" ng-if="currentView === 'TASKS'">
                     <!-- Add class "completed" if task is completed -->
