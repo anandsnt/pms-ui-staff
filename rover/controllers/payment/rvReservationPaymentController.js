@@ -36,6 +36,10 @@ sntRover.controller('reservationPaymentController',['$scope','$rootScope', funct
 		}
 	};
 
+	$scope.setAllowPostWithNoCredit = function(){
+		$scope.reservationData.reservation_card.allow_post_with_no_credit = !$scope.reservationData.reservation_card.allow_post_with_no_credit;
+	};
+
 	// Update while changing credit card from bill screen.
 	$rootScope.$on('UPDATEDPAYMENTLIST', function(event, data) {
 			$scope.reservationData.reservation_card.payment_details.card_type_image = data.card_code+".png";
