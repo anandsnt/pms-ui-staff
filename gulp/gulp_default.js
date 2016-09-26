@@ -23,7 +23,8 @@ module.exports = function(gulp, $, options) {
                     'login-asset-prod-precompile',
                     'station-login-asset-prod-precompile',
                     'guestweb-asset-prod-precompile',
-                    'guestweb-v2-asset-prod-precompile'
+                    'guestweb-v2-asset-prod-precompile',
+                    'payment-asset-prod-precompile'
                 ],
 
 		tasksAfterCompilation = [
@@ -54,7 +55,8 @@ module.exports = function(gulp, $, options) {
                     'build-admin-dev', 
                     'build-zest-dev', 
                     'build-guestweb-dev',
-                    'build-guestweb-v2-dev'
+                    'build-guestweb-v2-dev',
+                    'build-payment-dev'
                 ],
 
 		watchTasks = [
@@ -64,7 +66,8 @@ module.exports = function(gulp, $, options) {
                     'watch-admin-files', 
                     'watch-zest-files', 
                     'watch-guestweb-files',
-                    'watch-guestweb-v2-files'
+                    'watch-guestweb-v2-files',
+                    'watch-payment-files'
                 ];
 
 	var processArgs = function() {

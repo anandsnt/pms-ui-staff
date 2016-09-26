@@ -74,7 +74,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
 	$scope.showUpgradeButton = function(reservationStatus,  isUpsellAvailable){
 		var showUpgrade = false;
-		if($scope.hasAnySharerCheckedin()){
+		if($scope.hasAnySharerCheckedin() || $scope.reservationData.reservation_card.is_suite || $rootScope.isHourlyRateOn){
 			return false;
 		}
 		if((isUpsellAvailable === 'true') && $scope.isFutureReservation(reservationStatus)){
@@ -213,7 +213,8 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	};
 
 	$scope.goToRoomUpgrades = function(){
-		$state.go("rover.reservation.staycard.upgrades", {reservation_id:$scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton"});
+        var cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number!=="";
+		$state.go("rover.reservation.staycard.upgrades", {reservation_id:$scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton", "cannot_move_room" : cannotMoveState});
 	};
 
 	/**

@@ -11,6 +11,7 @@
     <div ng-if="hasResults" id="report-content" class="report-content grid scrollable" ng-iscroll="addon-forecast-report-scroll">
         <div class="wrapper">
             <ul class="grid-header dates">
+                <li class="name">Date</li>
                 <li class="guests">Booked</li>
                 <li class="guests">Remaining</li>
                 <li class="guests">Guests</li>
@@ -102,27 +103,10 @@
                 </div>
             </div>
 
-            <ul class="grid-footer">
-                <li>
-                    <div ng-if="appliedFilter.fromDate || appliedFilter.toDate">
-                        Add-Ons from <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span>
-                    </div>
-                    <div ng-if="appliedFilter.addonGroups.length">
-                        Add-On Groups: <span>{{ appliedFilter.addonGroups.join(', ') }}</span>
-                    </div>
-                    <div ng-if="appliedFilter.addons.length">
-                        Add-Ons: <span>{{ appliedFilter.addons.join(', ') }}</span>
-                    </div>
-                    <div ng-if="appliedFilter.reservationStatus.length">
-                        Reservation Status: <span>{{ appliedFilter.reservationStatus.join(', ') }}</span>
-                    </div>
-                </li>
-                <li>
-                    Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
-                    User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
-                </li>
-            </ul>     
+            <!-- Reports table footer -->
+            <table>
+                <tfoot ng-include="'/assets/partials/reports/shared/rvReportDetailsFooter.html'"></tfoot>
+            </table>
         </div>
     </div>   
 </div>
-</section>

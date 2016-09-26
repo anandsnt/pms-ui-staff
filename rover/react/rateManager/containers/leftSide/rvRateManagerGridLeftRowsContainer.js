@@ -13,7 +13,7 @@ let convertRatesDataForLeftListing = (rates) => {
 			name: rate.name,
 			trClassName: ('cell rate ' + (((index + 1) === rates.length) ? 'last' : '')),
 			tdClassName: '',
-			leftSpanClassName: 'name ' + (rate.based_on_rate_id ? 'gray' : 'base-rate'),
+			leftSpanClassName: 'name ' + (rate.based_on_rate_id && !rate.is_copied ? 'gray' : 'base-rate'),
 			showIconBeforeText: !rate.based_on_rate_id,
 			iconClassBeforeText: !rate.based_on_rate_id ? 'base-rate-indicator': '',
 			textInIconArea: !rate.based_on_rate_id ? 'B' : '',
@@ -31,7 +31,7 @@ let getPreviousPageButtonText = (mode, paginationStateData) => {
 	switch(mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
 				previousPageButtonText += " " + paginationStateData.perPage + " RATES";
-            break;                           
+            break;
         default:
             break;
     };
@@ -43,12 +43,12 @@ let getNextPageButtonText = (mode, paginationStateData) => {
 	switch(mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
         	if (Math.ceil(paginationStateData.totalRows / paginationStateData.perPage) === paginationStateData.page + 1) {
-				// In case of navigation to last page; show remaining 
+				// In case of navigation to last page; show remaining
                 nextPageButtonText += " " + paginationStateData.totalRows - (paginationStateData.perPage * paginationStateData.page) + " RATES";
 			} else {
            		nextPageButtonText += " " + paginationStateData.perPage + " RATES";
            	}
-            break;                           
+            break;
         default:
             break;
     };
@@ -91,8 +91,8 @@ let convertSingleRateRoomTypesDataForLeftListing = (roomTypes, expandedRows) => 
 		roomTypesToReturn.push({
 			...roomType,
 			trClassName: (
-				'cell rate' + 
-				(((index + 1) === roomTypes.length) ? ' last' : '') + 
+				'cell rate' +
+				(((index + 1) === roomTypes.length) ? ' last' : '') +
 				( isExpandedRow ? ' expanded-row': '')
 				),
 			tdClassName: '',
@@ -130,7 +130,7 @@ const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 			leftListingData: convertSingleRateRoomTypesDataForLeftListing(state.list, state.expandedRows),
 			mode: state.mode
 		};
-	}	
+	}
 };
 
 const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatchProps, ownProps) => {
@@ -152,7 +152,7 @@ const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatch
 					toDate: stateProps.toDate,
 					selectedRates: [{id: clickedRate.id, name: clickedRate.name}]
 				})
-			}				
+			}
 		},
 		leftListingData: stateProps.leftListingData,
 		goToPrevPage: stateProps.goToPrevPage,

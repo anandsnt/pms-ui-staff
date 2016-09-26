@@ -74,7 +74,7 @@
 					</div>
 					<div class="entry re-invite" ng-if="!!userDetails.user_id">
 						<label>
-							<button id="re-invite" ng-click="sendInvitation(userDetails.user_id)" class="button" ng-disabled="!isableReInviteButton(userDetails)" ng-class="{'green': disableReInviteButton(userDetails), 'grey': !disableReInviteButton(userDetails)}">
+							<button id="re-invite" ng-click="sendInvitation(userDetails.user_id)" class="button" ng-disabled="disableReInviteButton(userDetails)" ng-class="{'green': !disableReInviteButton(userDetails), 'grey': disableReInviteButton(userDetails)}">
 								Re-Invite
 							</button> </label>
 					</div>

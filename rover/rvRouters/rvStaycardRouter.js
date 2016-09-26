@@ -21,7 +21,11 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/staycard/rvStaycard.html',
             controller: 'RVReservationMainCtrl', //staycardController',
             resolve: {
-                staycardJsAssets: function(jsMappings, mappingList) {
+
+                loadPaymentModule: function (jsMappings) {
+                    return jsMappings.loadPaymentModule();
+                },
+                staycardJsAssets: function(jsMappings, mappingList, loadPaymentModule) {
                     return jsMappings.fetchAssets(['rover.reservation', 'rover.groups', 'rover.allotments',
                         'rover.accounts', 'rover.companycarddetails', 'directives', 'highcharts'], ['highcharts-ng']);
                 },
@@ -296,7 +300,7 @@ angular.module('stayCardModule', [])
             }
         });
         $stateProvider.state('rover.reservation.staycard.upgrades', {
-            url: '/upgrades/:reservation_id/:clickedButton',
+            url: '/upgrades/:reservation_id/:clickedButton/:cannot_move_room',
             templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
             controller: 'RVUpgradesController',
             resolve: {

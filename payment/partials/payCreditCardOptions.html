@@ -1,0 +1,115 @@
+
+<!-- Credit card options - hidden until payment type is set as CC -->
+<!-- If hidden by default, add class="hidden" -->
+<!-- Card toggle - Use only if there are exsiting cards on file -->
+<ul class="card-toggle" ng-hide="hideCardToggles()">
+    <li ng-class="{'active': payment.addCCMode === 'EXISTING_CARDS'}" click-touch="toggleCCMOde( 'EXISTING_CARDS')">
+        Existing Cards
+    </li>
+    <li ng-class="{'active': payment.addCCMode === 'ADD_CARD'}" click-touch="toggleCCMOde('ADD_CARD')">
+        Add New Card
+    </li>
+    <li ng-show="showGiftCardToggle()" ng-class="{'active': payment.addCCMode === 'GIFT_CARD'}" click-touch="toggleCCMOde('GIFT_CARD')">
+        Gift Card
+    </li>
+</ul>
+
+<!-- Existing cards - use only when they exist -->
+<div id="cc-exsiting-card" class="cards-list cards-container scrollable" ng-show="payment.addCCMode === 'EXISTING_CARDS'" ng-iscroll="cardsList">
+    <div class="wrapper">
+        <label class="active-item item-payment" ng-click="setCreditCardFromList(card.value)" ng-repeat="card in payment.linkedCreditCards" ng-show="card.is_credit_card">
+            <!-- Add class "primary" when selected -->
+            <figure class="card-logo">
+                <img ng-src="/assets/images/{{card.card_code}}.png" alt="">
+            </figure>
+            <span class="number">{{'ENDING_WITH' | translate}} <span class="value number">{{card.ending_with}}</span></span>
+            <span class="date">{{'DATE' | translate}} <span class="value date">{{card.expiry_date}}</span></span>
+            <span class="icons icon-ok-10" ng-show="selectedCC.value == card.value"></span>
+        </label>
+    </div>
+</div>
+
+<div ng-include="paymentGatewayUIInterfaceUrl" ng-show="payment.addCCMode === 'ADD_CARD'"></div>
+
+<div class="new-card" ng-show="payment.addCCMode === 'GIFT_CARD'">
+    <div class="entry card-number card-type full-width">
+        <label>Card number (<span>No spaces</span>)</label>
+        <input placeholder="Enter Card number"
+               ng-model="giftCard.number"
+               maxlength="22"
+               rv-delay-textbox
+               delay="1000"
+               function-to-fire="onChangeGiftCard"
+               type="text"/>
+    </div>
+    <div class="entry full-width">
+        <label ng-show="giftCard.amountAvailable"> Available Card Balance({{currencySymbol}}) </label>
+        <input ng-show="giftCard.amountAvailable"
+               ng-readonly="true"
+               ng-model="giftCard.availableBalance"
+               type="text"/>
+    </div>
+    <div class="entry full-width">
+        <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+
+        <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
+        <input ng-change="onPaymentInfoChange()"
+               ng-model="payment.amount"
+               type="text"
+               ng-disabled="!payment.isEditable"
+               class="amount"
+               ng-if="!payment.isRateSuppressed"/>
+        <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
+        <input type="text"
+               ng-disabled="!payment.isEditable"
+               class="amount"
+               ng-if="payment.isRateSuppressed"
+               value="{{'SUPPRESSED_RATES_TEXT' | translate}}"/>
+
+        <span ng-show="feeData.showFee" class="delimiter">+</span>
+
+        <input ng-show="feeData.showFee && !payment.isRateSuppressed"
+               ng-change="onFeeOverride()"
+               ng-model="feeData.calculatedFee"
+               value="{{feeData.calculatedFee}}"
+               type="text"
+               class="fee"/>
+
+        <input ng-show="feeData.showFee && payment.isRateSuppressed"
+               value="{{'SUPPRESSED_RATES_TEXT' | translate}}"
+               type="text"
+               class="fee"/>
+
+        <span ng-show="feeData.showFee" class="delimiter">fee</span>
+
+        <span ng-show="feeData.showFee" class="total">
+          Total:
+          <strong ng-if="!payment.isRateSuppressed">
+              {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+          </strong>
+          <strong ng-if="payment.isRateSuppressed">
+              {{'SUPPRESSED_RATES_TEXT' | translate}}
+          </strong>
+        </span>
+    </div>
+</div>
+
+<div class="actions" ng-if="payment.addCCMode === 'EXISTING_CARDS' || payment.addCCMode === 'ADD_CARD'">
+    <button type="button" class="button blank" ng-click="cancelCardSelection()">
+        Cancel Card selection
+    </button>
+</div>
+
+
+<div class="actions" ng-if="payment.addCCMode === 'GIFT_CARD'">
+    <button type="button" id="close" class="button blank modal-close" ng-click="closeThePopup()">
+        Close
+    </button>
+
+    <button type="button"
+            ng-click="submitPayment()"
+            class="button green"
+            ng-hide="shouldHidePaymentButton()">
+        Make Payment
+    </button>
+</div>

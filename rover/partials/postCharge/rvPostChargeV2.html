@@ -15,7 +15,7 @@
 					<button type="button" class="button blank" ng-click="clickedAddGuestOrRoomCancel()" translate>CANCEL</button>
 				</div>
 			</div>
-		
+
 			<div id="not-checked-in" ng-show="guestHasNotCheckedin" class="inner-overlay" ng-class="{'visible': guestHasNotCheckedin == true}">
 				<div class="inner-content">
 					<span class="message h2" translate>GUEST_NOT_CHECKEDIN_MSG</span>
@@ -24,7 +24,7 @@
 					<button type="button" class="button blank" ng-click="clickedPostChargeCancel()" translate>CANCEL</button>
 				</div>
 			</div>
-		
+
 			<div ng-show="chargePosted" id="charge-posted" class="inner-overlay" ng-class="{'visible': chargePosted == true}">
 				<div class="inner-content">
 					<span class="message h2" translate>CHARGE_POSTED</span>
@@ -144,12 +144,16 @@
 													</strong>
 
 							                    	<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
-
 							                    	<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
 														{{row.late_checkout_time}}
 													</span>
 
-							                    	<span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)"></span>
+							                    	<span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status) && !row.is_suite_room"></span>
+							                    	<span class="icons icon-suite" ng-if="row.is_suite_room && !isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)">Suite</span>
+							                    	<div class="room-icons" ng-if="row.is_suite_room && isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)">
+							                    		<span class="icons icon-suite"></span>
+							                    		<span class="icons icon-queued"></span>
+							                    	</div>
 				                    			</div>
 				                    		</a>
 				                    	</li>

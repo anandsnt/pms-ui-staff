@@ -10,7 +10,7 @@
                     <!-- if addon type is person multiplification factor will be (addon_count*number of days*(adult_count+child_count))-->
 
                     <span >
-                        <span class="count" >({{getAddonCount(existingPackages.amount_type.value, existingPackages.post_type.value, existingPackages.post_type.frequency,reservationData.reservation_card.number_of_adults, reservationData.reservation_card.number_of_children, packageData.duration_of_stay, existingPackages.charge_full_weeks_only, existingPackages.quantity)}})</span>
+                        <span class="count" >({{getAddonCount(existingPackages.amount_type.value, existingPackages.post_type.value, existingPackages.post_type.frequency,reservationData.reservation_card.number_of_adults, reservationData.reservation_card.number_of_children, packageData.duration_of_stay, existingPackages.charge_full_weeks_only, existingPackages.addon_count)}})</span>
                     </span>
 
 

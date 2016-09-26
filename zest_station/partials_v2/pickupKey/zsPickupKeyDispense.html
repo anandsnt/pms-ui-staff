@@ -22,8 +22,8 @@
     <div id="content">
         <h1 translate>MAKE_KEY</h1>
         <h2 translate>MAKE_KEY_MSG</h2>
-        <div id="keys" ng-hide="remoteEncoding || icmp">
-            <div ng-include="icons.url.createkey"></div>
+        <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
+            <img src="{{icons.url.createkey}}">
         </div>
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
@@ -38,8 +38,8 @@
     <div id="content">
         <h1 translate>MAKE_FIRST_KEY</h1>
         <h2 translate>MAKE_FIRST_KEY_SUB</h2>
-        <div id="keys" ng-hide="remoteEncoding || icmp">
-            <div ng-include="icons.url.createkey"></div>
+        <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
+            <img src="{{icons.url.createkey}}">
         </div>
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
@@ -54,8 +54,8 @@
     <div id="content">
         <h1 translate>MADE_FIRST_KEY_MSG</h1>
         <h2 translate>MADE_FIRST_KEY_MSG_SUB</h2>
-         <div id="keys" ng-hide="remoteEncoding || icmp">
-            <div ng-include="icons.url.createkey"></div>
+        <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
+            <img src="{{icons.url.createkey}}">
         </div>
         <div id="keys" ng-show="icmp">
             <div ng-include="icons.url.createkey_icmp"></div>
@@ -70,7 +70,10 @@
     <div id="content">
         <h1 translate>SUCCESS_HDR</h1>
         <h2 translate>GRAB_KEYS</h2>
-        <button type="button" class="button" click-touch="clickedOnCloseButton()" translate>DONE</button>
+        <div id="room" ng-show="zestStationData.show_room_number">
+            <span class="number">{{selectedReservation.room}}</span>
+        </div>
+        <button type="button" class="button" click-touch="clickedOnCloseButton()" ng-style="doneButtonStyle" translate>DONE</button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
 </section>   

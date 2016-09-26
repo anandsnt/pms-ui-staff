@@ -15,10 +15,15 @@
                 <span ng-click="updateAllNights()" id="copy-to-all" class="admin-icons icon-mover-right" translate>COPY_VALUES</span>
             </div>
         </div>
-        <div class="holder right">
-            <div ng-repeat="nights in nightsData.occupancy" class="entry">
-                <label for="contracted-jan">{{nights.month}} {{nights.year}}</label>
-                <input ng-model="nights.contracted_occupancy" name="contracted-jan" id="contracted-jan" value="{{nights.contracted_occupancy}}" type="number" />
+        <div class="holder right scrollable"
+             ng-iscroll="contractedNightsScroller"
+             ng-iscroll-delay="1000">
+             
+            <div class="wrapper">
+                <div ng-repeat="nights in nightsData.occupancy" class="entry">
+                    <label for="contracted-jan">{{nights.month}} {{nights.year}}</label>
+                    <input ng-model="nights.contracted_occupancy" name="contracted-jan" id="contracted-jan" value="{{nights.contracted_occupancy}}" type="number" />
+                </div>
             </div>
         </div>
     </div>

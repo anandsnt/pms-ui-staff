@@ -368,6 +368,12 @@
 /* Modal window             ==============================*/
     #modal,
     .inline-modal {
+        width: 100%;
+        
+        @media only screen and (min-width: 600px) {
+            width: auto;
+        }
+
         .modal-content {
 
             /* Alert ***/
@@ -1098,7 +1104,13 @@
             &.edit-charge {
                 width: 360px;
 
+                .h2 {
+                    margin-bottom: 10px;
+                }
+                
                 .text {
+                    font-size: 14px;
+
                     strong { .show; }
                 }
 
@@ -2190,6 +2202,7 @@
             &.grid {
                 padding: 20px;
                 width: 550px;
+                max-height: 480px;
                 
                 .grid-wrapper {
                     .float;
@@ -2235,6 +2248,27 @@
                                 &:nth-child(6n) { margin-right: 0; }
                             }
                         }
+
+                        &.scrollable {
+                            position: relative;
+                            max-height: 320px;
+
+                            .wrapper {
+                                .float;
+                            }
+                        }
+                    }
+                }
+
+                .actions {
+                    margin-top: 20px;
+                    text-align: center;
+
+                    .button { 
+                        display: inline-block;
+                        width: auto;
+
+                        &.green { padding: 0 40px; }
                     }
                 }
 
@@ -2361,19 +2395,7 @@
                             }
                         }
                     }
-                }
-
-                .actions {
-                    margin-top: 20px;
-                    text-align: center;
-
-                    .button { 
-                        display: inline-block;
-                        width: auto;
-
-                        &.green { padding: 0 40px; }
-                    }
-                }
+                }                
             }
             
             /* Reservation confirmation modals ***/
@@ -6551,6 +6573,26 @@
                         width:40%;
                         display: inline-block;
                     }
+                }
+            }
+
+            /* Release Notes Full Screen ***/
+            &.release-notes-popup {
+                .square(100%);
+
+                .iframe-scroll {
+                    -webkit-overflow-scrolling: touch;
+                    overflow-y: auto;
+                    width: 100%;
+                    height: 100% !important;
+                }
+
+                iframe {
+                    .size(98%, 100%);
+                }
+
+                @media only screen and (min-width: 600px) {
+                    .square(640px);
                 }
             }
         }

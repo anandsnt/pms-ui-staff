@@ -47,7 +47,9 @@ sntRover.controller('RVOccRevPrintPopupCtrl', [
 
 
 		// initialize until date base on the from date
-		chosenReport.untilDate = $_onSelect( $filter('date')(chosenReport.fromDate, 'dd/MM/yyyy'), $scope.occupancyMaxDate );
+		// CICO-33536 - fix for date format
+		var fromDate = $filter('date')(chosenReport.fromDate, $rootScope.dateFormat);
+		chosenReport.untilDate = $_onSelect(fromDate, $scope.occupancyMaxDate );
 
 		// set min and max limits for until date
 		$scope.untilDateOptions.minDate = chosenReport.fromDate;
@@ -56,8 +58,9 @@ sntRover.controller('RVOccRevPrintPopupCtrl', [
 		// re-adjust min and max limits for until date
 		// when the from date is changed
 		$scope.adjustUntilDate = function () {
+			var fromDate = $filter('date')(chosenReport.fromDate, $rootScope.dateFormat);
 			$scope.untilDateOptions.minDate = chosenReport.fromDate;
-			$scope.untilDateOptions.maxDate = $_onSelect( $filter('date')(chosenReport.fromDate, 'dd/MM/yyyy'), $scope.occupancyMaxDate );
+			$scope.untilDateOptions.maxDate = $_onSelect(fromDate, $scope.occupancyMaxDate );
 		};
 
 

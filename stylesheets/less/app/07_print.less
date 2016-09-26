@@ -26,7 +26,8 @@ body { overflow: visible; height:auto; }
 .search-pagination,
 .reservation-tabs-nav,
 .reservation-list,
-.search-form { display: none !important; }
+.search-form,
+.release-notes { display: none !important; }
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
@@ -3176,6 +3177,12 @@ table {
 
                         &.description,
                         &.charge-description {
+
+                            strong {
+                                font-weight: 600;
+                                .show();
+                            }
+
                             span {
                                 .show;
 
@@ -3184,6 +3191,10 @@ table {
                                     margin-bottom: 2pt;
                                 }
                             }
+                        }
+
+                        &.description {
+                            font-size: 8pt;
                         }
                     }
 

@@ -51,7 +51,7 @@
                         <td>{{item.credit | number: precisonTwo}}</td>
                     </tr>
                     <tr class="pagination" ng-show="data.summaryData.deposit_balance.total_count > perPage && data.summaryData.deposit_balance.transactions.length > 0">
-                        <td colspan="8">
+                        <td colspan="10">
                             <rv-pagination page-options="depositPagination" page-data="data.summaryData.deposit_balance"></rv-pagination>
                         </td>
                     </tr>
@@ -100,7 +100,7 @@
                         <td>{{item.credit | number: precisonTwo}}</td>
                     </tr>
                     <tr class="pagination" ng-show="data.summaryData.guest_balance.total_count > perPage && data.summaryData.guest_balance.transactions.length > 0">
-                        <td colspan="8">
+                        <td colspan="10">
                             <rv-pagination page-options="guestPagination" page-data="data.summaryData.guest_balance"></rv-pagination>
                         </td>
                     </tr>
@@ -149,7 +149,7 @@
                         <td>{{item.credit | number: precisonTwo}}</td>
                     </tr>
                     <tr class="pagination" ng-show="data.summaryData.ar_balance.total_count > perPage && data.summaryData.ar_balance.transactions.length > 0">
-                        <td colspan="8">
+                        <td colspan="10">
                             <rv-pagination page-options="arPagination" page-data="data.summaryData.ar_balance"></rv-pagination>
                         </td>
                     </tr>

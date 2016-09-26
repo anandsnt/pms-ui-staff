@@ -355,6 +355,12 @@ sntRover.controller('roverController',
       $scope.hasLoader = false;
     });
 
+    $scope.$on("SHOW_SIX_PAY_LOADER",function(){
+      $scope.showSixPayLoader = true;
+    });
+    $scope.$on("HIDE_SIX_PAY_LOADER",function(){
+      $scope.showSixPayLoader = false;
+    });
     /**
      * in case of we want to reinitialize left menu based on new $rootScope values or something
      * which set during it's creation, we can use
@@ -363,21 +369,35 @@ sntRover.controller('roverController',
         setupLeftMenu();
     });
 
+    
+
     $scope.init = function() {
         BaseCtrl.call(this, $scope);
         $rootScope.adminRole = '';
-
         $scope.selectedMenuIndex = 0;
         $scope.formMenu();
 
         // if menu is open, close it
         $scope.isMenuOpen();
+
         $scope.menuOpen = false;
+
+        $rootScope.hotelPaymentConfig = {
+            isStandAlone: $rootScope.isStandAlone,
+            paymentGateway: $rootScope.paymentGateway,
+            emvTimeout: $rootScope.emvTimeout,
+            mliMerchantId: $rootScope.MLImerchantId,
+            currencySymbol: $rootScope.currencySymbol,
+            isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled
+        };
+
+        $scope.menuOpen = false;        
+        $rootScope.showNotificationForCurrentUser = true;           
 
     };
 
     $scope.init();
-
+    
     /*
      * update selected menu class
      */

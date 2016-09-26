@@ -5,6 +5,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
     var init =function(){
         setTitle();
         $scope.eodLogDetails = {};
+        $scope.checkEodStatus = false;
         $scope.dateFormat = $rootScope.dateFormat;
         $scope.businessDate =$rootScope.businessDate;       
         setDefaultNextBussinessDate();
@@ -94,19 +95,27 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         var data = {
             date: $scope.selectedDate
         };
-        var fetchEodLogSuccess = function(data){
+        var fetchEodLogSuccess = function(data){            
             $scope.eodLogDetails = data.eod_processes;
             $scope.nextEodRunTime = data.eod_process_time;
-                      
+            $scope.lastEodRunInHours = data.last_eod_run_in_hours;
+            $scope.lastEodRunInMinutes = data.last_eod_run_in_minutes;            
             $rootScope.$broadcast('hideLoader');
             $timeout(function() {
                 refreshScroller();           
-            },1000); 
+            },1000);
+            //Eod status update handles here
+            if(!$rootScope.isEodRunning&&$scope.checkEodStatus){
+                $state.go('rover.dashboard.manager');
+            } 
         };
         var fetchEodLogFailure = function(){
             $rootScope.$broadcast('hideLoader');
         };
         $scope.invokeApi(RVEndOfDayModalSrv.fetchLog,data,fetchEodLogSuccess,fetchEodLogFailure);
+    };
+    $scope.isLastEodRunWithin18Hr = function(){
+        return ($scope.lastEodRunInMinutes == null)?false:true;
     };
     /*
     * Show date picker
@@ -116,9 +125,35 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         ngDialog.open({
             template: '/assets/partials/endOfDay/rvEodDatepicker.html',
             className: 'single-date-picker',
-            //controller :'RVEndOfDayProcessController',
             scope: $scope
         });
+    };
+    /*
+    * returning class name for Button.
+    */
+    $scope.getClassForEODButton = function(){        
+        if(!$scope.isLastEodRunWithin18Hr()){
+            return "green";
+        };
+        if($scope.isLastEodRunWithin18Hr()&&$scope.hasPermissionToRunEOD()){
+            return "orange";
+        }else{
+            return "grey";
+        }        
+    };
+    
+    $scope.disableEODButton = function(){
+        if($scope.isLastEodRunWithin18Hr()){
+            return !($scope.hasPermissionToRunEOD());
+        }else{
+            return false;
+        }        
+    };
+    
+    $scope.updateStatus = function(){
+        //we are fetching eod login, flag to handle update status
+        $scope.checkEodStatus = true;
+        fetchEodLogOfSelectedDate();
     };
 
     $scope.setSelectedDateToBussinessDate = function(){

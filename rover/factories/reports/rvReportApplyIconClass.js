@@ -37,6 +37,8 @@ angular.module('reportsModule')
                         'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': 'icon-report icon-forecast',
                         'CREDIT_CHECK_REPORT'          : 'icon-report icon-deposit',
                         'DEPOSIT_SUMMARY'              : 'icon-report icon-deposit',
+                        'ROOMS_OOO_OOS'                : 'icon-report icon-room',
+                        'ACTIONS_MANAGER'              : 'icon-report icon-action',
                         /* default class name */
                         'DEFAULT'                      : 'icon-report'
                     };

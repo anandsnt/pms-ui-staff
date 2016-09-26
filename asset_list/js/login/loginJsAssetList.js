@@ -7,13 +7,18 @@ module.exports = {
 		loginJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'angular.min.js',
-				jsLibRoot + 'angular-ui-router.min.js'
+				jsLibRoot + 'angular-ui-router.min.js',
+				jsLibRoot + 'angular-sanitize.min.js'
 			],
 			nonMinifiedFiles: [
 				sharedRoot + 'directives/documentTouchMovePrevent/*.js',
+				sharedRoot + 'baseCtrl.js',
+				jsLibRoot + 'iscroll.js',
+				jsLibRoot + 'ng-iscroll.js',
+				jsLibRoot + 'Utils.js',
 				loginRoot + 'loginApp.js',
 				loginRoot + 'loginRouter.js',
-				loginRoot + "**/*.js",
+				loginRoot + '**/*.js',
 				'!'+loginRoot+'loginJsAssetList.js'
 			]	
 		};
