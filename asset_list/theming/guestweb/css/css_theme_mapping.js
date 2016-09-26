@@ -70,7 +70,8 @@ module.exports = {
 			'guestweb_playa_largo':[ themeCSSRoot + 'guestweb_playa_largo.css'],
 			'guestweb_rivington':[ themeCSSRoot + 'guestweb_rivington.css'],
 			'guestweb_hewing':[ themeCSSRoot + 'guestweb_hewing.css'],
-			'guestweb_sombrero':[ themeCSSRoot + 'guestweb_sombrero.css']
+			'guestweb_sombrero':[ themeCSSRoot + 'guestweb_sombrero.css'],
+			'guestweb_beverly_hills':[ themeCSSRoot + 'guestweb_beverly_hills.css']
 		}
 	}
 }
