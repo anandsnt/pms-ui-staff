@@ -1442,6 +1442,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				}
 			} else {
 				$scope.errorMessage = error;
+				$scope.closeDialog();
 			}
 		}
 
