@@ -5,6 +5,10 @@
 sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2',
     function($http, $q, zsBaseWebSrv, zsBaseWebSrv2) {
         var that = this;
+        /*
+        * The configuredHotels list are the hotels which zest station has added stylesheets / images / icons, and we 'officially' support
+        * all other hotels should default to the SNT theme until which time we add the styling into our product or until a CMS is integrated
+        */
         this.configuredHotels = [
             'zoku',
             'yotel',
@@ -15,11 +19,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         ];
         this.isThemeConfigured = function(theme) {
             //if theme is configured with stylesheets, use it, otherwise default to SNT Theme
-            if (that.configuredHotels.indexOf(theme) !== -1) {
-                return true;
-             } else {
-                return false;
-            };
+            return (that.configuredHotels.indexOf(theme) !== -1);
         };
         this.hotelTheme = '';
         this.fetchSettings = function() {
@@ -44,13 +44,17 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     var hotelDetails = _.findWhere(response.themes, {
                         id: response.existing_email_template_theme
                     });
-                    theme = (hotelDetails && hotelDetails.name).toLowerCase();
+                    if (hotelDetails && hotelDetails.name){
+                        theme = hotelDetails.name.toLowerCase();    
+                    } else {
+                        deferred.reject();
+                    }
                 }
                 if (!that.isThemeConfigured(theme)){
                     theme = 'snt';
                 }
-                that.hotelTheme = theme.toLowerCase();
-                resolveData.themeLogoPath = 'assets/zest_station/css/themes/'+that.hotelTheme+'/logo.svg';
+                that.hotelTheme = theme;
+                resolveData.themeLogoPath = '/assets/zest_station/css/themes/'+that.hotelTheme+'/logo.svg';
                 //resolves this.fetchSetting()
                 deferred.resolve(resolveData);
             }, function(data) {
@@ -61,15 +65,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
         this.fetchHotelSettings = function() { //to get terms & conditions
-            var deferred = $q.defer();
             var url = '/api/hotel_settings.json';
-
-            zsBaseWebSrv.getJSON(url).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
+            return zsBaseWebSrv.getJSON(url);
         };
 
         this.getDoorLockSettings = function() {
