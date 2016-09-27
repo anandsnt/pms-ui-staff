@@ -63,5 +63,21 @@ this.getBlockCodes = function(data){
 };
 
 
+	//for groups
+	this.getExcludedBlockCodes = function(){
+		var url = '/api/groups/pre_checkin_excluded_block_codes.json';
+		return ADBaseWebSrvV2.getJSON(url);
+	};
 
+	//for rates
+	this.getExcludedRateCodes = function(){
+		var url = '/api/rates/pre_checkin_excluded_rate_codes.json';
+		return ADBaseWebSrvV2.getJSON(url);
+	};
+
+	//for rates
+	this.getExcludedRoomTypes = function(){
+		var url = '/api/room_types/pre_checkin_excluded_room_types.json';
+		return ADBaseWebSrvV2.getJSON(url);
+	};
 }]);
