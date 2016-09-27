@@ -72,25 +72,35 @@
         </thead>
         <tfoot>
             <tr>
-                <td colspan="3"><strong translate>TOTAL_CHARGE</strong></td>
-                <td><strong>{{currencySymbol}}{{printData.total_fees}}<strong></td>
+                <td></td>
+                <td></td>
+                <td><strong translate>TOTAL_CHARGE</strong></td>
+                <td><strong>{{currencySymbol}}{{printData.total_fees}}</strong></td>
             </tr>
             <tr>
-                <td colspan="3"><strong translate>TOTAL_CREDITS<strong></td>
-                <td><strong>{{currencySymbol}}{{printData.credits}} <strong></td>
+                <td></td>
+                <td></td>
+                <td><strong translate>TOTAL_CREDITS<strong></td>
+                <td><strong>{{currencySymbol}}{{printData.credits}} </strong></td>
             </tr>
 
             <tr>
-                <td colspan="3"><strong translate>BALANCE</strong></td>
+                <td></td>
+                <td></td>
+                <td><strong translate>BALANCE</strong></td>
                 <td><strong>{{currencySymbol}}{{printData.balance}} </strong></td>
             </tr>
             <tr>
-                <td colspan="3" translate>NET_AMOUNT</td>
+                <td></td>
+                <td></td>
+                <td translate>NET_AMOUNT</td>
                 <td>{{currencySymbol}}{{printData.net_amount}}</td>
             </tr>
 
             <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="item in printData.tax_details">
-                <td colspan="3">
+                <td></td>
+                <td></td> 
+                <td>
                     {{item.description}}
                 </td>
                 <td>
@@ -102,6 +112,7 @@
             <tr ng-repeat="item in printData.charge_details_list">
                 <td>{{item.date | date:dateFormat}}</td>
                 <td class="description">
+                    <strong>{{item.item_description}}</strong>
                     <span>{{item.description}}</span>
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
                 </td>
@@ -112,6 +123,7 @@
             <tr ng-repeat="item in printData.credit_details_list">
                 <td>{{item.date | date:dateFormat}}</td>
                 <td class="description">
+                    <strong>{{item.item_description}}</strong>
                     <span>{{item.description}}</span>
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
                 </td>

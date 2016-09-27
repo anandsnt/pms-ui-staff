@@ -33,7 +33,9 @@ angular.module('accountsModule', [])
                             'query'     : '',
                             'status'    : '',
                             'per_page'  : rvAccountsSrv.DEFAULT_PER_PAGE,
-                            'page'      : rvAccountsSrv.DEFAULT_PAGE
+                            'page'      : rvAccountsSrv.DEFAULT_PAGE,
+                            'is_non_zero' : true,
+                            'account_type':''
                         };
                         return rvAccountsSrv.getAccountsList(params);
                     }
@@ -55,8 +57,11 @@ angular.module('accountsModule', [])
                 }
             }],
             resolve: {
-                accountData: ['rvAccountsConfigurationSrv', '$stateParams', 'accountsAssets',
-                    function(rvAccountsConfigurationSrv, $stateParams, accountsAssets){
+                loadPaymentModule: function (jsMappings) {
+                    return jsMappings.loadPaymentModule();
+                },
+                accountData: ['rvAccountsConfigurationSrv', '$stateParams', 'accountsAssets', 'loadPaymentModule',
+                    function(rvAccountsConfigurationSrv, $stateParams, accountsAssets, loadPaymentModule){
                         var params = {
                             accountId: $stateParams.id
                         };
