@@ -84,22 +84,21 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
              * @param2: object as scroller options
              */
             setScroller = function(key, scrollerOptions) {
-                if (typeof scrollerOptions === 'undefined') {
-                    scrollerOptions = {};
-                }
+                scrollerOptions = scrollerOptions || {};
+
                 //we are merging the settings provided in the function call with defaults
                 var tempScrollerOptions = angular.copy(defaultScrollerOptions);
                 angular.extend(tempScrollerOptions, scrollerOptions); //here is using a angular function to extend,
                 scrollerOptions = tempScrollerOptions;
                 //checking whether scroll options object is already initilised in parent controller
                 //if so we need add a key, otherwise initialise and add
-                var isEmptyParentScrollerOptions = isEmptyObject($scope.$parent.myScrollOptions);
+                var isEmptyParentScrollerOptions = isEmptyObject($scope.myScrollOptions);
 
                 if (isEmptyParentScrollerOptions) {
-                    $scope.$parent.myScrollOptions = {};
+                    $scope.myScrollOptions = {};
                 }
 
-                $scope.$parent.myScrollOptions[key] = scrollerOptions;
+                $scope.myScrollOptions[key] = scrollerOptions;
             },
 
             /**
