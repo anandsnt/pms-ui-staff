@@ -5,8 +5,8 @@
 			<span class="payment-hold" ng-if="reservationData.reservation_card.guarentee_type && reservationData.reservation_card.guarentee_type!=''">
 				{{reservationData.reservation_card.guarentee_type}} {{ 'GUARANTEE' | translate }}
 			</span>
-			<div class="block-input">
-	            <label for="post-no-credit" class="label">=={{reservationData.reservation_card.allow_post_with_no_credit}}Post With No Credit</label>
+			<div class="block-input" ng-show="showPostWithNoCreditButton()">
+	            <label for="post-no-credit" class="label">Post With No Credit</label>
 
 	            <!-- Add class .on when switched on-->
 	            <div class="switch-button" ng-class="{'on' : reservationData.reservation_card.allow_post_with_no_credit}" ng-click="setAllowPostWithNoCredit()">
