@@ -12,6 +12,7 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
   ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
   $scope.init = function(){
+    $scope.$emit('showLoader');
       $scope.emailDatas = {};
   };
 
@@ -23,7 +24,7 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
   */
   $scope.fetchTableData = function($defer, params){
     $scope.selectAllOption = false;
-  	$scope.emailTitle = 'Guests Checking In';
+    $scope.emailTitle = 'Guests Checking In';
     $scope.saveButtonTitle = 'SEND WEB CHECKIN INVITES';
     var getParams = $scope.calculateGetParams(params);
     getParams.id = 'checkin';
@@ -44,7 +45,12 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
         $defer.resolve($scope.data);
         $scope.isAllOptionsSelected();
   };
-  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, getParams, fetchEmailListSuccessCallback);
+  var fetchEmailListFailureCallback = function(response){
+      $scope.isLoading = false;
+      $scope.$emit('hideLoader');
+      $scope.errorMessage = response;
+  };
+  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, getParams, fetchEmailListSuccessCallback, fetchEmailListFailureCallback);
   };
 
 $scope.loadTable = function(){
