@@ -46,6 +46,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     });
                     if (hotelDetails && hotelDetails.name){
                         theme = hotelDetails.name.toLowerCase();    
+                    } else {
+                        deferred.reject(resolveData);
                     }
                 }
                 if (!that.isThemeConfigured(theme)){
@@ -63,15 +65,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
         this.fetchHotelSettings = function() { //to get terms & conditions
-            var deferred = $q.defer();
             var url = '/api/hotel_settings.json';
-
-            zsBaseWebSrv.getJSON(url).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
+            return zsBaseWebSrv.getJSON(url);
         };
 
         this.getDoorLockSettings = function() {
