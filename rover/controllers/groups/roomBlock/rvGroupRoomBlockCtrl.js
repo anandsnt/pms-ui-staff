@@ -509,7 +509,6 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
 		$scope.showMassUpdateEndDateConfirmation = function(data) {
 			$scope.overBookingMessage = '';
-			setDatePickers();
 
 			ngDialog.open({
 				template: '/assets/partials/groups/roomBlock/rvGroupConfirmMassUpdatePopup.html',
@@ -774,6 +773,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			//default to date
 			$scope.endDate = '';
+			var maxEndDate = '';
 
 			//referring data model -> from group summary
 			var refData = $scope.groupConfigData.summary;
@@ -781,6 +781,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			//default to goto date
 			$scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
 			$scope.timeLineEndDate = new tzIndependentDate(refData.block_to);
+
 
 			//if from date is not null from summary screen, we are setting it as busines date
 			if (!$scope.isEmpty(refData.block_from.toString())) {
@@ -790,8 +791,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			//if to date is null from summary screen, we are setting it from date
 			if (!$scope.isEmpty(refData.block_to.toString())) {
 				$scope.endDate = refData.block_to;
+				maxEndDate = new tzIndependentDate($scope.endDate - 86400000);
 			}
 
+			$scope.massUpdateEndDate = maxEndDate;
 
 			//date picker options - Common
 			var commonDateOptions = {
@@ -814,24 +817,17 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				onSelect: onEndDatePicked
 			}, commonDateOptions);
 
-			//setting max date of goto date
-			var maxDate = refData.block_to;
-			maxDate.setDate(maxDate.getDate()-1);
-
 			//date picker options - Goto Date
 			$scope.timeLineStartDateOptions = _.extend({
-				minDate: refData.block_from,
-				maxDate: maxDate,
+				minDate: ($scope.startDate !== '') ? new tzIndependentDate($scope.startDate): new tzIndependentDate($rootScope.businessDate),
+				maxDate: maxEndDate,
 				onSelect: $scope.onTimeLineStartDatePicked,
 			}, commonDateOptions);
-
-			//setting max date of mass update
-			$scope.massUpdateEndDate = new tzIndependentDate(maxDate);
 
 			//date picker options - mass update end Date
 			$scope.massUpdateEndDateOptions = _.extend({
 				minDate: $scope.timeLineStartDate,
-				maxDate: maxDate,
+				maxDate: maxEndDate,
 				onSelect: $scope.onMassUpdateEndDatePicked,
 			}, commonDateOptions);
 		};
