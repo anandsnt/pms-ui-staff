@@ -33,7 +33,7 @@ module.exports = {
                     'shared/directives/emitWhen/emitWhen.js',
                     'shared/directives/limitInputRange/limitInputRange.js',
                     'rover/directives/multiOptionSelection/multiOptionSelection.js',
-
+                    'shared/directives/prettyTimeAgo/prettyTimeAgo.js',
                     jsLibRoot + 'fullcalender/**/*.js'
 				]
 			};
