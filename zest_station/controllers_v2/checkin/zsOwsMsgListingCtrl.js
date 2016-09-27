@@ -20,7 +20,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 
 			setBeforePrintSetup();
 			// add the orientation
-		addPrintOrientation();
+			addPrintOrientation();
 
 			var onPrintSuccess = function() {
 				//do nothing for now

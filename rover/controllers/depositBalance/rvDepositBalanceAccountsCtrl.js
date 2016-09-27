@@ -72,6 +72,13 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		}, 1500);
 	};
 
+	var refreshPaymentScroll = function() {
+		setTimeout(function() {
+			$scope.refreshScroller('payment-deposit-scroll');
+		}, 500);
+
+	};
+
     $scope.validPayment = true;
 
 	$scope.disableMakePayment = function () {
@@ -110,41 +117,6 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 
     $scope.timer = null;
 
-    $scope.cardNumberInput = function (n, e) {
-        if ($scope.depositWithGiftCard){
-            var len = n.length;
-            $scope.num = n;
-            if (len >= 8 && len <= 22){
-                //then go check the balance of the card
-                $('[name=card-number]').keydown(function(){
-                    clearTimeout($scope.timer);
-                    $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
-                });
-            } else {
-                //hide the field and reset the amount stored
-                $scope.giftCardAmountAvailable = false;
-            }
-        }
-    };
-
-    $scope.num;
-
-    $scope.fetchGiftCardBalance = function () {
-        if ($scope.depositWithGiftCard){
-               //switch this back for the UI if the payment was a gift card
-           var fetchGiftCardBalanceSuccess = function (giftCardData) {
-               $scope.giftCardAvailableBalance = giftCardData.amount;
-               $scope.giftCardAmountAvailable = true;
-               $scope.$emit('giftCardAvailableBalance',giftCardData);
-               //data.expiry_date //unused at this time
-               $scope.$emit('hideLoader');
-           };
-           $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {'card_number':$scope.num}, fetchGiftCardBalanceSuccess);
-       } else {
-           $scope.giftCardAmountAvailable = false;
-       }
-    };
-
 	/**
 	* function to check whether the user has permission
 	* to make payment
@@ -154,124 +126,13 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		return rvPermissionSrv.getPermissionValue ('MAKE_PAYMENT');
 	};
 
-	/**
-	* function to determine the visibility of Make Payment button
-	* @return {Boolean}
-	*/
-	$scope.hideMakePayment = function () {
-		return (!$scope.hasPermissionToMakePayment());
-	};
-
-	/*
-	 * class based on the make payment button status
-	 */
-	$scope.showMakePaymentButtonStatus = function () {
-		var buttonClass = "";
-		if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
-			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.validPayment) ? "green" :"grey";
-		}else {
-                    if (!$scope.validPayment){
-			buttonClass = "grey overlay";
-                    } else {
-			buttonClass = "grey";
-                    }
-		};
-		return buttonClass;
-	};
-
-	$scope.showRefundButtonStatus = function () {
-		var buttonClass = "";
-		if(typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined"){
-			buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? "blue" :"grey";
-		}else {
-			buttonClass = "grey";
-		};
-		return buttonClass;
-	};
-
 	if($rootScope.paymentGateway === "sixpayments"){
     	//initilayy C&P ACTIVE
     	$scope.shouldCardAvailable = false;
     	$scope.makePaymentButtonDisabled = false;
     }
 
-	var checkReferencetextAvailableForCC = function () {
-		angular.forEach($scope.creditCardTypes, function(value, key) {
-			if($scope.depositBalanceMakePaymentData.card_code.toUpperCase() === value.cardcode){
-				$scope.isDisplayReference = (value.is_display_reference)? true:false;
-			};
-		});
-	};
 
-	var checkReferencetextAvailableFornonCC = function () {
-		angular.forEach($scope.passData.details.paymentTypes, function(value, key) {
-			if(value.name === $scope.depositBalanceMakePaymentData.payment_type){
-				$scope.isDisplayReference =  (value.is_display_reference)? true:false;
-
-				// To handle fees details on reservation summary,
-				// While we change payment methods
-				// Handling Credit Cards seperately.
-				if(value.name !== "CC" && value.name !== "GIFT_CARD"){
-					$scope.feeData.feesInfo = value.charge_code.fees_information;
-					$scope.setupFeeData();
-				}
-			}
-		});
-	};
-
-
-        $scope.setupGiftCardParams = function(){
-             if(!$rootScope.isStandAlone){
-                        $scope.initFromCashDeposit = true;
-                    }
-                    $rootScope.$broadcast('giftCardSelected');
-                    $scope.shouldShowIframe = false;
-                    $rootScope.depositUsingGiftCard = true;
-                    $scope.depositWithGiftCard = true;
-        };
-        $scope.hideGiftCardFields = function(){
-            $scope.depositWithGiftCard = false;
-            $rootScope.depositUsingGiftCard = false;
-        };
-
-
-	$scope.changePaymentType = function () {
-            var depositType = $scope.depositBalanceMakePaymentData.payment_type;
-
-            if(depositType === "CC" || depositType === "GIFT_CARD"){
-                    if (depositType === "CC"){
-                        $scope.shouldShowIframe = true;
-                        $rootScope.$broadcast('creditCardSelected');
-
-                    }
-                    if (depositType === "GIFT_CARD"){
-                        $scope.setupGiftCardParams();
-
-                    } else {
-                        $scope.hideGiftCardFields();
-                    }
-                    if($rootScope.paymentGateway !== "sixpayments"){
-                            $scope.shouldShowMakePaymentScreen       = false;
-                            $scope.shouldShowExistingCards =  ($scope.cardsList.length>0) ? true :false;
-                            $scope.addmode = ($scope.cardsList.length>0) ? false :true;
-
-                    if (depositType === "GIFT_CARD"){
-                        $scope.shouldShowExistingCards = false;
-                        $scope.addmode = false;
-                    }
-
-                            refreshScroll();
-                    } else {
-                            $scope.isManual = false;
-                    }
-            } else {
-                $scope.shouldShowMakePaymentScreen       = true;
-                $scope.hideCreditCardFields();
-                checkReferencetextAvailableFornonCC();
-                $scope.hideGiftCardFields();
-            };
-            $rootScope.$emit('depositUsingGiftCardChange');
-	};
 
         $scope.hideCreditCardFields = function(){
             $scope.addmode                          = false;
@@ -303,7 +164,6 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	    	cardExpiry = ($scope.cardValues.cardDetails.expiryMonth!=='' && $scope.cardValues.cardDetails.expiryYear!=='') ? "20"+$scope.cardValues.cardDetails.expiryYear+"-"+$scope.cardValues.cardDetails.expiryMonth+"-01" : "";
 	    	//To render the selected card data
 	    	$scope.depositBalanceMakePaymentData.card_code = getCreditCardType($scope.cardValues.cardDetails.cardType).toLowerCase();
-	    	checkReferencetextAvailableForCC();
 	    	$scope.depositBalanceMakePaymentData.ending_with = $scope.cardValues.cardDetails.cardNumber.substr($scope.cardValues.cardDetails.cardNumber.length - 4);;
 		    var dataToApiToAddNewCard = {
 		          	"token" : $scope.cardValues.tokenDetails.session,
@@ -362,83 +222,6 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 			}
 		}
 		return isShowFees;
-	};
-
-	// CICO-9457 : To calculate fee
-	$scope.calculateFee = function () {
-		if($scope.isStandAlone){
-			var feesInfo = $scope.feeData.feesInfo;
-			var amountSymbol = "";
-			var feePercent  = zeroAmount;
-			var minFees = zeroAmount;
-
-			if (typeof feesInfo !== 'undefined' && feesInfo !== null){
-				amountSymbol = feesInfo.amount_symbol;
-				feePercent  = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
-				minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
-			}
-
-			var totalAmount = ($scope.depositBalanceMakePaymentData.amount === "") ? zeroAmount :
-							parseFloat($scope.depositBalanceMakePaymentData.amount);
-
-			$scope.feeData.minFees = minFees;
-			$scope.feeData.defaultAmount = totalAmount;
-
-			if($scope.isShowFees()){
-				if(amountSymbol === "percent"){
-					var calculatedFee = parseFloat(totalAmount * (feePercent/100));
-					$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
-					$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
-				}
-				else{
-					$scope.feeData.calculatedFee = parseFloat(feePercent).toFixed(2);
-					$scope.feeData.totalOfValueAndFee = parseFloat(totalAmount + feePercent).toFixed(2);
-				}
-			}
-
-			if($scope.depositBalanceMakePaymentData.amount < 0){
-				$scope.refundAmount = (-1)*parseFloat($scope.depositBalanceMakePaymentData.amount);
-				$scope.shouldShowMakePaymentButton = false;
-			} else {
-				$scope.shouldShowMakePaymentButton = true;
-			}
-		}
-	};
-
-	// CICO-9457 : Data for fees details.
-	$scope.setupFeeData = function () {
-		var feesInfo = $scope.feeData.feesInfo ? $scope.feeData.feesInfo : {};
-		var defaultAmount = $scope.depositBalanceMakePaymentData ?
-		 	parseFloat($scope.depositBalanceMakePaymentData.amount) : zeroAmount;
-
-		var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
-		$scope.feeData.minFees = minFees;
-		$scope.feeData.defaultAmount = defaultAmount;
-
-		if($scope.isShowFees()){
-			if(typeof feesInfo.amount !== 'undefined' && feesInfo!== null){
-
-				var amountSymbol = feesInfo.amount_symbol;
-				var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
-				$scope.feeData.actualFees = feesAmount;
-
-				if(amountSymbol === "percent") {
-					$scope.calculateFee();
-				}
-				else{
-					$scope.feeData.calculatedFee = parseFloat(feesAmount).toFixed(2);
-					$scope.feeData.totalOfValueAndFee = parseFloat(feesAmount + defaultAmount).toFixed(2);
-				}
-			}
-		}
-	};
-
-	// CICO-12408 : To calculate Total of fees and amount to pay.
-	$scope.calculateTotalAmount = function (amount) {
-		var feesAmount  = (typeof $scope.feeData.calculatedFee === 'undefined' || $scope.feeData.calculatedFee === '' || $scope.feeData.calculatedFee === '-') ? zeroAmount : parseFloat($scope.feeData.calculatedFee);
-		var amountToPay = (typeof amount === 'undefined' || amount ==='') ? zeroAmount : parseFloat(amount);
-
-		$scope.feeData.totalOfValueAndFee = parseFloat(amountToPay + feesAmount).toFixed(2);
 	};
 
     $scope.emitCancelCardSelection = function () {
@@ -539,6 +322,8 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		$scope.closeDialog();
 	};
 
+	$scope.$on("CLOSE_DIALOG", $scope.closeDepositModal);
+
 	/*
 	 * Make payment button success
 	 * Update balance data in staycard
@@ -555,9 +340,6 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 
         //To update the balance in accounts
         $scope.$emit("BALANCE_AFTER_PAYMENT", data.current_balance);
-
-		ngDialog.close();
-
 	};
 
 	/*
@@ -576,7 +358,6 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		$scope.depositBalanceMakePaymentData.card_code = $scope.depositBalanceData.data.existing_payments[index].card_code;
 		$scope.depositBalanceMakePaymentData.ending_with  = $scope.depositBalanceData.data.existing_payments[index].ending_with;
 		$scope.depositBalanceMakePaymentData.card_expiry = $scope.depositBalanceData.data.existing_payments[index].card_expiry;
-		checkReferencetextAvailableForCC();
 
 		if ($scope.isStandAlone) {
 			// Setup fees info
@@ -635,14 +416,25 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.successSavePayment);
 	});
 
-	//CICO-12488
-	$scope.changePaymentType();
-
     /**
     * Set this value as true always as we have not implemented permission
     * based SR view rate functionality in accounts
     */
     $scope.isBalanceAmountShown = function() {
         return true;
-    }
+    };
+
+	$scope.$on("PAYMENT_SUCCESS", function(event, data) {
+		$scope.successMakePayment(data);
+		refreshPaymentScroll();
+	});
+
+	$scope.$on("PAYMENT_FAILED", function(event, errorMessage) {
+		$scope.errorMessage = errorMessage;
+	});
+
+	(function() {
+		$scope.setScroller('payment-deposit-scroll');
+	})();
+
 }]);

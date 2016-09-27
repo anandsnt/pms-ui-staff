@@ -17,7 +17,7 @@
 				<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
 			</div>
 			<span class="count-entries">entries</span>
-				
+
 			<div class="entry table-search">
 				<span class="search-text">Search</span>
 				<span class="icons icon-search" name="submit" type="submit"></span>
@@ -43,9 +43,10 @@
 					<td data-title="'Locked'" class="delete" header-class="delete">
 						<button type="button" ui-sref="admin.userdetails({ page: 'edit', id: user.id, hotelId: hotelId, isUnlocking: true})" class="icons icon-lock" ng-if="user.is_locked">Locked</button>
 					</td>
-					<td data-title="'Delete'" class="delete" header-class="delete">
-						<a id="165" ng-show="user.can_delete" class="icons icon-delete large-icon" ng-click="deleteUser($index, user.id)">Delete this user</a>							
-					</td>
+					<!-- As a quick fix for defect CICO-33728 -->
+					<!-- <td data-title="'Delete'" class="delete" header-class="delete">
+						<a id="165" ng-show="user.can_delete" class="icons icon-delete large-icon" ng-click="deleteUser($index, user.id)">Delete this user</a>
+					</td> -->
 				</tr>
 			</table>
 		</section>
@@ -58,11 +59,11 @@
 	              	<li ng-repeat="page in pages"
 		                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
 		                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
-	
+
 		                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
 		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
 		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
-		                
+
 		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
 		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
 		                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
