@@ -1,4 +1,4 @@
-admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state','ngTableParams','$filter','$stateParams',function($scope,adCheckinCheckoutSrv,$state,ngTableParams,$filter,$stateParams){
+admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state','ngTableParams','$filter','$stateParams','$timeout',function($scope,adCheckinCheckoutSrv,$state,ngTableParams,$filter,$stateParams, $timeout){
 
  /*
   * To retrieve previous state
@@ -12,8 +12,10 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
   ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
   $scope.init = function(){
-    $scope.$emit('showLoader');
       $scope.emailDatas = {};
+      $timeout(function(){
+          $scope.loadTable();
+      },20);
   };
 
   $scope.init();
@@ -45,12 +47,7 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
         $defer.resolve($scope.data);
         $scope.isAllOptionsSelected();
   };
-  var fetchEmailListFailureCallback = function(response){
-      $scope.isLoading = false;
-      $scope.$emit('hideLoader');
-      $scope.errorMessage = response;
-  };
-  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, getParams, fetchEmailListSuccessCallback, fetchEmailListFailureCallback);
+  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, getParams, fetchEmailListSuccessCallback);
   };
 
 $scope.loadTable = function(){
@@ -67,7 +64,6 @@ $scope.loadTable = function(){
     );
   };
 
-  $scope.loadTable();
 
 
 
