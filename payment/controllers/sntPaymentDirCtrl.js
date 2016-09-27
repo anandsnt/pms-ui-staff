@@ -159,10 +159,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          * show add to guest card checkbox to add the card to the guestcard
          */
         var showAddtoGuestCardBox = function() {
-            //this need to be set to true only if new card is added
-            if (!!$scope.reservationId) {
-                $scope.payment.showAddToGuestCard = true;
-            }
+            $scope.payment.showAddToGuestCard = !!$scope.reservationId;
         };
 
         /**
@@ -200,7 +197,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             if ($scope.payment.isManualEntryInsideIFrame) {
                 $scope.payment.isManualEntryInsideIFrame = false;
                 //Add to guestcard feature for C&P
-                $scope.payment.showAddToGuestCard = $scope.payment.isManualEntryInsideIFrame ? false : true;
+                $scope.payment.showAddToGuestCard = !!$scope.reservationId && ($scope.payment.isManualEntryInsideIFrame ? false : true);
                 $scope.selectedCC = {};
             } else {
                 $scope.payment.isManualEntryInsideIFrame = true;
@@ -596,7 +593,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             if (!!selectedPaymentType && selectedPaymentType.name === "CC") {
                 if (!!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
                     //Add to guestcard feature for C&P
-                    $scope.payment.showAddToGuestCard = $scope.payment.isManualEntryInsideIFrame ? false : true;
+                    $scope.payment.showAddToGuestCard = !!$scope.reservationId && ($scope.payment.isManualEntryInsideIFrame ? false : true);
                     refreshIFrame();
                 } else {
                     // In case no card has been selected yet, move to add card mode
