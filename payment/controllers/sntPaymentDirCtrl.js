@@ -416,6 +416,12 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             }
         });
 
+        $scope.$on(payEvntConst.PAYMENTAPP_ERROR_OCCURED, (event, errorMessage) => {
+            $timeout(()=> {
+                $scope.errorMessage = errorMessage;
+            }, 100)
+        });
+
         /**
          * This method checks if the selected payment type is Direct Bill
          * In case the payment type is direct bill;
@@ -691,7 +697,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
                     $scope.selectedCC.value = response.data.id;
                     $scope.selectedCard = $scope.selectedCC.value;
-                    $scope.selectedCC.card_code = cardDetails.cardDisplayData.card_code;
+                    $scope.selectedCC.card_code = cardDetails.cardDisplayData.card_code || response.data.credit_card_type;
                     $scope.selectedCC.ending_with = cardDetails.cardDisplayData.ending_with;
                     $scope.selectedCC.expiry_date = cardDetails.cardDisplayData.expiry_date;
                     $scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;
@@ -772,6 +778,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         };
 
         $scope.$on(payEvntConst.CC_TOKEN_GENERATED, function(event, data) {
+            $scope.errorMessage = "";
+
             var paymentData = data.paymentData;
 
             if ($scope.actionType === "ADD_PAYMENT_GUEST_CARD" || !!paymentData.apiParams.mli_token) {
@@ -843,6 +851,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             }
 
             $scope.$emit('PAYMENT_SUCCESS', response);
+        };
+
+        $scope.clearErrorMessage = function() {
+            $scope.errorMessage = "";
         };
 
         $scope.showSixPaymentsModeSelection = function() {
