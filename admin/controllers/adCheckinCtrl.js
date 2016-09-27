@@ -368,6 +368,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
 
     var saveCheckinDetailsSuccessCallback = function (data) {
       $scope.$emit('hideLoader');
+      $scope.goBackToPreviousState();
     };
 
     $scope.invokeApi(adCheckinSrv.save, uploadData, saveCheckinDetailsSuccessCallback, saveCheckinDetailsFailureCallback);
