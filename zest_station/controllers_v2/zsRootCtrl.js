@@ -196,9 +196,14 @@ sntZestStation.controller('zsRootCtrl', [
 				configureSwipeSettings();
 				//logStationSettings();
 			};
+			var onFailure = function(){
+				console.warn('unable to fetch hotel settings');
+				$scope.$emit(zsEventConstants.PUT_OOS);
+			}
 			var options = {
 				params: {},
-				successCallBack: onSuccess
+				successCallBack: onSuccess,
+				failureCallBack: onFailure
 			};
 			$scope.callAPI(zsGeneralSrv.fetchHotelSettings, options);
 		};

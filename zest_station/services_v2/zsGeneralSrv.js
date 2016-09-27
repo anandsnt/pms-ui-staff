@@ -47,7 +47,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     if (hotelDetails && hotelDetails.name){
                         theme = hotelDetails.name.toLowerCase();    
                     } else {
-                        deferred.reject(resolveData);
+                        deferred.reject();
                     }
                 }
                 if (!that.isThemeConfigured(theme)){
