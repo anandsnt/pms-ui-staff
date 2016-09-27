@@ -92,6 +92,10 @@
                         <h3>
                             <span class="icons icon-suite" ng-if="multiSheetState.allRooms[room.room_index].is_suite">Suite room</span>
                             {{task.room_no}}
+                            <span ng-if="multiSheetState.allRooms[room.room_index].is_queued" class="icons icon-queued has-time">
+                                Queued
+                                <span class="time" pretty-time-span="multiSheetState.allRooms[room.room_index].is_queued_till"></span>
+                            </span>
                         </h3>
                         <span class="task">{{task.task_name}}</span>
                     </li>
