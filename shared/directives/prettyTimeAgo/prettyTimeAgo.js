@@ -26,7 +26,7 @@ angular.module('prettyTimeAgoModule', [])
 				prettyTimeSpan: '='
 			},
 			link: function(scope, element) {
-				v = timeAgo.convert(1235);
+				var v = timeAgo.convert(1235);
 				console.log(v, element);
 				element.innerHTML( v );
 				return;
