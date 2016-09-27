@@ -53,7 +53,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                         ...payLoad,
                         "bill_number": $scope.billNumber,
                         "payment_type": $scope.selectedPaymentType,
-                        "amount": $scope.payment.amount.toString().replace(/,/g,""),
+                        "amount": $scope.payment.amount.toString().replace(/,/g, ""),
                         "is_split_payment": $scope.splitBillEnabled && $scope.numSplits > 1,
                         "workstation_id": $scope.hotelConfig.workstationId
                     },
@@ -670,6 +670,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $scope.$emit('showLoader');
             var params = angular.copy(cardDetails.apiParams),
                 onSaveSuccess = function(response) {
+
+                    if (!$scope.selectedPaymentType) {
+                        $scope.selectedPaymentType = "CC";
+                    }
 
                     $scope.selectedCC = $scope.selectedCC || {};
 

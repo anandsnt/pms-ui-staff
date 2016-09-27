@@ -9,6 +9,12 @@ angular.module("sntPayConfig", []).constant("PAYMENT_CONFIG", Object.freeze({
         partial: "/assets/partials/payMLIPartial.html",
         params: null
     },
+    "SAFERPAY": {
+        iFrameUrl: null,
+        jsLibrary: null,
+        partial: "/assets/partials/payMLIPartial.html",
+        params: null
+    },
     "sixpayments": {
         iFrameUrl: "/api/ipage/index.html",
         //Iframe loading url query string params
