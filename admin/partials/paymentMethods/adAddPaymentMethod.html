@@ -29,7 +29,7 @@
 				<ad-checkbox is-checked="addData.is_rover_only" label="{{ 'ROVER_ONLY' | translate}}" div-class="full-width" change="roverOnlyChanged()"></ad-checkbox>
 				<ad-checkbox is-checked="addData.is_web_only" label="{{ 'WEB_ONLY' | translate}}" div-class="full-width" change="webOnlyChanged()"></ad-checkbox>
 				<ad-checkbox is-checked="addData.is_display_reference" label="{{ 'DISPLAY_REFERENCE' | translate}}" div-class="full-width"></ad-checkbox>
-				<ad-checkbox is-disabled="addData.value == 'CC'" is-checked="addData.allow_post_with_no_credit" label="{{ 'ALLOW_POST_WITH_NO_CREDIT' | translate}}" div-class="full-width"></ad-checkbox>
+				<ad-checkbox is-checked="addData.allow_post_with_no_credit" label="{{ 'ALLOW_POST_WITH_NO_CREDIT' | translate}}" div-class="full-width"></ad-checkbox>
 			</fieldset>
 			<div class='actions float'>
 				<button class='button blank edit-data-inline' id='cancel' type='button' ng-click="clickCancel()" translate>
