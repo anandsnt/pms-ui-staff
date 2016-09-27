@@ -176,12 +176,12 @@
                 </figure>
 
                 <!-- Show only if room is vacant -->
-                <div ng-show="!room.is_queued && !room.is_occupied" class="show-vacant">VACANT</div>
+                <div bo-if="!room.is_queued && !room.is_occupied" class="show-vacant">VACANT</div>
 
                 <!-- Show only if room is queued -->
-                <div ng-show="room.is_queued" class="icons icon-queued has-time">
+                <div bo-if="room.is_queued" class="icons icon-queued has-time">
                     Queued
-                    <span class="time" pretty-time-ago="room.is_queued_till"></span>
+                    <span class="time" pretty-time-span="room.is_queued_till"></span>
                 </div>
 
                 <!-- IF VIEW BY TASK, ADD THIS: -->

@@ -2,18 +2,25 @@ angular.module('prettyTimeAgoModule', [])
 	.factory('timeAgo', function() {
 		return {
 			convert: function(seconds) {
-				var seconds = seconds || 0,
-					minutes = Math.floor( seconds / 60 ),
-					hours   = Math.floor( minutes / 60 );
+				var sec, min, hrs;
 
-				if ( hours > 12 ) {
-					return '> 12h';
-				} else if ( hours > 0 ) {
-					return hours + 'h';
-				} else if ( minutes > 0 ) {
-					return minutes + 'm';
+				sec = parseInt(seconds);
+
+				if ( isNaN(sec) ) {
+					return '';
 				} else {
-					return '1m';
+					min = Math.floor( sec / 60 );
+					hrs = Math.floor( min / 60 );
+
+					if ( hours > 12 ) {
+						return '>12h';
+					} else if ( hours > 0 ) {
+						return hours + 'h';
+					} else if ( minutes > 0 ) {
+						return minutes + 'm';
+					} else {
+						return '1m';
+					}
 				}
 			}
 		}
@@ -26,16 +33,9 @@ angular.module('prettyTimeAgoModule', [])
 				prettyTimeSpan: '='
 			},
 			link: function(scope, element) {
-				var v = timeAgo.convert(1235);
-				console.log(v, element);
-				element.innerHTML( v );
-				return;
-
-				if ( ! scope.prettyTimeSpan ) {
-					return;
+				if ( scope.prettyTimeSpan !== null || scope.prettyTimeSpan !== undefined ) {
+					element.html( timeAgo.convert(scope.prettyTimeSpan) );
 				}
-
-				element.innerHTML( timeAgo.convert(scope.prettyTimeSpan) );
 			}
 		}
 	}])
