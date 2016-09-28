@@ -194,6 +194,7 @@ angular.module('reportsModule')
             // for CREDIT_CHECK_REPORT
             'INCLUDE_DUE_OUT': true,
             'INCLUDE_INHOUSE': true,
+            'ALLOW_POST_WITH_NO_CREDIT': true,
 
             // for room ooo oos report
             OOO: true,
@@ -354,7 +355,7 @@ angular.module('reportsModule')
                     break;
             };
         };
-        
+
 
         /**
          * Process the filters and create proper DS to show and play in UI
@@ -454,7 +455,7 @@ angular.module('reportsModule')
 
                 if(filter.value === 'RATE_CODE') {
                     report['hasRateCodeFilter'] = filter;
-                };                
+                };
 
                 if(filter.value === 'ROOM_TYPE') {
                     report['hasRoomTypeFilter'] = filter;
@@ -525,6 +526,9 @@ angular.module('reportsModule')
                     __pushGeneralOptionData( report, filter );
                 };
                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'INCLUDE_DUE_OUT' ) {
+                    __pushGeneralOptionData( report, filter, true );
+                }
+                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'ALLOW_POST_WITH_NO_CREDIT' ) {
                     __pushGeneralOptionData( report, filter, true );
                 }
 
@@ -953,7 +957,7 @@ angular.module('reportsModule')
                                 defaultValue: 'Select Rate'
                             }
                         }
-                    };                    
+                    };
 
 
                 });

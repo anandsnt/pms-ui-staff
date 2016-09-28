@@ -13,7 +13,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 	function($rootScope, $scope, reportsSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
-		// helper function 
+		// helper function
 		var findOccurance = function(item) {
 			var occurance = 'Runs ',
 				frequency = _.find($scope.scheduleFrequency, { id: item.frequency_id }).description;
@@ -158,7 +158,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			return !! found ? found.value : 'Per';
 		};
 
-		
+
 
 
 		var validateSchedule = function() {
@@ -214,7 +214,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			}
 			if ( !! $scope.scheduleParams.time_period_id ) {
 				params.time_period_id = $scope.scheduleParams.time_period_id;
-			} 
+			}
 
 			// fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
 			params.frequency_id = $scope.scheduleParams.frequency_id;
@@ -309,7 +309,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			}
 			if ( !! $scope.scheduleParams.time_period_id ) {
 				params.time_period_id = $scope.scheduleParams.time_period_id;
-			} 
+			}
 
 			// fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
 			params.frequency_id = $scope.scheduleParams.frequency_id;
@@ -478,7 +478,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			VIP_ONLY: 'VIP_ONLY',
 			// this filter for few reports could also be listed
 			// under SHOW and not OPTIONS
-			INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT'
+			INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT',
+			ALLOW_POST_WITH_NO_CREDIT : 'ALLOW_POST_WITH_NO_CREDIT'
 		};
 
 		var matchSortFields = {
@@ -497,7 +498,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 		};
 
 		// this is a temporary setup
-		// may have to share logic with 
+		// may have to share logic with
 		// rvReportUtilsFac.js in future
 		var setupFilters = function() {
 			$scope.filters = {};
@@ -527,7 +528,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
 				selected = false;
 				if ( matchGeneralOptions[filter.value] ) {
-					
+
 					if ( $scope.selectedEntityDetails.report.description === 'Arriving Guests' && filter.value === 'DUE_IN_ARRIVALS' ) {
 						selected = true;
 					}
@@ -537,6 +538,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 					}
 
 					if ( $scope.selectedEntityDetails.report.description === 'All In-House Guests' && filter.value === 'INCLUDE_DUE_OUT' ) {
+					    selected = true;
+					}
+
+					if ( $scope.selectedEntityDetails.report.description === 'Allow post with no Credit' && filter.value === 'ALLOW_POST_WITH_NO_CREDIT' ) {
 					    selected = true;
 					}
 
@@ -580,7 +585,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			$scope.scheduleParams = {};
 
 			var hasAccOrGuest, todayTimePeriod;
-			
+
 			hasAccOrGuest = _.find(report.filters, function(filter) {
 				return filter.value == 'ACCOUNT' || filter.value == 'GUEST'
 			});
@@ -598,7 +603,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				$scope.scheduleParams.time_period_id = undefined;
 			}
 
-			
+
 			if ( !! $scope.selectedEntityDetails.time ) {
 				$scope.scheduleParams.time = $scope.selectedEntityDetails.time;
 			} else {
@@ -662,7 +667,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			if ( !! $scope.selectedEntityDetails.emails ) {
 				$scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
 			} else {
-				$scope.emailList = [];	
+				$scope.emailList = [];
 			}
 
 			$scope.timeSlots = reportUtils.createTimeSlots(30);
@@ -721,7 +726,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 							return item.report.title
 						}
 					);
-				
+
 
 				var getValue = function(value) {
 					switch(value) {
