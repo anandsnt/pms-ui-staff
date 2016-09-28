@@ -386,6 +386,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			$scope.query = '';
 			//Initial search param
 			$scope.isNonZero = true;
+			$scope.status = 'OPEN';
 
 			//scroller and related things
 			setScrollerForMe();

@@ -220,6 +220,7 @@ sntRover.controller('reservationDetailsController',
 		$scope.reservationParentData = $scope.$parent.reservationData;
 
 		$scope.reservationData = reservationDetails;
+
 		// CICO-13564
 		$scope.editStore = {
 			arrival: $scope.reservationData.reservation_card.arrival_date,

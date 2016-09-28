@@ -2,6 +2,37 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
     function($q, $http, $location, PAYMENT_CONFIG) {
         var service = this;
 
+        var webserviceErrorActions = function(url, deferred, errors, status) {
+            var urlStart = url.split('?')[0];
+            // please note the type of error expecting is array
+            // so form error as array if you modifying it
+            if (status === 406) { // 406- Network error
+                deferred.reject(errors);
+            } else if (status === 422) { // 422
+                deferred.reject(errors);
+            } else if (status === 500) { // 500- Internal Server Error
+                deferred.reject(['Internal server error occured']);
+            } else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
+                $window.location.href = '/500';
+            } else if (status === 401) { // 401- Unauthorized
+                // so lets redirect to login page
+                $window.location.href = '/logout';
+            }
+
+            //set of custom error emssage range http status
+            else if (status >= 470 && status <= 490) {
+                errors.httpStatus = status;
+                errors.errorMessage = errors;
+                deferred.reject(errors);
+            }
+            // CICO-26779 : Handling 404 - Not found.
+            else if (status === 404) {
+                console.warn("Found 404 Error : " + url);
+            } else {
+                deferred.reject(errors);
+            }
+        };
+
         service.submitPayment = function(dataToSrv) {
 
             var deferred = $q.defer(),
@@ -429,6 +460,9 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             return deferred.promise;
         };
 
+        service.isValidAmount = function(amount) {
+            return !!amount && !isNaN(Number(amount)) && Number(amount) !== 0;
+        };
 
     }
 ]);
