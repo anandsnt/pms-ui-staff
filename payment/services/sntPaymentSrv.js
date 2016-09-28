@@ -429,6 +429,9 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             return deferred.promise;
         };
 
+        service.isValidAmount = function(amount) {
+            return !!amount && !isNaN(Number(amount)) && Number(amount) !== 0;
+        };
 
     }
 ]);

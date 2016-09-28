@@ -84,10 +84,6 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			}, 500);
 			console.log($scope.errorMessage);
 		};		
-		
-		$scope.$on("ERROR_OCCURED",function(event,data){
-			showErrorMessage(data);
-		});
 
 		$scope.$on('CLOSE_DIALOG',function(){
 			closeDepositPopup();
