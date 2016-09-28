@@ -376,7 +376,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 			var deferred = $q.defer(),
 				url = 'api/work_assignments/assign';
 
-			var params = compileAssignedRoomsParams( options.assignedRoomTasks, options.date );
+			var params = compileAssignedRoomsParams( options.assignedRoomTasks, options.date, options.shouldSaveOrder );
 
 			RVBaseWebSrvV2.postJSON(url, params)
 				.then(function(data) {
@@ -733,7 +733,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 			};
 		};
 
-		function compileAssignedRoomsParams (assignedRoomTasks, date) {
+		function compileAssignedRoomsParams (assignedRoomTasks, date, shouldSaveOrder) {
 			var complied = $.extend(
 					{},
 					{ 'date'       : date },
@@ -786,7 +786,10 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 							newTask = {
 								id      : eachTask.id,
 								room_id : eachTask.room_id,
-								order   : eachTask.order
+							}
+
+							if ( shouldSaveOrder ) {
+								newTask.order = eachTask.order
 							}
 
 							newAssignment
