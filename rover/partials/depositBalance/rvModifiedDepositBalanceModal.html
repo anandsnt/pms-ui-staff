@@ -1,6 +1,5 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak ng-click="clearErrorMessage()">
-
-	<form ng-show="!shouldShowWaiting" name="deposit-balance" method="post" id="deposit-balance" class="modal-content form deposit-balance" action="{action}">
+	<form ng-show="!showSixPayLoader" name="deposit-balance" method="post" id="deposit-balance" class="modal-content form deposit-balance" action="{action}">
 		<button type="button" id="modal-close" class="modal-close" ng-click="closeDepositModal()">
 			<span class="icons icon-close invert"> </span>
 		</button>
@@ -143,13 +142,4 @@
 			</div>
 		</fieldset>
 	</form>
-	<div ng-if="shouldShowWaiting && pageloadingOver">
-		<div class="modal-content modal-vertical-centered" style="position: relative;padding: 40px;text-align: center;">
-				<div class="centeralign alert-box">
-					WAITING FOR PAYMENT COMPLETION
-				</div>
-				<div class="waiting-payment">&nbsp;</div>
-		</div>
-	</div>
-
 </div>
