@@ -17,6 +17,9 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 				key: "available_rooms",
 				name: "Available Rooms"
 			}, {
+				key: "out_of_order_rooms",
+				name: "Out of Order Rooms"
+			}, {
 				key: "occupied_rooms",
 				name: "Occupied Rooms"
 			}, {
@@ -201,8 +204,16 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 				last = new tzIndependentDate(chosenReport.untilDate) * 1,
 				step = (24 * 3600 * 1000);
 
+			$scope.marketExists = false;
 			// since we moved these from main controller
 			$scope.markets = chosenReport.hasMarketsList;
+
+			angular.forEach($scope.markets.data,function(marketValue, index){
+				if(marketValue.selected  !== undefined) {
+					$scope.marketExists = true;
+					return true;
+				}
+			});
 
 			// deep check if we have these flags choosen by the user
 			var hasIncludeLastYear = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_last_year' });
