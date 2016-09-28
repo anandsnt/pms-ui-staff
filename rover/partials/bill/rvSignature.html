@@ -2,8 +2,12 @@
 <form id="signature-pad" class="complete-registration form" ng-if="clickedButton == 'checkinButton' && $index === 0">
 	<h2  ng-show="reservationBillData.required_signature_at === 'CHECKIN' && reservationBillData.signature_details.is_signed === 'false' && !reservation.reservation_card.is_pre_checkin" translate>PLEASE_SIGN_BELOW</h2>
 	<div class="sig sigWrapper" ng-show="reservationBillData.required_signature_at === 'CHECKIN'  && reservationBillData.signature_details.is_signed === 'false' && !reservation.reservation_card.is_pre_checkin">
-		<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
-
+		<div id="signature"
+			 ui-jq="jSignature"
+			 ui-options="signaturePluginOptions"
+			 ng-mouseover="disableScroll()"
+			 ng-mouseleave="enableScroll()"
+			 div-touch-move-stop-propogate>
 		</div>
 	</div>
 	<div class="entry">
