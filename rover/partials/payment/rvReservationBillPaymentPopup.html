@@ -1,8 +1,8 @@
 <div role="dialog" id="modal" class="modal-show" ng-cloak ng-click="clearErrorMessage()"
      ng-class="{'modal-show': !modalClosing}">
     <!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
-    <form ng-show="!shouldShowWaiting" class="modal-content form pay-bill"
-          ng-class="{'select-card':showCreditCardInfo && !showCCPage && saveData.paymentType ==='CC','select-card':showCCPage}">
+    <form ng-show="!showSixPayLoader" class="modal-content form pay-bill"
+          ng-class="{'select-card':showCCPage}">
 
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
@@ -93,13 +93,14 @@
                     form-template-url='/assets/partials/payment/rvReservationBillPayment.html'
                     first-name="{{guestCardData.contactInfo.first_name}}"
                     last-name="{{guestCardData.contactInfo.last_name}}"
-                    split-bill-enabled = "splitBillEnabled"
+                    split-bill-enabled="splitBillEnabled"
                     num-splits="splitePaymentDetail.totalNoOfsplits"
                     completed-split-payments="splitePaymentDetail.completedSplitPayments"
                     ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
             <div class="actions" ng-hide="!depositPaidSuccesFully">
-                <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="closeDialog()" translate>
+                <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="closeDialog()"
+                        translate>
                     CLOSE
                 </button>
             </div>
