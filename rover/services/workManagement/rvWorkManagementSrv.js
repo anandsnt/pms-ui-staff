@@ -786,10 +786,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 							newTask = {
 								id      : eachTask.id,
 								room_id : eachTask.room_id,
-							}
-
-							if ( shouldSaveOrder ) {
-								newTask.order = eachTask.order
+								order   : eachTask.order || null
 							}
 
 							newAssignment
