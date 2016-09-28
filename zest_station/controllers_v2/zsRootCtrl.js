@@ -417,6 +417,7 @@ sntZestStation.controller('zsRootCtrl', [
 				url: {
 
 					active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
+					booknow: iconBasePath + '/checkin.svg',//TODO, swap for new book now icon
 
 					checkin: iconBasePath + '/checkin.svg',
 					checkout: iconBasePath + '/checkout.svg',

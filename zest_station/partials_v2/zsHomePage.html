@@ -25,13 +25,16 @@
                         </button>
                         {{'CHECK_OUT' |translate}}
                     </li>
+                     <li ng-if="zestStationData.home_screen.booking_pop_up.enable_pop_up">
+                        <button type="button" class="button option" touch-press='openExternalWebPage()'>
+                            <div ng-include="icons.url.booknow"></div>
+                        </button>
+                        {{'BOOK_NOW' |translate}}
+                    </li>
                 </ul>
             </nav>
         </div>
         <div id="actions" class="align-center">
-            <button type="button" class="button" ng-show="zestStationData.home_screen.booking_pop_up.enable_pop_up" touch-press="openExternalWebPage()">
-                {{zestStationData.home_screen.booking_pop_up.button_label}}
-            </button>
             <button type="button" class="button with-icon" touch-press="languageSelect()" ng-hide="!zestStationData.zest_lang.enabled">
                 <i class="icons icon-flag {{selectedLanguage.info.flag}}"></i> {{selectedLanguage.info.language}}
             </button>
