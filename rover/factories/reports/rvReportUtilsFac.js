@@ -529,7 +529,7 @@ angular.module('reportsModule')
                     __pushGeneralOptionData( report, filter, true );
                 }
                  if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'ALLOW_POST_WITH_NO_CREDIT' ) {
-                    __pushGeneralOptionData( report, filter, true );
+                    __pushGeneralOptionData( report, filter, false );
                 }
 
                  // fill up DS for options combo box

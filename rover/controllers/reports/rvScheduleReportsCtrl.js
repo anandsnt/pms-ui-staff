@@ -542,7 +542,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 					}
 
 					if ( $scope.selectedEntityDetails.report.description === 'Allow post with no Credit' && filter.value === 'ALLOW_POST_WITH_NO_CREDIT' ) {
-					    selected = true;
+					    selected = false;
 					}
 
 					$scope.filters.hasGeneralOptions.data.push({
