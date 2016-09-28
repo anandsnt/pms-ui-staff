@@ -1,4 +1,9 @@
-sntRover.controller('reservationPaymentController',['$scope','$rootScope', function($scope,$rootScope){
+sntRover.controller('reservationPaymentController',
+	['$scope',
+	'$rootScope',
+	'RVReservationSummarySrv',
+	'rvPermissionSrv',
+	function($scope, $rootScope, RVReservationSummarySrv, rvPermissionSrv){
 
 	// To add class based on number of buttons present.
 	$scope.getHasButtonClass = function(){
@@ -35,6 +40,39 @@ sntRover.controller('reservationPaymentController',['$scope','$rootScope', funct
 			return false;
 		}
 	};
+
+
+	var successCallBackOfUpdateAllowPostWithNoCredit = function(){
+        $scope.reservationData.reservation_card.allow_post_with_no_credit = !$scope.reservationData.reservation_card.allow_post_with_no_credit;
+    };
+    /*
+     * Allow post with no credit
+     *
+     */
+    $scope.setAllowPostWithNoCredit= function(){
+
+    	if(rvPermissionSrv.getPermissionValue('ALLOW_POST_WITH_NO_CREDIT')){
+    		var updateParams = {
+	            "allow_post_with_no_credit": !$scope.reservationData.reservation_card.allow_post_with_no_credit,
+	            "reservationId": $scope.reservationData.reservation_card.reservation_id
+	        }
+
+	        var options = {
+	            params:             updateParams,
+	            successCallBack:    successCallBackOfUpdateAllowPostWithNoCredit
+	        };
+	        $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
+    	}
+
+
+    }
+    $scope.showPostWithNoCreditButton = function(){
+    	var isPostWithNoCreditButtonVisible = true;
+    	if(!$rootScope.isStandAlone || $rootScope.isHourlyRateOn){
+    		isPostWithNoCreditButtonVisible = false;
+    	}
+    	return isPostWithNoCreditButtonVisible;
+    }
 
 	// Update while changing credit card from bill screen.
 	$rootScope.$on('UPDATEDPAYMENTLIST', function(event, data) {

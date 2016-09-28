@@ -27,6 +27,8 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          * 2.EMAIL_INVLAID_MODE
          */
 
+        
+         
         /**
          * [initializeMe description]
          */
@@ -37,30 +39,33 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.email = "";
             $scope.mode = "EMAIL_ENTRY_MODE";
+            $scope.focusInputField('email-entry');
         }();
+
         /**
          * [reEnterText description]
          * @return {[type]} [description]
          */
         $scope.reEnterText = function() {
             $scope.mode = "EMAIL_ENTRY_MODE";
+            $scope.focusInputField('email-entry');
         };
         /*
-        * after validating email syntax, need to check the email against the hotel's black list
-        * - settings/zest/email blacklist
-        * if the email is validated as non-blacklisted, then proceed to next function
-        */
-        var checkIfEmailIsBlacklisted = function(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure){
+         * after validating email syntax, need to check the email against the hotel's black list
+         * - settings/zest/email blacklist
+         * if the email is validated as non-blacklisted, then proceed to next function
+         */
+        var checkIfEmailIsBlacklisted = function(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure) {
             var blacklistCheckOptions = {
                 params: {
                     'email': $scope.email
                 },
-                successCallBack: function(data){
+                successCallBack: function(data) {
                     //onSuccess, 
-                    if (!data.black_listed_email){
+                    if (!data.black_listed_email) {
                         afterBlackListValidation();
 
-                    } else{
+                    } else {
                         console.warn('email is black listed, request different email address');
                         onBlackListedEmailFound();
                     };
@@ -75,7 +80,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
          * [updateGuestEmail description]
          * @return {[type]} [description]
          */
-        var setInvalidEmailMode = function(){
+        var setInvalidEmailMode = function() {
             $scope.mode = "EMAIL_INVLAID_MODE";
         };
         var updateGuestEmail = function() {
@@ -108,7 +113,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                 $state.go('zest_station.speakToStaff', stateParams);
             };
 
-            var afterBlackListValidation = function(){
+            var afterBlackListValidation = function() {
                 var options = {
                     params: {
                         'guest_id': $stateParams.guest_id,
@@ -119,10 +124,10 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                 };
                 $scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
             };
-            var onBlackListedEmailFound = function(){
-                setInvalidEmailMode();    
+            var onBlackListedEmailFound = function() {
+                setInvalidEmailMode();
             };
-            var onValidationAPIFailure = function(){
+            var onValidationAPIFailure = function() {
                 updateGuestEmailFailed();
             };
             //checks if new email is blacklisted, if so, set invalid email mode

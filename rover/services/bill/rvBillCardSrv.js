@@ -120,6 +120,25 @@ angular.module('sntRover').service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2
 		return deferred.promise;
 	};
 
+	/*
+	 * Service function to edit charge code description
+	 * @method POST
+	 * @param {object} data
+	 * @return {object} defer promise
+	 */
+
+	this.transactionEditChargeDescription = function(params){
+
+		var deferred = $q.defer();
+		var url = 'api/financial_transactions/' + params.id+ '/save_custom_description';
+		BaseWebSrvV2.postJSON(url, params.postData).then(function(data) {
+		   	 deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});
+
+		return deferred.promise;
+	};
 
   /*
 	 * Service function to delete transaction

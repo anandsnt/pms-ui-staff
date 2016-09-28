@@ -66,7 +66,14 @@
                         jqyoui-draggable ="{index: {{$index}}, animate:false, onStart: 'onAssignmentDragStart()', onStop: 'onAssignmentDragStop()' }"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', containment: '#worksheet-content'}">
 
-                    <h3 class="{{room.current_status | lowercase}}">{{room.room_no}}</h3>
+                    <h3 class="{{room.current_status | lowercase}}">
+                        <span ng-show="NOT_NOW" class="icons icon-suite">Suite room</span>
+                        {{room.room_no}}
+                        <span ng-show="NOT_NOW" class="icons icon-queued has-time">
+                            Queued
+                            <span class="time" pretty-time-span="room.is_queued_till"></span>
+                        </span>
+                    </h3>
                     <div class="reservation-status">
                         <div class="current {{departureClass[room.reservation_status]}}">
                             <span class="guest-status {{departureClass[room.reservation_status]}}">{{room.reservation_status}}</span>

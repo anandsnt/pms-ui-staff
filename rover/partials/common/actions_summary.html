@@ -12,7 +12,7 @@
         <span class="label">Assigned To</span>
         {{selectedAction.assigned_to.name}}
     </div>
-    <div class="info created" ng-hide="!isStandAlone && !isTrace(selectedAction.action_task_type)" >
+    <div class="info" ng-hide="!isTrace(selectedAction.action_task_type) && !isMessage(selectedAction.action_task_type)" ng-class="{'created' : !!selectedAction.assigned_to.name}">
         <span class="label" ng-if="!selectedAction.created_by_null">Created By</span>
         <span class="label" ng-if="selectedAction.created_by_null">Created </span>
         {{selectedAction.created_by.name}} {{selectedAction.created_at_date}} &#8226; {{selectedAction.created_at_time}}
@@ -39,7 +39,7 @@
     </div>
 </div>
 
-<div class="notice" ng-hide="!selectedAction.date_completed || (!isStandAlone && !isTrace(selectedAction.action_task_type))">
+<div class="notice" ng-hide="!selectedAction.date_completed || (!isTrace(selectedAction.action_task_type) && !isMessage(selectedAction.action_task_type))">
     <span>Completed By</span>
     {{selectedAction.completed_by.name}} {{selectedAction.completed_at | date: dateFormat}} &#8226;
     {{selectedAction.completed_at | date: "hh:mm a"}}

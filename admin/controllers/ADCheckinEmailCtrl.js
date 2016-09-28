@@ -1,4 +1,4 @@
-admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state','ngTableParams','$filter','$stateParams',function($scope,adCheckinCheckoutSrv,$state,ngTableParams,$filter,$stateParams){
+admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state','ngTableParams','$filter','$stateParams','$timeout',function($scope,adCheckinCheckoutSrv,$state,ngTableParams,$filter,$stateParams, $timeout){
 
  /*
   * To retrieve previous state
@@ -13,6 +13,9 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
 
   $scope.init = function(){
       $scope.emailDatas = {};
+      $timeout(function(){
+          $scope.loadTable();
+      },20);
   };
 
   $scope.init();
@@ -23,7 +26,7 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
   */
   $scope.fetchTableData = function($defer, params){
     $scope.selectAllOption = false;
-  	$scope.emailTitle = 'Guests Checking In';
+    $scope.emailTitle = 'Guests Checking In';
     $scope.saveButtonTitle = 'SEND WEB CHECKIN INVITES';
     var getParams = $scope.calculateGetParams(params);
     getParams.id = 'checkin';
@@ -61,7 +64,6 @@ $scope.loadTable = function(){
     );
   };
 
-  $scope.loadTable();
 
 
 

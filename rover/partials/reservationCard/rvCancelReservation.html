@@ -26,89 +26,26 @@
     <fieldset id="apply-penalty" class="credit-card" ng-show="ngDialogData.state == 'PENALTY'&&!DailogeState.isCancelled" ng-show = "!DailogeState.isCancelled ">
         <strong class="h2 message">Select or Add Credit Card</strong>
         <span class="text">Card will be charged with a {{currencySymbol}}{{ ngDialogData.penalty }} penalty.</span>
-
         <div id="set-payment" class="payment-form">
-            <div ng-include="'/assets/partials/roverPayment/rvCardOptions.html'" ng-controller="RVCardOptionsCtrl" ng-show="showCCPage"></div>
-
-             <!-- Payment type -->
-               <div ng-init="isCancelReservation = true" ng-include="'/assets/partials/payment/rvSelectPaymentType.html'"></div>
-                 
-                  
-             <!-- Card Input type - output only if Six Payments and payment type is CC -->
-            <div class="entry" ng-show="paymentGateway === 'sixpayments' && cancellationData.paymentType ==='CC' && !showCCPage">
-                <div ng-include="'/assets/partials/payment/rvSixPayCardInput.html'"></div>
-            </div>
-             
-             <!-- Selected/added credit card -->
-            <div id="selected-card" class="entry full-width" ng-show="!showCCPage && cancellationData.paymentType ==='CC' && (paymentGateway !== 'sixpayments' || isManual) && !depositPaidSuccesFully && cancellationData.cardNumber.length>0" ng-click="onCardClick()">
-                <label>Credit Card (<span>Tap to change</span>)</label>
-                <label id="pay-with-jcb" class="active-item item-payment">
-                    <figure class="card-logo">
-                      <img src="/assets/images/{{cancellationData.card_type}}.png" alt="" />
-                    </figure>
-                    <span class="number">Ending with <span class="value number">{{cancellationData.cardNumber}}</span></span>
-                    <span class="date">Date <span class="value date">{{cancellationData.expiry_date}}</span></span>
-                </label>
-            </div>
-
-            <div class="entry full-width" ng-hide="showCCPage || depositPaidSuccesFully" ng-class="{'amount': isShowFees()}">
-                <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
-                
-                <!-- CICO-12408 : Use only when fee exsists -->
-                <input ng-keyup="calculateFee()" name="amount" id="amount" ng-model="ngDialogData.penalty" type="text" disabled="true" class="amount" />
-                <span ng-show="isShowFees()" class="delimiter">+</span> 
-                <input ng-show="isShowFees()" name="fee" id="fee" ng-keyup="calculateTotalAmount(ngDialogData.penalty)" ng-model="feeData.calculatedFee" value="{{feeData.calculatedFee}}" type="text" class="fee" />
-                <span ng-show="isShowFees()" class="delimiter">fee</span>
-
-                <span ng-show="isShowFees()" class="total">
-                    Total:
-                    <strong id="total-deposit-amount">
-                        {{currencySymbol}}{{feeData.totalOfValueAndFee}}
-                    </strong>
-                </span>
-
-            </div>
-            <!-- Reference field - use only when it exsits -->
-            <div class="entry full-width reference" ng-hide="showCCPage || !isDisplayReference ||depositPaidSuccesFully">
-                <label for="reference">Reference</label>
-                <input name="reference" id="reference" ng-model="referanceText" type="text" />
-            </div>
-            
-            <div class="entry full-width" ng-show="!showCCPage && cancellationData.paymentType ==='CC' && (paymentGateway !== 'sixpayments' || isManual) && newCardAdded && !depositPaidSuccesFully">
-                <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': cancellationData.addToGuestCard}">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked': cancellationData.addToGuestCard}"></span>
-                    <input ng-model="cancellationData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
-                    {{'ADD_TO_GUEST_CARD' | translate}}
-                </label>
-            </div> 
-
-            <!-- Success feedback -->
-            <div class="feedback" ng-show="depositPaidSuccesFully">
-                <div class="notice success">Amount paid!</div>
-                <ul class="transaction">
-                    <li ng-show="authorizedCode !==''">
-                        Your Authorize code is: <span class="auth">{{authorizedCode}}</span>
-                    </li>
-                    <li ng-if="isShowFees()">
-                        Amount paid: <span class="value">{{currencySymbol}}{{ngDialogData.penalty}} + {{currencySymbol}}{{feeData.calculatedFee}} fee
-                        </span>
-                    </li>
-                    <li ng-if="!isShowFees()">
-                        Amount paid: <span class="value">{{currencySymbol}}{{ngDialogData.penalty}}
-                        </span>
-                    </li>
-                </ul>
-            </div> 
-
-
-            <!-- Buttons -->
-            <div class="actions" ng-hide="showCCPage || depositPaidSuccesFully">
-                <button type="button" class="button blank modal-close" ng-click="closeReservationCancelModal()">Close</button>
-                <button type="button"  ng-disabled="cancellationData.paymentType === ''" ng-class="{'grey':cancellationData.paymentType === '','green':cancellationData.paymentType !== ''}" class="button" click-touch="submitPayment()">Make Payment</button> 
-            </div>
-            <div class="actions" ng-hide="!depositPaidSuccesFully">
-                <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="cancelReservation(true)" translate>CANCEL_RESERVATION</button>
-             </div>   
+            <snt-payment
+                    hotel-config="hotelPaymentConfig"
+                    workstation-id = "{{workstation_id}}"
+                    reservation-id="{{passData.reservationId}}"
+                    bill-number="billNumber"
+                    payment-types="passData.details.paymentTypes"
+                    selected-payment-type="cancellationData.paymentType"
+                    selected-c-c="depositDetails.attached_card"
+                    amount='ngDialogData.penalty'
+                    action-type="CANCEL_RESERVATION_STAYCARD"
+                    deposit-policy-name="{{depositPolicyName}}"
+                    is-editable='isDepositEditable'
+                    is-rate-suppressed='isReservationRateSuppressed'
+                    has-permission='hasPermissionToMakePayment()'
+                    form-template-url='/assets/partials/payment/rvCancelReservationPartial.html'
+                    first-name="{{firstName}}"
+                    last-name="{{lastName}}"
+                    ng-show="!errorOccured && !depositPaidSuccesFully">
+            </snt-payment>
         </div>
     </fieldset>
     <fieldset id="reservation-canceled" ng-show ="DailogeState.isCancelled">

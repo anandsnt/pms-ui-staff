@@ -42,12 +42,11 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			var reservations = zsCheckinSrv.getCheckInReservations();
 			$state.go('zest_station.checkInReservationSearch');
 			//check if this page was invoked through pickupkey flow
-			if(!!$stateParams.pickup_key_mode){
+			if (!!$stateParams.pickup_key_mode) {
 				$state.go('zest_station.checkOutReservationSearch', {
 					'mode': 'PICKUP_KEY'
 				});
-            }
-			else if (reservations.length > 0) {
+			} else if (reservations.length > 0) {
 				$state.go('zest_station.selectReservationForCheckIn');
 			} else {
 				$state.go('zest_station.checkInReservationSearch');
