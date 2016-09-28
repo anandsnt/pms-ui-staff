@@ -1,4 +1,5 @@
-admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$state', 'rateCodeData', 'blockCodeData', 'roomTypes', function ($scope, $rootScope, adCheckinSrv, $state, rateCodeData, blockCodeData, roomTypes) {
+admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$state', 'ADRoomTypesSrv', '$q',
+    function ($scope, $rootScope, adCheckinSrv, $state, ADRoomTypesSrv, $q) {
 
   $scope.errorMessage = '';
 
@@ -23,9 +24,9 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     }
     $scope.excludedRateCodes = [];
     $scope.excludedBlockCodes = [];
-    $scope.rate_codes = rateCodeData.results;
-    $scope.block_codes = blockCodeData.block_codes;
-    $scope.roomTypes = roomTypes.room_types;
+    $scope.rate_codes = [];
+    $scope.block_codes = [];
+    $scope.roomTypes = [];
     $scope.excludedRoomTypes = [];
   };
 
@@ -42,32 +43,6 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
 
     $scope.checkinData.is_sent_to_queue = ($scope.checkinData.is_sent_to_queue === 'true') ? "yes" : "no";
     $scope.checkinData.is_precheckin_only = ($scope.checkinData.is_precheckin_only === 'true') ? true : false;
-
-    angular.forEach($scope.rate_codes, function (rate, index) {
-      angular.forEach($scope.checkinData.excluded_rate_codes, function (excludedrate, index) {
-        if (parseInt(rate.id) === excludedrate) {
-          $scope.excludedRateCodes.push(rate);
-          rate.ticked = true;// for the multi-select implementation
-        }
-      });
-    });
-
-    angular.forEach($scope.block_codes, function (block, index) {
-      angular.forEach($scope.checkinData.excluded_block_codes, function (excludedblock, index) {
-        if (parseInt(block.id) === excludedblock) {
-          $scope.excludedBlockCodes.push(block);
-          block.ticked = true;// for the multi-select implementation
-        }
-      });
-    });
-    angular.forEach($scope.roomTypes, function (roomType, index) {
-      angular.forEach($scope.checkinData.excluded_room_types, function (excludedRoomType, index) {
-        if (parseInt(roomType.id) === excludedRoomType) {
-          $scope.excludedRoomTypes.push(roomType);
-          roomType.ticked = true;// for the multi-select implementation
-        }
-      });
-    });
 
     $scope.$watch('checkinData.is_send_checkin_staff_alert_flag', function () {
       $scope.hideAlertOption = $scope.checkinData.is_send_checkin_staff_alert_flag ? false : true;
@@ -99,21 +74,100 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     }
 
     $scope.surveyQuestionImage = angular.copy($scope.checkinData.survey_question_image);
+
+  };
+
+  /**
+   * [onFetchBlockCodeDropDownClick description]
+   * @param  {[type]} result [description]
+   * @return {[type]}        [description]
+   */
+  var onFetchBlockCodeDropDownClick = function(result) {
+    $scope.block_codes = result.block_codes;
+
+    //for multi select purpose
+    //we need to mark rate code as ticked if it is in exluded list
+    var excludedGroupIds = _.pluck($scope.excludedBlockCodes, 'id');
+    $scope.block_codes.map(function(group) {
+      if(excludedGroupIds.indexOf(group.id) > -1) {
+        group.ticked = true;
+      }
+    });
+  };
+
+  /**
+   * when you clicked on group code dropdown
+   */
+  $scope.onBlockCodeDropDownClick = function(){
+    //if we have the data already, we dont need to fetch
+    if ($scope.block_codes.length) {
+        return;
+    }
+    var options = {
+        onSuccess: onFetchBlockCodeDropDownClick
+    };
+    $scope.callAPI(adCheckinSrv.getBlockCodes, options);
+  };
+
+  var onFetchRateCodeDropDownClick = function(result) {
+    $scope.rate_codes = result.results;
+
+    //for multi select purpose
+    //we need to mark rate code as ticked if it is in exluded list
+    var excludedRateIds = _.pluck($scope.excludedRateCodes, 'id');
+    $scope.rate_codes.map(function(rate) {
+      if(excludedRateIds.indexOf(rate.id) > -1) {
+        rate.ticked = true;
+      }
+    });
+  };
+
+  /**
+   * when you clicked on rate code dropdown
+   */
+  $scope.onRateCodeDropDownClick = function(){
+    //if we have the data already, we dont need to fetch
+    if ($scope.rate_codes.length) {
+        return;
+    }
+    var options = {
+        onSuccess: onFetchRateCodeDropDownClick
+    };
+    $scope.callAPI(adCheckinSrv.getRateCodes, options);
+  };
+
+  var onFetchRoomTypesDropDownClick = function(result) {
+    $scope.roomTypes = result.room_types;
+
+    //for multi select purpose
+    //we need to mark rate code as ticked if it is in exluded list
+    var excludedRoomTypeIds = _.pluck($scope.excludedRoomTypes, 'id');
+    $scope.roomTypes.map(function(roomType) {
+      if(excludedRoomTypeIds.indexOf(parseInt(roomType.id)) > -1) {
+        roomType.ticked = true;
+      }
+    });
+  };
+
+  /**
+   * when you clicked on room types dropdown
+   */
+  $scope.onRoomTypesDropDownClick = function(){
+    //if we have the data already, we dont need to fetch
+    if ($scope.roomTypes.length) {
+        return;
+    }
+    var options = {
+        onSuccess: onFetchRoomTypesDropDownClick
+    };
+    $scope.callAPI(ADRoomTypesSrv.fetch, options);
   };
 
   /*
    * To fetch checkin details
    */
-  $scope.fetchCheckinDetails = function () {
 
-    var fetchCheckinDetailsFailureCallback = function (data) {
-      $scope.$emit('hideLoader');
-      $scope.isLoading = false;
-
-    };
     var fetchCheckinDetailsSuccessCallback = function (data) {
-      $scope.$emit('hideLoader');
-      $scope.isLoading = false;
       $scope.checkinData = data;
       if (!$scope.checkinData.next_day_checkin_alert_primetime){
           $scope.checkinData.next_day_checkin_alert_primetime = 'AM';
@@ -140,10 +194,54 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       setUpData();
 
     };
-    $scope.invokeApi(adCheckinSrv.fetch, {}, fetchCheckinDetailsSuccessCallback, fetchCheckinDetailsFailureCallback);
+
+  var onFetchSuccessExcludedBlockCodes = function(data) {
+    $scope.excludedBlockCodes = data.block_codes;
   };
 
-  $scope.fetchCheckinDetails();
+  var onFetchSuccessExcludedRateCodes = function(data) {
+    $scope.excludedRateCodes = data.rate_codes;
+  };
+
+  var onFetchSuccessExcludedRoomTypes = function(data) {
+    $scope.excludedRoomTypes = data.block_room_types;
+  };
+
+  var failedToFetchOfAllRequiredDataForCheckinScreen = function(errorMessage) {
+    $scope.$emit('hideLoader');
+    $scope.errorMessage = errorMessage;
+  };
+
+  var successFetchOfAllRequiredDataForCheckinScreen = function() {
+    $scope.$emit('hideLoader');
+  };
+
+  /**
+   * initialization stuff
+   */
+  var fetchRequiredDataForCheckinScreen = function(){
+    //we are not using our normal API calling since we have multiple API calls needed
+    $scope.$emit('showLoader');
+
+    var promises = [];
+
+    //general data
+    promises.push(adCheckinSrv.fetch().then(fetchCheckinDetailsSuccessCallback));
+
+    //excluded group codes
+    promises.push(adCheckinSrv.getExcludedBlockCodes().then(onFetchSuccessExcludedBlockCodes));
+
+    //excluded rate codes
+    promises.push(adCheckinSrv.getExcludedRateCodes().then(onFetchSuccessExcludedRateCodes));
+
+    //excluded room types
+    promises.push(adCheckinSrv.getExcludedRoomTypes().then(onFetchSuccessExcludedRoomTypes));
+
+    //Lets start the processing
+    $q.all(promises)
+              .then(successFetchOfAllRequiredDataForCheckinScreen,
+                failedToFetchOfAllRequiredDataForCheckinScreen);
+  }();
 
   /*
    * To save checkin details
@@ -270,6 +368,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
 
     var saveCheckinDetailsSuccessCallback = function (data) {
       $scope.$emit('hideLoader');
+      $scope.goBackToPreviousState();
     };
 
     $scope.invokeApi(adCheckinSrv.save, uploadData, saveCheckinDetailsSuccessCallback, saveCheckinDetailsFailureCallback);
