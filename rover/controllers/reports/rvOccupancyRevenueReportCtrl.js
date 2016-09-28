@@ -209,7 +209,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			$scope.markets = chosenReport.hasMarketsList;
 
 			angular.forEach($scope.markets.data,function(marketValue, index){
-				if(marketValue.selected  !== undefined) {
+				if(marketValue.hasOwnProperty("selected")) {
 					$scope.marketExists = true;
 					return true;
 				}
