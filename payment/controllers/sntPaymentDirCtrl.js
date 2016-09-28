@@ -84,22 +84,21 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
              * @param2: object as scroller options
              */
             setScroller = function(key, scrollerOptions) {
-                if (typeof scrollerOptions === 'undefined') {
-                    scrollerOptions = {};
-                }
+                scrollerOptions = scrollerOptions || {};
+
                 //we are merging the settings provided in the function call with defaults
                 var tempScrollerOptions = angular.copy(defaultScrollerOptions);
                 angular.extend(tempScrollerOptions, scrollerOptions); //here is using a angular function to extend,
                 scrollerOptions = tempScrollerOptions;
                 //checking whether scroll options object is already initilised in parent controller
                 //if so we need add a key, otherwise initialise and add
-                var isEmptyParentScrollerOptions = isEmptyObject($scope.$parent.myScrollOptions);
+                var isEmptyParentScrollerOptions = isEmptyObject($scope.myScrollOptions);
 
                 if (isEmptyParentScrollerOptions) {
-                    $scope.$parent.myScrollOptions = {};
+                    $scope.myScrollOptions = {};
                 }
 
-                $scope.$parent.myScrollOptions[key] = scrollerOptions;
+                $scope.myScrollOptions[key] = scrollerOptions;
             },
 
             /**
@@ -160,10 +159,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          * show add to guest card checkbox to add the card to the guestcard
          */
         var showAddtoGuestCardBox = function() {
-            //this need to be set to true only if new card is added
-            if (!!$scope.reservationId) {
-                $scope.payment.showAddToGuestCard = true;
-            }
+            $scope.payment.showAddToGuestCard = !!$scope.reservationId;
         };
 
         /**
@@ -201,7 +197,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             if ($scope.payment.isManualEntryInsideIFrame) {
                 $scope.payment.isManualEntryInsideIFrame = false;
                 //Add to guestcard feature for C&P
-                $scope.payment.showAddToGuestCard = $scope.payment.isManualEntryInsideIFrame ? false : true;
+                $scope.payment.showAddToGuestCard = !!$scope.reservationId && ($scope.payment.isManualEntryInsideIFrame ? false : true);
                 $scope.selectedCC = {};
             } else {
                 $scope.payment.isManualEntryInsideIFrame = true;
@@ -597,7 +593,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             if (!!selectedPaymentType && selectedPaymentType.name === "CC") {
                 if (!!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
                     //Add to guestcard feature for C&P
-                    $scope.payment.showAddToGuestCard = $scope.payment.isManualEntryInsideIFrame ? false : true;
+                    $scope.payment.showAddToGuestCard = !!$scope.reservationId && ($scope.payment.isManualEntryInsideIFrame ? false : true);
                     refreshIFrame();
                 } else {
                     // In case no card has been selected yet, move to add card mode
