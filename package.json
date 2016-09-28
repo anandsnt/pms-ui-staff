@@ -66,5 +66,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/StayNTouch/pms.git"
+  },
+  "scripts": {
+    "glite": "gulp --no-gw --no-zs"
   }
 }
