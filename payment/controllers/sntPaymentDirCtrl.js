@@ -693,7 +693,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
                     $scope.selectedCC.value = response.data.id;
                     $scope.selectedCard = $scope.selectedCC.value;
-                    $scope.selectedCC.card_code = cardDetails.cardDisplayData.card_code || response.data.credit_card_type;
+                    $scope.selectedCC.card_code = response.data.credit_card_type;
                     $scope.selectedCC.ending_with = cardDetails.cardDisplayData.ending_with;
                     $scope.selectedCC.expiry_date = cardDetails.cardDisplayData.expiry_date;
                     $scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;

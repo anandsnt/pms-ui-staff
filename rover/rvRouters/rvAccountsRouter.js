@@ -57,11 +57,11 @@ angular.module('accountsModule', [])
                 }
             }],
             resolve: {
-                loadPaymentModule: function (jsMappings) {
+                loadPaymentModule: ['jsMappings', function(jsMappings) {
                     return jsMappings.loadPaymentModule();
-                },
-                accountData: ['rvAccountsConfigurationSrv', '$stateParams', 'accountsAssets', 'loadPaymentModule',
-                    function(rvAccountsConfigurationSrv, $stateParams, accountsAssets, loadPaymentModule){
+                }],
+                accountData: ['rvAccountsConfigurationSrv', '$stateParams', 'accountsAssets',
+                    function(rvAccountsConfigurationSrv, $stateParams, accountsAssets){
                         var params = {
                             accountId: $stateParams.id
                         };
