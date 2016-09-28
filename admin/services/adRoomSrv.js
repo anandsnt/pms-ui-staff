@@ -154,13 +154,24 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		return deferred.promise;
 	};
 	this.deleteRoom = function(data) {
-			var deferred = $q.defer();
-			var url = '/admin/hotel_rooms/' + data.room_id;
-			ADBaseWebSrv.deleteJSON(url).then(function(data) {
+		var deferred = $q.defer();
+		var url = '/admin/hotel_rooms/' + data.room_id;
+		ADBaseWebSrv.deleteJSON(url).then(function(data) {
+		deferred.resolve(data);
+		},function(errorMessage){
+		deferred.reject(errorMessage);
+		});
+	return deferred.promise;
+	};
+	this.getComponentRoomTypes = function(data){
+		var deferred = $q.defer();
+		var url = 'admin/room_types/'+data.suite_room_type_id+'/component_room_types';
+		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-			},function(errorMessage){
+		},function(errorMessage){
 			deferred.reject(errorMessage);
-			});
+		});
+
 		return deferred.promise;
-		};
+	};
 }]);

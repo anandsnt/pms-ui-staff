@@ -98,24 +98,23 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         var onBackButtonClicked = function(event) {
             var reservations = zsCheckinSrv.getCheckInReservations();
-            
+
             if ($scope.zestStationData.check_in_collect_nationality) {
                 var collectNationalityParams = {
                     'guestId': $scope.selectedReservation.guest_details[0].id,
                     'first_name': $scope.selectedReservation.guest_details[0].first_name
                 };
-                if(!!$stateParams.pickup_key_mode){
+                if (!!$stateParams.pickup_key_mode) {
                     collectNationalityParams.pickup_key_mode = 'manual';
                 }
                 $state.go('zest_station.collectNationality', collectNationalityParams);
-            } 
+            }
             //check if this page was invoked through pickupkey flow
-            else if(!!$stateParams.pickup_key_mode){
+            else if (!!$stateParams.pickup_key_mode) {
                 $state.go('zest_station.checkOutReservationSearch', {
                     'mode': 'PICKUP_KEY'
                 });
-            }
-            else if (reservations.length > 0) {
+            } else if (reservations.length > 0) {
                 $state.go('zest_station.selectReservationForCheckIn');
             } else {
                 $state.go('zest_station.checkInReservationSearch');
@@ -144,10 +143,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         $scope.addRemove = function() {
             setSelectedReservation();
             var stateParams = {};
-            if(!!$stateParams.pickup_key_mode){
+            if (!!$stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
-            $state.go('zest_station.add_remove_guests',stateParams);
+            $state.go('zest_station.add_remove_guests', stateParams);
         };
 
         //will need to check for ECI & Terms bypass, happy path for now
@@ -296,7 +295,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin
             };
             //check if this page was invoked through pickupkey flow
-            if(!!$stateParams.pickup_key_mode){
+            if (!!$stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
             console.warn('to checkin terms: ', stateParams);
@@ -371,45 +370,45 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             var nowHour = current.getHours(),
                 nowMin = current.getMinutes(),
                 arrival = $scope.selectedReservation.reservation_details.arrival_time.split(':');
-               // depart = $scope.selectedReservation.reservation_details.departure_time.split(':');
+            // depart = $scope.selectedReservation.reservation_details.departure_time.split(':');
 
             var arrival_am_pm = arrival[1].split(' ')[1];
-              //  depart_am_pm = depart[1].split(' ')[1];
+            //  depart_am_pm = depart[1].split(' ')[1];
 
             var arrivalHour = getMilTime(parseInt(arrival[0]), arrival_am_pm);
-               // departHour = getMilTime(depart[0], depart_am_pm);
+            // departHour = getMilTime(depart[0], depart_am_pm);
 
             var arrivalMin = parseInt(arrival[1].split(' ')[0]);
-              //  departMin = parseInt(depart[1].split(' ')[0]);
+            //  departMin = parseInt(depart[1].split(' ')[0]);
 
             console.warn('arrival time : ', arrivalHour);
             //console.warn('hour time : ', departHour);
             console.log('');
-            console.log('current time: ', nowHour,nowMin);
+            console.log('current time: ', nowHour, nowMin);
             console.log('');
-            console.info('arrival time for this reservation: ', arrival, ' - [ ',arrivalHour, arrivalMin, arrival_am_pm,' ]');
+            console.info('arrival time for this reservation: ', arrival, ' - [ ', arrivalHour, arrivalMin, arrival_am_pm, ' ]');
             //console.info('departure time for this reservation: ', depart, ' - [ ',departHour,departMin, depart_am_pm,' ]');
 
-            var tA = new Date();//, tD = new Date();
+            var tA = new Date(); //, tD = new Date();
             tA.setHours(arrivalHour);
             tA.setMinutes(arrivalMin);
             console.log(tA)
-            //we dont need departure time, only arrival time here, keeping this for generic use if wanted in the future
-            //tD.setHours(departHour);
-            //tD.setMinutes(departMin);
+                //we dont need departure time, only arrival time here, keeping this for generic use if wanted in the future
+                //tD.setHours(departHour);
+                //tD.setMinutes(departMin);
 
             console.log('')
-            console.log('current: ',current);
-            console.log('arrival: ',tA);
+            console.log('current: ', current);
+            console.log('arrival: ', tA);
             //console.log('depart : ',tD);
             console.log('');
             var a = tA.getTime(),
                 c = current.getTime();
 
-            if (c > a){// && (d < c)){//if arrival time is greater than current time allow guest to check-in
+            if (c > a) { // && (d < c)){//if arrival time is greater than current time allow guest to check-in
                 console.warn('guest is within arrival time');
                 return true;
-            } else if (c+3600000 > a){// current time plus an hour is greater than arrival time, (within 60-minutes from arrival time, allow guest to check in (for yotel))
+            } else if (c + 3600000 > a) { // current time plus an hour is greater than arrival time, (within 60-minutes from arrival time, allow guest to check in (for yotel))
                 console.warn('guest is within an hour of arrival time');
                 return true;
             } else {

@@ -144,7 +144,7 @@ $scope.fetchAddons = function(){
        $scope.addons = $scope.getAddonsWithNameValues(data.results);
        $scope.fetchRates();
    };
-   $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true}, fetchSuccessOfAddons);
+   $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true, "ignore_inventory":true}, fetchSuccessOfAddons);
 };
 
 $scope.fetchRates = function(){

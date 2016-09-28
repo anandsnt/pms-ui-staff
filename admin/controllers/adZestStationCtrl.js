@@ -1,5 +1,5 @@
 
-admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', function ($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter) {
+admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', function ($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout) {
     BaseCtrl.call(this, $scope);
     $scope.$emit("changedSelectedMenu", 10);
 
@@ -59,6 +59,13 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         if ($scope.zestSettings && $scope.zestSettings.zest_lang){
             if ($scope.zestSettings.zest_lang[name+'_translations_file_updated'] ||
                 $scope.zestSettings.zest_lang[name+'_translations_file']){return true;}
+            return false;
+        } else return false;
+    };
+
+    $scope.hasKeyImageFileUpdatedOrUploading = function(name){
+        if ($scope.zestSettings && $scope.zestSettings.key_create_file_uploaded){
+            if ($scope.zestSettings.key_create_file_uploaded !== '' && $scope.zestSettings.key_create_file_uploaded !== 'false' && $scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') === -1){return true;}
             return false;
         } else return false;
     };
@@ -142,10 +149,16 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     };
 
     $scope.saveSettings = function() {
+        ///handling for the api for now, api has some issue with the default image setting back to snt logo...
+        //api dev should resolve this at some point
+        if ($scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') !== -1){
+            $scope.zestSettings.key_create_file_uploaded = 'false';
+        }
         var saveSuccess = function() {
             $scope.zestSettings.zest_lang = angular.copy(zestLanguageDataCopy);
             $scope.successMessage = 'Success';
             $scope.$emit('hideLoader');
+            $scope.goBackToPreviousState();
         };
         setUpTranslationFilesStatus();
         
@@ -154,8 +167,34 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         };
         $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess);
     };
+
+    $scope.closePrompt = function(){
+        ngDialog.close();
+    };
+    $scope.downloadPromptFileName = '';
+    $scope.downloadLang = function(lang){
+         $timeout(function(){
+            $scope.downloadPromptFileName = lang+'.json';
+            var link = document.getElementById('download-link-popup');//ie. en-download-link
+            link.href = 'staff/locales/download/'+lang+'.json';
+         },500);
+         ngDialog.open({
+            template: '/assets/partials/zestStation/adZestStationLanguageFile.html',
+            className: 'ngdialog-theme-default single-calendar-modal',
+            scope: $scope,
+            closeByDocument: true
+        });
+    };
+    $scope.saveAsText = '';
+    $scope.isChrome = (window.navigator.userAgent.toLowerCase().indexOf("chrome") !== -1);
+
     $scope.init = function() {
         fetchSettings();
+        if ($scope.isChrome){
+            $scope.saveAsText = 'Save-As';
+        } else {
+            $scope.saveAsText = 'Download Linked File As';
+        }
     };
 
     $scope.init();
