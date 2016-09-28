@@ -43,7 +43,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 				key: "adr_inclusive_complimentary_rooms",
 				name: "ADR (Incl. Comp.)"
 			}, {
-				key: "adr_exclusive_complimentatry_rooms",
+				key: "adr_exclusive_complimentary_rooms",
 				name: "ADR (Excl. Comp.)"
 			}],
 			revenueTotals: [{
