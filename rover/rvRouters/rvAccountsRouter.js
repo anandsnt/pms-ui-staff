@@ -33,7 +33,9 @@ angular.module('accountsModule', [])
                             'query'     : '',
                             'status'    : '',
                             'per_page'  : rvAccountsSrv.DEFAULT_PER_PAGE,
-                            'page'      : rvAccountsSrv.DEFAULT_PAGE
+                            'page'      : rvAccountsSrv.DEFAULT_PAGE,
+                            'is_non_zero' : true,
+                            'account_type':''
                         };
                         return rvAccountsSrv.getAccountsList(params);
                     }

@@ -116,8 +116,9 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
          * @returns {deferred.promise|{then, catch, finally}}
          */
         service.submitPaymentForChipAndPin = function(dataToSrv) {
+            var deferred = $q.defer(),
+                url = "";
 
-            var deferred = $q.defer();
             if (!!dataToSrv.reservation_id) {
                 url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
             } else {
@@ -420,7 +421,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
         service.saveARDetails = function(data) {
             var deferred = $q.defer();
             var url = 'api/accounts/save_ar_details';
-            $http.post(url,data).then(function(data) {
+            $http.post(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data.data);

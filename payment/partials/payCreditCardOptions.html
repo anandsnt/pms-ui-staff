@@ -15,7 +15,9 @@
 </ul>
 
 <!-- Existing cards - use only when they exist -->
-<div id="cc-exsiting-card" class="cards-list cards-container scrollable" ng-show="payment.addCCMode === 'EXISTING_CARDS'" ng-iscroll="cardsList">
+<div id="cc-exsiting-card" class="cards-list cards-container scrollable" ng-show="payment.addCCMode === 'EXISTING_CARDS'"
+     ng-iscroll="cardsList"
+     ng-iscroll-delay='100'>
     <div class="wrapper">
         <label class="active-item item-payment" ng-click="setCreditCardFromList(card.value)" ng-repeat="card in payment.linkedCreditCards" ng-show="card.is_credit_card">
             <!-- Add class "primary" when selected -->
