@@ -424,12 +424,6 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          *  then there MUST be an added Company or Travel Agent Card with an AR Account
          */
         $scope.submitAccountPayment = function() {
-            if ($scope.payment.amount === '' || $scope.payment.amount === null) {
-                var errorMessage = ["Please enter amount"];
-                $scope.$emit('ERROR_OCCURED', errorMessage);
-                return;
-            }
-
             if ($scope.selectedPaymentType === "DB") {
                 // TODO: Check if AR account is present
                 sntPaymentSrv.checkARStatus($scope.postingAccountId).then(data=> {
@@ -467,11 +461,13 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          */
         $scope.submitPayment = function(payLoad) {
 
-            if ($scope.payment.amount === '' || $scope.payment.amount === null) {
-                var errorMessage = ["Please enter amount"];
-                $scope.$emit('ERROR_OCCURED', errorMessage);
+            if (!sntPaymentSrv.isValidAmount($scope.payment.amount)) {
+                var errorMessage = ["Please enter a valid amount"];
+                $scope.errorMessage = errorMessage;
                 return;
             }
+
+            $scope.errorMessage = "";
 
             var params = intiateSubmitPaymentParams(payLoad);
 
@@ -617,6 +613,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         };
         //cancel CC entry and go to initial page
         $scope.cancelCardSelection = function() {
+            $scope.errorMessage = "";
             $scope.payment.screenMode = "PAYMENT_MODE";
             $scope.selectedPaymentType = "";
             $scope.$emit("PAYMENT_TYPE_CHANGED", $scope.selectedPaymentType);
