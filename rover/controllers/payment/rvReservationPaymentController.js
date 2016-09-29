@@ -68,7 +68,7 @@ sntRover.controller('reservationPaymentController',
     }
     $scope.showPostWithNoCreditButton = function(){
     	var isPostWithNoCreditButtonVisible = true;
-    	if(!$rootScope.isStandAlone || $rootScope.isHourlyRateOn $scope.reservationData.reservation_card.payment_method_used === '' || $scope.reservationData.reservation_card.payment_method_used === null){
+    	if(!$rootScope.isStandAlone || $rootScope.isHourlyRateOn || $scope.reservationData.reservation_card.payment_method_used === '' || $scope.reservationData.reservation_card.payment_method_used === null){
     		isPostWithNoCreditButtonVisible = false;
     	}
     	return isPostWithNoCreditButtonVisible;
