@@ -1082,12 +1082,13 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
 
     $scope.$on("PAYMENT_SAVE_CARD_SUCCESS", function() {
         $scope.refreshScroller('routeDetails');
+        $scope.selectedPayment = "";
     });
 
     $scope.$on("PAYMENT_TYPE_CHANGED", function() {
         setTimeout(function() {
             $scope.refreshScroller('routeDetails');
-        },300);
+        }, 300);
     })
 
 }]);
