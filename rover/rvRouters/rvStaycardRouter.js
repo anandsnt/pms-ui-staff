@@ -22,10 +22,10 @@ angular.module('stayCardModule', [])
             controller: 'RVReservationMainCtrl', //staycardController',
             resolve: {
 
-                loadPaymentModule: function (jsMappings) {
+                loadPaymentModule: ['jsMappings', function (jsMappings) {
                     return jsMappings.loadPaymentModule();
-                },
-                staycardJsAssets: function(jsMappings, mappingList, loadPaymentModule) {
+                }],
+                staycardJsAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets(['rover.reservation', 'rover.groups', 'rover.allotments',
                         'rover.accounts', 'rover.companycarddetails', 'directives', 'highcharts'], ['highcharts-ng']);
                 },
