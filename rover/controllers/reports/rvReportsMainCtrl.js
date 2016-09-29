@@ -1904,12 +1904,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		};
 
 		// generate reports
-		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {
+		$scope.genReport = function(changeView, loadPage, resultPerPageOverride, stepFetch) {
 			var chosenReport = reportsSrv.getChoosenReport(),
 				changeView   = 'boolean' === typeof changeView ? changeView : true,
 				page         = !!loadPage ? loadPage : 1;
-
-			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
 
 			// fill in data into seperate props
 			var updateDS = function (response) {
@@ -1926,7 +1924,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.currCount = response.results ? response.results.length : 0;
 			};
 
-			var sucssCallback = function(response) {
+			var successCallback = function(response) {
 				var msg = '';
 
 				if ( changeView ) {
@@ -1970,8 +1968,45 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$rootScope.$broadcast( reportMsgs['REPORT_API_FAILED'] );
 			};
 
+			
+			var stepUpRes, nextPage, params;
+			var successMore = function(response) {
+				if ( ! stepUpRes ) {
+					stepUpRes = angular.copy( response );
+				} else {
+					stepUpRes.results = stepUpRes.results.concat(response.results);
+				}
+
+				if ( ! nextPage ) {
+					nextPage = page + 1;
+				} else {
+					nextPage = nextPage + 1;
+				}
+
+				if ( stepUpRes.results.length === stepUpRes.total_count ) {
+					successCallback(stepUpRes);
+				} else {
+					params = genParams(chosenReport, nextPage, $scope.resultsPerPage);
+					$scope.invokeApi(reportsSubSrv.fetchReportDetails, params, successMore, errorMore);
+				}
+			}
+
+			var errorMore = function() {
+				// no idea what to do!!
+				// idealy we will have to reduce resultsPerPage amount from stepUpRes.total_count
+				// add some end conditions and move on
+				// but its not as simple as it sounds
+			}
+
+			if ( stepFetch ) {
+				params = genParams(chosenReport, page, $scope.resultsPerPage);
+				$scope.invokeApi(reportsSubSrv.fetchReportDetails, params, successMore, errorMore);
+			} else {
+				params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
+				$scope.invokeApi(reportsSubSrv.fetchReportDetails, params, successCallback, errorCallback);
+			}
+
 			$scope.clearErrorMessage();
-			$scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
 		};
 
 		$scope.clearErrorMessage = function () {
