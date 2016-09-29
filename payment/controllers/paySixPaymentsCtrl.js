@@ -18,6 +18,29 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
             return cardDetails;
         };
 
+        var notifyParent = function(tokenDetails) {
+            var cardDetails = retrieveCardDetails(tokenDetails);
+            var paymentData = {
+                apiParams: {
+                    name_on_card: cardDetails.nameOnCard,
+                    payment_type: "CC",
+                    token: cardDetails.token,
+                    card_expiry: cardDetails.cardExpiry
+                },
+                cardDisplayData: {
+                    card_code: cardDetails.cardCode,
+                    ending_with: cardDetails.endingWith,
+                    expiry_date: cardDetails.expiryDate
+                }
+            };
+            $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, {
+                paymentData,
+                tokenDetails,
+                cardData: cardDetails
+            });
+        };
+
+
         var notifyParentError = function(errorMessage) {
             console.error(errorMessage);
         };
@@ -123,42 +146,17 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
             var isCCPresent = angular.copy($scope.showSelectedCard());
             $scope.payment.isManualEntryInsideIFrame = isCCPresent && $scope.hotelConfig.paymentGateway === 'sixpayments' ? true : false;
 
-            if (!sntPaymentSrv.get("SIX_PAYMENT_LISTENER_INIT")) {
-                var notifyParent = function(tokenDetails) {
-                    var cardDetails = retrieveCardDetails(tokenDetails);
-                    var paymentData = {
-                        apiParams: {
-                            name_on_card: cardDetails.nameOnCard,
-                            payment_type: "CC",
-                            token: cardDetails.token,
-                            card_expiry: cardDetails.cardExpiry
-                        },
-                        cardDisplayData: {
-                            card_code: cardDetails.cardCode,
-                            ending_with: cardDetails.endingWith,
-                            expiry_date: cardDetails.expiryDate
-                        }
-                    };
-                    $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, {
-                        paymentData,
-                        tokenDetails,
-                        cardData: cardDetails
-                    });
-                };
-                //handle six payment iFrame communication
-                var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-                var eventer = window[eventMethod];
-                var messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
+            //handle six payment iFrame communication
+            var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+            var eventer = window[eventMethod];
+            var messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 
-                eventer(messageEvent, e => {
-                    var responseData = e.data;
-                    if (responseData.response_message === "token_created") {
-                        notifyParent(responseData);
-                    }
-                }, false);
-
-                sntPaymentSrv.set("SIX_PAYMENT_LISTENER_INIT", true);
-            }
+            eventer(messageEvent, function(e) {
+                var responseData = e.data;
+                if (responseData.response_message === "token_created") {
+                    notifyParent(responseData);
+                }
+            }, false);
         })();
 
     }]);
