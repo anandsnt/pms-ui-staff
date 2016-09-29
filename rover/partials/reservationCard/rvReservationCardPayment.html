@@ -6,7 +6,7 @@
 				{{reservationData.reservation_card.guarentee_type}} {{ 'GUARANTEE' | translate }}
 			</span>
 			<div class="block-input" ng-show="showPostWithNoCreditButton()">
-	            <label for="post-no-credit" class="label">Post With No Credit</label>
+	            <label for="post-no-credit" class="label">{{ 'ALLOW_POST_WITH_NO_CREDIT' | translate }}</label>
 
 	            <!-- Add class .on when switched on-->
 	            <div class="switch-button" ng-class="{'on' : reservationData.reservation_card.allow_post_with_no_credit}" ng-click="setAllowPostWithNoCredit()">
