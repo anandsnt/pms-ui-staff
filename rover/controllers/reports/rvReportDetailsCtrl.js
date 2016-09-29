@@ -955,19 +955,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.$on( '$destroy', prePrintDone );
 
 		function $_fetchFullReport () {
-			var changeView = false,
-				perPage = $scope.totalCount || 1000,
-				stepFetch = true;
 
 			// since we are loading the entire report and show its print preview
 			// we need to keep a back up of the original report with its pageNo
 			$scope.returnToPage = $_pageNo;
 
-			if ( $scope.parsedApiFor === reportNames['CREDIT_CHECK_REPORT'] ) {
-				$scope.genReport( changeView, 1, perPage, stepFetch );
-			} else {
-				$scope.genReport( changeView, 1, perPage );
-			}
+			// should-we-change-view, specify-page, per-page-value
+			$scope.genReport( false, 1, 1000 );
 		};
 
 		// add the print orientation before printing
