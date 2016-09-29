@@ -9,7 +9,7 @@
 
     <!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
     <form class="modal-content form new-content has-card select-card"
-          ng-show="!showManualEntryDisabledPopup && !showWarningMessage">
+          ng-show="!showManualEntryDisabledPopup && !showWarningMessage && !showSixPayLoader">
 
         <button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
             <span class="icons icon-close invert"></span>

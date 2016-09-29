@@ -523,7 +523,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
         };
         $scope.messageOfSuccessSplitPayment = '';
         $scope.paymentErrorMessage = '';
-        $scope.renderData.defaultPaymentAmount = angular.copy(startingAmount);
+        $scope.renderData.defaultPaymentAmount = 0;
         $scope.splitSelected = false;
     };
 
