@@ -615,6 +615,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         $scope.cancelCardSelection = function() {
             $scope.errorMessage = "";
             $scope.payment.screenMode = "PAYMENT_MODE";
+            $scope.payment.showAddToGuestCard = false;
             $scope.selectedPaymentType = "";
             $scope.$emit("PAYMENT_TYPE_CHANGED", $scope.selectedPaymentType);
             $scope.selectedCC = {};
