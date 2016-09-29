@@ -1908,7 +1908,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			var chosenReport = reportsSrv.getChoosenReport(),
 				changeView   = 'boolean' === typeof changeView ? changeView : true,
 				page         = !!loadPage ? loadPage : 1;
-
+				
 			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
 
 			// fill in data into seperate props
@@ -1971,6 +1971,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			};
 
 			$scope.clearErrorMessage();
+			params.reportTitle = chosenReport.title;
 			$scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
 		};
 
