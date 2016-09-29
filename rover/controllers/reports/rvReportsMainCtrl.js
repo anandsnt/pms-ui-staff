@@ -1996,6 +1996,15 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				// idealy we will have to reduce resultsPerPage amount from stepUpRes.total_count
 				// add some end conditions and move on
 				// but its not as simple as it sounds
+
+				// so for the time being we are gonna complete the stepFetch
+				// once the error occurs. This way we can print what we have 
+				// fetched till now
+				if ( !! stepUpRes ) {
+					successCallback(stepUpRes);
+				} else {
+					errorCallback(['Something went wrong. Please try again'])
+				}
 			}
 
 			if ( stepFetch ) {
