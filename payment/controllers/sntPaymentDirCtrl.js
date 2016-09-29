@@ -578,11 +578,11 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         };
 
         // Payment type change action
-        $scope.onPaymentInfoChange = function() {
+        $scope.onPaymentInfoChange = function(isReset) {
             //NOTE: Fees information is to be calculated only for standalone systems
             //TODO: See how to handle fee in case of C&P
 
-            if ($scope.payment.isEditable && $scope.selectedPaymentType === "GIFT_CARD") {
+            if (isReset && $scope.payment.isEditable && $scope.selectedPaymentType === "GIFT_CARD") {
                 $scope.payment.amount = 0;
             }
 
