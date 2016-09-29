@@ -174,7 +174,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                     // NOTE:This sample json helps to mock the response
                     // For further info : https://stayntouch.atlassian.net/wiki/display/ROV/SIXPayment+Service+Design+Document
                     // var async_callback_url = '/sample_json/payment/six_payment_sample.json';
-                    $http.get(async_callback_url).success(function(data, status) {
+                    $http.get(async_callback_url).then(function(data, status) {
                         //if the request is still not proccesed
                         if (status === 202 || status === 102 || status === 250) {
                             setTimeout(function() {
@@ -238,7 +238,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                     // For further info : https://stayntouch.atlassian.net/wiki/display/ROV/SIXPayment+Service+Design+Document
                     // var async_callback_url = '/sample_json/payment/get_six_pay_token.json';
 
-                    $http.get(async_callback_url).success(function(data, status) {
+                    $http.get(async_callback_url).then(function(data, status) {
                         //if the request is still not proccesed
                         if (status === 202 || status === 102 || status === 250) {
                             setTimeout(function() {
