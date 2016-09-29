@@ -990,41 +990,52 @@ sntRover.controller('RVbillCardController',
 
 
 	$scope.openPostCharge = function(activeBillNo) {
-        // Show a loading message until promises are not resolved
-        $scope.$emit('showLoader');
 
-        jsMappings.fetchAssets(['postcharge', 'directives'])
-        .then(function(){
+		if(!$scope.reservationBillData.allow_post_with_no_credit && !$scope.hasPermissionToAllowPostWithNoCredit()){
 
-        $scope.$emit('hideLoader');
+			ngDialog.open({
+	    		template: '/assets/partials/postCharge/allowPostWithNoCredit.html',
+	    		className: '',
+	    		scope: $scope
+	    	});
+		} else {
+			// Show a loading message until promises are not resolved
+	        $scope.$emit('showLoader');
 
-		// pass on the reservation id
-		$scope.reservation_id = $scope.reservationBillData.reservation_id;
+	        jsMappings.fetchAssets(['postcharge', 'directives'])
+	        .then(function(){
 
-		// pass down active bill no
+		        $scope.$emit('hideLoader');
 
-		$scope.billNumber = activeBillNo;
+				// pass on the reservation id
+				$scope.reservation_id = $scope.reservationBillData.reservation_id;
 
-		// translating this logic as such from old Rover
-		// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
-		// Also passing the available bills to the post charge modal
-		$scope.fetchTotalBal = false;
+				// pass down active bill no
 
-		var bills = [];
-	    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ ) {
-	    	bills.push(i+1);
-	    }
+				$scope.billNumber = activeBillNo;
 
-	    $scope.fetchedData = {};
-		$scope.fetchedData.bill_numbers = bills;
-	    $scope.isOutsidePostCharge = false;
+				// translating this logic as such from old Rover
+				// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
+				// Also passing the available bills to the post charge modal
+				$scope.fetchTotalBal = false;
 
-		ngDialog.open({
-    		template: '/assets/partials/postCharge/rvPostChargeV2.html',
-    		className: '',
-    		scope: $scope
-    	});
-	    })
+				var bills = [];
+			    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ ) {
+			    	bills.push(i+1);
+			    }
+
+			    $scope.fetchedData = {};
+				$scope.fetchedData.bill_numbers = bills;
+			    $scope.isOutsidePostCharge = false;
+
+				ngDialog.open({
+		    		template: '/assets/partials/postCharge/rvPostChargeV2.html',
+		    		className: '',
+		    		scope: $scope
+		    	});
+		    })
+		}
+
 	};
 
 	$scope.$on('paymentTypeUpdated', function() {
@@ -1707,6 +1718,13 @@ sntRover.controller('RVbillCardController',
 	*/
 	$scope.hasPermissionToShowCheckoutWithoutSettlement = function() {
 		return rvPermissionSrv.getPermissionValue ('ALLOW_CHECKOUT_WITHOUT_SETTLEMENT');
+	};
+	/**
+	* function to check whether the user has permission to allow post with no credit
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToAllowPostWithNoCredit = function() {
+		return rvPermissionSrv.getPermissionValue('ALLOW_POST_WITH_NO_CREDIT')
 	};
     // CICO-6089 : Handle toggle button.
     $scope.toggleCheckoutWithoutSettlement = function(){

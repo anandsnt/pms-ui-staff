@@ -446,6 +446,20 @@ sntRover.controller('RVPostChargeControllerV2',
 				};
 			};
 
+			$scope.postChargesToReservation = function(){
+				if(!$scope.reservationBillData.allow_post_with_no_credit && $scope.hasPermissionToAllowPostWithNoCredit()){
+
+					ngDialog.open({
+			    		template: '/assets/partials/postCharge/allowPostWithNoCredit.html',
+			    		className: '',
+			    		scope: $scope
+			    	});
+				} else {
+					$scope.postCharges();
+				}
+
+			}
+
 			$scope.postCharges = function() {
 
 				// CICO-23196 => to disable Multiple Postings/API requests from UI.
