@@ -21,10 +21,10 @@
                 </select>
             </div>
         </strong>
-        <span ng-hide="saveData.paymentType === 'GIFT_CARD'" class="text">
+        <span ng-hide="defaultPaymentTypeOfBill === 'GIFT_CARD'" class="text">
                     Or enter negative amount to make a refund
                 </span>
-        <span ng-show="saveData.paymentType === 'GIFT_CARD'" class="text">
+        <span ng-show="defaultPaymentTypeOfBill === 'GIFT_CARD'" class="text">
                     No Refunds available for Gift Cards
                 </span>
         <!-- Title when bill# is defined: <strong class="h2 message">Pay Bill #{bill num}</strong> -->
@@ -43,7 +43,7 @@
         <div class="payment-form">
             <!-- Split payment -->
             <div class="entry split" ng-class="{active: splitBillEnabled }"
-                 ng-hide="depositPaidSuccesFully || saveData.paymentType === 'GIFT_CARD' || !isStandAlone">
+                 ng-hide="depositPaidSuccesFully || defaultPaymentTypeOfBill === 'GIFT_CARD' || !isStandAlone">
 
                 <label class="checkbox inline" ng-class="{checked: splitBillEnabled }">
                     <span class="icon-form icon-checkbox" ng-class="{checked: splitBillEnabled }">
