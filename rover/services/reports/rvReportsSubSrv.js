@@ -39,9 +39,9 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			var refreshIntervalId = setInterval(incrementTimer, 1000);
 
 			var pollToReport = function(async_callback_url) {
-				//we will continously communicate with the terminal till 
+				//we will continously communicate with the server 
 				//the timeout set for the hotel
-				if (timeStampInSeconds >= 180) {
+				if (timeStampInSeconds >= 300) {
 					var errors = ["Request timed out. Unable to process report !!"];
 					deferred.reject(errors);
 				} else {
@@ -113,13 +113,10 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			
 				if ( options.params.reportTitle === "Credit Check Report" ){
 					options.params = _.omit(options.params, 'reportTitle');
-					console.log(options.params);
-					console.log("new api");
 					rvBaseWebSrvV2.postJSONWithSpecialStatusHandling( options.url, options.params ).then( success, failed );
 				}
 				else {
 					options.params = _.omit(options.params, 'reportTitle');
-					console.log(options.params);
 					rvBaseWebSrvV2[options.method]( options.url, options.params ).then( success, failed );
 				}
 			}
