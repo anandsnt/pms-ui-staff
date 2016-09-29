@@ -976,28 +976,41 @@
                         .pull-left;
                     }
 
-                    .room-icons {
+                     .icon-suite {
+                        position: absolute;
+                        top: 25px;
+                        right: 0;
+                    }
+                    
+
+                    .icon-queued {
                         position: absolute;
                         top: 10px;
                         right: 0;
                     }
-
-                    .icon-queued,
-                    .icon-suite {
-                        float:left;
-                    }
                      
 
                     .icon-queued { 
-                        margin-left: 5px;
-                        background-position: 4px -3480px; 
+                        background-position: 0px -3480px; 
                         background-size: 100px;
                         .size(20px, 30px);
+
+                        &.has-time {
+                            .size(20px, 45px);
+
+                            .time {
+                                display: block;
+                                float: right;
+                                text-indent: initial;
+                                font-size: 12px;
+                                line-height: 20px;
+                            }
+                        }
                     }
                   
                     .room-info {
                         padding-top: 12px;
-                        .size(50px, 120px);
+                        .size(50px, 100px);
                         .pull-left;
                     }     
 
@@ -1249,6 +1262,17 @@
                 .icon-queued {
                     width: 30px;
                     background-position: 0px -4178px;
+
+                    &.has-time { 
+                        width: 50px;
+                        .time {
+                            display: block;
+                            float: right;
+                            font-size: 12px;
+                            text-indent: initial;
+                            line-height: 20px;
+                        }
+                    }
                 }
 
                 .guest-image {
@@ -1944,7 +1968,18 @@
                 }
 
                 .icon-queued {
-                    background-position: 0 -4174px;
+                    background-position: 2px -4174px;
+                    &.has-time { 
+                        width: 30px;
+                        text-align: center;
+                        .time {
+                            display: block;
+                            float: none;
+                            font-size: 12px;
+                            text-indent: initial;
+                            line-height: 30px;
+                        }
+                    }
                 }
 
                 .guest-image {

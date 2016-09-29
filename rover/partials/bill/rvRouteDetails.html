@@ -86,8 +86,7 @@
 				<div ng-controller="rvRoutesAddPaymentCtrl"
 					 class="payment-form"
 					 style="height: auto"
-					 ng-show = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null">
-					<!--ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"-->
+					 ng-if = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null">
 					<snt-payment
 							hotel-config="hotelPaymentConfig"
 							workstation-id="{{workstation_id}}"

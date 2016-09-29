@@ -511,6 +511,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		});
 	};
 
+	$scope.$on("PAYMENT_TYPE_CHANGED", function(event, paymentType) {
+		$scope.showCCPage = paymentType === "CC";
+	});
+
 	$scope.$watch("reservationBillData.bills", matchCardObjectSchema);
 
 	$scope.$on('$destroy', listenerPaymentFailure);

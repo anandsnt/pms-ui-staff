@@ -376,12 +376,33 @@
                 font-weight: 700;
                 position: relative;
 
-                .icon-suite {
+                .icon-suite,
+                .icon-queued{
                     position: absolute;
                     top:0;
-                    bottom:0;
-                    left:0;
+                    bottom:0; 
                     margin: auto;
+                }
+
+                .icon-suite {
+                    left: 0;
+                }
+
+                .icon-queued {
+                    right: 0;
+                    background-position: 0 -4174px;
+
+                    &.has-time {
+                        font-size: 10px;
+                        line-height: 12px;
+                        .time {
+                            text-indent: initial;
+                            display: block;
+                            margin-top: 10px;
+                            font-weight: normal;
+
+                        }
+                    }
                 }
             }
 

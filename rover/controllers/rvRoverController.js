@@ -116,7 +116,16 @@ sntRover.controller('roverController',
     $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
 
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
-    $rootScope.paymentGateway = hotelDetails.payment_gateway;
+      /**
+       * CICO-34068
+       * NOTE: Temporary Fix
+       * As saferpay is not supported in Rover, if saferpay is selected in SNT Admin; default to sixpayments
+       */
+      if(hotelDetails.payment_gateway === "SAFERPAY") {
+          $rootScope.paymentGateway = "sixpayments";
+      }else{
+          $rootScope.paymentGateway = hotelDetails.payment_gateway;
+      }
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
     $rootScope.minimumHourlyReservationPeriod = hotelDetails.hourly_min_reservation_hours;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;

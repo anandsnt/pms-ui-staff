@@ -5,41 +5,68 @@
 sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2',
     function($http, $q, zsBaseWebSrv, zsBaseWebSrv2) {
         var that = this;
-
+        /*
+        * The configuredHotels list are the hotels which zest station has added stylesheets / images / icons, and we 'officially' support
+        * all other hotels should default to the SNT theme until which time we add the styling into our product or until a CMS is integrated
+        */
+        this.configuredHotels = [
+            'zoku',
+            'yotel',
+            'avenue',
+            'conscious',
+            'epik',
+            'fontainebleau'
+        ];
+        this.isThemeConfigured = function(theme) {
+            //if theme is configured with stylesheets, use it, otherwise default to SNT Theme
+            return (that.configuredHotels.indexOf(theme) !== -1);
+        };
+        this.hotelTheme = '';
         this.fetchSettings = function() {
             var deferred = $q.defer(),
                 url = '/api/hotel_settings/kiosk';
 
             zsBaseWebSrv.getJSON(url).then(function(data) {
-                deferred.resolve(data);
+                //fetch hotel theme and set variable to this controller,
+                //then resolve the fetch settings
+                that.fetchHotelTheme(data, deferred);
             }, function(data) {
                 deferred.reject(data);
             });
+            return deferred.promise;
+        };
+
+        this.fetchHotelTheme = function(resolveData, deferred) {
+            var url = '/api/email_templates/list.json?hotel_id=' + resolveData.hotel_id,
+                theme = '';
+            zsBaseWebSrv.getJSON(url).then(function(response) {
+                if (response && response.existing_email_templates && response.themes) {
+                    var hotelDetails = _.findWhere(response.themes, {
+                        id: response.existing_email_template_theme
+                    });
+                    if (hotelDetails && hotelDetails.name){
+                        theme = hotelDetails.name.toLowerCase();    
+                    } else {
+                        deferred.reject();
+                    }
+                }
+                if (!that.isThemeConfigured(theme)){
+                    theme = 'snt';
+                }
+                that.hotelTheme = theme;
+                resolveData.themeLogoPath = '/assets/zest_station/css/themes/'+that.hotelTheme+'/logo.svg';
+                //resolves this.fetchSetting()
+                deferred.resolve(resolveData);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
             return deferred.promise;
         };
 
         this.fetchHotelSettings = function() { //to get terms & conditions
-            var deferred = $q.defer();
             var url = '/api/hotel_settings.json';
-
-            zsBaseWebSrv.getJSON(url).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
-        };
-
-        this.fetchHotelTheme = function(params) {
-            var deferred = $q.defer();
-            var url = '/api/email_templates/list.json?hotel_id=' + params.id;
-            zsBaseWebSrv.getJSON(url).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-
-            return deferred.promise;
+            return zsBaseWebSrv.getJSON(url);
         };
 
         this.getDoorLockSettings = function() {
