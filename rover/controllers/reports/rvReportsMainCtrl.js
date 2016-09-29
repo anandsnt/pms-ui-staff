@@ -2002,6 +2002,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
 
+			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
+
 			// fill in data into seperate props
 			var updateDS = function (response) {
 				$scope.totals          = response.totals || [];
@@ -2016,7 +2018,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.totalCount = response.total_count || 0;
 				$scope.currCount = response.results ? response.results.length : 0;
 			};
-
 
 			var sucssCallback = function(response) {
 				var msg = '';
@@ -2063,6 +2064,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			};
 
 			$scope.clearErrorMessage();
+
+			params.reportTitle = chosenReport.title;
 			$scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
 		};
 
