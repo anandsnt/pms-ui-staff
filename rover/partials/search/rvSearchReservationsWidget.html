@@ -95,7 +95,13 @@
                             <div class="room-icons">
 
                                 <span class="icons icon-suite" ng-if="row.is_suite_room"></span>
-                                <span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)"></span>
+
+                                <span class="icons icon-queued has-time"
+                                	ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)"
+                                >
+                                	Queued
+                                	<span class="time" pretty-time-span="row.is_queued_till"></span>
+                                </span>
                             </div>
 
 
