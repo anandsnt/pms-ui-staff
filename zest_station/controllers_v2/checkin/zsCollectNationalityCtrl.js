@@ -38,12 +38,15 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			$timeout(function(){
 				$('select').selectToAutocomplete();
 				$timeout(function(){
-					$('input').focus();
-				},1000);
-			},0)
-			
-		};
+					$(document).on('touchstart', function() {
+					    documentClick = true;
+					});
 
+					$scope.showOnScreenKeyboard('country-selector');
+				},0);
+			},0);
+
+		};
 
 		/**
 		 * when the back button clicked

@@ -265,6 +265,12 @@ this.initScreenKeyboardListener = function(from, id, show) {
     beforeVisible: function(e, keyboard, el) {},
     visible: function(e, keyboard, el) {},
     change: function(e, keyboard, el) {
+      //country selector uses another jquery plugin, which does not recognize the input event from virtual keyboard,
+      //we just need to trigger the search method from autocomplete to trigger filtering
+      if (id === 'country-selector'){
+        $(elementObj).autocomplete('search', $(elementObj).val());
+      }
+
     },
     beforeClose: function(e, keyboard, el, accepted) {
       applyKeyboardInput();

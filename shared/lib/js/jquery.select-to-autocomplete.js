@@ -46,7 +46,7 @@ THE SOFTWARE.
       if ( context.settings['remove-valueless-options'] ) {
         selected_finder = 'option:selected[value!=""]:first';
       }
-     // context.$text_field.val( context.$select_field.find( selected_finder ).text() );
+      context.$text_field.val( context.$select_field.find( selected_finder ).text() );
     },
     handle_select_field: function( $select_field ) {
       return $select_field.hide();
