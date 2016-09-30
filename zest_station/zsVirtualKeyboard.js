@@ -273,6 +273,12 @@ this.initScreenKeyboardListener = function(from, id, show) {
 
     },
     beforeClose: function(e, keyboard, el, accepted) {
+      if (id === 'country-selector'){
+        var beforeCloseVal = $(elementObj).val();
+        setTimeout(function(){
+          $(elementObj).autocomplete('search', beforeCloseVal);
+        },0);
+      }
       applyKeyboardInput();
     },
     accepted: function(e, keyboard, el) {
@@ -312,6 +318,15 @@ this.initScreenKeyboardListener = function(from, id, show) {
      focused = $('#' + id);  
      elementObj = $(focused);
   }
+
+
+  /*
+  * if the keyboard is used in conjunction with the autocomplete jquery plugin, then
+  * it should be configured slightly differently...
+  */
+  if (id === 'country-selector'){
+      keyboardOptions.ignoreEsc = true;
+  }
   elementObj.keyboard(keyboardOptions);
 
 
@@ -321,14 +336,23 @@ this.initScreenKeyboardListener = function(from, id, show) {
   };
 
   this.blurHandler = function() {
-    var focused = elementObj;
-    if (elementObj.getkeyboard().isOpen) {
-      try {
-        elementObj.getkeyboard().accept(true);
-      } catch (err) {
-        elementObj.getkeyboard().close();
+    if (id === 'country-selector'){
+      console.log('blur keyboard for country selector: ');
+      console.info($(elementObj).val());
+
+    } else {
+  
+      var focused = elementObj;
+      if (elementObj.getkeyboard().isOpen) {
+        try {
+          elementObj.getkeyboard().accept(true);
+        } catch (err) {
+          elementObj.getkeyboard().close();
+        }
       }
+
     }
+
 
 
   };
