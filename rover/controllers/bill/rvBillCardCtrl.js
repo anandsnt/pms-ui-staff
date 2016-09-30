@@ -988,53 +988,59 @@ sntRover.controller('RVbillCardController',
 	 	$scope.reservationBillData.roomChargeEnabled = true;
 	 });
 
-
-	$scope.openPostCharge = function(activeBillNo) {
-
-		if(!$scope.reservationBillData.allow_post_with_no_credit && !$scope.hasPermissionToAllowPostWithNoCredit()){
-
+	 $scope.clickedAddCharge = function(activeBillNo){
+	 	if(!$scope.reservationBillData.allow_post_with_no_credit){
+	 		$scope.selectedBillNumber = activeBillNo;
 			ngDialog.open({
 	    		template: '/assets/partials/postCharge/allowPostWithNoCredit.html',
 	    		className: '',
 	    		scope: $scope
 	    	});
 		} else {
-			// Show a loading message until promises are not resolved
-	        $scope.$emit('showLoader');
-
-	        jsMappings.fetchAssets(['postcharge', 'directives'])
-	        .then(function(){
-
-		        $scope.$emit('hideLoader');
-
-				// pass on the reservation id
-				$scope.reservation_id = $scope.reservationBillData.reservation_id;
-
-				// pass down active bill no
-
-				$scope.billNumber = activeBillNo;
-
-				// translating this logic as such from old Rover
-				// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
-				// Also passing the available bills to the post charge modal
-				$scope.fetchTotalBal = false;
-
-				var bills = [];
-			    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ ) {
-			    	bills.push(i+1);
-			    }
-
-			    $scope.fetchedData = {};
-				$scope.fetchedData.bill_numbers = bills;
-			    $scope.isOutsidePostCharge = false;
-
-				ngDialog.open({
-		    		template: '/assets/partials/postCharge/rvPostChargeV2.html',
-		    		className: '',
-		    		scope: $scope
-		    	});
-		    })
+			$scope.openPostCharge(activeBillNo);
 		}
+
+	 }
+
+	$scope.openPostCharge = function(activeBillNo) {
+
+
+		// Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');
+
+        jsMappings.fetchAssets(['postcharge', 'directives'])
+        .then(function(){
+
+	        $scope.$emit('hideLoader');
+
+			// pass on the reservation id
+			$scope.reservation_id = $scope.reservationBillData.reservation_id;
+
+			// pass down active bill no
+
+			$scope.billNumber = activeBillNo;
+
+			// translating this logic as such from old Rover
+			// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
+			// Also passing the available bills to the post charge modal
+			$scope.fetchTotalBal = false;
+
+			var bills = [];
+		    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ ) {
+		    	bills.push(i+1);
+		    }
+
+		    $scope.fetchedData = {};
+			$scope.fetchedData.bill_numbers = bills;
+		    $scope.isOutsidePostCharge = false;
+
+			ngDialog.open({
+	    		template: '/assets/partials/postCharge/rvPostChargeV2.html',
+	    		className: '',
+	    		scope: $scope
+	    	});
+	    })
+
 
 	};
 

@@ -446,19 +446,6 @@ sntRover.controller('RVPostChargeControllerV2',
 				};
 			};
 
-			$scope.postChargesToReservation = function(){
-				if(!$scope.reservationBillData.allow_post_with_no_credit && $scope.hasPermissionToAllowPostWithNoCredit()){
-
-					ngDialog.open({
-			    		template: '/assets/partials/postCharge/allowPostWithNoCredit.html',
-			    		className: '',
-			    		scope: $scope
-			    	});
-				} else {
-					$scope.postCharges();
-				}
-
-			}
 
 			$scope.postCharges = function() {
 
@@ -550,8 +537,11 @@ sntRover.controller('RVPostChargeControllerV2',
 					$scope.closeDialog();
 					$scope.$emit('UPDATE_TRANSACTION_DATA',data);
 				};
-
+				if(!$scope.reservationBillData.allow_post_with_no_credit && $scope.hasPermissionToAllowPostWithNoCredit()){
+					data.post_anyway = true;
+				}
 				var updateParam = data;
+
 				/****    CICO-6094    **/
 				if(!needToCreateNewBill){
 					if(isFromAccounts){

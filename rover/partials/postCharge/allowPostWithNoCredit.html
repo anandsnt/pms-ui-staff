@@ -1,5 +1,5 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}"> <!--modal-content diary-move -->
-  <div ng-cloak class="modal-content alert">
+  <div ng-cloak class="modal-content">
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
             <span class="icons icon-close invert">
         </button>
@@ -10,8 +10,8 @@
             <button type="button" class="button red" ng-click="closeDialog()">Ok</button>
         </div>
         <div class="actions" ng-show="hasPermissionToAllowPostWithNoCredit()">
-            <button id="try-again" class="button green end-of-day-button" ng-click="yesClick()" translate>POST CHARGES</button>
-            <button class="button blank end-of-day-button" ng-click="cancelClicked()"translate>Cancel</button>
+            <button id="try-again" class="button green " ng-click="openPostCharge(selectedBillNumber)" translate>PROCEED WITH POST CHARGES</button>
+            <button class="button blank" ng-click="cancelClicked()"translate>Cancel</button>
          </div>
    </div>
 
