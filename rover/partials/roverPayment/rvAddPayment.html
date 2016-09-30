@@ -28,7 +28,7 @@
                     reservation-id="{{passData.reservationId}}"
                     fetch-linked-cards="!isFromGuestCard"
                     guest-id="{{passData.guest_id}}"
-                    workstation-id = "{{workstation_id}}"
+                    workstation-id="{{workstation_id}}"
                     bill-number="billNumber"
                     payment-types="paymentData.paymentTypes"
                     selected-c-c="selectedCC"
@@ -42,6 +42,7 @@
                     form-template-url='/assets/partials/staycard/rvStaycardAddPaymentPopup.html'
                     first-name="{{passData.details.firstName}}"
                     last-name="{{passData.details.lastName}}"
+                    hide-overlay-giftcard="true"
                     ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
         </div>
