@@ -1,6 +1,8 @@
  {
 
    "PICKUP_KEY": "Pick up Key",
+   "BOOK_NOW": "Book Now",
+   
    "CHECK_IN": "Check In",
    "CHECK_OUT": "Check Out",
    "HOME_PUK_SUB": "If you have already checked in",

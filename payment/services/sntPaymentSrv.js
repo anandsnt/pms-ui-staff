@@ -2,6 +2,16 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
     function($q, $http, $location, PAYMENT_CONFIG) {
         var service = this;
 
+        var state = {};
+
+        service.set = function(key, status) {
+            state[key] = status;
+        };
+
+        service.get = function(key) {
+            return state[key];
+        };
+
         var webserviceErrorActions = function(url, deferred, errors, status) {
             var urlStart = url.split('?')[0];
             // please note the type of error expecting is array
@@ -185,7 +195,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);
                         }
-                    }, function(data) {
+                    }).error(function(data) {
                         if (typeof data === 'undefined') {
                             pollToTerminal(async_callback_url);
                         } else {
@@ -249,7 +259,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);
                         }
-                    }, function(data) {
+                    }).error(data => {
                         if (typeof data === 'undefined') {
                             pollToTerminal(async_callback_url);
                         } else {
