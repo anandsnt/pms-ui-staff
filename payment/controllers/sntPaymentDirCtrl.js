@@ -131,8 +131,12 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             if ($scope.selectedPaymentType !== "GIFT_CARD") {
                 return false;
             } else {
+                var payableAmount = parseFloat($scope.payment.amount);
+                if (!!$scope.feeData) {
+                    payableAmount = parseFloat($scope.feeData.totalOfValueAndFee);
+                }
                 return $scope.giftCard.availableBalance &&
-                    parseFloat($scope.giftCard.availableBalance) < parseFloat($scope.feeData.totalOfValueAndFee);
+                    parseFloat($scope.giftCard.availableBalance) < payableAmount;
             }
         };
 
@@ -212,6 +216,13 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
         //toggle between CC entry and existing card selection
         $scope.toggleCCMOde = function(mode) {
+            if (mode === "GIFT_CARD") {
+                $scope.selectedPaymentType = "GIFT_CARD";
+                $scope.onPaymentInfoChange();
+            } else {
+                $scope.selectedPaymentType = "CC";
+                $scope.onPaymentInfoChange();
+            }
             $scope.payment.addCCMode = mode;
             mode === 'ADD_CARD' ? refreshIFrame() : '';
         };
@@ -568,6 +579,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 }, errorMessage => {
                     $scope.giftCard.amountAvailable = false;
                     $scope.errorMessage = errorMessage;
+                    $scope.$emit('hideLoader');
                 });
 
             } else {
@@ -578,11 +590,11 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         };
 
         // Payment type change action
-        $scope.onPaymentInfoChange = function() {
+        $scope.onPaymentInfoChange = function(isReset) {
             //NOTE: Fees information is to be calculated only for standalone systems
             //TODO: See how to handle fee in case of C&P
 
-            if ($scope.payment.isEditable && $scope.selectedPaymentType === "GIFT_CARD") {
+            if (isReset && $scope.payment.isEditable && $scope.selectedPaymentType === "GIFT_CARD") {
                 $scope.payment.amount = 0;
             }
 
@@ -598,7 +610,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             if (!!selectedPaymentType && selectedPaymentType.name === "CC") {
                 if (!!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
                     //Add to guestcard feature for C&P
+                    $scope.payment.isManualEntryInsideIFrame = false;
+                    //Add to guestcard feature for C&P
                     $scope.payment.showAddToGuestCard = !!$scope.reservationId && ($scope.payment.isManualEntryInsideIFrame ? false : true);
+                    $scope.selectedCC = {};
                     refreshIFrame();
                 } else {
                     // In case no card has been selected yet, move to add card mode
@@ -824,7 +839,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 name: "GIFT_CARD"
             });
 
-            return !$scope.hotelConfig.isStandAlone && !!isGiftCardEnabled;
+            return !$scope.hotelConfig.isStandAlone && !!isGiftCardEnabled && !$scope.hideOverlayGiftcard;
         };
 
         var onAmountChange = function() {

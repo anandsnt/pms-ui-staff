@@ -509,6 +509,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
 		$scope.showMassUpdateEndDateConfirmation = function(data) {
 			$scope.overBookingMessage = '';
+			setDatePickers();
 
 			ngDialog.open({
 				template: '/assets/partials/groups/roomBlock/rvGroupConfirmMassUpdatePopup.html',
@@ -637,6 +638,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				$scope.groupConfigData.summary.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 				$scope.groupConfigData.summary.block_to.setDate(refData.block_to.getDate() + originalStayLength);
 				$scope.endDate = $scope.groupConfigData.summary.block_to;
+				//for goto and mass update calender popup on group move
+				$scope.timeLineStartDate = $scope.groupConfigData.summary.block_from;
+				$scope.timeLineEndDate = $scope.endDate;
+				$scope.massUpdateEndDate = new tzIndependentDate($scope.endDate - 86400000);
 			}
 
 			//arrival left date change
@@ -779,7 +784,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var refData = $scope.groupConfigData.summary;
 
 			//default to goto date
-			$scope.timeLineStartDate = new tzIndependentDate($rootScope.businessDate);
+			if(!$scope.timeLineStartDate) {
+				$scope.timeLineStartDate = (refData.block_from !== '') ? new tzIndependentDate(refData.block_from) : new tzIndependentDate($rootScope.businessDate);
+			}
+
 			$scope.timeLineEndDate = new tzIndependentDate(refData.block_to);
 
 
@@ -819,7 +827,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 			//date picker options - Goto Date
 			$scope.timeLineStartDateOptions = _.extend({
-				minDate: ($scope.startDate !== '') ? new tzIndependentDate($scope.startDate): new tzIndependentDate($rootScope.businessDate),
+				minDate: ($scope.startDate !== '') ? new tzIndependentDate($scope.startDate) : new tzIndependentDate($rootScope.businessDate),
 				maxDate: maxEndDate,
 				onSelect: $scope.onTimeLineStartDatePicked,
 			}, commonDateOptions);
