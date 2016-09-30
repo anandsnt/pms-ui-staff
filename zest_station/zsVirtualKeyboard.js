@@ -15,8 +15,8 @@ this.initScreenKeyboardListener = function(from, id, show) {
   //open virtual keyboard
   $.keyboard.language.love = $.extend($.keyboard.language.en);
   var focused;
-  if (id === 'first_input'){
-     focused = $('input');  
+  if (id === 'country-selector'){
+     focused = $('input')[0];  
      elementObj = $(focused)[0];
   } else {
      focused = $('#' + id);  
@@ -296,11 +296,11 @@ this.initScreenKeyboardListener = function(from, id, show) {
   } else if (zestStationNationalityField){
     //number of days keyboard, only number input with backspace button
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard_no_numbers;
-    $('.ui-keyboard').addClass('top-align-keyboard');
+    $('.ui-keyboard').addClass('bottom-align-keyboard');
   }
   var focused;
-  if (id === 'first_input'){
-     focused = $('input');  
+  if (id === 'country-selector'){
+     focused = $('input')[0];  
      elementObj = $(focused);
   } else {
      focused = $('#' + id);  

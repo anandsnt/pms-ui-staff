@@ -177,19 +177,18 @@ select {
 }
     .ui-autocomplete{
         overflow:hidden;
-        max-height: 275px !important;
+        max-height: 225px !important;
+        border-bottom: 2px solid @transparentColor;
+        border-radius: 0 0 6px 6px;
     }
     .ui-autocomplete .ui-menu-item {
       background:@white;
       color:@brandColor;
-      padding:15px;
+      padding:20px;
+      font-size: 1.389em;
     }
     .ui-autocomplete .ui-menu-item.ui-state-focus {
       background-color: @white;
       color: @brandColor;
     }
 
-    .ui-autocomplete .ui-menu-item:last-child {
-        border-bottom: 2px solid @brandColor;
-        border-radius: 0 0 6px 6px;
-    }

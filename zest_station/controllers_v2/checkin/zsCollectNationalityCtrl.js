@@ -37,6 +37,9 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			
 			$timeout(function(){
 				$('select').selectToAutocomplete();
+				$timeout(function(){
+					$('input').focus();
+				},1000);
 			},0)
 			
 		};
