@@ -163,7 +163,6 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
             });
 
             $scope.$on("$destroy", ()=> {
-                console.log("-- clean up of listener --");
                 angular.element($window).off(messageEvent);
             });
 
