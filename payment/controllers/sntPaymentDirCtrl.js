@@ -610,7 +610,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             if (!!selectedPaymentType && selectedPaymentType.name === "CC") {
                 if (!!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
                     //Add to guestcard feature for C&P
-                    if($scope.payment.screenMode !== "CARD_ADD_MODE"){
+                    // The payment info may change after adding a payment method; in such a case, should not reset back to C&P mode
+                    if($scope.payment.screenMode !== "CARD_ADD_MODE" && !$scope.selectedCC.value){
                         $scope.payment.isManualEntryInsideIFrame = false;
                         $scope.selectedCC = {};
                     }
