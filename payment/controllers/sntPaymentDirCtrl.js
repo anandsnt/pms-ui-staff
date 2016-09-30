@@ -116,6 +116,11 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                         $scope.myScroll[key].refresh();
                     }
                 }, timeOutForScrollerRefresh);
+            },
+            setEditableFlag = function() {
+                if ($scope.isEditable !== false) {
+                    $scope.payment.isEditable = true;
+                }
             };
 
         /**
@@ -127,7 +132,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 return false;
             } else {
                 return $scope.giftCard.availableBalance &&
-                    parseFloat($scope.giftCard.availableBalance) < parseFloat($scope.payment.amount);
+                    parseFloat($scope.giftCard.availableBalance) < parseFloat($scope.feeData.totalOfValueAndFee);
             }
         };
 
@@ -573,9 +578,13 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         };
 
         // Payment type change action
-        $scope.onPaymentInfoChange = function() {
+        $scope.onPaymentInfoChange = function(isReset) {
             //NOTE: Fees information is to be calculated only for standalone systems
             //TODO: See how to handle fee in case of C&P
+
+            if (isReset && $scope.payment.isEditable && $scope.selectedPaymentType === "GIFT_CARD") {
+                $scope.payment.amount = 0;
+            }
 
             calculateFee();
             var selectedPaymentType = _.find($scope.paymentTypes, {
@@ -878,9 +887,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $scope.payment.creditCardTypes = getCrediCardTypesList();
             });
 
+            $scope.$watch('isEditable', setEditableFlag);
+
             $scope.payment.amount = $scope.amount || 0;
             $scope.payment.isRateSuppressed = $scope.isRateSuppressed || false;
-            $scope.payment.isEditable = $scope.isEditable || true;
             $scope.billNumber = $scope.billNumber || 1;
             $scope.payment.linkedCreditCards = $scope.linkedCreditCards || [];
 

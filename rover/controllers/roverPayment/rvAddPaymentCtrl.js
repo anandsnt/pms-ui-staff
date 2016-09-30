@@ -159,6 +159,10 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                $scope.errorMessage = errorMessage;
             });
 
+            $scope.$on('PAYMENT_FAILED', function(event, errorMessage) {
+                $scope.errorMessage = errorMessage;
+            });
+
             /**
              * Initialization Method
              *
