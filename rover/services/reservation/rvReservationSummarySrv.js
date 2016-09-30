@@ -13,9 +13,9 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
 
         this.fetchPaymentMethods = function() {
             var deferred = $q.defer();
-            var url = '/api/hotel_settings/payment_types';
+            var url = '/staff/payments/addNewPayment.json';
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                deferred.resolve(data);
+                deferred.resolve(data.data);
             }, function(data) {
                 deferred.reject(data);
             });

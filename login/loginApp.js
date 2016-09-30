@@ -51,7 +51,12 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 		 	  	sessionStorage.removeItem(key);
 		 	}
 
-		 	localStorage.email = $scope.data.email;
+			try {
+				localStorage.email = $scope.data.email;
+			} catch(e) {
+				console.log('ignoring a problem occured while setting item using localStorage');
+			}
+
 		 	if(data.token!==''){
 		 		$state.go('resetpassword', {token: data.token, notifications: data.notifications});
 		 	}
@@ -332,7 +337,7 @@ login.controller('stationLoginCtrl',['$scope', 'loginSrv', '$window', '$state', 
          
         $scope.showOnScreenKeyboard = function(id) {
            //pull up the virtual keyboard (snt) theme... if chrome & fullscreen
-            var isTouchDevice = 'ontouchstart' in document.documentElement,
+            var isTouchDevice = 'ontouchstart' in document,
                 agentString = window.navigator.userAgent;
             var shouldShowKeyboard = (typeof chrome) && (agentString.toLowerCase().indexOf('window')!==-1) && isTouchDevice;
             if (shouldShowKeyboard && id){

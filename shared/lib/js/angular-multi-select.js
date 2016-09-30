@@ -174,6 +174,26 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             $scope.formElements     = [];
             $scope.tabIndex         = 0;
             $scope.clickedItem      = null;
+
+            /**
+             * //Shahul: I dont what they doing, fixing the issue of undefined variable
+             * I am wondering who is modifying library for their own purpose
+             * @type {Number}
+             */
+            var prevTabIndex            = 0;
+            /**
+             * //Shahul: I dont what they doing, fixing the issue of undefined variable
+             * I am wondering who is modifying library for their own purpose
+             * @type {Number}
+             */
+            var helperItems             = [];
+            /**
+             * //Shahul: I dont what they doing, fixing the issue of undefined variable
+             * I am wondering who is modifying library for their own purpose
+             * @type {Number}
+             */
+            var helperItemsLength       = 0;
+
             $scope.showOptions      = false;
 
             var prevTabIndex            = 0;
@@ -525,7 +545,13 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             $scope.refreshButton = function() {
 
                 $scope.varButtonLabel   = '';                
-                ctr                     = 0;                  
+
+                /**
+                 * //Shahul: I dont what they doing, fixing the issue of undefined variable
+                 * I am wondering who is modifying library for their own purpose
+                 * @type {Number}
+                 */
+                var ctr                 = 0;
 
                 // refresh button label...
                 if ( $scope.selectedItems.length === 0 ) {
@@ -613,7 +639,12 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 $scope.checkBoxLayer = element.children()[1];
 
                 // We grab the button
-                clickedEl = element.children()[0];
+                /**
+                 * //Shahul: I dont what they doing, fixing the issue of undefined variable
+                 * I am wondering who is modifying library for their own purpose
+                 * @type {Evnt Node}
+                 */
+                var clickedEl = element.children()[0];
 
                 // Just to make sure.. had a bug where key events were recorded twice
                 angular.element( document ).unbind( 'click', $scope.externalClickListener );
@@ -673,7 +704,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                     var helperContainer = angular.element( element[ 0 ].querySelector( '.helperContainer' ) )[0];                
                     
                     if ( typeof helperContainer !== 'undefined' ) {
-                        for ( i = 0; i < helperContainer.getElementsByTagName( 'BUTTON' ).length ; i++ ) {
+                        for (var i = 0; i < helperContainer.getElementsByTagName( 'BUTTON' ).length ; i++ ) {
                             helperItems[ i ] = helperContainer.getElementsByTagName( 'BUTTON' )[ i ];
                         }
                         helperItemsLength = helperItems.length + helperContainer.getElementsByTagName( 'INPUT' ).length;
@@ -697,7 +728,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             
             // handle clicks outside the button / multi select layer
             $scope.externalClickListener = function( e ) {                   
-                targetsArr = element.find( e.target.tagName );
+                var targetsArr = element.find( e.target.tagName );
                 for (var i = 0; i < targetsArr.length; i++) {                                        
                     if ( e.target == targetsArr[i] ) {
                         return;
@@ -732,7 +763,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             // select All / select None / reset buttons
             $scope.select = function( type, e ) {
 
-                helperIndex = helperItems.indexOf( e.target );
+                var helperIndex = helperItems.indexOf( e.target );
                 $scope.tabIndex = helperIndex;
 
                 switch( type.toUpperCase() ) {
@@ -772,7 +803,12 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 }                                                                                 
             }            
 
-            // just to create a random variable name                
+            // just to create a random variable name
+            /**
+             * //Shahul: I dont what they doing, fixing the issue of undefined variable
+             * I am wondering who is modifying library for their own purpose
+             * @type {function}
+             */
             var genRandomString = function( length ) {                
                 var possible    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
                 var temp        = '';
@@ -798,7 +834,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
 
             // prepare original index
             $scope.prepareIndex = function() {
-                ctr = 0;
+                var ctr = 0;
                 angular.forEach( $scope.filteredModel, function( value, key ) {
                     value[ $scope.indexProperty ] = ctr;
                     ctr++;

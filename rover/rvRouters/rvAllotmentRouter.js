@@ -60,9 +60,12 @@ angular.module('allotmentModule', [])
                 }
             }],
             resolve: {
+                loadPaymentModule: function (jsMappings) {
+                    return jsMappings.loadPaymentModule();
+                },
                 //to tackle from coming admin app to rover
-                summaryData: ['rvAllotmentConfigurationSrv', '$stateParams', 'allotmentAssets',
-                    function(rvAllotmentConfigurationSrv, $stateParams, allotmentAssets){
+                summaryData: ['rvAllotmentConfigurationSrv', '$stateParams', 'allotmentAssets', 'loadPaymentModule',
+                    function(rvAllotmentConfigurationSrv, $stateParams, allotmentAssets, loadPaymentModule){
                         var isInAddMode = ($stateParams.id === "NEW_ALLOTMENT");
                         var params = {
                             allotmentId: $stateParams.id
@@ -70,8 +73,8 @@ angular.module('allotmentModule', [])
                         return rvAllotmentConfigurationSrv.getAllotmentSummary (params);
                     }
                 ],
-                holdStatusList: ['rvAllotmentConfigurationSrv', 'allotmentAssets',
-                    function (rvAllotmentConfigurationSrv, allotmentAssets) {
+                holdStatusList: ['rvAllotmentConfigurationSrv', 'allotmentAssets', 'loadPaymentModule',
+                    function (rvAllotmentConfigurationSrv, allotmentAssets, loadPaymentModule) {
                         var params = {
                             is_group : false
                         }

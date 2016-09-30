@@ -19,7 +19,7 @@
                                     <ad-dropdown label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' required = "no" div-class="full-width"></ad-dropdown>
                                 </div>  
                                 
-				<ad-dropdown label="{{'CHARGE_CODE_TYPE'| translate}}" label-in-drop-down="{{'CHARGE_CODE_TYPE'| translate}}" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="full-width"></ad-dropdown>
+				<ad-dropdown label="{{'CHARGE_CODE_TYPE'| translate}}" label-in-drop-down="{{'CHARGE_CODE_TYPE'| translate}}" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="full-width"  on-change="onChangeChargeCodeType"></ad-dropdown>
 
 				<!-- show For charge codes of the code type Payment -->
 				<div class="entry full-width" required="required" ng-show="prefetchData.selected_charge_code_type == '2'" >

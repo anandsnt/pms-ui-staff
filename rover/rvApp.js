@@ -18,7 +18,6 @@ var sntRover = angular.module('sntRover',[
 		'groupModule',
 		'allotmentModule',
 		'accountsModule',
-		'todoModule',
 		'rateManagerModule',
 		'FinancialsModule',
 		'cacheVaultModule',
@@ -33,7 +32,8 @@ var sntRover = angular.module('sntRover',[
 		'clickTouch',
 		'oc.lazyLoad',
 		'limitInputRange',
-		'emitWhen']);
+		'emitWhen',
+		'prettyTimeAgoModule']);
 
 sntRover.config([
 	'$httpProvider',
