@@ -23,9 +23,23 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 		});
 		$scope.countryListFocused = false;
 		$scope.init = function() {
-			$scope.countryList = countryList;
+			$scope.countryList = [];
 			$scope.sortedCountries = sortedCountryList.sorted;
 			$scope.unSortedCountries = sortedCountryList.unsorted;
+			//if not using the sorted list, get country names with the country native languages to popuplate the list as well
+			if (!$scope.zestStationData.kiosk_enforce_country_sort){
+				_.each(countryList, function(someThing) {
+						_.each(someThing.names, function(otherThing) {
+								  $scope.countryList.push({
+								  	id: someThing.id,
+								  	value: otherThing
+								  });
+					  	});
+				});				
+			} else {
+				$scope.countryList = countryList;
+			}
+
 			$scope.selectedCountry = {
 				"id": ""
 			};
@@ -55,8 +69,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 		$scope.showingOnScreenKeyboard = function(){
 			if ($('input')[0]){
 				var nationalityInput = $('input')[0],
-				 currentValue = $(nationalityInput).val().toLowerCase(),
-				 placeholderText = ' -- select country -- ';
+				 currentValue = $(nationalityInput).val().toLowerCase();
 				if (currentValue.length > 0 && (currentValue.toLowerCase().indexOf('select country') === -1)){
 					return true;
 				};
