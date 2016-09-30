@@ -165,12 +165,12 @@ sntRover.controller('RVOutsidePostChargeController',
 				$rootScope.$broadcast("UPDATED_BILLNUMBERS", data);
 			};
 			$scope.clickedReservationToPostCharge = function(reservationData){
-				var reservationId = reservationData.id;
+				$scope.selectedReservationId = reservationData.id;
 				if(!reservationData.allow_post_with_no_credit){
 					$scope.selectedReservationPostNotAllowed = true;
 				} else {
 					$scope.showPostChargesScreen();
-					$scope.invokeApi(RVPostChargeSrvV2.getReservationBillDetails, reservationId, $scope.successGetBillDetails);
+					$scope.invokeApi(RVPostChargeSrvV2.getReservationBillDetails, $scope.selectedReservationId, $scope.successGetBillDetails);
 				}
 
 			};
@@ -178,7 +178,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				event.stopImmediatePropagation();
 				$scope.selectedReservationPostNotAllowed = false;
 				$scope.showPostChargesScreen();
-				$scope.invokeApi(RVPostChargeSrvV2.getReservationBillDetails, reservationId, $scope.successGetBillDetails);
+				$scope.invokeApi(RVPostChargeSrvV2.getReservationBillDetails, $scope.selectedReservationId, $scope.successGetBillDetails);
 			};
 			$scope.showPostChargesScreen = function(){
 				$scope.showInitialSearchScreen = false;
