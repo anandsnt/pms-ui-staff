@@ -1,14 +1,18 @@
 <section id="main" class="centered" role="main">
-    <div id="content">
+    <div id="content" class="input-field-contents">
         <h1 translate>NATIONALITY</h1>
         <!-- <h3>Subheading text here</h3> -->
         <form method="post" class="form">
-            <div class="entry select select-with-button">
-                <select ng-options="country.id as country.value for country in countryList" ng-model="selectedCountry.id" ng-if="!zestStationData.kiosk_enforce_country_sort">
+            <div class="entry select select-with-button" ng-focus="showOnScreenKeyboard('country-selector')" click-touch="showOnScreenKeyboard('country-selector')">
+                <input type='text' id='country-selector'>
+                <select class="turn-to-ac select" name="Country" autofocus="autofocus" autocorrect="off" autocomplete="off"
+                ng-options="country.id as country.value for country in countryList" ng-model="selectedCountry.id" 
+                ng-if="!zestStationData.kiosk_enforce_country_sort">
                     <option style="display:none" value="" class=""></option>
                 </select>
                 <!-- sorted -->
-                <select ng-model="selectedCountry.id" ng-if="zestStationData.kiosk_enforce_country_sort">
+                <select class="turn-to-ac select" name="Country" autofocus="autofocus" autocorrect="off" autocomplete="off"
+                 ng-model="selectedCountry.id" ng-if="zestStationData.kiosk_enforce_country_sort">
                     <option value="">-- Select country --</option>
                     <option ng-repeat="country in sortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
                     <option value="" ng-show="sortedCountries.length > 0" disabled> ------------------ </option>

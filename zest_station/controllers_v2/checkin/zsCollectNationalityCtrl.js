@@ -3,8 +3,8 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 	'$state',
 	'zsEventConstants',
 	'$stateParams',
-	'$sce', 'countryList', 'sortedCountryList', 'zsCheckinSrv',
-	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, sortedCountryList, zsCheckinSrv) {
+	'$sce', 'countryList', 'sortedCountryList', 'zsCheckinSrv', '$timeout',
+	function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, sortedCountryList, zsCheckinSrv, $timeout) {
 
 		/**********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -29,7 +29,16 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			$scope.selectedCountry = {
 				"id": ""
 			};
+
 			$scope.$emit('hideLoader');
+
+			//touch-friendly, +searchable list
+			//initializes the jquery plugin for search-filtering in the UI
+			
+			$timeout(function(){
+				$('select').selectToAutocomplete();
+			},0)
+			
 		};
 
 

@@ -175,3 +175,21 @@ select {
         width: 15%;
     }
 }
+    .ui-autocomplete{
+        overflow:hidden;
+        max-height: 275px !important;
+    }
+    .ui-autocomplete .ui-menu-item {
+      background:@white;
+      color:@brandColor;
+      padding:15px;
+    }
+    .ui-autocomplete .ui-menu-item.ui-state-focus {
+      background-color: @white;
+      color: @brandColor;
+    }
+
+    .ui-autocomplete .ui-menu-item:last-child {
+        border-bottom: 2px solid @brandColor;
+        border-radius: 0 0 6px 6px;
+    }
