@@ -90,6 +90,22 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			$scope.invokeApi(ADChargeCodesSrv.fetchAddData, {}, fetchNewDetailsSuccessCallback);
 		};
 
+		/**
+		 * Callback for charge code type dropdown
+		 * See comments in CICO-33997
+		 * @param {Number} selectedType charge code type selected
+		 * @return {Undefined} none
+		 */
+		$scope.onChangeChargeCodeType = function (selectedType) {
+			/* if charge code type TAX(value 1) is selected
+			 * reset sign and symbol to +ve
+			 */
+			if (selectedType === '1') {
+				$scope.prefetchData.selected_amount_sign = '+';
+				$scope.prefetchData.selected_amount_symbol = 'amount';
+			}
+		};
+
 		/*
 		 * To fetch the charge code details for edit screen.
 		 */

@@ -130,6 +130,7 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
     }else{
       $scope.selectedIndex = index;
       $scope.selectedDevice = device;
+      $scope.selectedDevice.hours_log_enabled = $scope.selectedDevice.hours_log_enabled == "" ? 4 : $scope.selectedDevice.hours_log_enabled;
     }
       
   }

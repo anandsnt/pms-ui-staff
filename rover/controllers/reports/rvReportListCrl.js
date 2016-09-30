@@ -63,6 +63,7 @@ sntRover.controller('RVReportListCrl', [
                 // unfortunately this is not sent from server
                 reportUtils.addIncludeUserFilter( report[i] );
 
+
                 setupDates.init( report[i] );
                 _.each(report[i]['filters'], function(filter) {
                     setupDates.execFilter( report[i], filter );
@@ -80,6 +81,7 @@ sntRover.controller('RVReportListCrl', [
                     'chargeCodes'      : $scope.$parent.chargeCodes,
                     'addons'           : $scope.$parent.addons,
                     'reservationStatus': $scope.$parent.reservationStatus,
+                    'assigned_departments': $scope.$parent.assigned_departments,
                     'activeUserList'   : $scope.$parent.activeUserList
                 });
 
@@ -173,7 +175,7 @@ sntRover.controller('RVReportListCrl', [
         //removing event listners when scope is destroyed
         $scope.$on( '$destroy', serveRefresh );
 
-        
+
     }
 
 ]);

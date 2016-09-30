@@ -23,22 +23,9 @@ sntZestStation.service('zsBaseWebSrv', ['$http', '$q', '$window','$rootScope', f
 			deferred.reject(errors);
 		} else if (status === 500) { // 500- Internal Server Error
 			deferred.reject(['Internal server error occured']);
-		} else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
-			$window.location.href = '/500';
 		} else if (status === 401) { // 401- Unauthorized
 			// so lets redirect to login page
 			$window.location.href = '/logout';
-		}
-
-		//set of custom error emssage range http status
-		else if (status >= 470 && status <= 490) {
-			errors.httpStatus = status;
-			errors.errorMessage = errors;
-			deferred.reject(errors);
-		}
-		// CICO-26779 : Handling 404 - Not found.
-		else if (status === 404) {
-			console.warn("Found 404 Error : " + url);
 		} else {
 			deferred.reject(errors);
 		}
