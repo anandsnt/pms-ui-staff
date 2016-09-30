@@ -5,11 +5,16 @@ admin.controller('adZestStationLanguageConfigCtrl',
 
 		BaseCtrl.call(this, $scope);
 
-		var saveNewLanguagePosition = function(languageName, position) {
+		var saveNewLanguagePosition = function(languageName, position, prevPosition) {
+			var languageListForApi = $scope.languageList.map(function(language, index){
+				return {
+					'name': language.name,
+					'position': index + 1 //index will be in teh order of position
+				}
+			});
 			var options = {
 				params: {
-					'language_name': languageName, //TODO: we need to change this to id when api is comfortable to do so
-					'position': position
+					language_list: languageListForApi
 				},
 				successCallBack: fetchLanguageList
 			};
@@ -23,7 +28,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 				prevPosition = ui.item.sortable.index;
 
 			if (position && position !== prevPosition) {
-				saveNewLanguagePosition(languageName, position + 1);
+				saveNewLanguagePosition(languageName, position, prevPosition);
 			}
 		};
 
