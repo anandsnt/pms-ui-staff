@@ -807,8 +807,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $scope.selectedCC.ending_with = paymentData.cardDisplayData.ending_with;
                 $scope.selectedCC.expiry_date = paymentData.cardDisplayData.expiry_date;
                 $scope.selectedCC.holder_name = paymentData.apiParams.name_on_card;
-
-                $scope.payment.screenMode = "PAYMENT_MODE";
+                $timeout(()=> {
+                    $scope.selectedPaymentType = "CC";
+                    $scope.payment.screenMode = "PAYMENT_MODE";
+                }, 600);
             } else {
                 $scope.payment.tokenizedCardData = null;
             }
