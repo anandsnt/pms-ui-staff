@@ -60,10 +60,13 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
                     }
                     $scope.selectedCC = $scope.selectedCC || {};
 
-                    $scope.selectedCC.value = response.payment_method.id;
-                    $scope.selectedCC.card_code = response.payment_method.card_type;
-                    $scope.selectedCC.ending_with = response.payment_method.ending_with;
-                    $scope.selectedCC.expiry_date = response.payment_method.expiry_date;
+                    if(!!response.payment_method) {
+                        $scope.selectedCC.value = response.payment_method.id;
+                        $scope.selectedCC.card_code = response.payment_method.card_type;
+                        $scope.selectedCC.ending_with = response.payment_method.ending_with;
+                        $scope.selectedCC.expiry_date = response.payment_method.expiry_date;
+                    }
+
                     response.cc_details = angular.copy($scope.selectedCC);
 
                     if ($scope.payment.showAddToGuestCard) {
