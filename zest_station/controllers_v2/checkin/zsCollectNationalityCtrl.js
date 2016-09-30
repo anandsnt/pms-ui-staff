@@ -66,16 +66,6 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			}
 
 		};
-		$scope.showingOnScreenKeyboard = function(){
-			if ($('input')[0]){
-				var nationalityInput = $('input')[0],
-				 currentValue = $(nationalityInput).val().toLowerCase();
-				if (currentValue.length > 0 && (currentValue.toLowerCase().indexOf('select country') === -1)){
-					return true;
-				};
-			};
-			return false;
-		};
 
 		/**
 		 * when the back button clicked
