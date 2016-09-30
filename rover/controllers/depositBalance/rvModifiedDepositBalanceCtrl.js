@@ -20,6 +20,8 @@ sntRover.controller('RVDepositBalanceCtrl', [
 
         BaseCtrl.call(this, $scope);
 
+        $scope.isDepositEditable = !!$scope.depositDetails.deposit_policy.allow_deposit_edit;
+
         //adding a flag to be set after some timeout to remove flickering action in iPad
         $scope.pageloadingOver = false;
         $timeout(function() {
