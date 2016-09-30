@@ -5,7 +5,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 
 		BaseCtrl.call(this, $scope);
 
-		var saveNewLanguagePosition = function(languageName, position, prevPosition) {
+		var saveNewLanguagePosition = function(languageName, position) {
 			var languageListForApi = $scope.languageList.map(function(language, index){
 				return {
 					'name': language.name,
@@ -14,7 +14,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			});
 			var options = {
 				params: {
-					language_list: languageListForApi
+					languages: languageListForApi
 				},
 				successCallBack: fetchLanguageList
 			};
@@ -27,14 +27,14 @@ admin.controller('adZestStationLanguageConfigCtrl',
 				languageName = ui.item.sortable.model.name,
 				prevPosition = ui.item.sortable.index;
 
-			if (position && position !== prevPosition) {
-				saveNewLanguagePosition(languageName, position, prevPosition);
+			if (position !== null && position !== prevPosition) {
+				saveNewLanguagePosition(languageName, position);
 			}
 		};
 
 		//when language fetch completed
 		var onFetchLanguageList = function(data) {
-			$scope.languageList = data.language_list;
+			$scope.languageList = _.sortBy(data.languages, 'position');
 		}
 
 		/**
