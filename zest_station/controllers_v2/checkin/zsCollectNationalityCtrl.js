@@ -21,7 +21,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 				return $sce.trustAsHtml(val);
 			};
 		});
-
+		$scope.countryListFocused = false;
 		$scope.init = function() {
 			$scope.countryList = countryList;
 			$scope.sortedCountries = sortedCountryList.sorted;
@@ -34,18 +34,34 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 
 			//touch-friendly, +searchable list
 			//initializes the jquery plugin for search-filtering in the UI
-			
-			$timeout(function(){
-				$('select').selectToAutocomplete();
+			if ($scope.zestStationData.theme === 'yotel') {
+				//for yotel only right now, TODO: need to optimize on IPAD for zoku and others
 				$timeout(function(){
-					$(document).on('touchstart', function() {
-					    documentClick = true;
-					});
+					//initializes autocomplete, changes the <select> into an <input> field with autocomplete features
+					$('select').selectToAutocomplete();
 
-					$scope.showOnScreenKeyboard('country-selector');
+					$timeout(function(){
+						$(document).on('touchstart', function() {
+						    documentClick = true;
+						});
+						$scope.showOnScreenKeyboard('country-selector');
+					},0);
+
+
 				},0);
-			},0);
+			}
 
+		};
+		$scope.showingOnScreenKeyboard = function(){
+			if ($('input')[0]){
+				var nationalityInput = $('input')[0],
+				 currentValue = $(nationalityInput).val().toLowerCase(),
+				 placeholderText = ' -- select country -- ';
+				if (currentValue.length > 0 && (currentValue.toLowerCase().indexOf('select country') === -1)){
+					return true;
+				};
+			};
+			return false;
 		};
 
 		/**

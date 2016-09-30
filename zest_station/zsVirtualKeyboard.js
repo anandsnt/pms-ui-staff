@@ -273,7 +273,7 @@ this.initScreenKeyboardListener = function(from, id, show) {
 
     },
     beforeClose: function(e, keyboard, el, accepted) {
-      if (id === 'country-selector'){
+      if (id === 'country-selector' && ('ontouchstart' in window)){//only for touchscreen devices
         var beforeCloseVal = $(elementObj).val();
         setTimeout(function(){
           $(elementObj).autocomplete('search', beforeCloseVal);

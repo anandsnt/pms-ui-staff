@@ -2,13 +2,12 @@
     <div id="content" class="input-field-contents">
         <h1 translate>NATIONALITY</h1>
         <!-- <h3>Subheading text here</h3> -->
-        <form ng-class="{'focused-pushed-up':zestStationData.theme == 'yotel'}" method="post" class="form">
+        <form method="post" class="form">
 
             <div class="entry select select-with-button" >
                 <!--input type='text' id='country-selector'-->
 
-
-                <select  id='country-selector' class="turn-to-ac select" name="Country" autofocus="autofocus" autocorrect="off" autocomplete="off"
+                <select id='country-selector' class="turn-to-ac select" name="Country" autofocus="autofocus" autocorrect="off" autocomplete="off"
                 ng-options="country.id as country.value for country in countryList" 
                  ng-model="selectedCountry.id" 
                 ng-if="!zestStationData.kiosk_enforce_country_sort">
