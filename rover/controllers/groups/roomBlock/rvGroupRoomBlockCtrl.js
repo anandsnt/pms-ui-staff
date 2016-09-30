@@ -509,6 +509,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
 		$scope.showMassUpdateEndDateConfirmation = function(data) {
 			$scope.overBookingMessage = '';
+			setDatePickers();
 
 			ngDialog.open({
 				template: '/assets/partials/groups/roomBlock/rvGroupConfirmMassUpdatePopup.html',
@@ -783,7 +784,10 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			var refData = $scope.groupConfigData.summary;
 
 			//default to goto date
-			$scope.timeLineStartDate = (refData.block_from !== '') ? new tzIndependentDate(refData.block_from) : new tzIndependentDate($rootScope.businessDate);
+			if(!$scope.timeLineStartDate) {
+				$scope.timeLineStartDate = (refData.block_from !== '') ? new tzIndependentDate(refData.block_from) : new tzIndependentDate($rootScope.businessDate);
+			}
+
 			$scope.timeLineEndDate = new tzIndependentDate(refData.block_to);
 
 
