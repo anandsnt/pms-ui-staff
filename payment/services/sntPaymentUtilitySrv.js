@@ -7,7 +7,8 @@ angular.module('sntPay').service('paymentUtilSrv',
      * @type {String}
      */
     var normalSwipeKeyInObject = 'session',
-        mliSwipeKey = 'mli_token';
+        mliSwipeKey = 'mli_token',
+        mliManualKey ='session';
 
     /**
      * to form the param for fetching the token
@@ -57,6 +58,9 @@ angular.module('sntPay').service('paymentUtilSrv',
         //if it is MLI
         if(mliSwipeKey in object) {
             card_code = this.getCreditCardTypeForMLI(object.cardType);
+        }
+        else if(mliManualKey in object){
+            card_code = this.getCreditCardTypeForMLI(object.cardBrand);
         }
         return {
             card_code,

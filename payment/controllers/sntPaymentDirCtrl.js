@@ -610,10 +610,13 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             if (!!selectedPaymentType && selectedPaymentType.name === "CC") {
                 if (!!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
                     //Add to guestcard feature for C&P
-                    $scope.payment.isManualEntryInsideIFrame = false;
+                    // The payment info may change after adding a payment method; in such a case, should not reset back to C&P mode
+                    if($scope.payment.screenMode !== "CARD_ADD_MODE" && !$scope.selectedCC.value){
+                        $scope.payment.isManualEntryInsideIFrame = false;
+                        $scope.selectedCC = {};
+                    }
                     //Add to guestcard feature for C&P
                     $scope.payment.showAddToGuestCard = !!$scope.reservationId && ($scope.payment.isManualEntryInsideIFrame ? false : true);
-                    $scope.selectedCC = {};
                     refreshIFrame();
                 } else {
                     // In case no card has been selected yet, move to add card mode
@@ -807,8 +810,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $scope.selectedCC.ending_with = paymentData.cardDisplayData.ending_with;
                 $scope.selectedCC.expiry_date = paymentData.cardDisplayData.expiry_date;
                 $scope.selectedCC.holder_name = paymentData.apiParams.name_on_card;
-
-                $scope.payment.screenMode = "PAYMENT_MODE";
+                $timeout(()=> {
+                    $scope.selectedPaymentType = "CC";
+                    $scope.payment.screenMode = "PAYMENT_MODE";
+                }, 600);
             } else {
                 $scope.payment.tokenizedCardData = null;
             }
