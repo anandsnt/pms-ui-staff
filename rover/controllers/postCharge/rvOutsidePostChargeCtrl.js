@@ -331,6 +331,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				}
 				else {
 					$scope.reservation_id = $scope.cardAttached.id;
+					$scope.allow_post_with_no_credit = $scope.cardAttached.allow_post_with_no_credit;
 					$rootScope.$broadcast('POSTCHARGE');
 					$scope.disableOutsidePostChargeButton = true;
 				}
@@ -357,6 +358,7 @@ sntRover.controller('RVOutsidePostChargeController',
 
 				$scope.guestHasNotCheckedin = false;
 				$scope.reservation_id = $scope.cardAttached.id;
+				$scope.allow_post_with_no_credit = $scope.cardAttached.allow_post_with_no_credit;
 				$rootScope.$broadcast('POSTCHARGE');
 				$scope.disableOutsidePostChargeButton = true;
 			};

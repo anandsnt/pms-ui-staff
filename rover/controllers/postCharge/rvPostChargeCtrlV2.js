@@ -537,7 +537,8 @@ sntRover.controller('RVPostChargeControllerV2',
 					$scope.closeDialog();
 					$scope.$emit('UPDATE_TRANSACTION_DATA',data);
 				};
-				if(!$scope.reservationBillData.allow_post_with_no_credit && $scope.hasPermissionToAllowPostWithNoCredit()){
+
+				if(!$scope.allow_post_with_no_credit && $scope.hasPermissionToAllowPostWithNoCredit()){
 					data.post_anyway = true;
 				}
 				var updateParam = data;
