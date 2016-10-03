@@ -269,7 +269,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             //the rest of actions will in paySixPayController
             if ($scope.selectedPaymentType === "CC" && $scope.hotelConfig.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
                 var params = {
-                    workstation_id: $scope.hotelConfig.workstationId
+                    workstation_id: $scope.hotelConfig.workstationId,
+                    bill_number: $scope.billNumber
                 };
 
                 if ($scope.actionType === "ADD_PAYMENT_GUEST_CARD") {
