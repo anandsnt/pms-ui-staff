@@ -135,8 +135,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 if (!!$scope.feeData) {
                     payableAmount = parseFloat($scope.feeData.totalOfValueAndFee);
                 }
-                return $scope.giftCard.availableBalance &&
-                    parseFloat($scope.giftCard.availableBalance) < payableAmount;
+                //https://stayntouch.atlassian.net/browse/CICO-34115?focusedCommentId=93132&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-93132
+                return (payableAmount < 0) || // NOTE : We can't make a negative payment with a GIFT_CARD
+                    ($scope.giftCard.availableBalance &&
+                    parseFloat($scope.giftCard.availableBalance) < payableAmount);
             }
         };
 
