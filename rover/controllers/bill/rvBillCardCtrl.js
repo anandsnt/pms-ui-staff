@@ -805,6 +805,8 @@ sntRover.controller('RVbillCardController',
 			 },
 			 onSuccess : function(response) {
 				 paymentData.paymentTypes = response;
+				 //close any ngDialogs if opened (work around fix)
+				 ngDialog.close($rootScope.LastngDialogId, "");
 				 $scope.openPaymentDialogModal(passData, paymentData);
 			 }
 		 });
