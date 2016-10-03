@@ -83,7 +83,11 @@ sntRover.controller('RVDepositBalanceCtrl', [
         $scope.isManual = false;
         $scope.setScroller('cardsList', {'click': true, 'tap': true});
         $scope.setScroller('deopositdue');
-        $scope.setScroller('payment-deposit-scroll');
+        $scope.setScroller('payment-deposit-scroll', {
+            'preventDefaultException': {
+                tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|LABEL)$/
+            }
+        });
 
         var refreshScroll = function() {
             $timeout(function() {
