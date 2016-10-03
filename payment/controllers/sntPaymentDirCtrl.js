@@ -145,7 +145,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          * @returns {boolean}
          */
         $scope.shouldHidePaymentButton = function() {
-            return !$scope.splitBillEnabled && (!$scope.selectedPaymentType || !$scope.hasPermission ||
+            return (!$scope.selectedPaymentType || !$scope.hasPermission ||
                 $scope.isGCBalanceShort() ||
                 ($scope.paymentAttempted && !$scope.isPaymentFailure));
         };
