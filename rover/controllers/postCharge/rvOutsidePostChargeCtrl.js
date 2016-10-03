@@ -364,6 +364,8 @@ sntRover.controller('RVOutsidePostChargeController',
 			};
 			$scope.clickedPostChargeCancel = function(){
 				$scope.guestHasNotCheckedin = false;
+				$scope.selectedReservationPostNotAllowed = false;
+				$scope.clickedDetachCard();
 			};
 
 			/*
