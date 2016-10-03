@@ -70,20 +70,28 @@
     <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
         CANCEL
     </button>
-    <button type="button" class="button green" click-touch="submitPayment()"
-            ng-show="!shouldHidePaymentButton() && !isRefund() && !splitBillEnabled">
+    <button type="button" class="button" click-touch="submitPayment()"
+            ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
+            ng-show="!isRefund() && !splitBillEnabled">
         MAKE PAYMENT
     </button>
-    <button type="button" class="button green" click-touch="submitPayment()"
-            ng-show="!shouldHidePaymentButton() && !isRefund() && splitBillEnabled">
+    <button type="button" class="button" click-touch="submitPayment()"
+            ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
+            ng-show="!isRefund() && splitBillEnabled">
         MAKE PAYMENT ({{ completedSplitPayments + 1 }}/{{ numSplits }})
     </button>
-    <button type="button" class="button blue" click-touch="submitPayment()"
-            ng-show="!shouldHidePaymentButton() && isRefund() && !splitBillEnabled">
+    <button type="button" class="button" click-touch="submitPayment()"
+            ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'blue': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
+            ng-show="isRefund() && !splitBillEnabled">
         REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
     </button>
-    <button type="button" class="button blue" click-touch="submitPayment()"
-            ng-show="!shouldHidePaymentButton() && isRefund() && splitBillEnabled">
+    <button type="button" class="button" click-touch="submitPayment()"
+            ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'blue': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
+            ng-show="isRefund() && splitBillEnabled">
         REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }} ({{ completedSplitPayments + 1}}/{{ numSplits }})
     </button>
 </div>

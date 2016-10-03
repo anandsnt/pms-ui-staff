@@ -80,11 +80,15 @@
         CANCEL
     </button>
     <button type="button" class="button green" click-touch="submitAccountPayment()"
-            ng-show="!shouldHidePaymentButton() && !isRefund()">
+            ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
+            ng-show="!isRefund()">
         MAKE PAYMENT
     </button>
     <button type="button" class="button blue" click-touch="submitAccountPayment()"
-            ng-show="!shouldHidePaymentButton() && isRefund()">
+            ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
+            ng-show="isRefund()">
         REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
     </button>
 </div>
