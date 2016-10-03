@@ -272,10 +272,20 @@ sntRover.controller('RVbillCardController',
 	var hasPermissionToChangeCharges = function(type) {
 		//hide edit and remove options in case type is  payment
 		var hasRemoveAndEditPermission  = (type !== "PAYMENT") ? true : false;
-	    var split_permission = rvPermissionSrv.getPermissionValue('SPLIT_CHARGES'),
-	        edit_permission = rvPermissionSrv.getPermissionValue('EDIT_CHARGES'),
-	        delete_permission = rvPermissionSrv.getPermissionValue('DELETE_CHARGES');
-	    return ((hasRemoveAndEditPermission && (edit_permission || delete_permission)) || split_permission);
+	    var splitPermission = rvPermissionSrv.getPermissionValue('SPLIT_CHARGES'),
+	    	editChargeCodeDescription = $scope.hasPermissionToEditChargeCodeDescription(),
+	        editPermission = rvPermissionSrv.getPermissionValue('EDIT_CHARGES'),
+	        deletePermission = rvPermissionSrv.getPermissionValue('DELETE_CHARGES');
+	    return ((hasRemoveAndEditPermission && (editPermission || deletePermission)) || splitPermission || editChargeCodeDescription);
+	};
+
+	/**
+	* function to check whether the user has permission
+	* to Edit charge code description.
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToEditChargeCodeDescription = function() {
+		return rvPermissionSrv.getPermissionValue ('EDIT_CHARGECODE_DESCRIPTION');
 	};
 
 	/**
@@ -788,6 +798,18 @@ sntRover.controller('RVbillCardController',
 	 	 return showGuestBalance;
 	 };
 
+	 var fetchPaymentTypesAndOpenPaymentModal = function(passData, paymentData) {
+		 $scope.callAPI(RVPaymentSrv.renderPaymentScreen, {
+			 params: {
+			     direct_bill: false
+			 },
+			 onSuccess : function(response) {
+				 paymentData.paymentTypes = response;
+				 $scope.openPaymentDialogModal(passData, paymentData);
+			 }
+		 });
+	 };
+
 	 $scope.addNewPaymentModal = function(swipedCardData){
 	 	//Current active bill is index - adding 1 to get billnumber
 	 	var billNumber = parseInt($scope.currentActiveBill)+parseInt(1);
@@ -815,7 +837,7 @@ sntRover.controller('RVbillCardController',
 				$scope.setScroller('cardsList');
 				$scope.addmode = false;
 				passData.details.hideDirectBill = true;
-		 		$scope.openPaymentDialogModal(passData, paymentData);
+				fetchPaymentTypesAndOpenPaymentModal(passData, paymentData);
 
   	 	} else {
 
@@ -824,7 +846,7 @@ sntRover.controller('RVbillCardController',
 
 				passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 				if(swipedCardDataToRender.swipeFrom !== "payButton" && swipedCardDataToRender.swipeFrom !== 'billingInfo'){
-					$scope.openPaymentDialogModal(passData, paymentData);
+					fetchPaymentTypesAndOpenPaymentModal(passData, paymentData);
 				} else if(swipedCardDataToRender.swipeFrom === "payButton") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
 				}
@@ -902,13 +924,29 @@ sntRover.controller('RVbillCardController',
 	 	else {
 	 		$scope.isViaReviewProcess = false;
 	 	}
-	 	ngDialog.open({
-              template: '/assets/partials/pay/rvPaymentModal.html',
-              className: '',
-              controller: 'RVBillPayCtrl',
-              closeByDocument: false,
-              scope: $scope
-          });
+
+
+		 var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : {};
+
+		 /*
+		  *	CICO-6089 => Enable Direct Bill payment option for OPEN BILLS.
+		  */
+		 if ($scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "DB" &&
+			 $scope.reservationBillData.reservation_status === "CHECKEDOUT") {
+			 paymentParams.direct_bill = true;
+		 }
+
+		 $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, function(data) {
+			 // NOTE: Obtain the payment methods and then open the payment popup
+			 $scope.paymentTypes = data;
+			 ngDialog.open({
+				 template: '/assets/partials/payment/rvReservationBillPaymentPopup.html',
+				 className: '',
+				 controller: 'RVBillPayCtrl',
+				 closeByDocument: false,
+				 scope: $scope
+			 });
+		 });
 	 };
 	 $scope.clickedAddUpdateCCButton = function(){
 	 	$scope.fromViewToPaymentPopup = "billcard";
@@ -950,43 +988,60 @@ sntRover.controller('RVbillCardController',
 	 	$scope.reservationBillData.roomChargeEnabled = true;
 	 });
 
+	 $scope.clickedAddCharge = function(activeBillNo){
+	 	if(!$scope.reservationBillData.allow_post_with_no_credit){
+	 		$scope.selectedBillNumber = activeBillNo;
+			ngDialog.open({
+	    		template: '/assets/partials/postCharge/allowPostWithNoCredit.html',
+	    		className: '',
+	    		scope: $scope
+	    	});
+		} else {
+			$scope.openPostCharge(activeBillNo);
+		}
+
+	 }
 
 	$scope.openPostCharge = function(activeBillNo) {
-        // Show a loading message until promises are not resolved
+
+
+		// Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
         jsMappings.fetchAssets(['postcharge', 'directives'])
         .then(function(){
 
-        $scope.$emit('hideLoader');
+	        $scope.$emit('hideLoader');
 
-		// pass on the reservation id
-		$scope.reservation_id = $scope.reservationBillData.reservation_id;
+			// pass on the reservation id
+			$scope.reservation_id = $scope.reservationBillData.reservation_id;
 
-		// pass down active bill no
+			// pass down active bill no
 
-		$scope.billNumber = activeBillNo;
+			$scope.billNumber = activeBillNo;
 
-		// translating this logic as such from old Rover
-		// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
-		// Also passing the available bills to the post charge modal
-		$scope.fetchTotalBal = false;
+			// translating this logic as such from old Rover
+			// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
+			// Also passing the available bills to the post charge modal
+			$scope.fetchTotalBal = false;
 
-		var bills = [];
-	    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ ) {
-	    	bills.push(i+1);
-	    }
+			var bills = [];
+		    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ ) {
+		    	bills.push(i+1);
+		    }
 
-	    $scope.fetchedData = {};
-		$scope.fetchedData.bill_numbers = bills;
-	    $scope.isOutsidePostCharge = false;
+		    $scope.fetchedData = {};
+			$scope.fetchedData.bill_numbers = bills;
+		    $scope.isOutsidePostCharge = false;
 
-		ngDialog.open({
-    		template: '/assets/partials/postCharge/rvPostChargeV2.html',
-    		className: '',
-    		scope: $scope
-    	});
+			ngDialog.open({
+	    		template: '/assets/partials/postCharge/rvPostChargeV2.html',
+	    		className: '',
+	    		scope: $scope
+	    	});
 	    })
+
+
 	};
 
 	$scope.$on('paymentTypeUpdated', function() {
@@ -1670,6 +1725,13 @@ sntRover.controller('RVbillCardController',
 	$scope.hasPermissionToShowCheckoutWithoutSettlement = function() {
 		return rvPermissionSrv.getPermissionValue ('ALLOW_CHECKOUT_WITHOUT_SETTLEMENT');
 	};
+	/**
+	* function to check whether the user has permission to allow post with no credit
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToAllowPostWithNoCredit = function() {
+		return rvPermissionSrv.getPermissionValue('ALLOW_POST_WITH_NO_CREDIT')
+	};
     // CICO-6089 : Handle toggle button.
     $scope.toggleCheckoutWithoutSettlement = function(){
     	$scope.isCheckoutWithoutSettlement = !$scope.isCheckoutWithoutSettlement;
@@ -2117,6 +2179,18 @@ sntRover.controller('RVbillCardController',
     	});
 	};
 
+	/*
+	 * open popup for edit charge code
+	 */
+	$scope.openEditChargeDescPopup = function(){
+		ngDialog.open({
+    		template: '/assets/partials/bill/rvEditChargePopup.html',
+    		controller:'rvBillCardPopupCtrl',
+    		className: '',
+    		scope: $scope
+    	});
+	};
+
   /*
 	 * open popup for edit transaction
 	 */
@@ -2141,14 +2215,16 @@ sntRover.controller('RVbillCardController',
 	$scope.callActionsPopupAction = function(action){
 
 		ngDialog.close();
-		if(action ==="remove"){
-			$scope.openRemoveChargePopup();
-		}
-		else if(action ==="split"){
-			$scope.openSplitChargePopup();
-		}else if(action === "edit"){
-			$scope.openEditChargePopup();
+		if (action === "custom_description") {
+			$scope.openEditChargeDescPopup();
+		} else if (action === "remove") {
+		    $scope.openRemoveChargePopup();
+		} else if (action === "split") {
+		    $scope.openSplitChargePopup();
+		} else if (action === "edit") {
+		    $scope.openEditChargePopup();
 		};
+
 
 	};
 
@@ -2319,7 +2395,7 @@ sntRover.controller('RVbillCardController',
 	};
 
 
-	 $scope.$on('PAYMENT_SUCCESS', function(event,data) {
+	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event,data) {
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 	 	var billCount = $scope.reservationBillData.bills.length;
 		$scope.isRefreshOnBackToStaycard = true;

@@ -190,10 +190,11 @@ angular.module('reportsModule')
         var __showFilterNames = {
             'SHOW_COMPANY': true,
             'SHOW_TRAVEL_AGENT': true,
-            
+
             // for CREDIT_CHECK_REPORT
             'INCLUDE_DUE_OUT': true,
             'INCLUDE_INHOUSE': true,
+            'ALLOW_POST_WITH_NO_CREDIT': true,
 
             // for room ooo oos report
             OOO: true,
@@ -257,7 +258,12 @@ angular.module('reportsModule')
                 selected = true;
             };
 
+            if ( report['title'] == reportNames['RESERVATIONS_BY_USER'] && filter.value === 'INCLUDE_BOTH') {
+                selected = true;
+            }
+
             report['hasGeneralOptions']['data'].push({
+                id          : filter.value.toLowerCase(),
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
                 selected    : selected,
@@ -266,6 +272,12 @@ angular.module('reportsModule')
 
             // if filter value is either of these, selectAll should be false
             if ( report['title'] == reportNames['ARRIVAL'] || report['title'] == reportNames['DEPARTURE'] ) {
+                report.hasGeneralOptions.options.noSelectAll = true;
+            };
+
+            // when 'SHOW_RATE_ADJUSTMENTS_ONLY' is selected other should not be and vice versa
+            if ( report['title'] == reportNames['RESERVATIONS_BY_USER'] && filter.value == 'SHOW_RATE_ADJUSTMENTS_ONLY' ) {
+                report.hasGeneralOptions.options.selectiveSingleSelectKey = filter.value.toLowerCase();
                 report.hasGeneralOptions.options.noSelectAll = true;
             };
         };
@@ -328,12 +340,22 @@ angular.module('reportsModule')
                         'description': "Include User Names"
                     });
                     break;
+                case reportNames['ACTIONS_MANAGER']:
+                    report['filters'].push({
+                        'value': "INCLUDE_COMPLETION_STATUS",
+                        'description': "Include Completion status"
+                    }, {
+                        'value': "INCLUDE_DEPARTMENTS",
+                        'description': "Include Departments"
+                    });
+
 
                 default:
                     // no op
                     break;
             };
         };
+
 
         /**
          * Process the filters and create proper DS to show and play in UI
@@ -506,6 +528,9 @@ angular.module('reportsModule')
                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'INCLUDE_DUE_OUT' ) {
                     __pushGeneralOptionData( report, filter, true );
                 }
+                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'ALLOW_POST_WITH_NO_CREDIT' ) {
+                    __pushGeneralOptionData( report, filter, false );
+                }
 
                  // fill up DS for options combo box
                 if ( __excludeFilterNames[filter.value] ) {
@@ -630,7 +655,7 @@ angular.module('reportsModule')
                         .then( fillRateTypesAndRateList );
                 }
 
-                else if ('RATE_CODE' === filter.value && ! filter.filled ) {
+                else if (('RATE_CODE' === filter.value && ! filter.filled)) {
                     requested++;
                     reportsSubSrv.fetchRateCode()
                         .then( fillRateCodeList );
@@ -688,10 +713,15 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchFloors()
                         .then( fillFloors );
-                }
-
-                else {
-                    // no op
+                } else if ( 'INCLUDE_DEPARTMENTS' === filter.value && ! filter.filled){
+                    requested++;
+                    reportsSubSrv.fetchDepartments()
+                        .then( fillDepartments );
+                } else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled){
+                    //requested++;
+                    fillCompletionStatus();
+                } else {
+                    //no op
                 };
             });
 
@@ -857,6 +887,59 @@ angular.module('reportsModule')
                 checkAllCompleted();
             };
 
+            function fillCompletionStatus(){
+                customData = [
+                                {id: "UNASSIGNED", status: "UNASSIGNED", selected: true},
+                                {id: "ASSIGNED", status: "ASSIGNED", selected: true},
+                                {id: "COMPLETED",  status: "COMPLETED", selected: true}
+                            ];
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_COMPLETION_STATUS' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasCompletionStatus = {
+                            data: customData,
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'status',
+                                defaultValue: 'Select Status'
+                            }
+                        }
+                    };
+                });
+            };
+
+            function fillDepartments(data){
+                var foundFilter,
+                    customData;
+
+                    _.each(data, function(departmentData) {
+                      departmentData.id = departmentData.value;
+                    });
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_DEPARTMENTS' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasDepartments = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'name',
+                                defaultValue: 'Select Department'
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
+
             function fillRateCodeList (data) {
                 data[0].selected = true;
                 _.each(reportList, function(report) {
@@ -868,13 +951,15 @@ angular.module('reportsModule')
                             data: angular.copy( data ),
                             options: {
                                 hasSearch: true,
-                                selectAll: false,
-                                singleSelect: true,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
+                                singleSelect: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? false : true,
                                 key: 'description',
                                 defaultValue: 'Select Rate'
                             }
                         }
                     };
+
+
                 });
 
                 completed++;
@@ -940,7 +1025,6 @@ angular.module('reportsModule')
                                 name: 'hasURLsList',
                                 process: function(filter, selectedItems) {
                                     var hasUrl = _.find(selectedItems, { value: 'URL' });
-                                    console.log(!hasUrl);
                                     filter.updateData(!hasUrl);
                                 }
                             }

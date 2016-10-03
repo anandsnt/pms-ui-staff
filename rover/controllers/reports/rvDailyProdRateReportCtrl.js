@@ -203,12 +203,12 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 
 		var processData = function() {
 			var SUB_HEADER_NAMES = {
-					'ROOMS': 'Rooms #',
+					'ROOMS': 'Occ Rooms',
 					'AVAILABLE_ROOMS': 'Avl. Rooms',
 					/**/
 					'FORECAST': 'Forecast.',
 					'ADR': 'ADR',
-					'ACTUAL': 'Actual Rev.',
+					'ACTUAL': 'Room Rev.',
 					/**/
 					'ADDON': 'Add-on' //>> This is to be shown IFF 'Options'->'Include Add-on Revenue' is checked
 				},

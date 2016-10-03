@@ -36,9 +36,8 @@
                             <span class="input" ng-show="hasFileUpdatedOrUploading('english')">File Attached</span>
                             <span class="input" ng-show="!hasFileUpdatedOrUploading('english')">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.english_translations_file" accept="*" app-filereader emit-data="english_translations_file" />
-                            <button type="button" class="button brand-colors">
-                                Attach file
-                            </button>
+                            <button type="button" class="button brand-colors">Attach file</button>
+                            <button type="button" ng-show="hasFileUpdatedOrUploading('english')" class="button download-arrow icons icon-download" ng-click="downloadLang('en')"></button>
                         </div>
                     </div>
                 </div>
@@ -50,9 +49,9 @@
                             <span class="input" ng-show="hasFileUpdatedOrUploading('french')">File Attached</span>
                             <span class="input" ng-show="!hasFileUpdatedOrUploading('french')">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.french_translations_file" accept="*" app-filereader emit-data="french_translations_file" />
-                            <button type="button" class="button brand-colors">
-                                Attach file
-                            </button>
+                            
+                            <button type="button" class="button brand-colors">Attach file</button>
+                            <button type="button" class="button download-arrow icons icon-download" ng-click="downloadLang('fr')" ng-show="hasFileUpdatedOrUploading('french')"></button>
                         </div>
                     </div>
                 </div>
@@ -64,9 +63,9 @@
                             <span class="input" ng-show="hasFileUpdatedOrUploading('spanish')">File Attached</span>
                             <span class="input" ng-show="!hasFileUpdatedOrUploading('spanish')">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.spanish_translations_file" accept="*" app-filereader emit-data="spanish_translations_file" />
-                            <button type="button" class="button brand-colors">
-                                Attach file
-                            </button>
+                            
+                            <button type="button" class="button brand-colors">Attach file</button>
+                            <button type="button" class="button download-arrow icons icon-download" ng-click="downloadLang('es')" ng-show="hasFileUpdatedOrUploading('spanish')"></button>
                         </div>
                     </div>
                 </div>
@@ -78,9 +77,9 @@
                             <span class="input" ng-show="hasFileUpdatedOrUploading('german')">File Attached</span>
                             <span class="input" ng-show="!hasFileUpdatedOrUploading('german')">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.german_translations_file" accept="*" app-filereader emit-data="german_translations_file" />
-                            <button type="button" class="button brand-colors">
-                                Attach file
-                            </button>
+                            
+                            <button type="button" class="button brand-colors">Attach file</button>
+                            <button type="button" class="button download-arrow icons icon-download" ng-click="downloadLang('de')" ng-show="hasFileUpdatedOrUploading('german')"></button>
                         </div>
                     </div>
                 </div>
@@ -92,9 +91,9 @@
                             <span class="input" ng-show="hasFileUpdatedOrUploading('italian')">File Attached</span>
                             <span class="input" ng-show="!hasFileUpdatedOrUploading('italian')">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.italian_translations_file" accept="*" app-filereader emit-data="italian_translations_file" />
-                            <button type="button" class="button brand-colors">
-                                Attach file
-                            </button>
+                            
+                            <button type="button" class="button brand-colors">Attach file</button>
+                            <button  type="button" class="button download-arrow icons icon-download" ng-click="downloadLang('it')" ng-show="hasFileUpdatedOrUploading('italian')"></button>
                         </div>
                     </div>
                 </div>
@@ -106,9 +105,9 @@
                             <span class="input" ng-show="hasFileUpdatedOrUploading('castellano')">File Attached</span>
                             <span class="input" ng-show="!hasFileUpdatedOrUploading('castellano')">Choose file..</span>
                             <input type="file" ng-model="zestSettings.zest_lang.castellano_translations_file" accept="*" app-filereader emit-data="italian_translations_file" />
-                            <button type="button" class="button brand-colors">
-                                Attach file
-                            </button>
+                            
+                            <button type="button" class="button brand-colors">Attach file</button>
+                            <button type="button" class="button download-arrow icons icon-download" ng-click="downloadLang('cl')" ng-show="hasFileUpdatedOrUploading('castellano')"></button>
                         </div>
                     </div>
                 </div>
@@ -179,6 +178,23 @@
                         <input type="radio" value="ingenico_infinea_key" ng-model="zestSettings.kiosk_key_creation_method">{{ 'INGENICO_INFINEA_KEY' | translate}}
                     </label>
                 </div>
+                <!-- Upload image for Key Creation In Progress Screen -->
+                <label translate>KEY_CREATION_IMAGE </label>
+                        <div class="entry">
+                    <div class="file-upload" ng-class="{'with-remove-file-area':hasKeyImageFileUpdatedOrUploading('keyCreate')}">
+                        <span class="input" ng-show="hasKeyImageFileUpdatedOrUploading('keyCreate')">File Attached</span>
+                        <span class="input" ng-show="!hasKeyImageFileUpdatedOrUploading('keyCreate')">Choose file..</span>
+                        <input type="file" ng-model="zestSettings.key_create_file_uploaded" accept="*" app-filereader emit-data="key_create_file_uploaded" />
+                        <button type="button" class="button brand-colors">
+                            Attach file
+                        </button>
+                    </div>
+                    <button ng-show="hasKeyImageFileUpdatedOrUploading('keyCreate')" type="button" class="button brand-colors with-remove-file" ng-click="zestSettings.key_create_file_uploaded = 'false'">
+                            Remove file
+                        </button>
+                        
+                </div>
+
             </fieldset>
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>

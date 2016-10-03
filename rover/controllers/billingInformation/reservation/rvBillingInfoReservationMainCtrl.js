@@ -144,7 +144,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
      * @return {String} class according to reservation status
      */
     $scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn) {
-        return getGuestStatusMapped(reservationStatus, isLateCheckoutOn);
+        return RVBillingInfoUtilSrv.getGuestStatusMapped(reservationStatus, isLateCheckoutOn);
     };
 
     /**

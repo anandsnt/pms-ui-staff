@@ -16,7 +16,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			} else {
 				return false;
 			};
-		};	
+		};
 
 		service.setIntoStore = function(key, value) {
 			store[key] = value;
@@ -97,7 +97,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			var failed = function(data) {
 				deferred.reject( data || {} );
 			};
-			
+
 			// if config is incorrect
 			if ( ! options.url || ! options.method || ! rvBaseWebSrvV2.hasOwnProperty(options.method) ) {
 				failed();
@@ -305,7 +305,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				method : 'getJSON',
 				url    : '/api/restriction_types?is_activated=true',
 				resKey : 'results'
-			});			
+			});
 		};
 		service.fetchOrigins = function() {
 			return callApi({
@@ -379,6 +379,16 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				method: 'getJSON',
 				url: 'api/floors.json',
 				resKey: 'floors'
+			})
+		}
+
+		service.fetchDepartments = function() {
+			return callApi({
+				name: 'departments',
+				method: 'getJSON',
+				url: 'admin/departments.json',
+				resKey  : 'data',
+				resKey2 : 'departments'
 			})
 		}
 

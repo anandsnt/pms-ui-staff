@@ -446,6 +446,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				};
 			};
 
+
 			$scope.postCharges = function() {
 
 				// CICO-23196 => to disable Multiple Postings/API requests from UI.
@@ -537,7 +538,11 @@ sntRover.controller('RVPostChargeControllerV2',
 					$scope.$emit('UPDATE_TRANSACTION_DATA',data);
 				};
 
+				if(!$scope.allow_post_with_no_credit && $scope.hasPermissionToAllowPostWithNoCredit()){
+					data.post_anyway = true;
+				}
 				var updateParam = data;
+
 				/****    CICO-6094    **/
 				if(!needToCreateNewBill){
 					if(isFromAccounts){
