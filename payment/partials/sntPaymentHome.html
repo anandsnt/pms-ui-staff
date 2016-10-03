@@ -3,7 +3,8 @@
 <div id="payment-type" class="entry full-width" ng-show="payment.screenMode === 'PAYMENT_MODE'">
     <label for="payment-type" translate>PAYMENT_TYPE</label>
     <div class="select">
-        <select ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes" ng-model="selectedPaymentType" ng-change="onPaymentInfoChange(true)">
+        <select ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes"
+                ng-model="selectedPaymentType" ng-change="onPaymentInfoChange(true)">
             <option value="" translate>SELECT_PAYMENT_TYPE</option>
         </select>
     </div>
@@ -12,7 +13,10 @@
 <div class="entry" ng-show="showSixPaymentsModeSelection()">
     <label for="card-source">Card Input</label>
     <div class="switch-button" ng-class="{'on': !payment.isManualEntryInsideIFrame}">
-        <input name="card-source" id="card-source" value="card-source" type="checkbox" ng-model="payment.manualSixPayCardEntry" ng-click="sixPayEntryOptionChanged()" />
+        <input name="card-source"
+               style="width: 100%"
+               id="card-source" value="card-source" type="checkbox" ng-model="payment.isManualEntryInsideIFrame"
+               ng-click="sixPayEntryOptionChanged()"/>
         <label class="data-off">
             <span class="value">C &amp; P</span>
             <span class="switch-icon">Manual</span>
@@ -28,7 +32,7 @@
     <label>Credit Card (<span>Tap to change</span>)</label>
     <label class="active-item item-payment">
         <figure class="card-logo">
-            <img ng-src="/assets/images/{{selectedCC.card_code.toLowerCase()}}.png" alt="" />
+            <img ng-src="/assets/images/{{selectedCC.card_code.toLowerCase()}}.png" alt=""/>
         </figure>
         <span class="number">Ending with <span class="value number">{{selectedCC.ending_with}}</span></span>
         <span class="date">Date <span class="value date">{{selectedCC.expiry_date}}</span></span>
