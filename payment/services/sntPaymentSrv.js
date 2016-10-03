@@ -148,7 +148,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                 "MV": 'MC'
             };
 
-            return sixCreditCardTypes[cardCode.toUpperCase()];
+            return sixCreditCardTypes[cardCode.toUpperCase()] || 'credit-card';
         };
 
         /**
