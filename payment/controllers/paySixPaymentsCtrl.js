@@ -1,5 +1,5 @@
-sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 'sntPaymentSrv', '$timeout',
-    function($scope, payEvntConst, sntPaymentSrv, $timeout) {
+sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 'sntPaymentSrv', '$timeout', '$window',
+    function($scope, payEvntConst, sntPaymentSrv, $timeout, $window) {
 
         var retrieveCardDetails = function(tokenDetails) {
             var cardDetails = {};
@@ -60,7 +60,7 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
                     }
                     $scope.selectedCC = $scope.selectedCC || {};
 
-                    if(!!response.payment_method) {
+                    if (!!response.payment_method) {
                         $scope.selectedCC.value = response.payment_method.id;
                         $scope.selectedCC.card_code = response.payment_method.card_type;
                         $scope.selectedCC.ending_with = response.payment_method.ending_with;
@@ -142,6 +142,7 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
             tokenize(data);
         });
 
+
         /****************** init ***********************************************/
 
         (function() {
@@ -154,12 +155,17 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
             var eventer = window[eventMethod];
             var messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 
-            eventer(messageEvent, function(e) {
-                var responseData = e.data;
+            angular.element($window).on(messageEvent, function(e) {
+                var responseData = e.data || e.originalEvent.data;
                 if (responseData.response_message === "token_created") {
                     notifyParent(responseData);
                 }
-            }, false);
+            });
+
+            $scope.$on("$destroy", ()=> {
+                angular.element($window).off(messageEvent);
+            });
+
         })();
 
     }]);
