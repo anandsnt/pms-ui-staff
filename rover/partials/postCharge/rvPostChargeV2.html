@@ -28,7 +28,7 @@
 			<div id="not-checked-in" ng-show="selectedReservationPostNotAllowed" class="inner-overlay" ng-class="{'visible': selectedReservationPostNotAllowed == true}">
 				<div class="inner-content big-message">
 					<span class="message h2" translate>{{'POSTINGS_WITHOUT_CREDIT_NOT_PERMITTED_FOR_THIS_RESERVATION' | translate}}</span>
-					<button type="button" ng-show="!hasPermissionToAllowPostWithNoCredit()" class="button red" ng-click="clickedPostCharge($event)" translate>OK</button>
+					<button type="button" ng-show="!hasPermissionToAllowPostWithNoCredit()" class="button red" ng-click="clickedPostChargeCancel($event)" translate>OK</button>
 					<button ng-show="hasPermissionToAllowPostWithNoCredit()" type="button" class="button green" ng-click="proceedWithPostCharge($event)" translate>PROCEED WITH POST CHARGES</button>
 					<button ng-show="hasPermissionToAllowPostWithNoCredit()" type="button" class="button blank" ng-click="clickedPostChargeCancel()" translate>CANCEL</button>
 				</div>
