@@ -109,7 +109,7 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
                      * The API response has guest_payment_method_id instead of payment_method_id
                      */
 
-                    var cardType = ( response.card_type && response.card_type.toLowerCase()) || "";
+                    var cardType = response.card_type || "";
 
                     $scope.$emit('SUCCESS_LINK_PAYMENT', {
                         response: {
