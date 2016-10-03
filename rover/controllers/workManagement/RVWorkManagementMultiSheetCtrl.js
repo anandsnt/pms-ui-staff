@@ -194,26 +194,28 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					roomCopy[hasRoomIndex].room_tasks.push( draggedTask );
 				}
 
-				if ( hasRoomIndex > $scope.dropIndex ) {
-					move(roomCopy, hasRoomIndex, $scope.dropIndex);
-				} else {
-					if ( $scope.dropIndex === 0 ) {
-						move(roomCopy, hasRoomIndex, $scope.dropIndex)
+				if ( $scope.dropIndex !== undefined ) {
+					if ( hasRoomIndex > $scope.dropIndex ) {
+						move(roomCopy, hasRoomIndex, $scope.dropIndex);
 					} else {
-						move(roomCopy, hasRoomIndex, $scope.dropIndex - 1);
+						if ( $scope.dropIndex === 0 ) {
+							move(roomCopy, hasRoomIndex, $scope.dropIndex)
+						} else {
+							move(roomCopy, hasRoomIndex, $scope.dropIndex - 1);
+						}
 					}
 				}
 
 				toEmp.rooms = roomCopy;
 			} else {
-				if ( $scope.dropIndex === 0 ) {
-					toEmp.rooms.unshift({
+				if ( $scope.dropIndex === undefined || $scope.dropIndex === toEmp.rooms - 1 ) {
+					toEmp.rooms.push({
 						'room_id': draggedRoom.room_id,
 						'room_index': draggedRoom.room_index,
 						'room_tasks': [draggedTask]
 					})
-				} else if ( $scope.dropIndex === toEmp.rooms - 1 ) {
-					toEmp.rooms.push({
+				} else if ( $scope.dropIndex === 0 ) {
+					toEmp.rooms.unshift({
 						'room_id': draggedRoom.room_id,
 						'room_index': draggedRoom.room_index,
 						'room_tasks': [draggedTask]
@@ -451,18 +453,21 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					failureCallBack: saveMultiSheetFailureCallBack,
 					params: {
 						assignedRoomTasks: $scope.multiSheetState.assigned,
-						date: (config && config.date) || $scope.multiSheetState.selectedDate
-					}
+						date: (config && config.date) || $scope.multiSheetState.selectedDate,
+						shouldSaveOrder: isAllWorktypeView()
+					},
 				}
 
 				// now assign room "order" to the tasks inside "only_tasks" based on their index in "rooms"
-				_.each($scope.multiSheetState.assigned, function(emp) {
-					_.each(emp.only_tasks, function(task) {
-						var roomIndex = _.findIndex(emp.rooms, { room_id: task.room_id });
+				if ( isAllWorktypeView() ) {
+					_.each($scope.multiSheetState.assigned, function(emp) {
+						_.each(emp.only_tasks, function(task) {
+							var roomIndex = _.findIndex(emp.rooms, { room_id: task.room_id });
 
-						task.order = roomIndex + 1;
+							task.order = roomIndex + 1;
+						});
 					});
-				});
+				}
 
 				$scope.callAPI(RVWorkManagementSrv.saveWorkSheets, options);
 
@@ -673,6 +678,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				};
 			});
 		};
+
+		var isAllWorktypeView = function() {
+        	return ! $scope.multiSheetState.header.work_type_id;
+        }
 
 
 		// common computation part of below 2 functions
@@ -1298,7 +1307,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
             var draggedItem;
 
-            // once the user starts dragging 
             $scope.dragStart = function(event) {
             	draggedItem = $(event.target).parent();
             	draggedItem.hide();
@@ -1311,7 +1319,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             	var delayed = true;
 
             	draggedItem.show();
-                orderState.removePlaceholder(delayed);
+
+                if ( isAllWorktypeView() ) {
+                	orderState.removePlaceholder(delayed);
+                }
 
                 if ( !! timer ) {
                     window.clearInterval(timer);
@@ -1321,11 +1332,14 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
             var addPlaceholderThrottled = _.throttle(orderState.addPlaceholder, 250, {leading: true, trailing: false});
             $scope.userDragging = function(e) {
-                
-                // ask orderState to get a load of latest clientX and clientY
-                // throttle the calls to addplaceholder
-                orderState.setClientPos(e.clientX, e.clientY);
-                addPlaceholderThrottled();
+
+            	if ( isAllWorktypeView() ) {
+
+					// ask orderState to get a load of latest clientX and clientY
+					// throttle the calls to addplaceholder
+					orderState.setClientPos(e.clientX, e.clientY);
+					addPlaceholderThrottled();
+            	}
                 
                 // Priority for detect for horizontal scroll requirement
                 // only if the check are not positive we check for vertical scrolls

@@ -25,6 +25,15 @@
 				</div>
 			</div>
 
+			<div id="not-checked-in" ng-show="selectedReservationPostNotAllowed" class="inner-overlay" ng-class="{'visible': selectedReservationPostNotAllowed == true}">
+				<div class="inner-content big-message">
+					<span class="message h2" translate>{{'POSTINGS_WITHOUT_CREDIT_NOT_PERMITTED_FOR_THIS_RESERVATION' | translate}}</span>
+					<button type="button" ng-show="!hasPermissionToAllowPostWithNoCredit()" class="button red" ng-click="clickedPostChargeCancel($event)" translate>OK</button>
+					<button ng-show="hasPermissionToAllowPostWithNoCredit()" type="button" class="button green" ng-click="proceedWithPostCharge($event)" translate>PROCEED WITH POST CHARGES</button>
+					<button ng-show="hasPermissionToAllowPostWithNoCredit()" type="button" class="button blank" ng-click="clickedPostChargeCancel()" translate>CANCEL</button>
+				</div>
+			</div>
+
 			<div ng-show="chargePosted" id="charge-posted" class="inner-overlay" ng-class="{'visible': chargePosted == true}">
 				<div class="inner-content">
 					<span class="message h2" translate>CHARGE_POSTED</span>
@@ -116,7 +125,7 @@
 				        	<div id="search-guests-for-charge-content" class="search-cards reservation-list scrollable" ng-iscroll="result_showing_area_post_charg" ng-iscroll-delay="1000" ng-show="!showInitialSearchScreen" ng-hide="showInitialSearchScreen || showNoMatches">
 				                <div class="wrapper">
 				                    <ul id="search-guests-for-charge-results" class="search-results">
-				                    	<li class="reservation post-charge" ng-click="clickedReservationToPostCharge(row.id)" ng-show="row.shouldShowReservation" ng-repeat="row in reservationsArray">
+				                    	<li class="reservation post-charge" ng-click="clickedReservationToPostCharge(row)" ng-show="row.shouldShowReservation" ng-repeat="row in reservationsArray">
 				                    		<a ng-class="getReservationClass(row.reservation_status)" ng-click="selectReservation(row)">
 
 				                    			<figure class="guest-image" ng-class="{'accompany': row.images.length >1}">
