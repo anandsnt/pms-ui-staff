@@ -85,7 +85,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
         $scope.setScroller('deopositdue');
         $scope.setScroller('payment-deposit-scroll', {
             'preventDefaultException': {
-                tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|LABEL)$/
+                tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|LABEL|FIGURE|SPAN|IMG)$/
             }
         });
 
