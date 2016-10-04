@@ -1,0 +1,21 @@
+<section id="replacing-div-second" class="content current admin-scrollfix " div-touch-move-stop-propogate="" ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2 >Zest Station Language</h2>
+        <a ng-click="goBackToPreviousState()" class="action back ">Back to Station Setup</a>
+    </header>
+    <!-- list mode -->
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    	<div class=''>
+			Select the language and drag it to change the display order shown on the Zest Station home screen.
+		</div>
+		<!--  -->
+		<ol class="cms-tree" ui-sortable="sortableOptions" ng-model="languageList">
+            <li class="branch" ng-repeat="language in languageList">
+                <div class="sort">
+                    <a class="cms-name">{{language.name}}</a>
+                </div>
+            </li>
+        </ol>
+    </section>
+ </section>

@@ -381,8 +381,6 @@
          &.align-center {
             #flexbox > .parent('', center, '', '');
             
-            .button:nth-child(2),
-            .button:nth-child(3) { margin-left: 40px; }
         }
 
         &.small-text {
@@ -1369,5 +1367,15 @@
 .focused-pushed-up{
     position: relative!important;
     top: -125px;
+}
 
+#actions {
+    &.languages {
+        .language {
+            margin-right: 15px;
+            background: @white;
+            color: @black;
+            line-height: normal;
+        }
+    }
 }

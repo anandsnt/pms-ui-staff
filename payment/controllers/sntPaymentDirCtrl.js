@@ -135,8 +135,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 if (!!$scope.feeData) {
                     payableAmount = parseFloat($scope.feeData.totalOfValueAndFee);
                 }
-                return $scope.giftCard.availableBalance &&
-                    parseFloat($scope.giftCard.availableBalance) < payableAmount;
+                //https://stayntouch.atlassian.net/browse/CICO-34115?focusedCommentId=93132&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-93132
+                return (payableAmount < 0) || // NOTE : We can't make a negative payment with a GIFT_CARD
+                    ($scope.giftCard.availableBalance &&
+                    parseFloat($scope.giftCard.availableBalance) < payableAmount);
             }
         };
 
@@ -145,7 +147,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          * @returns {boolean}
          */
         $scope.shouldHidePaymentButton = function() {
-            return !$scope.splitBillEnabled && (!$scope.selectedPaymentType || !$scope.hasPermission ||
+            return (!$scope.selectedPaymentType || !$scope.hasPermission ||
                 $scope.isGCBalanceShort() ||
                 ($scope.paymentAttempted && !$scope.isPaymentFailure));
         };
@@ -269,7 +271,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             //the rest of actions will in paySixPayController
             if ($scope.selectedPaymentType === "CC" && $scope.hotelConfig.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
                 var params = {
-                    workstation_id: $scope.hotelConfig.workstationId
+                    workstation_id: $scope.hotelConfig.workstationId,
+                    bill_number: $scope.billNumber
                 };
 
                 if ($scope.actionType === "ADD_PAYMENT_GUEST_CARD") {
@@ -610,10 +613,13 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             if (!!selectedPaymentType && selectedPaymentType.name === "CC") {
                 if (!!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
                     //Add to guestcard feature for C&P
-                    $scope.payment.isManualEntryInsideIFrame = false;
+                    // The payment info may change after adding a payment method; in such a case, should not reset back to C&P mode
+                    if($scope.payment.screenMode !== "CARD_ADD_MODE" && !$scope.selectedCC.value){
+                        $scope.payment.isManualEntryInsideIFrame = false;
+                        $scope.selectedCC = {};
+                    }
                     //Add to guestcard feature for C&P
                     $scope.payment.showAddToGuestCard = !!$scope.reservationId && ($scope.payment.isManualEntryInsideIFrame ? false : true);
-                    $scope.selectedCC = {};
                     refreshIFrame();
                 } else {
                     // In case no card has been selected yet, move to add card mode

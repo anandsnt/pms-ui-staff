@@ -3,7 +3,7 @@
 /* 1. COLORS
 ==========================================================*/
 	@brandColor:			#53246d;
-	
+
 	@textColor: 			@white;
 	@backgroundColor: 		@brandColor;
 
@@ -40,8 +40,8 @@
 	@headerIconsColor: 		@brandColor;
 	@headerIconsActive:		lighten(@brandColor, 20);
 
-	.icons { 
-		fill: @actionColor; 
+	.icons {
+		fill: @actionColor;
 
 		&.icon-create-key {
 			fill: @white;
@@ -113,16 +113,16 @@
 			}
 		}
 
-		#options { 
+		#options {
 			li {
 				.option {
 					background: transparent;
 					.box-shadow(none);
 					#rounded > .round(0px);
 
-					.icons { 
+					.icons {
 						margin: 0;
-						.square(100%); 
+						.square(100%);
 					}
 				}
 			}
@@ -133,7 +133,7 @@
 	                .option {
 	                    #rounded > .round(0px);
 
-	                    .icons { 
+	                    .icons {
 	                        margin: 0;
 	                        .square(100%);
 	                    }
@@ -209,7 +209,7 @@
             .bill-room-details{
                 width:60%;
                 margin-bottom:40px;
-                div{  
+                div{
                     .room-data{
                         width:40%;
                         float:right;
@@ -222,11 +222,11 @@
                 }
             }
         }
-        
+
 
         /* commenting out admin settings
 
-        
+
         .page-print{
             >div.logo>div{
                 position: fixed;
@@ -255,14 +255,14 @@
                     white-space: pre-wrap;
                 }
             }
-            
+
         }
         */
-        
+
 	   .yotel-logo{
            position: fixed;
-    
-            //width="239.3px" height="64.8px" 
+
+            //width="239.3px" height="64.8px"
             //viewBox: "0 0 239.3 64.8";
         }
 
@@ -271,11 +271,11 @@
                position: relative;
             }
         }
-        
+
         /////////////////////
         //keyboard
         /////////////////////
-        
+
         //dark theme (modified for yotel)
         @charset: "UTF-8";
         .ui-keyboard{
@@ -296,7 +296,7 @@
             width: 56% !important;
             bottom: 10px;
         }
-        
+
         .ui-keyboard-button{
             border:4px solid #dededc;
             padding:0 .8em;
@@ -415,8 +415,8 @@
            font-size: 1.8em;
            position: inherit;
         }
-        
-        
+
+
 .make-key-now{
     z-index: 11;
     position: inherit;
@@ -504,7 +504,14 @@
     bottom: 10% !important;
     right:9%;
 }
-
-
-
-
+#actions {
+    &.languages {
+        .language {
+            box-shadow: inset 0 0 0 6px #dededc;
+            &.selected  {
+                color: @white;
+                background: transparent;
+            }
+        }
+    }
+}
