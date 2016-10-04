@@ -30,11 +30,11 @@ angular.module('prettyTimeAgoModule', [])
 			restrict: 'A',
 			replace: false,
 			scope: {
-				prettyTimeSpan: '='
+				prettyTimeAgo: '='
 			},
 			link: function(scope, element) {
-				if ( scope.prettyTimeSpan !== null || scope.prettyTimeSpan !== undefined ) {
-					element.html( timeAgo.convert(scope.prettyTimeSpan) );
+				if ( scope.prettyTimeAgo !== null || scope.prettyTimeAgo !== undefined ) {
+					element.html( timeAgo.convert(scope.prettyTimeAgo) );
 				}
 			}
 		}
