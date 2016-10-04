@@ -925,8 +925,10 @@ sntRover.controller('RVbillCardController',
 	 		$scope.isViaReviewProcess = false;
 	 	}
 
+	 	// changes for CICO-13763
+	 	var reservationData = { "reservation_id":$scope.reservationData.reservationId ,"is_checkout":$scope.reservationBillData.isCheckout};
 
-		 var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : {};
+		var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : {};
 
 		 /*
 		  *	CICO-6089 => Enable Direct Bill payment option for OPEN BILLS.

@@ -135,8 +135,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 if (!!$scope.feeData) {
                     payableAmount = parseFloat($scope.feeData.totalOfValueAndFee);
                 }
-                return $scope.giftCard.availableBalance &&
-                    parseFloat($scope.giftCard.availableBalance) < payableAmount;
+                //https://stayntouch.atlassian.net/browse/CICO-34115?focusedCommentId=93132&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-93132
+                return (payableAmount < 0) || // NOTE : We can't make a negative payment with a GIFT_CARD
+                    ($scope.giftCard.availableBalance &&
+                    parseFloat($scope.giftCard.availableBalance) < payableAmount);
             }
         };
 
@@ -145,7 +147,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          * @returns {boolean}
          */
         $scope.shouldHidePaymentButton = function() {
-            return !$scope.splitBillEnabled && (!$scope.selectedPaymentType || !$scope.hasPermission ||
+            return (!$scope.selectedPaymentType || !$scope.hasPermission ||
                 $scope.isGCBalanceShort() ||
                 ($scope.paymentAttempted && !$scope.isPaymentFailure));
         };
@@ -269,7 +271,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             //the rest of actions will in paySixPayController
             if ($scope.selectedPaymentType === "CC" && $scope.hotelConfig.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
                 var params = {
-                    workstation_id: $scope.hotelConfig.workstationId
+                    workstation_id: $scope.hotelConfig.workstationId,
+                    bill_number: $scope.billNumber
                 };
 
                 if ($scope.actionType === "ADD_PAYMENT_GUEST_CARD") {

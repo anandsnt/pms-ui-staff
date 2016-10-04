@@ -1,4 +1,4 @@
-<div class="notice deposit">
+<div class="deposit" ng-class="{'notice' : !paymentAttempted }">
     <section ng-if="!paymentAttempted">
         <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
 
