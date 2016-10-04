@@ -34,7 +34,7 @@ angular.module('sntPay').service('paymentUtilSrv',
         if (!_.has(paymentConstants.creditCardMappingTypes, cardBrand_)) {
             return 'credit-card';
         }
-        return creditCardTypes[cardBrand_];
+        return creditCardTypes[cardBrand_].toLowerCase();
     };
 
     /**
