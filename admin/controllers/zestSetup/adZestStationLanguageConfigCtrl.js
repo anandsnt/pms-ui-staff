@@ -34,7 +34,10 @@ admin.controller('adZestStationLanguageConfigCtrl',
 
 		//when language fetch completed
 		var onFetchLanguageList = function(data) {
-			$scope.languageList = _.sortBy(data.languages, 'position');
+			var combinedList = _.partition(data.languages, { position: null }),
+				nullList = combinedList[0],
+				listHavingValues= combinedList[1];
+			$scope.languageList = _.sortBy(listHavingValues, 'position').concat(nullList);
 		}
 
 		/**

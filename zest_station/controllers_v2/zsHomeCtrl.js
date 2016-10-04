@@ -111,13 +111,18 @@ sntZestStation.controller('zsHomeCtrl', [
 			$scope.zestStationData.keyCardInserted = false;
 
 			//list of languages configured for this hotel
-			$scope.languages = _.sortBy(languages.languages, 'position');
+			var combinedList = _.partition(languages.languages, { position: null }),
+				nullList = combinedList[0],
+				listHavingValues= combinedList[1];
+			$scope.languages = _.sortBy(listHavingValues, 'position').concat(nullList);
+
 			$scope.languages = $scope.languages.map(function(language) {
 				//merging, so that we can use more localized terms in UI
 				Object.assign(language, zsGeneralSrv.languageValueMappingsForUI[language.name]);
 				return language;
 			});
-			$scope.selectedLanguage = $scope.languages[0];
+			//assigning default language
+			$scope.selectLanguage($scope.languages[0]);
 
 			$scope.resetHomeScreenTimer();
 			if ($scope.zestStationData.workstationStatus === 'out-of-order') {
