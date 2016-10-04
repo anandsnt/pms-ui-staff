@@ -925,8 +925,10 @@ sntRover.controller('RVbillCardController',
 	 		$scope.isViaReviewProcess = false;
 	 	}
 
+	 	// changes for CICO-13763
+	 	var reservationData = { "reservation_id":$scope.reservationData.reservationId ,"is_checkout":$scope.reservationBillData.isCheckout};
 
-		 var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : {};
+		var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : {};
 
 		 /*
 		  *	CICO-6089 => Enable Direct Bill payment option for OPEN BILLS.
@@ -988,43 +990,60 @@ sntRover.controller('RVbillCardController',
 	 	$scope.reservationBillData.roomChargeEnabled = true;
 	 });
 
+	 $scope.clickedAddCharge = function(activeBillNo){
+	 	if(!$scope.reservationBillData.allow_post_with_no_credit){
+	 		$scope.selectedBillNumber = activeBillNo;
+			ngDialog.open({
+	    		template: '/assets/partials/postCharge/allowPostWithNoCredit.html',
+	    		className: '',
+	    		scope: $scope
+	    	});
+		} else {
+			$scope.openPostCharge(activeBillNo);
+		}
+
+	 }
 
 	$scope.openPostCharge = function(activeBillNo) {
-        // Show a loading message until promises are not resolved
+
+
+		// Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
         jsMappings.fetchAssets(['postcharge', 'directives'])
         .then(function(){
 
-        $scope.$emit('hideLoader');
+	        $scope.$emit('hideLoader');
 
-		// pass on the reservation id
-		$scope.reservation_id = $scope.reservationBillData.reservation_id;
+			// pass on the reservation id
+			$scope.reservation_id = $scope.reservationBillData.reservation_id;
 
-		// pass down active bill no
+			// pass down active bill no
 
-		$scope.billNumber = activeBillNo;
+			$scope.billNumber = activeBillNo;
 
-		// translating this logic as such from old Rover
-		// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
-		// Also passing the available bills to the post charge modal
-		$scope.fetchTotalBal = false;
+			// translating this logic as such from old Rover
+			// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
+			// Also passing the available bills to the post charge modal
+			$scope.fetchTotalBal = false;
 
-		var bills = [];
-	    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ ) {
-	    	bills.push(i+1);
-	    }
+			var bills = [];
+		    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ ) {
+		    	bills.push(i+1);
+		    }
 
-	    $scope.fetchedData = {};
-		$scope.fetchedData.bill_numbers = bills;
-	    $scope.isOutsidePostCharge = false;
+		    $scope.fetchedData = {};
+			$scope.fetchedData.bill_numbers = bills;
+		    $scope.isOutsidePostCharge = false;
 
-		ngDialog.open({
-    		template: '/assets/partials/postCharge/rvPostChargeV2.html',
-    		className: '',
-    		scope: $scope
-    	});
+			ngDialog.open({
+	    		template: '/assets/partials/postCharge/rvPostChargeV2.html',
+	    		className: '',
+	    		scope: $scope
+	    	});
 	    })
+
+
 	};
 
 	$scope.$on('paymentTypeUpdated', function() {
@@ -1707,6 +1726,13 @@ sntRover.controller('RVbillCardController',
 	*/
 	$scope.hasPermissionToShowCheckoutWithoutSettlement = function() {
 		return rvPermissionSrv.getPermissionValue ('ALLOW_CHECKOUT_WITHOUT_SETTLEMENT');
+	};
+	/**
+	* function to check whether the user has permission to allow post with no credit
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToAllowPostWithNoCredit = function() {
+		return rvPermissionSrv.getPermissionValue('ALLOW_POST_WITH_NO_CREDIT')
 	};
     // CICO-6089 : Handle toggle button.
     $scope.toggleCheckoutWithoutSettlement = function(){
