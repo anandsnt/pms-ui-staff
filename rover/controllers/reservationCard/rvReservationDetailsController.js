@@ -833,6 +833,9 @@ sntRover.controller('reservationDetailsController',
 					if (swipedCardDataToRender.swipeFrom === 'guestCard'){
                        passData.isFromGuestCard = true;
 					}
+					//close any ngDialogs if opened (work around fix)
+					ngDialog.close($rootScope.LastngDialogId, "");
+
 					$scope.openPaymentDialogModal(passData, paymentData);
 
 
