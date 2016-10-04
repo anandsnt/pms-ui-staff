@@ -12,12 +12,12 @@ angular.module('prettyTimeAgoModule', [])
 					min = Math.floor( sec / 60 );
 					hrs = Math.floor( min / 60 );
 
-					if ( hours > 12 ) {
+					if ( hrs > 12 ) {
 						return '>12h';
-					} else if ( hours > 0 ) {
-						return hours + 'h';
-					} else if ( minutes > 0 ) {
-						return minutes + 'm';
+					} else if ( hrs > 0 ) {
+						return hrs + 'h';
+					} else if ( min > 0 ) {
+						return min + 'm';
 					} else {
 						return '1m';
 					}
