@@ -50,19 +50,24 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
             //as this is an external directive
 
             $scope.$emit("SHOW_SIX_PAY_LOADER");
-            sntPaymentSrv.submitPaymentForChipAndPin(params).then(function(response) {
+            sntPaymentSrv.submitPaymentForChipAndPin(params).then(
+                response => {
                     console.log("payment success" + $scope.payment.amount);
                     response.amountPaid = $scope.payment.amount;
                     response.authorizationCode = response.authorization_code;
+
+                    var cardType = (response.payment_method && response.payment_method.card_type) || "";
+
                     // NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
                     if ($scope.feeData) {
                         response.feePaid = $scope.feeData.calculatedFee;
                     }
+
                     $scope.selectedCC = $scope.selectedCC || {};
 
                     if (!!response.payment_method) {
                         $scope.selectedCC.value = response.payment_method.id;
-                        $scope.selectedCC.card_code = response.payment_method.card_type;
+                        $scope.selectedCC.card_code = cardType.toLowerCase();
                         $scope.selectedCC.ending_with = response.payment_method.ending_with;
                         $scope.selectedCC.expiry_date = response.payment_method.expiry_date;
                     }
@@ -79,7 +84,7 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
                     }, 700);
 
                 },
-                function(errorMessage) {
+                errorMessage => {
                     console.log("payment failed" + errorMessage);
                     $scope.$emit('PAYMENT_FAILED', errorMessage);
                     $scope.$emit("HIDE_SIX_PAY_LOADER");
@@ -103,6 +108,9 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
                      * NOTE: In case the request params sends add_to_guest_card: true AND guest_id w/o reservation_id
                      * The API response has guest_payment_method_id instead of payment_method_id
                      */
+
+                    var cardType = response.card_type || "";
+
                     $scope.$emit('SUCCESS_LINK_PAYMENT', {
                         response: {
                             id: response.payment_method_id || response.guest_payment_method_id,
@@ -110,7 +118,7 @@ sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 
                         },
                         selectedPaymentType: $scope.selectedPaymentType || "CC",
                         cardDetails: {
-                            "card_code": response.card_type,
+                            "card_code": cardType.toLowerCase(),
                             "ending_with": response.ending_with,
                             "expiry_date": response.expiry_date,
                             "card_name": ""
