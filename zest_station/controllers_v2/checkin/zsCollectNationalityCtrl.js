@@ -28,11 +28,11 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			$scope.unSortedCountries = sortedCountryList.unsorted;
 			//if not using the sorted list, get country names with the country native languages to popuplate the list as well
 			if (!$scope.zestStationData.kiosk_enforce_country_sort){
-				_.each(countryList, function(someThing) {
-						_.each(someThing.names, function(otherThing) {
+				_.map(countryList, function(countryObj) {
+						_.map(countryObj.names, function(nativeCountryName) {
 								  $scope.countryList.push({
-								  	id: someThing.id,
-								  	value: otherThing
+								  	id: countryObj.id,
+								  	value: nativeCountryName
 								  });
 					  	});
 				});				
@@ -60,8 +60,6 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 						});
 						$scope.showOnScreenKeyboard('country-selector');
 					},0);
-
-
 				},0);
 			}
 

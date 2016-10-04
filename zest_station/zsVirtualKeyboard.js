@@ -14,8 +14,8 @@ this.initScreenKeyboardListener = function(from, id, show) {
   this.bound = false;
   //open virtual keyboard
   $.keyboard.language.love = $.extend($.keyboard.language.en);
-  var focused;
-  if (id === 'country-selector'){
+  var focused, isCountrySelector = (id === 'country-selector');
+  if (isCountrySelector){
      focused = $('input')[0];  
      elementObj = $(focused)[0];
   } else {
@@ -267,13 +267,13 @@ this.initScreenKeyboardListener = function(from, id, show) {
     change: function(e, keyboard, el) {
       //country selector uses another jquery plugin, which does not recognize the input event from virtual keyboard,
       //we just need to trigger the search method from autocomplete to trigger filtering
-      if (id === 'country-selector'){
+      if (isCountrySelector){
         $(elementObj).autocomplete('search', $(elementObj).val());
       }
 
     },
     beforeClose: function(e, keyboard, el, accepted) {
-      if (id === 'country-selector' && ('ontouchstart' in window)){//only for touchscreen devices
+      if (isCountrySelector && ('ontouchstart' in window)){//only for touchscreen devices
         var beforeCloseVal = $(elementObj).val();
         setTimeout(function(){
           $(elementObj).autocomplete('search', beforeCloseVal);
@@ -310,8 +310,8 @@ this.initScreenKeyboardListener = function(from, id, show) {
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard_no_numbers;
     $('.ui-keyboard').addClass('bottom-align-keyboard');
   }
-  var focused;
-  if (id === 'country-selector'){
+  var focused, isCountrySelector = (id === 'country-selector');
+  if (isCountrySelector){
      focused = $('input')[0];  
      elementObj = $(focused);
   } else {
@@ -324,7 +324,7 @@ this.initScreenKeyboardListener = function(from, id, show) {
   * if the keyboard is used in conjunction with the autocomplete jquery plugin, then
   * it should be configured slightly differently...
   */
-  if (id === 'country-selector'){
+  if (isCountrySelector){
       keyboardOptions.ignoreEsc = true;
   }
   elementObj.keyboard(keyboardOptions);
@@ -336,13 +336,6 @@ this.initScreenKeyboardListener = function(from, id, show) {
   };
 
   this.blurHandler = function() {
-    if (id === 'country-selector'){
-      console.log('blur keyboard for country selector: ');
-      console.info($(elementObj).val());
-
-    } else {
-  
-      var focused = elementObj;
       if (elementObj.getkeyboard().isOpen) {
         try {
           elementObj.getkeyboard().accept(true);
@@ -350,11 +343,6 @@ this.initScreenKeyboardListener = function(from, id, show) {
           elementObj.getkeyboard().close();
         }
       }
-
-    }
-
-
-
   };
   elementObj.focus(this.focusHandler).blur(this.blurHandler).keydown(function(e) {
     if (e.keyCode == 13) { //enter

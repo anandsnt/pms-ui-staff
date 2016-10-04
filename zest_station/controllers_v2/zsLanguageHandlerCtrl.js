@@ -17,7 +17,7 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
         var setToLanguage = function(setToDefaultLanguage) {
 
             var findTheDefaultLanguage = function() {
-                    _.each($scope.languageDetails, function(language) {
+                    _.map($scope.languageDetails, function(language) {
                         if ($scope.zestStationData.zest_lang.default_language == language.name) {
                             $scope.$parent.selectedLanguage = language;
                         };
@@ -63,7 +63,7 @@ sntZestStation.controller('zsLanguageHandlerCtrl', [
         };
         var setlanguageListForPopUp = function() {
             $scope.languageList = [];
-            _.each($scope.languageDetails, function(language) {
+            _.map($scope.languageDetails, function(language) {
                 if ($scope.zestStationData.zest_lang[language.name] == true) {
                     $scope.languageList.push(language);
                 };
