@@ -4,7 +4,7 @@
         <!-- <h3>Subheading text here</h3> -->
         <form method="post" class="form">
 
-            <div class="entry select select-with-button" >
+            <div class="entry select select-with-button input" >
                 <!--input type='text' id='country-selector'-->
 
                 <select id='country-selector' class="turn-to-ac select" name="Country" autofocus="autofocus" autocorrect="off" autocomplete="off"
@@ -27,8 +27,11 @@
                 </select>
 
             </div>
-            <div class="entry action">
-                <button type="button" class="button" ng-click="saveNationality()">{{'NEXT_BTN' |translate}}</button>
+
+            <div ng-if="zestStationData.theme === 'yotel'" ng-include="icons.url.clear_icon" ng-click="clearNationality()"></div>
+
+            <div class="action">
+                <button type="button" class="button left-aligned-next" ng-click="saveNationality()">{{'NEXT_BTN' |translate}}</button>
             </div>
         </form>
     </div>
