@@ -478,8 +478,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			VIP_ONLY: 'VIP_ONLY',
 			// this filter for few reports could also be listed
 			// under SHOW and not OPTIONS
-			INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT',
-			ALLOW_POST_WITH_NO_CREDIT : 'ALLOW_POST_WITH_NO_CREDIT'
+			INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT',Restricted Post only
+			RESTRICTED_POST_ONLY : 'RESTRICTED_POST_ONLY'
 		};
 
 		var matchSortFields = {
@@ -541,7 +541,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 					    selected = true;
 					}
 
-					if ( $scope.selectedEntityDetails.report.description === 'Allow post with no Credit' && filter.value === 'ALLOW_POST_WITH_NO_CREDIT' ) {
+					if ( $scope.selectedEntityDetails.report.description === 'Restricted Post only' && filter.value === 'RESTRICTED_POST_ONLY' ) {
 					    selected = false;
 					}
 
