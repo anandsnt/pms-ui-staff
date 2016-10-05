@@ -343,7 +343,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                     var time = new Date().getTime(),
                         service_action = PAYMENT_CONFIG[gateWay].params.service_action;
 
-                    iFrameUrlWithParams = PAYMENT_CONFIG[gateWay].iFrameUrl +
+                    iFrameUrlWithParams = PAYMENT_CONFIG[gateWay].iFrameUrl + '?' +
                         "card_holder_first_name=" + params.card_holder_first_name +
                         "&card_holder_last_name=" + params.card_holder_last_name +
                         "&service_action=" + service_action +
