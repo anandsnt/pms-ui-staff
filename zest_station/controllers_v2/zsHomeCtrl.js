@@ -7,7 +7,8 @@ sntZestStation.controller('zsHomeCtrl', [
 	'zsCheckinSrv',
 	'languages',
 	'zsGeneralSrv',
-	function($scope, $rootScope, $state, zsEventConstants, $translate, zsCheckinSrv, languages, zsGeneralSrv) {
+	'zestStationSettings',
+	function($scope, $rootScope, $state, zsEventConstants, $translate, zsCheckinSrv, languages, zsGeneralSrv, zestStationSettings) {
 		/**
 		 * when we clicked on pickup key from home screen
 		 */
@@ -113,7 +114,7 @@ sntZestStation.controller('zsHomeCtrl', [
 			//list of languages configured for this hotel
 			var combinedList = _.partition(languages.languages, { position: null }),
 				nullList = combinedList[0],
-				listHavingValues= combinedList[1];
+				listHavingValues = combinedList[1];
 			$scope.languages = _.sortBy(listHavingValues, 'position').concat(nullList);
 
 			$scope.languages = $scope.languages.map(function(language) {
@@ -121,8 +122,13 @@ sntZestStation.controller('zsHomeCtrl', [
 				Object.assign(language, zsGeneralSrv.languageValueMappingsForUI[language.name]);
 				return language;
 			});
+
 			//assigning default language
-			$scope.selectLanguage($scope.languages[0]);
+			if($scope.languages.length) {
+				var defaultLangName = zestStationSettings.zest_lang.default_language.toLowerCase(),
+					defaultLanguage = _.findWhere($scope.languages, { name : defaultLangName });
+				$scope.selectLanguage(defaultLanguage);
+			}
 
 			$scope.resetHomeScreenTimer();
 			if ($scope.zestStationData.workstationStatus === 'out-of-order') {
