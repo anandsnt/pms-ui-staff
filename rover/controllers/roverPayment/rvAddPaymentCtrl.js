@@ -130,7 +130,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                     $scope.paymentData.reservation_card.payment_method_description = response.payment_type;
                     $scope.paymentData.reservation_card.payment_method_used = paymentType;
                 }
-                $scope.paymentData.reservation_card.allow_post_with_no_credit = response.allow_post_with_no_credit;
+                $scope.paymentData.reservation_card.restrict_post = response.restrict_post;
                 // Update reservation type
                 $rootScope.$broadcast('UPDATERESERVATIONTYPE', response.reservation_type_id, response.id);
                 $scope.$emit('UPDATECCATTACHEDBILLSTATUS', response.has_any_credit_card_attached_bill);

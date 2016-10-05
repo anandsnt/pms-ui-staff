@@ -61,4 +61,5 @@
     "CONFIRMATION":"Confirmation",
     "EMAIL_SENT_SUCCESSFULLY" : "Email sent successfully",
     "EMAIL_SEND_FAILED" : "Email send failed",
-    "ALLOW_POST_WITH_NO_CREDIT": "Allow post"
+    "RESTRICT_POST": "Restrict post",
+    "PROCEED_WITH_POST_CHARGES": "PROCEED WITH POST CHARGES"
