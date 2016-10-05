@@ -37,7 +37,7 @@
                         <span class="price" ng-hide="addon.is_rate_addon || addon.post_type !=='Entire Stay'">{{currencySymbol}}{{addon.totalAmount * duration_of_stay*(reservationData.number_of_children+reservationData.number_of_adults)| number : 2}}</span>
                     </span>
 
-                <span class="price" ng-show="addon.is_rate_addon">INCL</span>
+                <span class="price" ng-show="addon.is_rate_addon && addon.is_inclusive">INCL</span>
                 <button type="button" ng-hide="addon.is_rate_addon" class="icons icon-trash" ng-click="removeSelectedAddons($index)" translate>REMOVE</button>
             </li>
         </ul>
