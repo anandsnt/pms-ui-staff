@@ -24,7 +24,7 @@
 		$state.go('checkinCcVerification');
 	}
 	//CICO-34045 we should allow the user to enter their email address if it is not on the database
-	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && (originsNeedEmailEntering.indexOf($rootScope.application) > -1){
+	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && originsNeedEmailEntering.indexOf($rootScope.application) > -1){
 		$state.go('emailAddition',{'isFrom':'checkinNow'});// if user has not attached an email
 	}
 	else if($rootScope.isCheckedin){
