@@ -14,12 +14,17 @@
 	//this has to be set to false as the CC page is expecting that variable to do
 	//checkin now or later
 	$rootScope.isAutoCheckinOn = false;
+
+	//CICO-34045 we should allow the user to enter their email address if it is not on the database
+	var originsNeedEmailEntering = ["SMS", "EMAIL", "URL"];
+
 	// if prompt for cc is turned on
 	// we will always ask for CC addition in case of MLI
 	if($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb ){
 		$state.go('checkinCcVerification');
 	}
-	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application ==="SMS" || $rootScope.application ==="EMAIL")){
+	//CICO-34045 we should allow the user to enter their email address if it is not on the database
+	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && (originsNeedEmailEntering.indexOf($rootScope.application) > -1){
 		$state.go('emailAddition',{'isFrom':'checkinNow'});// if user has not attached an email
 	}
 	else if($rootScope.isCheckedin){
