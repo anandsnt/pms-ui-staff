@@ -29,7 +29,8 @@ sntPay.directive('sntPayment', function() {
             splitBillEnabled: '=?',
             numSplits: '=?',
             completedSplitPayments: '=?',
-            fetchLinkedCards: "=?"
+            fetchLinkedCards: "=?",
+            hideOverlayGiftcard: "=?"
         },
         link: function(scope, element, attrs) {
             console.log("--From Payment Module Init--");

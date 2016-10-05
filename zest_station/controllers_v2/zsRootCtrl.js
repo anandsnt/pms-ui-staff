@@ -406,6 +406,7 @@ sntZestStation.controller('zsRootCtrl', [
 				return false;
 			}
 		};
+
 		$scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
 			var iconBasePath = (!useCommonIcons ? iconsPath : commonIconsPath);
 			$scope.activeScreenIcon = 'bed';
@@ -415,9 +416,8 @@ sntZestStation.controller('zsRootCtrl', [
 			
 			$scope.icons = {
 				url: {
-
 					active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
-					//booknow: iconBasePath + '/cal.png',//TODO, swap for new book now icon instead of SVG
+					booknow: iconBasePath + '/calendar.svg',//TODO, need generic icon for default (css update needed)
 
 					checkin: iconBasePath + '/checkin.svg',
 					checkout: iconBasePath + '/checkout.svg',
@@ -442,7 +442,8 @@ sntZestStation.controller('zsRootCtrl', [
 					createkey: iconBasePath + ($scope.zestStationData.key_create_file_uploaded.length > 0) ? $scope.zestStationData.key_create_file_uploaded : '',
 					logo: iconBasePath + '/print_logo.svg',
 					watch: iconBasePath + '/watch.svg',
-					qr_arrow: iconBasePath + '/qr-arrow.svg'
+					qr_arrow: iconBasePath + '/qr-arrow.svg',
+					clear_icon: iconBasePath + '/x.svg'
 				}
 			};
 

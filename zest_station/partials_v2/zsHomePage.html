@@ -1,4 +1,4 @@
-<div ng-controller="zsLanguageHandlerCtrl" touch-press="resetHomeScreenTimer()">
+<div touch-press="resetHomeScreenTimer()">
     <!--  Home -->
     <section id="main" class="centered kiosk" role="main">
         <div id="content">
@@ -27,16 +27,19 @@
                     </li>
                      <li ng-if="zestStationData.home_screen.booking_pop_up.enable_pop_up">
                         <button type="button" class="button option" touch-press='openExternalWebPage()'>
-                            <img style="height: 95%;margin-top: 5px;" src="{{icons.url.booknow}}" />
+                                <div ng-include="icons.url.booknow"></div>
                         </button>
                         {{'BOOK_NOW' |translate}}
                     </li>
                 </ul>
             </nav>
         </div>
-        <div id="actions" class="align-center">
-            <button type="button" class="button with-icon" touch-press="languageSelect()" ng-hide="!zestStationData.zest_lang.enabled">
-                <i class="icons icon-flag {{selectedLanguage.info.flag}}"></i> {{selectedLanguage.info.language}}
+        <div id="actions" class="align-center languages">
+            <button type="button" class="button language" ng-hide="!zestStationData.zest_lang.enabled"
+            touch-press="selectLanguage(language)"
+            ng-class="{'selected': language.name === selectedLanguage.name }"
+            ng-repeat="language in languages">
+                {{language.language_name_in_local}}
             </button>
         </div>
         <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
@@ -46,18 +49,6 @@
         <div class="popup-content iframe-content">
             <i class="close-popup" touch-press="closeExternalWebPage()"></i>
             <iframe click-touch="showKeyboardOnInput()" id="booking_iframe" src="{{zestStationData.home_screen.booking_pop_up.booking_engine_url| trustAsResourceUrl}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock"></iframe>
-        </div>
-    </div>
-    <!--PopUp For Translation-->
-    <div class="popup open" ng-show="showLanguagePopup" touch-press="resetHomeScreenTimer()">
-        <div class="popup-content">
-            <i class="close-popup" data-action="popup" touch-press="languageSelect()"></i>
-            <h2 class="nocaps">Select Language</h2>
-            <div id="languages">
-                <button ng-repeat="language in languageList" touch-press="selectLanguage(language)" type="button" class="button with-icon" ng-class="getClassForSelectedLanguage(language)">
-                    <i class="icons icon-flag {{language.info.flag}}"></i> {{language.name}}
-                </button>
-            </div>
         </div>
     </div>
 </div>

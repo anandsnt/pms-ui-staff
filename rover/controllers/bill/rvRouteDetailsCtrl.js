@@ -61,14 +61,15 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         $scope.selectedEntity.credit_limit = parseFloat($scope.selectedEntity.credit_limit).toFixed(2);
     }
 
-    setTimeout(function() {
-            $scope.refreshScroller('paymentList');
-            $scope.refreshScroller('billingGroups');
-            $scope.refreshScroller('chargeCodes');
-            $scope.refreshScroller('chargeCodesList');
-            $scope.refreshScroller('routeDetails');
-        },
-        500);
+    var refreshScrollers = function() {
+        $scope.refreshScroller('paymentList');
+        $scope.refreshScroller('billingGroups');
+        $scope.refreshScroller('chargeCodes');
+        $scope.refreshScroller('chargeCodesList');
+        $scope.refreshScroller('routeDetails');
+    };
+
+    setTimeout(refreshScrollers, 500);
 
     $scope.editPaymentMethod = function() {
         $scope.oldPayment = $scope.renderAddedPayment;
@@ -373,6 +374,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         var successCallback = function(data) {
             $scope.attachedPaymentTypes = data;
             $scope.$parent.$emit('hideLoader');
+            refreshScrollers();
         };
         var errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
@@ -1081,14 +1083,12 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
     };
 
     $scope.$on("PAYMENT_SAVE_CARD_SUCCESS", function() {
-        $scope.refreshScroller('routeDetails');
+        refreshScrollers();
         $scope.selectedPayment = "";
     });
 
     $scope.$on("PAYMENT_TYPE_CHANGED", function() {
-        setTimeout(function() {
-            $scope.refreshScroller('routeDetails');
-        }, 300);
-    })
+        setTimeout(refreshScrollers, 300);
+    });
 
 }]);

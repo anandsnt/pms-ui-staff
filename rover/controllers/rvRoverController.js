@@ -750,14 +750,14 @@ sntRover.controller('roverController',
      * Handles the bussiness date change in progress
      */
 
-    var LastngDialogId = "";
+    $rootScope.LastngDialogId = "";
 
     $scope.closeBussinnesDatePopup = function() {
-      ngDialog.close(LastngDialogId, "");
+      ngDialog.close($rootScope.LastngDialogId, "");
     };
 
     $rootScope.$on('ngDialog.opened', function(e, $dialog) {
-        LastngDialogId = $dialog.attr('id');
+        $rootScope.LastngDialogId = $dialog.attr('id');
     });
 
     $rootScope.showBussinessDateChangingPopup = function() {

@@ -20,7 +20,13 @@ sntRover.controller('RVDepositBalanceCtrl', [
 
         BaseCtrl.call(this, $scope);
 
-        $scope.isDepositEditable = !!$scope.depositDetails.deposit_policy.allow_deposit_edit;
+        //NOTE: For connected hotels, the deposit policy is not available inside this controller.
+        $scope.isDepositEditable = !!$scope.depositDetails.deposit_policy && !!$scope.depositDetails.deposit_policy.allow_deposit_edit;
+
+        //NOTE: The deposit is always editable for connected hotels
+        if (!$rootScope.isStandAlone) {
+            $scope.isDepositEditable = true;
+        }
 
         //adding a flag to be set after some timeout to remove flickering action in iPad
         $scope.pageloadingOver = false;
@@ -77,7 +83,11 @@ sntRover.controller('RVDepositBalanceCtrl', [
         $scope.isManual = false;
         $scope.setScroller('cardsList', {'click': true, 'tap': true});
         $scope.setScroller('deopositdue');
-        $scope.setScroller('payment-deposit-scroll');
+        $scope.setScroller('payment-deposit-scroll', {
+            'preventDefaultException': {
+                tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|LABEL|FIGURE|SPAN|IMG)$/
+            }
+        });
 
         var refreshScroll = function() {
             $timeout(function() {

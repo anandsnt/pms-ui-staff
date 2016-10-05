@@ -14,9 +14,17 @@ this.initScreenKeyboardListener = function(from, id, show) {
   this.bound = false;
   //open virtual keyboard
   $.keyboard.language.love = $.extend($.keyboard.language.en);
+  var focused, isCountrySelector = (id === 'country-selector');
+  if (isCountrySelector){
+     focused = $('input')[0];  
+     elementObj = $(focused)[0];
+  } else {
+     focused = $('#' + id);  
+     elementObj = $(focused);
+  }
+  
 
-  var focused = $('#' + id);
-  var defaultLayout, shift, zestStationNonPasswordField, zestStationNumDaysField;
+  var defaultLayout, shift, zestStationNonPasswordField, zestStationNumDaysField, zestStationNationalityField;
   isPasswordField = function(i) {
     return (i && i.indexOf('pass') !== -1);
   };
@@ -25,29 +33,43 @@ this.initScreenKeyboardListener = function(from, id, show) {
     return (i && i.indexOf('no-of-nights') !== -1);
   };
 
+  isNationalityField = function(i) {
+    return (i && i.indexOf('country-selector') !== -1);
+  };
+
   if (from === 'login' || isPasswordField(id)) {
     defaultLayout = 'default';
     shift = '{shift}';
     zestStationNonPasswordField = false;
     zestStationNumDaysField = false;
+    zestStationNationalityField = false;
     
   } else if (isNumOfDaysField(id)){
     zestStationNonPasswordField = true;
     zestStationNumDaysField = true;
+    zestStationNationalityField = false;
 
     defaultLayout = 'station_num_keyboard';
+    shift = '';
+  } else if (isNationalityField(id)){
+    zestStationNonPasswordField = true;
+    zestStationNumDaysField = false;
+    zestStationNationalityField = true;
+
+    defaultLayout = 'station_keyboard_no_numbers';
     shift = '';
   } else {
     zestStationNonPasswordField = true;
     zestStationNumDaysField = false;
+    zestStationNationalityField = false;
     defaultLayout = 'station_keyboard';
     shift = '';
   }
 
   var applyKeyboardInput = function() {
     if (from === 'login') { //fixes an issue where data values are not set from virtual keyboard
-      if (angular.element($('#' + id)).scope()) {
-        angular.element($('#' + id)).scope().data[id] = $('#' + id).val();
+      if (angular.element( elementObj.scope() ) ) {
+        angular.element(elementObj).scope().data[id] = elementObj.val();
       }
     }
   };
@@ -72,6 +94,12 @@ this.initScreenKeyboardListener = function(from, id, show) {
         "A S D F G H J K L ' @",
         'Z X C V B N M . +',
         shift + ' {space} _ - .com'
+      ],
+      'station_keyboard_no_numbers': [
+        'Q W E R T Y U I O P {bksp}',
+        "A S D F G H J K L '",
+        'Z X C V B N M',
+         ' {space} '
       ],
       'station_num_keyboard': [
         '1 2 3 4 5 6 7 8 9 0 {bksp}'
@@ -237,9 +265,20 @@ this.initScreenKeyboardListener = function(from, id, show) {
     beforeVisible: function(e, keyboard, el) {},
     visible: function(e, keyboard, el) {},
     change: function(e, keyboard, el) {
+      //country selector uses another jquery plugin, which does not recognize the input event from virtual keyboard,
+      //we just need to trigger the search method from autocomplete to trigger filtering
+      if (isCountrySelector){
+        $(elementObj).autocomplete('search', $(elementObj).val());
+      }
 
     },
     beforeClose: function(e, keyboard, el, accepted) {
+      if (isCountrySelector && ('ontouchstart' in window)){//only for touchscreen devices
+        var beforeCloseVal = $(elementObj).val();
+        setTimeout(function(){
+          $(elementObj).autocomplete('search', beforeCloseVal);
+        },0);
+      }
       applyKeyboardInput();
     },
     accepted: function(e, keyboard, el) {
@@ -258,7 +297,7 @@ this.initScreenKeyboardListener = function(from, id, show) {
     }
   };
 
-  if (zestStationNonPasswordField && !zestStationNumDaysField) {
+  if (zestStationNonPasswordField && !zestStationNumDaysField && !zestStationNationalityField) {
     //custom keyboard for zest station
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard;
     $('.ui-keyboard').removeClass('top-align-keyboard');
@@ -266,31 +305,46 @@ this.initScreenKeyboardListener = function(from, id, show) {
     //number of days keyboard, only number input with backspace button
     keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_num_keyboard;
     $('.ui-keyboard').addClass('top-align-keyboard');
+  } else if (zestStationNationalityField){
+    //number of days keyboard, only number input with backspace button
+    keyboardOptions.customLayout.default = keyboardOptions.customLayout.station_keyboard_no_numbers;
+    $('.ui-keyboard').addClass('bottom-align-keyboard');
   }
-  $(focused).keyboard(keyboardOptions);
+  var focused, isCountrySelector = (id === 'country-selector');
+  if (isCountrySelector){
+     focused = $('input')[0];  
+     elementObj = $(focused);
+  } else {
+     focused = $('#' + id);  
+     elementObj = $(focused);
+  }
+
+
+  /*
+  * if the keyboard is used in conjunction with the autocomplete jquery plugin, then
+  * it should be configured slightly differently...
+  */
+  if (isCountrySelector){
+      keyboardOptions.ignoreEsc = true;
+  }
+  elementObj.keyboard(keyboardOptions);
 
 
 
   this.focusHandler = function() {
-    var focused = $('#' + id);
-    $(focused).getkeyboard();
+    elementObj.getkeyboard();
   };
 
   this.blurHandler = function() {
-    var focused = $('#' + id);
-    if ($(focused).getkeyboard().isOpen) {
-      try {
-        $(focused).getkeyboard().accept(true);
-      } catch (err) {
-        //console.warn($(focused).getkeyboard())
-        $(focused).getkeyboard().close();
+      if (elementObj.getkeyboard().isOpen) {
+        try {
+          elementObj.getkeyboard().accept(true);
+        } catch (err) {
+          elementObj.getkeyboard().close();
+        }
       }
-    }
-
-
   };
-  var focused = $('#' + id);
-  $(focused).focus(this.focusHandler).blur(this.blurHandler).keydown(function(e) {
+  elementObj.focus(this.focusHandler).blur(this.blurHandler).keydown(function(e) {
     if (e.keyCode == 13) { //enter
       that.blurHandler();
     }
