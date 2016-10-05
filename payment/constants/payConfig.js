@@ -16,7 +16,7 @@ angular.module("sntPayConfig", []).constant("PAYMENT_CONFIG", Object.freeze({
         params: null
     },
     "sixpayments": {
-        iFrameUrl: "/api/ipage/index.html",
+        iFrameUrl: "/api/ipage/index.html?",
         //Iframe loading url query string params
         //Skelton
         //TODO: need to use while constructing from the params from service
