@@ -225,8 +225,14 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $scope.selectedPaymentType = "CC";
                 $scope.onPaymentInfoChange();
             }
-            $scope.payment.addCCMode = mode;
             mode === 'ADD_CARD' ? refreshIFrame() : '';
+            
+            //adding timeout to avoid blinking effect when the iframe reloads
+            $timeout(function(){
+                $scope.payment.addCCMode = mode;
+            }, 350);
+            
+
         };
 
         /********************* Payment Actions *****************************/
