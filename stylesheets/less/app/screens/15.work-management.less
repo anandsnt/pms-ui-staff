@@ -343,6 +343,7 @@
             cursor: @draggable, pointer;
             cursor: @draggable 16 16, pointer;
             .box-shadow(1px 1px 2px 1px rgba(0,0,0,.15));
+            min-width: 160px;
 
             .info {
                 display: flex;
@@ -372,9 +373,10 @@
             }
 
             h3 {
-                font-size: 40px;
+                font-size: 35px;
                 font-weight: 700;
                 position: relative;
+                text-align: center;
 
                 .icon-suite,
                 .icon-queued{
@@ -395,12 +397,14 @@
                     &.has-time {
                         font-size: 10px;
                         line-height: 12px;
+
+                        width: 25px;
+                        height: 35px;
                         .time {
                             text-indent: initial;
                             display: block;
                             margin-top: 10px;
                             font-weight: normal;
-
                         }
                     }
                 }
