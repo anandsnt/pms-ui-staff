@@ -35,9 +35,9 @@
 
 			<div class="entry radio-check " ng-hide="editData.value == 'CC' && !isEditCC">
                 <label class="checkbox">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked': editData.allow_post_with_no_credit}"></span>
-                    {{ 'ALLOW_POST_WITH_NO_CREDIT' | translate }}
-                    <input ng-model = "editData.allow_post_with_no_credit" type="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': editData.restrict_post}"></span>
+                    {{ 'RESTRICT_POST' | translate }}
+                    <input ng-model = "editData.restrict_post" type="checkbox">
                 </label>
             </div>
 		</fieldset>
