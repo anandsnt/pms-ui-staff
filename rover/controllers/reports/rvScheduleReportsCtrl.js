@@ -478,7 +478,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			VIP_ONLY: 'VIP_ONLY',
 			// this filter for few reports could also be listed
 			// under SHOW and not OPTIONS
-			INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT',Restricted Post only
+			INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT',
 			RESTRICTED_POST_ONLY : 'RESTRICTED_POST_ONLY'
 		};
 
