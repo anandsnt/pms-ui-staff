@@ -61,12 +61,12 @@ sntRover
 
 					// if in this set if a particular item is selected, that should only be selected
 					var isSelectiveSingleSelect = function() {
-						var hasSelectKey = _.find(options.selectiveSingleSelectKey, function(key) {
-							return key === item.id;
-						});
-
-						return item.selected && !! hasSelectKey;
+						return item.selected && (options.selectiveSingleSelectKey === item.id)
 					};
+
+					var isRadioOption = function() {
+						return item.selected && item.isRadioOption
+					}
 
 					var checkUnselectSelectiveSingleSelect = function() {
 						var thatItem;
@@ -86,8 +86,18 @@ sntRover
 						});
 					};
 
+					var unSelectOtherRadio = function() {
+						_.each($scope.data, function(each) {
+							if( each.isRadioOption && each.id !== item.id) {
+								each.selected = false;
+							}
+						});
+					}
+
 					if ( isSingleSelect() || isSelectiveSingleSelect() ) {
 						unSelectOthers();
+					} else if ( isRadioOption() ) {
+						unSelectOtherRadio();
 					} else {
 						checkUnselectSelectiveSingleSelect();
 					}
