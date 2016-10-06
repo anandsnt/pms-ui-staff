@@ -47,6 +47,8 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
                 $scope.invokeApi(selectPropertySrv.searchChargeCode, params, successCallBackSearchProperty);
             } else {
                 $scope.propertyResults = [];
+                // CICO-33518 fix
+                $scope.selectedPropertyId = "";
             }
         };
 

@@ -622,10 +622,14 @@
                         .show;
                         .size(18px, 28px);
                         .pull-left;
-
+                        
                         &.on {
                             .gradient(@greenEnd, @greenStart);
                             .switch-icon { left: 12px; }
+
+                            &.red-on {
+                                .gradient(@redEnd, @redStart);
+                            }
                         }
                     }
 

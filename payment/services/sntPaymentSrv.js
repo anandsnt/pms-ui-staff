@@ -2,6 +2,16 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
     function($q, $http, $location, PAYMENT_CONFIG) {
         var service = this;
 
+        var state = {};
+
+        service.set = function(key, status) {
+            state[key] = status;
+        };
+
+        service.get = function(key) {
+            return state[key];
+        };
+
         var webserviceErrorActions = function(url, deferred, errors, status) {
             var urlStart = url.split('?')[0];
             // please note the type of error expecting is array
@@ -138,7 +148,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                 "MV": 'MC'
             };
 
-            return sixCreditCardTypes[cardCode.toUpperCase()];
+            return sixCreditCardTypes[cardCode.toUpperCase()] || 'credit-card';
         };
 
         /**
@@ -174,7 +184,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                     // NOTE:This sample json helps to mock the response
                     // For further info : https://stayntouch.atlassian.net/wiki/display/ROV/SIXPayment+Service+Design+Document
                     // var async_callback_url = '/sample_json/payment/six_payment_sample.json';
-                    $http.get(async_callback_url).then(function(data, status) {
+                    $http.get(async_callback_url).success(function(data, status) {
                         //if the request is still not proccesed
                         if (status === 202 || status === 102 || status === 250) {
                             setTimeout(function() {
@@ -185,7 +195,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);
                         }
-                    }, function(data) {
+                    }).error(function(data) {
                         if (typeof data === 'undefined') {
                             pollToTerminal(async_callback_url);
                         } else {
@@ -238,7 +248,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                     // For further info : https://stayntouch.atlassian.net/wiki/display/ROV/SIXPayment+Service+Design+Document
                     // var async_callback_url = '/sample_json/payment/get_six_pay_token.json';
 
-                    $http.get(async_callback_url).then(function(data, status) {
+                    $http.get(async_callback_url).success(function(data, status) {
                         //if the request is still not proccesed
                         if (status === 202 || status === 102 || status === 250) {
                             setTimeout(function() {
@@ -249,7 +259,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);
                         }
-                    }, function(data) {
+                    }).error(data => {
                         if (typeof data === 'undefined') {
                             pollToTerminal(async_callback_url);
                         } else {
@@ -333,7 +343,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                     var time = new Date().getTime(),
                         service_action = PAYMENT_CONFIG[gateWay].params.service_action;
 
-                    iFrameUrlWithParams = PAYMENT_CONFIG[gateWay].iFrameUrl +
+                    iFrameUrlWithParams = PAYMENT_CONFIG[gateWay].iFrameUrl + '?' +
                         "card_holder_first_name=" + params.card_holder_first_name +
                         "&card_holder_last_name=" + params.card_holder_last_name +
                         "&service_action=" + service_action +

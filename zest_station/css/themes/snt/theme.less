@@ -292,9 +292,7 @@
            font-size: 1.8em;
            position: inherit;
         }
-        
-        
-        
+
 .make-key-now{
     z-index: 11;
     position: inherit;
@@ -302,3 +300,17 @@
         opacity: .5;
     }
 }
+
+#actions {
+    &.languages {
+        .language {
+            border: 6px solid @gradientStart;
+            box-shadow: none;
+            &.selected  {
+                background: linear-gradient(to bottom, @gradientStart 0%, @gradientEnd 100%);
+                border: none;
+            }
+        }
+    }
+}
+

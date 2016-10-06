@@ -9,7 +9,7 @@
 
     <!-- Add class "has-card" when selected card is shown. Add class "select-card" when selecting/entering a credit card. -->
     <form class="modal-content form new-content has-card select-card"
-          ng-show="!showManualEntryDisabledPopup && !showWarningMessage">
+          ng-show="!showManualEntryDisabledPopup && !showWarningMessage && !showSixPayLoader">
 
         <button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
             <span class="icons icon-close invert"></span>
@@ -28,7 +28,7 @@
                     reservation-id="{{passData.reservationId}}"
                     fetch-linked-cards="!isFromGuestCard"
                     guest-id="{{passData.guest_id}}"
-                    workstation-id = "{{workstation_id}}"
+                    workstation-id="{{workstation_id}}"
                     bill-number="billNumber"
                     payment-types="paymentData.paymentTypes"
                     selected-c-c="selectedCC"
@@ -42,6 +42,7 @@
                     form-template-url='/assets/partials/staycard/rvStaycardAddPaymentPopup.html'
                     first-name="{{passData.details.firstName}}"
                     last-name="{{passData.details.lastName}}"
+                    hide-overlay-giftcard="true"
                     ng-show="!errorOccured && !depositPaidSuccesFully">
             </snt-payment>
         </div>

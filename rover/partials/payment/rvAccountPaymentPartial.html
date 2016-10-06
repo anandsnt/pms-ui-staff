@@ -74,22 +74,21 @@
     </ul>
 </div>
 
-<!-- Fail feedback -->
-<div class="feedback" ng-show="isPaymentFailure">
-    <div class="notice error">Payment failed. Try again or change payment method.</div>
-</div>
-
 <!-- Buttons -->
 <div class="actions" ng-hide="paymentAttempted && !isPaymentFailure">
     <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
         CANCEL
     </button>
     <button type="button" class="button green" click-touch="submitAccountPayment()"
-            ng-show="!shouldHidePaymentButton() && !isRefund()">
+            ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
+            ng-show="!isRefund()">
         MAKE PAYMENT
     </button>
     <button type="button" class="button blue" click-touch="submitAccountPayment()"
-            ng-show="!shouldHidePaymentButton() && isRefund()">
+            ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
+            ng-show="isRefund()">
         REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
     </button>
 </div>

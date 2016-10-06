@@ -79,7 +79,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 */
 	$scope.addNew = function() {
 		$scope.addData = {"is_cc":false};
-		$scope.addData.allow_post_with_no_credit = false;
+		$scope.addData.restrict_post = false;
 		$scope.currentClickedElement = "new";
 		$timeout(function() {
             $location.hash('new-form-holder');

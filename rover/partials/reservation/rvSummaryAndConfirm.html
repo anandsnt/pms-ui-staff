@@ -216,7 +216,7 @@
                 </ul>
             </div>
         </div>
-        <form class="form payment-info" ng-click="clearErrorMessage()">
+        <form class="form payment-info scrollable" ng-click="clearErrorMessage()" ng-iscroll='paymentInfo'>
             <div class="wrapper">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <div id="set-payment" class="payment-form for-reservation" ng-if="!!reservationData.reservationId">
@@ -231,7 +231,7 @@
                             selected-c-c="renderData"
                             amount='reservationData.depositAmount'
                             action-type="DEPOSIT_PAYMENT_RES_SUMMARY"
-                            is-editable='isDepositEditable'
+                            is-editable='reservationData.depositEditable'
                             is-rate-suppressed='isReservationRateSuppressed'
                             has-permission='hasPermissionToMakePayment()'
                             form-template-url='/assets/partials/payment/rvReservationSummaryDepositPartial.html'

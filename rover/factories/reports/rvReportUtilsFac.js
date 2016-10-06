@@ -194,7 +194,7 @@ angular.module('reportsModule')
             // for CREDIT_CHECK_REPORT
             'INCLUDE_DUE_OUT': true,
             'INCLUDE_INHOUSE': true,
-            'ALLOW_POST_WITH_NO_CREDIT': true,
+            'RESTRICTED_POST_ONLY': true,
 
             // for room ooo oos report
             OOO: true,
@@ -528,7 +528,7 @@ angular.module('reportsModule')
                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'INCLUDE_DUE_OUT' ) {
                     __pushGeneralOptionData( report, filter, true );
                 }
-                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'ALLOW_POST_WITH_NO_CREDIT' ) {
+                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'RESTRICTED_POST_ONLY' ) {
                     __pushGeneralOptionData( report, filter, false );
                 }
 

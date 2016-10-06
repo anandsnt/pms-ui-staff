@@ -116,6 +116,11 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                         $scope.myScroll[key].refresh();
                     }
                 }, timeOutForScrollerRefresh);
+            },
+            setEditableFlag = function() {
+                if ($scope.isEditable !== false) {
+                    $scope.payment.isEditable = true;
+                }
             };
 
         /**
@@ -126,8 +131,14 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             if ($scope.selectedPaymentType !== "GIFT_CARD") {
                 return false;
             } else {
-                return $scope.giftCard.availableBalance &&
-                    parseFloat($scope.giftCard.availableBalance) < parseFloat($scope.payment.amount);
+                var payableAmount = parseFloat($scope.payment.amount);
+                if (!!$scope.feeData) {
+                    payableAmount = parseFloat($scope.feeData.totalOfValueAndFee);
+                }
+                //https://stayntouch.atlassian.net/browse/CICO-34115?focusedCommentId=93132&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-93132
+                return (payableAmount < 0) || // NOTE : We can't make a negative payment with a GIFT_CARD
+                    ($scope.giftCard.availableBalance &&
+                    parseFloat($scope.giftCard.availableBalance) < payableAmount);
             }
         };
 
@@ -136,7 +147,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          * @returns {boolean}
          */
         $scope.shouldHidePaymentButton = function() {
-            return !$scope.splitBillEnabled && (!$scope.selectedPaymentType || !$scope.hasPermission ||
+            return (!$scope.selectedPaymentType || !$scope.hasPermission ||
                 $scope.isGCBalanceShort() ||
                 ($scope.paymentAttempted && !$scope.isPaymentFailure));
         };
@@ -207,8 +218,21 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
         //toggle between CC entry and existing card selection
         $scope.toggleCCMOde = function(mode) {
-            $scope.payment.addCCMode = mode;
+            if (mode === "GIFT_CARD") {
+                $scope.selectedPaymentType = "GIFT_CARD";
+                $scope.onPaymentInfoChange();
+            } else {
+                $scope.selectedPaymentType = "CC";
+                $scope.onPaymentInfoChange();
+            }
             mode === 'ADD_CARD' ? refreshIFrame() : '';
+            
+            //adding timeout to avoid blinking effect when the iframe reloads
+            $timeout(function(){
+                $scope.payment.addCCMode = mode;
+            }, 350);
+            
+
         };
 
         /********************* Payment Actions *****************************/
@@ -253,7 +277,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             //the rest of actions will in paySixPayController
             if ($scope.selectedPaymentType === "CC" && $scope.hotelConfig.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
                 var params = {
-                    workstation_id: $scope.hotelConfig.workstationId
+                    workstation_id: $scope.hotelConfig.workstationId,
+                    bill_number: $scope.billNumber
                 };
 
                 if ($scope.actionType === "ADD_PAYMENT_GUEST_CARD") {
@@ -563,6 +588,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 }, errorMessage => {
                     $scope.giftCard.amountAvailable = false;
                     $scope.errorMessage = errorMessage;
+                    $scope.$emit('hideLoader');
                 });
 
             } else {
@@ -573,9 +599,13 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         };
 
         // Payment type change action
-        $scope.onPaymentInfoChange = function() {
+        $scope.onPaymentInfoChange = function(isReset) {
             //NOTE: Fees information is to be calculated only for standalone systems
             //TODO: See how to handle fee in case of C&P
+
+            if (isReset && $scope.payment.isEditable && $scope.selectedPaymentType === "GIFT_CARD") {
+                $scope.payment.amount = 0;
+            }
 
             calculateFee();
             var selectedPaymentType = _.find($scope.paymentTypes, {
@@ -588,6 +618,12 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             //If there are attached cards, show them first
             if (!!selectedPaymentType && selectedPaymentType.name === "CC") {
                 if (!!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
+                    //Add to guestcard feature for C&P
+                    // The payment info may change after adding a payment method; in such a case, should not reset back to C&P mode
+                    if($scope.payment.screenMode !== "CARD_ADD_MODE" && !$scope.selectedCC.value){
+                        $scope.payment.isManualEntryInsideIFrame = false;
+                        $scope.selectedCC = {};
+                    }
                     //Add to guestcard feature for C&P
                     $scope.payment.showAddToGuestCard = !!$scope.reservationId && ($scope.payment.isManualEntryInsideIFrame ? false : true);
                     refreshIFrame();
@@ -783,8 +819,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $scope.selectedCC.ending_with = paymentData.cardDisplayData.ending_with;
                 $scope.selectedCC.expiry_date = paymentData.cardDisplayData.expiry_date;
                 $scope.selectedCC.holder_name = paymentData.apiParams.name_on_card;
-
-                $scope.payment.screenMode = "PAYMENT_MODE";
+                $timeout(()=> {
+                    $scope.selectedPaymentType = "CC";
+                    $scope.payment.screenMode = "PAYMENT_MODE";
+                }, 600);
             } else {
                 $scope.payment.tokenizedCardData = null;
             }
@@ -815,7 +853,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 name: "GIFT_CARD"
             });
 
-            return !$scope.hotelConfig.isStandAlone && !!isGiftCardEnabled;
+            return !$scope.hotelConfig.isStandAlone && !!isGiftCardEnabled && !$scope.hideOverlayGiftcard;
         };
 
         var onAmountChange = function() {
@@ -878,9 +916,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $scope.payment.creditCardTypes = getCrediCardTypesList();
             });
 
+            $scope.$watch('isEditable', setEditableFlag);
+
             $scope.payment.amount = $scope.amount || 0;
             $scope.payment.isRateSuppressed = $scope.isRateSuppressed || false;
-            $scope.payment.isEditable = $scope.isEditable || true;
             $scope.billNumber = $scope.billNumber || 1;
             $scope.payment.linkedCreditCards = $scope.linkedCreditCards || [];
 

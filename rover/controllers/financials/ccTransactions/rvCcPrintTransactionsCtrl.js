@@ -7,6 +7,17 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 	$scope.eventTimestamp = '';
 	$scope.data.printBoxHeight = resizableMinHeight;
 
+  // Checks height on drag-to-resize and opens or closes drawer.
+  var heightChecker = function(height) {
+    if (height > 5){
+      $scope.data.isDrawerOpened = true;
+      $scope.data.printBoxHeight = height;
+      $scope.$apply();
+    }
+    else if(height < 5){
+      $scope.closeDrawer();
+    }
+  };
 	// Drawer resize options.
 	$scope.resizableOptions = {
 		minHeight: resizableMinHeight,
@@ -14,17 +25,13 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 		handles: 's',
 		resize: function(event, ui) {
 			var height = $(this).height();
-			if (height > 5){
-				$scope.data.isDrawerOpened = true;
-				$scope.data.printBoxHeight = height;
-			}
-			else if(height < 5){
-				$scope.closeDrawer();
-			}
+      heightChecker(height);
 		},
 		stop: function(event, ui) {
+      var height = $(this).height();
 			preventClicking = true;
 			$scope.eventTimestamp = event.timeStamp;
+      heightChecker(height);
 		}
 	};
 
