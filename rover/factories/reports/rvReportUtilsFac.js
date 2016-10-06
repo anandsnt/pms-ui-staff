@@ -271,7 +271,7 @@ angular.module('reportsModule')
             }
 
             if ( report['title'] === reportNames['IN_HOUSE_GUEST'] ) {
-                if ( filter.value === 'INCLUDE_VIP' || filter.value === 'RESTRICTED_POST_ONLY' ) {
+                if ( filter.value === 'VIP_ONLY' || filter.value === 'RESTRICTED_POST_ONLY' ) {
                     isRadioOption = true;
                 }
             };
