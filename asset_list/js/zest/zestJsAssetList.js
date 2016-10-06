@@ -42,6 +42,7 @@ module.exports = {
 					jsLibRoot + 'iscroll.js',
 					jsLibRoot + 'ng-iscroll.js',
 					jsLibRoot + 'Utils.js',
+					jsLibRoot + 'jquery.select-to-autocomplete.js',
 					sharedRoot + 'interceptors/**/*.js',
 					sharedRoot + 'directives/documentTouchMovePrevent/*.js',
 					sharedRoot + 'directives/divTouchMoveStopPropogate/*.js',
