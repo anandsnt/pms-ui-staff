@@ -995,6 +995,7 @@ sntRover.controller('RVbillCardController',
 	 $scope.clickedAddCharge = function(activeBillNo){
 	 	if(!!$scope.reservationBillData.restrict_post){
 	 		$scope.selectedBillNumber = activeBillNo;
+	 		$scope.restrict_post = $scope.reservationBillData.restrict_post;
 			ngDialog.open({
 	    		template: '/assets/partials/postCharge/restrictPost.html',
 	    		className: '',
