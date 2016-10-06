@@ -98,7 +98,7 @@ $scope.deleteRoomType = function(value,name){
 };
 
 $scope.closeBlockClodeWindow = function(){
-  //TODO: reset back to initial set
+  //resets back to initial set and closes dialog
   $scope.excludedBlockCodes = $scope.blockCodesWhenOpenedPopup;
   $scope.block_codes = $scope.blockCodeModelWhenOpened;
     ngDialog.close();
