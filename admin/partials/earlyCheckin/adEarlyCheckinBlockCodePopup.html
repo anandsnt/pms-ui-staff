@@ -1,0 +1,27 @@
+<div id="modal" class="modal-show" role="dialog">
+	<form method="post" class="modal-content group-rooms">
+		<div class="entry block-code-popup-exclude-section">
+			<div class="entry">
+				<label translate>BLOCK_CODES_TO_EXCLUDE_FROM_EARLY_CHECK_IN</label>
+				<div
+					multi-select
+					input-model="block_codes"
+					button-label="group_code"
+					item-label="group_code"
+					tick-property="ticked"
+					max-labels="0"
+					default-label="None selected"
+					max-height="300px"
+					>
+				</div>
+			</div>
+			<div class="entry top-padding-20">
+				<div class="entry top-padding-20"><label>&nbsp;&nbsp;</label>
+				<button translate="" ng-click="closeBlockClodeWindow()"  class="button green" translate="">CANCEL</button>
+				<label>&nbsp;&nbsp;</label>
+				<button translate="" ng-click="clickExcludeBlockCode()"  class="button green" translate="">EXCLUDE_BLOCK_CODES</button>
+			</div>
+		</div>
+		</div>
+	</form>
+</div>
