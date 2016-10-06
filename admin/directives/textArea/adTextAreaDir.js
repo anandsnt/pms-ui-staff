@@ -15,7 +15,8 @@ admin.directive('adTextarea', function($timeout) {
             rows: '@rows',
             required: '=required',
             maxlength: '@maxlength',
-            disabled: '=disabled'
+            disabled: '=disabled',
+            ngHide: '@hide'
 	    },
     	templateUrl: '/assets/directives/textArea/adTextArea.html'
 
