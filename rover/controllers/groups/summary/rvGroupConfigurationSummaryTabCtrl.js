@@ -508,6 +508,12 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 					$scope.updateGroupSummary();
 				}, 100);
 			}
+
+			// CICO-34261
+			if (newBlockTo < refData.release_date) {
+				$scope.groupConfigData.summary.release_date = newBlockTo;
+			}
+			$scope.releaseDateOptions.maxDate = newBlockTo;
 			runDigestCycle();
 		};
 
@@ -618,7 +624,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			$scope.releaseDateOptions = _.extend({
 				onSelect: releaseDateChoosed,
 				disabled: shouldDisableReleaseDatePicker(),
-				minDate: tzIndependentDate($rootScope.businessDate)
+				minDate: tzIndependentDate($rootScope.businessDate),
+				maxDate: $scope.groupConfigData.summary.block_to
 			}, commonDateOptions);
 
 			//summary memento will change we attach date picker to controller
