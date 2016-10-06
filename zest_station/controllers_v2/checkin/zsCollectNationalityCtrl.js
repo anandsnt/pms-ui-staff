@@ -61,14 +61,37 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 						    documentClick = true;
 						});
 						$scope.showOnScreenKeyboard('country-selector');
+						$scope.focusInputField('country-selector');
+						$timeout(function(){
+							$(document).bind('touchstart touch tap click', function (event) {
+								$scope.showingAutoComplete();
+							});
+							$($('input')[0]).keydown($scope.showingAutoComplete());
+							$($('input')[0]).change($scope.showingAutoComplete());
+							$($('input')[0]).blur($scope.showingAutoComplete());
+						},1500);
 					},0);
 				},0);
 			}
 
 		};
+		$scope.showingAutoCompleteArea = false;
+		$scope.showingAutoComplete = function(){
+			console.log(($('input').val().length));
+			//autocomplete plugin overwrites the <select>tags and appends an <input> with autocomplete trigger
+			//need to update the css based on the new dom elements, ie. the border in the input needs to be updated
+			//  when there are autocomplete elements on-screen
+			$scope.showingAutoCompleteArea = (($('input').val().length > 1) && !$scope.selectedCountry.id);
+			if (($('input').val().length < 1)){
+				$scope.selectedCountry.id = "";	
+			}
+			$scope.$digest();
+		};
+
 		$scope.clearNationality = function(){
 			$scope.selectedCountry.id = "";
 			$('input').val('');
+			$scope.showingAutoComplete();
 		};
 		/**
 		 * when the back button clicked

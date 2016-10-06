@@ -1305,9 +1305,12 @@
 }
 .ui-autocomplete {
     position: absolute;
-    top: -20px;
+    top: -25px;
     left: 0;
     cursor: default;
+    border-color:@white;
+    left:6.25% !important;
+    width:73.6% !important;
 }
 .ui-menu {
     list-style: none;
@@ -1329,11 +1332,14 @@
     list-style-image: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
 }
 .ui-menu .ui-menu-divider {
+    display:none;
+    /* not using divider for station
     margin: 5px 0;
     height: 0;
     font-size: 0;
     line-height: 0;
     border-width: 1px 0 0 0;
+    */
 }
 
 /* icon support */
@@ -1342,6 +1348,13 @@
 }
 .ui-menu-icons .ui-menu-item {
     padding-left: 2em;
+
+}
+
+/* Only display the first 4 items, CSS filter what is shown on screen for autocomplete */
+
+.ui-menu-item:nth-child(n+4){
+    display:none;
 }
 
 /* left-aligned */
@@ -1357,6 +1370,10 @@
 .ui-menu .ui-menu-icon {
     left: auto;
     right: 0;
+}
+.autocomplete-border{
+    border-bottom-left-radius: 0em !important;
+    border-bottom-right-radius: 0em !important;
 }
 
 /******** ************************************* *******/
