@@ -148,8 +148,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          */
         $scope.shouldHidePaymentButton = function() {
             return (!$scope.selectedPaymentType || !$scope.hasPermission ||
-                $scope.isGCBalanceShort() ||
-                ($scope.paymentAttempted && !$scope.isPaymentFailure));
+            $scope.isGCBalanceShort() ||
+            ($scope.paymentAttempted && !$scope.isPaymentFailure));
         };
 
         /**
@@ -226,12 +226,12 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $scope.onPaymentInfoChange();
             }
             mode === 'ADD_CARD' ? refreshIFrame() : '';
-            
+
             //adding timeout to avoid blinking effect when the iframe reloads
-            $timeout(function(){
+            $timeout(function() {
                 $scope.payment.addCCMode = mode;
             }, 350);
-            
+
 
         };
 
@@ -620,7 +620,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 if (!!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
                     //Add to guestcard feature for C&P
                     // The payment info may change after adding a payment method; in such a case, should not reset back to C&P mode
-                    if($scope.payment.screenMode !== "CARD_ADD_MODE" && !$scope.selectedCC.value){
+                    if ($scope.payment.screenMode !== "CARD_ADD_MODE" && !$scope.selectedCC.value) {
                         $scope.payment.isManualEntryInsideIFrame = false;
                         $scope.selectedCC = {};
                     }
@@ -830,7 +830,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             if ($scope.actionType === "AR_SUBMIT_PAYMENT") {
                 addBillPayment(paymentData);
             }
-            else if ($scope.actionType !== "ADD_PAYMENT_GUEST_CARD") {
+            else if (!(/^ADD_PAYMENT_/.test($scope.actionType))) {
                 saveCCPayment(paymentData);
             }
         });
