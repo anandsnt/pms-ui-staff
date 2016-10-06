@@ -61,7 +61,11 @@ sntRover
 
 					// if in this set if a particular item is selected, that should only be selected
 					var isSelectiveSingleSelect = function() {
-						return item.selected && (options.selectiveSingleSelectKey === item.id)
+						var hasSelectKey = _.find(options.selectiveSingleSelectKey, function(key) {
+							return key === item.id;
+						});
+
+						return item.selected && !! hasSelectKey;
 					};
 
 					var checkUnselectSelectiveSingleSelect = function() {

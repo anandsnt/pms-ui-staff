@@ -254,11 +254,11 @@ angular.module('reportsModule')
             }
 
             // if filter is this, make it selected by default
-            if ( report['title'] == reportNames['DAILY_PRODUCTION_ROOM_TYPE'] && filter.value == 'INCLUDE_ADDONS' ) {
+            if ( report['title'] === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] && filter.value === 'INCLUDE_ADDONS' ) {
                 selected = true;
             };
 
-            if ( report['title'] == reportNames['RESERVATIONS_BY_USER'] && filter.value === 'INCLUDE_BOTH') {
+            if ( report['title'] === reportNames['RESERVATIONS_BY_USER'] && filter.value === 'INCLUDE_BOTH') {
                 selected = true;
             }
 
@@ -271,13 +271,13 @@ angular.module('reportsModule')
             });
 
             // if filter value is either of these, selectAll should be false
-            if ( report['title'] == reportNames['ARRIVAL'] || report['title'] == reportNames['DEPARTURE'] ) {
+            if ( report['title'] === reportNames['ARRIVAL'] || report['title'] === reportNames['DEPARTURE'] ) {
                 report.hasGeneralOptions.options.noSelectAll = true;
             };
 
             // when 'SHOW_RATE_ADJUSTMENTS_ONLY' is selected other should not be and vice versa
-            if ( report['title'] == reportNames['RESERVATIONS_BY_USER'] && filter.value == 'SHOW_RATE_ADJUSTMENTS_ONLY' ) {
-                report.hasGeneralOptions.options.selectiveSingleSelectKey = filter.value.toLowerCase();
+            if ( report['title'] === reportNames['RESERVATIONS_BY_USER'] && filter.value === 'SHOW_RATE_ADJUSTMENTS_ONLY' ) {
+                report.hasGeneralOptions.options.selectiveSingleSelectKey.push( filter.value.toLowerCase() );
                 report.hasGeneralOptions.options.noSelectAll = true;
             };
         };
@@ -383,7 +383,8 @@ angular.module('reportsModule')
                     selectAll: false,
                     hasSearch: false,
                     key: 'description'
-                }
+                },
+                selectiveSingleSelectKey: []
             }
 
             // create a name space for chosen options
