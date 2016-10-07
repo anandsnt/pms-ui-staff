@@ -47,10 +47,11 @@
 			</div>
 
 			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_pseudo_room_type" hide="{{ isStandAlone }}" label="{{ 'PSEUDO_ROOM_TYPE' | translate }}"></ad-checkbox>
-			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_suite" hide="{{isHourlyRatesEnabled}}" label="{{ 'SUITE_ROOM_TYPE' | translate }}"></ad-checkbox>
+			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_suite" hide="{{isHourlyRatesEnabled || !isSuiteRoomsAvailable}}" label="{{ 'SUITE_ROOM_TYPE' | translate }}"></ad-checkbox>
+
 			<ad-checkbox hide="{{ !isRoomStatusImportPerRoomTypeOn || isStandAlone }}" div-class="full-width" is-checked="roomTypeData.is_room_type_ows_request_per_status_type" label="{{ 'SEND_INTERFACE_REQUEST' | translate }}"></ad-checkbox>
 
-			<div class="entry full-width" ng-class="{'hidden': !roomTypeData.is_suite}" hide="{{isHourlyRatesEnabled}}">
+			<div class="entry full-width" ng-class="{'hidden': !roomTypeData.is_suite || !isSuiteRoomsAvailable }">
 		        <ul class="room-type-list">
 		            <li ng-repeat="roomTypes in availableRoomTypes">
 		                <span class="room-type-name">{{roomTypes.name}}</span>

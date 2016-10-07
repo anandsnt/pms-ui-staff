@@ -1,5 +1,5 @@
 <!-- Search form -->
-<form method="get" action="" name="accounts-search-form" id="accounts-search-form" class="search-form has-options single-option enable-adding" role="search" ng-class="{'enable-adding':shouldShowAddNewButton()}">
+<form method="get" action="" name="accounts-search-form" id="accounts-search-form" class="search-form has-options three-options" role="search" ng-class="{'enable-adding':shouldShowAddNewButton()}">
     
     <div class="entry search">
         <button id="accounts-clear-query" class="clear-query" 
@@ -21,15 +21,29 @@
                 function-to-fire="searchQueryChanged"/>
     </div>
     <div class="entry options">
-        <div class="select">
+        <div class="select with-label">
+            <label for="account-type">Account Type</label>
+            <select id="account-type" ng-model="accountType" ng-change= "search()">
+                <option value="" selected="" translate>ALL_ACCOUNT_TYPE</option>
+                <option value="GROUP" translate>GROUP</option>
+                <option value="HOUSE" translate>HOUSE</option>
+            </select>
+        </div>
+        <div class="select larger-select with-label">
+            <label for="account-status">Account Status</label>
             <select id="account-status" ng-model="status" 
                 ng-change= "search()"
-                ng-class="{'placeholder': status == ''}"> <!-- Add class="placeholder" if val="" is selected -->
+                ng-class="{'placeholder': status == ''}"> 
                 <option value="" translate>ALL_ACCOUNTS</option>
                 <option value="OPEN" translate>ACCOUNTS_OPEN</option>
                 <option value="CLOSED" translate>ACCOUNTS_CLOSED</option>
             </select>
         </div>
+        <label class="checkbox inline" ng-class="{'checked':isNonZero}">
+            <span class="icon-form icon-checkbox" ng-class="{'checked':isNonZero}"></span>
+            <input type="checkbox" checked="checked" value="{value}" ng-model="isNonZero" ng-change= "search()">
+            Non-Zero Balance
+        </label>
     </div>
     <a ng-click="gotoAddNewAccount()" class="add-new-button" ng-show="shouldShowAddNewButton()" translate>ACCOUNTS_ADD_NEW</a>
 </form>
@@ -70,9 +84,9 @@
             <li class="account" ng-show="!shouldShowNoResult()" ng-repeat="account in accountList" ngrepeatend ngrepeatstarted>
                 <a ng-click="gotoEditAccountConfiguration(account.id)">
                     <div class="data">
-                        <h2 ng-bind-html="getHighlightedHTML(account.posting_accounts_name)">
+                        <h2 ng-bind-html="getHighlightedHTML(account.posting_accounts_name, query)">
                         </h2>
-                        <span class="confirmation" ng-bind-html="getHighlightedHTML(account.posting_accounts_number)"></span>
+                        <span class="confirmation" ng-bind-html="getHighlightedHTML(account.posting_accounts_number, query)"></span>
                         <!-- If linked company exists: -->
                         <span class="icons icon-guest-company" ng-hide="isEmpty(account.company)">
                             {{account.company}}

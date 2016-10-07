@@ -8,6 +8,18 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	$scope.data.printBoxHeight = resizableMinHeight;
 	$scope.data.uiSelectedPaymentType = 'ALL';
 	$scope.data.uiSelectedChargeGroup = 'ALL';
+
+	// Checks height on drag-to-resize and opens or closes drawer.
+	var heightChecker = function(height) {
+		if (height > 5){
+			$scope.data.isDrawerOpened = true;
+			$scope.data.printBoxHeight = height;
+			$scope.$apply();
+		}
+		else if(height < 5){
+			$scope.closeDrawer();
+		}
+	};
 	// Drawer resize options.
 	$scope.resizableOptions = {
 		minHeight: resizableMinHeight,
@@ -15,17 +27,13 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		handles: 's',
 		resize: function(event, ui) {
 			var height = $(this).height();
-			if (height > 5){
-				$scope.data.isDrawerOpened = true;
-				$scope.data.printBoxHeight = height;
-			}
-			else if(height < 5){
-				$scope.closeDrawer();
-			}
+			heightChecker(height);
 		},
 		stop: function(event, ui) {
+			var height = $(this).height();
 			preventClicking = true;
 			$scope.eventTimestamp = event.timeStamp;
+			heightChecker(height);
 		}
 	};
 

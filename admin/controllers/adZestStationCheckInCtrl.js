@@ -13,15 +13,24 @@ admin.controller('ADZestStationCheckInCtrl',['$scope','$rootScope', '$state','$s
         };
 
         $scope.saveSettings = function(){
-            var saveSuccess = function(){
+            var saveSuccess = function(response){
                 $scope.successMessage = 'Success';
+                $scope.$emit('hideLoader');
+            };
+            var saveFailed = function(response){
+                console.warn(response);
+                var message = '';
+                if (response){
+                    message = response;
+                }
+                $scope.errorMessage = message;
                 $scope.$emit('hideLoader');
             };
 
             var params = {
                                 'kiosk':$scope.zestSettings
                              };
-            $scope.invokeApi(ADZestStationSrv.save, params, saveSuccess);
+            $scope.invokeApi(ADZestStationSrv.save, params, saveSuccess, saveFailed);
         };
 
         $scope.init = function(){

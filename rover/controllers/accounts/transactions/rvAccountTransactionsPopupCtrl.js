@@ -89,14 +89,15 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
    /*
 	 * API call edit transaction
 	 */
-	$scope.editCharge = function(newAmount,chargeCode){
+	$scope.editCharge = function(newAmount,chargeCode,adjustmentReason){
 		$scope.$emit('showLoader');
 		var editData =
 		{
 			"updatedDate":
 						{
 				  			"new_amount":newAmount,
-				  			"charge_code_id": chargeCode.id
+				  			"charge_code_id": chargeCode.id,
+				  			"adjustment_reason":adjustmentReason
 						},
 					"id" :$scope.selectedTransaction.id
 		};
@@ -107,6 +108,27 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 			successCallBack: 	hideLoaderAndClosePopup
 		};
 		$scope.callAPI (rvAccountTransactionsSrv.transactionEdit, options);
+
+	};
+
+	/*
+	 * API call edit charge description
+	 */
+	$scope.editChargeDescription = function(newDescription) {
+
+	    var editData = {
+	        "postData": {
+	            "custom_charge_description": newDescription
+	        },
+	        "id": $scope.selectedTransaction.id
+	    };
+
+		var options = {
+			params: 			editData,
+			loader: 			'NONE',
+			successCallBack: 	hideLoaderAndClosePopup
+		};
+		$scope.callAPI (rvAccountTransactionsSrv.transactionEditChargeDescription, options);
 
 	};
 
@@ -189,5 +211,11 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	   	var queryText = $scope.chargecodeData.chargeCodeSearchText;
 	    $scope.chargecodeData.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
     };
+    /* 
+     * Method to update the button label on EDIT CHARGE screen
+     */
+    $scope.getEditChargeButtonText = function() {
+		return ($scope.chargeCodeActive) ? 'CHANGE_CHARGE_CODE' : 'CHANGE_AMOUNT';
+	};
 
 }]);

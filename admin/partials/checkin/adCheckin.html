@@ -1,4 +1,4 @@
-<section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-hide="isLoading" ng-click="clearErrorMessage()">
+<section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate  ng-click="clearErrorMessage()">
     <div data-view="ZestCheckinConfiguration">
         <header class="content-title float">
             <h2>{{ 'GUEST_CHECKIN_SETUP' | translate}}</h2>
@@ -216,7 +216,7 @@
                 <fieldset class="holder full-width">
                     <div class="entry">
                         <label translate>RATE_CODES_TO_EXCLUDE_FROM_CHECKIN</label>
-                        <div multi-select input-model="rate_codes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+                        <div multi-select on-open="onRateCodeDropDownClick()" input-model="rate_codes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
                         </div>
                     </div>
                     <div class="entry entry-padding-left">
@@ -244,8 +244,8 @@
                 </fieldset>
                 <fieldset class="holder full-width">
                     <div class="entry">
-                        <label translate>BLOCK_CODES_EXCLUDE_FROM_CHECKIN</label>
-                        <div multi-select input-model="block_codes" button-label="group_code" item-label="group_code" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+                        <label translate>BLOCK_CODES_EXCLUDE_FROM_CHECKIN</label> <!--"-->
+                        <div multi-select  on-open="onBlockCodeDropDownClick()" input-model="block_codes" button-label="group_code" item-label="group_code" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
                         </div>
                     </div>
                     <div class="entry entry-padding-left">
@@ -274,7 +274,7 @@
                 <fieldset class="holder full-width">
                     <div class="entry">
                         <label translate>EXCLUDE_FOLLOWING_ROOM_TYPES_FROM_EMAIL_INVITE</label>
-                        <div multi-select input-model="roomTypes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+                        <div multi-select on-open="onRoomTypesDropDownClick()" input-model="roomTypes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
                         </div>
                     </div>
                     <div class="entry entry-padding-left">

@@ -8,6 +8,7 @@
                <span class="room-number" ng-class ="getRoomStatusClass(upgrade)"> {{upgrade.upgrade_room_number}} </span>
                <h2> {{upgrade.upgrade_room_type_name}} </h2>
                <a class="toggle has-arrow" ng-click = "toggleUpgradeDescriptionStatus($event,$index)" translate>DETAILS_LABEL</a>
+               <span class="icons icon-suite" ng-show="upgrade.is_suite_room">Suite room</span>
             </div>
             <div id="room1034-details" ng-class="{'hidden':!isDescriptionVisible($index)}" class="room-details" ng-show="isDescriptionVisible($index)" ng-bind-html="upgrade.upgrade_room_description">
 

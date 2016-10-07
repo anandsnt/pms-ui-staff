@@ -1,5 +1,5 @@
 <div class="block-wrapper">
-    <a class="block-title toggle has-arrow" ng-click="clickedAdditionalDetails($event)">Additional details</a>
+    <a class="block-title toggle has-arrow" ng-class="{'active': !additionalDetails.hideDetails}" ng-click="clickedAdditionalDetails($event)">Additional details</a>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div ng-class="{'hidden': additionalDetails.hideDetails }">
         <!-- Reservation Type -->
@@ -14,7 +14,7 @@
                 </select>
             </div>
         </div>
-        
+
         <!-- If TA is attached and commission is turned on: -->
         <div class="block-item item-commission additional-detail" ng-if="reservationData.reservation_card.commission_details.is_on">
             <h3 class="block-title">

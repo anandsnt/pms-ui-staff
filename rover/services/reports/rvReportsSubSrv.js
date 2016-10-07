@@ -16,7 +16,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 			} else {
 				return false;
 			};
-		};	
+		};
 
 		service.setIntoStore = function(key, value) {
 			store[key] = value;
@@ -32,30 +32,72 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 		 */
 		var callApi = function(options) {
 			var deferred = $q.defer();
+			var timeStampInSeconds = 0;
+			var incrementTimer = function() {
+				timeStampInSeconds++;
+			};
+			var refreshIntervalId = setInterval(incrementTimer, 1000);
+
+			var pollToReport = function(async_callback_url) {
+				//we will continously communicate with the server 
+				//the timeout set for the hotel
+				if (timeStampInSeconds >= 300) {
+					var errors = ["Request timed out. Unable to process report !!"];
+					deferred.reject(errors);
+				} else {
+					rvBaseWebSrvV2.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {
+						//if the request is still not proccesed
+						if ((!!data.status && data.status === 'processing_not_completed') || data === "null") {
+							//is this same URL ?
+							setTimeout(function() {
+								console.info("POLLING::-> for print response");
+								pollToReport(async_callback_url);
+							}, 5000)
+						} else {
+							clearInterval(refreshIntervalId);
+							deferred.resolve(data);
+						}
+					}, function(data) {
+						if (typeof data === 'undefined') {
+							pollToReport(async_callback_url);
+						} else {
+							clearInterval(refreshIntervalId);
+							deferred.reject(data);
+						}
+					});
+				};
+			};
 
 			var success = function(data) {
 				var resolveData;
 
-				if ( !! options.resKey2 && !! options.resKey ) {
-					resolveData = data[options.resKey][options.resKey2];
-				} else if ( !! options.resKey ) {
-					resolveData = data[options.resKey];
-				} else {
-					resolveData = data;
-				};
+				if ( !!data.status && data.status === 'processing_not_completed' ) {
+					pollToReport(data.location_header);
+				}
+				else{
 
-				// push it into store
-				if ( !! options.hasOwnProperty('name') ) {
-					service.setIntoStore(options.name, resolveData);
-				};
+					if ( !! options.resKey2 && !! options.resKey ) {
+						resolveData = data[options.resKey][options.resKey2];
+					} else if ( !! options.resKey ) {
+						resolveData = data[options.resKey];
+					} else {
+						resolveData = data;
+					};
 
-				deferred.resolve( resolveData );
+					// push it into store
+					if ( !! options.hasOwnProperty('name') ) {
+						service.setIntoStore(options.name, resolveData);
+					};
+					clearInterval(refreshIntervalId);
+					deferred.resolve( resolveData );
+				}
+
 			};
 
 			var failed = function(data) {
 				deferred.reject( data || {} );
 			};
-			
+
 			// if config is incorrect
 			if ( ! options.url || ! options.method || ! rvBaseWebSrvV2.hasOwnProperty(options.method) ) {
 				failed();
@@ -68,7 +110,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 
 			// if there is a request params object
 			else if ( !! options.params ) {
-				rvBaseWebSrvV2[options.method]( options.url, options.params ).then( success, failed );
+			
+				if ( options.params.reportTitle === "Credit Check Report" ){
+					options.params = _.omit(options.params, 'reportTitle');
+					rvBaseWebSrvV2.postJSONWithSpecialStatusHandling( options.url, options.params ).then( success, failed );
+				}
+				else {
+					options.params = _.omit(options.params, 'reportTitle');
+					rvBaseWebSrvV2[options.method]( options.url, options.params ).then( success, failed );
+				}
 			}
 
 			// else simple call
@@ -255,7 +305,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				method : 'getJSON',
 				url    : '/api/restriction_types?is_activated=true',
 				resKey : 'results'
-			});			
+			});
 		};
 		service.fetchOrigins = function() {
 			return callApi({
@@ -293,7 +343,6 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 		};
 		service.fetchSchedules = function() {
 			return callApi({
-				name   : 'schedulesList',
 				method : 'getJSON',
 				url    : 'admin/export_schedules.json',
 				resKey : 'results'
@@ -314,6 +363,34 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				resKey : 'campaign_types'
 			});
 		};
+
+		service.fetchSchedulableReports = function() {
+			return callApi({
+				name   : 'schedulableReports',
+				method : 'getJSON',
+				url    : 'admin/export_reports.json',
+				resKey : 'results'
+			});
+		};
+
+		service.fetchFloors = function() {
+			return callApi({
+				name: 'houseFloors',
+				method: 'getJSON',
+				url: 'api/floors.json',
+				resKey: 'floors'
+			})
+		}
+
+		service.fetchDepartments = function() {
+			return callApi({
+				name: 'departments',
+				method: 'getJSON',
+				url: 'admin/departments.json',
+				resKey  : 'data',
+				resKey2 : 'departments'
+			})
+		}
 
 		return service;
 	}

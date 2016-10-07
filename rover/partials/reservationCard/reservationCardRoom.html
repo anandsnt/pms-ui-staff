@@ -1,16 +1,30 @@
-<div class="block-item item-room" ng-controller="reservationRoomStatus" ng-class="addHasButtonClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)" ng-init="">
-    <h3 class="block-title">
+<div class="block-item item-room" ng-controller="reservationRoomStatus" ng-class="addHasButtonClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)" >
+  <h3 class="block-title">
         Room
-        <button ng-controller="staycardController" ng-click="showRoomSharerPopup()" type="button" class="button blue" ng-hide="sharedReservationData.sharers.length === 0">Shared</button>
-	</h3>
+
+
+      <button ng-controller="staycardController" ng-click="showRoomSharerPopup()" type="button" class="button blue" ng-hide="sharedReservationData.sharers.length === 0">Shared</button>
+
+        <!-- Do Not Move toggle -->
+
+         <div class="move-room" ng-show="showDoNotMoveToggleButton()">
+            <label for="lock-room" class="label">Do Not Move</label>
+            <div class="switch-button" ng-class="{'on': reservationData.reservation_card.cannot_move_room}" ng-click="toggleDoNotMove()">
+                <span class="switch-icon"  ng-class="{'on': reservationData.reservation_card.cannot_move_room}" ></span>
+                <button type="checkbox" id="lock-room" ng-model="reservationData.reservation_card.cannot_move_room" >
+            </div>
+        </div>
+
+  	</h3>
 
 	<!-- Room Assignment screen is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
 	<!-- The arrows are removed and room assignment buttons are not clickable in that case -->
-	<a class="next-view no-auto-bind" ng-click="goToroomAssignment()" ng-class="getRoomClass(reservationData.reservation_card.reservation_status)">
+	<a class="next-view no-auto-bind" ng-click="goToroomAssignment()" ng-class="getRoomClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.cannot_move_room)">
 		 <strong class="room-number" ng-class="getRoomStatusClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.room_status, reservationData.reservation_card.fo_status, reservationData.reservation_card.room_ready_status,  reservationData.reservation_card.checkin_inspected_only)" >
-		 	 {{reservationData.reservation_card.room_number}} 
+		 	 {{reservationData.reservation_card.room_number}}
 		 </strong>
-		 {{reservationData.reservation_card.room_type_description}} 
+		 {{reservationData.reservation_card.room_type_description}}
+     <span class="icons icon-room-lock" ng-show="reservationData.reservation_card.cannot_move_room"></span>
 	</a>
 
 	<!-- If room assignment not available:
@@ -18,7 +32,7 @@
         <strong class="room-number">{Room number}</strong>
         {Room Type}
     </div> -->
-	
+
 	<div class="actions" >
 
   		<a id="upgrade-btn" ng-if="showUpgradeButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)" class="button with-icon brand-colors" ng-click="goToRoomUpgrades()">
@@ -26,11 +40,11 @@
     		Upgrade
   		</a>
 
-  		<a ng-hide="!showKeysButton(reservationData.reservation_card.reservation_status)" ng-show="showKeysButton(reservationData.reservation_card.reservation_status)" click-touch="clickedIconKey()" id="add-keys" class="button with-icon blue"> <!-- Add attribute data-position="bottom-right" if QR is to be shown --> 
+  		<a ng-hide="!showKeysButton(reservationData.reservation_card.reservation_status)" ng-show="showKeysButton(reservationData.reservation_card.reservation_status)" click-touch="clickedIconKey()" id="add-keys" class="button with-icon blue"> <!-- Add attribute data-position="bottom-right" if QR is to be shown -->
     		<span class="icons icon-key"></span>
     		Keys
   		</a>
 
 	</div>
-	
+
 </div>

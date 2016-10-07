@@ -44,8 +44,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 			$scope.results.reservations = [];
 		}
 		else{
-	    	displayFilteredResultsCards();
-	    	displayFilteredResultsReservations();
+	    	($scope.isReservationActive)?displayFilteredResultsReservations():displayFilteredResultsCards();
 	   	}
 	   	var queryText = $scope.textInQueryBox;
 	   	$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
@@ -70,59 +69,8 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
   	* if not fouund in the data, it will request for webservice
   	*/
   	var displayFilteredResultsCards = function(){
-	    //show everything, means no filtering
-	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
-	      //based on 'is_row_visible' parameter we are showing the data in the template
-	      for(var i = 0; i < $scope.results.accounts.length; i++){
-	          $scope.results.accounts[i].is_row_visible = true;
-	      }
-	      for(var i = 0; i < $scope.results.posting_accounts.length; i++){
-	          $scope.results.posting_accounts[i].is_row_visible = true;
-	      }
-
-	      // we have changed data, so we are refreshing the scrollerbar
-	      $scope.refreshScroller('cards_search_scroller');
-	    }
-	    else{
-	      var value = "";
-	      var visibleElementsCount = 0;
-	      //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-	      //if it is zero, then we will request for webservice
-	      for(var i = 0; i < $scope.results.accounts.length; i++){
-	        value = $scope.results.accounts[i];
-	        if (($scope.escapeNull(value.account_first_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-	            ($scope.escapeNull(value.account_last_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 )
-	            {
-	               $scope.results.accounts[i].is_row_visible = true;
-	               visibleElementsCount++;
-	            }
-	        else {
-	          $scope.results.accounts[i].is_row_visible = false;
-	        }
-
-	      }
-
-	      for(var i = 0; i < $scope.results.posting_accounts.length; i++){
-	        value = $scope.results.posting_accounts[i];
-	        if (($scope.escapeNull(value.account_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 )
-	            {
-	               $scope.results.posting_accounts[i].is_row_visible = true;
-	               visibleElementsCount++;
-	            }
-	        else {
-	          $scope.results.posting_accounts[i].is_row_visible = false;
-	        }
-
-	      }
-
-	      // last hope, we are looking in webservice.
-	     if(visibleElementsCount === 0){
-	        var dataDict = {'query': $scope.textInQueryBox.trim()};
-	        $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);
-	      }
-	      // we have changed data, so we are refreshing the scrollerbar
-	      $scope.refreshScroller('cards_search_scroller');
-	    }
+	    var dataDict = {'query': $scope.textInQueryBox.trim()};
+	    $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);	      
   	};
 
   	/**
@@ -169,53 +117,8 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
   	* if not fouund in the data, it will request for webservice
   	*/
 	var displayFilteredResultsReservations = function(){
-	    //show everything, means no filtering
-	    if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
-	      	//based on 'is_row_visible' parameter we are showing the data in the template
-	      	for(var i = 0; i < $scope.results.length; i++){
-	          $scope.results.reservations[i].is_row_visible = true;
-	      	}
-
-			$scope.refreshScroller('res_search_scroller');
-	    }
-	    else{
-
-	    	if($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && $scope.textInQueryBox.length === 3){
-				fetchSearchResults();
-				return false;
-			}
-
-		    if($scope.textInQueryBox.indexOf($scope.textInQueryBox) === 0 && $scope.results.reservations.length > 0){
-		        var value = "";
-		        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-		        //if it is zero, then we will request for webservice
-		        var totalCountOfFound = 0;
-		        for(var i = 0; i < $scope.results.reservations.length; i++){
-		          value = $scope.results.reservations[i];
-		          if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-		              ($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-		              ($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-		              ($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 ||
-		              ($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0 )
-		              	{
-		                 	$scope.results.reservations[i].is_row_visible = true;
-		                 	totalCountOfFound++;
-		              	}
-		          	else {
-		            	$scope.results.reservations[i].is_row_visible = false;
-		          	}
-		        }
-		        if(totalCountOfFound === 0){
-		        	fetchSearchResults();
-		        }
-		    }
-		    else{
-		    	fetchSearchResults();
-		    }
-	      	// we have changed data, so we are refreshing the scrollerbar
-	      	$scope.refreshScroller('res_search_scroller');
-	    }
-	}; //end of displayFilteredResults
+	    fetchSearchResults();	    
+	};
 
 	var fetchSearchResults = function() {
 		var dataDict = {'query': $scope.textInQueryBox.trim()};
@@ -228,6 +131,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 	//Toggle between Reservations , Cards
 	$scope.toggleClicked = function(flag){
 		$scope.isReservationActive = flag;
+		($scope.isReservationActive)?displayFilteredResultsReservations():displayFilteredResultsCards();
 	};
 
 }]);

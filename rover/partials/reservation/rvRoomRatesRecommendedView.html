@@ -75,7 +75,7 @@
                 <button ng-show="stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)" class="button white blue-text" ng-click="handleNoEdit($event,room.id,rate.id)">
                     CURRENT RATE
                 </button>
-                <button class="button {{room.buttonClass}}" ng-hide="(stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)) || restrictIfOverbook(room.id,rate.id)" ng-click="handleBooking(room.id,rate.id, $event)" translate>RESV_BOOK
+                <button class="button {{room.buttonClass}}" ng-hide="room.isSuiteUnavailable || (stateCheck.selectedStayDate.rate.id == rate.id && (stateCheck.selectedStayDate.roomType.id == room.id || reservationData.rooms[activeRoom].roomTypeId == room.id)) || restrictIfOverbook(room.id,rate.id)" ng-click="handleBooking(room.id,rate.id, $event)" translate>RESV_BOOK
                 </button>
             </a>
             <div class="rate-details" ng-if="room.showDays">

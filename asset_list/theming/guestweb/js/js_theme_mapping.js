@@ -68,6 +68,14 @@ module.exports = {
 			'guestweb_consciousVondelpark':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_halcyon':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_chancellors_house':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_calvary_court':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_playa_largo':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_rivington':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_hewing':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_sombrero':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_beverly_hills':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_nativ':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_west_wing':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_hotel_epik':[ themeJsRoot + 'app_router_common.js']
 		}
 	}

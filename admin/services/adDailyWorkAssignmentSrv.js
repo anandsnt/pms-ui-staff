@@ -240,9 +240,14 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
 
         var roomTypesList = [];
-        this.fetchRoomTypes = function() {
-            var deferred = $q.defer(),
-                url = 'api/room_types/';
+        this.fetchRoomTypes = function(params) {
+            var deferred = $q.defer(), url;
+            // hide suite as per CICO-24369
+            if(params) {
+                url = 'api/room_types.json?exclude_suite='+ params.exclude_suite;
+            } else {
+                url = 'api/room_types';
+            }
 
             if (roomTypesList.length) {
                 deferred.resolve(roomTypesList);

@@ -75,7 +75,7 @@
     "SHOW_OPEN_BALANCE": "Show Open Balance",
     "CLEAR_QUERY": "Clear query",
     "SEARCH": "Search",
-    "SEARCH_BY_NAME_ROOM_PLACEHOLDER": "Search by Name, Room No., Confirmation No. or External Reference No.",
+    "SEARCH_BY_NAME_ROOM_PLACEHOLDER": "Search by Name, Room No., Invoice No., Confirmation No. or External Reference No.",
     "FROM": "From",
     "TO": "To",
     "OPEN_GUEST_BILLS": "Open guest bills",

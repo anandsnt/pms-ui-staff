@@ -116,7 +116,16 @@ sntRover.controller('roverController',
     $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
 
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
-    $rootScope.paymentGateway = hotelDetails.payment_gateway;
+      /**
+       * CICO-34068
+       * NOTE: Temporary Fix
+       * As saferpay is not supported in Rover, if saferpay is selected in SNT Admin; default to sixpayments
+       */
+      if(hotelDetails.payment_gateway === "SAFERPAY") {
+          $rootScope.paymentGateway = "sixpayments";
+      }else{
+          $rootScope.paymentGateway = hotelDetails.payment_gateway;
+      }
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
     $rootScope.minimumHourlyReservationPeriod = hotelDetails.hourly_min_reservation_hours;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
@@ -355,6 +364,12 @@ sntRover.controller('roverController',
       $scope.hasLoader = false;
     });
 
+    $scope.$on("SHOW_SIX_PAY_LOADER",function(){
+      $scope.showSixPayLoader = true;
+    });
+    $scope.$on("HIDE_SIX_PAY_LOADER",function(){
+      $scope.showSixPayLoader = false;
+    });
     /**
      * in case of we want to reinitialize left menu based on new $rootScope values or something
      * which set during it's creation, we can use
@@ -363,21 +378,35 @@ sntRover.controller('roverController',
         setupLeftMenu();
     });
 
+    
+
     $scope.init = function() {
         BaseCtrl.call(this, $scope);
         $rootScope.adminRole = '';
-
         $scope.selectedMenuIndex = 0;
         $scope.formMenu();
 
         // if menu is open, close it
         $scope.isMenuOpen();
+
         $scope.menuOpen = false;
+
+        $rootScope.hotelPaymentConfig = {
+            isStandAlone: $rootScope.isStandAlone,
+            paymentGateway: $rootScope.paymentGateway,
+            emvTimeout: $rootScope.emvTimeout,
+            mliMerchantId: $rootScope.MLImerchantId,
+            currencySymbol: $rootScope.currencySymbol,
+            isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled
+        };
+
+        $scope.menuOpen = false;        
+        $rootScope.showNotificationForCurrentUser = true;           
 
     };
 
     $scope.init();
-
+    
     /*
      * update selected menu class
      */
@@ -721,14 +750,14 @@ sntRover.controller('roverController',
      * Handles the bussiness date change in progress
      */
 
-    var LastngDialogId = "";
+    $rootScope.LastngDialogId = "";
 
     $scope.closeBussinnesDatePopup = function() {
-      ngDialog.close(LastngDialogId, "");
+      ngDialog.close($rootScope.LastngDialogId, "");
     };
 
     $rootScope.$on('ngDialog.opened', function(e, $dialog) {
-        LastngDialogId = $dialog.attr('id');
+        $rootScope.LastngDialogId = $dialog.attr('id');
     });
 
     $rootScope.showBussinessDateChangingPopup = function() {
@@ -840,6 +869,45 @@ sntRover.controller('roverController',
      */
     $rootScope.trustAsHtml = function(string) {
         return $sce.trustAsHtml(string);
+    };
+
+    /**
+     * Converts charactors to their html encoded value
+     * @param  {string} str input value
+     * @return {string}     encoded value
+     */
+    var toHTMLSpecials = function (str) {
+      if (typeof str === 'string' && !!str) {
+        str = str.replace(/&/g, '&amp;');
+        str = str.replace(/"/g, '&quot;');
+        str = str.replace(/'/g, '&#039;');
+        str = str.replace(/</g, '&lt;');
+        str = str.replace(/>/g, '&gt;');
+      }
+      return str;
+    }
+
+    /**
+     * Forms highlighted html content to use with ng-bind-html
+     * Handles case when there are special charactors
+     * @param  {string} text text to format
+     * @param  {string} queryString search query
+     * @return {Object} trusted HTML object
+     */
+    $rootScope.getHighlightedHTML = function(text, query) {
+      text = text || '';
+      query = query || '';
+
+      if (!query) {
+        return $rootScope.trustAsHtml(toHTMLSpecials(text));
+      }
+
+       // convert HTML syntax charactors to their encoded value ex: < to &lt;
+      text = text.split(query).map(toHTMLSpecials);
+      query = toHTMLSpecials(query);
+      text = text.join('<span class="highlight">'+ query +'</span>');
+      
+      return $rootScope.trustAsHtml(text);
     };
 
 

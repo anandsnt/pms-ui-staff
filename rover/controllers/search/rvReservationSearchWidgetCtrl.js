@@ -379,7 +379,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			//if it is zero, then we will request for webservice
 			for (var i = 0; i < $scope.results.length; i++) {
 				reservation = $scope.results[i];
-				$scope.results[i].is_row_visible = reservationMeetConditionsToShow(reservation);
+				//CICO-32761 - Suite room component room search retrieves result in API but not visible
+				//in UI. So commenting this.
+				//Everytime API call happening so no use of this filtering
+				//$scope.results[i].is_row_visible = reservationMeetConditionsToShow(reservation);
+				$scope.results[i].is_row_visible = true;
 			}
 			$scope.isTyping = false;
 		};

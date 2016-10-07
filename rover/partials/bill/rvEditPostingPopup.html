@@ -37,7 +37,10 @@
                     </div>
                 </div>
             </div>
-            
+            <!-- Adjustment reason -->
+            <div class="entry full-width">
+                <textarea placeholder="Adjustment reason" ng-model="adjustmentReason" rows="2"></textarea>
+            </div>
             <!-- Preview, hidden until amount edited or charge code changed -->
             <div id="edit-preview" class="entry full-width notice" ng-show="selectedChargeCode.description.length>0 || newAmount.length>0">
                 <strong class="h4" translate>CHARGE_WILL_APPEAR_AS</strong>
@@ -52,7 +55,7 @@
                 </ul>
             </div>
             <div>
-                <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editCharge(newAmount,selectedChargeCode)">{{getEditChargeButtonText() | translate}}</button>
+                <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editCharge(newAmount, selectedChargeCode, adjustmentReason)">{{getEditChargeButtonText() | translate}}</button>
                 <button type="button" class="button blank guest-bill-edit-buttons" ng-click="callActionsPopupAction('close')" translate>CANCEL</button> 
             </div>
         </fieldset>

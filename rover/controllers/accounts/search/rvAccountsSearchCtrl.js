@@ -146,23 +146,11 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 				status		: $scope.status,
 				to_date		: $scope.toDate,
 				per_page 	: $scope.perPage,
-				page  		: $scope.page
+				page  		: $scope.page,
+				account_type: $scope.accountType,
+				is_non_zero : $scope.isNonZero
 			};
 			return params;
-		};
-
-		/**
-		 * Forms highlighted html content to use with ng-bind-html
-		 * Handles case when there are special charactors
-		 * @param  {string} input text to format
-		 * @return {Object} trusted HTML object
-		 */
-		$scope.getHighlightedHTML = function(input) {
-			var text  = $scope.escapeNull(input),
-				query = $scope.query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"); // escape specials
-				regEx = new RegExp(query, 'gi');
-
-			return $rootScope.trustAsHtml(text.replace(regEx, '<span class="highlight">$&</span>'));
 		};
 
 		/**
@@ -396,6 +384,9 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			$scope.amFirstTimeHere = true;
 
 			$scope.query = '';
+			//Initial search param
+			$scope.isNonZero = true;
+			$scope.status = 'OPEN';
 
 			//scroller and related things
 			setScrollerForMe();

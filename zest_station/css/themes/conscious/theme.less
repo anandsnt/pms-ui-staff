@@ -1,0 +1,132 @@
+/* StayNTouch | conscious Zest Station styles */
+
+/* 1. COLORS
+==========================================================*/
+	@brandColor:			#7a813b;
+	
+	@textColor: 			@white;
+	@backgroundColor: 		@black;
+	
+	@actionColor: 			@white;
+	@actionBackground: 		@brandColor;
+	
+	@inputBackground: 		#707070;
+	@transparentColor: 		rgba(255,255,255,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+	@fontFamily: sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+	/*@background: url("../../cssimg/zeststation/conscious-background.jpg") no-repeat;
+	@backgroundSize: 		cover;*/
+	@background: 			#27260d;
+	@backgroundSize: 		'';
+	
+
+	@headerIconsColor: 		@white;
+	@headerIconsActive:		@brandColor;
+
+	.icons { 
+		&.icon-create-key {
+			fill: @white;
+			stroke: @white;
+		}
+
+		&.icon-no-print { stroke: @white; }
+
+		&.icon-oos {
+			fill: @white;
+		}
+	}
+
+/* 4. LAYOUT
+==========================================================*/
+
+	#conscious {
+
+		#header {
+			height: 140px;
+                        position:relative;
+			top: 45px;
+
+			.button {
+				margin-top: -40px;
+			}
+		}
+
+		#logo {
+                        margin-top: -100px;
+			.logo {
+				height: 140px;
+                                
+			}
+		}
+		
+		#options {
+			.icons {
+				fill: @white;
+			}
+
+			&.large-icons {
+				li {
+					.option {
+						.icons {
+							margin: 55px;
+							.square(90px);
+
+							&.icon-checkout {
+								margin: 65px;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		#guests {
+			.button {
+				color: @white;
+				background-color: @black;
+			}
+		}
+
+		#textual,
+		.popup {
+			.icons {
+				fill: @white;
+			}
+		}
+
+		/* Print ***/
+		@media only print {
+			#registration-card {
+				padding-top: 1cm;
+
+				.logo {
+					height: 4cm;
+				}
+
+				.room {
+					margin-top: -2cm;
+				}
+			}
+		}
+	}
+
+.make-key-now{
+    z-index: 11;
+    position: inherit;
+     &.disabled{
+        opacity: .5;
+    }
+}
+
+.demo-text{
+    float: right;
+    left: 0;
+    position: absolute;
+    color: #d8d8d8;
+    z-index: 999;
+}

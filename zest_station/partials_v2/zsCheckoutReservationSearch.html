@@ -1,6 +1,6 @@
 <section id="main" role="main" class="centered" click-touch='resetTime()' ng-hide="alreadyCheckedOut">
     <!-- last name -->
-    <div id="content" ng-show="mode === 'LAST_NAME_ENTRY'">
+    <div id="content" class="input-field-contents" ng-show="mode === 'LAST_NAME_ENTRY'">
         <h1 translate>TYPE_LAST</h1>
         <form method="post" class="form">
             <div class="entry input">
@@ -12,7 +12,7 @@
         </form>
     </div>
     <!-- room number -->
-    <div id="content" ng-show="mode === 'ROOM_NUMBER_ENTRY'">
+    <div id="content" class="input-field-contents" ng-show="mode === 'ROOM_NUMBER_ENTRY'">
         <h1 translate>NEXT_ROOM_NUMBER</h1>
          <form class="form" ng-if='showTowers'>
             <div class="entry">

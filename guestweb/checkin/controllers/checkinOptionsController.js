@@ -138,6 +138,8 @@
 			roomAssignmentActions();
 		};
 		$scope.checkinLater = function() {
+			//not to eta restrict on arrival time
+			delete $rootScope.earlyCheckinRestrictHour;
 			//continue existing precheckin flow
 			$state.go('checkinArrival');
 		};

@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="data">
-                            <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
+                            <h2 ng-bind-html="getHighlightedHTML(row.account_name, textInQueryBox)"></h2>
                         </div>
 
                         <div class="rate" ng-if="row.current_contracts.length > 0">

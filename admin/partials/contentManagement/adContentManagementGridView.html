@@ -78,7 +78,9 @@
             <table class="grid datatable ng-table" ng-show="selectedView == 'home screens'" ng-table="homeScreenParams">
                 
                 <!-- Section table HTML -->
-                <thead>                 
+                <thead>   
+
+                              
 
                     <th class="sortable" ng-class="{
                         'sort-asc': homeScreenParams.isSortBy('name', 'asc'),
@@ -167,7 +169,7 @@
                         <td>{{gridItem.no_of_categories}}</td>
                         <td>{{gridItem.no_of_items}}</td>
                         <td >
-                            <div class="switch-button " ng-show="!gridItem.is_system_defined" ng-class="{'on':gridItem.status}">
+                            <div class="switch-button " ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
@@ -239,7 +241,15 @@
              <!-- Items table HTML -->
              <table class="grid datatable ng-table" ng-show="selectedView == 'items'" ng-table="itemParams">               
                 
-                <thead>                 
+                <thead>      
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': itemParams.isSortBy('id', 'asc'),
+                        'sort-desc': itemParams.isSortBy('id', 'desc')
+                      }"
+                        ng-click="itemParams.sorting({'id' : itemParams.isSortBy('id', 'asc') ? 'desc' : 'asc'})" rowspan="1">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>ID</span></div>
+                    </th>             
 
                     <th class="sortable" ng-class="{
                         'sort-asc': itemParams.isSortBy('name', 'asc'),
@@ -253,7 +263,7 @@
                         'sort-asc': itemParams.isSortBy('page_template', 'asc'),
                         'sort-desc': itemParams.isSortBy('page_template', 'desc')
                       }"
-                        ng-click="itemParams.sorting({'page_template' : itemParams.isSortBy('page_template', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        ng-click="itemParams.sorting({'page_template' : itemParams.isSortBy('page_template', 'asc') ? 'desc' : 'asc'})" rowspan="1">
                         <div><i class="glyphicon glyphicon-user"></i> <span translate>TYPE_LABEL</span></div>
                     </th>
 
@@ -283,6 +293,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:filterComponents">
+                        <td ng-show="selectedView == 'items'">{{gridItem.id}}</td>
                         <td><a ng-click="componentSelected(gridItem)">{{gridItem.name}}</a>
                         <em ng-if="gridItem.is_system_defined" translate="" class="ng-scope">(system defined)</em></td>
                         <td>{{gridItem.page_template}}</td>

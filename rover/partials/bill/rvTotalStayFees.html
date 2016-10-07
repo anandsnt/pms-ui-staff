@@ -115,7 +115,7 @@
 		<figure>
 			<img ng-src="{{reservationBillData.signature_details.signed_image}}" alt="" />
 		</figure>
-		<span class="signature-date" translate>SIGNED <em> {{reservationBillData.signature_details.signed_date|date:dateFormat}} {{reservationBillData.signature_details.local_user_time}}</em> </span>
+		<span class="signature-date" translate>SIGNED <em> {{reservationBillData.signature_details.signed_date|date:dateFormat}} {{reservationBillData.signature_details.signed_time}}</em> </span>
 	</div>
 	<div ng-if="isChargeAccepted()">
 		Charges Accepted VIA On-Line Check-In
@@ -232,12 +232,16 @@
 					</span>
 				</td>
 				<td class="description">
-					<span ng-repeat="description in feesData.description">
+					<strong ng-repeat="description in feesData.description">{{description.item_description}}</strong>
+					<span ng-repeat="description in feesData.description" class="charge" ng-class="{ 'icons edited' : feesData.is_description_edited }">
 						{{description.fees_desc}}
 						<br />
 					</span>
 					<span ng-show="feesData.reference_text != ''" class="reference">
 						{{feesData.reference_text}}
+					</span>
+					<span class="adjusted" ng-show="feesData.adjustment_reason && feesData.adjustment_reason !=''">
+						<em>{{'ADJUSTMENT' | translate}}</em> - {{feesData.adjustment_reason}}
 					</span>
 				</td>
 				<td>

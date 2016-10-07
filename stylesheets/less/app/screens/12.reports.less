@@ -660,6 +660,7 @@
         width: 100%;
         background: transparent;
         padding-right: 20px;
+        overflow: hidden;
         .box-shadow(none);
 
         .wrapper { padding-bottom: 20px; }
@@ -771,21 +772,21 @@
     }
 
     &.cols-2 {
-        .report-col.main-col { .calc-width(100, 260); }
+        .report-col.main-col { .calc-width(100, 270); }
         .cols-wrapper { padding-right: 20px; }
-        > .wrapper { width: 100%; }
+        > .wrapper { min-width: 790px; }
     }
-
+    
     &.cols-3 {
-        .report-col.main-col { .calc-width(100, 530); }
+        .report-col.main-col { .calc-width(100, 540); }
         .cols-wrapper { padding-right: 20px; }
-        > .wrapper { min-width: 1080px; }
+        > .wrapper { min-width: 1060px; }
     }
 
     &.cols-4 {
-        .report-col.main-col { .calc-width(100, 800); }
+        .report-col.main-col { .calc-width(100, 790); }
         .cols-wrapper { padding-right: 20px; }
-        > .wrapper { min-width: 1350px; }
+        > .wrapper { min-width: 1330px; }
     }
 }
 
@@ -1199,6 +1200,7 @@
             .purple { color: @purpleStart; }
             .blue { color: @blue; }
             .unassigned { color: @grey3; }
+            .unassigned { color: @grey3; }
 
             strong { font-weight: 600; }
 
@@ -1309,6 +1311,7 @@
             &.deposit-reports,
             &.balance-reports,
             &.log-table,
+            &.action-manager-reports,
             &.card-authorization-check-reports {
                 th {
                     line-height: 35px;
@@ -1547,27 +1550,97 @@
                             color: @grey3;
                             font-weight: 400;
 
-                            span { .show;}
+                            span { 
+                                .show(); 
 
-                            &.notes {
-                                display: table-cell;
-
-                                strong { 
-                                    color: @grey4;
+                                &.red,
+                                &.orange,
+                                &.green {
                                     text-transform: uppercase;
-                                    font-weight: 600;
-                                    .show;
-
-                                    &.red { color: @red; }
                                 }
+                            }
 
-                                p { line-height: 1em; }
+                            strong { 
+                                color: @grey4;
+                                text-transform: uppercase;
+                                font-weight: 600;
+                                margin-bottom: 10px;
+                                .show();
+
+                                &.red { color: @red; }
+                            }
+
+                            p { 
+                                line-height: 1;
+                            }
+
+                            &.notes,
+                            &.actions {
+                                display: table-cell;
+                            }
+
+                            &.actions {
+                                p {
+                                    position: relative;
+                                    padding-left: 26px;
+
+                                    .icons {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                    }
+
+                                    
+                                }
                             }
 
                             &:first-child { padding-left: 0; }
                         }
                     }
                 }                    
+            }
+
+            &.action-manager-reports {
+                table-layout: fixed;
+
+                thead {
+                    th {
+                        &.department {
+                            width: 150px;
+                        }
+
+                        &.date {
+                            width: 100px;
+                        }
+
+                        &.status {
+                            width:120px;
+                        }
+
+                        &.guest {
+                            width:250px;
+                        }
+                    }
+                }
+                tr {
+
+                    td {
+
+                        .status {
+                            &.unassigned {
+                                color: @red;
+                            }
+
+                            &.assigned {
+                                color: @orangeStart;
+                            }
+
+                            &.completed {
+                                color: @green;
+                            }
+                        }
+                    }
+                }
             }
 
             &.log-reports {
@@ -2797,6 +2870,7 @@
                             padding: 0;
                             background-color: transparent;
                             
+                            .numbers-pagination,
                             .search-pagination {
                                 position: static;
                                 left: auto;

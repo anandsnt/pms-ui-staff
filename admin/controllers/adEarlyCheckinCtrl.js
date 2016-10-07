@@ -1,4 +1,4 @@
-admin.controller('ADEarlyCheckinCtrl',['$scope','$rootScope','$state','adUpsellEarlyCheckinService', 'ADChargeCodesSrv', 'ADRatesSrv', 'ADRatesAddonsSrv','blockCodeData',  function($scope,$rootScope,$state,adUpsellEarlyCheckinService, ADChargeCodesSrv, ADRatesSrv, ADRatesAddonsSrv,blockCodeData){
+admin.controller('ADEarlyCheckinCtrl',['$scope','$rootScope','$state','adUpsellEarlyCheckinService', 'ADChargeCodesSrv', 'ADRatesSrv', 'ADRatesAddonsSrv','blockCodeData','ngDialog',  function($scope,$rootScope,$state,adUpsellEarlyCheckinService, ADChargeCodesSrv, ADRatesSrv, ADRatesAddonsSrv,blockCodeData, ngDialog){
 
 BaseCtrl.call(this, $scope);
 $scope.upsellData = {};
@@ -19,27 +19,30 @@ var setUpList = function(){
 
    //remove the selected item from drop down
   var selectedIds = [];
-  angular.forEach($scope.upsellData.room_types,function(item, index) {
+  $scope.upsellData.room_types.forEach(function(item, index) {
     if((typeof item.max_early_checkins !=="undefined") && item.max_early_checkins !== null){
        selectedIds.push(item.id);
     }
   });
-  angular.forEach(selectedIds,function(id, index1) {
-  angular.forEach($scope.upsellData.room_type_list,function(room_type_list, index) {
-        if(room_type_list.value === id){
-           $scope.upsellData.room_type_list.splice(index,1);
-        }
-    });
+
+  selectedIds.forEach(function(id, index1) {
+    $scope.upsellData.room_type_list.forEach(function(room_type_list, index) {
+          if(room_type_list.value === id){
+             $scope.upsellData.room_type_list.splice(index,1);
+          }
+      });
   });
 
-  angular.forEach($scope.block_codes,function(block, index) {
-    angular.forEach($scope.upsellData.excluded_block_codes,function(excludedblock, index) {
-      if(block.id === excludedblock){
-        $scope.excludedBlockCodes.push(block);
-        block.ticked = true;// for the multi-select implementation
-      }
-    });
-   });
+  var block_codes = [];
+  $scope.block_codes.forEach(function(block, index){
+      $scope.upsellData.excluded_block_codes.forEach(function(excludedblock, index){
+        if(block.id === excludedblock){
+            block.ticked = true;// for the multi-select implementation
+            block_codes.push(block);
+        }
+      });
+  });
+  $scope.excludedBlockCodes = block_codes;
 
 };
 
@@ -60,7 +63,10 @@ $scope.clickExcludeRoomType = function(){
   //While addig a room type, making its max_late_checkins defaults to 0.
   angular.forEach($scope.upsellData.room_types,function(item, index) {
       if(parseInt(item.id) === parseInt($scope.upsellData.selected_room_type)){
-         item.max_early_checkins = 0;
+        // CICO-32613: Do not reset existing value.
+        if (!item.max_early_checkins) {
+            item.max_early_checkins = 0;
+        }
       }
   });
     //Removing the selected room type from dropdown of room type list.
@@ -90,15 +96,24 @@ $scope.deleteRoomType = function(value,name){
   isRoomTypesSelected();
   $scope.upsellData.selected_room_type = "";
 };
+
+$scope.closeBlockClodeWindow = function(){
+  //resets back to initial set and closes dialog
+  $scope.excludedBlockCodes = $scope.blockCodesWhenOpenedPopup;
+  $scope.block_codes = $scope.blockCodeModelWhenOpened;
+    ngDialog.close();
+};
+$scope.blockCodesWhenOpenedPopup = [];
 // to add to excluded block codes
 $scope.clickExcludeBlockCode = function(){
-
   $scope.excludedBlockCodes = [];
   angular.forEach($scope.block_codes, function( value, key ) {
     if ( (value.ticked === true) && ( $scope.excludedBlockCodes.indexOf(value) === -1)) {
         $scope.excludedBlockCodes.push(value);
     }
   });
+
+  ngDialog.close();
 };
 
 //remove exclude block code
@@ -141,7 +156,7 @@ $scope.fetchAddons = function(){
        $scope.addons = $scope.getAddonsWithNameValues(data.results);
        $scope.fetchRates();
    };
-   $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true}, fetchSuccessOfAddons);
+   $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true, "ignore_inventory":true}, fetchSuccessOfAddons);
 };
 
 $scope.fetchRates = function(){
@@ -456,5 +471,19 @@ $scope.startWatching = function(){
         }
    });
 };
+
+//opens the block/group code selector (angular-multi-select) in a new window scope so the elements dont slow down the rest of the page (CICO-34151)
+$scope.clickOpenBlockCodeDialog = function(){
+    $scope.blockCodesWhenOpenedPopup = $scope.excludedBlockCodes;
+    $scope.blockCodeModelWhenOpened = angular.copy($scope.block_codes);
+        ngDialog.open({
+            template: '/assets/partials/earlyCheckin/adEarlyCheckinBlockCodePopup.html',
+           //className: 'ngdialog-theme-default1 calendar-single1',
+            closeByDocument: true,
+            scope: $scope
+        });
+};
+
+
 
 }]);

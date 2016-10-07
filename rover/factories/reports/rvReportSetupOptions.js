@@ -16,6 +16,7 @@ angular.module('reportsModule')
                         'INCLUDE_CANCELLED',
                         'INCLUDE_NO_SHOW',
                         'INCLUDE_NOTES',
+                        'INCLUDE_ACTIONS',
                         'SHOW_GUESTS',
                         'VIP_ONLY'
                     ],
@@ -43,6 +44,7 @@ angular.module('reportsModule')
         			SHOW_DELETED_CHARGES: true
         		},
         		hasGeneralOptions: {
+                    INCLUDE_ACTIONS: true,
         			INCLUDE_NOTES: true,
         			VIP_ONLY: true,
         			INCLUDE_VARIANCE: true,

@@ -2,44 +2,105 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2',
-    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2) {
+sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$translate',
+    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $translate) {
         var that = this;
-
+        /*
+        * The configuredHotels list are the hotels which zest station has added stylesheets / images / icons, and we 'officially' support
+        * all other hotels should default to the SNT theme until which time we add the styling into our product or until a CMS is integrated
+        */
+        this.configuredHotels = [
+            'zoku',
+            'yotel',
+            'avenue',
+            'conscious',
+            'epik',
+            'fontainebleau'
+        ];
+        this.isThemeConfigured = function(theme) {
+            //if theme is configured with stylesheets, use it, otherwise default to SNT Theme
+            return (that.configuredHotels.indexOf(theme) !== -1);
+        };
+        this.hotelTheme = '';
         this.fetchSettings = function() {
             var deferred = $q.defer(),
                 url = '/api/hotel_settings/kiosk';
 
             zsBaseWebSrv.getJSON(url).then(function(data) {
-                deferred.resolve(data);
+                //fetch hotel theme and set variable to this controller,
+                //then resolve the fetch settings
+                that.fetchHotelTheme(data, deferred);
             }, function(data) {
                 deferred.reject(data);
             });
+            return deferred.promise;
+        };
+
+        this.fetchHotelTheme = function(resolveData, deferred) {
+            var url = '/api/email_templates/list.json?hotel_id=' + resolveData.hotel_id,
+                theme = '';
+            zsBaseWebSrv.getJSON(url).then(function(response) {
+                if (response && response.existing_email_templates && response.themes) {
+                    var hotelDetails = _.findWhere(response.themes, {
+                        id: response.existing_email_template_theme
+                    });
+                    if (hotelDetails && hotelDetails.name){
+                        theme = hotelDetails.name.toLowerCase();    
+                    } else {
+                        deferred.reject();
+                    }
+                }
+                if (!that.isThemeConfigured(theme)){
+                    theme = 'snt';
+                }
+                that.hotelTheme = theme;
+                resolveData.themeLogoPath = '/assets/zest_station/css/themes/'+that.hotelTheme+'/logo.svg';
+                //resolves this.fetchSetting()
+                deferred.resolve(resolveData);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        this.fetchLanguages = function() { //to get terms & conditions
+            var url = '/api/kiosk/languages';
+            return zsBaseWebSrv.getJSON(url);
+        };
+
+        /**
+         * to fetch the translation file against languages
+         * @param  {Object} language
+         */
+        this.fetchTranslations = function(languages) {
+            var deferred = $q.defer();
+
+            var languageConfig, langShortCode, url, promises = [], results = {};
+
+            languages.map(function(language) {
+                languageConfig = that.languageValueMappingsForUI[language.name];
+                langShortCode = languageConfig.code;
+                url = '/api/locales/' + langShortCode + '.json';
+                promises.push(
+                    zsBaseWebSrv.getJSON(url)
+                        .then(function(langShortCode, data){
+                                results[langShortCode] = data.data;
+                            }.bind(null, langShortCode)
+                        )
+                    );
+            });
+
+            $q.all(promises).then(function(data){
+                deferred.resolve(results);
+            });
+
             return deferred.promise;
         };
 
         this.fetchHotelSettings = function() { //to get terms & conditions
-            var deferred = $q.defer();
             var url = '/api/hotel_settings.json';
-
-            zsBaseWebSrv.getJSON(url).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
-        };
-
-        this.fetchHotelTheme = function(params) {
-            var deferred = $q.defer();
-            var url = '/api/email_templates/list.json?hotel_id=' + params.id;
-            zsBaseWebSrv.getJSON(url).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-
-            return deferred.promise;
+            return zsBaseWebSrv.getJSON(url);
         };
 
         this.getDoorLockSettings = function() {
@@ -110,6 +171,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             } else return true;
         };
 
+
         this.isValidEmail = function(email) {
             if (email === '') {
                 return false;
@@ -126,7 +188,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer();
             var url = '/staff/payments/tokenize';
 
-            zsBaseWebSrv.postJSON(url, data).then(function(data) {
+            zsBaseWebSrv2.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -168,6 +230,22 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+
+
+        this.emailIsBlackListed = function(data) {
+            //send email address as string, returns true/false depending on if the domain was found to be blacklisted
+            //in settings/zest//email blacklist
+            var deferred = $q.defer();
+            var url = '/api/black_listed_emails';
+
+            zsBaseWebSrv.getJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);    
+            });
+            return deferred.promise;
+        };
+
         this.fetchHotelTime = function() {
             var deferred = $q.defer(),
                 url = '/api/hotel_current_time.json';
@@ -190,68 +268,58 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+
+        this.languageValueMappingsForUI = {
+            //LangugaeName: Corresponsing values
+            english: {
+                'prefix': 'EN',
+                'code': 'en',
+                'flag': 'flag-gb',
+                'language_name_in_local': 'English'
+            },
+            french: {
+                'prefix': 'FR',
+                'code': 'fr',
+                'flag': 'flag-fr',
+                'language_name_in_local': 'Français'
+            },
+            spanish: {
+                'prefix': 'ES',
+                'code': 'es',
+                'flag': 'flag-es',
+                'language_name_in_local': 'Español'
+            },
+            german: {
+                'prefix': '',
+                'code': 'de',
+                'flag': 'flag-de',
+                'language_name_in_local': 'Deutsche'
+            },
+            castellano: {
+                'prefix': '',
+                'code': 'cl',
+                'flag': 'flag-ca',
+                'language_name_in_local': 'Castellano'
+                    //using name as an english reference (which is in the api call)
+            },
+            italian: {
+                'prefix': '',
+                'code': 'it',
+                'flag': 'flag-it',
+                'language_name_in_local': 'Italiano'
+            },
+            netherland: {
+                'prefix': 'NL',
+                'code': 'nl',
+                'flag': 'flag-nl',
+                'language_name_in_local': 'Nederlands'
+            }
+        };
+
         //This data supposed to be handled in back end.
         //TODO : Move to api
         this.returnLanguageList = function() {
             return [ //in our admin/API, these are saved in english, we will keep reference here if needed
-                {
-                    'name': 'Castellano',
-                    'info': {
-                        'prefix': '',
-                        'code': 'cl',
-                        'flag': 'flag-ca',
-                        'language': 'Castellano'
-                            //using name as an english reference (which is in the api call)
-                    }
-                }, {
-                    'name': 'German',
-                    'info': {
-                        'prefix': '',
-                        'code': 'de',
-                        'flag': 'flag-de',
-                        'language': 'Deutsche'
-                    }
-                }, {
-                    'name': 'English',
-                    'info': {
-                        'prefix': 'EN',
-                        'code': 'en',
-                        'flag': 'flag-gb',
-                        'language': 'English'
-                    }
-                }, {
-                    'name': 'Spanish',
-                    'info': {
-                        'prefix': 'ES',
-                        'code': 'es',
-                        'flag': 'flag-es',
-                        'language': 'Español'
-                    }
-                }, {
-                    'name': 'French',
-                    'info': {
-                        'prefix': 'FR',
-                        'code': 'fr',
-                        'flag': 'flag-fr',
-                        'language': 'Français'
-                    }
-                }, {
-                    'name': 'Italian',
-                    'info': {
-                        'prefix': '',
-                        'code': 'it',
-                        'flag': 'flag-it',
-                        'language': 'Italiano'
-                    }
-                }, {
-                    'name': 'Netherlands',
-                    'info': {
-                        'prefix': 'NL',
-                        'code': 'nl',
-                        'flag': 'flag-nl',
-                        'language': 'Nederlands'
-                    }
-                }
             ];
         }
 
@@ -323,6 +391,18 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 url = 'api/users/check_if_admin';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchCheckinReservationDetails = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/reservations?reservation_id=' + params.reservation_id;
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
