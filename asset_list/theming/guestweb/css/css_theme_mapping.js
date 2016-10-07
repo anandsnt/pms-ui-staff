@@ -74,7 +74,10 @@ module.exports = {
 			'guestweb_beverly_hills':[ themeCSSRoot + 'guestweb_beverly_hills.css'],
 			'guestweb_nativ':[ themeCSSRoot + 'guestweb_nativ.css'],
 			'guestweb_west_wing':[ themeCSSRoot + 'guestweb_west_wing.css'],
-			'guestweb_estencia_la_jolla':[ themeCSSRoot + 'guestweb_estencia_la_jolla.css']
+			'guestweb_estencia_la_jolla':[ themeCSSRoot + 'guestweb_estencia_la_jolla.css'],
+			'guestweb_el_castell':[ themeCSSRoot + 'guestweb_el_castell.css'],
+			'guestweb_hotel_epik':[ themeCSSRoot + 'guestweb_hotel_epik.css']
+			
 		}
 	}
 }

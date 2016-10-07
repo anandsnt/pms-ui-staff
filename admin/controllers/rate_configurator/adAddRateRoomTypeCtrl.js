@@ -87,6 +87,11 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
             'room_type_ids': roomIdArray,
             'id' : $scope.rateData.id
         };
+        var saveRoomTypeFailureCallback = function(error){
+            $scope.$emit('hideLoader');
+            $scope.$emit("errorReceived", error);
+            $scope.fetchAllRoomTypes();
+        }
         var saveRoomTypesSuccessCallback = function(data){
             $scope.$emit('hideLoader');
             $scope.rateData.room_types = roomTypes;
@@ -102,7 +107,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
             $scope.$emit("changeMenu", menuName);
         };
 
-        $scope.invokeApi(ADRatesAddRoomTypeSrv.saveRoomTypes, data, saveRoomTypesSuccessCallback);
+        $scope.invokeApi(ADRatesAddRoomTypeSrv.saveRoomTypes, data, saveRoomTypesSuccessCallback, saveRoomTypeFailureCallback);
     };
 
     /**
