@@ -88,7 +88,6 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
             'id' : $scope.rateData.id
         };
         var saveRoomTypeFailureCallback = function(error){
-            console.log("reached failure")
             $scope.$emit('hideLoader');
             $scope.$emit("errorReceived", error);
             $scope.fetchAllRoomTypes();
