@@ -72,7 +72,7 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 				$scope.dataToPaymentList.reservation_card.payment_details.is_swiped = isSwiped ;
 				$scope.dataToPaymentList.reservation_card.payment_details.auth_color_code = colorCode;
 				$scope.dataToPaymentList.reservation_card.payment_details.id = data.id;
-				$scope.dataToPaymentList.reservation_card.allow_post_with_no_credit = data.allow_post_with_no_credit;
+				$scope.dataToPaymentList.reservation_card.restrict_post = data.restrict_post;
 			}
 
 		};

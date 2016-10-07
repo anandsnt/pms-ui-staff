@@ -209,7 +209,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 		};
 		var setTowers = function() {
 			$scope.towerList = [];
-			_.each($scope.zestStationData.towers, function(value, key) {
+			_.map($scope.zestStationData.towers, function(value, key) {
 				$scope.towerList.push({
 					name: key,
 					value: value

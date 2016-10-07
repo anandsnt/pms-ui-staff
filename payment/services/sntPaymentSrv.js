@@ -343,7 +343,7 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
                     var time = new Date().getTime(),
                         service_action = PAYMENT_CONFIG[gateWay].params.service_action;
 
-                    iFrameUrlWithParams = PAYMENT_CONFIG[gateWay].iFrameUrl +
+                    iFrameUrlWithParams = PAYMENT_CONFIG[gateWay].iFrameUrl + '?' +
                         "card_holder_first_name=" + params.card_holder_first_name +
                         "&card_holder_last_name=" + params.card_holder_last_name +
                         "&service_action=" + service_action +
@@ -384,7 +384,11 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             var url = '/staff/reservation/save_payment';
 
             $http.post(url, data).success(data => {
-                deferred.resolve(data);
+                if (data.status === "failure") {
+                    deferred.reject(data.errors);
+                } else {
+                    deferred.resolve(data);
+                }
             }).error(data => {
                 deferred.reject(data);
             });

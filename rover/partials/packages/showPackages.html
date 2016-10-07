@@ -42,7 +42,7 @@
                         <span class="price" ng-hide="existingPackages.is_rate_addon || existingPackages.post_type.value !=='STAY'">{{currencySymbol}}{{existingPackages.totalAmount * packageData.duration_of_stay*(reservationData.reservation_card.number_of_children+reservationData.reservation_card.number_of_adults)| number : 2}}</span>
                     </span>
 
-                    <span class="price" ng-show="existingPackages.is_rate_addon">INCL</span>
+                    <span class="price" ng-show="existingPackages.is_rate_addon && existingPackages.is_inclusive">INCL</span>
                     <button type="button" class="icons icon-trash" ng-hide="existingPackages.is_rate_addon" ng-click="removeSelectedAddons(existingPackages.id, $index)">Remove</button>
                 </li>
             </ul>

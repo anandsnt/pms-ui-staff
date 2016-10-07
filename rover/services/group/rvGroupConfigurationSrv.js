@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccountsConfigurationSrv',
-	function($q, rvBaseWebSrvV2, rvAccountsConfigurationSrv) {
+angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccountsConfigurationSrv', '$timeout',
+	function($q, rvBaseWebSrvV2, rvAccountsConfigurationSrv, $timeout) {
 
 		var self = this;
 
@@ -256,7 +256,9 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 					rvBaseWebSrvV2.getJSON(url).then(
 						function(data) {
 							summaryHolder.accountSummary = data;
-							deferred.resolve(summaryHolder);
+							$timeout(function() {
+							     deferred.resolve(summaryHolder);
+							}, 5000);
 						},
 						function(errorMessage) {
 							deferred.reject(errorMessage);

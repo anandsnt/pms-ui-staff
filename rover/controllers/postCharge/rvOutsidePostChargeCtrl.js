@@ -166,7 +166,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			};
 			$scope.clickedReservationToPostCharge = function(reservationData){
 				$scope.selectedReservationId = reservationData.id;
-				if(!reservationData.allow_post_with_no_credit){
+				if(!!reservationData.restrict_post){
 					$scope.selectedReservationPostNotAllowed = true;
 				} else {
 					$scope.showPostChargesScreen();
@@ -189,7 +189,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			* @return {Boolean}
 			*/
 			$scope.hasPermissionToAllowPostWithNoCredit = function() {
-				return rvPermissionSrv.getPermissionValue('ALLOW_POST_WITH_NO_CREDIT')
+				return rvPermissionSrv.getPermissionValue('ALLOW_POST_WHEN_RESTRICTED')
 			};
 
 			/*
@@ -331,7 +331,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				}
 				else {
 					$scope.reservation_id = $scope.cardAttached.id;
-					$scope.allow_post_with_no_credit = $scope.cardAttached.allow_post_with_no_credit;
+					$scope.restrict_post = $scope.cardAttached.restrict_post;
 					$rootScope.$broadcast('POSTCHARGE');
 					$scope.disableOutsidePostChargeButton = true;
 				}
@@ -358,7 +358,7 @@ sntRover.controller('RVOutsidePostChargeController',
 
 				$scope.guestHasNotCheckedin = false;
 				$scope.reservation_id = $scope.cardAttached.id;
-				$scope.allow_post_with_no_credit = $scope.cardAttached.allow_post_with_no_credit;
+				$scope.restrict_post = $scope.cardAttached.restrict_post;
 				$rootScope.$broadcast('POSTCHARGE');
 				$scope.disableOutsidePostChargeButton = true;
 			};

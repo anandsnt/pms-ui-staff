@@ -994,10 +994,11 @@ sntRover.controller('RVbillCardController',
 	 });
 
 	 $scope.clickedAddCharge = function(activeBillNo){
-	 	if(!$scope.reservationBillData.allow_post_with_no_credit){
+	 	if(!!$scope.reservationBillData.restrict_post){
 	 		$scope.selectedBillNumber = activeBillNo;
+	 		$scope.restrict_post = $scope.reservationBillData.restrict_post;
 			ngDialog.open({
-	    		template: '/assets/partials/postCharge/allowPostWithNoCredit.html',
+	    		template: '/assets/partials/postCharge/restrictPost.html',
 	    		className: '',
 	    		scope: $scope
 	    	});
@@ -1735,7 +1736,7 @@ sntRover.controller('RVbillCardController',
 	* @return {Boolean}
 	*/
 	$scope.hasPermissionToAllowPostWithNoCredit = function() {
-		return rvPermissionSrv.getPermissionValue('ALLOW_POST_WITH_NO_CREDIT')
+		return rvPermissionSrv.getPermissionValue('ALLOW_POST_WHEN_RESTRICTED')
 	};
     // CICO-6089 : Handle toggle button.
     $scope.toggleCheckoutWithoutSettlement = function(){

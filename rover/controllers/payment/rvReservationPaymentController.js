@@ -43,7 +43,7 @@ sntRover.controller('reservationPaymentController',
 
 
 	var successCallBackOfUpdateAllowPostWithNoCredit = function(){
-        $scope.reservationData.reservation_card.allow_post_with_no_credit = !$scope.reservationData.reservation_card.allow_post_with_no_credit;
+        $scope.reservationData.reservation_card.restrict_post = !$scope.reservationData.reservation_card.restrict_post;
     };
     /*
      * Allow post with no credit
@@ -51,9 +51,9 @@ sntRover.controller('reservationPaymentController',
      */
     $scope.setAllowPostWithNoCredit= function(){
 
-    	if(rvPermissionSrv.getPermissionValue('ALLOW_POST_WITH_NO_CREDIT')){
+    	if(rvPermissionSrv.getPermissionValue('ALLOW_POST_WHEN_RESTRICTED')){
     		var updateParams = {
-	            "allow_post_with_no_credit": !$scope.reservationData.reservation_card.allow_post_with_no_credit,
+	            "restrict_post": !$scope.reservationData.reservation_card.restrict_post,
 	            "reservationId": $scope.reservationData.reservation_card.reservation_id
 	        }
 
