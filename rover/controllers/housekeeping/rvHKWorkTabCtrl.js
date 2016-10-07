@@ -68,21 +68,35 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		// only for standalone will these get typecasted to booleans
 		$scope.taskDetails.length && $scope.isStandAlone && $_updateWorkStatusFlags();
 
+		var getServiceStatusTitle = function (room, isStandAlone) {
+			if (isStandAlone) {
+				return false;
+			}
 
+			var isOOO = false;
+			var isOOS = false;
+			var OOSTitle = 'Out Of Service';
+			var OOOTitle = 'Out Of Order';
+
+			// see: commit# 07679f9d new code
+			if ( room.hasOwnProperty('service_status') ) {
+				isOOO = room.service_status.value === 'OUT_OF_ORDER';
+				isOOS = room.service_status.value === 'OUT_OF_SERVICE';
+			} else if (!!room.hk_status) {
+				// see: commit# 07679f9d old-code-fallback
+				isOOO = room.hk_status.value === 'OO';
+				isOOS = room.hk_status.value === 'OS';
+			} else {
+				isOOO = room.room_reservation_hk_status === 3;
+				isOOS = room.room_reservation_hk_status === 2;
+			}
+
+			return isOOS? OOSTitle : (isOOO ? OOOTitle : false);
+		};
 
 		// default room HK status
 		// will be changed only for connected
-		if ( !$scope.isStandAlone ) {
-			if ( $scope.roomDetails.hk_status_list[0].value === 'OS' ) {
-				$scope.ooOsTitle = 'Out Of Service';
-			} else if ( $scope.roomDetails.hk_status_list[0].value === 'OO' ) {
- 				$scope.ooOsTitle = 'Out Of Order';
-			} else {
-				$scope.ooOsTitle = false;
-			}
-		} else {
-			$scope.ooOsTitle = false;
-		}
+		$scope.ooOsTitle = getServiceStatusTitle($scope.roomDetails, $scope.isStandAlone);
 
 		$scope.checkShow = function(from) {
 			if ( from === 'clean' && ($scope.roomDetails.current_hk_status === 'CLEAN' || $scope.roomDetails.current_hk_status === 'INSPECTED') ) {
