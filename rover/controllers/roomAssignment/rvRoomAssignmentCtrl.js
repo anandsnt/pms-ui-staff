@@ -179,26 +179,28 @@ sntRover.controller('RVroomAssignmentController',[
 			var isOverBookPermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
 			$scope.currentRoomObject = roomObject;
 
-			if ( roomObject.room_type_code !== currentRoomType.type ) {
-				if (!isAvailablityExist) {
-					if (roomObject.is_suite_room || !isOverBookPermission) {
-						ngDialog.open({
-							template: '/assets/partials/roomAssignment/rvRoomTypeNotAvailable.html',
-							className: 'ngdialog-theme-default',
-							scope: $scope
-						});
-					} else {
-						ngDialog.open({
-							template: '/assets/partials/roomAssignment/rvOverBookRoom.html',
-							controller: 'RVOverBookRoomDialogController',
-							className: 'ngdialog-theme-default',
-							scope: $scope
-						});
-					}
+			//as per CICO-34310 if room type in dropdown and room type of chosen room are same as old room type
+			//No need to check availability or overbooking
+			if ( currentRoomType.type === oldRoomType && roomObject.room_type_code === oldRoomType) {
+				$scope.showMaximumOccupancyDialog(roomObject);
+			}
+			//if room type of chosen room is different from old room type, check for overbooking
+			else if (!isAvailablityExist) {
+				if (roomObject.is_suite_room || !isOverBookPermission) {
+					ngDialog.open({
+						template: '/assets/partials/roomAssignment/rvRoomTypeNotAvailable.html',
+						className: 'ngdialog-theme-default',
+						scope: $scope
+					});
 				} else {
-					$scope.showMaximumOccupancyDialog(roomObject);
+					ngDialog.open({
+						template: '/assets/partials/roomAssignment/rvOverBookRoom.html',
+						controller: 'RVOverBookRoomDialogController',
+						className: 'ngdialog-theme-default',
+						scope: $scope
+					});
 				}
-			} else if ( currentRoomType.type === oldRoomType ) {
+			} else {
 				$scope.showMaximumOccupancyDialog(roomObject);
 			}
 		}
