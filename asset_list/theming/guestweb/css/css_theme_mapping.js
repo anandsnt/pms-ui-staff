@@ -73,7 +73,8 @@ module.exports = {
 			'guestweb_sombrero':[ themeCSSRoot + 'guestweb_sombrero.css'],
 			'guestweb_beverly_hills':[ themeCSSRoot + 'guestweb_beverly_hills.css'],
 			'guestweb_nativ':[ themeCSSRoot + 'guestweb_nativ.css'],
-			'guestweb_west_wing':[ themeCSSRoot + 'guestweb_west_wing.css']
+			'guestweb_west_wing':[ themeCSSRoot + 'guestweb_west_wing.css'],
+			'guestweb_estencia_la_jolla':[ themeCSSRoot + 'guestweb_estencia_la_jolla.css']
 		}
 	}
 }
