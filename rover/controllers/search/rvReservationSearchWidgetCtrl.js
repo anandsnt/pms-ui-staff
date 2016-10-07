@@ -77,14 +77,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		};
 		$scope.setScroller('result_showing_area', scrollerOptions);
 
-		// if returning back and there was a search query typed in restore that
-		// else reset the query value in vault
-		if ($stateParams.useCache && !!$vault.get('searchQuery')) {
-			$scope.textInQueryBox = $vault.get('searchQuery');
-		} else {
-			$vault.set('searchQuery', '');
-		}
-
 		if ($stateParams.type === "LATE_CHECKOUT") {
 			$scope.isLateCheckoutList = true;
 		} else {
@@ -279,6 +271,16 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.$emit("UpdateHeading", 'SEARCH_NORMAL');
 			return true;
 		}; //end of query entered
+
+		// Relocated and modified the code to fix CICO-33114.
+		// if returning back and there was a search query typed in restore that
+		// else reset the query value in vault
+		if ($stateParams.useCache && !!$vault.get('searchQuery')) {
+			$scope.textInQueryBox = $vault.get('searchQuery');
+			$scope.queryEntered();
+		} else {
+			$vault.set('searchQuery', '');
+		}
 
 		/**
 		 * fnction to execute on focused out event of search textbox is using that feature in dahbaord
