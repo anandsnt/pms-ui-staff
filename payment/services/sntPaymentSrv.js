@@ -384,7 +384,11 @@ sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
             var url = '/staff/reservation/save_payment';
 
             $http.post(url, data).success(data => {
-                deferred.resolve(data);
+                if (data.status === "failure") {
+                    deferred.reject(data.errors);
+                } else {
+                    deferred.resolve(data);
+                }
             }).error(data => {
                 deferred.reject(data);
             });

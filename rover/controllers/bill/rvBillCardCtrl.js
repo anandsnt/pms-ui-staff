@@ -458,7 +458,8 @@ sntRover.controller('RVbillCardController',
 
 			//To handle fees open/close
 			value.isOpenFeesDetails = false;
-			if(key === 0 && $scope.clickedButton === "viewBillButton"){
+			//CICO-33934 fix to set flag for current active tab.
+			if((key === 0 && $scope.clickedButton === "viewBillButton") || key === $scope.currentActiveBill){
 				value.isOpenFeesDetails = true;
 			}
 			value.hasFeesArray = true;
@@ -995,6 +996,7 @@ sntRover.controller('RVbillCardController',
 	 $scope.clickedAddCharge = function(activeBillNo){
 	 	if(!!$scope.reservationBillData.restrict_post){
 	 		$scope.selectedBillNumber = activeBillNo;
+	 		$scope.restrict_post = $scope.reservationBillData.restrict_post;
 			ngDialog.open({
 	    		template: '/assets/partials/postCharge/restrictPost.html',
 	    		className: '',
