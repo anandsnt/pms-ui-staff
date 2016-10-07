@@ -32,8 +32,7 @@ var sntRover = angular.module('sntRover',[
 		'clickTouch',
 		'oc.lazyLoad',
 		'limitInputRange',
-		'emitWhen',
-		'prettyTimeAgoModule']);
+		'emitWhen']);
 
 sntRover.config([
 	'$httpProvider',
