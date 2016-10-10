@@ -302,11 +302,12 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 							rvBaseWebSrvV2.getJSON(url)
 								.then(
 									function(accountSummary) {
-										summaryHolder.accountSummary = accountSummary;
-										deferred.resolve({
-											groupSummary: groupSummary,
-											accountSummary: accountSummary
-										});
+										_.defer(
+											deferred.resolve({
+												groupSummary: groupSummary,
+												accountSummary: accountSummary
+											})
+										);
 									},
 									function(errorMessage) {
 										deferred.reject(errorMessage);
