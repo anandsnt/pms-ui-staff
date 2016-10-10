@@ -300,7 +300,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
         };
         
         $scope.includedRoomTypeSelected;
-        $scope.leftToRight = function(){
+        $scope.excludeRoomType = function(){
             if ($scope.selectedIncludedRoomTypeIndex === -1){
                 return;
             }
@@ -320,7 +320,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
             $scope.includedRoomTypeSelected = {};
             $scope.excludedRoomTypeSelected = {};
         };
-        $scope.rightToLeft = function(){
+        $scope.includeRoomType = function(){
             if ($scope.selectedExcludedRoomTypeIndex === -1){
                 return;
             }
@@ -354,7 +354,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
             }
         };
         
-        $scope.moveAllLeft = function(){
+        $scope.includeAllRoomTypes = function(){
             for (var i in $scope.excludedRoomTypes){
                 $scope.includedRoomTypes.push($scope.excludedRoomTypes[i]);
             }
@@ -362,7 +362,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
             $scope.deSelectAll();
             $scope.resortLists();
         };
-        $scope.moveAllRight = function(){
+        $scope.excludeAllRoomTypes = function(){
             for (var i in $scope.includedRoomTypes){
                 $scope.excludedRoomTypes.push($scope.includedRoomTypes[i]);
             }
