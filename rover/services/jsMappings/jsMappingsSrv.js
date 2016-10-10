@@ -70,7 +70,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
 
                     return $q.all(promises).then(function () {
                         $ocLazyLoad.inject(['sntPayConfig', 'sntPay','sntPayTemplates']);
-                        _.defer( deferred.resolve() );
+                        _.defer( deferred.resolve );
                     });
 
                 } else {
