@@ -66,6 +66,7 @@ angular.module('groupModule', [])
                 //to tackle from coming admin app to rover
                 summaryData: ['rvGroupConfigurationSrv', '$stateParams', 'groupAssets', 'loadPaymentModule',
                     function(rvGroupConfigurationSrv, $stateParams, groupAssets, loadPaymentModule){
+                        console.log( loadPaymentModule )
                         var isInAddMode = ($stateParams.id === "NEW_GROUP");
                         var params = {
                             groupId: $stateParams.id
@@ -75,6 +76,7 @@ angular.module('groupModule', [])
                 ],
                 holdStatusList: ['rvGroupConfigurationSrv', 'groupAssets', 'loadPaymentModule',
                     function(rvGroupConfigurationSrv, groupAssets, loadPaymentModule) {
+                        console.log( loadPaymentModule )
                         var params = {
                             is_group: true
                         }
