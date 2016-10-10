@@ -121,6 +121,19 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 if ($scope.isEditable !== false) {
                     $scope.payment.isEditable = true;
                 }
+            },
+            isCardSelectionDisabled = function() {
+                return !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].disableCardSelection;
+            },
+            handlePaymentError = function(errorMessage) {
+                $timeout(()=> {
+                    $scope.paymentAttempted = true;
+                    $scope.isPaymentFailure = true;
+                    $scope.paymentErrorMessage = errorMessage[0];
+                    console.log("payment failed" + errorMessage);
+                    $scope.$emit('PAYMENT_FAILED', errorMessage);
+                    $scope.$emit('hideLoader');
+                }, 300)
             };
 
         /**
@@ -162,7 +175,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             var isManualEntry = !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl &&
                 $scope.payment.isManualEntryInsideIFrame;
 
-            return (isCCPresent && $scope.payment.screenMode === "PAYMENT_MODE" &&
+            return !isCardSelectionDisabled() && (isCCPresent && $scope.payment.screenMode === "PAYMENT_MODE" &&
             (isManualEntry || $scope.hotelConfig.paymentGateway !== 'sixpayments'));
         };
 
@@ -532,6 +545,13 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 return;
             }
 
+            // --- CBA ---
+            if ($scope.selectedPaymentType === "CC" &&
+                $scope.hotelConfig.paymentGateway === 'CBA') {
+                $scope.$broadcast('INITIATE_CBA_PAYMENT', params);
+                return;
+            }
+
             //for CC payments, we need payment type id
             var paymentTypeId;
 
@@ -556,13 +576,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     $scope.onPaymentSuccess(response);
                     $scope.$emit('hideLoader');
                 }, errorMessage => {
-                    $scope.paymentAttempted = true;
-                    $scope.isPaymentFailure = true;
-
-                    $scope.paymentErrorMessage = errorMessage[0];
-                    console.log("payment failed" + errorMessage);
-                    $scope.$emit('PAYMENT_FAILED', errorMessage);
-                    $scope.$emit('hideLoader');
+                    handlePaymentError(errorMessage);
                 }
             );
 
@@ -657,7 +671,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     //Add to guestcard feature for C&P
                     $scope.payment.showAddToGuestCard = !!$scope.reservationId && ($scope.payment.isManualEntryInsideIFrame ? false : true);
                     refreshIFrame();
-                } else {
+                } else if (!isCardSelectionDisabled()) {
                     // In case no card has been selected yet, move to add card mode
                     !$scope.showSelectedCard() && changeToCardAddMode();
                 }
@@ -981,9 +995,15 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $scope.hotelConfig.emvTimeout = $scope.hotelConfig.emvTimeout || 120;
             $scope.hotelConfig.paymentGateway = $scope.hotelConfig.paymentGateway || "";
 
+            if ($scope.hotelConfig.paymentGateway === "CBA") {
+                $scope.$on("CBA_PAYMENT_FAILED", (event, errorMessage)=> {
+                    handlePaymentError(errorMessage);
+                });
+            }
+
             $scope.currencySymbol = $scope.hotelConfig.currencySymbol;
 
-            if ($scope.fetchLinkedCards) {
+            if ($scope.fetchLinkedCards && !isCardSelectionDisabled()) {
                 fetchAttachedCreditCards();
             }
 
@@ -1018,7 +1038,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             /**
              *
              */
-            if (!$scope.hotelConfig.isStandAlone) {
+            if (!$scope.hotelConfig.isStandAlone && !isCardSelectionDisabled()) {
                 changeToCardAddMode();
             }
 
