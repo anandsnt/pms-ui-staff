@@ -45,11 +45,13 @@ sntZestStation.controller('zsHomeCtrl', [
 
 		$scope.language = {};
 
-		var setToDefaultLanguage = function(){
+		var setToDefaultLanguage = function() {
 			//assigning default language
-			if($scope.languages.length) {
+			if ($scope.languages.length) {
 				var defaultLangName = zestStationSettings.zest_lang.default_language.toLowerCase(),
-					defaultLanguage = _.findWhere($scope.languages, { name : defaultLangName });
+					defaultLanguage = _.findWhere($scope.languages, {
+						name: defaultLangName
+					});
 				$scope.selectLanguage(defaultLanguage);
 
 			}
@@ -72,6 +74,7 @@ sntZestStation.controller('zsHomeCtrl', [
 				if (userInActivityTimeInHomeScreenInSeconds >= 120) {
 					console.info("translating to default lanaguage");
 					setToDefaultLanguage();
+					$scope.runDigestCycle();
 					userInActivityTimeInHomeScreenInSeconds = 0;
 				} else {
 					//do nothing;
@@ -102,7 +105,6 @@ sntZestStation.controller('zsHomeCtrl', [
 				langShortCode = languageConfig.code;
 			$translate.use(langShortCode);
 			$scope.selectedLanguage = language;
-			$scope.runDigestCycle();
 		};
 
 		/**
@@ -123,7 +125,9 @@ sntZestStation.controller('zsHomeCtrl', [
 			$scope.zestStationData.keyCardInserted = false;
 
 			//list of languages configured for this hotel
-			var combinedList = _.partition(languages.languages, { position: null }),
+			var combinedList = _.partition(languages.languages, {
+					position: null
+				}),
 				nullList = combinedList[0],
 				listHavingValues = combinedList[1];
 			$scope.languages = _.sortBy(listHavingValues, 'position').concat(nullList);
@@ -135,13 +139,14 @@ sntZestStation.controller('zsHomeCtrl', [
 			});
 
 			//assigning default language initially
-			if(!zsGeneralSrv.isDefaultLanguageSet){
+			if (!zsGeneralSrv.isDefaultLanguageSet) {
 				setToDefaultLanguage();
 				zsGeneralSrv.isDefaultLanguageSet = true;
-			}
-			else{
-			//set the active language as the selected language in the home screen
-				var activeLanguage = _.findWhere($scope.languages, { code : $translate.use() });
+			} else {
+				//set the active language as the selected language in the home screen
+				var activeLanguage = _.findWhere($scope.languages, {
+					code: $translate.use()
+				});
 				$scope.selectedLanguage = activeLanguage;
 			}
 
