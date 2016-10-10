@@ -2,12 +2,12 @@
     <div id="content" class="input-field-contents">
         <h1 translate>NATIONALITY</h1>
         <!-- <h3>Subheading text here</h3> -->
-        <form method="post" class="form">
+        <form method="post" class="form" focus-on='true'>
 
-            <div class="entry select select-with-button input" ng-blur='showingAutoComplete()' ng-focus='showingAutoComplete()' ng-class="{'autocomplete-border':showingAutoCompleteArea == true}">
+            <div class="entry select select-with-button input" ng-class="{'autocomplete-border':showingAutoCompleteArea == true}">
                 <!--input type='text' id='country-selector'-->
 
-                <select id='country-selector' class="turn-to-ac select" name="Country" autofocus="autofocus" autocorrect="off" autocomplete="off"
+                <select id='country-selector' class="turn-to-ac select" name="Country" autocorrect="off" autocomplete="off"
                 ng-options="country.id as country.value for country in countryList" 
                 ng-model="selectedCountry.id" 
                 ng-keydown='showingAutoComplete()'
@@ -17,7 +17,7 @@
 
                 <!-- sorted -->
 
-                <select id='country-selector' class="turn-to-ac select" name="Country" autofocus="autofocus" autocorrect="off" autocomplete="off"
+                <select  id='country-selector' class="turn-to-ac select" name="Country" autocorrect="off" autocomplete="off"
                  ng-model="selectedCountry.id" ng-if="zestStationData.kiosk_enforce_country_sort">
                     <option value="">{{SELECT_COUNTRY}}</option><!-- TODO need to have this translatable -->
                     <option ng-repeat="country in sortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
@@ -27,7 +27,7 @@
 
             </div>
 
-            <div ng-if="zestStationData.theme === 'yotel'" ng-include="icons.url.clear_icon" click-touch="clearNationality()"></div>
+            <div clear-field='input' ng-if="zestStationData.theme === 'yotel'" ng-include="icons.url.clear_icon" click-touch="clearNationality()"></div>
 
             <div class="action">
                 <button type="button" class="button left-aligned-next" ng-click="saveNationality()">{{'NEXT_BTN' |translate}}</button>
