@@ -245,6 +245,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			return deferred.promise;
 		};
 
+		/*** DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
 		var summaryHolder = {},
 			getAccountSummary = function(deferred, params) {
 				if (params.accountId === "NEW_ACCOUNT") {
@@ -267,6 +268,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 				}
 				return deferred.promise;
 			};
+		/*** DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
 
 		this.getGroupSummary = function(params) {
 			var deferred = $q.defer();
@@ -278,18 +280,39 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			} else {
 				url = 'api/groups/' + params.groupId;
 				rvBaseWebSrvV2.getJSON(url).then(
-					function(data) {
-						if (data.rate === null){
-							data.rate = -1;
+					function(groupSummary) {
+						var postingAccId = groupSummary.posting_account_id,
+							url;
+
+						if ( groupSummary.rate === null ){
+							groupSummary.rate = -1;
 						}
+
 						self.lastFetchedGroup = {
-							id: data.group_id,
-							demographics: angular.copy(data.demographics)
+							id: groupSummary.group_id,
+							demographics: angular.copy(groupSummary.demographics)
 						}
-						summaryHolder.groupSummary = data;
-						getAccountSummary(deferred, {
-							accountId: data.posting_account_id
-						});
+
+						if ( groupSummary.posting_account_id === 'NEW_ACCOUNT' ) {
+							deferred.resolve({
+								accountSummary: angular.copy( rvAccountsConfigurationSrv.baseAccountSummaryData )
+							});
+						} else {
+							url = 'api/posting_accounts/' + params.accountId;
+							rvBaseWebSrvV2.getJSON(url)
+								.then(
+									function(accountSummary) {
+										summaryHolder.accountSummary = accountSummary;
+										deferred.resolve({
+											groupSummary: groupSummary,
+											accountSummary: accountSummary
+										});
+									},
+									function(errorMessage) {
+										deferred.reject(errorMessage);
+									}
+								);
+						}
 					},
 					function(errorMessage) {
 						deferred.reject(errorMessage);
