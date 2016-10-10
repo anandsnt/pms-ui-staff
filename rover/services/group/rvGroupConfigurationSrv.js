@@ -293,12 +293,12 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 							demographics: angular.copy(groupSummary.demographics)
 						}
 
-						if ( groupSummary.posting_account_id === 'NEW_ACCOUNT' ) {
+						if ( postingAccId === 'NEW_ACCOUNT' ) {
 							deferred.resolve({
 								accountSummary: angular.copy( rvAccountsConfigurationSrv.baseAccountSummaryData )
 							});
 						} else {
-							url = 'api/posting_accounts/' + params.accountId;
+							url = 'api/posting_accounts/' + postingAccId;
 							rvBaseWebSrvV2.getJSON(url)
 								.then(
 									function(accountSummary) {
