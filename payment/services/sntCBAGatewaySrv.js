@@ -17,6 +17,31 @@ sntPay.service('sntCBAGatewaySrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG'
             }).then(response => response.data.id, response => response.data);
         };
 
+        service.updateTransactionSuccess = function(transactionId, cordovaResponse) {
+            return $http.put('/api/cc/' + transactionId, {
+                "status": true,
+                "req_reference_no": cordovaResponse.rrn,
+                "external_transaction_ref": null,
+                "authorization_code": cordovaResponse.tid,
+                "external_print_data": null,
+                "external_message": "external_message",
+                "payment_method": {
+                    "card_name": cordovaResponse.card_name,
+                    "card_expiry": cordovaResponse.expiry_date,
+                    "card_number": cordovaResponse.card_sequence,
+                    "credit_card_type": null
+                }
+            }).then(response => response.payment_method_id, response => response.data);
+        };
+
+        service.updateTransactionFailure = function(transactionId, cordovaResponse) {
+            return $http.put('/api/cc/' + transactionId, {
+                "status": false,
+                "external_failure_reason": cordovaResponse.RVErrorCode,
+                "external_message": cordovaResponse.RVErrorDesc
+            }).then(response => response.data.id, response => response.data);
+        };
+
         /**
          *
          */
