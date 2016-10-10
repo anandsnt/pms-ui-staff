@@ -86,6 +86,11 @@ angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWe
 				if ( data['is_opted_late_checkout'] ) {
 					self.data[i]['is_opted_late_checkout'] = data['is_opted_late_checkout'];
 				}
+				// Fix for CICO-33114 where the departure date in cache wasn't getting updated.
+				if ( data['departure_date'] ) {
+          self.data[i]['departure_date'] = data['departure_date'];
+        }
+			
 			}
 
 			// if not then check if this room number is assigned to any other reservation
