@@ -16,7 +16,6 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
             $(document).on('touchstart', function() {
                 documentClick = true;
             });
-            console.info('focus on is working', attrs.focusOn);
             var elToFocus = '';
             if (attrs.focusOn){
                 elToFocus = attrs.focusOn;
@@ -29,7 +28,9 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                         $(elToFocus).keydown(scopeFn);
                         $(elToFocus).change(scopeFn);
                         $(elToFocus).blur(scopeFn);
-
+                        //sets initial focus 
+                        $(elToFocus).focus();
+                        $(elToFocus).click();
                         scopeFn();
                     },0);
                 }

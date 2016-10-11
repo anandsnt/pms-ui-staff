@@ -687,14 +687,9 @@ sntZestStation.controller('zsRootCtrl', [
                 if ($scope.isIpad){
                     $scope.callBlurEventForIpad();
                 }
-                if (elementId === 'country-selector'){
-                	elementId = 'input'
-                	$(elementId).focus();
-                	$(elementId).click();
-                } else {
-	                document.getElementById(elementId).focus();
-	                document.getElementById(elementId).click();
-                }
+                document.getElementById(elementId).focus();
+                document.getElementById(elementId).click();
+                
             }, 300);
 
         };
