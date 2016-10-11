@@ -134,6 +134,28 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     $scope.$emit('PAYMENT_FAILED', errorMessage);
                     $scope.$emit('hideLoader');
                 }, 300)
+            },
+            initiateCBAlisteners = function() {
+                var listenerCBAPaymentFailure = $scope.$on("CBA_PAYMENT_FAILED", (event, errorMessage)=> {
+                    handlePaymentError(errorMessage);
+                });
+                var listenerCBAPaymentSuccess = $scope.$on("CBA_PAYMENT_SUCCESS", (event, response)=> {
+                    //we need to notify the parent controllers to show loader
+                    //as this is an external directive
+                    $scope.$emit('showLoader');
+                    var params = intiateSubmitPaymentParams();
+                    params.postData.payment_type_id = response.payment_method_id;
+                    sntPaymentSrv.submitPayment(params).then(response => {
+                            $scope.onPaymentSuccess(response);
+                            $scope.$emit('hideLoader');
+                        }, errorMessage => {
+                            handlePaymentError(errorMessage);
+                        }
+                    );
+                });
+
+                $scope.$on("$destroy", listenerCBAPaymentFailure);
+                $scope.$on("$destroy", listenerCBAPaymentSuccess);
             };
 
         /**
@@ -162,7 +184,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         $scope.shouldHidePaymentButton = function() {
             return (!$scope.selectedPaymentType || !$scope.hasPermission ||
             $scope.isGCBalanceShort() ||
-            ($scope.paymentAttempted && !$scope.isPaymentFailure));
+            (!$scope.splitBillEnabled && $scope.paymentAttempted && !$scope.isPaymentFailure));
         };
 
         /**
@@ -176,7 +198,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $scope.payment.isManualEntryInsideIFrame;
 
             return !isCardSelectionDisabled() && (isCCPresent && $scope.payment.screenMode === "PAYMENT_MODE" &&
-            (isManualEntry || $scope.hotelConfig.paymentGateway !== 'sixpayments'));
+                (isManualEntry || $scope.hotelConfig.paymentGateway !== 'sixpayments'));
         };
 
         /**
@@ -356,7 +378,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     ...$scope.payment.tokenizedCardData.apiParams,
                     workstation_id: $scope.hotelConfig.workstationId,
                     reservation_id: $scope.reservationId,
-                    bill_number: $scope.billNumber
+                    bill_number: $scope.billNumber,
+                    add_to_guest_card: $scope.payment.addToGuestCardSelected
                 }).then(response => {
                     var cardDetails = $scope.payment.tokenizedCardData;
                     $scope.$emit('SUCCESS_LINK_PAYMENT', {
@@ -864,6 +887,9 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             var paymentData = data.paymentData;
 
             if (/^ADD_PAYMENT_/.test($scope.actionType) || !!paymentData.apiParams.mli_token) {
+
+                showAddtoGuestCardBox();
+
                 $scope.payment.tokenizedCardData = paymentData;
                 $scope.selectedCC = $scope.selectedCC || {};
                 $scope.selectedCC.card_code = paymentData.cardDisplayData.card_code;
@@ -996,9 +1022,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $scope.hotelConfig.paymentGateway = $scope.hotelConfig.paymentGateway || "";
 
             if ($scope.hotelConfig.paymentGateway === "CBA") {
-                $scope.$on("CBA_PAYMENT_FAILED", (event, errorMessage)=> {
-                    handlePaymentError(errorMessage);
-                });
+                initiateCBAlisteners();
             }
 
             $scope.currencySymbol = $scope.hotelConfig.currencySymbol;

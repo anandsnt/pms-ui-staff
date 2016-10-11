@@ -7,20 +7,27 @@ angular.module('sntPay').controller('payCBACtrl',
                     status: null
                 },
                 onSubmitSuccess = response => {
-                    console.log("onSubmitSuccess", response);
+                    sntCBAGatewaySrv.updateTransactionSuccess(
+                        transaction.id,
+                        response
+                    ).then(response => {
+                        $scope.$emit("hideLoader");
+                        $scope.$emit("CBA_PAYMENT_SUCCESS", response);
+                    }, errorMessage => {
+                        $scope.$emit("hideLoader");
+                        $scope.$emit("CBA_PAYMENT_FAILED", errorMessage);
+                    })
                 },
                 onSubmitFailure = err => {
                     sntCBAGatewaySrv.updateTransactionFailure(
                         transaction.id,
                         err
-                    ).then(response => {
+                    ).then(err => {
                         $scope.$emit("hideLoader");
-                        console.log(response);
                         var errorMessage = [err.RVErrorCode + " " + err.RVErrorDesc];
                         $scope.$emit("CBA_PAYMENT_FAILED", errorMessage);
                     }, errorMessage => {
                         $scope.$emit("hideLoader");
-                        console.log(errorMessage);
                         $scope.$emit("CBA_PAYMENT_FAILED", errorMessage);
                     });
                 },

@@ -17,6 +17,12 @@ sntPay.service('sntCBAGatewaySrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG'
             }).then(response => response.data.id, response => response.data);
         };
 
+        /**
+         *
+         * @param transactionId
+         * @param cordovaResponse
+         * @returns {*|Promise.<response.data|{bill_details, room_number}>}
+         */
         service.updateTransactionSuccess = function(transactionId, cordovaResponse) {
             return $http.put('/api/cc/' + transactionId, {
                 "status": true,
@@ -34,6 +40,12 @@ sntPay.service('sntCBAGatewaySrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG'
             }).then(response => response.payment_method_id, response => response.data);
         };
 
+        /**
+         *
+         * @param transactionId
+         * @param cordovaResponse
+         * @returns {*|Promise.<response.data|{bill_details, room_number}>}
+         */
         service.updateTransactionFailure = function(transactionId, cordovaResponse) {
             return $http.put('/api/cc/' + transactionId, {
                 "status": false,
@@ -44,6 +56,9 @@ sntPay.service('sntCBAGatewaySrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG'
 
         /**
          *
+         * @param params
+         * @param onSuccess
+         * @param onFailure
          */
         service.doPayment = function(params, onSuccess, onFailure) {
             cordovaAPI.callCordovaService({
@@ -58,6 +73,8 @@ sntPay.service('sntCBAGatewaySrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG'
         /**
          *
          * @param params
+         * @param onSuccess
+         * @param onFailure
          */
         service.doRefund = function(params, onSuccess, onFailure) {
             cordovaAPI.callCordovaService({
