@@ -57,19 +57,8 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 					$('select').selectToAutocomplete();
 
 					$timeout(function(){
-						$(document).on('touchstart', function() {
-						    documentClick = true;
-						});
 						$scope.showOnScreenKeyboard('country-selector');
 						$scope.focusInputField('country-selector');
-						$timeout(function(){
-							$(document).bind('touchstart touch tap click', function (event) {
-								$scope.showingAutoComplete();
-							});
-							$($('input')[0]).keydown($scope.showingAutoComplete());
-							$($('input')[0]).change($scope.showingAutoComplete());
-							$($('input')[0]).blur($scope.showingAutoComplete());
-						},1500);
 					},0);
 				},0);
 			}

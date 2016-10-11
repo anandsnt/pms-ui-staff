@@ -50,7 +50,6 @@ module.exports = {
 					sharedRoot + 'directives/iScrollFixes/iscrollStopPropagation.js',
 					sharedRoot + 'directives/touchPress/touchPress.js',
 					sharedRoot + 'directives/enterPress/enterPress.js',
-					sharedRoot + 'directives/focusOn/focusOn.js',
 					sharedRoot + 'directives/clickTouch/clickTouch.js',
 					jsLibRoot + 'date.js',
 					'rover/rvSntApp.js',
