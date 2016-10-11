@@ -149,7 +149,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         $scope.shouldHidePaymentButton = function() {
             return (!$scope.selectedPaymentType || !$scope.hasPermission ||
             $scope.isGCBalanceShort() ||
-            ($scope.paymentAttempted && !$scope.isPaymentFailure));
+            (!$scope.splitBillEnabled &&  $scope.paymentAttempted && !$scope.isPaymentFailure));
         };
 
         /**
