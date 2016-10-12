@@ -68,6 +68,8 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				promptMandatoryDemographics: false,
 				isDemographicsPopupOpen: false,
 				newNote: "",
+				// CICO-24928
+				editingNote: null,
 				demographics: null
 			};
 			summaryMemento = angular.copy($scope.accountConfigData.summary);
@@ -215,6 +217,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 						note_id: params.noteId
 					}));
 					$scope.refreshScroller("rvAccountSummaryScroller");
+					$scope.cancelEditModeAccountNote();
 				},
 				onRemoveAccountNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
@@ -231,6 +234,48 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				}
 			});
 		};
+
+		// CICO-24928 
+		$scope.updateActiveAccountNote = function() {
+			if($scope.accountSummaryData.editingNote === null) {
+            $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
+            return;
+        }
+      $scope.errorMessage = '';
+      var newNote = $scope.accountSummaryData.newNote;
+      // Removes exisiting note and adds as a new one. To be replaced by update note api call
+      $scope.removeAccountNote($scope.accountSummaryData.editingNote.note_id);
+      $scope.accountSummaryData.newNote = newNote;
+      if ($scope.accountSummaryData.newNote) {
+				var onUpdateAccountNoteSuccess = function(data) {
+					$scope.accountConfigData.summary.notes = data.notes;
+					$scope.refreshScroller("rvAccountSummaryScroller");
+					$scope.cancelEditModeAccountNote();
+				},
+				onUpdateAccountNoteFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				};
+				// Edit here when API for updating notes become available.
+				$scope.callAPI(rvAccountsConfigurationSrv.saveAccountNote, {
+					successCallBack: onUpdateAccountNoteSuccess,
+					failureCallBack: onUpdateAccountNoteFailure,
+					params: {
+						"notes": $scope.accountSummaryData.newNote,
+						"posting_account_id": $scope.accountConfigData.summary.posting_account_id
+					}
+				});
+			}
+		};
+		// CICO-24928
+		$scope.clickedOnNote = function(note) {
+      $scope.accountSummaryData.editingNote  = note;
+      $scope.accountSummaryData.newNote = note.description;
+    };
+    // CICO-24928
+    $scope.cancelEditModeAccountNote = function(){
+      $scope.accountSummaryData.editingNote  = null;
+      $scope.accountSummaryData.newNote = '';
+    };
 
 		$scope.onCloseWarningPopup = function() {
 			$scope.accountConfigData.summary.posting_account_status = "OPEN";

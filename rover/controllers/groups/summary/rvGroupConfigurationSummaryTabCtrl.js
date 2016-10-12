@@ -1200,6 +1200,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 						note_id: params.noteId
 					}));
 					$scope.refreshScroller("groupSummaryScroller");
+					$scope.cancelEditModeGroupNote();
 				},
 				onRemoveGroupNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
@@ -1216,7 +1217,47 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				}
 			});
 		};
-
+		// CICO-24928 
+		$scope.updateActiveGroupNote = function() {
+			if($scope.groupSummaryData.editingNote === null) {
+            $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
+            return;
+        }
+      $scope.errorMessage = '';
+      var newNote = $scope.groupSummaryData.newNote;
+      // Removes exisiting note and adds as a new one. To be replaced by update note api call
+      $scope.removeGroupNote($scope.groupSummaryData.editingNote.note_id);
+      $scope.groupSummaryData.newNote = newNote;
+      if ($scope.groupSummaryData.newNote) {
+				var onUpdateGroupNoteSuccess = function(data) {
+					$scope.groupConfigData.summary.notes = data.notes;
+					$scope.refreshScroller("groupSummaryScroller");
+					$scope.cancelEditModeGroupNote();
+				},
+				onUpdateGroupNoteFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				};
+				// Edit here when API for updating notes become available.
+				$scope.callAPI(rvGroupConfigurationSrv.saveGroupNote, {
+					successCallBack: onUpdateGroupNoteSuccess,
+					failureCallBack: onUpdateGroupNoteFailure,
+					params: {
+						"notes": $scope.groupSummaryData.newNote,
+						"group_id": $scope.groupConfigData.summary.group_id
+					}
+				});
+			}
+		};
+		// CICO-24928
+		$scope.clickedOnNote = function(note) {
+      $scope.groupSummaryData.editingNote  = note;
+      $scope.groupSummaryData.newNote = note.description;
+    };
+    // CICO-24928
+    $scope.cancelEditModeGroupNote = function(){
+      $scope.groupSummaryData.editingNote  = null;
+      $scope.groupSummaryData.newNote = '';
+    };
 
 		var getPassData = function() {
 			var passData = {
@@ -1370,6 +1411,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				promptMandatoryDemographics: false,
 				isDemographicsPopupOpen: false,
 				newNote: "",
+				// CICO-24928
+				editingNote: null,
 
 				//This is required to reset Cancel when selected in dropdown but not proceeded with in the popup
 				existingHoldStatus: parseInt($scope.groupConfigData.summary.hold_status),

@@ -140,10 +140,16 @@
             <strong class="h3 margin">Notes</strong>
             <div class="entry full-width no-label with-notes">
                 <textarea id="group-notes" ng-disabled="isInStaycardScreen()" ng-model="groupSummaryData.newNote" placeholder="Write a note" rows="2"></textarea>
-                <button type="button" ng-disabled="isInStaycardScreen()" class="button post" ng-class="{'brand-colors' : !isInAddMode() && !isInStaycardScreen() , 'grey' : isInAddMode()||isInStaycardScreen()}" ng-click="saveGroupNote()">Post</button>
+                <!-- CICO-24928, minor changes -->
+                <button type="button" ng-disabled="isInStaycardScreen()" class="button" ng-class="{'brand-colors' : !isInAddMode() && !isInStaycardScreen() && groupSummaryData.newNote.trim()!=='' , 'grey' : isInAddMode()||isInStaycardScreen()||groupSummaryData.newNote.trim()===''}" ng-click="saveGroupNote()" ng-show="groupSummaryData.editingNote===null">Post</button>
+                <!-- CICO-24928 -->
+                <button type="button" ng-disabled="isInStaycardScreen()||groupSummaryData.newNote.trim()===''" class="button" ng-class="{'brand-colors' : !isInAddMode() && !isInStaycardScreen() , 'grey' : isInAddMode()||isInStaycardScreen()||groupSummaryData.newNote.trim()===''}" ng-click="updateActiveGroupNote()" ng-show="groupSummaryData.editingNote!==null">Save</button>
+
+                <button type="button" ng-disabled="isInStaycardScreen()" class="button blank" ng-click="cancelEditModeGroupNote()" ng-show="groupSummaryData.editingNote!==null">Cancel</button>
             </div>
             <ul class="notes" ng-disabled="isInStaycardScreen()">
-                <li ng-repeat="note in groupConfigData.summary.notes">
+                <li ng-repeat="note in groupConfigData.summary.notes" ng-class="{'editing': (groupSummaryData.editingNote && note.note_id === groupSummaryData.editingNote.note_id)}"
+                ng-click="clickedOnNote(note)">
                     <figure class="guest-image">
                         <img src="{{note.user_image}}" alt="" />
                     </figure>
