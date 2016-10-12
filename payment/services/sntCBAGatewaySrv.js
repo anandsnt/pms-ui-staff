@@ -4,7 +4,7 @@ sntPay.service('sntCBAGatewaySrv', ['$q', '$http', '$filter', 'PAYMENT_CONFIG',
             cordovaAPI = new CardOperation();
 
 
-        cordovaAPI = new CBAMockOperation();
+        // cordovaAPI = new CBAMockOperation();
 
         /**
          *
