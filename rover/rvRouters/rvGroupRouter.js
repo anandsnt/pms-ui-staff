@@ -60,27 +60,23 @@ angular.module('groupModule', [])
                 }
             }],
             resolve: {
-                loadPaymentModule: ['jsMappings', function (jsMappings) {
+                loadPaymentModule: function (jsMappings) {
                     return jsMappings.loadPaymentModule();
-                }],
+                },
                 //to tackle from coming admin app to rover
-                summaryData: ['rvGroupConfigurationSrv', '$stateParams', 'groupAssets', 'loadPaymentModule',
-                    function(rvGroupConfigurationSrv, $stateParams, groupAssets, loadPaymentModule){
-                        var isInAddMode = ($stateParams.id === "NEW_GROUP");
-                        var params = {
-                            groupId: $stateParams.id
-                        };
-                        return rvGroupConfigurationSrv.getGroupSummary (params);
+                summaryData: function(rvGroupConfigurationSrv, $stateParams, groupAssets, loadPaymentModule){
+                    var isInAddMode = ($stateParams.id === "NEW_GROUP");
+                    var params = {
+                        groupId: $stateParams.id
+                    };
+                    return rvGroupConfigurationSrv.getGroupSummary (params);
+                },
+                holdStatusList: function(rvGroupConfigurationSrv, groupAssets, loadPaymentModule) {
+                    var params = {
+                        is_group: true
                     }
-                ],
-                holdStatusList: ['rvGroupConfigurationSrv', 'groupAssets', 'loadPaymentModule',
-                    function(rvGroupConfigurationSrv, groupAssets, loadPaymentModule) {
-                        var params = {
-                            is_group: true
-                        }
-                        return rvGroupConfigurationSrv.getHoldStatusList (params);
-                    }
-                ]
+                    return rvGroupConfigurationSrv.getHoldStatusList (params);
+                }
             }
 
         });

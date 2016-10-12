@@ -143,7 +143,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 					});
 					if (isPastDay) {
 						eachDateVal.push({
-							value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
+							value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, 2),
 							isRev: true,
 							isRateType: isRateType
 						});
@@ -174,7 +174,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 
 					if (isPastDay) {
 						eachDateVal.push({
-							value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
+							value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, 2),
 							isRev: true,
 							isRateType: isRateType
 						});

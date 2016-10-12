@@ -1041,7 +1041,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				checkOutKey = '',
 				selected    = [];
 
-			var changeAppliedFilter = 'boolean' == typeof changeAppliedFilter ? changeAppliedFilter : true;
+			var changeAppliedFilter = 'boolean' === typeof changeAppliedFilter ? changeAppliedFilter : true;
 
 			// capturing the filters applied to be
 			// shown on the report details footer
@@ -1497,7 +1497,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			};
 
 			// include company/ta/group
-			if ( report.hasOwnProperty('hasIncludeCompanyTaGroup') && !!report.chosenIncludeCompanyTaGroup ) {
+			if ( report.hasOwnProperty('hasIncludeCompanyTaGroup') && !! report.chosenIncludeCompanyTaGroup ) {
 				key         = report.hasIncludeCompanyTaGroup.value.toLowerCase();
 				params[key] = report.chosenIncludeCompanyTaGroup;
 				/* Note: Using the ui value here */
@@ -1999,8 +1999,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			var chosenReport = reportsSrv.getChoosenReport(),
 				changeView   = 'boolean' === typeof changeView ? changeView : true,
 				page         = !!loadPage ? loadPage : 1;
-
-			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
 
 			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
 
