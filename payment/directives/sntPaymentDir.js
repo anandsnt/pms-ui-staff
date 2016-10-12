@@ -30,7 +30,8 @@ sntPay.directive('sntPayment', function() {
             numSplits: '=?',
             completedSplitPayments: '=?',
             fetchLinkedCards: "=?",
-            hideOverlayGiftcard: "=?"
+            hideOverlayGiftcard: "=?",
+            reservationIds: "=?"
         },
         link: function(scope, element, attrs) {
             console.log("--From Payment Module Init--");
