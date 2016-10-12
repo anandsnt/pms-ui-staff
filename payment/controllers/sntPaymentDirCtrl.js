@@ -144,7 +144,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     //as this is an external directive
                     $scope.$emit('showLoader');
                     var params = intiateSubmitPaymentParams();
+
                     params.postData.payment_type_id = response.payment_method_id;
+                    params.postData.credit_card_transaction_id = response.id;
+
                     sntPaymentSrv.submitPayment(params).then(response => {
                             $scope.onPaymentSuccess(response);
                             $scope.$emit('hideLoader');

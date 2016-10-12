@@ -1,7 +1,10 @@
-sntPay.service('sntCBAGatewaySrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
-    function($q, $http, $location, PAYMENT_CONFIG) {
+sntPay.service('sntCBAGatewaySrv', ['$q', '$http', '$filter', 'PAYMENT_CONFIG',
+    function($q, $http, $filter, PAYMENT_CONFIG) {
         var service = this,
             cordovaAPI = new CardOperation();
+
+
+        cordovaAPI = new CBAMockOperation();
 
         /**
          *
@@ -14,7 +17,7 @@ sntPay.service('sntCBAGatewaySrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG'
                 amount,
                 bill_id,
                 credit_card_transaction_type: Number(amount) > 0 ? "PAYMENT" : "REFUND"
-            }).then(response => response.data.id, response => response.data);
+            });
         };
 
         /**
@@ -24,20 +27,34 @@ sntPay.service('sntCBAGatewaySrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG'
          * @returns {*|Promise.<response.data|{bill_details, room_number}>}
          */
         service.updateTransactionSuccess = function(transactionId, cordovaResponse) {
+
+            var expiryDate = cordovaResponse.expiry_date,
+                formattedExpiry = "20";
+            //NOTE : Expiry Date from cordovaResponse would be in MMYY format; This has to be changed to YYYY-MM-DD format
+
+            if (expiryDate.length === 4) {
+                // Rover expects all dates to be formatted in YYYY-MM-DD; Here we are converting the MMYY string coming in
+                // to YYYY-MM-DD with simple string manipulations
+                var dateParts = expiryDate.match(/.{1,2}/g);
+                formattedExpiry += [dateParts[1], dateParts[0], "01"].join("-");
+            } else {
+                throw new Error("The UI expects MMYY format date as the cordovaResponse!")
+            }
+
             return $http.put('/api/cc/' + transactionId, {
                 "status": true,
                 "req_reference_no": cordovaResponse.rrn,
-                "external_transaction_ref": null,
-                "authorization_code": cordovaResponse.tid,
-                "external_print_data": null,
-                "external_message": "external_message",
+                "external_transaction_ref": cordovaResponse.tid,
+                "authorization_code": cordovaResponse.auth_code,
+                "external_print_data": cordovaResponse.custom_data,
+                "external_message": null,
                 "payment_method": {
                     "card_name": cordovaResponse.card_name,
-                    "card_expiry": cordovaResponse.expiry_date,
-                    "card_number": cordovaResponse.card_sequence,
-                    "credit_card_type": null
+                    "card_expiry": formattedExpiry,
+                    "card_number": cordovaResponse.pan,
+                    "credit_card_type": cordovaResponse.card_type
                 }
-            }).then(response => response.payment_method_id, response => response.data);
+            });
         };
 
         /**
@@ -51,7 +68,7 @@ sntPay.service('sntCBAGatewaySrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG'
                 "status": false,
                 "external_failure_reason": cordovaResponse.RVErrorCode,
                 "external_message": cordovaResponse.RVErrorDesc
-            }).then(response => response.data.id, response => response.data);
+            });
         };
 
         /**

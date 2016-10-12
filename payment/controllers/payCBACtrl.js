@@ -6,29 +6,29 @@ angular.module('sntPay').controller('payCBACtrl',
                     id: null,
                     status: null
                 },
-                onSubmitSuccess = response => {
+                onSubmitSuccess = function(response) {
                     sntCBAGatewaySrv.updateTransactionSuccess(
                         transaction.id,
                         response
                     ).then(response => {
                         $scope.$emit("hideLoader");
-                        $scope.$emit("CBA_PAYMENT_SUCCESS", response);
+                        $scope.$emit("CBA_PAYMENT_SUCCESS", response.data);
                     }, errorMessage => {
                         $scope.$emit("hideLoader");
-                        $scope.$emit("CBA_PAYMENT_FAILED", errorMessage);
+                        $scope.$emit("CBA_PAYMENT_FAILED", errorMessage.data);
                     })
                 },
-                onSubmitFailure = err => {
+                onSubmitFailure = function(err) {
                     sntCBAGatewaySrv.updateTransactionFailure(
                         transaction.id,
                         err
-                    ).then(err => {
+                    ).then(() => {
                         $scope.$emit("hideLoader");
                         var errorMessage = [err.RVErrorCode + " " + err.RVErrorDesc];
                         $scope.$emit("CBA_PAYMENT_FAILED", errorMessage);
                     }, errorMessage => {
                         $scope.$emit("hideLoader");
-                        $scope.$emit("CBA_PAYMENT_FAILED", errorMessage);
+                        $scope.$emit("CBA_PAYMENT_FAILED", errorMessage.data);
                     });
                 },
                 doPayment = function() {
@@ -40,7 +40,7 @@ angular.module('sntPay').controller('payCBACtrl',
                 doRefund = function() {
                     sntCBAGatewaySrv.doRefund({
                         transaction_id: transaction.id,
-                        amount: $scope.payment.amount
+                        amount: Math.abs($scope.payment.amount)
                     }, onSubmitSuccess, onSubmitFailure);
                 },
                 initiatePaymentProcess = function(event, params) {
@@ -48,13 +48,13 @@ angular.module('sntPay').controller('payCBACtrl',
                     sntCBAGatewaySrv.initiateTransaction(
                         params.postData.amount,
                         params.bill_id
-                    ).then(id => {
+                    ).then(response => {
                         $scope.$emit("hideLoader");
-                        transaction.id = id;
+                        transaction.id = response.data.id;
                         Number(params.postData.amount) > 0 ? doPayment() : doRefund();
                     }, errorMessage => {
                         $scope.$emit("hideLoader");
-                        console.log(errorMessage);
+                        $scope.$emit("CBA_PAYMENT_FAILED", errorMessage.data);
                     });
                 };
 
