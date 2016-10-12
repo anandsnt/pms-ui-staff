@@ -458,8 +458,7 @@ sntRover.controller('RVbillCardController',
 
 			//To handle fees open/close
 			value.isOpenFeesDetails = false;
-			//CICO-33934 fix to set flag for current active tab.
-			if((key === 0 && $scope.clickedButton === "viewBillButton") || key === $scope.currentActiveBill){
+			if(key === 0 && $scope.clickedButton === "viewBillButton"){
 				value.isOpenFeesDetails = true;
 			}
 			value.hasFeesArray = true;
