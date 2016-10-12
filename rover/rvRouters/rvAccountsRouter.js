@@ -57,17 +57,15 @@ angular.module('accountsModule', [])
                 }
             }],
             resolve: {
-                loadPaymentModule: ['jsMappings', function(jsMappings) {
+                loadPaymentModule: function(jsMappings) {
                     return jsMappings.loadPaymentModule();
-                }],
-                accountData: ['rvAccountsConfigurationSrv', '$stateParams', 'accountsAssets',
-                    function(rvAccountsConfigurationSrv, $stateParams, accountsAssets){
-                        var params = {
-                            accountId: $stateParams.id
-                        };
-                        return rvAccountsConfigurationSrv.getAccountSummary (params);
-                    }
-                ]
+                },
+                accountData: function(rvAccountsConfigurationSrv, $stateParams, accountsAssets, loadPaymentModule){
+                    var params = {
+                        accountId: $stateParams.id
+                    };
+                    return rvAccountsConfigurationSrv.getAccountSummary (params);
+                }
             }
 
         });
