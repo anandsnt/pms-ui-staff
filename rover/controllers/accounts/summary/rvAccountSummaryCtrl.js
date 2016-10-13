@@ -211,18 +211,19 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			}
 		};
 
-		$scope.removeAccountNote = function(noteId) {
+		$scope.removeAccountNote = function(event, noteId) {
 			var onRemoveAccountNoteSuccess = function(data, params) {
 					$scope.accountConfigData.summary.notes = _.without($scope.accountConfigData.summary.notes, _.findWhere($scope.accountConfigData.summary.notes, {
 						note_id: params.noteId
 					}));
 					$scope.refreshScroller("rvAccountSummaryScroller");
+					// CICO-24928
 					$scope.cancelEditModeAccountNote();
 				},
 				onRemoveAccountNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 				};
-
+			event.stopPropagation();
 			$scope.callAPI(rvAccountsConfigurationSrv.removeAccountNote, {
 				successCallBack: onRemoveAccountNoteSuccess,
 				failureCallBack: onRemoveAccountNoteFailure,

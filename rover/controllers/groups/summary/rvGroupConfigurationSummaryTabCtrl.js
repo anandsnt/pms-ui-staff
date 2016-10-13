@@ -1194,7 +1194,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 		};
 
-		$scope.removeGroupNote = function(noteId) {
+		$scope.removeGroupNote = function(event, noteId) {
 			var onRemoveGroupNoteSuccess = function(data, params) {
 					$scope.groupConfigData.summary.notes = _.without($scope.groupConfigData.summary.notes, _.findWhere($scope.groupConfigData.summary.notes, {
 						note_id: params.noteId
@@ -1205,7 +1205,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				onRemoveGroupNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 				};
-
+			event.stopPropagation();
 			$scope.callAPI(rvGroupConfigurationSrv.removeGroupNote, {
 				successCallBack: onRemoveGroupNoteSuccess,
 				failureCallBack: onRemoveGroupNoteFailure,

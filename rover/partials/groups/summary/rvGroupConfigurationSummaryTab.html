@@ -159,7 +159,7 @@
                             <span class="time">{{note.posted_date}}</span>
                             <span class="date">{{note.posted_time}}</span>
                         </time>
-                        <button type="button" class="icons icon-trash" ng-click="removeGroupNote(note.note_id)">Delete post</button>
+                        <button type="button" class="icons icon-trash" ng-click="removeGroupNote($event, note.note_id)">Delete post</button>
                     </div>
                     <p>{{note.description}}</p>
                 </li>

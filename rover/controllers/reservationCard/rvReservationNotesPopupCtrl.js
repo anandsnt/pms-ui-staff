@@ -4,6 +4,8 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', functi
 
 	BaseCtrl.call(this, $scope);
 	$scope.reservationnote = "";
+	// CICO-24928
+	$scope.editingNote = null;
 	$scope.saveReservationNote = function() {
 	    if (!$scope.$parent.isNewsPaperPreferenceAvailable()) {
 	        if (!$rootScope.isStandAlone) {
@@ -34,11 +36,16 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', functi
 	/*
 	 *To delete the reservation note and update the ui accordingly
 	 */
-	$scope.deleteReservationNote = function(index) {
+	$scope.deleteReservationNote = function(event, index) {
 	    $scope.deletedNoteIndex = index;
+	    if(event!== null) {
+	    	event.stopPropagation();
+	    }
 	    var successCallBackDeleteReservationNote = function(data) {
 	        $scope.$parent.reservationData.reservation_card.notes.reservation_notes.splice($scope.deletedNoteIndex, 1);
 	        $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
+	        // CICO-24928
+	        $scope.cancelEditModeReservationNote();
 	        $scope.$parent.$emit('hideLoader');
 	        refreshScroller();
 	    };
@@ -47,7 +54,55 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', functi
 	    $scope.invokeApi($scope.$parent.reservationCardSrv.deleteReservationNote, note_id, successCallBackDeleteReservationNote);
 	};
 
+	// CICO-24928 
+	$scope.updateActiveReservationNote = function() {
+		if($scope.reservationnote === null) {
+          $scope.errorMessage = ['Something went wrong, please try again!'];
+          return;
+      }
+    if (!$scope.$parent.isNewsPaperPreferenceAvailable()) {
+      if (!$rootScope.isStandAlone) {
+          $scope.reservationnote = "";
+          $scope.$parent.showFeatureNotAvailableMessage();
+          return;
+      }
+    }
+    $scope.errorMessage = '';
+    var noteIndex = _.findIndex($scope.$parent.reservationData.reservation_card.notes.reservation_notes, {note_id : $scope.editingNote.note_id});
+    if ($scope.reservationnote) {
+			var successCallBackReservationNote = function(data) {
+				//Update full notes array - $scope.$parent.reservationData.reservation_card.notes.reservation_notes accordingly
+				$scope.$parent.reservationData.reservation_card.notes.reservation_notes.splice(0, 0, data);
+				$scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
+				refreshScroller();
+				$scope.cancelEditModeReservationNote();
+				$scope.$parent.$emit('hideLoader');
+			},
+			failureCallBackReservationNote = function(errorMessage) {
+				$scope.errorMessage = errorMessage;
+			};
+			// Edit here when API for updating notes become available.
+			var params = {};
+			params.text = $scope.reservationnote;
+			params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;
+			params.note_topic = 1;
+			// Change the api that is to be called.
+			$scope.invokeApi($scope.$parent.reservationCardSrv.saveReservationNote, params, successCallBackReservationNote, failureCallBackReservationNote
+			);
+		}
+	};
+	// CICO-24928
+	$scope.clickedOnNote = function(note) {
+    $scope.editingNote  = note;
+    $scope.reservationnote = note.text;
+  };
+  // CICO-24928
+  $scope.cancelEditModeReservationNote = function(){
+    $scope.editingNote  = null;
+    $scope.reservationnote = '';
+  };
+
 	var refreshScroller = function() {
-        $scope.refreshScroller('reservationNotes');
-    };
+    $scope.refreshScroller('reservationNotes');
+  };
 }]);
