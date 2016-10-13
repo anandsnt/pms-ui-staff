@@ -86,7 +86,7 @@
                     <strong>*</strong>
                 </label>
                 <!-- releaseDateOptions -->
-                <input class="datepicker" type="text" ui-date="releaseDateOptions" value="{{groupConfigData.summary.release_date|date:dateFormat}}" readonly ng-class="{'not-selected': !groupConfigData.summary.release_date}" />
+                <input class="datepicker" type="text" ui-date="releaseDateOptions" rv-set-textbox-value listen-this="groupConfigData.summary.release_date|date:dateFormat" readonly ng-class="{'not-selected': !groupConfigData.summary.release_date}" />
                 <button type="button" ng-hide="isInStaycardScreen()" ng-click="warnReleaseRooms();" class="button" ng-class="{'red': !isInAddMode() ,'grey': isInAddMode() || !!groupConfigData.summary.is_cancelled}" translate>RELEASE_NOW</button>
                 <!-- Class grey is for new group (when this button does nothing), red is for existing group -->
             </div>

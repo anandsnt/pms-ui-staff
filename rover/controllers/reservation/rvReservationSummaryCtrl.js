@@ -702,7 +702,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             $scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email !== null && $scope.reservationData.guest.email !== "") ? true : false;
             $scope.otherData.isGuestAdditionalEmailChecked = false;
-            $scope.reservationData.paymentMethods = [];
+            $scope.reservationData.paymentMethods = paymentMethods;
             $scope.data.MLIData = {};
             $scope.isGuestEmailAlreadyExists = ($scope.reservationData.guest.email !== null && $scope.reservationData.guest.email !== "") ? true : false;
             $scope.heading = "Guest Details & Payment";
@@ -721,7 +721,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 'tap': true
             });
 
-            fetchPaymentMethods();
+            // fetchPaymentMethods();
             refreshScrolls();
         };
 
@@ -915,7 +915,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             if ($scope.reservationData.paymentType.type.value !== null) {
                 angular.forEach($scope.reservationData.paymentMethods, function(item) {
-                    if ($scope.reservationData.paymentType.type.value === item.value) {
+                    if ($scope.reservationData.paymentType.type.value === item.name) {
                         if ($scope.reservationData.paymentType.type.value === "CC") {
                             postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
                         } else {
@@ -923,14 +923,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                         }
                     }
                 });
-                postData.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear === "" || $scope.reservationData.paymentType.ccDetails.expYear === "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
-                $scope.reservationData.paymentType.ccDetails.expMonth + "-01";
-                postData.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
             }
 
             $scope.errorMessage = [];
 
-            console.log( $scope.reservationData.reservationId );
             var check = function() {
                 if ( ! $scope.reservationData.reservationId ) {
                     setTimeout(check, 100);
@@ -944,19 +940,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 }
             }
             check();
-
-            // THE BELOW CODE IS SHIT!
-            // if (typeof index === 'undefined') {
-            //     // TO HANDLE OVERRIDE ALL SCENARIO
-            //     _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
-            //         postData.reservationId = $scope.reservationData.reservationIds && $scope.reservationData.reservationIds[currentRoomIndex] || $scope.reservationData.reservationId;
-            //         promises.push(RVReservationSummarySrv.updateReservation(postData));
-            //     });
-            // } else {
-            //     postData.reservationId = reservationId;
-            //     promises.push(RVReservationSummarySrv.updateReservation(postData));
-            // }
-            // $q.all(promises).then(updateSuccess, updateFailure);
         };
 
         $scope.onPayDepositLater = function(){
@@ -1517,9 +1500,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 swipedCardData.token = tokenValue;
                 var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
                 $scope.reservationData.paymentType.type.value = "CC";
-                $scope.showCCPage = true;
-                $scope.addmode = true;
-                $scope.swippedCard = true;
+                // $scope.showCCPage = true;
+                // $scope.addmode = true;
+                // $scope.swippedCard = true;
 
                 $scope.newPaymentInfo = {
                     "tokenDetails": {
@@ -1626,6 +1609,40 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 }, onupdateSuccess, onUpdateFailure);
             }
         };
+
+
+        $scope.$on("PAY_LATER", function(e, data) {
+            $scope.reservationData.paymentType.ccDetails = data.cardDetails;
+            $scope.reservationData.selectedPaymentId = data.cardDetails.value;
+            $scope.reservationData.paymentType.type.value = data.paymentType;
+            savePayment($scope.confirmReservation);
+        });
+
+        $scope.$on("PAYMENT_SUCCESS", function(e, data) {
+            //On continue on create reservation - add to guest card - to fix undefined issue on tokendetails
+            if ($scope.reservationData.paymentType.type.value !== "CC") {
+                $scope.isNewCardAdded = false;
+            }
+            $scope.depositData.attempted = true;
+            $scope.depositData.depositSuccess = true;
+            $scope.depositData.authorizationCode = data.authorization_code;
+            $scope.reservationData.selectedPaymentId = data.payment_method.id;
+
+            $scope.reservationData.depositData = angular.copy($scope.depositData);
+            runDigestCycle();
+            //On continue on create reservation - add to guest card - to fix undefined issue on tokendetails - commenting the if else block below for CICO-14199
+            $scope.$emit('hideLoader');
+        });
+
+        $scope.$on("PAYMENT_FAILED", function(e, errorMessage) {
+            $scope.depositData.attempted = true;
+            $scope.depositData.depositAttemptFailure = true;
+            $scope.reservationData.depositData = angular.copy($scope.depositData);
+
+            $scope.paymentErrorMessage = errorMessage[0];
+            runDigestCycle();
+            $scope.$emit('hideLoader');
+        });
 
         $scope.init();
     }

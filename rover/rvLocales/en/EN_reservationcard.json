@@ -60,4 +60,6 @@
     "RESEND_CONFIRMATION" : "Resend Confirmation",
     "CONFIRMATION":"Confirmation",
     "EMAIL_SENT_SUCCESSFULLY" : "Email sent successfully",
-    "EMAIL_SEND_FAILED" : "Email send failed"
+    "EMAIL_SEND_FAILED" : "Email send failed",
+    "RESTRICT_POST": "Restrict post",
+    "PROCEED_WITH_POST_CHARGES": "PROCEED WITH POST CHARGES"

@@ -136,7 +136,7 @@ sntRover.controller('RVCardOptionsCtrl',
                 };
                 
                 $scope.showGiftCardToggle = function(){
-                    if (!$scope.isStandAlone && $scope.allowPmtWithGiftCard){
+                    if (!$scope.isStandAlone && $scope.allowPmtWithGiftCard ){
                         return true;
                     } else return false;
                 };

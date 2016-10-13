@@ -174,6 +174,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             $scope.formElements     = [];
             $scope.tabIndex         = 0;
             $scope.clickedItem      = null;
+
             /**
              * //Shahul: I dont what they doing, fixing the issue of undefined variable
              * I am wondering who is modifying library for their own purpose
@@ -192,7 +193,13 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
              * @type {Number}
              */
             var helperItemsLength       = 0;
+
             $scope.showOptions      = false;
+
+            var prevTabIndex            = 0;
+            var helperItems             = [];
+            var helperItemsLength       = 0;
+            var ctr = 0;
 
             //CICO-9120 Need to get the scroller working!
             // This works but is a shoddy code... Revisit later 

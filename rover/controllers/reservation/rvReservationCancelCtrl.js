@@ -561,6 +561,16 @@
 			if ($scope.DailogeState.isCancelled && $scope.isEmailAttached()) {
 				$scope.sendReservationCancellation();
 			}
+
+			$scope.$on('PAYMENT_FAILED', function(e, errorMessage) {
+				$scope.errorMessage = errorMessage;
+			});
+
+			$scope.$on("CLOSE_DIALOG", $scope.closeReservationCancelModal);
+
+			$scope.$on("PAYMENT_ACTION_CONTINUE", function(e, data) {
+				$scope.cancelReservation(data);
+			});
 		}
 	]);
 

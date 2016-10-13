@@ -5,8 +5,10 @@ sntZestStation.controller('zsHomeCtrl', [
 	'zsEventConstants',
 	'$translate',
 	'zsCheckinSrv',
-	function($scope, $rootScope, $state, zsEventConstants, $translate, zsCheckinSrv) {
-
+	'languages',
+	'zsGeneralSrv',
+	'zestStationSettings',
+	function($scope, $rootScope, $state, zsEventConstants, $translate, zsCheckinSrv, languages, zsGeneralSrv, zestStationSettings) {
 		/**
 		 * when we clicked on pickup key from home screen
 		 */
@@ -80,24 +82,22 @@ sntZestStation.controller('zsHomeCtrl', [
 			$scope.showExternalWebPage = false;
 		};
 
-		var initiateLanguagePopUpSetting = function() {
-			$scope.showLanguagePopup = false;
-			//This value will be updated from child controller ie, zsLanguageHandlerCtrl during init
-			$scope.selectedLanguage = {};
-		};
-		$scope.languageSelect = function() {
-			$scope.showLanguagePopup = !$scope.showLanguagePopup;
-			if ($scope.showLanguagePopup) {
-				clearInterval($scope.activityTimer);
-			} else {
-				setHomeScreenTimer();
-			}
+
+		/**
+		 * to change the default language
+		 * @param  {object} language
+		 */
+		$scope.selectLanguage = function(language) {
+			var languageConfig = zsGeneralSrv.languageValueMappingsForUI[language.name],
+				langShortCode = languageConfig.code;
+			$translate.use(langShortCode);
+			$scope.selectedLanguage = language;
 		};
 
 		/**
 		 * [initializeMe description]
 		 */
-		var initializeMe = function() {
+		(function() {
 			//hide back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 
@@ -110,7 +110,26 @@ sntZestStation.controller('zsHomeCtrl', [
 			$scope.$emit('EJECT_KEYCARD');
 			//set this to false always on entering home screen
 			$scope.zestStationData.keyCardInserted = false;
-			initiateLanguagePopUpSetting();
+
+			//list of languages configured for this hotel
+			var combinedList = _.partition(languages.languages, { position: null }),
+				nullList = combinedList[0],
+				listHavingValues = combinedList[1];
+			$scope.languages = _.sortBy(listHavingValues, 'position').concat(nullList);
+
+			$scope.languages = $scope.languages.map(function(language) {
+				//merging, so that we can use more localized terms in UI
+				Object.assign(language, zsGeneralSrv.languageValueMappingsForUI[language.name]);
+				return language;
+			});
+
+			//assigning default language
+			if($scope.languages.length) {
+				var defaultLangName = zestStationSettings.zest_lang.default_language.toLowerCase(),
+					defaultLanguage = _.findWhere($scope.languages, { name : defaultLangName });
+				$scope.selectLanguage(defaultLanguage);
+			}
+
 			$scope.resetHomeScreenTimer();
 			if ($scope.zestStationData.workstationStatus === 'out-of-order') {
 				var params = {};
@@ -121,7 +140,7 @@ sntZestStation.controller('zsHomeCtrl', [
 			} else {
 				$scope.setScreenIcon('bed');
 			}
-		}();
+		})();
 
 
 	}

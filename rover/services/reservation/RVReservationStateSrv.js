@@ -231,7 +231,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 
 					if (!!tax.calculation_rules.length) {
 						_.each(tax.calculation_rules, function(tax) {
-							taxOn += parseFloat(taxesLookUp[tax]);
+							taxOn = !!taxesLookUp[tax] ? (taxOn + parseFloat(taxesLookUp[tax])) : taxOn;
 						});
 					}
 

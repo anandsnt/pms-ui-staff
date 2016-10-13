@@ -116,7 +116,16 @@ sntRover.controller('roverController',
     $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
 
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
-    $rootScope.paymentGateway = hotelDetails.payment_gateway;
+      /**
+       * CICO-34068
+       * NOTE: Temporary Fix
+       * As saferpay is not supported in Rover, if saferpay is selected in SNT Admin; default to sixpayments
+       */
+      if(hotelDetails.payment_gateway === "SAFERPAY") {
+          $rootScope.paymentGateway = "sixpayments";
+      }else{
+          $rootScope.paymentGateway = hotelDetails.payment_gateway;
+      }
     $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
     $rootScope.minimumHourlyReservationPeriod = hotelDetails.hourly_min_reservation_hours;
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
@@ -355,6 +364,12 @@ sntRover.controller('roverController',
       $scope.hasLoader = false;
     });
 
+    $scope.$on("SHOW_SIX_PAY_LOADER",function(){
+      $scope.showSixPayLoader = true;
+    });
+    $scope.$on("HIDE_SIX_PAY_LOADER",function(){
+      $scope.showSixPayLoader = false;
+    });
     /**
      * in case of we want to reinitialize left menu based on new $rootScope values or something
      * which set during it's creation, we can use
@@ -373,8 +388,21 @@ sntRover.controller('roverController',
 
         // if menu is open, close it
         $scope.isMenuOpen();
+
+        $scope.menuOpen = false;
+
+        $rootScope.hotelPaymentConfig = {
+            isStandAlone: $rootScope.isStandAlone,
+            paymentGateway: $rootScope.paymentGateway,
+            emvTimeout: $rootScope.emvTimeout,
+            mliMerchantId: $rootScope.MLImerchantId,
+            currencySymbol: $rootScope.currencySymbol,
+            isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled
+        };
+
         $scope.menuOpen = false;        
         $rootScope.showNotificationForCurrentUser = true;           
+
     };
 
     $scope.init();
@@ -722,14 +750,14 @@ sntRover.controller('roverController',
      * Handles the bussiness date change in progress
      */
 
-    var LastngDialogId = "";
+    $rootScope.LastngDialogId = "";
 
     $scope.closeBussinnesDatePopup = function() {
-      ngDialog.close(LastngDialogId, "");
+      ngDialog.close($rootScope.LastngDialogId, "");
     };
 
     $rootScope.$on('ngDialog.opened', function(e, $dialog) {
-        LastngDialogId = $dialog.attr('id');
+        $rootScope.LastngDialogId = $dialog.attr('id');
     });
 
     $rootScope.showBussinessDateChangingPopup = function() {

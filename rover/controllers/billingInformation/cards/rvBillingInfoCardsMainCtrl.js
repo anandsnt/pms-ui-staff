@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
+sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', 'RVBillingInfoUtilSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog, RVBillingInfoUtilSrv){
 
     BaseCtrl.call(this, $scope);
 
@@ -67,12 +67,7 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
      * @return {String} class of 'li'
      */
     $scope.getEntityRole = function(route) {
-        if (route.entity_type === 'TRAVEL_AGENT') {
-            return 'travel-agent'; 
-        }
-        else {
-            return 'company';
-        }
+        return RVBillingInfoUtilSrv.getEntityRole(route);
     };
 
     /**
@@ -81,12 +76,7 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
      * @return {String} class of 'icon'
      */
     $scope.getEntityIconClass = function(route) {
-        if (route.entity_type === 'COMPANY_CARD') {
-            return '';
-        }
-        else {
-            return 'icons icon-travel-agent';
-        } 
+        return RVBillingInfoUtilSrv.getEntityIconClass(route);
     };
 
     /**
