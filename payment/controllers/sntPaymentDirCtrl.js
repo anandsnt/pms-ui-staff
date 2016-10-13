@@ -76,6 +76,11 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     //if reference text is presernt for the payment type
                     params.postData.reference_text = $scope.payment.referenceText;
                 }
+
+                if ($scope.reservationIds) {
+                    params.postData.reservation_ids = $scope.reservationIds;
+                }
+
                 return params;
             },
             /**
