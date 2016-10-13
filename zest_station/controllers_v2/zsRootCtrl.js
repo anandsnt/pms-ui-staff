@@ -1086,7 +1086,6 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.zestStationData.workstationOooReason = "";
 			$scope.zestStationData.workstationStatus = "";
 			$scope.zestStationData.wsIsOos = false;
-			$scope.showLanguagePopup = false;
 			$scope.inChromeApp ? maximizeScreen() : "";
 			//create a websocket obj
 			$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
