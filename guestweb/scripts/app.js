@@ -128,6 +128,52 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.conductSurvey =  !!reservationAndhotelData.survey_question_prompt_on ? true : false;
 		$rootScope.skipBalanceconductSurvey = false;
 
+		//TODO: to be removed later
+		var commonSettings = {
+			"zest_web_footer_settings": {
+				"display_footer": true,
+				"footer_1": {
+					"is_active": true,
+					"label": "footer 1",
+					"url": "http://url1.com"
+				},
+				"footer_2": {
+					"is_active": true,
+					"label": "footer 2",
+					"url": "http://url2.com"
+				},
+				"footer_3": {
+					"is_active": true,
+					"label": "footer 3",
+					"url": "http://url13.com"
+				}
+			}
+		};
+
+		var footerCount = 0;
+		$rootScope.footerSettings = commonSettings.zest_web_footer_settings;
+
+		if($rootScope.footerSettings.footer_1.is_active){
+			footerCount++;
+		}
+		if($rootScope.footerSettings.footer_2.is_active){
+			footerCount++;
+		}
+		if($rootScope.footerSettings.footer_3.is_active){
+			footerCount++;
+		}
+
+		// based upon number of footer items, set a class for styling
+		if(footerCount === 3){
+			$rootScope.footerClass = "triple-footer";
+		}
+		else if(footerCount === 2){
+			$rootScope.footerClass = "double-footer";
+		}
+		else{
+			$rootScope.footerClass = "single-footer";
+		}
+
 		//Params for zest mobile and desktop screens
 		if (reservationAndhotelData.hasOwnProperty('is_password_reset')) {
 			$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset;
