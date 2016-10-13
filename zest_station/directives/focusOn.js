@@ -25,12 +25,17 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                         var el = $(elToFocus)[0],
                         scopeFn = angular.element(el).scope()[attrs.focusOnTrigger];
 
+                        $(elToFocus).focus(scopeFn);
                         $(elToFocus).keydown(scopeFn);
                         $(elToFocus).change(scopeFn);
                         $(elToFocus).blur(scopeFn);
                         //sets initial focus 
+
                         $(elToFocus).focus();
-                        $(elToFocus).click();
+                        $timeout(function(){
+                            $(elToFocus).click();
+                        },200);
+
                         scopeFn();
                     },0);
                 }

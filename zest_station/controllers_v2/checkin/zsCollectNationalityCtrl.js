@@ -66,11 +66,15 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 		};
 		$scope.showingAutoCompleteArea = false;
 		$scope.showingAutoComplete = function(){
+			if ($scope.zestStationData.theme !== 'yotel') {
+				$scope.showingAutoCompleteArea = false;
+				return false;
+			}
 			var val = $('input').val().length;
 			//autocomplete plugin overwrites the <select>tags and appends an <input> with autocomplete trigger
 			//need to update the css based on the new dom elements, ie. the border in the input needs to be updated
 			//  when there are autocomplete elements on-screen
-			$scope.showingAutoCompleteArea = val > 1 && !$scope.selectedCountry.id;
+			$scope.showingAutoCompleteArea = val >= 1 && !$scope.selectedCountry.id;
 			if (val < 1){
 				$scope.selectedCountry.id = "";	
 			}
