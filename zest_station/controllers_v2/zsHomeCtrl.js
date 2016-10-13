@@ -58,9 +58,9 @@ sntZestStation.controller('zsHomeCtrl', [
 		};
 
 		/**************************************************************************************/
+		var userInActivityTimeInHomeScreenInSeconds = 0;
 
 		var setHomeScreenTimer = function() {
-			var userInActivityTimeInHomeScreenInSeconds = 0;
 
 			$scope.resetHomeScreenTimer = function() {
 				userInActivityTimeInHomeScreenInSeconds = 0;
@@ -105,6 +105,8 @@ sntZestStation.controller('zsHomeCtrl', [
 				langShortCode = languageConfig.code;
 			$translate.use(langShortCode);
 			$scope.selectedLanguage = language;
+			//Reset timer on language selection
+			userInActivityTimeInHomeScreenInSeconds = 0;
 		};
 
 		/**
