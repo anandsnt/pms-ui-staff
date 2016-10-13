@@ -1,4 +1,4 @@
-sntPay.service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
+angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG',
     function($q, $http, $location, PAYMENT_CONFIG) {
         var service = this;
 

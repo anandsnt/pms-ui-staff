@@ -1,4 +1,4 @@
-sntPay.directive('sntPayment', function() {
+angular.module('sntPay').directive('sntPayment', function() {
     return {
         restrict: 'E',
         transclude: true,
