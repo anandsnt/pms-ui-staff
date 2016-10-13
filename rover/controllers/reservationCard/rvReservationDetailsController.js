@@ -220,6 +220,7 @@ sntRover.controller('reservationDetailsController',
 		$scope.reservationParentData = $scope.$parent.reservationData;
 
 		$scope.reservationData = reservationDetails;
+
 		// CICO-13564
 		$scope.editStore = {
 			arrival: $scope.reservationData.reservation_card.arrival_date,
@@ -812,7 +813,7 @@ sntRover.controller('reservationDetailsController',
 
 			var passData = {
 				"reservationId": $scope.reservationData.reservation_card.reservation_id,
-				"userId": $scope.data.guest_details.user_id,
+				"guest_id": $scope.data.guest_details.user_id,
 				"details": {
 					"firstName": $scope.data.guest_details.first_name,
 					"lastName": $scope.data.guest_details.last_name,
@@ -829,6 +830,12 @@ sntRover.controller('reservationDetailsController',
                                         swipedCardDataToRender.swipeFrom !== "cancelReservationPenalty" &&
                                         swipedCardDataToRender.swipeFrom !== "stayCardDeposit") {
                                         console.info('doing open pmt window with pass data')
+					if (swipedCardDataToRender.swipeFrom === 'guestCard'){
+                       passData.isFromGuestCard = true;
+					}
+					//close any ngDialogs if opened (work around fix)
+					ngDialog.close($rootScope.LastngDialogId, "");
+
 					$scope.openPaymentDialogModal(passData, paymentData);
 
 

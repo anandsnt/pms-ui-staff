@@ -27,7 +27,7 @@ angular.module('reportsModule')
                 cgAssociated       = false,
                 paymentEntry       = {};
 
-            var selected = 'boolean' == typeof selected ? selected : true;
+            var selected = 'boolean' === typeof selected ? selected : true;
 
             chargeGroupsAryCopy = angular.copy( chargeGroupsAry );
             chargeCodesAryCopy = angular.copy( chargeCodesAry );
@@ -190,10 +190,11 @@ angular.module('reportsModule')
         var __showFilterNames = {
             'SHOW_COMPANY': true,
             'SHOW_TRAVEL_AGENT': true,
-            
+
             // for CREDIT_CHECK_REPORT
             'INCLUDE_DUE_OUT': true,
             'INCLUDE_INHOUSE': true,
+            'RESTRICTED_POST_ONLY': true,
 
             // for room ooo oos report
             OOO: true,
@@ -212,7 +213,8 @@ angular.module('reportsModule')
          */
         var __pushGeneralOptionData = function(report, filter, selected) {
             var selected = typeof selected === typeof true ? selected : false,
-                mustSend = false;
+                mustSend = false,
+                isRadioOption = false;
 
             var includeCancelled = {
                         'INCLUDE_CANCELLED' : true,
@@ -229,7 +231,7 @@ angular.module('reportsModule')
                     };
 
             // if filter is this, make it selected by default
-            if ( report['title'] == reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
+            if ( report['title'] === reportNames['CANCELLATION_NO_SHOW'] && includeCancelled[filter.value] ) {
                 selected = true;
             };
 
@@ -244,7 +246,7 @@ angular.module('reportsModule')
             };
 
             // if filter value is either of these, must include when report submit
-            if ( report['title'] == reportNames['FORECAST_GUEST_GROUPS'] && filter.value === 'EXCLUDE_NON_GTD' ) {
+            if ( report['title'] === reportNames['FORECAST_GUEST_GROUPS'] && filter.value === 'EXCLUDE_NON_GTD' ) {
                 selected = true;
             };
 
@@ -253,19 +255,38 @@ angular.module('reportsModule')
             }
 
             // if filter is this, make it selected by default
-            if ( report['title'] == reportNames['DAILY_PRODUCTION_ROOM_TYPE'] && filter.value == 'INCLUDE_ADDONS' ) {
+            if ( report['title'] === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] && filter.value === 'INCLUDE_ADDONS' ) {
                 selected = true;
             };
 
+            if ( report['title'] === reportNames['RESERVATIONS_BY_USER'] && filter.value === 'INCLUDE_BOTH') {
+                if ( filter.value === 'INCLUDE_BOTH') {
+                    selected = true;
+                }
+
+                if ( filter.value === 'SHOW_RATE_ADJUSTMENTS_ONLY') {
+                    report.hasGeneralOptions.options.selectiveSingleSelectKey = filter.value.toLowerCase();
+                    report.hasGeneralOptions.options.noSelectAll = true;
+                }
+            }
+
+            if ( report['title'] === reportNames['IN_HOUSE_GUEST'] ) {
+                if ( filter.value === 'VIP_ONLY' || filter.value === 'RESTRICTED_POST_ONLY' ) {
+                    isRadioOption = true;
+                }
+            };
+
             report['hasGeneralOptions']['data'].push({
+                id          : filter.value.toLowerCase(),
                 paramKey    : filter.value.toLowerCase(),
                 description : filter.description,
                 selected    : selected,
-                mustSend    : mustSend
+                mustSend    : mustSend,
+                isRadioOption : isRadioOption
             });
 
             // if filter value is either of these, selectAll should be false
-            if ( report['title'] == reportNames['ARRIVAL'] || report['title'] == reportNames['DEPARTURE'] ) {
+            if ( report['title'] === reportNames['ARRIVAL'] || report['title'] === reportNames['DEPARTURE'] ) {
                 report.hasGeneralOptions.options.noSelectAll = true;
             };
         };
@@ -278,7 +299,7 @@ angular.module('reportsModule')
         var __pushDisplayData = function(report, filter) {
             var selected = false;
 
-            if ( report['title'] == reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'INCLUDE_MARKET' ) {
+            if ( report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] && filter.value === 'INCLUDE_MARKET' ) {
                 selected = true;
             };
 
@@ -328,12 +349,22 @@ angular.module('reportsModule')
                         'description': "Include User Names"
                     });
                     break;
+                case reportNames['ACTIONS_MANAGER']:
+                    report['filters'].push({
+                        'value': "INCLUDE_COMPLETION_STATUS",
+                        'description': "Include Completion status"
+                    }, {
+                        'value': "INCLUDE_DEPARTMENTS",
+                        'description': "Include Departments"
+                    });
+
 
                 default:
                     // no op
                     break;
             };
         };
+
 
         /**
          * Process the filters and create proper DS to show and play in UI
@@ -506,12 +537,15 @@ angular.module('reportsModule')
                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'INCLUDE_DUE_OUT' ) {
                     __pushGeneralOptionData( report, filter, true );
                 }
+                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'RESTRICTED_POST_ONLY' ) {
+                    __pushGeneralOptionData( report, filter, false );
+                }
 
                  // fill up DS for options combo box
                 if ( __excludeFilterNames[filter.value] ) {
                     var selected = false;
 
-                    if (report['title'] == reportNames['DAILY_PRODUCTION_DEMO'] || reportNames['DAILY_PRODUCTION_RATE']) {
+                    if (report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] || reportNames['DAILY_PRODUCTION_RATE']) {
                         report['hasExclusions'].options.selectAll = true;
                     };
 
@@ -529,8 +563,8 @@ angular.module('reportsModule')
                     //
                     // QUICK PATCH
                     // TODO: replace with a better solution
-                    if ( report.title == reportNames['MARKET_SEGMENT_STAT_REPORT'] ) {
-                        if ( filter.value == 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
+                    if ( report.title === reportNames['MARKET_SEGMENT_STAT_REPORT'] ) {
+                        if ( filter.value === 'INCLUDE_MARKET' && data.codeSettings['is_market_on'] ) {
                             __pushDisplayData( report, filter );
                         } else if ( filter.value === 'INCLUDE_ORIGIN' && data.codeSettings['is_origin_on'] ) {
                             __pushDisplayData( report, filter );
@@ -566,7 +600,7 @@ angular.module('reportsModule')
                 completed = 0;
 
             var checkAllCompleted = function() {
-                if ( completed == requested ) {
+                if ( completed === requested ) {
 
                     // tryin to figure out if all the filters for this
                     // reportItem has been filled, if so make it 'allFiltersProcessed'
@@ -574,7 +608,7 @@ angular.module('reportsModule')
                         return ! each.hasOwnProperty( 'filled' );
                     });
 
-                    if ( undefined == anyFilterLeft ) {
+                    if ( undefined === anyFilterLeft ) {
                         reportItem.allFiltersProcessed = true;
                     };
 
@@ -588,37 +622,37 @@ angular.module('reportsModule')
 
             _.each(filters, function(filter) {
 
-                if ( 'INCLUDE_GUARANTEE_TYPE' == filter.value && ! filter.filled ) {
+                if ( 'INCLUDE_GUARANTEE_TYPE' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchGuaranteeTypes()
                         .then( fillGarntTypes );
                 }
 
-                else if ( 'CHOOSE_MARKET' == filter.value && ! filter.filled ) {
+                else if ( 'CHOOSE_MARKET' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchMarkets()
                         .then( fillMarkets );
                 }
 
-                else if ( 'CHOOSE_SOURCE' == filter.value && ! filter.filled ) {
+                else if ( 'CHOOSE_SOURCE' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchSources()
                         .then( fillSources );
                 }
 
-                else if ( 'CHOOSE_BOOKING_ORIGIN' == filter.value && ! filter.filled ) {
+                else if ( 'CHOOSE_BOOKING_ORIGIN' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchBookingOrigins()
                         .then( fillBookingOrigins );
                 }
 
-                else if ( 'HOLD_STATUS' == filter.value && ! filter.filled ) {
+                else if ( 'HOLD_STATUS' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchHoldStatus()
                         .then( fillHoldStatus );
                 }
 
-                else if ( 'RESERVATION_STATUS' == filter.value && ! filter.filled ) {
+                else if ( 'RESERVATION_STATUS' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchReservationStatus()
                         .then( fillResStatus );
@@ -630,7 +664,7 @@ angular.module('reportsModule')
                         .then( fillRateTypesAndRateList );
                 }
 
-                else if ('RATE_CODE' === filter.value && ! filter.filled ) {
+                else if (('RATE_CODE' === filter.value && ! filter.filled)) {
                     requested++;
                     reportsSubSrv.fetchRateCode()
                         .then( fillRateCodeList );
@@ -648,7 +682,7 @@ angular.module('reportsModule')
                         .then( fillRestrictionList );
                 }
 
-                else if ( ('INCLUDE_CHARGE_GROUP' == filter.value && ! filter.filled) || ('INCLUDE_CHARGE_CODE' == filter.value && ! filter.filled)  || ('ADDON_GROUPS' == filter.value && ! filter.filled) || ('SHOW_CHARGE_CODES' == filter.value && ! filter.filled) ) {
+                else if ( ('INCLUDE_CHARGE_GROUP' === filter.value && ! filter.filled) || ('INCLUDE_CHARGE_CODE' === filter.value && ! filter.filled)  || ('ADDON_GROUPS' === filter.value && ! filter.filled) || ('SHOW_CHARGE_CODES' === filter.value && ! filter.filled) ) {
 
                     // fetch charge groups
                     requested++;
@@ -666,19 +700,19 @@ angular.module('reportsModule')
                                 .then( fillAGAs.bind(null, chargeNAddonGroups) );
                         });
                 }
-                else if ( 'URLS' == filter.value && ! filter.filled ) {
+                else if ( 'URLS' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchURLs()
                         .then( fillURLs );
                 }
 
-                else if ( 'ORIGIN' == filter.value && ! filter.filled ) {
+                else if ( 'ORIGIN' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchOrigins()
                         .then( fillOrigins );
                 }
 
-                else if ( 'CAMPAIGN_TYPES' == filter.value && ! filter.filled ) {
+                else if ( 'CAMPAIGN_TYPES' === filter.value && ! filter.filled ) {
                     requested++;
                     reportsSubSrv.fetchCampaignTypes()
                         .then( fillCampaignTypes );
@@ -688,15 +722,20 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchFloors()
                         .then( fillFloors );
-                }
-
-                else {
-                    // no op
+                } else if ( 'INCLUDE_DEPARTMENTS' === filter.value && ! filter.filled){
+                    requested++;
+                    reportsSubSrv.fetchDepartments()
+                        .then( fillDepartments );
+                } else if ( 'INCLUDE_COMPLETION_STATUS' === filter.value && ! filter.filled){
+                    //requested++;
+                    fillCompletionStatus();
+                } else {
+                    //no op
                 };
             });
 
             // lets just resolve the deferred already!
-            if ( 0 == requested ) {
+            if ( 0 === requested ) {
                 checkAllCompleted();
             };
 
@@ -857,6 +896,59 @@ angular.module('reportsModule')
                 checkAllCompleted();
             };
 
+            function fillCompletionStatus(){
+                customData = [
+                                {id: "UNASSIGNED", status: "UNASSIGNED", selected: true},
+                                {id: "ASSIGNED", status: "ASSIGNED", selected: true},
+                                {id: "COMPLETED",  status: "COMPLETED", selected: true}
+                            ];
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_COMPLETION_STATUS' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasCompletionStatus = {
+                            data: customData,
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'status',
+                                defaultValue: 'Select Status'
+                            }
+                        }
+                    };
+                });
+            };
+
+            function fillDepartments(data){
+                var foundFilter,
+                    customData;
+
+                    _.each(data, function(departmentData) {
+                      departmentData.id = departmentData.value;
+                    });
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_DEPARTMENTS' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasDepartments = {
+                            data: angular.copy( data ),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'name',
+                                defaultValue: 'Select Department'
+                            }
+                        }
+                    };
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
+
             function fillRateCodeList (data) {
                 data[0].selected = true;
                 _.each(reportList, function(report) {
@@ -868,13 +960,15 @@ angular.module('reportsModule')
                             data: angular.copy( data ),
                             options: {
                                 hasSearch: true,
-                                selectAll: false,
-                                singleSelect: true,
+                                selectAll: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? true : false,
+                                singleSelect: report['title'] === reportNames['RESERVATIONS_BY_USER'] ? false : true,
                                 key: 'description',
                                 defaultValue: 'Select Rate'
                             }
                         }
                     };
+
+
                 });
 
                 completed++;
@@ -940,7 +1034,6 @@ angular.module('reportsModule')
                                 name: 'hasURLsList',
                                 process: function(filter, selectedItems) {
                                     var hasUrl = _.find(selectedItems, { value: 'URL' });
-                                    console.log(!hasUrl);
                                     filter.updateData(!hasUrl);
                                 }
                             }

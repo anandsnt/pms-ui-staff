@@ -36,5 +36,4 @@ admin.service('ADZestStationSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
         return deferred.promise;
     };
 
-
 }]);

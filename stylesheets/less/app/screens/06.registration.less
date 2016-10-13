@@ -885,6 +885,10 @@
                         padding: 0 10px;
                         font-weight: 600;
 
+                        &.description {
+                            padding: 0 10px 0 30px;
+                        }
+
                         .sort {
                             position: relative;
                             cursor: pointer;
@@ -931,9 +935,12 @@
                         &.description {
                             font-style: normal;
 
-                            .charge,
-                            .adjusted,
-                            .reference {
+                            strong {
+                                font-weight: 600;
+                            }
+
+                            span,
+                            strong {
                                 line-height: 1;
                                 .show();
                             }

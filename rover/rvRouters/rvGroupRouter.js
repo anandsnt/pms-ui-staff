@@ -60,6 +60,9 @@ angular.module('groupModule', [])
                 }
             }],
             resolve: {
+                loadPaymentModule: ['jsMappings', function (jsMappings) {
+                    return jsMappings.loadPaymentModule();
+                }],
                 //to tackle from coming admin app to rover
                 summaryData: ['rvGroupConfigurationSrv', '$stateParams', 'groupAssets',
                     function(rvGroupConfigurationSrv, $stateParams, groupAssets){

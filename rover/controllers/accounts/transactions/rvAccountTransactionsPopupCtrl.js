@@ -111,6 +111,27 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 
 	};
 
+	/*
+	 * API call edit charge description
+	 */
+	$scope.editChargeDescription = function(newDescription) {
+
+	    var editData = {
+	        "postData": {
+	            "custom_charge_description": newDescription
+	        },
+	        "id": $scope.selectedTransaction.id
+	    };
+
+		var options = {
+			params: 			editData,
+			loader: 			'NONE',
+			successCallBack: 	hideLoaderAndClosePopup
+		};
+		$scope.callAPI (rvAccountTransactionsSrv.transactionEditChargeDescription, options);
+
+	};
+
 
 /*----------------------------edit charge drop down implementation--------------------------------------*/
 

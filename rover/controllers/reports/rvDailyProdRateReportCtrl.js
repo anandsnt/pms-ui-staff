@@ -131,7 +131,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				} else if (!$scope.uiFilter.showAvailability && $scope.uiFilter.showRevenue) {
 					if (!isPastDay) {
 						eachDateVal.push({
-							value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
+							value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, 2),
 							isRev: true,
 							isRateType: isRateType
 						});
@@ -143,7 +143,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 					});
 					if (isPastDay) {
 						eachDateVal.push({
-							value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
+							value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, 2),
 							isRev: true,
 							isRateType: isRateType
 						});
@@ -161,7 +161,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 					});
 					if (!isPastDay) {
 						eachDateVal.push({
-							value: $filter('currency')(dateObj['rate_revenue'], $rootScope.currencySymbol, 2),
+							value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, 2),
 							isRev: true,
 							isRateType: isRateType
 						});
@@ -174,7 +174,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 
 					if (isPastDay) {
 						eachDateVal.push({
-							value: $filter('currency')(dateObj['actual_revenue'], $rootScope.currencySymbol, 2),
+							value: $filter('currency')(dateObj['room_revenue'], $rootScope.currencySymbol, 2),
 							isRev: true,
 							isRateType: isRateType
 						});
@@ -203,12 +203,12 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 
 		var processData = function() {
 			var SUB_HEADER_NAMES = {
-					'ROOMS': 'Rooms #',
+					'ROOMS': 'Occ Rooms',
 					'AVAILABLE_ROOMS': 'Avl. Rooms',
 					/**/
 					'FORECAST': 'Forecast.',
 					'ADR': 'ADR',
-					'ACTUAL': 'Actual Rev.',
+					'ACTUAL': 'Room Rev.',
 					/**/
 					'ADDON': 'Add-on' //>> This is to be shown IFF 'Options'->'Include Add-on Revenue' is checked
 				},
