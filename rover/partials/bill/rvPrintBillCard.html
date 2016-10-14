@@ -161,7 +161,7 @@
     </tfoot>           
 </table>
 
-<div class="invoice-footer text-center">
+<div ng-if="printData.is_from_cards" class="invoice-footer text-center">
     {{printData.ar_invoice_billing_text}}
 </div>
 
