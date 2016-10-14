@@ -32,6 +32,7 @@
 
                         <div class="data">
                             <h2 ng-bind-html="getHighlightedHTML(row.account_name, textInQueryBox)"></h2>
+                            <span class="icons icon-location" ng-if = "escapeNull(row.account_address)!==''">{{row.account_address}}</span>
                         </div>
 
                         <div class="rate" ng-if="row.current_contracts.length > 0">
