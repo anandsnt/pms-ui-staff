@@ -53,7 +53,10 @@
                   		<figure class="guest-image" ng-if="escapeNull(attachedEntities.company_card.logo)==''">
 		                    <div class="guest-image icons icon-company" ></div>
 		                </figure>
-                  <h2>{{attachedEntities.company_card.name}}</h2>
+                    <div class="data">
+                      <h2>{{attachedEntities.company_card.name}}</h2>
+                      <span class="location">{{attachedEntities.company_card.address}}</span>
+                    </div>
                  </li>
 
                  <!-- Travel agent card -->
@@ -66,7 +69,10 @@
 		                    <div class="guest-image icons icon-travel-agent" ></div>
 		                </figure>
 
-                  <h2>{{attachedEntities.travel_agent.name}}</h2>
+                    <div class="data">
+                        <h2>{{attachedEntities.travel_agent.name}}</h2>
+                        <span class="location">{{attachedEntities.travel_agent.address}}</span>
+                    </div>
                  </li>
 
                 <!-- If group added -->
@@ -86,8 +92,10 @@
                     <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='GROUP' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
                     <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
                   </figure>
-
-                  <h2>{{selectedEntity.name}}</h2>
+                  <div ng-class="{'data':selectedEntity.address}">
+                      <h2>{{selectedEntity.name}}</h2>
+                      <span class="location">{{selectedEntity.address}}</span>
+                  </div>
                   <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
                   <span class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</span>
 
@@ -118,7 +126,10 @@
             <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT'" ></div>
           </figure>
           <!-- heading -->
-          <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
+          <div class="data">
+              <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
+              <span class="location">{{row.account_address}}</span>
+          </div>
           <!-- icon -->
           <span class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></span>
         </div>

@@ -37,7 +37,11 @@
 	                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='ALLOTMENT' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
 	                </figure>
 
-					<h2>{{selectedEntity.name}}</h2>
+	                <div class="data">
+                        <h2>{{selectedEntity.name}}</h2>
+                        <span class="location">{{selectedEntity.address}}</span>
+                    </div>
+
 					<span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
                   	<span class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</span>
 				</div>
