@@ -1,0 +1,36 @@
+admin.service('ADzestwebCommonSettingsSrv', ['$q', 'ADBaseWebSrvV2', function($q, ADBaseWebSrvV2) {
+	
+	/**
+	 * [fetchSettings description]
+	 * @param  {[type]} params [description]
+	 * @return {[type]}        [description]
+	 */
+	this.fetchSettings = function(params) {
+
+		var deferred = $q.defer();
+		var url = '/sample_json/zestwebCommon/zestwebCommon.json';
+		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	/**
+	 * [saveSettings description]
+	 * @param  {[type]} data [description]
+	 * @return {[type]}      [description]
+	 */
+	this.saveSettings = function(data){
+		var deferred = $q.defer();
+		var url = '/sample_json/zestwebCommon/zestwebCommon.json';
+		var deferred = $q.defer();
+		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
+			deferred.resolve(data);
+		},function(errorMessage){
+			deferred.reject(errorMessage);
+		});
+		return deferred.promise;
+	};
+}]);
