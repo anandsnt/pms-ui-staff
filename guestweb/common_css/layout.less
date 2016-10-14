@@ -422,3 +422,47 @@
       padding-right:0px !important;
     }
 }
+
+/**************************** Footer Styles ***********************/
+.main-container{
+    height:100%;
+}
+#zest-footer{
+    bottom:0;
+    width: 100%;
+    a{
+      float:left;
+      text-align:center;
+      text-decoration: underline !important;
+      margin-left:2%;
+    }
+}
+@media (max-width: 900px) {
+    #zest-footer{
+      padding: 10% 0;
+      a{
+        width:100%;
+        margin-bottom:5px;
+        font-size: 12px;
+      }
+    }
+}
+@media (min-width: 900px) {
+
+  #zest-footer{
+    padding: 15% 10% 5%;
+    bottom:0;
+    a{
+      font-size: 18px;
+    }
+  }
+  #zest-footer.single-footer a{
+        width:100%;
+  }
+  #zest-footer.double-footer a{
+        width:45%
+  }
+  #zest-footer.triple-footer a{
+        width:30%;
+  }
+}
