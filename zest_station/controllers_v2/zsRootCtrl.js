@@ -149,6 +149,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 */
 		$scope.$on(zsEventConstants.PUT_OOS, function(event) {
 			if ($state.current.name !== 'zest_station.admin') {
+				$scope.hideKeyboardIfUp();
 				$state.go('zest_station.outOfService');
 			} else {
 				//do nothing
@@ -688,6 +689,7 @@ sntZestStation.controller('zsRootCtrl', [
                 }
                 document.getElementById(elementId).focus();
                 document.getElementById(elementId).click();
+                
             }, 300);
 
         };
