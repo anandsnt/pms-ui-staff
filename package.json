@@ -60,7 +60,7 @@
   },
   "optionalDependencies": {},
   "engines": {
-    "node": "*"
+    "node": "4.6.0"
   },
   "author": "Aswanth <aswanth@stayntouch.com>",
   "description": "Stayntouch",
