@@ -58,8 +58,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 		$scope.findByDate = function() {
 			$scope.mode = 'FIND_BY_DATE';
-			$scope.focusInputField("departure-date");
-			$scope.resetTime();
+			//$scope.focusInputField("departure-date");
+
+			$scope.showDatePicker();
 		};
 		$scope.findByNoOfNights = function() {
 			$scope.mode = 'NO_OF_NIGHTS_MODE';
@@ -272,7 +273,9 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				$scope.focusInputField("guest-email");
 			} else if ($scope.reservationParams.date.length > 0) {
 				$scope.mode = "FIND_BY_DATE";
-				$scope.focusInputField("departure-date");
+				//$scope.focusInputField("departure-date");
+				//$scope.findByDate();
+				//$scope.showDatePicker = true;
 			} else {
 				return;
 			};
