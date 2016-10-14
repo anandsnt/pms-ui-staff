@@ -1,10 +1,20 @@
 angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$filter', 'PAYMENT_CONFIG',
     function($q, $http, $filter, PAYMENT_CONFIG) {
         var service = this,
-            cordovaAPI = new CardOperation();
+            // cordovaAPI = new CardOperation(),
+            // This has to be consistent with Setting.cba_payment_card_types in  lib/seeds/production/product_config.rb
+            cardMap = {
+                AX: 'AX',
+                DC: 'DC',
+                DS: 'DS',
+                JC: 'JCB',
+                MC: 'MC',
+                VI: 'VA',
+                CA: 'MC',
+                TO: 'MA'
+            };
 
-
-        // cordovaAPI = new CBAMockOperation();
+        cordovaAPI = new CBAMockOperation();
 
         /**
          *
@@ -142,7 +152,7 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$filter', 
                     card_number: cardDetails.RVCardReadMaskedPAN,
                 },
                 cardDisplayData: {
-                    card_code: cardDetails.RVCardReadCardType,
+                    card_code: (cardMap[cardDetails.RVCardReadCardType] || cardDetails.RVCardReadCardType).toLowerCase(),
                     ending_with: cardDetails.RVCardReadMaskedPAN.match(/[0-9]{4}$/)[0],
                     expiry_date: dateParts[1] + " / " + dateParts[0],
                     name_on_card: cardDetails.RVCardReadCardName
