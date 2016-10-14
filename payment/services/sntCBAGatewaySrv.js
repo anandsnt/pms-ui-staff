@@ -1,4 +1,4 @@
-sntPay.service('sntCBAGatewaySrv', ['$q', '$http', '$filter', 'PAYMENT_CONFIG',
+angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$filter', 'PAYMENT_CONFIG',
     function($q, $http, $filter, PAYMENT_CONFIG) {
         var service = this,
             cordovaAPI = new CardOperation();
@@ -101,6 +101,53 @@ sntPay.service('sntCBAGatewaySrv', ['$q', '$http', '$filter', 'PAYMENT_CONFIG',
                 successCallBack: onSuccess,
                 failureCallBack: onFailure
             });
+        };
+
+        /**
+         *
+         * @param onSuccess
+         * @param onFailure
+         */
+        service.addCard = function(onSuccess, onFailure) {
+            cordovaAPI.callCordovaService({
+                service: "RVCardPlugin",
+                action: "addCard",
+                successCallBack: onSuccess,
+                failureCallBack: onFailure
+            });
+        };
+
+        /**
+         * {"card_number": "4111xxxxxx1235","credit_card":"VI","card_name":"M","payment_type":"CC","card_expiry":"2017-12-01"}
+         * {"credit_card":"VA","card_expiry":"2018-04-01","card_name":"VISA ISMP","payment_type":"CC","card_number":"494052******5694","workstation_id":"265","reservation_id":"1480431","bill_number":1,"add_to_guest_card":false}
+         * @param cardDetails
+         * @returns {{apiParams: {credit_card: (string|string), card_expiry: string, card_name: (string|string), payment_type: string, card_number: (string|string)}, cardDisplayData: {card_code: (string|string), ending_with: (Array|{index: number, input: string}), expiry_date: string, name_on_card: (string|string)}}}
+         */
+        service.generateApiParams = function(cardDetails) {
+            // NOTE: The date would be in YYMM format
+            var formattedExpiry = "20",
+                dateParts = cardDetails.RVCardReadExpDate.match(/.{1,2}/g);
+
+            formattedExpiry += [dateParts[0], dateParts[1], "01"].join("-");
+
+            /**
+             * TODO: Map the card code
+             */
+            return {
+                apiParams: {
+                    credit_card: cardDetails.RVCardReadCardType,
+                    card_expiry: formattedExpiry,
+                    card_name: cardDetails.RVCardReadCardName,
+                    payment_type: "CC",
+                    card_number: cardDetails.RVCardReadMaskedPAN,
+                },
+                cardDisplayData: {
+                    card_code: cardDetails.RVCardReadCardType,
+                    ending_with: cardDetails.RVCardReadMaskedPAN.match(/[0-9]{4}$/)[0],
+                    expiry_date: dateParts[1] + " / " + dateParts[0],
+                    name_on_card: cardDetails.RVCardReadCardName
+                }
+            };
         };
 
     }

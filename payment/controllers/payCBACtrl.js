@@ -6,6 +6,17 @@ angular.module('sntPay').controller('payCBACtrl',
                     id: null,
                     status: null
                 },
+                onAddCardSuccess = function(cardDetails) {
+                    var paymentData = sntCBAGatewaySrv.generateApiParams(cardDetails);
+                    $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, {
+                        paymentData,
+                        forceSaveRoutine: true
+                    });
+                },
+                onAddCardFailure = function(err) {
+                    var errorMessage = [err.RVErrorCode + " " + err.RVErrorDesc];
+                    console.log(errorMessage);
+                },
                 onSubmitSuccess = function(response) {
                     sntCBAGatewaySrv.updateTransactionSuccess(
                         transaction.id,
@@ -65,8 +76,13 @@ angular.module('sntPay').controller('payCBACtrl',
                 // Initiate Listeners
                 var listenerPayment = $scope.$on("INITIATE_CBA_PAYMENT", initiatePaymentProcess);
 
+                var listenerAddCard = $scope.$on("INITIATE_CBA_TOKENIZATION", ()=> {
+                    sntCBAGatewaySrv.addCard(onAddCardSuccess, onAddCardFailure);
+                });
+
                 // Cleaning listeners
                 $scope.$on("$destroy", listenerPayment);
+                $scope.$on("$destroy", listenerAddCard);
             })();
 
         }

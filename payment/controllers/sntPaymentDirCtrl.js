@@ -316,6 +316,14 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
          *    Request Params: {reservation_id: 1348897, payment_type: "CK", workstation_id: 159, user_payment_type_id: "1171"}
          */
         $scope.saveReservationPaymentMethod = function() {
+
+            // in case of CBA and the card is not tokenized yet
+            if ($scope.selectedPaymentType === "CC" &&
+                $scope.hotelConfig.paymentGateway === 'CBA' && !$scope.payment.tokenizedCardData) {
+                $scope.$broadcast('INITIATE_CBA_TOKENIZATION');
+                return;
+            }
+
             //check if chip and pin is selected in case of six payments
             //the rest of actions will in paySixPayController
             if ($scope.selectedPaymentType === "CC" && $scope.hotelConfig.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
@@ -907,6 +915,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $timeout(()=> {
                     $scope.selectedPaymentType = "CC";
                     $scope.payment.screenMode = "PAYMENT_MODE";
+                    data.forceSaveRoutine && $scope.saveReservationPaymentMethod();
                 }, 600);
             } else {
                 $scope.payment.tokenizedCardData = null;

@@ -27,6 +27,22 @@ var CBAMockOperation = function() {
         paymentActionFailureResponse = {
             RVErrorCode: 114,
             RVErrorDesc: "The Argument 'transaction_id' not valid."
+        },
+        addCardSuccessResponse = {
+            "RVCardReadCardIIN": "494052",
+            "RVCardReadCardName": "VISA ISMP",
+            "RVCardReadCardType": "VI",
+            "RVCardReadETB": "",
+            "RVCardReadETBKSN": "",
+            "RVCardReadExpDate": "1804",
+            "RVCardReadIsEncrypted": "0",
+            "RVCardReadMaskedPAN": "494052******5694",
+            "RVCardReadTrack1": "B494052******5694^??????????????????????????^1804???????????????????????????",
+            "RVCardReadTrack1KSN": "",
+            "RVCardReadTrack2": "494052******5694=1804????????????????",
+            "RVCardReadTrack2KSN": "",
+            "RVCardReadTrack3": "",
+            "RVCardReadTrack3KSN": ""
         };
 
     /**
@@ -48,6 +64,13 @@ var CBAMockOperation = function() {
                         : options.failureCallBack(paymentActionFailureResponse);
                 }, 2000);
                 break;
+            case "addCard":
+                window.setTimeout(()=> {
+                    options.successCallBack(addCardSuccessResponse);
+                }, 2000);
+                break;
+            default:
+                options.failureCallBack(paymentActionFailureResponse);
         }
     };
 };
