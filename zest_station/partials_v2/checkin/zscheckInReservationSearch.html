@@ -75,7 +75,7 @@
     <div id="content" ng-show="mode === 'FIND_BY_DATE'">
         <h1 translate>FIND_BY_DATE</h1>
         <form method="post" class="form short">
-            <div class="entry input" ng-click="showDatePicker(); resetTime();">
+            <div class="entry input" click-touch="showDatePicker(); resetTime();">
                 <!--div ng-include="'/assets/css/icons/date.svg'"></div-->
                 <div ng-include="icons.url.date"></div>
                 <input placeholder="" class="hasDatepicker start-focused" ng-model="reservationParams.date" id="departure-date" readonly>
@@ -142,7 +142,7 @@
                     <span>Or</span>
                 </li>
                 <li>
-                    <button type="button" class="button option" click-touch="reEnterText(''); resetTime();">
+                    <button type="button" class="button option" touch-press="reEnterText(''); resetTime();">
                         <!-- no of nights or departure date selected -->
                         <div ng-include="icons.url.moon" ng-show="reservationParams.no_of_nights.length>0 ||reservationParams.date.length >0"></div>
                         <!-- email selected -->

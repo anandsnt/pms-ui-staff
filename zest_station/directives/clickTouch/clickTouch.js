@@ -2,6 +2,7 @@ angular.module('clickTouch', []).directive('clickTouch', function($timeout, $par
     return {
         restrict: 'AE',
         link: function(scope, element, attrs, opt) {
+            var eventShallPass = scope.$eval( attrs.eventShallPass );
 
             element.bind('touchstart', function(event) {
                 try {
@@ -19,7 +20,9 @@ angular.module('clickTouch', []).directive('clickTouch', function($timeout, $par
                     if (event.preventDefault){
                    //     event.preventDefault();
                     }
-                    event.stopPropagation();
+                    if ( ! eventShallPass && event.stopPropagation ) {
+                     //   event.stopPropagation();
+                    }
                 }
                 scope.$apply(attrs['clickTouch']);
             });
