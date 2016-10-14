@@ -684,12 +684,15 @@ sntZestStation.controller('zsRootCtrl', [
 		 //
         $scope.focusInputField = function(elementId) {
             $timeout(function() {
-                if ($scope.isIpad){
-                    $scope.callBlurEventForIpad();
-                }
-                document.getElementById(elementId).focus();
-                document.getElementById(elementId).click();
-                
+            	if (!$scope.isIpad) {
+            		if (elementId !== 'departure-date'){
+						document.getElementById(elementId).focus();
+					} else if (elementId === 'departure-date'){
+						document.getElementById(elementId).click();
+					}
+				} else {
+					$scope.callBlurEventForIpad();
+				}
             }, 300);
 
         };
@@ -1088,6 +1091,7 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.zestStationData.workstationOooReason = "";
 			$scope.zestStationData.workstationStatus = "";
 			$scope.zestStationData.wsIsOos = false;
+			$scope.showLanguagePopup = false;
 			$scope.inChromeApp ? maximizeScreen() : "";
 			//create a websocket obj
 			$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
