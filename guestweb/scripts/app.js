@@ -132,7 +132,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		var commonSettings = {
 			"zest_web_footer_settings": {
 				"display_footer": true,
-				"footer_color" : "blue",
+				"footer_color" : "red",
 				"footer_1": {
 					"is_active": true,
 					"label": "footer 1",
@@ -155,10 +155,8 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.footerSettings = commonSettings.zest_web_footer_settings;
 
 		//set zestweb footer color based on admin settings
-		var css = document.createElement("style");
-		css.type = "text/css";
-		css.innerHTML = "#zest-footer a{  color :"+ commonSettings.zest_web_footer_settings.footer_color + " !important}";
-		document.head.appendChild(css);
+		var styleString = "#zest-footer a{  color :"+ commonSettings.zest_web_footer_settings.footer_color + " !important}";
+		applyStyle(styleString);//utils function
 
 		if($rootScope.footerSettings.footer_1.is_active){
 			footerCount++;

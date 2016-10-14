@@ -120,4 +120,12 @@ var returnMonthsArray = function() {
     'name': 'DEC',
     'value': '12'
   }];
-}
+};
+
+var applyStyle = function(styleString){
+  //set zestweb footer color based on admin settings
+    var css = document.createElement("style");
+    css.type = "text/css";
+    css.innerHTML = styleString;
+    document.head.appendChild(css);
+};
