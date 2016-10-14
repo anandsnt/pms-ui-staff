@@ -1893,6 +1893,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				};
 			};
 
+			// has min no of days not occupied
+			if ( report.hasOwnProperty('hasMinNoOfDaysNotOccupied') && !!report.hasMinNoOfDaysNotOccupied.data ) {
+				key         = report.hasMinNoOfDaysNotOccupied.value.toLowerCase();
+				params[key] = report.hasMinNoOfDaysNotOccupied.data;
+				/* Note: Using the ui value here */
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['hasMinNoOfDaysNotOccupied'] = report.hasMinNoOfDaysNotOccupied.data;
+				};
+			};
+
 			// need to reset the "group by" if any new filter has been applied
 			// Added a patch to ignore the following for addon forecast report
 			// @TODO: Fix this. May be refactor the whole logic
