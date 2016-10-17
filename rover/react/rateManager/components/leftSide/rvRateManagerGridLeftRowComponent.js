@@ -8,6 +8,7 @@ const RateManagerGridLeftRowComponent = ({
 	iconClassBeforeText,
 	textInIconArea,
 	leftSpanText,
+	address,
 	showRightSpan,
 	rightSpanClassName
 }) => (
@@ -18,7 +19,7 @@ const RateManagerGridLeftRowComponent = ({
 					{
 						showIconBeforeText ? (<span className={iconClassBeforeText}> {textInIconArea} </span>) : ''
 					}
-					{leftSpanText}
+					{leftSpanText}{address}
 				</span>
 				{
 					showRightSpan ? (<span className={rightSpanClassName}/>) : ''

@@ -18,6 +18,7 @@ let convertRatesDataForLeftListing = (rates) => {
 			iconClassBeforeText: !rate.based_on_rate_id ? 'base-rate-indicator': '',
 			textInIconArea: !rate.based_on_rate_id ? 'B' : '',
 			leftSpanText: rate.name,
+			address: rate.address,
 			showRightSpan: true,
 			rightSpanClassName: 'icons icon-double-arrow rotate-right'
 		})

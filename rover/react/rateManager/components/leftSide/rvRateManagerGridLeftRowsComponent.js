@@ -25,6 +25,7 @@ const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItem
 					iconClassBeforeText = {item.iconClassBeforeText}
 					textInIconArea = {item.textInIconArea}
 					leftSpanText = {item.leftSpanText}
+					address = {item.address}
 					showRightSpan = {item.showRightSpan}
 					rightSpanClassName = {item.rightSpanClassName}/>
 			)			
