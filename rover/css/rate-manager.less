@@ -400,6 +400,32 @@
             }
         }
 
+        .actions {
+            max-width: 175px;
+            margin-right: 5px;
+            height: 60px;
+            .pull-right;
+            .float;
+
+            li {
+                width: 80px;
+                .pull-left;
+                padding:10px 0;
+                text-align: center;
+
+                button {
+                    font-size: 12px;
+                    padding:0 10px;
+
+                    &:not(.red):not(.green) {
+                        color: @black;
+                        text-shadow: none;
+                        background-color: @grey2;
+                    }
+                }
+            }
+        }
+
         /* Screen Display Mode ***/
         .display-mode {
             max-width: 180px;
