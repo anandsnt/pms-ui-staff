@@ -524,6 +524,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/textMessagingInterfaces'
 		});
 
+		$stateProvider.state('admin.adInterfaceCRM', {
+			templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+			controller: 'ADInterfaceSubMenuCtrl',
+			url : '/crmInterfaces'
+		});
+
 		$stateProvider.state('admin.stationary', {
 			templateUrl: '/assets/partials/stationary/adStationary.html',
 			controller: 'ADStationaryCtrl',
