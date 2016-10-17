@@ -1,7 +1,7 @@
 angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$filter', 'PAYMENT_CONFIG',
     function($q, $http, $filter, PAYMENT_CONFIG) {
         var service = this,
-            // cordovaAPI = new CardOperation(),
+            cordovaAPI = new CardOperation(),
             // This has to be consistent with Setting.cba_payment_card_types in  lib/seeds/production/product_config.rb
             cardMap = {
                 AX: 'AX',
@@ -14,7 +14,7 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$filter', 
                 TO: 'MA'
             };
 
-        cordovaAPI = new CBAMockOperation();
+        // cordovaAPI = new CBAMockOperation();
 
         /**
          *
