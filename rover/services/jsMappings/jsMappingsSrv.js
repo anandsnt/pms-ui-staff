@@ -66,10 +66,11 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
                     for (; i < length; i++) {
                         promises.push($ocLazyLoad.load({serie: true, files: data.js[keys[i]]}));
                     }
-                   promises.push($ocLazyLoad.load({serie: true, files: data['template']}));
+                   promises.push( $ocLazyLoad.load({serie: true, files: data['template']}) );
 
                     return $q.all(promises).then(function () {
-                        $ocLazyLoad.inject(['sntPayConfig', 'sntPayTemplates', 'sntPay']);
+                        console.log('everything loaded');
+                        // $ocLazyLoad.inject(['sntPayConfig', 'sntPayTemplates', 'sntPay']);
                         deferred.resolve();
                     });
 
