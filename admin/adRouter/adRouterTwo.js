@@ -626,6 +626,9 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			resolve : {
 				zestWebCommonSettings : function (ADzestwebCommonSettingsSrv){
 					return ADzestwebCommonSettingsSrv.fetchSettings();
+				},
+				initialFooterSettings : function (ADzestwebCommonSettingsSrv){
+					return ADzestwebCommonSettingsSrv.fetchInitialFooterSettings();
 				}
 			}
 		});

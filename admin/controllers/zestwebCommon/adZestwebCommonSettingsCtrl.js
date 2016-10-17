@@ -1,20 +1,19 @@
-admin.controller('ADZestwebCommonSettingsCtrl', ['$scope', '$state', 'zestWebCommonSettings', 'ADzestwebCommonSettingsSrv', function($scope, $state, zestWebCommonSettings , ADzestwebCommonSettingsSrv) {
+admin.controller('ADZestwebCommonSettingsCtrl', ['$scope', '$state', 'zestWebCommonSettings', 'initialFooterSettings', 'ADzestwebCommonSettingsSrv', function($scope, $state, zestWebCommonSettings, initialFooterSettings, ADzestwebCommonSettingsSrv) {
 
 	BaseCtrl.call(this, $scope);
 
 	//zestWebCommonSettings is resolved from router
 	$scope.zestCommonSettings = zestWebCommonSettings;
 
-
-	//initial loading, no footers will be there. So set some default values for footers
+	//In the initial loading, no footers will be there. So set some default values for footers
 	//from sample JSON file
-	if ($scope.zestCommonSettings.zest_web_footer_settings.footers.length === 0) {
-		var options = {
-			successCallBack: function(response){
-				$scope.zestCommonSettings.zest_web_footer_settings.footers = response;
-			}
-		};
-		$scope.callAPI(ADzestwebCommonSettingsSrv.fetchInitialFooterSettings, options);
+	var numberOfFooterItems = 3;
+
+	for (i = 0; i < numberOfFooterItems; i++) {
+		//if footer item is not present, create one with default settings
+		if (_.isUndefined($scope.zestCommonSettings.zest_web_footer_settings.footers[i])) {
+			$scope.zestCommonSettings.zest_web_footer_settings.footers.push(initialFooterSettings);
+		}
 	}
 
 	/**
