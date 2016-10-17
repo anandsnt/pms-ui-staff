@@ -5,11 +5,26 @@ admin.service('ADzestwebCommonSettingsSrv', ['$q', 'ADBaseWebSrvV2', function($q
 	 * @param  {[type]} params [description]
 	 * @return {[type]}        [description]
 	 */
-	this.fetchSettings = function(params) {
+	this.fetchSettings = function() {
 
 		var deferred = $q.defer();
 		var url = '/api/zest_web_common_settings.json';
-		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	/**
+	 * [fetchInitialFooterSettings description]
+	 * @return {[type]} [description]
+	 */
+	this.fetchInitialFooterSettings = function(){
+		var deferred = $q.defer();
+		var url = '/sample_json/zestwebCommon/zestwebFooters.json';
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
