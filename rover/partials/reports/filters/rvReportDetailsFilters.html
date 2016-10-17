@@ -334,10 +334,9 @@
             <span class="title">Company/TA/Group</span>
         </a>
         <div class="settings-content" ng-show="chosenReport.hasIncludeCompanyTaGroup" ng-class="{'hidden': !filterItemsToggle.item_10}">
-            <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnDetails" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)" ng-change="removeCompTaGrpId(chosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
+            <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnDetails" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(chosenReport)" ng-change="removeCompTaGrpId(chosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
             <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeCompanyTaGroup">
         </div>
-
 
 
 
