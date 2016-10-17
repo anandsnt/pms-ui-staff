@@ -60,27 +60,44 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
 
             var deferred = $q.defer();
 
-            rvBaseWebSrvV2.getJSON(locMappingFile).then(function (data) {
-                var promises = [], length = keys.length, i = 0;
-                if (!!data) {
-                    for (; i < length; i++) {
-                        promises.push($ocLazyLoad.load({serie: true, files: data.js[keys[i]]}));
-                    }
-                   promises.push( $ocLazyLoad.load({serie: true, files: data['template']}) );
+            var failure = function() {
+              console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
+              deferred.reject('error');
+            }
+            
+            var success = function(data) {
+              var promises = [];
+              var i, j = 0;
 
-                    return $q.all(promises).then(function () {
-                        console.log('everything loaded');
-                        // $ocLazyLoad.inject(['sntPayConfig', 'sntPayTemplates', 'sntPay']);
-                        deferred.resolve();
-                    });
-
-                } else {
-                    console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
-                    deferred.reject('error');
+              if ( !!data ) {
+                for ( i = 0, j = keys.length; i < j; i++ ) {
+                  promises.push( $ocLazyLoad.load({
+                    serie: true,
+                    files: data.js[keys[i]]
+                  }) );
                 }
-            }, function (error) {
-                deferred.reject(error);
-            });
+                
+                promises.push( $ocLazyLoad.load({
+                  serie: true,
+                  files: data['template']
+                }) );
+
+                return $q.all(promises).then(function () {
+                  console.log('everything loaded');
+                  $ocLazyLoad.inject(['sntPayConfig', 'sntPayTemplates', 'sntPay']);
+                  deferred.resolve();
+                });
+              } else {
+                failure();
+              }
+            }
+
+            var failure = function() {
+              console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
+              deferred.reject('error');
+            }
+
+            rvBaseWebSrvV2.getJSON(locMappingFile).then( success, failure );
 
             return deferred.promise;
         };
