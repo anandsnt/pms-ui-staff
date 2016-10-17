@@ -127,13 +127,17 @@ angular.module('sntPay').controller('payMLIOperationsController',
             /****************** init ***********************************************/
 
             (function() {
-                //to set your merchant ID provided by Payment Gateway
-                HostedForm.setMerchant($scope.hotelConfig.mliMerchantId);
-
-                //
                 initializeCardData();
 
                 $scope.modes = paymentConstants.modes;
+
+                try {
+                    //to set your merchant ID provided by Payment Gateway
+                    HostedForm.setMerchant($scope.hotelConfig.mliMerchantId);
+                } catch (e) {
+                    //
+                }
+
             })();
 
         }]);
