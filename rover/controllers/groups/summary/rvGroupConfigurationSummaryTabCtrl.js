@@ -1220,30 +1220,29 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		// CICO-24928 
 		$scope.updateActiveGroupNote = function() {
 			if($scope.groupSummaryData.editingNote === null) {
-            $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
-            return;
-        }
+        $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
+        return;
+      }
       $scope.errorMessage = '';
-      var newNote = $scope.groupSummaryData.newNote;
-      // Removes exisiting note and adds as a new one. To be replaced by update note api call
-      $scope.removeGroupNote($scope.groupSummaryData.editingNote.note_id);
-      $scope.groupSummaryData.newNote = newNote;
       if ($scope.groupSummaryData.newNote) {
 				var onUpdateGroupNoteSuccess = function(data) {
-					$scope.groupConfigData.summary.notes = data.notes;
+					$scope.groupSummaryData.editingNote.description = $scope.groupSummaryData.newNote;
+					var noteArrayIndex = _.findIndex($scope.groupConfigData.summary.notes, {note_id : data.note_id});
+					$scope.groupConfigData.summary.notes[noteArrayIndex] = $scope.groupSummaryData.editingNote;
 					$scope.refreshScroller("groupSummaryScroller");
 					$scope.cancelEditModeGroupNote();
 				},
 				onUpdateGroupNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 				};
-				// Edit here when API for updating notes become available.
-				$scope.callAPI(rvGroupConfigurationSrv.saveGroupNote, {
+				$scope.callAPI(rvGroupConfigurationSrv.updateGroupNote, {
 					successCallBack: onUpdateGroupNoteSuccess,
 					failureCallBack: onUpdateGroupNoteFailure,
 					params: {
-						"notes": $scope.groupSummaryData.newNote,
-						"group_id": $scope.groupConfigData.summary.group_id
+						"id": $scope.groupSummaryData.editingNote.note_id,
+						"text": $scope.groupSummaryData.newNote,
+						"associated_id": $scope.groupConfigData.summary.group_id,
+						"associated_type": 'Group'
 					}
 				});
 			}

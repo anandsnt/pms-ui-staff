@@ -435,7 +435,18 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			return deferred.promise;
 		};
 
-
+		// CICO-24928 
+		this.updateGroupNote = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/notes/' + data.id;
+			rvBaseWebSrvV2.putJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		};
 
 		this.removeGroupNote = function(data) {
 			var deferred = $q.defer(),

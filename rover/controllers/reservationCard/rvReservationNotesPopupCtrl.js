@@ -68,11 +68,11 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', functi
       }
     }
     $scope.errorMessage = '';
-    var noteIndex = _.findIndex($scope.$parent.reservationData.reservation_card.notes.reservation_notes, {note_id : $scope.editingNote.note_id});
     if ($scope.reservationnote) {
 			var successCallBackReservationNote = function(data) {
-				//Update full notes array - $scope.$parent.reservationData.reservation_card.notes.reservation_notes accordingly
-				$scope.$parent.reservationData.reservation_card.notes.reservation_notes.splice(0, 0, data);
+        $scope.editingNote.text = $scope.reservationnote;
+        var noteArrayIndex = _.findIndex($scope.$parent.reservationData.reservation_card.notes.reservation_notes, {note_id : data.note_id});
+				$scope.$parent.reservationData.reservation_card.notes.reservation_notes[noteArrayIndex] = $scope.editingNote;
 				$scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
 				refreshScroller();
 				$scope.cancelEditModeReservationNote();
@@ -81,13 +81,12 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', functi
 			failureCallBackReservationNote = function(errorMessage) {
 				$scope.errorMessage = errorMessage;
 			};
-			// Edit here when API for updating notes become available.
 			var params = {};
+      params.id = $scope.editingNote.note_id;
 			params.text = $scope.reservationnote;
-			params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;
-			params.note_topic = 1;
-			// Change the api that is to be called.
-			$scope.invokeApi($scope.$parent.reservationCardSrv.saveReservationNote, params, successCallBackReservationNote, failureCallBackReservationNote
+			params.associated_id = $scope.$parent.reservationData.reservation_card.reservation_id;
+      params.associated_type = 'Reservation';
+			$scope.invokeApi($scope.$parent.reservationCardSrv.updateReservationNote, params, successCallBackReservationNote, failureCallBackReservationNote
 			);
 		}
 	};

@@ -243,26 +243,25 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
             return;
         }
       $scope.errorMessage = '';
-      var newNote = $scope.accountSummaryData.newNote;
-      // Removes exisiting note and adds as a new one. To be replaced by update note api call
-      $scope.removeAccountNote($scope.accountSummaryData.editingNote.note_id);
-      $scope.accountSummaryData.newNote = newNote;
       if ($scope.accountSummaryData.newNote) {
 				var onUpdateAccountNoteSuccess = function(data) {
-					$scope.accountConfigData.summary.notes = data.notes;
+					$scope.accountSummaryData.editingNote.description = $scope.accountSummaryData.newNote;
+					var noteArrayIndex = _.findIndex($scope.accountConfigData.summary.notes, {note_id : data.note_id});
+					$scope.accountConfigData.summary.notes[noteArrayIndex] = $scope.accountSummaryData.editingNote;
 					$scope.refreshScroller("rvAccountSummaryScroller");
 					$scope.cancelEditModeAccountNote();
 				},
 				onUpdateAccountNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 				};
-				// Edit here when API for updating notes become available.
-				$scope.callAPI(rvAccountsConfigurationSrv.saveAccountNote, {
+				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountNote, {
 					successCallBack: onUpdateAccountNoteSuccess,
 					failureCallBack: onUpdateAccountNoteFailure,
 					params: {
-						"notes": $scope.accountSummaryData.newNote,
-						"posting_account_id": $scope.accountConfigData.summary.posting_account_id
+						"id": $scope.accountSummaryData.editingNote.note_id,
+						"text": $scope.accountSummaryData.newNote,
+						"associated_id": $scope.accountConfigData.summary.posting_account_id,
+						"associated_type": 'PostingAccount'
 					}
 				});
 			}
