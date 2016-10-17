@@ -1155,6 +1155,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                                 entry = {
                                     label: each.account_name,
                                     value: each.id,
+                                    address: each.account_address,
                                     type: each.account_type
                                 };
                                 list.push(entry);
