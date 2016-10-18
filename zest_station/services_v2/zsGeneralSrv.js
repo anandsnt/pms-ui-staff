@@ -9,27 +9,18 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         * The configuredHotels list are the hotels which zest station has added stylesheets / images / icons, and we 'officially' support
         * all other hotels should default to the SNT theme until which time we add the styling into our product or until a CMS is integrated
         */
-        this.configuredHotels = [
-            'zoku',
-            'yotel',
-            'avenue',
-            'conscious',
-            'epik',
-            'fontainebleau'
-        ];
-
         var themeMappings = {
             'zoku': 'zoku',
             'yotel': 'yotel',
             'avenue': 'avenue',
+            'epik': 'Hotel epik',
             'conscious': 'Conscious vondelpark',
-            'epik': 'epik',
             'fontainebleau': 'fontainebleau'
         };
 
         this.isThemeConfigured = function(theme) {
             //if theme is configured with stylesheets, use it, otherwise default to SNT Theme
-            return (that.configuredHotels.indexOf(theme) !== -1);
+            return (typeof themeMappings[theme] !== "undefined");
         };
         this.hotelTheme = '';
         this.fetchSettings = function() {
