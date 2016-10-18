@@ -116,6 +116,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.isDepositBalanceReport = false;
 			$scope.isCancellationReport = false;
 			$scope.isActionsManager = false;
+			$scope.isVacantRoomsReport = false;
 
 			$scope.hasNoSorting  = false;
 			$scope.hasNoTotals   = false;
@@ -239,6 +240,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 					break;
 				case reportNames['ACTIONS_MANAGER']:
                     $scope.isActionsManager = true;
+					break;
+				case reportNames['VACANT_ROOMS_REPORT']:
+                    $scope.isVacantRoomsReport = true;
 					break;
 
 				default:
@@ -774,6 +778,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['ACTIONS_MANAGER']:
 					template = '/assets/partials/reports/actionManager/reportRow.html';
+					break;
+				case reportNames['VACANT_ROOMS_REPORT']:
+					template = '/assets/partials/reports/vacantRoomsReport/rvVacantRoomsReportRow.html';
 					break;
 
 				// Default report row

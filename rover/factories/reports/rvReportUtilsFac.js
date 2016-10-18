@@ -529,6 +529,10 @@ angular.module('reportsModule')
                     report['hasMinRoomNights'] = filter;
                 };
 
+                if ( filter.value === 'MIN_NUMBER_OF_DAYS_NOT_OCCUPIED' ) {
+                    report['hasMinNoOfDaysNotOccupied'] = filter;
+                };
+
 
                 // fill up DS for options combo box
                 if ( __optionFilterNames[filter.value] ) {
