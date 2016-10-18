@@ -15,7 +15,8 @@
         </div>
         <div id="notes-list" class="scrollable" ng-if="!!reservationData.reservation_card.notes.reservation_notes && reservationData.reservation_card.notes.reservation_notes.length>0" ng-iscroll="reservationNotes">
             <ul class="notes wrapper">
-                <li ng-repeat="note in reservationData.reservation_card.notes.reservation_notes">
+                <li ng-repeat="note in reservationData.reservation_card.notes.reservation_notes" ng-class="{'editing': (editingNote && note.note_id === editingNote.note_id)}"
+                ng-click="clickedOnNote(note)">
                     <figure class="guest-image">
                         <img ng-src="{{note.user_image}}" alt="">
                     </figure>
@@ -26,7 +27,7 @@
                             <span class="date">{{note.posted_date | date:dateFormat}}</span>
                         </time>
                         <span class="topic">{{note.topic}}</span>
-                        <button type="button" class="icons icon-trash" ng-click="deleteReservationNote($index)">Delete post</button>
+                        <button type="button" class="icons icon-trash" ng-click="deleteReservationNote($event, $index)">Delete post</button>
                     </div>
                     <p ng-bind-html="note.text">
                     </p>
@@ -37,8 +38,13 @@
         <div class="actions">
             <textarea placeholder="{{'WRITE_NOTE'|translate}}" ng-model="reservationnote" rows="2"></textarea>
             <div class="post">
-                <button type="button" class="button brand-colors" click-touch="saveReservationNote()">Post</button>
-                <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+                <button type="button" class="button" ng-class = "{'brand-colors': reservationnote.trim()!=='', 'grey' : reservationnote.trim()===''}" ng-show="editingNote===null" click-touch="saveReservationNote()">Post</button>
+
+                <button type="button" class="button" ng-class="{'brand-colors' : reservationnote.trim()!=='', 'grey' : reservationnote.trim()===''}" ng-click="updateActiveReservationNote()" ng-show="editingNote!==null" ng-disabled="reservationnote.trim()===''">Save</button>
+
+                <button type="button" class="button blank" ng-click="closeDialog()" ng-show="editingNote===null">Cancel</button>
+
+                <button type="button" class="button blank" ng-click="cancelEditModeReservationNote()" ng-show="editingNote!==null">Cancel</button>
             </div>
         </div>
     </form>

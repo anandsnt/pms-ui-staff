@@ -253,6 +253,9 @@
 		<div ng-if="appliedFilter.completion_status.length">
 			Completion Status: <span>{{ appliedFilter.completion_status.join(', ') }}</span>
 		</div>
+		<div ng-if="appliedFilter.hasMinNoOfDaysNotOccupied">
+			Min. Days Not Occupied: <span>{{ appliedFilter.hasMinNoOfDaysNotOccupied}}</span>
+		</div>
 
 
 		<!-- Never REMOVE this span -->
