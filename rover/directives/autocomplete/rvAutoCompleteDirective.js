@@ -28,10 +28,14 @@ sntRover.directive('autoComplete', ['highlightFilter',
 
                         var $content = highlightFilter(item.label, scope.ngModel),
                             $result = $("<a></a>").html($content),
+                            address = $("<span></span>").html(item.address),
                             defIcon = '',
                             defIconText = '',
                             $image = '';
 
+                        address.addClass("location");       
+                        $result.append(address);
+                        
                         switch (item.type) {
                             case 'COMPANY':
                                 defIcon = 'icon-company';

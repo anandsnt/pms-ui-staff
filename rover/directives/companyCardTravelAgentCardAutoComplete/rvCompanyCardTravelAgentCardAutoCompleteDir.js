@@ -20,20 +20,39 @@
       });
 
       ul.addClass('find-cards');
-      var $content = highlightFilter_(item.account_name, $scope.ngModel),
-         htmlForItem = $('<a></a>').html($content),
-         defIcon = '',
+      // var $content = highlightFilter_(item.account_name, $scope.ngModel),
+      //    htmlForItem = $('<a></a>').html($content),
+      
+      var defIcon = '',
          $image = '';
+
+      //CICO-29668   
+      var content = $("<div></div>"),
+          accountName = $("<span></span>").html(highlightFilter_(item.account_name, $scope.ngModel)),
+          address = $("<span></span>").html(item.account_address), 
+          smallSpace = $("<span></span>").html("&nbsp;"),
+          lineBreak = $("<br>");
+
+      content.addClass("rates-box");
+      accountName.addClass("rate-data");
+      address.addClass("rate-data location");
+      lineBreak.attr("clear", "all");
+
+      content.append(accountName).append(address).append(smallSpace).append(lineBreak);    
+      var htmlForItem = $('<a></a>').html(content);
 
       switch (item.account_type) {
         case 'COMPANY':
           defIcon = 'icon-company';
+          content.addClass("dark");
           break;
 
         case 'TRAVELAGENT':
           defIcon = 'icon-travel-agent';
+          content.addClass("purple");
           break;
         default:
+          content.addClass("dark");
           break;
       };
 
