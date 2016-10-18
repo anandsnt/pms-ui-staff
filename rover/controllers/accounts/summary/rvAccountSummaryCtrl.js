@@ -236,14 +236,14 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			});
 		};
 
-		// CICO-24928 
+		// CICO-24928
 		$scope.updateActiveAccountNote = function() {
-			if($scope.accountSummaryData.editingNote === null) {
-            $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
-            return;
-        }
-      $scope.errorMessage = '';
-      if ($scope.accountSummaryData.newNote) {
+			if(!$scope.accountSummaryData.editingNote) {
+	            $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
+	            return;
+        	}
+      		$scope.errorMessage = '';
+      		if ($scope.accountSummaryData.newNote) {
 				var onUpdateAccountNoteSuccess = function(data) {
 					$scope.accountSummaryData.editingNote.description = $scope.accountSummaryData.newNote;
 					var noteArrayIndex = _.findIndex($scope.accountConfigData.summary.notes, {note_id : data.note_id});
@@ -268,14 +268,14 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		};
 		// CICO-24928
 		$scope.clickedOnNote = function(note) {
-      $scope.accountSummaryData.editingNote  = note;
-      $scope.accountSummaryData.newNote = note.description;
-    };
-    // CICO-24928
-    $scope.cancelEditModeAccountNote = function(){
-      $scope.accountSummaryData.editingNote  = null;
-      $scope.accountSummaryData.newNote = '';
-    };
+	      $scope.accountSummaryData.editingNote  = note;
+	      $scope.accountSummaryData.newNote = note.description;
+    	};
+    	// CICO-24928
+	    $scope.cancelEditModeAccountNote = function() {
+	      $scope.accountSummaryData.editingNote  = null;
+	      $scope.accountSummaryData.newNote = '';
+	    };
 
 		$scope.onCloseWarningPopup = function() {
 			$scope.accountConfigData.summary.posting_account_status = "OPEN";

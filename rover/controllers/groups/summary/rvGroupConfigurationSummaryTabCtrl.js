@@ -785,7 +785,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 		/*
 		 * Send Confirmation popup handler
-		 * @return undefined 
+		 * @return undefined
 		 */
 		$scope.openSendConfirmationPopup = function () {
 
@@ -810,7 +810,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 		/*
 		 * Send Confirmation email API call
-		 * @return undefined 
+		 * @return undefined
 		 */
 		$scope.sendGroupConfirmation = function() {
 
@@ -1217,46 +1217,46 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				}
 			});
 		};
-		// CICO-24928 
+		// CICO-24928
 		$scope.updateActiveGroupNote = function() {
-			if($scope.groupSummaryData.editingNote === null) {
-        $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
-        return;
-      }
-      $scope.errorMessage = '';
-      if ($scope.groupSummaryData.newNote) {
-				var onUpdateGroupNoteSuccess = function(data) {
-					$scope.groupSummaryData.editingNote.description = $scope.groupSummaryData.newNote;
-					var noteArrayIndex = _.findIndex($scope.groupConfigData.summary.notes, {note_id : data.note_id});
-					$scope.groupConfigData.summary.notes[noteArrayIndex] = $scope.groupSummaryData.editingNote;
-					$scope.refreshScroller("groupSummaryScroller");
-					$scope.cancelEditModeGroupNote();
-				},
-				onUpdateGroupNoteFailure = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
-				};
-				$scope.callAPI(rvGroupConfigurationSrv.updateGroupNote, {
-					successCallBack: onUpdateGroupNoteSuccess,
-					failureCallBack: onUpdateGroupNoteFailure,
-					params: {
-						"id": $scope.groupSummaryData.editingNote.note_id,
-						"text": $scope.groupSummaryData.newNote,
-						"associated_id": $scope.groupConfigData.summary.group_id,
-						"associated_type": 'Group'
-					}
-				});
+			if(!$scope.groupSummaryData.editingNote) {
+		        $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
+		        return;
+      		}
+      		$scope.errorMessage = '';
+	      	if ($scope.groupSummaryData.newNote) {
+					var onUpdateGroupNoteSuccess = function(data) {
+						$scope.groupSummaryData.editingNote.description = $scope.groupSummaryData.newNote;
+						var noteArrayIndex = _.findIndex($scope.groupConfigData.summary.notes, {note_id : data.note_id});
+						$scope.groupConfigData.summary.notes[noteArrayIndex] = $scope.groupSummaryData.editingNote;
+						$scope.refreshScroller("groupSummaryScroller");
+						$scope.cancelEditModeGroupNote();
+					},
+					onUpdateGroupNoteFailure = function(errorMessage) {
+						$scope.errorMessage = errorMessage;
+					};
+					$scope.callAPI(rvGroupConfigurationSrv.updateGroupNote, {
+						successCallBack: onUpdateGroupNoteSuccess,
+						failureCallBack: onUpdateGroupNoteFailure,
+						params: {
+							"id": $scope.groupSummaryData.editingNote.note_id,
+							"text": $scope.groupSummaryData.newNote,
+							"associated_id": $scope.groupConfigData.summary.group_id,
+							"associated_type": 'Group'
+						}
+					});
 			}
 		};
 		// CICO-24928
 		$scope.clickedOnNote = function(note) {
-      $scope.groupSummaryData.editingNote  = note;
-      $scope.groupSummaryData.newNote = note.description;
-    };
-    // CICO-24928
-    $scope.cancelEditModeGroupNote = function(){
-      $scope.groupSummaryData.editingNote  = null;
-      $scope.groupSummaryData.newNote = '';
-    };
+	      $scope.groupSummaryData.editingNote  = note;
+	      $scope.groupSummaryData.newNote = note.description;
+    	};
+    	// CICO-24928
+	    $scope.cancelEditModeGroupNote = function(){
+	      $scope.groupSummaryData.editingNote  = null;
+	      $scope.groupSummaryData.newNote = '';
+	    };
 
 		var getPassData = function() {
 			var passData = {

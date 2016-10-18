@@ -54,54 +54,53 @@ sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', functi
 	    $scope.invokeApi($scope.$parent.reservationCardSrv.deleteReservationNote, note_id, successCallBackDeleteReservationNote);
 	};
 
-	// CICO-24928 
+	// CICO-24928
 	$scope.updateActiveReservationNote = function() {
 		if($scope.reservationnote === null) {
           $scope.errorMessage = ['Something went wrong, please try again!'];
           return;
-      }
-    if (!$scope.$parent.isNewsPaperPreferenceAvailable()) {
-      if (!$rootScope.isStandAlone) {
-          $scope.reservationnote = "";
-          $scope.$parent.showFeatureNotAvailableMessage();
-          return;
-      }
-    }
-    $scope.errorMessage = '';
-    if ($scope.reservationnote) {
-			var successCallBackReservationNote = function(data) {
-        $scope.editingNote.text = $scope.reservationnote;
-        var noteArrayIndex = _.findIndex($scope.$parent.reservationData.reservation_card.notes.reservation_notes, {note_id : data.note_id});
-				$scope.$parent.reservationData.reservation_card.notes.reservation_notes[noteArrayIndex] = $scope.editingNote;
-				$scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
-				refreshScroller();
-				$scope.cancelEditModeReservationNote();
-				$scope.$parent.$emit('hideLoader');
-			},
-			failureCallBackReservationNote = function(errorMessage) {
-				$scope.errorMessage = errorMessage;
-			};
-			var params = {};
-      params.id = $scope.editingNote.note_id;
-			params.text = $scope.reservationnote;
-			params.associated_id = $scope.$parent.reservationData.reservation_card.reservation_id;
-      params.associated_type = 'Reservation';
-			$scope.invokeApi($scope.$parent.reservationCardSrv.updateReservationNote, params, successCallBackReservationNote, failureCallBackReservationNote
-			);
-		}
+        }
+        if (!$scope.$parent.isNewsPaperPreferenceAvailable()) {
+          if (!$rootScope.isStandAlone) {
+              $scope.reservationnote = "";
+              $scope.$parent.showFeatureNotAvailableMessage();
+              return;
+          }
+        }
+        $scope.errorMessage = '';
+        if ($scope.reservationnote) {
+    			var successCallBackReservationNote = function(data) {
+                    $scope.editingNote.text = $scope.reservationnote;
+                    var noteArrayIndex = _.findIndex($scope.$parent.reservationData.reservation_card.notes.reservation_notes, {note_id : data.note_id});
+    				$scope.$parent.reservationData.reservation_card.notes.reservation_notes[noteArrayIndex] = $scope.editingNote;
+    				$scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
+    				refreshScroller();
+    				$scope.cancelEditModeReservationNote();
+    				$scope.$parent.$emit('hideLoader');
+    			},
+    			failureCallBackReservationNote = function(errorMessage) {
+    				$scope.errorMessage = errorMessage;
+    			};
+    			var params = {};
+                params.id = $scope.editingNote.note_id;
+    			params.text = $scope.reservationnote;
+    			params.associated_id = $scope.$parent.reservationData.reservation_card.reservation_id;
+                params.associated_type = 'Reservation';
+    			$scope.invokeApi($scope.$parent.reservationCardSrv.updateReservationNote, params, successCallBackReservationNote, failureCallBackReservationNote);
+    	}
 	};
 	// CICO-24928
 	$scope.clickedOnNote = function(note) {
-    $scope.editingNote  = note;
-    $scope.reservationnote = note.text;
-  };
-  // CICO-24928
-  $scope.cancelEditModeReservationNote = function(){
-    $scope.editingNote  = null;
-    $scope.reservationnote = '';
-  };
+        $scope.editingNote  = note;
+        $scope.reservationnote = note.text;
+    };
+    // CICO-24928
+    $scope.cancelEditModeReservationNote = function(){
+        $scope.editingNote  = null;
+        $scope.reservationnote = '';
+    };
 
 	var refreshScroller = function() {
-    $scope.refreshScroller('reservationNotes');
-  };
+        $scope.refreshScroller('reservationNotes');
+    };
 }]);
