@@ -76,11 +76,11 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
          *
          */
 
-    this.loadPaymentModule = function (keys, mapping) {
+    this.loadPaymentModule = function (keys) {
       var promises = [], i, j;
 
-      if ( ! mapping ) {
-        console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
+      if ( ! paymentMappingList ) {
+        console.error('something wrong, mapping list is not filled yet, please ensure that loadPaymentMapping is called first');
         return;
       } else {
         if ( ! keys ) {

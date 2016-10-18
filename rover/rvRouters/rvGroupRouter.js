@@ -64,7 +64,7 @@ angular.module('groupModule', [])
                     return jsMappings.loadPaymentMapping();
                 },
                 loadPaymentModule: function (jsMappings, loadPaymentMapping) {
-                    return jsMappings.loadPaymentModule(loadPaymentMapping);
+                    return jsMappings.loadPaymentModule();
                 },
 
                 //to tackle from coming admin app to rover
