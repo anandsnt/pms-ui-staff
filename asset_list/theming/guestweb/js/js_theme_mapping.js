@@ -78,8 +78,8 @@ module.exports = {
 			'guestweb_west_wing':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_estencia_la_jolla':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_el_castell':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_hotel_epik':[ themeJsRoot + 'app_router_common.js']
-			
+			'guestweb_hotel_epik':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_avenue_hotel':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }
