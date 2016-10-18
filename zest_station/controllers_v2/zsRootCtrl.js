@@ -377,7 +377,7 @@ sntZestStation.controller('zsRootCtrl', [
 				}
 				$scope.lastKeyboardId = id;
 				//pull up the virtual keyboard (snt) theme... if chrome & fullscreen
-				var isTouchDevice = 'ontouchstart' in document,
+				var isTouchDevice = 'ontouchstart' in window,
 					agentString = window.navigator.userAgent;
 				var themeUsesKeyboard = false;
 				if ($scope.theme === 'yotel' || !$scope.theme) {
