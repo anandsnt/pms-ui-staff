@@ -398,7 +398,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 
 			//if it is is Move Date mode
-			else if ($scope.changeDatesActions.isInCompleteMoveMode()) {
+			//this condition is independent of above if - CICO-34463
+			if ($scope.changeDatesActions.isInCompleteMoveMode()) {
 				var originalStayLength = (util.getDatesBetweenTwoDates (new tzIndependentDate(util.deepCopy(summaryMemento.block_from)), new tzIndependentDate(util.deepCopy(summaryMemento.block_to))).length - 1);
 				refData.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 				refData.block_to.setDate(refData.block_to.getDate() + originalStayLength);
@@ -488,7 +489,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 			// check move validity
 			// departure left date change
-			else if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
+			// this condition is independent of above if - CICO-34463
+			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
 				if(new tzIndependentDate(refData.last_arrival_date) > newBlockTo){
 					triggerEarlierDepartureDateChangeInvalidError();
 				}
