@@ -1,7 +1,6 @@
 angular.module('sntPay', [
     'pascalprecht.translate',
     'oc.lazyLoad',
-    'sntPayTemplates',
     'ng-iscroll',
     'ngDialog'
 ])

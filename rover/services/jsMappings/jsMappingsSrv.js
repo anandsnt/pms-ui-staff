@@ -77,6 +77,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
          */
 
     this.loadPaymentModule = function (keys) {
+      var deferred = $q.defer();
       var promises = [], i, j;
 
       if ( ! paymentMappingList ) {
@@ -99,9 +100,12 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
           files: paymentMappingList.template
         }) );
 
-        return $q.all(promises).then(function () {
-          $ocLazyLoad.inject(['sntPayConfig', 'sntPay', 'sntPayTemplates']);
+        $q.all(promises).then(function () {
+          $ocLazyLoad.inject(['sntPayConfig', 'sntPayTemplates', 'sntPay']);
+          deferred.resolve()
         });
+
+        return deferred.promise;
       }
     };
 
