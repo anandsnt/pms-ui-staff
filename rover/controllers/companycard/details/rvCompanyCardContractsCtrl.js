@@ -16,6 +16,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.contractList.isRenameMode = false;
 		$scope.contractList.contractNameToChange = "";
 		var existingContractName = "";
+		var contractSelected;
 
 		$scope.errorMessage = "";
 		$scope.autoCompleteState = {};
@@ -194,10 +195,22 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.errorMessage = "";
 
 		};
+
+		var fetchContractsSuccessCallback = function(data) {
+			$scope.contractList = data;
+			$scope.contractList.contractSelected = contractSelected;
+			$scope.$emit('hideLoader');
+			checkContractListEmpty();
+			$scope.errorMessage = "";
+
+		};
+
 		var fetchContractsDetailsFailureCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
 		};
+
+
 
 
 		var manipulateGraphData = function(data) {
@@ -260,7 +273,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 
 		$scope.fetchContractsList = function () {
-
 			if ($stateParams.id !== "add") {
 				$scope.invokeApi(RVCompanyCardSrv.fetchContractsList, {
 					"account_id": $stateParams.id
@@ -269,6 +281,12 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.contractList.isAddMode = true;
 				$scope.$emit('hideLoader');
 			}
+		};
+
+		$scope.fetchContracts = function () {
+				$scope.invokeApi(RVCompanyCardSrv.fetchContractsList, {
+					"account_id": $stateParams.id
+				}, fetchContractsSuccessCallback, fetchFailureCallback);
 		};
 
 		$scope.fetchContractsList();
@@ -545,7 +563,11 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			var renameContractSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = "";
-				$scope.fetchContractsList();
+				contractSelected = angular.copy($scope.contractList.contractSelected);
+				$scope.contractList.current_contracts = [];
+				$scope.contractList.future_contracts = [];
+				$scope.contractList.history_contracts = [];
+				$scope.fetchContracts();
 			};
 
 			/**
@@ -579,6 +601,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
 				var account_id = $stateParams.id;
 				data.contract_name = $scope.contractList.contractNameToChange;
+				$scope.contractData.contract_name = $scope.contractList.contractNameToChange;
 				$scope.invokeApi(RVCompanyCardSrv.updateContract, {
 					"account_id": account_id,
 					"contract_id": $scope.contractList.contractSelected,
