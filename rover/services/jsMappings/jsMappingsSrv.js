@@ -48,8 +48,8 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
 
 
     this.loadPaymentMapping = function() {
-      var locMappingFile,
-          deferred = $q.defer();
+      var locMappingFilevar;
+      var deferred = $q.defer();
 
       if ( !! paymentMappingList ) {
         deferred.resolve(paymentMappingList);
@@ -101,7 +101,6 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
 
         return $q.all(promises).then(function () {
           $ocLazyLoad.inject(['sntPayConfig', 'sntPayTemplates', 'sntPay']);
-          deferred.resolve();
         });
       }
     };
