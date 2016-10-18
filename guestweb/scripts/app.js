@@ -133,9 +133,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			//active footer count
 			var footerCount = _.filter($rootScope.footerSettings.footers, function(footer){ return footer.is_active;}).length;
 			//set zestweb footer color based on admin settings
-			var styleString = "#zest-footer a{  color :"+ $rootScope.footerSettings.footer_color + " !important}";
-			applyStyle(styleString);//utils function
-
+			applyFooterStyle($rootScope.footerSettings.footer_color);//utils function
 			// based upon number of footer items, set a class for styling
 			$rootScope.footerClass = returnFooterStyleClass(footerCount);
 		}else{
