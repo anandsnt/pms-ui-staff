@@ -3,6 +3,8 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
 
   var mappingList = null;
 
+  var paymentMappingList = undefined;
+
   /**
 	 * [fetchMappingList description]
 	 * @return {[type]} [description]
@@ -41,7 +43,30 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
       console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
       return;
     };
-  };
+  };    
+
+
+
+    this.loadPaymentMapping = function() {
+      var locMappingFile,
+          deferred = $q.defer();
+
+      if ( !! paymentMappingList ) {
+        deferred.resolve(paymentMappingList);
+      } else {
+        locMappingFile = "/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json";
+
+        rvBaseWebSrvV2.getJSON(locMappingFile).then(function(data){
+          paymentMappingList = data;
+          deferred.resolve(paymentMappingList);
+        }, function() {
+          console.error('something wrong, make sure the payment mapping file is in exact place or name is correct');
+          deferred.reject('something wrong, make sure the payment mapping file is in exact place or name is correct');
+        });
+      }
+
+      return deferred.promise;
+    }
 
         /**
          * [loadPaymentModule description]
@@ -51,55 +76,35 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
          *
          */
 
-        this.loadPaymentModule = function (keys) {
-            var locMappingFile = "/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json";
+    this.loadPaymentModule = function (keys, mapping) {
+      var promises = [], i, j;
 
-            if (!keys) {
-                keys = ['common'];
-            }
+      if ( ! mapping ) {
+        console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
+        return;
+      } else {
+        if ( ! keys ) {
+          keys = ['common'];
+        }
 
-            var deferred = $q.defer();
+        for ( i = 0, j = keys.length; i < j; i++ ) {
+          promises.push( $ocLazyLoad.load({
+            serie: true,
+            files: mapping.js[keys[i]]
+          }) );
+        }
 
-            var failure = function() {
-              console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
-              deferred.reject('error');
-            }
-            
-            var success = function(data) {
-              var promises = [];
-              var i, j = 0;
+        promises.push( $ocLazyLoad.load({
+          serie: true,
+          files: mapping.template
+        }) );
 
-              if ( !!data ) {
-                for ( i = 0, j = keys.length; i < j; i++ ) {
-                  promises.push( $ocLazyLoad.load({
-                    serie: true,
-                    files: data.js[keys[i]]
-                  }) );
-                }
-                
-                promises.push( $ocLazyLoad.load({
-                  serie: true,
-                  files: data['template']
-                }) );
-
-                return $q.all(promises).then(function () {
-                  console.log('everything loaded');
-                  $ocLazyLoad.inject(['sntPayConfig', 'sntPayTemplates', 'sntPay']);
-                  deferred.resolve();
-                });
-              } else {
-                failure();
-              }
-            }
-
-            var failure = function() {
-              console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
-              deferred.reject('error');
-            }
-
-            rvBaseWebSrvV2.getJSON(locMappingFile).then( success, failure );
-
-            return deferred.promise;
-        };
+        return $q.all(promises).then(function () {
+          console.log('everything loaded');
+          $ocLazyLoad.inject(['sntPayConfig', 'sntPayTemplates', 'sntPay']);
+          deferred.resolve();
+        });
+      }
+    };
 
 }]);
