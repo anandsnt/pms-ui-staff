@@ -28,17 +28,19 @@ sntRover.directive('autoComplete', ['highlightFilter',
 
                         var $content = highlightFilter(item.label, scope.ngModel),
                             $result = $("<a></a>").html($content),
-                            address = $("<span></span>").html(item.address),
                             defIcon = '',
                             defIconText = '',
                             $image = '';
-
-                        address.addClass("location");       
-                        $result.append(address);
                         
                         switch (item.type) {
                             case 'COMPANY':
                                 defIcon = 'icon-company';
+                                $result.addClass("autocomplete-result");
+                                if (item.address !== '') {
+                                    var address = $("<span></span>").html(item.address);
+                                    address.addClass("location");
+                                    $result.append(address);
+                                }
                                 break;
 
                             case 'ALLOTMENT':
@@ -47,6 +49,12 @@ sntRover.directive('autoComplete', ['highlightFilter',
 
                             case 'TRAVELAGENT':
                                 defIcon = 'icon-travel-agent';
+                                $result.addClass("autocomplete-result");
+                                if (item.address !== '') {
+                                    var address = $("<span></span>").html(item.address);
+                                    address.addClass("location");
+                                    $result.append(address);
+                                }
                                 break;
 
                             case 'GROUP':
