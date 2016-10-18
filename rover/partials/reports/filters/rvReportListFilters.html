@@ -356,6 +356,11 @@
     data="uiChosenReport.hasDepartments.data"
     options="uiChosenReport.hasDepartments.options"></multi-option-selection>
 
+<div class="entry" ng-show="uiChosenReport.hasMinNoOfDaysNotOccupied">
+    <label>Min. Days Not Occupied</label>
+    <input ng-model="uiChosenReport.hasMinNoOfDaysNotOccupied.data" value="" type="number" placeholder="Min.number of day" />
+</div>
+
 <div class="entry" ng-show="uiChosenReport.sortByOptions">
     <label>Sort By</label>
     <div class="select">

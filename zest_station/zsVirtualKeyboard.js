@@ -68,8 +68,9 @@ this.initScreenKeyboardListener = function(from, id, show) {
 
   var applyKeyboardInput = function() {
     if (from === 'login') { //fixes an issue where data values are not set from virtual keyboard
-      if (angular.element( elementObj.scope() ) ) {
-        angular.element(elementObj).scope().data[id] = elementObj.val();
+      var el = $(elementObj[0]);
+      if ( angular.element(el).scope() ) {
+        angular.element(el).scope().data[id] = $(elementObj[0]).val();
       }
     }
   };
