@@ -1,6 +1,7 @@
 const RateManagerGridLeftRowComponent = ({
 	trClassName,
 	tdClassName,
+	name,
 	onClick,
 	index,	
 	leftSpanClassName,
@@ -10,17 +11,31 @@ const RateManagerGridLeftRowComponent = ({
 	leftSpanText,
 	address,
 	showRightSpan,
-	rightSpanClassName
+	rightSpanClassName,
+	contractLabel,
+	contractClass,
+	accountName,
+	showDetails
 }) => (
 	<tr className={trClassName} onClick={(e) => onClick(e, index) }>
 		<td className={tdClassName}>
-			<a>
+			<a title={name}>
 				<span className={leftSpanClassName}>
 					{
 						showIconBeforeText ? (<span className={iconClassBeforeText}> {textInIconArea} </span>) : ''
-					}
-					{leftSpanText}{address}
+					}					
+					{showDetails?(<span className={contractClass}>
+                        {contractLabel}
+                    </span>):''
+                	}
+                    {leftSpanText}
 				</span>
+				{
+					showDetails?(<span className={contractClass}>{accountName}</span>):''
+				}
+                {
+                	showDetails?(<span className={contractClass}>{address}</span>):''
+                }
 				{
 					showRightSpan ? (<span className={rightSpanClassName}/>) : ''
 				}
