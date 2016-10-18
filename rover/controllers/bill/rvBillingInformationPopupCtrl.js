@@ -177,11 +177,11 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             }
     		if(data.account_type === 'COMPANY'){
     			$scope.selectedEntity.entity_type = 'COMPANY_CARD';
-                $scope.selectedEntity.address = data.address || data.account_address;
+                $scope.selectedEntity.address = data.account_address;
     		}
             else if(data.account_type === 'TRAVELAGENT'){
                 $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
-                $scope.selectedEntity.address = data.address || data.account_address;
+                $scope.selectedEntity.address = data.account_address;
             }
         }
         else if(type === 'GROUP' || type === 'HOUSE'){

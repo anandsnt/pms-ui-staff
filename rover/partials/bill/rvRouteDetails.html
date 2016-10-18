@@ -39,7 +39,7 @@
 
 	                <div class="data">
                         <h2>{{selectedEntity.name}}</h2>
-                        <span class="location">{{selectedEntity.address}}</span>
+                        <span class="location">{{selectedEntity.account_address}}</span>
                     </div>
 
 					<span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
