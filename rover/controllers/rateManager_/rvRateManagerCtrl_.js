@@ -680,6 +680,31 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         };
     };
 
+    $scope.closeAll = function(){
+        var stateProps  = store.getState();
+        var closedRestriction = _.findWhere(stateProps.restrictionTypes, { value: RM_RX_CONST.CLOSED_RESTRICTION_VALUE });
+        let paramsForClosingRestriction = {
+            details: [{
+                from_date: stateProps.dates[0],
+                to_date: stateProps.dates[stateProps.dates.length-1],
+                restrictions: [{
+                    action: 'add',
+                    restriction_type_id: closedRestriction.id
+                }]
+            }]
+        };
+        if(stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
+            openAllRestrictionsForSingleRateView(paramsForClosingRestriction);
+        }
+        else if(stateProps.mode ===  RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
+            closeAllRestrictionsForRoomTypeView(paramsForClosingRestriction);
+        }
+        else if(stateProps.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
+            paramsForClosingRestriction.rate_ids = _.pluck(stateProps.list.slice(0), 'id');
+            closeAllRestrictionsForRateView(paramsForClosingRestriction);
+        };
+    };
+
     /**
      * to show & form the data required for topbar
      * @param  {array} dates [description]
