@@ -40,6 +40,8 @@ admin.controller('ADZestwebCommonSettingsCtrl', ['$scope', '$state', 'zestWebCom
 
 		//zestWebCommonSettings is resolved from router
 		$scope.zestCommonSettings = zestWebCommonSettings;
+		$scope.errorMessage = '';
+		$scope.successMessage = '';
 		//In the initial loading, no footers will be there. So set some default values for footers
 		//from sample JSON file
 		var numberOfFooterItems = 3;

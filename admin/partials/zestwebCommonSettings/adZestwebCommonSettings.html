@@ -1,10 +1,12 @@
 <section id="replacing-div-fourth" class="content current admin-scrollfix" div-touch-move-stop-propogate>
-    <div data-view="UserDetailsView">
+    <div ng-click="clearErrorMessage()">
         <header class="content-title float">
             <h2>Zest web Common Settings</h2>
             <a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()">Back</a>
         </header>
         <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
             <form class="form zest-web-settins-form float">
                 <div class="form-title full-width">
                     <h3><span> Zestweb Footer setup</span></h3>
