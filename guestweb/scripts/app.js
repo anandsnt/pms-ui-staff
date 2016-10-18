@@ -136,6 +136,8 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			applyFooterStyle($rootScope.footerSettings.footer_color);//utils function
 			// based upon number of footer items, set a class for styling
 			$rootScope.footerClass = returnFooterStyleClass(footerCount);
+			//to avoid flickering effect we hides the footer initially using CSS
+			$("#zest-footer").show();
 		}else{
 			//if no footer is set
 			$rootScope.footerSettings.display_footer = false;
