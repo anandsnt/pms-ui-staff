@@ -1,4 +1,4 @@
-    
+
     "ALL": "All",
     "CANCEL": "Cancel",
     "SAVE": "Save",
@@ -6,7 +6,7 @@
     "CREATE": "Create",
     "YES": "YES",
     "NO": "No",
-   
+
     "MENU_DASHBOARD" : "Dashboard",
     "MENU_SEARCH" : "Search",
     "MENU_SEARCH_RESERVATIONS" : "Search Reservations",
@@ -46,7 +46,7 @@
     "MENU_CREATE_ALLOTMENT": "New Allotment",
     "MENU_MANAGE_ALLOTMENT": "Manage Allotment",
     "MENU_ACCOUNTS": "Accounts",
-    
+
     "DUEIN_TITLE": "Checking In",
     "IN_HOUSE_TITLE": "In House",
     "CHECKING_OUT_TITLE": "Checking Out",
@@ -55,6 +55,7 @@
     "STAYCARD_TITLE": "Staycard",
     "ROOM_ASSIGNMENT_TITLE" : "Room Assignment",
     "MENU_ROOM_DIARY": "Room Diary",
+    "MENU_NIGHTLY_DIARY" : "Nightly Diary",
     "ROOM_UPGRADES_TITLE": "Room Upgrades",
     "RESERVATION_TITLE": "Reservation",
     "RATE_MANAGER_TITLE": "Rate Manager",

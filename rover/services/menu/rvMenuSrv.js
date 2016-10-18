@@ -151,6 +151,11 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: 'rover.diary',
 		            //hidden: !isHourlyRateOn,
 		            menuIndex: 'diaryReservation'
+		        }, {
+		            title: "MENU_NIGHTLY_DIARY",
+		            action: 'rover.nightlyDiary',
+		            //hidden: !isHourlyRateOn,
+		            menuIndex: 'nightlyDiaryReservation'
 		        },  {
 		            title: "MENU_POST_CHARGES",
 		            action: "",
@@ -501,6 +506,10 @@ angular.module('sntRover').service('rvMenuSrv',
 		switch (menuIndex){
 			case 'diaryReservation':
 				returnValue = isHourlyRateOn();
+				break;
+
+			case 'nightlyDiaryReservation':
+				returnValue = !isHourlyRateOn();
 				break;
 
 			//dont wanted to show on hourly enabled hotels

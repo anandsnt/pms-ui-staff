@@ -1,6 +1,7 @@
 module.exports = {
 	getStateMappingList : function () {
 		var roverJsListRoot = '../../asset_list/js/rover/';
+
 		return {
 			'rover.diary': {
 				filename: roverJsListRoot + 'diaryJsAssetList.js',
@@ -30,6 +31,11 @@ module.exports = {
 				filename: roverJsListRoot + 'newRateManagerJsAssetList.js',
 				babelify: true
 			},
+			'rover.nightlyDiary': {
+				filename: roverJsListRoot + 'nightlyDiaryJsAssetList.js',
+				babelify: true
+			},
+
 			'rover.housekeeping': {
 				filename: roverJsListRoot + 'houseKeepingJsAssetList.js',
 				babelify: false
