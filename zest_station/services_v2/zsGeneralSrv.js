@@ -17,6 +17,16 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'epik',
             'fontainebleau'
         ];
+
+        var themeMappings = {
+            'zoku': 'zoku',
+            'yotel': 'yotel',
+            'avenue': 'avenue',
+            'conscious': 'Conscious vondelpark',
+            'epik': 'epik',
+            'fontainebleau': 'fontainebleau'
+        };
+
         this.isThemeConfigured = function(theme) {
             //if theme is configured with stylesheets, use it, otherwise default to SNT Theme
             return (that.configuredHotels.indexOf(theme) !== -1);
@@ -41,15 +51,22 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 theme = '';
             zsBaseWebSrv.getJSON(url).then(function(response) {
                 if (response && response.existing_email_templates && response.themes) {
-                    var hotelDetails = _.findWhere(response.themes, {
+                    var hotelTheme = _.findWhere(response.themes, {
                         id: response.existing_email_template_theme
                     });
-                    if (hotelDetails && hotelDetails.name){
-                        theme = hotelDetails.name.toLowerCase();    
+                    if (hotelTheme && hotelTheme.name){
+                        theme = hotelTheme.name.toLowerCase();    
                     } else {
                         deferred.reject();
                     }
                 }
+
+                //the hotel theme name has to be mapped to the zeststation resource files 
+                //corresponding to those themes.
+                theme = _.findKey(themeMappings, function(themeMapping) {
+                    return themeMapping.toLowerCase() === theme;
+                });
+
                 if (!that.isThemeConfigured(theme)){
                     theme = 'snt';
                 }
