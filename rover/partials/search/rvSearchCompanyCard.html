@@ -30,7 +30,7 @@
                             <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT'" ></div>
                         </div>
 
-                        <div class="data">
+                        <div class="data" ng-class="{'no-address': escapeNull(row.account_address)===''}">
                             <h2 ng-bind-html="getHighlightedHTML(row.account_name, textInQueryBox)"></h2>
                             <span class="icons icon-location" ng-if = "escapeNull(row.account_address)!==''">{{row.account_address}}</span>
                         </div>
