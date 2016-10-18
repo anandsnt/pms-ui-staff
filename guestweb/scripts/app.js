@@ -128,15 +128,21 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		//Footer Settings
 		$rootScope.footerSettings = reservationAndhotelData.zest_web_footer_settings;
-		//active footer count
-		var footerCount = _.filter($rootScope.footerSettings.footers, function(footer){ return footer.is_active}).length;
-		//set zestweb footer color based on admin settings
-		var styleString = "#zest-footer a{  color :"+ $rootScope.footerSettings.footer_color + " !important}";
-		applyStyle(styleString);//utils function
 
-		// based upon number of footer items, set a class for styling
-		$rootScope.footerClass = returnFooterStyleClass(footerCount);
+		if(!!$rootScope.footerSettings.display_footer){
+			//active footer count
+			var footerCount = _.filter($rootScope.footerSettings.footers, function(footer){ return footer.is_active;}).length;
+			//set zestweb footer color based on admin settings
+			var styleString = "#zest-footer a{  color :"+ $rootScope.footerSettings.footer_color + " !important}";
+			applyStyle(styleString);//utils function
 
+			// based upon number of footer items, set a class for styling
+			$rootScope.footerClass = returnFooterStyleClass(footerCount);
+		}else{
+			//if no footer is set
+			$rootScope.footerSettings.display_footer = false;
+		}
+		
 		//Params for zest mobile and desktop screens
 		if (reservationAndhotelData.hasOwnProperty('is_password_reset')) {
 			$rootScope.isPasswordResetView = reservationAndhotelData.is_password_reset;
