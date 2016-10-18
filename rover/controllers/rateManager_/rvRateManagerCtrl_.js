@@ -679,7 +679,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             restrictionSummary: restrictionSummary
         };
     };
-
+    /**
+     * close rates from diff mode.
+     */
     $scope.closeAll = function(){
         var stateProps  = store.getState();
         var closedRestriction = _.findWhere(stateProps.restrictionTypes, { value: RM_RX_CONST.CLOSED_RESTRICTION_VALUE });
@@ -703,6 +705,34 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             paramsForClosingRestriction.rate_ids = _.pluck(stateProps.list.slice(0), 'id');
             closeAllRestrictionsForRateView(paramsForClosingRestriction);
         };
+    };
+    /**
+     * open rates from diff mode.
+     */
+    $scope.openAll = function(){
+        var stateProps  = store.getState();
+        var closedRestriction = _.findWhere(stateProps.restrictionTypes, { value: RM_RX_CONST.CLOSED_RESTRICTION_VALUE });
+        let paramsForOpeningRestriction = {
+            details: [{
+                from_date: stateProps.dates[0],
+                to_date: stateProps.dates[stateProps.dates.length-1],
+                restrictions: [{
+                    action: 'add',
+                    restriction_type_id: closedRestriction.id
+                }]
+            }]
+        };
+        if(stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
+            //rate_id: will be adding from the controller (openAllRestrictionsForSingleRateView)
+            openAllRestrictionsForSingleRateView(paramsForOpeningRestriction);
+        }
+        else if(stateProps.mode ===  RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
+            openAllRestrictionsForRoomTypeView(paramsForOpeningRestriction);
+        }
+        else if(stateProps.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
+            paramsForOpeningRestriction.rate_ids = _.pluck(stateProps.list.slice(0), 'id');
+            openAllRestrictionsForRateView(paramsForOpeningRestriction);
+        }
     };
 
     /**
