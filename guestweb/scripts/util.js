@@ -129,3 +129,17 @@ var applyStyle = function(styleString){
     css.innerHTML = styleString;
     document.head.appendChild(css);
 };
+
+
+var returnFooterStyleClass = function(footerCount) {
+  var footerClass = "";
+  // based upon number of footer items, set a class for styling
+  if (footerCount === 3) {
+    footerClass = "triple-footer";
+  } else if (footerCount === 2) {
+    footerClass = "double-footer";
+  } else {
+    footerClass = "single-footer";
+  }
+  return footerClass;
+}
