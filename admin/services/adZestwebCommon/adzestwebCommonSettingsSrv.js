@@ -23,7 +23,7 @@ admin.service('ADzestwebCommonSettingsSrv', ['$q', 'ADBaseWebSrvV2', function($q
 	 */
 	this.fetchInitialFooterSettings = function(){
 		var deferred = $q.defer();
-		var url = '/sample_json/zestwebCommon/zestwebFooters.json';
+		var url = '/sample_json/zestwebCommon/zestWebFooters.json';
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
