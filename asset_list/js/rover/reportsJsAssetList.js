@@ -12,7 +12,8 @@ module.exports = {
 				roverRoot + "factories/reports/**/*.js",
 				roverRoot + "constants/reports/**/*.js",
 				roverRoot + "controllers/reports/**/*.js",
-				reportReactViewRoot + "**/*.js"
+				reportReactViewRoot + "**/*.js",
+				'shared/directives/numbersOnly/numbersOnly.js'
 			]
 		};
 		return reportJsAssets;
