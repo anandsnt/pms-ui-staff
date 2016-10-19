@@ -703,7 +703,7 @@
         .pinnedLeft-actions {
             padding: 10px 10px 0 10px;
             overflow: hidden;
-            .size(50px, 100%);
+            .size(55px, 100%);
             .float;
 
             .button {
@@ -1028,7 +1028,16 @@
                 &:not(.expanded-cell) {
                      height: 65px; 
                 }
-               
+                
+            }
+
+            /* If a last child is also a first child, keep it the same*/
+            &:first-child {
+                .cell-container {
+                    &:not(.expanded-cell) {
+                     height: 60px; 
+                    }
+                }
             }
         }
 
@@ -1204,7 +1213,7 @@
         /* First Row - Days ***/
         &.calendar-rate-table-days { 
             top: 0;
-            height: 115px; 
+            height: 120px; 
             tr:first-child {
                 .cell-content {
                     > .restriction-icon {
@@ -1234,8 +1243,8 @@
 
         /* Other Rows - Data ***/
         &.calendar-rate-table-grid { 
-            top: 115px;
-            .calc-height(100, 165); 
+            top: 120px;
+            .calc-height(100, 160); 
 
             tr:first-child {
                 .cell-container { 
