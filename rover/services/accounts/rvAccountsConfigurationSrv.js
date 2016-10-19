@@ -43,8 +43,7 @@ angular.module('sntRover').service('rvAccountsConfigurationSrv', ['$q', 'rvBaseW
 		this.updateAccountSummary = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/posting_accounts/' + data.summary.posting_account_id;
-
-			rvBaseWebSrvV2.putJSON(url, data.summary)
+			rvBaseWebSrvV2.putJSON(url, data.custom_reference_number)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data) {
