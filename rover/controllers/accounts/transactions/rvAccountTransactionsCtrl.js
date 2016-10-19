@@ -840,8 +840,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
                 .then(successFetchOfAllReqdForTransactionDetails, failedToFetchOfAllReqdForTransactionDetails);
         };
 
-        $scope.changeBillingReferanceNumber = function(){
-        	$scope.isBillingRefernceNumberChanged = true;
+        $scope.changeBillingReferenceNumber = function(){
+        	$scope.isBillingReferenceNumberChanged = true;
         };
 
 
@@ -856,13 +856,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				callInitialAPIs();
 			}
 			else{
-				if($scope.isBillingRefernceNumberChanged){
-					updateBillingReferanceNumber();
+				if($scope.isBillingReferenceNumberChanged){
+					updateBillingReferenceNumber();
 				}
 			}
 		});
 		
-		var updateBillingReferanceNumber = function() {				
+		var updateBillingReferenceNumber = function() {				
 			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
 				var onAccountUpdateSuccess = function(data) {
 						//client controllers should get an infromation whether updation was success
@@ -876,7 +876,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 						$scope.$emit('hideloader');
 					};
 
-				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountSummary, {
+				$scope.callAPI(rvAccountsConfigurationSrv.updateBillingRefernceNumber, {
 					successCallBack: onAccountUpdateSuccess,
 					failureCallBack: onAccountUpdateFailure,
 					params: {
