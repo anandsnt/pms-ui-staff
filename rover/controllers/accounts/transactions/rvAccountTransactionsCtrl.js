@@ -865,6 +865,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
 				var onAccountUpdateSuccess = function(data) {
 						//client controllers should get an infromation whether updation was success
+						$scope.isBillingRefernceNumberChanged = false;
 						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
 						$scope.$emit('hideloader');
 					},
