@@ -68,6 +68,8 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				promptMandatoryDemographics: false,
 				isDemographicsPopupOpen: false,
 				newNote: "",
+				// CICO-24928
+				editingNote: null,
 				demographics: null
 			};
 			summaryMemento = angular.copy($scope.accountConfigData.summary);
@@ -209,17 +211,19 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 			}
 		};
 
-		$scope.removeAccountNote = function(noteId) {
+		$scope.removeAccountNote = function(event, noteId) {
 			var onRemoveAccountNoteSuccess = function(data, params) {
 					$scope.accountConfigData.summary.notes = _.without($scope.accountConfigData.summary.notes, _.findWhere($scope.accountConfigData.summary.notes, {
 						note_id: params.noteId
 					}));
 					$scope.refreshScroller("rvAccountSummaryScroller");
+					// CICO-24928
+					$scope.cancelEditModeAccountNote();
 				},
 				onRemoveAccountNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 				};
-
+			event.stopPropagation();
 			$scope.callAPI(rvAccountsConfigurationSrv.removeAccountNote, {
 				successCallBack: onRemoveAccountNoteSuccess,
 				failureCallBack: onRemoveAccountNoteFailure,
@@ -231,6 +235,47 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				}
 			});
 		};
+
+		// CICO-24928
+		$scope.updateActiveAccountNote = function() {
+			if(!$scope.accountSummaryData.editingNote) {
+	            $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
+	            return;
+        	}
+      		$scope.errorMessage = '';
+      		if ($scope.accountSummaryData.newNote) {
+				var onUpdateAccountNoteSuccess = function(data) {
+					$scope.accountSummaryData.editingNote.description = $scope.accountSummaryData.newNote;
+					var noteArrayIndex = _.findIndex($scope.accountConfigData.summary.notes, {note_id : data.note_id});
+					$scope.accountConfigData.summary.notes[noteArrayIndex] = $scope.accountSummaryData.editingNote;
+					$scope.refreshScroller("rvAccountSummaryScroller");
+					$scope.cancelEditModeAccountNote();
+				},
+				onUpdateAccountNoteFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				};
+				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountNote, {
+					successCallBack: onUpdateAccountNoteSuccess,
+					failureCallBack: onUpdateAccountNoteFailure,
+					params: {
+						"id": $scope.accountSummaryData.editingNote.note_id,
+						"text": $scope.accountSummaryData.newNote,
+						"associated_id": $scope.accountConfigData.summary.posting_account_id,
+						"associated_type": 'PostingAccount'
+					}
+				});
+			}
+		};
+		// CICO-24928
+		$scope.clickedOnNote = function(note) {
+	      $scope.accountSummaryData.editingNote  = note;
+	      $scope.accountSummaryData.newNote = note.description;
+    	};
+    	// CICO-24928
+	    $scope.cancelEditModeAccountNote = function() {
+	      $scope.accountSummaryData.editingNote  = null;
+	      $scope.accountSummaryData.newNote = '';
+	    };
 
 		$scope.onCloseWarningPopup = function() {
 			$scope.accountConfigData.summary.posting_account_status = "OPEN";
