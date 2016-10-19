@@ -696,7 +696,10 @@
                             width: 100%;
                         }
 
-                        &.clear { float: none; }
+                        &.clear { 
+                            float: none; 
+                            clear: both;
+                        }
 
                         &.small { #pixel-to-percent > .width(196, 904); }
 
@@ -2403,6 +2406,29 @@
                             float: none;
 
                             li {
+                                height: 40px;
+                                overflow: hidden;
+
+                                .entry {
+                                    position: relative;
+                                    display: inline-block;
+                                    float: none;
+
+                                    .label {
+                                        position: absolute;
+                                        top: 3px;
+                                        left: 10px;
+                                        font-size: 12px;
+                                        float: none;
+                                    }
+
+                                    input {
+                                        padding-top: 10px;
+                                        line-height: 30px;
+                                        width: 160px;
+                                    }
+                                }
+
                                 .button { padding: 0 20px; }
                             }
                         }
