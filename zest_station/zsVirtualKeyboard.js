@@ -9,7 +9,7 @@
  *  this code will need to be dropped in lieu of some other extension for onscreen keyboards
  */
 
-this.initScreenKeyboardListener = function(from, id, show) {
+this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
   var that = this;
   this.bound = false;
   //open virtual keyboard
@@ -151,7 +151,7 @@ this.initScreenKeyboardListener = function(from, id, show) {
       'alt': 'AltGr:Alternate Graphemes',
       // Left arrow (same as &larr;)
       'b': '\u2190:Backspace',
-      'bksp': '\Del:Backspace',
+      'bksp': ' ',
       //'bksp': '\u2421:Backspace',
       //'bksp': '\u2421:Backspace',
       // big X, close/cancel
@@ -266,6 +266,9 @@ this.initScreenKeyboardListener = function(from, id, show) {
     beforeVisible: function(e, keyboard, el) {},
     visible: function(e, keyboard, el) {},
     change: function(e, keyboard, el) {
+       if (onChangeEvent){
+        onChangeEvent();  
+      }
       //country selector uses another jquery plugin, which does not recognize the input event from virtual keyboard,
       //we just need to trigger the search method from autocomplete to trigger filtering
       if (isCountrySelector){
