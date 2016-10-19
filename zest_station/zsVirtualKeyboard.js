@@ -333,6 +333,9 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
   }
   elementObj.keyboard(keyboardOptions);
 
+  if (from === 'login'){
+    keyboardOptions.display.bksp = '\u2421:Backspace';
+   }
 
 
   this.focusHandler = function() {
