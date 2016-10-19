@@ -93,15 +93,21 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
           }) );
         }
 
-        promises.push( $ocLazyLoad.load({
-          serie: true,
-          files: paymentMappingList.template,
-          reconfig: true
-        }) );
-
         $q.all(promises).then(function () {
-          $ocLazyLoad.inject(['sntPayConfig', 'sntPay']);
-          deferred.resolve();
+          return $ocLazyLoad.load({
+            serie: true,
+            files: paymentMappingList.template,
+            rerun: true
+          }).then(function() {
+            $ocLazyLoad.inject(['sntPayConfig', 'sntPay']);
+            deferred.resolve();
+          }, function(err) {
+             console.log(err);
+          })
+
+        },function(error) {
+          console.log('failed error', error);
+
         });
 
         return deferred.promise;
