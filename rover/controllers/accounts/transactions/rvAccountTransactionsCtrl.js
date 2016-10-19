@@ -35,6 +35,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		BaseCtrl.call(this, $scope);
 		$scope.perPage = 50;
 		$scope.businessDate = $rootScope.businessDate;
+		$scope.transactionsDetails={};
 
 		$scope.hasMoveToOtherBillPermission = function() {
         	return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
@@ -839,6 +840,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
                 .then(successFetchOfAllReqdForTransactionDetails, failedToFetchOfAllReqdForTransactionDetails);
         };
 
+        $scope.changeBillingReferanceNumber = function(){
+        	$scope.isBillingRefernceNumberChanged = true;
+        };
+
 
 		/**
 		 * When there is a TAB switch, we will get this. We will initialize things from here
@@ -846,11 +851,46 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @param  {[type]} currentTab){		} [description]
 		 * @return {[type]}                   [description]
 		 */
-		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab){
+		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab){			
 			if (currentTab === "TRANSACTIONS") {
 				callInitialAPIs();
 			}
+			else{
+				if($scope.isBillingRefernceNumberChanged){
+					updateBillingReferanceNumber();
+				}
+			}
 		});
+		
+		var updateBillingReferanceNumber = function() {				
+			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
+				var onAccountUpdateSuccess = function(data) {
+						//client controllers should get an infromation whether updation was success
+						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
+						$scope.$emit('hideloader');
+					},
+					onAccountUpdateFailure = function(errorMessage) {
+						//client controllers should get an infromation whether updation was a failure
+						$scope.$broadcast("FAILED_TO_UPDATE_ACCOUNT_INFO");
+						$scope.$emit('showErrorMessage', errorMessage);
+						$scope.$emit('hideloader');
+					};
+
+				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountSummary, {
+					successCallBack: onAccountUpdateSuccess,
+					failureCallBack: onAccountUpdateFailure,
+					params: {
+						summary: $scope.accountConfigData.summary,
+						custom_reference_number: $scope.custom_reference_number
+					}
+				});
+			} else {
+				$scope.$emit('showErrorMessage', ['Sorry, Changes will not get saved as you don\'t have enough permission']);
+			}
+		};
+
+
+		
 
 		/**
 		 * When there is a TAB switch, we will get this. We will initialize things from here
@@ -1025,7 +1065,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			};
 			$scope.callAPI(rvAccountTransactionsSrv.fetchBillTransactionDetails, options);
 		};
-
 		// Reset the pagination params.
 		var resetPagination = function(activebillTab){
 			activebillTab.page_no 	 = 1;
