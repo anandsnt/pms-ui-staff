@@ -683,11 +683,15 @@ sntZestStation.controller('zsRootCtrl', [
 		 //
         $scope.focusInputField = function(elementId) {
             $timeout(function() {
-                if ($scope.isIpad){
-                    $scope.callBlurEventForIpad();
-                }
-                document.getElementById(elementId).focus();
-                document.getElementById(elementId).click();
+            	if (!$scope.isIpad) {
+            		if (elementId !== 'departure-date'){
+						document.getElementById(elementId).focus();
+					} else if (elementId === 'departure-date'){
+						document.getElementById(elementId).click();
+					}
+				} else {
+					$scope.callBlurEventForIpad();
+				}
             }, 300);
 
         };
