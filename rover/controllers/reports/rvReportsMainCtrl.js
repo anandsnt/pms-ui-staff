@@ -275,7 +275,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_41: false,
 			item_42: false,
 			item_43: false,
-			item_44: false
+			item_44: false,
+			item_45 : false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -1890,6 +1891,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				/* Note: Using the ui value here */
 				if ( changeAppliedFilter ) {
 					$scope.appliedFilter['hasMinRoomNights'] = report.hasMinRoomNights.data;
+				};
+			};
+
+			// has min no of days not occupied
+			if ( report.hasOwnProperty('hasMinNoOfDaysNotOccupied') && !!report.hasMinNoOfDaysNotOccupied.data ) {
+				key         = report.hasMinNoOfDaysNotOccupied.value.toLowerCase();
+				params[key] = report.hasMinNoOfDaysNotOccupied.data;
+				/* Note: Using the ui value here */
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['hasMinNoOfDaysNotOccupied'] = report.hasMinNoOfDaysNotOccupied.data;
 				};
 			};
 
