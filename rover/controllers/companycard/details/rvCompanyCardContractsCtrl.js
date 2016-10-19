@@ -502,6 +502,48 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			}
 		};
 
+		/**
+		 * function used to save the contract data, it will save only if there is any
+		 * change found in the present contract info.
+		 */
+		$scope.updateContract = function() {
+			var saveContractSuccessCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = "";
+			};
+			var saveContractFailureCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = data;
+				$scope.$parent.currentSelectedTab = 'cc-contracts';
+			};
+
+			/**
+			 * change date format for API call
+			 */
+			var dataToUpdate = JSON.parse(JSON.stringify($scope.contractData));
+			var dataUpdated = false;
+			if (angular.equals(dataToUpdate, contractInfo)) {
+				dataUpdated = true;
+			} else {
+				contractInfo = dataToUpdate;
+			}
+			if (!dataUpdated) {
+				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
+				if ($stateParams.id === "add") {
+					var account_id = $scope.contactInformation.id;
+				} else {
+					var account_id = $stateParams.id;
+				}
+				if ($scope.contractList.contractSelected) {
+					$scope.invokeApi(RVCompanyCardSrv.updateContract, {
+						"account_id": account_id,
+						"contract_id": $scope.contractList.contractSelected,
+						"postData": data
+					}, saveContractSuccessCallback, saveContractFailureCallback);
+				}
+			}
+		};
+
 		
 		$scope.renameButtonClicked = function() {
 			//Setup data for Rename mode
@@ -531,6 +573,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.contractList.contractNameToChange = angular.copy(existingContractName);
 		};
 
+
 		// Cancel Rename mode
 		$scope.cancelRenameContract = function() {
 			$scope.contractList.isRenameMode = false;
@@ -541,21 +584,18 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 * To rename existing contract
 		 */
 		$scope.renameContract = function() {
-			$scope.updateContract();
+			$scope.updateRenamedContract();
 			$scope.contractList.isRenameMode = false;
 		};
 
 
 		/**
-		 * function used to save the contract data, it will save only if there is any
-		 * change found in the present contract info.
+		 * function used to save the changed contract name, it will save only if there is any
+		 * change found in the present contract name.
 		 */
-		$scope.updateContract = function() {
-			var saveContractSuccessCallback = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.errorMessage = "";
-			};
-			var saveContractFailureCallback = function(data) {
+
+		$scope.updateRenamedContract = function() {
+			var renameContractFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = data;
 				$scope.$parent.currentSelectedTab = 'cc-contracts';
@@ -569,46 +609,22 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.contractList.history_contracts = [];
 				$scope.fetchContracts();
 			};
-
-			/**
-			 * change date format for API call
-			 */
-			var dataToUpdate = JSON.parse(JSON.stringify($scope.contractData));
-			var dataUpdated = false;
-			if (angular.equals(dataToUpdate, contractInfo)) {
-				dataUpdated = true;
-			} else {
-				contractInfo = dataToUpdate;
-			}
-			if (!dataUpdated) {
-				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
-				
-				
-				if ($stateParams.id === "add") {
-					var account_id = $scope.contactInformation.id;
-				} else {
-					var account_id = $stateParams.id;
-				}
-				if ($scope.contractList.contractSelected) {
-					$scope.invokeApi(RVCompanyCardSrv.updateContract, {
-						"account_id": account_id,
-						"contract_id": $scope.contractList.contractSelected,
-						"postData": data
-					}, saveContractSuccessCallback, saveContractFailureCallback);
-				}
-			}
+			
 			if(existingContractName !== $scope.contractList.contractNameToChange) {
 				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
 				var account_id = $stateParams.id;
 				data.contract_name = $scope.contractList.contractNameToChange;
-				$scope.contractData.contract_name = $scope.contractList.contractNameToChange;
 				$scope.invokeApi(RVCompanyCardSrv.updateContract, {
 					"account_id": account_id,
 					"contract_id": $scope.contractList.contractSelected,
 					"postData": data
-				}, renameContractSuccessCallback, saveContractFailureCallback);
+				}, renameContractSuccessCallback, renameContractFailureCallback);
 			}
 		};
+
+
+
+
 		/**
 		 * recieving function for save contract with data
 		 */
