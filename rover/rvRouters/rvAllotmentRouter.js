@@ -60,27 +60,26 @@ angular.module('allotmentModule', [])
                 }
             }],
             resolve: {
-                loadPaymentModule: function (jsMappings) {
+                loadPaymentMapping: function (jsMappings) {
+                    return jsMappings.loadPaymentMapping();
+                },
+                loadPaymentModule: function (jsMappings, loadPaymentMapping) {
                     return jsMappings.loadPaymentModule();
                 },
                 //to tackle from coming admin app to rover
-                summaryData: ['rvAllotmentConfigurationSrv', '$stateParams', 'allotmentAssets', 'loadPaymentModule',
-                    function(rvAllotmentConfigurationSrv, $stateParams, allotmentAssets, loadPaymentModule){
-                        var isInAddMode = ($stateParams.id === "NEW_ALLOTMENT");
-                        var params = {
-                            allotmentId: $stateParams.id
-                        };
-                        return rvAllotmentConfigurationSrv.getAllotmentSummary (params);
+                summaryData: function(rvAllotmentConfigurationSrv, $stateParams, allotmentAssets, loadPaymentModule){
+                    var isInAddMode = ($stateParams.id === "NEW_ALLOTMENT");
+                    var params = {
+                        allotmentId: $stateParams.id
+                    };
+                    return rvAllotmentConfigurationSrv.getAllotmentSummary (params);
+                },
+                holdStatusList: function (rvAllotmentConfigurationSrv, allotmentAssets, loadPaymentModule) {
+                    var params = {
+                        is_group : false
                     }
-                ],
-                holdStatusList: ['rvAllotmentConfigurationSrv', 'allotmentAssets', 'loadPaymentModule',
-                    function (rvAllotmentConfigurationSrv, allotmentAssets, loadPaymentModule) {
-                        var params = {
-                            is_group : false
-                        }
-                        return rvAllotmentConfigurationSrv.getHoldStatusList (params);
-                    }
-                ]
+                    return rvAllotmentConfigurationSrv.getHoldStatusList (params);
+                }
             }
 
         });

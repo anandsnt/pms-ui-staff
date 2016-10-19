@@ -257,7 +257,9 @@ sntRover.controller('reservationDetailsController',
 				'is_reservation_queued': $scope.reservationData.reservation_card.is_reservation_queued,
 				'is_queue_rooms_on': $scope.reservationData.reservation_card.is_queue_rooms_on,
 				'late_checkout_time': $scope.reservationData.reservation_card.late_checkout_time,
-				'is_opted_late_checkout': $scope.reservationData.reservation_card.is_opted_late_checkout
+				'is_opted_late_checkout': $scope.reservationData.reservation_card.is_opted_late_checkout,
+				'departure_date': $scope.reservationData.reservation_card.departure_date
+				// Fix for CICO-33114 where the departure_date value in cache wasn't getting updated.
 			};
 
 			RVSearchSrv.updateRoomDetails($scope.reservationData.reservation_card.confirmation_num, data);

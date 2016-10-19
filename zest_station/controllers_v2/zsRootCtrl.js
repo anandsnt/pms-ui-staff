@@ -149,6 +149,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 */
 		$scope.$on(zsEventConstants.PUT_OOS, function(event) {
 			if ($state.current.name !== 'zest_station.admin') {
+				$scope.hideKeyboardIfUp();
 				$state.go('zest_station.outOfService');
 			} else {
 				//do nothing
@@ -376,7 +377,7 @@ sntZestStation.controller('zsRootCtrl', [
 				}
 				$scope.lastKeyboardId = id;
 				//pull up the virtual keyboard (snt) theme... if chrome & fullscreen
-				var isTouchDevice = 'ontouchstart' in document,
+				var isTouchDevice = 'ontouchstart' in window,
 					agentString = window.navigator.userAgent;
 				var themeUsesKeyboard = false;
 				if ($scope.theme === 'yotel' || !$scope.theme) {
@@ -683,11 +684,15 @@ sntZestStation.controller('zsRootCtrl', [
 		 //
         $scope.focusInputField = function(elementId) {
             $timeout(function() {
-                if ($scope.isIpad){
-                    $scope.callBlurEventForIpad();
-                }
-                document.getElementById(elementId).focus();
-                document.getElementById(elementId).click();
+            	if (!$scope.isIpad) {
+            		if (elementId !== 'departure-date'){
+						document.getElementById(elementId).focus();
+					} else if (elementId === 'departure-date'){
+						document.getElementById(elementId).click();
+					}
+				} else {
+					$scope.callBlurEventForIpad();
+				}
             }, 300);
 
         };

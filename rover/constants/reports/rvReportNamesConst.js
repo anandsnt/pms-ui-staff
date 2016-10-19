@@ -44,5 +44,6 @@ angular.module('reportsModule')
 		'DEPOSIT_SUMMARY' : 'Deposit Balance Summary',
 		'ZEST_CAMPAIGN_REPORT' : 'Zest App Campaign Report',
 		'ROOMS_OOO_OOS': 'Rooms OOO/OOS',
-		'ACTIONS_MANAGER' : 'Action Manager'
+		'ACTIONS_MANAGER' : 'Action Manager',
+		'VACANT_ROOMS_REPORT' : 'Vacant Rooms Report'
 	});
