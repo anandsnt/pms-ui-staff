@@ -261,6 +261,11 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $scope.$emit('PAYMENT_ACTION_CONTINUE', arg);
         };
 
+        $scope.resetPaymentAttempt = function() {
+            $scope.paymentAttempted = false;
+            $scope.isPaymentFailure = false;
+        };
+
         /**
          * This method  is used adding a payment method
          * Places of use are
