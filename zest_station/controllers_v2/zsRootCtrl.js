@@ -687,11 +687,7 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.focusInputField = function(elementId) {
             $timeout(function() {
             	if (!$scope.isIpad) {
-            		if (elementId !== 'departure-date'){
-						document.getElementById(elementId).focus();
-					} else if (elementId === 'departure-date'){
-						document.getElementById(elementId).click();
-					}
+					document.getElementById(elementId).click();
 				} else {
 					$scope.callBlurEventForIpad();
 				}
