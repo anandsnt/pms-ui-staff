@@ -48,7 +48,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
 
 
     this.loadPaymentMapping = function() {
-      var locMappingFilevar;
+      var locMappingFile;
       var deferred = $q.defer();
 
       if ( !! paymentMappingList ) {
