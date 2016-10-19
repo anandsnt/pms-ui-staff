@@ -687,11 +687,7 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.focusInputField = function(elementId) {
             $timeout(function() {
             	if (!$scope.isIpad) {
-            		if (elementId !== 'departure-date'){
-						document.getElementById(elementId).focus();
-					} else if (elementId === 'departure-date'){
-						document.getElementById(elementId).click();
-					}
+					document.getElementById(elementId).click();
 				} else {
 					$scope.callBlurEventForIpad();
 				}
@@ -699,6 +695,11 @@ sntZestStation.controller('zsRootCtrl', [
 
         };
 
+		$scope.navToHome = function() {
+			$timeout(function(){
+				$state.go('zest_station.home');
+			},250);//use delay so user doesnt immediately click check-in/out icons on touchscreen devices
+		};
 		/********************************************************************************
 		 *  Work station code  
 		 *  starts here

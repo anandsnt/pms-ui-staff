@@ -273,6 +273,8 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
       //we just need to trigger the search method from autocomplete to trigger filtering
       if (isCountrySelector){
         $(elementObj).autocomplete('search', $(elementObj).val());
+        //workaround to fix css updating for nationality in yotel..need to fire the scope.showingAutoComplete
+        angular.element(elementObj).scope().showingAutoComplete();
       }
 
     },
