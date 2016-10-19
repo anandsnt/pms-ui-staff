@@ -55,5 +55,7 @@
     "ARRIVAL_TIMES":"Arrival Times",
     "LIMIT_ARRIVAL_TIMES":"Limit Arrival Times based on Hotel's local time",
     "EXCLUDE_ROUTING_FROM_EMAIL":"Exclude Reservations With Routing From Email Invite",
-    "EXCLUDE_ROUTING_FROM_EMAIL_TITLE":"Email Invite"
+    "EXCLUDE_ROUTING_FROM_EMAIL_TITLE":"Email Invite",
+
+    "OPEN_BLOCK_CODES_DIALOG":"SELECT BLOCK CODES"
 

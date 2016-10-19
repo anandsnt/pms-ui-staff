@@ -134,11 +134,18 @@
     <li>Variance<span ng-class="{ red: summaryCounts.rate_adjustment_variance < 0 }">{{ summaryCounts.rate_adjustment_variance | currency:currencySymbol:2 }}</span></li>
 </ul>
 
-<!-- Daily production report -->
-<ul ng-if="isThisReport(['DAILY_PRODUCTION_ROOM_TYPE', 'DAILY_PRODUCTION_RATE'])" class="totals">
-    <li>Total Revenue<span>{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></li>
+<!-- Daily production by rate report -->
+<ul ng-if="isThisReport('DAILY_PRODUCTION_RATE')" class="totals">
+    <li>Total Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
     <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
-    <li>Room Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>Room Revenue<span>{{ summaryCounts.room_revenue | currency:currencySymbol:2 }}</span></li>
+</ul>
+
+<!-- Daily production report -->
+<ul ng-if="isThisReport('DAILY_PRODUCTION_ROOM_TYPE')" class="totals">
+    <li>Rate Revenue<span>{{ summaryCounts.actual_revenue | currency:currencySymbol:2 }}</span></li>
+    <li>ADR<span>{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></li>
+    <li>Actual Revenue<span>{{ summaryCounts.rate_revenue | currency:currencySymbol:2 }}</span></li>
 </ul>
 
 <!-- Daily production by demographics -->
@@ -182,5 +189,10 @@
 <!-- Web check in -->
 <ul ng-if="isThisReport( 'ACTIONS_MANAGER' )" class="totals">
     <li>Total Actions<span>{{ totalCount}}</span></li>
+
+</ul>
+<!-- Vacant Rooms -->
+<ul ng-if="isThisReport( 'VACANT_ROOMS_REPORT' )" class="totals">
+    <li>Rooms<span>{{ summaryCounts}}</span></li>
 
 </ul>

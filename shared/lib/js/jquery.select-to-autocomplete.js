@@ -38,7 +38,7 @@ THE SOFTWARE.
     'relevancy-sorting-partial-match-value': 1,
     'relevancy-sorting-strict-match-value': 5,
     'relevancy-sorting-booster-attr': 'data-relevancy-booster',
-    'minLength': 0,
+    'minLength': 1,
 	  'delay': 0,
     'autoFocus': true,
     handle_invalid_input: function( context ) {
