@@ -169,6 +169,11 @@ angular.module('sntRover').service('rvMenuSrv',
 	                action: "rover.endOfDay.starteod",
 	                actionPopup: false,
 	                menuIndex: "endOfDay"
+            	},{
+	                title: "MENU_SOCIAL_LOBBY",
+	                action: "rover.socialLobby",
+	                actionPopup: false,
+	                menuIndex: "sociallobby"
             	}]
 		    }, {
 		        title: "MENU_GROUPS",
