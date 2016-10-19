@@ -5,17 +5,15 @@ const {connect} = ReactRedux;
  * @param  {array} rates
  * @return {array}
  */
-let convertRatesDataForLeftListing = (rates, flags) => {
+let convertRatesDataForLeftListing = (rates) => {
 	var ratesToReturn = [];
-	let showDetails = (!!flags&&flags.showRateDetail)?true:false;
-	console.log(showDetails);	
 	rates.map((rate, index) => {
 		ratesToReturn.push({
 			id: rate.id,
 			name: rate.name,
 			trClassName: ('cell rate ' + (((index + 1) === rates.length) ? 'last' : '')),
 			tdClassName: '',
-			leftSpanClassName: 'name ' + (rate.based_on_rate_id && !rate.is_copied ? 'gray' : 'base-rate')+((rate.is_company_card||rate.is_travel_agent)?' contracted-rate':'contracted-rate-missing-info'),
+			leftSpanClassName: 'name ' + (rate.based_on_rate_id && !rate.is_copied ? 'gray' : 'base-rate')+((rate.is_company_card||rate.is_travel_agent)?' contracted-rate':' contracted-rate-missing-info'),
 			showIconBeforeText: !rate.based_on_rate_id,
 			iconClassBeforeText: !rate.based_on_rate_id ? 'base-rate-indicator': '',
 			textInIconArea: !rate.based_on_rate_id ? 'B' : '',
@@ -23,10 +21,9 @@ let convertRatesDataForLeftListing = (rates, flags) => {
 			address: rate.address,
 			showRightSpan: true,
 			contractLabel: rate.is_travel_agent?'ta':(rate.is_company_card?'c':''),
-			contractClass: 'contracted-rate-indicator ' + (rate.is_travel_agent?'travel-agent':''),
+			contractClass: rate.is_travel_agent?'travel-agent':'',
 			rightSpanClassName: 'icons icon-double-arrow rotate-right',
-			accountName: rate.account_name,
-			showDetails: showDetails
+			accountName: rate.account_name
 		})
 	});
 
@@ -117,7 +114,7 @@ let convertSingleRateRoomTypesDataForLeftListing = (roomTypes, expandedRows) => 
 const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 	if(state.mode === RM_RX_CONST.RATE_VIEW_MODE) {
 		return {
-			leftListingData: convertRatesDataForLeftListing(state.list, state.flags),
+			leftListingData: convertRatesDataForLeftListing(state.list),
 			mode: state.mode,
 			fromDate: state.dates[0],
 			toDate: state.dates[state.dates.length-1],
