@@ -100,6 +100,19 @@ angular.module('sntRover').service('rvAccountsConfigurationSrv', ['$q', 'rvBaseW
 			return deferred.promise;
 		};
 
+		// CICO-24928 
+		this.updateAccountNote = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/notes/' + data.id;
+			rvBaseWebSrvV2.putJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		};
+
 		this.removeAccountNote = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/posting_accounts/delete_posting_account_note';
