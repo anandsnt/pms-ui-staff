@@ -102,11 +102,11 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
             $ocLazyLoad.inject(['sntPayConfig', 'sntPay']);
             deferred.resolve();
           }, function(err) {
-             console.log(err);
+             console.log('Error on loading Payment Module', err);
           })
 
-        },function(error) {
-          console.log('failed error', error);
+        },function(err) {
+          console.log('Error on loading Payment Module', err);
 
         });
 
