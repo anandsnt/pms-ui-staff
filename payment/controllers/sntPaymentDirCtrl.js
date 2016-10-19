@@ -399,13 +399,13 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 }).then(response => {
                     var cardDetails = $scope.payment.tokenizedCardData;
                     $scope.$emit('SUCCESS_LINK_PAYMENT', {
-                        response: response.data,
+                        response: {...response.data, addToGuestCard: $scope.payment.addToGuestCardSelected},
                         selectedPaymentType: $scope.selectedPaymentType,
                         cardDetails: {
                             "card_code": cardDetails.cardDisplayData.card_code,
                             "ending_with": cardDetails.cardDisplayData.ending_with,
                             "expiry_date": cardDetails.cardDisplayData.expiry_date,
-                            "card_name": cardDetails.apiParams.name_on_card
+                            "card_name": cardDetails.apiParams.name_on_card || cardDetails.apiParams.card_name
                         }
                     });
                     $scope.$emit('hideLoader');
@@ -911,7 +911,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                 $scope.selectedCC.card_code = paymentData.cardDisplayData.card_code;
                 $scope.selectedCC.ending_with = paymentData.cardDisplayData.ending_with;
                 $scope.selectedCC.expiry_date = paymentData.cardDisplayData.expiry_date;
-                $scope.selectedCC.holder_name = paymentData.apiParams.name_on_card;
+                $scope.selectedCC.holder_name = paymentData.apiParams.name_on_card || paymentData.apiParams.card_name;
                 $timeout(()=> {
                     $scope.selectedPaymentType = "CC";
                     $scope.payment.screenMode = "PAYMENT_MODE";

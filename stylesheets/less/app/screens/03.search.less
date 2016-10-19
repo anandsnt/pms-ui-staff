@@ -1334,12 +1334,29 @@
                 position: relative;
 
                 .data {
-                    margin-right: 20px;
+                    margin-right: 20px; 
                     .calc-width(50, 130);
 
-                    h2 { line-height: 50px; }
-                }
+                    h2 { 
+                        line-height: 50px;
+                    }
 
+                    span.icons {
+                        padding-left: 20px;
+                        line-height: 24px;
+                        font-size: 14px;
+                        float:left;
+                        color: @grey3;
+                    }
+
+                    &:not(.no-address) {
+                        h2 {
+                            line-height: 24px;
+                            margin-top: 5px;
+                            display: block;
+                        }
+                    }
+                }
                 .rate {
                     line-height: 50px;
                     .calc-width(50, 130);
