@@ -682,6 +682,19 @@
                     </label>
                     <input type="text" ng-model="data.shiji_partner_id" value="{{data.shiji_partner_id}}">
                 </div>
+                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
+                    <label for="shiji-key">
+                        Platform SSL Key
+                    </label>
+                    <input type="text" ng-model="data.shiji_key" value="{{data.shiji_key}}">
+                </div>
+                
+                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
+                    <label for="shiji-payment-gateway-url">
+                        Gateway URL
+                    </label>
+                    <input type="text" value="{{data.shiji_payment_gateway_url}}" readonly="readonly">
+                </div>
                 <!--SHIJI ENDS-->
 				<div class="entry full-width">
 					<label>Allow CC processors per payment methods</label>
