@@ -80,14 +80,20 @@ angular.module('sntPay').controller('payMLIOperationsController',
              * @param  {[type]} response [description]
              * @return {[type]}          [description]
              */
-            var successCallBackOfGetMLIToken = (response) => notifyParent(response);
+            var successCallBackOfGetMLIToken = (response) => {
+                $scope.$emit("hideLoader");
+                notifyParent(response)
+            };
 
             /**
              * [description]
              * @param  {[type]} error [description]
              * @return {[type]}       [description]
              */
-            var failureCallBackOfGetMLIToken = (error) => notifyParentError(error);
+            var failureCallBackOfGetMLIToken = (error) => {
+                $scope.$emit("hideLoader");
+                notifyParentError(error);
+            };
 
             /*
              * Function to get MLI token on click 'Add' button in form
@@ -102,6 +108,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
                 }
 
                 var params = util.formParamsForFetchingTheToken($scope.cardData);
+                $scope.$emit("showLoader");
                 sntPaymentSrv.fetchMLIToken(params, successCallBackOfGetMLIToken, failureCallBackOfGetMLIToken);
             };
 
@@ -127,13 +134,17 @@ angular.module('sntPay').controller('payMLIOperationsController',
             /****************** init ***********************************************/
 
             (function() {
-                //to set your merchant ID provided by Payment Gateway
-                HostedForm.setMerchant($scope.hotelConfig.mliMerchantId);
-
-                //
                 initializeCardData();
 
                 $scope.modes = paymentConstants.modes;
+
+                try {
+                    //to set your merchant ID provided by Payment Gateway
+                    HostedForm.setMerchant($scope.hotelConfig.mliMerchantId);
+                } catch (e) {
+                    //
+                }
+
             })();
 
         }]);
