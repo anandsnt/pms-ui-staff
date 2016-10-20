@@ -37,8 +37,8 @@
                         </fieldset>
                         <fieldset class="holder right float">
                             <ad-dropdown-name label-in-drop-down="{{'SELECT_CHARGE_CODE_PLACEHOLDER' | translate}}"
-                                              savemodel="state.new.charge_code_id"
-                                              valueproperty="id"
+                                              savemodel="state.new.charge_code_name"
+                                              valueproperty="name"
                                               label-properties="['name','description']"
                                               prefix-value="true"
                                               required="yes"
@@ -78,7 +78,7 @@
 
                     <td data-item="2" data-title="'Charge Code'" ng-click="onSelect($index, mapping)"
                         header-class="width-30" ng-hide="state.selected === $index">
-                        <a class="edit-data-inline">{{mapping.charge_code}}</a>
+                        <a class="edit-data-inline">{{mapping.charge_code_name}}</a>
                     </td>
 
                     <td header-class="width-10" data-title="'Delete'" class="delete"
@@ -115,8 +115,8 @@
                                     </fieldset>
                                     <fieldset class="holder right float">
                                         <ad-dropdown-name label-in-drop-down="{{'SELECT_CHARGE_CODE_PLACEHOLDER' | translate}}"
-                                                          savemodel="mapping.charge_code_id"
-                                                          valueproperty="id"
+                                                          savemodel="mapping.charge_code_name"
+                                                          valueproperty="name"
                                                           label-properties="['name','description']"
                                                           required="yes"
                                                           list="state.chargeCodes"

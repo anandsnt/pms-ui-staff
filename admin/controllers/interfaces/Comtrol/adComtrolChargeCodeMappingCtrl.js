@@ -6,8 +6,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
                 $scope.state.new = {
                     revenue_center_code: "",
                     category_name: "",
-                    charge_code_id: "",
-                    charge_code: ""
+                    charge_code_name: ""
                 }
             },
             revertEdit = function() {
@@ -24,9 +23,6 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
                         cb();
                     }
                 })
-            },
-            getChargeCode = function(id) {
-                return _.find($scope.state.chargeCodes, {id: Number(id)}).name;
             };
 
         //scope method and variables
@@ -58,21 +54,20 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
         $scope.onSave = function() {
             var revenue_center_code = $scope.state.new.revenue_center_code,
                 category_name = $scope.state.new.category_name,
-                charge_code_id = $scope.state.new.charge_code_id;
+                charge_code_name = $scope.state.new.charge_code_name;
 
             $scope.callAPI(adComtrolChargeCodeMappingSrv.create, {
                 params: {
                     revenue_center_code: revenue_center_code,
                     category_name: category_name,
-                    charge_code_id: charge_code_id
+                    charge_code_name: charge_code_name
                 },
                 successCallBack: function(response) {
                     $scope.mappings.push({
                         id: response.id,
                         revenue_center_code: revenue_center_code,
                         category_name: category_name,
-                        charge_code_id: charge_code_id,
-                        charge_code: getChargeCode(charge_code_id)
+                        charge_code_name: charge_code_name
                     });
                     $scope.state.mode = "";
                 }
@@ -113,7 +108,6 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
             $scope.callAPI(adComtrolChargeCodeMappingSrv.update, {
                 params: mapping,
                 successCallBack: function() {
-                    mapping.charge_code = getChargeCode(mapping.charge_code_id);
                     $scope.state.mode = "";
                     $scope.state.selected = null;
                 }
@@ -149,8 +143,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
                 new: {
                     revenue_center_code: "",
                     category_name: "",
-                    charge_code_id: "",
-                    charge_code: ""
+                    charge_code_name: "",
                 }
             };
 
