@@ -44,9 +44,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         $scope.summaryState = {
             forceDemographicsData: false,
-            computedSegment: false
+            computedSegment: false,
+            selectedCardDetails: {
+                value: ""
+            }
         };
-
 
         /**
          * function to check whether the user has permission
@@ -837,62 +839,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.setDemographics(true);
                 return;
             }
-            if ($scope.depositData.isDepositRequired) {
-                $scope.proceedCreatingReservation();
-            } else {
-                if ($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.reservationData.paymentType.type.value === "CC") {
-                    var data = {};
-                    data.reservation_id = $scope.reservationData.reservationId;
-                    data.add_to_guest_card = $scope.addToGuestCard;
-                    data.guest_id = $scope.reservationData.guest.id;
-                    ngDialog.open({
-                        template: '/assets/partials/reservation/rvWaitingDialog.html',
-                        className: 'ngdialog-theme-default',
-                        closeByDocument: false,
-                        scope: $scope
-                    });
-
-                    RVPaymentSrv.chipAndPinGetToken(data).then(function(response) {
-                        $scope.reservationData.selectedPaymentId = response.payment_method_id;
-                        $scope.isSixCardSwiped = true;
-                        //TO fix issue with add to guest card
-                        $scope.isNewCardAdded = true;
-                        $scope.closeDialog();
-                        var cardType = getSixCreditCardType(response.card_type).toLowerCase();
-                        var endingWith = response.ending_with;
-                        var expiryDate = response.expiry_date.slice(-2) + "/" + response.expiry_date.substring(0, 2);
-
-                        if ($scope.addToGuestCard) {
-                            var dataToGuestList = {
-                                "card_code": cardType,
-                                "mli_token": endingWith,
-                                "card_expiry": expiryDate,
-                                "card_name": "",
-                                "id": response.guest_payment_method_id,
-                                "isSelected": true,
-                                "is_primary": false,
-                                "payment_type": "CC",
-                                "payment_type_id": 1
-                            };
-                            $scope.cardsList.push(dataToGuestList);
-                            $rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
-                        };
-
-
-                        $scope.proceedCreatingReservation();
-                    }, function(error) {
-                        $scope.isNewCardAdded = false;
-                        $scope.closeDialog();
-                        $scope.isSixCardSwiped = false;
-                        $scope.errorMessage = error;
-
-                    });
-                } else {
-                    $scope.proceedCreatingReservation();
-                }
-                //
-
-            }
+            $scope.proceedCreatingReservation();
         };
 
         var savePayment = function(callback){
@@ -917,7 +864,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 angular.forEach($scope.reservationData.paymentMethods, function(item) {
                     if ($scope.reservationData.paymentType.type.value === item.name) {
                         if ($scope.reservationData.paymentType.type.value === "CC") {
-                            postData.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
+                            postData.payment_type.payment_method_id = $scope.summaryState.selectedCardDetails.value;
                         } else {
                             postData.payment_type.type_id = item.id;
                         }
