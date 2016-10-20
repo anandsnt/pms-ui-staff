@@ -233,7 +233,7 @@
         /* Rates Box ***/
         .rates-box {
             position: relative;
-            font-style: 12px;
+            font-size: 12px;
             line-height: 21px;
             text-transform: uppercase;
             color: @white;
@@ -241,6 +241,15 @@
             margin: 10px 0;
             padding: 5px 25px 5px 10px;
             #border-radius > .rounded();
+
+            .rate-data {
+                display: inline-block;
+                width: 100%;
+
+                &.location {
+                    font-size: 10px; 
+                }
+            }
 
             .delete_small {
                 cursor: pointer;
@@ -311,6 +320,13 @@
 
                 .ui-match { color: @logoPrimary; }
 
+                .location {
+                    display:block;
+                    font-size: 12px;
+                    font-weight: 400;
+
+                }
+                
                 .icons,
                 img {
                     position: absolute;
