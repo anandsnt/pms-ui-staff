@@ -1,0 +1,9 @@
+cssimg/*
+admin/adLocales/*
+admin/css/*
+javascripts/*
+lib/*
+node_modules/**/**
+shared/lib/*
+gulp/*
+asset_list/*
