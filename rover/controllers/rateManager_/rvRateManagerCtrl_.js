@@ -103,6 +103,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.showTopBar = false;
         $scope.selectedCardNames = [];
         $scope.selectedRateNames = [];
+        $scope.selectedAccountName = [];
+        $scope.selectedAddress = [];
     };
 
     /**
@@ -745,6 +747,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.showTopBar = true;
         $scope.selectedCardNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedCards, 'account_name');
         $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
+        $scope.selectedAccountName = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'accountName');
+        $scope.selectedAddress = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'address');
+
     };
 
     /**
@@ -1741,6 +1746,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.showBackButton = false;
         $scope.selectedCardNames = [];
         $scope.selectedRateNames = [];
+        $scope.selectedAccountName = [];
+        $scope.selectedAddress = [];
         $scope.fromDate = null;
         $scope.toDate = null;
 
