@@ -1,10 +1,10 @@
-const NightlyDiaryRoomsListContainer = ({ shouldShow }) => {
+const NightlyDiaryRoomsListComponent = ({ roomListToComponent }) => {
 
-
+console.log("reached here ----")
     return (
         <div id='rate-manager-not-configured' className='no-content'>
             <div className="info">
-               ROOMSLIST COMPONENT
+               {'ROOMSLIST COMPONENT === '+roomListToComponent.roomsList[0].room_type}
             </div>
         </div>
     )

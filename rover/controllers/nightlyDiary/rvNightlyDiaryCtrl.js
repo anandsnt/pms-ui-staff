@@ -20,8 +20,7 @@ angular.module('sntRover')
         var initialState = {
             mode: NIGHTLY_DIARY_SEVEN_MODE
         };
-
-        //const store = configureStore(initialState);
+        const store = configureStore(initialState);
 
         const {render} = ReactDOM;
         const {Provider} = ReactRedux;
@@ -35,17 +34,20 @@ angular.module('sntRover')
          * to render the grid view
          */
         var renderDiaryView = () => render(
-            <Provider >
+            <Provider store={store}>
                 <NightlyDiaryRootComponent/>
             </Provider>,
             document.querySelector('#nightlyDiaryMain')
         );
-
+        var initialDispatchData = {
+            type: 'INITIAL_RENDERING',
+            roomsListData : roomsList
+        };
+        store.dispatch(initialDispatchData);
         /**
          * initialisation function
          */
         (() => {
-            console.log("Just reached now second")
             renderDiaryView();
         })();
 
