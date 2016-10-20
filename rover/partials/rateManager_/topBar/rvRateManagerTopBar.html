@@ -19,6 +19,10 @@
             <span>{{selectedRateNames.join()}}</span>
             
         </li>
+        <li class="card" ng-show="selectedAccountName.length">
+            <strong>{{selectedAccountName.join()}}</strong>
+            <span>{{selectedAddress.join()}}</span>
+        </li>
          
         <!-- show .card if there are any cards selected -->
         <li class="card" ng-show="selectedCardNames.length">

@@ -154,7 +154,7 @@ const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatch
 				stateProps.callBackForSingleRateFetch({
 					fromDate: stateProps.fromDate,
 					toDate: stateProps.toDate,
-					selectedRates: [{id: clickedRate.id, name: clickedRate.name}]
+					selectedRates: [{id: clickedRate.id, name: clickedRate.name, accountName: clickedRate.accountName, address: clickedRate.address}]
 				})
 			}
 		},
