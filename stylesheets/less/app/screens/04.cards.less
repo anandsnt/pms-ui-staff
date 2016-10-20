@@ -1232,8 +1232,10 @@
                         padding: 20px;
 
                         .entry {
+                            width: 440px;
                             .float;
 
+                            input,
                             .select { 
                                 margin-right: 10px;
                                 width: 240px;
@@ -1241,6 +1243,14 @@
                             }
 
                             .button { .pull-left; }
+                        }
+
+                        .actions {
+                            .button {
+                                margin-right: 0;
+
+                                &.blank { margin-right: 10px; }
+                            }
                         }
                     }
 
