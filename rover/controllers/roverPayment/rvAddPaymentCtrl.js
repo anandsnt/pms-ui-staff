@@ -74,6 +74,9 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                         "confirm_no": $scope.paymentData.confirm_no
                     });
 
+                    // CICO-34754: room charge enabled needs to be true if cc added.
+                    $rootScope.$broadcast('paymentChangedToCC');
+
                     $scope.$emit('UPDATECCATTACHEDBILLSTATUS', response.has_any_credit_card_attached_bill);
                 } else {
                     // For non CC Payments
