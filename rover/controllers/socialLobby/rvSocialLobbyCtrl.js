@@ -10,7 +10,7 @@ sntRover.controller('RVSocialLobbyCrl', [
 
         $scope.posts = [];
         $scope.postParams = {'page': 1, 'per_page':25};
-        $scope.totalPostPages = 93 % 25 > 0 ? Math.floor(93 / 25) + 1 : Math.floor(93 / 25);
+        
         $scope.newPost = "";
 
         var POST_LIST_SCROLL = 'post-list-scroll',
@@ -48,11 +48,19 @@ sntRover.controller('RVSocialLobbyCrl', [
             options.params = $scope.postParams;
             options.onSuccess = function(data){
                 
-                $scope.posts = data;
+                $scope.posts = data.results.posts;
+                $scope.totalPostPages = data.results.total_count % $scope.postParams.per_page > 0 ? Math.floor(data.results.total_count / $scope.postParams.per_page) + 1 : Math.floor(data.results.total_count / $scope.postParams.per_page);
                 $scope.$emit('hideLoader');
                 $scope.refreshPostScroll();
             }
             $scope.callAPI(RVSocilaLobbySrv.fetchPosts, options);
+        }
+
+        $scope.fetchPosts();
+
+        $scope.refreshPosts = function(){
+            $scope.postParams.page = 1;
+            $scope.fetchPosts();
         }
 
         $scope.addPost = function(){
@@ -60,17 +68,28 @@ sntRover.controller('RVSocialLobbyCrl', [
             options.params = {
                 "post" :{
                 "author_name": "shaun alex",
-                "body": $scope.newPost,
-                "body_html": "",
-                "user_id" : "34"
+                "post_message": $scope.newPost,
+                "body_html": "testtt"
             }};
             options.onSuccess = function(data){
-                $scope.fetchPosts();
+                $scope.refreshPosts();
             }
             $scope.callAPI(RVSocilaLobbySrv.addPost, options);
         }
 
-        $scope.fetchPosts();
+        $scope.goToStayCard = function(reservation_id){
+
+        }
+
+        $scope.deletePost = function(post_id){
+            var options = {};
+            options.params = {'post_id': post_id};
+            options.onSuccess = function(data){
+                
+                $scope.refreshPosts();
+            }
+            $scope.callAPI(RVSocilaLobbySrv.deletePost, options);
+        }
 
         $scope.paginatePosts = function(page){
             $scope.postParams.page = page;

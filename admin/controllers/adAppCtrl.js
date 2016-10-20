@@ -128,7 +128,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						action: "staff#/staff/endofDay/starteod"
 					},{
 		                title: "MENU_SOCIAL_LOBBY",
-		                action: "staff#/socialLobby"
+		                action: "staff#/staff/socialLobby"
             		}]
 				}, {
 			        title: "MENU_GROUPS",

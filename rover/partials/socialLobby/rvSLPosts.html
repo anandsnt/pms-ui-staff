@@ -5,7 +5,7 @@
 <form method="get" action="{action}" id="neighbors-search-form" class="search-form neighbors-search" role="search">
 
     <!-- Refresh -->
-    <button type="button" class="button white with-icon only-icon refresh">
+    <button type="button" ng-click = "refreshPosts()" class="button white with-icon only-icon refresh">
         <span class="icons icon-reset"></span>
         Refresh
     </button>
@@ -54,18 +54,18 @@
 
 
                         <!-- If not staff member, show Stay Card link -->
-                        <button type="button" class="button white brand-text small-button">Stay Card</button>
+                        <button type="button" class="button white brand-text small-button" ng-show="post.user_role == 'guest'" ng-click="goToStayCard()">Stay Card</button>
                         <!-- If staff member post, output this instad of L64, L66 and L68:
                         <em class="icons icon-staff-blue">Staff</em> -->
                     </div>
-                    <h4 class="post" ng-class="{'staff': post.user_role != 'guest'}"> <!-- If this is a 1st level unread post, add class 'unread'. If staff post, add class 'staff'. If entered / left the lobby post, add class 'appearance' -->
-                        <!-- If post has replies, show count like this:
-                        <span class="icons icon-comment">{replies count}</span>-->
+                    <h4 class="post" ng-class="{'staff': post.user_role != 'guest', 'unread': !post.isRead}"> <!-- If this is a 1st level unread post, add class 'unread'. If staff post, add class 'staff'. If entered / left the lobby post, add class 'appearance' -->
+                        <!-- If post has replies, show count like this:-->
+                        <span class="icons icon-comment" ng-show="post.comment_count > 0">{{post.comment_count}}</span>
                         {{post.body}}
                     </h4>
                 </div>
             </div>
-            <button type="button" class="button white icons icon-remove-10">Delete</button>
+            <button type="button" class="button white icons icon-remove-10" ng-click="deletePost(post.id)">Delete</button>
 
             <!-- If post has replies-->
             <div class="conversation hidden"> <!-- Toggle class 'hidden' to show/hide when L55 is tapped/clicked -->
