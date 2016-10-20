@@ -1,2 +1,9 @@
 "ADD_REVENUE_CENTER":"Add Revenue Center",
-"EDIT_REVENUE_CENTER":"Edit Revenue Center"
+"EDIT_REVENUE_CENTER":"Edit Revenue Center",
+"ADD_CHARGE_CODE_MAPPING":"Add Charge Code Mapping",
+"REVENUE_CENTER":"REVENUE CENTER",
+"REVENUE_CENTER_PLACEHOLDER":"Select Revenue Center",
+"EXTERNAL_CODE":"EXTERNAL CODE",
+"EXTERNAL_CODE_PLACEHOLDER":"Enter External Code",
+"SELECT_CHARGE_CODE_PLACEHOLDER": "Select Charge Code",
+"EDIT_CHARGE_CODE_MAPPING":"Edit Charge Code Mapping"
