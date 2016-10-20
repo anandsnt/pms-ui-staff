@@ -277,6 +277,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.isDefaultLanguageSet = false;
+
+
         this.languageValueMappingsForUI = {
             //LangugaeName: Corresponsing values
             english: {

@@ -29,7 +29,15 @@
 				<ad-checkbox is-checked="addData.is_rover_only" label="{{ 'ROVER_ONLY' | translate}}" div-class="full-width" change="roverOnlyChanged()"></ad-checkbox>
 				<ad-checkbox is-checked="addData.is_web_only" label="{{ 'WEB_ONLY' | translate}}" div-class="full-width" change="webOnlyChanged()"></ad-checkbox>
 				<ad-checkbox is-checked="addData.is_display_reference" label="{{ 'DISPLAY_REFERENCE' | translate}}" div-class="full-width"></ad-checkbox>
-				<ad-checkbox is-checked="addData.restrict_post" label="{{ 'RESTRICT_POST' | translate}}" div-class="full-width"></ad-checkbox>
+
+
+				<div class="entry radio-check " ng-if="isStandAlone">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': addData.restrict_post}"></span>
+                    {{ 'RESTRICT_POST' | translate }}
+                    <input ng-model = "addData.restrict_post" type="checkbox">
+                </label>
+            </div>
 			</fieldset>
 			<div class='actions float'>
 				<button class='button blank edit-data-inline' id='cancel' type='button' ng-click="clickCancel()" translate>

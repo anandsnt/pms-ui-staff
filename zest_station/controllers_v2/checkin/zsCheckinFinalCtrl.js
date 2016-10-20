@@ -56,13 +56,8 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
 					$scope.subtext = "";
 				}
 			}
-
-
 		}();
 
-		$scope.navToHome = function() {
-			$state.go('zest_station.home');
-		};
 
 	}
 ]);
