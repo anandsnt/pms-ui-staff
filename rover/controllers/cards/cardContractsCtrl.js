@@ -11,6 +11,12 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 		$scope.contractList.future_contracts = [];
 		$scope.contractList.history_contracts = [];
 		$scope.contractList.isAddMode = false;
+
+		$scope.contractList.isRenameMode = false;
+		$scope.contractList.contractNameToChange = "";
+		var existingContractName = "";
+		var contractSelected;
+
 		$scope.errorMessage = "";
 		$scope.autoCompleteState = {};
 		var contractInfo = {};
@@ -177,6 +183,15 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			$scope.errorMessage = "";
 			$scope.$emit('hideLoader');
 		};
+		var fetchContractsSuccessCallback = function(data) {
+			$scope.contractList = data;
+			$scope.contractList.contractSelected = contractSelected;
+			$scope.$emit('hideLoader');
+			checkContractListEmpty();
+			$scope.errorMessage = "";
+
+		};
+
 		var fetchContractsDetailsFailureCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
@@ -256,6 +271,11 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			}
 		};
 
+		$scope.fetchContracts = function () {
+				$scope.invokeApi(RVCompanyCardSrv.fetchContractsList, {
+					"account_id": $scope.currentCard
+				}, fetchContractsSuccessCallback, fetchFailureCallback);
+		};
 		$scope.fetchContractsList();
 
 		/*
@@ -518,6 +538,82 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 						}, saveContractSuccessCallback, saveContractFailureCallback);
 					}
 				}
+			}
+		};
+
+		/**
+		* functions to perform rename button click
+		*/
+		$scope.renameButtonClicked = function() {
+			//Setup data for Rename mode
+			$scope.contractList.isRenameMode = true;
+			
+			var renameId = $scope.contractList.contractSelected;
+			console.log(renameId);
+			$scope.contractNameToRename = "";
+			for(var index = 0; index < $scope.contractList.current_contracts.length; index++) {
+				if(renameId == $scope.contractList.current_contracts[index].id) {
+					existingContractName = angular.copy($scope.contractList.current_contracts[index].contract_name);
+					break;
+				}
+			}
+			for(var index = 0; index < $scope.contractList.future_contracts.length; index++) {
+				if(renameId == $scope.contractList.future_contracts[index].id) {
+					existingContractName = angular.copy($scope.contractList.future_contracts[index].contract_name);
+					break;
+				}
+			}
+			for(var index = 0; index < $scope.contractList.history_contracts.length; index++) {
+				if(renameId == $scope.contractList.history_contracts[index].id) {
+					existingContractName = angular.copy($scope.contractList.history_contracts[index].contract_name);
+					break;
+				}
+			}
+			$scope.contractList.contractNameToChange = angular.copy(existingContractName);
+		};
+
+		// Cancel Rename mode
+		$scope.cancelRenameContract = function() {
+			$scope.contractList.isRenameMode = false;
+		};
+
+
+		/*
+		 * To rename existing contract
+		 */
+		$scope.renameContract = function() {
+			$scope.updateRenamedContract();
+			$scope.contractList.isRenameMode = false;
+		};
+		/**
+
+		 * function used to save the changed contract name, it will save only if there is any
+		 * change found in the present contract name.
+		 */
+		$scope.updateRenamedContract = function() {
+			var renameContractFailureCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = data;
+				$scope.$parent.currentSelectedTab = 'cc-contracts';
+			};
+			var renameContractSuccessCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = "";
+				contractSelected = angular.copy($scope.contractList.contractSelected);
+				$scope.contractList.current_contracts = [];
+				$scope.contractList.future_contracts = [];
+				$scope.contractList.history_contracts = [];
+				$scope.fetchContracts();
+			};
+			if(existingContractName !== $scope.contractList.contractNameToChange) {
+				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
+				var account_id = $scope.currentCard;
+				data.contract_name = $scope.contractList.contractNameToChange;
+				$scope.invokeApi(RVCompanyCardSrv.updateContract, {
+					"account_id": account_id,
+					"contract_id": $scope.contractList.contractSelected,
+					"postData": data
+				}, renameContractSuccessCallback, renameContractFailureCallback);
 			}
 		};
 		/**

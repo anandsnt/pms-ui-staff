@@ -1,4 +1,4 @@
-angular.module('sntPayTemplates', []);
+var payTemplateApp = angular.module('sntPayTemplates', []);
 
 angular.module('sntPay', [
     'pascalprecht.translate',
