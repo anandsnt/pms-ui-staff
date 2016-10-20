@@ -65,10 +65,16 @@
             <strong class="h3 margin" translate>NOTES</strong>
             <div class="entry full-width no-label with-notes">
                 <textarea id="account-notes" ng-model="accountSummaryData.newNote" placeholder="Write a note" rows="2"></textarea>
-                <button type="button" class="button post" ng-class="{'brand-colors' : !isInAddMode() , 'grey' : isInAddMode()}" ng-click="saveAccountNote()" translate>POST</button>
+
+                <button type="button" class="button" ng-class="{'brand-colors' : !isInAddMode() && accountSummaryData.newNote.trim()!=='' , 'grey' : isInAddMode() || accountSummaryData.newNote.trim()===''}" ng-click="saveAccountNote()" ng-show="accountSummaryData.editingNote===null" translate>POST</button>
+
+                <button type="button" class="button" ng-class="{'brand-colors' : !isInAddMode() && accountSummaryData.newNote.trim()!=='', 'grey' : isInAddMode()||accountSummaryData.newNote.trim()===''}" ng-click="updateActiveAccountNote()" ng-show="accountSummaryData.editingNote!==null" ng-disabled="accountSummaryData.newNote.trim()===''">Save</button>
+
+                <button type="button" class="button blank" ng-click="cancelEditModeAccountNote()" ng-show="accountSummaryData.editingNote!==null">Cancel</button>
             </div>
             <ul class="notes">
-                <li ng-repeat="note in accountConfigData.summary.notes">
+                <li ng-repeat="note in accountConfigData.summary.notes" ng-class="{'editing': (accountSummaryData.editingNote && note.note_id === accountSummaryData.editingNote.note_id)}"
+                ng-click="clickedOnNote(note)">
                     <figure class="guest-image">
                         <img src="{{note.user_image}}" alt="" />
                     </figure>
@@ -78,7 +84,7 @@
                             <span class="time">{{note.posted_date}}</span>
                             <span class="date">{{note.posted_time}}</span>
                         </time>
-                        <button type="button" class="icons icon-trash" ng-click="removeAccountNote(note.note_id)">Delete post</button>
+                        <button type="button" class="icons icon-trash" ng-click="removeAccountNote($event, note.note_id)">Delete post</button>
                     </div>
                     <p>{{note.description}}</p>
                 </li>
