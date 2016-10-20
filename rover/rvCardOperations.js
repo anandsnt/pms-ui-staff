@@ -97,8 +97,16 @@ var CardOperation = function(){
 							else{
 								failureCallBack(error);
 							}
-
-							that.callRecursively(options);
+							/**
+							 * CICO-29248
+							 * Observe for swipe is not valid for CBA devices; as they cant be tokenized;
+							 * Hence; there is no point in recursively calling if cordovaAPI return 100
+							 * RVErrorCode : "100",
+							 * RVErrorDesc : "Device does not support the feature."
+							 */
+							if(!error || (error.RVErrorCode !== 100 && error.RVErrorCode !== "100")){
+								that.callRecursively(options);
+							}
 						},
 
 						// service name

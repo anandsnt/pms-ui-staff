@@ -1,184 +1,190 @@
 <form id="cc-contracts" name="cc-contracts" class="form card-tab inner-header contracts" ng-show="currentSelectedTab == 'cc-contracts'">
-    
-    <div id="cc-contracts-header" class="tab-header with-filters">
-        <div class="entry" ng-hide="contractList.isAddMode">
-            <div class="select" >
-                <select iscroll-stop-propagation name="company-contract" ng-model="contractList.contractSelected">
-                    <option value="" class="placeholder" disabled="" translate>SELECT_CONTRACT</option>
-                    <optgroup label="Current">
-                    	<option  value="{{type.id}}" ng-selected="type.id==contractList.contractSelected" ng-repeat="type in contractList.current_contracts" >{{type.contract_name}}</option>
-                	</optgroup>
-                	<optgroup label="Future">
-                    	<option  value="{{type.id}}" ng-selected="type.id==contractList.contractSelected" ng-repeat="type in contractList.future_contracts" >{{type.contract_name}}</option>
-                	</optgroup>
-                	<optgroup label="History">
-                    	<option  value="{{type.id}}" ng-selected="type.id==contractList.contractSelected" ng-repeat="type in contractList.history_contracts" >{{type.contract_name}}</option>
-                	</optgroup>
-                </select>
-            </div>
-            <button type="button" class="button red" ng-show="isDeleteAllowed && hasPermisionToDeleteContract()" ng-click="deleteContract()">Delete Contract</button>
-        </div>
-        <div class="entry" ng-show="contractList.isAddMode">
-            <input ng-model="addData.contract_name" placeholder="Contract Name" name="company-contract-new" class="" value="{{addData.contract_name}}" type="text" />
-        </div>
-        <div class="actions" ng-hide="contractList.isAddMode">
-            <button id="company-new-contract" type="button" class="button green" ng-click="AddNewButtonClicked()" translate>NEW_CONTRACT</button>
-        </div>
-        <div class="actions" ng-show="contractList.isAddMode">
-        	<button id="company-new-contract" type="button" class="button red" ng-click="CancelAddNewContract()" translate>CANCEL</button>
-            <button id="company-new-contract" type="button" class="button green" ng-click="AddNewContract()" translate>SAVE_CONTRACT</button>
-        </div>
-    </div>
-    
-    <div id="cc-contracts-content" class="tab-details scrollable" ng-iscroll="cardContractsScroll" ng-iscroll-delay="1000">    	
-    	
-        <div class="wrapper" ng-class="{'overlay':hasOverlay==true}">
-            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-            <div class="holder left" ng-hide="contractList.isAddMode">
-                <strong class="h3" translate>DETAILS</strong>
-                <span selected-rate-id="contractData.contracted_rate_selected" ng-model="contractData.contractedRate" rate-auto-complete></span>
-                <div class="entry price-adjust no-label">
-                     <div class="select">
-                        <select iscroll-stop-propagation name="company-rate-adjust-3" ng-model="contractData.selected_symbol">
-                        	<option ng-repeat="symbol in ['+','-']" ng-selected="symbol==contractData.selected_symbol" value="{{symbol}}">{{symbol}}</option>
-                        </select>
-                    </div>
-                    <input ng-model="contractData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{contractData.rate_value | number:2}}" type="text" />
-                    <div class="select">
-                        <select iscroll-stop-propagation name="company-rate-adjust-1" ng-model="contractData.selected_type">
-                            <option ng-repeat="type in rateValueTypes"  ng-selected="type.name==contractData.selected_type" value="{{type.name}}">{{type.value}}</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="entry margin has-datepicker">
-                    <label for="company-contract-start" translate>CONTRACT_START</label>
-                    <input type="text" readonly="" maxlength="8" value="{{contractData.begin_date | date :dateFormat }}" class="datepicker1 hasDatepicker" >
-                    <button ng-click="contractStart()" type="button" class="ui-datepicker-trigger">...</button>
-                </div>
-                
-                <div class="entry has-datepicker">
-                    <label for="company-contract-end" translate>CONTRACT_END</label>
-                    <input type="text" readonly="" maxlength="8" value="{{contractData.end_date | date :dateFormat }}" class="datepicker1 hasDatepicker" >
-                    <button ng-click="contractEnd()" type="button" class="ui-datepicker-trigger">...</button>
-                </div>
-                
-                <div class="entry margin only-switch">
-                    <label for="company-contract-fixed-rate" translate>FIXED_RATE</label>
-                    <div ng-model="contractData.is_fixed_rate" class="switch-button full-width" ng-class="{'on': contractData.is_fixed_rate}">
-                        <input ng-disabled="!contractData.is_fixed_rate" ng-click="contractData.is_fixed_rate = !contractData.is_fixed_rate" name="company-contract-fixed-rate" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
-                        <label class="data-off">
-                            <span class="value" translate>NO</span>
-                            <span class="switch-icon" translate>YES</span>
-                        </label>
-                        <label class="data-on">
-                            <span class="switch-icon" translate>NO</span>
-                            <span class="value" translate>YES</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="entry only-switch">
-                    <label for="company-contract-show-on-bill" translate>SHOW_ON_GUEST_BILL</label>
-                    <div ng-model="contractData.is_rate_shown_on_guest_bill" class="switch-button full-width" ng-class="{'on': contractData.is_rate_shown_on_guest_bill}">
-                        <input ng-click="contractData.is_rate_shown_on_guest_bill = !contractData.is_rate_shown_on_guest_bill" name="company-contract-show-on-bill" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
-                        <label class="data-off">
-                            <span class="value" translate>NO</span>
-                            <span class="switch-icon" translate>YES</span>
-                        </label>
-                        <label class="data-on">
-                            <span class="switch-icon" translate>NO</span>
-                            <span class="value" translate>YES</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="entry">
-                    <label for="company-contracted-nights" translate>CONTRACTED_NIGHTS</label>
-                    <input ng-click="clickedContractedNights()" name="company-contracted-nights" id="company-contracted-nights" class="open-modal1 contracted-nights" placeholder="Nights per month" value="{{contractData.total_contracted_nights}}" maxlength="8" readonly type="text" />
-                </div>
-            </div>
-            
-            <div class="holder left" ng-show="contractList.isAddMode">
-                <strong class="h3" translate>DETAILS</strong>
-                <span selected-rate-id="addData.contracted_rate_selected" ng-model="addData.contractedRate" rate-auto-complete></span>
-                <div class="entry price-adjust no-label">
-                	
-                	<div class="select">
-                        <select iscroll-stop-propagation name="company-rate-adjust-3" ng-model="addData.selected_symbol">
-                        	<option ng-repeat="symbol in ['+','-']" ng-selected="symbol==addData.selected_symbol" value="{{symbol}}">{{symbol}}</option>
-                        </select>
-                    </div>
-                    <input ng-model="addData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{addData.rate_value | number:2}}" type="text" />
-                    <div class="select">
-                        <select iscroll-stop-propagation name="company-rate-adjust-1" ng-model="addData.selected_type">
-                            <option ng-repeat="type in rateValueTypes"  ng-selected="type.name==addData.selected_type" value="{{type.name}}">{{type.value}}</option>
-                        </select>
-                    </div>
-                    
-                </div>
-	                
-                <div class="entry margin has-datepicker">
-                    <label for="company-contract-start" translate>CONTRACT_START</label>
-                    <input type="text" readonly="" maxlength="8" value="{{addData.begin_date | date :dateFormat}}" class="datepicker1 hasDatepicker" >
-                    <button ng-click="contractStart()" type="button" class="ui-datepicker-trigger">...</button>
-                </div>
-                
-                <div class="entry has-datepicker">
-                    <label for="company-contract-end" translate>CONTRACT_END</label>
-                    <input type="text" readonly="" maxlength="8" value="{{addData.end_date | date :dateFormat}}" class="datepicker1 hasDatepicker" >
-                    <button ng-click="contractEnd()" type="button" class="ui-datepicker-trigger">...</button>
-                </div>
-                
-                <div class="entry margin only-switch">
-                    <label for="company-contract-fixed-rate" translate>FIXED_RATE</label>
-                    <div ng-model="addData.is_fixed_rate" class="switch-button full-width" ng-class="{'on': addData.is_fixed_rate}">
-                        <input ng-click="addData.is_fixed_rate = !addData.is_fixed_rate" name="company-contract-fixed-rate" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
-                        <label class="data-off">
-                            <span class="value" translate>NO</span>
-                            <span class="switch-icon" translate>YES</span>
-                        </label>
-                        <label class="data-on">
-                            <span class="switch-icon" translate>NO</span>
-                            <span class="value" translate>YES</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="entry only-switch">
-                    <label for="company-contract-show-on-bill" translate>SHOW_ON_GUEST_BILL</label>
-                    <div ng-model="addData.is_rate_shown_on_guest_bill" class="switch-button full-width" ng-class="{'on': addData.is_rate_shown_on_guest_bill}">
-                        <input ng-click="addData.is_rate_shown_on_guest_bill = !addData.is_rate_shown_on_guest_bill" name="company-contract-show-on-bill" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
-                        <label class="data-off">
-                            <span class="value" translate>NO</span>
-                            <span class="switch-icon" translate>YES</span>
-                        </label>
-                        <label class="data-on">
-                            <span class="switch-icon" translate>NO</span>
-                            <span class="value" translate>YES</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="entry">
-                    <label for="company-contracted-nights" translate>CONTRACTED_NIGHTS</label>
-                    <input ng-click="clickedContractedNights()" name="company-contracted-nights" id="company-contracted-nights" class="open-modal1 contracted-nights" placeholder="Nights per month" value="{{addData.total_contracted_nights}}" maxlength="8" readonly type="text" />
-                </div>
-            </div>
-            
-            <div class="holder right" ng-hide="contractList.isAddMode">
-                <strong class="h3" translate>STATISTICS</strong>
-                <ul id="company-contract-stats" class="contract-stats">
-                    <li>{{ 'BOOKED_NIGHTS' | translate }}<span>{{contractData.statistics.booked_nights}}</span></li>
-                    <li>{{ 'TOTAL_NIGHTS'  | translate }}<span>{{contractData.statistics.total_nights}}</span></li>
-                    <li>{{ 'TOTAL_STAYS'   | translate }}<span>{{contractData.statistics.total_stays}}</span></li>
-                    <li>{{ 'TOTAL_REVENUE' | translate }}<span class="green">{{contractData.statistics.total_revenue}}</span></li>
-                    <li>{{ 'AVERAGE_RATE'  | translate }}<span>{{contractData.statistics.average_rate}}</span></li>
-                </ul>
-            </div>
-            
-            <div id="company-cards-occupancy" class="occupancy-graph" ng-hide="contractList.isAddMode">
-		        <strong class="h3" translate>OCCUPANCY</strong>
-		        <div class="occgraph-outer" style='width: 100%'>
-		            <highchart id="occGraphContainer" config="highchartsNG"></highchart>
-		        </div>
-		    </div>    
-        </div>    
-    </div>
+	
+	<div id="cc-contracts-header" class="tab-header with-filters">
+		<div class="entry" ng-hide="contractList.isAddMode || contractList.isRenameMode">
+			<div class="select" >
+				<select iscroll-stop-propagation name="company-contract" ng-model="contractList.contractSelected">
+					<option value="" class="placeholder" disabled="" translate>SELECT_CONTRACT</option>
+					<optgroup label="Current">
+						<option  value="{{type.id}}" ng-selected="type.id==contractList.contractSelected" ng-repeat="type in contractList.current_contracts" >{{type.contract_name}}</option>
+					</optgroup>
+					<optgroup label="Future">
+						<option  value="{{type.id}}" ng-selected="type.id==contractList.contractSelected" ng-repeat="type in contractList.future_contracts" >{{type.contract_name}}</option>
+					</optgroup>
+					<optgroup label="History">
+						<option  value="{{type.id}}" ng-selected="type.id==contractList.contractSelected" ng-repeat="type in contractList.history_contracts" >{{type.contract_name}}</option>
+					</optgroup>
+				</select>
+			</div>
+			<button ng-hide="contractList.isRenameMode" id="company-rename-contract" type="button" class="button purple" ng-click="renameButtonClicked()" translate>RENAME</button>
+			<button type="button" class="button red" ng-show="isDeleteAllowed && hasPermisionToDeleteContract()" ng-click="deleteContract()">Delete Contract</button>
+		</div>
+		<div class="entry" ng-show="contractList.isAddMode">
+			<input ng-model="addData.contract_name" placeholder="Contract Name" name="company-contract-new" class="" value="{{addData.contract_name}}" type="text" />
+		</div>
+		<div class="entry" ng-show="contractList.isRenameMode">
+			<input name="company-contract-rename" class="" type="text" ng-model="contractList.contractNameToChange" />
+		</div>
+		<div class="actions">
+			<button ng-hide="contractList.isAddMode || contractList.isRenameMode" id="company-new-contract" type="button" class="button green" ng-click="AddNewButtonClicked()" translate>NEW_CONTRACT</button>
+
+			<button ng-show="contractList.isRenameMode" id="company-rename-contract" type="button" class="button blank" ng-click="cancelRenameContract()" translate>CANCEL</button>
+			<button ng-show="contractList.isRenameMode" id="company-rename-contract" type="button" class="button green" ng-click="renameContract()" translate>SAVE_CONTRACT</button>
+			
+			<button ng-show="contractList.isAddMode" id="company-new-contract" type="button" class="button red" ng-click="CancelAddNewContract()" translate>CANCEL</button>
+			<button ng-show="contractList.isAddMode" id="company-new-contract" type="button" class="button green" ng-click="AddNewContract()" translate>SAVE_CONTRACT</button>
+		</div>
+	</div>
+	
+	<div id="cc-contracts-content" class="tab-details scrollable" ng-iscroll="cardContractsScroll" ng-iscroll-delay="1000">    	
+		
+		<div class="wrapper" ng-class="{'overlay':hasOverlay==true}">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div class="holder left" ng-hide="contractList.isAddMode">
+				<strong class="h3" translate>DETAILS</strong>
+				<span selected-rate-id="contractData.contracted_rate_selected" ng-model="contractData.contractedRate" rate-auto-complete></span>
+				<div class="entry price-adjust no-label">
+					 <div class="select">
+						<select iscroll-stop-propagation name="company-rate-adjust-3" ng-model="contractData.selected_symbol">
+							<option ng-repeat="symbol in ['+','-']" ng-selected="symbol==contractData.selected_symbol" value="{{symbol}}">{{symbol}}</option>
+						</select>
+					</div>
+					<input ng-model="contractData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{contractData.rate_value | number:2}}" type="text" />
+					<div class="select">
+						<select iscroll-stop-propagation name="company-rate-adjust-1" ng-model="contractData.selected_type">
+							<option ng-repeat="type in rateValueTypes"  ng-selected="type.name==contractData.selected_type" value="{{type.name}}">{{type.value}}</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="entry margin has-datepicker">
+					<label for="company-contract-start" translate>CONTRACT_START</label>
+					<input type="text" readonly="" maxlength="8" value="{{contractData.begin_date | date :dateFormat }}" class="datepicker1 hasDatepicker" >
+					<button ng-click="contractStart()" type="button" class="ui-datepicker-trigger">...</button>
+				</div>
+				
+				<div class="entry has-datepicker">
+					<label for="company-contract-end" translate>CONTRACT_END</label>
+					<input type="text" readonly="" maxlength="8" value="{{contractData.end_date | date :dateFormat }}" class="datepicker1 hasDatepicker" >
+					<button ng-click="contractEnd()" type="button" class="ui-datepicker-trigger">...</button>
+				</div>
+				
+				<div class="entry margin only-switch">
+					<label for="company-contract-fixed-rate" translate>FIXED_RATE</label>
+					<div ng-model="contractData.is_fixed_rate" class="switch-button full-width" ng-class="{'on': contractData.is_fixed_rate}">
+						<input ng-disabled="!contractData.is_fixed_rate" ng-click="contractData.is_fixed_rate = !contractData.is_fixed_rate" name="company-contract-fixed-rate" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
+						<label class="data-off">
+							<span class="value" translate>NO</span>
+							<span class="switch-icon" translate>YES</span>
+						</label>
+						<label class="data-on">
+							<span class="switch-icon" translate>NO</span>
+							<span class="value" translate>YES</span>
+						</label>
+					</div>
+				</div>
+				<div class="entry only-switch">
+					<label for="company-contract-show-on-bill" translate>SHOW_ON_GUEST_BILL</label>
+					<div ng-model="contractData.is_rate_shown_on_guest_bill" class="switch-button full-width" ng-class="{'on': contractData.is_rate_shown_on_guest_bill}">
+						<input ng-click="contractData.is_rate_shown_on_guest_bill = !contractData.is_rate_shown_on_guest_bill" name="company-contract-show-on-bill" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
+						<label class="data-off">
+							<span class="value" translate>NO</span>
+							<span class="switch-icon" translate>YES</span>
+						</label>
+						<label class="data-on">
+							<span class="switch-icon" translate>NO</span>
+							<span class="value" translate>YES</span>
+						</label>
+					</div>
+				</div>
+				<div class="entry">
+					<label for="company-contracted-nights" translate>CONTRACTED_NIGHTS</label>
+					<input ng-click="clickedContractedNights()" name="company-contracted-nights" id="company-contracted-nights" class="open-modal1 contracted-nights" placeholder="Nights per month" value="{{contractData.total_contracted_nights}}" maxlength="8" readonly type="text" />
+				</div>
+			</div>
+			
+			<div class="holder left" ng-show="contractList.isAddMode">
+				<strong class="h3" translate>DETAILS</strong>
+				<span selected-rate-id="addData.contracted_rate_selected" ng-model="addData.contractedRate" rate-auto-complete></span>
+				<div class="entry price-adjust no-label">
+					
+					<div class="select">
+						<select iscroll-stop-propagation name="company-rate-adjust-3" ng-model="addData.selected_symbol">
+							<option ng-repeat="symbol in ['+','-']" ng-selected="symbol==addData.selected_symbol" value="{{symbol}}">{{symbol}}</option>
+						</select>
+					</div>
+					<input ng-model="addData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{addData.rate_value | number:2}}" type="text" />
+					<div class="select">
+						<select iscroll-stop-propagation name="company-rate-adjust-1" ng-model="addData.selected_type">
+							<option ng-repeat="type in rateValueTypes"  ng-selected="type.name==addData.selected_type" value="{{type.name}}">{{type.value}}</option>
+						</select>
+					</div>
+					
+				</div>
+					
+				<div class="entry margin has-datepicker">
+					<label for="company-contract-start" translate>CONTRACT_START</label>
+					<input type="text" readonly="" maxlength="8" value="{{addData.begin_date | date :dateFormat}}" class="datepicker1 hasDatepicker" >
+					<button ng-click="contractStart()" type="button" class="ui-datepicker-trigger">...</button>
+				</div>
+				
+				<div class="entry has-datepicker">
+					<label for="company-contract-end" translate>CONTRACT_END</label>
+					<input type="text" readonly="" maxlength="8" value="{{addData.end_date | date :dateFormat}}" class="datepicker1 hasDatepicker" >
+					<button ng-click="contractEnd()" type="button" class="ui-datepicker-trigger">...</button>
+				</div>
+				
+				<div class="entry margin only-switch">
+					<label for="company-contract-fixed-rate" translate>FIXED_RATE</label>
+					<div ng-model="addData.is_fixed_rate" class="switch-button full-width" ng-class="{'on': addData.is_fixed_rate}">
+						<input ng-click="addData.is_fixed_rate = !addData.is_fixed_rate" name="company-contract-fixed-rate" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
+						<label class="data-off">
+							<span class="value" translate>NO</span>
+							<span class="switch-icon" translate>YES</span>
+						</label>
+						<label class="data-on">
+							<span class="switch-icon" translate>NO</span>
+							<span class="value" translate>YES</span>
+						</label>
+					</div>
+				</div>
+				<div class="entry only-switch">
+					<label for="company-contract-show-on-bill" translate>SHOW_ON_GUEST_BILL</label>
+					<div ng-model="addData.is_rate_shown_on_guest_bill" class="switch-button full-width" ng-class="{'on': addData.is_rate_shown_on_guest_bill}">
+						<input ng-click="addData.is_rate_shown_on_guest_bill = !addData.is_rate_shown_on_guest_bill" name="company-contract-show-on-bill" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
+						<label class="data-off">
+							<span class="value" translate>NO</span>
+							<span class="switch-icon" translate>YES</span>
+						</label>
+						<label class="data-on">
+							<span class="switch-icon" translate>NO</span>
+							<span class="value" translate>YES</span>
+						</label>
+					</div>
+				</div>
+				<div class="entry">
+					<label for="company-contracted-nights" translate>CONTRACTED_NIGHTS</label>
+					<input ng-click="clickedContractedNights()" name="company-contracted-nights" id="company-contracted-nights" class="open-modal1 contracted-nights" placeholder="Nights per month" value="{{addData.total_contracted_nights}}" maxlength="8" readonly type="text" />
+				</div>
+			</div>
+			
+			<div class="holder right" ng-hide="contractList.isAddMode">
+				<strong class="h3" translate>STATISTICS</strong>
+				<ul id="company-contract-stats" class="contract-stats">
+					<li>{{ 'BOOKED_NIGHTS' | translate }}<span>{{contractData.statistics.booked_nights}}</span></li>
+					<li>{{ 'TOTAL_NIGHTS'  | translate }}<span>{{contractData.statistics.total_nights}}</span></li>
+					<li>{{ 'TOTAL_STAYS'   | translate }}<span>{{contractData.statistics.total_stays}}</span></li>
+					<li>{{ 'TOTAL_REVENUE' | translate }}<span class="green">{{contractData.statistics.total_revenue}}</span></li>
+					<li>{{ 'AVERAGE_RATE'  | translate }}<span>{{contractData.statistics.average_rate}}</span></li>
+				</ul>
+			</div>
+			
+			<div id="company-cards-occupancy" class="occupancy-graph" ng-hide="contractList.isAddMode">
+				<strong class="h3" translate>OCCUPANCY</strong>
+				<div class="occgraph-outer" style='width: 100%'>
+					<highchart id="occGraphContainer" config="highchartsNG"></highchart>
+				</div>
+			</div>    
+		</div>    
+	</div>
 </form>
