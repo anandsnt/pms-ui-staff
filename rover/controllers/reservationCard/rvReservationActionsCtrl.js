@@ -445,36 +445,32 @@ sntRover.controller('reservationActionsController', [
 		};
 		/******************************************/
 		$scope.showPutInQueue = function() {
-                     //In standalone hotels we do not show the putInQueue option
-                    if ($rootScope.isStandAlone) {
-                        return false;
-                    } else {
-                        var isQueueRoomsOn = $scope.reservationData.reservation_card.is_queue_rooms_on,
-                            isReservationQueued = $scope.reservationData.reservation_card.is_reservation_queued,
-                            reservationStatus = $scope.reservationData.reservation_card.reservation_status;
-                        var displayPutInQueue = false;
-                        if (reservationStatus === 'CHECKING_IN' || reservationStatus === 'NOSHOW_CURRENT') {
-                            if (isQueueRoomsOn === "true" && isReservationQueued === "false") {
-                                    displayPutInQueue = true;
-                            }
-                        }
-                        return displayPutInQueue;
-                    }
+            var isQueueRoomsOn = $scope.reservationData.reservation_card.is_queue_rooms_on,
+                isReservationQueued = $scope.reservationData.reservation_card.is_reservation_queued,
+                reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+            var displayPutInQueue = false;
+            if (reservationStatus === 'CHECKING_IN' || reservationStatus === 'NOSHOW_CURRENT') {
+                if (isQueueRoomsOn === "true" && isReservationQueued === "false") {
+                        displayPutInQueue = true;
+                }
+            }
+            return displayPutInQueue;
+
 		};
 
 		$scope.showRemoveFromQueue = function() {
-                    var isQueueRoomsOn = $scope.reservationData.reservation_card.is_queue_rooms_on,
-                            isReservationQueued = $scope.reservationData.reservation_card.is_reservation_queued,
-                            reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+            var isQueueRoomsOn = $scope.reservationData.reservation_card.is_queue_rooms_on,
+                    isReservationQueued = $scope.reservationData.reservation_card.is_reservation_queued,
+                    reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 
-                    var displayPutInQueue = false;
-                    if (reservationStatus === 'CHECKING_IN' || reservationStatus === 'NOSHOW_CURRENT') {
-                        if (isQueueRoomsOn === "true" && isReservationQueued === "true") {
-                                displayPutInQueue = true;
-                        }
-                    }
+            var displayPutInQueue = false;
+            if (reservationStatus === 'CHECKING_IN' || reservationStatus === 'NOSHOW_CURRENT') {
+                if (isQueueRoomsOn === "true" && isReservationQueued === "true") {
+                        displayPutInQueue = true;
+                }
+            }
 
-                    return displayPutInQueue;
+            return displayPutInQueue;
 		};
 
 		$scope.successPutInQueueCallBack = function() {

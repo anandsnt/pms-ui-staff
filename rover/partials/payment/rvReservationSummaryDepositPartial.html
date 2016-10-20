@@ -1,3 +1,14 @@
+<!-- show if new card is added -->
+<div class="entry full-width" ng-show="payment.showAddToGuestCard">
+    <label class="checkbox inline" for="add-in-guest-card"
+           ng-class="{'checked':payment.addToGuestCardSelected}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked': payment.addToGuestCardSelected}"></span>
+        <input ng-model="payment.addToGuestCardSelected"
+               id="add-in-guest-card" value="1" type="checkbox"/>
+        {{'ADD_TO_GUEST_CARD' | translate}}
+    </label>
+</div>
+
 <div class="deposit" ng-class="{'notice' : !paymentAttempted }">
     <section ng-if="!paymentAttempted">
         <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
