@@ -1,7 +1,7 @@
-admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters',
-    function($scope, revCenters) {
+admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtrolRevenueCenterSrv',
+    function($scope, revCenters, adComtrolRevenueCenterSrv) {
 
-        //private
+        //private methods and variables
         var resetNew = function() {
             $scope.state.new = {
                 name: "",
@@ -9,44 +9,108 @@ admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters',
             }
         };
 
-        //scope
-        $scope.state = {
-            selected: null,
-            mode: "",
-            new: {
-                name: "",
-                code: ""
-            }
-        };
-
+        //scope method and variables
+        //-------------------------------------------------------------------------------------------------------------- ADD
+        /**
+         * Method to open the add form
+         */
         $scope.onClickAdd = function() {
             $scope.state.mode = "ADD";
             resetNew();
         };
 
+        /**
+         * Method to close the ad form
+         */
         $scope.onCancelAdd = function() {
             $scope.state.mode = "";
         };
 
+        /**
+         * Method to save a new Revenue Center
+         * NOTE: Mandatory check is done on the templates
+         */
+        $scope.onSave = function() {
+            var name = $scope.state.new.name,
+                code = $scope.state.new.code;
+
+            $scope.callAPI(adComtrolRevenueCenterSrv.create, {
+                params: {
+                    name: name,
+                    code: code
+                },
+                successCallBack: function(response) {
+                    $scope.revCenters.push({
+                        id: response.id,
+                        name: name,
+                        code: code
+                    });
+                    $scope.state.mode = "";
+                }
+            });
+        };
+        //-------------------------------------------------------------------------------------------------------------- EDIT
+        /**
+         * Method to show the edit form
+         * @param idx
+         */
         $scope.onSelect = function(idx) {
             $scope.state.selected = idx;
         };
 
+        /**
+         * Method to close the edit form
+         */
         $scope.onCancelEdit = function() {
-
-        };
-
-        $scope.onUpdate = function() {
             $scope.state.mode = "";
             $scope.state.selected = null;
         };
 
-        $scope.onSave = function() {
-            $scope.state.mode = "";
-            $scope.revCenters.push(angular.copy($scope.state.new));
+        /**
+         * Method to update a revenue Center
+         * NOTE: Mandatory check is done on the templates
+         * @param revCenter
+         */
+        $scope.onUpdate = function(revCenter) {
+            $scope.callAPI(adComtrolRevenueCenterSrv.create, {
+                params: revCenter,
+                successCallBack: function() {
+                    $scope.state.mode = "";
+                    $scope.state.selected = null;
+                }
+            });
         };
-
+        //-------------------------------------------------------------------------------------------------------------- DELETE
+        /**
+         * Method to delete a Revenue Center
+         * Deleted ones are  hidden in UI with help of isDeleted flag
+         * @param revCenter
+         */
+        $scope.onClickDelete = function(revCenter) {
+            $scope.callAPI(adComtrolRevenueCenterSrv.delete, {
+                params: revCenter.id,
+                successCallBack: function() {
+                    revCenter.isDeleted = true;
+                    $scope.state.deletedCount++;
+                }
+            });
+        };
+        //--------------------------------------------------------------------------------------------------------------
+        /**
+         * Initialization method for the controller
+         */
         (function() {
+            //scope
+            $scope.state = {
+                deletedCount: 0,
+                selected: null,
+                mode: "",
+                new: {
+                    name: "",
+                    code: ""
+                }
+            };
+
             $scope.revCenters = revCenters;
         })();
     }
