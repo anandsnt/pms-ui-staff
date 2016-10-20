@@ -77,7 +77,6 @@ module.exports = {
 			'guestweb_estencia_la_jolla':[ themeCSSRoot + 'guestweb_estencia_la_jolla.css'],
 			'guestweb_el_castell':[ themeCSSRoot + 'guestweb_el_castell.css'],
 			'guestweb_hotel_epik':[ themeCSSRoot + 'guestweb_hotel_epik.css']
-			
 		}
 	}
 }

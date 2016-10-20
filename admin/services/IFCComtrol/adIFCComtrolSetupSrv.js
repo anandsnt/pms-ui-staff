@@ -31,4 +31,21 @@ admin.service('adIFCComtrolSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
 		});
 		return deferred.promise;
 	};
+
+	/**
+	 *
+	 * @param params
+	 * @returns {deferred.promise|{then, catch, finally}}
+     */
+	this.reAuthComtrol = function() {
+		var deferred = $q.defer();
+		var url = '/api/hotel_settings/comtrol/reset_auth_token';
+
+		ADBaseWebSrvV2.postJSON(url).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 }]);
