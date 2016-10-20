@@ -1,5 +1,5 @@
-admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtrolRevenueCenterSrv',
-    function($scope, revCenters, adComtrolRevenueCenterSrv) {
+admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes', 'adComtrolChargeCodeMappingSrv',
+    function($scope, mappedChargeCodes, adComtrolChargeCodeMappingSrv) {
 
         //private methods and variables
         var resetNew = function() {
@@ -41,7 +41,7 @@ admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtr
             var name = $scope.state.new.name,
                 code = $scope.state.new.code;
 
-            $scope.callAPI(adComtrolRevenueCenterSrv.create, {
+            $scope.callAPI(adComtrolChargeCodeMappingSrv.create, {
                 params: {
                     name: name,
                     code: code
@@ -81,7 +81,7 @@ admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtr
          * @param revCenter
          */
         $scope.onUpdate = function(revCenter) {
-            $scope.callAPI(adComtrolRevenueCenterSrv.update, {
+            $scope.callAPI(adComtrolChargeCodeMappingSrv.update, {
                 params: revCenter,
                 successCallBack: function() {
                     $scope.state.mode = "";
@@ -96,7 +96,7 @@ admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtr
          * @param revCenter
          */
         $scope.onClickDelete = function(revCenter) {
-            $scope.callAPI(adComtrolRevenueCenterSrv.delete, {
+            $scope.callAPI(adComtrolChargeCodeMappingSrv.delete, {
                 params: revCenter.id,
                 successCallBack: function() {
                     revCenter.isDeleted = true;
@@ -120,7 +120,7 @@ admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtr
                 }
             };
 
-            $scope.revCenters = revCenters;
+            $scope.revCenters = mappedChargeCodes;
         })();
     }
 ]);

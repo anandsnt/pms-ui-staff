@@ -1,4 +1,4 @@
-admin.service('adComtrolRevenueCenterSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('adComtrolChargeCodeMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 
     var service = this,
         baseUrl = "/api/hotel_settings/comtrol_mappings/revenue_centers";

@@ -137,11 +137,11 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
 
   $stateProvider.state('admin.ifc_charge_codes', {
     templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolChargeCodes.html',
-    controller: 'adComtrolMappingCtrl',
-    url : '/ifc_comtrol/setup',
+    controller: 'adComtrolChargeCodeMappingCtrl',
+    url : '/ifc_comtrol/chargeCodeMappings',
     resolve: {
-      mappedValues: ['adComtrolMappingSrv', function(adComtrolMappingSrv) {
-        return adComtrolMappingSrv.fetchChargeCodeMappings();
+      mappedChargeCodes: ['adComtrolChargeCodeMappingSrv', function(adComtrolChargeCodeMappingSrv) {
+        return adComtrolChargeCodeMappingSrv.fetch();
       }]
     }
   });
