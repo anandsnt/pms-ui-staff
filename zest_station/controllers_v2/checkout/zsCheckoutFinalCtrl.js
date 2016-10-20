@@ -24,10 +24,5 @@ sntZestStation.controller('zsCheckoutFinalCtrl', [
 			//hide close button
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
 		}();
-
-		$scope.navToHome = function() {
-			$state.go('zest_station.home');
-		};
-
 	}
 ]);
