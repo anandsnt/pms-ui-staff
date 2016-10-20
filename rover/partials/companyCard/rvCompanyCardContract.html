@@ -25,16 +25,14 @@
 		<div class="entry" ng-show="contractList.isRenameMode">
 			<input name="company-contract-rename" class="" type="text" ng-model="contractList.contractNameToChange" />
 		</div>
-		<div class="actions" ng-hide="contractList.isAddMode || contractList.isRenameMode">
-			<button id="company-new-contract" type="button" class="button green" ng-click="AddNewButtonClicked()" translate>NEW_CONTRACT</button>
-		</div>
-		<div class="actions" ng-show="contractList.isRenameMode">
-			<button id="company-rename-contract" type="button" class="button red" ng-click="cancelRenameContract()" translate>CANCEL</button>
-			<button id="company-rename-contract" type="button" class="button green" ng-click="renameContract()" translate>SAVE_CONTRACT</button>
-		</div>
-		<div class="actions" ng-show="contractList.isAddMode">
-			<button id="company-new-contract" type="button" class="button red" ng-click="CancelAddNewContract()" translate>CANCEL</button>
-			<button id="company-new-contract" type="button" class="button green" ng-click="AddNewContract()" translate>SAVE_CONTRACT</button>
+		<div class="actions">
+			<button ng-hide="contractList.isAddMode || contractList.isRenameMode" id="company-new-contract" type="button" class="button green" ng-click="AddNewButtonClicked()" translate>NEW_CONTRACT</button>
+
+			<button ng-show="contractList.isRenameMode" id="company-rename-contract" type="button" class="button blank" ng-click="cancelRenameContract()" translate>CANCEL</button>
+			<button ng-show="contractList.isRenameMode" id="company-rename-contract" type="button" class="button green" ng-click="renameContract()" translate>SAVE_CONTRACT</button>
+			
+			<button ng-show="contractList.isAddMode" id="company-new-contract" type="button" class="button red" ng-click="CancelAddNewContract()" translate>CANCEL</button>
+			<button ng-show="contractList.isAddMode" id="company-new-contract" type="button" class="button green" ng-click="AddNewContract()" translate>SAVE_CONTRACT</button>
 		</div>
 	</div>
 	
