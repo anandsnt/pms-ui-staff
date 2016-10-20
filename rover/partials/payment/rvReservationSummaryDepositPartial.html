@@ -1,4 +1,4 @@
-<div class="deposit" ng-class="{'notice' : !paymentAttempted }">
+<div class="deposit" ng-class="{'notice' : !paymentAttempted }" ng-show="payment.amount != 0">
     <section ng-if="!paymentAttempted">
         <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
 
@@ -23,8 +23,6 @@
             </div>
             <div class="entry full-width">
                 <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
-
-                <!--ng-class="{'red-text': depositWithGiftCard && !validPayment}"-->
                 <input ng-change="onPaymentInfoChange()"
                        ng-model="payment.amount"
                        type="text"
@@ -107,7 +105,7 @@
         <!-- <div class="notice error">Payment failed. Try again or change payment method.</div> -->
         <div class="notice error">{{paymentErrorMessage}}</div>
         <!-- Show when deposit payment fails  -->
-        <button type="button" class="button blue" ng-click="submitPayment()">Try Again</button>
+        <button type="button" class="button blue" ng-click="resetPaymentAttempt()">Try Again</button>
     </div>
 
 </div>

@@ -3,6 +3,8 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
 
   var mappingList = null;
 
+  var paymentMappingList = undefined;
+
   /**
 	 * [fetchMappingList description]
 	 * @return {[type]} [description]
@@ -41,47 +43,69 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
       console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
       return;
     };
-  };
+  };    
 
-        /**
-         * [loadPaymentModule description]
-         * @param  {array} keys               [description]
-         * @param  {[type]} modules_to_inject [description]
-         * @return {[type]}                   [description]
-         *
-         */
 
-        this.loadPaymentModule = function (keys) {
-            var locMappingFile = "/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json";
 
-            if (!keys) {
-                keys = ['common'];
-            }
+    this.loadPaymentMapping = function() {
+      var locMappingFile,
+        deferred = $q.defer();
 
-            var deferred = $q.defer();
+      if ( !! paymentMappingList ) {
+        deferred.resolve(paymentMappingList);
+      } else {
+        locMappingFile = "/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json";
 
-            rvBaseWebSrvV2.getJSON(locMappingFile).then(function (data) {
-                var promises = [], length = keys.length, i = 0;
-                if (!!data) {
-                    for (; i < length; i++) {
-                        promises.push($ocLazyLoad.load({serie: true, files: data.js[keys[i]]}));
-                    }
-                   promises.push($ocLazyLoad.load({serie: true, files: data['template']}));
+        rvBaseWebSrvV2.getJSON(locMappingFile).then(function(data){
+          paymentMappingList = data;
+          deferred.resolve(paymentMappingList);
+        }, function() {
+          console.error('something wrong, make sure the payment mapping file is in exact place or name is correct');
+          deferred.reject('something wrong, make sure the payment mapping file is in exact place or name is correct');
+        });
+      }
 
-                    return $q.all(promises).then(function () {
-                        $ocLazyLoad.inject(['sntPayConfig', 'sntPayTemplates', 'sntPay']);
-                        deferred.resolve();
-                    });
+      return deferred.promise;
+    }
 
-                } else {
-                    console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
-                    deferred.reject('error');
-                }
-            }, function (error) {
-                deferred.reject(error);
-            });
+    /**
+     * [loadPaymentModule description]
+     * @param  {array} keys               [description]
+     * @param  {[type]} modules_to_inject [description]
+     * @return {[type]}                   [description]
+     */
+    this.loadPaymentModule = function (keys) {
+      var deferred = $q.defer();
+      var promises = [], i, j;
 
-            return deferred.promise;
-        };
+      if ( ! paymentMappingList ) {
+        console.error('something wrong, mapping list is not filled yet, please ensure that loadPaymentMapping is called first');
+        return;
+      } else {
+        if ( ! keys ) {
+          keys = ['common'];
+        }
+
+        for ( i = 0, j = keys.length; i < j; i++ ) {
+          promises.push( $ocLazyLoad.load({
+            serie: true,
+            files: paymentMappingList.js[keys[i]]
+          }) );
+        }
+
+        promises.push( $ocLazyLoad.load({
+          serie: true,
+          files: paymentMappingList.template,
+          reconfig: true
+        }) );
+
+        $q.all(promises).then(function () {
+          $ocLazyLoad.inject(['sntPayConfig', 'sntPay']);
+          deferred.resolve();
+        });
+
+        return deferred.promise;
+      }
+    };
 
 }]);
