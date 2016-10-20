@@ -1,10 +1,10 @@
 <!-- login an cancel mode -->
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'login-mode'">
     <div id="content">
-        <h1>Administrator</h1>
+        <h1>{{ADMIN_HEADER | translate}}</h1>
         <!-- Admin -->
-        <button type="button" class="button" touch-press="loginAdmin()">LOGIN</button>
-        <button type="button" class="button transparent" touch-press="navToPrev()">Exit</button>
+        <button type="button" class="button" touch-press="loginAdmin()">{{'ADMIN_LOGIN' | translate}}</button>
+        <button type="button" class="button transparent" touch-press="navToPrev()">{{'ADMIN_EXIT' | translate}}</button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
@@ -46,30 +46,30 @@
                     <label>{{'ADMIN_WORKSTATION' |translate}}</label>
                     <div class="entry select">
                         <select ng-options="workstation.id as workstation.name for workstation in zestStationData.workstations" ng-model="workstation.selected" ng-change="worksStationChanged()">
-                            <option style="display:none" value="" class="">Select</option>
+                            <option style="display:none" value="" class="">{{'ADMIN_SELECT' |translate}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="entry with-label">
-                    <label>Status</label>
+                    <label>{{'ADMIN_STATUS' |translate}}</label>
                     <div class="entry select">
                         <select id="order-status" ng-model="zestStationData.workstationStatus">
-                            <option value="">SELECT</option>
-                            <option value="in-order">In Order</option>
-                            <option selected="selected" value="out-of-order">Out of Order</option>
+                            <option value="">{{'ADMIN_SELECT' |translate}}</option>
+                            <option value="in-order">{{'ADMIN_IN_ORDER' |translate}}</option>
+                            <option selected="selected" value="out-of-order">{{'ADMIN_OUTOF_ORDER' |translate}}</option>
                         </select>
                     </div>
                 </div>
                 <div id="order-reason" class="entry with-label" ng-show="zestStationData.workstationStatus === 'out-of-order'">
-                    <label>Out of Order Reason</label>
+                    <label>{{'ADMIN_OUT_OF_ORDER_REASON' |translate}}</label>
                     <input readonly="" class="read-only" ng-model="zestStationData.workstationOooReason">
                 </div>
                 <div class="entry with-label">
                     <label class='admin-item-label'>{{'ADMIN_TIMER_ENABLED_BTN' |translate}}</label>
                     <div class="entry select">
                         <select ng-model="zestStationData.idle_timer.enabled">
-                            <option value="true">Enabled</option>
-                            <option value="false">Disabled</option>
+                            <option value="true">{{'ADMIN_ENABLED' |translate}}</option>
+                            <option value="false">{{'ADMIN_DISABLED' |translate}}</option>
                         </select>
                     </div>
                 </div>
@@ -94,16 +94,16 @@
                     <label>{{'ADMIN_STATION_DEMOMODE' |translate}}</label>
                     <div class="entry select">
                         <select ng-model="zestStationData.demoModeEnabled">
-                            <option value="true">Enabled</option>
-                            <option value="false">Disabled</option>
+                            <option value="true">{{'ADMIN_ENABLED' |translate}}</option>
+                            <option value="false">{{'ADMIN_DISABLED' |translate}}</option>
                         </select>
                     </div>
                 </div>
             </div>
         </div>
         <div id="actions" class="align-center">
-            <button type="button" class="button" touch-press='cancelAdminSettings()'>Cancel</button>
-            <button type="button" class="button button-left-margin" touch-press='saveSettings()'>Save</button>
+            <button type="button" class="button" touch-press='cancelAdminSettings()'>{{'ADMIN_CANCEL' |translate}}</button>
+            <button type="button" class="button button-left-margin" touch-press='saveSettings()'>{{'ADMIN_SAVE' |translate}}</button>
             <button type="button" class="button button-left-margin" touch-press='logOutApplication()'>{{'LOGOUT' |translate}}</button>
         </div>
     </div>
