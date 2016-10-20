@@ -591,6 +591,52 @@
         }
     }
 
+    /* Grid Content - Pagination ***/
+    .grid-pagination {
+        position: absolute;
+        left: 0;
+        height: 40px;
+        z-index: 50;
+        padding: 5px;
+        .calc-width(100, @nightlyGridWidth);
+
+        .button {
+            font-size: 14px;
+            line-height: 30px;
+            padding: 0 10px;
+            width: 100%;
+        }
+
+        &.top {
+            top: 0;
+        }
+
+        &.bottom {
+            bottom: 0;
+        }
+    }
+
+    .grid-content.top-pagination {
+        .grid-rooms,
+        .grid-reservations {
+            padding-top: 40px;
+        }
+    }
+
+    .grid-content.bottom-pagination {
+        .grid-rooms,
+        .grid-reservations {
+            padding-bottom: 40px;
+        }
+    }
+
+    .grid-content.dual-pagination {
+        .grid-rooms,
+        .grid-reservations {
+            padding: 40px 0;
+        }
+    }
+
     /* Grid Content - Reservations - Block ***/
     .reservation {
         position: absolute;
