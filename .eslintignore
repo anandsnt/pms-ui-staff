@@ -5,5 +5,3 @@ javascripts/*
 lib/*
 node_modules/**/**
 shared/lib/*
-gulp/*
-asset_list/*

@@ -18,6 +18,7 @@
         "eqeqeq":[  
             "error"
         ],
+        "indent":"error",
         "linebreak-style":[  
             "error",
             "unix"
