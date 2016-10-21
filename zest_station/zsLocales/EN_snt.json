@@ -429,9 +429,6 @@
    "SELECT_COUNTRY": "-- Select Country --translated",
 
 
-
-   //LOST SHEEP
-
    "ADMIN_SELECT": "Select",
    "ADMIN_STATUS": "Status",
 
@@ -440,10 +437,8 @@
 
    "ADMIN_OUT_OF_ORDER_REASON": "Out of Order Reason",
 
-
    "ADMIN_ENABLED": "Enabled",
    "ADMIN_DISABLED": "Disabled",
    "RE_TYPE": "Re-Type"
-
    
 }
