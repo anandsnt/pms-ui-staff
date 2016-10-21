@@ -54,6 +54,10 @@ module.exports = {
 				filename: roverJsListRoot + 'endOfDayJsAssetList.js',
 				babelify: false
 			},
+			'sociallobby':{
+				filename: roverJsListRoot + 'socialLobbyJsAssetList.js',
+				babelify: false
+			},
 			'directives': {
 				filename: roverJsListRoot + 'directivesJsAssetList.js',
 				babelify: true
