@@ -22,7 +22,7 @@
                         <fieldset class="holder left float">
                             <ad-dropdown-name label-in-drop-down="{{'EXTERNAL_TYPE_PLACEHOLDER' | translate}}"
                                               savemodel="state.new.external_type"
-                                              valueproperty="value"
+                                              valueproperty="code"
                                               label-properties="['value']"
                                               required="yes"
                                               list="state.extTypes"
@@ -88,7 +88,7 @@
                     </td>
                     <td data-item="2" data-title="'External Value'" ng-click="onSelect($index, mapping)"
                         header-class="width-30" ng-hide="state.selected === $index">
-                        <a class="edit-data-inline">{{mapping.external_type}}</a>
+                        <a class="edit-data-inline">{{getExternalType(mapping.external_type) || mapping.external_type}}</a>
                     </td>
 
                     <td data-item="3" data-title="'Charge Code'" ng-click="onSelect($index, mapping)"
@@ -124,7 +124,7 @@
                                     <fieldset class="holder left float">
                                         <ad-dropdown-name label-in-drop-down="{{'EXTERNAL_TYPE_PLACEHOLDER' | translate}}"
                                                           savemodel="mapping.external_type"
-                                                          valueproperty="value"
+                                                          valueproperty="code"
                                                           label-properties="['value']"
                                                           required="yes"
                                                           list="state.extTypes"

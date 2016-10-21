@@ -159,6 +159,16 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                 }
             });
         };
+
+
+        $scope.getExternalType = function(externalTypeCode) {
+            var mappedExternalCode = _.find(COMTROL_REF.FOLIO_POSTING_TRANSACTION_CODE, {
+                code: externalTypeCode
+            });
+
+            return mappedExternalCode && mappedExternalCode.value;
+        };
+
         //--------------------------------------------------------------------------------------------------------------
         /**
          * Initialization method for the controller
