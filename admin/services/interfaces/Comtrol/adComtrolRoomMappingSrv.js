@@ -2,7 +2,7 @@ admin.service('adComtrolRoomMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
     function($http, $q, ADBaseWebSrvV2) {
 
         var service = this,
-            baseUrl = "/api/hotel_settings/comtrol_mappings/charge_code_mappings";
+            baseUrl = "/api/hotel_settings/comtrol_mappings/room_mappings";
 
         var fetchRoomsList = function() {
             var deferred = $q.defer();
