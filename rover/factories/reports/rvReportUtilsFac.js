@@ -1643,6 +1643,18 @@ angular.module('reportsModule')
                     null
                 ];
             };
+
+            if ( report['title'] === reportNames['VACANT_ROOMS_REPORT'] ) {
+                var roomNo = angular.copy( _.find(report['sort_fields'], { 'value': 'ROOM_NUMBER' }) ),
+                    roomType    = angular.copy( _.find(report['sort_fields'], { 'value': 'ROOM_TYPE' }) ),
+                    daysVacant    = angular.copy( _.find(report['sort_fields'], { 'value': 'NO_OF_DAYS_VACANT' }) ),
+                    lastCheckoutDate = angular.copy( _.find(report['sort_fields'], { 'value': 'LAST_CHECK_OUT_DATE' }) );
+
+                report['sort_fields'][0] = roomNo;
+                report['sort_fields'][1] = roomType;
+                report['sort_fields'][2] = daysVacant;
+                report['sort_fields'][3] = lastCheckoutDate;
+            };
         };
 
 

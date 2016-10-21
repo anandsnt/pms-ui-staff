@@ -7,9 +7,10 @@
 	"LOCATION_LABEL": "Location",
 	"ECODER_ID_LABEL": "Encoder ID",
 	"ENCODER_ID_PLACEHOLDER": "Enter encoder id",
-        "FAILED_INTERFACE_MESSAGES": "Failed OTA Messages",
+	"FAILED_INTERFACE_MESSAGES": "Failed OTA Messages",
 	"WORKSTATION_IS_OOS":"Out of Service",
 	"WORKSTATION_OOS_MSG":"OOS Message",
 	"OOS_REASON":"OOS Reason",
-        "ROVER_DEVICE_ID" : "Rover Device ID"
+	"ROVER_DEVICE_ID" : "Rover Device ID",
+	"RE_AUTH_WARNING_MESSAGE" : "You are about to replace the interface authentication, which would require changes on the interface PC onsite, are you sure you want to proceed?"
 
