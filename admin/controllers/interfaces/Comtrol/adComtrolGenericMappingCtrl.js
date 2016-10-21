@@ -52,21 +52,24 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
          * NOTE: Mandatory check is done on the templates
          */
         $scope.onSave = function() {
-            var revenue_center_code = $scope.state.new.revenue_center_code,
-                category_name = $scope.state.new.category_name,
+            var external_type = $scope.state.new.external_type,
+                external_code = $scope.state.new.external_code,
+                is_default = $scope.state.new.is_default,
                 charge_code_name = $scope.state.new.charge_code_name;
 
             $scope.callAPI(adComtrolGenericMappingSrv.create, {
                 params: {
-                    revenue_center_code: revenue_center_code,
-                    category_name: category_name,
+                    external_type: external_type,
+                    external_code: external_code,
+                    is_default: is_default,
                     charge_code_name: charge_code_name
                 },
                 successCallBack: function(response) {
                     $scope.mappings.push({
                         id: response.id,
-                        revenue_center_code: revenue_center_code,
-                        category_name: category_name,
+                        external_type: external_type,
+                        external_code: external_code,
+                        is_default: is_default,
                         charge_code_name: charge_code_name
                     });
                     $scope.state.mode = "";
@@ -88,6 +91,24 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                     $scope.state.selected = idx;
                 });
             }
+        };
+
+        $scope.onToggleDefault = function(mapping) {
+            var updatedMapping = angular.copy(mapping);
+
+            updatedMapping['is_default'] = !updatedMapping.is_default;
+
+            $scope.callAPI(adComtrolGenericMappingSrv.update, {
+                params: updatedMapping,
+                successCallBack: function() {
+                    if(updatedMapping.is_default){
+                        // TODO: Ensure that there is only one default per type
+                    }
+                    mapping = updatedMapping;
+                    $scope.state.mode = "";
+                    $scope.state.selected = null;
+                }
+            });
         };
 
         /**

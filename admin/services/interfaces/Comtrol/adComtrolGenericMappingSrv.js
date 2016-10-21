@@ -28,10 +28,6 @@ admin.service('adComtrolGenericMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'a
                 results["chargeCodes"] = chargeCodes;
             }));
 
-            promises.push(adComtrolRevenueCenterSrv.fetch().then(function(revCenters) {
-                results["revCenters"] = revCenters;
-            }));
-
             $q.all(promises).then(function() {
                 deferred.resolve(results);
             }, function() {
@@ -74,8 +70,9 @@ admin.service('adComtrolGenericMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'a
          */
         service.update = function(mapping) {
             return ADBaseWebSrvV2.putJSON(baseUrl + "/" + mapping.id, {
-                revenue_center_code: mapping.revenue_center_code,
-                category_name: mapping.category_name,
+                external_type: mapping.external_type,
+                external_code: mapping.external_code,
+                is_default: mapping.is_default,
                 charge_code_name: mapping.charge_code_name
             });
         };

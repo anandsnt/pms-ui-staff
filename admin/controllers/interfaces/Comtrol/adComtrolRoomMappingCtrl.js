@@ -1,12 +1,12 @@
-admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtrolChargeCodeMappingSrv',
-    function($scope, roomMappings, adComtrolChargeCodeMappingSrv) {
+admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtrolRoomMappingSrv',
+    function($scope, roomMappings, adComtrolRoomMappingSrv) {
 
         //private methods and variables
         var resetNew = function() {
                 $scope.state.new = {
-                    revenue_center_code: "",
-                    category_name: "",
-                    charge_code_name: ""
+                    room_no: "",
+                    external_room: "",
+                    external_extension: ""
                 }
             },
             revertEdit = function() {
@@ -16,10 +16,9 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
                 }
             },
             loadMetaList = function(cb) {
-                $scope.callAPI(adComtrolChargeCodeMappingSrv.fetchMeta, {
+                $scope.callAPI(adComtrolRoomMappingSrv.fetchMeta, {
                     successCallBack: function(response) {
-                        $scope.state.revCenters = response.revCenters;
-                        $scope.state.chargeCodes = response.chargeCodes;
+                        $scope.state.roomNumbers = response.roomNumbers;
                         cb();
                     }
                 })
@@ -31,7 +30,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
          * Method to open the add form
          */
         $scope.onClickAdd = function() {
-            if ($scope.state.revCenters) {
+            if ($scope.state.roomNumbers) {
                 $scope.state.mode = "ADD";
                 $scope.state.selected = null;
                 resetNew();
@@ -52,22 +51,22 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
          * NOTE: Mandatory check is done on the templates
          */
         $scope.onSave = function() {
-            var revenue_center_code = $scope.state.new.revenue_center_code,
-                category_name = $scope.state.new.category_name,
-                charge_code_name = $scope.state.new.charge_code_name;
+            var room_no = $scope.state.new.room_no,
+                external_room = $scope.state.new.external_room,
+                external_extension = $scope.state.new.external_extension;
 
-            $scope.callAPI(adComtrolChargeCodeMappingSrv.create, {
+            $scope.callAPI(adComtrolRoomMappingSrv.create, {
                 params: {
-                    revenue_center_code: revenue_center_code,
-                    category_name: category_name,
-                    charge_code_name: charge_code_name
+                    room_no: room_no,
+                    external_room: external_room,
+                    external_extension: external_extension
                 },
                 successCallBack: function(response) {
                     $scope.mappings.push({
                         id: response.id,
-                        revenue_center_code: revenue_center_code,
-                        category_name: category_name,
-                        charge_code_name: charge_code_name
+                        room_no: room_no,
+                        external_room: external_room,
+                        external_extension: external_extension
                     });
                     $scope.state.mode = "";
                 }
@@ -79,7 +78,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
          * @param idx
          */
         $scope.onSelect = function(idx, mapping) {
-            if ($scope.state.revCenters) {
+            if ($scope.state.roomNumbers) {
                 $scope.state.editRef = angular.copy(mapping);
                 $scope.state.selected = idx;
             } else {
@@ -105,7 +104,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
          * @param revCenter
          */
         $scope.onUpdate = function(mapping) {
-            $scope.callAPI(adComtrolChargeCodeMappingSrv.update, {
+            $scope.callAPI(adComtrolRoomMappingSrv.update, {
                 params: mapping,
                 successCallBack: function() {
                     $scope.state.mode = "";
@@ -120,7 +119,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
          * @param revCenter
          */
         $scope.onClickDelete = function(mapping) {
-            $scope.callAPI(adComtrolChargeCodeMappingSrv.delete, {
+            $scope.callAPI(adComtrolRoomMappingSrv.delete, {
                 params: mapping.id,
                 successCallBack: function() {
                     mapping.isDeleted = true;
@@ -134,20 +133,19 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
          */
         (function() {
             $scope.state = {
-                revCenters: null,
-                chargeCodes: null,
+                roomNumbers: null,
                 deletedCount: 0,
                 selected: null,
                 mode: "",
                 editRef: null,
                 new: {
-                    revenue_center_code: "",
-                    category_name: "",
-                    charge_code_name: "",
+                    room_no: "",
+                    external_room: "",
+                    external_extension: ""
                 }
             };
 
-            $scope.mappings = mappedChargeCodes;
+            $scope.mappings = roomMappings;
         })();
     }
 ]);
