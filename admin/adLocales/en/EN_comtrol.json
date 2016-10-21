@@ -6,4 +6,16 @@
 "EXTERNAL_CODE":"EXTERNAL CODE",
 "EXTERNAL_CODE_PLACEHOLDER":"Enter External Code",
 "SELECT_CHARGE_CODE_PLACEHOLDER": "Select Charge Code",
-"EDIT_CHARGE_CODE_MAPPING":"Edit Charge Code Mapping"
+"EDIT_CHARGE_CODE_MAPPING":"Edit Charge Code Mapping",
+"ROOM_NO":"Rover Room Number",
+"SELECT_ROOM_NO_PLACEHOLDER":"Select Room Number",
+"EXTERNAL_ROOM": "External Room",
+"EXTERNAL_ROOM_PLACEHOLDER": "Enter External Room",
+"EXTERNAL_EXTENSION": "External Extension",
+"EXTERNAL_EXTENSION_PLACEHOLDER" : "Enter External Extension",
+"EXTERNAL_TYPE_PLACEHOLDER": "Select External Type",
+"EXTERNAL_TYPE": "External Type",
+"ADD_GENERIC_MAPPING": "Add Generic Mapping",
+"EDIT_GENERIC_MAPPING": "Edit Generic Mapping",
+"ADD_ROOM_MAPPING": "Add Room Mapping",
+"EDIT_ROOM_MAPPING" : "Edit Room Mapping"

@@ -2,7 +2,7 @@ admin.service('adComtrolGenericMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'a
     function($http, $q, ADBaseWebSrvV2, adComtrolRevenueCenterSrv) {
 
         var service = this,
-            baseUrl = "/api/hotel_settings/comtrol_mappings/charge_code_mappings";
+            baseUrl = "/api/hotel_settings/comtrol_mappings/generic_mappings";
 
         var fetchNonPaymentChargeCodes = function() {
             var deferred = $q.defer();

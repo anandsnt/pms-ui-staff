@@ -65,6 +65,13 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                     charge_code_name: charge_code_name
                 },
                 successCallBack: function(response) {
+                    if (is_default) {
+                        var similar_types = _.where($scope.mappings, {external_type: external_type});
+                        _.each(similar_types, function(obj) {
+                            obj.is_default = false
+                        });
+                    }
+
                     $scope.mappings.push({
                         id: response.id,
                         external_type: external_type,
@@ -94,17 +101,20 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
         };
 
         $scope.onToggleDefault = function(mapping) {
-            var updatedMapping = angular.copy(mapping);
-
-            updatedMapping['is_default'] = !updatedMapping.is_default;
-
+            /**
+             * In case, the user is turning one entry from a type as default
+             * SET ALL OTHERS in that type as not default
+             */
+            if (!mapping.is_default) {
+                var similar_types = _.where($scope.mappings, {external_type: mapping.external_type});
+                _.each(similar_types, function(obj) {
+                    obj.is_default = false
+                });
+            }
+            mapping.is_default = !mapping.is_default;
             $scope.callAPI(adComtrolGenericMappingSrv.update, {
-                params: updatedMapping,
+                params: mapping,
                 successCallBack: function() {
-                    if(updatedMapping.is_default){
-                        // TODO: Ensure that there is only one default per type
-                    }
-                    mapping = updatedMapping;
                     $scope.state.mode = "";
                     $scope.state.selected = null;
                 }
