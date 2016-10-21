@@ -1,7 +1,7 @@
 <!-- login an cancel mode -->
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'login-mode'">
     <div id="content">
-        <h1>{{ADMIN_HEADER | translate}}</h1>
+        <h1>{{'ADMIN_HEADER' | translate}}</h1>
         <!-- Admin -->
         <button type="button" class="button" touch-press="loginAdmin()">{{'ADMIN_LOGIN' | translate}}</button>
         <button type="button" class="button transparent" touch-press="navToPrev()">{{'ADMIN_EXIT' | translate}}</button>
