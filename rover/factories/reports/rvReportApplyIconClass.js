@@ -39,6 +39,7 @@ angular.module('reportsModule')
                         'DEPOSIT_SUMMARY'              : 'icon-report icon-deposit',
                         'ROOMS_OOO_OOS'                : 'icon-report icon-room',
                         'ACTIONS_MANAGER'              : 'icon-report icon-action',
+                        'VACANT_ROOMS_REPORT'          : 'icon-report icon-room',
                         /* default class name */
                         'DEFAULT'                      : 'icon-report'
                     };

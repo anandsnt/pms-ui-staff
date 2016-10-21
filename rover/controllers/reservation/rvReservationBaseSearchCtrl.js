@@ -561,7 +561,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         type: item.account_type,
                         id: item.id,
                         corporateid: '',
-                        iataNumber: ''
+                        iataNumber: '',
+                        /*Address*/
+                        address: item.account_address  
                     };
 
                     // making sure that the newly created 'eachItem'
