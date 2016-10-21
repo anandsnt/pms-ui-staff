@@ -6,27 +6,25 @@ const RateManagerGridLeftSideHeadButtonComponent = ({
 	onOpenAllClick,
 	onCloseAllClick,
 	showOpenAll,
-	showCloseAll
+	showCloseAll,
+    shouldShowToggle,
+    toggleClicked,
+    flags,
+    toggleClass
 	}) => (
 	<div className='pinnedLeft-actions'> 
-         {
-         	showOpenAll ? 
-          
-            (<button disabled={!openAllEnabled} onClick = {(e) => onOpenAllClick(e)} 
-            	className={'button rm-buttonOpenClose ' + openAllClass}> 
-                Open All
-            </button>)
-            :
-            ''
-         }
-         {
-         	showOpenAll ? 
-            (<button disabled={!closeAllEnabled} onClick = {(e) => onCloseAllClick(e)} 
-            	className={'button rm-buttonOpenClose ' + closeAllClass}> 
-                Close All
-            </button>)
-            :
-            ''
-         }
+         {shouldShowToggle?(<div className={toggleClass}>
+            <input id="rate-toggle" value="" type="checkbox" checked="checked" onClick = {(e) => toggleClicked(e)} ></input>
+            { flags.showRateDetail?(<label className="data-off">
+                <span className="value">Rate</span>
+                <span className="switch-icon">Contract Details</span>
+            </label>):''
+            }
+            {!flags.showRateDetail?(<label className="data-on">
+                <span className="switch-icon">Rate</span>
+                <span className="value">Contract Details</span>
+            </label>):''
+            }            
+        </div>):''}
 	</div>
 )

@@ -1,0 +1,7 @@
+cssimg/*
+admin/adLocales/*
+admin/css/*
+javascripts/*
+lib/*
+node_modules/**/**
+shared/lib/*

@@ -541,7 +541,7 @@ angular.module('reportsModule')
                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'INCLUDE_DUE_OUT' ) {
                     __pushGeneralOptionData( report, filter, true );
                 }
-                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'RESTRICTED_POST_ONLY' ) {
+                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'RESTRICTED_POST_ONLY' && $rootScope.isStandAlone) {
                     __pushGeneralOptionData( report, filter, false );
                 }
 

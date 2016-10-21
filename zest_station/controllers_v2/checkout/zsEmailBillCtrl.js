@@ -48,10 +48,6 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			$scope.focusInputField("email_text");
 		};
 
-		$scope.navToHome = function() {
-			$state.go('zest_station.home');
-		};
-
 		/**
 		 *  general failure actions
 		 **/
