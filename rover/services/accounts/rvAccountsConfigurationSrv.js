@@ -53,6 +53,7 @@ angular.module('sntRover').service('rvAccountsConfigurationSrv', ['$q', 'rvBaseW
 			return deferred.promise;
 		};
 
+
 		this.updateBillingRefNumber = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/posting_accounts/' + data.summary.posting_account_id,
