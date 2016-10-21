@@ -148,11 +148,11 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
 
   $stateProvider.state('admin.ifc_generic_mappings', {
     templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolGenericMappings.html',
-    controller: 'adComtrolMappingCtrl',
-    url : '/ifc_comtrol/setup',
+    controller: 'adComtrolGenericMappingCtrl',
+    url : '/ifc_comtrol/genericMappings',
     resolve: {
-      mappedValues: ['adComtrolMappingSrv', function(adComtrolMappingSrv) {
-        return adComtrolMappingSrv.fetchGenericMappings();
+      genericMappings: ['adComtrolGenericMappingSrv', function(adComtrolGenericMappingSrv) {
+        return adComtrolGenericMappingSrv.fetch();
       }]
     }
   });
@@ -160,11 +160,11 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
 
   $stateProvider.state('admin.ifc_room_mappings', {
     templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRoomMappings.html',
-    controller: 'adComtrolMappingCtrl',
+    controller: 'adComtrolRoomMappingCtrl',
     url : '/ifc_comtrol/setup',
     resolve: {
-      mappedValues: ['adComtrolMappingSrv', function(adComtrolMappingSrv) {
-        return adComtrolMappingSrv.fetchRoomMappings();
+      roomMappings : ['adComtrolRoomMappingSrv', function(adComtrolRoomMappingSrv) {
+        return adComtrolRoomMappingSrv.fetch();
       }]
     }
   });
