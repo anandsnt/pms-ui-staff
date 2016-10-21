@@ -4,14 +4,16 @@ sntRover.controller('RVSocialLobbyCrl', [
     '$filter',
     'RVSocilaLobbySrv',
     '$timeout',
-    function($scope, $rootScope, $filter, RVSocilaLobbySrv, $timeout) {
+    '$state',
+    function($scope, $rootScope, $filter, RVSocilaLobbySrv, $timeout, $state) {
 
         BaseCtrl.call(this, $scope);
 
         $scope.posts = [];
-        $scope.postParams = {'page': 1, 'per_page':25};
-        
+        $scope.postParams = {'page': 1, 'per_page':20};
+        $scope.selectedPost = "";
         $scope.newPost = "";
+        $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
 
         var POST_LIST_SCROLL = 'post-list-scroll',
             COMMENT_LIST_SCROLL = 'comment-list-scroll';
@@ -60,6 +62,7 @@ sntRover.controller('RVSocialLobbyCrl', [
 
         $scope.refreshPosts = function(){
             $scope.postParams.page = 1;
+            $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
             $scope.fetchPosts();
         }
 
@@ -67,18 +70,21 @@ sntRover.controller('RVSocialLobbyCrl', [
             var options = {};
             options.params = {
                 "post" :{
-                "author_name": "shaun alex",
                 "post_message": $scope.newPost,
                 "body_html": "testtt"
             }};
             options.onSuccess = function(data){
+
                 $scope.refreshPosts();
             }
             $scope.callAPI(RVSocilaLobbySrv.addPost, options);
         }
 
         $scope.goToStayCard = function(reservation_id){
-
+            $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+                id: reservation_id,
+                isrefresh: false
+            });
         }
 
         $scope.deletePost = function(post_id){
@@ -92,8 +98,23 @@ sntRover.controller('RVSocialLobbyCrl', [
         }
 
         $scope.paginatePosts = function(page){
+            if(page == $scope.postParams.page)
+                return;
             $scope.postParams.page = page;
             $scope.fetchPosts();
+            if($scope.postParams.page > $scope.middle_page3 && $scope.postParams.page < $scope.totalPostPages){
+                $scope.middle_page3++;
+                $scope.middle_page2++;
+                $scope.middle_page1++;
+            }else if($scope.postParams.page < $scope.middle_page1 && $scope.postParams.page > 1){
+                $scope.middle_page3--;
+                $scope.middle_page2--;
+                $scope.middle_page1--;
+            }
+        }
+
+        $scope.togglePostDetails = function(post){
+            $scope.selectedPost = $scope.selectedPost == "" ? post : post.id == $scope.selectedPost.id? "" : post;
         }
 
     }
