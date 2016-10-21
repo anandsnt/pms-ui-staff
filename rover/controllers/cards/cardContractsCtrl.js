@@ -627,6 +627,18 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			}
 		};
 		/**
+		* To check if contract list is empty to 
+		* decide whether or not to show rename button
+		*/
+		$scope.isContractListEmpty = function() {
+			if ($scope.contractList.current_contracts.length === 0 && $scope.contractList.future_contracts.length === 0 && $scope.contractList.history_contracts.length === 0) {
+				return true;
+			} else {
+				return false;
+			}
+		};
+
+		/**
 		 * recieving function for save contract with data
 		 */
 		$scope.$on('saveContract', function(event) {
