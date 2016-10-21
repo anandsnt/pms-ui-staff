@@ -81,6 +81,11 @@
 		};
 	};
 
+	$scope.skipTermsAndContinue = function(){
+		$scope.checked = true;
+		$scope.checkInButtonClicked();
+	};
+
 }
 
 };
