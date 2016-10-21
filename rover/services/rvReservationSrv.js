@@ -196,6 +196,19 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 			return deferred.promise;
 		};
 
+		// CICO-24928 
+		this.updateReservationNote = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/notes/' + data.id;
+			rvBaseWebSrvV2.putJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		};
+
 		this.getGuestDetails = function(guestData) {
 			var deferred = $q.defer();
 			var url = '/api/guest_details/' + guestData.id;

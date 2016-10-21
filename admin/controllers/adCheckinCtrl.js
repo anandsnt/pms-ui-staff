@@ -40,7 +40,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     $scope.checkinData.is_notify_on_room_not_assigned_flag = ($scope.checkinData.is_notify_on_room_not_assigned === 'true') ? true : false;
     $scope.checkinData.is_notify_on_room_ready_flag = ($scope.checkinData.is_notify_on_room_ready === 'true') ? true : false;
     $scope.checkinData.require_cc_for_checkin_email_flag = ($scope.checkinData.require_cc_for_checkin_email === 'true') ? true : false;
-
+    $scope.checkinData.is_sent_none_cc_reservations_to_front_desk_only = ($scope.checkinData.is_sent_none_cc_reservations_to_front_desk_only === 'true') ? true : false;
+    
     $scope.checkinData.is_sent_to_queue = ($scope.checkinData.is_sent_to_queue === 'true') ? "yes" : "no";
     $scope.checkinData.is_precheckin_only = ($scope.checkinData.is_precheckin_only === 'true') ? true : false;
 
