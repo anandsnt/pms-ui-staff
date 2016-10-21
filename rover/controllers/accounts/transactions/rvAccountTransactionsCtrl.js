@@ -35,7 +35,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		BaseCtrl.call(this, $scope);
 		$scope.perPage = 50;
 		$scope.businessDate = $rootScope.businessDate;
-		$scope.transactionsDetails={};
 
 		$scope.hasMoveToOtherBillPermission = function() {
         	return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
@@ -866,6 +865,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
 				var onAccountUpdateSuccess = function(data) {
 						//client controllers should get an infromation whether updation was success
+						$scope.isBillingRefernceNumberChanged = false;
 						$scope.$broadcast("UPDATED_ACCOUNT_INFO");
 						$scope.$emit('hideloader');
 					},
@@ -876,12 +876,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 						$scope.$emit('hideloader');
 					};
 
-				$scope.callAPI(rvAccountsConfigurationSrv.updateBillingRefernceNumber, {
+
+				$scope.callAPI(rvAccountsConfigurationSrv.updateBillingRefNumber, {
 					successCallBack: onAccountUpdateSuccess,
 					failureCallBack: onAccountUpdateFailure,
 					params: {
 						summary: $scope.accountConfigData.summary,
-						custom_reference_number: $scope.custom_reference_number
+						custom_reference_number: $scope.transactionsDetails.custom_reference_number
 					}
 				});
 			} else {

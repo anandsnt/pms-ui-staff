@@ -3,6 +3,8 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
 
   var mappingList = null;
 
+  var paymentMappingList = undefined;
+
   /**
 	 * [fetchMappingList description]
 	 * @return {[type]} [description]
@@ -41,65 +43,69 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
       console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
       return;
     };
-  };
+  };    
 
-        /**
-         * [loadPaymentModule description]
-         * @param  {array} keys               [description]
-         * @param  {[type]} modules_to_inject [description]
-         * @return {[type]}                   [description]
-         *
-         */
 
-        this.loadPaymentModule = function (keys) {
-            var locMappingFile = "/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json";
 
-            if (!keys) {
-                keys = ['common'];
-            }
+    this.loadPaymentMapping = function() {
+      var locMappingFile,
+        deferred = $q.defer();
 
-            var deferred = $q.defer();
+      if ( !! paymentMappingList ) {
+        deferred.resolve(paymentMappingList);
+      } else {
+        locMappingFile = "/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json";
 
-            var failure = function() {
-              console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
-              deferred.reject('error');
-            }
-            
-            var success = function(data) {
-              var promises = [];
-              var i, j = 0;
+        rvBaseWebSrvV2.getJSON(locMappingFile).then(function(data){
+          paymentMappingList = data;
+          deferred.resolve(paymentMappingList);
+        }, function() {
+          console.error('something wrong, make sure the payment mapping file is in exact place or name is correct');
+          deferred.reject('something wrong, make sure the payment mapping file is in exact place or name is correct');
+        });
+      }
 
-              if ( !!data ) {
-                for ( i = 0, j = keys.length; i < j; i++ ) {
-                  promises.push( $ocLazyLoad.load({
-                    serie: true,
-                    files: data.js[keys[i]]
-                  }) );
-                }
-                
-                promises.push( $ocLazyLoad.load({
-                  serie: true,
-                  files: data['template']
-                }) );
+      return deferred.promise;
+    }
 
-                return $q.all(promises).then(function () {
-                  console.log('everything loaded');
-                  $ocLazyLoad.inject(['sntPayConfig', 'sntPayTemplates', 'sntPay']);
-                  deferred.resolve();
-                });
-              } else {
-                failure();
-              }
-            }
+    /**
+     * [loadPaymentModule description]
+     * @param  {array} keys               [description]
+     * @param  {[type]} modules_to_inject [description]
+     * @return {[type]}                   [description]
+     */
+    this.loadPaymentModule = function (keys) {
+      var deferred = $q.defer();
+      var promises = [], i, j;
 
-            var failure = function() {
-              console.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
-              deferred.reject('error');
-            }
+      if ( ! paymentMappingList ) {
+        console.error('something wrong, mapping list is not filled yet, please ensure that loadPaymentMapping is called first');
+        return;
+      } else {
+        if ( ! keys ) {
+          keys = ['common'];
+        }
 
-            rvBaseWebSrvV2.getJSON(locMappingFile).then( success, failure );
+        for ( i = 0, j = keys.length; i < j; i++ ) {
+          promises.push( $ocLazyLoad.load({
+            serie: true,
+            files: paymentMappingList.js[keys[i]]
+          }) );
+        }
 
-            return deferred.promise;
-        };
+        promises.push( $ocLazyLoad.load({
+          serie: true,
+          files: paymentMappingList.template,
+          reconfig: true
+        }) );
+
+        $q.all(promises).then(function () {
+          $ocLazyLoad.inject(['sntPayConfig', 'sntPay']);
+          deferred.resolve();
+        });
+
+        return deferred.promise;
+      }
+    };
 
 }]);
