@@ -308,6 +308,11 @@ angular.module('reportsModule')
                 description : filter.description,
                 selected    : selected
             });
+
+            // if filter value is either of these, selectAll should be false CICO-31886
+            if ( report['title'] === reportNames['MARKET_SEGMENT_STAT_REPORT']) {
+                report.hasDisplay.options.noSelectAll = true;
+            };
         };
 
         /**
