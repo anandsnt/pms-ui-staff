@@ -135,6 +135,9 @@
                             <input type="radio" value="none" ng-model="checkinData.checkin_action"> {{ 'NONE' | translate}}
                         </label>
                     </div>
+                    <!--  -->
+                    <ad-toggle-button is-checked="checkinData.zest_web_use_new_sent_to_que_action" label="{{ 'USE_NEW_SENT_TO_QUE' | translate}}" ng-show="checkinData.checkin_action == 'sent_to_queue' && !hideAddOption"></ad-toggle-button>
+                    <!--  -->
                     <div class="entry full-width">
                         <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_complete_confirmation_screen_text" label="{{ 'CHECK_IN_COMPLETE_CONFIRMATION_SCREEN_TEXT' | translate}}" placeholder=""></ad-textarea>
                     </div>
