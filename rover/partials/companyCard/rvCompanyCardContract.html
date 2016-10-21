@@ -16,7 +16,7 @@
 					</optgroup>
 				</select>
 			</div>
-			<button ng-hide="contractList.isRenameMode" id="company-rename-contract" type="button" class="button purple" ng-click="renameButtonClicked()" translate>RENAME</button>
+			<button ng-hide="contractList.isRenameMode || isContractListEmpty()" id="company-rename-contract" type="button" class="button purple" ng-click="renameButtonClicked()" translate>RENAME</button>
 			<button type="button" class="button red" ng-show="isDeleteAllowed && hasPermisionToDeleteContract()" ng-click="deleteContract()">Delete Contract</button>
 		</div>
 		<div class="entry" ng-show="contractList.isAddMode">
