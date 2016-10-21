@@ -426,7 +426,7 @@
    "CHECKIN_TOO_EARLY_SUB_HEADER": "",
    "CHECKIN_TOO_EARLY_SUB_MSG": "Please try again in a little while",
    "CHECKIN_TOO_EARLY_DONE": "Done",
-   "SELECT_COUNTRY": "-- Select Country --translated",
+   "SELECT_COUNTRY": "-- Select Country --",
 
 
    "ADMIN_SELECT": "Select",
