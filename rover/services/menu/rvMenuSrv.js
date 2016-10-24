@@ -67,6 +67,15 @@ angular.module('sntRover').service('rvMenuSrv',
     };
 
     /**
+     * Decide whether the neighbours submenu is to be shown in Front desk menu
+     * will use the hotel details API response
+     * @return {Boolean}
+     */
+    var isNeighboursEnabled = function() {
+    	return RVHotelDetailsSrv.hotelDetails.social_lobby_settings.is_neighbours_enabled != null? true : false; ;
+    };
+
+    /**
     * utility function to process menu list
     * will check permission, check role permission, visibility permission
     * @param {array of Objects}
@@ -172,7 +181,7 @@ angular.module('sntRover').service('rvMenuSrv',
             	},{
 	                title: "MENU_SOCIAL_LOBBY",
 	                action: "rover.socialLobby",
-	                actionPopup: false,
+	                hidden: !isNeighboursEnabled(),
 	                menuIndex: "sociallobby"
             	}]
 		    }, {
@@ -531,6 +540,11 @@ angular.module('sntRover').service('rvMenuSrv',
 			case 'workManagement':
 				returnValue = !isHourlyRateOn();
 				break;
+
+			case 'sociallobby':
+				returnValue = isNeighboursEnabled();
+				break;
+				// we display social lobby to only
 
 			default:
         		break;
