@@ -51,7 +51,7 @@
                             <figure ng-hide="travelAgent.logo == ''" class="guest-image">
                                     <img ng-src="{{travelAgent.logo}}"/>
                             </figure>
-                            <div class="data">
+                            <div class="data" ng-class = "{'no-email': escapeNull(travelAgent.email) === '', 'no-confirmation': escapeNull(travelAgent.address.postalCode) === '', 'no-address': escapeNull(travelAgent.account_address) === '', 'no-phone': escapeNull(travelAgent.phone) === ''}">
                                 <div class="info">
                                     <h2 ng-bind-html="getHighlightedHTML(travelAgent.account_name, searchData.travelAgentCard.travelAgentName)"></h2>
                                     <div class="rate" ng-show="travelAgent.rate">
