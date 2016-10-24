@@ -72,7 +72,7 @@ angular.module('sntRover').service('rvMenuSrv',
      * @return {Boolean}
      */
     var isNeighboursEnabled = function() {
-    	return RVHotelDetailsSrv.hotelDetails.social_lobby_settings.is_neighbours_enabled != null? true : false; ;
+    	return RVHotelDetailsSrv.hotelDetails.social_lobby_settings.is_neighbours_enabled;
     };
 
     /**

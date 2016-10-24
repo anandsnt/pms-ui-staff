@@ -500,7 +500,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 			// flag to decide show task management under house keeping: true by default
 			showTaskManagementInHKMenu = data.is_show_task_management_in_hk_menu;
-			isNeighboursEnabled = data.social_lobby_settings.is_neighbours_enabled != null? true : false;
+			isNeighboursEnabled = data.social_lobby_settings.is_neighbours_enabled;
 			if (data.language) {
 		      $translate.use(data.language.value);
 		      $translate.fallbackLanguage('EN');
