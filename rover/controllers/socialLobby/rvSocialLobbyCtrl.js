@@ -14,6 +14,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.selectedPost = "";
         $scope.newPost = "";
         $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
+        $scope.$emit("updateRoverLeftMenu", "sociallobby");
 
         var POST_LIST_SCROLL = 'post-list-scroll',
             COMMENT_LIST_SCROLL = 'comment-list-scroll';
@@ -63,6 +64,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.refreshPosts = function(){
             $scope.postParams.page = 1;
             $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
+            $scope.newPost = "";
             $scope.fetchPosts();
         }
 
@@ -80,7 +82,8 @@ sntRover.controller('RVSocialLobbyCrl', [
             $scope.callAPI(RVSocilaLobbySrv.addPost, options);
         }
 
-        $scope.goToStayCard = function(reservation_id){
+        $scope.goToStayCard = function(reservation_id, event){
+            event.preventDefault();
             $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
                 id: reservation_id,
                 isrefresh: false
