@@ -60,18 +60,22 @@ angular.module('groupModule', [])
                 }
             }],
             resolve: {
-                loadPaymentModule: function (jsMappings) {
+                loadPaymentMapping: function (jsMappings) {
+                    return jsMappings.loadPaymentMapping();
+                },
+                loadPaymentModule: function (jsMappings, loadPaymentMapping) {
                     return jsMappings.loadPaymentModule();
                 },
+
                 //to tackle from coming admin app to rover
-                summaryData: function(rvGroupConfigurationSrv, $stateParams, groupAssets, loadPaymentModule){
+                summaryData: function(rvGroupConfigurationSrv, $stateParams, groupAssets){
                     var isInAddMode = ($stateParams.id === "NEW_GROUP");
                     var params = {
                         groupId: $stateParams.id
                     };
                     return rvGroupConfigurationSrv.getGroupSummary (params);
                 },
-                holdStatusList: function(rvGroupConfigurationSrv, groupAssets, loadPaymentModule) {
+                holdStatusList: function (rvGroupConfigurationSrv, groupAssets) {
                     var params = {
                         is_group: true
                     }

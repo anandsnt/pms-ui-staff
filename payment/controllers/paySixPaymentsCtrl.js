@@ -1,4 +1,4 @@
-sntPay.controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 'sntPaymentSrv', '$timeout', '$window',
+angular.module('sntPay').controller('paySixPayController', ['$scope', 'paymentAppEventConstants', 'sntPaymentSrv', '$timeout', '$window',
     function($scope, payEvntConst, sntPaymentSrv, $timeout, $window) {
 
         var retrieveCardDetails = function(tokenDetails) {

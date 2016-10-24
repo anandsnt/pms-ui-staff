@@ -8,7 +8,7 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
             $scope.searchData = "";
             $scope.selectedPropertyId = "";
             $scope.$emit('hideloader');
-            $scope.setScroller('property-results');
+            $scope.setScroller('property-results', {click: true});
         };
 
         /*

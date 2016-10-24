@@ -1,5 +1,5 @@
-admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'adIFCComtrolSetupSrv', '$timeout',
-	function($scope, ifcComtrolSetupValues, adIFCComtrolSetupSrv, $timeout) {
+admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'adIFCComtrolSetupSrv', 'ngDialog',
+	function($scope, ifcComtrolSetupValues, adIFCComtrolSetupSrv, ngDialog) {
 	
 	BaseCtrl.call (this, $scope);
 	
@@ -47,6 +47,27 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 	        successCallBack : successCallBackOfIFCComtrolSetup
 	    };
 	    $scope.callAPI(adIFCComtrolSetupSrv.saveIFCComtrolConfiguration, options);
+	};
+
+	$scope.onClickRegenerate = function() {
+		ngDialog.open({
+			template: '/assets/partials/interfaces/modals/adInterfacesComptrolReAuthWarning.html',
+			scope: $scope,
+			closeByDocument: true
+		});
+	};
+
+	$scope.closeDialog = function() {
+		ngDialog.close();
+	};
+
+	$scope.regenerateAuth = function(){
+		$scope.callAPI(adIFCComtrolSetupSrv.reAuthComtrol, {
+			successCallBack: function(response) {
+				$scope.ifc_comtrol.authentication_token =  response.authentication_token;
+				$scope.closeDialog();
+			}
+		});
 	};
 
 	/**

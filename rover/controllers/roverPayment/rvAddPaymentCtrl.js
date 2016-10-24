@@ -75,6 +75,21 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                     });
 
                     $scope.$emit('UPDATECCATTACHEDBILLSTATUS', response.has_any_credit_card_attached_bill);
+
+                    if (response.addToGuestCard) {
+                        $rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', {
+                            "card_code": cardDetails.card_code,
+                            "mli_token": cardDetails.ending_with,
+                            "card_expiry": cardDetails.expiry_date,
+                            "card_name": cardDetails.card_name,
+                            "id": response.id,
+                            "isSelected": true,
+                            "is_primary": false,
+                            "payment_type": paymentType || "CC",
+                            "payment_type_id": 1
+                        });
+                    }
+
                 } else {
                     // For non CC Payments
                     $scope.paymentData.bills[billIndex].credit_card_details.payment_type = paymentType;
@@ -100,7 +115,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                     "id": response.id,
                     "isSelected": true,
                     "is_primary": false,
-                    "payment_type": response.payment_name,
+                    "payment_type": paymentType || "CC",
                     "payment_type_id": 1
                 });
 
@@ -114,7 +129,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
              * @param cardDetails
              */
             var handleStayCardAddPaymentSuccess = function(response, paymentType, cardDetails) {
-                console.log("reached here")
                 if (paymentType === "CC") {
                     $scope.paymentData.reservation_card.payment_method_used = paymentType;
                     _.extend($scope.paymentData.reservation_card.payment_details, {
@@ -124,7 +138,6 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                         is_swiped: cardDetails.is_swiped,
                         auth_color_code: cardDetails.auth_color_code
                     });
-
                 } else {
                     // For non cc payment types
                     $scope.paymentData.reservation_card.payment_method_description = response.payment_type;
@@ -135,6 +148,19 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
                 $rootScope.$broadcast('UPDATERESERVATIONTYPE', response.reservation_type_id, response.id);
                 $scope.$emit('UPDATECCATTACHEDBILLSTATUS', response.has_any_credit_card_attached_bill);
 
+                if (response.addToGuestCard) {
+                    $rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', {
+                        "card_code": cardDetails.card_code,
+                        "mli_token": cardDetails.ending_with,
+                        "card_expiry": cardDetails.expiry_date,
+                        "card_name": cardDetails.card_name,
+                        "id": response.id,
+                        "isSelected": true,
+                        "is_primary": false,
+                        "payment_type": paymentType || "CC",
+                        "payment_type_id": 1
+                    });
+                }
                 $scope.closeDialog();
             };
 
@@ -156,7 +182,7 @@ sntRover.controller('RVPaymentAddPaymentCtrl',
             });
 
             $scope.$on('ERROR_OCCURED', function(event, errorMessage) {
-               $scope.errorMessage = errorMessage;
+                $scope.errorMessage = errorMessage;
             });
 
             $scope.$on('PAYMENT_FAILED', function(event, errorMessage) {

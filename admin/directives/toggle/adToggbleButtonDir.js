@@ -9,7 +9,8 @@ admin.directive('adToggleButton', function($timeout) {
             divClass: '@divClass',
             buttonClass: '@buttonClass',
             label: '@label',
-            isDisabled: '=isDisabled'
+            isDisabled: '=isDisabled',
+            isHide: '=isHide'
 	    },
 
     	templateUrl: '/assets/directives/toggle/adToggleButton.html'
