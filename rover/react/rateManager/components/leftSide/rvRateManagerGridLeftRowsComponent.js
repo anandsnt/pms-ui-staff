@@ -17,6 +17,7 @@ const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItem
 				<RateManagerGridLeftRowComponent
 					key = {item.id}
 					index = {index}
+					name = {item.name}
 					trClassName = {item.trClassName}
 					tdClassName = {item.tdClassName}
 					onClick = {(e, index) => { onItemClick(e, index); }}
@@ -25,8 +26,13 @@ const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItem
 					iconClassBeforeText = {item.iconClassBeforeText}
 					textInIconArea = {item.textInIconArea}
 					leftSpanText = {item.leftSpanText}
+					address = {item.address}
+					contractLabel = {item.contractLabel}
+					contractClass = {item.contractClass}
 					showRightSpan = {item.showRightSpan}
-					rightSpanClassName = {item.rightSpanClassName}/>
+					rightSpanClassName = {item.rightSpanClassName}
+					accountName={item.accountName}
+					showIndicator={item.showIndicator}/>
 			)			
 		}	
 		{isLastPage ? null :

@@ -1347,6 +1347,8 @@
                         font-size: 14px;
                         float:left;
                         color: @grey3;
+                        .nowrap();
+                        width: 100%;
                     }
 
                     &:not(.no-address) {
@@ -1390,24 +1392,108 @@
 
                     .confirmation,
                     .icons {
-                        display: inline;
+                        display: inline-block;
+                        vertical-align: middle;
                         line-height: 20px;
                         height: 20px;
                         overflow: hidden;
+                        .nowrap();
                     }
 
                     .icons {
                         color: @grey3;
                         padding-left: 20px;
-                        margin-right: 20px;
-
+                        margin-right: 20px; 
                         &:last-child { margin-right: 0; }
+                        .calc-max-width(100, 630);
                     }
 
                     .confirmation { 
+                        max-width: 150px;
                         font-weight: 600;
                         margin-right: 20px;
                     }
+
+                    // State Classes:
+                    &.no-confirmation {
+                        .confirmation {
+                            .hide();
+                        }
+                        .icons {
+                            .calc-max-width(33, 20); // 33 (3 Icons) - 20 (margin)
+                        }
+
+                        &.no-email,
+                        &.no-phone,
+                        &.no-address {
+                            .icons {
+                                .calc-max-width(50, 20); // 2 Icons - 20%
+                            }
+                        }
+                    }
+
+                    &.no-email {
+                        .icon-email-grey {
+                            .hide();
+                        }
+                        .icons {
+                            .calc-max-width(100, 520);
+                        }
+                        &.no-phone,
+                        &.no-address {
+                            .icons {
+                                .calc-max-width(100, 170); // 1 Icons & Conf
+                            }
+
+                            &.no-confirmation {
+                                .icons {
+                                    max-width: 100%; // Only this Icon
+                                }
+                            }
+                        }
+                    }
+
+                    &.no-phone {
+                        .icon-phone {
+                            .hide();
+                        }
+                        .icons {
+                            .calc-max-width(100, 520);
+                        }
+                        &.no-email
+                        &.no-address {
+                            .icons {
+                                .calc-max-width(100, 170); // 1 Icons & Conf
+                            }
+
+                            &.no-confirmation {
+                                .icons {
+                                    max-width: 100%; // Only this Icon
+                                }
+                            }
+                        }
+                    }
+
+                    &.no-address {
+                        .icon-location {
+                            .hide();
+                        }
+                        .icons {
+                            .calc-max-width(100, 520);
+                        }
+                        &.no-email,
+                        &.no-phone {
+                            .icons {
+                                .calc-max-width(100, 170); // 1 Icons & Conf
+                            }
+
+                            &.no-confirmation {
+                                .icons {
+                                    max-width: 100%; // Only this Icon
+                                }
+                            }
+                        }
+                    } 
                 }
             }
 
