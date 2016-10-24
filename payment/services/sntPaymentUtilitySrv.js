@@ -28,13 +28,12 @@ angular.module('sntPay').service('paymentUtilSrv',
      * @return {String}
      */
     this.getCreditCardTypeForMLI = (cardBrand) => {
-        var cardBrand_ = cardBrand.toUpperCase();
+        cardBrand = cardBrand ||  "credit-card";
 
-        //if card brand NOT EXIST in mapping file
-        if (!_.has(paymentConstants.creditCardMappingTypes, cardBrand_)) {
-            return 'credit-card';
-        }
-        return creditCardTypes[cardBrand_].toLowerCase();
+        var cardBrand_ = cardBrand.toUpperCase(),
+            mappedCardType = creditCardTypes[cardBrand_] || cardBrand;
+
+        return mappedCardType.toLowerCase();
     };
 
     /**
