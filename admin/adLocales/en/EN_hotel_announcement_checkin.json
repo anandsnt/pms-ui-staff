@@ -57,5 +57,6 @@
     "EXCLUDE_ROUTING_FROM_EMAIL":"Exclude Reservations With Routing From Email Invite",
     "EXCLUDE_ROUTING_FROM_EMAIL_TITLE":"Email Invite",
 
-    "OPEN_BLOCK_CODES_DIALOG":"SELECT BLOCK CODES"
+    "OPEN_BLOCK_CODES_DIALOG":"SELECT BLOCK CODES",
+    "USE_NEW_SENT_TO_QUE" : "Use new Sent to Que"
 

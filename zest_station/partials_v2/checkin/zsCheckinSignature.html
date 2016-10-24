@@ -2,7 +2,7 @@
     <div id="content">
         <h1 translate>SIGN_SCREEN</h1>
         <form type="post" action="" id="signature">
-            <form id="signature-pad" class="complete-registration form" style=' height: 295px; border-radius: 8px;'>
+            <form id="signature-pad" class="complete-registration form signature-pad-layout">
                 <div>
                     <div class="sig">
                         <div width='100%' class='station-sign' id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
@@ -15,7 +15,7 @@
     <div>
         <div id="actions" class="add-guests-footer sign">
             <button type="button" class="button transparent prev" touch-press='clearSignature()' translate>CLEAR_BTN</button>
-            <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()" translate>NEXT_BTN</button>
+            <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()">{{'NEXT_BTN' | translate}}</button>
         </div>
     </div>
 </section>

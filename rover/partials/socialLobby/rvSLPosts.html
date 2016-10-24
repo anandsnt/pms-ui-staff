@@ -1,0 +1,158 @@
+
+<div ng-include="'/assets/partials/common/header.html'"></div>
+
+<!-- Search -->
+<form method="get" action="{action}" id="neighbors-search-form" class="search-form neighbors-search" role="search">
+
+    <!-- Refresh -->
+    <button type="button" ng-click = "refreshPosts()" class="button white with-icon only-icon refresh">
+        <span class="icons icon-reset"></span>
+        Refresh
+    </button>
+
+    <!-- Search -->
+    <div class="entry search">
+        <button class="clear-query"> <!-- Add class 'visible' to show. -->
+            <span class="icons icon-clear-search">Clear query</span>
+        </button>
+        <button type="submit" class="icons icon-search">Search</button>
+        <input id="neighbors-query" class="query" placeholder="Search" type="search" autocomplete="off" />
+    </div>
+</form> 
+
+<!-- Posts scenario 1: Nothing to show (L40-L48) -->
+<section id="neighbors-activity" ng-show="posts.length == 0" class="content" role="main">
+    <div class="no-content">
+        <div class="info">
+            <span class="icon-no-content icon-messages"></span>
+            <strong class="h1">No conversations</strong>
+            <span class="h2">Currently there are no conversations in the your Neighborhood</span>
+        </div>
+    </div>
+</section> 
+
+<!-- Posts scenario 2: Data exists (L51-L120) -->
+<section id="neighbors-activity" ng-iscroll='post-list-scroll' ng-show="posts.length != 0" class="content scrollable neighbours-post-scroll" role="main">
+    <div class="wrapper neighbours-post-container">
+        <div class="activity-post" ng-class="{'has-replies': post.comment_count > 0}" ng-repeat = "post in posts"> <!-- Add class 'has-replies' if there are replies in the conversation. -->
+            <div class="post-details toggle has-arrow" ng-click="togglePostDetails(post)"> <!-- Add class 'toggle has-arrow' if there are replies in the conversation. Add class "has-unread" if there are undread posts in the conversation. -->
+                <figure class="guest-image">
+                    <img src="{{post.user.image_url}}" alt="" />
+                    
+                    <!-- If VIP - <span class="vip">VIP</span> -->
+                </figure>
+                <div class="post-data">
+                    <div class="author">
+                        <h3>{{post.author_name}}</h3>
+                        <!-- If not staff member, output job details (if they exist) -->
+                        <span class="job-title" ng-if="post.user.works_at != '' && post.user.works_at != null">{{post.user.profession + ', ' + post.user.works_at}}</span> 
+                        <span class="job-title" ng-if="post.user.works_at == '' || post.user.works_at == null">{{post.user.profession}}</span>
+                        <!-- If they exist, output Company / TA 7 Group / Allotment name -->
+
+
+                        <!-- <em class="icons icon-{'guest-company' or 'guest-travelagent' or 'group' or 'allotment'}">{Name}</em> -->
+                        <!-- <em class="icons icon-guest-company">Company</em>
+                        <em class="icons icon-guest-travelagent">travelagent</em>
+                        <em class="icons icon-guest-group">group</em>
+                        <em class="icons icon-guest-allotment">allotment</em> -->
+
+                        <!-- If not staff member, show Stay Card link -->
+                        <button type="button" class="button white brand-text small-button" ng-show="post.user_role == 'guest' && post.user.current_reservation_id != null" ng-click="goToStayCard(post.user.current_reservation_id, $event)">Stay Card</button>
+                        <!-- If staff member post, output this instad of L64, L66 and L68:-->
+                        <em class="icons icon-staff-blue" ng-show="post.user_role != 'guest'">Staff</em> 
+                    </div>
+                    <h4 class="post" ng-class="{'staff': post.user_role != 'guest', 'post-with-limit': post.id != selectedPost.id, 'post-full': post.id == selectedPost.id}"> <!-- If this is a 1st level unread post, add class 'unread'. If staff post, add class 'staff'. If entered / left the lobby post, add class 'appearance' -->
+                        <!-- If post has replies, show count like this:-->
+                        <span class="icons icon-comment" ng-show="post.comment_count > 0">{{post.comment_count}}</span>
+                        <!-- <span class="post-with-limit" ng-show= "post.id != selectedPost.id">
+                            {{post.body}}
+                        </span>
+                        <span  class = "post-full" ng-show= "post.id == selectedPost.id">
+                            {{post.body}}
+                        </span> -->
+                        {{post.body}}
+                    </h4>
+                </div>
+            </div>
+            <button type="button" class="button white icons icon-remove-10" ng-click="deletePost(post.id)">Delete</button>
+
+            <!-- If post has replies-->
+            <div class="conversation " ng-show="post.id == selectedPost.id"> <!-- Toggle class 'hidden' to show/hide when L55 is tapped/clicked -->
+                <div class="reply-post hidden">
+                    <div class="post-details"> <!-- NO CLASSES TO ADD! -->
+                        <figure class="guest-image">
+                            <img src="{user-image}" alt="" />
+                            <!-- If VIP - <span class="vip">VIP</span> -->
+                        </figure>
+                        <div class="post-data">
+                            <div class="author">
+                                <h3>{Lastname, Firstname}</h3>
+                                <!-- If not staff member, output job details (if they exist) -->
+                                <span class="job-title">{Job Title, Company}</span> 
+                                <!-- If they exist, output Company / TA 7 Group / Allotment name -->
+                                <em class="icons icon-{'guest-company' or 'guest-travelagent' or 'group' or 'allotment'}">{Name}</em>
+                                <!-- If not staff member, show Stay Card link -->
+                                <button type="button" class="button white brand-text small-button">Stay Card</button>
+                                <!-- If staff member post, output this instad of L64, L66 and L68:
+                                <em class="icons icon-staff-blue">Staff</em> -->
+                            </div>
+                            <h4 class="post"> <!-- If this is a 2nd level unread post, add class 'unread'. If staff post, add class 'staff'. If entered / left the lobby post, add class 'appearance' -->
+                                {Post Text or 'Entered the Lobby' or 'Left the Lobby'}
+                            </h4>
+                        </div>
+                    </div>
+                    <button type="button" class="button white icons icon-remove-10">Delete</button>
+                </div>
+                
+                <div class="conversation-reply"><!-- Add class 'numbers-pagination' if 2nd level pagination is showing as well -->
+                    <input placeholder="Add comment to this conversation"  type="text" />
+                    <button type="button" class="button soft-red" >Post</button>
+                    <!-- If showing 2nd level pagination, output this:
+                    <div class="pages">
+                        same logic as 1st level pagination, see L130-L149
+                    </div>  -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Post form -->
+<div class="neighbors-form numbers-pagination" > <!-- Add class 'numbers-pagination' if 1st level pagination is showing as well -->
+    <input type="text" placeholder="Add comment" ng-model = "newPost" />
+    <button type="button" class="button white soft-red-text" ng-click="addPost();">Post</button>
+
+    <!-- If showing 1st level pagination, output this -->
+    <div class="pages" ng-show="totalPostPages > 1"> <!-- Add class "active" to selected number -->
+        
+        <!-- If not first page, show prev button:-->
+        <button type="button" class="button prev" ng-show= "postParams.page != 1" ng-click="paginatePosts(postParams.page -1)">Prev</button> 
+        
+        <!-- First page, always show it -->
+        <button type="button" class="button dark-grey number" ng-class="{'active': 1 == postParams.page}" >1</button> 
+
+        <!-- If not first page, and there's more than 5 pages to show, show this:-->
+        <span class="delimiter post-delimiter" ng-show="middle_page1 > 2 && totalPostPages > 5">...</span> 
+
+        <!-- Next 3 page numbers -->
+        <!-- <button type="button" class="button dark-grey number active" ng-show="totalPostPages == 1">{{postParams.page }}</button>
+        <button type="button" class="button dark-grey number active" ng-show="totalPostPages > 2">{{postParams.page >= totalPostPages -2 ? postParams.page -2 : postParams.page }}</button> -->
+        <button type="button" class="button dark-grey number"  ng-show="totalPostPages > 2" ng-class="{'active': middle_page1 == postParams.page}" >{{middle_page1 }}</button>
+
+
+        <!-- <button type="button" class="button dark-grey number" ng-show="totalPostPages > 2" >{{postParams.page == totalPostPages ? postParams.page -1 : postParams.page + 1}}</button>
+        <button type="button" class="button dark-grey number" ng-show="totalPostPages == 2" >{{postParams.page == totalPostPages ? postParams.page : postParams.page + 1}}</button> -->
+
+        <button type="button" class="button dark-grey number"  ng-show="totalPostPages > 3" ng-class="{'active': middle_page2 == postParams.page}" >{{middle_page2 }}</button>
+
+
+        <button type="button" class="button dark-grey number"  ng-show="totalPostPages > 4" ng-class="{'active': middle_page3 == postParams.page}">{{middle_page3 }}</button>
+
+        <!-- If not last page, and there's more than 5 pages to show, show this:-->
+        <span class="delimiter post-delimiter" ng-show="middle_page3 < (totalPostPages - 1) && totalPostPages > 5">...</span> 
+        <button type="button" class="button dark-grey number"  ng-class="{'active' : postParams.page == totalPostPages }">{{totalPostPages}}</button>
+
+        <!-- If not last page, show next button:-->
+        <button type="button" class="button next" ng-click="paginatePosts(postParams.page +1)" ng-show= "postParams.page != totalPostPages ">Next</button> 
+    </div>
+</div>

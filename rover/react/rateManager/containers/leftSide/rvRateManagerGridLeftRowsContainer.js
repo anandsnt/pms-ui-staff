@@ -5,21 +5,27 @@ const {connect} = ReactRedux;
  * @param  {array} rates
  * @return {array}
  */
-let convertRatesDataForLeftListing = (rates) => {
+let convertRatesDataForLeftListing = (rates, mode) => {
 	var ratesToReturn = [];
+	var showIndicator = (mode == RM_RX_CONST.RATE_VIEW_MODE);
 	rates.map((rate, index) => {
 		ratesToReturn.push({
 			id: rate.id,
 			name: rate.name,
 			trClassName: ('cell rate ' + (((index + 1) === rates.length) ? 'last' : '')),
 			tdClassName: '',
-			leftSpanClassName: 'name ' + (rate.based_on_rate_id && !rate.is_copied ? 'gray' : 'base-rate'),
+			leftSpanClassName: 'name ' + (rate.based_on_rate_id && !rate.is_copied ? 'gray' : 'base-rate')+((rate.is_company_card||rate.is_travel_agent)?' contracted-rate':' contracted-rate contracted-rate-missing-info'),
 			showIconBeforeText: !rate.based_on_rate_id,
 			iconClassBeforeText: !rate.based_on_rate_id ? 'base-rate-indicator': '',
 			textInIconArea: !rate.based_on_rate_id ? 'B' : '',
 			leftSpanText: rate.name,
+			address: rate.address,
 			showRightSpan: true,
-			rightSpanClassName: 'icons icon-double-arrow rotate-right'
+			contractLabel: rate.is_travel_agent?'ta':(rate.is_company_card?'c':''),
+			contractClass: rate.is_travel_agent?'travel-agent':'',
+			rightSpanClassName: 'icons icon-double-arrow rotate-right',
+			accountName: rate.account_name,
+			showIndicator :showIndicator
 		})
 	});
 
@@ -110,7 +116,7 @@ let convertSingleRateRoomTypesDataForLeftListing = (roomTypes, expandedRows) => 
 const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 	if(state.mode === RM_RX_CONST.RATE_VIEW_MODE) {
 		return {
-			leftListingData: convertRatesDataForLeftListing(state.list),
+			leftListingData: convertRatesDataForLeftListing(state.list, state.mode),
 			mode: state.mode,
 			fromDate: state.dates[0],
 			toDate: state.dates[state.dates.length-1],
@@ -150,7 +156,7 @@ const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatch
 				stateProps.callBackForSingleRateFetch({
 					fromDate: stateProps.fromDate,
 					toDate: stateProps.toDate,
-					selectedRates: [{id: clickedRate.id, name: clickedRate.name}]
+					selectedRates: [{id: clickedRate.id, name: clickedRate.name, accountName: clickedRate.accountName, address: clickedRate.address}]
 				})
 			}
 		},
