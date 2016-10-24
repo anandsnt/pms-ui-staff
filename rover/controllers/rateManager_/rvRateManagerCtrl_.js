@@ -719,7 +719,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 from_date: stateProps.dates[0],
                 to_date: stateProps.dates[stateProps.dates.length-1],
                 restrictions: [{
-                    action: 'add',
+                    action: 'remove',
                     restriction_type_id: closedRestriction.id
                 }]
             }]
