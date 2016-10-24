@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccountsConfigurationSrv', '$timeout',
-	function($q, rvBaseWebSrvV2, rvAccountsConfigurationSrv, $timeout) {
+angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebSrvV2', 'rvAccountsConfigurationSrv',
+	function($q, rvBaseWebSrvV2, rvAccountsConfigurationSrv) {
 
 		var self = this;
 
@@ -245,6 +245,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			return deferred.promise;
 		};
 
+		/*** DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
 		var summaryHolder = {},
 			getAccountSummary = function(deferred, params) {
 				if (params.accountId === "NEW_ACCOUNT") {
@@ -256,9 +257,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 					rvBaseWebSrvV2.getJSON(url).then(
 						function(data) {
 							summaryHolder.accountSummary = data;
-							$timeout(function() {
-							     deferred.resolve(summaryHolder);
-							}, 5000);
+							deferred.resolve(summaryHolder);
 						},
 						function(errorMessage) {
 							deferred.reject(errorMessage);
@@ -267,6 +266,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 				}
 				return deferred.promise;
 			};
+		/*** DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
 
 		this.getGroupSummary = function(params) {
 			var deferred = $q.defer();
@@ -278,18 +278,38 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			} else {
 				url = 'api/groups/' + params.groupId;
 				rvBaseWebSrvV2.getJSON(url).then(
-					function(data) {
-						if (data.rate === null){
-							data.rate = -1;
+					function(groupSummary) {
+						var postingAccId = groupSummary.posting_account_id,
+							url;
+
+						if ( groupSummary.rate === null ){
+							groupSummary.rate = -1;
 						}
+
 						self.lastFetchedGroup = {
-							id: data.group_id,
-							demographics: angular.copy(data.demographics)
+							id: groupSummary.group_id,
+							demographics: angular.copy(groupSummary.demographics)
 						}
-						summaryHolder.groupSummary = data;
-						getAccountSummary(deferred, {
-							accountId: data.posting_account_id
-						});
+
+						if ( postingAccId === 'NEW_ACCOUNT' ) {
+							deferred.resolve({
+								accountSummary: angular.copy( rvAccountsConfigurationSrv.baseAccountSummaryData )
+							});
+						} else {
+							url = 'api/posting_accounts/' + postingAccId;
+							rvBaseWebSrvV2.getJSON(url)
+								.then(
+									function(accountSummary) {
+										_.defer(deferred.resolve, {
+											groupSummary: groupSummary,
+											accountSummary: accountSummary
+										});
+									},
+									function(errorMessage) {
+										deferred.reject(errorMessage);
+									}
+								);
+						}
 					},
 					function(errorMessage) {
 						deferred.reject(errorMessage);
@@ -415,7 +435,18 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			return deferred.promise;
 		};
 
-
+		// CICO-24928 
+		this.updateGroupNote = function(data) {
+			var deferred = $q.defer(),
+				url = 'api/notes/' + data.id;
+			rvBaseWebSrvV2.putJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+			return deferred.promise;
+		};
 
 		this.removeGroupNote = function(data) {
 			var deferred = $q.defer(),

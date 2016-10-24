@@ -275,7 +275,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			item_41: false,
 			item_42: false,
 			item_43: false,
-			item_44: false
+			item_44: false,
+			item_45 : false
 		};
 		$scope.toggleFilterItems = function(item) {
 			if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -1041,7 +1042,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				checkOutKey = '',
 				selected    = [];
 
-			var changeAppliedFilter = 'boolean' == typeof changeAppliedFilter ? changeAppliedFilter : true;
+			var changeAppliedFilter = 'boolean' === typeof changeAppliedFilter ? changeAppliedFilter : true;
 
 			// capturing the filters applied to be
 			// shown on the report details footer
@@ -1497,7 +1498,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			};
 
 			// include company/ta/group
-			if ( report.hasOwnProperty('hasIncludeCompanyTaGroup') && !!report.chosenIncludeCompanyTaGroup ) {
+			if ( report.hasOwnProperty('hasIncludeCompanyTaGroup') && !! report.chosenIncludeCompanyTaGroup ) {
 				key         = report.hasIncludeCompanyTaGroup.value.toLowerCase();
 				params[key] = report.chosenIncludeCompanyTaGroup;
 				/* Note: Using the ui value here */
@@ -1893,6 +1894,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				};
 			};
 
+			// has min no of days not occupied
+			if ( report.hasOwnProperty('hasMinNoOfDaysNotOccupied') && !!report.hasMinNoOfDaysNotOccupied.data ) {
+				key         = report.hasMinNoOfDaysNotOccupied.value.toLowerCase();
+				params[key] = report.hasMinNoOfDaysNotOccupied.data;
+				/* Note: Using the ui value here */
+				if ( changeAppliedFilter ) {
+					$scope.appliedFilter['hasMinNoOfDaysNotOccupied'] = report.hasMinNoOfDaysNotOccupied.data;
+				};
+			};
+
 			// need to reset the "group by" if any new filter has been applied
 			// Added a patch to ignore the following for addon forecast report
 			// @TODO: Fix this. May be refactor the whole logic
@@ -1999,8 +2010,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			var chosenReport = reportsSrv.getChoosenReport(),
 				changeView   = 'boolean' === typeof changeView ? changeView : true,
 				page         = !!loadPage ? loadPage : 1;
-
-			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
 
 			var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
 

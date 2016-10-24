@@ -228,7 +228,7 @@
                             bill-number="billNumber"
                             payment-types="reservationData.paymentMethods"
                             selected-payment-type="reservationData.paymentType.type.value"
-                            selected-c-c="renderData"
+                            selected-c-c="summaryState.selectedCardDetails"
                             amount='reservationData.depositAmount'
                             action-type="DEPOSIT_PAYMENT_RES_SUMMARY"
                             is-editable='reservationData.depositEditable'
@@ -236,7 +236,8 @@
                             has-permission='hasPermissionToMakePayment()'
                             form-template-url='/assets/partials/payment/rvReservationSummaryDepositPartial.html'
                             first-name="{{guestCardData.contactInfo.first_name}}"
-                            last-name="{{guestCardData.contactInfo.last_name}}">
+                            last-name="{{guestCardData.contactInfo.last_name}}"
+                            reservation-ids="reservationData.reservationIds">
                     </snt-payment>
                     <div class="actions" ng-hide="showCCPage">
                         <button type="button"

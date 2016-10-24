@@ -11,7 +11,7 @@ angular.module('reportsModule')
                         'IN_HOUSE_GUEST'               : ['canRemoveDate'],
                         'OCCUPANCY_REVENUE_SUMMARY'    : ['hasPrevDateLimit'],
                         'RESERVATIONS_BY_USER'         : ['hasUserFilter', 'canRemoveDate'],
-                        'MARKET_SEGMENT_STAT_REPORT'   : ['hasDateLimit'],
+                        'MARKET_SEGMENT_STAT_REPORT'   : ['hasSysDateLimit'],
                         'ROOMS_QUEUED'                 : ['hasSysDateLimit'],
                         'RATE_ADJUSTMENTS_REPORT'      : ['hasDateLimit', 'canRemoveDate'],
                         'ADDON_FORECAST'               : ['canRemoveDate'],

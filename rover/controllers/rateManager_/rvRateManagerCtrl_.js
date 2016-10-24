@@ -103,6 +103,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.showTopBar = false;
         $scope.selectedCardNames = [];
         $scope.selectedRateNames = [];
+        $scope.selectedAccountName = [];
+        $scope.selectedAddress = [];
     };
 
     /**
@@ -679,6 +681,61 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             restrictionSummary: restrictionSummary
         };
     };
+    /**
+     * close rates from diff mode.
+     */
+    $scope.closeAll = function(){
+        var stateProps  = store.getState();
+        var closedRestriction = _.findWhere(stateProps.restrictionTypes, { value: RM_RX_CONST.CLOSED_RESTRICTION_VALUE });
+        let paramsForClosingRestriction = {
+            details: [{
+                from_date: stateProps.dates[0],
+                to_date: stateProps.dates[stateProps.dates.length-1],
+                restrictions: [{
+                    action: 'add',
+                    restriction_type_id: closedRestriction.id
+                }]
+            }]
+        };
+        if(stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
+            openAllRestrictionsForSingleRateView(paramsForClosingRestriction);
+        }
+        else if(stateProps.mode ===  RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
+            closeAllRestrictionsForRoomTypeView(paramsForClosingRestriction);
+        }
+        else if(stateProps.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
+            paramsForClosingRestriction.rate_ids = _.pluck(stateProps.list.slice(0), 'id');
+            closeAllRestrictionsForRateView(paramsForClosingRestriction);
+        };
+    };
+    /**
+     * open rates from diff mode.
+     */
+    $scope.openAll = function(){
+        var stateProps  = store.getState();
+        var closedRestriction = _.findWhere(stateProps.restrictionTypes, { value: RM_RX_CONST.CLOSED_RESTRICTION_VALUE });
+        let paramsForOpeningRestriction = {
+            details: [{
+                from_date: stateProps.dates[0],
+                to_date: stateProps.dates[stateProps.dates.length-1],
+                restrictions: [{
+                    action: 'remove',
+                    restriction_type_id: closedRestriction.id
+                }]
+            }]
+        };
+        if(stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
+            //rate_id: will be adding from the controller (openAllRestrictionsForSingleRateView)
+            openAllRestrictionsForSingleRateView(paramsForOpeningRestriction);
+        }
+        else if(stateProps.mode ===  RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
+            openAllRestrictionsForRoomTypeView(paramsForOpeningRestriction);
+        }
+        else if(stateProps.mode ===  RM_RX_CONST.RATE_VIEW_MODE) {
+            paramsForOpeningRestriction.rate_ids = _.pluck(stateProps.list.slice(0), 'id');
+            openAllRestrictionsForRateView(paramsForOpeningRestriction);
+        }
+    };
 
     /**
      * to show & form the data required for topbar
@@ -690,6 +747,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.showTopBar = true;
         $scope.selectedCardNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedCards, 'account_name');
         $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
+        $scope.selectedAccountName = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'accountName');
+        $scope.selectedAddress = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'address');
+
     };
 
     /**
@@ -1537,6 +1597,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         activeFilterIndex = activeFilterIndex + 1;
         $scope.selectedRateNames = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'name');
+        $scope.selectedAccountName = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'accountName');
+        $scope.selectedAddress = _.pluck(lastSelectedFilterValues[activeFilterIndex].selectedRates, 'address');
 
         $scope.showBackButton = true;
 
@@ -1684,6 +1746,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $scope.showBackButton = false;
         $scope.selectedCardNames = [];
         $scope.selectedRateNames = [];
+        $scope.selectedAccountName = [];
+        $scope.selectedAddress = [];
         $scope.fromDate = null;
         $scope.toDate = null;
 

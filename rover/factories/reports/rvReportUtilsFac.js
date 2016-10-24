@@ -308,6 +308,11 @@ angular.module('reportsModule')
                 description : filter.description,
                 selected    : selected
             });
+
+            // if filter value is either of these, selectAll should be false CICO-31886
+            if ( report['title'] === reportNames['MARKET_SEGMENT_STAT_REPORT']) {
+                report.hasDisplay.options.noSelectAll = true;
+            };
         };
 
         /**
@@ -529,6 +534,10 @@ angular.module('reportsModule')
                     report['hasMinRoomNights'] = filter;
                 };
 
+                if ( filter.value === 'MIN_NUMBER_OF_DAYS_NOT_OCCUPIED' ) {
+                    report['hasMinNoOfDaysNotOccupied'] = filter;
+                };
+
 
                 // fill up DS for options combo box
                 if ( __optionFilterNames[filter.value] ) {
@@ -537,7 +546,7 @@ angular.module('reportsModule')
                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'INCLUDE_DUE_OUT' ) {
                     __pushGeneralOptionData( report, filter, true );
                 }
-                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'RESTRICTED_POST_ONLY' ) {
+                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'RESTRICTED_POST_ONLY' && $rootScope.isStandAlone) {
                     __pushGeneralOptionData( report, filter, false );
                 }
 
@@ -1633,6 +1642,18 @@ angular.module('reportsModule')
                     null,
                     null
                 ];
+            };
+
+            if ( report['title'] === reportNames['VACANT_ROOMS_REPORT'] ) {
+                var roomNo = angular.copy( _.find(report['sort_fields'], { 'value': 'ROOM_NUMBER' }) ),
+                    roomType    = angular.copy( _.find(report['sort_fields'], { 'value': 'ROOM_TYPE' }) ),
+                    daysVacant    = angular.copy( _.find(report['sort_fields'], { 'value': 'NO_OF_DAYS_VACANT' }) ),
+                    lastCheckoutDate = angular.copy( _.find(report['sort_fields'], { 'value': 'LAST_CHECK_OUT_DATE' }) );
+
+                report['sort_fields'][0] = roomNo;
+                report['sort_fields'][1] = roomType;
+                report['sort_fields'][2] = daysVacant;
+                report['sort_fields'][3] = lastCheckoutDate;
             };
         };
 
