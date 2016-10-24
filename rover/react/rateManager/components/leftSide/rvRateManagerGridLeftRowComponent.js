@@ -14,16 +14,17 @@ const RateManagerGridLeftRowComponent = ({
 	rightSpanClassName,
 	contractLabel,
 	contractClass,
-	accountName
+	accountName,
+	showIndicator
 }) => (
 	<tr className={trClassName} onClick={(e) => onClick(e, index) }>
 		<td className={tdClassName}>
 			<a title={name}>
 			<span className={leftSpanClassName}>
-				<span className="base-rate-indicator">B</span>
-				<span className={'contracted-rate-indicator ' + contractClass}>
+				{  (textInIconArea == 'B' && showIndicator)?(<span className="base-rate-indicator">B</span>):''}
+				{ (contractLabel !=='' && showIndicator)? (<span className={'contracted-rate-indicator ' + contractClass}>
 	                {contractLabel}
-				</span>
+				</span>):''}
  			{leftSpanText}
 			</span>                                
 			<span className={'contracted-rate-contract '+ contractClass}>{accountName}</span>

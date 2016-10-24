@@ -23,7 +23,7 @@ var DailyProductionByDemographicsTableHeader = React.createClass({
 				React.DOM.th(
 				{
   					className	: header.showRevenue ? '' : 'hidden'
-				}, 'Forecast Room Revenue'),
+				}, 'Actual Room Revenue'),
 
 				React.DOM.th(
 				{
@@ -33,7 +33,7 @@ var DailyProductionByDemographicsTableHeader = React.createClass({
 				React.DOM.th(
 				{
   					className	: header.showRevenue ? 'day-end' : 'hidden'
-				}, 'Actual Room Revenue')
+				}, 'Forecast Room Revenue')
 			],
 
 			dates  = [],
