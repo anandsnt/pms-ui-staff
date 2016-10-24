@@ -927,6 +927,8 @@ angular.module('sntRover').controller('guestCardController', [
 							companyData.email = item.email;
 							companyData.phone = item.phone;
 							$scope.searchedCompanies.push(companyData);
+							/*Account Address*/
+							companyData.account_address = item.account_address;
 						}
 					});
 				}
@@ -960,6 +962,8 @@ angular.module('sntRover').controller('guestCardController', [
 							var travelAgentData = {};
 							travelAgentData.id = item.id;
 							travelAgentData.account_name = item.account_name;
+							/*Account address*/
+							travelAgentData.account_address = item.account_address;
 
 							travelAgentData.account_type = item.account_type;
 							travelAgentData.isMultipleContracts = false;

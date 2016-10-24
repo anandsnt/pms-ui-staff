@@ -398,7 +398,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 
 			//if it is is Move Date mode
-			else if ($scope.changeDatesActions.isInCompleteMoveMode()) {
+			//this condition is independent of above if - CICO-34463
+			if ($scope.changeDatesActions.isInCompleteMoveMode()) {
 				var originalStayLength = (util.getDatesBetweenTwoDates (new tzIndependentDate(util.deepCopy(summaryMemento.block_from)), new tzIndependentDate(util.deepCopy(summaryMemento.block_to))).length - 1);
 				refData.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 				refData.block_to.setDate(refData.block_to.getDate() + originalStayLength);
@@ -418,6 +419,18 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				else {
 					triggerLaterArrivalDateChange();
 				}
+			}
+
+			// let the date update if it is future group as well is in edit mode
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+				$timeout(function() {
+					$scope.updateGroupSummary();
+				}, 100);
+			}
+
+			// CICO-34261
+			if (newBlockFrom > new tzIndependentDate(refData.release_date)) {
+				$scope.groupConfigData.summary.release_date = newBlockFrom;
 			}
 
 			//setting the min date for end Date
@@ -488,7 +501,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 			// check move validity
 			// departure left date change
-			else if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
+			// this condition is independent of above if - CICO-34463
+			if(newBlockTo < oldBlockTo && chActions.depDateLeftChangeAllowed()) {
 				if(new tzIndependentDate(refData.last_arrival_date) > newBlockTo){
 					triggerEarlierDepartureDateChangeInvalidError();
 				}
@@ -510,8 +524,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 
 			// CICO-34261
-			if (newBlockTo < refData.release_date) {
-				$scope.groupConfigData.summary.release_date = newBlockTo;
+			if (newBlockTo < new tzIndependentDate(refData.release_date)) {
+				$scope.groupConfigData.summary.release_date = refData.block_from;
 			}
 			$scope.releaseDateOptions.maxDate = newBlockTo;
 			runDigestCycle();
@@ -785,7 +799,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 		/*
 		 * Send Confirmation popup handler
-		 * @return undefined 
+		 * @return undefined
 		 */
 		$scope.openSendConfirmationPopup = function () {
 
@@ -810,7 +824,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 		/*
 		 * Send Confirmation email API call
-		 * @return undefined 
+		 * @return undefined
 		 */
 		$scope.sendGroupConfirmation = function() {
 
@@ -1194,17 +1208,18 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 		};
 
-		$scope.removeGroupNote = function(noteId) {
+		$scope.removeGroupNote = function(event, noteId) {
 			var onRemoveGroupNoteSuccess = function(data, params) {
 					$scope.groupConfigData.summary.notes = _.without($scope.groupConfigData.summary.notes, _.findWhere($scope.groupConfigData.summary.notes, {
 						note_id: params.noteId
 					}));
 					$scope.refreshScroller("groupSummaryScroller");
+					$scope.cancelEditModeGroupNote();
 				},
 				onRemoveGroupNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 				};
-
+			event.stopPropagation();
 			$scope.callAPI(rvGroupConfigurationSrv.removeGroupNote, {
 				successCallBack: onRemoveGroupNoteSuccess,
 				failureCallBack: onRemoveGroupNoteFailure,
@@ -1216,7 +1231,46 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				}
 			});
 		};
-
+		// CICO-24928
+		$scope.updateActiveGroupNote = function() {
+			if(!$scope.groupSummaryData.editingNote) {
+		        $scope.errorMessage = ['Something went wrong, please switch tab and comeback'];
+		        return;
+      		}
+      		$scope.errorMessage = '';
+	      	if ($scope.groupSummaryData.newNote) {
+					var onUpdateGroupNoteSuccess = function(data) {
+						$scope.groupSummaryData.editingNote.description = $scope.groupSummaryData.newNote;
+						var noteArrayIndex = _.findIndex($scope.groupConfigData.summary.notes, {note_id : data.note_id});
+						$scope.groupConfigData.summary.notes[noteArrayIndex] = $scope.groupSummaryData.editingNote;
+						$scope.refreshScroller("groupSummaryScroller");
+						$scope.cancelEditModeGroupNote();
+					},
+					onUpdateGroupNoteFailure = function(errorMessage) {
+						$scope.errorMessage = errorMessage;
+					};
+					$scope.callAPI(rvGroupConfigurationSrv.updateGroupNote, {
+						successCallBack: onUpdateGroupNoteSuccess,
+						failureCallBack: onUpdateGroupNoteFailure,
+						params: {
+							"id": $scope.groupSummaryData.editingNote.note_id,
+							"text": $scope.groupSummaryData.newNote,
+							"associated_id": $scope.groupConfigData.summary.group_id,
+							"associated_type": 'Group'
+						}
+					});
+			}
+		};
+		// CICO-24928
+		$scope.clickedOnNote = function(note) {
+	      $scope.groupSummaryData.editingNote  = note;
+	      $scope.groupSummaryData.newNote = note.description;
+    	};
+    	// CICO-24928
+	    $scope.cancelEditModeGroupNote = function(){
+	      $scope.groupSummaryData.editingNote  = null;
+	      $scope.groupSummaryData.newNote = '';
+	    };
 
 		var getPassData = function() {
 			var passData = {
@@ -1370,6 +1424,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				promptMandatoryDemographics: false,
 				isDemographicsPopupOpen: false,
 				newNote: "",
+				// CICO-24928
+				editingNote: null,
 
 				//This is required to reset Cancel when selected in dropdown but not proceeded with in the popup
 				existingHoldStatus: parseInt($scope.groupConfigData.summary.hold_status),

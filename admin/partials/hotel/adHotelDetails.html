@@ -494,6 +494,11 @@
                         <input type="radio" ng-model="data.payment_gateway" value="CBA" class="change-data">
                         Commonwealth Bank Australia (CBA)
                     </label>
+                    <label class="radio" ng-class="{checked:data.payment_gateway == 'SHIJI'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'SHIJI'}"></span>
+                        <input type="radio" ng-model="data.payment_gateway" value="SHIJI" class="change-data">
+                        SHIJI Payment
+                    </label>
 				</div>
 				<div class="entry full-width"></div>
                 <!--CBA starts-->
@@ -653,7 +658,7 @@
 					<label for="six-server-port">
 						Six Payments Communication Protocol
 					</label>
-					<label class="radio" ng-class="{checked:data.payment_gateway === 'MLI'}">
+					<label class="radio" ng-class="{checked:data.payment_gateway === 'sixpayments'}">
 						<span class="icon-form icon-radio " ng-class="{checked:data.six_connection_mode === 'PORT'}"></span>
 						<input type="radio" ng-model="data.six_connection_mode" value="PORT" class="change-data">
 						TCP/IP Socket
@@ -664,6 +669,20 @@
 						HTTPS
 					</label>
 				</div>
+                <!--SHIJI STARTS-->
+                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
+                    <label for="shiji-merchant-id">
+                        Merchant ID
+                    </label>
+                    <input type="text" ng-model="data.shiji_merchant_id" value="{{data.shiji_merchant_id}}">
+                </div>
+                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
+                    <label for="shiji-partner-id">
+                        Partner ID
+                    </label>
+                    <input type="text" ng-model="data.shiji_partner_id" value="{{data.shiji_partner_id}}">
+                </div>
+                <!--SHIJI ENDS-->
 				<div class="entry full-width">
 					<label>Allow CC processors per payment methods</label>
 					<div class="switch-button single" ng-class="{ on : data.allow_cc_processors_per_payment_methods == true }" ng-click="data.allow_cc_processors_per_payment_methods = !data.allow_cc_processors_per_payment_methods">

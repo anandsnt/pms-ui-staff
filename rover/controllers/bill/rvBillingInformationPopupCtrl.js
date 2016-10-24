@@ -177,9 +177,11 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             }
     		if(data.account_type === 'COMPANY'){
     			$scope.selectedEntity.entity_type = 'COMPANY_CARD';
+                $scope.selectedEntity.account_address = data.account_address;
     		}
             else if(data.account_type === 'TRAVELAGENT'){
                 $scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
+                $scope.selectedEntity.account_address = data.account_address;
             }
         }
         else if(type === 'GROUP' || type === 'HOUSE'){
@@ -270,6 +272,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                     "guest_image": $scope.attachedEntities.company_card.logo
                 }];
                 $scope.selectedEntity.entity_type = "COMPANY_CARD";
+                $scope.selectedEntity.account_address = $scope.attachedEntities.company_card.account_address;
             }else if(type === 'TRAVEL_AGENT'){
                 $scope.selectedEntity.id = $scope.attachedEntities.travel_agent.id;
                 $scope.selectedEntity.name = $scope.attachedEntities.travel_agent.name;
@@ -279,6 +282,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                     "guest_image": $scope.attachedEntities.travel_agent.logo
                 }];
                 $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
+                $scope.selectedEntity.account_address = $scope.attachedEntities.travel_agent.account_address;
             }
             else if(type ==='GROUP' || type === 'HOUSE'){
                 if(isRoutingForPostingAccountExist()){
