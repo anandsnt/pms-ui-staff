@@ -12,6 +12,12 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.contractList.future_contracts = [];
 		$scope.contractList.history_contracts = [];
 		$scope.contractList.isAddMode = false;
+		
+		$scope.contractList.isRenameMode = false;
+		$scope.contractList.contractNameToChange = "";
+		var existingContractName = "";
+		var contractSelected;
+
 		$scope.errorMessage = "";
 		$scope.autoCompleteState = {};
 		var contractInfo = {};
@@ -189,10 +195,22 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.errorMessage = "";
 
 		};
+
+		var fetchContractsSuccessCallback = function(data) {
+			$scope.contractList = data;
+			$scope.contractList.contractSelected = contractSelected;
+			$scope.$emit('hideLoader');
+			checkContractListEmpty();
+			$scope.errorMessage = "";
+
+		};
+
 		var fetchContractsDetailsFailureCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
 		};
+
+
 
 
 		var manipulateGraphData = function(data) {
@@ -255,7 +273,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 
 		$scope.fetchContractsList = function () {
-
 			if ($stateParams.id !== "add") {
 				$scope.invokeApi(RVCompanyCardSrv.fetchContractsList, {
 					"account_id": $stateParams.id
@@ -264,6 +281,17 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.contractList.isAddMode = true;
 				$scope.$emit('hideLoader');
 			}
+		};
+
+		$scope.fetchContracts = function () {
+			if ($stateParams.id === "add") {
+				var account_id = $scope.contactInformation.id;
+			} else {
+				var account_id = $stateParams.id;
+			}
+			$scope.invokeApi(RVCompanyCardSrv.fetchContractsList, {
+				"account_id": account_id
+			}, fetchContractsSuccessCallback, fetchFailureCallback);
 		};
 
 		$scope.fetchContractsList();
@@ -493,7 +521,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.errorMessage = data;
 				$scope.$parent.currentSelectedTab = 'cc-contracts';
 			};
-
 			/**
 			 * change date format for API call
 			 */
@@ -520,6 +547,100 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				}
 			}
 		};
+		
+		/**
+		* functions to perform rename button click
+		*/
+		$scope.renameButtonClicked = function() {
+			//Setup data for Rename mode
+			$scope.contractList.isRenameMode = true;
+			var renameId = $scope.contractList.contractSelected;
+			$scope.contractNameToRename = "";
+			for(var index = 0; index < $scope.contractList.current_contracts.length; index++) {
+				if(renameId == $scope.contractList.current_contracts[index].id) {
+					existingContractName = angular.copy($scope.contractList.current_contracts[index].contract_name);
+					break;
+				}
+			}
+			for(var index = 0; index < $scope.contractList.future_contracts.length; index++) {
+				if(renameId == $scope.contractList.future_contracts[index].id) {
+					existingContractName = angular.copy($scope.contractList.future_contracts[index].contract_name);
+					break;
+				}
+			}
+			for(var index = 0; index < $scope.contractList.history_contracts.length; index++) {
+				if(renameId == $scope.contractList.history_contracts[index].id) {
+					existingContractName = angular.copy($scope.contractList.history_contracts[index].contract_name);
+					break;
+				}
+			}
+			$scope.contractList.contractNameToChange = angular.copy(existingContractName);
+		};
+
+		// Cancel Rename mode
+		$scope.cancelRenameContract = function() {
+			$scope.contractList.isRenameMode = false;
+			$scope.addData.contract_name = "";
+			$scope.errorMessage = "";
+			checkContractListEmpty();
+		};
+
+
+		/*
+		 * To rename existing contract
+		 */
+		$scope.renameContract = function() {
+			$scope.updateRenamedContract();
+			$scope.contractList.isRenameMode = false;
+		};
+
+
+		/**
+		 * function used to save the changed contract name, it will save only if there is any
+		 * change found in the present contract name.
+		 */
+		$scope.updateRenamedContract = function() {
+			var renameContractFailureCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = data;
+				$scope.$parent.currentSelectedTab = 'cc-contracts';
+			};
+			var renameContractSuccessCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = "";
+				contractSelected = angular.copy($scope.contractList.contractSelected);
+				$scope.contractList.current_contracts = [];
+				$scope.contractList.future_contracts = [];
+				$scope.contractList.history_contracts = [];
+				$scope.fetchContracts();
+			};
+			if(existingContractName !== $scope.contractList.contractNameToChange) {
+				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
+				if ($stateParams.id === "add") {
+					var account_id = $scope.contactInformation.id;
+				} else {
+					var account_id = $stateParams.id;
+				}
+				data.contract_name = $scope.contractList.contractNameToChange;
+				$scope.invokeApi(RVCompanyCardSrv.updateContract, {
+					"account_id": account_id,
+					"contract_id": $scope.contractList.contractSelected,
+					"postData": data
+				}, renameContractSuccessCallback, renameContractFailureCallback);
+			}
+		};
+		/**
+		* To check if contract list is empty, to 
+		* decide whether or not to show rename button
+		*/
+		$scope.isContractListEmpty = function() {
+			if ($scope.contractList.current_contracts.length === 0 && $scope.contractList.future_contracts.length === 0 && $scope.contractList.history_contracts.length === 0) {
+				return true;
+			} else {
+				return false;
+			}
+		};
+
 		/**
 		 * recieving function for save contract with data
 		 */

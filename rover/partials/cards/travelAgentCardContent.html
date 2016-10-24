@@ -51,7 +51,7 @@
                             <figure ng-hide="travelAgent.logo == ''" class="guest-image">
                                     <img ng-src="{{travelAgent.logo}}"/>
                             </figure>
-                            <div class="data">
+                            <div class="data" ng-class = "{'no-email': escapeNull(travelAgent.email) === '', 'no-confirmation': escapeNull(travelAgent.address.postalCode) === '', 'no-address': escapeNull(travelAgent.account_address) === '', 'no-phone': escapeNull(travelAgent.phone) === ''}">
                                 <div class="info">
                                     <h2 ng-bind-html="getHighlightedHTML(travelAgent.account_name, searchData.travelAgentCard.travelAgentName)"></h2>
                                     <div class="rate" ng-show="travelAgent.rate">
@@ -60,11 +60,12 @@
                                     </div>
                                     <span ng-if="travelAgent.isMultipleContracts" class="icons icon-contracts">Multiple Contracts</span>
                                 </div>
+         
                                 <span class="confirmation">{{ travelAgent.address.postalCode }}</span>
-                                <span class="icons icon-location" ng-if="travelAgent.address.city != '' && travelAgent.address.city != null"> 
-                                    <span ng-bind-html="'getHighlightedHTML(travelAgent.address.city, searchData.travelAgentCard.travelAgentCity"></span>
-                                    <span ng-show="travelAgent.address.state">, </span>
-                                    {{ travelAgent.address.state }}
+                                <span class="icons icon-location" ng-if="travelAgent.account_address != '' "> 
+                                    
+                                    {{travelAgent.account_address}}
+                           
                                 </span>
                                 <span class="icons icon-phone" ng-if="travelAgent.phone != '' && travelAgent.phone != null">{{ travelAgent.phone }}</span>
                                 <span class="icons icon-email-grey" ng-if="travelAgent.email != '' && travelAgent.email != null">{{ travelAgent.email }}</span>
