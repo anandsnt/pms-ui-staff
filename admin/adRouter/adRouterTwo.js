@@ -623,4 +623,19 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 				}
 			}
 		});
+
+
+		$stateProvider.state('admin.zestWebCommon',{
+			templateUrl: '/assets/partials/zestwebCommonSettings/adZestwebCommonSettings.html',
+			controller : 'ADZestwebCommonSettingsCtrl',
+			url: '/zestWebCommonSettings',
+			resolve : {
+				zestWebCommonSettings : function (ADzestwebCommonSettingsSrv){
+					return ADzestwebCommonSettingsSrv.fetchSettings();
+				},
+				initialFooterSettings : function (ADzestwebCommonSettingsSrv){
+					return ADzestwebCommonSettingsSrv.fetchInitialFooterSettings();
+				}
+			}
+		});
 });
