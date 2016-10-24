@@ -15,7 +15,30 @@ angular.module('sntRover')
 
         BaseCtrl.call(this, $scope);
 
-        const roomsList = [{"id": 1, "room_number": 22, "room_type": "Deluxe KIng"}]
+        const diaryRenderData = {
+            "rooms_list": [{
+                "room_no": 112,
+                "room_type": "Deluxe Twin",
+                "room_status": "clean"
+            }, {
+                "room_no": 113,
+                "room_type": "Deluxe King",
+                "room_status": "clean"
+            }, {
+                "room_no": 114,
+                "room_type": "Loft XL",
+                "room_status": "clean"
+            }],
+            "reservations": [{
+                "room_no": 112,
+                "reservatio_start_date": 2222,
+                "reservatio_end_date": 245345,
+                "reservation_status": "in-house",
+                "number_of_days": "3",
+                "is_locked": true
+            }]
+
+        }
 
         var initialState = {
             mode: NIGHTLY_DIARY_SEVEN_MODE
@@ -41,7 +64,7 @@ angular.module('sntRover')
         );
         var initialDispatchData = {
             type: 'INITIAL_RENDERING',
-            roomsListData : roomsList
+            diaryRenderData : diaryRenderData
         };
         store.dispatch(initialDispatchData);
         /**
