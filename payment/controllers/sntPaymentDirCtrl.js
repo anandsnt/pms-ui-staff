@@ -253,7 +253,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         $scope.payLater = function() {
             $scope.$emit('PAY_LATER', {
                 paymentType: $scope.selectedPaymentType,
-                cardDetails: $scope.selectedCC
+                cardDetails: $scope.selectedCC,
+                addToGuestCard: $scope.payment.addToGuestCardSelected
             });
         };
 
