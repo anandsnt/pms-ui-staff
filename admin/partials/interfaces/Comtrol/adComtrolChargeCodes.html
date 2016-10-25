@@ -28,19 +28,6 @@
                                               label="{{'REVENUE_CENTER' | translate}}"
                                               class="full-width">
                             </ad-dropdown-name>
-                        </fieldset>
-                        <fieldset class="holder left float">
-                            <ad-dropdown-name label-in-drop-down="{{'CATEGORY_NAME_PLACEHOLDER' | translate}}"
-                                              savemodel="state.new.category_name"
-                                              valueproperty="code"
-                                              label-properties="['id','value']"
-                                              required="yes"
-                                              list="state.categories"
-                                              label="{{'CATEGORY_NAME' | translate}}"
-                                              class="full-width">
-                            </ad-dropdown-name>
-                        </fieldset>
-                        <fieldset class="holder right float">
                             <ad-dropdown-name label-in-drop-down="{{'SELECT_CHARGE_CODE_PLACEHOLDER' | translate}}"
                                               savemodel="state.new.charge_code_name"
                                               valueproperty="name"
@@ -51,6 +38,20 @@
                                               label="{{'CHARGE_CODE' | translate}}"
                                               class="full-width">
                             </ad-dropdown-name>
+                        </fieldset>
+                        <fieldset class="holder right float">
+                            <ad-dropdown-name label-in-drop-down="{{'CATEGORY_NAME_PLACEHOLDER' | translate}}"
+                                              savemodel="state.new.category_name"
+                                              valueproperty="code"
+                                              label-properties="['id','value']"
+                                              required="yes"
+                                              list="state.categories"
+                                              label="{{'CATEGORY_NAME' | translate}}"
+                                              class="full-width">
+                            </ad-dropdown-name>
+                            <ad-toggle-button is-checked="state.new.is_default"
+                                              label="{{'DEFAULT'| translate}}">
+                            </ad-toggle-button>
                         </fieldset>
                         <div class="actions float">
                             <button type="button" ng-click="onCancelAdd()" class="button blank edit-data-inline"
@@ -82,8 +83,18 @@
                     </td>
 
                     <td data-item="2" data-title="'Charge Code'" ng-click="onSelect($index, mapping)"
-                        header-class="width-30" ng-hide="state.selected === $index">
+                        header-class="width-20" ng-hide="state.selected === $index">
                         <a class="edit-data-inline">{{mapping.charge_code_name}}</a>
+                    </td>
+
+                    <td data-item="4" data-title="'Default'"
+                        header-class="width-10" ng-hide="state.selected === $index">
+                        <div class="entry">
+                            <div class="switch-button single" ng-class="{ on: mapping.is_default }">
+                                <input type="checkbox" id="rates-addons" name="rates-addons" ng-click="onToggleDefault(mapping)">
+                                <span class="switch-icon"></span>
+                            </div>
+                        </div>
                     </td>
 
                     <td header-class="width-10" data-title="'Delete'" class="delete"
@@ -91,7 +102,7 @@
                         <a class="icons icon-delete large-icon" ng-click="onClickDelete(mapping)"></a>
                     </td>
 
-                    <td colspan="4" ng-show="state.selected === $index">
+                    <td colspan="5" ng-show="state.selected === $index">
                         <div style="display: block;" id="add-new" class="edit-data">
                             <div class="data-holder">
                                 <!-- Edit Department -->
@@ -111,19 +122,6 @@
                                                           label="{{'REVENUE_CENTER' | translate}}"
                                                           class="full-width">
                                         </ad-dropdown-name>
-                                    </fieldset>
-                                    <fieldset class="holder left float">
-                                        <ad-dropdown-name label-in-drop-down="{{'CATEGORY_NAME_PLACEHOLDER' | translate}}"
-                                                          savemodel="mapping.category_name"
-                                                          valueproperty="code"
-                                                          label-properties="['id','value']"
-                                                          required="yes"
-                                                          list="state.categories"
-                                                          label="{{'CATEGORY_NAME' | translate}}"
-                                                          class="full-width">
-                                        </ad-dropdown-name>
-                                    </fieldset>
-                                    <fieldset class="holder right float">
                                         <ad-dropdown-name label-in-drop-down="{{'SELECT_CHARGE_CODE_PLACEHOLDER' | translate}}"
                                                           savemodel="mapping.charge_code_name"
                                                           valueproperty="name"
@@ -133,6 +131,20 @@
                                                           label="{{'CHARGE_CODE' | translate}}"
                                                           class="full-width">
                                         </ad-dropdown-name>
+                                    </fieldset>
+                                    <fieldset class="holder right float">
+                                        <ad-dropdown-name label-in-drop-down="{{'CATEGORY_NAME_PLACEHOLDER' | translate}}"
+                                                          savemodel="mapping.category_name"
+                                                          valueproperty="code"
+                                                          label-properties="['id','value']"
+                                                          required="yes"
+                                                          list="state.categories"
+                                                          label="{{'CATEGORY_NAME' | translate}}"
+                                                          class="full-width">
+                                        </ad-dropdown-name>
+                                        <ad-toggle-button is-checked="mapping.is_default"
+                                                          label="{{'DEFAULT'| translate}}">
+                                        </ad-toggle-button>
                                     </fieldset>
                                     <div class="actions float">
                                         <button type="button" ng-click="onCancelEdit()" class="button blank edit-data-inline"

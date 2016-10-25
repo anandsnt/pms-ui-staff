@@ -139,6 +139,15 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
             $scope.callAPI(adComtrolGenericMappingSrv.update, {
                 params: mapping,
                 successCallBack: function() {
+                    var similar_types;
+                    if (mapping.is_default) {
+                        similar_types = _.where($scope.mappings, {external_type: mapping.external_type});
+
+                        _.each(similar_types, function(obj) {
+                            obj.is_default = false
+                        });
+                        mapping.is_default = true;
+                    }
                     $scope.state.mode = "";
                     $scope.state.selected = null;
                 }
