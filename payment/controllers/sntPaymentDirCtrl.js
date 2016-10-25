@@ -683,6 +683,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $scope.feeData.totalOfValueAndFee = totalAmount.toFixed(2);
         };
 
+        $scope.propagateAddToggle = function() {
+            $scope.$emit('PAYMENT_TOGGLE_ATTACH_TO_GUEST_CARD', $scope.payment.addToGuestCardSelected);
+        };
+
         /**************** CC handling ********************/
         //if the selected card is clicked, go to card entry page
         $scope.onCardClick = function() {
