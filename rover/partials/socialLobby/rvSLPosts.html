@@ -57,7 +57,7 @@
                         <em class="icons icon-guest-allotment">allotment</em> -->
 
                         <!-- If not staff member, show Stay Card link -->
-                        <button type="button" class="button white brand-text small-button" ng-show="post.user_role == 'guest'" ng-click="goToStayCard(post.user.current_reservation_id)">Stay Card</button>
+                        <button type="button" class="button white brand-text small-button" ng-show="post.user_role == 'guest' && post.user.current_reservation_id != null" ng-click="goToStayCard(post.user.current_reservation_id, $event)">Stay Card</button>
                         <!-- If staff member post, output this instad of L64, L66 and L68:-->
                         <em class="icons icon-staff-blue" ng-show="post.user_role != 'guest'">Staff</em> 
                     </div>

@@ -1,7 +1,7 @@
 
 <div class='entry {{divClass}}'  ng-style="{{divStyle}}">
   <label class='{{labelClass}}' for='{{id}}' ng-hide="label.length==0">
-        {{labelClass}}{{label}}<strong ng-show = "required=='no'"> * </strong>
+        {{labelClass}}{{label}}<strong ng-show = "required=='yes'"> * </strong>
   </label>
   
   <div class='select'>
@@ -12,9 +12,17 @@
         {{labelInDropDown}}
         </option>
       
-      <option ng-repeat='row in list' value='{{row[valueproperty]}}' ng-show = "showOptionsIf($index)" ng-selected="ngModel == row[valueproperty]">
+      <option ng-if="!labelProperties" ng-repeat='row in list' value='{{row[valueproperty]}}' ng-show = "showOptionsIf($index)" ng-selected="ngModel == row[valueproperty]">
         {{prefixValue ? row[valueproperty] + " " + row[prop] : row[prop]}}
       </option>
+
+        <option ng-if="labelProperties"
+                ng-repeat='row in list'
+                value='{{row[valueproperty]}}'
+                ng-show = "showOptionsIf($index)"
+                ng-selected="ngModel == row[valueproperty]">
+            {{getLabel(row)}}
+        </option>
       
     </select>
       

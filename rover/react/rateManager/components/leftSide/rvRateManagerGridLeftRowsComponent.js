@@ -32,7 +32,7 @@ const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItem
 					showRightSpan = {item.showRightSpan}
 					rightSpanClassName = {item.rightSpanClassName}
 					accountName={item.accountName}
-					showDetails={item.showDetails}/>
+					showIndicator={item.showIndicator}/>
 			)			
 		}	
 		{isLastPage ? null :

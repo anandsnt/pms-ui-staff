@@ -467,7 +467,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
              *  - unless they are within the hour of the arrival time
              */
             $state.go('zest_station.checkinRoomError', {
-                'unavailable': true,
+                'early_checkin_unavailable': true,
                 'first_name': $scope.selectedReservation.guest_details[0].first_name
             });
         };
