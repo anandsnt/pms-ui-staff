@@ -17,25 +17,48 @@ angular.module('sntRover')
 
         const diaryRenderData = {
             "rooms_list": [{
-                "room_no": 112,
+                "room_no": "112",
                 "room_type": "Deluxe Twin",
                 "room_status": "clean"
             }, {
-                "room_no": 113,
+                "room_no": "113",
                 "room_type": "Deluxe King",
                 "room_status": "clean"
             }, {
-                "room_no": 114,
+                "room_no": "114",
                 "room_type": "Loft XL",
                 "room_status": "clean"
             }],
             "reservations": [{
-                "room_no": 112,
-                "reservatio_start_date": 2222,
-                "reservatio_end_date": 245345,
-                "reservation_status": "in-house",
-                "number_of_days": "3",
-                "is_locked": true
+                "room_no": "2323",
+                "reservations": [{
+                    "reservatio_start_date": 2222,
+                    "reservatio_end_date": 245345,
+                    "reservation_status": "in-house",
+                    "number_of_days": "3",
+                    "is_locked": true
+                }, {
+                    "reservatio_start_date": 2222,
+                    "reservatio_end_date": 245345,
+                    "reservation_status": "in-house",
+                    "number_of_days": "5",
+                    "is_locked": false
+                }]
+            }, {
+                "room_no": "113",
+                "reservations": [{
+                    "reservatio_start_date": 2222,
+                    "reservatio_end_date": 245345,
+                    "reservation_status": "in-house",
+                    "number_of_days": "3",
+                    "is_locked": true
+                }, {
+                    "reservatio_start_date": 2222,
+                    "reservatio_end_date": 245345,
+                    "reservation_status": "in-house",
+                    "number_of_days": "5",
+                    "is_locked": false
+                }]
             }]
 
         }
