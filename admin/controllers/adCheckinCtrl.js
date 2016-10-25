@@ -356,7 +356,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'numeric_answer_max_limit': $scope.checkinData.numeric_answer_max_limit,
       'survey_question_is_mandatory': $scope.checkinData.survey_question_is_mandatory,
       'survey_question_image' : angular.copy($scope.checkinData.survey_question_image),
-      'zestweb_collect_outstanding_balance' : $scope.checkinData.zestweb_collect_outstanding_balance
+      'zestweb_collect_outstanding_balance' : $scope.checkinData.zestweb_collect_outstanding_balance,
+      'zest_web_use_new_sent_to_que_action' : $scope.checkinData.zest_web_use_new_sent_to_que_action
     };
 
     if($scope.surveyQuestionImage === $scope.checkinData.survey_question_image){
