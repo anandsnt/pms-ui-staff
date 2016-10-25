@@ -48,10 +48,6 @@ angular.module('sntRover')
         const {render} = ReactDOM;
         const {Provider} = ReactRedux;
 
-       // import { render } from 'react-dom' // ← Main react library
-        // import { Provider } from 'react-redux' //← Bridge React and Redux
-        // import { createStore } from 'redux'
-        // import NightlyDiary from '../react/nightlyDiary/components/NightlyDiary'
 
         /**
          * to render the grid view
