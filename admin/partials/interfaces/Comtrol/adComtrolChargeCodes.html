@@ -30,10 +30,15 @@
                             </ad-dropdown-name>
                         </fieldset>
                         <fieldset class="holder left float">
-                            <ad-textbox styleclass="full-width" value="state.new.category_name"
-                                        label="{{'EXTERNAL_CODE' | translate}}"
-                                        required="yes"
-                                        placeholder="{{'EXTERNAL_CODE_PLACEHOLDER' | translate}}"></ad-textbox>
+                            <ad-dropdown-name label-in-drop-down="{{'CATEGORY_NAME_PLACEHOLDER' | translate}}"
+                                              savemodel="state.new.category_name"
+                                              valueproperty="code"
+                                              label-properties="['id','value']"
+                                              required="yes"
+                                              list="state.categories"
+                                              label="{{'CATEGORY_NAME' | translate}}"
+                                              class="full-width">
+                            </ad-dropdown-name>
                         </fieldset>
                         <fieldset class="holder right float">
                             <ad-dropdown-name label-in-drop-down="{{'SELECT_CHARGE_CODE_PLACEHOLDER' | translate}}"
@@ -71,9 +76,9 @@
                         header-class="width-30" ng-hide="state.selected === $index">
                         <a class="edit-data-inline">{{mapping.revenue_center_code}}</a>
                     </td>
-                    <td data-item="2" data-title="'External Code'" ng-click="onSelect($index, mapping)"
+                    <td data-item="2" data-title="'Category Name'" ng-click="onSelect($index, mapping)"
                         header-class="width-30" ng-hide="state.selected === $index">
-                        <a class="edit-data-inline">{{mapping.category_name}}</a>
+                        <a class="edit-data-inline">{{getCategoryName(mapping.category_name) || mapping.category_name}}</a>
                     </td>
 
                     <td data-item="2" data-title="'Charge Code'" ng-click="onSelect($index, mapping)"
@@ -108,10 +113,15 @@
                                         </ad-dropdown-name>
                                     </fieldset>
                                     <fieldset class="holder left float">
-                                        <ad-textbox styleclass="full-width" value="mapping.category_name"
-                                                    label="{{'EXTERNAL_CODE' | translate}}"
-                                                    required="yes"
-                                                    placeholder="{{'EXTERNAL_CODE_PLACEHOLDER' | translate}}"></ad-textbox>
+                                        <ad-dropdown-name label-in-drop-down="{{'CATEGORY_NAME_PLACEHOLDER' | translate}}"
+                                                          savemodel="mapping.category_name"
+                                                          valueproperty="code"
+                                                          label-properties="['id','value']"
+                                                          required="yes"
+                                                          list="state.categories"
+                                                          label="{{'CATEGORY_NAME' | translate}}"
+                                                          class="full-width">
+                                        </ad-dropdown-name>
                                     </fieldset>
                                     <fieldset class="holder right float">
                                         <ad-dropdown-name label-in-drop-down="{{'SELECT_CHARGE_CODE_PLACEHOLDER' | translate}}"

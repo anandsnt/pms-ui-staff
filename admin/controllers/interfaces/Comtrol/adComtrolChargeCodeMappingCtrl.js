@@ -1,5 +1,5 @@
-admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes', 'adComtrolChargeCodeMappingSrv', 'ngTableParams',
-    function($scope, mappedChargeCodes, adComtrolChargeCodeMappingSrv, ngTableParams) {
+admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes', 'adComtrolChargeCodeMappingSrv', 'COMTROL_REF',
+    function($scope, mappedChargeCodes, adComtrolChargeCodeMappingSrv, COMTROL_REF) {
 
         //private methods and variables
         var resetNew = function() {
@@ -128,6 +128,15 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
                 }
             });
         };
+
+        $scope.getCategoryName = function(externalCategoryName) {
+            var mappedExternalCode = _.find(COMTROL_REF.POS_POSTING_CATEGORIES, {
+                code: externalCategoryName
+            });
+
+            return mappedExternalCode && mappedExternalCode.value;
+        };
+
         //--------------------------------------------------------------------------------------------------------------
         /**
          * Initialization method for the controller
@@ -136,6 +145,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
             $scope.state = {
                 revCenters: null,
                 chargeCodes: null,
+                categories: COMTROL_REF.POS_POSTING_CATEGORIES,
                 deletedCount: 0,
                 selected: null,
                 mode: "",

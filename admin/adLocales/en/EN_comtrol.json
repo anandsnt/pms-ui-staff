@@ -18,4 +18,6 @@
 "ADD_GENERIC_MAPPING": "Add Generic Mapping",
 "EDIT_GENERIC_MAPPING": "Edit Generic Mapping",
 "ADD_ROOM_MAPPING": "Add Room Mapping",
-"EDIT_ROOM_MAPPING" : "Edit Room Mapping"
+"EDIT_ROOM_MAPPING" : "Edit Room Mapping",
+"CATEGORY_NAME_PLACEHOLDER": "Select Category Name",
+"CATEGORY_NAME": "Category Name"
