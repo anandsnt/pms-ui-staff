@@ -85,7 +85,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         }
 
         $scope.goToStayCard = function(reservation_id, event){
-            event.preventDefault();
+            event.stopPropagation();
             $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
                 id: reservation_id,
                 isrefresh: false
