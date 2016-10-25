@@ -74,7 +74,7 @@
                     </h4>
                 </div>
             </div>
-            <button type="button" class="button white icons icon-remove-10" ng-click="deletePost(post.id)">Delete</button>
+            <button type="button" class="button white icons icon-remove-10" ng-click="deletePostClicked(post.id)">Delete</button>
 
             <!-- If post has replies-->
             <div class="conversation " ng-show="post.id == selectedPost.id"> <!-- Toggle class 'hidden' to show/hide when L55 is tapped/clicked -->
@@ -129,7 +129,7 @@
         <button type="button" class="button prev" ng-show= "postParams.page != 1" ng-click="paginatePosts(postParams.page -1)">Prev</button> 
         
         <!-- First page, always show it -->
-        <button type="button" class="button dark-grey number" ng-class="{'active': 1 == postParams.page}" >1</button> 
+        <button type="button" class="button dark-grey number" ng-click="paginatePosts(1)" ng-class="{'active': 1 == postParams.page}" >1</button> 
 
         <!-- If not first page, and there's more than 5 pages to show, show this:-->
         <span class="delimiter post-delimiter" ng-show="middle_page1 > 2 && totalPostPages > 5">...</span> 
@@ -137,20 +137,20 @@
         <!-- Next 3 page numbers -->
         <!-- <button type="button" class="button dark-grey number active" ng-show="totalPostPages == 1">{{postParams.page }}</button>
         <button type="button" class="button dark-grey number active" ng-show="totalPostPages > 2">{{postParams.page >= totalPostPages -2 ? postParams.page -2 : postParams.page }}</button> -->
-        <button type="button" class="button dark-grey number"  ng-show="totalPostPages > 2" ng-class="{'active': middle_page1 == postParams.page}" >{{middle_page1 }}</button>
+        <button type="button" class="button dark-grey number" ng-click="paginatePosts(middle_page1)" ng-show="totalPostPages > 2" ng-class="{'active': middle_page1 == postParams.page}" >{{middle_page1 }}</button>
 
 
         <!-- <button type="button" class="button dark-grey number" ng-show="totalPostPages > 2" >{{postParams.page == totalPostPages ? postParams.page -1 : postParams.page + 1}}</button>
         <button type="button" class="button dark-grey number" ng-show="totalPostPages == 2" >{{postParams.page == totalPostPages ? postParams.page : postParams.page + 1}}</button> -->
 
-        <button type="button" class="button dark-grey number"  ng-show="totalPostPages > 3" ng-class="{'active': middle_page2 == postParams.page}" >{{middle_page2 }}</button>
+        <button type="button" class="button dark-grey number" ng-click="paginatePosts(middle_page2)"  ng-show="totalPostPages > 3" ng-class="{'active': middle_page2 == postParams.page}" >{{middle_page2 }}</button>
 
 
-        <button type="button" class="button dark-grey number"  ng-show="totalPostPages > 4" ng-class="{'active': middle_page3 == postParams.page}">{{middle_page3 }}</button>
+        <button type="button" class="button dark-grey number"  ng-click="paginatePosts(middle_page3)" ng-show="totalPostPages > 4" ng-class="{'active': middle_page3 == postParams.page}">{{middle_page3 }}</button>
 
         <!-- If not last page, and there's more than 5 pages to show, show this:-->
         <span class="delimiter post-delimiter" ng-show="middle_page3 < (totalPostPages - 1) && totalPostPages > 5">...</span> 
-        <button type="button" class="button dark-grey number"  ng-class="{'active' : postParams.page == totalPostPages }">{{totalPostPages}}</button>
+        <button type="button" class="button dark-grey number" ng-click="paginatePosts(totalPostPages)"  ng-class="{'active' : postParams.page == totalPostPages }">{{totalPostPages}}</button>
 
         <!-- If not last page, show next button:-->
         <button type="button" class="button next" ng-click="paginatePosts(postParams.page +1)" ng-show= "postParams.page != totalPostPages ">Next</button> 
