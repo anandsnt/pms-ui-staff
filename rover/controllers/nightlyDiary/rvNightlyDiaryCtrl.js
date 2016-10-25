@@ -23,7 +23,7 @@ angular.module('sntRover')
             }, {
                 "room_no": "113",
                 "room_type": "Deluxe King",
-                "room_status": "clean"
+                "room_status": "dirty"
             }, {
                 "room_no": "114",
                 "room_type": "Loft XL",

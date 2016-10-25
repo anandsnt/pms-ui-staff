@@ -5,8 +5,8 @@ const NightlyDiaryRoomsListComponent = ({ roomListToComponent }) => {
             <div className="info">
 
                {
-                roomListToComponent.roomsList.map((item, index) =>
-                    <div>
+                roomListToComponent.map((item, index) =>
+                    <div style={item.room_class}>
                     {item.room_type}
                     </div>
                     )
