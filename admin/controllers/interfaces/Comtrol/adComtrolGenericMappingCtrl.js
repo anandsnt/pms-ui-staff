@@ -153,6 +153,15 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                 }
             });
         };
+
+        $scope.getChargeCodeDescription = function(chargeCodeName) {
+            var chargeCode = _.find($scope.state.chargeCodes, {
+                name: chargeCodeName
+            });
+
+            return chargeCode && chargeCode.description;
+        };
+
         //-------------------------------------------------------------------------------------------------------------- DELETE
         /**
          * Method to delete a Generic Mapping
@@ -198,6 +207,10 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                     is_default: false
                 }
             };
+
+            if (genericMappings.length) {
+                loadMetaList();
+            }
 
             $scope.mappings = genericMappings;
         })();

@@ -74,8 +74,11 @@
                 <tbody>
                 <tr ng-repeat="mapping in mappings track by $index" ng-hide="mapping.isDeleted">
                     <td data-item="1" data-title="'Revenue Center'" ng-click="onSelect($index, mapping)"
-                        header-class="width-30" ng-hide="state.selected === $index">
-                        <a class="edit-data-inline">{{mapping.revenue_center_code}}</a>
+                        header-class="width-20" ng-hide="state.selected === $index">
+                        <a class="edit-data-inline">
+                            {{mapping.revenue_center_code}}
+                            <em>{{getRevenueCenterName(mapping.revenue_center_code)}}</em>
+                        </a>
                     </td>
                     <td data-item="2" data-title="'Category Name'" ng-click="onSelect($index, mapping)"
                         header-class="width-30" ng-hide="state.selected === $index">
@@ -83,8 +86,11 @@
                     </td>
 
                     <td data-item="2" data-title="'Charge Code'" ng-click="onSelect($index, mapping)"
-                        header-class="width-20" ng-hide="state.selected === $index">
-                        <a class="edit-data-inline">{{mapping.charge_code_name}}</a>
+                        header-class="width-30" ng-hide="state.selected === $index">
+                        <a class="edit-data-inline">
+                            {{mapping.charge_code_name}}
+                            <em>{{getChargeCodeDescription(mapping.charge_code_name)}}</em>
+                        </a>
                     </td>
 
                     <td data-item="4" data-title="'Default'"

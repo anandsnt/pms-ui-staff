@@ -92,7 +92,10 @@
 
                     <td data-item="3" data-title="'Charge Code'" ng-click="onSelect($index, mapping)"
                         header-class="width-30" ng-hide="state.selected === $index">
-                        <a class="edit-data-inline">{{mapping.charge_code_name}}</a>
+                        <a class="edit-data-inline">
+                            {{mapping.charge_code_name}}
+                            <em>{{getChargeCodeDescription(mapping.charge_code_name)}}</em>
+                        </a>
                     </td>
 
                     <td data-item="4" data-title="'Default'"

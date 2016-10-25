@@ -153,6 +153,22 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
             return mappedExternalCode && mappedExternalCode.value;
         };
 
+        $scope.getRevenueCenterName = function(revenueCenterCode) {
+            var revenueCenter = _.find($scope.state.revCenters, {
+                code: revenueCenterCode
+            });
+
+            return revenueCenter && revenueCenter.name;
+        };
+
+        $scope.getChargeCodeDescription = function(chargeCodeName) {
+            var chargeCode = _.find($scope.state.chargeCodes, {
+                name: chargeCodeName
+            });
+
+            return chargeCode && chargeCode.description;
+        };
+
         $scope.onToggleDefault = function(mapping) {
             /**
              * In case, the user is turning one entry from a type as default
@@ -194,7 +210,12 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
                 }
             };
 
+            if (mappedChargeCodes.length) {
+                loadMetaList();
+            }
+
             $scope.mappings = mappedChargeCodes;
+
         })();
     }
 ]);
