@@ -421,6 +421,18 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				}
 			}
 
+			// let the date update if it is future group as well is in edit mode
+			else if (!$scope.isInAddMode() && !refData.is_a_past_group){
+				$timeout(function() {
+					$scope.updateGroupSummary();
+				}, 100);
+			}
+
+			// CICO-34261
+			if (newBlockFrom > new tzIndependentDate(refData.release_date)) {
+				$scope.groupConfigData.summary.release_date = newBlockFrom;
+			}
+
 			//setting the min date for end Date
 			$scope.toDateOptions.minDate = refData.block_from;
 
@@ -512,8 +524,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 
 			// CICO-34261
-			if (newBlockTo < refData.release_date) {
-				$scope.groupConfigData.summary.release_date = newBlockTo;
+			if (newBlockTo < new tzIndependentDate(refData.release_date)) {
+				$scope.groupConfigData.summary.release_date = refData.block_from;
 			}
 			$scope.releaseDateOptions.maxDate = newBlockTo;
 			runDigestCycle();

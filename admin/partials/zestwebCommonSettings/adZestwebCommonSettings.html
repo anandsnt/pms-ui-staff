@@ -1,0 +1,60 @@
+<section id="replacing-div-fourth" class="content current admin-scrollfix" div-touch-move-stop-propogate>
+    <div ng-click="clearErrorMessage()">
+        <header class="content-title float">
+            <h2>Zest Web Common Settings</h2>
+            <a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()">Back</a>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+            <form class="form zest-web-settins-form float">
+                <div class="form-title full-width">
+                    <h3><span> Zest Web Footer setup</span></h3>
+                </div>
+                <div class="form-subtitle-title margin-bottom-50">
+                    <h6><span>Customize what appears in the footer on Zest Web pages</span></h6>
+                </div>
+                <fieldset class="holder left">
+                    <ad-toggle-button is-checked="zestCommonSettings.zest_web_footer_settings.display_footer" label="Display Footer"></ad-toggle-button>
+                    <div class="entry entry-color-picker full-width">
+                        <label>Footer Color</label>
+                        <ui-colorpicker ng-model="zestCommonSettings.zest_web_footer_settings.footer_color"></ui-colorpicker>
+                        <input ng-model="zestCommonSettings.zest_web_footer_settings.footer_color">
+                    </div>
+                    <div class="entry full-width">
+                        <div class="form-title full-width">
+                            <h3><span> Footer Text 1</span></h3>
+                        </div>
+                        <ad-toggle-button is-checked="footer1.is_active" label="Display"></ad-toggle-button>
+                        <ad-textbox value="footer1.label" label="Label" styleclass="full-width" placeholder=""></ad-textbox>
+                        <ad-textbox value="footer1.url" label="URL" styleclass="full-width" placeholder=""></ad-textbox>
+                    </div>
+                    <div class="entry full-width">
+                        <div class="form-title full-width">
+                            <h3><span> Footer Text 2</span></h3>
+                        </div>
+                        <ad-toggle-button is-checked="footer2.is_active" label="Display"></ad-toggle-button>
+                        <ad-textbox value="footer2.label" label="Label" styleclass="full-width" placeholder=""></ad-textbox>
+                        <ad-textbox value="footer2.url" label="URL" styleclass="full-width" placeholder=""></ad-textbox>
+                    </div>
+                    <div class="entry full-width">
+                        <div class="form-title full-width">
+                            <h3><span> Footer Text 3</span></h3>
+                        </div>
+                        <ad-toggle-button is-checked="footer3.is_active" label="Display"></ad-toggle-button>
+                        <ad-textbox value="footer3.label" label="Label" styleclass="full-width" placeholder=""></ad-textbox>
+                        <ad-textbox value="footer3.url" label="URL" styleclass="full-width" placeholder=""></ad-textbox>
+                    </div>
+                </fieldset>
+                <div class="actions float">
+                    <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
+                        CANCEL
+                    </button>
+                    <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
+                        SAVE_CHANGES
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+</section>
