@@ -35,7 +35,7 @@ angular
             reduxAssets: function(jsMappings, reactAssets) {
                 return jsMappings.fetchAssets(['redux.files']);
             },
-            diaryAssets: function(jsMappings, mappingList) {
+            diaryAssets: function(jsMappings, reduxAssets) {
                 return jsMappings.fetchAssets(['rover.nightlyDiary']);
             }
         }
