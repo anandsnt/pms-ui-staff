@@ -21,9 +21,9 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'mappedChargeCodes
                     successCallBack: function(response) {
                         $scope.state.revCenters = response.revCenters;
                         $scope.state.chargeCodes = response.chargeCodes;
-                        cb();
+                        cb && cb();
                     }
-                })
+                });
             };
 
         //scope method and variables

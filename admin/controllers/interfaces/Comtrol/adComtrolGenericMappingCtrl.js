@@ -20,9 +20,9 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                 $scope.callAPI(adComtrolGenericMappingSrv.fetchMeta, {
                     successCallBack: function(response) {
                         $scope.state.chargeCodes = response.chargeCodes;
-                        cb();
+                        cb && cb();
                     }
-                })
+                });
             };
 
         //scope method and variables
