@@ -13,35 +13,39 @@ var DailyProductionByDemographicsTableHeader = React.createClass({
                 React.DOM.th(
                     {
                         className: header.showAvailable ? '' : 'hidden',
-                        style: { whiteSpace: 'nowrap' }
+						style: { whiteSpace: 'nowrap' }
                     },
                     'Rooms Occ'
                 ),
 
                 React.DOM.th(
                     {
-                        className: (header.showAvailable ? '' : 'hidden') + (!header.showRevenue ? ' day-end' : '')
+                        className: (header.showAvailable ? '' : 'hidden') + (!header.showRevenue ? ' day-end' : ''),
+						style: { whiteSpace: 'nowrap' }
                     },
                     'Rooms Available'
                 ),
 
                 React.DOM.th(
                     {
-                        className: header.showRevenue ? '' : 'hidden'
+                        className: header.showRevenue ? '' : 'hidden',
+						style: { whiteSpace: 'nowrap' }
                     },
                     'Forecast Room Revenue'
                 ),
 
                 React.DOM.th(
                     {
-                        className: header.showRevenue ? '' : 'hidden'
+                        className: header.showRevenue ? '' : 'hidden',
+						style: { whiteSpace: 'nowrap' }
                     },
                     'ADR'
                 ),
 
                 React.DOM.th(
                     {
-                        className: header.showRevenue ? 'day-end' : 'hidden'
+                        className: header.showRevenue ? 'day-end' : 'hidden',
+						style: { whiteSpace: 'nowrap' }
                     },
                     'Actual Room Revenue'
                 )
