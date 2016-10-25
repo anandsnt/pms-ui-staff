@@ -6,7 +6,9 @@ const NightlyDiaryRoomsListComponent = ({ roomListToComponent }) => {
 
                {
                 roomListToComponent.roomsList.map((item, index) =>
-                    <div>{item.room_type}</div>
+                    <div>
+                    {item.room_type}
+                    </div>
                     )
                }
             </div>
