@@ -8,7 +8,7 @@
                 <input id="email-entry" type="text" ng-focus="showOnScreenKeyboard('email-entry')" click-touch="showOnScreenKeyboard('email-entry')" class="start-focused" ng-keydown="resetTime()" ng-model='email' enter-press="goToNext()" value="" touch-press />
             </div>
             <div class="entry action">
-                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': email.length < 1}" translate>NEXT_BTN</button>
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': email.length < 1}">{{'NEXT_BTN' | translate}}</button>
             </div>
         </form>
     </div>
@@ -25,13 +25,13 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    Re-Type
+                    {{'RE_TYPE' | translate}}
                     <span>"{{email}}"</span>
                 </li>
             </ul>
         </nav>
         <div id="actions" class="align-right">
-            <button type="button" class="button transparent" click-touch="skipEmail()">Skip This</button>
+            <button type="button" class="button transparent" click-touch="skipEmail()">{{'SKIP_BTN' | translate}}</button>
         </div>
     </div>
 </section>

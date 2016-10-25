@@ -453,12 +453,12 @@ sntRover.controller('RVbillCardController',
 		 * Check in HTML moveToBillAction
 		 */
 		angular.forEach(reservationBillData.bills, function(value, key) {
-
-
-
+			var billTabsData = $scope.reservationBillData.bills;
 			//To handle fees open/close
 			value.isOpenFeesDetails = false;
-			if(key === 0 && $scope.clickedButton === "viewBillButton"){
+			//CICO-33934 fix to set flag for current active tab.
+			//CICO-35134 fix.
+			if((key === 0 && $scope.clickedButton === "viewBillButton") || (!!billTabsData[key] && billTabsData[key].isOpenFeesDetails)){
 				value.isOpenFeesDetails = true;
 			}
 			value.hasFeesArray = true;

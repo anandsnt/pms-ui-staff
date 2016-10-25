@@ -1,19 +1,18 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
-    <div id="content" ng-if="!unavailable">
-        <h1 translate>TALK_TO_STAFF</h1>
-        <h2 translate>ROOM_NOT_AVAIL_MSG</h2>
+    <div id="content" ng-show="early_checkin_unavailable != 'true'">
+        <h1>{{'TALK_TO_STAFF' |translate}}</h1>
+        <h2>{{'ROOM_NOT_AVAIL_MSG' |translate}}</h2>
         <!-- General error -->
-        <button type="button" class="button" touch-press="clickedOnCloseButton()" translate>DONE_BTN</button>
-        
+        <button type="button" class="button" touch-press="clickedOnCloseButton()">{{'DONE_BTN' |translate}}</button>
     </div>
-
     <!-- Early Checkin Unavailable, too early to check-in -->
-    <div id="message" ng-if="unavailable">
-        <h1 translate>CHECKIN_TOO_EARLY</h1>
-        <h2 class="nocaps" translate>CHECKIN_TOO_EARLY_SUB_HEADER</h2>
-        <h3 translate>CHECKIN_TOO_EARLY_SUB_MSG</h3>
-        <button type="button" class="button" touch-press='clickedOnCloseButton()' translate>CHECKIN_TOO_EARLY_DONE</button>
+    <div id="message" ng-show="early_checkin_unavailable == 'true'">
+        <h1>{{'CHECKIN_TOO_EARLY' |translate}}</h1>
+        <h2 class="nocaps">
+        {{'CHECKIN_TOO_EARLY_SUB_HEADER' |translate}}</h2>
+        <h3>{{'CHECKIN_TOO_EARLY_SUB_MSG' |translate}}</h3>
+        <button type="button" class="button" touch-press='clickedOnCloseButton()'>{{'CHECKIN_TOO_EARLY_DONE' |translate}}</button>
     </div>
     
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" ></span>
-</section>
+</section>g

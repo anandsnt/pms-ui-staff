@@ -506,6 +506,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/intefaceMappingsList'
 		});
 
+		$stateProvider.state('admin.ifcComtrolSetup', {
+			templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+			controller: 'ADInterfaceSubMenuCtrl',
+			url : '/comtrolSetup'
+		});
+
 		$stateProvider.state('admin.backOfficeSetup', {
 			templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
 			controller: 'ADInterfaceSubMenuCtrl',
