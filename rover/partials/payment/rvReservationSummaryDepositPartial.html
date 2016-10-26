@@ -10,7 +10,7 @@
     </label>
 </div>
 
-<div class="deposit" ng-class="{'notice' : !paymentAttempted }" ng-show="payment.amount != 0">
+<div class="deposit" ng-class="{'notice' : !paymentAttempted }" ng-show="onlyPaymentSelection">
     <section ng-if="!paymentAttempted">
         <p>Deposit required: <strong>{{depositPolicyName}}</strong>.</p>
 
