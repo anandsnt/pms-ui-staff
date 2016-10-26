@@ -180,8 +180,9 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		};
 		
 
-		/****** TO MODIFY ********/
-		$rootScope.bypassCheckinVerification = false;
+		//check if we are using new send to que settings.
+		$rootScope.bypassCheckinVerification = (reservationAndhotelData.is_sent_to_que === 'true' 
+		           && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action);
 
 
 		if (typeof reservationAndhotelData.accessToken !== "undefined") {
