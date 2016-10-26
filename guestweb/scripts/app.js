@@ -171,6 +171,16 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.checkin_later_text = 
 		(reservationAndhotelData.zest_checkin_later_text !== null && typeof reservationAndhotelData.zest_checkin_later_text !== "undefined" && reservationAndhotelData.zest_checkin_later_text.length>0) ? reservationAndhotelData.zest_checkin_later_text :"Arriving Later";
 
+
+		if(reservationAndhotelData.is_sent_to_que === 'true' 
+		           && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action){
+			//even though this is sent to que, the  flag name in 
+			//next screens are isAutoCheckinOn. So setting that as true
+			$rootScope.isAutoCheckinOn = true;
+		};
+		
+
+
 		if (typeof reservationAndhotelData.accessToken !== "undefined") {
 			$rootScope.accessToken = reservationAndhotelData.accessToken;
 		}
