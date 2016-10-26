@@ -253,7 +253,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         $scope.payLater = function() {
             $scope.$emit('PAY_LATER', {
                 paymentType: $scope.selectedPaymentType,
-                cardDetails: $scope.selectedCC
+                cardDetails: $scope.selectedCC,
+                addToGuestCard: $scope.payment.addToGuestCardSelected
             });
         };
 
@@ -680,6 +681,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         $scope.onFeeOverride = function() {
             var totalAmount = parseFloat($scope.feeData.calculatedFee) + parseFloat($scope.payment.amount);
             $scope.feeData.totalOfValueAndFee = totalAmount.toFixed(2);
+        };
+
+        $scope.propagateAddToggle = function() {
+            $scope.$emit('PAYMENT_TOGGLE_ATTACH_TO_GUEST_CARD', $scope.payment.addToGuestCardSelected);
         };
 
         /**************** CC handling ********************/
