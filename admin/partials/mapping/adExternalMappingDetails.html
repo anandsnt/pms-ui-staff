@@ -32,8 +32,11 @@
                 <div class="entry external" ng-if="editData.externalValues">
                     <label for="external-value-list"> External Value <strong>*</strong> </label>
                     <div class="select" id="external-value-list">
-                        <select ng-model="editData.external_value" ng-options="option.value as option.description for option in editData.externalValues">
+                        <select ng-model="editData.external_value">
                             <option ng-disabled="true" value="">External Value</option>
+                            <option ng-repeat="externalValue in externalValues" value="{{externalValue.name}}" ng-selected="editData.external_value == externalValue.name">
+                                {{externalValue.description}}
+                            </option>
                         </select>
                     </div>
                 </div>
