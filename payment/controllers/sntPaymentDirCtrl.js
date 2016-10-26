@@ -1045,6 +1045,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $timeout($scope.onPaymentInfoChange, 1000);
 
             setScroller('cardsList', {'click': true, 'tap': true});
+
+            $scope.$watch('payment.screenMode', ()=>{
+                $scope.$emit('PAYMENT_SCREEN_MODE_CHANGED', $scope.payment.screenMode);
+            });
         })();
 
     }

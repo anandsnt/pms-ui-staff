@@ -1584,12 +1584,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.reservationData.depositData = angular.copy($scope.depositData);
 
             $scope.paymentErrorMessage = errorMessage[0];
+            $scope.errorMessage = errorMessage;
             runDigestCycle();
             $scope.$emit('hideLoader');
         });
 
         $scope.$on('PAYMENT_TOGGLE_ATTACH_TO_GUEST_CARD', function(e, addToGuestCard) {
             $scope.addToGuestCard = addToGuestCard;
+        });
+
+        $scope.$on('PAYMENT_SCREEN_MODE_CHANGED', function(){
+            $timeout(function() {
+                $scope.refreshScroller('paymentInfo');
+            }, 300);
+
         });
 
         $scope.init();
