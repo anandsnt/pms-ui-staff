@@ -1560,17 +1560,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.reservationData.selectedPaymentId = data.cardDetails.value;
             $scope.reservationData.paymentType.type.value = data.paymentType;
             savePayment($scope.confirmReservation, data.addToGuestCard);
-            if (data.paymentType === 'CC' && data.addToGuestCard) {
-                addToGuestCard(data.cardDetails);
-            }
         });
 
         $scope.$on("PAYMENT_SUCCESS", function(e, data) {
             // On continue on create reservation - add to guest card - to fix undefined issue on tokendetails
             if ($scope.reservationData.paymentType.type.value !== "CC") {
                 $scope.isNewCardAdded = false;
-            } else if (data.add_to_guest_card) {
-                addToGuestCard(data.cc_details);
             }
             $scope.depositData.attempted = true;
             $scope.depositData.depositSuccess = true;
