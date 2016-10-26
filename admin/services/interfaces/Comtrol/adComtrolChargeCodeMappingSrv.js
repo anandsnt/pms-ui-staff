@@ -76,7 +76,8 @@ admin.service('adComtrolChargeCodeMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             return ADBaseWebSrvV2.putJSON(baseUrl + "/" + mapping.id, {
                 revenue_center_code: mapping.revenue_center_code,
                 category_name: mapping.category_name,
-                charge_code_name: mapping.charge_code_name
+                charge_code_name: mapping.charge_code_name,
+                is_default: mapping.is_default
             });
         };
 
