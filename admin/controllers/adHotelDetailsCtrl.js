@@ -269,6 +269,13 @@ admin.controller('ADHotelDetailsCtrl', [
 	};
 
 	/**
+	 * Toggle the OWS logging
+	 */
+	$scope.toggleOWSLogging = function() {
+		$scope.data.is_ows_logging_enabled = !$scope.data.is_ows_logging_enabled;
+	};
+
+	/**
     *   to test MLI connectivity.
     */
 
