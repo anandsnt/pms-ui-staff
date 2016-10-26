@@ -180,6 +180,9 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		};
 		
 
+		/****** TO MODIFY ********/
+		$rootScope.bypassCheckinVerification = false;
+
 
 		if (typeof reservationAndhotelData.accessToken !== "undefined") {
 			$rootScope.accessToken = reservationAndhotelData.accessToken;

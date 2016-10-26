@@ -43,11 +43,30 @@
 				return deferred.promise;
 			};
 
+			var fetchCheckinVerificationBypassReservationData =  function(data){
+				var deferred = $q.defer();
+				data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
+				var url = '/sample_json/zestweb_v2/checkin_bypass_data.json';
+				$http.get(url,{params: data}).success(function(response) {
+					if(response.status === "success"){
+						deferred.resolve(response.data);			
+					}
+					else{
+						deferred.reject();
+					}
+				}.bind(this))
+				.error(function() {
+					deferred.reject();
+				});
+				return deferred.promise;
+			};
+
 			return {
 				responseData: responseData,
 				login : login,
 				searchReservation:searchReservation,
-				getToken:getToken
+				getToken:getToken,
+				fetchCheckinVerificationBypassReservationData : fetchCheckinVerificationBypassReservationData
 			};
 		};
 
