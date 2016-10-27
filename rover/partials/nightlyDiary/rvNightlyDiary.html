@@ -1,8 +1,70 @@
 <!-- Diary header -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
-<section id="diary-content" class="content diary-content" role="main">
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div class="diary-nightly-search-form">
+        <!-- Refresh -->
+        <div class="entry reset">
+            <button type="button" class="button white with-icon only-icon">
+                <span class="icons icon-reset"></span>
+            </button>
+        </div>
 
-    <div id="nightlyDiaryMain"></div>
-</section>
+        <!-- Set start date -->
+        <div class="entry date">
+            <button type="button" class="button white with-icon only-icon">
+                <span class="icons icon-double-arrow black"></span>
+            </button>
+            <div class="entry-data">
+                <input type="text" class="datepicker" value="" readonly />
+                <span class="date-range"></span>
+            </div>
+            <button type="button" class="button white with-icon only-icon">
+                <span class="icons icon-double-arrow black rotate-right"></span>
+            </button>
+        </div>
+
+        <!-- Find reservation -->
+        <div class="entry search">
+            <button class="clear-query"> <!-- Add class 'visible' when searching. Tap clears L25 value and removes search. -->
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <!--- Show count when searching:
+            <span class="result-count">{X} Matches</span> -->
+            <input class="query" placeholder="Search by Guest, Allotment/Group or Conf./Ext. red no." type="search" autocomplete="off">
+
+            <!-- Search results, show only when searching: -->
+
+        </div>
+
+        <!-- 7 or 21 Days -->
+        <div class="entry switch">
+            <div class="switch-button on"> <!-- Class 'on' is default, it means L75 is checked and we're showing 7 days. Remove it if L75 unckeched, meaning we're showing 21 days -->
+                <input value="" type="checkbox" checked>
+                <label class="data-off">
+                    <span class="value">7 Days</span>
+                    <span class="switch-icon">21 Days</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">7 Days</span>
+                    <span class="value">21 Days</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Show / Hide Filters -->
+        <div class="entry filters">
+            <button type="button" class="button white with-icon only-icon">
+                <span class="count">33</span>
+                <span class="icons icon-filter-room"></span>
+            </button>
+            <button type="button" class="button white with-icon only-icon">
+                <span class="count">4</span>
+                <span class="icons icon-filter"></span>
+            </button>
+        </div>
+    </div>
+
+     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+    <section id="nightlyDiaryMain" class="content diary-days-7" role="main">
+    </section>

@@ -1,9 +1,11 @@
 const NightlyDiaryRoomsListComponent = ({ roomListToComponent }) => {
 
     return (
-        <div id='rate-manager-not-configured' className='no-content'>
-            <div className="info">
 
+        <div className="grid-room-search-results visible">
+        {/*<!-- Room Search Results above line -->*/}
+        {/*<!-- Add class 'visible' to show -->*/}
+            <div className="wrapper">
                {
                 roomListToComponent.map((item, index) =>
                     <div style={item.room_class}>
