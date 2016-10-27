@@ -12,13 +12,17 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             }
         });
 
+
         //company card details
         $stateProvider.state('rover.companycarddetails', {
             url: '/companycard/:type/:id/:query/:isBackFromStaycard/:origin',
             templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
             controller: 'companyCardDetailsController',
             resolve: {
-                loadPaymentModule: function (jsMappings) {
+                loadPaymentMapping: function (jsMappings) {
+                    return jsMappings.loadPaymentMapping();
+                },
+                loadPaymentModule: function (jsMappings, loadPaymentMapping) {
                     return jsMappings.loadPaymentModule();
                 },
                 comapanycardDetailsAssets: function(jsMappings, loadPaymentModule) {

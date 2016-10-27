@@ -120,4 +120,33 @@ var returnMonthsArray = function() {
     'name': 'DEC',
     'value': '12'
   }];
+};
+
+var applyStyle = function(styleString){
+  //set zestweb footer color based on admin settings
+    var css = document.createElement("style");
+    css.type = "text/css";
+    css.innerHTML = styleString;
+    document.body.appendChild(css);
+};
+
+var applyFooterStyle = function(footer_color){
+    var styleString = "#zest-footer a{  color :"+ footer_color + " !important;}";
+    //body and HTML tags were given auto height in some themes(almost 40 themes),
+    //so in order to override all these, we needed to add this line of code here
+    styleString = styleString + " body,html{ height : 100% !important;} ";
+    applyStyle(styleString);
+};
+
+var returnFooterStyleClass = function(footerCount) {
+  var footerClass = "";
+  // based upon number of footer items, set a class for styling
+  if (footerCount === 3) {
+    footerClass = "triple-footer";
+  } else if (footerCount === 2) {
+    footerClass = "double-footer";
+  } else {
+    footerClass = "single-footer";
+  }
+  return footerClass;
 }

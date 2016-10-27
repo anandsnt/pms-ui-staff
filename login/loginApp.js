@@ -79,28 +79,33 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 		 	}
         }
 	 	
-        // if(sntapp.loginUpdate != null){
-	       //  /**
-	       //  * Passing user Login ID to native, for debugging on ipads
-	       //  */
-	       //  var args = [];
-	       //  args.push($scope.data.email);        
-	       //  var options = {
-	       //    //Cordova write success callback
-	       //    'successCallBack': navigateToRover,
-	       //    'failureCallBack': navigateToRover,
-	       //    arguments: args
-	       //  }; 
-	       //  sntapp.loginUpdate.setUserId(options); 
-	       //  /**END
-        // 	* Passing user login to native, for debugging  */
-        // }else{
-        // 	/**
-	       //  * There is no native component, so just move to rover without passing Login ID.
-	       //  */
-        // 	navigateToRover();    
-        // }*/
-        navigateToRover(); 
+        if(sntapp.loginUpdate != null){
+	        /**
+	        * Passing user Login ID to native, for debugging on ipads
+	        */
+	        var args = [];
+	        args.push($scope.data.email);
+	        var callback = function(){};
+	        var options = {
+	          //Cordova write success callback
+	          'successCallBack': callback,
+	          'failureCallBack': callback,
+	          arguments: args
+	        };
+	        sntapp.loginUpdate.setUserId(options);
+	        /**END
+        	* Passing user login to native, for debugging  */
+        }else{
+        	/**
+	        * There is no native component, so just move to rover without passing Login ID.
+	        */
+        	// navigateToRover();
+        }
+
+        setTimeout(function() {
+   		        navigateToRover();
+    	}, 100);
+        
 	 };
 	 /*
 	  * Failure call back of login

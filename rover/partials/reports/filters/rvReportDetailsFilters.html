@@ -617,6 +617,13 @@
             <label>Minimum Nights</label>
             <input ng-model="chosenReport.hasMinRoomNights.data" placeholder="Enter No." type="number" limit-input-range="{'from': 0}" />
         </div>
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasMinNoOfDaysNotOccupied" ng-class="{'active': filterItemsToggle.item_45}" ng-click="toggleFilterItems('item_45')">
+            <span class="title">Min. Days Not Occupied</span>
+        </a>
+        <div class="settings-content" ng-show="chosenReport.hasMinNoOfDaysNotOccupied" ng-class="{'hidden': !filterItemsToggle.item_45}">
+            <label>Min. Days Not Occupied</label>
+            <input ng-model="chosenReport.hasMinNoOfDaysNotOccupied.data" placeholder="Min.number of day" numbers-only  />
+        </div>
 
 
 

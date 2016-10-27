@@ -366,7 +366,7 @@ angular.module('sntRover')
 				x_p_time:                  (!payload.display.x_p_time ? payload.display.x_p.toComponents().time.convertToReferenceInterval(15) : payload.display.x_p_time),
 				width: 						undefined,
 				height: 					undefined,
-				hours: 						48,
+				hours: 						getTotalGridHours( payload.display.x_n ),
 				row_height: 				24, //please set to 60 when default changeed to 12 hour mode
 				row_height_margin: 			0,
 				intervals_per_hour: 		4,
@@ -618,6 +618,27 @@ angular.module('sntRover')
 				$scope.renderGrid();
 			}
 		}
+	};
+
+	/**
+	 * Need to check if there is a DST Time change
+	 * If there is an additonal hour we should have a total of 49 grid-hours
+	 * For an hour less the total grid-hours should be 48 hours
+	*/
+	function getTotalGridHours(arrivalDate) {
+		var startingTime = new Date(arrivalDate),
+            endingTime = new Date(arrivalDate);
+
+		var lastHour = 23,
+			lastMin = 59,
+			lastSec = 59,
+			toHourMs = 36e5;
+
+        endingTime.setDate(endingTime.getDate() + 1);
+        endingTime.setHours(lastHour, lastMin, lastSec);
+        startingTime.setHours(0, 0, 0, 0);
+
+        return Math.ceil( Math.abs(endingTime - startingTime) / toHourMs );
 	};
 
 	$scope.gridProps.filter.room_types.unshift({ id: 'All', name: 'All', description: 'All' });

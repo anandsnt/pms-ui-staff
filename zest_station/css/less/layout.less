@@ -1387,6 +1387,9 @@
 }
 
 #actions {
+    .button-left-margin{
+      margin-left: 40px;
+    }
     &.languages {
         .language {
             margin-right: 15px;
@@ -1395,6 +1398,29 @@
             line-height: normal;
             height: 50px;
             font-size: 16px;
+            &.selected  {
+                color: @actionBackground;
+                background: transparent;
+            }
         }
     }
+}
+.ui-icon {
+    text-indent: 0px !important; 
+}
+.demo-text{
+    float: right;
+    left: 0;
+    position: absolute;
+    color: #d8d8d8;
+    z-index: 999;
+}
+
+.add-guest-mode-content{
+    height: 75% !important;
+    margin-top: 50px;
+}
+.signature-pad-layout {
+    height: 295px; 
+    border-radius: 8px;
 }

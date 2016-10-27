@@ -195,7 +195,6 @@ sntZestStation.controller('zsRootCtrl', [
 				$rootScope.emvTimeout = !!$scope.zestStationData.hotelSettings.emv_timeout ? $scope.zestStationData.hotelSettings.emv_timeout : 60;
 				$scope.zestStationData.mliMerchantId = data.mli_merchant_id;
 				configureSwipeSettings();
-				//logStationSettings();
 			};
 			var onFailure = function(){
 				console.warn('unable to fetch hotel settings');
@@ -367,7 +366,8 @@ sntZestStation.controller('zsRootCtrl', [
 			//in console, allow debugging to test out keyboard in any browser
 			if (zestSntApp.virtualKeyBoardEnabled){
 				if (id) {
-					new initScreenKeyboardListener('station', id, true);
+					$scope.lastKeyboardId = id;
+					new initScreenKeyboardListener('station', id, true, $scope.resetTime);//on change event fire reset time
 				}
 			} else {
 				//restrict keyboard if screen is resized
@@ -377,7 +377,7 @@ sntZestStation.controller('zsRootCtrl', [
 				}
 				$scope.lastKeyboardId = id;
 				//pull up the virtual keyboard (snt) theme... if chrome & fullscreen
-				var isTouchDevice = 'ontouchstart' in document,
+				var isTouchDevice = 'ontouchstart' in window,
 					agentString = window.navigator.userAgent;
 				var themeUsesKeyboard = false;
 				if ($scope.theme === 'yotel' || !$scope.theme) {
@@ -389,7 +389,7 @@ sntZestStation.controller('zsRootCtrl', [
 					$scope.inChromeApp && themeUsesKeyboard;
 				if (shouldShowKeyboard) {
 					if (id) {
-						new initScreenKeyboardListener('station', id, true);
+						new initScreenKeyboardListener('station', id, true, $scope.resetTime);//on change event fire reset time
 					}
 				}
 			}
@@ -542,6 +542,8 @@ sntZestStation.controller('zsRootCtrl', [
 					//when user activity is not recorded for more than idle_timer.max
 					//time set in admin, got to home page
 					if (userInActivityTimeInSeconds >= $scope.zestStationData.idle_timer.max && currentState !== 'zest_station.checkInSignature' && currentState !== 'zest_station.checkInCardSwipe') {
+						$scope.hideKeyboardIfUp();
+
 						$state.go('zest_station.home');
 						$scope.runDigestCycle();
 					} else {
@@ -684,16 +686,20 @@ sntZestStation.controller('zsRootCtrl', [
 		 //
         $scope.focusInputField = function(elementId) {
             $timeout(function() {
-                if ($scope.isIpad){
-                    $scope.callBlurEventForIpad();
-                }
-                document.getElementById(elementId).focus();
-                document.getElementById(elementId).click();
-                
+            	if (!$scope.isIpad) {
+					document.getElementById(elementId).click();
+				} else {
+					$scope.callBlurEventForIpad();
+				}
             }, 300);
 
         };
 
+		$scope.navToHome = function() {
+			$timeout(function(){
+				$state.go('zest_station.home');
+			},250);//use delay so user doesnt immediately click check-in/out icons on touchscreen devices
+		};
 		/********************************************************************************
 		 *  Work station code  
 		 *  starts here
@@ -959,76 +965,6 @@ sntZestStation.controller('zsRootCtrl', [
 			//adds colors green/red to console log, to quickly check if a setting is enabled or disabled
 			console.log('%c' + txt + logTextOnOff(setting), colorLogText(setting))
 		};
-		/*
-		 * Take a quick look at hotel + zest station settings, 
-		 *  -helpful for debugging and making sure settings are what we expect
-		 */
-		var logStationSettings = function() {
-			var setting = $scope.zestStationData;
-			console.log('');
-			console.log('-');
-			console.log('-:-');
-			//zest-station general settings
-			console.log(' -:- Station Settings -:- ', setting);
-			console.log('');
-			logSetting('  - Hourly Hotel Mode  :  ', $scope.zestStationData.isHourlyRateOn);
-
-			console.log('  - Payment Gateway    :  ', setting.paymentGateway);
-			console.log('  - Key Writer         :  ', setting.keyWriter);
-			console.log('  - CC Reader          :  ', setting.ccReader);
-			logSetting('  - Idle Timer         :  ', setting.idle_timer.enabled);
-			console.log('    -> Prompt  : ', (setting.idle_timer.prompt), 'sec ');
-			console.log('    -> Home    : ', (setting.idle_timer.max), 'sec ');
-			console.log('');
-			console.log('  - Chrome App ID      :  ', setting.chrome_app_id);
-			console.log('  - Bussiness Date     :  ', setting.bussinessDate);
-			console.log('  - Check-in Time      :  ', setting.check_in_time.hour + ':' + setting.check_in_time.minute + ' - ' + setting.check_in_time.primetime);
-			console.log('  - Check-out Time     :  ', setting.check_out_time.hour + ':' + setting.check_out_time.minute + ' - ' + setting.check_out_time.primetime);
-			//check-in
-			console.log('');
-			console.log('  - Check-In Settings - ');
-			console.log('');
-			logSetting('  -  *Confirmation      :  ', setting.checkin_screen.authentication_settings.confirmation);
-			logSetting('  -  *Departure Date    :  ', setting.checkin_screen.authentication_settings.departure_date);
-			logSetting('  -  *Email             :  ', setting.checkin_screen.authentication_settings.email);
-			logSetting('  -  *No. Nights        :  ', setting.checkin_screen.authentication_settings.number_of_nights);
-			logSetting('  -  Enforce Deposit    :  ', setting.enforce_deposit);
-			logSetting('  -  Early Check-In     :  ', setting.offer_early_checkin);
-			logSetting('  -  On-Screen Room No  :  ', setting.show_room_number);
-			logSetting('  -  Collect Nationality:  ', setting.check_in_collect_nationality);
-			logSetting('  -  OWS Guest Messeges :  ', setting.is_kiosk_ows_messages_active);
-			logSetting('  -  Display Terms      :  ', setting.kiosk_display_terms_and_condition);
-			logSetting('  -  ByPass Prepaid CC  :  ', setting.bypass_cc_for_prepaid_reservation);
-			logSetting('  -  Validate First Name:  ', setting.kiosk_validate_first_name);
-			logSetting('  -  Country Sorted List:  ', setting.kiosk_enforce_country_sort);
-			//check-out
-			console.log('');
-			console.log('  - Check-Out Settings - ');
-			console.log('');
-			logSetting('  -  Key Card Lookup    :  ', setting.checkout_keycard_lookup);
-			console.log('');
-			console.log('  - Guest Bill Delivery:  ');
-			console.log('');
-			logSetting('  -  Print              :  ', setting.guest_bill.print);
-			logSetting('  -  Email              :  ', setting.guest_bill.email);
-			//pickup key
-			console.log('');
-			console.log('  - Pick-Up Keys Settings - ');
-			console.log('');
-			logSetting('  -  QR Scanner        :  ', setting.pickup_qr_scan);
-			logSetting('  -  QR FailOver       :  ', setting.pickup_qr_scan_fail_over);
-			console.log('');
-			console.log('  - Authentication - ');
-			console.log('');
-			logSetting('  - Datalogic           :  ', setting.qr_scanner_datalogic);
-			logSetting('  - Samsotech           :  ', setting.qr_scanner_samsotech);
-			console.log('  - Arrow Direction    :  ', setting.qr_scanner_arrow_direction);
-			console.log('');
-			console.log(' -:-- - - - - - - - --:- ');
-			console.log('-:-');
-			console.log('-');
-			console.log('');
-		};
 
 		var cardwriter = new CardOperation();
 		var initCardReadTest = function() {
@@ -1088,6 +1024,7 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.zestStationData.workstationOooReason = "";
 			$scope.zestStationData.workstationStatus = "";
 			$scope.zestStationData.wsIsOos = false;
+			$scope.showLanguagePopup = false;
 			$scope.inChromeApp ? maximizeScreen() : "";
 			//create a websocket obj
 			$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);

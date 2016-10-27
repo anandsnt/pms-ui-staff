@@ -52,7 +52,8 @@ module.exports = {
 				adminRoot + 'filters/*.js',
 				sharedRoot + 'directives/uiColorpicker/uiColorpicker.js',
 				sharedRoot + 'directives/onScroll/onScroll.js',
-				sharedRoot + 'directives/limitInputRange/limitInputRange.js'
+				sharedRoot + 'directives/limitInputRange/limitInputRange.js',
+				adminRoot + 'constants/**/*.js',
 			]
 		};		
 		

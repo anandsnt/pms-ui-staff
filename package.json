@@ -60,6 +60,9 @@
     "url": "https://github.com/StayNTouch/pms.git"
   },
   "scripts": {
-    "glite": "gulp --no-gw --no-zs"
+    "glite": "gulp --no-gw --no-zs",
+    "lint": "eslint -c .eslintrc.json .",
+    "lintRover": "eslint -c .eslintrc.json rover",
+    "lintAdmin": "eslint -c .eslintrc.json admin"
   }
 }
