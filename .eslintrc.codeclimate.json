@@ -11,10 +11,12 @@
             "jsx":true
         }
     },
-    "extends" : "eslint:recommended",
+    "extends": [
+      "eslint:recommended",
+      "angular"
+    ],
     "plugins":[
-        "react",
-        "angular"
+        "react"
     ],
     "rules":{
     }
