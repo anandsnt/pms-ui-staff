@@ -13,7 +13,8 @@
     },
     "extends" : "eslint:recommended",
     "plugins":[
-        "react"
+        "react",
+        "angular"
     ],
     "rules":{
     }
