@@ -1399,7 +1399,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * Save roomblock data with selected mass update end date.
 		 * @return {undefined}
 		 */
-		$scope.clickedOnMassUpdateSaveButton = function (ngDialogData) {
+		$scope.clickedOnMassUpdateSaveButton = function (ngDialogData, isOverbooking) {
 
 			var value 		  = ngDialogData.value,
 				timeLineStart = $scope.timeLineStartDate,
@@ -1416,6 +1416,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				start_date: formatDateForAPI(timeLineStart),
 				end_date: formatDateForAPI($scope.massUpdateEndDate),
 				bulk_updated_for: occupancy.toUpperCase(),
+				overbook_chosen: isOverbooking
 			});
 
 			// Save room block now.
@@ -1461,7 +1462,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		$scope.saveMassUpdate = function(forceOverbook, config) {
 			forceOverbook = forceOverbook || false;
 			config = config || {};
-			config = _.pick(config, ["group_id", "forcefully_overbook_and_assign_rooms","start_date","end_date",
+			config = _.pick(config, ["group_id", "overbook_chosen", "forcefully_overbook_and_assign_rooms","start_date","end_date",
 				'bulk_updated_for', "room_type_id", "room_type_name",
 				"single", "double","quadruple","triple", "old_total"]);
 
