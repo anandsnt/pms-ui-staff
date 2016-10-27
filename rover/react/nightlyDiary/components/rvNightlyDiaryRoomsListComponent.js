@@ -8,15 +8,21 @@ const NightlyDiaryRoomsListComponent = ({ roomListToComponent }) => {
             <div className="wrapper">
                {
                 roomListToComponent.map((item, index) =>
-                    <div style={item.room_class}>
-                    {item.room_type}
+                    <div className="room">
+                        <span className="room-number {HK status or 'out' if OOO/OOS}">
+                            {item.room_no}
+                        {/*<!-- Highlight search query like this: <span class="highlight">{Query}</span> -->*/}
+                        </span>
+                        <span className="room-type">{item.room_type}</span>
                     </div>
+
                     )
                }
             </div>
         </div>
     )
 };
+
 
 //const { PropTypes } = React;
 
