@@ -58,7 +58,6 @@ admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSr
 		    }, {
 		        total: $scope.data.length, // length of data
 		        getData: $scope.fetchTableData
-
 		    }
 		);
 	};

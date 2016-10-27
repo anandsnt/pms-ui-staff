@@ -20,7 +20,8 @@ admin.directive('adDropdownName', function($timeout) {
             labelClass:'@labelClass',
             valueproperty:'@valueproperty',
             options: '=',
-            prefixValue: '@'
+            prefixValue: '@',
+            labelProperties: "="
 	    },
         link: function ($scope, $element, $attr)
         {
@@ -32,6 +33,19 @@ admin.directive('adDropdownName', function($timeout) {
                 $scope.showOptionsIf = function(index){
                      return true;
                 };
+            }
+
+            $scope.getLabel = function(row){
+                var label = "";
+                _.each($scope.labelProperties, function(key, idx){
+                    if (idx === 0){
+                        label += row[key];
+                    } else {
+                        label +=  " - " + row[key];
+                    }
+
+                });
+                return label;
             }
         },
     	templateUrl: '/assets/directives/selectBox/adDropdownboxName.html'

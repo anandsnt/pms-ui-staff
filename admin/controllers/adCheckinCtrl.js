@@ -40,7 +40,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     $scope.checkinData.is_notify_on_room_not_assigned_flag = ($scope.checkinData.is_notify_on_room_not_assigned === 'true') ? true : false;
     $scope.checkinData.is_notify_on_room_ready_flag = ($scope.checkinData.is_notify_on_room_ready === 'true') ? true : false;
     $scope.checkinData.require_cc_for_checkin_email_flag = ($scope.checkinData.require_cc_for_checkin_email === 'true') ? true : false;
-
+    $scope.checkinData.is_sent_none_cc_reservations_to_front_desk_only = ($scope.checkinData.is_sent_none_cc_reservations_to_front_desk_only === 'true') ? true : false;
+    
     $scope.checkinData.is_sent_to_queue = ($scope.checkinData.is_sent_to_queue === 'true') ? "yes" : "no";
     $scope.checkinData.is_precheckin_only = ($scope.checkinData.is_precheckin_only === 'true') ? true : false;
 
@@ -355,7 +356,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'numeric_answer_max_limit': $scope.checkinData.numeric_answer_max_limit,
       'survey_question_is_mandatory': $scope.checkinData.survey_question_is_mandatory,
       'survey_question_image' : angular.copy($scope.checkinData.survey_question_image),
-      'zestweb_collect_outstanding_balance' : $scope.checkinData.zestweb_collect_outstanding_balance
+      'zestweb_collect_outstanding_balance' : $scope.checkinData.zestweb_collect_outstanding_balance,
+      'zest_web_use_new_sent_to_que_action' : $scope.checkinData.zest_web_use_new_sent_to_que_action
     };
 
     if($scope.surveyQuestionImage === $scope.checkinData.survey_question_image){

@@ -53,7 +53,10 @@
                   		<figure class="guest-image" ng-if="escapeNull(attachedEntities.company_card.logo)==''">
 		                    <div class="guest-image icons icon-company" ></div>
 		                </figure>
-	                    <h2>{{attachedEntities.company_card.name}}</h2>
+		                <div class="data">
+	                      <h2>{{attachedEntities.company_card.name}}</h2>
+	                      <span class="location">{{attachedEntities.company_card.address}}</span>
+	                    </div>
 	                </li>
 
 	                <!-- Travel agent card -->
@@ -67,7 +70,10 @@
 		                    <div class="guest-image icons icon-travel-agent" ></div>
 		                </figure>
 
-	                 	<h2>{{attachedEntities.travel_agent.name}}</h2>
+	                 	<div class="data">
+	                        <h2>{{attachedEntities.travel_agent.name}}</h2>
+	                        <span class="location">{{attachedEntities.travel_agent.address}}</span>
+	                    </div>
 	                </li>
 
 	                <!-- If group added -->
