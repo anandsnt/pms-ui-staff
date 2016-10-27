@@ -148,6 +148,9 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 
     $scope.saveCheckout = function(){
 
+            if (!$scope.isStandAlone){
+                $scope.checkoutData.enable_offline_checkout = ($scope.enable_offline_checkout) ? 'true':'false';
+            }
     	    $scope.checkoutData.is_send_checkout_staff_alert = ($scope.is_send_checkout_staff_alert_flag) ? 'true':'false';
             $scope.checkoutData.is_send_zest_checkout_alert = ($scope.is_send_zest_checkout_alert_flag) ? 'true':'false';
 			$scope.checkoutData.require_cc_for_checkout_email = ($scope.require_cc_for_checkout_email_flag) ? 'true':'false';
@@ -177,6 +180,9 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
                 'excluded_room_types':excluded_room_types,
                 'checkout_static_uri':$scope.checkoutData.checkout_static_uri
 			};
+            if (!$scope.isStandAlone){
+                uploadData.enable_offline_checkout = $scope.checkoutData.enable_offline_checkout;
+            }
 
         
     	var saveCheckoutDetailsSuccessCallback = function(data) {
