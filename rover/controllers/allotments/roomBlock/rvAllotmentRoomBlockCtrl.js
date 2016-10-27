@@ -772,7 +772,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @param {boolean} if only contract counts updated
 		 * @return undefined
 		 */
-		$scope.saveRoomBlock = function(forceOverbook, isContratUpdate) {
+		$scope.saveRoomBlock = function(forceOverbook, isContratUpdate, isOverbooking) {
 			forceOverbook = forceOverbook || false;
 			isContratUpdate = isContratUpdate || false;
 
@@ -781,7 +781,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
 				results: data,
 				forcefully_overbook_and_assign_rooms: forceOverbook,
-				is_contract_save: isContratUpdate
+				is_contract_save: isContratUpdate,
+				overbook_chosen: isOverbooking
 			};
 
 			var options = {

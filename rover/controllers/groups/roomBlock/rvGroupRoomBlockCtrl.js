@@ -956,7 +956,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @param {boolean} forceOverbook
 		 * @return undefined
 		 */
-		$scope.saveRoomBlock = function(forceOverbook) {
+		$scope.saveRoomBlock = function(forceOverbook, isOverbooking) {
 			forceOverbook = forceOverbook || false;
 
 			$timeout(function() {
@@ -964,7 +964,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 				var params = {
 					group_id: $scope.groupConfigData.summary.group_id,
 					results: $scope.groupConfigData.summary.selected_room_types_and_bookings,
-					forcefully_overbook_and_assign_rooms: forceOverbook
+					forcefully_overbook_and_assign_rooms: forceOverbook,
+					overbook_chosen: isOverbooking
 				};
 
 				var options = {
