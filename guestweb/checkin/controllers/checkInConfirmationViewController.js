@@ -45,6 +45,8 @@
 				$rootScope.paymentDetails = response.payment_details;
 				//navigate to next page
 				$state.go('checkinReservationDetails');
+				$scope.isPosting = false;
+
 			};
 
 			//if we don't need extra verification using
@@ -53,21 +55,25 @@
 				//set up flags related to webservice
 				$scope.isPosting = true;
 				var data = {
-					'reservation_id': $rootScope.reservationID
+					'reservation_id': $rootScope.reservationID,
+					'bypass_verification' : true
 				};
-				checkinConfirmationService.fetchCheckinVerificationBypassReservationData(data).then(function(response) {
-					$scope.isPosting = false;
-					verificationSuccessActions(response);
+				checkinConfirmationService.verifyCheckinReservation(data).then(function(response) {
+					if (response.status === 'failure') {
+						$rootScope.netWorkError = true;
+					}else{
+						verificationSuccessActions(response.data);	
+					}
 				}, function() {
 					$rootScope.netWorkError = true;
 					$scope.isPosting = false;
 				});
+			}else{
+				//set up flags related to webservice
+				$scope.isPosting = false;
+				$rootScope.netWorkError = false;
 			}
-			//set up flags related to webservice
-			$scope.isPosting = false;
-			$rootScope.netWorkError = false;
-
-
+			
 			//next button clicked actions
 			$scope.nextButtonClicked = function() {
 				var data = {
@@ -78,8 +84,7 @@
 				$scope.isPosting = true;
 
 				//call service
-				checkinConfirmationService.login(data).then(function(response) {
-					$scope.isPosting = false;
+				checkinConfirmationService.verifyCheckinReservation(data).then(function(response) {
 
 					if (response.status === 'failure') {
 						$modal.open($scope.opts); // error modal popup
