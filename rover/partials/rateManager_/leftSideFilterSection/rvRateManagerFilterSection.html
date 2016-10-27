@@ -138,7 +138,10 @@
                     </div>
 
                     <div id='rm-selected-card-list' class="rates-box" ng-class="{'dark': card.account_type === 'COMPANY', 'purple': card.account_type === 'TRAVELAGENT'}" ng-repeat="card in selectedCards">
-                        <span class="rate-data">{{card.account_name}}</span>
+                        <span class="rate-data">
+                            {{card.account_name}}
+                            <span class = "rate-data location">{{card.account_address}}</span>
+                        </span>
                         <span ng-click="deleteSelectedCard(card.id)" class="icons delete_small"> &nbsp;</span>
                     </div>
 

@@ -1,6 +1,7 @@
 const RM_RX_CONST = {
 	GRID_VIEW   : 'RM_Grid_View',
 	GRAPH_VIEW  : 'RM_Graph_View',
+	RATE_VIEW_WITH_ADDRESS : "Rate_View_With_Address",
 	
 	RATE_VIEW_CHANGED                      : 'RM_Rate_View_Changed',
 	ROOM_TYPE_VIEW_CHANGED                 : 'RM_Room_Type_View_Changed',

@@ -31,7 +31,8 @@ angular.module('sntPay').directive('sntPayment', function() {
             completedSplitPayments: '=?',
             fetchLinkedCards: "=?",
             hideOverlayGiftcard: "=?",
-            reservationIds: "=?"
+            reservationIds: "=?",
+            onlyPaymentSelection: "=?"
         },
         link: function(scope, element, attrs) {
             console.log("--From Payment Module Init--");

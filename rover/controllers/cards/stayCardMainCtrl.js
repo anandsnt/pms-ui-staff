@@ -740,7 +740,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					//TODO: Handle each success call here
 				};
 
-			if ($scope.reservationData && $scope.reservationData.reservationIds && $scope.reservationData.reservationIds.length > 1) {
+			if (future && $scope.reservationData && $scope.reservationData.reservationIds && $scope.reservationData.reservationIds.length > 1) {
 				var promises = []; // Use this array to push the promises returned for every call
 				$scope.$emit('showLoader');
 				// Loop through the reservation ids and call the cancel API for each of them

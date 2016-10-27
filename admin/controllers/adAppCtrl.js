@@ -64,6 +64,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 	    // flag to decide show task management under house keeping: true by default
 	    var showTaskManagementInHKMenu = true;
 
+	    // flag to decide show neighbours screen
+	    var isNeighboursEnabled = false;
+
 	    var routeChange = function(event, newURL) {
 	      event.preventDefault();
 	      return;
@@ -126,7 +129,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		       	 	},{
 						title: "MENU_END_OF_DAY",
 						action: "staff#/staff/endofDay/starteod"
-					  }]
+					},{
+		                title: "MENU_SOCIAL_LOBBY",
+		                hidden: !isNeighboursEnabled,
+		                action: "staff#/staff/socialLobby"
+            		}]
 				}, {
 			        title: "MENU_GROUPS",
 
@@ -493,7 +500,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 			// flag to decide show task management under house keeping: true by default
 			showTaskManagementInHKMenu = data.is_show_task_management_in_hk_menu;
-
+			isNeighboursEnabled = data.social_lobby_settings.is_neighbours_enabled;
 			if (data.language) {
 		      $translate.use(data.language.value);
 		      $translate.fallbackLanguage('EN');

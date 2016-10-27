@@ -409,10 +409,40 @@
                     padding-right: 10px;
                     border-right: 1px solid rgba(0,0,0,.1);
                 }
+
+                &.card {
+                    max-width: 300px;
+                }
             }
 
             .back-button {
                 .box-shadow(none);
+            }
+        }
+
+        .actions {
+            max-width: 175px;
+            margin-right: 5px;
+            height: 60px;
+            .pull-right;
+            .float;
+
+            li {
+                width: 80px;
+                .pull-left;
+                padding:10px 0;
+                text-align: center;
+
+                button {
+                    font-size: 12px;
+                    padding:0 10px;
+
+                    &:not(.red):not(.green) {
+                        color: @black;
+                        text-shadow: none;
+                        background-color: @grey2;
+                    }
+                }
             }
         }
 
@@ -655,6 +685,36 @@
         .calc-height(100, 50);
         .box-shadow(2px 2px 3px rgba(0,0,0,.2));
 
+        &.expanded {
+            width: 300px;
+
+            .rate-calendar {
+
+                .name {
+
+                    &.contracted-rate {
+                        padding-top: 0;
+                        margin-top: -20px;
+
+                        &.contracted-rate-missing-info {
+                            margin-top: -5px;
+
+                            & + span {
+                                bottom: 10px;
+                            }
+                        }
+                    }
+                }
+
+                // Show Address
+                .contracted-rate-address,
+                .contracted-rate-contract {
+                    display: block;
+                    .nowrap();
+                }
+            }
+        }
+
         > .rate-calendar {
              /* First row needs to be slightly smaller ***/
             //.cell:first-child { height: 55px; }
@@ -663,7 +723,7 @@
         .pinnedLeft-actions {
             padding: 10px 10px 0 10px;
             overflow: hidden;
-            .size(50px, 100%);
+            .size(55px, 100%);
             .float;
 
             .button {
@@ -679,6 +739,57 @@
                 &:not(.red):not(.green):not(.orange) {
                     color: @black;
                     text-shadow: none;
+                }
+            }
+
+            .switch-button { 
+                border-radius: 3px;
+                background: @grey2;
+                width: 100%;
+                max-width: 155px;
+                height: 45px;
+                text-transform: uppercase;
+                display: block;
+                margin:0 auto;
+
+                label {
+                    width: 100%;
+                    height: 41px;
+                    top: 2px; 
+                    font-size: 14px;
+                    
+                    .switch-icon,
+                    .value {
+                        color: @grey3;
+                        text-shadow:none;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        line-height: 1;
+                        font-weight: 400;
+                        text-shadow: none;
+                    }
+                }
+
+                &:not(.on) {
+                     label {
+                        &.data-off {
+                            left: -2px;
+                        } 
+                    }
+                }
+
+                &.on {
+                    label {
+                        &.data-on {
+                            left: 2px;
+                        } 
+                    }
+                }
+
+                .switch-icon {
+                    border-radius: 3px;
+                    background: @white;
                 }
             }
         }
@@ -747,28 +858,31 @@
                 -webkit-line-clamp: 2;
                 -webkit-box-orient: vertical;  
 
-                .base-rate-indicator {
-                    position: absolute;
-                    top: 23px;
-                    left: 10px;
-                    background: @blueStart;
-                    color: @white;
-                    font-size: 9px;
-                    line-height: 20px;
-                    text-align: center;
-                    border-radius: 20px;
-                    .square(20px);
-                }
-
                 &.bolder { 
                     font-weight: 18px;
                     font-weight: 600;
                     padding-right: 20px;
                 }
 
-                &.base-rate { 
-                    padding-left: 30px;
+                &.contracted-rate {
+                    padding-left: 35px;
                 }
+
+                &.base-rate { 
+                    padding-left: 35px;
+
+                    //Both
+                    &.contracted-rate {
+                        .base-rate-indicator {
+                            top: 10px;
+                        }
+
+                        .contracted-rate-indicator {
+                            top: 35px;
+                        }
+                    }
+                }
+
 
                 &.gray { 
                     color:@grey3;
@@ -778,6 +892,82 @@
 
                 &.room-type {
                     padding-right: 20px;
+                }
+            }
+
+            .base-rate-indicator,
+            .contracted-rate-indicator {
+                position: absolute;
+                top: 23px;
+                left: 10px;
+                background: @blueStart;
+                color: @white;
+                font-size: 9px;
+                line-height: 20px;
+                text-align: center;
+                border-radius: 20px;
+                text-transform: uppercase;
+                .square(20px);
+            }
+
+            .contracted-rate-indicator {
+                background-color: @ccard;
+                 
+
+                &.allotment{ 
+                    background-color: @allotmentcard;
+                }
+
+                &.travel-agent{
+                    background-color: @tacard;
+                    
+                }
+
+                &.group {
+                    background-color: @groupcard;
+                     
+                }
+            }
+
+            .contracted-rate-address,
+            .contracted-rate-contract {
+                display:none;
+                position: absolute;
+                padding: 0 35px;
+                left:0;
+                width: 100%; 
+                font-size: 12px;
+                color: @ccard;
+
+                &.allotment{ 
+                    color: @allotmentcard;
+                }
+
+                &.travel-agent{
+                    color: @tacard;
+                    
+                }
+
+                &.group {
+                    color: @groupcard;   
+                }
+            }
+
+            .contracted-rate-contract {
+                bottom: 21px;
+            }
+
+            .contracted-rate-address {
+                bottom: 5px;
+                .contracted-rate-indicator {
+                    position: static;
+                    display: inline-block;
+                    vertical-align: middle;
+                    margin-right: 2px;
+                    margin-top:-1px;
+                    .size(15px,15px);
+                    font-size: 8px;
+                    line-height: 15px;
                 }
             }
 
@@ -858,7 +1048,16 @@
                 &:not(.expanded-cell) {
                      height: 65px; 
                 }
-               
+                
+            }
+
+            /* If a last child is also a first child, keep it the same*/
+            &:first-child {
+                .cell-container {
+                    &:not(.expanded-cell) {
+                     height: 60px; 
+                    }
+                }
             }
         }
 
@@ -1034,7 +1233,7 @@
         /* First Row - Days ***/
         &.calendar-rate-table-days { 
             top: 0;
-            height: 115px; 
+            height: 120px; 
             tr:first-child {
                 .cell-content {
                     > .restriction-icon {
@@ -1064,8 +1263,8 @@
 
         /* Other Rows - Data ***/
         &.calendar-rate-table-grid { 
-            top: 115px;
-            .calc-height(100, 165); 
+            top: 120px;
+            .calc-height(100, 160); 
 
             tr:first-child {
                 .cell-container { 
