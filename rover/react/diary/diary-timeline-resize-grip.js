@@ -245,8 +245,6 @@ var TimelineResizeGrip = React.createClass({
 						left = (dateForCalculatingLeft.getTime() + 3600000 - x_origin) * px_per_ms;
 					}
 				}
-
-
 			}
 
 			if(this.props.edit.active) {
