@@ -217,6 +217,34 @@
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.pre_checkin_email_bottom_body" label="{{ 'PRE_CHECK_IN_BOTTOM_BODY' | translate}}" placeholder=""></ad-textarea>
                 </fieldset>
                 <fieldset class="holder full-width">
+                    <!--  -->
+                    <!-- Header Collapse View -->
+                    <div ng-hide="openRoomExclusionSettings">
+                        <div class="form-title cursor_pointer" ng-click="toggleRoomExlusionSettings(true)">
+                            <div>
+                                CHECKIN EMAIL ROOM EXCLUSION SETTINGS
+                                <div class="cursor_pointer rate_additional_details_pointers">
+                                    <img src="/assets/cssimg/arrow-down.png">
+                                </div>
+                            </div>
+                      </div>
+                    </div>
+                    <!-- Expanded View -->
+                    <div ng-show="openRoomExclusionSettings" class="form_add_new_rate">
+                        <div class="form-title cursor_pointer " ng-click="toggleRoomExlusionSettings(false)">
+                            <div>
+                                CHECKIN EMAIL ROOM EXCLUSION SETTINGS
+                                <div class="cursor_pointer rate_additional_details_pointers">
+                                    <img src="/assets/cssimg/arrow-up.png">
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-include="'/assets/partials/adCheckinEmailSettings/adCheckinEmailSettings.html'"></div>
+                    </div>
+                    <!--  -->
+                    <div class="form-title half-width-title">
+                        <h3><span>OTHER EXCLUSION SETTINGS</span> </h3>
+                    </div>
                     <div class="entry">
                         <label translate>RATE_CODES_TO_EXCLUDE_FROM_CHECKIN</label>
                         <div multi-select on-open="onRateCodeDropDownClick()" input-model="rate_codes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">

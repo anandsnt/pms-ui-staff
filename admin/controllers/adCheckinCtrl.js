@@ -28,6 +28,11 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     $scope.block_codes = [];
     $scope.roomTypes = [];
     $scope.excludedRoomTypes = [];
+    $scope.openRoomExclusionSettings = false;
+  };
+
+  $scope.toggleRoomExlusionSettings = function(bool){
+    $scope.openRoomExclusionSettings = bool;
   };
 
   $scope.init();
