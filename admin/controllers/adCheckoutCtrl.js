@@ -18,6 +18,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
         $scope.isLoading = true;
         $scope.roomTypes = roomTypes.room_types;
         $scope.excludedRoomTypes = [];
+        $scope.isStandAlone = $rootScope.isStandAlone;
     };
 
     $scope.init();
@@ -101,9 +102,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
             $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute = $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute === null? "MM":$scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute;
 
             $scope.is_send_checkout_staff_alert_flag = ($scope.checkoutData.is_send_checkout_staff_alert === 'true') ? true:false;
-            if (!$scope.isStandAlone){
-                $scope.enable_offline_checkout = ($scope.checkoutData.enable_offline_checkout === 'true') ? true:false;    
-            }
+            $scope.enable_offline_checkout = ($scope.checkoutData.enable_offline_checkout === 'true') ? true:false;    
             $scope.is_send_zest_checkout_alert_flag = ($scope.checkoutData.is_send_zest_checkout_alert === 'true') ? true:false;
 			$scope.require_cc_for_checkout_email_flag = ($scope.checkoutData.require_cc_for_checkout_email === 'true') ? true:false;
 			$scope.include_cash_reservationsy_flag = ($scope.checkoutData.include_cash_reservations === 'true') ? true:false;
@@ -150,10 +149,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     */
 
     $scope.saveCheckout = function(){
-
-            if (!$scope.isStandAlone){
-                $scope.checkoutData.enable_offline_checkout = ($scope.enable_offline_checkout) ? 'true':'false';
-            }
+            $scope.checkoutData.enable_offline_checkout = ($scope.enable_offline_checkout) ? 'true':'false';
     	    $scope.checkoutData.is_send_checkout_staff_alert = ($scope.is_send_checkout_staff_alert_flag) ? 'true':'false';
             $scope.checkoutData.is_send_zest_checkout_alert = ($scope.is_send_zest_checkout_alert_flag) ? 'true':'false';
 			$scope.checkoutData.require_cc_for_checkout_email = ($scope.require_cc_for_checkout_email_flag) ? 'true':'false';
@@ -181,11 +177,9 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
                 'staff_emails_for_late_checkouts':$scope.checkoutData.staff_emails_for_late_checkouts,
                 'room_verification_instruction':$scope.checkoutData.room_verification_instruction,
                 'excluded_room_types':excluded_room_types,
+                'enable_offline_checkout': $scope.checkoutData.enable_offline_checkout,
                 'checkout_static_uri':$scope.checkoutData.checkout_static_uri
 			};
-            if (!$scope.isStandAlone){
-                uploadData.enable_offline_checkout = $scope.checkoutData.enable_offline_checkout;
-            }
 
         
     	var saveCheckoutDetailsSuccessCallback = function(data) {

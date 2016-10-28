@@ -265,7 +265,7 @@
 
 						<fieldset class="holder left">							
 							<ad-toggle-button is-checked="is_send_checkout_staff_alert_flag" label="{{'WEB_CHEKOUT_ALERT_LABEL' | translate}}"></ad-toggle-button>
-							<ad-toggle-button ng-if='!isStandAlone' is-checked="enable_offline_checkout" label="{{'WEB_CHEKOUT_OFFLINE_LABEL' | translate}}"></ad-toggle-button>
+							<ad-toggle-button is-checked="enable_offline_checkout" label="{{'WEB_CHEKOUT_OFFLINE_LABEL' | translate}}" is-hide="isStandAlone"></ad-toggle-button>
 
 							<div id="options" class="entry full-width" ng-show="is_send_checkout_staff_alert_flag">
 								
