@@ -66,7 +66,7 @@
         <!--end-->
         <!-- Action Buttons Here -->
         <div class="actions ">
-            <button type="button" id="cancel" class="button blank" ng-click="onCancelChanges()" translate>
+            <button type="button" id="cancel" class="button blank" ng-click="toggleRoomExlusionSettings(false)" translate>
                 CANCEL
             </button>
             <button type="button" ng-hide="roomSelection.activeTab === 'SELECTED'" like-type="common" ng-show="" class="button " ng-click="onSaveChanges()" ng-disabled="!roomSelection.areSomeRoomsSelected && !roomSelection.areAllRoomsSelected" ng-class="{'green': roomSelection.areAllRoomsSelected || roomSelection.areSomeRoomsSelected, 'grey': !roomSelection.areSomeRoomsSelected && !roomSelection.areAllRoomsSelected}" translate>
