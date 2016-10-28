@@ -4,6 +4,9 @@ admin.controller('ADCheckinEmailSettingsCtrl', ['$scope', 'ADCheckinEmailSetting
 		BaseCtrl.call(this, $scope);
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
+		var selectedRoomIdsList = [];
+		var unSelectedRoomIdsList = [];
+
 		var initController = function() {
 			$scope.roomSelection = {
 				activeTab: "SELECTED",
@@ -25,7 +28,7 @@ admin.controller('ADCheckinEmailSettingsCtrl', ['$scope', 'ADCheckinEmailSetting
 					$scope.reloadTable();
 					$scope.$emit("ASSIGNMENT_CHANGED");
 					updateSelectedList();
-				}
+				};
 		};
 
 		$scope.loadTable = function() {
@@ -41,9 +44,51 @@ admin.controller('ADCheckinEmailSettingsCtrl', ['$scope', 'ADCheckinEmailSetting
 			});
 		};
 
+		/**
+		 * [toggleAvailableRooms tab actions]
+		 * @return {[type]} [description]
+		 */
 		$scope.toggleAvailableRooms = function() {
 			$scope.roomSelection.activeTab = $scope.roomSelection.activeTab === "UNSELECTED" ? "SELECTED" : "UNSELECTED";
 			$scope.reloadTable();
+		};
+
+		/**
+		 * [processSelectedRooms remove the unselected item]
+		 * @param  {[type]} roomIds [description]
+		 * @return {[type]}         [description]
+		 */
+		var processSelectedRooms = function(roomIds) {
+
+			var selectedRooms = _.where($scope.data, {
+					isSelected: true
+			}),currentPageRoomIds = _.pluck(selectedRooms, 'id');
+
+			roomIds = _.union(roomIds, currentPageRoomIds);
+
+			_.each($scope.data, function(room) {
+				_.each(roomIds, function(roomId, key) {
+					if (room.id === roomId && !room.isSelected) {
+						roomIds.splice(key, 1);
+					}
+				});
+			});
+			return  roomIds;
+		};
+
+		/**
+		 * [handleCurrentSelectedPage on page change, mark already selected item as selected]
+		 * @param  {[type]} alreadyChosenRoomIds [description]
+		 * @return {[type]}                      [description]
+		 */
+		var handleCurrentSelectedPage = function(alreadyChosenRoomIds) {
+			_.each($scope.data, function(room) {
+				_.each(alreadyChosenRoomIds, function(roomId, key) {
+					if (room.id === roomId) {
+						room.isSelected = true;
+					}
+				});
+			});
 		};
 
 		$scope.fetchTableData = function($defer, params) {
@@ -53,9 +98,13 @@ admin.controller('ADCheckinEmailSettingsCtrl', ['$scope', 'ADCheckinEmailSetting
 					$scope.currentClickedElement = -1;
 					$scope.totalCount = data.total_count;
 					$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
-					$scope.roomSelection.noOfRoomsSelected =
-						($scope.roomSelection.activeTab === "SELECTED") ? data.total_count : $scope.roomSelection.noOfRoomsSelected;
 					$scope.data = data.rooms;
+					if ($scope.roomSelection.activeTab === "SELECTED") {
+						handleCurrentSelectedPage(selectedRoomIdsList);
+						$scope.roomSelection.noOfRoomsSelected = data.total_count;
+					}else{
+						handleCurrentSelectedPage(unSelectedRoomIdsList);
+					}
 					$scope.currentPage = params.page();
 					params.total(data.total_count);
 					$defer.resolve($scope.data);
@@ -102,12 +151,14 @@ admin.controller('ADCheckinEmailSettingsCtrl', ['$scope', 'ADCheckinEmailSetting
 				params = {
 					room_ids: _.pluck(selectedRooms, 'id')
 				};
-			console.log(params.room_ids);
-			// if ($scope.roomSelection.activeTab === "AVAILABLE") {
-			// 	$scope.invokeApi(ADFloorSetupSrv.assignRooms, params, onSaveSuccess);
-			// } else {
-			// 	$scope.invokeApi(ADFloorSetupSrv.unAssignRooms, params, onSaveSuccess);
-			// }
+			
+			if ($scope.roomSelection.activeTab === "SELECTED") {
+				selectedRoomIdsList = processSelectedRooms(selectedRoomIdsList);
+				console.log(selectedRoomIdsList);
+			} else {
+				unSelectedRoomIdsList = processSelectedRooms(unSelectedRoomIdsList);
+				console.log(unSelectedRoomIdsList);
+			}
 		};
 
 		initController();
