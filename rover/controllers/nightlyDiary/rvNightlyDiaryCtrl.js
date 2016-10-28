@@ -4,16 +4,20 @@ angular.module('sntRover')
         '$rootScope',
         '$state',
         '$stateParams',
+        '$filter',
         function(
             $scope,
             $rootScope,
             $state,
-            $stateParams
+            $stateParams,
+            $filter
         ) {
 
        // $scope.$emit('showLoader');
 
         BaseCtrl.call(this, $scope);
+        $scope.$parent.heading = $filter('translate')('MENU_ROOM_DIARY');
+        $scope.setTitle($filter('translate')('MENU_ROOM_DIARY'));
 
         const diaryRenderData = {
             "rooms_list": [{
@@ -79,7 +83,7 @@ angular.module('sntRover')
             <Provider store={store}>
                 <NightlyDiaryRootComponent/>
             </Provider>,
-            document.querySelector('#nightlyDiaryMain')
+            document.querySelector('#diary-nightly')
         );
         var initialDispatchData = {
             type: 'INITIAL_RENDERING',
