@@ -291,12 +291,18 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
         $scope.payLater = function() {
             $scope.$emit('PAY_LATER', {
                 paymentType: $scope.selectedPaymentType,
-                cardDetails: $scope.selectedCC
+                cardDetails: $scope.selectedCC,
+                addToGuestCard: $scope.payment.addToGuestCardSelected
             });
         };
 
         $scope.continueAction = function(arg) {
             $scope.$emit('PAYMENT_ACTION_CONTINUE', arg);
+        };
+
+        $scope.resetPaymentAttempt = function() {
+            $scope.paymentAttempted = false;
+            $scope.isPaymentFailure = false;
         };
 
         /**
@@ -724,6 +730,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $scope.feeData.totalOfValueAndFee = totalAmount.toFixed(2);
         };
 
+        $scope.propagateAddToggle = function() {
+            $scope.$emit('PAYMENT_TOGGLE_ATTACH_TO_GUEST_CARD', $scope.payment.addToGuestCardSelected);
+        };
+
         /**************** CC handling ********************/
         //if the selected card is clicked, go to card entry page
         $scope.onCardClick = function() {
@@ -1087,6 +1097,10 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             $timeout($scope.onPaymentInfoChange, 1000);
 
             setScroller('cardsList', {'click': true, 'tap': true});
+
+            $scope.$watch('payment.screenMode', ()=>{
+                $scope.$emit('PAYMENT_SCREEN_MODE_CHANGED', $scope.payment.screenMode);
+            });
         })();
 
     }
