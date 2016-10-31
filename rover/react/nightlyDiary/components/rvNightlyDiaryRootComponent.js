@@ -11,45 +11,8 @@ const NightlyDiaryRootComponent = () => (
              {/* <!-- Add className .hidden when edit screen is displayed -->*/}
                 <input type="text" placeholder="Go to Room No." value="" />
             </div>
-            {/* <!-- Timeline -->*/}
-            <div className="grid-dates">
-                {/*_content/timeline.html*/}
-                <div className="day">
-                    <span>Sunday</span>
-                    <strong>October 16</strong>
-                </div>
-                <div className="day">
-                    <span>Sunday</span>
-                    <strong>October 16</strong>
-                </div>
-                <div className="day">
-                    <span>Sunday</span>
-                    <strong>October 16</strong>
-                </div>
-                <div className="day">
-                    <span>Sunday</span>
-                    <strong>October 16</strong>
-                </div>
-                <div className="day">
-                    <span>Sunday</span>
-                    <strong>October 16</strong>
-                </div>
-                <div className="day">
-                    <span>Sunday</span>
-                    <strong>October 16</strong>
-                </div>
-                <div className="day">
-                    <span>Sunday</span>
-                    <strong>October 16</strong>
-                </div>
-            </div>
-
-            {/* <!-- Stay Range | Remove .hidden to show-->*/}
-            <div className="grid-stay-range hidden">
-                {/*_content/stay-range.html*/}
-            </div>
+            <NightlyDiaryDatesContainer/>
         </div>
-
         <NightlyDiaryRoomsListContainer/>
     </div>
 );

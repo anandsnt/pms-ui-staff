@@ -1,8 +1,7 @@
 const nightlyDiaryRoomsListReducer = (state = [], action) => {
   switch (action.type) {
-    case 'INITIAL_RENDERING':
-    console.log("reached reducer")
-        return action.diaryRenderData.rooms_list;
+    case '7_DAYS':
+        return action.diaryRoomsListData.rooms;
     default:
         return state;
   }

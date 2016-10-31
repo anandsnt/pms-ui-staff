@@ -2,23 +2,11 @@ const {connect} = ReactRedux;
 
 let convertRoomsListReadyToComponent = roomsList => {
 
-    // divStyle = {
-    //   color: 'blue'
-    // };
-
-
     roomsList.map((room, index) => {
-            room.room_class = (room.room_status === "clean") ? {color: 'green'}: {color: 'red'};
+            room.room_class = "room-number "+room.hk_status
         }
     )
-
-     console.log("--++---")
-     console.log(roomsList)
     return roomsList;
-    // for (var value of roomsList) {
-    //     console.log("-----")
-    //     console.log(value);
-    // }
 }
 
 
