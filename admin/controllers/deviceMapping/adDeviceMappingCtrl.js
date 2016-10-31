@@ -285,7 +285,6 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 data.out_of_order_msg = $scope.mapping.out_of_order_msg;
             }
 
-            console.log('$scope.isAddMode: ',$scope.isAddMode);
             if ($scope.isAddMode) {
                 $scope.invokeApi(ADDeviceSrv.createMapping, data, $scope.successSaveMapping);
             } else {
