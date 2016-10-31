@@ -12,13 +12,15 @@ sntGuestWeb.controller('gwEarlyCheckinOptionsController', ['$scope', '$state', '
 			$scope.checkinTime = $stateParams.time;
 			$scope.earlyCheckinCharge = $stateParams.charge;
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
-			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description,"@checkin-time", $scope.checkinTime);
-			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description,"@early-checkin-charge", $scope.earlyCheckinCharge);
+			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@checkin-time", $scope.checkinTime);
+			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@early-checkin-charge", $scope.earlyCheckinCharge);
 		}();
 
 		$scope.nextButtonClicked = function() {
 			var applyEarlyCheckinSuccess = function(response) {
-				var stateParams = {'charge':$scope.earlyCheckinCharge};
+				var stateParams = {
+					'charge': $scope.earlyCheckinCharge
+				};
 				$state.go('earlyCheckinFinal', stateParams);
 			};
 			var params = {
@@ -32,7 +34,11 @@ sntGuestWeb.controller('gwEarlyCheckinOptionsController', ['$scope', '$state', '
 			$scope.callAPI(GwCheckinSrv.applyEarlyCheckin, options);
 		};
 		$scope.changeArrivalTime = function() {
-			//to do
+			var stateParams = {
+				'time': $scope.checkinTime,
+				'isearlycheckin': true
+			};
+			$state.go('laterArrival', stateParams);
 		};
 
 	}

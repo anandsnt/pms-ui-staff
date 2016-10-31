@@ -78,7 +78,9 @@ module.exports = {
 			'guestweb_el_castell':[ themeCSSRoot + 'guestweb_el_castell.css'],
 			'guestweb_hotel_epik':[ themeCSSRoot + 'guestweb_hotel_epik.css'],
 			'guestweb_fontainebleau_v2' : [ themeCSSRoot + 'guestweb_fontainebleau_v2.css'],
-			'guestweb_sandman_inn':[ themeCSSRoot + 'guestweb_sandman_inn.css']
+			'guestweb_sandman_inn':[ themeCSSRoot + 'guestweb_sandman_inn.css'],
+			'guestweb_nobu_miami':[ themeCSSRoot + 'guestweb_nobu_miami.css'],
+			'guestweb_EdenRoc':[ themeCSSRoot + 'guestweb_EdenRoc.css']
 		}
 			
 	}

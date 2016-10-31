@@ -429,7 +429,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			}
 
 			// CICO-34261
-			if (newBlockFrom > new tzIndependentDate(refData.release_date)) {
+			if (newBlockFrom < new tzIndependentDate(refData.release_date)) {
 				$scope.groupConfigData.summary.release_date = newBlockFrom;
 			}
 

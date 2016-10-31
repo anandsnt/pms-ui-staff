@@ -20,9 +20,9 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                 $scope.callAPI(adComtrolGenericMappingSrv.fetchMeta, {
                     successCallBack: function(response) {
                         $scope.state.chargeCodes = response.chargeCodes;
-                        cb();
+                        cb && cb();
                     }
-                })
+                });
             };
 
         //scope method and variables
@@ -139,11 +139,29 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
             $scope.callAPI(adComtrolGenericMappingSrv.update, {
                 params: mapping,
                 successCallBack: function() {
+                    var similar_types;
+                    if (mapping.is_default) {
+                        similar_types = _.where($scope.mappings, {external_type: mapping.external_type});
+
+                        _.each(similar_types, function(obj) {
+                            obj.is_default = false
+                        });
+                        mapping.is_default = true;
+                    }
                     $scope.state.mode = "";
                     $scope.state.selected = null;
                 }
             });
         };
+
+        $scope.getChargeCodeDescription = function(chargeCodeName) {
+            var chargeCode = _.find($scope.state.chargeCodes, {
+                name: chargeCodeName
+            });
+
+            return chargeCode && chargeCode.description;
+        };
+
         //-------------------------------------------------------------------------------------------------------------- DELETE
         /**
          * Method to delete a Generic Mapping
@@ -189,6 +207,10 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                     is_default: false
                 }
             };
+
+            if (genericMappings.length) {
+                loadMetaList();
+            }
 
             $scope.mappings = genericMappings;
         })();
