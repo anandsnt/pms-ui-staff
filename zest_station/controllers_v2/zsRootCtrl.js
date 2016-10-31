@@ -514,12 +514,14 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.zestStationData.timeOut = false;
 
 			$scope.resetTime = function() {
+				homeInActivityTimeInSeconds = 0;
 				userInActivityTimeInSeconds = 0;
 				$scope.zestStationData.timeOut = false;
 			};
 
 			function increment() {
 				var currentState = $state.current.name;
+				checkForEventsIfAtHomeScreen(currentState);
 				//the user inactivity actions need not be done when user in 
 				//home screen or in admin screen or in OOS screen
 				//include the states, which don't need the timeout to be handled 
@@ -553,9 +555,75 @@ sntZestStation.controller('zsRootCtrl', [
 					return;
 				}
 			}
+
 			setInterval(increment, 1000);
 		};
 
+
+		/********************************************************************************
+		 *  User activity timer at home screen - 
+		 *   -- fire events when kiosk is in-service and not in-use by guest.
+		 *   --	 
+		 *
+		 *  Events include
+		 *   *Refresh-workstation --> Triggered from Hotel Admin - interfaces - workstation > toggle (Refresh Station)
+		 ********************************************************************************/
+		var checkForEventsIfAtHomeScreen = function(currentState){
+			console.log('homeInActivityTimeInSeconds: ',homeInActivityTimeInSeconds);
+			if (currentState !== 'zest_station.home'){
+				homeInActivityTimeInSeconds = 0;
+			} else {
+				if (homeInActivityTimeInSeconds >= 30){
+					//reset idle timer, then fire idle timer events
+					homeInActivityTimeInSeconds = 0;
+					//Workstation trigger for Refresh Station is set to TRUE, --Refresh Station at next (idle) opportunity--
+					var station = getLocalWorkStation();
+					//send back to workstation that kiosk is being/has been refreshed 
+					// --assumption is that two Zest Stations will be sharing a workstation, currently S69, that is not a logical setup
+					
+					//station.refresh_station = true;//TODO REMOVE THIS AND ADD FROM WORKSTATION API
+					if (station.refresh_station){
+						//update the workstation to reflect the refresh has taken place
+						//call API to set workstation "station_refresh" to false, and note "last_refreshed"
+						refreshInProgress(station);
+						//just refreshes the browser, user should not have to re-login 
+						//-- CICO-35215
+						//--  this should refresh all settings and bring zest station up to the latest version
+						//--  does not apply to the ChromeApp / iOS apps... only the zest station content
+					};
+
+				} else {
+					homeInActivityTimeInSeconds = homeInActivityTimeInSeconds+1;
+				}	
+			}
+		}
+
+		var refreshInProgress = function(station){
+			console.log('Calling API to Reset (refresh_station) Flag for: ',station.name, ' - ',station.id);
+			var onSuccess = function(response) {
+				console.info('Successful Refresh of Station Triggered, turning off (Workstation) Trigger ');
+				initRefreshStation();
+			};
+			var onFail = function(response) {
+				console.warn('Manual Refresh Failed: ',response);
+			};
+			var options = {
+				params: {
+					'refresh_station': false,
+					'identifier': station.station_identifier,
+					'id': station.id
+				},
+				successCallBack: onSuccess,
+				failureCallBack: onFail,
+				'loader': 'none'
+			};
+			$scope.callAPI(zsGeneralSrv.refreshWorkStationInitialized, options);
+		}
+	 	var homeInActivityTimeInSeconds = 0;
+	 	var initRefreshStation = function(){
+	 		console.warn(':: Refreshing Station ::');
+	 		location.reload(true);
+	 	};
 		/**
 		 * [CheckForWorkStationStatusContinously description]
 		 *  Check if admin has set back the status of the
@@ -563,7 +631,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 */
 		var CheckForWorkStationStatusContinously = function() {
 			$scope.$emit('FETCH_LATEST_WORK_STATIONS');
-			$timeout(CheckForWorkStationStatusContinously, 120000);
+			$timeout(CheckForWorkStationStatusContinously, 10000);//DEBUGGING,@=10 seconds, reset to 120s before pushing to dev
 		};
 		/********************************************************************************
 		 *  User activity timer
@@ -727,6 +795,21 @@ sntZestStation.controller('zsRootCtrl', [
 			'name': ''
 		};
 
+		var getLocalWorkStation = function(){
+			try {
+				storedWorkStation = storage.getItem(workStationstorageKey);
+			} catch (err) {
+				console.warn(err);
+			}
+			//find workstation with the local storage data
+			var station = getSavedWorkStationObj(storedWorkStation);
+			if (typeof station !== typeof undefined){
+				return station;
+			} else {
+				return null;
+			}
+		};
+
 		var workStationstorageKey = 'snt_zs_workstation',
 			oosStorageKey = 'snt_zs_workstation.in_oos',
 			oosReasonKey = 'snt_zs_workstation.oos_reason',
@@ -741,17 +824,14 @@ sntZestStation.controller('zsRootCtrl', [
 		var setWorkStationForAdmin = function() {
 			//work station , oos status, reason  etc are saved in local storage
 
-			try {
-				storedWorkStation = storage.getItem(workStationstorageKey);
-			} catch (err) {
-				console.warn(err);
-			}
 			//find workstation with the local storage data
-			var station = getSavedWorkStationObj(storedWorkStation);
-			if (typeof station === typeof undefined) {
+			var station = getLocalWorkStation();
+			//station.refresh_station = true;//DEBUGGING REMOVE BEFORE PUSH
+			if (station === null) {
 				$scope.zestStationData.set_workstation_id = "";
 				$scope.zestStationData.key_encoder_id = "";
 				$scope.zestStationData.workstationStatus = "out-of-order";
+
 				if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)) {
 					$state.go('zest_station.admin');
 				} else {
@@ -786,7 +866,7 @@ sntZestStation.controller('zsRootCtrl', [
 						$state.go('zest_station.home');
 					} else {
 						//if application is launched either in chrome app or ipad go to login page
-						if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)) {
+						if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad) && !station.refresh_station) {
 							$state.go('zest_station.admin');
 						} else {
 							//we want to treat other clients are normal, ie need to provide 

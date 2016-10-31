@@ -336,6 +336,20 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
 
 
+        this.refreshWorkStationInitialized = function(params) {
+            console.log('::refreshWorkStationInitialized:: ',params)
+            var deferred = $q.defer(),
+                url = '/api/workstations/' + params.id;
+
+            zsBaseWebSrv.putJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
         this.fetchWorkStations = function(params) {
             var deferred = $q.defer();
             var url = '/api/workstations.json';
