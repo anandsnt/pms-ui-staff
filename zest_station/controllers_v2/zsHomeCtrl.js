@@ -45,14 +45,23 @@ sntZestStation.controller('zsHomeCtrl', [
 
 		$scope.language = {};
 
-		var setToDefaultLanguage = function() {
+		var setToDefaultLanguage = function(checkIfDefaultLanguagIsSet) {
 			//assigning default language
 			if ($scope.languages.length) {
 				var defaultLangName = zestStationSettings.zest_lang.default_language.toLowerCase(),
 					defaultLanguage = _.findWhere($scope.languages, {
 						name: defaultLangName
 					});
-				$scope.selectLanguage(defaultLanguage);
+				var languageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
+				langShortCode = languageConfig.code;
+
+				if( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet){
+					//do nothing, current language is already the default one
+				}else
+				{
+					console.info("translating to default lanaguage after "+userInActivityTimeInHomeScreenInSeconds+" seconds");
+					$scope.selectLanguage(defaultLanguage);
+				}
 			}
 		};
 
@@ -80,8 +89,10 @@ sntZestStation.controller('zsHomeCtrl', [
 			//when user activity is not recorded for more than 120 secs
 			//translating to default lanaguage
 			if (userInActivityTimeInHomeScreenInSeconds >= 120 && $state.current.name === 'zest_station.home') {
-				console.info("translating to default lanaguage after "+userInActivityTimeInHomeScreenInSeconds+" seconds");
-				setToDefaultLanguage();
+				var checkIfDefaultLanguagIsSet = true;//this need to checked as, apart from translating we are 
+				//highlighting active language buttons. We need not do that again and again , if we already have a 
+				//default language set.So on timer limit(120s), we need to check if the current language is default or not.
+				setToDefaultLanguage(checkIfDefaultLanguagIsSet);
 				$scope.runDigestCycle();
 				userInActivityTimeInHomeScreenInSeconds = 0;
 			} else {
