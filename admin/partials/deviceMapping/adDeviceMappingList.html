@@ -30,15 +30,20 @@
 						<td data-title="'Workstation ID'" header-class="width-40" ng-hide="currentClickedElement == $index">
 							{{workStations.station_identifier}}
 						</td>
+						<td data-title="'Refresh Station'" header-class="width-40" ng-hide="currentClickedElement == $index">
+                                                         <div class="switch-button single" 
+                                                         		ng-click="workStations.refresh_station = !workStations.refresh_station; saveWorkstation(workStations)" 
+                                                         		ng-class="{'on': workStations.refresh_station}">
+
+                                                            <input type="checkbox"  ng-checked="workStations.refresh_station">
+                                                            <span class="switch-icon"></span>
+                                                        </div>
+						</td>
 						<td data-title="'Key Encoder'" header-class="width-40" ng-hide="currentClickedElement == $index">
 							{{workStations.key_encoder_description}}
 						</td>
 						<td data-title="'EMV Terminal'" header-class="width-40" ng-hide="currentClickedElement == $index">
 							{{workStations.emv_name}}
-						</td>
-
-						<td data-title="'OOS Reason'" header-class="width-40" ng-hide="currentClickedElement == $index">
-							{{workStations.oo_reason}}
 						</td>
                                                 
 						<td data-title="'Out of Service'" header-class="width-40" ng-hide="currentClickedElement == $index">
