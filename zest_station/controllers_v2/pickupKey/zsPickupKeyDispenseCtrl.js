@@ -19,7 +19,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 *    MODES inside the page
 		 *    
 		 * 1. DISPENSE_KEY_MODE -> select No of keys
-		 * 2. DISPENSE_KEY_FAILRURE_MODE -> failure mode
+		 * 2. DISPENSE_KEY_FAILURE_MODE -> failure mode
 		 * 3. SOLO_KEY_CREATION_IN_PROGRESS_MODE -> one key selected case
 		 * 4. KEY_ONE_CREATION_IN_PROGRESS_MODE -> 2 key selected, 1st in progress
 		 * 5. KEY_ONE_CREATION_SUCCESS_MODE -> 2 key selected, 1st completed
@@ -61,7 +61,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		};
 
 		var onGeneralFailureCase = function() {
-			$scope.mode = "DISPENSE_KEY_FAILRURE_MODE";
+			$scope.mode = "DISPENSE_KEY_FAILURE_MODE";
 			$scope.runDigestCycle();
 		};
 		/**

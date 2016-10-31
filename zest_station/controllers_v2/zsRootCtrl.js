@@ -933,38 +933,6 @@ sntZestStation.controller('zsRootCtrl', [
 			//maximize the chrome app in the starting
 			(chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, "zest-station-login"): "";
 		};
-		var colorLogText = function(val) {
-			//if using chrome, push debugging log for UI, colors only supported by chrome 24+
-			try {
-				if (val) {
-					return 'color:#007F00';
-				} else {
-					return 'color:#e7390c';
-				}
-			} catch (err) {
-				console.log('error trying color logging');
-				console.log(err);
-				return val;
-			}
-		};
-		var logTextOnOff = function(val) {
-			//if using chrome, push debugging log for UI, colors only supported by chrome 24+
-			try {
-				if (val) {
-					return '[ On ]';
-				} else {
-					return '[ Off ]';
-				}
-			} catch (err) {
-				console.log('error trying color logging');
-				console.log(err);
-				return val;
-			}
-		};
-		var logSetting = function(txt, setting) {
-			//adds colors green/red to console log, to quickly check if a setting is enabled or disabled
-			console.log('%c' + txt + logTextOnOff(setting), colorLogText(setting))
-		};
 
 		var cardwriter = new CardOperation();
 		var initCardReadTest = function() {

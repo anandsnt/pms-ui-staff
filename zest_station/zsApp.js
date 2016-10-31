@@ -88,7 +88,7 @@ var GlobalZestStationApp = function() {
 
         }
 
-    };
+    }; 
 
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data) {
@@ -109,6 +109,20 @@ var GlobalZestStationApp = function() {
     this.fetchFailedOfCordovaPlugins = function(errorMessage) {
         that.cordovaLoaded = false;
     };
+
+    this.demoMode = function(){
+        var el = angular.element('#header');
+        if (el){
+            var demoModeEnabled = el.scope().$parent.zestStationData.demoModeEnabled;
+            if (demoModeEnabled === 'true'){
+                angular.element('#header').scope().$parent.zestStationData.demoModeEnabled = 'false';
+            } else {
+                angular.element('#header').scope().$parent.zestStationData.demoModeEnabled = 'true';
+            }
+            angular.element('#header').scope().$apply();
+        }
+            
+    }
     this.virtualKeyBoardEnabled = false;
 
     this.enableCardSwipeDebug = function(toggle) {
