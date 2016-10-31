@@ -4,9 +4,7 @@
         <span ng-hide="useNavIcons" translate>NAV_BACK</span>
         <div ng-show="useNavIcons" ng-include="icons.url.back"></div>
     </button>
-    <div id="logo">
-        <ng-include src="getThemeUrl()"></ng-include>
-    </div>
+    <div id="logo" class='logo-svg'></div>
     <!-- Close button, if applicable -->
     
     <button type="button" id="close-button" class="button blank" click-touch='clickedOnCloseButton()' ng-hide="hideCloseButton">
