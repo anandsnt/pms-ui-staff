@@ -164,6 +164,12 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
                 $scope.$on("$destroy", listenerCBAPaymentFailure);
                 $scope.$on("$destroy", listenerCBAPaymentSuccess);
+            }, initiateSHIJIListeners = function() {
+                var listenerSHIJIPaymentFailure = $scope.$on('SHIJI_PAYMENT_FAILED', (event, errorMessage)=> {
+                    handlePaymentError(errorMessage);
+                });
+
+                $scope.$on("$destroy", listenerSHIJIPaymentFailure);
             };
 
         /**
@@ -594,6 +600,13 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
             if ($scope.selectedPaymentType === "CC" &&
                 $scope.hotelConfig.paymentGateway === 'CBA') {
                 $scope.$broadcast('INITIATE_CBA_PAYMENT', params);
+                return;
+            }
+
+            // --- Shiji ---
+            if ($scope.hotelConfig.paymentGateway === 'SHIJI' &&
+                ($scope.selectedPaymentType === 'ALIPAY' || $scope.selectedPaymentType === 'WECHAT')) {
+                $scope.$broadcast('INITIATE_SHIJI_PAYMENT', params);
                 return;
             }
 
@@ -1050,6 +1063,8 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
             if ($scope.hotelConfig.paymentGateway === "CBA") {
                 initiateCBAlisteners();
+            } else if($scope.hotelConfig.paymentGateway === "SHIJI") {
+                initiateSHIJIListeners();
             }
 
             $scope.currencySymbol = $scope.hotelConfig.currencySymbol;

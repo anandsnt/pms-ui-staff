@@ -1,0 +1,25 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <form class="modal-content form new-content">
+        <div class="alipay">
+            <h2 class="message">AliPay QR Code</h2>
+
+            <!-- Show notification only where there is one
+
+                notification-class:
+                 - 'success_message' - for success
+                 - 'error-message error' - for error
+
+                notification-text:
+                  - 'Payment successfull' - for success
+                  - 'There was an error while processing payment' - for error
+              -->
+            <!--<span class="{notification-class}">-->
+                <!--{notification-text}-->
+            <!--</span>-->
+
+            <img src="{qr_code}" alt=""/>
+            <!-- On cancel, return to previous screen by remove class .show-alipay from modal -->
+            <button type="button" class="button blank">Cancel</button>
+        </div>
+    </form>
+</div>
