@@ -366,7 +366,7 @@ angular.module('sntRover')
 				x_p_time:                  (!payload.display.x_p_time ? payload.display.x_p.toComponents().time.convertToReferenceInterval(15) : payload.display.x_p_time),
 				width: 						undefined,
 				height: 					undefined,
-				hours: 						48,
+				hours: 						getTotalGridHours( payload.display.x_n ),
 				row_height: 				24, //please set to 60 when default changeed to 12 hour mode
 				row_height_margin: 			0,
 				intervals_per_hour: 		4,
@@ -618,6 +618,27 @@ angular.module('sntRover')
 				$scope.renderGrid();
 			}
 		}
+	};
+
+	/**
+	 * Need to check if there is a DST Time change
+	 * If there is an additonal hour we should have a total of 49 grid-hours
+	 * For an hour less the total grid-hours should be 48 hours
+	*/
+	function getTotalGridHours(arrivalDate) {
+		var startingTime = new Date(arrivalDate),
+            endingTime = new Date(arrivalDate);
+
+		var lastHour = 23,
+			lastMin = 59,
+			lastSec = 59,
+			toHourMs = 36e5;
+
+        endingTime.setDate(endingTime.getDate() + 1);
+        endingTime.setHours(lastHour, lastMin, lastSec);
+        startingTime.setHours(0, 0, 0, 0);
+
+        return Math.ceil( Math.abs(endingTime - startingTime) / toHourMs );
 	};
 
 	$scope.gridProps.filter.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
@@ -1517,6 +1538,38 @@ angular.module('sntRover')
 	}.bind($scope.gridProps);
 
 	var getAvailabilityCallingParams = function() {
+		function checkHours(arrivalDate, span) {
+			var startingTime = new Date(arrivalDate),
+				endingTime = new Date(startingTime),
+				timeChnangeDiff,
+				hasExtraHour,
+				hasLessHour;
+
+			endingTime.setHours( span );
+			timeChnangeDiff = startingTime.getTimezoneOffset() - endingTime.getTimezoneOffset();
+
+			if ( timeChnangeDiff < 0 ) {
+				hasLessHour = true;
+				hasExtraHour = false;
+			} else if ( timeChnangeDiff > 0 ) {
+				hasLessHour = false;
+				hasExtraHour = true;
+			} else {
+				hasLessHour = false;
+				hasExtraHour = false;
+			}
+
+			console.log( startingTime, endingTime )
+			console.log( startingTime.getTimezoneOffset(), endingTime.getTimezoneOffset() )
+			console.log( timeChnangeDiff );
+
+			return {
+				hasExtraHour: hasExtraHour,
+				hasLessHour: hasLessHour
+			}
+		};
+
+
 		var filter 		= _.extend({}, this.filter),
 			time_span 	= Time({ hours: this.display.min_hours }),
 			start_date 	= new Date(this.display.x_n);
@@ -1535,10 +1588,14 @@ angular.module('sntRover')
 					hour = selected_hour_min[0],
 					min  = selected_hour_min[1];
 			start.setHours(hour, min);
+
+		var hoursInDay = checkHours(start, time_span.hours),
+            dstChange = hoursInDay.hasExtraHour ? 1 : (hoursInDay.hasLessHour ? -1 : 0);
+
 		var end = new Date(start.getFullYear(),
 						   start.getMonth(),
 						   start.getDate(),
-						   start.getHours()  + time_span.hours,
+						   start.getHours()  + time_span.hours + dstChange,
 						   start.getMinutes() + time_span.minutes,
 						   0, 0),
 			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id),

@@ -22,7 +22,7 @@ var DailyProductionByDemographicsTableRows = React.createClass({
         if ((visibleColCounter + 1) % totalColumnsVisible === 0) {
           className = 'day-end';
         }
-        if (_.indexOf(['rate_revenue', 'adr', 'actual_revenue'], colData.key) >= 0 && !header.showRevenue) {
+        if (_.indexOf(['future_revenue', 'adr', 'rate_revenue'], colData.key) >= 0 && !header.showRevenue) {
           className += ' hidden';
         } else if (_.indexOf(['available', 'res_count'], colData.key) >= 0 && !header.showAvailable) {
           className += ' hidden';
