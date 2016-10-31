@@ -40,7 +40,7 @@ sntZestStation.controller('zsHomeCtrl', [
 				$state.go('zest_station.checkOutReservationSearch');
 			} else {
 				$state.go('zest_station.checkoutSearchOptions');
-			};
+			}
 		};
 
 		$scope.language = {};
@@ -53,7 +53,6 @@ sntZestStation.controller('zsHomeCtrl', [
 						name: defaultLangName
 					});
 				$scope.selectLanguage(defaultLanguage);
-
 			}
 		};
 
@@ -66,22 +65,39 @@ sntZestStation.controller('zsHomeCtrl', [
 				userInActivityTimeInHomeScreenInSeconds = 0;
 			};
 
-			var incrementHomeScreenTimer = function() {
-
+		var incrementHomeScreenTimer = function() {
+			//if by some reason, the timer is running even 
+			//after chaning state (we are clearing timer whenever we are
+			//changing state), we need to deactivate the timer.
+			if ($state.current.name === 'zest_station.home') {
 				userInActivityTimeInHomeScreenInSeconds++;
-				//when user activity is not recorded for more than 120 secs
-				//translating to default lanaguage
-				if (userInActivityTimeInHomeScreenInSeconds >= 120) {
-					console.info("translating to default lanaguage");
-					setToDefaultLanguage();
-					$scope.runDigestCycle();
-					userInActivityTimeInHomeScreenInSeconds = 0;
-				} else {
-					//do nothing;
-				}
-			};
+			} else {
+				//if current state is not home, then 
+				//deactivate the timer
+				userInActivityTimeInHomeScreenInSeconds = 0;
+				clearInterval($scope.activityTimer);
+			}
+			//when user activity is not recorded for more than 120 secs
+			//translating to default lanaguage
+			if (userInActivityTimeInHomeScreenInSeconds >= 120 && $state.current.name === 'zest_station.home') {
+				console.info("translating to default lanaguage after "+userInActivityTimeInHomeScreenInSeconds+" seconds");
+				setToDefaultLanguage();
+				$scope.runDigestCycle();
+				userInActivityTimeInHomeScreenInSeconds = 0;
+			} else {
+				//do nothing;
+			}
+		};
 			$scope.activityTimer = setInterval(incrementHomeScreenTimer, 1000);
 		};
+
+		//deactivate the active activity timer on entering home page(inorder to avoid multiple timers 
+		//running at the same time, we will be start new timer)
+		try{
+			clearInterval($scope.activityTimer);
+		}catch(e){
+			//console.log("no timer running.")
+		}
 		setHomeScreenTimer();
 		/**************************************************************************************/
 
@@ -101,12 +117,12 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * @param  {object} language
 		 */
 		$scope.selectLanguage = function(language) {
+			//Reset timer on language selection
+			userInActivityTimeInHomeScreenInSeconds = 0;
 			var languageConfig = zsGeneralSrv.languageValueMappingsForUI[language.name],
 				langShortCode = languageConfig.code;
 			$translate.use(langShortCode);
 			$scope.selectedLanguage = language;
-			//Reset timer on language selection
-			userInActivityTimeInHomeScreenInSeconds = 0;
 		};
 
 		/**
