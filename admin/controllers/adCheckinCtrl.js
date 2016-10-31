@@ -29,6 +29,17 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     $scope.roomTypes = [];
     $scope.excludedRoomTypes = [];
     $scope.openRoomExclusionSettings = false;
+
+    $scope.checkinEmailRoomExclusionConfig = {
+        "item_number_active":true,
+        "item_number_label" : 'ROOM NO.',
+        "item_desc_active":true,
+        "item_desc_label" : 'ROOM TYPE',
+        "selectedExcludedRoomIds": [],
+        "unSelectedExcludedRoomIds": [],
+        "apiService" : "ADEmailSettingsSrv"
+    };
+
   };
 
   $scope.toggleRoomExlusionSettings = function(bool){

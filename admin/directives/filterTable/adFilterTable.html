@@ -1,0 +1,80 @@
+<section id="assignRooms">
+    <form style="overflow-y:auto;" class="form float">
+        <!-- Toggle between assigned & UNSELECTED rooms -->
+        <div class="controls-holder tabs">
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAvailableRooms()" ng-class="{'orange' : selectionConfig.activeTab === 'UNSELECTED', 'white grey-bg' : selectionConfig.activeTab !== 'UNSELECTED'}">
+                UNSELECTED
+            </button>
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAvailableRooms()" ng-class="{'orange' : selectionConfig.activeTab === 'SELECTED', 'white grey-bg' : selectionConfig.activeTab!== 'SELECTED'}">
+                SELECTED
+                <span class="bubble" ng-class="{'selected' : selectionConfig.noOfItemsSelected > 0}"> {{selectionConfig.noOfItemsSelected}} </span>
+            </button>
+        </div>
+        <!-- Config section and search come here! -->
+        <div class="controls-holder filters">
+            <span class="count-show">Show</span>
+            <div class="select floor-room-count">
+                <select ng-model="displyCount" ng-options="opt for opt in displayCountList"></select>
+            </div>
+            <span class="count-entries">entries</span>
+            <!-- 3. search -->
+            <div class="table-search three-column">
+                <span class="search-text">Search</span>
+                <span class="icons icon-search" name="submit" type="submit"></span>
+                <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+            </div>
+        </div>
+        <!--ng-table component -->
+        <table class="grid" ng-table="tableParams" template-pagination="custom/pager">
+            <tbody>
+                <tr ng-repeat="item in $data" ng-click="toggleSelectRoom(item)" ng-class="{'selected': item.isSelected}">
+                    <td data-title="filterConfig.item_number_label" sortable="'item_no'" header-class="width-40">
+                        <a class="room-number">
+                            <strong ng-class="{'selected': item.isSelected, 'green': selectionConfig.activeTab === 'UNSELECTED', 'red': selectionConfig.activeTab === 'SELECTED'}"> {{item.item_number}} </strong>
+                        </a>
+                    </td>
+                    <td data-title="filterConfig.item_desc_label" sortable="'item_desc'" header-class="width-40">
+                        {{item.item_desc}}
+                    </td>
+                    <td header-class="width-10 padding-checkbox" style="text-align: left; " header="'/assets/partials/filterTable/adFilterTableHeader.html'">
+                        <div class="entry radio-check">
+                            <label class="checkbox" ng-class="{'checked': item.isSelected}">
+                                <span class="icon-form icon-checkbox" ng-class="{'checked': item.isSelected, 'green': selectionConfig.activeTab === 'UNSELECTED', 'red': selectionConfig.activeTab === 'SELECTED'}"></span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!--Custom pagination footer goes here-->
+        <script type="text/ng-template" id="custom/pager">
+            <div class="pager">
+                <span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+                <span ng-show="totalCount==0">Showing 0 items</span>
+                <ul class="ng-cloak">
+                    <li ng-repeat="page in pages" ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}" ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+                        <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+                        <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+                    </li>
+                </ul>
+            </div>
+        </script>
+        <!--end-->
+        <!-- Action Buttons Here -->
+        <div class="actions ">
+            <button type="button" id="cancel" class="button blank" ng-click="toggleRoomExlusionSettings(false)" translate>
+                CANCEL
+            </button>
+            <button type="button" ng-hide="selectionConfig.activeTab === 'SELECTED'" like-type="common" ng-show="" class="button " ng-click="onSaveChanges()" ng-disabled="!selectionConfig.areSomeItemsSelected && !selectionConfig.areAllItemsSelected" ng-class="{'green': selectionConfig.areAllItemsSelected || selectionConfig.areSomeItemsSelected, 'grey': !selectionConfig.areSomeItemsSelected && !selectionConfig.areAllItemsSelected}" translate>
+                ASSIGN_SELECTED
+            </button>
+            <button type="button" ng-show="selectionConfig.activeTab === 'SELECTED'" like-type="common" class="button " ng-click="onSaveChanges()" ng-disabled="!selectionConfig.areSomeItemsSelected && !selectionConfig.areAllItemsSelected" ng-class="{'red': selectionConfig.areAllItemsSelected || selectionConfig.areSomeItemsSelected, 'grey': !selectionConfig.areSomeItemsSelected && !selectionConfig.areAllItemsSelected}" translate>
+                UNASSIGN_SELECTED
+            </button>
+        </div>
+    </form>
+</section>
