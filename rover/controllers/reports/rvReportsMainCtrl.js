@@ -1028,7 +1028,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             $scope.invokeApi(reportsSubSrv.fetchAddons, groupIds, sucssCallback, errorCallback);
         };
 
-		function genParams (report, page, perPage, changeAppliedFilter) {
+		function genParams (report, page, perPage, changeAppliedFilter, exportType) {
 			var params = {
 				'id'       : report.id,
 				'page'     : page,
@@ -1042,6 +1042,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				checkOutKey = '',
 				selected    = [];
 
+			if(exportType) {
+				params['export_type'] = exportType;
+			}
 			var changeAppliedFilter = 'boolean' === typeof changeAppliedFilter ? changeAppliedFilter : true;
 
 			// capturing the filters applied to be
@@ -1959,11 +1962,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			var chosenReport = report || reportsSrv.getChoosenReport(),
 				loadPage = 1,
 				resultPerPageOverride = true,
-				changeAppliedFilter = false;
+				changeAppliedFilter = false,
+				exportType = "";
 
+			// only do this for this report 34758
+			if ( chosenReport.title === reportNames['FORECAST_BY_DATE'] ) {
+				var exportType = 'csv';
+			};
 			$scope.invokeApi(reportsSrv.exportCSV, {
 				url: $scope.getExportPOSTUrl(report),
-				payload: genParams(chosenReport, loadPage, resultPerPageOverride, changeAppliedFilter)
+				payload: genParams(chosenReport, loadPage, resultPerPageOverride, changeAppliedFilter, exportType)
 			}, function(response) {
 				$scope.$emit('hideLoader');
 			}, function(errorMessage) {
