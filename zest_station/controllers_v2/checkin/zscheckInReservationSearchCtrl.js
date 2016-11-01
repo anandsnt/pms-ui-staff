@@ -295,16 +295,14 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 			hotelDate.setHours(currentHours);
 			hotelDate.setMinutes(currentMins);
-
-			hotelDate.setYear(hotelDateParams[0]);
-			hotelDate.setMonth(hotelDateParams[1] - 1);
-			hotelDate.setDate(hotelDateParams[2]);
-
-			console.warn('hotelDate with current time: ', hotelDate);
+			var oneDayGap = 86400 * 1000,
+			 today = new Date(hotelDate),
+			 minDatePickDate = new Date(today.getTime() + oneDayGap);
+			 console.log('min date: ',minDatePickDate);
 			$scope.dateOptions = {
 				dateFormat: $scope.zestStationData.hotelDateFormat,
 				yearRange: "0:+10",
-				minDate: hotelDate,
+				minDate: new Date(minDatePickDate),
 				onSelect: function(value) {
 					$scope.showDatePicker();
 				}
