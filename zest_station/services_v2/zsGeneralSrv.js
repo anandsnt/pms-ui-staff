@@ -62,7 +62,6 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     theme = 'snt';
                 }
                 that.hotelTheme = theme;
-                resolveData.themeLogoPath = '/assets/zest_station/css/themes/'+that.hotelTheme+'/logo.svg';
                 //resolves this.fetchSetting()
                 deferred.resolve(resolveData);
             }, function(data) {
