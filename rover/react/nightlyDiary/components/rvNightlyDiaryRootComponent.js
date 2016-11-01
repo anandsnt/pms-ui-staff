@@ -26,7 +26,7 @@ const NightlyDiaryRootComponent = () => (
 
                 {/*<!-- Rooms -->*/}
 
-                    <NightlyDiaryRoomsListContainer/>
+                <NightlyDiaryRoomsListContainer/>
 
 
                 {/*<!-- Grid -->*/}
