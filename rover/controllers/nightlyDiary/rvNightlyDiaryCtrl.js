@@ -5,12 +5,16 @@ angular.module('sntRover')
         '$state',
         '$stateParams',
         '$filter',
+        'roomsList',
+        'datesList',
         function(
             $scope,
             $rootScope,
             $state,
             $stateParams,
-            $filter
+            $filter,
+            roomsList,
+            datesList
         ) {
 
        // $scope.$emit('showLoader');
@@ -19,44 +23,9 @@ angular.module('sntRover')
         $scope.$parent.heading = $filter('translate')('MENU_ROOM_DIARY');
         $scope.setTitle($filter('translate')('MENU_ROOM_DIARY'));
 
-        const diaryRoomsList = {
-                                "rooms": [{
-                                    "id": "582",
-                                    "room_no": "101",
-                                    "room_type_name": "Triple Cabin",
-                                    "hk_status": "CLEAN",
-                                    "service_status": "IN_SERVICE",
-                                    "suite_room_details": [{
-                                        "id": 555,
-                                        "room_no": "777_suite"
-                                    }, {
-                                        "id": 556,
-                                        "room_no": "776_suite"
-                                    }]
+        const diaryRoomsList = roomsList;
 
-
-                                }, {
-                                    "id": "582",
-                                    "room_no": "102",
-                                    "room_type_name": "Deluxe Twin",
-                                    "hk_status": "DIRTY",
-                                    "service_status": "IN_SERVICE",
-                                    "suite_room_details": [{
-                                        "id": 555,
-                                        "room_no": "777_suite"
-                                    }, {
-                                        "id": 556,
-                                        "room_no": "776_suite"
-                                    }]
-
-
-                                }],
-                                "total_count": 1000
-                            }
-
-        const datesGridData =   {
-                            "dates": ["2015-10-26", "2015-10-27", "2015-10-28", "2015-10-29", "2015-10-30", "2015-10-31", "2015-11-01"]
-                        }
+        const datesGridData =  datesList;
 
         $scope.isSevenMode = true;
         $scope.switchMode = function(){
@@ -77,8 +46,6 @@ angular.module('sntRover')
                 diaryRoomsListData : diaryRoomsList,
                 datesGridData: datesGridData
             };
-           // console.log("------");
-            //console.log(initialDispatchData);
             store.dispatch(initialDispatchData);
         };
 

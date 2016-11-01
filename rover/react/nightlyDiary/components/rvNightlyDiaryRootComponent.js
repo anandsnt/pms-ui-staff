@@ -13,6 +13,28 @@ const NightlyDiaryRootComponent = () => (
             </div>
             <NightlyDiaryDatesContainer/>
         </div>
-        <NightlyDiaryRoomsListContainer/>
+        <div id="diary-nightly-grid" className="grid-content scrollable top-pagination">
+            <div className="wrapper">
+
+                {/*<!-- Pagination (show only those in use) -->*/}
+                <div className="grid-pagination top">
+                    <button type="button" className="button blue">Prev 6 Rooms</button>
+                </div>
+                <div className="grid-pagination bottom">
+                    <button type="button" className="button blue">Next 10 Rooms</button>
+                </div>
+
+                {/*<!-- Rooms -->*/}
+
+                    <NightlyDiaryRoomsListContainer/>
+
+
+                {/*<!-- Grid -->*/}
+                <div className="grid-reservations firstday-wed">
+
+                </div>
+            </div>
+        </div>
+
     </div>
 );

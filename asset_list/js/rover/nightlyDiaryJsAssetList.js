@@ -7,7 +7,7 @@ module.exports = {
         nightlyDiaryJsAssets   = {
             minifiedFiles: [],
             nonMinifiedFiles: [
-                roverRoot + "services/nightlyDiary/**/*.js",
+                roverRoot + "services/nightlyDiary/*.js",
                 roverRoot + "services/reservation/rvReservationBaseSearchSrv.js",
                 roverRoot + "services/reservation/rvReservationSummarySrv.js",
                 roverRoot + "controllers/nightlyDiary/**/*.js",
