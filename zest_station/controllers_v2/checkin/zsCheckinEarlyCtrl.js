@@ -68,16 +68,16 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
             console.log('is_early_prepaid: ', $scope.is_early_prepaid);
 
             $scope.standardCheckinTime = response.checkin_time;
-            $scope.unavailable = earlyCheckinUnavailable(response);
-            console.info('$scope.unavailable: ', $scope.unavailable);
+            $scope.early_checkin_unavailable = earlyCheckinUnavailable(response);
+            console.info('$scope.early_checkin_unavailable: ', $scope.early_checkin_unavailable);
 
-            if ($scope.unavailable) {
+            if ($scope.early_checkin_unavailable) {
                 $scope.bypass = false;
                 $scope.is_early_prepaid = false;
                 $scope.reservation_in_early_checkin_window = false;
             }
 
-            $scope.ableToPurchaseEarly = (!$scope.unavailable && !$scope.is_early_prepaid && $scope.reservation_in_early_checkin_window && !$scope.bypass);
+            $scope.ableToPurchaseEarly = (!$scope.early_checkin_unavailable && !$scope.is_early_prepaid && $scope.reservation_in_early_checkin_window && !$scope.bypass);
             $scope.early_checkin_charge = response.early_checkin_charge;
         };
 

@@ -5,7 +5,8 @@ sntRover.controller('RVSocialLobbyCrl', [
     'RVSocilaLobbySrv',
     '$timeout',
     '$state',
-    function($scope, $rootScope, $filter, RVSocilaLobbySrv, $timeout, $state) {
+    'ngDialog',
+    function($scope, $rootScope, $filter, RVSocilaLobbySrv, $timeout, $state, ngDialog) {
 
         BaseCtrl.call(this, $scope);
 
@@ -14,13 +15,15 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.selectedPost = "";
         $scope.newPost = "";
         $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
+        $scope.$emit("updateRoverLeftMenu", "sociallobby");
+        var deleteIndex = "";
 
         var POST_LIST_SCROLL = 'post-list-scroll',
             COMMENT_LIST_SCROLL = 'comment-list-scroll';
 
         $scope.refreshPostScroll = function(scrollUp) {
             $scope.refreshScroller(POST_LIST_SCROLL);
-            if ( !!scrollUp && $scope.myScroll.hasOwnProperty(POST_LIST_SCROLL) ) {
+            if ( $scope.myScroll.hasOwnProperty(POST_LIST_SCROLL) ) {
                 $scope.myScroll[POST_LIST_SCROLL].scrollTo(0, 0, 100);
             };
         }
@@ -63,6 +66,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.refreshPosts = function(){
             $scope.postParams.page = 1;
             $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
+            $scope.newPost = "";
             $scope.fetchPosts();
         }
 
@@ -80,19 +84,32 @@ sntRover.controller('RVSocialLobbyCrl', [
             $scope.callAPI(RVSocilaLobbySrv.addPost, options);
         }
 
-        $scope.goToStayCard = function(reservation_id){
+        $scope.goToStayCard = function(reservation_id, event){
+            event.stopPropagation();
             $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
                 id: reservation_id,
                 isrefresh: false
             });
         }
 
-        $scope.deletePost = function(post_id){
+        $scope.deletePostClicked = function(post_id){
+            deleteIndex = post_id;
+            ngDialog.open({
+                   template: '/assets/partials/socialLobby/rvSLPostDelete.html',
+                   className: 'ngdialog-theme-default single-calendar-modal',
+                   scope: $scope,
+                   closeByDocument: true});
+        }
+        $scope.closeDialog = function(){
+            ngDialog.close();
+        }
+        $scope.deletePost = function(){
             var options = {};
-            options.params = {'post_id': post_id};
+            options.params = {'post_id': deleteIndex};
             options.onSuccess = function(data){
                 
                 $scope.refreshPosts();
+                ngDialog.close();
             }
             $scope.callAPI(RVSocilaLobbySrv.deletePost, options);
         }
@@ -110,6 +127,14 @@ sntRover.controller('RVSocialLobbyCrl', [
                 $scope.middle_page3--;
                 $scope.middle_page2--;
                 $scope.middle_page1--;
+            }else if($scope.postParams.page == 1){
+                $scope.middle_page3 = 4;
+                $scope.middle_page2 = 3;
+                $scope.middle_page1 = 2;
+            }else if($scope.postParams.page == $scope.totalPostPages && $scope.totalPostPages > 5){
+                $scope.middle_page3 = $scope.totalPostPages -1;
+                $scope.middle_page2 = $scope.totalPostPages -2;
+                $scope.middle_page1 = $scope.totalPostPages -3;
             }
         }
 

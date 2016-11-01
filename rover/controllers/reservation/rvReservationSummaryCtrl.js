@@ -229,31 +229,27 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.errorMessage = data;
         });
 
-        var addToGuestCard = function(data) {
-            var dataToGuestList = {};
-            if ($scope.isNewCardAdded && !$scope.isSixCardSwiped) {
-                var cardName = (!$scope.newPaymentInfo.tokenDetails.isSixPayment) ?
-                    $scope.newPaymentInfo.cardDetails.userName :
-                    ($scope.passData.details.firstName + " " + $scope.passData.details.lastName);
-                var cardType = "CC";
-                if ($scope.isGiftCard) {
-                    cardType = 'GIFT_CARD';
-                }
-                dataToGuestList = {
-                    "id": data.id,
-                    "isSelected": true,
-                    "card_code": retrieveCardtype(),
-                    "is_primary": false,
-                    "payment_type": cardType,
-                    "card_expiry": retrieveExpiryDate(),
-                    "mli_token": retrieveCardNumber(),
-                    "card_name": cardName,
-                    "payment_type_id": 1
-                };
-            }
+        /**
+         * Method to communicate to the guest card payment controller the adding of the card to the guest card
+         * @param {object} data response from submit_payment API
+         * @returns {undefined} undefined
+         */
+        function addToGuestCard (cardDetails) {
+            var dataToGuestList = {
+                'id': cardDetails.value,
+                'isSelected': true,
+                'card_code': cardDetails.card_code,
+                'is_primary': false,
+                'payment_type': 'CC',
+                'card_expiry': cardDetails.expiry_date,
+                'mli_token': cardDetails.ending_with,
+                'card_name': cardDetails.holder_name,
+                'payment_type_id': 1
+            };
 
+            // Handled in rvGuestPaymentCtrl.js
             $rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
-        };
+        }
 
         var savenewCc = function() {
 
@@ -806,8 +802,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 console.log(data);
                 console.log($scope.reservationData)
                 //CICO-18699 credit card not saving to guest card when selecting Deposit later option.
-                if ($scope.addToGuestCard) {
-                    addToGuestCard(data);
+                if ($scope.reservationData.paymentType.type.value === 'CC' && $scope.addToGuestCard) {
+                    addToGuestCard($scope.summaryState.selectedCardDetails);
                 }
                 $state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
                     "id": $scope.reservationData.reservationId,
@@ -842,7 +838,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.proceedCreatingReservation();
         };
 
-        var savePayment = function(callback){
+        var savePayment = function(callback, addToGuestCard){
             var promises = [];
             $scope.$emit('showLoader');
 
@@ -865,6 +861,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                     if ($scope.reservationData.paymentType.type.value === item.name) {
                         if ($scope.reservationData.paymentType.type.value === "CC") {
                             postData.payment_type.payment_method_id = $scope.summaryState.selectedCardDetails.value;
+                            postData.add_to_guest_card = addToGuestCard;
                         } else {
                             postData.payment_type.type_id = item.id;
                         }
@@ -896,7 +893,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         // Save the payment information initially and then proceed with the demographics check!
         $scope.clickedContinueButton = function() {
-            savePayment(onSavePaymentMethodSuccess);
+            savePayment(onSavePaymentMethodSuccess, $scope.addToGuestCard);
         };
 
         $scope.proceedCreatingReservation = function() {
@@ -972,8 +969,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.$emit('hideLoader');
                 $scope.viewState.identifier = "UPDATED";
                 $scope.reservationData.is_routing_available = data.is_routing_available;
-                if ($scope.addToGuestCard) {
-                    addToGuestCard(data);
+                if ($scope.reservationData.paymentType.type.value === 'CC' && $scope.addToGuestCard) {
+                    addToGuestCard($scope.summaryState.selectedCardDetails);
                 }
 
                 $state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
@@ -1562,11 +1559,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.reservationData.paymentType.ccDetails = data.cardDetails;
             $scope.reservationData.selectedPaymentId = data.cardDetails.value;
             $scope.reservationData.paymentType.type.value = data.paymentType;
-            savePayment($scope.confirmReservation);
+            savePayment($scope.confirmReservation, data.addToGuestCard);
         });
 
         $scope.$on("PAYMENT_SUCCESS", function(e, data) {
-            //On continue on create reservation - add to guest card - to fix undefined issue on tokendetails
+            // On continue on create reservation - add to guest card - to fix undefined issue on tokendetails
             if ($scope.reservationData.paymentType.type.value !== "CC") {
                 $scope.isNewCardAdded = false;
             }
@@ -1587,8 +1584,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.reservationData.depositData = angular.copy($scope.depositData);
 
             $scope.paymentErrorMessage = errorMessage[0];
+            $scope.errorMessage = errorMessage;
             runDigestCycle();
             $scope.$emit('hideLoader');
+        });
+
+        $scope.$on('PAYMENT_TOGGLE_ATTACH_TO_GUEST_CARD', function(e, addToGuestCard) {
+            $scope.addToGuestCard = addToGuestCard;
+        });
+
+        $scope.$on('PAYMENT_SCREEN_MODE_CHANGED', function(){
+            $timeout(function() {
+                $scope.refreshScroller('paymentInfo');
+            }, 300);
+
         });
 
         $scope.init();
