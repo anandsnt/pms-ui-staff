@@ -624,6 +624,11 @@ sntZestStation.controller('zsRootCtrl', [
 	 	var homeInActivityTimeInSeconds = 0;
 	 	var initRefreshStation = function(){
 	 		console.warn(':: Refreshing Station ::');
+	 		try{
+	 			storage.setItem(refreshedKey, 'true');
+	 		} catch(err){
+	 			console.log(err);
+	 		}
 	 		location.reload(true);
 	 	};
 		/**
@@ -833,9 +838,23 @@ sntZestStation.controller('zsRootCtrl', [
 		var workStationstorageKey = 'snt_zs_workstation',
 			oosStorageKey = 'snt_zs_workstation.in_oos',
 			oosReasonKey = 'snt_zs_workstation.oos_reason',
+			refreshedKey = 'snt_zs_workstation.recent_refresh',
 			storage = localStorage,
 			storedWorkStation = '',
 			station;
+			var recently_refreshed;
+			try{
+	 			recently_refreshed = storage.getItem(refreshedKey);
+	 			if (recently_refreshed == 'true'){
+	 				recently_refreshed = true;	
+	 			} else {
+	 				recently_refreshed = false;	
+	 			}
+	 		} catch(err){
+	 			recently_refreshed = false;
+	 			console.log(err);
+	 		}
+	 		storage.setItem(refreshedKey, 'false');
 		/**
 		 * [setWorkStationForAdmin description]
 		 *  The workstation, status and oos reason are stored in
@@ -885,7 +904,7 @@ sntZestStation.controller('zsRootCtrl', [
 						$state.go('zest_station.home');
 					} else {
 						//if application is launched either in chrome app or ipad go to login page
-						if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad) && !station.refresh_station) {
+						if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad) && !recently_refreshed) {
 							$state.go('zest_station.admin');
 						} else {
 							//we want to treat other clients are normal, ie need to provide 
