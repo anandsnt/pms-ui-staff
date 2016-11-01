@@ -7,11 +7,7 @@ sntGuestWeb.controller('gwLateETAUpdationController', ['$scope', '$state', '$con
 		$controller('gwETABaseController', {
 			$scope: $scope
 		});
-		//to delete
-		$rootScope.accessToken = "e78a8786c11ce4ecd9ae2a7c452e2911";
-		GwWebSrv.zestwebData.reservationID = "1339909"
-			//to delete
-			//
+		
 		var init = function() {
 			var screenIdentifier = "ETA_LATE_UPDATION";
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);

@@ -1,7 +1,6 @@
-cssimg/*
-admin/adLocales/*
-admin/css/*
-javascripts/*
-lib/*
-node_modules/**/**
-shared/lib/*
+app/assets/shared/lib/**/*
+app/assets/node_modules/**/*
+app/assets/**/node_modules/**/*
+app/assets/javascripts/**/*
+app/assets/asset_list/**/*
+app/assets/gulp/**/*
