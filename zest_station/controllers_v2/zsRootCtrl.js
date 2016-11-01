@@ -577,7 +577,7 @@ sntZestStation.controller('zsRootCtrl', [
 					//reset idle timer, then fire idle timer events
 					homeInActivityTimeInSeconds = 0;
 					//Workstation trigger for Refresh Station is set to TRUE, --Refresh Station at next (idle) opportunity--
-					var station = getLocalWorkStation();
+					var station = getWorkStationSetting($rootScope.workstation_id);
 					//send back to workstation that kiosk is being/has been refreshed 
 					// --assumption is that two Zest Stations will be sharing a workstation, currently S69, that is not a logical setup
 					
@@ -609,8 +609,14 @@ sntZestStation.controller('zsRootCtrl', [
 			};
 			var options = {
 				params: {
+					'out_of_order_msg': station.out_of_order_msg,
+					'emv_terminal_id': station.emv_terminal_id,
+					'default_key_encoder_id': station.key_encoder_id,
 					'refresh_station': false,
+					'is_out_of_order': station.is_out_of_order,
 					'identifier': station.station_identifier,
+					'name': station.name,
+					'rover_device_id':station.rover_device_id,
 					'id': station.id
 				},
 				successCallBack: onSuccess,
@@ -631,7 +637,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 */
 		var CheckForWorkStationStatusContinously = function() {
 			$scope.$emit('FETCH_LATEST_WORK_STATIONS');
-			$timeout(CheckForWorkStationStatusContinously, 10000);//DEBUGGING,@=10 seconds, reset to 120s before pushing to dev
+			$timeout(CheckForWorkStationStatusContinously, 120000);
 		};
 		/********************************************************************************
 		 *  User activity timer
@@ -795,20 +801,38 @@ sntZestStation.controller('zsRootCtrl', [
 			'name': ''
 		};
 
-		var getLocalWorkStation = function(){
+		var getLocalWorkStation = function(id){
 			try {
 				storedWorkStation = storage.getItem(workStationstorageKey);
 			} catch (err) {
 				console.warn(err);
 			}
-			//find workstation with the local storage data
-			var station = getSavedWorkStationObj(storedWorkStation);
+			//find workstation with the local storage data or from last fetched
+			var station;
+			if (id){
+				station = getWorkStationSetting(id);
+			} else {
+			 	station = getSavedWorkStationObj(storedWorkStation);	
+			}
+			
 			if (typeof station !== typeof undefined){
 				return station;
 			} else {
 				return null;
 			}
 		};
+
+		var getWorkStationSetting = function(id){
+			if (zsGeneralSrv.last_workstation_set.work_stations){
+				for (var i in zsGeneralSrv.last_workstation_set.work_stations){
+					if (zsGeneralSrv.last_workstation_set.work_stations[i].id === id){
+						return zsGeneralSrv.last_workstation_set.work_stations[i];
+					}
+				}
+			}
+			return {};
+		};
+
 
 		var workStationstorageKey = 'snt_zs_workstation',
 			oosStorageKey = 'snt_zs_workstation.in_oos',
@@ -826,7 +850,6 @@ sntZestStation.controller('zsRootCtrl', [
 
 			//find workstation with the local storage data
 			var station = getLocalWorkStation();
-			//station.refresh_station = true;//DEBUGGING REMOVE BEFORE PUSH
 			if (station === null) {
 				$scope.zestStationData.set_workstation_id = "";
 				$scope.zestStationData.key_encoder_id = "";

@@ -355,6 +355,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/api/workstations.json';
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                that.last_workstation_set = data;
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
