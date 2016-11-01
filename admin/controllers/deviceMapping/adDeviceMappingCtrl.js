@@ -19,12 +19,13 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
             }
         };
         $scope.getEmvDescription = function(id) {
-            var e = $scope.emv_terminals;
-            for (var i in e) {
-                if (e[i].id === id) {
-                    return e[i].name;
-                }
-            }
+            var name;
+            _.find($scope.emv_terminals, function(terminal) {
+                if (terminal.id === id){
+                    name = terminal.name;
+                }   
+            });
+             return name;
         };
         $scope.listDevices = function($defer, params) {
             var getParams = $scope.calculateGetParams(params);
