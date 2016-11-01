@@ -1559,10 +1559,6 @@ angular.module('sntRover')
 				hasExtraHour = false;
 			}
 
-			console.log( startingTime, endingTime )
-			console.log( startingTime.getTimezoneOffset(), endingTime.getTimezoneOffset() )
-			console.log( timeChnangeDiff );
-
 			return {
 				hasExtraHour: hasExtraHour,
 				hasLessHour: hasLessHour
