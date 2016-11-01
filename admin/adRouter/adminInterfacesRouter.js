@@ -299,4 +299,13 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     url : '/travelTripperSetup'
   });
 
+  $stateProvider.state('admin.revinateSetup', {
+    templateUrl: '/assets/partials/revinateSetup/adRevinateSetup.html',
+    controller: 'adExternalInterfaceCtrl',
+    //interface_id: 4,
+    interface_id: 'REVINATE',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'REVINATE',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    url : '/zRevinateSetup'
+  });
+
 });
