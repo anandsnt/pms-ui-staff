@@ -11,21 +11,24 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
          * To fetch list of device mappings
          */
         $scope.getKeyEncoderDescription = function(id) {
-            var encoders = $scope.key_encoders;
-            for (var i in encoders) {
-                if (encoders[i].id === id) {
-                    return encoders[i].description;
-                }
+            var encoder =  _.find($scope.key_encoders, function(t) {
+                return (t.id == id);
+            });
+            if (!_.isUndefined(encoder)){
+                return encoder.description;    
+            } else {
+                return '';
             }
         };
         $scope.getEmvDescription = function(id) {
-            var name;
-            _.find($scope.emv_terminals, function(terminal) {
-                if (terminal.id === id){
-                    name = terminal.name;
-                }   
+            var terminal =  _.find($scope.emv_terminals, function(t) {
+                return (t.id == id);
             });
-             return name;
+            if (!_.isUndefined(terminal)){
+                return terminal.name;    
+            } else {
+                return '';
+            }
         };
         $scope.listDevices = function($defer, params) {
             var getParams = $scope.calculateGetParams(params);
@@ -157,7 +160,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
          * @param {string} id of the department
          */
         $scope.getTemplateUrl = function(index, id) {
-            if (typeof index === "undefined" || typeof id === "undefined") {
+            if (_.isUndefined(index) || _.isUndefined(id)) {
                 return "";
             }
             if ($scope.currentClickedElement === index) {
@@ -258,10 +261,10 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 "name": $scope.mapping.name,
                 "identifier": $scope.mapping.station_identifier
             };
-            if (typeof $scope.mapping.selectedKeyEncoder !== typeof undefined) {
+            if (!_.isUndefined($scope.mapping.selectedKeyEncoder)) {
                 data.default_key_encoder_id = $scope.mapping.selectedKeyEncoder;
             }
-            if (typeof $scope.mapping.selectedEmvTerminal !== typeof undefined) {
+            if (!_.isUndefined($scope.mapping.selectedEmvTerminal)) {
                 data.emv_terminal_id = $scope.mapping.selectedEmvTerminal;
             }
             if (inline) {
@@ -269,7 +272,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 data.default_key_encoder_id = $scope.mapping.key_encoder_id;
             }
             //CICO-18808
-            if (typeof $scope.mapping.rover_device_id !== typeof undefined) {
+            if (!_.isUndefined($scope.mapping.rover_device_id)) {
                 data.rover_device_id = $scope.mapping.rover_device_id;
             }
             if (!$scope.mapping.refresh_station) {
