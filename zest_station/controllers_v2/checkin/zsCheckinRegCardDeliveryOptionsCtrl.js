@@ -87,7 +87,10 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				var emailopted = false;
 				var actionStatus = 'success';
 				nextPageActions(printopted, emailopted, actionStatus);
-			}
+			};
+			var handleStarTacPrinterActions = function(){
+
+       		};
 			var handleBillPrint = function() {
 				// add the orientation
 				addPrintOrientation();
@@ -107,10 +110,15 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 								printFailedActions();
 							}, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
 						} else {
-							$window.print();
-							setTimeout(function() {
-								printSuccessActions();
-							}, 100);
+							if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
+								handleStarTacPrinterActions();
+                        	}
+                        	else{
+								$window.print();
+								setTimeout(function() {
+									printSuccessActions();
+								}, 100);
+							}
 						};
 						// provide a delay for preview to appear 
 

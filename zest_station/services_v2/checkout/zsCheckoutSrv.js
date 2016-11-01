@@ -112,5 +112,16 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
             return deferred.promise;
         };
 
+        this.fetchStarTacPrinterData = function(params){
+            var deferred = $q.defer();
+            var url = '/sample_json/zest_station/starttac.json';
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);

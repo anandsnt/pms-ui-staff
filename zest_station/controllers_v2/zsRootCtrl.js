@@ -631,7 +631,13 @@ sntZestStation.controller('zsRootCtrl', [
 					$scope.$broadcast('DISPENSE_CARD_EMPTY');
 				} else {
 					$scope.$broadcast('DISPENSE_FAILED');
-				};
+				}
+			} else if( response.Command === 'cmd_print_bill'){
+				if (response.ResponseCode === 0) {
+					$scope.$broadcast('WS_PRINT_SUCCESS');
+				} else {
+					$scope.$broadcast('WS_PRINT_FAILED');
+				}
 			}
 		};
 		var socketOpenedFailed = function() {
