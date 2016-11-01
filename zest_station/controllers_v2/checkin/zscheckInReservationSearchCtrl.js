@@ -288,12 +288,12 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			// * have noticed multiple API calls that get date/time and there are inconsistencies
 			$scope.zestStationData.bussinessDate = $scope.hotel_date.business_date;
 
-			 minDatePickDate = new Date($scope.zestStationData.bussinessDate.replace(/-/g, '/'));
-			 console.log(minDatePickDate);
+			 minDate = new Date($scope.zestStationData.bussinessDate.replace(/-/g, '/'));
+			 console.log(minDate);
 			$scope.dateOptions = {
 				dateFormat: $scope.zestStationData.hotelDateFormat,
 				yearRange: "0:+10",
-				minDate: new Date(minDatePickDate),
+				minDate: minDate,
 				onSelect: function(value) {
 					$scope.showDatePicker();
 				}
