@@ -1,4 +1,4 @@
-admin.controller('filterTableController', ['$scope', 'ngTableParams', '$injector',
+admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$injector',
 	function($scope, ngTableParams, $injector) {
 
 		BaseCtrl.call(this, $scope);
@@ -27,7 +27,7 @@ admin.controller('filterTableController', ['$scope', 'ngTableParams', '$injector
 
 		/**
 		 * [processSelectedRooms remove the unselected item]
-		 * @param  {[type]} roomIds [description]
+		 * @param  {[type]} itemIds [description]
 		 * @return {[type]}         [description]
 		 */
 		var processSelectedRooms = function(itemIds, currentPageList) {
@@ -80,10 +80,10 @@ admin.controller('filterTableController', ['$scope', 'ngTableParams', '$injector
 		};
 
 		/**
-		 * [toggleSelectAllRooms choose All/ unselect All]
+		 * [toggleSelectAllItems choose All/ unselect All]
 		 * @return {[type]} [description]
 		 */
-		$scope.toggleSelectAllRooms = function() {
+		$scope.toggleSelectAllItems = function() {
 			$scope.selectionConfig.areAllItemsSelected = !$scope.selectionConfig.areAllItemsSelected;
 			_.each($scope.data, function(item) {
 				item.isSelected = $scope.selectionConfig.areAllItemsSelected;
@@ -91,7 +91,7 @@ admin.controller('filterTableController', ['$scope', 'ngTableParams', '$injector
 			$scope.updateSelectedList();
 		};
 
-		$scope.toggleSelectRoom = function(item) {
+		$scope.toggleSelectItem = function(item) {
 			item.isSelected = !item.isSelected;
 			if (!item.isSelected) {
 				//if unselected delete the Item in the list
@@ -101,10 +101,10 @@ admin.controller('filterTableController', ['$scope', 'ngTableParams', '$injector
 		};
 
 		/**
-		 * [toggleAvailableRooms tab actions]
+		 * [toggleAvailableItems tab actions]
 		 * @return {[type]} [description]
 		 */
-		$scope.toggleAvailableRooms = function() {
+		$scope.toggleAvailableItems = function() {
 			$scope.selectionConfig.activeTab = $scope.selectionConfig.activeTab === "UNSELECTED" ? "SELECTED" : "UNSELECTED";
 			$scope.reloadTable();
 		};
@@ -118,7 +118,7 @@ admin.controller('filterTableController', ['$scope', 'ngTableParams', '$injector
 				$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
 				$scope.data = data.items;
 				if ($scope.selectionConfig.activeTab === "SELECTED") {
-					//set the isSelected Flag for rooms if in already
+					//set the isSelected Flag for items if in already
 					//selected list
 					$scope.data = handleCurrentSelectedPage($scope.filterConfig.selectedExcludedRoomIds, $scope.data);
 					$scope.selectionConfig.noOfItemsSelected = data.total_count;

@@ -6,6 +6,6 @@ admin.directive('adFilterTable', function() {
 			filterConfig: '='
 		},
 		templateUrl: '/assets/directives/filterTable/adFilterTable.html',
-		controller: 'filterTableController'
+		controller: 'adFilterTableController'
 	};
 });

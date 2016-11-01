@@ -2,10 +2,10 @@
     <form style="overflow-y:auto;" class="form float">
         <!-- Toggle between assigned & UNSELECTED rooms -->
         <div class="controls-holder tabs">
-            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAvailableRooms()" ng-class="{'orange' : selectionConfig.activeTab === 'UNSELECTED', 'white grey-bg' : selectionConfig.activeTab !== 'UNSELECTED'}">
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAvailableItems()" ng-class="{'orange' : selectionConfig.activeTab === 'UNSELECTED', 'white grey-bg' : selectionConfig.activeTab !== 'UNSELECTED'}">
                 UNSELECTED
             </button>
-            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAvailableRooms()" ng-class="{'orange' : selectionConfig.activeTab === 'SELECTED', 'white grey-bg' : selectionConfig.activeTab!== 'SELECTED'}">
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAvailableItems()" ng-class="{'orange' : selectionConfig.activeTab === 'SELECTED', 'white grey-bg' : selectionConfig.activeTab!== 'SELECTED'}">
                 SELECTED
                 <span class="bubble" ng-class="{'selected' : selectionConfig.noOfItemsSelected > 0}"> {{selectionConfig.noOfItemsSelected}} </span>
             </button>
@@ -27,7 +27,7 @@
         <!--ng-table component -->
         <table class="grid" ng-table="tableParams" template-pagination="custom/pager">
             <tbody>
-                <tr ng-repeat="item in $data" ng-click="toggleSelectRoom(item)" ng-class="{'selected': item.isSelected}">
+                <tr ng-repeat="item in $data" ng-click="toggleSelectItem(item)" ng-class="{'selected': item.isSelected}">
                     <td data-title="filterConfig.item_number_label" sortable="'item_no'" header-class="width-40">
                         <a class="room-number">
                             <strong ng-class="{'selected': item.isSelected, 'green': selectionConfig.activeTab === 'UNSELECTED', 'red': selectionConfig.activeTab === 'SELECTED'}"> {{item.item_number}} </strong>
@@ -36,7 +36,7 @@
                     <td data-title="filterConfig.item_desc_label" sortable="'item_desc'" header-class="width-40">
                         {{item.item_desc}}
                     </td>
-                    <td header-class="width-10 padding-checkbox" style="text-align: left; " header="'/assets/partials/filterTable/adFilterTableHeader.html'">
+                    <td header-class="width-10 padding-checkbox" style="text-align: left; " header="'/assets/directives/filterTable/adFilterTableHeader.html'">
                         <div class="entry radio-check">
                             <label class="checkbox" ng-class="{'checked': item.isSelected}">
                                 <span class="icon-form icon-checkbox" ng-class="{'checked': item.isSelected, 'green': selectionConfig.activeTab === 'UNSELECTED', 'red': selectionConfig.activeTab === 'SELECTED'}"></span>
