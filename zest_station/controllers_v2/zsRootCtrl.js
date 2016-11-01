@@ -575,7 +575,6 @@ sntZestStation.controller('zsRootCtrl', [
 			} else {
 				if (homeInActivityTimeInSeconds >= 30){
 					//reset idle timer, then fire idle timer events
-					homeInActivityTimeInSeconds = 0;
 					//Workstation trigger for Refresh Station is set to TRUE, --Refresh Station at next (idle) opportunity--
 					var station = getWorkStationSetting($rootScope.workstation_id);
 					//send back to workstation that kiosk is being/has been refreshed 
@@ -583,6 +582,7 @@ sntZestStation.controller('zsRootCtrl', [
 					
 					//station.refresh_station = true;//TODO REMOVE THIS AND ADD FROM WORKSTATION API
 					if (station.refresh_station){
+						homeInActivityTimeInSeconds = 0;
 						//update the workstation to reflect the refresh has taken place
 						//call API to set workstation "station_refresh" to false, and note "last_refreshed"
 						refreshInProgress(station);
