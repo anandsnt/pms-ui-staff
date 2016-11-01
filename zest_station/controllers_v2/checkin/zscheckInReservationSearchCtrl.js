@@ -302,7 +302,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			$scope.dateOptions = {
 				dateFormat: $scope.zestStationData.hotelDateFormat,
 				yearRange: "0:+10",
-				minDate: new Date(minDatePickDate),
+				minDate: minDatePickDate,
 				onSelect: function(value) {
 					$scope.showDatePicker();
 				}
