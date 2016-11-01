@@ -506,6 +506,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/intefaceMappingsList'
 		});
 
+		$stateProvider.state('admin.ifcComtrolSetup', {
+			templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+			controller: 'ADInterfaceSubMenuCtrl',
+			url : '/comtrolSetup'
+		});
+
 		$stateProvider.state('admin.backOfficeSetup', {
 			templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
 			controller: 'ADInterfaceSubMenuCtrl',
@@ -620,6 +626,21 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 				},
 				menuDetails : function(ADTranslationSrv) {
 					return ADTranslationSrv.getMenuOptionDetails();
+				}
+			}
+		});
+
+
+		$stateProvider.state('admin.zestWebCommon',{
+			templateUrl: '/assets/partials/zestwebCommonSettings/adZestwebCommonSettings.html',
+			controller : 'ADZestwebCommonSettingsCtrl',
+			url: '/zestWebCommonSettings',
+			resolve : {
+				zestWebCommonSettings : function (ADzestwebCommonSettingsSrv){
+					return ADzestwebCommonSettingsSrv.fetchSettings();
+				},
+				initialFooterSettings : function (ADzestwebCommonSettingsSrv){
+					return ADzestwebCommonSettingsSrv.fetchInitialFooterSettings();
 				}
 			}
 		});

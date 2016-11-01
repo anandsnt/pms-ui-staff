@@ -113,13 +113,58 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     }
   });
 
-  $stateProvider.state('admin.ifcComtrolSetup', {
+  $stateProvider.state('admin.ifc_comtrol_settings', {
     templateUrl: '/assets/partials/IFCComtrol/adIFCComtrolSetup.html',
     controller: 'adIFCComtrolSetupCtrl',
     url : '/ifc_comtrol/setup',
     resolve: {
       ifcComtrolSetupValues: ['adIFCComtrolSetupSrv', function(adIFCComtrolSetupSrv) {
         return adIFCComtrolSetupSrv.fetchIFCComtrolConfiguration();
+      }]
+    }
+  });
+
+  $stateProvider.state('admin.ifc_revenue_centers', {
+    templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRevenueCenterConfig.html',
+    controller: 'adComtrolRevenueCenterCtrl',
+    url : '/ifc_comtrol/revenueCenter',
+    resolve: {
+      revCenters: ['adComtrolRevenueCenterSrv', function(adComtrolRevenueCenterSrv) {
+        return adComtrolRevenueCenterSrv.fetch();
+      }]
+    }
+  });
+
+  $stateProvider.state('admin.ifc_charge_codes', {
+    templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolChargeCodes.html',
+    controller: 'adComtrolChargeCodeMappingCtrl',
+    url : '/ifc_comtrol/chargeCodeMappings',
+    resolve: {
+      mappedChargeCodes: ['adComtrolChargeCodeMappingSrv', function(adComtrolChargeCodeMappingSrv) {
+        return adComtrolChargeCodeMappingSrv.fetch();
+      }]
+    }
+  });
+
+  $stateProvider.state('admin.ifc_generic_mappings', {
+    templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolGenericMappings.html',
+    controller: 'adComtrolGenericMappingCtrl',
+    url : '/ifc_comtrol/genericMappings',
+    resolve: {
+      genericMappings: ['adComtrolGenericMappingSrv', function(adComtrolGenericMappingSrv) {
+        return adComtrolGenericMappingSrv.fetch();
+      }]
+    }
+  });
+
+
+  $stateProvider.state('admin.ifc_room_mappings', {
+    templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRoomMappings.html',
+    controller: 'adComtrolRoomMappingCtrl',
+    url : '/ifc_comtrol/setup',
+    resolve: {
+      roomMappings : ['adComtrolRoomMappingSrv', function(adComtrolRoomMappingSrv) {
+        return adComtrolRoomMappingSrv.fetch();
       }]
     }
   });

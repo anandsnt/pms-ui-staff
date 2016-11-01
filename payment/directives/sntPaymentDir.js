@@ -1,4 +1,4 @@
-sntPay.directive('sntPayment', function() {
+angular.module('sntPay').directive('sntPayment', function() {
     return {
         restrict: 'E',
         transclude: true,
@@ -30,7 +30,9 @@ sntPay.directive('sntPayment', function() {
             numSplits: '=?',
             completedSplitPayments: '=?',
             fetchLinkedCards: "=?",
-            hideOverlayGiftcard: "=?"
+            hideOverlayGiftcard: "=?",
+            reservationIds: "=?",
+            onlyPaymentSelection: "=?"
         },
         link: function(scope, element, attrs) {
             console.log("--From Payment Module Init--");

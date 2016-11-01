@@ -107,7 +107,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 */
 	$scope.savePaymentMethod = function() {
 		var successCallbackSaveCC = function(data){
-			$scope.data.credit_card_types[parseInt($scope.currentClickedElementCC)] = data;
+			$scope.data.credit_card_types[parseInt($scope.currentClickedElementCC)] = _.extend($scope.data.credit_card_types[parseInt($scope.currentClickedElementCC)], data);
 			$scope.$emit('hideLoader');
     		$scope.currentClickedElementCC = -1;
 		};

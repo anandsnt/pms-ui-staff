@@ -20,8 +20,10 @@ sntRover.controller('RVDepositBalanceCtrl', [
 
         BaseCtrl.call(this, $scope);
 
-        //NOTE: For connected hotels, the deposit policy is not available inside this controller.
-        $scope.isDepositEditable = !!$scope.depositDetails.deposit_policy && !!$scope.depositDetails.deposit_policy.allow_deposit_edit;
+        // NOTE: For connected hotels, the deposit policy is not available inside this controller.
+        // CICO-34705 in case no deposit policy is set; then the API will not provide the deposit_policy key
+        $scope.isDepositEditable = $scope.depositDetails.deposit_policy === undefined ||
+            (!!$scope.depositDetails.deposit_policy && !!$scope.depositDetails.deposit_policy.allow_deposit_edit);
 
         //NOTE: The deposit is always editable for connected hotels
         if (!$rootScope.isStandAlone) {
@@ -400,6 +402,10 @@ sntRover.controller('RVDepositBalanceCtrl', [
         //Listen to swipe events
         $scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function(e, swipedCardDataToRender) {
             $scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
+        });
+
+        $scope.$on('PAYMENT_SCREEN_MODE_CHANGED', function(){
+            refreshPaymentScroll();
         });
 
     }]);

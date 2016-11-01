@@ -1,0 +1,23 @@
+{
+    "env":{
+        "browser":true,
+        "es6":true,
+        "jquery":true
+    },
+    "installedESLint":true,
+    "parserOptions":{
+        "ecmaFeatures":{
+            "experimentalObjectRestSpread":true,
+            "jsx":true
+        }
+    },
+    "extends": [
+      "eslint:recommended",
+      "angular"
+    ],
+    "plugins":[
+        "react"
+    ],
+    "rules":{
+    }
+}

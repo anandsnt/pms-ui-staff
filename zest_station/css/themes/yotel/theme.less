@@ -48,6 +48,15 @@
 			stroke: @white;
 		}
 	}
+    .logo-svg{
+        background-image: url("../css/themes/yotel/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+        height: 59%;
+        background-position: center;
+        margin-top: 2%;
+    }
 
 /* 3. LAYOUT
 ==========================================================*/
@@ -292,7 +301,7 @@
             overflow-x:visible !important;
         }
         .ui-keyboard-has-focus{
-            z-index:16001;
+            z-index:7999;
             width: 56% !important;
             bottom: 10px;
         }
@@ -315,28 +324,15 @@
             -webkit-box-shadow:1px 1px 3px 0 rgba(0,0,0,.5);
             box-shadow:1px 1px 3px 0 rgba(0,0,0,.5);
             background:@background;
-            background-image:-webkit-linear-gradient(-90deg,@background 0,@background 100%);
-            background-image:linear-gradient(-90deg,@background 0,@background 100%);
             cursor:pointer;
             overflow:visible;
             -moz-user-focus:ignore
         }
-        .ui-keyboard-button:not([disabled]):hover{
-            background:@brandColor;
+        .ui-state-hover:not([data-action="bksp"]){
+            background-color:@brandColor;
             color:@textColor;
-            background-image:-webkit-linear-gradient(-90deg,@brandColor 0,@background 100%);
-            background-image:linear-gradient(-90deg,@brandColor 0,@background 100%)
         }
-        .ui-state-hover{
-            background:@brandColor;
-            color:@textColor;
-            background-image:-webkit-linear-gradient(-90deg,@brandColor 0,@background 100%);
-            background-image:linear-gradient(-90deg,@brandColor 0,@background 100%)
-        }
-        .ui-keyboard-button:not([disabled]):active{
-            background:#ddd;
-            background-image:-webkit-linear-gradient(-90deg,@background  0,#5f5f5f 100%);
-            background-image:linear-gradient(-90deg,@background  0,#5f5f5f 100%)
+        .ui-keyboard-button:not([disabled]):not([data-action="bksp"]):active{
         }
         .ui-keyboard-button span{
             display:block;
@@ -411,10 +407,30 @@
             opacity:.5
         }
         .ui-keyboard-overlay{position:absolute;top:0;left:0;bottom:0;right:0;background:rgba(0,0,0,.5)}.ui-keyboard-popup{display:inline-block;max-width:22em}.ui-keyboard-caret{background:#c00;width:1px;margin-top:3px}div.ui-keyboard-extender{margin-left:5px;margin-right:10px}button.ui-keyboard-extender span{width:.9em;height:.9em;display:inline-block;margin-bottom:3px;background-repeat:no-repeat;background-position:center center;background-size:contain;background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgc3R5bGU9ImZpbGw6I2VlZSI+PGc+PHBhdGggc3R5bGU9ImZpbGw6bm9uZTtzdHJva2U6I2VlZSIgZD0iTSAwLjUsNC41IDE1LjUsNC41IDE1LjUsMTUuNSAwLjUsMTUuNSBaIj48L3BhdGg+PHJlY3Qgd2lkdGg9IjIiIGhlaWdodD0iMiIgeD0iMiIgeT0iNiI+PC9yZWN0PjxyZWN0IHdpZHRoPSIyIiBoZWlnaHQ9IjIiIHg9IjUiIHk9IjYiPjwvcmVjdD48cmVjdCB3aWR0aD0iMiIgaGVpZ2h0PSIyIiB4PSI4IiB5PSI2Ij48L3JlY3Q+PHBhdGggZD0ibSAxMSw2IDMsMCAwLDUgLTIsMCAwLC0zIC0xLDAgeiI+PC9wYXRoPjxyZWN0IHdpZHRoPSIyIiBoZWlnaHQ9IjIiIHg9IjEyIiB5PSIxMiI+PC9yZWN0PjxyZWN0IHdpZHRoPSI2IiBoZWlnaHQ9IjIiIHg9IjUiIHk9IjEyIj48L3JlY3Q+PHJlY3Qgd2lkdGg9IjIiIGhlaWdodD0iMiIgeD0iOSIgeT0iOSI+PC9yZWN0PjxyZWN0IHdpZHRoPSIyIiBoZWlnaHQ9IjIiIHg9IjYiIHk9IjkiPjwvcmVjdD48cmVjdCB3aWR0aD0iMiIgaGVpZ2h0PSIyIiB4PSIyIiB5PSIxMiI+PC9yZWN0PjxyZWN0IHdpZHRoPSIzIiBoZWlnaHQ9IjIiIHg9IjIiIHk9IjkiPjwvcmVjdD48L2c+PC9zdmc+)}
-        .ui-keyboard-button[data-action="bksp"]>.ui-keyboard-text {
-           font-size: 1.8em;
-           position: inherit;
+        .ui-keyboard-button[data-action="bksp"] {
+            /* Backspace key */
+             background: url('data:image/svg+xml;utf8,<svg fill="#53246d" height="70" width="70" viewBox="-10 -9 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/></svg>');
+             background-repeat: no-repeat;
+             background-color: #fff;
+            /* background-position-y: -7px; */
         }
+        .ui-keyboard-button[data-action="bksp"]:active {
+            /* Backspace key */
+             background: url('data:image/svg+xml;utf8,<svg fill="#fff" height="70"  width="70" viewBox="-10 -9 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/></svg>');
+             background-repeat: no-repeat;
+            /* background-position-y: -7px; */
+
+            background-color:@brandColor;
+        }
+
+        .ui-state-hover[data-action="bksp"]{
+             background: url('data:image/svg+xml;utf8,<svg fill="#fff" height="70"  width="70" viewBox="-10 -9 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/></svg>');
+             background-repeat: no-repeat;
+            /* background-position-y: -7px; */
+
+            background-color:@brandColor;
+        }
+
 
 
 .make-key-now{
@@ -425,13 +441,6 @@
     }
 }
 
-.demo-text{
-    float: right;
-    left: 0;
-    position: absolute;
-    color: #d8d8d8;
-    z-index: 999;
-}
 
 
 @media (min-height: 800px) {
@@ -512,16 +521,9 @@
     right:9%;
 }
 #actions {
-    .button-left-margin{
-        margin-left: 40px;
-    }
     &.languages {
         .language {
-            box-shadow: inset 0 0 0 4px #dededc;
-            &.selected  {
-                color: @white;
-                background: transparent;
-            }
+            box-shadow: inset 0 0 0 4px @grey1;
         }
     }
 }
