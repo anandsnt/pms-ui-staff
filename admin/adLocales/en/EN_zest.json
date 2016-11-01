@@ -10,6 +10,7 @@
 "CC_GUARENTEED_LABEL":"Only if Reservation is CC guaranteed",
 "CASH_PAYMENT_LABEL":"Only if Reservation is CASH payment",
 "WEB_CHEKOUT_ALERT_LABEL":"Web Check Out staff alert",
+"WEB_CHEKOUT_OFFLINE_LABEL":"Enable Offline Checkout",
 "CHECKOUT_NOT_SUCESSFULL":"Only when check out is NOT successful",
 "EMAIL_ACCOUNTS_LABEL":"Email Accounts (Seperated by semicolon [;]) ",
 "EMAIL_ACCOUNTS_LABEL2":"EMAIL ACCOUNTS TO RECEIVE LATE CHECK OUT ALERT ONLY (Seperated by semicolon [;]) ",
