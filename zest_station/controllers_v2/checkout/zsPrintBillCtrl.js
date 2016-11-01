@@ -36,8 +36,10 @@ sntZestStation.controller('zsPrintBillCtrl', [
             }
         };
         var printFailedActions = function() {
-                $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKOUT_PRINT_FAILED');
-                $scope.zestStationData.workstationStatus = 'out-of-order';
+            $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKOUT_PRINT_FAILED');
+            $scope.zestStationData.workstationStatus = 'out-of-order';
+            var printopted = 'false';
+            nextPageActions(printopted);
         };
 
         var handleStarTacPrinterActions = function(){
@@ -61,7 +63,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                $scope.socketOperator.startPrint(response.data,printer);
             });
             /**** Socket actions ends here *****/
-            
+
             var fetchSatrTacBillSuccess = function(response){
                 printData =  response.data;
                 //check if socket is open
