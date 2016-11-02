@@ -3,15 +3,14 @@ const {connect} = ReactRedux;
 let convertRoomsListReadyToComponent = roomsList => {
 
     roomsList.map((room, index) => {
-            room.room_class = "room-number "+room.hk_status
-        }
-    )
+        room.room_class = "room-number "+room.hk_status
+        room.isSuitesAvailable = (room.suite_room_details.length > 0) ? true : false;
+    })
     return roomsList;
 }
 
 
 const mapStateToNightlyDiaryRoomsListContainerProps = (state) => ({
-    // shouldShow: (state.mode === NIGHTLY_DIARY_SEVEN_MODE)
     roomListToComponent: convertRoomsListReadyToComponent(state.roomsList)
 });
 
