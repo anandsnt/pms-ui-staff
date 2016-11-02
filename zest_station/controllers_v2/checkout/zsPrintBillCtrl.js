@@ -35,8 +35,9 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 $state.go('zest_station.reservationCheckedOut', stateParams);
             }
         };
-        var printFailedActions = function() {
-            $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKOUT_PRINT_FAILED');
+        var printFailedActions = function(errorMessage) {
+            errorMessage = _.isUndefined(errorMessage) ? 'CHECKOUT_PRINT_FAILED' : errorMessage;
+            $scope.zestStationData.workstationOooReason =  $filter('translate')(errorMessage);
             $scope.zestStationData.workstationStatus = 'out-of-order';
             var printopted = 'false';
             nextPageActions(printopted);
@@ -45,7 +46,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
         var handleStarTacPrinterActions = function(){
 
             //need to change this to printer name
-            var printer = "Star TUP900 Presenter (TUP992)";
+            //var printer = "Star TUP900 Presenter (TUP992)";
             var printData = "";
 
             /**** Socket actions starts here *****/
@@ -56,11 +57,11 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 var printopted = 'true';
                 nextPageActions(printopted);
             });
-             $scope.$on('WS_PRINT_FAILED',function(){
-                printFailedActions();
+             $scope.$on('WS_PRINT_FAILED',function(event,data){
+                printFailedActions(data.error_message);
             });
             $scope.$on('SOCKET_CONNECTED', function() {
-               $scope.socketOperator.startPrint(response.data,printer);
+               $scope.socketOperator.startPrint(response.data);
             });
             /**** Socket actions ends here *****/
 
@@ -68,7 +69,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 printData =  response.data;
                 //check if socket is open
                 if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
-                    $scope.socketOperator.startPrint(printData,printer);
+                    $scope.socketOperator.startPrint(printData);
                 } else {
                     $scope.$emit('CONNECT_WEBSOCKET'); // connect socket
                 }
@@ -82,7 +83,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 successCallBack: fetchSatrTacBillSuccess,
                 failureCallBack: printFailedActions
             };
-            $scope.callAPI(zsCheckoutSrv.fetchStarTacPrinterData, options);
+           $scope.callAPI(zsCheckoutSrv.fetchStarTacPrinterData, options);
         };
 
         var handleBillPrint = function() {

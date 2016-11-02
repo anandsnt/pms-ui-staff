@@ -275,5 +275,17 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchStarTacPrinterData = function(params){
+            var deferred = $q.defer();
+            var url = '/sample_json/zest_station/starttac.json';
+            //var url = 'api/reservations/'+params.reservation_id+'/bill_print_data?is_checkout=false';
+            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);

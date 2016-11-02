@@ -88,9 +88,52 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				var actionStatus = 'success';
 				nextPageActions(printopted, emailopted, actionStatus);
 			};
-			var handleStarTacPrinterActions = function(){
 
-       		};
+			var handleStarTacPrinterActions = function() {
+				//need to change this to printer name
+				//var printer = "Star TUP900 Presenter (TUP992)";
+				var printData = "";
+
+				/**** Socket actions starts here *****/
+				$scope.$on('SOCKET_FAILED', function() {
+					printFailedActions();
+				});
+				$scope.$on('WS_PRINT_SUCCESS', function() {
+					var printopted = 'true';
+					printSuccessActions();
+				});
+				$scope.$on('WS_PRINT_FAILED', function(event, data) {
+					$scope.zestStationData.workstationOooReason = $filter('translate')(data.error_message);
+					$scope.zestStationData.workstationStatus = 'out-of-order';
+					var printopted = 'false';
+					printFailedActions();
+				});
+				$scope.$on('SOCKET_CONNECTED', function() {
+					$scope.socketOperator.startPrint(response.data);
+				});
+				/**** Socket actions ends here *****/
+
+				var fetchSatrTacDataSuccess = function(response) {
+					printData = response.data;
+					//check if socket is open
+					if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+						$scope.socketOperator.startPrint(printData);
+					} else {
+						$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
+					}
+				};
+				var data = {
+					"reservation_id": $scope.reservation_id,
+					"bill_number": 1
+				};
+				var options = {
+					params: data,
+					successCallBack: fetchSatrTacDataSuccess,
+					failureCallBack: printFailedActions
+				};
+				$scope.callAPI(zsCheckinSrv.fetchStarTacPrinterData, options);
+			};
+
 			var handleBillPrint = function() {
 				// add the orientation
 				addPrintOrientation();

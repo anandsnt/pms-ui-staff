@@ -35,7 +35,8 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
         that.ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
     };
     this.startPrint = function(data, printer){
-        var printBillJson = { "Command": "cmd_print_bill", "Data": data, "PrinterName" : printer};
+       // var printBillJson = { "Command": "cmd_print_bill", "Data": data, "PrinterName" : printer};
+        var printBillJson = { "Command": "cmd_print_bill", "Data": data};
         var jsonstring = JSON.stringify(printBillJson);
         console.log(jsonstring);
         that.ws.send(jsonstring);

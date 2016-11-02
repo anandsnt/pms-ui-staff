@@ -115,6 +115,7 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
         this.fetchStarTacPrinterData = function(params){
             var deferred = $q.defer();
             var url = '/sample_json/zest_station/starttac.json';
+            //var url = 'api/reservations/'+params.reservation_id+'/bill_print_data?is_checkout=true';
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {

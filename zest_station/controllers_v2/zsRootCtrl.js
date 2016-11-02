@@ -620,7 +620,7 @@ sntZestStation.controller('zsRootCtrl', [
 				} else {
 					//capture failed
 					$state.go('zest_station.speakToStaff');
-				};
+				}
 			} else if (response.Command === 'cmd_dispense_key_card') {
 				if (response.ResponseCode === 0) {
 					$scope.$broadcast('DISPENSE_SUCCESS', {
@@ -633,13 +633,16 @@ sntZestStation.controller('zsRootCtrl', [
 					$scope.$broadcast('DISPENSE_FAILED');
 				}
 			} else if( response.Command === 'cmd_print_bill'){
-				if (response.ResponseCode === 0) {
+
+				if (response.ResponseCode === 0 ) {
 					$scope.$broadcast('WS_PRINT_SUCCESS');
 				} else {
-					$scope.$broadcast('WS_PRINT_FAILED');
+					var errorData = {'error_message':printerErrorMapping[response.ResponseCode]};
+					$scope.$broadcast('WS_PRINT_FAILED',errorData);
 				}
 			}
 		};
+
 		var socketOpenedFailed = function() {
 			console.info("Websocket:-> socket connection failed");
 			$scope.$broadcast('SOCKET_FAILED');
