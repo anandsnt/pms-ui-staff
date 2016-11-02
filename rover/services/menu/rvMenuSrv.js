@@ -1,6 +1,6 @@
 angular.module('sntRover').service('rvMenuSrv',
-	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv',
-	function(rvPermissionSrv, RVDashboardSrv, RVHotelDetailsSrv) {
+	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv','$rootScope',
+	function(rvPermissionSrv, RVDashboardSrv, RVHotelDetailsSrv, $rootScope ) {
 
 
 	//we have to keep reference
@@ -516,6 +516,7 @@ angular.module('sntRover').service('rvMenuSrv',
 	* @return {boolean}
 	*/
 	this.hasSettingsPermission = function(menuIndex) {
+		
 		var returnValue = true;
 		switch (menuIndex){
 			case 'diaryReservation':
@@ -523,7 +524,7 @@ angular.module('sntRover').service('rvMenuSrv',
 				break;
 
 			case 'nightlyDiaryReservation':
-				returnValue = !isHourlyRateOn();
+				returnValue = !isHourlyRateOn() || !$rootScope.isPmsDevEnv;
 				break;
 
 			//dont wanted to show on hourly enabled hotels
