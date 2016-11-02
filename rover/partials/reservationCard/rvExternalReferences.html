@@ -5,7 +5,8 @@
         <!-- Remove class hidden when 'a.toggle' is clicked -->
         <div class="block-item item-reference">
             <div class="entry" ng-repeat="reference in stateExternalRef.references">
-                <div class="select">
+                <!--CICO-32546, hide the select for external interface type in case of Overlay hotels.-->
+                <div class="select" ng-if = "isStandAlone">
                     <select ng-disabled="!reference.is_from_rover" ng-class="{'placeholder' : !reference.external_interface_type_id}" ng-model="reference.external_interface_type_id" ng-change="onEditReference(reference)">
                         <!-- Add attr 'disabled' if value is inserted by external system itself. Remove class 'palceholder' when system is selected (class should be applied only when first(blank) option is selected -->
                         <option value="" selected>Select External System</option>
@@ -15,11 +16,12 @@
                     </select>
                 </div>
                 <input placeholder="Reference No." ng-disabled="!reference.is_from_rover" ng-model="reference.external_confirm_no" type="text" rv-delay-textbox delay="1000" function-to-fire="onEditReference" function-param="reference"/>
-                <!-- <!-- Add attr 'disabled' if value is inserted by external system itself.-->
+                <!-- Add attr 'disabled' if value is inserted by external system itself.-->
                 <!-- Remove button: show for all existing numbers (except system added ones) -->
                 <button type="button" class="button white icons icon-remove-60" ng-if="reference.is_from_rover && reference.id" ng-click="deleteReference(reference)">-</button>
                 <!-- Add button: show it when new number can be added:-->
-                <button type="button" ng-show="$last && reference.id" class="button white icons icon-add-60" ng-click="addNewRow()">+</button>
+                <!--CICO-32546, hide the add external reference number button for Overlay hotels.-->
+                <button type="button" ng-if = "isStandAlone" ng-show="$last && reference.id" class="button white icons icon-add-60" ng-click="addNewRow()">+</button>
             </div>
         </div>
     </div>

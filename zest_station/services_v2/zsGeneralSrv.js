@@ -62,7 +62,6 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     theme = 'snt';
                 }
                 that.hotelTheme = theme;
-                resolveData.themeLogoPath = '/assets/zest_station/css/themes/'+that.hotelTheme+'/logo.svg';
                 //resolves this.fetchSetting()
                 deferred.resolve(resolveData);
             }, function(data) {
@@ -336,11 +335,26 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
 
 
+        this.refreshWorkStationInitialized = function(params) {
+            console.log('::refreshWorkStationInitialized:: ',params)
+            var deferred = $q.defer(),
+                url = '/api/workstations/' + params.id;
+
+            zsBaseWebSrv.putJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
         this.fetchWorkStations = function(params) {
             var deferred = $q.defer();
             var url = '/api/workstations.json';
 
             zsBaseWebSrv.getJSON(url, params).then(function(data) {
+                that.last_workstation_set = data;
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
