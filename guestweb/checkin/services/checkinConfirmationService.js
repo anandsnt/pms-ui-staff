@@ -3,7 +3,7 @@
 
 			var responseData = {};
 
-			var login = function(data) {
+			var verifyCheckinReservation = function(data) {
 				var deferred = $q.defer();
 				var url = '/guest_web/search.json';
 				$http.post(url,data).success(function(response) {
@@ -45,7 +45,7 @@
 
 			return {
 				responseData: responseData,
-				login : login,
+				verifyCheckinReservation : verifyCheckinReservation,
 				searchReservation:searchReservation,
 				getToken:getToken
 			};

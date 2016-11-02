@@ -986,8 +986,11 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     }
 
                     if(data) {
-                        var start_date   = parseDate(data.fromDate, data.arrivalTime),
-                            end_date     = parseDate(data.toDate, data.departureTime),
+                        var hoursInDay = getTotalHours(data.fromDate),
+                            dstChange = hoursInDay.hasExtraHour ? 1 : (hoursInDay.hasLessHour ? -1 : 0);
+
+                        var start_date   = parseDate(data.fromDate, data.arrivalTime, dstChange),
+                            end_date     = parseDate(data.toDate, data.departureTime, dstChange),
                             __start_date = new Date(data.fromDate),
                             __end_date   = new Date(data.toDate);
 
@@ -1014,8 +1017,10 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     }
 
                     /*Method to parse object time props into MS*/
-                    function parseDate(ms, timeObj) {
+                    function parseDate(ms, timeObj, dstChange) {
                         var t_a, t_b;
+
+                        var diffDiff = dstChange * 3600000;
 
                         // since the date passed from the reservation search screen will
                         // also have the hour and minutes, so lets reset that to zero
@@ -1030,8 +1035,45 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                         t_b = parseInt(timeObj.mm, 10) * 60000;
 
-                        return t_a + t_b + ms;
+                        return t_a + t_b + diffDiff + ms;
                     }
+
+                    function getTotalHours(arrivalDate) {
+                        var startingTime = new Date(arrivalDate),
+                            timeBefore,
+                            timeChnangeDiff,
+                            i, len;
+
+                        var hasExtraHour, hasLessHour;
+
+                        startingTime.setHours(0, 0, 0);
+                        for (i = 0, len = 25; i < len; i++) {
+                            timeBefore = new Date( startingTime );
+                            timeBefore.setHours( timeBefore.getHours() - 1);
+
+                            timeChnangeDiff = startingTime.getTimezoneOffset() - timeBefore.getTimezoneOffset();
+                            if ( timeChnangeDiff < 0 ) {
+                                hasLessHour = true;
+                                hasExtraHour = false;
+                                break;
+                            }
+                            else if ( timeChnangeDiff > 0 ) {
+                                hasLessHour = false;
+                                hasExtraHour = true;
+                                break;
+                            } else {
+                                hasLessHour = false;
+                                hasExtraHour = false;
+                            }
+
+                            startingTime.setHours(startingTime.getHours() + 1);
+                        }
+
+                        return {
+                            hasExtraHour: hasExtraHour,
+                            hasLessHour: hasLessHour
+                        }
+                    };
                 };
 
                 this.fetchUnassignedRoomList = function(params) {

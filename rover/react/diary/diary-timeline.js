@@ -63,6 +63,8 @@ var Timeline = React.createClass({
                 timeBefore.setHours( timeBefore.getHours() - 1);
 
                 timeChnangeDiff = startingTime.getTimezoneOffset() - timeBefore.getTimezoneOffset();
+
+
                 if ( timeChnangeDiff < 0 ) {
                     // do nothing since this hour will be forwarded to next hour
                     // the lost hour due to DST change
