@@ -15,9 +15,7 @@ angular.module('sntRover')
             $filter,
             roomsList,
             datesList
-        ) {
-
-       // $scope.$emit('showLoader');
+        ){
 
         BaseCtrl.call(this, $scope);
         $scope.$parent.heading = $filter('translate')('MENU_ROOM_DIARY');
@@ -27,12 +25,20 @@ angular.module('sntRover')
 
         const datesGridData =  datesList;
         
+        //var 7thDay = tzIndependentDate($rootScope.businessDate);
+        //7thDay.setDate(7thDay.getDate()+7);
+
+        //var 21stDay = tzIndependentDate($rootScope.businessDate);
+        //21stDay.setDate(21stDay.getDate()+21);
+
         $scope.diaryData = {
             isSevenMode     : true,
             datesGridData   : datesList.dates
+            //startDate       : tzIndependentDate($rootScope.businessDate)
+            //endDate         : 7thDay
         };
 
-        $scope.switchMode = function(){
+        $scope.toggleSwitchMode = function(){
             $scope.diaryData.isSevenMode = !$scope.diaryData.isSevenMode;
             $scope.renderDiaryScreen();
         }
@@ -55,8 +61,6 @@ angular.module('sntRover')
 
         $scope.renderDiaryScreen();
 
-
-
         /**
          * to render the grid view
          */
@@ -73,6 +77,5 @@ angular.module('sntRover')
         (() => {
             renderDiaryView();
         })();
-
 
 }]);

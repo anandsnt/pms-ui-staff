@@ -77,7 +77,7 @@
 
     <!-- 7 or 21 Days -->
     <div class="entry switch">
-        <div class="switch-button" ng-class="{'on' : isSevenMode}" ng-click="switchMode()"> <!-- Class 'on' is default, it means L75 is checked and we're showing 7 days. Remove it if L75 unckeched, meaning we're showing 21 days -->
+        <div class="switch-button overlay" ng-class="{'on' : diaryData.isSevenMode}" ng-click="toggleSwitchMode()">
             <input value="" type="checkbox" checked>
             <label class="data-off">
                 <span class="value">7 Days</span>
