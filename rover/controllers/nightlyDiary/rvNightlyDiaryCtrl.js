@@ -25,19 +25,13 @@ angular.module('sntRover')
 
         const datesGridData =  datesList;
         
-        //var 7thDay = tzIndependentDate($rootScope.businessDate);
-        //7thDay.setDate(7thDay.getDate()+7);
-
-        //var 21stDay = tzIndependentDate($rootScope.businessDate);
-        //21stDay.setDate(21stDay.getDate()+21);
-
+        // data set for diary used for Angular code.
         $scope.diaryData = {
             isSevenMode     : true,
             datesGridData   : datesList.dates
-            //startDate       : tzIndependentDate($rootScope.businessDate)
-            //endDate         : 7thDay
         };
 
+        // To toogle 7/21 button.
         $scope.toggleSwitchMode = function(){
             $scope.diaryData.isSevenMode = !$scope.diaryData.isSevenMode;
             $scope.renderDiaryScreen();
@@ -49,6 +43,7 @@ angular.module('sntRover')
         const {render} = ReactDOM;
         const {Provider} = ReactRedux;
 
+        // angular method to render diary screen via react dispatch method.
         $scope.renderDiaryScreen = function(){
             var initialDispatchData = {
                 type: ($scope.diaryData.isSevenMode) ? '7_DAYS': '21_DAYS',
