@@ -86,7 +86,10 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
 		// fetch callback of saved oo/os details
 		function $_fetchSavedStausCallback(data) {
-			$scope.$emit('hideLoader');
+			var selectedDate = $scope.updateService.selected_date;
+			var selectedHash = data.service_status[selectedDate];
+			var reasonID = selectedHash.reason_id;
+			var comment = selectedHash.comments;
 
 			/***
 			 *	Sadly the fetch for server API has
@@ -95,21 +98,21 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			 *	we need to map the key from data to
 			 *	out 'editService' object
 			 */
-			$scope.editService.selected_date = $filter('date')(tzIndependentDate(data.from_date), 'yyyy-MM-dd');
-			$scope.editService.from_date = $filter('date')(tzIndependentDate(data.from_date), 'yyyy-MM-dd');
-			$scope.editService.to_date = $filter('date')(tzIndependentDate(data.to_date), 'yyyy-MM-dd');
-			$scope.editService.reason_id = data.maintenance_reason_id;
-			$scope.editService.comment = data.comments;
+			$scope.editService.selected_date = selectedDate;
+			$scope.editService.from_date = selectedDate;
+			$scope.editService.reason_id = reasonID;
+			$scope.editService.comment = comment;
 
 			$scope.showForm = false;
 			$scope.showSaved = true;
 
+			$scope.$emit('hideLoader');
 			$scope.refreshScroller('room-tab-scroll');
+			$scope.onViewDateChanged(data.service_status);
 		};
 
 		// fetch callback of all service status
 		function $_allServiceStatusCallback(data) {
-			$scope.$emit('hideLoader');
 			$scope.allServiceStatus = data;
 
 			// find and update ooOsTitle
@@ -126,11 +129,11 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			if (!$scope.inService) {
 				$scope.invokeApi(RVHkRoomDetailsSrv.getRoomServiceStatus, {
 					room_id: $scope.roomDetails.id,
-					from_date: $scope.updateService.selected_date,
-					to_date: $scope.updateService.selected_date
-				}, $_fetchSavedStausCallback);
+					from_date: $scope.updateService.selected_date
+				}, $_fetchSavedStausCallback);			
 			} else {
 				$scope.refreshScroller('room-tab-scroll');
+				$scope.$emit('hideLoader');
 			};
 		};
 
@@ -190,7 +193,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 						to_date: $scope.updateService.selected_date
 					}, $_fetchSavedStausCallback);
 				}
-				$scope.$apply();
+				$scope.$apply(); // work need to be done here
 			} else {
 				$scope.showForm = false;
 				$scope.showSaved = false;
@@ -290,7 +293,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 		$scope.selectDateOptions = angular.extend({
 			minDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
 			onSelect: function(dateText, inst) {
-				$scope.onViewDateChanged();
+				$scope.onViewDateChanged($scope.serviceStatus);
 				if ($scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")]) {
 					$scope.updateService.room_service_status_id = $scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")].id;
 				}
@@ -559,9 +562,9 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 		});
 
 
-		$scope.onViewDateChanged = function() {
+		$scope.onViewDateChanged = function(dateHash) {
 			$scope.updateService.selected_date = $filter('date')(tzIndependentDate($scope.updateService.selected_date), 'yyyy-MM-dd');
-			$scope.updateService.room_service_status_id = $scope.serviceStatus[$scope.updateService.selected_date].id;
+			$scope.updateService.room_service_status_id = dateHash[$scope.updateService.selected_date].id;
 			// The $_originalStatusId flag is used to make sure that the same change is not sent back to the server -- to many flags whew...
 			$_originalStatusId = $scope.updateService.room_service_status_id;
 
@@ -573,8 +576,8 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			$scope.ooOsTitle = item.description;
 
 			if ($scope.updateService.room_service_status_id > 1) {
-				$scope.updateService.reason_id = $scope.serviceStatus[$scope.updateService.selected_date].reason_id;
-				$scope.updateService.comment = $scope.serviceStatus[$scope.updateService.selected_date].comments;
+				$scope.updateService.reason_id = dateHash[$scope.updateService.selected_date].reason_id;
+				$scope.updateService.comment = dateHash[$scope.updateService.selected_date].comments;
 				/**
 				 * https://stayntouch.atlassian.net/browse/CICO-12520?focusedCommentId=39411&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-39411
 				 *When putting the room OOO or OOS for a date range, say 12 - 15 and going back to edit, each day shows separately,
@@ -583,9 +586,9 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 				 * TODO : If the neigbouring dates have the same status id reason and comment put them in the date range
 				 */
 				var oneDay = 86400000; // number of milliseconds in a day
-				while ($scope.serviceStatus[$filter('date')(tzIndependentDate($scope.updateService.from_date).getTime() - oneDay, 'yyyy-MM-dd')]) {
+				while (dateHash[$filter('date')(tzIndependentDate($scope.updateService.from_date).getTime() - oneDay, 'yyyy-MM-dd')]) {
 					var prevDate = $filter('date')(tzIndependentDate($scope.updateService.from_date).getTime() - oneDay, 'yyyy-MM-dd');
-					var prevDateStatus = $scope.serviceStatus[prevDate];
+					var prevDateStatus = dateHash[prevDate];
 					if (prevDateStatus.id === $scope.updateService.room_service_status_id &&
 						prevDateStatus.reason_id === $scope.updateService.reason_id &&
 						prevDateStatus.comments === $scope.updateService.comment) {
@@ -595,13 +598,14 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 					}
 				}
 
-				while ($scope.serviceStatus[$filter('date')(tzIndependentDate($scope.updateService.to_date).getTime() + oneDay, 'yyyy-MM-dd')]) {
+				while (dateHash[$filter('date')(tzIndependentDate($scope.updateService.to_date).getTime() + oneDay, 'yyyy-MM-dd')]) {
 					var nextDate = $filter('date')(tzIndependentDate($scope.updateService.to_date).getTime() + oneDay, 'yyyy-MM-dd');
-					var nextDateStatus = $scope.serviceStatus[nextDate];
+					var nextDateStatus = dateHash[nextDate];
 					if (nextDateStatus.id === $scope.updateService.room_service_status_id &&
 						nextDateStatus.reason_id === $scope.updateService.reason_id &&
 						nextDateStatus.comments === $scope.updateService.comment) {
 						$scope.updateService.to_date = nextDate;
+						$scope.editService.to_date = nextDate;
 					} else {
 						break;
 					}
