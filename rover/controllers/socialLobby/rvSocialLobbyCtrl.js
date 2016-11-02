@@ -103,7 +103,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.closeDialog = function(){
             ngDialog.close();
         }
-        $scope.deletePost = function(){
+        $scope.delete = function(){
             var options = {};
             options.params = {'post_id': deleteIndex};
             options.onSuccess = function(data){
