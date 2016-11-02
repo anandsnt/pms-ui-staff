@@ -1,25 +1,18 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
-    <form class="modal-content form new-content">
+    <form class="modal-content form pay-bill show-alipay">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeThisDialog()">
+            <span class="icons icon-close invert"></span>
+        </button>
         <div class="alipay">
             <h2 class="message">AliPay QR Code</h2>
 
-            <!-- Show notification only where there is one
+            <span ng-class="{'success_message' : shijiPaymentState.isSuccess , 'error-message error' : shijiPaymentState.isFailure }">
+            {{shijiPaymentState.notificationText}}
+            </span>
 
-                notification-class:
-                 - 'success_message' - for success
-                 - 'error-message error' - for error
-
-                notification-text:
-                  - 'Payment successfull' - for success
-                  - 'There was an error while processing payment' - for error
-              -->
-            <!--<span class="{notification-class}">-->
-                <!--{notification-text}-->
-            <!--</span>-->
-
-            <img src="{qr_code}" alt=""/>
+            <img data-ng-src="data:image/png;base64,{{ngDialogData.qr_code}}" alt=""/>
             <!-- On cancel, return to previous screen by remove class .show-alipay from modal -->
-            <button type="button" class="button blank">Cancel</button>
+            <button type="button" class="button blank" ng-click="cancelShijiPayment()">Cancel</button>
         </div>
     </form>
 </div>
