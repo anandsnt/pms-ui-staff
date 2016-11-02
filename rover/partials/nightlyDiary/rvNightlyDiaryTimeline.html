@@ -1,18 +1,19 @@
-<!-- If showing 7 days -->
-<div class="day" ng-repeat="item in diaryData.datesGridData">
-{{item}}
-    <span>{{ item | date: 'EEEE' }}</span>
-    <strong>{{ item | date: 'MMMM dd,yyyy' }}</strong>
-</div>
-
-<!-- If showing 21 days -->
-<div class="grid-dates hidden">
-    <div class="month">
-        <strong>{Month Year (e.g. 'October 2016')}</strong>
-        <div class="days">
-            <span class="day">{Day (e.g. '16')}</span>
-            ...repeat until end of month or you've shown 21 days
-        </div>
+<div class="grid-dates">
+    <!-- If showing 7 days -->
+    <div ng-if="diaryData.isSevenMode" class="day" ng-repeat="item in diaryData.datesGridData">
+        <span>{{ item | date: 'EEEE' }}</span>
+        <strong>{{ item | date: 'MMMM dd' }}</strong>
     </div>
-    ... if you need to show 2 months (e.g. today is 26th), repeat L11-L17 for every until showing 21 days
+
+    <!-- If showing 21 days -->
+    <div ng-if="!diaryData.isSevenMode" class="grid-dates hidden">
+        <div class="month">
+            <strong>{Month Year (e.g. 'October 2016')}</strong>
+            <div class="days">
+                <span class="day">{Day (e.g. '16')}</span>
+                ...repeat until end of month or you've shown 21 days
+            </div>
+        </div>
+        ... if you need to show 2 months (e.g. today is 26th), repeat L11-L17 for every until showing 21 days
+    </div>
 </div>

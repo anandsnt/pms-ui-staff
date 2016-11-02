@@ -28,13 +28,12 @@ angular.module('sntRover')
         const datesGridData =  datesList;
         
         $scope.diaryData = {
-            isSevenMode : true,
-            datesGridData : datesList
+            isSevenMode     : true,
+            datesGridData   : datesList.dates
         };
 
-        $scope.isSevenMode = true;
         $scope.switchMode = function(){
-            $scope.isSevenMode = !$scope.isSevenMode;
+            $scope.diaryData.isSevenMode = !$scope.diaryData.isSevenMode;
             $scope.renderDiaryScreen();
         }
 
@@ -46,8 +45,8 @@ angular.module('sntRover')
 
         $scope.renderDiaryScreen = function(){
             var initialDispatchData = {
-                type: ($scope.isSevenMode) ? '7_DAYS': '21_DAYS',
-                mode: ($scope.isSevenMode) ? '7_DAYS_MODE': '21_DAYS_MODE',
+                type: ($scope.diaryData.isSevenMode) ? '7_DAYS': '21_DAYS',
+                mode: ($scope.diaryData.isSevenMode) ? '7_DAYS_MODE': '21_DAYS_MODE',
                 diaryRoomsListData : diaryRoomsList,
                 datesGridData: datesGridData
             };

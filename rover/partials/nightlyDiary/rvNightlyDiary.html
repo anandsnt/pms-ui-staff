@@ -5,7 +5,7 @@
 
 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-<section id="diary-nightly" class="content diary-days-7" role="main">
+<section id="diary-nightly" ng-class="{'diary-days-7': diaryData.isSevenMode ,'diary-days-21': !diaryData.isSevenMode }" class="content" role="main">
 
     <div class="diary-nightly-main">
         
@@ -19,10 +19,8 @@
                 <!-- Add class .hidden when edit screen is displayed -->
                 <input type="text" placeholder="Go to Room No." value="">
             </div>
-            <!-- Timeline -->
-            <div class="grid-dates">
-                <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'"></div>
-            </div> 
+            
+            <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryTimeline.html'"></div>
 
             <!-- Stay Range | Remove .hidden to show-->
             <div class="grid-stay-range hidden">
