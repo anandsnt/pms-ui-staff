@@ -74,7 +74,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 "authorize_credit_card": false,
                 "do_not_cc_auth": false,
                 "is_promotions_and_email_set": false,
-                "no_post": "",
+//                "no_post": "",//handled by the API CICO-35315
                 "is_kiosk": true,
                 'signature': signature
             };
