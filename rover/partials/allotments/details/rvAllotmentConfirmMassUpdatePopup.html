@@ -13,7 +13,7 @@
         <div class="actions">
             <button type="button" class="button"
                 ng-show="showSaveButton"
-                ng-click="clickedOnSaveButton()"
+                ng-click="clickedOnSaveButton(!!overBookingMessage)"
                 ng-disabled="disableButtons"
                 ng-class="{ 'grey': disableButtons,
                             'green': !disableButtons
