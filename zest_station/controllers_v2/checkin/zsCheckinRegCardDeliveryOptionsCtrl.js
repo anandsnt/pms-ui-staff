@@ -70,12 +70,13 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				});
 			};
 
-			var printFailedActions = function() {
+			var printFailedActions = function(errorMessage) {
+				errorMessage = _.isUndefined(errorMessage) ? 'CHECKIN_PRINT_FAIL' : errorMessage;
 				if ($stateParams.key_success === "true") {
-					$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_PRINT_FAIL');
+					$scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
 				} else {
 					$scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL_PRINT_FAIL');
-				};
+				}
 				$scope.zestStationData.workstationStatus = 'out-of-order';
 				var printopted = true;
 				var emailopted = false;
@@ -103,10 +104,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 					printSuccessActions();
 				});
 				$scope.$on('WS_PRINT_FAILED', function(event, data) {
-					$scope.zestStationData.workstationOooReason = $filter('translate')(data.error_message);
-					$scope.zestStationData.workstationStatus = 'out-of-order';
-					var printopted = 'false';
-					printFailedActions();
+					printFailedActions(data.error_message);
 				});
 				$scope.$on('SOCKET_CONNECTED', function() {
 					$scope.socketOperator.startPrint(response.data);
