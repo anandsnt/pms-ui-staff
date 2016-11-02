@@ -193,7 +193,9 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 						to_date: $scope.updateService.selected_date
 					}, $_fetchSavedStausCallback);
 				}
-				$scope.$apply(); // work need to be done here
+				if (!$scope.$$phase) {
+					$scope.$apply();
+				}
 			} else {
 				$scope.showForm = false;
 				$scope.showSaved = false;
