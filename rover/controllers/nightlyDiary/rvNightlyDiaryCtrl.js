@@ -4,72 +4,58 @@ angular.module('sntRover')
         '$rootScope',
         '$state',
         '$stateParams',
+        '$filter',
+        'roomsList',
+        'datesList',
         function(
             $scope,
             $rootScope,
             $state,
-            $stateParams
+            $stateParams,
+            $filter,
+            roomsList,
+            datesList
         ) {
 
        // $scope.$emit('showLoader');
 
         BaseCtrl.call(this, $scope);
+        $scope.$parent.heading = $filter('translate')('MENU_ROOM_DIARY');
+        $scope.setTitle($filter('translate')('MENU_ROOM_DIARY'));
 
-        const diaryRenderData = {
-            "rooms_list": [{
-                "room_no": "112",
-                "room_type": "Deluxe Twin",
-                "room_status": "clean"
-            }, {
-                "room_no": "113",
-                "room_type": "Deluxe King",
-                "room_status": "dirty"
-            }, {
-                "room_no": "114",
-                "room_type": "Loft XL",
-                "room_status": "clean"
-            }],
-            "reservations": [{
-                "room_no": "2323",
-                "reservations": [{
-                    "reservatio_start_date": 2222,
-                    "reservatio_end_date": 245345,
-                    "reservation_status": "in-house",
-                    "number_of_days": "3",
-                    "is_locked": true
-                }, {
-                    "reservatio_start_date": 2222,
-                    "reservatio_end_date": 245345,
-                    "reservation_status": "in-house",
-                    "number_of_days": "5",
-                    "is_locked": false
-                }]
-            }, {
-                "room_no": "113",
-                "reservations": [{
-                    "reservatio_start_date": 2222,
-                    "reservatio_end_date": 245345,
-                    "reservation_status": "in-house",
-                    "number_of_days": "3",
-                    "is_locked": true
-                }, {
-                    "reservatio_start_date": 2222,
-                    "reservatio_end_date": 245345,
-                    "reservation_status": "in-house",
-                    "number_of_days": "5",
-                    "is_locked": false
-                }]
-            }]
+        const diaryRoomsList = roomsList;
 
+        const datesGridData =  datesList;
+        
+        $scope.diaryData = {
+            isSevenMode : true,
+            datesGridData : datesList
+        };
+
+        $scope.isSevenMode = true;
+        $scope.switchMode = function(){
+            $scope.isSevenMode = !$scope.isSevenMode;
+            $scope.renderDiaryScreen();
         }
 
-        var initialState = {
-            mode: NIGHTLY_DIARY_SEVEN_MODE
-        };
+        var initialState = {};
         const store = configureStore(initialState);
 
         const {render} = ReactDOM;
         const {Provider} = ReactRedux;
+
+        $scope.renderDiaryScreen = function(){
+            var initialDispatchData = {
+                type: ($scope.isSevenMode) ? '7_DAYS': '21_DAYS',
+                mode: ($scope.isSevenMode) ? '7_DAYS_MODE': '21_DAYS_MODE',
+                diaryRoomsListData : diaryRoomsList,
+                datesGridData: datesGridData
+            };
+            store.dispatch(initialDispatchData);
+        };
+
+        $scope.renderDiaryScreen();
+
 
 
         /**
@@ -81,11 +67,7 @@ angular.module('sntRover')
             </Provider>,
             document.querySelector('#nightlyDiaryMain')
         );
-        var initialDispatchData = {
-            type: 'INITIAL_RENDERING',
-            diaryRenderData : diaryRenderData
-        };
-        store.dispatch(initialDispatchData);
+
         /**
          * initialisation function
          */

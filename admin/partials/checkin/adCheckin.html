@@ -126,8 +126,8 @@
                             <span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_action=='sent_to_queue'}"></span>
                             <input type="radio" value="sent_to_queue" ng-model="checkinData.checkin_action"> {{ 'SENT_TO_QUEUE' | translate}}
                         </label>
-                         <!--  -->
-                        <ad-toggle-button is-checked="checkinData.zest_web_use_new_sent_to_que_action" label="{{ 'USE_NEW_SENT_TO_QUE' | translate}}" ng-show="checkinData.checkin_action == 'sent_to_queue' && !hideAddOption" div-class="full-width margin-bottom-20-important"></ad-toggle-button>
+                        <!-- This is new settings related to the sent to que -->
+                        <ad-toggle-button is-checked="checkinData.zest_web_use_new_sent_to_que_action" label="{{ 'USE_NEW_SENT_TO_QUE_WITH_UPSELLS' | translate}}" is-hide="checkinData.checkin_action !== 'sent_to_queue'" div-class="full-width margin-bottom-20-important"></ad-toggle-button>
                         <!--  -->
                         <label class="radio" ng-class="{'checked':checkinData.checkin_action == 'auto_checkin'}">
                             <span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_action == 'auto_checkin'}"></span>

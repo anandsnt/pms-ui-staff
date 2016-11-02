@@ -1,26 +1,26 @@
 const NightlyDiaryRoomsListComponent = ({ roomListToComponent }) => {
 
     return (
-
-        <div className="grid-room-search-results visible">
-        {/*<!-- Room Search Results above line -->*/}
-        {/*<!-- Add class 'visible' to show -->*/}
-            <div className="wrapper">
-               {
+            <div className="grid-rooms">
+            {
                 roomListToComponent.map((item, index) =>
                     <div className="room">
-                        <span className="room-number {HK status or 'out' if OOO/OOS}">
-                            {item.room_no}
-                        {/*<!-- Highlight search query like this: <span class="highlight">{Query}</span> -->*/}
-                        </span>
-                        <span className="room-type">{item.room_type}</span>
-                    </div>
+                    {/* <!-- Add className 'highlighted' if jumped to this room -->*/}
+                        <span className={item.room_className}>{item.room_no}</span>
+                        <span className="room-type">{item.room_type_name}</span>
+                       {/* <!-- If suite room, show this -->*/}
+                        <div className="suites">
+                            <span className="suite-room">
+                                <span className="icons icon-suite-white"></span>
 
-                    )
-               }
+                            </span>
+                           {/* ... repeat L6-L9 for every suite room (we support up to 4)*/}
+                        </div>
+                    </div>
+                )
+            }
             </div>
-        </div>
-    )
+        )
 };
 
 
