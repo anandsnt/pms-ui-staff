@@ -161,7 +161,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		            //hidden: !isHourlyRateOn,
 		            menuIndex: 'diaryReservation'
 		        }, {
-		            title: "MENU_NIGHTLY_DIARY",
+		            title: "MENU_ROOM_DIARY",
 		            action: 'rover.nightlyDiary',
 		            //hidden: !isHourlyRateOn,
 		            menuIndex: 'nightlyDiaryReservation'
@@ -461,7 +461,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],
 			'commisions': 			['ACCESS_COMMISSIONS'],
 			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],
-
+			'nightlyDiaryReservation': 	['ACCESS_ROOM_DIARY'],
 
 			'menuGroups': 			[],
 			'menuCreateGroup': 		['GROUP_CREATE'],
