@@ -15,7 +15,7 @@
         "eslint:recommended"
     ],
     "plugins":[
-        "react"
+        "react","underscore"
     ],
     "rules":{
     }
