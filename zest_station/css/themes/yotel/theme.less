@@ -48,6 +48,15 @@
 			stroke: @white;
 		}
 	}
+    .logo-svg{
+        background-image: url("../css/themes/yotel/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+        height: 59%;
+        background-position: center;
+        margin-top: 2%;
+    }
 
 /* 3. LAYOUT
 ==========================================================*/
@@ -512,16 +521,9 @@
     right:9%;
 }
 #actions {
-    .button-left-margin{
-        margin-left: 40px;
-    }
     &.languages {
         .language {
-            box-shadow: inset 0 0 0 4px #dededc;
-            &.selected  {
-                color: @white;
-                background: transparent;
-            }
+            box-shadow: inset 0 0 0 4px @grey1;
         }
     }
 }

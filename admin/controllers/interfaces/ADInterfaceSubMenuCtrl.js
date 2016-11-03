@@ -10,6 +10,9 @@ admin.controller('ADInterfaceSubMenuCtrl', ['$scope', '$state',
             case "admin.centralReservationSystemGroup":
                 $scope.sectionTitle = "Central Reservation Systems Setup";
                 break;
+            case "admin.ifcComtrolSetup":
+                $scope.sectionTitle = "Comtrol Setup"
+                break;
             default:
                 $scope.sectionTitle = "Interfaces Setup"
         }
