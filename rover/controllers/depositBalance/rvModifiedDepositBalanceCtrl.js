@@ -404,4 +404,8 @@ sntRover.controller('RVDepositBalanceCtrl', [
             $scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
         });
 
+        $scope.$on('PAYMENT_SCREEN_MODE_CHANGED', function(){
+            refreshPaymentScroll();
+        });
+
     }]);

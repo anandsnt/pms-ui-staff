@@ -1538,6 +1538,34 @@ angular.module('sntRover')
 	}.bind($scope.gridProps);
 
 	var getAvailabilityCallingParams = function() {
+		function checkHours(arrivalDate, span) {
+			var startingTime = new Date(arrivalDate),
+				endingTime = new Date(startingTime),
+				timeChnangeDiff,
+				hasExtraHour,
+				hasLessHour;
+
+			endingTime.setHours( span );
+			timeChnangeDiff = startingTime.getTimezoneOffset() - endingTime.getTimezoneOffset();
+
+			if ( timeChnangeDiff < 0 ) {
+				hasLessHour = true;
+				hasExtraHour = false;
+			} else if ( timeChnangeDiff > 0 ) {
+				hasLessHour = false;
+				hasExtraHour = true;
+			} else {
+				hasLessHour = false;
+				hasExtraHour = false;
+			}
+
+			return {
+				hasExtraHour: hasExtraHour,
+				hasLessHour: hasLessHour
+			}
+		};
+
+
 		var filter 		= _.extend({}, this.filter),
 			time_span 	= Time({ hours: this.display.min_hours }),
 			start_date 	= new Date(this.display.x_n);
@@ -1556,10 +1584,14 @@ angular.module('sntRover')
 					hour = selected_hour_min[0],
 					min  = selected_hour_min[1];
 			start.setHours(hour, min);
+
+		var hoursInDay = checkHours(start, time_span.hours),
+            dstChange = hoursInDay.hasExtraHour ? 1 : (hoursInDay.hasLessHour ? -1 : 0);
+
 		var end = new Date(start.getFullYear(),
 						   start.getMonth(),
 						   start.getDate(),
-						   start.getHours()  + time_span.hours,
+						   start.getHours()  + time_span.hours + dstChange,
 						   start.getMinutes() + time_span.minutes,
 						   0, 0),
 			rt_filter = (_.isEmpty(filter.room_type) || (filter.room_type && angular.lowercase(filter.room_type.id) === 'all')  ? undefined : filter.room_type.id),
