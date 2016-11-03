@@ -104,7 +104,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 					printFailedActions(data.error_message);
 				});
 				$scope.$on('SOCKET_CONNECTED', function() {
-					$scope.socketOperator.startPrint(response.data);
+					$scope.socketOperator.startPrint(printData);
 				});
 				/**** Socket actions ends here *****/
 
