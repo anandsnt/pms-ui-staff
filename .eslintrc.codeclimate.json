@@ -15,8 +15,11 @@
         "eslint:recommended"
     ],
     "plugins":[
-        "react","underscore"
+        "react"
     ],
     "rules":{
+    },
+    "global":{
+        "_":true
     }
 }
