@@ -518,6 +518,8 @@ sntRover.controller('RVroomAssignmentController',[
 		params.room_number 			= $scope.assignedRoom.room_number;
 		params.without_rate_change 	= $scope.roomTransfer.withoutRateChange;
 		params.new_rate_amount 		= $scope.roomTransfer.newRoomRateChange;
+		//Added for CICO-35102
+		params.is_preassigned       = $scope.assignedRoom.is_preassigned;
 
 		//CICO-17082 - As per design pattern
 		params.forcefully_assign_room = wanted_to_forcefully_assign;
