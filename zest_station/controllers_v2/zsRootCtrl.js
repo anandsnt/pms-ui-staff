@@ -510,12 +510,14 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.zestStationData.timeOut = false;
 
 			$scope.resetTime = function() {
+				homeInActivityTimeInSeconds = 0;
 				userInActivityTimeInSeconds = 0;
 				$scope.zestStationData.timeOut = false;
 			};
 
 			function increment() {
 				var currentState = $state.current.name;
+				checkForEventsIfAtHomeScreen(currentState);
 				//the user inactivity actions need not be done when user in 
 				//home screen or in admin screen or in OOS screen
 				//include the states, which don't need the timeout to be handled 
@@ -549,9 +551,86 @@ sntZestStation.controller('zsRootCtrl', [
 					return;
 				}
 			}
+
 			setInterval(increment, 1000);
 		};
 
+
+		/********************************************************************************
+		 *  User activity timer at home screen - 
+		 *   -- fire events when kiosk is in-service and not in-use by guest.
+		 *   --	 
+		 *
+		 *  Events include
+		 *   *Refresh-workstation --> Triggered from Hotel Admin - interfaces - workstation > toggle (Refresh Station)
+		 ********************************************************************************/
+		var checkForEventsIfAtHomeScreen = function(currentState){
+			console.log('homeInActivityTimeInSeconds: ',homeInActivityTimeInSeconds);
+			if (currentState !== 'zest_station.home'){
+				homeInActivityTimeInSeconds = 0;
+			} else {
+				if (homeInActivityTimeInSeconds >= 30){
+					//reset idle timer, then fire idle timer events
+					//Workstation trigger for Refresh Station is set to TRUE, --Refresh Station at next (idle) opportunity--
+					var station = getWorkStationSetting($rootScope.workstation_id);
+					//send back to workstation that kiosk is being/has been refreshed 
+					// --assumption is that two Zest Stations will be sharing a workstation, currently S69, that is not a logical setup
+					
+					//station.refresh_station = true;//TODO REMOVE THIS AND ADD FROM WORKSTATION API
+					if (station.refresh_station){
+						homeInActivityTimeInSeconds = 0;
+						//update the workstation to reflect the refresh has taken place
+						//call API to set workstation "station_refresh" to false, and note "last_refreshed"
+						refreshInProgress(station);
+						//just refreshes the browser, user should not have to re-login 
+						//-- CICO-35215
+						//--  this should refresh all settings and bring zest station up to the latest version
+						//--  does not apply to the ChromeApp / iOS apps... only the zest station content
+					};
+
+				} else {
+					homeInActivityTimeInSeconds = homeInActivityTimeInSeconds+1;
+				}	
+			}
+		}
+
+		var refreshInProgress = function(station){
+			console.log('Calling API to Reset (refresh_station) Flag for: ',station.name, ' - ',station.id);
+			var onSuccess = function(response) {
+				console.info('Successful Refresh of Station Triggered, turning off (Workstation) Trigger ');
+				initRefreshStation();
+			};
+			var onFail = function(response) {
+				console.warn('Manual Refresh Failed: ',response);
+			};
+			var options = {
+				params: {
+					'out_of_order_msg': station.out_of_order_msg,
+					'emv_terminal_id': station.emv_terminal_id,
+					'default_key_encoder_id': station.key_encoder_id,
+					'refresh_station': false,
+					'is_out_of_order': station.is_out_of_order,
+					'identifier': station.station_identifier,
+					'name': station.name,
+					'rover_device_id':station.rover_device_id,
+					'id': station.id
+				},
+				successCallBack: onSuccess,
+				failureCallBack: onFail,
+				'loader': 'none'
+			};
+			$scope.callAPI(zsGeneralSrv.refreshWorkStationInitialized, options);
+		}
+	 	var homeInActivityTimeInSeconds = 0;
+	 	var initRefreshStation = function(){
+	 		console.warn(':: Refreshing Station ::');
+	 		try{
+	 			storage.setItem(refreshedKey, 'true');
+	 		} catch(err){
+	 			console.log(err);
+	 		}
+	 		location.reload(true);
+	 	};
 		/**
 		 * [CheckForWorkStationStatusContinously description]
 		 *  Check if admin has set back the status of the
@@ -732,12 +811,59 @@ sntZestStation.controller('zsRootCtrl', [
 			'name': ''
 		};
 
+		var getLocalWorkStation = function(id){
+			try {
+				storedWorkStation = storage.getItem(workStationstorageKey);
+			} catch (err) {
+				console.warn(err);
+			}
+			//find workstation with the local storage data or from last fetched
+			var station;
+			if (id){
+				station = getWorkStationSetting(id);
+			} else {
+			 	station = getSavedWorkStationObj(storedWorkStation);	
+			}
+			
+			if (typeof station !== typeof undefined){
+				return station;
+			} else {
+				return null;
+			}
+		};
+
+		var getWorkStationSetting = function(id){
+			if (zsGeneralSrv.last_workstation_set.work_stations){
+				for (var i in zsGeneralSrv.last_workstation_set.work_stations){
+					if (zsGeneralSrv.last_workstation_set.work_stations[i].id === id){
+						return zsGeneralSrv.last_workstation_set.work_stations[i];
+					}
+				}
+			}
+			return {};
+		};
+
+
 		var workStationstorageKey = 'snt_zs_workstation',
 			oosStorageKey = 'snt_zs_workstation.in_oos',
 			oosReasonKey = 'snt_zs_workstation.oos_reason',
+			refreshedKey = 'snt_zs_workstation.recent_refresh',
 			storage = localStorage,
 			storedWorkStation = '',
 			station;
+			var recently_refreshed;
+			try{
+	 			recently_refreshed = storage.getItem(refreshedKey);
+	 			if (recently_refreshed == 'true'){
+	 				recently_refreshed = true;	
+	 			} else {
+	 				recently_refreshed = false;	
+	 			}
+	 		} catch(err){
+	 			recently_refreshed = false;
+	 			console.log(err);
+	 		}
+	 		storage.setItem(refreshedKey, 'false');
 		/**
 		 * [setWorkStationForAdmin description]
 		 *  The workstation, status and oos reason are stored in
@@ -746,17 +872,13 @@ sntZestStation.controller('zsRootCtrl', [
 		var setWorkStationForAdmin = function() {
 			//work station , oos status, reason  etc are saved in local storage
 
-			try {
-				storedWorkStation = storage.getItem(workStationstorageKey);
-			} catch (err) {
-				console.warn(err);
-			}
 			//find workstation with the local storage data
-			var station = getSavedWorkStationObj(storedWorkStation);
-			if (typeof station === typeof undefined) {
+			var station = getLocalWorkStation();
+			if (station === null) {
 				$scope.zestStationData.set_workstation_id = "";
 				$scope.zestStationData.key_encoder_id = "";
 				$scope.zestStationData.workstationStatus = "out-of-order";
+
 				if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)) {
 					$state.go('zest_station.admin');
 				} else {
@@ -791,7 +913,7 @@ sntZestStation.controller('zsRootCtrl', [
 						$state.go('zest_station.home');
 					} else {
 						//if application is launched either in chrome app or ipad go to login page
-						if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)) {
+						if ($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad) && !recently_refreshed) {
 							$state.go('zest_station.admin');
 						} else {
 							//we want to treat other clients are normal, ie need to provide 

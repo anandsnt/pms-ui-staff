@@ -149,7 +149,13 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		// fetch oo/os details from server
 		this.getRoomServiceStatus = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/room_services/' + params.room_id;
+				url = '/api/room_services/service_info.json?',
+				from = tzIndependentDate(params.from_date),
+				year = from.getFullYear(),
+				month = from.getMonth(),
+				to = tzIndependentDate(new Date(year, month + 2, 1));
+
+			params.to_date = $filter('date')(to, 'yyyy-MM-dd');
 
 			rvBaseWebSrvV2.getJSON(url, params)
 				.then(function(data) {
