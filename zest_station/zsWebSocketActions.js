@@ -34,8 +34,7 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
     this.InsertKeyCard = function() { //use key for checkout takes key in
         that.ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
     };
-    this.startPrint = function(data, printer){
-       // var printBillJson = { "Command": "cmd_print_bill", "Data": data, "PrinterName" : printer};
+    this.startPrint = function(data){
         var printBillJson = { "Command": "cmd_print_bill", "Data": data};
         var jsonstring = JSON.stringify(printBillJson);
         that.ws.send(jsonstring);
