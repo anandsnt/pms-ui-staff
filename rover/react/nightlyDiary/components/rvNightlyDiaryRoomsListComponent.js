@@ -33,8 +33,8 @@ const NightlyDiaryRoomsListComponent = ({ roomListToComponent }) => {
 };
 
 
-//const { PropTypes } = React;
+const { PropTypes } = React;
 
-// NightlyDiaryRoomsListContainer.propTypes = {
-//   shouldShow:
-// }
+NightlyDiaryRoomsListComponent.propTypes = {
+  roomListToComponent: PropTypes.string.isRequired
+}
