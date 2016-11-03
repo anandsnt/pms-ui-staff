@@ -66,7 +66,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             /**** Socket actions ends here *****/
 
             var fetchSatrTacBillSuccess = function(response){
-                printData =  response.data;
+                printData =  response.bill_details;
                 //check if socket is open
                 if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
                     $scope.socketOperator.startPrint(printData);
@@ -75,8 +75,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 }
             };
             var data = {
-                "reservation_id": $scope.reservation_id,
-                "bill_number": 1
+                "reservation_id": $scope.reservation_id
             };
             var options = {
                 params: data,
