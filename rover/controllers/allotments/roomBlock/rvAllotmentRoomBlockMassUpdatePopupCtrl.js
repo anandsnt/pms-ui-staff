@@ -54,7 +54,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 		 * Tells room block controller to save roomblock data with selected end date.
 		 * @return {undefined}
 		 */
-		$scope.clickedOnSaveButton = function () {
+		$scope.clickedOnSaveButton = function (isOverbooking) {
 
 			var roomBlockData = $scope.allotmentConfigData.roomblock,
 				isReleaseDays = $scope.ngDialogData.isReleaseDays || false,
@@ -94,6 +94,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 					start_date: formatDateForAPI(timeLineStart),
 					end_date: formatDateForAPI($scope.massUpdateEndDate),
 					bulk_updated_for: occupancy.toUpperCase(),
+					overbook_chosen: isOverbooking
 				});
 
 				// Save room block now.
@@ -146,7 +147,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 			forceOverbook = forceOverbook || false;
 			isContratUpdate = isContratUpdate || false;
 			config = config || {};
-			config = _.pick(config, ["allotment_id", "forcefully_overbook_and_assign_rooms", "start_date",
+			config = _.pick(config, ["allotment_id", "overbook_chosen", "forcefully_overbook_and_assign_rooms", "start_date",
 					"end_date", "is_contract_save", 'bulk_updated_for', "room_type_id", "room_type_name",
             		"release_days", "single", "single_contract", "double", "double_contract",
             		"old_total", "old_double", "old_double_contract", "old_release_days", "old_single", "old_single_contract",
