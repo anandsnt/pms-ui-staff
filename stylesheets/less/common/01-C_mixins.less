@@ -384,6 +384,36 @@
 		}
 	}
 
+	/* Clear Input			   =============================*/
+	.clear-input(@top: 10px, @right: 10px) {
+		position: absolute;
+		top: @top;
+		right: @right;
+        visibility: hidden;
+        z-index: 420;
+
+        .icons {
+            background-color: @grey1;
+            .hide-text;
+            .square(20px);
+            .opacity(0);
+            .show;
+            #fade > .out();
+            #border-radius > .rounded(15px);
+            background-position: 6px -2620px;
+            background-size:80px; 
+        }
+
+        &.visible { 
+            visibility: visible;
+
+            .icons {    
+                .opacity(100); 
+                #fade > .in(); 
+            }
+        }
+	}
+
 /* 4. LAYOUT
 ==========================================================*/
 	.size(@height: 5px, @width: 5px) {
