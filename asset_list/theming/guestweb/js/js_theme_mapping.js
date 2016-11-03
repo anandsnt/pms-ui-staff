@@ -29,7 +29,6 @@ module.exports = {
 			'guestweb_knickerbocker' 	: [ themeJsRoot + 'app_router_common.js'],
 			'guestweb_margaritaville' 	: [ themeJsRoot + 'app_router_margaritaville.js'],
 			'guestweb' 	: [ themeJsRoot + 'app_router_carlyle.js'],
-			'guestweb_galleria' 	: [ themeJsRoot + 'app_router_galleria.js'],
 			'guestweb_claridge' :[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_demo' 		: [ themeJsRoot + 'app_router_common.js'],
 			'guestweb_balboa':[ themeJsRoot + 'app_router_common.js'],
@@ -83,10 +82,9 @@ module.exports = {
 			'guestweb_sandman_inn':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_nobu_miami':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_EdenRoc':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_national_harbor': [themeJsRoot + 'app_router_mgm_chain.js',
-										 themeJsRoot + 'app_router_national_harbor.js'],
-			'guestweb_freehand':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_park_valkenburg':[ themeJsRoot + 'app_router_common.js']
-		}
-	}
+			'guestweb_national_harbor': [themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_national_harbor.js'],
+			'guestweb_freehand': [ themeJsRoot + 'app_router_common.js'],
+			'guestweb_park_valkenburg': [ themeJsRoot + 'app_router_common.js']
+    }
+}
 }
