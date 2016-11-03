@@ -83,7 +83,8 @@ module.exports = {
 			'guestweb_EdenRoc':[ themeCSSRoot + 'guestweb_EdenRoc.css'],
 			'guestweb_national_harbor':[ themeCSSRoot + 'guestweb_national_harbor.css'],
 			'guestweb_freehand':[ themeCSSRoot + 'guestweb_freehand.css'],
-			'guestweb_dewberry': [ themeCSSRoot + 'guestweb_dewberry.css']
+			'guestweb_dewberry': [ themeCSSRoot + 'guestweb_dewberry.css'],
+			'guestweb_park_valkenburg':[ themeCSSRoot + 'guestweb_park_valkenburg.css']
 		}
 			
 	}
