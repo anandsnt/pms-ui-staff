@@ -100,6 +100,10 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 			$scope.updateSelectedList();
 		};
 
+		$scope.displayCountChanged = function(count){
+			$scope.displyCount = count;
+		};
+
 		/**
 		 * [toggleAvailableItems tab actions]
 		 * @return {[type]} [description]
@@ -121,7 +125,8 @@ admin.controller('adFilterTableController', ['$scope', 'ngTableParams', '$inject
 					//set the isSelected Flag for items if in already
 					//selected list
 					$scope.data = handleCurrentSelectedPage($scope.filterConfig.selectedExcludedRoomIds, $scope.data);
-					$scope.selectionConfig.noOfItemsSelected = data.total_count;
+					//$scope.selectionConfig.noOfItemsSelected = data.total_count;
+					$scope.filterConfig.noOfItemsSelected = data.total_count;
 				} else {
 					$scope.data = handleCurrentSelectedPage($scope.filterConfig.unSelectedExcludedRoomIds, $scope.data);
 				}

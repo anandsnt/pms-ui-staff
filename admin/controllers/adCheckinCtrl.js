@@ -31,13 +31,20 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     $scope.openRoomExclusionSettings = false;
 
     $scope.checkinEmailRoomExclusionConfig = {
-        "item_number_active":true,
-        "item_number_label" : 'ROOM NO.',
-        "item_desc_active":true,
-        "item_desc_label" : 'ROOM TYPE',
+        "item_number": {
+          "active": true,
+          "label" : "ROOM NO.",
+          "column_width" : "width-20"
+        },
+        "item_description": {
+          "active": true,
+          "label" : "ROOM TYPE.",
+          "column_width" : "width-40"
+        },
         "selectedExcludedRoomIds": [],
         "unSelectedExcludedRoomIds": [],
-        "apiService" : "ADEmailSettingsSrv"
+        "apiService" : "ADEmailSettingsSrv",
+        "noOfItemsSelected" :0
     };
 
   };

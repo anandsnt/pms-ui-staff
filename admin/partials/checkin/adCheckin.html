@@ -216,36 +216,31 @@
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.pre_checkin_email_body" label="{{ 'PRE_CHECK_IN_TOP_BODY' | translate}}" placeholder=""></ad-textarea>
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.pre_checkin_email_bottom_body" label="{{ 'PRE_CHECK_IN_BOTTOM_BODY' | translate}}" placeholder=""></ad-textarea>
                 </fieldset>
+                <!--  -->
                 <fieldset class="holder full-width">
-                    <!--  -->
-                    <!-- Header Collapse View -->
-                    <div ng-hide="openRoomExclusionSettings">
-                        <div class="form-title cursor_pointer" ng-click="toggleRoomExlusionSettings(true)">
-                            <div>
-                                CHECKIN EMAIL ROOM EXCLUSION SETTINGS
-                                <div class="cursor_pointer rate_additional_details_pointers">
-                                    <img src="/assets/cssimg/arrow-down.png">
-                                </div>
-                            </div>
-                      </div>
+                    <div class="form-title">
+                        <h3>
+                <span>
+                Exclude
+                </span>
+                </h3>
                     </div>
-                    <!-- Expanded View -->
-                    <div ng-show="openRoomExclusionSettings" class="form_add_new_rate">
-                        <div class="form-title cursor_pointer " ng-click="toggleRoomExlusionSettings(false)">
-                            <div>
-                                CHECKIN EMAIL ROOM EXCLUSION SETTINGS
-                                <div class="cursor_pointer rate_additional_details_pointers">
-                                    <img src="/assets/cssimg/arrow-up.png">
-                                </div>
+                    <section class="holder full-width group group-grey" ng-class="{'active':openRoomExclusionSettings}">
+                        <div class="form-title has-toggle">
+                            <h3 class="with-count">
+                <!-- add .active if more than 0 -->
+                <span class="count" ng-class="{'active' : checkinEmailRoomExclusionConfig.noOfItemsSelected > 0}"> {{checkinEmailRoomExclusionConfig.noOfItemsSelected}} </span>
+                                                CHECKIN EMAIL ROOM EXCLUSION SETTINGS
+                </h3>
+                            <div class="toggle-arrows" ng-click="toggleRoomExlusionSettings(!openRoomExclusionSettings)">
+                                <img class="toggle-down" src="/assets/cssimg/arrow-down.png">
+                                <img class="toggle-up" src="/assets/cssimg/arrow-up.png">
                             </div>
                         </div>
-                        <ad-filter-table  filter-config="checkinEmailRoomExclusionConfig"></ad-filter-table> 
-                        <!-- <div ng-include="'/assets/partials/adCheckinEmailSettings/adCheckinEmailSettings.html'"></div> -->
-                    </div>
-                    <!--  -->
-                    <div class="form-title half-width-title">
-                        <h3><span>OTHER EXCLUSION SETTINGS</span> </h3>
-                    </div>
+                        <ad-filter-table filter-config="checkinEmailRoomExclusionConfig"></ad-filter-table>
+                    </section>
+                </fieldset>
+                <!--  -->
                     <div class="entry">
                         <label translate>RATE_CODES_TO_EXCLUDE_FROM_CHECKIN</label>
                         <div multi-select on-open="onRateCodeDropDownClick()" input-model="rate_codes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
