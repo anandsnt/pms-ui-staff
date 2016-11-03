@@ -28,14 +28,12 @@ angular.module('sntRover')
         // data set for diary used for Angular code.
         $scope.diaryData = {
             isSevenMode     : true,
-            datesGridData   : datesList.dates
+            datesGridData   : datesList.dates,
+            fromDate        : '',
+            toDate          : '',
+            roomFilterCount : 0,
+            filterCount     : 0
         };
-
-        // To toogle 7/21 button.
-        $scope.toggleSwitchMode = function(){
-            $scope.diaryData.isSevenMode = !$scope.diaryData.isSevenMode;
-            $scope.renderDiaryScreen();
-        }
 
         var initialState = {};
         const store = configureStore(initialState);
@@ -45,12 +43,13 @@ angular.module('sntRover')
 
         // angular method to render diary screen via react dispatch method.
         $scope.renderDiaryScreen = function(){
+            console.log("renderDiaryScreen");
             var initialDispatchData = {
                 type: ($scope.diaryData.isSevenMode) ? '7_DAYS': '21_DAYS',
                 mode: ($scope.diaryData.isSevenMode) ? '7_DAYS_MODE': '21_DAYS_MODE',
-                diaryRoomsListData : diaryRoomsList,
-                datesGridData: datesGridData
+                diaryRoomsListData : diaryRoomsList
             };
+            console.log(initialDispatchData);
             store.dispatch(initialDispatchData);
         };
 
