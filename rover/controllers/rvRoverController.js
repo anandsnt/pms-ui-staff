@@ -6,7 +6,7 @@ sntRover.controller('roverController',
   'ngDialog', '$translate', 'hotelDetails',
   'userInfoDetails', '$stateParams',
 
-  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings', '$q', '$sce',
+  'rvMenuSrv', 'rvPermissionSrv', '$timeout', 'rvUtilSrv', 'jsMappings', '$q', '$sce', '$log',
 
   function($rootScope, $scope, $state,
     $window, RVDashboardSrv, RVHotelDetailsSrv,
@@ -14,7 +14,7 @@ sntRover.controller('roverController',
     ngDialog, $translate, hotelDetails,
     userInfoDetails, $stateParams,
 
-    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce) {
+    rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce, $log) {
 
 
 
@@ -138,7 +138,16 @@ sntRover.controller('roverController',
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
     //need to set some default timeout
     //discuss with Mubarak
-    $rootScope.emvTimeout = !!hotelDetails.emv_timeout ? hotelDetails.emv_timeout : 60;
+
+      if (hotelDetails.emv_timeout) {
+          $rootScope.emvTimeout = hotelDetails.emv_timeout;
+      } else {
+          var defaultTimeout = 120;
+
+          $log.warn('configuration missing: [emv] no timeout set. defaulting to ' + defaultTimeout);
+          $rootScope.emvTimeout = defaultTimeout;
+      }
+
 
       //CICO-25728
       //TEMPORARY FLAG TO SKIP BAR AREAS

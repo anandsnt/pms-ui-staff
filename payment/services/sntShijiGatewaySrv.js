@@ -1,5 +1,5 @@
-angular.module('sntPay').service('sntShijiGatewaySrv', ['$q', '$http', '$timeout',
-    function($q, $http, $timeout) {
+angular.module('sntPay').service('sntShijiGatewaySrv', ['$q', '$http', '$timeout', '$interval', '$log',
+    function($q, $http, $timeout, $interval, $log) {
         var service = this;
 
         service.initiatePayment = function(reservationId, payLoad) {
@@ -10,16 +10,17 @@ angular.module('sntPay').service('sntShijiGatewaySrv', ['$q', '$http', '$timeout
         service.pollPaymentStatus = function(id, timeout) {
             var deferred = $q.defer(),
                 ms = 1000,
-                defaultTimeout = 60,
+                defaultTimeout = 120,
                 baseUrl = '/api/async_callbacks/',
                 timeStampInSeconds = 0,
                 pollingInterval = 5000,
-                refreshIntervalId = setInterval(()=> {
+                refreshIntervalId = $interval(()=> {
                     timeStampInSeconds++;
                 }, ms),
                 poller = function() {
                     if (timeStampInSeconds >= timeout) {
                         clearInterval(refreshIntervalId);
+                        $log.warn('timeout: [shiji] transaction timed out after ' + timeout + '. from hotel_settings.json emv_timeout');
                         deferred.reject(['Request timed out. Unable to process the transaction']);
                     } else {
                         $http.get(baseUrl + id)
@@ -27,7 +28,7 @@ angular.module('sntPay').service('sntShijiGatewaySrv', ['$q', '$http', '$timeout
                                 // if the request is still not processed
                                 if (status === 202 || status === 102 || status === 250) {
                                     $timeout(function() {
-                                        console.info('polling: [shiji] waiting for response');
+                                        $log.info('polling: [shiji] waiting for response');
                                         poller();
                                     }, pollingInterval);
                                 } else {

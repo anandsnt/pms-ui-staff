@@ -1,6 +1,6 @@
 angular.module('sntPay').controller('payShijiCtrl',
-    ['$scope', 'sntShijiGatewaySrv', 'ngDialog',
-        function($scope, sntShijiGatewaySrv, ngDialog) {
+    ['$scope', 'sntShijiGatewaySrv', 'ngDialog', '$log',
+        function($scope, sntShijiGatewaySrv, ngDialog, $log) {
 
             $scope.shijiPaymentState = {
                 isSuccess: false,
@@ -21,10 +21,27 @@ angular.module('sntPay').controller('payShijiCtrl',
                     scope: $scope,
                     data: JSON.stringify(response.data),
                     preCloseCallback: function() {
-                        console.log('TODO:', 'Need to stop listening to the async callback');
+                        $log.log('TODO:', 'Need to stop listening to the async callback');
                         return true;
                     }
                 });
+            }
+
+            /**
+             * @return {undefined}
+             */
+            function startPolling(id) {
+                sntShijiGatewaySrv.pollPaymentStatus(
+                    id,
+                    $scope.hotelConfig.emvTimeout
+                ).then(
+                    response => {
+                        $log.info(response);
+                    },
+                    errorMessage => {
+                        $log.info(errorMessage);
+                    }
+                );
             }
 
             /**
@@ -50,10 +67,7 @@ angular.module('sntPay').controller('payShijiCtrl',
                     bill_number: $scope.billNumber,
                     amount: $scope.payment.amount
                 }).then(response => {
-                    sntShijiGatewaySrv.pollPaymentStatus(
-                        response.data.async_callback_id,
-                        $scope.hotelConfig.emvTimeout
-                    );
+                    startPolling(response.data.async_callback_id);
                     showQRCode(response);
                     $scope.$emit('hideLoader');
                 }, errorMessage => {
