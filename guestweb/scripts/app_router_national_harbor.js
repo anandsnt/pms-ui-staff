@@ -1,4 +1,4 @@
-sntGuestWeb.config(['$stateProvider', function($stateProvider) {
+angular.module('sntGuestWeb').config(['$stateProvider', function($stateProvider) {
 
     $stateProvider.state('checkOutStatus', {
         url: '/checkOutStatus',
