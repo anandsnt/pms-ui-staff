@@ -22,11 +22,48 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         var POST_LIST_SCROLL = 'post-list-scroll',
             COMMENT_LIST_SCROLL = 'comment-list-scroll';
 
+        var setCommentScrollHeight = function(){
+            var conversationWrapper = angular.element(document.querySelector(".conversation-wrapper"))[0];
+            var commentScroll = angular.element(document.querySelector(".neighbours-comment-scroll"))[0];
+            var commentContainer = angular.element(document.querySelector(".neighbours-comment-container"))[0];
+            var comments = commentContainer.children;
+            var height = 75 * comments.length ;
+            
+            _.each(comments, function(comment){
+                commentHeight = comment.clientHeight;
+                if(comment.clientHeight > 70)
+                    height += comment.clientHeight - 70;
+            });
+            var wrapperHeight;conversationWrapper.clientHeight;
+            if(height < 300){
+                wrapperHeight = height;
+                commentScroll.style.height = ""+height+"px";
+                conversationWrapper.style.height = ""+height+"px";
+            }else{
+                wrapperHeight = 300;
+                commentScroll.style.height = "300px";
+                conversationWrapper.style.height = "300px";
+            }
+            
+            commentContainer.style.height = ""+height+"px";
+
+            var parentPostEl =  angular.element(document.querySelector(".post-full"))[0];
+            var parentPostElHeight = parentPostEl.clientHeight - 20;
+            var updatedHeight = wrapperHeight + 60 + parentPostElHeight;
+            $scope.$emit("socialLobbyHeightUpdated", updatedHeight);
+        }
+
         $scope.refreshCommentScroll = function() {
-            $scope.refreshScroller(COMMENT_LIST_SCROLL);
-            if ( $scope.myScroll.hasOwnProperty(COMMENT_LIST_SCROLL) ) {
-                $scope.myScroll[COMMENT_LIST_SCROLL].scrollTo(0, 0, 100);
-            };
+            
+            setTimeout(function(){
+                setCommentScrollHeight();
+                $scope.refreshScroller(COMMENT_LIST_SCROLL);
+                if ( $scope.myScroll.hasOwnProperty(COMMENT_LIST_SCROLL) ) {
+                    $scope.myScroll[COMMENT_LIST_SCROLL].scrollTo(0, 0, 100);
+                };
+                
+
+            },1000);
             
         };
 
@@ -75,6 +112,10 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             options.onSuccess = function(data){
 
                 $scope.refreshComments();
+            }
+            options.failureCallBack = function(error){
+
+                $scope.$parent.errorMessage = error[0];
             }
             $scope.callAPI(RVSocilaLobbySrv.addComment, options);
         }

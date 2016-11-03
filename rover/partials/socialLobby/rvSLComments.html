@@ -2,7 +2,7 @@
 <div class="conversation "  ng-controller="RVSocialLobbyCommentsCrl"> <!-- Toggle class 'hidden' to show/hide when L55 is tapped/clicked -->
 
         <div class="conversation-wrapper">    
-            <div ng-iscroll='comment-list-scroll' class=" scrollable neighbours-comment-scroll" >
+            <div ng-iscroll='comment-list-scroll' class="scrollable neighbours-comment-scroll" >
                 <div class="wrapper neighbours-comment-container" >
                     <div class="reply-post " ng-repeat="comment in comments">
                             <div class="post-details"> <!-- NO CLASSES TO ADD! -->
@@ -20,23 +20,25 @@
                                             <!-- If they exist, output Company / TA 7 Group / Allotment name -->
                                             <!-- <em class="icons icon-{'guest-company' or 'guest-travelagent' or 'group' or 'allotment'}">{Name}</em> -->
                                             <!-- If not staff member, show Stay Card link -->
-                                            <button type="button" class="button white brand-text small-button">Stay Card</button>
-                                            <!-- If staff member post, output this instad of L64, L66 and L68:
-                                            <em class="icons icon-staff-blue">Staff</em> -->
+                                            <button type="button" class="button white brand-text small-button" ng-show="comment.user_role == 'guest' && comment.user.current_reservation_id != '' && comment.user.current_reservation_id != null" ng-click="goToStayCard(comment.user.current_reservation_id, post.user.current_reservation_confirm_no, $event)" translate>SL_STAYCARD_LINK</button>
+                                            <!-- If staff member post, output this instad of L64, L66 and L68:-->
+                                            <em class="icons icon-staff-blue" ng-show="comment.user_role != 'guest'">Staff</em>
+
+                                            <span class="posted">1 min ago</span>
                                         </div>
                                         <h4 class="post" ng-class="{'staff': comment.user_role != 'guest'}"> <!-- If this is a 2nd level unread post, add class 'unread'. If staff post, add class 'staff'. If entered / left the lobby post, add class 'appearance' -->
                                             {{comment.comment}}
                                         </h4>
                                     </div>
                             </div>
-                            <button type="button" class="button white icons icon-remove-10" ng-click="deleteCommentClicked()">Delete</button>
+                            <button type="button" class="button white icons icon-remove-10" ng-click="deleteCommentClicked(comment.id)">Delete</button>
                     </div>
                 </div>
             </div>
         </div>            
                     <div class="conversation-reply numbers-pagination"><!-- Add class 'numbers-pagination' if 2nd level pagination is showing as well -->
                         <input placeholder="Add comment to this conversation" ng-model="newComment"  type="text" />
-                        <button type="button" class="button soft-red" ng-click="addComment()">Post</button>
+                        <button type="button" class="button soft-red" ng-click="addComment()" translate>SL_POST_BUTTON</button>
                         <!-- If showing 2nd level pagination, output this:-->
                         <div class="pages" ng-show="totalCommentPages > 1"> <!-- Add class "active" to selected number -->
         
