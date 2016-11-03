@@ -19,7 +19,7 @@
     ],
     "rules":{
     },
-    "global":{
+    "globals":{
         "_":true
     }
 }
