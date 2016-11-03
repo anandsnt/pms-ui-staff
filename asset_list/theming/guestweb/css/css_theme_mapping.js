@@ -81,6 +81,7 @@ module.exports = {
 			'guestweb_sandman_inn':[ themeCSSRoot + 'guestweb_sandman_inn.css'],
 			'guestweb_nobu_miami':[ themeCSSRoot + 'guestweb_nobu_miami.css'],
 			'guestweb_EdenRoc':[ themeCSSRoot + 'guestweb_EdenRoc.css'],
+			'guestweb_national_harbor':[ themeCSSRoot + 'guestweb_national_harbor.css'],
 			'guestweb_freehand':[ themeCSSRoot + 'guestweb_freehand.css']
 		}
 			

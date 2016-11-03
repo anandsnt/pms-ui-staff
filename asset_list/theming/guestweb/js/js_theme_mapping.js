@@ -83,6 +83,8 @@ module.exports = {
 			'guestweb_sandman_inn':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_nobu_miami':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_EdenRoc':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_national_harbor': [themeJsRoot + 'app_router_mgm_chain.js',
+										 themeJsRoot + 'app_router_national_harbor.js'],
 			'guestweb_freehand':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
