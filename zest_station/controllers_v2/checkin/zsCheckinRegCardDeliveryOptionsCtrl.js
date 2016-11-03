@@ -91,8 +91,6 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			};
 
 			var handleStarTacPrinterActions = function() {
-				//need to change this to printer name
-				//var printer = "Star TUP900 Presenter (TUP992)";
 				var printData = "";
 
 				/**** Socket actions starts here *****/
@@ -151,6 +149,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 							}, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
 						} else {
 							if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
+								//we will call websocket services to print
 								handleStarTacPrinterActions();
                         	}
                         	else{
@@ -159,7 +158,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 									printSuccessActions();
 								}, 100);
 							}
-						};
+						}
 						// provide a delay for preview to appear 
 
 					}, 100);

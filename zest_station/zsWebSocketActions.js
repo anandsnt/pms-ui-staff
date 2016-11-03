@@ -38,7 +38,6 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
        // var printBillJson = { "Command": "cmd_print_bill", "Data": data, "PrinterName" : printer};
         var printBillJson = { "Command": "cmd_print_bill", "Data": data};
         var jsonstring = JSON.stringify(printBillJson);
-        console.log(jsonstring);
         that.ws.send(jsonstring);
     };
 
