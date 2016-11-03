@@ -661,6 +661,16 @@ sntZestStation.controller('zsRootCtrl', [
 		 *   Websocket actions related to keycard lookup
 		 *  starts here
 		 ********************************************************************************/
+		
+		var printerErrorMapping = {
+			23: 'PRINTER_ERROR_PRINTER_IS_OFFLINE',
+			24:	'PRINTER_ERROR_PAPER_ROLL_IS_NEAR_EMPTY',
+			25:	'PRINTER_ERROR_PRINTER_OUT_OF_ORDER',
+			26:	'PRINTER_ERROR_PRINTER_ERROR',
+			27:	'PRINTER_ERROR_UNABLE_TO_GET_PRINTER_STATUS',
+			28:	'PRINTER_ERROR_UNABLE_TO_WRITE_TO_PRINTER_PORT',
+			29:	'PRINTER_ERROR_PRINT_ERROR'
+		};
 
 		var socketActions = function(response) {
 			var cmd = response.Command,
