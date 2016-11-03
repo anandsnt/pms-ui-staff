@@ -21,13 +21,15 @@
         <div class="info-left" ng-if="printData.card_type === 'COMPANY'">
             <strong translate>INVOICE_DATE:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <strong translate>INVOICE_NO:</strong>{{printData.invoice_number}}<br>
-            <strong translate>REF_NO:</strong>{{printData.custom_reference_number}}<br/>
+            <div ng-if="printData.custom_reference_number != null">
+            <strong  translate>REF_NO:</strong>{{printData.custom_reference_number}}</div><br/>
             <strong ng-if="printData.company_card_details.payment_due_in_days" translate>PAYMENT_DUE_IN_DAYS:</strong>{{printData.company_card_details.payment_due_in_days}}<br ng-if="printData.company_card_details.payment_due_in_days" />
         </div>
         <div class="info-left" ng-if="printData.card_type === 'TRAVELAGENT'">
             <strong translate>INVOICE_DATE:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <strong translate>INVOICE_NO:</strong>{{printData.invoice_number}}<br>
-            <strong translate>REF_NO:</strong>{{printData.custom_reference_number}}<br/>
+            <div ng-if="printData.custom_reference_number != null">
+            <strong translate>REF_NO:</strong>{{printData.custom_reference_number}}</div><br/>
             <strong ng-if="printData.ta_card_details.payment_due_in_days" translate>PAYMENT_DUE_IN_DAYS:</strong>{{printData.ta_card_details.payment_due_in_days}}<br ng-if="printData.ta_card_details.payment_due_in_days" />
         </div>
         <div class="info-right" ng-if="printData.card_type === 'COMPANY'">
