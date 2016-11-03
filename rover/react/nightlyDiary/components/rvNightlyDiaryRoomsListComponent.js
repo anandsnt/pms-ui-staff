@@ -36,5 +36,5 @@ const NightlyDiaryRoomsListComponent = ({ roomListToComponent }) => {
 const { PropTypes } = React;
 
 NightlyDiaryRoomsListComponent.propTypes = {
-  roomListToComponent: PropTypes.string.isRequired
+  roomListToComponent: PropTypes.array.isRequired
 }
