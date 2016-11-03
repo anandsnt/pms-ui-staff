@@ -82,7 +82,8 @@ module.exports = {
 			'guestweb_fontainebleau_v2':[ themeJsRoot + 'app_router_fontainebleau_v2.js'],
 			'guestweb_sandman_inn':[ themeJsRoot + 'app_router_common.js'],
 			'guestweb_nobu_miami':[ themeJsRoot + 'app_router_common.js'],
-			'guestweb_EdenRoc':[ themeJsRoot + 'app_router_common.js']
+			'guestweb_EdenRoc':[ themeJsRoot + 'app_router_common.js'],
+			'guestweb_freehand':[ themeJsRoot + 'app_router_common.js']
 		}
 	}
 }

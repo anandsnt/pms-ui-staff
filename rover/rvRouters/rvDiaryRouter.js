@@ -24,4 +24,35 @@ angular
             }
         }
     });
+    $stateProvider.state('rover.nightlyDiary', {
+        url: '/nightlyDiary/?reservation_id&checkin_date',
+        templateUrl: '/assets/partials/nightlyDiary/rvNightlyDiary.html',
+        controller: 'rvNightlyDiaryController',
+        resolve: {
+            reactAssets: function(jsMappings, mappingList) {
+                return jsMappings.fetchAssets(['react.files', 'directives'], ['react']);
+            },
+            reduxAssets: function(jsMappings, reactAssets) {
+                return jsMappings.fetchAssets(['redux.files']);
+            },
+            diaryAssets: function(jsMappings, reduxAssets) {
+                return jsMappings.fetchAssets(['rover.nightlyDiary']);
+            },
+            roomsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets) {
+                var params = {};
+                //params.start_date = $rootScope.businessDate;
+                //params.no_of_days = 7;
+                params.page = 1;
+                params.per_page = 50;
+                return RVNightlyDiarySrv.fetchRoomsList(params);
+            },
+            datesList: function(RVNightlyDiarySrv, $rootScope, diaryAssets) {
+                var params = {};
+                params.start_date = $rootScope.businessDate;
+                params.no_of_days = 7;
+                return RVNightlyDiarySrv.fetchDatesList(params);
+            }
+
+        }
+    });
 });
