@@ -1,13 +1,20 @@
 angular.module('sntPay').controller('payShijiCtrl',
-    ['$scope', 'sntShijiGatewaySrv', 'ngDialog', '$log',
-        function($scope, sntShijiGatewaySrv, ngDialog, $log) {
+    ['$scope', 'sntShijiGatewaySrv', 'ngDialog', '$timeout',
+        function($scope, sntShijiGatewaySrv, ngDialog, $timeout) {
 
-            $scope.shijiPaymentState = {
-                isSuccess: false,
-                isFailure: false,
-                notificationText: '',
-                modal: null
-            };
+            /**
+             * @return {undefined}
+             */
+            function initScopeState() {
+                $scope.shijiPaymentState = {
+                    isSuccess: false,
+                    isFailure: false,
+                    notificationText: '',
+                    modal: null,
+                    action: 'CANCEL',
+                    response: null
+                };
+            }
 
             /**
              *
@@ -15,19 +22,36 @@ angular.module('sntPay').controller('payShijiCtrl',
              * @return {undefined}
              */
             function showQRCode(response) {
+                $scope.$emit('SHOW_SIX_PAY_LOADER');
+
                 $scope.shijiPaymentState.modal = ngDialog.open({
                     template: '/assets/partials/payShijiQRPopup.html',
                     className: '',
                     scope: $scope,
-                    data: JSON.stringify(response.data),
+                    data: angular.toJson(response.data),
                     preCloseCallback: function() {
-                        $log.log('TODO:', 'Need to stop listening to the async callback');
-                        return true;
+                        if ($scope.shijiPaymentState.isSuccess || $scope.shijiPaymentState.isFailure) {
+                            $timeout(()=> {
+                                if ($scope.shijiPaymentState.isSuccess) {
+                                    $scope.$emit('SHIJI_PAYMENT_SUCCESS', $scope.shijiPaymentState.response);
+                                } else {
+                                    $scope.$emit('SHIJI_PAYMENT_FAILED', $scope.shijiPaymentState.response);
+                                }
+                                initScopeState();
+                                $scope.$emit('HIDE_SIX_PAY_LOADER');
+                            }, 700);
+                            return true;
+                        }
+                        $scope.$emit('showLoader');
+                        sntShijiGatewaySrv.stopPolling();
+                        return false;
                     }
                 });
             }
 
             /**
+             *
+             * @param {Integer} id transaction identifier for polling
              * @return {undefined}
              */
             function startPolling(id) {
@@ -36,10 +60,17 @@ angular.module('sntPay').controller('payShijiCtrl',
                     $scope.hotelConfig.emvTimeout
                 ).then(
                     response => {
-                        $log.info(response);
+                        $scope.shijiPaymentState.response = response;
+                        $scope.shijiPaymentState.action = 'CLOSE';
+                        $scope.shijiPaymentState.isSuccess = true;
+                        $scope.shijiPaymentState.notificationText = 'Payment successful';
                     },
                     errorMessage => {
-                        $log.info(errorMessage);
+                        $scope.shijiPaymentState.response = errorMessage;
+                        $scope.shijiPaymentState.action = 'CLOSE';
+                        $scope.shijiPaymentState.isFailure = true;
+                        $scope.shijiPaymentState.notificationText = errorMessage[0] || 'There was an error while processing payment';
+                        $scope.$emit('hideLoader');
                     }
                 );
             }
@@ -47,15 +78,9 @@ angular.module('sntPay').controller('payShijiCtrl',
             /**
              * @return {undefined}
              */
-            $scope.cancelShijiPayment = function() {
+            $scope.onCloseQRModal = function() {
                 ngDialog.close($scope.shijiPaymentState.modal.id);
             };
-
-            /*
-             notification-text:
-             - 'Payment successfull' - for success
-             - 'There was an error while processing payment' - for error
-             */
 
             /**
              * @return {undefined}
@@ -81,6 +106,7 @@ angular.module('sntPay').controller('payShijiCtrl',
                 // Initialization code goes here
                 var listenerPayment = $scope.$on('INITIATE_SHIJI_PAYMENT', initiatePaymentProcess);
 
+                initScopeState();
                 $scope.$on('$destroy', listenerPayment);
             })();
 

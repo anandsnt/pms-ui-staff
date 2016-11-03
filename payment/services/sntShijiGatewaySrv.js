@@ -1,11 +1,15 @@
 angular.module('sntPay').service('sntShijiGatewaySrv', ['$q', '$http', '$timeout', '$interval', '$log',
     function($q, $http, $timeout, $interval, $log) {
-        var service = this;
+        var service = this,
+            shouldPoll = true;
 
         service.initiatePayment = function(reservationId, payLoad) {
             return $http.post('api/reservations/' + reservationId + '/submit_payment/', payLoad);
         };
 
+        service.stopPolling = function() {
+            shouldPoll = false;
+        };
 
         service.pollPaymentStatus = function(id, timeout) {
             var deferred = $q.defer(),
@@ -13,7 +17,7 @@ angular.module('sntPay').service('sntShijiGatewaySrv', ['$q', '$http', '$timeout
                 defaultTimeout = 120,
                 baseUrl = '/api/async_callbacks/',
                 timeStampInSeconds = 0,
-                pollingInterval = 5000,
+                pollingInterval = 2000,
                 refreshIntervalId = $interval(()=> {
                     timeStampInSeconds++;
                 }, ms),
@@ -22,7 +26,26 @@ angular.module('sntPay').service('sntShijiGatewaySrv', ['$q', '$http', '$timeout
                         clearInterval(refreshIntervalId);
                         $log.warn('timeout: [shiji] transaction timed out after ' + timeout + '. from hotel_settings.json emv_timeout');
                         deferred.reject(['Request timed out. Unable to process the transaction']);
-                    } else {
+                        // TODO: Remove this sample response before merge
+                        // deferred.resolve({
+                        //     reservation_id: 1482139,
+                        //     reservation_type_id: 4,
+                        //     bill_balance: "-25.0",
+                        //     reservation_balance: "5.00",
+                        //     authorization_code: "094582",
+                        //     payment_method: {
+                        //         id: null,
+                        //         token: null,
+                        //         expiry_date: null,
+                        //         card_type: null,
+                        //         ending_with: null
+                        //     },
+                        //     is_eod_in_progress: false,
+                        //     is_eod_manual_started: false,
+                        //     is_eod_failed: true,
+                        //     is_eod_process_running: false
+                        // });
+                    } else if (shouldPoll) {
                         $http.get(baseUrl + id)
                             .success((data, status) => {
                                 // if the request is still not processed
@@ -44,9 +67,13 @@ angular.module('sntPay').service('sntShijiGatewaySrv', ['$q', '$http', '$timeout
                                     deferred.reject(data);
                                 }
                             });
+                    } else {
+                        clearInterval(refreshIntervalId);
+                        deferred.reject(['Payment action cancelled']);
                     }
                 };
 
+            shouldPoll = true;
             timeout = timeout || defaultTimeout;
             poller();
             return deferred.promise;

@@ -169,7 +169,12 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
                     handlePaymentError(errorMessage);
                 });
 
+                var listenerSHIJIPaymentSuccess = $scope.$on('SHIJI_PAYMENT_SUCCESS', (event, response)=> {
+                    $scope.onPaymentSuccess(response);
+                });
+
                 $scope.$on("$destroy", listenerSHIJIPaymentFailure);
+                $scope.$on("$destroy", listenerSHIJIPaymentSuccess);
             };
 
         /**
@@ -1063,7 +1068,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
             if ($scope.hotelConfig.paymentGateway === "CBA") {
                 initiateCBAlisteners();
-            } else if($scope.hotelConfig.paymentGateway === "SHIJI") {
+            } else if ($scope.hotelConfig.paymentGateway === "SHIJI") {
                 initiateSHIJIListeners();
             }
 
@@ -1113,7 +1118,7 @@ angular.module('sntPay').controller('sntPaymentController', ["$scope", "sntPayme
 
             setScroller('cardsList', {'click': true, 'tap': true});
 
-            $scope.$watch('payment.screenMode', ()=>{
+            $scope.$watch('payment.screenMode', ()=> {
                 $scope.$emit('PAYMENT_SCREEN_MODE_CHANGED', $scope.payment.screenMode);
             });
         })();
