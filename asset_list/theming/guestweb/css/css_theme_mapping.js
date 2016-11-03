@@ -80,7 +80,8 @@ module.exports = {
 			'guestweb_fontainebleau_v2' : [ themeCSSRoot + 'guestweb_fontainebleau_v2.css'],
 			'guestweb_sandman_inn':[ themeCSSRoot + 'guestweb_sandman_inn.css'],
 			'guestweb_nobu_miami':[ themeCSSRoot + 'guestweb_nobu_miami.css'],
-			'guestweb_EdenRoc':[ themeCSSRoot + 'guestweb_EdenRoc.css']
+			'guestweb_EdenRoc':[ themeCSSRoot + 'guestweb_EdenRoc.css'],
+			'guestweb_freehand':[ themeCSSRoot + 'guestweb_freehand.css']
 		}
 			
 	}
