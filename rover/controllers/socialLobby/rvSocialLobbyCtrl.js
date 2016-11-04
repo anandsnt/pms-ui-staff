@@ -31,8 +31,8 @@ sntRover.controller('RVSocialLobbyCrl', [
                 height = height + expandedPostHeight;
                 if(expandedPostHeight > 300)
                     postScroll.style.height = ""+400+"px";
-                // else if(expandedPostHeight < 200)
-                //     postScroll.style.height = ""+450+"px";
+                else if(expandedPostHeight < 200)
+                    postScroll.style.height = ""+450+"px";
                 
             }
             
