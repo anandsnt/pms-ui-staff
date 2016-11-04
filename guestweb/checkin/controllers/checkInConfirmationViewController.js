@@ -88,6 +88,7 @@
 
 					if (response.status === 'failure') {
 						$modal.open($scope.opts); // error modal popup
+						$scope.isPosting = false;
 					} else {
 						verificationSuccessActions(response.data);
 					}
