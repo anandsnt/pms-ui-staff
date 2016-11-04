@@ -67,7 +67,7 @@
 
                             <!-- If staff member post, output this instad of L64, L66 and L68:-->
                             <em class="icons icon-staff-blue" ng-show="post.user_role != 'guest'">Staff</em> 
-                            <span class="posted">1 min ago</span>
+                            <span class="posted">{{post.created_at}}</span>
                         </div>
                         <h4 class="post" ng-class="{'staff': post.user_role != 'guest', 'post-with-limit': post.id != selectedPost.id, 'post-full': post.id == selectedPost.id}"> <!-- If this is a 1st level unread post, add class 'unread'. If staff post, add class 'staff'. If entered / left the lobby post, add class 'appearance' -->
                             <!-- If post has replies, show count like this:-->

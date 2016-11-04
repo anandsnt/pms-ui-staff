@@ -24,7 +24,7 @@
                                             <!-- If staff member post, output this instad of L64, L66 and L68:-->
                                             <em class="icons icon-staff-blue" ng-show="comment.user_role != 'guest'">Staff</em>
 
-                                            <span class="posted">1 min ago</span>
+                                            <span class="posted">{{comment.created_at}}</span>
                                         </div>
                                         <h4 class="post" ng-class="{'staff': comment.user_role != 'guest'}"> <!-- If this is a 2nd level unread post, add class 'unread'. If staff post, add class 'staff'. If entered / left the lobby post, add class 'appearance' -->
                                             {{comment.comment}}

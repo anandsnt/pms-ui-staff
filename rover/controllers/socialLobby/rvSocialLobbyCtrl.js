@@ -62,6 +62,12 @@ sntRover.controller('RVSocialLobbyCrl', [
 
             refreshPostScroll();
         });
+
+        $scope.$on("SL_ERROR", function(event, error) {
+            $scope.errorMessage = error;
+        });
+
+        
         var setScroller = function() {
             var scrollerOptions = {
                 tap: true,
