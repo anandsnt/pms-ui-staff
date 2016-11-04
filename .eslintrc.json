@@ -4,6 +4,12 @@
         "es6":true,
         "jquery":true
     },
+    "globals":{
+        "sntRover":true,
+        "angular":true,
+        "BaseCtrl":true,
+        "_":true
+    },
     "installedESLint":true,
     "parserOptions":{
         "ecmaFeatures":{

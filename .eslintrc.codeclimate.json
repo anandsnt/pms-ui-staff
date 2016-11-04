@@ -5,13 +5,15 @@
         "jquery": true
     },
     "globals": {
+        "_": false,
         "angular": false,
         "React": false,
         "ReactDOM": false,
         "Provider": false,
         "ReactRedux": false,
         "ReduxThunk": false,
-        "BaseCtrl": true
+        "BaseCtrl": true,
+        "sntRover": true
     },
     "installedESLint": true,
     "parserOptions": {
@@ -26,6 +28,5 @@
     "plugins":[
         "react"
     ],
-    "rules": {
-    }
+    "rules": {}
 }
