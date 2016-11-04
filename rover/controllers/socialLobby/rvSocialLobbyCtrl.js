@@ -102,7 +102,7 @@ sntRover.controller('RVSocialLobbyCrl', [
                 "post_message": $scope.newPost,
                 "body_html": "testtt"
             }};
-            options.onSuccess = function(data){
+            options.onSuccess = function(){
 
                 $scope.refreshPosts();
             }
@@ -132,7 +132,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.delete = function(){
             var options = {};
             options.params = {'post_id': deleteIndex};
-            options.onSuccess = function(data){
+            options.onSuccess = function(){
                 
                 $scope.refreshPosts();
                 ngDialog.close();

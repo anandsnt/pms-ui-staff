@@ -132,7 +132,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         $scope.delete = function(){
             var options = {};
             options.params = {'comment_id': deleteIndex};
-            options.onSuccess = function(data){
+            options.onSuccess = function(){
                 
                 $scope.refreshComments();
                 ngDialog.close();
