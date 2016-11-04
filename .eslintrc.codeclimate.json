@@ -11,10 +11,18 @@
             "jsx":true
         }
     },
-    "extends" : "eslint:recommended",
+    "extends": [
+        "eslint:recommended"
+    ],
     "plugins":[
         "react"
     ],
     "rules":{
+    },
+    "globals":{
+        "_":true,
+        "sntRover":true,
+        "angular":true,
+        "BaseCtrl":true
     }
 }
