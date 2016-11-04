@@ -5,12 +5,14 @@ angular.module('sntRover')
         '$state',
         '$stateParams',
         '$filter',
+        'ngDialog',
         function(
             $scope,
             $rootScope,
             $state,
             $stateParams,
-            $filter
+            $filter,
+            ngDialog
         ){
 
         BaseCtrl.call(this, $scope);
@@ -24,7 +26,6 @@ angular.module('sntRover')
                 date.setDate(date.getDate() - shiftCount );
             }
             date = $filter('date')(date, 'yyyy-MM-dd');
-            console.log(date);
             return date;
         };
 
@@ -33,19 +34,41 @@ angular.module('sntRover')
             $scope.diaryData.fromDate = tzIndependentDate($rootScope.businessDate);
             $scope.diaryData.toDate   = getDateShift( $rootScope.businessDate, 7, true);
         };
+
+        // Show calendar popup.
+        var popupCalendar = function() {
+            ngDialog.open({
+                template: '/assets/partials/nightlyDiary/rvNightlyDiaryDatePicker.html',
+                controller: 'RVNightlyDiaryDatePickerController',
+                className: 'single-date-picker',
+                scope: $scope
+            });
+        };
+
+        $scope.clickedDatePicker = function(){
+            popupCalendar();
+        };
+
+        $rootScope.$on('DATE_CAHNGED',function () {
+            var isRightShift = true;
+            if($scope.diaryData.isSevenMode){
+                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift);
+            }
+            else{
+                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift);
+            }
+            $scope.renderDiaryScreen();
+        });
        
         // To toggle 7/21 button.
         $scope.toggleSwitchMode = function(){
-            console.log("toggleSwitchMode");
             var isRightShift = true;
             $scope.diaryData.isSevenMode = !$scope.diaryData.isSevenMode;
             var isRightShift = true;
             if($scope.diaryData.isSevenMode){
-                console.log('7');
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift);
             }
             else{
-                console.log('21');
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift);
             }
             $scope.renderDiaryScreen();

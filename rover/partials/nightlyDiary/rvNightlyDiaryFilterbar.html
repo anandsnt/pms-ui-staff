@@ -12,7 +12,7 @@
         <button type="button" class="button white with-icon only-icon" ng-click="clickedDateLeftShift()">
             <span class="icons icon-double-arrow black"></span>
         </button>
-        <div class="entry-data">
+        <div class="entry-data" ng-click="clickedDatePicker()">
             <input type="text" class="datepicker" value="" readonly />
             <span class="date-range">{{ diaryData.fromDate | date: 'd MMM' }} - {{ diaryData.toDate | date: 'd MMM yyyy' }}</span>
         </div>
