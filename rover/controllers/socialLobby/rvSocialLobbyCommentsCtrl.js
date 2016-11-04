@@ -19,8 +19,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         
         var deleteIndex = "";
 
-        var POST_LIST_SCROLL = 'post-list-scroll',
-            COMMENT_LIST_SCROLL = 'comment-list-scroll';
+        var COMMENT_LIST_SCROLL = 'comment-list-scroll';
 
         var setCommentScrollHeight = function(){
             var conversationWrapper = angular.element(document.querySelector(".conversation-wrapper"))[0];
@@ -30,7 +29,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             var height = 75 * comments.length ;
             
             _.each(comments, function(comment){
-                commentHeight = comment.clientHeight;
+                
                 if(comment.clientHeight > 70)
                     height += comment.clientHeight - 70;
             });
@@ -50,6 +49,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             var parentPostEl =  angular.element(document.querySelector(".post-full"))[0];
             var parentPostElHeight = parentPostEl.clientHeight - 20;
             var updatedHeight = wrapperHeight + 60 + parentPostElHeight;
+
             $scope.$emit("socialLobbyHeightUpdated", updatedHeight);
         }
 
@@ -60,7 +60,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
                 $scope.refreshScroller(COMMENT_LIST_SCROLL);
                 if ( $scope.myScroll.hasOwnProperty(COMMENT_LIST_SCROLL) ) {
                     $scope.myScroll[COMMENT_LIST_SCROLL].scrollTo(0, 0, 100);
-                };
+                }
                 
 
             },1000);
@@ -109,13 +109,13 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
                 "comment_text": $scope.newComment
             }};
             options.params.post_id = $scope.parentPost.id;
-            options.onSuccess = function(data){
+            options.onSuccess = function(){
 
                 $scope.refreshComments();
             }
             options.failureCallBack = function(error){
 
-                $scope.$parent.errorMessage = error[0];
+                $scope.$parent.errorMessage = error;
             }
             $scope.callAPI(RVSocilaLobbySrv.addComment, options);
         }
