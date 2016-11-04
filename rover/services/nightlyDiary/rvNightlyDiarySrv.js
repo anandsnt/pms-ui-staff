@@ -1,4 +1,7 @@
-angular.module('sntRover').service('RVNightlyDiarySrv',['$q', 'BaseWebSrvV2','rvBaseWebSrvV2','$rootScope', function($q, BaseWebSrvV2,rvBaseWebSrvV2,$rootScope){
+angular.module('sntRover').service('RVNightlyDiarySrv',
+    ['$q',
+    'BaseWebSrvV2',
+    function($q, BaseWebSrvV2){
     this.fetchRoomsList = function (data) {
         var deferred = $q.defer();
         var url = '/api/nightly_diary/room_list';
