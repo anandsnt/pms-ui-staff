@@ -1,0 +1,76 @@
+<!-- If post has replies-->
+<div class="conversation "  ng-controller="RVSocialLobbyCommentsCrl"> <!-- Toggle class 'hidden' to show/hide when L55 is tapped/clicked -->
+
+        <div class="conversation-wrapper">    
+            <div ng-iscroll='comment-list-scroll' class="scrollable neighbours-comment-scroll" >
+                <div class="wrapper neighbours-comment-container" >
+                    <div class="reply-post " ng-repeat="comment in comments">
+                            <div class="post-details"> <!-- NO CLASSES TO ADD! -->
+                                    <figure class="guest-image">
+                                        <img src="{{comment.user.image_url}}" alt="" />
+                                        <!-- If VIP - <span class="vip">VIP</span> -->
+                                    </figure>
+                                    <div class="post-data">
+                                        <div class="author">
+                                            <h3>{{comment.author_name}}</h3>
+                                            <!-- If not staff member, output job details (if they exist) -->
+                                            
+                                            <span class="job-title" ng-if="comment.user.works_at != '' && comment.user.works_at != null">{{comment.user.profession + ', ' + comment.user.works_at}}</span> 
+                                            <span class="job-title" ng-if="comment.user.works_at == '' || comment.user.works_at == null">{{comment.user.profession}}</span>
+                                            <!-- If they exist, output Company / TA 7 Group / Allotment name -->
+                                            <!-- <em class="icons icon-{'guest-company' or 'guest-travelagent' or 'group' or 'allotment'}">{Name}</em> -->
+                                            <!-- If not staff member, show Stay Card link -->
+                                            <button type="button" class="button white brand-text small-button" ng-show="comment.user_role == 'guest' && comment.user.current_reservation_id != '' && comment.user.current_reservation_id != null" ng-click="goToStayCard(comment.user.current_reservation_id, post.user.current_reservation_confirm_no, $event)" translate>SL_STAYCARD_LINK</button>
+                                            <!-- If staff member post, output this instad of L64, L66 and L68:-->
+                                            <em class="icons icon-staff-blue" ng-show="comment.user_role != 'guest'">Staff</em>
+
+                                            <span class="posted">{{comment.created_at}}</span>
+                                        </div>
+                                        <h4 class="post" ng-class="{'staff': comment.user_role != 'guest'}"> <!-- If this is a 2nd level unread post, add class 'unread'. If staff post, add class 'staff'. If entered / left the lobby post, add class 'appearance' -->
+                                            {{comment.comment}}
+                                        </h4>
+                                    </div>
+                            </div>
+                            <button type="button" class="button white icons icon-remove-10" ng-click="deleteCommentClicked(comment.id)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>            
+                    <div class="conversation-reply numbers-pagination"><!-- Add class 'numbers-pagination' if 2nd level pagination is showing as well -->
+                        <input placeholder="Add comment to this conversation" ng-model="newComment"  type="text" />
+                        <button type="button" class="button soft-red" ng-click="addComment()" translate>SL_POST_BUTTON</button>
+                        <!-- If showing 2nd level pagination, output this:-->
+                        <div class="pages" ng-show="totalCommentPages > 1"> <!-- Add class "active" to selected number -->
+        
+                            <!-- If not first page, show prev button:-->
+                            <button type="button" class="button prev" ng-show= "commentParams.page != 1" ng-click="paginateComments(commentParams.page -1)">Prev</button> 
+                            
+                            <!-- First page, always show it -->
+                            <button type="button" class="button dark-grey number" ng-click="paginateComments(1)" ng-class="{'active': 1 == commentParams.page}" >1</button> 
+
+                            <!-- If not first page, and there's more than 5 pages to show, show this:-->
+                            <span class="delimiter post-delimiter" ng-show="middle_page1 > 2 && totalCommentPages > 5">...</span> 
+
+                            <!-- Next 3 page numbers -->
+                            <!-- <button type="button" class="button dark-grey number active" ng-show="totalPostPages == 1">{{postParams.page }}</button>
+                            <button type="button" class="button dark-grey number active" ng-show="totalPostPages > 2">{{postParams.page >= totalPostPages -2 ? postParams.page -2 : postParams.page }}</button> -->
+                            <button type="button" class="button dark-grey number" ng-click="paginateComments(middle_page1)" ng-show="totalCommentPages > 2" ng-class="{'active': middle_page1 == commentParams.page}" >{{middle_page1 }}</button>
+
+
+                            <!-- <button type="button" class="button dark-grey number" ng-show="totalPostPages > 2" >{{postParams.page == totalPostPages ? postParams.page -1 : postParams.page + 1}}</button>
+                            <button type="button" class="button dark-grey number" ng-show="totalPostPages == 2" >{{postParams.page == totalPostPages ? postParams.page : postParams.page + 1}}</button> -->
+
+                            <button type="button" class="button dark-grey number" ng-click="paginateComments(middle_page2)"  ng-show="totalCommentPages > 3" ng-class="{'active': middle_page2 == commentParams.page}" >{{middle_page2 }}</button>
+
+
+                            <button type="button" class="button dark-grey number"  ng-click="paginateComments(middle_page3)" ng-show="totalCommentPages > 4" ng-class="{'active': middle_page3 == commentParams.page}">{{middle_page3 }}</button>
+
+                            <!-- If not last page, and there's more than 5 pages to show, show this:-->
+                            <span class="delimiter post-delimiter" ng-show="middle_page3 < (totalCommentPages - 1) && totalCommentPages > 5">...</span> 
+                            <button type="button" class="button dark-grey number" ng-click="paginateComments(totalCommentPages)"  ng-class="{'active' : commentParams.page == totalCommentPages }">{{totalCommentPages}}</button>
+
+                            <!-- If not last page, show next button:-->
+                            <button type="button" class="button next" ng-click="paginateComments(commentParams.page +1)" ng-show= "commentParams.page != totalCommentPages ">Next</button> 
+                        </div>  
+                    </div>
+</div>
