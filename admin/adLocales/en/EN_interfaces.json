@@ -12,5 +12,8 @@
 	"WORKSTATION_OOS_MSG":"OOS Message",
 	"OOS_REASON":"OOS Reason",
 	"ROVER_DEVICE_ID" : "Rover Device ID",
-	"RE_AUTH_WARNING_MESSAGE" : "You are about to replace the interface authentication, which would require changes on the interface PC onsite, are you sure you want to proceed?"
+	"RE_AUTH_WARNING_MESSAGE" : "You are about to replace the interface authentication, which would require changes on the interface PC onsite, are you sure you want to proceed?",
+	"USER_NAME" : "User Name",
+	"END_POINT" : "End Point",
+	"ACTIVATE_INACTIVATE" : "Activate / Inactivate"
 
