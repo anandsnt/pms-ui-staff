@@ -20,6 +20,9 @@
     "rules":{
     },
     "globals":{
-        "_":true
+        "_":true,
+        "sntRover":true,
+        "angular":true,
+        "BaseCtrl":true
     }
 }
