@@ -16,26 +16,58 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.newPost = "";
         $scope.middle_page1 = 2, $scope.middle_page2 = 3, $scope.middle_page3 = 4;
         $scope.$emit("updateRoverLeftMenu", "sociallobby");
+        var expandedPostHeight = "";
         var deleteIndex = "";
 
-        var POST_LIST_SCROLL = 'post-list-scroll',
-            COMMENT_LIST_SCROLL = 'comment-list-scroll';
+        var POST_LIST_SCROLL = 'post-list-scroll';
 
-        $scope.refreshPostScroll = function(scrollUp) {
-            $scope.refreshScroller(POST_LIST_SCROLL);
-            if ( $scope.myScroll.hasOwnProperty(POST_LIST_SCROLL) ) {
-                $scope.myScroll[POST_LIST_SCROLL].scrollTo(0, 0, 100);
-            };
+        var setPostScrollHeight = function(){
+            var postContainer = angular.element(document.querySelector(".neighbours-post-container"))[0];
+            var postScroll = angular.element(document.querySelector(".neighbours-post-scroll"))[0];
+            var posts = postContainer.children;
+            // var height = $scope.errorrMessage == "" || typeof $scope.errorrMessage == 'undefined' ? 82 * posts.length +100 : 82 * posts.length + 200;
+            var height = 82 * posts.length +100;
+            if(expandedPostHeight !== ""){
+                height = height + expandedPostHeight;
+                if(expandedPostHeight > 300)
+                    postScroll.style.height = ""+400+"px";
+                else if(expandedPostHeight < 200)
+                    postScroll.style.height = ""+450+"px";
+                
+            }
+            
+            postContainer.style.height = ""+height+"px";
+            
         }
 
-        $scope.refreshCommentScroll = function() {
-            $scope.refreshScroller(COMMENT_LIST_SCROLL);
-            if ( $scope.myScroll.hasOwnProperty(COMMENT_LIST_SCROLL) ) {
-                $scope.myScroll[COMMENT_LIST_SCROLL].scrollTo(0, 0, 100);
-            };
-            $scope.refreshFilterScroll();
-        };
+        
 
+        var refreshPostScroll = function(scrollUp) {
+            
+            // $scope.$apply();
+            setTimeout(function(){
+                setPostScrollHeight();
+                $scope.refreshScroller(POST_LIST_SCROLL);
+                if (scrollUp &&  $scope.myScroll.hasOwnProperty(POST_LIST_SCROLL) ) {
+                    $scope.myScroll[POST_LIST_SCROLL].scrollTo(0, 0, 100);
+                };
+                
+
+            },1000);
+            
+        }
+
+        $scope.$on("socialLobbyHeightUpdated", function(event, currentPostHeight) {
+            expandedPostHeight = currentPostHeight;
+
+            refreshPostScroll();
+        });
+
+        $scope.$on("SL_ERROR", function(event, error) {
+            $scope.errorMessage = error;
+        });
+
+        
         var setScroller = function() {
             var scrollerOptions = {
                 tap: true,
@@ -43,7 +75,6 @@ sntRover.controller('RVSocialLobbyCrl', [
             };
 
             $scope.setScroller(POST_LIST_SCROLL, scrollerOptions);
-            // $scope.setScroller(COMMENT_LIST_SCROLL, scrollerOptions);
         };
 
         setScroller();
@@ -56,7 +87,7 @@ sntRover.controller('RVSocialLobbyCrl', [
                 $scope.posts = data.results.posts;
                 $scope.totalPostPages = data.results.total_count % $scope.postParams.per_page > 0 ? Math.floor(data.results.total_count / $scope.postParams.per_page) + 1 : Math.floor(data.results.total_count / $scope.postParams.per_page);
                 $scope.$emit('hideLoader');
-                $scope.refreshPostScroll();
+                refreshPostScroll(true);
             }
             $scope.callAPI(RVSocilaLobbySrv.fetchPosts, options);
         }
@@ -77,17 +108,18 @@ sntRover.controller('RVSocialLobbyCrl', [
                 "post_message": $scope.newPost,
                 "body_html": "testtt"
             }};
-            options.onSuccess = function(data){
+            options.onSuccess = function(){
 
                 $scope.refreshPosts();
             }
             $scope.callAPI(RVSocilaLobbySrv.addPost, options);
         }
 
-        $scope.goToStayCard = function(reservation_id, event){
+        $scope.goToStayCard = function(reservation_id, confirm_no, event){
             event.stopPropagation();
             $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
                 id: reservation_id,
+                confirmationId: confirm_no,
                 isrefresh: false
             });
         }
@@ -103,12 +135,17 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.closeDialog = function(){
             ngDialog.close();
         }
-        $scope.deletePost = function(){
+        $scope.delete = function(){
             var options = {};
             options.params = {'post_id': deleteIndex};
-            options.onSuccess = function(data){
+            options.onSuccess = function(){
                 
                 $scope.refreshPosts();
+                ngDialog.close();
+            }
+            options.failureCallBack = function(error){
+
+                $scope.errorMessage = error;
                 ngDialog.close();
             }
             $scope.callAPI(RVSocilaLobbySrv.deletePost, options);
@@ -140,7 +177,19 @@ sntRover.controller('RVSocialLobbyCrl', [
 
         $scope.togglePostDetails = function(post){
             $scope.selectedPost = $scope.selectedPost == "" ? post : post.id == $scope.selectedPost.id? "" : post;
+            if($scope.selectedPost == ""){
+                expandedPostHeight = "";
+                refreshPostScroll();
+            }
         }
+
+        $scope.$watch(function(){
+            return $scope.errorMessage;
+        }, function() {
+                
+                refreshPostScroll();
+            }
+        );
 
     }
 
