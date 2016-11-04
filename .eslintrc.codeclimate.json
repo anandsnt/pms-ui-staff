@@ -1,14 +1,23 @@
 {
-    "env":{
-        "browser":true,
-        "es6":true,
-        "jquery":true
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jquery": true
     },
-    "installedESLint":true,
-    "parserOptions":{
-        "ecmaFeatures":{
-            "experimentalObjectRestSpread":true,
-            "jsx":true
+    "globals": {
+        "angular": false,
+        "React": false,
+        "ReactDOM": false,
+        "Provider": false,
+        "ReactRedux": false,
+        "ReduxThunk": false,
+        "BaseCtrl": true
+    },
+    "installedESLint": true,
+    "parserOptions": {
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true,
+            "jsx": true
         }
     },
     "extends": [
@@ -17,6 +26,6 @@
     "plugins":[
         "react"
     ],
-    "rules":{
+    "rules": {
     }
 }
