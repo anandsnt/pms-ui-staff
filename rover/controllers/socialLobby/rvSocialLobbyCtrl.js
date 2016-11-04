@@ -143,6 +143,11 @@ sntRover.controller('RVSocialLobbyCrl', [
                 $scope.refreshPosts();
                 ngDialog.close();
             }
+            options.failureCallBack = function(error){
+
+                $scope.errorMessage = error;
+                ngDialog.close();
+            }
             $scope.callAPI(RVSocilaLobbySrv.deletePost, options);
         }
 

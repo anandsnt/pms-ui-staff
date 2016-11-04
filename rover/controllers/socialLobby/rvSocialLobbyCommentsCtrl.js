@@ -89,6 +89,10 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
                 $scope.$emit('hideLoader');
                 $scope.refreshCommentScroll();
             }
+            options.failureCallBack = function(error){
+
+                $scope.$emit("SL_ERROR", error);
+            }
             $scope.callAPI(RVSocilaLobbySrv.fetchComments, options);
         }
 
@@ -135,6 +139,11 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             options.onSuccess = function(){
                 
                 $scope.refreshComments();
+                ngDialog.close();
+            }
+            options.failureCallBack = function(error){
+
+                $scope.$emit("SL_ERROR", error);
                 ngDialog.close();
             }
             $scope.callAPI(RVSocilaLobbySrv.deleteComment, options);
