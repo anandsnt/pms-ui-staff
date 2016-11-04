@@ -7,6 +7,7 @@ angular.module('sntRover')
         '$filter',
         'roomsList',
         'datesList',
+        'reservationsList',
         function(
             $scope,
             $rootScope,
@@ -14,7 +15,8 @@ angular.module('sntRover')
             $stateParams,
             $filter,
             roomsList,
-            datesList
+            datesList,
+            reservationsList
         ){
 
         BaseCtrl.call(this, $scope);
@@ -24,7 +26,7 @@ angular.module('sntRover')
         const diaryRoomsList = roomsList;
 
         const datesGridData =  datesList;
-        
+
         // data set for diary used for Angular code.
         $scope.diaryData = {
             isSevenMode     : true,
@@ -44,12 +46,14 @@ angular.module('sntRover')
         // angular method to render diary screen via react dispatch method.
         $scope.renderDiaryScreen = function(){
             console.log("renderDiaryScreen");
+            var diaryInitialDayOfDateGrid = datesGridData.dates[0]
             var initialDispatchData = {
                 type: ($scope.diaryData.isSevenMode) ? '7_DAYS': '21_DAYS',
                 mode: ($scope.diaryData.isSevenMode) ? '7_DAYS_MODE': '21_DAYS_MODE',
-                diaryRoomsListData : diaryRoomsList
+                diaryRoomsListData : diaryRoomsList,
+                diaryReservationsListData: reservationsList,
+                diaryInitialDayOfDateGrid: diaryInitialDayOfDateGrid//Used to add class for reserations grid
             };
-            console.log(initialDispatchData);
             store.dispatch(initialDispatchData);
         };
 
