@@ -39,6 +39,7 @@ sntRover.controller('rvBorrowRoomTypeCtrl',[
         params.reservation_id   = resData.reservation_id;
         params.upsell_amount    = $scope.passingParams.upsell_amount;
         params.room_no          = $scope.assignedRoom.room_number;
+        params.is_preassigned   = $scope.assignedRoom.is_preassigned;
 
         // CICO-27661
         if (resStatus === "CHECKEDIN" && $scope.roomTransfer) {
