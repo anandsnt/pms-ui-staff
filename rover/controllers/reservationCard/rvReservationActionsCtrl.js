@@ -897,12 +897,19 @@ sntRover.controller('reservationActionsController', [
 		var printPage = function() {
 			// add the orientation
 			addPrintOrientation();
+
+			// CICO-35320: header logo needs to be hidden.
+			$("header .logo").hide();
+			$("header .h2").hide();
+
 			$timeout(function() {
 				$window.print();
 				if (sntapp.cordovaLoaded) {
 					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 				}
-			}, 100);
+				$("header .logo").show();
+				$("header .h2").show();
+			}, 400);
 			// remove the orientation after similar delay
 			$timeout(removePrintOrientation, 100);
 		};

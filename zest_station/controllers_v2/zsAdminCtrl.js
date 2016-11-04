@@ -211,9 +211,6 @@ sntZestStation.controller('zsAdminCtrl', [
                 getTheSelectedWorkStation().printer = $scope.savedSettings.printer;
                 setStationVariables();
                 restartTimers();
-                $scope.$emit('UPDATE_WORKSTATION', {
-                    id: station.station_identifier
-                });
                 $scope.zestStationData.set_workstation_id = station.id;
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 $scope.zestStationData.key_encoder_id = station.key_encoder_id;

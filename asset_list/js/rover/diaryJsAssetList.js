@@ -1,4 +1,4 @@
-module.exports = {	
+module.exports = {
 	getList : function() {
 		var jsLibRoot 	= 'shared/lib/js/',
 		roverRoot 		= 'rover/',
@@ -34,8 +34,8 @@ module.exports = {
 				diaryViewRoot + "diary-grid-panel.js",
 				diaryViewRoot + "diary-content.js"
 			]
-		};		
-		
+		};
+
 		return diaryJsAssets;
 	}
 };
