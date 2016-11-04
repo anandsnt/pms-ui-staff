@@ -116,10 +116,21 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     $stateProvider.state('admin.duettoSetup', {
         templateUrl: '/assets/partials/interfaces/Duetto/adDuettoSetup.html',
         controller: 'adDuettoSetupCtrl',
-        url: '/ideas/setup',
+        url: '/duetto/setup',
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('duetto');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.revinateSetup', {
+        templateUrl: '/assets/partials/interfaces/Revinate/adRevinateSetup.html',
+        controller: 'adRevinateSetupCtrl',
+        url: '/revinate/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('revinate');
             }]
         }
     });
@@ -309,14 +320,4 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
         simple_name: 'TravelTripper',
         url: '/travelTripperSetup'
     });
-
-    $stateProvider.state('admin.revinateSetup', {
-        templateUrl: '/assets/partials/revinateSetup/adRevinateSetup.html',
-        controller: 'adExternalInterfaceCtrl',
-        // interface_id: 4,
-        interface_id: 'REVINATE',
-        simple_name: 'REVINATE',
-        url: '/zRevinateSetup'
-    });
-
 });
