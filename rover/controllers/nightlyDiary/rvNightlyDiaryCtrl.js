@@ -28,7 +28,8 @@ angular.module('sntRover')
         // data set for diary used for Angular code.
         $scope.diaryData = {
             isSevenMode     : true,
-            datesGridData   : datesList.dates
+            datesGridData   : datesList,
+            businessDate    : $rootScope.businessDate
         };
 
         // To toogle 7/21 button.
