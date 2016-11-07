@@ -524,7 +524,7 @@ angular.module('sntRover').service('rvMenuSrv',
 				break;
 
 			case 'nightlyDiaryReservation':
-				returnValue = !isHourlyRateOn() || !$rootScope.isPmsDevEnv;
+				returnValue = !isHourlyRateOn() && !$rootScope.isPmsDevEnv;
 				break;
 
 			//dont wanted to show on hourly enabled hotels
