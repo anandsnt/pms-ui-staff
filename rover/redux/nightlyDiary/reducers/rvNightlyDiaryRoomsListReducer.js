@@ -3,6 +3,6 @@ const nightlyDiaryRoomsListReducer = (state = [], action) => {
     case 'DIARY_VIEW_CHANGED':
         return action.diaryRoomsListData.rooms;
     default:
-        return state;
+        return state.roomsList;
   }
 };
