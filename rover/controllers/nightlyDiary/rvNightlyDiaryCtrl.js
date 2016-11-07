@@ -21,12 +21,11 @@ angular.module('sntRover')
         $scope.heading = $filter('translate')('MENU_ROOM_DIARY');
         $scope.setTitle($filter('translate')('MENU_ROOM_DIARY'));
 
-
-
         // data set for diary used for Angular code.
         $scope.diaryData = {
             isSevenSelected : true,
-            datesGridData   : datesList.dates,
+            datesGridData   : datesList,
+            businessDate    : $rootScope.businessDate,
             diaryRoomsList  : roomsList,
             numberOfDays    : 7
         };
