@@ -5,6 +5,6 @@ const finalCreateStore = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
 )(createStore);
 
-const configureStore = (initialState = { 'mode': NIGHTLY_DIARY_SEVEN_MODE }) => {
+const configureStore = (initialState) => {
     return finalCreateStore(nightlyDiaryRootReducer, initialState);
 }

@@ -1,5 +1,8 @@
-angular.module('sntRover').service('RVNightlyDiarySrv',['$q', 'BaseWebSrvV2','rvBaseWebSrvV2','$rootScope', function($q, BaseWebSrvV2,rvBaseWebSrvV2,$rootScope){
-    
+angular.module('sntRover').service('RVNightlyDiarySrv',
+    ['$q',
+    'BaseWebSrvV2',
+    function($q, BaseWebSrvV2){
+
     /*
      * Service function to fetch room list.
      * @return {Object} room list.
