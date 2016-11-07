@@ -82,6 +82,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         $scope.fetchComments = function(){
             var options = {};
             options.params = $scope.commentParams;
+            $scope.$emit("SL_ERROR", "");
             options.onSuccess = function(data){
                 
                 $scope.comments = data.results.comments;
@@ -106,6 +107,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         }
 
         $scope.addComment = function(){
+            $scope.$emit("SL_ERROR", "");
             var options = {};
             options.params = {
                 "comment" :{
@@ -114,7 +116,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             }};
             options.params.post_id = $scope.parentPost.id;
             options.onSuccess = function(){
-
+                $scope.parentPost.comment_count ++;
                 $scope.refreshComments();
             }
             options.failureCallBack = function(error){
@@ -134,10 +136,11 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         }
         
         $scope.delete = function(){
+            $scope.$emit("SL_ERROR", "");
             var options = {};
             options.params = {'comment_id': deleteIndex};
             options.onSuccess = function(){
-                
+                $scope.parentPost.comment_count --;
                 $scope.refreshComments();
                 ngDialog.close();
             }
@@ -150,6 +153,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         }
 
         $scope.paginateComments = function(page){
+            $scope.$emit("SL_ERROR", "");
             if(page == $scope.commentParams.page)
                 return;
             $scope.commentParams.page = page;

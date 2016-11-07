@@ -80,6 +80,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         setScroller();
 
         $scope.fetchPosts = function(){
+            $scope.errorMessage = "";
             var options = {};
             options.params = $scope.postParams;
             options.onSuccess = function(data){
@@ -102,6 +103,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         }
 
         $scope.addPost = function(){
+            $scope.errorMessage = "";
             var options = {};
             options.params = {
                 "post" :{
@@ -125,6 +127,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         }
 
         $scope.deletePostClicked = function(post_id){
+            $scope.errorMessage = "";
             deleteIndex = post_id;
             ngDialog.open({
                    template: '/assets/partials/socialLobby/rvSLPostDelete.html',
@@ -136,6 +139,7 @@ sntRover.controller('RVSocialLobbyCrl', [
             ngDialog.close();
         }
         $scope.delete = function(){
+            $scope.errorMessage = "";
             var options = {};
             options.params = {'post_id': deleteIndex};
             options.onSuccess = function(){
@@ -152,6 +156,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         }
 
         $scope.paginatePosts = function(page){
+            $scope.errorMessage = "";
             if(page == $scope.postParams.page)
                 return;
             $scope.postParams.page = page;
@@ -176,6 +181,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         }
 
         $scope.togglePostDetails = function(post){
+            $scope.errorMessage = "";
             $scope.selectedPost = $scope.selectedPost == "" ? post : post.id == $scope.selectedPost.id? "" : post;
             if($scope.selectedPost == ""){
                 expandedPostHeight = "";
