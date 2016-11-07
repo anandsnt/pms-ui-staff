@@ -15,5 +15,9 @@
 	"RE_AUTH_WARNING_MESSAGE" : "You are about to replace the interface authentication, which would require changes on the interface PC onsite, are you sure you want to proceed?",
 	"USER_NAME" : "User Name",
 	"END_POINT" : "End Point",
-	"ACTIVATE_INACTIVATE" : "Activate / Inactivate"
-
+	"ACTIVATE_INACTIVATE" : "Activate / Inactivate",
+	"CUBILIS_HEADER": "Cubilis CRS Setup",
+	"DEFAULT_RATE": "Default Rate",
+	"DEFAULT_BOOKING_ORIGIN": "Default Booking Origin",
+	"DEFAULT_PAYMENT_METHOD": "Default Payment Method",
+	"TRAVELCLICK_HEADER": "TravelClick CRS Setup"
