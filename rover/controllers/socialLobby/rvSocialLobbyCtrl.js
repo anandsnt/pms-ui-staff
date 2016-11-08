@@ -124,6 +124,16 @@ sntRover.controller('RVSocialLobbyCrl', [
             });
         }
 
+        $scope.getProfessionStringForUser = function(user){
+            var professionString = "";
+            if(user.profession != null && user.profession != "")
+                professionString = professionString + user.profession;
+            if(user.works_at != "" && user.works_at != null)
+                professionString = professionString != ""? professionString + ", " + user.works_at : user.works_at;
+
+            return professionString;
+        }
+
         $scope.deletePostClicked = function(post_id){
             $scope.errorMessage = "";
             deleteIndex = post_id;
