@@ -274,4 +274,3 @@ var TimelineResizeGrip = React.createClass({
 			);
 		}
 });
-

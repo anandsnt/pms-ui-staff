@@ -8,21 +8,21 @@
 				<li>
 					<a class="button green" ui-sref="rover.search({type:'DUEIN'})">
 						{{ 'CHECKING_IN' | translate }}
-						<strong> {{dashboardData.due_in_count?dashboardData.due_in_count:0}} 
-							</strong> 
+						<strong> {{dashboardData.due_in_count?dashboardData.due_in_count:0}}
+							</strong>
 					</a>
 				</li>
 				<li>
-					<a class="button blue" ui-sref="rover.search({type:'INHOUSE'})"> 
+					<a class="button blue" ui-sref="rover.search({type:'INHOUSE'})">
 						{{ 'INHOUSE' | translate }}
-						<strong> {{dashboardData.inhouse_count?dashboardData.inhouse_count:0}} 
-							</strong> 
+						<strong> {{dashboardData.inhouse_count?dashboardData.inhouse_count:0}}
+							</strong>
 					</a>
 				</li>
 				<li>
-					<a class="button red" ui-sref="rover.search({type:'DUEOUT'})"> 
+					<a class="button red" ui-sref="rover.search({type:'DUEOUT'})">
 						{{ 'CHECKING_OUT' | translate }}
-						<strong> {{dashboardData.due_out_count?dashboardData.due_out_count:0}} </strong> 
+						<strong> {{dashboardData.due_out_count?dashboardData.due_out_count:0}} </strong>
 					</a>
 				</li>
 			</ul>

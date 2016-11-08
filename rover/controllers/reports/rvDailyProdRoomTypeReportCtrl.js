@@ -114,12 +114,12 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 
 		var processData = function() {
 			var SUB_HEADER_NAMES = [
-				'Rooms #',
+				'Rooms Occ',
 				'Rooms Available',
 				/**/
-				'Forecasted Revenue',
+				'Forecast Room Revenue',
 				'ADR',
-				'Actual Revenue'
+				'Actual Room Revenue'
 			];
 
 			var startIndex, endIndex, triggerIndex;

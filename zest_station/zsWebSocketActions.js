@@ -34,6 +34,12 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
     this.InsertKeyCard = function() { //use key for checkout takes key in
         that.ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
     };
+    this.startPrint = function(data){
+        var printBillJson = { "Command": "cmd_print_bill", "Data": data};
+        var jsonstring = JSON.stringify(printBillJson);
+        that.ws.send(jsonstring);
+    };
+
     this.connect = function() {
         try {
             that.ws = new WebSocket("wss://localhost:4649/CCSwipeService");
