@@ -565,7 +565,6 @@ sntZestStation.controller('zsRootCtrl', [
 		 *   *Refresh-workstation --> Triggered from Hotel Admin - interfaces - workstation > toggle (Refresh Station)
 		 ********************************************************************************/
 		var checkForEventsIfAtHomeScreen = function(currentState){
-			console.log('homeInActivityTimeInSeconds: ',homeInActivityTimeInSeconds);
 			if (currentState !== 'zest_station.home'){
 				homeInActivityTimeInSeconds = 0;
 			} else {
@@ -593,6 +592,9 @@ sntZestStation.controller('zsRootCtrl', [
 				}	
 			}
 		}
+		$scope.$on('HOME_ACTIVITY',function(){//need to move the above function to Home Controller after S69
+			homeInActivityTimeInSeconds = 0;
+		});
 
 		var refreshInProgress = function(station){
 			console.log('Calling API to Reset (refresh_station) Flag for: ',station.name, ' - ',station.id);
