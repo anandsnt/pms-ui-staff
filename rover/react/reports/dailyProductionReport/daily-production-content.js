@@ -4,7 +4,8 @@ var DPthCell = React.createClass({
 	render: function() {
 		return React.DOM.th({
 			'className' : this.props.className,
-			'colSpan'   : this.props.colspan
+			'colSpan'   : this.props.colspan,
+			'style' : {'whiteSpace' : 'nowrap'}
 		}, this.props.data);
 	}
 });
@@ -114,6 +115,7 @@ var DPContent = React.createClass({
 	render: function() {
 		return React.DOM.table({
 				'className' : 'statistics-reports',
+				 'style': { 'tableLayout': 'auto'}
 			},
 			React.createElement( DPHeadPanel, {
 				'colspan'    	: this.props.colspan,

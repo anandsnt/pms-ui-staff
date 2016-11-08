@@ -26,24 +26,27 @@ angular.module('sntRover')
 
         // data set for diary used for Angular code.
         $scope.diaryData = {
-            isSevenMode     : true,
+            isSevenSelected : true,
             datesGridData   : datesList.dates,
             fromDate        : '',
             toDate          : '',
             roomFilterCount : 0,
             filterCount     : 0
-            diaryRoomsList  : roomsList
+            diaryRoomsList  : roomsList,
+            numberOfDays    : 7,
+            reservationsList:reservationsList
         };
 
         // To toogle 7/21 button.
         $scope.toggleSwitchMode = function(){
-            $scope.diaryData.isSevenMode = !$scope.diaryData.isSevenMode;
+            $scope.diaryData.isSevenSelected = !$scope.diaryData.isSevenSelected;
             $scope.renderDiaryScreen();
         }
-        //Nothing to be there in initial state
-        // $scope.updateDiaryView - used for every actions in top bar filters
-        //During initial nvaigation too we are using the same common method to view screen and dispatch data
-        var initialState = {};
+        //Initial State
+        var initialState = {
+            roomsList : roomsList.rooms,
+            reservationsList: reservationsList
+        };
         const store = configureStore(initialState);
 
         const {render} = ReactDOM;
@@ -54,13 +57,13 @@ angular.module('sntRover')
         $scope.updateDiaryView = function(){
             var dispatchData = {
                 type: 'DIARY_VIEW_CHANGED',
-                mode: ($scope.diaryData.isSevenMode) ? '7_DAYS_MODE': '21_DAYS_MODE',
+                number_of_days: $scope.diaryData.numberOfDays,
                 diaryRoomsListData : $scope.diaryData.diaryRoomsList
             };
             store.dispatch(dispatchData);
         };
 
-        $scope.updateDiaryView();
+
 
         /**
          * to render the grid view

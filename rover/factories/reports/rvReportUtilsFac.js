@@ -549,7 +549,7 @@ angular.module('reportsModule')
                 if ( __excludeFilterNames[filter.value] ) {
                     var selected = false;
 
-                    if (report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] || reportNames['DAILY_PRODUCTION_RATE']) {
+                    if (report['title'] === reportNames['DAILY_PRODUCTION_DEMO'] || reportNames['DAILY_PRODUCTION_RATE'] || reportNames['DAILY_PRODUCTION_ROOM_TYPE']) {
                         report['hasExclusions'].options.selectAll = true;
                     };
 
