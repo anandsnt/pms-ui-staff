@@ -71,7 +71,14 @@ sntZestStation.controller('zsHomeCtrl', [
 				userInActivityTimeInHomeScreenInSeconds++;
 				//when user activity is not recorded for more than 120 secs
 				//translating to default lanaguage
-				if (userInActivityTimeInHomeScreenInSeconds >= 120) {
+				console.log('userInActivityTimeInHomeScreenInSeconds',userInActivityTimeInHomeScreenInSeconds,$state.current.name)
+				if ($state.current.name !== 'zest_station.home'){
+					userInActivityTimeInHomeScreenInSeconds = 0;
+					clearInterval($scope.activityTimer);
+					clearInterval(userInActivityTimeInHomeScreenInSeconds);
+				}
+
+				if (userInActivityTimeInHomeScreenInSeconds >= 120 && $state.current.name === 'zest_station.home') {
 					console.info("translating to default lanaguage");
 					setToDefaultLanguage();
 					$scope.runDigestCycle();
@@ -141,7 +148,7 @@ sntZestStation.controller('zsHomeCtrl', [
 			});
 
 			//assigning default language initially
-			if (!zsGeneralSrv.isDefaultLanguageSet) {
+			if (!zsGeneralSrv.isDefaultLanguageSet && $state.current.name === 'zest_station.home') {
 				setToDefaultLanguage();
 				zsGeneralSrv.isDefaultLanguageSet = true;
 			} else {
