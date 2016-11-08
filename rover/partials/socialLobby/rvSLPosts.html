@@ -48,8 +48,8 @@
                         <div class="author">
                             <h3>{{post.user.first_name + " " + post.user.last_name}}</h3>
                             <!-- If not staff member, output job details (if they exist) -->
-                            <span class="job-title" ng-if="post.user.works_at != '' && post.user.works_at != null">{{post.user.profession + ', ' + post.user.works_at}}</span> 
-                            <span class="job-title" ng-if="post.user.works_at == '' || post.user.works_at == null">{{post.user.profession}}</span>
+                            <span class="job-title" >{{getProfessionStringForUser(post.user)}}</span> 
+                            
                             <!-- If they exist, output Company / TA 7 Group / Allotment name -->
 
 
