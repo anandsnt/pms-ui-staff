@@ -79,7 +79,7 @@ sntZestStation.controller('zsHomeCtrl', [
 				//changing state), we need to deactivate the timer.
 				if ($state.current.name === 'zest_station.home') {
 					userInActivityTimeInHomeScreenInSeconds++;
-				};
+				}
 				//when user activity is not recorded for more than 120 secs
 				//translating to default lanaguage
 				console.log('userInActivityTimeInHomeScreenInSeconds',userInActivityTimeInHomeScreenInSeconds,$state.current.name)
