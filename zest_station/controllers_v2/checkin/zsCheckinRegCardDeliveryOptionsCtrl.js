@@ -120,10 +120,13 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				var data = {
 					"reservation_id": $stateParams.reservation_id
 				};
+				var startTacDataFailedActions = function(){
+                	printFailedActions();
+            	};
 				var options = {
 					params: data,
 					successCallBack: fetchSatrTacDataSuccess,
-					failureCallBack: printFailedActions
+					failureCallBack: startTacDataFailedActions
 				};
 				$scope.callAPI(zsCheckinSrv.fetchStarTacPrinterData, options);
 			};

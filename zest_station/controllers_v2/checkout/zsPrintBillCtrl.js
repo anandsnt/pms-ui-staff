@@ -75,10 +75,13 @@ sntZestStation.controller('zsPrintBillCtrl', [
             var data = {
                 "reservation_id": $scope.reservation_id
             };
+            var startTacDataFailedActions = function(){
+                printFailedActions();
+            };
             var options = {
                 params: data,
                 successCallBack: fetchSatrTacBillSuccess,
-                failureCallBack: printFailedActions
+                failureCallBack: startTacDataFailedActions
             };
            $scope.callAPI(zsCheckoutSrv.fetchStarTacPrinterData, options);
         };
