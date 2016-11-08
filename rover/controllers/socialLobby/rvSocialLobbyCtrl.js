@@ -26,14 +26,9 @@ sntRover.controller('RVSocialLobbyCrl', [
             var postScroll = angular.element(document.querySelector(".neighbours-post-scroll"))[0];
             var posts = postContainer.children;
             // var height = $scope.errorrMessage == "" || typeof $scope.errorrMessage == 'undefined' ? 82 * posts.length +100 : 82 * posts.length + 200;
-            var height = 82 * posts.length +100;
+            var height = 80 * posts.length + 40;
             if(expandedPostHeight !== ""){
-                height = height + expandedPostHeight;
-                if(expandedPostHeight > 300)
-                    postScroll.style.height = ""+400+"px";
-                else if(expandedPostHeight < 200)
-                    postScroll.style.height = ""+450+"px";
-                
+                height = height + expandedPostHeight;                
             }
             
             postContainer.style.height = ""+height+"px";
