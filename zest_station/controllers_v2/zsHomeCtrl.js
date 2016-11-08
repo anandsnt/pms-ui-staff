@@ -86,9 +86,9 @@ sntZestStation.controller('zsHomeCtrl', [
 				if ($state.current.name !== 'zest_station.home'){
 					userInActivityTimeInHomeScreenInSeconds = 0;
 					clearInterval($scope.activityTimer);
-					clearInterval(userInActivityTimeInHomeScreenInSeconds);
 				}
-
+				//$state.current.name === 'zest_station.admin' - if going to hotel admin, switch back to default language, in future we may need to find best logic for multiple languages for admin screen
+				//also if user has been inactive at the (home screen) for 2 minutes, reset language the default
 				if ((userInActivityTimeInHomeScreenInSeconds >= 120 && $state.current.name === 'zest_station.home') || $state.current.name === 'zest_station.admin')  {
 					console.info("translating to default lanaguage");
 					setToDefaultLanguage();
