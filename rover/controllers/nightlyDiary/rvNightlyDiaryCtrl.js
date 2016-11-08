@@ -20,6 +20,7 @@ angular.module('sntRover')
         BaseCtrl.call(this, $scope);
         $scope.heading = $filter('translate')('MENU_ROOM_DIARY');
         $scope.setTitle($filter('translate')('MENU_ROOM_DIARY'));
+        $scope.$emit("updateRoverLeftMenu", "nightlyDiaryReservation");
 
         // data set for diary used for Angular code.
         $scope.diaryData = {
