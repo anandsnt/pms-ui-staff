@@ -120,9 +120,9 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				var data = {
 					"reservation_id": $stateParams.reservation_id
 				};
-				var startTacDataFailedActions = function(){
-                	printFailedActions();
-            	};
+				var startTacDataFailedActions = function() {
+					printFailedActions();
+				};
 				var options = {
 					params: data,
 					successCallBack: fetchSatrTacDataSuccess,
@@ -136,33 +136,36 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				addPrintOrientation();
 				setBeforePrintSetup();
 				try {
-				// this will show the popup with full bill
-				$timeout(function() {
-					/*
-					 * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-					 */
+					// this will show the popup with full bill
+					$timeout(function() {
+						/*
+						 * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+						 */
 
-					if (sntapp.cordovaLoaded) {
-						var printer = (sntZestStation.selectedPrinter);
-						cordova.exec(function(success) {
-							printSuccessActions();
-						}, function(error) {
-							printFailedActions();
-						}, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
-					} else {
-						if ($scope.zestStationData.zest_printer_option === "STAR_TAC") {
-							//we will call websocket services to print
-							handleStarTacPrinterActions();
-						} else {
-							$window.print();
-							setTimeout(function() {
+						if (sntapp.cordovaLoaded) {
+							var printer = (sntZestStation.selectedPrinter);
+							cordova.exec(function(success) {
 								printSuccessActions();
-							}, 100);
+							}, function(error) {
+								printFailedActions();
+							}, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+						} else {
+							//REASON: API error . We cant push the starttac code.
+							//So uncomment and use the following line in next sprint
+							//if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
+							if (false) {
+								//we will call websocket services to print
+								handleStarTacPrinterActions();
+							} else {
+								$window.print();
+								setTimeout(function() {
+									printSuccessActions();
+								}, 100);
+							}
 						}
-					}
-					// provide a delay for preview to appear 
+						// provide a delay for preview to appear 
 
-				}, 100);
+					}, 100);
 				} catch (e) {
 					console.info("something went wrong while attempting to print--->" + e);
 					printFailedActions();
@@ -196,7 +199,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				},
 				successCallBack: fetchPrintViewCompleted,
 				failureCallBack: printFailedActions
-			}
+			};
 			$scope.callAPI(zsCheckinSrv.fetchRegistrationCardPrintData, options);
 		};
 		/**

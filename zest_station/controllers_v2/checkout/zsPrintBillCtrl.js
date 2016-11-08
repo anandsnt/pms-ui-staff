@@ -105,7 +105,10 @@ sntZestStation.controller('zsPrintBillCtrl', [
                             printFailedActions();
                         }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                     } else {
-                        if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
+                        //REASON: API error . We cant push the starttac code.
+                        //So uncomment and use the following line in next sprint
+                        //if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
+                        if(false){
                             //we will call websocket services to print
                             handleStarTacPrinterActions();
                         }
