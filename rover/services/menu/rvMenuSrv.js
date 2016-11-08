@@ -1,6 +1,6 @@
 angular.module('sntRover').service('rvMenuSrv',
-	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv',
-	function(rvPermissionSrv, RVDashboardSrv, RVHotelDetailsSrv) {
+	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv','$rootScope',
+	function(rvPermissionSrv, RVDashboardSrv, RVHotelDetailsSrv, $rootScope ) {
 
 
 	//we have to keep reference
@@ -160,6 +160,11 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: 'rover.diary',
 		            //hidden: !isHourlyRateOn,
 		            menuIndex: 'diaryReservation'
+		        }, {
+		            title: "MENU_ROOM_DIARY",
+		            action: 'rover.nightlyDiary',
+		            //hidden: !isHourlyRateOn,
+		            menuIndex: 'nightlyDiaryReservation'
 		        },  {
 		            title: "MENU_POST_CHARGES",
 		            action: "",
@@ -456,7 +461,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			'accounting': 			['ACCESS_ACCOUNTING_INTERFACE'],
 			'commisions': 			['ACCESS_COMMISSIONS'],
 			'diaryReservation': 	['CREATE_EDIT_RESERVATIONS'],
-
+			'nightlyDiaryReservation': 	['ACCESS_ROOM_DIARY'],
 
 			'menuGroups': 			[],
 			'menuCreateGroup': 		['GROUP_CREATE'],
@@ -511,10 +516,15 @@ angular.module('sntRover').service('rvMenuSrv',
 	* @return {boolean}
 	*/
 	this.hasSettingsPermission = function(menuIndex) {
+		
 		var returnValue = true;
 		switch (menuIndex){
 			case 'diaryReservation':
 				returnValue = isHourlyRateOn();
+				break;
+
+			case 'nightlyDiaryReservation':
+				returnValue = !isHourlyRateOn() && $rootScope.isPmsDevEnv;
 				break;
 
 			//dont wanted to show on hourly enabled hotels

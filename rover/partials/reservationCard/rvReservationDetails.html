@@ -273,7 +273,8 @@
             <div ng-include="'/assets/partials/reservationCard/rvReservationAdditional.html'" ng-controller="rvReservationAdditionalController" ng-if="isStandAlone"></div>
 
             <!-- External Reference Numbers -->
-            <div ng-include="'/assets/partials/reservationCard/rvExternalReferences.html'" ng-controller="rvExternalReferencesCtrl" ng-if="isStandAlone"></div>
+            <!-- CICO-32546, show extrenal reference number in overlay hotels, but only if one is available for the same -->
+            <div ng-include="'/assets/partials/reservationCard/rvExternalReferences.html'" ng-controller="rvExternalReferencesCtrl" ng-if="isStandAlone || externalReferencesExist"></div>
 
             <!-- Activity Log -->
             <div ng-include="'/assets/partials/reservationCard/rvReservationCardActivityLog.html'" ng-controller="rvReservationCardActivityLogCtrl"></div>

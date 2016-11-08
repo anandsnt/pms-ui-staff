@@ -282,6 +282,8 @@ angular.module('sntRover').controller('RVUpgradesController',
 			params.reservation_id 	= parseInt($stateParams.reservation_id, 10);
 			params.upsell_amount_id = parseInt(selectedListItem.upsell_amount_id, 10);
 			params.room_no 			= selectedListItem.upgrade_room_number;
+			params.is_preassigned   = selectedListItem.is_preassigned;
+
 
 			//yes. ALL set. Go!
 			var options = {
