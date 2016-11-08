@@ -107,18 +107,17 @@ sntZestStation.controller('zsPrintBillCtrl', [
                     } else {
                         //REASON: API error . We cant push the starttac code.
                         //So uncomment and use the following line in next sprint
-                        //if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
-                        if(false){
-                            //we will call websocket services to print
-                            handleStarTacPrinterActions();
-                        }
-                        else{
+                        // if($scope.zestStationData.zest_printer_option === "STAR_TAC"){
+                        //     //we will call websocket services to print
+                        //     handleStarTacPrinterActions();
+                        // }
+                        // else{
                             $window.print();
                             setTimeout(function() {
                                 var printopted = 'true';
                                 nextPageActions(printopted);
                             }, 100);
-                        }
+                        // }
                        
                     }
                     // provide a delay for preview to appear 
