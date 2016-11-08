@@ -36,7 +36,7 @@
 <section id="neighbors-activity"  ng-show="posts.length != 0"  role="main">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div ng-iscroll='post-list-scroll' class="content scrollable neighbours-post-scroll" ng-class="{'neighbours-post-scroll-error': errorMessage != ''}">
-        <div class="wrapper neighbours-post-container" ng-class="{'neighbours-post-container-error': errorMessage != '', 'neighbours-post-container-expanded': selectedPost != ''}">
+        <div class="wrapper neighbours-post-container" >
             <div class="activity-post" ng-class="{'has-replies': post.comment_count > 0}" ng-repeat = "post in posts"> <!-- Add class 'has-replies' if there are replies in the conversation. -->
                 <div class="post-details toggle has-arrow" ng-click="togglePostDetails(post)"> <!-- Add class 'toggle has-arrow' if there are replies in the conversation. Add class "has-unread" if there are undread posts in the conversation. -->
                     <figure class="guest-image">

@@ -27,7 +27,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             var commentContainer = angular.element(document.querySelector(".neighbours-comment-container"))[0];
             var comments = commentContainer.children;
             var height = 75 * comments.length ;
-            height = height < 200 ? height + 20: height;
+            height = height < 200 && height > 0 ? height + 20: height;
             _.each(comments, function(comment){
                 
                 if(comment.clientHeight > 70)
