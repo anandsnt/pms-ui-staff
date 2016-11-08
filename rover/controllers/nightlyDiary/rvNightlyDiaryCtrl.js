@@ -31,7 +31,7 @@ angular.module('sntRover')
             fromDate        : '',
             toDate          : '',
             roomFilterCount : 0,
-            filterCount     : 0
+            filterCount     : 0,
             diaryRoomsList  : roomsList,
             numberOfDays    : 7,
             reservationsList:reservationsList
