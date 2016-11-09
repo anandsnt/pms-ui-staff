@@ -1,18 +1,26 @@
 const {connect} = ReactRedux;
 
-let convertReservationsListReadyToComponent = (reservationsList, diaryInitialDayOfDateGrid) => {
-    console.log("--------Initial day-->>"+diaryInitialDayOfDateGrid)
-    console.log(diaryInitialDayOfDateGrid)
-    // roomsList.map((room, index) => {
-    //     room.room_class = "room-number "+room.hk_status
-    //     room.isSuitesAvailable = (room.suite_room_details.length > 0) ? true : false;
-    // })
-    return reservationsList;
+let convertReservationsListReadyToComponent = (roomsList, diaryInitialDayOfDateGrid) => {
+  //  console.log("--------Initial day-->>"+diaryInitialDayOfDateGrid)
+   // console.log(diaryInitialDayOfDateGrid)
+    roomsList.map((room) => {
+       // reservation.duration = 140;
+       // reservation.reservation_status = "inhouse";
+       if(room.reservations.length > 0){
+            room.reservations.map((reservation) => {
+                reservation.duration = 140;
+                reservation.reservation_status = "inhouse";
+
+            })
+        }
+
+    })
+    return roomsList;
 }
 
 
 const mapStateToNightlyDiaryReservationsListContainerProps = (state) => ({
-    reservationsListToComponent: convertReservationsListReadyToComponent(state.reservationsList)
+    reservationsListToComponent: convertReservationsListReadyToComponent(state.reservationsList, state.diaryInitialDayOfDateGrid)
 });
 
 const NightlyDiaryReservationsListContainer = connect(

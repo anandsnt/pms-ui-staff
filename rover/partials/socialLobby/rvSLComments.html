@@ -8,7 +8,7 @@
                             <div class="post-details"> <!-- NO CLASSES TO ADD! -->
                                     <figure class="guest-image">
                                         <img src="{{comment.user.image_url}}" alt="" />
-                                        <!-- If VIP - <span class="vip">VIP</span> -->
+                                        <span class="vip" ng-show="comment.user.is_vip">VIP</span> 
                                     </figure>
                                     <div class="post-data">
                                         <div class="author">
