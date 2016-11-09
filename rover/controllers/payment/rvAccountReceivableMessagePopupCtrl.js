@@ -8,6 +8,7 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl', ['$rootScope', '$scop
 
 		if((typeof $scope.reservationBillData !=="undefined"  && $scope.reservationBillData.is_auto_assign_ar_numbers === "true")||(typeof $scope.is_auto_assign_ar_numbers !=="undefined" && $scope.is_auto_assign_ar_numbers)) {
 			var isAutoAssignARNumber = true;
+
 			$scope.createAccountReceivable( isAutoAssignARNumber );
 		}
 		else{
@@ -36,6 +37,7 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl', ['$rootScope', '$scop
 			"id": $scope.account_id,
 			"ar_number": isAutoAssignARNumber ? "" : $scope.ar_number
 		};
+
 		$scope.invokeApi(RVCompanyCardSrv.saveARDetails, data, $scope.successCreate, $scope.failureCreate);
 	};
 

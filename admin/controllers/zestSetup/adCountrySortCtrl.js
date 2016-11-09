@@ -19,6 +19,7 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 				params: {},
 				successCallBack: onfetchCountriesSuccess
 			};
+
 			$scope.callAPI(ADCountrySortSrv.fetchCountries, options);
 		};
 
@@ -43,6 +44,7 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 				},
 				successCallBack: fetchCountryList
 			};
+
 			$scope.callAPI(ADCountrySortSrv.saveComponentOrder, options);
 		};
 
@@ -63,6 +65,7 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 				},
 				successCallBack: fetchCountryList
 			};
+
 			$scope.callAPI(ADCountrySortSrv.deleteItem, options);
 		};
 

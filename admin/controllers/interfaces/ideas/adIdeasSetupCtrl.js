@@ -53,6 +53,7 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
          */
         $scope.selectChosen = function() {
             var chosenAvailableChargeGroupValues = [];
+
             _.each($scope.chosenAvailableChargeGroups, function(chargeGroupIndex) {
                 chosenAvailableChargeGroupValues.push($scope.ideaSetup.available_charge_groups[chargeGroupIndex]);
             });
@@ -67,6 +68,7 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
          */
         $scope.unSelectChosen = function() {
             var chosenSelectedChargeGroupValues = [];
+
             _.each($scope.chosenSelectedChargeGroups, function(chargeGroupIndex) {
                 chosenSelectedChargeGroupValues.push($scope.ideaSetup.selected_charge_groups[chargeGroupIndex]);
             });
@@ -133,6 +135,7 @@ admin.controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'ideaSetup', 'adId
         $scope.saveSetup = function() {
             var params = angular.copy($scope.ideaSetup);
             // Convert date object to API format
+
             params.start_date = dateFilter(params.start_date, $rootScope.dateFormatForAPI);
             $scope.callAPI(adIdeasSetupSrv.postIdeasSetup, {
                 params: params,

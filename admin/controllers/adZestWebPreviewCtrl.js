@@ -10,6 +10,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 		// inject styles to head tag
 		function addStyleString(str) {
 			var node = document.createElement('style');
+
 			node.innerHTML = str;
 			setTimeout(function() {
 				document.getElementById('zest-web-main-container').appendChild(node);
@@ -20,6 +21,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 
 		var styleString = "";
 		//concat style strings
+
 		function appendStyleString(str) {
 			styleString = styleString + str;
 		};
@@ -42,6 +44,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 		var applyIconStyles = function(color) {
 
 				var styleString = ""
+
 				styleString = styleString + ".zest-web-checkout-icon{background-image: url('/assets/cssimg/" + color + "/checkout_icon.png')}"
 				addStyleString(styleString);
 			}
@@ -103,6 +106,7 @@ admin.controller('adZestWebPreviewCtrl', ['$scope', 'isSmallDevice',
 				return;
 			};
 		};
+
 		BaseCtrl.call(this, $scope);
 		if($scope.globalSettings.is_cms_on) {
 			overrideStylesWithCMSdata($scope.globalSettings);

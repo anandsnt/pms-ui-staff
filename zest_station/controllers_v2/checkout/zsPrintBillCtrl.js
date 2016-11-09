@@ -40,6 +40,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             $scope.zestStationData.workstationOooReason =  $filter('translate')(errorMessage);
             $scope.zestStationData.workstationStatus = 'out-of-order';
             var printopted = 'false';
+
             nextPageActions(printopted);
         };
 
@@ -53,6 +54,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             });
             $scope.$on('WS_PRINT_SUCCESS', function() {
                 var printopted = 'true';
+
                 nextPageActions(printopted);
             });
              $scope.$on('WS_PRINT_FAILED', function(event, data) {
@@ -83,6 +85,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 successCallBack: fetchSatrTacBillSuccess,
                 failureCallBack: startTacDataFailedActions
             };
+
            $scope.callAPI(zsCheckoutSrv.fetchStarTacPrinterData, options);
         };
 
@@ -98,8 +101,10 @@ sntZestStation.controller('zsPrintBillCtrl', [
                      */
                     if (sntapp.cordovaLoaded) {
                         var printer = (sntZestStation.selectedPrinter);
+
                         cordova.exec(function(success) {
                             var printopted = 'true';
+
                             nextPageActions(printopted);
                         }, function(error) {
                             printFailedActions();
@@ -115,6 +120,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                             $window.print();
                             setTimeout(function() {
                                 var printopted = 'true';
+
                                 nextPageActions(printopted);
                             }, 100);
                         // }
@@ -157,6 +163,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 successCallBack: fetchBillSuccess,
                 failureCallBack: failureCallBack
             };
+
             $scope.callAPI(zsCheckoutSrv.fetchBillPrintData, options);
         };
 
@@ -166,6 +173,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
 
         $scope.clickedNoThanks = function() {
             var printopted = 'false';
+
             nextPageActions(printopted);
         };
 

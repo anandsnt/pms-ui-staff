@@ -47,6 +47,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 			}
 			//forming the API params
 			var params = {};
+
 			params.reservation_id = getReservationID();
 			params.text = $scope.adjustment_reason;
 			params.is_from_rate_adjustment = true;
@@ -55,6 +56,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 			var options = {
 				params: params
 			};
+
 			$scope.callAPI(RVReservationCardSrv.saveReservationNote, options);
 		};
 

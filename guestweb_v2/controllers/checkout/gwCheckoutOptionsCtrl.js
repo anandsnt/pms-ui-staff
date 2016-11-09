@@ -11,6 +11,7 @@ sntGuestWeb.controller('GwCheckOutOptionsController', ['$scope', '$state', '$con
 		});
 		var init = function() {
 			var screenIdentifier = "CHECKOUT_LANDING";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			// replace the string @<what-ever> with corresponding scope variable
 			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@checkout-time", $scope.checkout_time);

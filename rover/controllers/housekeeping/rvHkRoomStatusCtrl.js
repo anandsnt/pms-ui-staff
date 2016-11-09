@@ -43,6 +43,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 		var _title = $rootScope.isMaintenanceStaff ? 'My WorkSheet' : 'ROOM_STATUS';
+
 		_title = $filter( 'translate')(_title);
 
 		// set title in header
@@ -95,6 +96,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		var $_lastQuery = '';
 
 		var $_oldFilterValues = angular.copy( RVHkRoomStatusSrv.currentFilters );
+
 			$_oldRoomTypes    = angular.copy( roomTypes );
 
 		var $_printQueued = false;
@@ -298,6 +300,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		$scope.isFilterChcked = function() {
 			var key, ret;
+
 			for (key in $scope.currentFilters) {
 				if ( key !== 'showAllFloors' && !!$scope.currentFilters[key] ) {
 					ret = true;
@@ -408,6 +411,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				if ( _.has($scope.multiRoomAction.indexes, _key) ) {
 					// remove from array
 					var indexToRemove = _.indexOf($scope.multiRoomAction.rooms, $scope.rooms[i].id);
+
 					$scope.multiRoomAction.rooms.splice(indexToRemove, 1);
 
 					// remove keyMirror
@@ -539,6 +543,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		 */
 		var intervalForTimeSelector = 15,
 			mode = 12;
+
 		$scope.timeSelectorList = util.getListForTimeSelector (intervalForTimeSelector, mode);
 
 		$scope.shouldShowTimeSelector = function() {
@@ -728,6 +733,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			};
 
 			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room) { return room.is_add_to_update});
+
 			params.room_id = _.pluck(roomsToAdd, 'id');
 			//as per CICO-32168 comments
 			if(params.room_id.length > 0) {
@@ -768,6 +774,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			// we are looping the 'keyMirror' rather than the
 			// entire rooms array, nice!
 			var i, _ithRoom;
+
 			for (i in $scope.multiRoomAction.indexes) {
 				if ( ! $scope.multiRoomAction.indexes.hasOwnProperty(i) ) {
 				    continue;
@@ -838,6 +845,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				// we are looping the 'keyMirror' rather than the
 				// entire rooms array, nice!
 				var i, ithSelectedRoom;
+
 				for (i in $scope.multiRoomAction.indexes) {
 					if ( ! $scope.multiRoomAction.indexes.hasOwnProperty(i) ) {
 					    continue;
@@ -1001,6 +1009,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				},
 				_callback = function(data) {
 					var employee = data.employees.length && data.employees[0] || null;
+
 					$scope.hasActiveWorkSheet = employee && employee.room_tasks && employee.room_tasks.length || false;
 
 					$scope.topFilter.byWorkType = $_defaultWorkType;
@@ -1425,11 +1434,13 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.getWidthForSummary = function() {
 			var summaryWidth = 0,
 				tasksLength = $scope.summary.work_types.length;
+
 			summaryWidth = parseInt(parseInt(tasksLength + 1)*160 + 40);
 			return summaryWidth;
 		};
 
 		var scrollerOptionsForSummary = {scrollX: true, scrollY: false, click: true, preventDefault: true, mouseWheel: false};
+
     	$scope.setScroller ('tasks-summary-scroller', scrollerOptionsForSummary);
 
 	}

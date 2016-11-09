@@ -3,6 +3,7 @@ sntRover.controller('rvDashboardGuestWidgetController', ['$scope', 'RVSearchSrv'
 	* controller class for dashbaord's guest's area
 	*/
 	var that = this;
+
   	BaseCtrl.call(this, $scope);
 
     this.clickedType = '';
@@ -21,6 +22,7 @@ sntRover.controller('rvDashboardGuestWidgetController', ['$scope', 'RVSearchSrv'
             //as we dont have a status called Mobile checkin, we still need to pass as PRE_CHECKIN
             //along with that we will pass is mobile checkin variable. This will be null if not send
             var stateParams = {'type': type, 'from_page': 'DASHBOARD', 'isMobileCheckin': isMobileCheckin};
+
             $state.go('rover.search', stateParams);
         }
         else {

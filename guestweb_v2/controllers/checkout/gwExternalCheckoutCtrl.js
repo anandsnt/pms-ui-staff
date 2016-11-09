@@ -12,6 +12,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 
 		var init = function() {
 			var screenIdentifier = "EXTERNAL_CHECKOUT";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.stayDetails = {
 				"room_number": "",
@@ -57,6 +58,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 			};
 			var onFailure = function(data) {
 				var popupOptions = angular.copy($scope.errorOpts);
+
 				popupOptions.resolve = {
 					message: function() {
 						return "<b>We could not find your reservation</b>. Please check for typos, or call <hotelPhone>."
@@ -69,6 +71,7 @@ sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$
 				successCallBack: onSuccess,
 				failureCallBack: onFailure
 			};
+
 			$scope.callAPI(GwCheckoutSrv.verifyCheckoutUser, options);
 		};
 

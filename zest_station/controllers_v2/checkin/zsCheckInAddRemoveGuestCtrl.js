@@ -23,6 +23,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
             var stateParams = {};
             //check if this page was invoked through pickupkey flow
+
             if (!!$stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
@@ -87,6 +88,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         $scope.removeGuest = function(toDeleteId) {
             //for API
             var accompanyingGuestData = angular.copy($scope.selectedReservation.guest_details);
+
             accompanyingGuestData = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
                 return guest.is_primary === true;
             })));
@@ -94,6 +96,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             var toDeleteItem = _.find(accompanyingGuestData, function(guest) {
                 return guest.id === toDeleteId;
             });
+
             toDeleteItem.last_name = null;
             toDeleteItem.first_name = null;
 
@@ -112,6 +115,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             var onFailureResponse = function(response) {
                 //do nothing for now..i don't know what to be done in that case
             };
+
             $scope.callAPI(zsCheckinSrv.updateGuestTabDetails, {
                 params: guestDetails,
                 'successCallBack': onSuccessResponse,
@@ -121,6 +125,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         var updateGuestDetails = function() {
 
             var accompanyingGuestData = angular.copy($scope.selectedReservation.guest_details);
+
             accompanyingGuestData = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
                 return guest.is_primary === true;
             })));
@@ -143,6 +148,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             var onFailureResponse = function(response) {
                 //do nothing for now..i don't know what to be done in that case
             };
+
             $scope.callAPI(zsCheckinSrv.updateGuestTabDetails, {
                 params: guestDetails,
                 'successCallBack': onSuccessResponse,

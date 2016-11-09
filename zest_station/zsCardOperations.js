@@ -59,6 +59,7 @@ var CardOperation = function() {
 	this.callRecursively = function(options) {
 		// TODO: Have to find better way of implementing this if not.
 		var shouldCallRecursively = options["shouldCallRecursively"] ? options["shouldCallRecursively"] : false;
+
 		if (shouldCallRecursively) {
 			that.callCordovaService(options);
 		}
@@ -108,6 +109,7 @@ var CardOperation = function() {
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		// we are simulating the process by calling the success call back after some time
+
 		setTimeout(function() {
 			successCallBack();
 		}, 1000);
@@ -135,6 +137,7 @@ var CardOperation = function() {
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		var deviceStatus = true;
 		// we are simulating the process by calling the success call back after some time
+
 		setTimeout(function() {
 			successCallBack(deviceStatus, successCallBackParameters);
 		}, 1000);

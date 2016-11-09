@@ -73,6 +73,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
         $scope.getGuestClassForArrival = function(allotment) {
             //"cancel" if cancelled, "check-in" if not cancelled
             var classes = isCancelledAllotment(allotment) ? 'cancel' : 'check-in';
+
             return classes;
         };
 
@@ -84,6 +85,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
         $scope.getGuestClassForDeparture = function(allotment) {
             //"cancel" if cancelled, 'check-out' if not cancelled
             var classes = isCancelledAllotment(allotment) ? 'cancel' : 'check-out';
+
             return classes;
         };
 
@@ -230,6 +232,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
                 per_page: $scope.perPage,
                 page: $scope.page
             };
+
             return params;
         };
 
@@ -247,6 +250,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
                 successCallBack: successCallBackOfSearch,
                 failureCallBack: failureCallBackOfSearch
             };
+
             $scope.callAPI(rvAllotmentSrv.getAllotmentList, options);
         };
 
@@ -318,6 +322,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
                 deceleration: 0.0001,
                 shrinkScrollbars: 'clip'
             };
+
             $scope.setScroller('result_showing_area', scrollerOptions);
         };
 
@@ -350,6 +355,7 @@ sntRover.controller('rvAllotmentSearchCtrl', [
         $scope.formatDateForUI = function(date_) {
             var type_ = typeof date_,
                 returnString = '';
+
             switch (type_) {
                 //if date string passed
                 case 'string':
@@ -427,9 +433,11 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          */
         $scope.loadPrevSet = function() {
             var isAtEnd = ($scope.end === $scope.totalResultCount);
+
             if (isAtEnd) {
                 //last diff will be diff from our normal diff
                 var lastDiff = ($scope.totalResultCount % $scope.perPage);
+
                 if (lastDiff === 0) {
                     lastDiff = $scope.perPage;
                 }

@@ -155,6 +155,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 
 	Time.prototype.toHourAndMinute = function(seperator, format) {
 		var ret;
+
 		if (typeof format === 'undefined') {
 			format = 12;
 		}
@@ -235,6 +236,7 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 				},
 				fromDate: function() {
 					var tmp = this.toLocaleDateString().replace(/\//g, '-').split('-').reverse();
+
 					return tmp.shift() + '-' + temp.reverse().join('-');
 				},
 				toShortDateString: function() {

@@ -89,6 +89,7 @@ admin.controller('ADFloorsListCtrl',
         var options = {
             successCallBack: successCallbackFetch
         };
+
         $scope.callAPI(ADFloorSetupSrv.fetch, options);
 	};
 
@@ -99,13 +100,16 @@ admin.controller('ADFloorsListCtrl',
 
         var unwantedKeys = [];
         var data = {};
+
         data.id = $scope.orderedData[index].id;
         var successCallbackSave = function() {
             $scope.$emit('hideLoader');
             var pos = $scope.data.floors.indexOf($scope.orderedData[index]);
+
             $scope.data.floors.splice(pos, 1);
             $scope.tableParams.reload();
         };
+
         $scope.invokeApi(ADFloorSetupSrv.deleteFloor, data, successCallbackSave);
     };
 

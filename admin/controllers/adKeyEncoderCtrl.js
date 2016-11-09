@@ -19,6 +19,7 @@ admin.controller('ADKeyEncoderCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADKeyEn
         	params.total(data.total_count);
             $defer.resolve($scope.data);
 		};
+
 		$scope.invokeApi(ADKeyEncoderSrv.fetchEncoders, getParams, fetchSuccessOfItemList);
 	};
 
@@ -62,6 +63,7 @@ admin.controller('ADKeyEncoderCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADKeyEn
 		var data = {
 			"id": id
 		};
+
 		$scope.invokeApi(ADKeyEncoderSrv.showEncoderDetails, data, successCallbackEdit);
 	};
 
@@ -73,6 +75,7 @@ admin.controller('ADKeyEncoderCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADKeyEn
 				// To add new data to scope
 				$scope.data.push(data);
 				var l = $scope.data.length;
+
 				$scope.data[(l - 1)].description = $scope.encoderData.description;
 				$scope.data[(l - 1)].location = $scope.encoderData.location;
 				$scope.data[(l - 1)].encoder_id = $scope.encoderData.encoder_id;
@@ -88,6 +91,7 @@ admin.controller('ADKeyEncoderCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADKeyEn
 			}
 			$scope.currentClickedElement = -1;
 		};
+
 		if ($scope.isAddMode) {
 			$scope.invokeApi(ADKeyEncoderSrv.saveEncoder, $scope.encoderData, successCallbackSave);
 		} else {
@@ -130,6 +134,7 @@ admin.controller('ADKeyEncoderCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADKeyEn
 			$scope.data.splice(index, 1);
 			$scope.currentClickedElement = -1;
 		};
+
 		$scope.invokeApi(ADKeyEncoderSrv.deleteEncoder, id, deleteEncoderSuccess);
 	};
 

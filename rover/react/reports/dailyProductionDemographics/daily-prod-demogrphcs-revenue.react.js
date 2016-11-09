@@ -1,6 +1,7 @@
 var DailyProductionRevenueToggle = React.createClass({
   toggleTheRevenue: function() {
     var toggleRevenue = this.props.toggleRevenue;
+
     setTimeout(function() {
       toggleRevenue();
     }, 0);

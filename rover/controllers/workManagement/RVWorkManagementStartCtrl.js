@@ -4,6 +4,7 @@ angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope'
         BaseCtrl.call(this, $scope);
 
         var scrollerOptions = {click: true, scrollbars: true};
+
         $scope.setScroller('work_management', scrollerOptions);
 
         $scope.refreshScroller = function (key) {
@@ -53,6 +54,7 @@ angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope'
                     $scope.errorMessage = errorMessage;
                     $scope.$emit('hideLoader');
                 };
+
             $scope.invokeApi(RVWorkManagementSrv.fetchStatistics, $scope.stateVariables.viewingDate, onFetchSuccess, onFetchFailure);
         };
 
@@ -103,6 +105,7 @@ angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope'
                     $scope.errorMessage = errorMessage;
                     $scope.$emit('hideLoader');
                 };
+
             $scope.invokeApi(RVWorkManagementSrv.createWorkSheet, $scope.stateVariables.newSheet, onCreateSuccess, onCreateFailure);
         };
 
@@ -155,6 +158,7 @@ angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope'
                     $scope.stateVariables.assignRoom.user_id = "";
                     $scope.stateVariables.assignRoom.work_type_id = "";
                     var workSheet = data.touched_work_sheets && data.touched_work_sheets[0] && data.touched_work_sheets[0].work_sheet_id;
+
                     $scope.showWorkSheet(workSheet);
                     $scope.closeDialog();
                 },
@@ -162,6 +166,7 @@ angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope'
                     $scope.$emit('hideLoader');
                     $scope.errorMessage = errorMessage;
                 };
+
             $scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
                 "date": $scope.stateVariables.viewingDate.date,
                 "task_id": $scope.stateVariables.assignRoom.work_type_id,

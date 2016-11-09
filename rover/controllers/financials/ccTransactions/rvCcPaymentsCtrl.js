@@ -6,6 +6,7 @@ sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParam
     var refreshPaymentScroll = function() {
         setTimeout(function() {$scope.refreshScroller('payment_content');}, 500);
     };
+
     refreshPaymentScroll();
 
 	var initPaymentData = function() {
@@ -16,6 +17,7 @@ sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParam
             $scope.$emit('hideLoader');
             refreshPaymentScroll();
 		};
+
 		$scope.invokeApi(RVccTransactionsSrv.fetchPayments, { "date": $scope.data.transactionDate }, successCallBackFetchPaymentData);
 	};
 

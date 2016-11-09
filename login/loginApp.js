@@ -46,8 +46,10 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 	 	var navigateToRover = function() {
 	 		//Clear all session storage contents. We are starting a new session.
         	var i = sessionStorage.length;
+
 		 	while(i--) {
 		 	  	var key = sessionStorage.key(i);
+
 		 	  	sessionStorage.removeItem(key);
 		 	}
 
@@ -84,6 +86,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 	        * Passing user Login ID to native, for debugging on ipads
 	        */
 	        var args = [];
+
 	        args.push($scope.data.email);
 	        var callback = function() {};
 	        var options = {
@@ -92,6 +95,7 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 	          'failureCallBack': callback,
 	          arguments: args
 	        };
+
 	        sntapp.loginUpdate.setUserId(options);
 	        /**END
         	* Passing user login to native, for debugging  */
@@ -148,10 +152,12 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
         $scope.errorMessage = "";
         $scope.successMessage = "";
 	 	var errorMessage = ["Please enter your Login email address"];
+
 	 	if($scope.data.email === "") {
 	 		$scope.errorMessage = errorMessage;
 	 	} else {
 	 		var dataToPost = {"email": $scope.data.email};
+
 	 		$scope.hasLoader = true;
  			loginSrv.forgotPassword(dataToPost, $scope.successCallbackForgotPassword, $scope.failureCallBackForgotPassword);
 	 	}
@@ -273,6 +279,7 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
         };
         var alphanumeric = function(str) {
             var letterNumber = /^.*(?=.{8,})(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%]+$/;//at least 1 letter, least 1 number, some special characters [ !@#$% ] allowed
+
             if(str.match(letterNumber)) {
               return true;
             } else {
@@ -282,6 +289,7 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
         /*
 	  * Submit action activate user
 	  */
+
 	 $scope.submit = function() {
 	 	 $scope.hasLoader = true;
 		 resetSrv.activateUser($scope.data, $scope.successCallback, $scope.failureCallBack);
@@ -306,8 +314,10 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
         $scope.successLoginCallback = function(data) {
 	 	//Clear all session storage contents. We are starting a new session.
 	 	var i = sessionStorage.length;
+
 	 	while(i--) {
 	 	  	var key = sessionStorage.key(i);
+
 	 	  	sessionStorage.removeItem(key);
 	 	}
 
@@ -346,6 +356,7 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
             var isTouchDevice = 'ontouchstart' in document,
                 agentString = window.navigator.userAgent;
             var shouldShowKeyboard = (typeof chrome) && (agentString.toLowerCase().indexOf('window')!==-1) && isTouchDevice;
+
             if (shouldShowKeyboard && id) {
                     new initScreenKeyboardListener('login', id, true);
              }

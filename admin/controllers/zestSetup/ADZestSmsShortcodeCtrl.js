@@ -23,8 +23,10 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
         var options = {
             params: data
         };
+
         $scope.callAPI(adZestCheckinCheckoutSrv.saveNewDirectURL, options);
     };
+
     $scope.onCallback = function(response) {
         if (response.status === 'success') {
             saveSMSUrl();
@@ -36,6 +38,7 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
     $scope.saveClicked = function() {
         
         var params = angular.copy($scope.editData);
+
         params.sms_double_opt_in = (params.sms_double_opt_in === 'true') ? true : false;
         console.info('saving', params);
         //params.id = $scope.editData.hotel_id;
@@ -44,6 +47,7 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
             successCallBack: $scope.onCallback,
             failureCallBack: $scope.onCallback
         };
+
         $scope.callAPI(ADZestShortCodeSrv.save, options);
     };
 
@@ -70,6 +74,7 @@ admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCode
             successCallBack: callback,
             failureCallBack: callback
         };
+
         $scope.callAPI(ADZestShortCodeSrv.fetch, options);
     };
     $scope.init = function() {

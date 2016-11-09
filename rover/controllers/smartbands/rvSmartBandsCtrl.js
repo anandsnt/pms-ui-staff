@@ -18,6 +18,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 
 	var that = this;
 	//since smartband api is returning reversed id, we are using a vairble to keep that locally and use that for band type writing.
+
 	that.lastSuccessfulIDReaded = '';
 	$scope.addNewSmartband = function() {
 		if($scope.selectedReservationStatus !== 'CHECKEDOUT') {
@@ -70,6 +71,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			'account_number': accountNumber,
 			'is_fixed': $scope.isFixedAmount
 		};
+
 		if($scope.isFixedAmount) {
 			postData.amount = $scope.smartBandData.fixedAmount;
 		};
@@ -77,6 +79,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			'postData': postData,
 			'reservationId': $scope.reservation.reservation_card.reservation_id
 		};
+
 		 $scope.invokeApi(RVSmartBandSrv.createSmartBand, dataToApi, $scope.createSmartBandSuccess, $scope.createSmartBandFailure);
 	};
 	$scope.fetchFailedKeyRead = function(errorObject) {
@@ -90,6 +93,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
       	   window.scrollTo(0, 0);
         }, 700);
 		var blankKeys = "";
+
 		that.lastSuccessfulIDReaded = '';
 		if($scope.isFixedAmount) {
 			if($scope.smartBandData.fixedAmount === '' || $scope.smartBandData.fixedAmount === null) {
@@ -97,6 +101,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			}
 			else{
 				var pattern = /^(0|[1-9][0-9]{0,2}(?:(,[0-9]{3})*|[0-9]*))(\.[0-9]+){0,1}$/;
+
 				if(!pattern.test($scope.smartBandData.fixedAmount)) {
 					blankKeys = blankKeys === '' ? "Amount is not valid" : (blankKeys + ", " + "Amount is not valid");
 				}
@@ -110,6 +115,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 				'successCallBack': $scope.fetchSuccessKeyRead,
 				'failureCallBack': $scope.fetchFailedKeyRead
 			};
+
 			$scope.$emit( 'showLoader' );
 			$scope.showWriteToBand = true;
 			if(sntapp.cardSwipeDebug) {
@@ -145,6 +151,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			var dataToApi = {
 				'reservationId': $scope.reservation.reservation_card.reservation_id
 			};
+
 			$scope.invokeApi(RVSmartBandSrv.listSmartBands, dataToApi, $scope.listSmartBandSuccess);
 		} else {
 			$scope.listSmartBandSuccess($scope.smartBands);
@@ -212,6 +219,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 				},
 				"bandId": $scope.bandEditId
 			};
+
 			$scope.invokeApi(RVSmartBandSrv.updateSmartBandDetails, dataToApi, $scope.updateSmartBandSuccess);
 		} else {
 			$scope.seeAllBands();
@@ -227,6 +235,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		//Fixed amount - bandtype code : 00000001
 		//Open room charge - bandtype code : 00000002
 		var bandType = '00000002';
+
 		if(that.newBandInfo.is_fixed) {
 			bandType = '00000001';
 		}
@@ -244,12 +253,14 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			},
 			'failureCallBack': function(errorObject) {
 				var message = [errorObject.RVErrorDesc];
+
 				that.lastSuccessfulIDReaded = '';
 				$scope.createSmartBandFailure(message);
 				$scope.$apply(); //since it is calling from outside of Angular scope, we need to call this one
 			},
 			arguments: args
 		};
+
 		if(sntapp.cardSwipeDebug) {
 			sntapp.cardReader.setBandTypeDebug(options);
 		}

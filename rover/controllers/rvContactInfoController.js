@@ -51,6 +51,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         // CICO-9169
 
         var avatarImage = getAvatharUrl(dataToUpdate.title);
+
         $scope.$emit("CHANGEAVATAR", avatarImage);
         //to reset current data in header info for determining any change
         $scope.$emit("RESETHEADERDATA", $scope.guestCardData.contactInfo);
@@ -68,6 +69,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
           'vip': dataSource.vip,
           'avatar': avatarImage
         };
+
         if (dataSource.address) {
           if ($scope.escapeNull(dataSource.address.city).toString().trim() !== '' || $scope.escapeNull(dataSource.address.state).toString().trim() !== '') {
             data.location = (dataSource.address.city + ', ' + dataSource.address.state);
@@ -133,6 +135,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
 
       var dataToUpdate = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
       var dataUpdated = false;
+
       if (angular.equals(dataToUpdate, presentContactInfo)) {
         dataUpdated = true;
       } else {
@@ -141,6 +144,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         //change date format to be send to API
         dataToUpdate.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
         var unwantedKeys = ["avatar"]; // remove unwanted keys for API
+
         dataToUpdate = dclone(dataToUpdate, unwantedKeys);
       };
 
@@ -210,6 +214,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         $scope.refreshScroller('contact_info');
       }, 700);
     };
+
     $scope.$on('CONTACTINFOLOADED', refreshContactsScroll);
     $scope.$on('REFRESHLIKESSCROLL', refreshContactsScroll);
 

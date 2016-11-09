@@ -6,6 +6,7 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 		 * @param  {Object} 	obj - Source Object
 		 * @return {Object}     Deep copied object
 		 */
+
 		this.deepCopy = function(obj) {
 			return (JSON.parse (JSON.stringify (obj)));
 		};
@@ -19,10 +20,12 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 		 */
 		this.escapeNull = function(value, replaceWith) {
 	  		var newValue = "";
+
 	  		if((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
 	  			newValue = replaceWith;
 	  		}
 	  		var valueToReturn = ((value === null || typeof value === 'undefined' ) ? newValue : value);
+
 	  		return valueToReturn;
 		};
 
@@ -172,6 +175,7 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
 			var date = new tzIndependentDate(date),
 				y = date.getFullYear(),
 				m = date.getMonth();
+
 			return (tzIndependentDate(new Date(y, m + 1, 1)));
 		};
 

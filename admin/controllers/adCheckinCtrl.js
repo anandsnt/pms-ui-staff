@@ -89,6 +89,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     //for multi select purpose
     //we need to mark rate code as ticked if it is in exluded list
     var excludedGroupIds = _.pluck($scope.excludedBlockCodes, 'id');
+
     $scope.block_codes.map(function(group) {
       if(excludedGroupIds.indexOf(group.id) > -1) {
         group.ticked = true;
@@ -107,6 +108,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     var options = {
         onSuccess: onFetchBlockCodeDropDownClick
     };
+
     $scope.callAPI(adCheckinSrv.getBlockCodes, options);
   };
 
@@ -116,6 +118,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     //for multi select purpose
     //we need to mark rate code as ticked if it is in exluded list
     var excludedRateIds = _.pluck($scope.excludedRateCodes, 'id');
+
     $scope.rate_codes.map(function(rate) {
       if(excludedRateIds.indexOf(rate.id) > -1) {
         rate.ticked = true;
@@ -134,6 +137,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     var options = {
         onSuccess: onFetchRateCodeDropDownClick
     };
+
     $scope.callAPI(adCheckinSrv.getRateCodes, options);
   };
 
@@ -143,6 +147,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     //for multi select purpose
     //we need to mark rate code as ticked if it is in exluded list
     var excludedRoomTypeIds = _.pluck($scope.excludedRoomTypes, 'id');
+
     $scope.roomTypes.map(function(roomType) {
       if(excludedRoomTypeIds.indexOf(parseInt(roomType.id)) > -1) {
         roomType.ticked = true;
@@ -161,6 +166,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     var options = {
         onSuccess: onFetchRoomTypesDropDownClick
     };
+
     $scope.callAPI(ADRoomTypesSrv.fetch, options);
   };
 
@@ -272,6 +278,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       excluded_block_codes.push(excludedrate.id);
     });
     var excluded_room_types = [];
+
     angular.forEach($scope.excludedRoomTypes, function (excludedRoomType, index) {
       excluded_room_types.push(excludedRoomType.id);
     });
@@ -286,6 +293,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
     var startAutoCheckinTo = ($scope.checkinData.auto_checkin_to_hour !== "" && $scope.checkinData.auto_checkin_to_minute !== "" && $scope.checkinData.auto_checkin_to_hour && $scope.checkinData.auto_checkin_to_minute) ? $scope.checkinData.auto_checkin_to_hour + ":" + $scope.checkinData.auto_checkin_to_minute : "";
     
     var max_no_of_keys = "";
+
     if($scope.checkinData.max_keys_type === "ROOM_OCCUPANCY") {
       max_no_of_keys = "ROOM_OCCUPANCY";
     }

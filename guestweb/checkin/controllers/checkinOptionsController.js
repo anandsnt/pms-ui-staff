@@ -28,6 +28,7 @@
 			var params = {
 				'reservation_id': $rootScope.reservationID
 			};
+
 			checkinNowService.fetchEarlyCheckinData(params).then(function(response) {
 				//set variables based on the response
 				early_checkin_switch_on = response.early_checkin_on;
@@ -93,6 +94,7 @@
 				reservation_id: $rootScope.reservationID,
 				without_rate_change: true
 			};
+
 			$scope.isLoading = true;
 			checkinNowService.assignRoom(params).then(function(response) {
 				$scope.isLoading = false;

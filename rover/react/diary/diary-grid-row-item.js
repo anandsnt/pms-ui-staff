@@ -17,6 +17,7 @@ var GridRowItem = React.createClass({
 
 	componentDidMount: function() {
 		var rootElement = $(this.getDOMNode());
+
 		rootElement.droppable({
 			accept: ".unassigned-list-item",
 			drop: this.__onDrop.bind(this),
@@ -212,11 +213,13 @@ var GridRowItem = React.createClass({
 
 		if(!display_start_time.isOnDST() && start_date.isOnDST()) {
 			var dateForCalculatingLeft = new Date(start_time_ms);
+
 			dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 			left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';
 		}
 		else if(display_start_time.isOnDST() && !start_date.isOnDST()) {
 			var dateForCalculatingLeft = new Date(start_time_ms);
+
 			dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 
 			left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';
@@ -228,6 +231,7 @@ var GridRowItem = React.createClass({
 		}
 
 		var styleForDepositIcon = {};
+
 		if (!show_outstanding_indicator) {
 			styleForDepositIcon.display = 'none';
 			styleForDepositIcon.width = '0px';

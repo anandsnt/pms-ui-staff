@@ -53,6 +53,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
             //process bill data
             var billsData = response.bill_details.fee_details;
+
             $scope.billData = [];
             $scope.zestStationData.currency = response.bill_details.currency;
             $scope.net_amount = response.bill_details.total_fees;
@@ -66,6 +67,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                         "description": chargeDetail.description,
                         "amount": chargeDetail.amount
                     };
+
                     $scope.billData.push(bill_details);
                 });
             });
@@ -83,6 +85,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 successCallBack: fetchBillSuccess,
                 failureCallBack: failureCallBack
             };
+
             $scope.callAPI(zsCheckoutSrv.fetchBillDetails, options);
         };
 
@@ -122,6 +125,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             };
             //check if email is valid
             //if invalid dont send mail
+
             if (zsUtilitySrv.isValidEmail($stateParams.email)) {
                 $scope.callAPI(zsCheckoutSrv.sendBill, options);
             } else {
@@ -158,6 +162,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 //cant do much with this now. It saved in admin like that
                 var printopted = 'false';
                 //if update email and print option are off
+
                 if (!guest_bill.email && !guest_bill.print) {
                     printopted = 'false';
                     printYetToDone = false;
@@ -183,6 +188,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 successCallBack: checkOutSuccess,
                 failureCallBack: failureCallBack
             };
+
             $scope.callAPI(zsCheckoutSrv.checkoutGuest, options);
         };
         /**
@@ -202,6 +208,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 return !$scope.has_cc;
             }
         };
+
         $scope.nextClicked = function() {
 
             if (checkIfDueBalancePresent()) {

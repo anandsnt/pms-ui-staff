@@ -9,6 +9,7 @@ admin.controller('ADZestStationCheckOutCtrl', ['$scope', '$rootScope', '$state',
                 $scope.zestSettings = data;
                 $scope.$emit('hideLoader');
             };
+
             $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
         };
         $scope.saveSettings = function() {
@@ -23,6 +24,7 @@ admin.controller('ADZestStationCheckOutCtrl', ['$scope', '$rootScope', '$state',
             var dataToSend = {
                                 'kiosk': $scope.zestSettings
                              };
+
             $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
         };
         

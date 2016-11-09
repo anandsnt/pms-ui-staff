@@ -43,6 +43,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 						'room_no': room_no,
 						'first_name': guest_response.primary_guest_details.first_name
 					};
+
 					$state.go('zest_station.pickUpKeyDispense', stateParams);
 				};
 
@@ -54,6 +55,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 					successCallBack: onFetchGuestDataSuccess,
 					failureCallBack: onFailureFetchReservation
 				};
+
 				$scope.callAPI(zsGeneralSrv.fetchGuestDetails, options);
 			};
 
@@ -65,6 +67,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				successCallBack: onSuccessFetchReservation,
 				failureCallBack: onFailureFetchReservation
 			};
+
 			console.info('Fetching Reservation by Scanned QR Code: ', reservation_id);
 			$scope.callAPI(zsGeneralSrv.fetchReservationDetails, options);
 
@@ -104,6 +107,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				} else if (info.msg.indexOf(' : ') !== -1) {
 					//qr code coming from the samsotech will look like "PR_DF_BC1 : somevalue"
 					var reservationId = info.msg.split(' : ')[1];
+
 					if (reservationId) {
 						fetchReservationDetails(reservationId);
 					} else {

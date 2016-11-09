@@ -5,6 +5,7 @@ angular.module('sntRover').service('RVAccountsReceivablesSrv', ['$http', '$q', '
      * Service function to fetch Accounts Receivables
      * @return {object} payments
      */
+
     that.fetchAccountsReceivables = function (params) {
 
     	var deferred = $q.defer();

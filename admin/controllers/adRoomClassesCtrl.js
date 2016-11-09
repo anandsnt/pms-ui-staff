@@ -15,6 +15,7 @@ admin.controller('ADRoomClassListCtrl', ['$scope', '$state', 'ADRoomClassesSrv',
 			$scope.currentClickedElement = -1;
 			$scope.isAddMode = false;
 		};
+
 		$scope.invokeApi(ADRoomClassesSrv.fetch, {}, successCallbackFetch);
 	};
 	//To list room class
@@ -33,6 +34,7 @@ admin.controller('ADRoomClassListCtrl', ['$scope', '$state', 'ADRoomClassesSrv',
 	 		$scope.$emit('hideLoader');
 	 	};
 	 	var data = {"id": id };
+
 	 	$scope.invokeApi(ADRoomClassesSrv.fetchDetailsOfRoomClass, data, successCallbackRender);
 	};
    /*
@@ -76,6 +78,7 @@ admin.controller('ADRoomClassListCtrl', ['$scope', '$state', 'ADRoomClassesSrv',
 	    	}
     		$scope.currentClickedElement = -1;
     	};
+
     	if($scope.isAddMode) {
     		$scope.invokeApi(ADRoomClassesSrv.saveClassRoom, $scope.roomClassData, successCallbackSave);
     	} else {
@@ -99,6 +102,7 @@ admin.controller('ADRoomClassListCtrl', ['$scope', '$state', 'ADRoomClassesSrv',
 	 		$scope.roomClasses.splice(index, 1);
 	 		$scope.currentClickedElement = -1;
 	 	};
+
 		$scope.invokeApi(ADRoomClassesSrv.deleteClassRoom, id, successCallbackDelete);
 	};
 }]);

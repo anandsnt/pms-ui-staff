@@ -51,6 +51,7 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
             successCallBack: $scope.successCallbackUpgrade,
             failureCallBack: $scope.failureCallbackUpgrade
         };
+
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 	};
 
@@ -96,6 +97,7 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 							"errorMessage": error.errorMessage[0],
 							"upsell_amount": $scope.roomCharge
 						};
+
 						wanted_to_forcefully_assign = true;
 						// openWantedToBorrowPopup(error);
 						$scope.$emit('closeDialogWithError', dataToBorrowRoom);

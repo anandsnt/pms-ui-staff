@@ -10,6 +10,7 @@ sntGuestWeb.controller('gwLateETAUpdationController', ['$scope', '$state', '$con
 		
 		var init = function() {
 			var screenIdentifier = "ETA_LATE_UPDATION";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.timings = returnTimeArray(); //utils function
 			$scope.checkinTime = $stateParams.time;
@@ -24,6 +25,7 @@ sntGuestWeb.controller('gwLateETAUpdationController', ['$scope', '$state', '$con
 		// check with Jeff if we need this
 		//$scope.timings = (hotelTimeLimit === "12:00 am") ? []: $scope.timings;
 		//remove all times prior to hotels time
+
 		$scope.timings.splice(0, hotelTimeLimitInTimeIndex);
 
 	}

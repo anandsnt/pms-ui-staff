@@ -37,6 +37,7 @@ admin.service('adReportsFilterSrv', ['$q', 'ADBaseWebSrvV2',
         var requestMap = {
             "PMS_TYPES": function() {
                 var deferred = $q.defer();
+
                 deferred.resolve([{
                     value: 'STANDALONE',
                     name: 'Standalone'
@@ -53,6 +54,7 @@ admin.service('adReportsFilterSrv', ['$q', 'ADBaseWebSrvV2',
                 if (!self.cache.responses['HOTELS'] || Date.now() > self.cache.responses['HOTELS']['expiryDate']) {
                     ADBaseWebSrvV2.getJSON(url).then(function(response) {
                         var hotels = [];
+
                         _.each(response.data.hotels, function(hotel) {
                             hotels.push({
                                 value: hotel.id,

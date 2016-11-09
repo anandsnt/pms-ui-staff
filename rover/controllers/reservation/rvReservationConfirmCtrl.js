@@ -72,8 +72,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	    var fetchGuestLanguages = function() {
 	    	var params = { 'reservation_id': $scope.reservationData.reservationId };
 	      	// call api
+
 	      	$scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, params, successCallBackForLanguagesFetch);
 	    };
+
 		$scope.init = function() {
 			$scope.heading = 'Reservations';
 			$scope.setHeadingTitle($scope.heading);
@@ -113,6 +115,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 */
 		$scope.isCheckinTimeSet = function() {
 			var ret = false;
+
 			if ($scope.reservationData.checkinTime.hh !== '' &&
 				$scope.reservationData.checkinTime.mm !== '' &&
 				$scope.reservationData.checkinTime.ampm !== '') {
@@ -128,6 +131,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 */
 		$scope.isCheckoutTimeSet = function() {
 			var ret = false;
+
 			if ($scope.reservationData.checkoutTime.hh !== '' &&
 				$scope.reservationData.checkoutTime.mm !== '' &&
 				$scope.reservationData.checkoutTime.ampm !== '') {
@@ -154,6 +158,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		// add the print orientation after printing
 		var addPrintOrientation = function() {
 			var orientation = 'portrait';
+
 			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
 		};
 		// remove the print orientation after printing
@@ -201,8 +206,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				$scope.confirmationMailsSent = true;
 				var paramsArray = [];
 				var rooms = angular.copy($scope.reservationData.rooms);
+
 				_.each(rooms, function(room, index) {
 					var validGuests = [];
+
 					_.each(room.accompanying_guest_details, function(guest) {
 						if (!guest.first_name && !guest.last_name) {
 							guest.first_name = null;
@@ -264,6 +271,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				}
 
 				var postData = {};
+
 				postData.reservationId = $scope.reservationData.reservationId;
 				/**
 				 * CICO-7077 Confirmation Mail to have tax details
@@ -296,6 +304,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					$scope.$emit('hideLoader');
 				};
 				//CICO-23139
+
 				postData.enable_confirmation_custom_text = $scope.reservationData.enable_confirmation_custom_text;
 				postData.confirmation_custom_title 	= $scope.reservationData.confirmation_custom_title;
 				postData.confirmation_custom_text 	= $scope.reservationData.confirmation_custom_text;
@@ -304,6 +313,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					$scope.invokeApi(RVReservationSummarySrv.sendHourlyConfirmationEmail, postData, emailSentSuccess);
 				} else {
 					var reservations = $scope.reservationData.reservations;
+
 					if (reservations && reservations.length) {
 						reservations.forEach(function (reservation) {
 							postData.reservationId = reservation.id;
@@ -360,6 +370,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				isrefresh: true,
 				justCreatedRes: true
 			};
+
 			$scope.otherData.reservationCreated = true;
 			$scope.reservationData.rateDetails = [];
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
@@ -395,6 +406,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					nameOnCard: ''
 				}
 			};
+
 			$scope.reservationData.paymentType = paymentType;
 			$scope.reservationData.demographics = {
 				market: '',
@@ -442,6 +454,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				totalRoomsAvailable++;
 			}
 		};
+
 		$scope.enableCheckInButton = function() {
 			return _.has($scope.reservationData, "rooms") &&
 				($scope.reservationData.rooms.length === totalRoomsAvailable);
@@ -452,6 +465,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			//we are following this structure bacuse of the hideloader pblm.
 			// we are going to call mutilple API's paralelly. So sometimes last API may complete first
 			// we need to keep loader until all api gets completed
+
 			$scope.$emit("showLoader");
 			for (var i = 0; i < $scope.reservationData.rooms.length; i++) {
 				id = $scope.reservationData.rooms[i].room_id;
@@ -484,6 +498,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			var confirmationIDs = [];
 			var promises = [];
 			var data = null;
+
 			$scope.$emit("showLoader");
 			for (var i = 0; i < $scope.reservationData.rooms.length; i++) {
 				confirmationIDs.push($scope.reservationData.rooms[i].confirm_no);
@@ -514,8 +529,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			var updateFailure = function(data) {
 				$scope.$emit('hideLoader');
 			};
+
 			if ($scope.reservationData.checkinTime.hh !== '' && $scope.reservationData.checkoutTime.hh !== '') {
 				var postData = $scope.computeReservationDataforUpdate();
+
 				postData.addons = $scope.existingAddons;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
@@ -595,6 +612,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$scope.errorMessage = [];
 
 			var postData = $scope.computeReservationDataforUpdate();
+
 			postData.reservationId = $scope.reservationData.reservationId;
 			postData.addons = $scope.existingAddons;
 			$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
@@ -618,6 +636,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				'reservation_id': $scope.reservationData.reservationId,
 				'hide_rates': !$scope.reservationData.hide_rates
 			};
+
 			$scope.invokeApi(RVBillCardSrv.toggleHideRate, data, sucessCallback, failureCallback);
 		};
 

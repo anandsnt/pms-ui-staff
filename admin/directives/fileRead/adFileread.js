@@ -34,6 +34,7 @@ admin.directive('appFilereader', function($q) {
                     var deferred = $q.defer();
 
                     var reader = new FileReader();
+
                     reader.onload = function(e) {
                     if (scope.emitData !== '') {
                          $('#'+scope.emitData).val(e.target.result);

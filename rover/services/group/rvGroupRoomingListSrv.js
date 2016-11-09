@@ -247,6 +247,7 @@ angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrv
 		this.emailInvoice = function(data) {
 			var deferred = $q.defer(),
 				url = '/api/group_reservations/email_rooming_list';
+
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -259,6 +260,7 @@ angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrv
 		this.fetchRegistrationCardPrintData = function(params) {
 			var deferred = $q.defer();
 			var url = '/api/reservations/' + params.group_id + '/batch_print_registration_cards';
+
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -271,6 +273,7 @@ angular.module('sntRover').service('rvGroupRoomingListSrv', ['$q', 'rvBaseWebSrv
 		this.updateGuestData = function(data) {
 			var deferred = $q.defer(),
 				url = '/api/group_reservations/update_guest_details';
+
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);

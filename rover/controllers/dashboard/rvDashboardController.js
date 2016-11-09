@@ -10,6 +10,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
     $scope.roomTypes = roomTypes;
 
     var that = this;
+
     $scope.shouldShowLateCheckout = true;
     $scope.shouldShowQueuedRooms  = true;
     BaseCtrl.call(this, $scope);
@@ -30,11 +31,13 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
         $scope.$emit("updateRoverLeftMenu", "dashboard");
         $scope.$emit("closeDrawer");
         var scrollerOptions = {click: true, preventDefault: false};
+
         $scope.setScroller('dashboard_scroller', scrollerOptions);
         //Display greetings message based on current time
         var d = new Date();
         var time = d.getHours();
          //Handle Notificatin releated logic.
+
         initNotification();
         $scope.greetingsMessage = "";
         if (time < 12) {
@@ -49,6 +52,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
         //ADDED Time out since translation not working without time out
         setTimeout(function() {
           var title = "Showing Dashboard";
+
            $scope.refreshScroller('dashboard_scroller');
            $scope.setTitle(title);
         }, 2000);
@@ -76,11 +80,13 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
         $scope.activeNotification = data.results[0];
         $scope.$emit('hideLoader');
       };
+
       $scope.invokeApi(RVDashboardSrv.fetchDashboardNotifications, params, successReleaseNotesFetch);
     };
  /*
    * Function to close release notes
    */
+
     $scope.closeReleaseNote = function() {
       ngDialog.close(); //close any existing popups
     }
@@ -89,6 +95,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
    */
     $scope.showReleaseNote = function(activeNotification) {
         var url = activeNotification.action_source;
+
         if (!url.match(/^https?:\/\//i)) {
           url = 'http://' + url+'?from=rover';
         }
@@ -115,6 +122,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
         $rootScope.showNotificationForCurrentUser = false;
         $scope.$emit('hideLoader');
       };
+
       $scope.invokeApi(RVDashboardSrv.changeNotificationStatus, activeNotification.id, successCallBack);
     };
   /*
@@ -142,6 +150,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
           "failureCallBack": onGetDeviceIdFailure,
           "arguments": []
         };
+
       try {
           sntapp.uuidService.getDeviceId(options);
       } catch(err) {
@@ -204,6 +213,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
 
    var invokeSetWorkstationApi = function() {
     var requestData = {};
+
     requestData.rover_device_id = $scope.getDeviceId();
     $scope.invokeApi(RVWorkstationSrv.setWorkstation, requestData, onSetWorkstationSuccess, onSetWorkstationFailure);
 
@@ -232,12 +242,14 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
             };
 
         var params = {};
+
         params.rover_device_id = $scope.getDeviceId();
         $scope.invokeApi(RVWorkstationSrv.setWorkstation, params, onSetWorkstationSuccess, onSetWorkstationFailure);
 
      };
 
      var requestData = {};
+
      requestData.rover_device_id =  $scope.getDeviceId();
      requestData.auto_generate_workstation = true;
 
@@ -247,6 +259,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
 
    $scope.getDeviceId = function() {
      var deviceId = $rootScope.UUID;
+
      return deviceId;
    };
 
@@ -256,6 +269,7 @@ sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboard
           'MANAGER': 'rover.dashboard.manager',
           'HOUSEKEEPING': 'rover.dashboard.housekeeping'
         };
+
         if($rootScope.default_dashboard in defaultDashboardMappedWithStates) {
 
             // Nice Gotacha!!

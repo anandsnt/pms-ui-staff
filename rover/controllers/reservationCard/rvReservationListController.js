@@ -1,6 +1,7 @@
 sntRover.controller('reservationListController', ['$scope', function($scope) {
 	BaseCtrl.call(this, $scope);
 	var scrollerOptions = {click: true, preventDefault: false};
+
 	$scope.setScroller('resultListing', scrollerOptions);
 
 

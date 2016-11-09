@@ -51,6 +51,7 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
     var isRoutingForPostingAccountExist = function() {
         var routeToPostingAccountExist = false;
         var routesList = dclone($scope.routes, []);
+
         for(var i = 0; i < routesList.length; i++) {
             if(routesList[i].entity_type === "GROUP" || routesList[i].entity_type === "HOUSE" || routesList[i].entity_type === "ALLOTMENT" ) {
                 routeToPostingAccountExist = true;
@@ -62,6 +63,7 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
     /**
     * function to handle the click 'all routes' and 'add routes' button
     */
+
 	$scope.headerButtonClicked = function () {
         $scope.isInAddRoutesMode = true;
         $scope.isEntitySelected = false;
@@ -119,6 +121,7 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
         }
         else if(type === 'RESERVATIONS') {
         	var data = $scope.results.reservations[index];
+
         	$scope.selectedEntity = {
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
@@ -150,6 +153,7 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
         }
         else if(type === 'ACCOUNT') {
         	var data = $scope.results.accounts[index];
+
         	$scope.selectedEntity = {
 			    "id": data.id,
 			    "name": data.account_name,
@@ -189,6 +193,7 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
             }
             else{
                 var data = $scope.results.posting_accounts[index];
+
                 $scope.selectedEntity = {
                     "id": data.id,
                     "name": data.account_name,
@@ -310,6 +315,7 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
     */
     $scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn) {
       var viewStatus = "";
+
       if(isLateCheckoutOn && "CHECKING_OUT" === reservationStatus) {
         viewStatus = "late-check-out";
         return viewStatus;
@@ -472,6 +478,7 @@ sntRover.controller('rvBillingInfoAccountsMainCtrl', ['$scope', '$rootScope', '$
         };
 
         var data = {};
+
         data.id = $scope.contactInformation.id;
         $scope.invokeApi(RVBillinginfoSrv.deleteDefaultRouting, data, successCallback, errorCallback);
     };

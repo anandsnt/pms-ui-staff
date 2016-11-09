@@ -41,6 +41,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 				'confirmation_number': $stateParams.confirmation_number
 			};
 			//check if this page was invoked through pickupkey flow
+
 			if (!!$stateParams.pickup_key_mode) {
 				stateParams.pickup_key_mode = 'manual';
 			}
@@ -84,6 +85,7 @@ sntZestStation.controller('zsCheckinDepositCtrl', [
 							'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 						}
 						//check if this page was invoked through pickupkey flow
+
 					if (!!$stateParams.pickup_key_mode) {
 						stateParams.pickup_key_mode = 'manual';
 					}

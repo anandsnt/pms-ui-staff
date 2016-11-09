@@ -2,6 +2,7 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
     function($q, RVBaseWebSrvV2, RVBaseWebSrv, $filter) {
 
         var that = this;
+
         this.availabilityData = {};
 
         this.lastFetchedDate = "";
@@ -54,6 +55,7 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
             //based on the last_fetched date
             var deferred = $q.defer();
             var url = '/api/availability';
+
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
                 //We save the last fetched date info to enable caching.
                 //For every subsequent fetch requensts we fetch next set of dates
@@ -81,8 +83,10 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
         this.manipulateAvailabilityForEasyLookup = function(data) {
             var availability = {};
             //loop1
+
             angular.forEach(data.results, function(dayDetails, index) {
                 var dayInfo = {};
+
                 dayInfo.date = dayDetails.date;
                 dayInfo.house = dayDetails.house;
                 dayInfo.BAR = that.getBestAvailableRateForTheDay(dayDetails.rates, dayDetails.room_types);
@@ -124,6 +128,7 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
             });
 
             var dict = {};
+
             dict.rate_id = rateId;
             dict.room_type_availability = {};
             //Get the room type availability details looping through all room types.
@@ -146,6 +151,7 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
             var rateForSingleRoom = null;
             var lowestRate = {};
             var rateId = "";
+
             angular.forEach(ratesForDay, function(rate, rateIndex) {
                 //loop1 - we need to display only the lowest rate in the UI. For a room type
                 angular.forEach(rate.room_rates, function(roomRate, roomRateIndex) {
@@ -166,6 +172,7 @@ angular.module('sntRover').service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSr
             });
 
             var dict = {};
+
             dict.rate_id = rateId;
             dict.room_type_availability = roomType;
             dict.room_rates = lowestRate;

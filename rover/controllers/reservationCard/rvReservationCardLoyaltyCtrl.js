@@ -9,6 +9,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
         $scope.showSelectedLoyalty = function() {
             var display = true;
             var selectedLoyalty = $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty;
+
             if (selectedLoyalty === null || typeof selectedLoyalty === 'undefined' || selectedLoyalty === '' || selectedLoyalty === {}) {
                 display = false;
             }
@@ -65,6 +66,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
                     use_hlp = $scope.$parent.reservationData.use_hlp;
             var flag = false;
             // doing null check as when, no guest card attached the hotelLoyaltyProgram variable has null
+
             if (hotelLoyaltyProgram !== null && $rootScope.isHLPActive) {
                 for (var i = 0; i < hotelLoyaltyProgram.length; i++) {
                     if (parseInt(id, 10) === parseInt(hotelLoyaltyProgram[i].id, 10)) {
@@ -98,6 +100,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
 
         $scope.setSelectedLoyalty = function(id) {
             var isSelectedSet = $scope.setSelectedLoyaltyForID(id);
+
             if (!isSelectedSet) {
                 $scope.selectedLoyalty = "";
                 $scope.selectedLoyaltyID = "";
@@ -123,6 +126,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
                 $scope.$parent.errorMessage = errorMessage;
             };
             var params = {};
+
             params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;
             params.membership_id = $scope.selectedLoyaltyID;
             $scope.invokeApi(RVLoyaltyProgramSrv.selectLoyalty, params, successCallback, errorCallback);

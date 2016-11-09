@@ -6,6 +6,7 @@
 			var verifyCheckinReservation = function(data) {
 				var deferred = $q.defer();
 				var url = '/guest_web/search.json';
+
 				$http.post(url, data).success(function(response) {
 					this.responseData = response;
 					deferred.resolve(this.responseData);
@@ -18,8 +19,10 @@
 
 			var searchReservation =  function(data) {
 				var deferred = $q.defer();
+
 				data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
 				var url = '/guest_web/checkin_reservation_search.json';
+
 				$http.get(url, {params: data}).success(function(response) {
 					deferred.resolve(response);
 				}.bind(this))
@@ -32,8 +35,10 @@
 
 			var getToken = function(data) {
 				var deferred = $q.defer();
+
 				data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
 				var url = '/guest_web/authenticate_checkin_guest';
+
 				$http.post(url, data).success(function(response) {
 					deferred.resolve(response);
 				}.bind(this))

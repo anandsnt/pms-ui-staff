@@ -44,6 +44,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
         $scope.selFirst = function() {
             //ensure the first child el is re-selected (chrome/chromium/ie9 fix for latest ipad:chrome:iOS version- 41.0.2272.58)
             var rmRateType = $('#rmRateType');
+
             if (rmRateType) {
                 if (rmRateType && rmRateType.children) {
                     try { setTimeout(function() {
@@ -57,6 +58,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
                 }
             }
             var rmRate = $('#rmRate');
+
             if (rmRate) {
                 if (rmRate && rmRate.children) {
                     try { setTimeout(function() {
@@ -214,6 +216,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
 
         var escapeNull = function(value) {
             var valueToReturn = ((value === null || typeof value === 'undefined') ? '' : value);
+
             return valueToReturn;
         };
 
@@ -221,8 +224,10 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
             // setting popver height and each element height
             $scope.cmpCardSearchDivHgt = 250;
             var totalHeight = 42;
+
             $scope.arrowPosFromTop = $('#company-card').offset().top;
             var popOverBottomPosFromTop = $('#company-card').offset().top - 20;
+
             if ($scope.companyCardResults.length === 0) {
                 $scope.cmpCardSearchDivHgt = totalHeight;
             } else {
@@ -232,6 +237,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
                 $scope.cmpCardSearchDivHgt = 250;
             }
             var halfOfInputHeight = $('#company-card').height() / 2;
+
             $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt - halfOfInputHeight;
            
             setTimeout(function() {
@@ -256,6 +262,7 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
                 var paramDict = {
                     'query': $scope.companySearchText.trim()
                 };
+
                 $scope.invokeApi(RMFilterOptionsSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
                 // we have changed data, so we dont hit server for each keypress
                 $scope.companyLastSearchText = $scope.companySearchText;

@@ -12,6 +12,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
     var refreshArOverviewScroll = function() {
         setTimeout(function() {$scope.refreshScroller('arOverViewScroll');}, 500);
     };
+
     refreshArOverviewScroll();
 
     /*
@@ -54,6 +55,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
             'ageing_days': $scope.filterData.ageingDays,
             'sort_by': $scope.filterData.sortBy
         };
+
         $scope.invokeApi(RVAccountsReceivablesSrv.fetchAccountsReceivables, params, successCallBackFetchAccountsReceivables );
     };
 
@@ -130,6 +132,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
 
     $scope.isNextButtonDisabled = function() {
         var isDisabled = false;
+
         if (!!$scope.arOverviewData && ($scope.end >= $scope.arOverviewData.total_result)) {
             isDisabled = true;
         }
@@ -138,6 +141,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
 
     $scope.isPrevButtonDisabled = function() {
         var isDisabled = false;
+
         if ($scope.filterData.page === 1) {
             isDisabled = true;
         }
@@ -166,10 +170,12 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
      */
     $scope.escapeNullStr = function(value, replaceWith) {
 		var newValue = "";
+
 		if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
 			newValue = replaceWith;
 		}
 		var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
+
         if (valueToReturn.indexOf('null') !== -1) {
             valueToReturn = '';//removes unwanted ", null" type of values
         }
@@ -181,6 +187,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
 	 */
 	$scope.isShowPagination = function() {
 		var arOverviewData = $scope.arOverviewData;
+
 		return (!!arOverviewData && arOverviewData.total_result >= $scope.filterData.perPage && arOverviewData.accounts.length > 0);
 	};
 

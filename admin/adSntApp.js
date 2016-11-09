@@ -1,5 +1,6 @@
 var AdminGlobalApp = function() {
     var that = this;
+
     this.browser = "other";
     this.cordovaLoaded = false;
     this.DEBUG = false;

@@ -31,6 +31,7 @@ admin.controller('ADEmailBlackListCtrl', ['$scope', '$state', 'ADEmailBlackListS
 		            $scope.totalPage = Math.ceil(orderedData.length/$scope.displyCount);
 		            var startIndex  = tbParams.per_page * (tbParams.page - 1);
 		            var endIndex  =      (tbParams.per_page * (tbParams.page - 1)) + tbParams.per_page;
+
 		            $scope.orderedData =  orderedData.splice(startIndex, tbParams.per_page);
 
 			        $scope.data = $scope.orderedData;
@@ -83,6 +84,7 @@ admin.controller('ADEmailBlackListCtrl', ['$scope', '$state', 'ADEmailBlackListS
 
 
 		};
+
 	   $scope.invokeApi(ADEmailBlackListSrv.fetch, {}, successCallbackFetch);
 	};
 	// To list blacklisted emails
@@ -133,6 +135,7 @@ admin.controller('ADEmailBlackListCtrl', ['$scope', '$state', 'ADEmailBlackListS
     		$scope.emailList.splice(index, 1);
     		$scope.tableParams.reload();
     	};
+
     	$scope.invokeApi(ADEmailBlackListSrv.deleteBlacklistedEmail, param, successCallbackDelete);
     };
 	/*

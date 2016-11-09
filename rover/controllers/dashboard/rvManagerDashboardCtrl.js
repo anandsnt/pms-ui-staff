@@ -84,10 +84,12 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
    */
   $scope.escapeNull = function(value, replaceWith) {
     var newValue = "";
+
     if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
       newValue = replaceWith;
     }
     var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
+
     return valueToReturn;
   };
 
@@ -125,6 +127,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
         "amount": 300
       }]
     };
+
     $vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(temporaryReservationDataFromDiaryScreen));
     $state.go("rover.reservation.staycard.mainCard.summaryAndConfirm", {
       'reservation': 'HOURLY'
@@ -165,6 +168,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
     'show_rate_of_day': true
   };
   //CICO-31344
+
   if(!$scope.isStandAlone) {
     requestParams.show_adr = false;
   }

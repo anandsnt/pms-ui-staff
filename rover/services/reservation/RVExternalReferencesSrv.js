@@ -8,6 +8,7 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
         var fetchExternalSystems = function() {
             var deferred = $q.defer(),
                 url = "/api/reference_values/manual_external_reference_interfaces";
+
             RVBaseWebSrvV2.getJSON(url).then(function(response) {
                 deferred.resolve(response.external_interface_types)
             }, function(errorMessage) {
@@ -19,8 +20,10 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
         var fetchExternalReferences = function(reservationId) {
             var deferred = $q.defer(),
                 url = "/api/reservations/" + reservationId + "/external_references";
+
             RVBaseWebSrvV2.getJSON(url).then(function(response) {
                 var references = response.external_references;
+
                 if (references.length === 0) {
                     references.push(self.getEmptyRow());
                 }
@@ -34,6 +37,7 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
         self.save = function(payLoad) {
             var deferred = $q.defer(),
                 url = "/api/reservations/" + payLoad.reservationId + "/external_references";
+
             RVBaseWebSrvV2.postJSON(url, {
                 external_confirm_no: payLoad.reference.external_confirm_no,
                 external_interface_type_id: payLoad.reference.external_interface_type_id
@@ -48,6 +52,7 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
         self.update = function(payLoad) {
             var deferred = $q.defer(),
                 url = "/api/reservations/" + payLoad.reservationId + "/external_references/" + payLoad.reference.id;
+
             RVBaseWebSrvV2.putJSON(url, {
                 external_confirm_no: payLoad.reference.external_confirm_no,
                 external_interface_type_id: payLoad.reference.external_interface_type_id
@@ -62,6 +67,7 @@ angular.module('sntRover').service('RVExternalReferencesSrv', ['$q', 'rvBaseWebS
         self.remove = function(payLoad) {
             var deferred = $q.defer(),
                 url = "/api/reservations/" + payLoad.reservationId + "/external_references/" + payLoad.referenceId;
+
             RVBaseWebSrvV2.deleteJSON(url).then(function(response) {
                 deferred.resolve(response);
             }, function(errorMessage) {

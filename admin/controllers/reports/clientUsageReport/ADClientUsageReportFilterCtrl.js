@@ -30,6 +30,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
                     };
                 // Get Filters and Sort Options for this report
                 // NOTE: $scope.reportKey is initiated in the partial so that it is availble in the respective controllers
+
                 $scope.invokeApi(adReportsSrv.getFilterData, $scope.reportKey, onGetFilterSuccess);
                 $scope.invokeApi(adReportsSortOptionsSrv.getSortOptions, $scope.reportKey, onGetSortOptionsSuccess);
             },
@@ -101,6 +102,7 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
 
             _.each($scope.filterState.store["HOTELS"], function(hotel) {
                 var pmsType = hotel.isStandAlone ? "STANDALONE" : "OVERLAY";
+
                 if (_.indexOf(selectedTypes, pmsType) > -1 &&
                     _.indexOf(selectedChains, hotel.chain) > -1) {
                     filteredHotels.push(_.extend(hotel, {

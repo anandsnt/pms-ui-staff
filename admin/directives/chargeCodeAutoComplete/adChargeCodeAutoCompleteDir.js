@@ -50,6 +50,7 @@ admin.directive('adChargeCodeAutoComplete', ['ADChargeCodesSrv', function (ADCha
 						callBackToAutoComplete: callBackToAutoComplete
 					}
 		        };
+
 		        $scope.callAPI(ADChargeCodesSrv.searchChargeCode, options);
 			};
 

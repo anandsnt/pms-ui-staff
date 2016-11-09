@@ -167,6 +167,7 @@ var TimelineResizeGrip = React.createClass({
 			px_per_ms 	= display.px_per_ms,
 			x_origin 	= display.x_n, // instanceof Date ? display.x_n.getTime() : display.x_n),
 			m 			= props.meta.occupancy;
+
 		if(!this.state.resizing) {
 			if(!props.currentResizeItem && nextProps.currentResizeItem) {
 				model = nextProps.currentResizeItem;
@@ -177,6 +178,7 @@ var TimelineResizeGrip = React.createClass({
 						currentResizeItemRow: model[props.meta.occupancy.id]
 					});
 					var scrollToPos = (model[m.start_date] - x_origin - 7200000) * px_per_ms;
+
 					if(scrollToPos < 0) {
 						scrollToPos = 0;
 					}
@@ -226,11 +228,13 @@ var TimelineResizeGrip = React.createClass({
 
 			if(currentResizeItem) {
 				var dateDirection = new Date(currentResizeItem[direction]);
+
 				time_txt = dateDirection.toComponents().time.toString(true);
 				var display_start_time = (props.display.x_n instanceof Date ? props.display.x_n : new Date (props.display.x_n) );
 
 				if(display_start_time.isOnDST()===false && dateDirection.isOnDST() ===true ) {
 					var dateForCalculatingLeft = new Date(currentResizeItem[direction]);
+
 					dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 					left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms;
 
@@ -238,6 +242,7 @@ var TimelineResizeGrip = React.createClass({
 
 				else if(display_start_time.isOnDST()===true && dateDirection.isOnDST() ===false ) {
 					var dateForCalculatingLeft = new Date(currentResizeItem[direction]);
+
 					dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 					left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms;
 					//The special case adjustment

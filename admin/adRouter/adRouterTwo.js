@@ -110,6 +110,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 						var params = {
 							floorID: $stateParams.id
 						};
+
 						return ADFloorSetupSrv.getFloorDetails(params);
 				}]
 			}
@@ -250,6 +251,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
                  	var params = {
 			 		  	rateId: $stateParams.rateId
 		 		  	};
+
                     return ADRatesSrv.fetchDetails(params);
                 }
 			}
@@ -437,6 +439,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
                  	var params = {
 			 		  	"id": $stateParams.action
 		 		  	};
+
                     return adiBeaconSettingsSrv.fetchBeaconDetails(params);
                 },
                 defaultBeaconDetails: function() {

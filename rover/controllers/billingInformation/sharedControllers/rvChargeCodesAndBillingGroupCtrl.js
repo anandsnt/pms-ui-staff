@@ -114,6 +114,7 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope', '$rootScope',
         $scope.billingInfoFlags.showChargeCodes = false;
         displayFilteredResultsChargeCodes();
         var queryText = $scope.chargeCodeSearchText;
+
         $scope.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
     };
 
@@ -153,6 +154,7 @@ sntRover.controller('rvChargeCodesAndBillingGroupCtrl', ['$scope', '$rootScope',
             var value = "";
             //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
             //if it is zero, then we will request for webservice
+
             for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
                 value = $scope.availableChargeCodes[i];
                 if ((($scope.escapeNull(value.code).toUpperCase()).indexOf($scope.chargeCodeSearchText.toUpperCase()) >= 0 ||

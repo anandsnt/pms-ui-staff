@@ -12,12 +12,14 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
 
 	  	//Setting scroller
 	  	var scrollerOptions = {click: true, preventDefault: false};
+
 	    $scope.setScroller('cards_search_scroller', scrollerOptions);
 	    $scope.setScroller('res_search_scroller', scrollerOptions);
 	    $scope.refreshScroller('cards_search_scroller');
 	    $scope.refreshScroller('res_search_scroller');
 
 	    var scrollerOptions = { preventDefault: false};
+
 	    $scope.setScroller('entities', scrollerOptions);
 
 	    setTimeout(function() {
@@ -56,6 +58,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
 	    	displayFilteredResultsReservations();
 	   	}
 	   	var queryText = $scope.textInQueryBox;
+
 	   	$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
   	};
 
@@ -141,6 +144,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
 			// last hope, we are looking in webservice.
 			if (visibleElementsCount === 0) {
 				var dataDict = {'query': $scope.textInQueryBox.trim()};
+
 				$scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);
 			}
 
@@ -263,6 +267,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
      */
 	var fetchSearchResults = function() {
 		var dataDict = {'query': $scope.textInQueryBox.trim()};
+
 		if ($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && 
 			$scope.textInQueryBox.length < 3) {
 
@@ -310,6 +315,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
                 "credit_card_details": {},
                 "id": data.id
 			};
+
 			$scope.setSelectedEntity(selectedEntityDetails, type);
         }
         else if (type === 'ACCOUNT') {
@@ -342,6 +348,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
         else if (type === 'GROUP' || type === 'HOUSE') {
             if ($scope.isRoutingForPostingAccountExist()) {
                 var errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+
                 $scope.$emit('displayErrorMessage', errorMessage);
                 $scope.billingInfoFlags.isEntitySelected = false;
                 $scope.billingInfoFlags.isInitialPage    = true;
@@ -359,6 +366,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
                     "credit_card_details": {},
                     "entity_type": data.account_type
                 };
+
                 $scope.setSelectedEntity(selectedEntityDetails, type);
             }
         }
@@ -384,6 +392,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
             "is_new": true,
             "credit_card_details": {}
         };
+
         $scope.setSelectedEntity(selectedEntityDetails);
 
         if (type === 'GUEST') {
@@ -441,6 +450,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
         else if (type ==='GROUP' || type === 'HOUSE') {
             if ($scope.isRoutingForPostingAccountExist()) {
                 var errorMessage = ["Routing to account already exists for this reservation. Please edit or remove existing routing to add new."];
+
                 $scope.$emit('displayErrorMessage', errorMessage);
                 $scope.billingInfoFlags.isEntitySelected = false;
                 $scope.billingInfoFlags.isInitialPage    = true;

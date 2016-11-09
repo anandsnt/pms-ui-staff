@@ -23,6 +23,7 @@ admin.controller('ADUserRolesCtrl', ['$scope', 'userRolesData', 'ADUserRolesSrv'
 
 	$scope.saveUserRole =  function() {
 		var data = {"name": $scope.newUserRole};
+
 		$scope.invokeApi(ADUserRolesSrv.saveUserRole, data, userRoleSuccessCallback, userRoleFailureCallback);
 
 	};
@@ -40,6 +41,7 @@ admin.controller('ADUserRolesCtrl', ['$scope', 'userRolesData', 'ADUserRolesSrv'
 
 	$scope.changeDashBoard =  function(id, dashboardId) {
 		var data =  {"value": id, "dashboard_id": dashboardId };
+
 		$scope.invokeApi(ADUserRolesSrv.assignDashboard, data, changeDashBoardSuccessCallback, changeDashBoardFailureCallback);
 	};
 

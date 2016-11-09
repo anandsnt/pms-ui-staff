@@ -14,6 +14,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
             var encoder =  _.find($scope.key_encoders, function(t) {
                 return (t.id == id);
             });
+
             if (!_.isUndefined(encoder)) {
                 return encoder.description;    
             } else {
@@ -24,6 +25,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
             var terminal =  _.find($scope.emv_terminals, function(t) {
                 return (t.id == id);
             });
+
             if (!_.isUndefined(terminal)) {
                 return terminal.name;    
             } else {
@@ -50,6 +52,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 $scope.isAddMode = false;
                 $defer.resolve($scope.data);
             };
+
             $scope.invokeApi(ADDeviceSrv.fetch, getParams, fetchSuccessOfItemList);
         };
 
@@ -90,6 +93,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 successCallBack: onSuccess,
                 failureCallBack: $scope.failureCallBack
             };
+
             $scope.callAPI(ADKeyEncoderSrv.fetchEncoders, options);
         };
         $scope.fetchEmvList = function() {
@@ -106,6 +110,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 successCallBack: onSuccess,
                 failureCallBack: $scope.failureCallBack
             };
+
             $scope.callAPI(ADEmvTerminalsSrv.fetchItemList, options);
         };
 
@@ -133,10 +138,12 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 $scope.mapping.out_of_order_msg = data.out_of_order_msg;
                 $scope.$emit('hideLoader');
             };
+
             $scope.mapping.id = id;
             var data = {
                 "id": id
             };
+
             $scope.invokeApi(ADDeviceSrv.getDeviceMappingDetails, data, successCallbackRender);
         };
         /*
@@ -187,6 +194,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 $scope.currentClickedElement = -1;
                 $scope.totalCount--;
             };
+
             $scope.invokeApi(ADDeviceSrv.deleteDeviceMapping, id, successCallbackDelete);
         };
         /*
@@ -230,6 +238,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 "emv_terminal_id": $scope.mapping.selectedEmvTerminal,
                 "key_encoder_description": $scope.getKeyEncoderDescription($scope.mapping.selectedKeyEncoder)
             };
+
             $scope.data.push(pushData);
             $scope.totalCount++;
         };
@@ -261,6 +270,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 "name": $scope.mapping.name,
                 "identifier": $scope.mapping.station_identifier
             };
+
             if (!_.isUndefined($scope.mapping.selectedKeyEncoder)) {
                 data.default_key_encoder_id = $scope.mapping.selectedKeyEncoder;
             }

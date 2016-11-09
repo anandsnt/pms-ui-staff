@@ -1,7 +1,9 @@
 var DesktopUUIDService = function() {
     var that = this;
+
     this.isActive = false;
     var ws = {};
+
     this.startDesktopUUIDService = function(portNumber, callbacks) {
         this.portNumber = portNumber;
         this.callbacks = callbacks;
@@ -26,6 +28,7 @@ var DesktopUUIDService = function() {
         // Triggers when there is a message from websocket server.
         ws.onmessage = function (event) {
             var cardData = event.data;
+
             that.callbacks.uuidServiceSuccessCallBack(JSON.parse(cardData));
         };
 

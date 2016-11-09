@@ -6,6 +6,7 @@
 			var resetPassword = function(data) {
 				var deferred = $q.defer();
 				var url = '/guest/users/update_password.json';
+
 				$http.post(url, data).success(function(response) {
 					this.responseData = response;
 					deferred.resolve(this.responseData);

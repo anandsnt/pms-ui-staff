@@ -8,6 +8,7 @@ admin.controller('ADUpsellLateCheckoutCtrl', ['$scope', '$rootScope', '$state', 
 var setUpList = function() {
    //remove the selected item from drop down
   var selectedIds = [];
+
   angular.forEach($scope.upsellData.room_types, function(item, index) {
     if(item.max_late_checkouts !== '') {
        selectedIds.push(item.id);
@@ -25,6 +26,7 @@ var setUpList = function() {
 * To fetch upsell details
 *
 */
+
 $scope.fetchUpsellDetails = function() {
     var fetchUpsellDetailsSuccessCallback = function(data) {
        $scope.$emit('hideLoader');
@@ -36,6 +38,7 @@ $scope.fetchUpsellDetails = function() {
        $scope.startWatching();
 
    };
+
    $scope.invokeApi(adUpsellLatecheckoutService.fetch, {}, fetchUpsellDetailsSuccessCallback);
 };
 
@@ -186,6 +189,7 @@ $scope.saveClick = function() {
 	angular.forEach($scope.upsellData.room_types, function(item, index) {
 		if(item.max_late_checkouts !== '') {
 			 var obj = { "id": item.id.toString(), "max_late_checkouts": item.max_late_checkouts.toString() };
+
 			 updateData.room_types.push(obj);
 		}
 	});
@@ -193,6 +197,7 @@ $scope.saveClick = function() {
       $scope.$emit('hideLoader');
       angular.forEach($scope.chekoutchargesArray, function(value, key) {
       var timeValue = value.time;
+
 			value.time = timeValue.replace(" PM", "");// To make the UI updated after success
 
 		});
@@ -204,11 +209,13 @@ $scope.saveClick = function() {
       $scope.errorMessage = errorMessage;
       angular.forEach($scope.chekoutchargesArray, function(value, key) {
       var timeValue = value.time;
+
 			value.time = timeValue.replace(" PM", "");// To make the UI updated after success
 
 		});
 
    	};
+
    	$scope.invokeApi(adUpsellLatecheckoutService.update, updateData, upsellLateCheckoutSuccessCallback, upsellLateCheckoutFailureCallback);
 
 };
@@ -247,9 +254,11 @@ var isRoomTypesSelected = function() {
 /*
  * Method to delete the room type.
  */
+
 $scope.deleteRoomType = function(value, name) {
 
 	var data = { "value": value, "name": name };
+
 	$scope.upsellData.room_types_list.push(data);
 	angular.forEach($scope.upsellData.room_types, function(item, index) {
 		if(item.id === value) {

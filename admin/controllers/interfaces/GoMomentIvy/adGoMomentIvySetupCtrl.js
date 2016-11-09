@@ -31,6 +31,7 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 
         params: params,
         successCallBack: successCallBackOfSaveGoMomentIvySetup
       };
+
       $scope.callAPI(adGoMomentIvySetupSrv.saveGoMomentIvyConfiguration, options);
     };
 

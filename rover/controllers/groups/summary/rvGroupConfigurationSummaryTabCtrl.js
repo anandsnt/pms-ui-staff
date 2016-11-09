@@ -12,6 +12,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		var whetherSummaryDataChanged = function() {
 			// Some properties not in original defenition should be left out
 			var currentSummaryData = $scope.groupConfigData.summary;
+
 			summaryMemento = _.omit(summaryMemento, [
 								'rooms_total',
 								'selected_room_types_and_bookings',
@@ -88,6 +89,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 					successCallBack: successCallBackOfMoveButton,
 					failureCallBack: failureCallBackOfMoveButton
 				};
+
 			$scope.changeDatesActions.clickedOnMoveSaveButton (options);
 		};
 
@@ -154,6 +156,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 					failureCallBack: failureCallBackOfEarlierArrivalDateChange,
 					cancelPopupCallBack: cancelCallBackofDateChange
 				};
+
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierArrDateChange (options);
 		};
@@ -180,6 +183,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 					failureCallBack: failureCallBackOfLaterArrivalDateChange,
 					cancelPopupCallBack: cancelCallBackofDateChange
 				};
+
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterArrDateChange (options);
 		};
@@ -218,6 +222,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 					failureCallBack: failureCallBackOfEarlierDepartureDateChange,
 					cancelPopupCallBack: cancelCallBackofDateChange
 				};
+
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerEarlierDepDateChange (options);
 		};
@@ -253,6 +258,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 					failureCallBack: failureCallBackOfLaterDepartureDateChange,
 					cancelPopupCallBack: cancelCallBackofDateChange
 				};
+
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.triggerLaterDepDateChange (options);
 		};
@@ -262,6 +268,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				cancelPopupCallBack: cancelCallBackofDateChange,
 				message: "GROUP_EARLIER_DEP_DATE_CHANGE_WARNING"
 			};
+
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
 		};
@@ -271,6 +278,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				cancelPopupCallBack: cancelCallBackofDateChange,
 				message: "GROUP_LATER_ARR_DATE_CHANGE_WARNING"
 			};
+
 			$scope.changeDatesActions.triggerdChangeDateActions();
 			$scope.changeDatesActions.showDateChangeInvalidWarning(options);
 		};
@@ -401,6 +409,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			//this condition is independent of above if - CICO-34463
 			if ($scope.changeDatesActions.isInCompleteMoveMode()) {
 				var originalStayLength = (util.getDatesBetweenTwoDates (new tzIndependentDate(util.deepCopy(summaryMemento.block_from)), new tzIndependentDate(util.deepCopy(summaryMemento.block_to))).length - 1);
+
 				refData.block_to = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 				refData.block_to.setDate(refData.block_to.getDate() + originalStayLength);
 			}
@@ -455,8 +464,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				},
 				updateSegment = function() {
 					var aptSegment = ""; //Variable to store the suitable segment ID
+
 					if (!!$scope.groupConfigData.summary.block_to && !!$scope.groupConfigData.summary.block_from) {
 						var dayDiff = Math.floor((new tzIndependentDate($scope.groupConfigData.summary.block_to) - new tzIndependentDate($scope.groupConfigData.summary.block_from)) / 86400000);
+
 						angular.forEach($scope.groupSummaryData.demographics.segments, function(segment) {
 							if (dayDiff < segment.los) {
 								if (!aptSegment) {
@@ -843,6 +854,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				postData: $scope.groupConfirmationData,
 				groupId: $scope.groupSummaryMemento.group_id
 			};
+
 			$scope.invokeApi(rvGroupConfigurationSrv.sendGroupConfirmationEmail, data, succesfullEmailCallback, failureEmailCallback);
 		};
 
@@ -909,6 +921,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				failureCallBack: onRateChangeFailureCallBack,
 				params: params
 			};
+
 			$scope.callAPI(rvGroupConfigurationSrv.updateRate, options);
 		};
 
@@ -967,6 +980,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				successCallBack: onReleaseRoomsSuccess,
 				failureCallBack: onReleaseRoomsFailure
 			};
+
 			$scope.callAPI(rvGroupConfigurationSrv.releaseRooms, options);
 		};
 
@@ -1012,6 +1026,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				successCallBack: onCancelGroupSuccess,
 				failureCallBack: onCancelGroupFailure
 			};
+
 			$scope.callAPI(rvGroupConfigurationSrv.cancelGroup, options);
 		};
 
@@ -1020,6 +1035,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				var selectedStatus = _.findWhere($scope.groupConfigData.holdStatusList, {
 					id: parseInt($scope.groupConfigData.summary.hold_status)
 				});
+
 				if (selectedStatus && selectedStatus.name === 'Cancel' && !!selectedStatus.is_system) {
 					ngDialog.open({
 						template: '/assets/partials/groups/summary/warnCancelGroupPopup.html',
@@ -1078,6 +1094,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 * Method to show addons popup
 		 * @return undefined
 		 */
+
 		$scope.viewAddons = function() {
 			var params = {
 				id: $scope.groupConfigData.summary.group_id
@@ -1088,12 +1105,14 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				successCallBack: onFetchAddonSuccess,
 				failureCallBack: onFetchAddonFailure
 			};
+
 			$scope.callAPI(rvGroupConfigurationSrv.getGroupEnhancements, options);
 		};
 
 
 		$scope.getRevenue = function() {
 			var sData = $scope.groupConfigData.summary;
+
 			if ($scope.isInAddMode()) {
 				return "";
 			}
@@ -1219,6 +1238,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 				onRemoveGroupNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 				};
+
 			event.stopPropagation();
 			$scope.callAPI(rvGroupConfigurationSrv.removeGroupNote, {
 				successCallBack: onRemoveGroupNoteSuccess,
@@ -1242,6 +1262,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 					var onUpdateGroupNoteSuccess = function(data) {
 						$scope.groupSummaryData.editingNote.description = $scope.groupSummaryData.newNote;
 						var noteArrayIndex = _.findIndex($scope.groupConfigData.summary.notes, {note_id: data.note_id});
+
 						$scope.groupConfigData.summary.notes[noteArrayIndex] = $scope.groupSummaryData.editingNote;
 						$scope.refreshScroller("groupSummaryScroller");
 						$scope.cancelEditModeGroupNote();
@@ -1249,6 +1270,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 					onUpdateGroupNoteFailure = function(errorMessage) {
 						$scope.errorMessage = errorMessage;
 					};
+
 					$scope.callAPI(rvGroupConfigurationSrv.updateGroupNote, {
 						successCallBack: onUpdateGroupNoteSuccess,
 						failureCallBack: onUpdateGroupNoteFailure,
@@ -1280,6 +1302,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 					"lastName": ""
 				}
 			};
+
 			return passData;
 		};
 
@@ -1296,6 +1319,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			var passData = getPassData();
 			var swipeOperationObj = new SwipeOperation();
 			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+
 			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 			$scope.$broadcast('SHOW_SWIPED_DATA_ON_BILLING_SCREEN', swipedCardDataToRender);
 		};
@@ -1315,6 +1339,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 					processSwipedData(swipedCardData);
                                         $scope.swippedCard = true;
 				};
+
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			}
 		});
@@ -1322,6 +1347,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		var fetchApplicableRates = function() {
 			var onFetchRatesSuccess = function(data) {
 					var sumData = $scope.groupSummaryData;
+
 						sumData.rateSelectDataObject = [];
 
 					// add custom rate obect
@@ -1446,6 +1472,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 			$scope.isUpdateInProgress = false;
 		};
 		//CICO-23143
+
 		$scope.$on("SET_ACTIONS_COUNT", function(event, value) {
 			if(value === "new") {
 				$scope.groupConfigData.summary.total_group_action_tasks_count = parseInt($scope.groupConfigData.summary.total_group_action_tasks_count) + parseInt(1);
@@ -1461,6 +1488,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 		 */
 		$scope.isInStaycardScreen = function() {
 			var sumData = $scope.groupConfigData;
+
 			return  ('activeScreen' in sumData && sumData.activeScreen === 'STAY_CARD');
 		};
 

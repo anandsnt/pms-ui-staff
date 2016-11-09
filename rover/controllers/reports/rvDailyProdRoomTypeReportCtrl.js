@@ -67,6 +67,7 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 				$timeout(isScrollReady, 1000);
 			};
 		};
+
 		isScrollReady();
 
 		var destroyScrolls = function() {
@@ -138,6 +139,7 @@ sntRover.controller('RVDailyProdRoomTypeReportCtrl', [
 
 			var allDatesValInRoom = [],
 				eachDateVal       = [];
+
 			$scope.reportData = [];	// this will be an array of arrays
 			$scope.roomNames = [];	// keeping seperate array so that we can avoid object being itrated aphabetically
 

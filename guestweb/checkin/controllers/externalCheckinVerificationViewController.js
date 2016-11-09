@@ -18,6 +18,7 @@
 
 	$scope.pageValid = false;
 	var dateToSend = '';
+
 	if($rootScope.isExternalVerification) {
 		$state.go('externalVerification');
 	}
@@ -57,6 +58,7 @@
 	    //so fetch it with reservation id
 	    var getToken = function(response) {
 	    	var data = {"reservation_id": $rootScope.reservationID};
+
 		    checkinConfirmationService.getToken(data).then(function(res_data) {
 	    		//set guestweb token
 	    		$rootScope.accessToken 				= res_data.guest_web_token;
@@ -113,6 +115,7 @@
 					};
 					var reservations = [];
 					//filter out reservations with reserved status
+
 					angular.forEach(response.results, function(value, key) {
 					  if(value.reservation_status ==='RESERVED') {
 					  	reservations.push(value);
@@ -185,6 +188,7 @@
 
 		function loseFocus() {
 			var inputs = document.getElementsByTagName('input');
+
 			for (var i = 0; i < inputs.length; ++i) {
 			  inputs[i].blur();
 			}

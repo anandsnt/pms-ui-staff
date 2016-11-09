@@ -50,6 +50,7 @@ admin.controller('ADStationaryCtrl',
 
 			$scope.hotelTemplateLogoPrefetched = data.location_image;
 		};
+
 		$scope.invokeApi(ADStationarySrv.fetch, params, successCallbackOfFetch);
 	};
 
@@ -58,6 +59,7 @@ admin.controller('ADStationaryCtrl',
 		$scope.holdStatusList = availableHoldStatus.data.hold_status;
 		$scope.locale = $scope.languages.default_locale;
 		var params = {};
+
 		fetchStationary(params);
 	};
 
@@ -75,9 +77,11 @@ admin.controller('ADStationaryCtrl',
 		$scope.goBackToPreviousState();
 	};
 	// Save changes button actions.
+
 	$scope.clickedSave = function() {
 
 		var filterKeys = ["guest_bill_template", "hotel_logo", "groupholdstatus", "group_confirmation_header", "group_confirmation_footer"];
+
 		if ($scope.data.hotel_picture === $scope.memento.hotel_picture) {
 			filterKeys.push('hotel_picture');
 		}
@@ -88,6 +92,7 @@ admin.controller('ADStationaryCtrl',
 		$scope.data.group_hold_status_data = [];
 		if(!!$scope.data.groupholdstatus) {
 			var groupConfirmationData = {};
+
 			groupConfirmationData.hold_status_id = $scope.data.groupholdstatus;
 			groupConfirmationData.confirmation_email_header = $scope.data.group_confirmation_header;
 			groupConfirmationData.confirmation_email_footer = $scope.data.group_confirmation_footer;
@@ -95,6 +100,7 @@ admin.controller('ADStationaryCtrl',
 		}
 		var postingData = dclone($scope.data, filterKeys);
 		//calling the save api
+
 		if ($scope.hotelTemplateLogoPrefetched === postingData.location_image) {
 			postingData.location_image = "";
 		}
@@ -174,6 +180,7 @@ admin.controller('ADStationaryCtrl',
 	*/
 	$scope.onLocaleChange = function() {
 		var params = {};
+
 		params.locale = $scope.locale;
 		fetchStationary(params);
 	}

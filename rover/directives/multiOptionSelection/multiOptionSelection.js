@@ -43,6 +43,7 @@ sntRover
 
 				$scope.toggleSelectAll = function() {
 					var options = $scope.options || {};
+
 					options.selectAll = ! options.selectAll;
 
 					updateData( 'selected', options.selectAll );
@@ -149,6 +150,7 @@ sntRover
 					$scope.value  = '';
 
 					var options = $scope.options || {};
+
 					if ( options.selectAll ) {
 						updateData( 'selected', true );
 					};

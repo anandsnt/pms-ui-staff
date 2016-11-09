@@ -65,6 +65,7 @@ angular.module('sntRover').controller('groupAvailabilityMainController', [
 				'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
 				'to_date': $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
 			};
+
 			$scope.invokeApi(rvAvailabilitySrv.fetchGroupAvailabilityDetails, dataForWebservice, successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);
 		}, 0);
 	};

@@ -14,6 +14,7 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
 			$scope.currentClickedElement = -1;
 			$scope.isAddMode = false;
 		};
+
 		$scope.invokeApi(ADHoldStatusSrv.fetch, {}, successCallbackFetch);
 	};
 	//To list Hold status
@@ -81,6 +82,7 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
 	    	}
     		$scope.currentClickedElement = -1;
     	};
+
     	if($scope.isAddMode) {
     		$scope.invokeApi(ADHoldStatusSrv.saveHoldStatus, $scope.holdstatusData, successCallbackSave);
     	} else {
@@ -111,6 +113,7 @@ admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv',
 	 		}
 	 		$scope.currentClickedElement = -1;
 	 	};
+
 		$scope.invokeApi(ADHoldStatusSrv.deleteHoldStatus, id, successCallbackDelete);
 	};
 }]);

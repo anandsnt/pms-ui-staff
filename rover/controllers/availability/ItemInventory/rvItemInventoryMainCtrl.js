@@ -69,12 +69,14 @@ angular.module('sntRover').controller('itemInventoryMainController', [
 		$timeout(function () {
 			//calculating date after number of dates selected in the select box
 			var dateAfter = tzIndependentDate ($scope.data.selectedDate);
+
 			dateAfter.setDate(dateAfter.getDate() + parseInt($scope.numberOfDaysSelected) - 1);
 
 			var dataForWebservice = {
 				'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
 				'to_date': $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
 			};
+
 			$scope.invokeApi(rvAvailabilitySrv.fetchItemInventoryDetails, dataForWebservice, successCallbackOfItemInventoryFetch, failureCallbackOfItemInventoryFetch);
 		}, 0);
 	};

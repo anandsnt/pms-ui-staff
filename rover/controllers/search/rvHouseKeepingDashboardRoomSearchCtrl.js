@@ -24,6 +24,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 
 		//setting the scroller for view
 		var scrollerOptions = { click: true, preventDefault: false };
+
 	  	$scope.setScroller('result_showing_area', scrollerOptions);
 
 	  	var refreshScroller = function() {

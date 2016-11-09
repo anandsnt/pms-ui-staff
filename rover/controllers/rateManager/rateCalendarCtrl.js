@@ -23,6 +23,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
             //get the 'day' format, sat/sun and return true if its considered a weekend
             var day = new Date(date).getDay();
             //sat=5, sun=6
+
             if (day === 6 || day === 5) {
                 return true;
             } else {
@@ -88,8 +89,10 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
 
         $scope.isRestrictTo = function(zoom, restrictions) {
             var z = '' + zoom;
+
             if (typeof restrictions === typeof []) {
                 var n = restrictions.length;
+
                 if (n === 0) {
                     return 3;
                 }
@@ -122,6 +125,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
 
         $scope.$on("setReadyButton", function() {
             var obj = arguments[1].via;
+
             switch (obj) {
                 case 'single':
                     $scope.ready.single = true;
@@ -162,6 +166,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
          */
         var getNumOfCalendarColumns = function() {
             var numColumns = new Date($scope.currentFilterData.end_date) - new Date($scope.currentFilterData.begin_date);
+
             numColumns = numColumns / (24 * 60 * 60 * 1000) + 1;
 
             return parseInt(numColumns);
@@ -208,6 +213,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
         var loadTable = function() {
             $scope.anyRoomHasClosedRestriction = false;
             var restriction;
+
             $scope.currentExpandedRow = -1; //reset the expanded row
             $scope.loading = true;
                 // If only one rate is selected in the filter section, the defult view is room type calendar
@@ -234,6 +240,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                         $scope.calendarData = data;
                         $scope.everyRestriction = $scope.calendarData.room_type_restrictions;
                         var d, rm_type, r_date, rm_type_name;
+
                         $scope.calendarData.data_new = [];
                         for (var x in $scope.calendarData.data) {
                             if (x < $scope.calendarData.room_types_all.length) {
@@ -252,6 +259,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                         //push the room_type restriction into the all_rates object
                         //per date/room_type
                         var room_type_id, date, rs, rs_ri;
+
                         for (var a in $scope.calendarData.data_new) {
                             room_type_id = $scope.calendarData.data_new[a].room_type_id;
                             date = $scope.calendarData.dates[a];
@@ -319,6 +327,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                     
                     
                     var _date, _row, _restriction;
+
                     for (var i in $scope.calendarData.dates) {
                         _date = $scope.calendarData.dates[i];
                         for (var e in $scope.calendarData.data) {
@@ -360,6 +369,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                     
                 };
                 //Set the current business date value to the service. Done for calculating the history dates
+
                 RateMngrCalendarSrv.businessDate = $rootScope.businessDate;
                 if ($scope.calendarMode === "RATE_VIEW") {
                     var params = calculateRateViewCalGetParams();
@@ -512,17 +522,21 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
             };
 
             var params = {};
+
             params.details = [];
 
             var item = {};
+
             item.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
             item.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
             item.restrictions = [];
 
             var rr = {};
+
             rr.action = action;
             var restrictionTypes = $scope.calendarData.restriction_types;
             var restrictionTypeId = "";
+
             for (var i = 0, keys = Object.keys(restrictionTypes), j = keys.length; i < j; i++) {
                 if (restrictionTypes[keys[i]].value === "CLOSED") {
                     restrictionTypeId = restrictionTypes[keys[i]].id;
@@ -538,6 +552,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
             }
             if ($scope.calendarData.data) {
                 var rateIds = [];
+
                 for (var r in $scope.calendarData.data) {
                     rateIds.push($scope.calendarData.data[r].id);
                 }
@@ -594,6 +609,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
             $scope.popupData.all_room_types = $scope.calendarData.room_types_all;
             if ($scope.ratesRoomsToggle === 'ROOMS') {
                 var roomTypeName;
+
                 for (var i in $scope.calendarData.room_types_all) {
                     if ($scope.calendarData.room_types_all[i].room_type_id === roomType) {
                         roomTypeName = $scope.calendarData.room_types_all[i].name;
@@ -661,6 +677,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
             var currentDate = new Date(date);
             var businessDate = new Date($rootScope.businessDate);
             var ret = false;
+
             if (currentDate.getTime() < businessDate.getTime()) {
                 ret = true;
             }
@@ -697,6 +714,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
 
         $scope.hasOverrideValue = function(date, room_type) {
             var override_obj, override_room_type;
+
             for (var i in $scope.overrideByDate) {
                 override_obj = $scope.overrideByDate[i];
                 if (override_obj.date === date) {
@@ -716,11 +734,13 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
             //date > room type > occupancy
             var all = $scope.current_overrides,
                 d, occupancyOverrides;
+
             for (var x in all) {
                 d = all[x].date;
                 var occupancyOverrides, room_types_with_override = [],
                     room_types_parent = [],
                     occupancies_with_override = [];
+
                 for (var i in all[x].room_types) {
                     room_types_parent.push({
                         'name': all[x].room_types[i].room_type.name,
@@ -776,10 +796,12 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
              */
 
             var room_type = rate.name;
+
             if (typeof date === typeof undefined) {
                 date = $scope.popupData.selectedDate; //use the popup data
             }
             var override_obj, override_date, room_type_obj;
+
             for (var i in $scope.overrideByDate) {
                 override_obj = $scope.overrideByDate[i];
                 override_date = override_obj.date;

@@ -53,6 +53,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 	            $scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
 	        }
         };
+
 		$rootScope.$broadcast("viewFromCardsOutside");
 		// Handle back button Click on card details page.
 		setBackButtonCaption();
@@ -130,6 +131,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 			// CICO-28058 - checking whether AR Number is present or not.
 			var isArNumberAvailable = !!$scope.contactInformation && !!$scope.contactInformation.account_details && !!$scope.contactInformation.account_details.accounts_receivable_number;
+
 			if ($scope.currentSelectedTab === 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
 
 				if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
@@ -221,6 +223,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			var dataToSend = {
 				"id": $scope.contactInformation.id
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
 		};
 
@@ -252,6 +255,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				}
 				fetchARNotes();
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);
 
 		};
@@ -310,6 +314,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		var id = $stateParams.id;
 		// here we are following a bad practice for add screen,
 		//we assumes that id will be equal to "add" in case for add, other for edit
+
 		if (typeof id !== "undefined" && id === "add") {
 			$scope.contactInformation = {};
 			if (typeof $stateParams.query !== "undefined" && $stateParams.query !== "") {
@@ -329,6 +334,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			var data = {
 				'id': id
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, data, successCallbackOfInitialFetch);
 		}
 
@@ -343,6 +349,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (typeof data.id !== 'undefined' && data.id !== "") {
 				//to check if id is defined or not before save
 				var contactInfoAvailable = $scope.contactInformation.id ? true : false;
+
 				$scope.contactInformation.id = data.id;
 				if (!contactInfoAvailable) {
 					callCompanyCardServices();
@@ -386,12 +393,14 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		var saveContactInformation = function(data) {
 			var dataUpdated = false;
+
 			if (!angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
 			}
 
 			if (dataUpdated) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
+
 				for (key in dataToSend) {
 					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
 						//in add case's first api call, presentContactInfo will be empty object

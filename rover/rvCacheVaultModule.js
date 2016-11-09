@@ -16,6 +16,7 @@ angular.module('cacheVaultModule', [])
 		factory.setUpto = function(key, value, min) {
 			var min = min || 3;
 			//$_store.put( key, value );
+
 			factory.set(key, value);
 			$timeout(function() {
 				$_store.remove(key);

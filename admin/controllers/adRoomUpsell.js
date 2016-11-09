@@ -54,6 +54,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         }
         
       };
+
       $scope.invokeApi(adRoomUpsellService.fetch, {}, fetchRoomUpsellDetailsSuccessCallback);
     };
 
@@ -108,6 +109,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
      */
     $scope.clickAddRoomType = function (nextday) {
         var n = 'room_types', s = 'selected_room_type';
+
         if (nextday) {
             n = 'next_day_room_types', s = 'next_day_selected_room_type';
         }
@@ -157,6 +159,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         //var data = {"value": value, "name": name};
         var losSet = function(n) {
             var t = 'room_types';
+
             if (n) {t = 'next_day_room_types';}
             angular.forEach($scope.upsellData[t], function (item, index) {
               if (item.id === value) {
@@ -164,6 +167,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
               }
             });
         };
+
         if (nextday) {
             //$scope.upsellData['next_day_room_types_list'].push(data);
             losSet(true);
@@ -187,6 +191,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       var data = {};
       
       var upsell_setup = {};
+
       upsell_setup.is_force_upsell = $scope.upsellData.upsell_setup.is_force_upsell;
       upsell_setup.is_one_night_only = $scope.upsellData.upsell_setup.is_one_night_only;
       upsell_setup.is_upsell_on = $scope.upsellData.upsell_setup.is_upsell_on;
@@ -215,12 +220,14 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       angular.forEach($scope.upsellData.room_types, function (item, index) {
         if (item.max_los !== '') {
           var obj = {"id": item.id.toString(), "max_los": item.max_los.toString(), "allow_rover_overwrite": item.allow_rover_overwrite.toString()};
+
           data.room_types.push(obj);
         }
       });
       angular.forEach($scope.upsellData.next_day_room_types, function (item, index) {
         if (item.max_los !== '') {
           var obj = {"id": item.id.toString(), "max_los": item.max_los.toString(), "allow_rover_overwrite": item.allow_rover_overwrite.toString()};
+
           data.next_day_room_types.push(obj);
         }
       });
@@ -236,8 +243,10 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         var updateRoomUpsellFailCallback = function (data) {
               $scope.$emit('hideLoader');
               var err = ['Unable to Save'];
+
               $scope.errorMessage = err;
         };
+
         $scope.invokeApi(adRoomUpsellService.update, data, updateRoomUpsellSuccessCallback, updateRoomUpsellFailCallback);
     };
 

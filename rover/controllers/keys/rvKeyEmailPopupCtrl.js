@@ -5,6 +5,7 @@ sntRover.controller('RVKeyEmailPopupController', [ '$rootScope', '$scope', 'ngDi
 	var setupData = function() {
 		var reservationId = "";
 		var reservationStatus = "";
+
 		if($scope.fromView === "checkin") {
 			reservationId = $scope.reservationBillData.reservation_id;
 			reservationStatus = $scope.reservationBillData.reservation_status;
@@ -47,6 +48,7 @@ sntRover.controller('RVKeyEmailPopupController', [ '$rootScope', '$scope', 'ngDi
 		$scope.invokeApi(RVKeyPopupSrv.fetchKeyEmailData, { "reservationId": reservationId }, successCallback, failureCallback);
 
 	};
+
 	setupData();
 
 	// To handle close button click

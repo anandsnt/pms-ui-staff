@@ -24,6 +24,7 @@ admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'CRSConfi
                 if ($scope.CRSConfig.full_refresh) {
                     timer = $interval(function() {
                         var refreshDateObj = new Date($scope.CRSConfig.full_refresh);
+
                         $scope.lastRefreshedTimeMark = timeSince(refreshDateObj.valueOf());
                     }, 1000);
                 }
@@ -67,6 +68,7 @@ admin.controller('adTravelClickCRSSetupCtrl', ['$scope', '$rootScope', 'CRSConfi
                                 $scope.datepicker.to = $scope.datepicker.from;
                             }
                             var currFromDate = new tzIndependentDate($scope.datepicker.from);
+
                             $scope.datepicker.settings.to.maxDate = new Date(currFromDate.setDate(currFromDate.getDate() + MAX_REFRESH_SPAN_DAYS));
                         }
                     },

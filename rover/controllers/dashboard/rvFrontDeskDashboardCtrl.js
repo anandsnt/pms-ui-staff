@@ -2,9 +2,11 @@ sntRover.controller('RVfrontDeskDashboardController', ['$scope', '$rootScope', '
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
+
   $scope.statistics = statistics;
 	//scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
+
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
 
   	$scope.showDashboard = true; //variable used to hide/show dabshboard

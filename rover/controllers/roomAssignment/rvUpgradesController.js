@@ -3,9 +3,11 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
 
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_UPGRADES_TITLE');
+
 	$scope.setTitle(title);
 
 	var scrollerOptions = {tap: true, click: true};
+
 	$scope.setScroller('upgradesView', scrollerOptions);
 	$scope.eventTimestamp = "";
 
@@ -26,6 +28,7 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
 	*/
 	$scope.isUpsellAvailable = function() {
 		var showUpgrade = false;
+
 		if($scope.upgradesList.length > 0 && !$scope.reservationData.reservation_card.is_suite && (($scope.reservationData.reservation_card.is_upsell_available === 'true') && ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' || $scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'))) {
 			showUpgrade = true;
 		}
@@ -64,6 +67,7 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
 		 */
 		_.each(data.upsell_mapping, function(roomType) {
 			var roomsInRoomType  = _.where($scope.allRooms, {"room_type_id": roomType.upgrade_room_type_id_int});
+
 				roomToUpgrade	 = _.filter(roomsInRoomType, isRoomReadyToAssign)[0];
 
 			if(roomToUpgrade) {
@@ -93,6 +97,7 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
             });
 		} else {
 			var showOccupancyMessage = false;
+
 			if($scope.upgradesList[index].room_max_occupancy !== "" && $scope.reservation_occupancy !== null) {
 					if(parseInt($scope.upgradesList[index].room_max_occupancy) < $scope.reservation_occupancy) {
 						showOccupancyMessage = true;
@@ -221,6 +226,7 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
             failureCallBack: errorCallbackselectUpgrade,
             successCallBackParameters: { selectedListItem: selectedListItem}
         };
+
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 	};
 
@@ -272,6 +278,7 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
 	*/
 	$scope.getRoomStatusClass = function(room) {
 		var statusClass = "ready";
+
 		if(room.is_oos === "true") {
 			return "room-grey";
 		}

@@ -150,6 +150,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 				account_type: $scope.accountType,
 				is_non_zero: $scope.isNonZero
 			};
+
 			return params;
 		};
 
@@ -170,6 +171,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 				successCallBack: successCallBackOfSearch,
 				failureCallBack: failureCallBackOfSearch
 			};
+
 			$scope.callAPI(rvAccountsSrv.getAccountsList, options);
 		};
 
@@ -210,6 +212,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 				deceleration: 0.0001,
 				shrinkScrollbars: 'clip'
 			};
+
 			$scope.setScroller('result_showing_area', scrollerOptions);
 		};
 
@@ -297,9 +300,11 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		*/
 		$scope.loadPrevSet = function() {
 			var isAtEnd = ($scope.end === $scope.totalResultCount);
+
 			if (isAtEnd) {
 				//last diff will be diff from our normal diff
 				var lastDiff = ($scope.totalResultCount % $scope.perPage);
+
 				if (lastDiff === 0) {
 					lastDiff = $scope.perPage;
 				}

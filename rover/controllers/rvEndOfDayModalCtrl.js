@@ -65,6 +65,7 @@ $scope.continueClicked = function() {
 		$rootScope.isBussinessDateChanging = true;
 		ngDialog.close();
 	};
+
 	$scope.invokeApi(RVEndOfDayModalSrv.startProcess, {}, startProcessSuccess, startProcessFailure);
 };
 

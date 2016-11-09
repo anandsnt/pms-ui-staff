@@ -13,6 +13,7 @@ admin.service('ADRoomSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms.json';
+
 		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {
@@ -29,6 +30,7 @@ admin.service('ADRoomSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 	this.fecthAllRoomDetails = function(data) {
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms/new.json';
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			that.saveRoomTypesArray(data);
 			deferred.resolve(data);
@@ -54,6 +56,7 @@ admin.service('ADRoomSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
                 "room_type": that.getRoomTypeName(updateData.room_type_id),
                 "room_id": data.room_id
 			};
+
 			deferred.resolve(data);
 		}, function(errorMessage) {
 			deferred.reject(errorMessage);
@@ -113,6 +116,7 @@ admin.service('ADRoomSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 	 */
 	this.getRoomTypeName = function(roomTypeId) {
 		var roomTypeName = "";
+
 		angular.forEach(that.roomTypesArray, function(value, key) {
 	     	if(value.value === roomTypeId) {
 	     		roomTypeName = value.name;
@@ -156,6 +160,7 @@ admin.service('ADRoomSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 	this.deleteRoom = function(data) {
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms/' + data.room_id;
+
 		ADBaseWebSrv.deleteJSON(url).then(function(data) {
 		deferred.resolve(data);
 		}, function(errorMessage) {
@@ -166,6 +171,7 @@ admin.service('ADRoomSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 	this.getComponentRoomTypes = function(data) {
 		var deferred = $q.defer();
 		var url = 'admin/room_types/'+data.suite_room_type_id+'/component_room_types';
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {

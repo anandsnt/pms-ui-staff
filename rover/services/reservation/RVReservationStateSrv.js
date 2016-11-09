@@ -1,6 +1,7 @@
 angular.module('sntRover').service('RVReservationStateService', [
 	function() {
 		var self = this;
+
 		self.metaData = {
 			rateAddons: [],
 			taxDetails: []
@@ -32,6 +33,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 			var rateAddons = _.findWhere(self.metaData.rateAddons, {
 				rate_id: rateId
 			});
+
 			if (rateAddons && rateAddons.associated_addons) {
 				return rateAddons.associated_addons;
 			} else {
@@ -61,6 +63,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 				rateIdentifier = '_CUSTOM_' + id, //Default to the GROUP
 				rateName = isAllotment ? "Custom Rate for Allotment " + name : "Custom Rate for Group " + name,
 				rateDescription = isAllotment ? "Custom Allotment Rate" : "Custom Group Rate";
+
 			return {
 				id: rateIdentifier,
 				name: rateName,
@@ -128,11 +131,13 @@ angular.module('sntRover').service('RVReservationStateService', [
 		self.calculateRate = function(rateTable, numAdults, numChildren) {
 			var baseRoomRate = numAdults >= 2 ? rateTable.double : rateTable.single;
 			var extraAdults = numAdults >= 2 ? numAdults - 2 : 0;
+
 			return baseRoomRate + (extraAdults * rateTable.extra_adult) + (numChildren * rateTable.child);
 		};
 
 		self.calculateMultiplier = function(amountType, numAdults, numChildren) {
 			var multiplier = 1; // for amount_type = flat
+
 			if (amountType === "ADULT") {
 				multiplier = numAdults;
 			} else if (amountType === "CHILD") {
@@ -173,6 +178,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 		self.computeBaseAmount = function(taxableAmount, taxes, numAdults, numChildren) {
 			var totalInclTaxPercent = 0.0,
 				totalInclTaxAmount = 0.0;
+
 			_.each(taxes, function(tax) {
 				var isInclusive = tax.is_inclusive,
 					taxData = _.findWhere(self.metaData.taxDetails, { // obtain the tax data from the metaData
@@ -180,6 +186,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 					}),
 					amountType = taxData.amount_type,
 					multiplier = self.calculateMultiplier(amountType, numAdults, numChildren);
+
 				if (isInclusive) {
 					if (taxData.amount_symbol === '%') {
 						totalInclTaxPercent += (multiplier * parseFloat(taxData.amount));
@@ -352,6 +359,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 
 		self.getAddonAmounts = function(rateAddons, arrival, departure, stayDates) {
 			var addonRates = {};
+
 			_.each(stayDates, function(dayInfo, date) {
 				var numAdults = dayInfo.guests.adults,
 					numChildren = dayInfo.guests.children,
@@ -361,9 +369,11 @@ angular.module('sntRover').service('RVReservationStateService', [
 
 				_.each(rateAddons, function(rateInfo) {
 					var rateId = rateInfo.rate_id;
+
 					_.each(rateInfo.associated_addons, function(addon) {
 						var currentAddonAmount = parseFloat(self.getAddonAmount(addon.amount_type.value, parseFloat(addon.amount), numAdults, numChildren)),
 							shouldPostAddon = self.shouldPostAddon(addon.post_type.frequency, currentDate, arrival, departure, addon.charge_full_weeks_only);
+
 						if (!addon.is_inclusive && shouldPostAddon) {
 							if (addonRates[currentDate][rateId] === undefined) {
 								addonRates[currentDate][rateId] = currentAddonAmount;
@@ -407,6 +417,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 					if (taxDetail.postType === 'STAY') {
 						var taxType = taxDetail.isInclusive ? "incl" : "excl",
 							currentTaxId = taxDetail.id;
+
 						if (stayTax[taxType][currentTaxId] === undefined) {
 							stayTax[taxType][currentTaxId] = parseFloat(taxDetail.amount);
 						} else {
@@ -461,6 +472,7 @@ angular.module('sntRover').service('RVReservationStateService', [
 			//calculate tax for the current day
 			if (taxes && taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
 				var taxApplied = self.calculateTax(rateOnRoomAddonAdjusted, taxes, activeRoom, numAdults, numChildren, false);
+
 				rateTax = {
 					incl: parseFloat(taxApplied.INCL.NIGHT),
 					excl: parseFloat(taxApplied.EXCL.NIGHT)

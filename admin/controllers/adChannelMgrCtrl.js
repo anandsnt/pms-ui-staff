@@ -15,6 +15,7 @@ admin.controller('ADChannelMgrCtrl', ['$scope', '$rootScope', '$state', 'ADChann
                     $scope.roomTypes = data.data.room_types;
                 }
             };
+
             $scope.invokeApi(ADChannelMgrSrv.fetchRoomTypes, {}, fetchSuccess);
         };
         $scope.loadRoomTypes();
@@ -32,6 +33,7 @@ admin.controller('ADChannelMgrCtrl', ['$scope', '$rootScope', '$state', 'ADChann
                 $scope.totalPage = Math.ceil(data.length / $scope.displyCount);
                 $scope.data = data.data;
             };
+
             $scope.invokeApi(ADChannelMgrSrv.fetchManagers, {}, fetchSuccess);
 
         };
@@ -54,6 +56,7 @@ admin.controller('ADChannelMgrCtrl', ['$scope', '$rootScope', '$state', 'ADChann
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = data;
             };
+
             $scope.invokeApi(ADChannelMgrSrv.toggleActivate, params, toggleSuccess, toggleFailure);
         };
         

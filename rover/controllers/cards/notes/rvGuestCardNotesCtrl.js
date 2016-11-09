@@ -13,6 +13,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
    */
   var scrollToTop = function() {
     var scroller = $scope.getScroller('guestcard_notes_scroller');
+
     $timeout(function() {
         scroller.scrollTo(0, 0, 300);
     }, 0);
@@ -41,6 +42,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
       params: params,
       successCallBack: successCallBackOfFetchNotesForThisGuest
     };
+
     $scope.callAPI(rvGuestCardNotesSrv.fetchNotesForGuest, options);
   };
 
@@ -52,6 +54,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
   var successCallBackOfFetchDeleteNoteFromGuestCard = function(data, successCallBackParameters) {
     //we are going to stripe the note from the list
     var indexToDelete = successCallBackParameters.index;
+
     $scope.notes.splice(indexToDelete, 1);
     $scope.refreshScroller('guestcard_notes_scroller');
     $scope.guestCardData.contactInfo.notes_count = $scope.notes.length;
@@ -91,6 +94,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
         index: deletingIndex
       }
     };
+
     $scope.callAPI(rvGuestCardNotesSrv.deleteNoteFromGuestCard, options);
   };
 
@@ -110,6 +114,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
       'date': data.date,
       'id': data.id
     };
+
     $scope.notes.unshift(0);
     $scope.notes[0] = noteToAdd;
 
@@ -138,6 +143,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
       params: params,
       successCallBack: successCallBackOfCreateNoteFromGuestCard
     };
+
     $scope.callAPI(rvGuestCardNotesSrv.createNoteFromGuestCard, options);
   };
 
@@ -148,9 +154,11 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
    */
   var successCallBackOfFetchUpdateActiveNote = function(data) {
     var indexOfNote = _.findIndex($scope.notes, {id: $scope.editingNote.id}) + 1;
+
   	$scope.cancelEditMode();
   	fetchNotesForThisGuest();
     var scroller = $scope.getScroller('guestcard_notes_scroller');
+
     $timeout(function() {
         scroller.scrollToElement('.notes.wrapper li:nth-child('+indexOfNote+')', 300);
     }, 0);
@@ -178,6 +186,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
       params: params,
       successCallBack: successCallBackOfFetchUpdateActiveNote
     };
+
     $scope.callAPI(rvGuestCardNotesSrv.updateNoteFromGuestCard, options);  	
   };
 
@@ -207,6 +216,7 @@ angular.module('sntRover').controller('rvGuestCardNotesCtrl',
   $scope.formatDateForUI = function(date_) {
     var type_ = typeof date_,
         returnString = '';
+
     switch (type_) {
       //if date string passed
       case 'string':

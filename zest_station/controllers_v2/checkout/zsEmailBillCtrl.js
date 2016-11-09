@@ -85,6 +85,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 				successCallBack: sendBillSuccess,
 				failureCallBack: sendBillFailure
 			};
+
 			$scope.callAPI(zsCheckoutSrv.sendBill, options);
 		};
 
@@ -106,6 +107,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 				},
 				failureCallBack: onValidationAPIFailure
 			};
+
 			$scope.callAPI(zsGeneralSrv.emailIsBlackListed, blacklistCheckOptions);
 		}
 
@@ -142,6 +144,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
 			//checks if new email is blacklisted, if so, set invalid email mode
 			//otherwise, continue updating guest email
 			//checkIfEmailIsBlacklisted(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure);
+
 			afterBlackListValidation();
 
 

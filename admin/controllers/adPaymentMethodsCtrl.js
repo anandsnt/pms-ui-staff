@@ -34,6 +34,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 			item.is_active = toggleOn;
 			$scope.$emit('hideLoader');
 		};
+
 		$scope.invokeApi(ADPaymentMethodsSrv.toggleSwitchPayment, data, postSuccess);
 	};
 
@@ -51,6 +52,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 			$scope.data.credit_card_types[index].is_active = ($scope.data.credit_card_types[index].is_active === 'true') ? 'false' : 'true';
 			$scope.$emit('hideLoader');
 		};
+
 		$scope.invokeApi(ADPaymentMethodsSrv.toggleSwitchCC, data, postSuccess);
 	};
 
@@ -63,6 +65,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
             $scope.data.data.product_cross_customer.default_payment_id = val;
              setTimeout(function () {
                 var payment = $('[valfor=value-default-payment]')[1];
+
                 $(payment).val(val);
             }, 2000);
 
@@ -229,6 +232,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 			$scope.currentClickedElementCC = -1;
 			}
 		};
+
 		$scope.invokeApi(ADPaymentMethodsSrv.deletePaymentMethod, id, successCallbackDelete);
 	};
 

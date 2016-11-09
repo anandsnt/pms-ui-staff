@@ -33,6 +33,7 @@ sntRover.controller('RVShowValidationErrorCtrl', ['$rootScope', '$scope', 'ngDia
 				$scope.$emit('hideLoader');
 				cancelPopup();
 			};
+
 			$scope.invokeApi(RVBillCardSrv.changeHousekeepingStatus, data, houseKeepingStatusUpdateSuccess);
 		//Room is set to be not ready by default in checkout process. So we don't need to change the HK status
 		} else {

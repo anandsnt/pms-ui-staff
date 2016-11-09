@@ -31,6 +31,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 			title: ('Work Management'),
 			name: 'rover.workManagement.start'
 		};
+
 		if ($stateParams.from === 'multiple') {
 			prevState = {
 				title: ('Manage Worksheets'),
@@ -54,11 +55,13 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 
 		$scope.dropToUnassign = function(event, dropped) {
 			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
+
 			$scope.unAssignRoom($scope.singleState.assigned[indexOfDropped]);
 		};
 
 		$scope.dropToAssign = function(event, dropped) {
 			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
+
 			$scope.assignRoom($scope.singleState.unassigned[indexOfDropped]);
 		};
 
@@ -146,6 +149,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 
 				// no more checking for worksheet id
 				var assignedRooms = [];
+
 				_.each(data.work_sheets[0].work_assignments, function(room) {
 					assignedRooms.push(room.room);
 				});
@@ -288,6 +292,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 					$scope.errorMessage = errorMessage;
 					$scope.$emit("hideLoader");
 				};
+
 			$scope.invokeApi(RVWorkManagementSrv.deleteWorkSheet, {
 				"id": $stateParams.id
 			}, onDeleteSuccess, onDeleteFailure);
@@ -304,6 +309,7 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 		// how many different work type has been touched
 		// and how many save request must be created
 		var wtid = '';
+
 		_.each(allUnassigned, function(item) {
 			wtid = item.id;
 			_.each(item.unassigned, function(room) {

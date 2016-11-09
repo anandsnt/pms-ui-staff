@@ -31,6 +31,7 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
         var expires_at = new Date(expires_at);
         var timeDiff = Math.abs(expires_at.getTime() - activates_at.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
         return (diffDays-1);
     };
 
@@ -47,6 +48,7 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
             $scope.errorMessage = err;
             $scope.$emit('hideLoader');
         }
+
         $scope.invokeApi(ADNotificationsListSrv.fetchNotification, id, fetchSuccess, fetchFailed);
     }
     //return a date string in the format of yyyy-MM-dd 00:00:00 (API expects this format)
@@ -58,6 +60,7 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
         if(duration !=0) {       
             var activates_at = new Date(activates_at);
             var expires_at = new Date(activates_at.getTime() + (duration*1000 * 60 * 60 * 24));
+
             expires_at = $filter('date')(tzIndependentDate(expires_at), 'yyyy-MM-dd') +" 23:59:59";
             return expires_at;
         }else{
@@ -97,14 +100,17 @@ admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stat
             $scope.errorMessage = err;
             $scope.$emit('hideLoader');
         }       
+
         if(!!notification.id) {
             var params = {
                 id: $scope.notification.id,
                 params: getParams(notification)
             }
+
             $scope.invokeApi(ADNotificationsListSrv.updateNotification, params, $scope.back, saveFailed);        
         }else{
             var params = getParams(notification);
+
             $scope.invokeApi(ADNotificationsListSrv.createNotification, params, $scope.back, saveFailed);
         }
     };

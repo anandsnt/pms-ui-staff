@@ -106,6 +106,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				//company/TA/guest search will be done for 3 characters.
 				//CICO-10323
 				var search = false;
+
 				if($scope.search.guest_company_agent.length >= 3) {
 					search = true;
 				}
@@ -197,6 +198,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			*/
 			$scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn) {
 				  var viewStatus = "";
+
 			      if(isLateCheckoutOn && "CHECKING_OUT" === reservationStatus) {
 			        viewStatus = "late-check-out";
 			        return viewStatus;
@@ -222,6 +224,7 @@ sntRover.controller('RVOutsidePostChargeController',
 		  //Map the room status to the view expected format
 		  $scope.getRoomStatusMapped = function(roomstatus, fostatus) {
 			    var mappedStatus = "";
+
 			    if (roomstatus === "READY" && fostatus === "VACANT") {
 			    mappedStatus = 'ready';
 			    } else {
@@ -236,10 +239,12 @@ sntRover.controller('RVOutsidePostChargeController',
 
 		  $scope.escapeNull = function(value, replaceWith) {
 		      var newValue = "";
+
 		      if((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
 		       newValue = replaceWith;
 		       }
 		      var valueToReturn = ((value === null || typeof value === 'undefined' ) ? newValue : value);
+
 		      return valueToReturn;
 		   };
 
@@ -255,6 +260,7 @@ sntRover.controller('RVOutsidePostChargeController',
 		   			"NOSHOW": 'guest-no-show',
 		   			"NOSHOW_CURRENT": 'guest-no-show'
 		   		};
+
 		   		if(reservationStatus.toUpperCase() in classes) {
 		   			return classes[reservationStatus.toUpperCase()];
 		   		}
@@ -262,6 +268,7 @@ sntRover.controller('RVOutsidePostChargeController',
 
 			$scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn) {
 		  	    var queueClass = '';
+
 		  		if(isReservationQueued==="true" && isQueueRoomsOn === "true") {
 		 			queueClass = 'queued';
 		 		}
@@ -270,6 +277,7 @@ sntRover.controller('RVOutsidePostChargeController',
 
 		    $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly) {
 		       var mappedStatus = "room-number";
+
 		       if(reservation_status === 'CHECKING_IN') {
 
 			      	switch(roomReadyStatus) {

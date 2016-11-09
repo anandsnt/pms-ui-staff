@@ -6,6 +6,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
         var init = function () {
                 $scope.$emit("updateRoverLeftMenu", "actionManager");
                 var heading = 'Actions Manager';
+
                 $scope.setScroller("rvActionListScroller", {
                     scrollbars: true,
                     preventDefault: false,
@@ -26,8 +27,10 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                 $scope.refreshScroller('rvActionListScroller');
             }, getBindabaleAction = function (response) {
                 var action = angular.copy(response);
+
                 action.department = action.assigned_to && action.assigned_to.id || "";
                 var splitDueTimeString = action.due_at_str.split("T");
+
                 action.dueDate = dateFilter(splitDueTimeString[0], $rootScope.dateFormatForAPI);
                 action.dueTime = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm");
                 return action;
@@ -85,6 +88,7 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
                         var selectedAction = _.findWhere($scope.actions, {
                             id: $scope.filterOptions.selectedActionId
                         })
+
                         if (!selectedAction) {
                             $scope.filterOptions.selectedActionId = $scope.actions[0].id;
                         }

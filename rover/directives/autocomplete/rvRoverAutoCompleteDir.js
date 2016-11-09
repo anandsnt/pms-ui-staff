@@ -15,6 +15,7 @@
     var defaultProcessEachItem = function (item, scope) {
         var $content = highlightFilter_(item.name, scope.ngModel),
             $result  = $("<a></a>").html($content);
+
         return $result;
     };
 

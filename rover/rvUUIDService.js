@@ -74,6 +74,7 @@ var UUIDService = function() {
     this.callRecursively = function(options) {
         // TODO: Have to find better way of implementing this if not.
         var shouldCallRecursively = options["shouldCallRecursively"] ? options["shouldCallRecursively"] : false;
+
         if(shouldCallRecursively) {
             that.callCordovaService(options);
         }

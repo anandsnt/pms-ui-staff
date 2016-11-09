@@ -16,6 +16,7 @@ sntRover.controller('RVArTransactionsAddCreditsController', ['$scope', '$rootSco
             ngDialog.close();
 
             var credits = parseFloat(data.available_credit).toFixed(2);
+
             if(credits === '-0.00') {
                 credits = parseFloat('0.00').toFixed(2);
             }
@@ -42,6 +43,7 @@ sntRover.controller('RVArTransactionsAddCreditsController', ['$scope', '$rootSco
     $scope.addCreditAmount = function() {
 
         var totalCreditAmount = parseFloat(parseFloat($scope.existingCreditAmount) + parseFloat($scope.selectedSymbol + $scope.addedCreditAmount)).toFixed(2);
+
         if(totalCreditAmount === '-0.00') {
             totalCreditAmount = parseFloat('0.00').toFixed(2);
         }

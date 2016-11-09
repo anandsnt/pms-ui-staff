@@ -27,6 +27,7 @@ sntRover.controller('RVReservationNotesPopupCtrl', ['$scope', '$rootScope', func
 	    };
 
 	    var params = {};
+
 	    params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;
 	    params.text = $scope.reservationnote;
 	    params.note_topic = 1;
@@ -51,6 +52,7 @@ sntRover.controller('RVReservationNotesPopupCtrl', ['$scope', '$rootScope', func
 	    };
 
 	    var note_id = $scope.$parent.reservationData.reservation_card.notes.reservation_notes[index].note_id;
+
 	    $scope.invokeApi($scope.$parent.reservationCardSrv.deleteReservationNote, note_id, successCallBackDeleteReservationNote);
 	};
 
@@ -72,6 +74,7 @@ sntRover.controller('RVReservationNotesPopupCtrl', ['$scope', '$rootScope', func
     			var successCallBackReservationNote = function(data) {
                     $scope.editingNote.text = $scope.reservationnote;
                     var noteArrayIndex = _.findIndex($scope.$parent.reservationData.reservation_card.notes.reservation_notes, {note_id: data.note_id});
+
     				$scope.$parent.reservationData.reservation_card.notes.reservation_notes[noteArrayIndex] = $scope.editingNote;
     				$scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
     				refreshScroller();
@@ -82,6 +85,7 @@ sntRover.controller('RVReservationNotesPopupCtrl', ['$scope', '$rootScope', func
     				$scope.errorMessage = errorMessage;
     			};
     			var params = {};
+
                 params.id = $scope.editingNote.note_id;
     			params.text = $scope.reservationnote;
     			params.associated_id = $scope.$parent.reservationData.reservation_card.reservation_id;

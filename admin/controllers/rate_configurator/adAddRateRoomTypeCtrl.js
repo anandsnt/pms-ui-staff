@@ -78,6 +78,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
     $scope.saveRoomTypes = function() {
         var roomIdArray =[];
         var roomTypes = [];
+
         angular.forEach($scope.assignedRoomTypes, function(item) {
             roomTypeItem = {"id": item.id, "name": item.name};
             roomTypes.push(roomTypeItem);
@@ -99,9 +100,11 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
             //Navigate to next level. If date ranges are available move to config rate screen
             //If no date range added, move to add_date_range screen
             var menuName = "ADD_NEW_DATE_RANGE";
+
             if($scope.rateData.date_ranges.length > 0) {
                 var dateRangeId = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].id;
                 var menuName = dateRangeId;
+
                 $rootScope.$broadcast("needToShowDateRange", dateRangeId);
             }
             $scope.$emit("changeMenu", menuName);
@@ -156,6 +159,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
         else if(typeof lastDropedTime === 'object') { //means date
             var currentTime = new Date();
             var diff = currentTime - lastDropedTime;
+
             if(diff <= 100) {
                 $event.preventDefault();
             }
@@ -187,6 +191,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
         else if(typeof lastDropedTime === 'object') { //means date
             var currentTime = new Date();
             var diff = currentTime - lastDropedTime;
+
             if(diff <= 100) {
                 $event.preventDefault();
             }
@@ -206,6 +211,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
 
         if($scope.selectedUnAssignedRoomIndex !== -1) {
             var temp = $scope.nonAssignedroomTypes[$scope.selectedUnAssignedRoomIndex];
+
             $scope.assignedRoomTypes.push(temp);
             $scope.nonAssignedroomTypes.splice($scope.selectedUnAssignedRoomIndex, 1);
             $scope.selectedUnAssignedRoomIndex =-1;
@@ -218,6 +224,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
     $scope.topMoveleftClicked = function() {
         if($scope.selectedAssignedRoomIndex !== -1) {
             var temp = $scope.assignedRoomTypes[$scope.selectedAssignedRoomIndex];
+
             $scope.nonAssignedroomTypes.push(temp);
             $scope.assignedRoomTypes.splice($scope.selectedAssignedRoomIndex, 1);
             $scope.selectedAssignedRoomIndex =-1;

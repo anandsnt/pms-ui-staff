@@ -23,6 +23,7 @@ and some folder dedicated to MGM, which has some text changes specifically asked
 */
 var sntGuestWebTemplates = angular.module('sntGuestWebTemplates', []);
 var sntGuestWeb = angular.module('sntGuestWeb', ['ui.router', 'ui.bootstrap', 'pickadate', 'oc.lazyLoad']);
+
 sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $scope) {
 	$state.go('guestwebRoot');
 	/*
@@ -38,6 +39,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 	function($rootScope, $scope, $location, $state, $timeout, reservationAndhotelData, $window) {
 
 		var that = this;
+
 		loadAssets('/assets/favicon.png', 'icon', 'image/png');
 		loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
 		loadAssets('/assets/apple-touch-startup-image-768x1004.png', 'apple-touch-startup-image', '', '(device-width: 768px) and (orientation: portrait)');
@@ -47,6 +49,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		var trackinID = reservationAndhotelData.google_analytics_tracking_id;
 		// initialise google analytics
+
 		$window.ga('create', trackinID, 'auto');
 		//store basic details as rootscope variables
 		if (typeof reservationAndhotelData.access_token !== "undefined") {
@@ -133,6 +136,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			//active footer count
 			var footerCount = _.filter($rootScope.footerSettings.footers, function(footer) { return footer.is_active;}).length;
 			//set zestweb footer color based on admin settings
+
 			applyFooterStyle($rootScope.footerSettings.footer_color);//utils function
 			// based upon number of footer items, set a class for styling
 			$rootScope.footerClass = returnFooterStyleClass(footerCount);
@@ -212,6 +216,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			$state.go('checkOutStatus'); //already checked out
 		} else if ($rootScope.hasOwnProperty('isPasswordResetView')) {
 			var path = $rootScope.isPasswordResetView === 'true' ? 'resetPassword' : 'emailVerification';
+
 			$state.go(path);
 		} else {
 			!reservationAndhotelData.error_occured ? $state.go('checkoutRoomVerification') : $state.go('errorOccured'); // checkout landing page
@@ -232,6 +237,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 var loadAssets = function(filename, rel, type, media) {
 	var fileref = document.createElement("link");
+
 	fileref.setAttribute("rel", rel);
 	fileref.setAttribute("href", filename);
 	if (type !== '') {

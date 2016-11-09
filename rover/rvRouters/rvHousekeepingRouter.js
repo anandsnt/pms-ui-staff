@@ -32,6 +32,7 @@ angular.module('housekeepingModule', [])
                             'QUEUED_ROOMS': ['queued']
                         };
                         var filtersToApply = filterStatus[$stateParams.roomStatus];
+
                         for (var i = 0; i < filtersToApply.length; i++) {
                             RVHkRoomStatusSrv.currentFilters[filtersToApply[i]] = true;
                         }
@@ -85,6 +86,7 @@ angular.module('housekeepingModule', [])
                         page: 1,
                         per_page: 50
                     };
+
                     return RVHkRoomDetailsSrv.getRoomLog(params);
                 }
             }

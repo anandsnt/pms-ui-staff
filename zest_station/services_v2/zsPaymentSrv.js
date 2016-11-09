@@ -84,6 +84,7 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
                 //the timeout set for the hotel
                 if (timeStampInSeconds >= $rootScope.emvTimeout) {
                     var errors = ["Request timed out. Unable to process the transaction"];
+
                     clearInterval(refreshIntervalId);
                     deferred.reject(errors);
                 } else {
@@ -171,6 +172,7 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
                 //the timeout set for the hotel
                 if (timeStampInSeconds >= $rootScope.emvTimeout) {
                     var errors = ["Request timed out. Unable to process the transaction"];
+
                     clearInterval(refreshIntervalId);
                     deferred.reject(errors);
                 } else {

@@ -46,6 +46,7 @@ admin.controller('ADContentManagementCtrl', ['$scope', '$state', '$rootScope', '
 			});
 			$scope.componentIdToDelete = id;
 		};
+
 		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id': id}, successCallbackFetchDeleteDetails);
 
 	};
@@ -58,6 +59,7 @@ admin.controller('ADContentManagementCtrl', ['$scope', '$state', '$rootScope', '
         $scope.$emit('hideLoader');
       };
       var data = {};
+
       data.status = status;
       data.id = id;
 

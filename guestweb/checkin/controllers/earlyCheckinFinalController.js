@@ -20,11 +20,13 @@
 			$scope.checkinTime = $stateParams.time;
 			$scope.earlyCheckinCharge = $stateParams.charge;
 			var offerId = $stateParams.id;
+
 			$scope.isPosting = true;
 			var dataTosend = {
 				'reservation_id': $rootScope.reservationID,
 				'early_checkin_offer_id': offerId
 			};
+
 			earlyCheckinService.applyEarlyCheckin(dataTosend).then(function(response) {
 				$scope.isPosting = false;
 			}, function() {

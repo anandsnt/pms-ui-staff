@@ -25,6 +25,7 @@ admin.controller('ADInvoiceSettingsCtrl', [
                  $scope.$emit('hideLoader');
                  $scope.goBackToPreviousState();
             };
+
             $scope.invokeApi(ADInvoiceSettingsSrv.saveInvoiceSettings, $scope.invoiceSettings, saveInvoiceSettingsSuccessCallback);
         };
 

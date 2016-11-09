@@ -9,6 +9,7 @@ admin.controller('ADAccountReceivablesCtrl', ['$scope', '$state', 'ADHotelSettin
 			$scope.data = data;
 			$scope.$emit('hideLoader');
 		};
+
 		$scope.invokeApi(ADHotelSettingsSrv.fetch, "", successCallbackFetch);
 
 	};
@@ -16,11 +17,13 @@ admin.controller('ADAccountReceivablesCtrl', ['$scope', '$state', 'ADHotelSettin
 	$scope.saveAccountReceivableStatus = function() {
 
 			var data = {};
+
 			data.ar_number_settings = $scope.data.ar_number_settings;
 			var postSuccess = function() {
 				$scope.$emit('hideLoader');
 
 			};
+
 			$scope.invokeApi(ADHotelSettingsSrv.update, data, postSuccess);
 	};
 	$scope.fetchAccountReceivableStatus();

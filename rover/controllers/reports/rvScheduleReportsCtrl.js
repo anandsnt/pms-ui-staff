@@ -47,6 +47,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			);
 
 			var reset = true;
+
 			$scope.refreshFourthColumnScroll(reset);
 		};
 		$scope.userAutoCompleteSimple = {
@@ -67,6 +68,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				var alreadyPresent = _.find($scope.emailList, function(email) {
 					return email === ui.item.value;
 				});
+
 				if ( ! alreadyPresent ) {
 					$scope.emailList.push( ui.item.value );
 				}
@@ -75,6 +77,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				runDigestCycle();
 
 				var reset = true;
+
 				$scope.refreshFourthColumnScroll(reset);
 
 				return false;
@@ -155,6 +158,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
 		$scope.getRepeatPer = function() {
 			var found = _.find($scope.scheduleFreqType, { id: $scope.scheduleParams.frequency_id });
+
 			return !! found ? found.value : 'Per';
 		};
 
@@ -361,6 +365,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
 
 				var updatedIndex = _.findIndex($scope.$parent.$parent.schedulesList, { id: params.id });
+
 				if ( updatedIndex > -1 ) {
 					$scope.$parent.$parent.schedulesList[updatedIndex].frequency_id = params.frequency_id;
 					$scope.$parent.$parent.schedulesList[updatedIndex].repeats_every = params.repeats_every;
@@ -445,6 +450,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			    $scope.myScroll[name].scrollTo(0, 0, 100);
 			}
 		};
+
 		$scope.refreshReportSchedulesScroll = function(reset) {
 			refreshScroll(REPORT_SCHEDULES_SCROLL, reset);
 		};
@@ -649,6 +655,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 			var startsOn = $scope.selectedEntityDetails.starts_on || $rootScope.businessDate;
 			var endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate;
 			/**/
+
 			$scope.startsOnOptions = angular.extend({
 				onSelect: function(value) {
 					$scope.endsOnOptions.minDate = value;
@@ -699,6 +706,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				// structure the schedulable reports exactly like the
 				// schedules list, then we can re-use the support functions
 				var found;
+
 				_.each(payload.schedulableReports, function(id) {
 					found = _.find($scope.$parent.$parent.reportList, { 'id': id });
 
@@ -742,6 +750,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 							return 'Per';
 					}
 				};
+
 				$scope.scheduleFreqType = _.map($scope.scheduleFrequency, function(freq) {
 					return {
 						id: freq.id,
@@ -756,6 +765,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 				});
 
 				var reset = true;
+
 				$scope.refreshReportSchedulesScroll(reset);
 				$scope.$emit( 'hideLoader' );
 			};
@@ -786,6 +796,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         	$scope.setViewCol( $scope.viewCols[0] );
 
         	var reset = true;
+
         	$scope.refreshReportSchedulesScroll(reset);
         }
 
@@ -812,6 +823,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         	$scope.setViewCol( $scope.viewCols[0] );
 
         	var reset = true;
+
         	$scope.refreshReportSchedulesScroll(reset);
 
         	$scope.closeDialog();

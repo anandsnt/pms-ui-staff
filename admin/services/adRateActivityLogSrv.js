@@ -4,6 +4,7 @@ function($http, $q, ADBaseWebSrvV2) {
             var deferred = $q.defer();
             //per page and current page need to be defined
             var url = "api/actions?actionable_type=Rate&actionable_id="+rateId.id+"&page=1&per_page=50";
+
             ADBaseWebSrvV2.getJSON(url).then(function(data) {
                     deferred.resolve(data.results);
             }, function(data) {
@@ -15,6 +16,7 @@ function($http, $q, ADBaseWebSrvV2) {
         this.filterActivityLog = function(params) {
                 var deferred = $q.defer();
                 var url = "api/actions?actionable_type=Rate&actionable_id="+params.id;
+
                 params = _.omit(params, 'id');
 
                 ADBaseWebSrvV2.getJSON(url, params)

@@ -13,6 +13,7 @@ sntRover.controller('rvAllotmentActivityCtrl', [
 		 */
 		$scope.init = function() {
 			var allotmentDataExists = !!$scope.allotmentConfigData;
+
 			$scope.selectedAllotmentOrAccountId = (allotmentDataExists) ? $scope.allotmentConfigData.summary.allotment_id : $scope.accountConfigData.summary.posting_account_id;
 			var params = {
 				"id": $scope.selectedAllotmentOrAccountId,
@@ -23,6 +24,7 @@ sntRover.controller('rvAllotmentActivityCtrl', [
 			var fetchCompleted = function(data) {
 				$scope.$broadcast('PopulateLogData', data);
 			};
+
 			$scope.invokeApi(rvAllotmentAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
 		};
 		$scope.$on('updateLogdata', function(e, params) {
@@ -31,6 +33,7 @@ sntRover.controller('rvAllotmentActivityCtrl', [
 				var fetchCompleted = function(data) {
 					$scope.$broadcast('PopulateLogData', data);
 				};
+
 				$scope.invokeApi(rvAllotmentAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
 
 			});

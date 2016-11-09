@@ -31,6 +31,7 @@ admin.controller('ADZestStationPickUpKeysCtrl', ['$scope', '$rootScope', '$state
 
             $scope.$emit('hideLoader');
         };
+
         $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
     };
     $scope.saveSettings = function() {
@@ -45,6 +46,7 @@ admin.controller('ADZestStationPickUpKeysCtrl', ['$scope', '$rootScope', '$state
         var dataToSend = {
             'kiosk': $scope.zestSettings
         };
+
         $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
     };
 

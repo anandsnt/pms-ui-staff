@@ -18,6 +18,7 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
 		};
 
 		var data = {'userID': $scope.$parent.guestCardData.userId};
+
 		$scope.invokeApi(RVGuestCardLoyaltySrv.fetchLoyalties, data, loyaltyFetchsuccessCallback, loyaltyFetchErrorCallback, 'NONE');
 	};
         $scope.reloadOnSet = false;
@@ -70,6 +71,7 @@ $scope.$on('clearNotifications', function() {
 	$scope.successMessage ="";
 });
 var scrollerOptions = { preventDefault: false};
+
 $scope.setScroller('loyaltyList', scrollerOptions);
 $scope.$on('REFRESHLIKESSCROLL', function() {
 	$scope.refreshScroller('loyaltyList');

@@ -127,6 +127,7 @@ angular.module('stayCardModule', [])
                 },
                 rates: function(RVRoomRatesSrv, $stateParams, staycardJsAssets, RVReservationBaseSearchSrv) {
                     var params = {};
+
                         params.from_date = $stateParams.from_date;
                         params.to_date   = $stateParams.to_date;
                         params.override_restrictions =  $stateParams.override_restrictions;
@@ -148,6 +149,7 @@ angular.module('stayCardModule', [])
                         params.is_member = $stateParams.is_member;
 
                     var activeTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
+
                     if(params.company_id || params.travel_agent_id || params.group_id || params.promotion_id || params.is_member) {
                         activeTab = 'RECOMMENDED';
                     }
@@ -179,6 +181,7 @@ angular.module('stayCardModule', [])
 
                 addonData: function(RVReservationAddonsSrv, $stateParams, staycardJsAssets) {
                     var params = {};
+
                     params.from_date = $stateParams.from_date;
                     params.to_date = $stateParams.to_date;
                     params.is_active = true;
@@ -230,6 +233,7 @@ angular.module('stayCardModule', [])
                         "reservationId": $stateParams.id,
                         "isRefresh": $stateParams.isrefresh
                     };
+
                     return RVReservationCardSrv.fetch(data);
                 },
                 reservationDetails: function(RVReservationCardSrv, $stateParams, staycardJsAssets) {
@@ -237,6 +241,7 @@ angular.module('stayCardModule', [])
                         "confirmationNumber": $stateParams.confirmationId,
                         "isRefresh": $stateParams.isrefresh
                     };
+
                     return RVReservationCardSrv.fetchReservationDetails(data);
                 },
                 baseData: function(RVReservationSummarySrv, staycardJsAssets) {
@@ -278,12 +283,14 @@ angular.module('stayCardModule', [])
                 roomsList: function(RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
 
                     var params = {};
+
                     params.reservation_id = $stateParams.reservation_id;
                    // params.room_type = $stateParams.room_type;
                     return RVRoomAssignmentSrv.getRooms(params);
                 },
                 roomPreferences: function(RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
                     var params = {};
+
                     params.reservation_id = $stateParams.reservation_id;
                     return RVRoomAssignmentSrv.getPreferences(params);
                 },
@@ -291,6 +298,7 @@ angular.module('stayCardModule', [])
                     //check if roomupgrade is available
                     if($stateParams.upgrade_available ==="true") {
                         var params = {};
+
                         params.reservation_id = $stateParams.reservation_id;
                         return RVUpgradesSrv.getAllUpgrades(params);
                     }
@@ -311,6 +319,7 @@ angular.module('stayCardModule', [])
                 },
                 roomsList: function(RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
                     var params = {};
+
                     params.reservation_id = $stateParams.reservation_id;
                     return RVRoomAssignmentSrv.getRooms(params);
                 }

@@ -1,6 +1,7 @@
 var DailyProductionAvailabilityToggle = React.createClass({
 	toggleTheAvailability: function() {
 		var toggleAvailability = this.props.toggleAvailability;
+
 		setTimeout(function() {
 			toggleAvailability();
 		}, 0);

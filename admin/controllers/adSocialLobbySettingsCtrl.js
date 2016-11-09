@@ -34,6 +34,7 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope', '$rootScope', '$state',
 
 	$scope.save = function() {
 		var postingData = {};
+
 		postingData.is_social_lobby_on = $scope.data.is_social_lobby_on;
 		postingData.is_my_group_on = $scope.data.is_my_group_on;
 		postingData.arrival_grace_days = $scope.data.arrival_grace_days;

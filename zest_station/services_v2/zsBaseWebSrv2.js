@@ -2,6 +2,7 @@
 sntZestStation.config(function($httpProvider) {
   $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   var m = document.getElementsByTagName('meta');
+
   for (var i in m) {
     if (m[i].name === 'csrf-token') {
 	  $httpProvider.defaults.headers.common['X-CSRF-Token'] = m[i].content;
@@ -23,11 +24,13 @@ sntZestStation.service('zsBaseWebSrv2', ['$http', '$q', '$window', '$rootScope',
 
 	this.callWebService = function(httpMethod, url, params) {
 		var deferred = $q.defer();
+
 		if(typeof params === "undefined") {
 			params = "";
 		}
 
 		var httpDict = {};
+
  		httpDict.url = url;
  		httpDict.method = httpMethod;
  		if(httpMethod === 'GET' || httpMethod === 'DELETE') {
@@ -52,7 +55,9 @@ sntZestStation.service('zsBaseWebSrv2', ['$http', '$q', '$window', '$rootScope',
 			var urlStart = url.split('?')[0];
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
-			if(status === 406) { // 406- Network error
+			
+
+if(status === 406) { // 406- Network error
 				deferred.reject(response.errors);
 			} else if(status === 422) { // 406- Network error
 				deferred.reject(response.errors);
@@ -73,6 +78,7 @@ sntZestStation.service('zsBaseWebSrv2', ['$http', '$q', '$window', '$rootScope',
 			//
 			else if(status >= 470 && status <= 490) {
 				var error = {};
+
 				error.httpStatus = status;
 				error.errorMessage = response.errors;
 				deferred.reject (error);

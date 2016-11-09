@@ -8,12 +8,14 @@ function isBlank(pString) {
 // inject styles to head tag
 function addStyleString(str) {
 	var node = document.createElement('style');
+
 	node.innerHTML = str;
 	document.head.appendChild(node);
 }
 
 var styleString = "";
 //concat style strings
+
 function appendStyleString(str) {
 	styleString = styleString + str;
 };
@@ -37,6 +39,7 @@ var applyStyle = function(target, style, type) {
 var applyIconStyles = function(color) {
 	if (color !== null) {
 		var styleString = ""
+
 		styleString = styleString + ".calendar-back {background-image: url('/assets/guestweb_v2/images/" + color + "/back_icon.png')}";
 		styleString = styleString + ".calendar-done{background-image: url('/assets/guestweb_v2/images/" + color + "/done_icon.png')}";
 		styleString = styleString + ".circle-bg { background: url('/assets/guestweb_v2/images/" + color + "/circle_bg.png')  no-repeat scroll center top transparent;}";

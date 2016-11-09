@@ -17,6 +17,7 @@ admin.controller('ADTemplateConfigurationCtrl', ['$scope', '$state', 'ADHotelLis
 			$scope.$emit('hideLoader');
 			$scope.data = data.hotels;
 		};
+
 		$scope.invokeApi(ADHotelListSrv.fetch, {}, fetchSuccess);
 	};
 	$scope.fetchHotelList();
@@ -51,6 +52,7 @@ admin.controller('ADTemplateConfigurationCtrl', ['$scope', '$state', 'ADHotelLis
 			}
 
 		};
+
 		$scope.invokeApi(ADHotelConfigurationSrv.editHotelConfiguration, postData, editHotelConfigurationSuccessCallback);
 	};
 
@@ -62,6 +64,7 @@ admin.controller('ADTemplateConfigurationCtrl', ['$scope', '$state', 'ADHotelLis
  			$scope.isEditmode = false;
 		};
 		var assignedEmailTemplates = [];
+
 		angular.forEach($scope.hotelConfig.email_templates, function(templates, index) {
 			if (templates.selected) {
 				assignedEmailTemplates.push(templates.id);
@@ -97,6 +100,7 @@ admin.controller('ADTemplateConfigurationCtrl', ['$scope', '$state', 'ADHotelLis
 			$scope.$emit('hideLoader');
 			$scope.hotelConfig.email_templates = data.email_templates;
 		};
+
 		$scope.invokeApi(ADHotelConfigurationSrv.getTemplateThemes, data, displayThemeCallback);
 	};
 

@@ -3,6 +3,7 @@ angular.module('sntRover').service('RVNewsPaperPreferenceSrv', ['$q', 'RVBaseWeb
 	this.saveNewspaperPreference = function(params) {
 		var deferred = $q.defer();
 		var url =  '/reservation/add_newspaper_preference';
+
 		RVBaseWebSrv.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {

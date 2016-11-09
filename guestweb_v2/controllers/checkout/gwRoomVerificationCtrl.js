@@ -10,6 +10,7 @@ sntGuestWeb.controller('GwRoomVerificationController', ['$scope', '$state', '$co
 
 		var init = function() {
 			var screenIdentifier = "ROOM_VERIFICATION";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.roomVerificationInstruction  = GwWebSrv.zestwebData.roomVerificationInstruction;
 		}();
@@ -21,6 +22,7 @@ sntGuestWeb.controller('GwRoomVerificationController', ['$scope', '$state', '$co
 			};
 			var onFailure = function() {
 				var popupOptions = angular.copy($scope.errorOpts);
+
 				popupOptions.resolve = {
 					message: function() {
 						return "We couldn't verify your room number. Please try again or check out at the front desk."

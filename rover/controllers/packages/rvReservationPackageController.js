@@ -19,6 +19,7 @@ sntRover.controller('RVReservationPackageController',
            item.totalAmount = (item.addon_count)*(item.amount);
   		});
 	};
+
 	$scope.invokeApi(RVReservationPackageSrv.getReservationPackages, reservationId, successCallBack);
 	$scope.setScroller('resultDetails', {
 			'click': true
@@ -63,6 +64,7 @@ sntRover.controller('RVReservationPackageController',
 			}
 		};
 		var addonArray = [];
+
 		addonArray.push(addonId);
 		var dataToApi = {
 			"postData": {
@@ -71,6 +73,7 @@ sntRover.controller('RVReservationPackageController',
 
 			"reservationId": reservationId
 		};
+
 		$scope.invokeApi(RVReservationPackageSrv.deleteAddonsFromReservation, dataToApi, successDelete);
 	};
 
@@ -87,6 +90,7 @@ sntRover.controller('RVReservationPackageController',
             }
             amountType = amountType.toUpperCase();
             var addonCount = RVReservationStateService.getApplicableAddonsCount(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly);
+
             return (addonCount * quantity);
         };
 

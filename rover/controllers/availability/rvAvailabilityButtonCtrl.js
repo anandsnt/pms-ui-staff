@@ -44,6 +44,7 @@ angular.module('sntRover').controller('rvAvailabilityButtonController', [
 
 				// setting data loaded as null, will be using to hide the data showing area on loading in availiable room grid display
 				var emptyDict = {};
+
 				rvAvailabilitySrv.updateData (emptyDict);
 			}
 			else{

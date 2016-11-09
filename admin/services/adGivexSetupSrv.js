@@ -15,6 +15,7 @@ admin.service('adGivexSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2
 	this.saveSetup = function(data) {
 		var deferred = $q.defer();
 		var url = 'admin/gift_systems';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -26,6 +27,7 @@ admin.service('adGivexSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2
 	this.toggleActive = function(data) {
 		var deferred = $q.defer();
 		var url = 'admin/gift_systems';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

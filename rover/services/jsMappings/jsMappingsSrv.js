@@ -13,6 +13,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
     var deferred = $q.defer();
     //if you are updating the url, make sure that same in rover's gulp task
     var url = '/assets/asset_list/____generatedStateJsMappings/____generatedrover/____generatedroverStateJsMappings.json';
+
     rvBaseWebSrvV2.getJSON(url).then(function(data) {
       mappingList = data;
       deferred.resolve(data);
@@ -30,6 +31,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
   	 */
   this.fetchAssets = function(keys, modules_to_inject) {
     var promises = [], length = keys.length, i = 0;
+
     if (!!mappingList) {
       for(; i < length; i++) {
         promises.push( $ocLazyLoad.load({ serie: true, files: mappingList[keys[i]] }) );

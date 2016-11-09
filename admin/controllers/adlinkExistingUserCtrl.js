@@ -14,6 +14,7 @@ admin.controller('ADLinkExistingUserCtrl', ['$scope', '$state', '$stateParams', 
 			$scope.$emit('hideLoader');
 			$state.go('admin.users', { id: $stateParams.id });
 		};
+
 		$scope.invokeApi(ADUserSrv.linkExistingUser, data, successCallback);
 	};
 

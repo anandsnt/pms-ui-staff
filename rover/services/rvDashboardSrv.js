@@ -3,6 +3,7 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
 
     var that = this;
     var userDetails = {}; //varibale to keep header_info.json's output
+
     this.dashBoardDetails = {};
     this.getUserDetails = function() {
         return userDetails;
@@ -14,6 +15,7 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
 	this.fetchUserInfo = function() {
 		var deferred = $q.defer();
 		var url =  '/api/rover_header_info.json';
+
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 
 		userDetails = data;
@@ -29,6 +31,7 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
 	    var deferred = $q.defer();
 
 		var url = '/api/dashboards';
+
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {
@@ -41,6 +44,7 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
 	    var deferred = $q.defer();
 	    //var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
 		var url = '/api/staff_notifications/user';
+
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {
@@ -53,6 +57,7 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
 	    var deferred = $q.defer();
 	    //var url = "ui/show?json_input=WindsurferCRS/settings.json&format=json";
 		var url = '/api/staff_notifications/'+id+'/user';
+
 		rvBaseWebSrvV2.putJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {
@@ -66,6 +71,7 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
     */
    	this.fetchDashboardDetails = function() {
 		var deferred = $q.defer();
+
 		that.fetchDashboardStatisticData()
 	    .then(function(data) {
 	        that.dashBoardDetails.dashboardStatistics = data;
@@ -79,6 +85,7 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
 	this.fetchHotelDetails = function() {
 		var deferred = $q.defer();
 		var url = '/api/hotel_settings.json';
+
 		RVBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {
@@ -91,6 +98,7 @@ angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvB
 	    var deferred = $q.defer();
 
 		var url = '/api/dashboards/statistics';
+
 		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {

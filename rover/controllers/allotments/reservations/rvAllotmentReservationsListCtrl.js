@@ -111,6 +111,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
             room_type_id: parseInt($scope.selectedRoomType)
         });
         //we are hiding the occupancy if selected room type is undefined
+
         if (typeof selectedRoomType === "undefined") {
             return false;
         }
@@ -440,6 +441,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      * [printRegistrationCards description]
      * @return {[type]} [description]
      */
+
     $scope.printRegistrationCards = function() {
       var params = {
         id: $scope.allotmentConfigData.summary.allotment_id
@@ -449,6 +451,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         successCallBack: sucessCallbackOfRegistrationCardData,
         failureCallBack: failureCallbackOfRegistrationCardData
       };
+
       $scope.callAPI(rvAllotmentReservationsListSrv.fetchRegistrationCardPrintData, options);
     };
 
@@ -669,6 +672,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
           successCallBack: successCallBackOfAutoRoomAssignQualifiedReservations,
           failureCallBack: failureCallBackOfAutoRoomAssignQualifiedReservations
         };
+
         $scope.callAPI(rvAllotmentReservationsListSrv.performAutoRoomAssignment, options);
       }, 800);
     };
@@ -776,6 +780,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         params: params,
         successCallBack: successCallBackOfFetchAllReservationsForPrint
       };
+
       $scope.callAPI(rvAllotmentReservationsListSrv.fetchReservations, options);
     };
 
@@ -863,6 +868,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         deceleration: 0.0001,
         shrinkScrollbars: 'clip'
       };
+
       $scope.setScroller('rooming_list', scrollerOptions);
     };
 
@@ -880,6 +886,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     var setActiveLeftSideMenu = function() {
       var activeMenu = ($scope.isInAddMode()) ? 'menuCreateAllotment' : 'menuManageAllotment';
+
       $scope.$emit('updateRoverLeftMenu', activeMenu);
     };
 
@@ -961,6 +968,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         params: params,
         successCallBack: successCallBackOfAddReservations
       };
+
       $scope.callAPI(rvAllotmentReservationsListSrv.addReservations, options);
 
     };
@@ -1031,6 +1039,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         params: params,
         successCallBack: successCallBackOfFetchConfiguredRoomTypeDetails
       };
+
       $scope.callAPI(rvAllotmentReservationsListSrv.getRoomTypesConfiguredAgainstGroup, options);
     };
 
@@ -1117,6 +1126,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         params: params,
         successCallBack: successCallBackOfFetchReservations
       };
+
       $scope.callAPI(rvAllotmentReservationsListSrv.fetchReservations, options);
     };
 
@@ -1174,10 +1184,12 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       var promises = [];
       //we are not using our normal API calling since we have multiple API calls needed
+
       $scope.$emit('showLoader');
 
       //roomtypes fetch
       var paramsForRoomingDetails = formParamsForConfiguredRoomTypeFetch();
+
       promises.push(rvAllotmentReservationsListSrv
           .getRoomTypesConfiguredAgainstGroup(paramsForRoomingDetails)
           .then(successCallBackOfFetchConfiguredRoomTypeDetails)
@@ -1185,6 +1197,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       //reservation list fetch
       var paramsForReservationFetch = formFetchReservationsParams();
+
       promises.push(rvAllotmentReservationsListSrv
           .fetchReservations(paramsForReservationFetch)
           .then(successCallBackOfFetchReservations)
@@ -1222,6 +1235,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     $scope.formatDateForUI = function(date_) {
       var type_ = typeof date_,
           returnString = '';
+
       switch (type_) {
           //if date string passed
         case 'string':
@@ -1267,9 +1281,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
      */
     $scope.loadPrevSet = function() {
       var isAtEnd = ($scope.end === $scope.totalResultCount);
+
       if (isAtEnd) {
         //last diff will be diff from our normal diff
         var lastDiff = ($scope.totalResultCount % $scope.perPage);
+
         if (lastDiff === 0) {
           lastDiff = $scope.perPage;
         }
@@ -1347,6 +1363,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
         successCallBack: sucessCallbackToggleHideRate,
         failureCallBack: failureCallbackToggleHideRate
       };
+
       $scope.callAPI(rvAllotmentReservationsListSrv.toggleHideRate, options);
     };
 
@@ -1362,6 +1379,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       if (isReservaionInSelectedReservation) {
         var index = _.indexOf(_.pluck($scope.selected_reservations, 'id'), reservation.id);
+
         $scope.selected_reservations.splice(index, 1);
       } else {
         $scope.selected_reservations.push(reservation);
@@ -1497,6 +1515,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       var isReservaionInSelectedReservation = _.findWhere($scope.selected_reservations, {
         id: (reservation.id)
       });
+
       return (typeof isReservaionInSelectedReservation !== 'undefined');
     };
 
@@ -1556,6 +1575,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
     $scope.getSortClass = function(sorting_field) {
       var classes = '';
       //if we are trying from the same tab, we have to switch between Asc/Desc
+
       if ($scope.sorting_field === sorting_field) {
         classes = ($scope.sort_dir === 'ASC') ? 'sorting-asc' : 'sorting-desc';
       }
@@ -1694,6 +1714,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       // CICO-17898 The initial APIs need to be called in the scenario while we come back to the Rooming List Tab from the stay card
       var isInRoomingList = ($scope.allotmentConfigData.activeTab === 'RESERVATIONS'),
           amDirectlyComingToRoomingList = $stateParams.activeTab === 'RESERVATIONS';
+
       if (isInRoomingList && (amDirectlyComingToRoomingList)) {
         $timeout(function() {
           callInitialAPIs();

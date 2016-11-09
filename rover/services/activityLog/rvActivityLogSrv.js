@@ -24,6 +24,7 @@ angular.module('sntRover').service('RVActivityLogSrv', [
 		this.filterActivityLog = function(params) {
 			var deferred = $q.defer();
 			var url = '/api/reservation_actions/'+ params.id;
+
 			params = _.omit(params, 'id');
 
 			rvBaseWebSrvV2.getJSON(url, params)

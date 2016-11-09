@@ -17,6 +17,7 @@ admin.service('ADHotelPropertyInterfaceSrv', ['$http', '$q', 'ADBaseWebSrvV2', f
 
         this.activate = function(data) {//data needs to include id (ie. {id: 'wakeup_call'}
 		var deferred = $q.defer(), url;
+
                     url = '/admin/hotel_interfaces.json';
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
@@ -28,6 +29,7 @@ admin.service('ADHotelPropertyInterfaceSrv', ['$http', '$q', 'ADBaseWebSrvV2', f
 	};
         this.deActivate = function(data) {
 		var deferred = $q.defer(), url;
+
                     url = 'admin/hotel_interfaces/'+data.id+'.json';
 
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {

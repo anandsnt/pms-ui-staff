@@ -2,6 +2,7 @@ var DesktopCardOperations = function() {
 	var that = this;
 	var ws = {};
 	//Set to true if the desktop swipe is enabled and a WebSocket connection is established.
+
     that.isActive = false;
     that.isDesktopUUIDServiceInvoked = false;
 
@@ -39,6 +40,7 @@ var DesktopCardOperations = function() {
 		ws.onmessage = function (event) {
 			var cardData = event.data;
 			var cardDataJSON = JSON.parse(cardData);
+
 			if(cardDataJSON.ResponseType) {
 				that.swipeCallbacks.uuidServiceSuccessCallBack(cardDataJSON);
 			}

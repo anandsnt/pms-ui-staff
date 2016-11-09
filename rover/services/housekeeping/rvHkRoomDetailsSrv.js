@@ -90,6 +90,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 
 		// room service status list (will be cached)
 		var allServiceStatus = [];
+
 		this.fetchAllServiceStatus = function() {
 			var deferred = $q.defer(),
 				url = 'api/room_services/status_list';
@@ -111,6 +112,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 
 		// maintenance reasons (will be cached)
 		var maintenanceReasons = [];
+
 		this.fetchMaintenanceReasons = function() {
 			var deferred = $q.defer(),
 				url = 'api/maintenance_reasons';
@@ -249,6 +251,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 
 		// get all all WorkTypes
 		var workTypesList = [];
+
 		this.getWorkTypes = function() {
 			var deferred = $q.defer(),
 				url = 'api/work_types';
@@ -293,6 +296,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			};
 			var deferred = $q.defer(),
 				url = '/api/room_services/service_info.json?';
+
 			rvBaseWebSrvV2.getJSON(url, queryString)
 				.then(function(data) {
 					deferred.resolve({

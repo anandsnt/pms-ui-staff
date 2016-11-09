@@ -7,10 +7,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * you wrapping this.
 		 */
 		var that = this;
+
 		BaseCtrl.call(this, $scope);
 
 		var searchFilteringCall = null;
 		//model against query textbox, we will be using this across
+
 		$scope.textInQueryBox = "";
 		$scope.fetchTerm = "";
 		$scope.room_type_id = "";
@@ -75,6 +77,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			deceleration: 0.0001,
 			shrinkScrollbars: 'clip'
 		};
+
 		$scope.setScroller('result_showing_area', scrollerOptions);
 
 		// The change made here while trying to fix CICO-33114 was reverted.
@@ -343,6 +346,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				return false;
 			}
 			var isContains = false;
+
 			for(var i = 0; i < query.length; i++) {
 				isContains = isContains || ((escN(text1).toUpperCase()).indexOf(query[i]) >= 0);
 			}
@@ -362,6 +366,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		var reservationMeetConditionsToShow = function (res, query) {
 			var escN = $scope.escapeNull,
 			    txtInQry = textContainQuery;
+
 			return (txtInQry(res.firstname) ||
 					txtInQry(res.lastname) ||
 					multipleTextContainQuery(res.firstname, res.lastname) ||
@@ -379,6 +384,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			var reservation = "";
 			//searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 			//if it is zero, then we will request for webservice
+
 			for (var i = 0; i < $scope.results.length; i++) {
 				reservation = $scope.results[i];
 				//CICO-32761 - Suite room component room search retrieves result in API but not visible
@@ -394,6 +400,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * The single digit search is done only for numeric characters.
 		 * CICO-10323
 		 */
+
 		function isSearchOnSingleDigit(searchTerm) {
 			if ($rootScope.isSingleDigitSearch) {
 				return isNaN(searchTerm);
@@ -443,6 +450,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.fetchSearchResults = function() {
 			var query = $scope.textInQueryBox.trim();
 			var hasRoomTypeFilter = $scope.room_type_id === '' || !!$scope.room_type_id;
+
 			if (!hasRoomTypeFilter && $scope.room_type_id === '' && $scope.escapeNull(query) === "" && $scope.escapeNull($stateParams.type) === "") {
 				return false;
 			}
@@ -503,6 +511,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.getGuestStatusIconForArrival = function(reservationStatus, isLateCheckoutOn, isPrecheckin) {
 			var viewStatus = "";
+
 			if ("RESERVED" === reservationStatus || "CHECKEDOUT" === reservationStatus) {
 				viewStatus = "arrival";
 			} else if (("NOSHOW" === reservationStatus) || ("NOSHOW_CURRENT" === reservationStatus)) {
@@ -531,6 +540,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			 */
 		$scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn, isPrecheckin, arrivalDate) {
 			var viewStatus = "";
+
 			if (isLateCheckoutOn && "CHECKING_OUT" === reservationStatus) {
 				viewStatus = "late-check-out";
 				return viewStatus;
@@ -559,6 +569,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		//Map the room status to the view expected format
 		$scope.getRoomStatusMapped = function(roomstatus, fostatus, roomNo) {
 			var mappedStatus = "";
+
 			if(roomNo == '' || roomNo == null) {
 				mappedStatus = 'no-number';
 			} else if (roomstatus === "READY" && fostatus === "VACANT") {
@@ -575,18 +586,22 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.escapeNull = function(value, replaceWith) {
 			var newValue = "";
+
 			if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
 				newValue = replaceWith;
 			}
 			var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
+
 			return valueToReturn;
 		};
 		$scope.escapeNullStr = function(value, replaceWith) {
 			var newValue = "";
+
 			if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
 				newValue = replaceWith;
 			}
 			var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
+
                         if (valueToReturn.indexOf('null') !== -1) {
                             valueToReturn = '';//removes unwanted ", null" type of values
                         }
@@ -605,6 +620,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				"NOSHOW": 'guest-no-show',
 				"NOSHOW_CURRENT": 'guest-no-show'
 			};
+
 			if (reservationStatus.toUpperCase() in classes) {
 				return classes[reservationStatus.toUpperCase()];
 			}
@@ -638,6 +654,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
                 $rootScope.$on('LOAD_SHARED_RESERVATION', function(evtObj, data) {
                     var reservationID = data.reservation_no, confirmationID = data.confirmation_no;
+
                     $scope.goToSharerReservationDetails(evtObj, reservationID, confirmationID);
                 });
 
@@ -724,12 +741,15 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.$emit("UpdateHeading", swipeHeadingInSearch);
 		};
 		var swipeHeadingInSearch = '';
+
 		$scope.$on('SWIPE_ACTION', function(event, data) {
 			var ksn = data.RVCardReadTrack2KSN;
+
 			if (data.RVCardReadETBKSN !== "" && typeof data.RVCardReadETBKSN !== "undefined") {
 				ksn = data.RVCardReadETBKSN;
 			}
 			var cardNumber = data.RVCardReadMaskedPAN.substr(data.RVCardReadMaskedPAN.length - 4);
+
 			swipeHeadingInSearch = 'Reservations with card ' + cardNumber;
 
 			var swipeData = {
@@ -752,6 +772,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.showNoMatches = function(results, queryLength, isTyping, isSwiped) {
 			var showNoMatchesMessage = false;
 			var resultLength = results.length;
+
 			if (!$scope.swipeNoResults) {
 				if (isSwiped && resultLength === 0) {
 					showNoMatchesMessage = true;
@@ -764,6 +785,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			if (!showNoMatchesMessage && resultLength > 0) {
 				//TODO: verify which condition check to chose
 				var totalCountOfFound = 0;
+
 				for (var i = 0; i < results.length; i++) {
 					if (results[i].is_row_visible) {
 						totalCountOfFound++;
@@ -777,6 +799,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		};
 		$scope.isReservationQueued = function(isReservationQueued, isQueueRoomsOn, reservationStatus) {
 			var isQueued = false;
+
 			if (reservationStatus === 'CHECKING_IN' || reservationStatus === 'RESERVED') {
 				if (isReservationQueued === "true" && isQueueRoomsOn === "true") {
 					isQueued = true;
@@ -865,6 +888,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.isNextButtonDisabled = function() {
 			var isDisabled = false;
+
 			if ($scope.end >= RVSearchSrv.totalSearchResults) {
 				isDisabled = true;
 			}
@@ -873,6 +897,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.isPrevButtonDisabled = function() {
 			var isDisabled = false;
+
 			if (RVSearchSrv.page === 1) {
 				isDisabled = true;
 			}
@@ -933,6 +958,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				return time;
 			}
 			var timeDict = tConvert(time);
+
 			return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
 		};
 
@@ -960,6 +986,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			    onRoomTypesFetchFailure = function(error) {
 			    	$scope.roomTypes = [];
 			    };
+
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomTypes, {}, onRoomTypesFetchSuccess, onRoomTypesFetchFailure);
 		};
 
@@ -1041,6 +1068,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		*/
 		$scope.getRoomStatus = function(reservation) {
 			var status = "";
+
 			if(!!reservation.is_room_due_out) {
 				status = "DUE OUT";
 			} else {

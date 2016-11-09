@@ -124,10 +124,12 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
 
         BaseWebSrvV2.getJSON(url, dataToSend).then(function (data) {
             var results = data.data.results;
+
             if (dataToSend.query) {
                 var first, last, room;
                 var str = dataToSend.query.toLowerCase();
                 var visible = 0;
+
                 for (var i in data.data.results) {
                     data.data.results[i].is_row_visible = false;
                     if (data.data.results[i].firstname) {
@@ -193,6 +195,7 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
     this.fetchCurrentTime = function () {
         var deferred = $q.defer();
         var url = '/api/hotel_current_time';
+
         BaseWebSrvV2.getJSON(url).then(function (data) {
             deferred.resolve(rvUtilSrv.roundToNextQuarter(parseInt(data.hotel_time.hh, 10), parseInt(data.hotel_time.mm, 10)));
         }, function (data) {

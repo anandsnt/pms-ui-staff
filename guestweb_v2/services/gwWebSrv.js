@@ -9,6 +9,7 @@
 			var fetchScreenWiseData = function(hotel_identifier) {
 				var deferred = $q.defer();
 				var url = '/api/hotels/custom_cms_messages.json?application=ZEST_WEB&hotel_identifier=' + hotel_identifier;
+
 				$http.get(url).success(function(response) {
 						that.cms_screen_details = _.find(response.screen_list, function(cms_item) {
 							return cms_item.screen_name === "ZEST WEB SCREENS"
@@ -25,24 +26,32 @@
 			var absUrl = window.location.href;
 			// if the guestweb is accessed normaly, ie invoked using
 			// the mail sent from the hotel admin
+
 			if (absUrl.indexOf("/guest_web/home/index?guest_web_token=") !== -1) {
 				var offset = absUrl.indexOf("?");
 				var remainingURl = absUrl.substring(offset, absUrl.length);
 				var startingUrl = absUrl.substring(0, offset);
+
 				apiUrl = startingUrl + "_data" + remainingURl;
 
 			} else if (absUrl.indexOf("checkin") !== -1) {
 				//to strip away state URLS
 				absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
-				var urlComponents = absUrl.split('/');;
+				var urlComponents = absUrl.split('/');
+
+;
 				var hotel_identifier = urlComponents[urlComponents.length - 2];
+
 				fetchScreenWiseData(hotel_identifier);
 			} // direct URL checkout - accessing URLS set in hotel admin for checkin
 			else {
 				//to strip away state URLS
 				absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
-				var urlComponents = absUrl.split('/');;
+				var urlComponents = absUrl.split('/');
+
+;
 				var hotel_identifier = urlComponents[urlComponents.length - 1];
+
 				fetchScreenWiseData(hotel_identifier);
 			};
 

@@ -158,6 +158,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					roomList.summary = response.data.summary;
 
 					var lastRoomService = $vault.get('LAST_ROOM_SERVICE');
+
 					if ( !! lastRoomService ) {
 						lastRoomService = JSON.parse(lastRoomService)
 					} else {
@@ -168,6 +169,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 					}
 
 					var i, j;
+
 					for (i = 0, j = roomList.rooms.length; i < j; i++) {
 						var room = roomList.rooms[i];
 
@@ -285,6 +287,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 		// Get all floors for the current hotel.
 		var hotelFloors = [];
+
 		this.fetchFloors = function() {
 			var deferred = $q.defer();
 			var url = '/api/floors.json';
@@ -340,6 +343,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 		// fetch all HK cleaning staffs
 		var HKEmps = [];
+
 		this.fetchHKEmps = function() {
 			var url = "/api/work_statistics/employees_list";
 			var deferred = $q.defer();
@@ -392,6 +396,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 
 		// get all all WorkTypes
 		var workTypesList = [];
+
 		this.fetchWorkTypes = function() {
 			var deferred = $q.defer(),
 				url = 'api/work_types';
@@ -493,6 +498,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 		this.setRoomStatusClass = function(room) {
 
 			var isOOSorOOO;
+
 			if ( room.hasOwnProperty('service_status') ) {
 				// new code, note: new code is not dependent on 'isStandAlone'
 				isOOSorOOO = (room.service_status.value === 'OUT_OF_SERVICE' || room.service_status.value === 'OUT_OF_ORDER') ? true : false;
@@ -642,6 +648,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			var matchedRoom = _.find(roomList.rooms, function(room) {
 				return parseInt(room.id) === id;
 			});
+
 			matchedRoom[property] = value;
 			matchedRoom.ooOsTitle = calculateOoOsTitle(matchedRoom);
 			this.setRoomStatusClass(matchedRoom);
@@ -651,6 +658,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			var matchedRoom = _.find(roomList.rooms, function(room) {
 				return parseInt(room.id) === id;
 			});
+
 			matchedRoom.hk_status.description = status.description;
 			matchedRoom.description = matchedRoom.hk_status.description;
 			matchedRoom.hk_status.value = status.value;
@@ -689,6 +697,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 				name: 'Unassigned',
 				class: 'unassigned'
 			};
+
 			room.canAssign = true;
 
 			if ( !!room.room_tasks && room.room_tasks.length ) {
@@ -705,6 +714,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 			return assignedStaff;
 		};
 		// exposing the method to service
+
 		this.calculateAssignedStaff = calculateAssignedStaff;
 
 		// calculte the OO/OS title

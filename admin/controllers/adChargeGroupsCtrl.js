@@ -12,6 +12,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 	};
+
 	$scope.invokeApi(ADChargeGroupsSrv.fetch, {}, fetchSuccessCallback);
 
     /*
@@ -65,6 +66,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
 			$scope.data.name = "";
 			$scope.data.charge_groups.push(data);
 		};
+
   		$scope.invokeApi(ADChargeGroupsSrv.save, { 'name': $scope.data.name }, postSuccess);
 	};
 	/*
@@ -76,6 +78,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
 			$scope.currentClickedElement = -1;
 		};
  		var data = $scope.data.charge_groups[$scope.currentClickedElement];
+
   		$scope.invokeApi(ADChargeGroupsSrv.update, data, postSuccess);
    	};
    	/*
@@ -92,6 +95,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
 	 			}
  			});
 		};
+
 		$scope.invokeApi(ADChargeGroupsSrv.deleteItem, {'value': id }, successDeletionCallback);
 	};
 

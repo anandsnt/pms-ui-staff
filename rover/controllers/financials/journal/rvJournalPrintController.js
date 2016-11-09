@@ -4,6 +4,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 	/** Code for PRINT BOX drawer common Resize Handler starts here .. **/
 	var resizableMinHeight = 0;
 	var resizableMaxHeight = 90;
+
 	$scope.eventTimestamp = '';
 	$scope.data.printBoxHeight = resizableMinHeight;
 	$scope.data.uiSelectedPaymentType = 'ALL';
@@ -21,16 +22,19 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 		}
 	};
 	// Drawer resize options.
+
 	$scope.resizableOptions = {
 		minHeight: resizableMinHeight,
 		maxHeight: resizableMaxHeight,
 		handles: 's',
 		resize: function(event, ui) {
 			var height = $(this).height();
+
 			heightChecker(height);
 		},
 		stop: function(event, ui) {
 			var height = $(this).height();
+
 			preventClicking = true;
 			$scope.eventTimestamp = event.timeStamp;
 			heightChecker(height);
@@ -92,6 +96,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 			$scope.data.revenueData = data;
 
 			var chargeCodeList = data.charge_groups[0].charge_codes;
+
 			$scope.data.activeChargeCodes = ( chargeCodeList.length >0 ) ? chargeCodeList : [];
 			$scope.data.revenueData.charge_groups[0].active = true;
 
@@ -112,6 +117,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
        	var uiValue = _.find($scope.data.activeChargeGroups, function(each) {
        		return (each.id).toString() === $scope.data.selectedChargeGroup;
        	});
+
        	$scope.data.uiSelectedChargeGroup = !!uiValue ? uiValue['name']: 'ALL';
 	};
 
@@ -144,6 +150,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
        	var uiValue = _.find($scope.data.activeChargeCodes, function(each) {
        		return each.id === $scope.data.selectedChargeCode;
        	});
+
        	$scope.data.uiSelectedChargeCode = !!uiValue ? uiValue['name'] : '';
 	};
 
@@ -197,6 +204,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 		var uiValue = _.find($scope.data.activePaymentTypes, function(each) {
 			return each.charge_code_id === parseInt($scope.data.selectedPaymentType);
 		});
+
 		$scope.data.uiSelectedPaymentType = !!uiValue ? uiValue['payment_type']:'ALL';
 	};
 

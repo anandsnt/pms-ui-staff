@@ -19,6 +19,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			}, 100);
 		};
 		// Refresh the scroller when the tab is active.
+
 		$rootScope.$on("arTransactionTabActive", function(event) {
 			refreshArTabScroller();
 		});
@@ -69,6 +70,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			};
 			//CICO-10323. for hotels with single digit search,
 			//If it is a numeric query with less than 3 digits, then lets assume it is room serach.
+
 			if($rootScope.isSingleDigitSearch &&
 				!isNaN($scope.filterData.textInQueryBox) &&
 				$scope.filterData.textInQueryBox.length < 3) {
@@ -101,6 +103,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			    $scope.arTransactionDetails = data;
 
 			    var credits = parseFloat(data.available_credit).toFixed(2);
+
 			    if(credits === '-0.00') {
 			    	credits = parseFloat('0.00').toFixed(2);
 			    }
@@ -202,6 +205,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 
 			var queryText = $scope.filterData.textInQueryBox;
 			//setting first letter as captial
+
 			$scope.filterData.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 
 			initPaginationParams();
@@ -278,6 +282,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 
 		$scope.isPrevButtonDisabled = function() {
 			var isDisabled = false;
+
 			if($scope.filterData.pageNo === 1) {
 				isDisabled = true;
 			}
@@ -296,6 +301,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 	            $scope.errorMessage = '';
 
 	            var credits = parseFloat(data.available_credits).toFixed(2);
+
 			    if(credits === '-0.00') {
 			    	credits = parseFloat('0.00').toFixed(2);
 			    }
@@ -379,6 +385,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 	                $scope.errorMessage = "";
 	            }
 	            var clearErrorMsg = false;
+
 	            fetchData(clearErrorMsg);
 	        };
 
@@ -390,6 +397,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 	        var params = {
 	            'id': $scope.filterData.id
 	        };
+
 	        $scope.invokeApi(RVCompanyCardSrv.payAll, params, payAllSuccess, failure);
 	    };
 
@@ -419,6 +427,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 				return "";
 			}
 			var timeDict = tConvert(time);
+
 			return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
 		};
 
@@ -479,6 +488,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 					"lastName": ""
 				}
 			};
+
 			return passData;
 		};
 
@@ -490,6 +500,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			var passData = getPassData();
 			var swipeOperationObj = new SwipeOperation();
 			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+
 			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 			$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
 
@@ -508,6 +519,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 					swipedCardData.token = tokenValue;
 					processSwipedData(swipedCardData);
 				};
+
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			} else {
 				return;
@@ -540,6 +552,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 				$scope.errorMessage = errorData;
 			};
 			var params = { 'id': $scope.filterData.id };
+
 			$scope.invokeApi(RVCompanyCardSrv.fetchArStatementData, params, dataFetchSuccess, dataFailureCallback);
 		};
 
@@ -602,12 +615,14 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorData;
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.fetchArStatementPrintData, params, printDataFetchSuccess, printDataFailureCallback);
 		};
 
 		// Handle AR Statement-PRINT button click
 		$scope.clickedPrintArStatementButton = function() {
 			var params = getParamsToSend();
+
 			printArStatement( params );
 		};
 		// To show email sent callbacks
@@ -621,6 +636,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 		// Handle AR Statement-EMAIL button click
 		$scope.clickedEmailArStatementButton = function() {
 			var params = getParamsToSend();
+
 			params.to_address = $scope.filterData.statementEmailAddress;
 			$scope.closeDialog();
 
@@ -638,6 +654,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 				$scope.status = "alert";
 				$scope.showEmailSentStatusPopup();
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.emailArStatement, params, emailSuccess, emailFailureCallback);
 		};
 
@@ -658,6 +675,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			}
 			else{
 				var transaction = $scope.arTransactionDetails.ar_transactions[index];
+
 				transaction.details = [];
 
 				if(!transaction.active) {
@@ -675,6 +693,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 					var param = {
 						'bill_id': transaction.bill_id
 					};
+
 					$scope.invokeApi(RVCompanyCardSrv.fetchTransactionDetails, param, transactionFetchSuccess, transactionFetchFailure);
 				}
 				else{

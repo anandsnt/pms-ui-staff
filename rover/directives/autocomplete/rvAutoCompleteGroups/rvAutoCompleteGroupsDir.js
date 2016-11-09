@@ -62,6 +62,7 @@ angular.module('sntRover').directive('autoCompleteGroups', ['RVSearchSrv', 'high
                             class: "name",
                             html: highlightFilter(item.group_name, lastSearchText)
                         });
+
                     ul.addClass("find-guest");
                     
                     //For fixing CICO-26513

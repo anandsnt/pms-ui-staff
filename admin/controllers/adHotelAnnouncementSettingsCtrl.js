@@ -25,6 +25,7 @@ admin.controller('ADHotelAnnouncementSettingsCtrl', ['$scope', '$rootScope', '$s
 
 	$scope.save = function() {
 		var postingData = {};
+
 		postingData.guest_zest_welcome_message = $scope.data.guest_zest_welcome_message;
 		postingData.guest_zest_checkout_complete_message = $scope.data.guest_zest_checkout_complete_message;
 		postingData.key_delivery_email_message = $scope.data.key_delivery_email_message;

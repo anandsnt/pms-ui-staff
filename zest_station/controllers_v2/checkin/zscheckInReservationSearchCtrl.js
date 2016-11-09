@@ -93,6 +93,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 					var primaryGuest = _.find(data.results[0].guest_details, function(guest_detail) {
 						return guest_detail.is_primary === true;
 					});
+
 					if ($scope.zestStationData.check_in_collect_nationality) {
 						$state.go('zest_station.collectNationality', {
 							'guestId': primaryGuest.id
@@ -109,6 +110,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				$scope.mode = 'NO_MATCH';
 				$scope.callBlurEventForIpad();
 			};
+
 			if ($scope.zestStationData.kiosk_validate_first_name) {
 				params.first_name = $scope.reservationParams.first_name;
 				params.validate_first_name_first_letter = true;
@@ -118,6 +120,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				successCallBack: checkinVerificationSuccess,
 				failureCallBack: checkinVerificationCallBack
 			};
+
 			$scope.callAPI(zsCheckinSrv.fetchReservations, options);
 		};
 
@@ -201,6 +204,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 			$scope.hideKeyboardIfUp();
 			var params = angular.copy($scope.reservationParams);
+
 			delete params.alt_confirmation_number;
 			delete params.email;
 			delete params.date;
@@ -215,6 +219,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 			$scope.hideKeyboardIfUp();
 			var params = angular.copy($scope.reservationParams);
+
 			delete params.no_of_nights;
 			delete params.email;
 			delete params.date;
@@ -228,6 +233,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 			$scope.hideKeyboardIfUp();
 			var params = angular.copy($scope.reservationParams);
+
 			delete params.no_of_nights;
 			delete params.alt_confirmation_number;
 			delete params.date;
@@ -241,6 +247,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 		$scope.dateEntered = function() {
 
 			var params = angular.copy($scope.reservationParams);
+
 			delete params.no_of_nights;
 			delete params.alt_confirmation_number;
 			delete params.email;
@@ -316,12 +323,14 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 						}
 
 					}
+
 					$scope.callAPI(zsGeneralSrv.fetchHotelTime, timeOptions);
 				},
 				failureCallBack: function(errorMessage) {
 					$scope.$emit('GENERAL_ERROR', errorMessage);
 				}
 			};
+
 			$scope.callAPI(zsGeneralSrv.fetchHotelBusinessDate, options);
 		};
 		var setReservationParams = function() {
@@ -373,6 +382,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			$scope.focusInputField('last-name');
 			$scope.setScreenIcon('checkin');
 		};
+
 		init();
 	}
 ]);

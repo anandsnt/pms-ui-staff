@@ -72,6 +72,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
         $scope.getGuestClassForArrival = function(group) {
             //"cancel" if cancelled, "check-in" if not cancelled
             var classes = isCancelledGroup(group) ? 'cancel' : 'check-in';
+
             return classes;
         };
 
@@ -83,6 +84,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
         $scope.getGuestClassForDeparture = function(group) {
             //"cancel" if cancelled, 'check-out' if not cancelled
             var classes = isCancelledGroup(group) ? 'cancel' : 'check-out';
+
             return classes;
         };
 
@@ -229,6 +231,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
                 per_page: $scope.perPage,
                 page: $scope.page
             };
+
             return params;
         };
 
@@ -246,6 +249,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
                 successCallBack: successCallBackOfSearch,
                 failureCallBack: failureCallBackOfSearch
             };
+
             $scope.callAPI(rvGroupSrv.getGroupList, options);
         };
 
@@ -317,6 +321,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
                 deceleration: 0.0001,
                 shrinkScrollbars: 'clip'
             };
+
             $scope.setScroller('result_showing_area', scrollerOptions);
         };
 
@@ -349,6 +354,7 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
         $scope.formatDateForUI = function(date_) {
             var type_ = typeof date_,
                 returnString = '';
+
             switch (type_) {
                 //if date string passed
                 case 'string':
@@ -426,9 +432,11 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          */
         $scope.loadPrevSet = function() {
             var isAtEnd = ($scope.end === $scope.totalResultCount);
+
             if (isAtEnd) {
                 //last diff will be diff from our normal diff
                 var lastDiff = ($scope.totalResultCount % $scope.perPage);
+
                 if (lastDiff === 0) {
                     lastDiff = $scope.perPage;
                 }

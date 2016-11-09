@@ -3,6 +3,7 @@ admin.service('adAnalyticSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSr
 	this.fetchSetup = function() {
 		var deferred = $q.defer();
 		var url = 'api/analytics_setups.json';
+
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -13,6 +14,7 @@ admin.service('adAnalyticSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSr
 	this.saveSetup = function(data) {
 		var deferred = $q.defer();
 		var url = 'api/analytics_setups/save_setup';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

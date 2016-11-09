@@ -105,6 +105,7 @@ sntRover.controller('RVReportListCrl', [
                     var sortDate = _.find(report[i].sortByOptions, function(item) {
                         return item.value === 'DATE';
                     });
+
                     if (!!sortDate) {
                         report[i].chosenSortBy = sortDate.value;
                     };

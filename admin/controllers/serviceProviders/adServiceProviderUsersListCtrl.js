@@ -13,6 +13,7 @@ admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q',
     */
 	var fetchTableData = function($defer, params) {
 		var getParams = $scope.calculateGetParams(params);
+
 		getParams.service_provider_id = $scope.serviceProviderId;		
 		var successCallbackFetch = function(data) {
 			if(data.status === "failure") {
@@ -28,6 +29,7 @@ admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q',
 	        $defer.resolve($scope.data);
         	$scope.$emit('hideLoader');
 		};
+
 		$scope.invokeApi(ADServiceProviderSrv.fetch, getParams, successCallbackFetch);
 	};
 	/**
@@ -63,6 +65,7 @@ admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q',
 			$scope.data[index].is_active = (currentStatus === "true" ? "false" : "true");
 			$scope.$emit('hideLoader');
 		};
+
 		$scope.invokeApi(ADServiceProviderSrv.activateInactivate, data, successCallbackActivateInactivate);
 	};
    /**
@@ -78,6 +81,7 @@ admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q',
 			$scope.data.splice(index, 1);
 			$scope.$emit('hideLoader');			
 		};
+
 		$scope.invokeApi(ADServiceProviderSrv.deleteUser, data, successDelete );
 	};
 	/**

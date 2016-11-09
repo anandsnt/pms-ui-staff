@@ -2,6 +2,7 @@
 admin.config(function($httpProvider) {
   $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   var m = document.getElementsByTagName('meta');
+
   for (var i in m) {
     if (m[i].name === 'csrf-token') {
 	  $httpProvider.defaults.headers.common['X-CSRF-Token'] = m[i].content;
@@ -22,12 +23,14 @@ admin.service('ADBaseWebSrvV2', ['$http', '$q', '$window', function($http, $q, $
     */
 	this.callWebService = function(httpMethod, url, params, data) {
 		var deferred = $q.defer();
+
 		if(typeof params === "undefined") {
 			params = "";
 		}
 
 		//Sample params {params:{fname: "fname", lname: "lname"}}
 		var httpDict = {};
+
  		httpDict.url = url;
  		httpDict.method = httpMethod;
  		if(httpMethod === 'GET' || httpMethod === 'DELETE') {

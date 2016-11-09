@@ -10,6 +10,7 @@ sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$control
 		
 		var init = function() {
 			var screenIdentifier = "ETA_UPDATION";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.timings = returnTimeArray();//utils function
 			$scope.arrivalTime = "";
@@ -24,6 +25,7 @@ sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$control
 				// check with Jeff if we need this
 				//$scope.timings = (hotelTimeLimit === "12:00 am") ? []: $scope.timings;
 				//remove all times prior to hotels time
+
 				$scope.timings.splice(0, hotelTimeLimitInTimeIndex);
 			} else {
 				return;
@@ -36,6 +38,7 @@ sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$control
 			},
 			successCallBack: fetchHotelTimeSuccess,
 		};
+
 		$scope.callAPI(GwCheckinSrv.fetchHotelTime, options);
 
 	}

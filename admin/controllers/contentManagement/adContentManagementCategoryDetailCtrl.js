@@ -25,6 +25,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl', ['$scope', '$state', '
 			$scope.data = data;
 			$scope.initialIcon = $scope.data.icon;
 		};
+
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id, fetchCategorySuccessCallback);
 	};
 	/*Checkin if the screen is loaded for a new category or,
@@ -64,10 +65,12 @@ admin.controller('ADContentManagementCategoryDetailCtrl', ['$scope', '$state', '
 			$scope.goBack();
 		};
 		var unwantedKeys = ["image"];
+
 		if($scope.initialIcon === $scope.data.icon) {
 			unwantedKeys = ["icon", "image"];
 		}
 		var data = dclone($scope.data, unwantedKeys);
+
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, data, saveCategorySuccessCallback);
 	};
 
@@ -87,6 +90,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl', ['$scope', '$state', '
 			});
 			$scope.componentIdToDelete = id;
 		};
+
 		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id': id}, successCallbackFetchDeleteDetails);
 
 	};

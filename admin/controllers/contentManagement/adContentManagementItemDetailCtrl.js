@@ -73,6 +73,7 @@ $scope.fetchAddons = function() {
        $scope.addons = $scope.getAddonsWithNameValues(data.results);
        $scope.$emit('hideLoader');
    };
+
    $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true}, fetchSuccessOfAddons);
 };
 
@@ -91,11 +92,13 @@ $scope.fetchSpaces = function() {
        $scope.space_durations = $scope.getDurationsWithNameValues(data.meeting_room_durations);
        $scope.$emit('hideLoader');
     };
+
    $scope.invokeApi(ADContentManagementSrv.fetchMeetingRooms, {"no_pagination": true}, fetchSuccessOfSpaces);
 };
 $scope.getDurationsWithNameValues = function(items) {
 	var list = [];
 	var obj;
+
     angular.forEach(items, function(item, index) {
         obj = {};
        	obj.value = item;
@@ -109,6 +112,7 @@ $scope.getDurationsWithNameValues = function(items) {
 $scope.getListWithNameValues = function(items) {
 	var list = [];
 	var obj;
+
     angular.forEach(items, function(item, index) {
         obj = {};
        	obj.value = item;
@@ -121,6 +125,7 @@ $scope.getListWithNameValues = function(items) {
 $scope.getDurationsNames = function (items) {
 	var duration = [];
 	var name;
+
 	angular.forEach(items, function(item, index) {
 		duration.push(item.name);
 	});
@@ -130,6 +135,7 @@ $scope.getDurationsNames = function (items) {
 $scope.setSpaceDurations = function(val, index) {
 	var duration = $scope.space_durations[index];
 	var flag = $scope.data.durations.indexOf(duration.value);
+
 	if(flag === -1) {
 		$scope.data.durations.push(duration.value);
 	}
@@ -149,6 +155,7 @@ $scope.itemTypeSelected = function() {
 
 $scope.getSelectedAddonDescription = function() {
 	var description = "";
+
      angular.forEach($scope.addons, function(item, index) {
        if(item.value === $scope.data.addon_id) {
        	description = item.description;
@@ -159,6 +166,7 @@ $scope.getSelectedAddonDescription = function() {
 
 $scope.getSelectedAddonPrice = function() {
 	var price = "";
+
 	angular.forEach($scope.addons, function(item, index) {
        if(item.value === $scope.data.addon_id) {
        	price = item.amount;
@@ -187,6 +195,7 @@ $scope.getSelectedAddonPrice = function() {
 			}
 			$scope.data.durations = $scope.getDurationsNames($scope.data.durations);
 		};
+
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id, fetchItemSuccessCallback);
 	};
 	/*Checkin if the screen is loaded for a new item or,
@@ -226,6 +235,7 @@ $scope.getSelectedAddonPrice = function() {
 			$scope.goBack();
 		};
 		var unwantedKeys = [];
+
 		if($scope.initialIcon === $scope.data.icon) {
 			unwantedKeys.push('icon');
 		}
@@ -233,6 +243,7 @@ $scope.getSelectedAddonPrice = function() {
 			unwantedKeys.push('image');
 		}
 		var data = dclone($scope.data, unwantedKeys);
+
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, data, saveItemSuccessCallback);
 	};
 
@@ -252,6 +263,7 @@ $scope.getSelectedAddonPrice = function() {
 			});
 			$scope.componentIdToDelete = id;
 		};
+
 		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id': id}, successCallbackFetchDeleteDetails);
 
 	};

@@ -15,6 +15,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 	//CICO-13907
 	$scope.hasAnySharerCheckedin = function() {
 		var isSharerCheckedin = false;
+
 		angular.forEach($scope.reservationData.reservation_card.sharer_information, function(sharer, key) {
 			if(sharer.reservation_status === 'CHECKEDIN' || sharer.reservation_status === 'CHECKING_OUT') {
 				isSharerCheckedin = true;
@@ -118,6 +119,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
             var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
             var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" &&
                                     (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
+
                 cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number!=="";
             $state.go("rover.reservation.staycard.roomassignment", {
                 "reservation_id": $scope.reservationData.reservation_card.reservation_id,
@@ -169,6 +171,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 			$scope.saveData.guest_id = $scope.guestCardData.guestId;
 	        $scope.saveData.user_id = $scope.guestCardData.userId;
 	        var isValidDataExist = false;
+
 			if($scope.showEmail && $scope.showPhone && $scope.showMobile) {
 				$scope.saveData = $scope.saveData;
 				if($scope.saveData.email !== '' || $scope.saveData.phone !== '' || $scope.saveData.mobile !== '') {
@@ -176,36 +179,42 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 				}
 			} else if($scope.showPhone && $scope.showMobile) {
 				var unwantedKeys = ["email"]; // remove unwanted keys for API
+
 				$scope.saveData = dclone($scope.saveData, unwantedKeys);
 				if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
 					isValidDataExist = true;
 				}
 			} else if($scope.showEmail && $scope.showMobile) {
                 var unwantedKeys = ["phone"]; // remove unwanted keys for API
+
                 $scope.saveData = dclone($scope.saveData, unwantedKeys);
                 if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
                     isValidDataExist = true;
                 }
             } else if($scope.showEmail && $scope.showPhone) {
                 var unwantedKeys = ["mobile"]; // remove unwanted keys for API
+
                 $scope.saveData = dclone($scope.saveData, unwantedKeys);
                 if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
                     isValidDataExist = true;
                 }
             } else if($scope.showEmail) {
                 var unwantedKeys = ["mobile", "phone"]; // remove unwanted keys for API
+
                 $scope.saveData = dclone($scope.saveData, unwantedKeys);
                 if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
                     isValidDataExist = true;
                 }
             } else if($scope.showPhone) {
                 var unwantedKeys = ["mobile", "email"]; // remove unwanted keys for API
+
                 $scope.saveData = dclone($scope.saveData, unwantedKeys);
                 if($scope.saveData.phone !== '' || $scope.saveData.mobile !== '' ) {
                     isValidDataExist = true;
                 }
             } else {
 				var unwantedKeys = ["phone", "email"]; // remove unwanted keys for API
+
 				$scope.saveData = dclone($scope.saveData, unwantedKeys);
 				if($scope.saveData.email !== '') {
 					isValidDataExist = true;
@@ -226,6 +235,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 			$scope.saveData.guest_id = $scope.guestCardData.guestId;
 	        $scope.saveData.user_id = $scope.guestCardData.userId;
 			var unwantedKeys = ["phone"]; // remove unwanted keys for API
+
 			$scope.saveData = dclone($scope.saveData, unwantedKeys);
 			$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.submitAndCheckinSuccessCallback);
 	};

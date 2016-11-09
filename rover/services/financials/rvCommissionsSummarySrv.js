@@ -5,6 +5,7 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
      * Service function to fetch Accounts Receivables
      * @return {object} payments
      */
+
     that.fetchCommissions = function (params) {
 
         var deferred = $q.defer();

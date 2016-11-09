@@ -149,6 +149,7 @@ sntRover.run([
 
 		var $_savePrevStateTitle = function(title) {
 			var upperCase = title.toUpperCase();
+
 			$_prevStateTitle = $_backTitleDict[upperCase] ? $_backTitleDict[upperCase] : title;
 		};
 
@@ -293,6 +294,7 @@ sntRover.run([
 	        	// please keep this log
 	        	console.log( 'HK.Filters.Cleared' )
 	        };
+
 	        if ( 'rover.housekeeping.roomStatus' == fromState.name ) {
 	        	if ( 'rover.housekeeping.roomDetails' != toState.name ) {
 	        		resetHkFilter();

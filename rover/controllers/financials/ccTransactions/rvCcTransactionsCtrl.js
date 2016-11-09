@@ -27,6 +27,7 @@ sntRover.controller('RVccTransactionsController', ['$scope', '$filter', '$stateP
             $scope.$broadcast('showErrorMessage', data);
             $scope.$emit('hideLoader');
         };
+
         $scope.invokeApi(RVccTransactionsSrv.submitBatch, {}, successCallBackSubmitBatch,  failureCallBackSubmitBatch);
     };
 
@@ -54,6 +55,7 @@ sntRover.controller('RVccTransactionsController', ['$scope', '$filter', '$stateP
 
     $scope.hasAnyElements = function(object) {
     	var hasAnyElements = true;
+
     	if(isEmptyObject(object)) {
     		hasAnyElements = false;
     	}

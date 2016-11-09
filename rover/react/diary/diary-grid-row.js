@@ -92,6 +92,7 @@ var GridRow = React.createClass({
 
 	__onDrop: function(e, id) {
 		var el = this.getDOMNode().querySelectorAll("[data-reactid='" + id + "']");
+
 		el[0].className = 'hour';
 		console.log(this.getDOMNode());
 
@@ -102,11 +103,13 @@ var GridRow = React.createClass({
 	__onDragOver: function(e, id) {
 		e.preventDefault();
 		var el = this.getDOMNode().querySelectorAll("[data-reactid='" + id + "']");
+
 		el[0].className = 'hour drag-over';
 	},
 	__onDragLeave: function(e, id) {
 		e.preventDefault();
 		var el = this.getDOMNode().querySelectorAll("[data-reactid='" + id + "']");
+
 		el[0].className = 'hour';
 	}
 });

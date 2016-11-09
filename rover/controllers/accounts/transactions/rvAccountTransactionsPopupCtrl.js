@@ -41,6 +41,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 			loader: 'NONE',
 			successCallBack: hideLoaderAndClosePopup
 		};
+
 		$scope.callAPI (rvAccountTransactionsSrv.transactionDelete, options);
 
 	};
@@ -52,6 +53,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	 */
 	$scope.showSpiltValues = function() {
 		var transaction = $scope.selectedTransaction;
+
 		if ($scope.splitTypeisAmount) {
 			$scope.displayFirstValue  = transaction.amount - $scope.splitValue;
 			$scope.displaySecondValue = $scope.splitValue;
@@ -82,6 +84,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 			loader: 'NONE',
 			successCallBack: hideLoaderAndClosePopup
 		};
+
 		$scope.callAPI (rvAccountTransactionsSrv.transactionSplit, options);
 
 	};
@@ -107,6 +110,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 			loader: 'NONE',
 			successCallBack: hideLoaderAndClosePopup
 		};
+
 		$scope.callAPI (rvAccountTransactionsSrv.transactionEdit, options);
 
 	};
@@ -128,6 +132,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 			loader: 'NONE',
 			successCallBack: hideLoaderAndClosePopup
 		};
+
 		$scope.callAPI (rvAccountTransactionsSrv.transactionEditChargeDescription, options);
 
 	};
@@ -138,6 +143,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	$scope.chargecodeData = {};
 	$scope.chargecodeData.chargeCodeSearchText = "";
 	var scrollerOptionsForSearch = {click: true, preventDefault: false};
+
 	$scope.setScroller('chargeCodesList', scrollerOptionsForSearch);
 
 	$scope.selectChargeCode = function(id) {
@@ -170,6 +176,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	      var value = "";
 	      //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 	      //if it is zero, then we will request for webservice
+
 	      for(var i = 0; i < $scope.availableChargeCodes.length; i++) {
 	        value = $scope.availableChargeCodes[i];
 	        if (($scope.escapeNull(value.name).toUpperCase()).indexOf($scope.chargecodeData.chargeCodeSearchText.toUpperCase()) >= 0 ||
@@ -190,6 +197,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	/**
     * function to clear the charge code search text
     */
+
 	$scope.clearResults = function() {
 	  	$scope.chargecodeData.chargeCodeSearchText = "";
 	};
@@ -209,6 +217,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
         $scope.showChargeCodes = false;
 	   	displayFilteredResultsChargeCodes();
 	   	var queryText = $scope.chargecodeData.chargeCodeSearchText;
+
 	    $scope.chargecodeData.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
     };
     /* 

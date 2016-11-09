@@ -13,6 +13,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
 
 			//we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
 			var scrollerOptions = {scrollX: true, preventDefault: false};
+
   			$scope.setScroller ('room_availability_scroller', scrollerOptions);
 
   			//if already fetched we will show without calling the API
@@ -127,6 +128,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
 		/**
 		* when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
 		*/
+
 		$scope.$on("changedRoomAvailableData", handleDataChange);
 
 		$scope.$on('changedGrpNAllotData', function() {
@@ -158,6 +160,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGridStatusController', 
 		*/
 		$scope.getGroupAllotmentName = function(source, id) {
 			var found = _.findWhere(source.holdStatus, {id: id});
+
 			return found && found.name;
 		};
 

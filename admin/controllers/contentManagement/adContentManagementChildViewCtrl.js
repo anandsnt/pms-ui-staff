@@ -25,6 +25,7 @@ admin.controller('ADContentManagementChildViewCtrl', ['$scope', '$state', 'ADCon
       $scope.$emit('hideLoader');
     };
     var data = {};
+
     data.id = id;
     data.parent_id = $scope.parent_id;
     data.position = position +1;

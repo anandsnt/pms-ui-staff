@@ -6,6 +6,7 @@ angular.module('onScroll', []).directive('onScroll', function() {
         },
         link: function(scope, element, attrs) {
             var expressionHandler = scope.method();
+
             element.bind('scroll', function() {
                 expressionHandler();
             });
@@ -14,5 +15,6 @@ angular.module('onScroll', []).directive('onScroll', function() {
             });
         }
     };
+
     return directiveDefinitionObject;
 });

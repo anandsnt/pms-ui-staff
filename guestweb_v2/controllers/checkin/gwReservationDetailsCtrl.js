@@ -9,6 +9,7 @@ sntGuestWeb.controller('gwReservationDetailsController', ['$scope', '$state', '$
 		});
 		var init = function() {
 			var screenIdentifier = "RESERVATION_DETAILS";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 		}();
 

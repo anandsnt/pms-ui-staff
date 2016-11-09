@@ -22,6 +22,7 @@ admin.service('ADCountrySortSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 
 		var deferred = $q.defer();
 		var url =  'api/countries/assign_sequence.json';
+
 		ADBaseWebSrv.postJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

@@ -56,6 +56,7 @@
 			var data 				= {};
 			var unwanted_keys 		= ["month", "year", "day"];
 			var newObject 			= JSON.parse(JSON.stringify($scope.guestDetails));
+
             for(var i=0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
             };
@@ -108,6 +109,7 @@
 			var d = parseInt(comp[1], 10);
 			var y = parseInt(comp[2], 10);
 			var date = new Date(y, m-1, d);
+
 			if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
 			   return true
 			} else {
@@ -131,6 +133,7 @@
 		    var birthDate = new Date(birthDateString);
 		    var age = today.getFullYear() - birthDate.getFullYear();
 		    var m = today.getMonth() - birthDate.getMonth();
+
 		    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
 		        age--;
 		    }
@@ -141,10 +144,12 @@
 		//else redirect to front desk
 		var checkIfGuestIsEligible = function() {
 			var birthday = $scope.guestDetails.month+"/"+$scope.guestDetails.day+"/"+$scope.guestDetails.year;	
+
 			$scope.isLoading 		= false;
 			if(getAge(birthday) >= $rootScope.minimumAge || $rootScope.minimumAge === 0) {
 				$scope.isLoading 		= true;
 				var dataToSave 			= getDataToSave();
+
 				guestDetailsService.postGuestBirthDate(dataToSave).then(function(response) {
 					$scope.isLoading 	= false;
 					$rootScope.isBirthdayVerified =  true;

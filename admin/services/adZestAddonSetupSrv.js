@@ -17,6 +17,7 @@ admin.service('adZestAddonSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 
 		var deferred = $q.defer();
 		var url = 'api/zest_addon_settings';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

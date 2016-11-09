@@ -10,6 +10,7 @@ angular.module('sntRover').controller('rvGroupRoomingMassCheckoutPopUpCtrl', ['$
 	var setScroller = function() {
 		//scroller options
         var scrollerOptions = {};
+
         $scope.setScroller('failed_reservations_scroller', scrollerOptions);
 	}();
 

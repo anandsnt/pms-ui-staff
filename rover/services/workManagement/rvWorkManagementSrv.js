@@ -10,6 +10,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.fetchMaids = function() {
 			var deferred = $q.defer();
 			var url = 'api/work_statistics/employees_list';
+
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				_.each(data.results, function(d) {
 					d.ticked = false;
@@ -42,6 +43,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.fetchShifts = function() {
 			var deferred = $q.defer();
 			var url = 'api/shifts';
+
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				_.each(data.results, function(shift) {
 					shift.display_name = shift.name + "(" + shift.time + ")";
@@ -62,6 +64,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.fetchStatistics = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/work_statistics?date=' + params.date;
+
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -78,6 +81,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.createWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_sheets';
+
 			RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -93,6 +97,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.fetchWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_sheets/' + params.id;
+
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -108,6 +113,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.deleteWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_sheets/' + params.id;
+
 			RVBaseWebSrvV2.deleteJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -129,6 +135,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 			// }, function(data) {
 			// 	deferred.reject(data);
 			// });
+
 			deferred.resolve([]);
 			return deferred.promise;
 		};
@@ -137,6 +144,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.saveWorkSheet = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_assignments/assign';
+
 			RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -188,6 +196,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.searchRooms = function(params) {
 			var deferred = $q.defer(),
 				url = '/house/search.json?query=' + params.key + '&date=' + params.date;
+
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data.data.rooms);
 			}, function(data) {
@@ -399,6 +408,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		this.sortAssigned = function(assigned, allRooms, allTasks, options) {
 			var length = assigned.length,
 				employee;
+
 			for (var i = 0; i < length; i++) {
 				employee = assigned[i];
 
@@ -567,6 +577,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 			for (i = 0, j = employees.length; i < j; i++) {
 				var displayName = employees[i].name.split(" "),
 					firstname   = displayName.shift();
+
 				displayName = firstname.charAt(0) + ". " + displayName.join(" ");
 				copyEmployee = $.extend(
 						{},

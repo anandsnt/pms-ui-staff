@@ -52,6 +52,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 		var data = {
 			"id": id
 		};
+
 		$scope.invokeApi(ADRateTypeSrv.getRateTypesDetails, data, successCallbackRender);
 	};
 
@@ -106,6 +107,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 				// To add new data to scope
 				$scope.data.push(data);
 				var l = $scope.data.length;
+
 				$scope.data[(l - 1)].name = $scope.rateTypeData.name;
 				if($scope.rateTypeData.classification !== null && typeof $scope.rateTypeData.classification !== "undefined") {
          	$scope.data[(l - 1)].classification = _.findWhere($scope.rateClassifications, {id: parseInt($scope.rateTypeData.classification.id, 10)});
@@ -120,6 +122,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 			}
 			$scope.currentClickedElement = -1;
 		};
+
 		if ($scope.isAddMode) {
 			$scope.invokeApi(ADRateTypeSrv.saveRateType, $scope.rateTypeData, successCallbackSave);
 		} else {
@@ -144,6 +147,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout,
 			$scope.data.splice(index, 1);
 			$scope.currentClickedElement = -1;
 		};
+
 		$scope.invokeApi(ADRateTypeSrv.deleteRateType, id, deleteRateSuccess);
 	};
 

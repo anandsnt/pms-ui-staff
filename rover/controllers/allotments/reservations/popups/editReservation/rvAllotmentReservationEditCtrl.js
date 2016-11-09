@@ -31,6 +31,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
       $scope.shouldDisableChangeRoom = function(reservation) {
         var rStatus = reservation.status,
             validResStatuses = ['RESERVED', 'CHECKING_IN'];
+
         return !_.contains(validResStatuses, rStatus);
       };
 
@@ -42,6 +43,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
       $scope.shouldDisableFromDateChange = function(reservation) {
         var rStatus = reservation.status,
             validResStatuses = ['RESERVED', 'CHECKING_IN'];
+
         return !_.contains(validResStatuses, rStatus);
       };
 
@@ -53,6 +55,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
       $scope.shouldDisableToDateChange = function(reservation) {
         var rStatus = reservation.status,
             validResStatuses = ['RESERVED', 'CHECKING_IN', 'CHECKEDIN', 'CHECKING_OUT'];
+
         return !_.contains(validResStatuses, rStatus);
       };
 
@@ -140,6 +143,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
           room_type_id: parseInt($scope.ngDialogData.room_type_id)
         });
         //we are hiding the occupancy if selected room type is undefined
+
         if (typeof selectedRoomType === 'undefined') {
           return false;
         }
@@ -204,6 +208,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
               params: reservation,
               successCallBack: onUpdateReservationSuccess
             };
+
         $scope.callAPI(rvAllotmentConfigurationSrv.updateRoomingListItem, options);
 
       };
@@ -327,6 +332,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
           params: paramsForListOfFreeRooms,
           successCallBack: successCallBackOfListOfFreeRoomsAvailable
         };
+
         $scope.callAPI(rvAllotmentReservationsListSrv.getFreeAvailableRooms, options);
       };
 
@@ -391,6 +397,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
 
       var computeReservationStatusFlags = function(reservation) {
         var rStatus = reservation.status;
+
         return {
           isCheckedOut: rStatus === 'CHECKEDOUT',
           isUneditable: rStatus === 'CANCELED',
@@ -458,6 +465,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
       * Initialization of pop
       * @return {[type]} [description]
       */
+
       (function initilizeMe() {
         //variable initilizations
         initializeVariables();

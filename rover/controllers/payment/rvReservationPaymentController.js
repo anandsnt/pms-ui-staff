@@ -11,6 +11,7 @@ sntRover.controller('reservationPaymentController',
 		var status = $scope.reservationData.reservation_card.reservation_status,
 		    isCC = $scope.reservationData.reservation_card.has_any_credit_card_attached_bill,
 		    hasButtonClass = "has-button";
+
 		if(status === 'NOSHOW' || status === 'CHECKEDOUT' || status === 'CANCELED') {
 			hasButtonClass = "";
 		}
@@ -24,6 +25,7 @@ sntRover.controller('reservationPaymentController',
 	$scope.displayButton = function() {
 		var status = $scope.reservationData.reservation_card.reservation_status,
 			display = true;
+
 		if(status === 'NOSHOW' || status === 'CHECKEDOUT' || status === 'CANCELED') {
 			display = false;
 		}
@@ -49,6 +51,7 @@ sntRover.controller('reservationPaymentController',
      * Allow post with no credit
      *
      */
+
     $scope.setAllowPostWithNoCredit= function() {
 
     	if(rvPermissionSrv.getPermissionValue('ALLOW_POST_WHEN_RESTRICTED')) {
@@ -61,6 +64,7 @@ sntRover.controller('reservationPaymentController',
 	            params: updateParams,
 	            successCallBack: successCallBackOfUpdateAllowPostWithNoCredit
 	        };
+
 	        $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
     	}
 
@@ -68,6 +72,7 @@ sntRover.controller('reservationPaymentController',
     }
     $scope.showPostWithNoCreditButton = function() {
     	var isPostWithNoCreditButtonVisible = true;
+
     	if(!$rootScope.isStandAlone || $scope.reservationData.reservation_card.payment_method_used === '' || $scope.reservationData.reservation_card.payment_method_used === null) {
     		isPostWithNoCreditButtonVisible = false;
     	}

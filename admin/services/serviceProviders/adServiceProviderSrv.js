@@ -24,6 +24,7 @@ admin.service('ADServiceProviderSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
         var deferred = $q.defer();
         var url = '/admin/users.json';
         //var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
+
         ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -39,6 +40,7 @@ admin.service('ADServiceProviderSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
     this.activateInactivate = function(data) {
         var deferred = $q.defer();
         var url = '/admin/users/toggle_activation';
+
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
@@ -71,6 +73,7 @@ admin.service('ADServiceProviderSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
     this.addServiceProviderUser = function(data) {
         var deferred = $q.defer();
         var url = '/admin/users';
+
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
@@ -85,6 +88,7 @@ admin.service('ADServiceProviderSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
     this.getServiceProviderUserDetails = function(request) {
         var deferred = $q.defer();        
         var url = '/admin/users/'+ request.id+'/edit.json';
+
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
@@ -100,6 +104,7 @@ admin.service('ADServiceProviderSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
     this.updateServiceProviderUser = function(data) {
         var deferred = $q.defer();
         var url = '/admin/users/'+ data.user_id;
+
         ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
@@ -179,6 +184,7 @@ admin.service('ADServiceProviderSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
     this.deleteUser = function(data) {
         var deferred = $q.defer();
         var url = '/admin/users/'+data.id;
+
            ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {           
             deferred.resolve(data);
         }, function(data) {
@@ -195,6 +201,7 @@ admin.service('ADServiceProviderSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
     this.sendInvitation = function(data) {
         var deferred = $q.defer();
         var url = '/admin/user/send_invitation';
+
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
             deferred.resolve(data);
         }, function(data) {

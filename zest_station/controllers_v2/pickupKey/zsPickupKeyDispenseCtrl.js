@@ -52,6 +52,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		//handling style in ctrl, so as not to mess up style sheet
 		//this is a small style addition
 		var marginTop = $scope.zestStationData.show_room_number ? '40px' : '0px';
+
 		$scope.doneButtonStyle = {
 			'margin-top': marginTop
 		};
@@ -191,6 +192,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 		 * [initMakeKey description]
 		 * @return {[type]} [description]
 		 */
+
 		$scope.$on('printLocalKeyCordovaFailed', function(evt, response) {
 			console.warn('error: ', response);
 			onGeneralFailureCase();

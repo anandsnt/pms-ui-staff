@@ -4,6 +4,7 @@ sntRover.service('RVWorkstationSrv', ['$q', 'rvBaseWebSrvV2', function($q, RVBas
 	this.setWorkstation = function(param) {
 		var deferred = $q.defer();
 		var url =  '/api/workstations/set_workstation';
+
 		RVBaseWebSrvV2.postJSON(url, param).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -44,6 +45,7 @@ sntRover.service('RVWorkstationSrv', ['$q', 'rvBaseWebSrvV2', function($q, RVBas
 	    var deferred = $q.defer();
 
 	    var url = "/api/key_encoders";
+
 	    RVBaseWebSrvV2.getJSON(url, data).then(function (data) {
 	        deferred.resolve(data);
 	    }, function (data) {

@@ -10,6 +10,7 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 		//to do:CC
 		var init = function() {
 			var screenIdentifier = "CHECKOUT_LATER_OPTIONS";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			var onSuccess = function(response) {
 				$scope.lateCheckoutOptions = response;
@@ -21,6 +22,7 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 				},
 				successCallBack: onSuccess
 			};
+
 			$scope.callAPI(GwCheckoutSrv.fetchLateCheckoutOptions, options);
 		}();
 
@@ -53,6 +55,7 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 				//'is_cc_attached_from_guest_web':false};
 				successCallBack: onSuccess
 			};
+
 			$scope.callAPI(GwCheckoutSrv.updateReservationWithNewCheckoutOptions, options);
 		};
 	}

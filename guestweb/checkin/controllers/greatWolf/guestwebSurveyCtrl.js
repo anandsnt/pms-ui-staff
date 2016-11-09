@@ -10,6 +10,7 @@
 
 			var fetchSurveyDetailsSuccessCallback = function(response) {
 				var screenCMSDetails = {};
+
 				screenCMSDetails.title = response.survey_question_title;
 				screenCMSDetails.description = response.survey_question;
 				$scope.screenDetails = screenCMSDetails;
@@ -40,6 +41,7 @@
 				};
 			};
 			//call API
+
 			$scope.isLoading = true;
 			guestDetailsService.fetchSurveyDetails(params).then(function(response) {
 
@@ -68,6 +70,7 @@
 				'survey_response': $scope.survey_response,
 				'reservation_id': $rootScope.reservationID
 			};
+
 			guestDetailsService.submitSurvey(params).then(function(response) {
 				$scope.isLoading = false;
 				$scope.goToNextPage();

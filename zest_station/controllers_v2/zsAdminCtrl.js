@@ -16,6 +16,7 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
         };
         // when the back button clicked
+
         $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
             $state.go('zest_station.home');
         });
@@ -37,6 +38,7 @@ sntZestStation.controller('zsAdminCtrl', [
             if (name && typeof name === typeof 'str') {
                 if (name.length > 1) {
                     var str = name.split('ipp://');
+
                     if (str[1]) {
                         name = str[1];
                     }
@@ -47,6 +49,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 name = 'Select';
             }
             var dots = "...";
+
             name = (name.length > 25) ? name.substring(0, 25) + dots : name;
             $scope.printerLabel = name;
         };
@@ -56,6 +59,7 @@ sntZestStation.controller('zsAdminCtrl', [
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.zestStationData.set_workstation_id;
             });
+
             $scope.workstation = {}
             if (typeof selectedWorkStation !== 'undefined') {
                 $scope.workstation.selected = parseInt(selectedWorkStation.id);
@@ -75,6 +79,7 @@ sntZestStation.controller('zsAdminCtrl', [
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.workstation.selected;
             });
+
             setPrinterLabel(selectedWorkStation.printer);
         };
 
@@ -115,12 +120,14 @@ sntZestStation.controller('zsAdminCtrl', [
                 successCallBack: onSuccess,
                 failureCallBack: onFail
             };
+
             $scope.callAPI(zsGeneralSrv.validate, options);
         };
         /**
          * Go to home page
          **/
         var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled;
+
         $scope.cancelAdminSettings = function(a) {
             if (!a) {
                 console.info('setting demo mode back to: ', lastDemoModeSetting);
@@ -174,6 +181,7 @@ sntZestStation.controller('zsAdminCtrl', [
         $scope.logOutApplication = function() {
             if (typeof chrome !== "undefined") {
                 var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
+
                 console.info("chrome app id" + chromeAppId);
                 //minimize the chrome app on loging out
                 (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, "zest-station-logout"): "";
@@ -199,6 +207,7 @@ sntZestStation.controller('zsAdminCtrl', [
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.workstation.selected;
             });
+
             return selectedWorkStation;
         };
         /**
@@ -219,6 +228,7 @@ sntZestStation.controller('zsAdminCtrl', [
                     'reason': $scope.zestStationData.workstationOooReason
                 });
                 var workStationstorageKey = 'snt_zs_workstation';
+
                 localStorage.setItem(workStationstorageKey, $scope.savedSettings.kiosk.workstation.station_identifier);
                 $scope.zestStationData.workstationStatus === 'out-of-order' ? $state.go('zest_station.outOfService') : $scope.cancelAdminSettings(true); //navigate to home screen
             };
@@ -251,6 +261,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 successCallBack: successCallBack,
                 failureCallBack: failureCallBack
             };
+
             if (station) {
                 //if no workstation is selected, we dont have an id to update settings for
                 //since the workstation station_id itself is saved in the browser
@@ -270,9 +281,11 @@ sntZestStation.controller('zsAdminCtrl', [
                     },
                     'printer': $scope.workstation.printer
                 };
+
                 return params;
             };
             var params = getParams();
+
             $scope.savedSettings = angular.copy(params);
             delete params.kiosk.workstation;
             delete params.printer;
@@ -290,6 +303,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 successCallBack: successCallBack,
                 failureCallBack: failureCallBack
             };
+
             $scope.callAPI(zsGeneralSrv.saveSettings, options);
         };
 
@@ -353,6 +367,7 @@ sntZestStation.controller('zsAdminCtrl', [
 
 
             var localDebugging = false; //change this if testing locally, be sure to make false if going up to dev/release/prod
+
             if (localDebugging && !($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad))) {
                 $scope.isIpad = true;
                 $scope.zestStationData.isAdminFirstLogin = true;

@@ -25,10 +25,12 @@ function BaseCtrl($scope) {
   //if no replace value is passed, it returns an empty string
   $scope.escapeNull = function(value, replaceWith) {
   		var newValue = '';
+
   		if ((typeof replaceWith !== 'undefined') && (replaceWith !== null)) {
     newValue = replaceWith;
   		}
   		var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
+
   		return valueToReturn;
 	};
 
@@ -125,17 +127,20 @@ function BaseCtrl($scope) {
 
   $scope.getSimplifiedDayName = function(date) {
     	var returnText = '';
+
     try {
       var passedDate = tzIndependentDate(date);
       var currentDate = tzIndependentDate($scope.businessDate);
       var timeDiff = (passedDate.getTime() - currentDate.getTime());
       var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
       if (diffDays === 0) {
         returnText = 'Today';
       } else if (diffDays === 1) {
         returnText = 'Tomorrow';
       } else {
         var weekday = new Array(7);
+
         weekday[0] = 'Sunday';
         weekday[1] = 'Monday';
         weekday[2] = 'Tuesday';
@@ -199,6 +204,7 @@ function BaseCtrl($scope) {
     	}
     	//we are merging the settings provided in the function call with defaults
     	var tempScrollerOptions = angular.copy(defaultScrollerOptions);
+
     	angular.extend(tempScrollerOptions, scrollerOptions); //here is using a angular function to extend,
     	scrollerOptions = tempScrollerOptions;
     	//checking whether scroll options object is already initilised in parent controller
@@ -256,6 +262,7 @@ function BaseCtrl($scope) {
     var failure = function(data) {
       $scope.$emit('hideLoader');
       var errorMessage = ['There is a problem with your credit card'];
+
       failureCallback(errorMessage);
       $scope.$apply();
     };
@@ -268,10 +275,12 @@ function BaseCtrl($scope) {
       catch (err) {
         $scope.$emit('hideLoader');
         var errorMessage = ['There was a problem connecting to the payment gateway.'];
+
         failureCallback(errorMessage);
       };
     } else {
       var errorMessage = ['There is a problem with your credit card'];
+
       failureCallback(errorMessage);
     };
 

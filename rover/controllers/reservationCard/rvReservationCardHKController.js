@@ -85,6 +85,7 @@ sntRover.controller('rvReservationCardHKController',
                 var configured = _.findWhere($scope.houseKeeping.reservationTasks, {
                     work_type_id: workType.id
                 });
+
                 if (configured) {
                     workType.default_task = configured.task_id;
                     workType.old_default_task = configured.task_id;

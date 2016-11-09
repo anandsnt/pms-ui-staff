@@ -4,6 +4,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrv
     */
    var that = this;
    var hotelDetailsData = {};
+
 	that.fetchAddData = function() {
 		var deferred = $q.defer();
 		var url = '/admin/hotels/new.json';
@@ -112,6 +113,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrv
 	this.testMLIPaymentGateway = function(data) {
 		var deferred = $q.defer();
 		var url = 'api/test_mli_payment_gate_way';
+
 		ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

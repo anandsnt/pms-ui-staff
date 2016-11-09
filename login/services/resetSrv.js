@@ -93,6 +93,7 @@ login.service('resetSrv', ['$http', '$q', function($http, $q) {
 		var url = "";
 
 		var url = "/api/password_resets/validate_token.json";
+
 		$http.post(url, data).success(function(response, status) {
 			if(response.status !== "success") {
 		    	failureCallBack(response.errors);

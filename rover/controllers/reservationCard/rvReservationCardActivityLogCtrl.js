@@ -6,6 +6,7 @@ sntRover.controller('rvReservationCardActivityLogCtrl',
        var init = function() {
 
             var hideLog = true;
+
             $scope.activityLog = {
                 hideDetails: hideLog
             };

@@ -74,6 +74,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
              "name": $scope.url.name,
              "url_suffix": $scope.url.url_suffix
         }
+
         $scope.invokeApi(adZestCheckinCheckoutSrv.saveNewDirectURL, data, saveNewDirectURLSuccess);
     };
 
@@ -93,10 +94,12 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
              "name": $scope.url.name,
              "url_suffix": $scope.url.url_suffix
         }
+
         $scope.invokeApi(adZestCheckinCheckoutSrv.editDirectURL, data, saveEditDirectURLSuccess);
 
     };
     //toggle activate/deactivate
+
     $scope.switchActivation =  function(index) {
         var toggleSucces = function(response) {
             $scope.$emit('hideLoader');
@@ -107,6 +110,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
              "id": $scope.urls[index].id,
              "active": !$scope.urls[index].active
         }
+
         $scope.invokeApi(adZestCheckinCheckoutSrv.editDirectURL, data, toggleSucces);
     };
     //delete the selected url        
@@ -119,6 +123,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
              $scope.$emit('hideLoader');
         };
         var data =  {"id": $scope.urls[index].id};
+
         $scope.invokeApi(adZestCheckinCheckoutSrv.deteDirectUrl, data, deleteSuccessCallback);
     };
     // save/update  success
@@ -135,6 +140,7 @@ admin.controller('ADZestCheckinDirectUrlEmailCtrl',
         $scope.$emit('hideLoader');
     };
     // save direct URL settings
+
     $scope.saveCheckin = function() {
         $scope.invokeApi(adZestCheckinCheckoutSrv.saveDirectSetup, $scope.directUrlData, saveSettingsSuccess);
     };

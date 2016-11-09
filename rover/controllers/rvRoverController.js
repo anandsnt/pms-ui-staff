@@ -174,6 +174,7 @@ sntRover.controller('roverController',
 
     eventer(messageEvent, function(e) {
       var responseData = e.data;
+
       if (responseData.response_message === "token_created") {
         $scope.$broadcast('six_token_recived', {
           'six_payment_data': responseData
@@ -594,6 +595,7 @@ sntRover.controller('roverController',
 
 
     var options = {};
+
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
     options["uuidServiceSuccessCallBack"] = $scope.uuidServiceSuccessCallBack;
@@ -824,6 +826,7 @@ sntRover.controller('roverController',
     $scope.clickedOnHeaderLateCheckoutIcon = function(event) {
       if ($rootScope.default_dashboard !== 'HOUSEKEEPING') {
         var type = "LATE_CHECKOUT";
+
         $state.go('rover.search', {
           'type': type,
           'from_page': 'DASHBOARD'
@@ -931,6 +934,7 @@ sntRover.controller('roverController',
 
       $scope.setScroller(MENU_SCROLLER, scrollerOptions);
     };
+
     setupScrolls();
     var refreshScroll = function(name, reset) {
       $scope.refreshScroller(name);
@@ -939,6 +943,7 @@ sntRover.controller('roverController',
           $scope.myScroll[name].scrollTo(0, 0, 100);
       }
     };
+
     $scope.refreshMenuScroll = function(reset) {
       refreshScroll(MENU_SCROLLER, reset);
     };

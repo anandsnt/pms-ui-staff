@@ -40,6 +40,7 @@ admin.controller('ADZestStationColorsAndGraphicsCtrl', ['$scope', '$rootScope', 
                 $scope.zestSettings = data;
                 $scope.$emit('hideLoader');
             };
+
             $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
         };
         $scope.saveSettings = function() {
@@ -53,12 +54,14 @@ admin.controller('ADZestStationColorsAndGraphicsCtrl', ['$scope', '$rootScope', 
             };
             var hasTagsRemoved = function(str) {
                 var regexp = new RegExp('#', 'g');
+
                 str = str.replace(regexp, '');
                 return str;
             };  
            
             var data = $scope.zestSettings.colors;
             var colorData = {};
+
              colorData.text = hasTagsRemoved(data.text);
              colorData.background = hasTagsRemoved(data.background);
              colorData.button = hasTagsRemoved(data.button);
@@ -73,6 +76,7 @@ admin.controller('ADZestStationColorsAndGraphicsCtrl', ['$scope', '$rootScope', 
                                         }
 
                              };
+
             $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess, saveFailed);
         };
         

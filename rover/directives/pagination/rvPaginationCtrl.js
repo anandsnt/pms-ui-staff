@@ -35,6 +35,7 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
             else {
                 var apiCall = $scope.pageOptions.api[0],
                     params  = $scope.pageOptions.api.slice(1);
+
                 params.push(page);
                 apiCall.apply($scope, params);      // invoking apiCall( additional_params, pageNo )
             }

@@ -31,6 +31,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		 * [set data from stateParams description]
 		 * @type {[type]}
 		 */
+
 		$scope.selectedReservation = {
 			"reservationId": $stateParams.reservation_id,
 			"room": $stateParams.room_no,
@@ -44,8 +45,10 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		var fetchDoorLockSettings = function() {
 			var onResponse = function(response) {
 				var remote = (response.enable_remote_encoding) ? 'enabled' : 'disabled';
+
 				$scope.remoteEncoding = response.enable_remote_encoding;
 			};
+
 			$scope.callAPI(zsGeneralSrv.getDoorLockSettings, {
 				params: {},
 				'successCallBack': onResponse
@@ -67,6 +70,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				"key": 1,
 				//"is_kiosk": true
 			};
+
 			if ($scope.makingKey === 1) {
 				postParams.is_additional = false;
 			} else {
@@ -92,6 +96,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 
 			}
 			var debugging = false;
+
 			if (debugging) {
 				console.info(JSON.stringify(debugPostParams));
 
@@ -120,6 +125,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			var onResponse = function() {
 				$scope.$emit("hideLoader");
 			};
+
 			$scope.callAPI(zsTabletSrv.saveUIDtoRes, {
 				params: {
 					reservation_id: $scope.selectedReservation.reservation_id,
@@ -154,6 +160,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		var writeKey = function(keyWriteData, index) {
 
 			var keyData = [];
+
 			keyData.push(JSON.stringify(keyWriteData));
 
 			var options = {

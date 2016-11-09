@@ -28,6 +28,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 			delete $scope.userDetails.user_photo;			
 			$scope.$emit('hideLoader');
 		};		
+
 		$scope.invokeApi(ADServiceProviderSrv.getServiceProviderUserDetails, param, successCallbackFetch);
 	};
 	/**
@@ -39,6 +40,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 	/**
     * checks the re-invite button status
     */
+
 	$scope.disableReInviteButton = function (data) {
 		if (!isInUnlockingMode()) {
 			return (data.is_activated === 'true');
@@ -64,6 +66,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 			$state.go('admin.serviceproviderusers', { 'id': $scope.userDetails.service_provider_id,
 				'name': $scope.serviceProviderName });
 		};
+
 	 	$scope.invokeApi(ADServiceProviderSrv.sendInvitation, data, successCallbackOfSendInvitation);
 	};
 	$scope.imageSelected = function() {
@@ -84,6 +87,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
 			$scope.$emit('hideLoader');
 		};
 		//if userId exist updates the user else add new user
+
 		if(!$scope.userDetails.user_id) {
 			$scope.invokeApi(ADServiceProviderSrv.addServiceProviderUser, $scope.userDetails, successCallbackFetch);
 		}else{

@@ -21,6 +21,7 @@ sntRover.controller('RVValidateEmailCtrl', ['$scope', '$state', 'ngDialog', 'RVC
         $scope.saveData.user_id = $scope.guestCardData.userId;
 
         var data = { 'data': $scope.saveData, 'userId': $scope.guestCardData.userId };
+
 		$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, $scope.submitAndGoToCheckoutSuccessCallback);
 	};
 	// Success callback for submit & goto checkout

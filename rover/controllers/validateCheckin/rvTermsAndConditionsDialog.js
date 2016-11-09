@@ -2,6 +2,7 @@ sntRover.controller('RVTermsAndConditionsDialogCtrl', ['$rootScope', '$scope', '
 	BaseCtrl.call(this, $scope);
 
 	var scrollerOptions = { preventDefault: false};
+
   	$scope.setScroller('termsandconditions', scrollerOptions);
   	setTimeout(function() {
 				$scope.refreshScroller('termsandconditions');

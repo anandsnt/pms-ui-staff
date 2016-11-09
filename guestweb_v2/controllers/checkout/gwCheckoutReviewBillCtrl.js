@@ -10,6 +10,7 @@ sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope', '$state', '$
 
 		var init = function() {
 			var screenIdentifier = "REVIEW_BILL";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			var onSuccess = function(response) {
 				$scope.billData = response.bill_details;
@@ -26,6 +27,7 @@ sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope', '$state', '$
 				},
 				successCallBack: onSuccess
 			};
+
 			$scope.callAPI(GwCheckoutSrv.fetchBillDetails, options);
 			// varibale to handle bill popup
 			$scope.showBill = false;

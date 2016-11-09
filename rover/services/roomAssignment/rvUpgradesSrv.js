@@ -15,6 +15,7 @@ angular.module('sntRover').service('RVUpgradesSrv', ['$q', 'RVBaseWebSrv', funct
 	this.selectUpgrade = function(param) {
 		var deferred = $q.defer();
 		var url =  '/staff/reservations/upgrade_room.json';
+
 		RVBaseWebSrv.postJSON(url, param).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {

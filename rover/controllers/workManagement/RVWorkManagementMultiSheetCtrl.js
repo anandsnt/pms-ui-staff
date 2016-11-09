@@ -75,6 +75,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.multiSheetState.dndEnabled = true;
 
 			var currIds = _.where($scope.employeeList, { ticked: true });
+
 			currIds     = _.pluck(currIds, 'id');
 
 			// if there is any changes made by user
@@ -244,6 +245,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				// and if the "work_type_id" in the removed task is not avail
 				// on toEmp's "room_tasks" anymore then remove it from "touched_work_types"
 				var inOnlyTask, hasOtherTaskWithSameWtid;
+
 				if ( 'UA' !== fromEmpIndex ) {
 					// that task with matches the id and room id of dragged task
 					inOnlyTask = _.findIndex(fromEmp.only_tasks, function(task) {
@@ -324,6 +326,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			// on employee's "room_tasks" anymore then remove it from "touched_work_types"
 			var inOnlyTask, hasOtherTaskWithSameWtid;
 			// that task with matches the id and room id of dragged task
+
 			inOnlyTask = _.findIndex(thatEmpl.only_tasks, function(task) {
 				return task.id === draggedTask.id && task.room_id === draggedTask.room_id
 			});
@@ -523,6 +526,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		 */
 		var configureMultisheetForPrinting = function(options) {
 			var multiSheetState 		= $scope.multiSheetState;
+
 			multiSheetState.selectedEmployees = RVWorkManagementSrv.sortAssigned(multiSheetState.selectedEmployees,
 										multiSheetState.allRooms,
 										multiSheetState.allTasks,
@@ -533,6 +537,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				listner();
 				$timeout(startPrinting, 0);
 			});
+
 			runDigestCycle();
 		};
 
@@ -585,6 +590,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			// reset scroll bars to top
 			var i;
+
 			for (i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
 				$scope.$parent.myScroll[ 'assignedRoomList-' + i ].scrollTo(0, 0);
 			}
@@ -638,6 +644,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				scrollX: false,
 				scrollY: true
 			}, commonScrollerOptions);
+
 			$scope.setScroller('unAssignedRoomList', vertical);
 			$scope.setScroller("multiSelectWorkSheet", commonScrollerOptions);
 			$scope.setScroller("multiSelectPrintPopup", commonScrollerOptions);
@@ -653,6 +660,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				}
 			}
 			/**/
+
 			addVerScroller(0, $scope.multiSheetState.selectedEmployees.length, vertical);
 			/**/
 			// for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
@@ -841,6 +849,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			if (typeof employeeId === "number") {
 				var employee = _.findWhere(refData.assigned, {id: employeeId});
+
 				refData.summary[employeeId] = calculateSummary(employee);
 
 			} else {
@@ -933,6 +942,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			refreshScrollers();
 		};
 		var handler = $scope.$on( 'ALL_RENDER_COMPLETE', callRefreshScroll );
+
 		$scope.$on( '$destroy', handler );
 
 		$scope.getReservationStatusClass = function(room) {
@@ -1235,6 +1245,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             var dimOnResize = function() {
                 dim = getDimentions();
             };
+
             dimOnResize();
             console.log( dim );
             window.addEventListener( 'resize', dimOnResize, false );
@@ -1331,6 +1342,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             };
 
             var addPlaceholderThrottled = _.throttle(orderState.addPlaceholder, 250, {leading: true, trailing: false});
+
             $scope.userDragging = function(e) {
 
             	if ( isAllWorktypeView() ) {

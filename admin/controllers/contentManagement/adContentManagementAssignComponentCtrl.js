@@ -19,6 +19,7 @@ admin.controller('ADContentManagementAssignComponentCtrl', ['$scope', 'ngDialog'
 			$scope.setUpLists();
       $scope.isDataFetched = true;
 		};
+
 	   $scope.invokeApi(ADContentManagementSrv.fetchGridViewList, {}, successCallComponentFetch);
    };
    /*Function to split the fetched components to categories and sections,

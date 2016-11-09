@@ -43,6 +43,7 @@ sntRover.controller('RVAddNewHotelLoyaltyController', ['$scope', '$rootScope', '
 			$scope.errorMessage = errorMessage;
 		};
 		var user_membership = {};
+
 		user_membership.membership_card_number = $scope.userMembershipNumber;
 		user_membership.membership_class = $scope.userMembershipClass;
 		user_membership.membership_type = $scope.userMembershipType;
@@ -54,6 +55,7 @@ sntRover.controller('RVAddNewHotelLoyaltyController', ['$scope', '$rootScope', '
 					'user_membership': user_membership,
 					 'reservation_id': $scope.reservationData.reservationId
 					};
+
 		$scope.invokeApi(RVGuestCardLoyaltySrv.createLoyalties, data, loyaltyPostsuccessCallback, loyaltyPostErrorCallback);
 	};
 

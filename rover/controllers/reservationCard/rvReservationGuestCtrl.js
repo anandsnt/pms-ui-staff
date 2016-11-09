@@ -5,6 +5,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		$scope.guestData = {};
 		var presentGuestInfo = {};
 		var initialGuestInfo = {};
+
 		$scope.errorMessage = '';
 
 		/**
@@ -13,6 +14,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		 */
 		function isWithinMaxOccupancy() {
 			var maxOccupancy = $scope.reservationData.reservation_card.max_occupancy; //TODO: Get the max occupancy here
+
 			if (!!maxOccupancy) {
 				var currentTotal = parseInt($scope.guestData.adult_count || 0) +
 					parseInt($scope.guestData.children_count || 0);
@@ -34,9 +36,11 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				var stayDate = _.findWhere($scope.reservationData.reservation_card.stay_dates, {
 					date: $scope.reservationData.reservation_card.arrival_date
 				});
+
 				return (!!(stayDate && stayDate.rate_config && stayDate.rate_config.single));
 			} else {
 				var flag = true;
+
 				angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
 					if (flag) {
 						if ($scope.guestData.adult_count && parseInt($scope.guestData.adult_count) === 1) {
@@ -115,6 +119,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 		var isRateChangeOcuured = function() {
 			var isRateChangeOcuured = false;
+
 			angular.forEach($scope.reservationParentData.rooms[0].stayDates, function(item, index) {
 				if (item.rateDetails.actual_amount !== item.rateDetails.modified_amount) {
 					isRateChangeOcuured = true;
@@ -133,6 +138,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 					var adults = parseInt($scope.guestData.adult_count || 0),
 						children = parseInt($scope.guestData.children_count || 0),
 						rateToday = item.rate_config;
+
 					$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].guests = {
 						adults: adults,
 						children: children,
@@ -193,6 +199,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			};
 
 			var dataToSend = dclone($scope.guestData, ["primary_guest_details", "accompanying_guests_details"]);
+
 			dataToSend.accompanying_guests_details = [];
 			dataToSend.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 
@@ -234,6 +241,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		/* To save guest details */
 		$scope.saveGuestDetails = function(params) {
 			var data = JSON.parse(JSON.stringify($scope.guestData));
+
 			if (!angular.equals(data, initialGuestInfo)) {
 				$scope.$emit('showLoader');
 

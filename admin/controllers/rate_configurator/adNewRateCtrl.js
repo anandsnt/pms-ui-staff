@@ -77,8 +77,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     $scope.rateData.commission_details = data.commission_details;
                 }
             };
+
             $scope.invokeApi(ADRatesSrv.fetchCommissionDetails, {}, fetchCommissionDetailsSuccess);
         };
+
         $scope.rateInitialData = rateInitialData;
 
         var setRateAdditionalDetails = function() {
@@ -175,6 +177,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.$broadcast('basedonRatesChanged');
                 $scope.$emit('hideLoader');
             };
+
             $scope.invokeApi(ADRatesSrv.fetchDetails, {
                 rateId: $scope.rateData.based_on.id
             }, fetchBasedonSuccess);
@@ -219,6 +222,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             // addons -mark as activated for selected addons
             if ($scope.rateData.addOns.length > 0) {
                 var tempData = $scope.rateData.addOns;
+
                 $scope.rateData.addOns = [];
                 angular.forEach($scope.allAddOns, function(addOns) {
                     angular.forEach(tempData, function(addOnsSelected) {
@@ -330,6 +334,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             var beginDate = '';
             var endDate = '';
             var hotelBusinessDate = null;
+
             if ($scope.is_edit) {
                 hotelBusinessDate = new Date($scope.hotel_business_date).getTime();
             } else {
@@ -337,6 +342,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }
             var keepGoing = true;
             var activeDateRange = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].id;
+
             angular.forEach($scope.rateData.date_ranges, function(dateRange, index) {
                 if (keepGoing) {
                     beginDate = new Date(dateRange.begin_date).getTime();
@@ -404,6 +410,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.$on("activateSetTab", function(e, value) {
             if ($scope.rateData.date_ranges.length > 0) {
                 var dateRange = getActiveDateRange();
+
                 $scope.changeMenu(dateRange);
             }
         });
@@ -417,6 +424,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     return origin.is_active;
                 });
             };
+
             $scope.invokeApi(ADOriginsSrv.fetch, {}, onOriginOfBookingFetchSuccess);
         };
 

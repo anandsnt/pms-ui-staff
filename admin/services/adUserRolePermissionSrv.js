@@ -12,6 +12,7 @@ admin.service('ADUserRolePermissionSrv', ['$q', 'ADBaseWebSrvV2',
 	this.fetchUserRolePermission = function(params) {
 		var deferred = $q.defer();
 		var url = '/admin/roles_permissions';
+
 		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {
@@ -23,6 +24,7 @@ admin.service('ADUserRolePermissionSrv', ['$q', 'ADBaseWebSrvV2',
 	this.addedUserRolePermission = function(params) {
 		var deferred = $q.defer();
 		var url = '/admin/roles_permissions/add_permission';
+
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {
@@ -34,6 +36,7 @@ admin.service('ADUserRolePermissionSrv', ['$q', 'ADBaseWebSrvV2',
 	this.removeUserRolePermission = function(params) {
 		var deferred = $q.defer();
 		var url = '/admin/roles_permissions/remove_permission';
+
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {

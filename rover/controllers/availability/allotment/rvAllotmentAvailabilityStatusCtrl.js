@@ -32,12 +32,14 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 		var setScroller = function() {
 			//we need horizontal scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
 			var scrollerOptions = {scrollX: true, preventDefault: false};
+
   			$scope.setScroller ('groupscroller', scrollerOptions);
 		};
 		/**
 		* Function to send notification for close availiblity slider
 		* Param  - Group id
 		*/		
+
 		$scope.gotoAllotmentScreen = function(GroupId) {
 			$scope.selectedAllotmentId = GroupId;
 			$scope.$emit("CLOSE_AVAILIBILTY_SLIDER");
@@ -47,6 +49,7 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 		*/
 		$scope.$on('CLOSED_AVAILIBILTY_SLIDER', function(event) {
 			var GroupId = $scope.selectedAllotmentId;
+
 			$timeout(function() {
 				$state.go('rover.allotments.config', {
 					id: GroupId,
@@ -97,6 +100,7 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 		*/
 		$scope.getGroupName = function(id) {
 			var group = _.findWhere($scope.data.holdStatus, {id: id});
+
 			return group && group.name;
 		};
 
@@ -131,6 +135,7 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 		*/
 		 var isTakenFromInventory = function(id) {
 		 	var group = _.findWhere($scope.data.holdStatus, {id: id});
+
 		 	return group && group.is_take_from_inventory;
 		};
 		/*
@@ -138,12 +143,14 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 		* param - index of clicked row
 		* return Null
 		*/
+
 		$scope.toggleButtonClicked = function(index) {
 			if(_.contains($scope.idsOfDropDownOpenedGroups, $scope.data.groupDetails[index].id)) {
 				var temp =_.filter($scope.idsOfDropDownOpenedGroups, 
 					function(num) { 
 						return num !== $scope.data.groupDetails[index].id; 
 					});
+
 				$scope.idsOfDropDownOpenedGroups = temp;
 			}else{
 				$scope.idsOfDropDownOpenedGroups.push($scope.data.groupDetails[index].id);
@@ -209,6 +216,7 @@ angular.module('sntRover').controller('rvAllotmentAvailabilityStatusController',
 				$scope.$emit("hideLoader");
 			};
 		};
+
 		init();
 	}
 ]);

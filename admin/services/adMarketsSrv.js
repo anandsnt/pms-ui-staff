@@ -6,6 +6,7 @@ admin.service('ADMarketsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 	this.fetch = function() {
 		var deferred = $q.defer();
 		var url = '/api/market_segments.json';
+
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -19,6 +20,7 @@ admin.service('ADMarketsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 	this.toggleUsedMarkets = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/market_segments/use_markets';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

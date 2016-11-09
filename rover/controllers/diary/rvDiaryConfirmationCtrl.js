@@ -64,6 +64,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                     _.extend($scope.vaultSelections, convertTimeFormat(vFormat, occupancy));
                     _.extend($scope.selection, convertTimeFormat(dFormat, occupancy));
                     var selected_type;
+
                     _.each($scope.selectedReservations, function(obj, idx, list) {
                         var item = {
                                 room_id: obj.room.id,
@@ -132,6 +133,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                 if ( !$rootScope.isHourlyRateOn && $rootScope.isAddonOn&&isAddonsConfigured) {
                     var arrival_date = $scope.vaultSelections.arrival_date;
                     var departure_date = $scope.vaultSelections.departure_date;
+
                     $state.go('rover.reservation.staycard.mainCard.addons', {
                         "from_date": arrival_date,
                         "to_date": departure_date,
@@ -149,6 +151,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
                 $scope.closeWithAnimation();
             };
             var params = {};
+
                 params.from_date = $scope.vaultSelections.arrival_date;
                 params.to_date = $scope.vaultSelections.departure_date;
                 params.is_active = true;

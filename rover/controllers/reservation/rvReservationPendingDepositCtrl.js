@@ -45,6 +45,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		};
 		//need to to override $scope.closeDialog function to handle 
 		//popup flags
+
 		$scope.closeDialog = function() {
 			closeDepositPopup();
 		};
@@ -137,6 +138,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 					"payment_type_id": 1,
 					"is_credit_card": true
 				};
+
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 			};
 		});

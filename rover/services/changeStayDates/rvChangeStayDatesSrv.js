@@ -2,12 +2,14 @@ angular.module('sntRover').service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV
     function ($q, rvBaseWebSrvV2, RVBaseWebSrv) {
 
     	var that = this;
+
         this.changeStayDetails = {};
 
 
         //function to fetch staydate details against a reservation id
         this.fetchStayBasicDetails = function (reservationId, deferred) {
             var url = '/staff/change_stay_dates/' + reservationId + '.json';
+
             RVBaseWebSrv.getJSON(url).then(function(data) {
                 that.changeStayDetails.details = data;
             }, function(errorMessage) {
@@ -32,6 +34,7 @@ angular.module('sntRover').service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV
         this.fetchInitialData = function (reservationId) {
             //Please be care. Only last function should resolve the data
             var deferred = $q.defer ();
+
             that.fetchStayBasicDetails (reservationId, deferred);
             that.fetchCalenderDetails (reservationId, deferred);
             return deferred.promise;
@@ -42,6 +45,7 @@ angular.module('sntRover').service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV
 
             var data = {'arrival_date': data.arrival_date, 'dep_date': data.dep_date};
             var deferred = $q.defer ();
+
             RVBaseWebSrv.getJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage) {
@@ -56,6 +60,7 @@ angular.module('sntRover').service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV
 
             var postData = {"arrival_date": data.arrival_date, "dep_date": data.dep_date, "room_number": data.room_selected, "authorize_credit_card": data.authorize_credit_card, "is_cc_authorize_for_incidentals": data.is_cc_authorize_for_incidentals };
             var deferred = $q.defer ();
+
             RVBaseWebSrv.postJSON(url, postData).then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage) {

@@ -71,6 +71,7 @@ admin.controller('ADDateRangeModalCtrl', ['$scope',
         "begin_date": $scope.fromDate,
         "end_date": $scope.toDate
       };
+
       $scope.invokeApi(ADRatesConfigureSrv.updateDateRange, data, successUpdateRange, failureUpdateRange);
     };
     $scope.cancelClicked = function() {

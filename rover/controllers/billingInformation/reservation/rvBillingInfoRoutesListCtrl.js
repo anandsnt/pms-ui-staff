@@ -6,6 +6,7 @@ sntRover.controller('rvBillingInfoRoutesListCtrl', ['$scope', '$rootScope', '$fi
     var init = function() {
         // set scrollers
         var scrollerOptions = { preventDefault: false };
+
         $scope.setScroller('routes', scrollerOptions);
 
         setTimeout(function() {
@@ -67,6 +68,7 @@ sntRover.controller('rvBillingInfoRoutesListCtrl', ['$scope', '$rootScope', '$fi
         };
 
         var data = {};
+
         data.id  = $scope.reservationData.reservation_id;
         data.from_bill = $scope.routes[index].from_bill;
         data.to_bill   = $scope.routes[index].to_bill;
@@ -92,6 +94,7 @@ sntRover.controller('rvBillingInfoRoutesListCtrl', ['$scope', '$rootScope', '$fi
         $scope.billingInfoFlags.isInitialPage     = false;
 
         var selectedEntityDetails = $scope.routes[index];
+
         $scope.setSelectedEntity(selectedEntityDetails);
         $scope.selectedEntity.is_new = false;
 

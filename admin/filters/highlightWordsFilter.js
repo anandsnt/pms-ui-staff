@@ -10,12 +10,14 @@ admin.filter('highlightWords', function() {
 function transformTextToHighlight(text, replaceableStrings) {
 	var regExpSpan = new RegExp("<span class='ui-match'>", "gi");
 	var text = text.replace(regExpSpan, "");
+
 	regExpSpan = new RegExp("</span>", "gi");
 	text = text.replace(regExpSpan, "");
 	var replacableString = text;
 	var spanAddedIndex = [];
 	var singleMatchFound = false;
 	var singleMatchFoundIndex = 0;
+
 	replaceableStrings.forEach(function(element, index, array) {
 		var subString = "";
 		var subStringArray = [];
@@ -24,15 +26,18 @@ function transformTextToHighlight(text, replaceableStrings) {
 		var charToMatch = element.charAt(0);
 		var substringPos = [];
 		var replacableStringArray = replacableString.split("");
+
 		for (var idx = 0; idx < replacableStringArray.length; idx++) {
 			char = replacableStringArray[idx];
 			//replacableString.split("").forEach(function(char, idx) {
 			var isAlreadyAdded = false;
+
 			if (spanAddedIndex.length > 0) {
 				spanAddedIndex.forEach(function(idxsAdded) {
 					idxsAdded.forEach(function(idxAdded) {
 						var startIdx = idxAdded[0];
 						var endIdx = idxAdded[1];
+
 						if (idx >= startIdx && idx <= endIdx) {
 							isAlreadyAdded = true;
 						}
@@ -69,11 +74,13 @@ function transformTextToHighlight(text, replaceableStrings) {
 			}
 		};
 		var splitedString = [];
+
 		lastIdx = 0;
 		spanAddedIndex[index] = [];
 		substringPos.forEach(function(idx, position) {
 			splitedString.push(replacableString.substring(lastIdx, idx + 1));
 			var formatedString = "<span class='ui-match'>" + subStringArray[position] + "</span>";
+
 			splitedString.push(formatedString);
 			if (index > 0) {
 				spanAddedIndex.forEach(function(spanIndex) {
@@ -86,6 +93,7 @@ function transformTextToHighlight(text, replaceableStrings) {
 				});
 			}
 			var padding = 0;
+
 			padding = (spanAddedIndex[index].length) * (formatedString.length - strSize);
 
 			spanAddedIndex[index].push([idx + 1 + padding, idx + formatedString.length + padding]);

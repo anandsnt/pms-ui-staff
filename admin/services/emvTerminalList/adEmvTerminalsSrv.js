@@ -46,6 +46,7 @@ admin.service('ADEmvTerminalsSrv', ['$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', func
 		var id = data.item_id;
 		var url =  "/api/emv_terminals/" + id ;
 		var deferred = $q.defer();
+
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {
@@ -60,6 +61,7 @@ admin.service('ADEmvTerminalsSrv', ['$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', func
 	this.saveItemDetails = function(itemDetails) {
 		var url = "/api/emv_terminals";
 		var deferred = $q.defer();
+
 		ADBaseWebSrvV2.postJSON(url, itemDetails).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {
@@ -74,6 +76,7 @@ admin.service('ADEmvTerminalsSrv', ['$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', func
 	this.updateItemDetails = function(data) {
 		var url = "/api/emv_terminals/"+data.id;
 		var deferred = $q.defer();
+
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {

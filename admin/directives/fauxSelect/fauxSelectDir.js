@@ -28,6 +28,7 @@ admin.directive('fauxSelect', function() {
                         return !!item.isSelected;
                     }),
                     selectedCount = selectedItems.length;
+
                 if (selectedCount === 0) {
                     $scope.title = "Select " + $scope.label;
                 } else if (selectedCount === 1) {

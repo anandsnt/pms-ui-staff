@@ -9,6 +9,7 @@ angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', '$q', 'RVBa
 			"phone": data.phone,
 			"mobile": data.mobile
 		};
+
 		rvBaseWebSrvV2.putJSON(url, dataToPost).then(function(data) {
 			    deferred.resolve(data);
 			}, function(data) {
@@ -21,6 +22,7 @@ angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', '$q', 'RVBa
 
 		var deferred = $q.defer();
 		var url = "staff/reservations/" + data.reservation_id + "/get_key_setup_popup.json";
+
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 			    deferred.resolve(data);
 			}, function(data) {

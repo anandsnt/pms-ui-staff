@@ -37,6 +37,7 @@ angular.module('sntRover').controller('rvGroupReservationCheckinCtrl', [
             successCallBack: completeCheckinSuccessCallback,
             failureCallBack: completeCheckinFailureCallback
         };
+
         $scope.callAPI(rvGroupRoomingListSrv.performMassCheckin, options);
     }
 }]);

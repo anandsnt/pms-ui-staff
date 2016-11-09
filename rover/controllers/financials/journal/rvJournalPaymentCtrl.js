@@ -32,6 +32,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
             "department_ids": $scope.data.selectedDepartmentList,
             "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
         };
+
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
 	};
 
@@ -94,6 +95,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
                 "per_page": $scope.data.filterData.perPage,
                 "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
             };
+
             $scope.invokeApi(RVJournalSrv.fetchPaymentDataByTransactions, postData, successCallBackFetchPaymentDataTransactions);
         }
         else{
@@ -127,6 +129,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
     $scope.checkHasArrowFirstLevel = function(index) {
         var hasArrow = false,
         item = $scope.data.paymentData.payment_types[index];
+
         if((typeof item.credit_cards !== 'undefined') && (item.credit_cards.length >0)) {
             hasArrow = true;
         }
@@ -140,6 +143,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
     $scope.checkHasArrowSecondLevel = function(index1, index2) {
         var hasArrow = false,
         item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
+
         if((typeof item !== 'undefined') && (item.length >0)) {
             hasArrow = true;
         }

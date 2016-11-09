@@ -12,6 +12,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		$scope.isSegmentAutoComputed = function() {
 			var currentSegment = $scope.reservationParentData.demographics.segment,
 				aptSegment = "";
+
 			if (!!currentSegment) {
 				angular.forEach($scope.otherData.segments, function(segment) {
 					if ($scope.reservationData.reservation_card.total_nights < segment.los) {
@@ -26,6 +27,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			}
 		};
 		var eventTimestamp = "";
+
 		$scope.clickedAdditionalDetails = function($event) {
 			$event.preventDefault();
 		    $event.stopImmediatePropagation();
@@ -35,6 +37,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				$scope.refreshReservationDetailsScroller(300);
 				eventTimestamp = $event.timeStamp;
   			};
+
 			if (parseInt(eventTimestamp)) {
 				if (($event.timeStamp - eventTimestamp) < 500) {
 					return;
@@ -56,6 +59,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				var selectedReservationGuaranteeType = _.where($scope.otherData.reservationTypes, {
 					value: parseInt($scope.reservationParentData.demographics.reservationType)
 				});
+
 				if (selectedReservationGuaranteeType.length > 0) {
 					$scope.reservationData.reservation_card.guarentee_type = selectedReservationGuaranteeType[0].name;
 				} else {
@@ -89,6 +93,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
             var selectedReservationGuaranteeType = _.where($scope.otherData.reservationTypes, {
 				value: parseInt($scope.reservationParentData.demographics.reservationType)
 			});
+
 			if (selectedReservationGuaranteeType.length > 0) {
 				$scope.reservationData.reservation_card.guarentee_type = selectedReservationGuaranteeType[0].name;
 			} else {

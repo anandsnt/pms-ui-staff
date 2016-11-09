@@ -9,6 +9,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		$scope.companies = [];
 
 		var presentContactInfo = {};
+
 		$scope.arAccountDetails = {};
 
 		//handle tab switching in both cards
@@ -93,6 +94,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			var dataToSend = {
 				"id": $scope.reservationDetails.companyCard.id
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
 		};
 
@@ -123,6 +125,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 				}
 				fetchARNotes();
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);
 
 		};
@@ -280,11 +283,13 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		 */
 		var saveContactInformation = function(data) {
 			var dataUpdated = false;
+
 			if (!angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
 			}
 			if (typeof data !== 'undefined' && (dataUpdated || $scope.viewState.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
+
 				for (key in dataToSend) {
 					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
 						//in add case's first api call, presentContactInfo will be empty object
@@ -318,6 +323,7 @@ angular.module('sntRover').controller('companyResults', ['$scope', '$timeout',
 			click: true,
 			preventDefault: false
 		};
+
 		$scope.setScroller('companyResultScroll', scrollerOptionsForGraph);
 
 		$scope.$on("refreshCompaniesScroll", function() {

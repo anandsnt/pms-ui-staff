@@ -72,6 +72,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                 },
                 failureCallBack: onValidationAPIFailure
             };
+
             $scope.callAPI(zsGeneralSrv.emailIsBlackListed, blacklistCheckOptions);
         }
 
@@ -94,6 +95,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                     "first_name": $stateParams.first_name,
                     "email": $scope.email
                 };
+
                 $state.go('zest_station.checkinKeyDispense', stateParams);
             };
             /**
@@ -105,6 +107,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                 var stateParams = {
                     "first_name": $stateParams.first_name,
                 };
+
                 if ($scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 !== '') {
                     stateParams.message = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
                 } else {
@@ -122,6 +125,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                     successCallBack: updateComplete,
                     failureCallBack: updateGuestEmailFailed
                 };
+
                 $scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
             };
             var onBlackListedEmailFound = function() {
@@ -132,14 +136,17 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
             };
             //checks if new email is blacklisted, if so, set invalid email mode
             //otherwise, continue updating guest email
+
             checkIfEmailIsBlacklisted(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure);
         };
         /**
          * [goToNext description]
          * @return {[type]} [description]
          */
+
         $scope.goToNext = function() {
             var isValidEmail = $scope.email.length > 0 ? zsUtilitySrv.isValidEmail($scope.email) : false;
+
             if (isValidEmail) {
                 updateGuestEmail();
             } else {
@@ -160,6 +167,7 @@ sntZestStation.controller('zsCheckinEmailCollectionCtrl', [
                 "email": $stateParams.email,
                 "first_name": $stateParams.first_name
             };
+
             console.info(' :: skipEmail :: ', stateParams);
             $state.go('zest_station.checkinKeyDispense', stateParams);
         };

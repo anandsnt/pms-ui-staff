@@ -27,6 +27,7 @@ admin
                     lastSelectedDate = '',
                     businessDate = tzIndependentDate($rootScope.businessDate),
                     toDate = tzIndependentDate($rootScope.businessDate);
+
                 toDate = new Date(toDate.setFullYear(toDate.getFullYear() + $rootScope.rateDateRangeLimit));
 
                 toDate.setDate(toDate.getDate() - 1);
@@ -121,6 +122,7 @@ admin
 
                 angular.forEach($scope.Sets, function(set, key) {
                     var setDetails = {};
+
                     setDetails.name = set.setName;
                     setDetails.monday = set.days[0].checked;
                     setDetails.tuesday = set.days[1].checked;
@@ -147,6 +149,7 @@ admin
                     /*
                      * check if any day has already been checked,if else check it in new set
                      */
+
                     angular.forEach($scope.Sets, function(set, key) {
                         angular.forEach(set.days, function(day, key) {
                             if (day.checked) {
@@ -182,6 +185,7 @@ admin
              */
             $scope.checkboxClicked = function(dayIndex, SetIndex) {
                 var temp = $scope.Sets[SetIndex].days[dayIndex].checked;
+
                 angular.forEach($scope.Sets, function(set, key) {
                     angular.forEach(set.days, function(day, key) {
                         if ($scope.Sets[SetIndex].days[dayIndex].name === day.name) {
@@ -198,6 +202,7 @@ admin
             $scope.allFieldsFilled = function() {
 
                 var anyOneDayisChecked = false;
+
                 angular.forEach($scope.Sets, function(set, key) {
                     angular.forEach(set.days, function(day, key) {
                         if (day.checked) {
@@ -245,6 +250,7 @@ admin
                         'checked': true
                     }]
                 };
+
                 return sets;
 
             };

@@ -7,6 +7,7 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 	var fetchTripDetails = function() {
 		var deferred = $q.defer();
 		var url = '/api/reservations/'+reservationId+'/web_checkin_reservation_details';
+
 		$http.get(url).success(function(response) {
 			deferred.resolve(response);
 		}.bind(this))
@@ -20,6 +21,7 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 	var postStayDetails = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/reservations/'+reservationId+'/update_stay_details';
+
 		$http.post(url, data).success(function(response) {
 			deferred.resolve(response);
 		}.bind(this))
@@ -33,6 +35,7 @@ var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 		var deferred = $q.defer();
 		var url = '/api/reservations/'+reservationId+'/pre_checkin';
 		var data = {};
+
 		data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
 		data.url_suffix = (typeof $rootScope.urlSuffix !=="undefined") ? $rootScope.urlSuffix : "";
 		$http.post(url, data).success(function(response) {

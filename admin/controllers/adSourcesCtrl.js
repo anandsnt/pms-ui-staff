@@ -12,6 +12,7 @@ admin.controller('ADSourcesCtrl', ['$scope', 'ADSourcesSrv', '$anchorScroll', '$
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 	};
+
 	$scope.invokeApi(ADSourcesSrv.fetch, {}, fetchSuccessCallback);
 	/*
     * To handle enable/disable of use sources
@@ -67,6 +68,7 @@ admin.controller('ADSourcesCtrl', ['$scope', 'ADSourcesSrv', '$anchorScroll', '$
 			$scope.data.name = "";
 			$scope.data.sources.push(data);
 		};
+
   		$scope.invokeApi(ADSourcesSrv.save, { 'name': $scope.data.name }, postSuccess);
 	};
 	/*
@@ -77,6 +79,7 @@ admin.controller('ADSourcesCtrl', ['$scope', 'ADSourcesSrv', '$anchorScroll', '$
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
+
 		if(index === undefined) {
 			var data = $scope.data.sources[$scope.currentClickedElement];
 		}
@@ -99,6 +102,7 @@ admin.controller('ADSourcesCtrl', ['$scope', 'ADSourcesSrv', '$anchorScroll', '$
 	 			}
  			});
 		};
+
 		$scope.invokeApi(ADSourcesSrv.deleteItem, {'value': id }, successDeletionCallback);
 	};
 

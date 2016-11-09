@@ -16,6 +16,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
 
 	$scope.addLoyaltyProgram = function () {
         var params = {};
+
 		params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;
 		params.user_id = $scope.$parent.$parent.guestCardData.userId;
 		params.user_membership = {};
@@ -42,6 +43,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
         if ($scope.$parent.reservationData) {
             var use_ffp = $scope.$parent.reservationData.use_ffp,
                 use_hlp = $scope.$parent.reservationData.use_hlp;
+
             if (use_ffp === true && use_hlp === false) {
                 $scope.loyaltyPrograms = [{name: "Frequent Flyer Program", code: "FFP"}];
             } else if (use_ffp === false && use_hlp === true) {
@@ -67,6 +69,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
         };
+
         $scope.invokeApi(RVLoyaltyProgramSrv.getAvailableFFPS, "", successCallbackGetFFPS, errorCallbackGetFFPS);
 	};
 
@@ -80,11 +83,13 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
         };
+
         $scope.invokeApi(RVLoyaltyProgramSrv.getAvailableHLPS, "", successCallbackGetHLPS, errorCallbackGetHLPS);
 	};
 
 	$scope.setAvailableFFPS = function (FFPArray) {
 		var loyaltyType;
+
 		for(var i=0; i < FFPArray.length; i++) {
 			loyaltyType = {};
 			loyaltyType.name = FFPArray[i].ff_description;
@@ -96,6 +101,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
 
 	$scope.setAvailableHLPS = function (HLPArray) {
 		var loyaltyType;
+
 		for(var i=0; i < HLPArray.length; i++) {
 			loyaltyType = {};
 			loyaltyType.name = HLPArray[i].hl_description;
@@ -123,6 +129,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
             if ($scope.$parent.reservationData) {
             var use_ffp = $scope.$parent.reservationData.use_ffp,
                     use_hlp = $scope.$parent.reservationData.use_hlp;
+
                 if (use_ffp === true && use_hlp === false) {
                     if($scope.selectedLoyaltyProgram === $scope.loyaltyPrograms[0].code) {
 			return $scope.getLoyaltyLevelsfromCode();
@@ -146,6 +153,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
 
 	$scope.getLoyaltyLevelsfromCode = function() {
             var loyaltytypes, levels = [];
+
             if ($scope.selectedLoyaltyProgram) {
                 if ($scope.selectedLoyaltyProgram === 'HLP') {
                     loyaltytypes = $scope.availableHLPS;

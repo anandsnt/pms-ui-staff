@@ -40,11 +40,13 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchHotelTheme = function(resolveData, deferred) {
             var url = '/api/email_templates/list.json?hotel_id=' + resolveData.hotel_id,
                 theme = '';
+
             zsBaseWebSrv.getJSON(url).then(function(response) {
                 if (response && response.existing_email_templates && response.themes) {
                     var hotelTheme = _.findWhere(response.themes, {
                         id: response.existing_email_template_theme
                     });
+
                     if (hotelTheme && hotelTheme.name) {
                         theme = hotelTheme.name.toLowerCase();    
                     } else {
@@ -73,6 +75,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchLanguages = function() { //to get terms & conditions
             var url = '/api/kiosk/languages';
+
             return zsBaseWebSrv.getJSON(url);
         };
 
@@ -107,6 +110,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchHotelSettings = function() { //to get terms & conditions
             var url = '/api/hotel_settings.json';
+
             return zsBaseWebSrv.getJSON(url);
         };
 
@@ -149,6 +153,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchGuestDetails = function(params) {
             var deferred = $q.defer();
             var url = '/api/reservations/' + params.id + '/reservations_guest_details';
+
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -207,6 +212,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchCountryList = function() {
             var deferred = $q.defer();
             var url = '/ui/country_list.json';
+
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -218,6 +224,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchSortedCountryList = function() {
             var deferred = $q.defer();
             var url = '/api/countries/sorted_list.json';
+
             zsBaseWebSrv2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -230,6 +237,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchHotelBusinessDate = function() {
             var deferred = $q.defer(),
                 url = '/api/business_dates/active';
+
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -256,6 +264,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchHotelTime = function() {
             var deferred = $q.defer(),
                 url = '/api/hotel_current_time.json';
+
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {

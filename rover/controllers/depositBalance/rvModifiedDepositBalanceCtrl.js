@@ -143,6 +143,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
          */
         $scope.showMakePaymentButtonStatus = function() {
             var buttonClass = "";
+
             if (typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined") {
                 buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0 && $scope.validPayment) ? "green" : "grey";
             } else {
@@ -158,6 +159,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
 
         $scope.showRefundButtonStatus = function() {
             var buttonClass = "";
+
             if (typeof $scope.depositBalanceMakePaymentData.payment_type !== "undefined") {
                 buttonClass = ($scope.depositBalanceMakePaymentData.payment_type.length > 0) ? "blue" : "grey";
             } else {
@@ -230,6 +232,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
             //in case of hotel with MLI iframe will not be present
             if (!!$("#sixIframe").length) {
                 var iFrame = document.getElementById('sixIframe');
+
                 iFrame.src = iFrame.src;
             }
             ;
@@ -258,9 +261,11 @@ sntRover.controller('RVDepositBalanceCtrl', [
             //used if checking against gift card balance
             if ($scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD') {
                 var bal = $scope.giftCardAvailableBalance;
+
                 if (bal) {
                     var avail = parseFloat(bal).toFixed(2);
                     var toPay = parseFloat(amt).toFixed(2);
+
                     avail = parseFloat(avail);
                     toPay = parseFloat(toPay);
                     if (avail < toPay) {
@@ -354,6 +359,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
                 var cardCode = cardDetails.card_code.toLowerCase();
                 var cardNumber = cardDetails.ending_with;
                 var cardName = "";
+
                 if ($scope.isSwipedCardSave) {
                     cardName = $scope.swipedCardHolderName;
                 } else {
@@ -371,6 +377,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
                     "payment_type": "CC",
                     "payment_type_id": 1
                 };
+
                 $scope.cardsList.push(dataToGuestList);
                 $rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
             }

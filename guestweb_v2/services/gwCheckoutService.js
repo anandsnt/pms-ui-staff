@@ -8,6 +8,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 		var deferred = $q.defer();
 		var url = "";
 		//use dummy data for demo mode
+
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/checkout_user_verification.json';
 			GWBaseWebSrv2.getJSON(url, params).then(function(data) {
@@ -49,6 +50,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 		var deferred = $q.defer();
 		var url = '';
 		//use dummy data for demo mode
+
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/return_status_success.json';
 			GWBaseWebSrv.getJSON(url, params).then(function(data) {
@@ -75,6 +77,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 		var deferred = $q.defer();
 		var url = "";
 		//use dummy data for demo mode
+
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/bill_details.json';
 		} else {
@@ -96,6 +99,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 		var deferred = $q.defer();
 		var url = "";
 		//use dummy data for demo mode
+
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/late_checkout_options.json';
 		} else {
@@ -116,6 +120,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 		var deferred = $q.defer();
 		var url = "";
 		//use dummy data for demo mode
+
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/return_blank.json';
 			GWBaseWebSrv2.getJSON(url, params).then(function(data) {
@@ -145,6 +150,7 @@ sntGuestWeb.service('GwCheckoutSrv', ['$q', 'GWBaseWebSrv', 'GWBaseWebSrv2', 'Gw
 		var deferred = $q.defer();
 		var url = "";
 		//use dummy data for demo mode
+
 		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			url = '/sample_json/zestweb_v2/return_status_success.json';
 			GWBaseWebSrv.getJSON(url, params).then(function(data) {

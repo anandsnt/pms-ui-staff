@@ -7,6 +7,7 @@ admin.service('ADRoomClassesSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($ht
 	this.fetch = function () {
         var deferred = $q.defer(),
         url = '/admin/room_classes';
+
         ADBaseWebSrvV2.getJSON(url).then(function (data) {
             deferred.resolve(data);
             }, function (data) {
@@ -23,6 +24,7 @@ admin.service('ADRoomClassesSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($ht
 	this.saveClassRoom = function(data) {
 		var deferred = $q.defer();
 		var url = 'admin/room_classes';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -39,6 +41,7 @@ admin.service('ADRoomClassesSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($ht
 	this.fetchDetailsOfRoomClass = function (data) {
         var deferred = $q.defer(),
         url = '/admin/room_classes/'+ data.id;
+
         ADBaseWebSrvV2.getJSON(url).then(function (data) {
             deferred.resolve(data);
             }, function (data) {
@@ -55,6 +58,7 @@ admin.service('ADRoomClassesSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($ht
     this.updateClassRoom = function(data) {
 		var deferred = $q.defer();
 		var url = ' /admin/room_classes/'+data.id;
+
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -70,6 +74,7 @@ admin.service('ADRoomClassesSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($ht
 	this.deleteClassRoom = function(id) {
 		var deferred = $q.defer();
 		var url ='admin/room_classes/'+id;
+
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

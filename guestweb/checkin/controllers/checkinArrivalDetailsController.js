@@ -16,6 +16,7 @@
 		var restrictHoursListByHour = function(restrictHour) {
 			// restrict hour selection based on a time
 			var hoursList = angular.copy($scope.hourCopy);
+
 			if (restrictHour !== "12") {
 				angular.forEach(hoursList, function(hour, index) {
 					if (hour === restrictHour) {
@@ -147,6 +148,7 @@
 			$scope.checkinTime = (typeof $stateParams.time !== "undefined") ? $stateParams.time : "";
 
 		};
+
 		if ($rootScope.is_checkin_now_on && !$rootScope.checkinOptionShown) {
 			$state.go('guestCheckinOptions');
 		} else {
@@ -161,6 +163,7 @@
 			} else {
 				//change format to 24 hours
 				var hour = parseInt($scope.stayDetails.hour);
+
 				if ($scope.stayDetails.primeTime === 'PM' && hour < 12) {
 					hour = hour + 12;
 				} else if ($scope.stayDetails.primeTime === 'AM' && hour === 12) {

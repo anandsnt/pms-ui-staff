@@ -22,6 +22,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		var that = this;
 		// CICO-9081
 		var translatedHeading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
+
 		$scope.$emit('HeaderChanged', translatedHeading);
 		$scope.setTitle(translatedHeading);
 
@@ -141,6 +142,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			//If the flag 'has_multiple_rates' is true,
 			//then we do not display the dates before check in and dates after departure date as an event
 			//Remove those dates fromt the available dates response
+
 			if (calendarDetails.has_multiple_rates === 'true') {
 				for (var i = calendarDetails.available_dates.length - 1; i >= 0; i--) {
 					thisTime = tzIndependentDate(calendarDetails.available_dates[i].date);
@@ -292,12 +294,14 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		$scope.showRoomAvailable = function() {
 			//setting nights based on calender checking/checkout days
 			var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
+
 			$scope.calendarNightDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
 			//calculating the total rate / avg.rate
 			$scope.totRate = 0;
 			$scope.isStayRatesSuppressed = false;
 			var checkinRate = '';
+
 			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
 				if (this.is_sr === "true") {
 					$scope.isStayRatesSuppressed = true;
@@ -316,6 +320,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			var firstDateInAvailableDate = $scope.stayDetails.calendarDetails.available_dates[0].date;
 			var indexOfFirstAvailableDateInStayDates = _.findIndex($scope.stayDetails.calendarDetails.stay_dates, {"date": firstDateInAvailableDate})
 			var remainingStayDatesArray = _.first($scope.stayDetails.calendarDetails.stay_dates, parseInt(indexOfFirstAvailableDateInStayDates));
+
 			$(remainingStayDatesArray).each(function(index) {
 				$scope.totRate += escapeNull(this.rate) === "" ? 0 : parseInt(this.rate);
 			});
@@ -397,6 +402,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			var roomReadyStatus = $scope.stayDetails.details.room_ready_status;
 			var foStatus = $scope.stayDetails.details.fo_status;
 			var checkinInspectedOnly = $scope.stayDetails.details.checkin_inspected_only;
+
 			return getMappedRoomStatusColor(reservationStatus, roomReadyStatus, foStatus, checkinInspectedOnly);
 		};
 
@@ -620,6 +626,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			var thisTime = "";
 			var totalNights = 0;
 			var minNumOfStay = "";
+
 			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
 				//Put time correction
 				thisTime = tzIndependentDate(this.date).setHours(00, 00, 00);
@@ -783,6 +790,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 		$scope.alertOverbooking = function(close) {
 			var timer = 0;
+
 			if (close) {
 				$scope.closeDialog();
 				timer = 1000

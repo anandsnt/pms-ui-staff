@@ -22,6 +22,7 @@ sntRover.controller('rvAccountActivityCtrl', [
 			var fetchCompleted = function(data) {
 				$scope.$broadcast('PopulateLogData', data);
 			};
+
 			$scope.invokeApi(rvGroupAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
 		};
 		$scope.$on('updateLogdata', function(e, params) {
@@ -30,6 +31,7 @@ sntRover.controller('rvAccountActivityCtrl', [
 			var fetchCompleted = function(data) {
 				$scope.$broadcast('PopulateLogData', data);
 			};
+
 			$scope.invokeApi(rvGroupAccountActivitySrv.fetchActivityLog, params, fetchCompleted);
 
 		});

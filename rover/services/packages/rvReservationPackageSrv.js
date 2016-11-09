@@ -2,10 +2,12 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 
 
 	var that = this;
+
 	this.getReservationPackages = function(reservationId) {
 		var deferred = $q.defer();
 
 		var url = '/staff/staycards/reservation_addons?reservation_id=' + reservationId;
+
 		RVBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -29,6 +31,7 @@ angular.module('sntRover').service('RVReservationPackageSrv', ['$http', '$q', 'r
 
 	this.parseAddonItem = function(item, forAssociated) {
 		var addonItem = {};
+
 		addonItem.id = item.id;
 		addonItem.isBestSeller = item.bestseller;
 		addonItem.category = item.charge_group.name;

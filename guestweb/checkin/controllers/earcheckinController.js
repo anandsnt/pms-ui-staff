@@ -28,6 +28,7 @@
 					'id': offerId,
 					'isFromCheckinNow': !!$stateParams.isFromCheckinNow
 				};
+
 				$state.go('earlyCheckinFinal', stateParams);
 			};
 
@@ -44,6 +45,7 @@
 				var params = {
 					'reservation_id': $rootScope.reservationID
 				};
+
 				checkinNowService.releaseRoomRoom(params).then(function(response) {
 					changeArrivalTime();
 				}, function() {

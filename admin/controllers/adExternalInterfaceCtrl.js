@@ -62,6 +62,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
     };
     $scope.init = function () {
       var interface = $scope.interfaceConfig[$scope.currentState];
+
       if (interface) {
         $scope.serviceController = interface.controller;
         $scope.interfaceName = interface.name;
@@ -87,6 +88,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
 
           $scope.$emit('hideLoader');
         };
+
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchFailedMessages, {}, onSuccess);
       }
     };
@@ -108,6 +110,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         //$scope.failedMessages = data.data;
         $scope.$emit('hideLoader');
       };
+
       $scope.invokeApi(adExternalInterfaceCommonSrv.deleteFailedMessages, {id: message_id}, onSuccess);
     };
 
@@ -117,10 +120,12 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         // $scope.failedMessages = data.data;
         $scope.$emit('hideLoader');
       };
+
       $scope.invokeApi(adExternalInterfaceCommonSrv.resubmitFailedMessages, {id: message_id}, onSuccess);
     };
     $scope.resubmitCheckedFailedMessage = function (msg, many) {
       var messages = [];
+
       if (many) {//msg will be the list of IDs from resubmitSelected
         messages = msg;
       } else {
@@ -141,6 +146,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
 
     $scope.resubmitSelected = function () {
       var forResubmit = [];
+
       for (var i in $scope.failedMessages) {
         if ($scope.failedMessages[i].selected) {
           forResubmit.push($scope.failedMessages[i].id);
@@ -151,6 +157,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
     };
     $scope.deleteSelected = function () {
       var forDelete = [];
+
       for (var i in $scope.failedMessages) {
         if ($scope.failedMessages[i].selected) {
           forDelete.push($scope.failedMessages[i].id);
@@ -163,6 +170,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
 
     $scope.deleteCheckedFailedMessage = function (msg, many) {
       var messages = [];
+
       if (many) {//msg will be the list of IDs from resubmitSelected
         messages = msg;
       } else {
@@ -178,6 +186,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         $scope.resetChecked();
         $scope.init();
       };
+
       $scope.invokeApi(adExternalInterfaceCommonSrv.deleteFailedMessages, {id: messages}, onSuccess);
     };
 
@@ -188,9 +197,11 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       }
       if (time.indexOf('T') !== -1) {
         var t = time.split('T');
+
         time = t[1];
       }
       var timeDict = tConvert(time);
+
       return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
     };
     ///////////////////////////
@@ -236,9 +247,11 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
     
     $scope.setDefaultRate = function() {
         var value = $scope.data.data.product_cross_customer.default_rate;
+
         if (typeof value !== typeof undefined) {
             setTimeout(function() {
                 var el = $('[name=default-rate]');
+
                 $(el).val(value);
             }, 950);
         };
@@ -278,18 +291,22 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         // Set the selected payment and origin
         var setPayment = function() {
             var value = parseInt($scope.data.data.product_cross_customer.default_payment_id);
+
             if (typeof value !== typeof undefined) {
                 setTimeout(function() {
                     var payment = $('[name=default-payment]');
+
                     $(payment).val(value);
                 }, 50);//takes a moment for angularjs to catch up with the list population, possibly longer if list grows too big
             };
         };
         var setOrigin = function() {
             var value = parseInt($scope.data.data.product_cross_customer.default_origin);
+
             if (typeof value !== typeof undefined) {
                 setTimeout(function() {
                     var payment = $('[name=default-origin]');
+
                     $(payment).val(value);
                 }, 50);
             };
@@ -299,6 +316,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         $scope.rateSelection = [];
         var rates = $scope.channel_manager_rates;
         var rate;
+
         for (var i in rates) {
             rate = rates[i].rate;
             if (rate) {
@@ -318,6 +336,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             $scope.errorMessage = data;
             $scope.$emit('hideLoader');
         };
+
         $scope.invokeApi(ADChannelMgrSrv.fetchManagerDetails, {'id': $scope.interface}, fetchSuccess, fetchFailure);
     };
 
@@ -325,6 +344,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
     
     $scope.initSave = function() {
         var saveData = $scope.lastSaved;
+
         if ($scope.interfaceName === 'Givex') {
         $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, $scope.saveSetupSuccessCallback, $scope.saveSetupFailureCallback);
       } else if ($scope.interfaceName === 'ZDirect') {
@@ -376,10 +396,12 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       };
     $scope.saveSetup = function () {
         var saveData;
+
         if ($scope.interfaceName === 'Givex') {
             saveData = $scope.data;
         } else {
             var unwantedKeys = ["available_trackers", "bookmark_count", "bookmarks", "current_hotel", "hotel_list", "menus", "interface_types"];
+
              saveData = dclone($scope.data, unwantedKeys);
         }
       
@@ -413,6 +435,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
                 if ($scope.data.data) {
                     if ($scope.data.data.product_cross_customer) {
                       var active = $scope.data.data.product_cross_customer.active;
+
                       if (active) {
                         $scope.data.data.product_cross_customer.active = false;
                       } else {
@@ -442,6 +465,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             
             //var newDateToSet = nYear+'-'+nMonth+'-'+nDayDate;
             var n = new Date(nYear, nMonth-1, nDayDate);
+
             return n;
         };
         
@@ -469,6 +493,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
               
               var start_date = s.valueOf(),
               end_date = e.valueOf();
+
               if (end_date < start_date) {
                   $scope.refreshDatePickerData.end_date = $scope.refreshDatePickerData.start_date;
                   $scope.refreshDatePickerData.end_date_for_display = $scope.refreshDatePickerData.start_date_for_display;
@@ -552,6 +577,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
     $scope.runFullRefresh = function () {
       var lastRefreshed = $scope.data.data.product_cross_customer.full_refresh, refreshNowDate = new Date();
       var data = {};
+
       data.start_date = $scope.refreshDatePickerData.start_date;
       data.end_date = $scope.refreshDatePickerData.end_date;
       data.interface_id = $scope.interfaceId;
@@ -559,6 +585,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       if (lastRefreshed !== null) {
         try {
           var lastRefreshedDate = new Date($scope.data.data.product_cross_customer.full_refresh);
+
           lastRefreshed = lastRefreshedDate.valueOf();
         } catch (err) {
 
@@ -571,6 +598,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       };
       var fullRefreshFail = function (response) {
         var msg = '';
+
         if (response[0]) {
           if (response[0].length > 0) {
             msg = ': "' + response[0] + '"';
@@ -579,6 +607,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         $scope.errorMessage = $scope.interfaceName + ' Full Refresh Failed' + msg;
         $scope.$emit('hideLoader');
       };
+
         $scope.invokeApi($scope.serviceController.fullRefresh, data, fullRefreshSuccess, fullRefreshFail);
     };
 
@@ -588,6 +617,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         //double check to see if it Actually failed..
         if (data.status === 'failure') {
           var msg = '';
+
           if (typeof data[0] === typeof 'str') {
             if (data[0].length > 1) {
               msg = ': ' + data[0];
@@ -605,6 +635,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
       var testSetupFailureCallback = function (data) {
         $scope.isLoading = false;
         var msg = '';
+
         if (typeof data[0] === typeof 'str') {
           if (data[0].length > 1) {
             msg = ': ' + data[0];
@@ -627,6 +658,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
 
       var unwantedKeys = ["available_trackers"];
       var testData = dclone($scope.data, unwantedKeys);
+
       testData.interface = $scope.interfaceId;
       $scope.invokeApi($scope.serviceController.testSetup, testData, checkCallback);
     };
@@ -661,22 +693,27 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
     $scope.formatDate = function (now) {
       var year = "" + now.getFullYear();
       var month = "" + (now.getMonth() + 1);
+
       if (month.length === 1) {
         month = "0" + month;
       }
       var day = "" + now.getDate();
+
       if (day.length === 1) {
         day = "0" + day;
       }
       var hour = "" + now.getHours();
+
       if (hour.length === 1) {
         hour = "0" + hour;
       }
       var minute = "" + now.getMinutes();
+
       if (minute.length === 1) {
         minute = "0" + minute;
       }
       var second = "" + now.getSeconds();
+
       if (second.length === 1) {
         second = "0" + second;
       }

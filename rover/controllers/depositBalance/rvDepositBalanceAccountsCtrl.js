@@ -160,6 +160,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	$scope.$on("TOKEN_CREATED", function (e, tokenDetails) {
 		$scope.cardValues = tokenDetails;
 	    var cardExpiry = "";
+
 	    if(!$scope.cardValues.tokenDetails.isSixPayment) {
 	    	cardExpiry = ($scope.cardValues.cardDetails.expiryMonth!=='' && $scope.cardValues.cardDetails.expiryYear!=='') ? "20"+$scope.cardValues.cardDetails.expiryYear+"-"+$scope.cardValues.cardDetails.expiryMonth+"-01" : "";
 	    	//To render the selected card data
@@ -213,6 +214,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	$scope.isShowFees = function () {
 		var isShowFees = false;
 		var feesData = $scope.feeData;
+
 		if(typeof feesData === 'undefined' || typeof feesData.feesInfo === 'undefined' || feesData.feesInfo === null) {
 			isShowFees = false;
 		}
@@ -235,6 +237,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
         //in case of hotel with MLI iframe will not be present
         if(!!$("#sixIframe").length) {
             var iFrame = document.getElementById('sixIframe');
+
             iFrame.src = iFrame.src;
         };
     };
@@ -288,9 +291,11 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
         //used if checking against gift card balance
            if ($scope.depositBalanceMakePaymentData.payment_type === 'GIFT_CARD') {
                var bal = $scope.giftCardAvailableBalance;
+
             if (bal) {
                 var avail = parseFloat(bal).toFixed(2);
                 var toPay = parseFloat(amt).toFixed(2);
+
                 avail = parseFloat(avail);
                 toPay = parseFloat(toPay);
                 if (avail < toPay) {
@@ -409,6 +414,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		$scope.isSwipedCardSave = true;
 
 		var data 			= swipedCardDataToSave;
+
 		data.payment_credit_type = swipedCardDataToSave.cardType;
 		data.credit_card = swipedCardDataToSave.cardType;
 		data.card_expiry = "20"+swipedCardDataToSave.cardExpiryYear+"-"+swipedCardDataToSave.cardExpiryMonth+"-01";

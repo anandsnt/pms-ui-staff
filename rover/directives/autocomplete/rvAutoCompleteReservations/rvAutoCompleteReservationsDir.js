@@ -70,6 +70,7 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
                             class: "room",
                             html: item.room ? "Room " + highlightFilter(item.room, lastSearchText) : ''
                         });
+
                     _.each(item.images, function (image) {
                         avatar.append(angular.element('<img>', {
                             src: image.guest_image

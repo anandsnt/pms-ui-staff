@@ -15,6 +15,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 	$scope.selectedAssignedPermission = -1;
 	$scope.justDropped = -1;
 	var lastDropedTime = '';
+
 	$scope.assignedRoles = [];
 	$scope.errorMessage = "";
 	$scope.assignedPermissions = [];
@@ -38,6 +39,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
 		};
+
 		$scope.invokeApi(ADUserRolePermissionSrv.fetchUserRolePermission, {}, successCallback, failureCallback);
     };
 	$scope.fetchUserRolePermission();
@@ -80,6 +82,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
     			if($scope.removedElement.length!==0) {
     			var successCallback = function(data) {
     				var index =$scope.userRoles[$scope.selectedUserRole.index].assigned_permissions.indexOf($scope.removedElement[0].value);
+
     				$scope.userRoles[$scope.selectedUserRole.index].assigned_permissions.splice(index, 1);
     				$scope.$emit('hideLoader');
     				$scope.errorMessage = '';
@@ -90,6 +93,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 					$scope.initiatePermissionforSelectedUserRole();
 				};
 				var postData = {};
+
 				postData.permissions = [];
 				postData.permissions.length =0;
 				postData.role_id = $scope.selectedUserRole.value;
@@ -112,6 +116,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 					$scope.initiatePermissionforSelectedUserRole();
 				};
 				var postData = {};
+
 				postData.permissions = [];
 				postData.permissions.length =0;
 				postData.role_id = $scope.selectedUserRole.value;
@@ -127,6 +132,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
     */
 	$scope.selectAssignedPermission = function($event, index) {
 		var lastSelectedItem =$scope.selectedAssignedPermission;
+
 		if(lastSelectedItem === index) {
 			$scope.selectedAssignedPermission =-1;
 		}
@@ -136,6 +142,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 		else if(typeof lastDropedTime === 'object') {
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
+
 			if(diff <= 100) {
 				$event.preventDefault();
 			}
@@ -150,6 +157,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
     */
 	$scope.selectUnAssignedPermission = function($event, index) {
 		var lastSelectedItem =$scope.selectedUnassignedPermission;
+
 		if(lastSelectedItem === index) {
 			$scope.selectedUnassignedPermission =-1;
 		}
@@ -159,6 +167,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 		else if(typeof lastDropedTime === 'object') { //means date
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
+
 			if(diff <= 100) {
 				$event.preventDefault();
 			}
@@ -172,12 +181,15 @@ admin.controller('ADUserRolePermissionsCtrl', [
     */
 	$scope.leftToRight = function() {
 		var index = $scope.selectedAssignedPermission;
+
 		if(index === -1) {
 			return;
 		}
 		var newElement = $scope.assignedPermissions[index];
+
 		$scope.unAssignedPermissions.push(newElement);
 		var newElement = $scope.unAssignedPermissions[index];
+
 		$scope.assignedPermissions.splice(index, 1);
 		$scope.selectedAssignedPermission = -1;
 	};
@@ -186,10 +198,12 @@ admin.controller('ADUserRolePermissionsCtrl', [
     */
 	$scope.rightToleft = function() {
 		var index = $scope.selectedUnassignedPermission;
+
 		if(index === -1) {
 			return;
 		}
 		var newElement = $scope.unAssignedPermissions[index];
+
 		$scope.assignedPermissions.push(newElement);
 		$scope.unAssignedPermissions.splice(index, 1);
 		$scope.selectedUnassignedPermission = -1;

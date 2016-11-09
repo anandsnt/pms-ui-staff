@@ -140,13 +140,16 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
          */
         var fetchPriceDetailsForRate = function () {
             var data = {};
+
             data.id = $scope.popupData.selectedRate;
             data.from_date = dateFilter($scope.popupData.selectedDate, 'yyyy-MM-dd');
             data.to_date = dateFilter($scope.popupData.selectedDate, 'yyyy-MM-dd');
             var priceDetailsFetchSuccess = function (response) {
                 var roomPriceData = [];
+
                 for (var i in response.data) {
                     var roomType = {};
+
                     roomType.name = response.data[i].name;
                     roomType.rate = response.data[i][$scope.popupData.selectedDate].single;
                     roomPriceData.push(roomType);
@@ -154,6 +157,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 $scope.data.roomPriceData = roomPriceData;
                 $scope.$emit('hideLoader');
             };
+
             $scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalendarData, data, priceDetailsFetchSuccess);
 
 
@@ -204,6 +208,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
             $scope.$watch("data.single_extra_amnt", function(to, from, evt) {
                 var via = 'single';
                 var d = {};
+
                 d.to = to;
                 d.from = from;
                 d.via = via;
@@ -214,6 +219,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
                 var via = 'double';
                 var d = {};
+
                 d.to = to;
                 d.from = from;
                 d.via = via;
@@ -224,6 +230,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
                 var via = 'extra_adult';
                 var d = {};
+
                 d.to = to;
                 d.from = from;
                 d.via = via;
@@ -234,6 +241,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
                 var via = 'child';
                 var d = {};
+
                 d.to = to;
                 d.from = from;
                 d.via = via;
@@ -318,10 +326,12 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
             var restrictionTypes = {};
             var rTypes = dclone($scope.calendarData.restriction_types);
+
             for (var i in rTypes) {
                 restrictionTypes[rTypes[i].id] = rTypes[i];
                 var item = rTypes[i];
                 var itemID = rTypes[i].id;
+
                 item.days = "";
                 item.isRestrictionEnabled = false;
                 item.isMixed = false;
@@ -363,6 +373,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
             var selectedDateInfo = {};
             //Get the rate/restriction details for the selected cell
+
             if ($scope.popupData.all_data_selected) {
                 selectedDateInfo = $scope.calendarData.all_rates[$scope.popupData.selectedDate];
 
@@ -382,6 +393,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
             var restrictionTypes = {};
             var rTypes = dclone($scope.calendarData.restriction_types);
+
             if ($scope.ratesRoomsToggle === 'ROOMS') {
                 selectedDateInfo = $scope.popupData.room_restrictions;
             }
@@ -389,6 +401,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 restrictionTypes[rTypes[i].id] = rTypes[i];
                 var item = rTypes[i];
                 var itemID = rTypes[i].id;
+
                 item.days = "";
                 item.isRestrictionEnabled = false;
                 item.isMixed = false;
@@ -419,6 +432,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
         var isRestictionHasDaysEnter = function (restriction) {
             var ret = false;
+
             if (['MIN_STAY_LENGTH', 'MAX_STAY_LENGTH', 'MIN_STAY_THROUGH', 'MIN_ADV_BOOKING', 'MAX_ADV_BOOKING'].indexOf(restriction) >= 0) {
                 ret = true;
             }
@@ -429,6 +443,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
          */
         var isMixed = function (id) {
             var mixed = false;
+
             for (var row in $scope.calendarData.data) {
                 if ($scope.popupData.fromRoomTypeView) {
                     var datedata = $scope.calendarData.data[row][$scope.popupData.selectedDate].restrictions;
@@ -448,6 +463,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
          * Click handler for restriction on/off buttons
          * Enable disable restriction.
          */
+
         $scope.toggleRestrictions = function (id, days, selectedIndex, restrictionType) {
             if (restrictionType) {
                 if (restrictionType.description === 'Has Restrictions') {
@@ -474,6 +490,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
              * Only if enabling a restriction.
              */
             var shouldShowEdit = false;
+
             if ($scope.data.restrictionTypes[id].hasEdit && action === "ENABLE") {
                 shouldShowEdit = true;
             }
@@ -507,6 +524,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
         $scope.updatePopupWidth = function () {
             var width = 270;
+
             if ($scope.data.showEditView) {
                 width = width + 400;
             }
@@ -536,6 +554,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
             var datesList = [];
             //First entry in the dates list is the current date
+
             datesList.push($scope.popupData.selectedDate);
             //If the day value is true, then it is a checked(selected) day
             var selectedDays = [];
@@ -557,6 +576,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 var date = new Date($scope.popupData.selectedDate);
                 var newDate = new Date(date.getTime() + (i * 24 * 60 * 60 * 1000));
                 var dayOfWeek = dateFilter(newDate, 'EEE');
+
                 if (selectedDays.indexOf(dayOfWeek.toUpperCase()) >= 0) {
                     datesList.push(getDateString(newDate));
 
@@ -596,6 +616,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                         angular.forEach($scope.data.restrictionTypes, function (value, key) {
                             if (value.hasChanged) {
                                 var action = "";
+
                                 if (value.isRestrictionEnabled) {
                                     action = "add";
                                 } else {
@@ -607,6 +628,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                                     "restriction_type_id": value.id,
                                     "days": value.days
                                 };
+
                                 restrictionDetails.restrictions.push(restrictionData);
                             }
                         });
@@ -723,6 +745,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
             var datesSelected = getAllSelectedDates();
 
             var data = {};
+
             data.rate_id = $scope.popupData.selectedRate;
             data.room_type_id = $scope.popupData.selectedRoomType;
             data.rate_ids = [];
@@ -741,6 +764,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
             var all = $scope.popupData.all_data_selected;//if a user wants All rates/rooms applied to or not
             var rateView, allRooms = $scope.calendarData.data;
             var room, totalRooms = allRooms.length;
+
             if ($scope.ratesRoomsToggle === 'RATES') {
                 rateView = true;
                 if ($scope.ratesDisplayed.length === 1) {
@@ -803,6 +827,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 $scope.refreshCalendar();
                 ngDialog.close();
             };
+
             data.room_type_id = data.selectedRoomType;
 
             $scope.invokeApi(RateMngrCalendarSrv.updateRoomTypeOverride, data, onsuccess);
@@ -827,9 +852,11 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
             $scope.overrideByDate = [];
             //date > room type > occupancy
             var all = $scope.current_overrides, d, occupancyOverrides;
+
             for (var x in all) {
                 d = all[x].date;
                 var occupancyOverrides, room_types_with_override = [], room_types_parent = [], occupancies_with_override = [];
+
                 for (var i in all[x].room_types) {
                     room_types_parent.push({
                         'name': all[x].room_types[i].room_type.name,
@@ -867,6 +894,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                     o = a.roomRateOverrides;
 
             var selected_info;
+
             if (o) {
                 if (o.room_types) {
                     for (var i in o.room_types) {
@@ -876,6 +904,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                     }
                     $scope.hasAnyOverride();
                     var lbl = label.toLowerCase();
+
                     for (var w in selected_info.has_override) {
                         if (selected_info.has_override[w].toLowerCase() === lbl) {
                             $scope.selected_has_override = 'true';

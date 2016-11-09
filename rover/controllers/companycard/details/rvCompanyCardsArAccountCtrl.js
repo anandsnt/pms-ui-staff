@@ -20,6 +20,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			$scope.ARData = {};
 			$scope.ARData.note = "";
 		};
+
 		init();
 		var presentArDetails = {};
 
@@ -56,6 +57,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			};
 
 			var dataToSend = $scope.arAccountDetails;
+
 			if(!!$scope.contactInformation.id) {
 				dataToSend.id = $scope.contactInformation.id;
 				presentArDetails.id = $scope.contactInformation.id;
@@ -113,6 +115,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 				"note": $scope.ARData.note,
 				"ar_number": $scope.arAccountDetails.ar_number
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.saveARNote, dataToSend, successCallbackOfsaveARNote);
 		};
 
@@ -128,6 +131,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 				"id": $scope.contactInformation.id,
 				"note_id": note_id
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.deleteARNote, dataToSend, deleteARNoteSuccess);
 
 		};
@@ -142,6 +146,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 		$scope.$on('ArAccountDeleted', function(event) {
 			var bool = $scope.arAccountDetails.is_auto_assign_ar_numbers;
+
 			$scope.arAccountDetails = {};
 			$scope.arAccountDetails.is_use_main_contact = true;
 			$scope.arAccountDetails.is_use_main_address = true;

@@ -58,6 +58,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
         if(typeof value !== 'undefined') {
             var index = $scope.hours.indexOf(value);
             var arrayAfterValue = ["HH"];
+
             for(var i = index; i < $scope.hours.length; i++) {
                 arrayAfterValue.push($scope.hours[i]);
             }
@@ -116,6 +117,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
         });
             setWatchers();
         };
+
 		$scope.invokeApi(adCheckoutSrv.fetch, {}, fetchCheckoutDetailsSuccessCallback, fetchCheckoutDetailsFailureCallback);
 	};
 
@@ -156,6 +158,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
 			$scope.checkoutData.include_cash_reservations = ($scope.include_cash_reservationsy_flag) ?'true':'false';
 			$scope.validateAlertTimings();
             var excluded_room_types = [];
+
             angular.forEach($scope.excludedRoomTypes, function(excludedRoomType, index) {
                 excluded_room_types.push(excludedRoomType.id);
             });
@@ -185,6 +188,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
     	var saveCheckoutDetailsSuccessCallback = function(data) {
     		$scope.$emit('hideLoader');
     	};
+
     	$scope.invokeApi(adCheckoutSrv.save, uploadData, saveCheckoutDetailsSuccessCallback);
     };
 

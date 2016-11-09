@@ -1,6 +1,7 @@
 sntRover.controller('RVJournalDatePickerController', ['$scope', '$rootScope', 'ngDialog', 'dateFilter', function($scope, $rootScope, ngDialog, dateFilter) {
 
     var minDateSelected = '';
+
     if($scope.clickedOn === 'FROM') {
         $scope.date = $scope.data.fromDate;
     }

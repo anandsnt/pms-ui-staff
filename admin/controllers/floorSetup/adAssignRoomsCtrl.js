@@ -64,6 +64,7 @@ admin.controller('ADAssignRoomsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTablePara
                     $defer.resolve($scope.data);
                     updateSelectedList();
                 };
+
             if ($scope.roomAssignment.activeTab === "AVAILABLE") {
                 $scope.invokeApi(ADFloorSetupSrv.getUnAssignedRooms, getParams, fetchSuccessOfItemList);
             } else {

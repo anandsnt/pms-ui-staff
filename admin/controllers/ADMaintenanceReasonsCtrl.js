@@ -13,6 +13,7 @@ admin.controller('ADMaintenanceReasonsCtrl', ['$scope', 'ADMaintenanceReasonsSrv
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 	};
+
 	$scope.invokeApi(ADMaintenanceReasonsSrv.fetch, {}, fetchSuccessCallback);
 
     /*
@@ -75,6 +76,7 @@ admin.controller('ADMaintenanceReasonsCtrl', ['$scope', 'ADMaintenanceReasonsSrv
 			'name': $scope.data.name,
 			'code': $scope.data.code
 		};
+
   		$scope.invokeApi(ADMaintenanceReasonsSrv.save, params, postSuccess);
 	};
 	/*
@@ -86,6 +88,7 @@ admin.controller('ADMaintenanceReasonsCtrl', ['$scope', 'ADMaintenanceReasonsSrv
 			$scope.currentClickedElement = -1;
 		};
  		var data = $scope.data.maintenance_reasons[$scope.currentClickedElement];
+
   		$scope.invokeApi(ADMaintenanceReasonsSrv.update, data, postSuccess);
    	};
    	/*
@@ -102,6 +105,7 @@ admin.controller('ADMaintenanceReasonsCtrl', ['$scope', 'ADMaintenanceReasonsSrv
 	 			}
  			});
 		};
+
 		$scope.invokeApi(ADMaintenanceReasonsSrv.deleteItem, {'value': id }, successDeletionCallback);
 	};
 

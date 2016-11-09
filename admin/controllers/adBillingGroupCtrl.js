@@ -11,6 +11,7 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
 			$scope.billingGroupList = data.results;
 			$scope.currentClickedElement = -1;
 		};
+
 	   $scope.invokeApi(ADBillingGroupSrv.fetch, {}, successCallbackFetch);
 	};
 	// To list billing groups
@@ -34,9 +35,11 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
 					$scope.updateIsAllChargeCodeSelectedStatus();
 				});
 			};
+
 			$scope.billingGroupData = data.results;
 	   		$scope.invokeApi(ADBillingGroupSrv.getChargeCodes, {}, successCallbackFetchChargeCodes);
 		};
+
 	   $scope.invokeApi(ADBillingGroupSrv.getBillingGroupDetails, id, successCallbackFetchbillingGroupDetails);
 	};
    /*
@@ -70,6 +73,7 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
     			$scope.currentClickedElement = -1;
     		}
     	};
+
     	if($scope.isAddMode) {
     		$scope.invokeApi(ADBillingGroupSrv.createBillingGroup, params, successCallbackSave);
     	}else{
@@ -87,6 +91,7 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
     		$scope.currentClickedElement = -1;
     		$scope.billingGroupList.splice(index, 1);
     	};
+
     	$scope.invokeApi(ADBillingGroupSrv.deleteBillingGroup, param, successCallbackSave);
     };
 	 /*
@@ -110,6 +115,7 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
 	            $anchorScroll();
 	    	});
     	};
+
     	$scope.invokeApi(ADBillingGroupSrv.getChargeCodes, {}, successCallbackSave);
 	};
 
@@ -146,6 +152,7 @@ admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv',
     */
 	$scope.removeChargeCode = function(id) {
 		var pos;
+
 		for(var i = 0; i < $scope.billingGroupData.selected_charge_codes.length; i++) {
 			if($scope.billingGroupData.selected_charge_codes[i] === id) {
 				pos = i;

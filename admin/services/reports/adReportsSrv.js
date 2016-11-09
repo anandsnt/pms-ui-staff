@@ -45,6 +45,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
         // ------------------------------------------------------------------------------------------------------------- B. EXPOSED SERVICES
         self.fetchReportsList = function() {
             var deferred = $q.defer();
+
             deferred.resolve(reportsList);
             return deferred.promise;
         };
@@ -55,6 +56,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
                 return _.indexOf(reportFiltersMap[key], ReportKey) > -1
             });
             var deferred = $q.defer();
+
             if (!self.cache.filters[ReportKey] || Date.now() > self.cache.filters[ReportKey]['expiryDate']) {
                 $q.when(adReportsFilterSrv.fetchFilterData(filters), function(filters) {
                     self.cache.filters[ReportKey] = {
@@ -74,12 +76,14 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
         //gets pre fetched filter data
         self.getFilterData = function(ReportKey) {
             var deferred = $q.defer();
+
             deferred.resolve(self.cache.filters[ReportKey].data);
             return deferred.promise;
         }
 
         self.exportCSV = function(params) {
             var deferred = $q.defer();
+
             $http({
                 method: 'POST',
                 url: params.url,
@@ -98,6 +102,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
                 // http://stackoverflow.com/questions/24673612/element-click-does-not-work-in-firefox-and-ie-but-works-in-chrome
                 if (document.createEvent) {
                     var ev = document.createEvent("MouseEvent");
+
                     ev.initMouseEvent(
                         "click",
                         true /* bubble */, true /* cancelable */,

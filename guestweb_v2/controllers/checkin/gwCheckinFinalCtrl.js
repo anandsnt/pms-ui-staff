@@ -9,6 +9,7 @@ sntGuestWeb.controller('gwCheckinFinalController', ['$scope', '$state', '$stateP
 		});
 		var init = function() {
 			var screenIdentifier = "CHECKIN_FINAL";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.confirmationNumber = GwWebSrv.zestwebData.confirmationNo;
 			$scope.isPosting = true;
@@ -24,6 +25,7 @@ sntGuestWeb.controller('gwCheckinFinalController', ['$scope', '$state', '$stateP
 				},
 				successCallBack: onSuccess
 		};
+
 		$scope.callAPI(GwCheckinSrv.checkinGuest, options);
 	}
 ]);

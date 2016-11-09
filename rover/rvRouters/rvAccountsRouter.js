@@ -37,6 +37,7 @@ angular.module('accountsModule', [])
                             'is_non_zero': true,
                             'account_type': ''
                         };
+
                         return rvAccountsSrv.getAccountsList(params);
                     }
                 ]
@@ -68,6 +69,7 @@ angular.module('accountsModule', [])
                         var params = {
                             accountId: $stateParams.id
                         };
+
                         return rvAccountsConfigurationSrv.getAccountSummary (params);
                     }
                 ]

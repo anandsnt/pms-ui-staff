@@ -69,6 +69,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 					"days_of_stay": data.days_of_stay,
 					"hours_of_stay": data.hours_of_stay
 				}
+
 				$state.go('zest_station.checkoutReservationBill', stateParams);
 			}
 		};
@@ -95,6 +96,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 				successCallBack: findReservationSuccess,
 				failureCallBack: findReservationFailed
 			};
+
 			$scope.callAPI(zsCheckoutSrv.fetchReservationFromUId, options);
 		};
 		/********************************************************************************
@@ -133,6 +135,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
 			//open socket if not in open state
 			($scope.socketOperator.returnWebSocketObject().readyState !== 1) ? $scope.$emit('CONNECT_WEBSOCKET'): $scope.socketOperator.InsertKeyCard();
 		};
+
 		init();
 
 		/** 

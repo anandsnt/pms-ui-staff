@@ -6,6 +6,7 @@ admin.service('ADHotelListSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, 
 	this.fetch = function(params) {
 		var deferred = $q.defer();
 		var url = '/admin/hotels.json';
+
 		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

@@ -41,6 +41,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
      */
     var setCreditCardDetails = function() {
         var entity = $scope.selectedEntity;
+
         if (entity.credit_card_details !== null &&
             entity.credit_card_details !== undefined &&
             entity.credit_card_details.hasOwnProperty('payment_type_description')) {
@@ -78,12 +79,14 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
      */
     var initializeScrollers = function() {
         var scrollerOptions = { preventDefault: false};
+
         $scope.setScroller('paymentList', scrollerOptions);
         $scope.setScroller('billingGroups', scrollerOptions);
         $scope.setScroller('chargeCodes', scrollerOptions);
         $scope.setScroller('routeDetails', scrollerOptions);
 
         var scrollerOptionsForSearch = {click: true};
+
         $scope.setScroller('chargeCodesList', scrollerOptionsForSearch);
 
         $scope.chargeCodesListDivHgt = 250;
@@ -140,6 +143,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
         var expiryDate = $scope.cardData.tokenDetails.isSixPayment?
                          $scope.cardData.tokenDetails.expiry.substring(2, 4)+" / "+$scope.cardData.tokenDetails.expiry.substring(0, 2):
                          $scope.cardData.cardDetails.expiryMonth+" / "+$scope.cardData.cardDetails.expiryYear;
+
         return expiryDate;
     };
 
@@ -151,6 +155,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
         var cardNumber = $scope.cardData.tokenDetails.isSixPayment?
                          $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4):
                          $scope.cardData.cardDetails.cardNumber.slice(-4);
+
         return cardNumber;
     };
 
@@ -162,6 +167,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
         var cardName = (!$scope.cardData.tokenDetails.isSixPayment)?
                        $scope.cardData.cardDetails.userName:
                        ($scope.passData.details.firstName + " " + $scope.passData.details.lastName);
+
         return cardName;
     };
 
@@ -178,6 +184,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
                           cardInfo.tokenDetails.expiry.substring(0, 2) :
                           cardInfo.cardDetails.expiryYear;
         var expiryDate  = (expiryMonth && expiryYear )? ("20"+expiryYear+"-"+expiryMonth+"-01"):"";
+
         return expiryDate;
     };
 
@@ -226,6 +233,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
                 controller: '',
                 scope: $scope
             });
+
             return;
         }
 
@@ -424,6 +432,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
         };
 
         var params = angular.copy($scope.selectedEntity);            
+
         $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess, errorCallback);
     };
 
@@ -472,6 +481,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
         var successCallback = function(data) {
             $scope.$parent.$emit('hideLoader');
             var params = angular.copy( $scope.selectedEntity);
+
             $scope.invokeApi(RVBillinginfoSrv.saveDefaultAccountRouting, params, defaultRoutingSaveSuccess, $scope.errorCallback);
         };
 
@@ -490,6 +500,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
                !$scope.paymentFlags.sixIsManual) {
 
                 var data = {};
+
                 data.account_id = $scope.selectedEntity.id;
                 data.add_to_guest_card = false;
 
@@ -504,6 +515,7 @@ sntRover.controller('rvBillingInfoCardsRouteDetailsCtrl', ['$scope', '$rootScope
             }
             else if (!isEmptyObject($scope.swipedCardDataToSave)) {
                 var data = $scope.swipedCardDataToSave;
+
                 data.account_id = $scope.selectedEntity.id;
                 data.payment_credit_type = $scope.swipedCardDataToSave.cardType;
                 data.credit_card = $scope.swipedCardDataToSave.cardType;

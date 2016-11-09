@@ -9,17 +9,20 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		var dataToApi = {
 			'reservationId': $scope.reservation.reservation_card.reservation_id
 		};
+
 		$scope.invokeApi(RVSmartBandSrv.getBalanceSmartBands, dataToApi, $scope.getBalanceSmartBandSuccess);
 	};
 	$scope.showBalanceSmartBands();
 	$scope.cashOutSmartBandSuccess = function() {
 		var reservationId = $scope.reservation.reservation_card.reservation_id;
+
 		$scope.$emit('hideLoader');
 		$scope.closeDialog();
 		$state.go("rover.reservation.staycard.billcard", {"reservationId": reservationId, "clickedButton": $scope.clickedButton});
 	};
 	$scope.clickCreditToRoom = function() {
 		var reservationId = $scope.reservation.reservation_card.reservation_id;
+
 		$scope.invokeApi(RVSmartBandSrv.cashOutSmartBalance, reservationId, $scope.cashOutSmartBandSuccess);
 	};
 

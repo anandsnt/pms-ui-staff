@@ -45,6 +45,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         var lang = $scope.zestSettings.zest_lang.default_language;
         var enabledLanguages = getEnabledLanguages();
         var isValid = false;
+
         for (var i in enabledLanguages) {
             if (lang === enabledLanguages[i].value) {
                 isValid = true;
@@ -74,6 +75,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         if (!$scope.zestSettings.zest_lang) {return null;};
         var langs = Object.keys($scope.zestSettings.zest_lang);
         var languages = [];
+
         if (!langs) {
             return null;
         } else {
@@ -83,6 +85,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             * otherwise the user shouldnt be allowed to set it to default
             */
             var isCapitalizedProperty, isEnabled, hasFileUpdatedOrUploading, langName;
+
             for (var i in langs) {
                 
                 isCapitalizedProperty = langs[i].charAt(0).toUpperCase() === langs[i].charAt(0);
@@ -122,6 +125,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             setupDefaultLanguageDropdown();
             
         };
+
         $scope.invokeApi(ADZestStationSrv.fetchZestStationData, {}, fetchSuccess);
     };
     
@@ -132,6 +136,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             $scope.zestSettings = data;
             fetchZestStationData();
         };
+
         $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
     };
     var checkIfFileWasAdded = function(file) {
@@ -160,11 +165,13 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             $scope.$emit('hideLoader');
             $scope.goBackToPreviousState();
         };
+
         setUpTranslationFilesStatus();
         
         var dataToSend = {
             'kiosk': $scope.zestSettings
         };
+
         $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess);
     };
 
@@ -176,6 +183,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
          $timeout(function() {
             $scope.downloadPromptFileName = lang+'.json';
             var link = document.getElementById('download-link-popup');//ie. en-download-link
+
             link.href = 'staff/locales/download/'+lang+'.json';
          }, 500);
          ngDialog.open({

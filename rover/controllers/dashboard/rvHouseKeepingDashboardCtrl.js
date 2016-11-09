@@ -4,6 +4,7 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
     var that = this;
 	//scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
+
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
 
 
@@ -74,10 +75,12 @@ sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope'
     */
     $scope.escapeNull = function(value, replaceWith) {
         var newValue = "";
+
         if((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
             newValue = replaceWith;
         }
         var valueToReturn = ((value === null || typeof value === 'undefined' ) ? newValue : value);
+
         return valueToReturn;
    };
 

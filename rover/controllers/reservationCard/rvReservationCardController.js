@@ -12,6 +12,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		$scope.setHeadingTitle($scope.heading);
 
 		var title = "Staycard";
+
 		$scope.setTitle(title);
 		$scope.prevTimeLineEmpty = false;
 		$scope.reservationCardClick = function() {
@@ -70,6 +71,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 					"user_id": $scope.data.guest_details.user_id,
 					"guest_id": $scope.data.guest_details.guest_id
 				};
+
 				$scope.$emit('SETGUESTDATA', guestInfo);
 				$scope.showGuestPaymentList(guestInfo);
 
@@ -104,6 +106,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		$scope.showTimeLineReservation = function(timeline) {
 			$scope.timeline = timeline;
 			var count = 0;
+
 			if (timeline === "current") {
 				$scope.reservationList = $scope.data.reservation_list.current_reservations_arr;
 				count = $scope.countCurrent;
@@ -174,6 +177,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 					"user_id": userId,
 					"guest_id": guestId
 				};
+
 				$scope.$emit('GUESTPAYMENTDATA', paymentData);
 				$scope.$emit('SHOWGUESTLIKES');
 			};

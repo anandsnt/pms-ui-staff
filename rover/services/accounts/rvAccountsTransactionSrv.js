@@ -81,6 +81,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var trasactionId = data.id;
 			var updatedDate  = data.updatedDate;
 			var url = 'api/financial_transactions/'+trasactionId;
+
 			rvBaseWebSrvV2.putJSON(url, updatedDate).then(function(data) {
 			   	 deferred.resolve(data);
 			}, function(data) {
@@ -101,6 +102,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 
 			var deferred = $q.defer();
 			var url = 'api/financial_transactions/'+ params.id +'/save_custom_description';
+
 			rvBaseWebSrvV2.postJSON(url, params.postData ).then(function(data) {
 			   	 deferred.resolve(data);
 			}, function(data) {
@@ -122,6 +124,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var deferred = $q.defer();
 			var trasactionId = deleteData.id;
 			var url = 'api/financial_transactions/'+trasactionId;
+
 			rvBaseWebSrvV2.putJSON(url, deleteData.data).then(function(data) {
 			   	 deferred.resolve(data);
 			}, function(data) {
@@ -141,6 +144,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var deferred = $q.defer();
 			var trasactionId = splitData.id;
 			var url = 'api/financial_transactions/'+trasactionId;
+
 			rvBaseWebSrvV2.putJSON(url, splitData.data).then(function(data) {
 			   	 deferred.resolve(data);
 			}, function(data) {
@@ -159,6 +163,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 		this.savePaymentDetails = function(data) {
 			var deferred = $q.defer();
 			var url = '/api/bills/'+data.bill_id+'/add_payment_method';
+
 			rvBaseWebSrvV2.postJSON(url, data.data_to_pass).then(function(data) {
 				    deferred.resolve(data);
 				}, function(data) {
@@ -199,6 +204,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 				//the timeout set for the hotel
 				if (timeStampInSeconds >= $rootScope.emvTimeout) {
 					var errors = ["Request timed out. Unable to process the transaction"];
+
 					deferred.reject(errors);
 				} else {
 					rvBaseWebSrvV2.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {

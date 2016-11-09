@@ -96,6 +96,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 		 */
 		var ifMandatoryValuesEntered = function() {
 			var summary = $scope.accountConfigData.summary;
+
 			return !!summary.posting_account_name;
 		};
 
@@ -137,6 +138,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 
 			// we will restrict tab swithing if we are in add mode
 			var tryingFromAccountsToOther = isInAccountsTab && tab !== 'ACCOUNT';
+
 			if ($scope.isInAddMode() && tryingFromAccountsToOther) {
 				$scope.errorMessage = ['Sorry, Please save the entered information and try to switch the tab'];
 				return;
@@ -230,6 +232,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 						.then(function(data) {
 							var list = [];
 							var entry = {};
+
 							$.map(data, function(each) {
 								entry = {
 									label: each.account_name,
@@ -268,6 +271,7 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 						.then(function(data) {
 							var list = [];
 							var entry = {};
+
 							$.map(data, function(each) {
 								entry = {
 									label: each.account_name,

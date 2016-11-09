@@ -27,6 +27,7 @@ sntRover.controller('RVSocialLobbyCrl', [
             var posts = postContainer.children;
             
             var height = 80 * posts.length + 40;
+
             if(expandedPostHeight !== "") {
                 height = height + expandedPostHeight;                
             }
@@ -80,6 +81,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.fetchPosts = function() {
             $scope.errorMessage = "";
             var options = {};
+
             options.params = $scope.postParams;
             options.onSuccess = function(data) {
                 
@@ -103,6 +105,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.addPost = function() {
             $scope.errorMessage = "";
             var options = {};
+
             options.params = {
                 "post": {
                 "post_message": $scope.newPost,
@@ -126,6 +129,7 @@ sntRover.controller('RVSocialLobbyCrl', [
 
         $scope.getProfessionStringForUser = function(user) {
             var professionString = "";
+
             if(user.profession != null && user.profession != "")
                 professionString = professionString + user.profession;
             if(user.works_at != "" && user.works_at != null)
@@ -149,6 +153,7 @@ sntRover.controller('RVSocialLobbyCrl', [
         $scope.delete = function() {
             $scope.errorMessage = "";
             var options = {};
+
             options.params = {'post_id': deleteIndex};
             options.onSuccess = function() {
                 

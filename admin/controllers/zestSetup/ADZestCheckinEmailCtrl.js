@@ -75,12 +75,15 @@ admin.controller('ADZestCheckinEmailCtrl', ['$scope', '$state', 'adZestCheckinCh
              "name": "Email URL",
              "url_suffix": $scope.data.zest_email_setup.checkin_static_uri
         }
+
         $scope.invokeApi(adZestCheckinCheckoutSrv.saveNewDirectURL, data, saveNewDirectURLSuccess);
     };
+
     $scope.saveEmailSetup = function() {
             var onSuccess = function(data) {
                 saveEmailUrl();
             };
+
             $scope.callAPI(adZestCheckinCheckoutSrv.saveEmailSetup, {
                 params: {
                     'zest_email_setup': $scope.data.zest_email_setup

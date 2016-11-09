@@ -24,10 +24,12 @@ admin.controller('ADServiceProviderListCtrl', ['$scope', '$rootScope', '$state',
                     var orderedData = params.sorting() ?
                                         $filter('orderBy')($scope.data, params.orderBy()) :
                                         $scope.data;
+
                     $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                 }
             });
         };
+
         $scope.invokeApi(ADServiceProviderSrv.fetchServiceProviderList, {}, onFetchSuccess);
 
     };
@@ -37,6 +39,7 @@ admin.controller('ADServiceProviderListCtrl', ['$scope', '$rootScope', '$state',
         var onDeleteSuccess = function(data) {
             fetchServiceProviderList();
         }
+
         $scope.invokeApi(ADServiceProviderSrv.deleteServiceProvider, serviceProviderId, onDeleteSuccess);
     };
 

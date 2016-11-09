@@ -9,6 +9,7 @@ angular.module('sntRover').service('rvGroupAccountActivitySrv', [
 			var deferred = $q.defer();
 
 			var url ='/api/group_actions/'	+ params.id;
+
 			params = _.omit(params, 'id');
 			rvBaseWebSrvV2.getJSON(url, params)
 			.then(function(data) {

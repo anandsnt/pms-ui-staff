@@ -35,9 +35,11 @@ angular.module('sntRover').controller('RVHouseAvailabilityStatusCtrl', [
 			var businessDate = tzIndependentDate($rootScope.businessDate);
 			//We need to display only 3 days information
 			var fromDate = businessDate.clone();
+
 			fromDate.setDate(fromDate.getDate() - 1);
 
 			var toDate = businessDate.clone();
+
 			toDate.setDate(toDate.getDate() + 1);
 
 			var dataForWebservice = {

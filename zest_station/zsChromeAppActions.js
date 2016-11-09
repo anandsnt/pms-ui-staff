@@ -1,5 +1,6 @@
 this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
     var that = this;
+
     if (typeof chrome !== "undefined" && typeof chrome.runtime !== "undefined") {
         //only init these if using chrome, this is for the chromeapp virtual keyboard
         that.onChromeAppMsgResponse = function(response) {
@@ -19,6 +20,7 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
                 var msg = {
                     fromZestStation: true
                 };
+
                 console.log('msg to ChromeApp:', msg);
                 chrome.runtime.sendMessage(chromeAppId, msg, this.onChromeAppMsgResponse);
             }
@@ -60,6 +62,7 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
         that.qrAttempt = 0;
         that.fetchQRCode = function() {
             var msg = 'initQRCodeScan';
+
             chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
             console.log('SENDING message: ', msg);
         };

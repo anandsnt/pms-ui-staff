@@ -51,6 +51,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		var date 						= '';
 		var totalRoomCount = availabilityAdditionalFromAPI.physical_count;
 		var currentRow = null;
+
 		for(var i = 0; i < availabilityAdditionalFromAPI.results.length; i++) {
 			currentRow = availabilityAdditionalFromAPI.results[i];
 
@@ -125,6 +126,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			//Extracting date detail
 			var dateToCheck = tzIndependentDate(element.date);
 			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+
 			dates.push({'date': element.date, 'isWeekend': isWeekend, 'dateObj': new Date(element.date)});
 			//Extracting groupTotalRooms
 			groupTotalRooms.push(element.group_total_rooms);
@@ -140,6 +142,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 					"total_blocked_rooms": ele.total_blocked_rooms,
 					"total_pickedup_rooms": ele.total_pickedup_rooms
 				};
+
 				temp.push(detail);
 			});
 			//Forms two dimensional array[datewise][groupwise]
@@ -153,6 +156,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 				"holdStatusName": getGroupName(element.hold_status_id, datafromApi.hold_status),
 				"details": _.zip.apply(null, groupDetail)[index]
 			};
+
 			groupDetails.push(groupdetail);
 		});
 
@@ -180,6 +184,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	/**
 	* function to fetch group availability between from date & to date
 	*/
+
 	this.fetchGroupAvailabilityDetails = function(params) {
 		var firstDate 	= (params.from_date);
 		var secondDate 	= (params.to_date);
@@ -192,6 +197,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		//Webservice calling section
 		var deferred = $q.defer();
 		var url = 'api/group_availability';
+
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
 			//storing response temporarily in that.data, will change in occupancy call
 			that.data.gridDataForGroupAvailability = formGridDataForGroupAvailability(resultFromAPI);
@@ -226,6 +232,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			//Extracting date detail
 			var dateToCheck = tzIndependentDate(item.date);
 			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+
 			dates.push({'date': item.date, 'isWeekend': isWeekend, 'dateObj': new Date(item.date)});
 
 			//Extracting Occupancy details
@@ -335,6 +342,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	/**
 	* function to fetch allotment availability between from date & to date
 	*/
+
 	this.fetchAllotmentAvailabilityDetails = function(params) {
 		var firstDate 	= (params.from_date);
 		var secondDate 	= (params.to_date);
@@ -347,6 +355,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		//Webservice calling section
 		var deferred = $q.defer();
 		var url = 'api/allotment_availability';
+
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice)
 			.then(function(resultFromAPI) {
 				//storing response temporarily in that.data, will change in occupancy call
@@ -389,6 +398,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			//Extracting date detail
 			var dateToCheck = tzIndependentDate(element.date);
 			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
+
 			dates.push({'date': element.date, 'isWeekend': isWeekend, 'dateObj': new Date(element.date)});
 
 			//Extracting groupTotalRooms
@@ -407,6 +417,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 					"total_blocked_rooms": ele.total_blocked_rooms,
 					"total_pickedup_rooms": ele.total_pickedup_rooms
 				};
+
 				temp.push(detail);
 			});
 
@@ -422,6 +433,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 				"holdStatusName": getAllotmentName(element.hold_status_id, datafromApi.hold_status),
 				"details": _.zip.apply(null, groupDetail)[index]
 			};
+
 			groupDetails.push(groupdetail);
 		});
 
@@ -453,6 +465,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		//Webservice calling section
 		var deferred = $q.defer();
 		var url = 'api/availability_main';
+
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
 			that.data.gridData ={};
 			that.data.gridData = formGridData(resultFromAPI);
@@ -470,6 +483,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			},
 			deferred = $q.defer(),
 			url = 'api/availability/best_rates';
+
 		rvBaseWebSrvV2.getJSON(url, payLoad).then(function(response) {
 			var BARs = [];
 
@@ -617,6 +631,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 	this.restructureHouseDataForUI = function(data, houseTotal, businessDate) {
 
 		var houseDetails = {};
+
 		houseDetails.physical_count = houseTotal;
 		houseDetails.dates = [];
 		houseDetails.total_rooms_occupied = {};
@@ -642,6 +657,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			dateDetails.date = dayInfo.date;
 			var date = tzIndependentDate(dayInfo.date);
 			//Set if the day is yesterday/today/tomorrow
+
 			if(date.getTime() ===  businessDate.getTime()) {
 				dateDetails.day = "TODAY";
 			} else if(date.getTime() < businessDate.getTime()) {
@@ -756,6 +772,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
         for (; currDate <= lastDate; currDate += (24 * 3600 * 1000)) {
             var dateObj = new tzIndependentDate(currDate);
+
             dates.push({
                 date: dateFilter(dateObj, 'yyyy-MM-dd'),
                 isWeekend: dateObj.getDay() === 0 || dateObj.getDay() === 6
@@ -810,6 +827,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
                     _.each(idsInOrder, function(roomTypeId) {
                     	var roomTypeData = {};
+
                     	roomTypeData.name = _.find(that.data.gridData.roomTypes, {
                             id: roomTypeId
                         }).name;

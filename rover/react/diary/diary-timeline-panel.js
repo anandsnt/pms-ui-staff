@@ -34,6 +34,7 @@ var TimelinePanel = React.createClass({
 	componentWillReceiveProps: function(nextProps) {
 
 		var hops = Object.prototype.hasOwnProperty;
+
 		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
   			this.setState({
   				filter: nextProps.filter

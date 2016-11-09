@@ -38,6 +38,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             var deferred = $q.defer();
 
             var url = "/api/rates.json";
+
             ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -49,6 +50,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.fetchCommissionDetails = function (data) {
             var deferred = $q.defer();
             var url = " /api/hotel_settings/default_rate_commission_details";
+
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -62,8 +64,10 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
 
             var url = "/api/rate_types.json";
+
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 var results = [];
+
                 for(var i = 0; i < data.results.length; i++) {
                     if(data.results[i].activated) {
                         results.push(data.results[i]);
@@ -79,6 +83,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.importRates = function () {
             var deferred = $q.defer();
             var url = "/api/rates/import";
+
             ADBaseWebSrvV2.postJSON(url).then(function (data) {
                 deferred.resolve(data.results);
             }, function (data) {
@@ -91,6 +96,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             var deferred = $q.defer();
 
             var url = "/api/rates/" + params.rate_id + "/rate_date_ranges";
+
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -116,6 +122,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             var deferred = $q.defer();
 
             var url = "/admin/rates/" + data.id;
+
             delete data['id'];
             ADBaseWebSrv.putJSON(url, data).then(function (data) {
                 deferred.resolve(data);
@@ -127,6 +134,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         };
 
         var that = this;
+
         this.rateDetails = {};
 
         // get rate details
@@ -136,9 +144,11 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
              * Service function to fetch add ons
              * @return {object} add ons
              */
+
             that.fetchAddons = function () {
                 var params = {"is_active": true, "is_not_reservation_only": true};
                 var url = "/api/addons";
+
                 ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
                     that.rateDetails.allAddOns = data.results;
                     deferred.resolve(that.rateDetails);
@@ -150,6 +160,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             // fetch hotel business date
             that.fetchHotelInfo = function () {
                 var url = "/api/rover_header_info";
+
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     data = data.data;
                     that.rateDetails.business_date = data.business_date;
@@ -161,6 +172,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             };
 
             var url = "/api/rates/" + params.rateId;
+
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 that.rateDetails = data;
                 var chargeCodes = data.commission_details.charge_codes,

@@ -43,11 +43,13 @@ var require,
             localRequire = function (id) {
                 var resultantId = id;
                 //Its a relative path, so lop off the last portion and add the id (minus "./")
+
                 if (id.charAt(0) === ".") {
                     resultantId = module.id.slice(0, module.id.lastIndexOf(SEPARATOR)) + SEPARATOR + id.slice(2);
                 }
                 return require(resultantId);
             };
+
         module.exports = {};
         delete module.factory;
         factory(localRequire, module.exports, module);
@@ -59,6 +61,7 @@ var require,
             throw "module " + id + " not found";
         } else if (id in inProgressModules) {
             var cycle = requireStack.slice(inProgressModules[id]).join('->') + '->' + id;
+
             throw "Cycle in require graph: " + cycle;
         }
         if (modules[id].factory) {
@@ -122,6 +125,7 @@ var documentEventHandlers = {},
 
 document.addEventListener = function(evt, handler, capture) {
     var e = evt.toLowerCase();
+
     if (typeof documentEventHandlers[e] != 'undefined') {
         documentEventHandlers[e].subscribe(handler);
     } else {
@@ -131,6 +135,7 @@ document.addEventListener = function(evt, handler, capture) {
 
 window.addEventListener = function(evt, handler, capture) {
     var e = evt.toLowerCase();
+
     if (typeof windowEventHandlers[e] != 'undefined') {
         windowEventHandlers[e].subscribe(handler);
     } else {
@@ -141,6 +146,7 @@ window.addEventListener = function(evt, handler, capture) {
 document.removeEventListener = function(evt, handler, capture) {
     var e = evt.toLowerCase();
     // If unsubscribing from an event that is handled by a plugin
+
     if (typeof documentEventHandlers[e] != "undefined") {
         documentEventHandlers[e].unsubscribe(handler);
     } else {
@@ -151,6 +157,7 @@ document.removeEventListener = function(evt, handler, capture) {
 window.removeEventListener = function(evt, handler, capture) {
     var e = evt.toLowerCase();
     // If unsubscribing from an event that is handled by a plugin
+
     if (typeof windowEventHandlers[e] != "undefined") {
         windowEventHandlers[e].unsubscribe(handler);
     } else {
@@ -160,6 +167,7 @@ window.removeEventListener = function(evt, handler, capture) {
 
 function createEvent(type, data) {
     var event = document.createEvent('Events');
+
     event.initEvent(type, false, false);
     if (data) {
         for (var i in data) {
@@ -211,6 +219,7 @@ var cordova = {
      */
     fireDocumentEvent: function(type, data, bNoDetach) {
         var evt = createEvent(type, data);
+
         if (typeof documentEventHandlers[type] != 'undefined') {
             if( bNoDetach ) {
                 documentEventHandlers[type].fire(evt);
@@ -230,6 +239,7 @@ var cordova = {
     },
     fireWindowEvent: function(type, data) {
         var evt = createEvent(type, data);
+
         if (typeof windowEventHandlers[type] != 'undefined') {
             setTimeout(function() {
                 windowEventHandlers[type].fire(evt);
@@ -281,6 +291,7 @@ var cordova = {
     callbackFromNative: function(callbackId, isSuccess, status, args, keepCallback) {
         try {
             var callback = cordova.callbacks[callbackId];
+
             if (callback) {
                 if (isSuccess && status == cordova.callbackStatus.OK) {
                     callback.success && callback.success.apply(null, args);
@@ -302,6 +313,7 @@ var cordova = {
         }
         catch (err) {
             var msg = "Error in " + (isSuccess ? "Success" : "Error") + " callbackId: " + callbackId + " : " + err;
+
             console && console.log && console.log(msg);
             cordova.fireWindowEvent("cordovacallbackerror", { 'message': msg });
             throw err;
@@ -350,11 +362,13 @@ function checkArgs(spec, functionName, args, opt_callee) {
     }
     var errMsg = null;
     var typeName;
+
     for (var i = 0; i < spec.length; ++i) {
         var c = spec.charAt(i),
             cUpper = c.toUpperCase(),
             arg = args[i];
         // Asterix means allow anything.
+
         if (c == '*') {
             continue;
         }
@@ -396,6 +410,7 @@ var base64 = exports;
 
 base64.fromArrayBuffer = function(arrayBuffer) {
     var array = new Uint8Array(arrayBuffer);
+
     return uint8ToBase64(array);
 };
 
@@ -403,6 +418,7 @@ base64.toArrayBuffer = function(str) {
     var decodedStr = typeof atob != 'undefined' ? atob(str) : new Buffer(str, 'base64').toString('binary');
     var arrayBuffer = new ArrayBuffer(decodedStr.length);
     var array = new Uint8Array(arrayBuffer);
+
     for (var i=0, len=decodedStr.length; i < len; i++) {
         array[i] = decodedStr.charCodeAt(i);
     }
@@ -435,6 +451,7 @@ function uint8ToBase64(rawData) {
     var output="";
     var segment;
     var table = b64_12bitTable();
+
     for (var i=0;i<numBytes-2;i+=3) {
         segment = (rawData[i] << 16) + (rawData[i+1] << 8) + rawData[i+2];
         output += table[segment >> 12];
@@ -471,6 +488,7 @@ function each(objects, func, context) {
 function clobber(obj, key, value) {
     exports.replaceHookForTesting(obj, key);
     var needsProperty = false;
+
     try {
         obj[key] = value;
     } catch (e) {
@@ -642,6 +660,7 @@ var Channel = function(type, sticky) {
                 f = function() {
                     if (!(--i)) h();
                 };
+
             for (var j=0; j<len; j++) {
                 if (c[j].state === 0) {
                     throw Error('Can only use join with sticky channels.');
@@ -673,6 +692,7 @@ var Channel = function(type, sticky) {
         waitForInitialization: function(feature) {
             if (feature) {
                 var c = channel[feature] || this.createSticky(feature);
+
                 this.deviceReadyChannelsMap[feature] = c;
                 this.deviceReadyChannelsArray.push(c);
             }
@@ -685,6 +705,7 @@ var Channel = function(type, sticky) {
          */
         initializationComplete: function(feature) {
             var c = this.deviceReadyChannelsMap[feature];
+
             if (c) {
                 c.fire();
             }
@@ -712,6 +733,7 @@ Channel.prototype.subscribe = function(f, c) {
 
     var func = f,
         guid = f.observer_guid;
+
     if (typeof c == "object") { func = utils.close(c, f); }
 
     if (!guid) {
@@ -740,6 +762,7 @@ Channel.prototype.unsubscribe = function(f) {
 
     var guid = f.observer_guid,
         handler = this.handlers[guid];
+
     if (handler) {
         delete this.handlers[guid];
         this.numHandlers--;
@@ -756,6 +779,7 @@ Channel.prototype.fire = function(e) {
     var fail = false,
         fireArgs = Array.prototype.slice.call(arguments);
     // Apply stickiness.
+
     if (this.state == 1) {
         this.state = 2;
         this.fireArgs = fireArgs;
@@ -764,6 +788,7 @@ Channel.prototype.fire = function(e) {
         // Copy the values first so that it is safe to modify it from within
         // callbacks.
         var toCall = [];
+
         for (var item in this.handlers) {
             toCall.push(this.handlers[item]);
         }
@@ -854,6 +879,7 @@ function shouldBundleCommandJson() {
     }
     if (bridgeMode === jsToNativeModes.XHR_OPTIONAL_PAYLOAD) {
         var payloadLength = 0;
+
         for (var i = 0; i < commandQueue.length; ++i) {
             payloadLength += commandQueue[i].length;
         }
@@ -868,6 +894,7 @@ function massageArgsJsToNative(args) {
         return args;
     }
     var ret = [];
+
     args.forEach(function(arg, i) {
         if (utils.typeName(arg) == 'ArrayBuffer') {
             ret.push({
@@ -885,6 +912,7 @@ function massageMessageNativeToJs(message) {
     if (message.CDVType == 'ArrayBuffer') {
         var stringToArrayBuffer = function(str) {
             var ret = new Uint8Array(str.length);
+
             for (var i = 0; i < str.length; i++) {
                 ret[i] = str.charCodeAt(i);
             }
@@ -893,6 +921,7 @@ function massageMessageNativeToJs(message) {
         var base64ToArrayBuffer = function(b64) {
             return stringToArrayBuffer(atob(b64));
         };
+
         message = base64ToArrayBuffer(message.data);
     }
     return message;
@@ -900,6 +929,7 @@ function massageMessageNativeToJs(message) {
 
 function convertMessageToArgsNativeToJs(message) {
     var args = [];
+
     if (!message || !message.hasOwnProperty('CDVType')) {
         args.push(message);
     } else if (message.CDVType == 'MultiPart') {
@@ -923,6 +953,7 @@ function iOSExec() {
 
     var successCallback, failCallback, service, action, actionArgs, splitCommand;
     var callbackId = null;
+
     if (typeof arguments[0] !== "string") {
         // FORMAT ONE
         successCallback = arguments[0];
@@ -1037,6 +1068,7 @@ function pokeNativeViaIframe() {
         // The delegate method is called only when the hash changes, so toggle it back and forth.
         hashToggle = hashToggle ^ 3;
         var hashValue = '%0' + hashToggle;
+
         if (bridgeMode === jsToNativeModes.IFRAME_HASH_WITH_PAYLOAD) {
             hashValue += iOSExec.nativeFetchMessages();
         }
@@ -1092,6 +1124,7 @@ iOSExec.nativeFetchMessages = function() {
         return '';
     }
     var json = '[' + commandQueue.join(',') + ']';
+
     commandQueue.length = 0;
     return json;
 };
@@ -1100,6 +1133,7 @@ iOSExec.nativeCallback = function(callbackId, status, message, keepCallback) {
     return iOSExec.nativeEvalAndFetch(function() {
         var success = status === 0 || status === 1;
         var args = convertMessageToArgsNativeToJs(message);
+
         cordova.callbackFromNative(callbackId, success, status, args, keepCallback);
     });
 };
@@ -1138,6 +1172,7 @@ module.exports = {
     // cordova.commandProxy.remove("Accelerometer");
     remove: function(id) {
         var proxy = CommandProxyMap[id];
+
         delete CommandProxyMap[id];
         CommandProxyMap[id] = null;
         return proxy;
@@ -1181,10 +1216,12 @@ window.setTimeout(function() {
 // We replace it so that properties that can't be clobbered can instead be overridden.
 function replaceNavigator(origNavigator) {
     var CordovaNavigator = function() {};
+
     CordovaNavigator.prototype = origNavigator;
     var newNavigator = new CordovaNavigator();
     // This work-around really only applies to new APIs that are newer than Function.bind.
     // Without it, APIs such as getGamepads() break.
+
     if (CordovaNavigator.bind) {
         for (var key in origNavigator) {
             if (typeof origNavigator[key] == 'function') {
@@ -1309,10 +1346,12 @@ window.setTimeout(function() {
 // We replace it so that properties that can't be clobbered can instead be overridden.
 function replaceNavigator(origNavigator) {
     var CordovaNavigator = function() {};
+
     CordovaNavigator.prototype = origNavigator;
     var newNavigator = new CordovaNavigator();
     // This work-around really only applies to new APIs that are newer than Function.bind.
     // Without it, APIs such as getGamepads() break.
+
     if (CordovaNavigator.bind) {
         for (var key in origNavigator) {
             if (typeof origNavigator[key] == 'function') {
@@ -1435,6 +1474,7 @@ function prepareNamespace(symbolPath, context) {
     }
     var parts = symbolPath.split('.');
     var cur = context;
+
     for (var i = 0, part; part = parts[i]; ++i) {
         cur = cur[part] = cur[part] || {};
     }
@@ -1443,12 +1483,14 @@ function prepareNamespace(symbolPath, context) {
 
 exports.mapModules = function(context) {
     var origSymbols = {};
+
     context.CDV_origSymbols = origSymbols;
     for (var i = 0, len = symbolList.length; i < len; i += 3) {
         var strategy = symbolList[i];
         var moduleName = symbolList[i + 1];
         var module = require(moduleName);
         // <runs/>
+
         if (strategy == 'r') {
             continue;
         }
@@ -1474,11 +1516,13 @@ exports.mapModules = function(context) {
 
 exports.getOriginalSymbol = function(context, symbolPath) {
     var origSymbols = context.CDV_origSymbols;
+
     if (origSymbols && (symbolPath in origSymbols)) {
         return origSymbols[symbolPath];
     }
     var parts = symbolPath.split('.');
     var obj = context;
+
     for (var i = 0; i < parts.length; ++i) {
         obj = obj && obj[parts[i]];
     }
@@ -1514,6 +1558,7 @@ var urlutil = require('cordova/urlutil');
 exports.injectScript = function(url, onload, onerror) {
     var script = document.createElement("script");
     // onload fires even when script fails loads with an error.
+
     script.onload = onload;
     // onerror fires for malformed URLs.
     script.onerror = onerror;
@@ -1587,8 +1632,10 @@ function findCordovaPath() {
     var path = null;
     var scripts = document.getElementsByTagName('script');
     var term = '/cordova.js';
+
     for (var n = scripts.length-1; n>-1; n--) {
         var src = scripts[n].src.replace(/\?.*$/, ''); // Strip any query param (CB-6007).
+
         if (src.indexOf(term) == (src.length - term.length)) {
             path = src.substring(0, src.length - term.length) + '/';
             break;
@@ -1602,12 +1649,14 @@ function findCordovaPath() {
 // onPluginsReady is fired when there are no plugins to load, or they are all done.
 exports.load = function(callback) {
     var pathPrefix = findCordovaPath();
+
     if (pathPrefix === null) {
         console.log('Could not find cordova.js script tag. Plugin loading may fail.');
         pathPrefix = '';
     }
     injectIfNecessary('cordova/plugin_list', pathPrefix + 'cordova_plugins.js', function() {
         var moduleList = require("cordova/plugin_list");
+
         handlePluginsObject(pathPrefix, moduleList, callback);
     }, callback);
 };
@@ -1625,6 +1674,7 @@ define("cordova/urlutil", function(require, exports, module) {
  */
 exports.makeAbsolute = function makeAbsolute(url) {
     var anchorEl = document.createElement('a');
+
     anchorEl.href = url;
     return anchorEl.href;
 };
@@ -1646,6 +1696,7 @@ utils.defineGetterSetter = function(obj, key, getFunc, opt_setFunc) {
             get: getFunc,
             configurable: true
         };
+
         if (opt_setFunc) {
             desc.set = opt_setFunc;
         }
@@ -1668,6 +1719,7 @@ utils.arrayIndexOf = function(a, item) {
         return a.indexOf(item);
     }
     var len = a.length;
+
     for (var i = 0; i < len; ++i) {
         if (a[i] == item) {
             return i;
@@ -1681,6 +1733,7 @@ utils.arrayIndexOf = function(a, item) {
  */
 utils.arrayRemove = function(a, item) {
     var index = utils.arrayIndexOf(a, item);
+
     if (index != -1) {
         a.splice(index, 1);
     }
@@ -1766,6 +1819,7 @@ utils.extend = (function() {
     // proxy used to establish prototype chain
     var F = function() {};
     // extend Child from Parent
+
     return function(Child, Parent) {
         F.prototype = Parent.prototype;
         Child.prototype = new F();
@@ -1789,8 +1843,10 @@ utils.alert = function(msg) {
 //------------------------------------------------------------------------------
 function UUIDcreatePart(length) {
     var uuidpart = "";
+
     for (var i=0; i<length; i++) {
         var uuidchar = parseInt((Math.random() * 256), 10).toString(16);
+
         if (uuidchar.length == 1) {
             uuidchar = "0" + uuidchar;
         }

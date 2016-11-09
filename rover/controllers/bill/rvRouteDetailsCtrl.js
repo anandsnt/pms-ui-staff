@@ -48,11 +48,13 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
      * Initializing the scrollers for the screen
      */
     var scrollerOptions = {preventDefault: false};
+
     $scope.setScroller('paymentList', scrollerOptions);
     $scope.setScroller('billingGroups', scrollerOptions);
     $scope.setScroller('chargeCodes', scrollerOptions);
     $scope.setScroller('routeDetails', scrollerOptions);
     var scrollerOptionsForSearch = {click: true};
+
     $scope.setScroller('chargeCodesList', scrollerOptionsForSearch);
     $scope.chargeCodesListDivHgt = 250;
     $scope.chargeCodesListDivTop = 0;
@@ -95,6 +97,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         var expiryDate = $scope.cardData.tokenDetails.isSixPayment ?
             $scope.cardData.tokenDetails.expiry.substring(2, 4) + " / " + $scope.cardData.tokenDetails.expiry.substring(0, 2) :
             $scope.cardData.cardDetails.expiryMonth + " / " + $scope.cardData.cardDetails.expiryYear
+
             ;
         return expiryDate;
     };
@@ -104,11 +107,13 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         var cardNumber = $scope.cardData.tokenDetails.isSixPayment ?
             $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4) :
             $scope.cardData.cardDetails.cardNumber.slice(-4);
+
         return cardNumber;
     };
     /**
      * function to show the newly added payment
      */
+
     $scope.paymentAdded = function(data) {
         $scope.selectedEntity.selected_payment = "";
         $scope.cardData = data;
@@ -161,6 +166,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 controller: '',
                 scope: $scope
             });
+
             return;
         }
 
@@ -297,6 +303,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             $scope.$emit('displayErrorMessage', errorMessage);
         };
         var data = {};
+
         data.id = $scope.reservationData.reservation_id;
         if ($scope.reservationData.reservation_id !== $scope.selectedEntity.id && $scope.selectedEntity.entity_type === 'RESERVATION') {
             data.to_bill = $scope.first_bill_id;
@@ -351,6 +358,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             $scope.$emit('displayErrorMessage', errorMessage);
         };
         var data = {};
+
         data.id = $scope.reservationData.reservation_id;
         if ($scope.reservationData.reservation_id !== $scope.selectedEntity.id && $scope.selectedEntity.entity_type === 'RESERVATION') {
             data.to_bill = $scope.first_bill_id;
@@ -410,6 +418,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
 
             $scope.first_bill_id = typeof data[0] !== "undefined" ? data[0].id : "";
             var firstBillId = typeof data[0] !== "undefined" ? data[0].id : "";
+
             $scope.newBillNumber = data.length + 1;
             if (typeof $scope.reservationData !== "undefined" && $scope.reservationData.reservation_id !== $scope.selectedEntity.id && $scope.selectedEntity.entity_type === 'RESERVATION') {
                 $scope.bills.push(data[0]);
@@ -420,6 +429,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 $scope.bills = $scope.excludeExistingBills(data);
                 if ($scope.newBillNumber <= 10) {
                     var newBill = {};
+
                     newBill.id = 'new';
                     newBill.bill_number = '' + $scope.newBillNumber + '(new)';
                     $scope.bills.push(newBill);
@@ -436,6 +446,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
 
             //default to last item when there is no bill no.
             var billNo = $scope.selectedEntity.bill_no;
+
             if ($scope.selectedEntity.entity_type === 'ALLOTMENT' || $scope.selectedEntity.entity_type === 'GROUP' || $scope.selectedEntity.entity_type === 'HOUSE') {
                 $scope.selectedEntity.to_bill = firstBillId;
             }
@@ -455,6 +466,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
 
         var id = typeof $scope.reservationData !== "undefined" ? $scope.reservationData.reservation_id : "";
         var entity_type = "";
+
         if ($scope.selectedEntity.entity_type === 'ALLOTMENT' || $scope.selectedEntity.entity_type === 'GROUP' || $scope.selectedEntity.entity_type === 'HOUSE') {
             id = $scope.selectedEntity.id;
             entity_type = $scope.selectedEntity.entity_type;
@@ -463,6 +475,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             id = $scope.selectedEntity.id;
         }
         var sendData = {"id": id, "entity_type": entity_type};
+
         $scope.invokeApi(RVBillinginfoSrv.fetchBillsForReservation, sendData, successCallback, errorCallback);
     };
 
@@ -528,6 +541,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             $scope.$parent.$emit('hideLoader');
         };
         var params = {};
+
         params.id = $scope.selectedEntity.id;
         params.entity_type = $scope.selectedEntity.entity_type;
         if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
@@ -592,6 +606,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         $scope.showChargeCodes = false;
         displayFilteredResultsChargeCodes();
         var queryText = $scope.chargeCodeSearchText;
+
         $scope.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
     };
     /**
@@ -627,6 +642,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             var value = "";
             //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
             //if it is zero, then we will request for webservice
+
             for (var i = 0; i < $scope.availableChargeCodes.length; i++) {
                 value = $scope.availableChargeCodes[i];
                 if ((($scope.escapeNull(value.code).toUpperCase()).indexOf($scope.chargeCodeSearchText.toUpperCase()) >= 0 ||
@@ -752,6 +768,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             $scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
 
             var params = angular.copy($scope.selectedEntity);
+
             if ($scope.billingEntity === "GROUP_DEFAULT_BILLING" && ($scope.selectedEntity.entity_type === "GROUP" || $scope.selectedEntity.entity_type === "HOUSE")) {
                 params.entity_type = $scope.selectedEntity.entity_type;
             }
@@ -765,6 +782,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         else {
             //CICO-12797 workaround to meet the API expected params
             var params = angular.copy($scope.selectedEntity);
+
             $scope.invokeApi(RVBillinginfoSrv.saveRoute, params, $scope.saveSuccessCallback, errorCallback);
         }
     };
@@ -803,6 +821,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             }
 
         };
+
         $scope.invokeApi(RVBillCardSrv.createAnotherBill, data, createBillSuccessCallback, $scope.errorCallback);
     };
 
@@ -810,6 +829,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         var cardName = (!$scope.cardData.tokenDetails.isSixPayment) ?
             $scope.cardData.cardDetails.userName :
             ($scope.passData.details.firstName + " " + $scope.passData.details.lastName);
+
         return cardName;
     };
 
@@ -817,11 +837,13 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         var expiryMonth = $scope.cardData.tokenDetails.isSixPayment ? $scope.cardData.tokenDetails.expiry.substring(2, 4) : $scope.cardData.cardDetails.expiryMonth;
         var expiryYear = $scope.cardData.tokenDetails.isSixPayment ? $scope.cardData.tokenDetails.expiry.substring(0, 2) : $scope.cardData.cardDetails.expiryYear;
         var expiryDate = (expiryMonth && expiryYear ) ? ("20" + expiryYear + "-" + expiryMonth + "-01") : "";
+
         return expiryDate;
     };
     /**
      * function to save a new payment type for the bill
      */
+
     $scope.savePayment = function() {
 
         $scope.saveSuccessCallback = function(data) {
@@ -895,6 +917,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 $scope.billingEntity === "GROUP_DEFAULT_BILLING" ||
                 $scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
                 var params = angular.copy($scope.selectedEntity);
+
                 if ($scope.billingEntity === "ALLOTMENT_DEFAULT_BILLING") {
                     params.entity_type = "ALLOTMENT";
                     $scope.invokeApi(RVBillinginfoSrv.saveAllotmentDefaultAccountRouting, params, defaultRoutingSaveSuccess, $scope.errorCallback);
@@ -916,6 +939,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 "token": response.token,
                 "is_swiped": true
             };
+
             if (toReservationOrAccount === "reservation") {
                 data.reservation_id = $scope.reservationData.reservation_id;
             }
@@ -930,10 +954,12 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             }
             $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
         };
+
         if ($scope.saveData.payment_type === 'CC') {
             if ($rootScope.paymentGateway === "sixpayments" && !$scope.sixIsManual) {
 
                 var data = {};
+
                 if (toReservationOrAccount === "reservation") {
                     data.reservation_id = $scope.reservationData.reservation_id;
                 }
@@ -964,6 +990,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             else if (!isEmptyObject($scope.swipedCardDataToSave)) {
 
                 var data = $scope.swipedCardDataToSave;
+
                 if (toReservationOrAccount === "reservation") {
                     data.reservation_id = $scope.reservationData.reservation_id;
                 }
@@ -987,6 +1014,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 var data = {
                     "add_to_guest_card": false
                 };
+
                 if (toReservationOrAccount === "reservation") {
                     data.reservation_id = $scope.reservationData.reservation_id;
                 }
@@ -1017,6 +1045,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             var data = {
                 "payment_type": $scope.saveData.payment_type
             };
+
             if (toReservationOrAccount === "reservation") {
                 data.reservation_id = $scope.reservationData.reservation_id;
             }

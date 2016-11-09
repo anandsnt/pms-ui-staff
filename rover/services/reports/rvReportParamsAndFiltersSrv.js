@@ -171,14 +171,17 @@ angular.module('reportsModule')
                     });
 
                     var dateFilter = dateFilterFac.check(report, shouldChangeFilters);
+
                     addParam(dateFilter.params);
                     addFilter(dateFilter.filters);
 
                     var cancelDateFilter = cancelDateFilterFac.check(report, shouldChangeFilters);
+
                     addParam(cancelDateFilter.params);
                     addFilter(cancelDateFilter.filters);
 
                     var arrivalDateFilter = arrivalDateFilterFac.check(report, shouldChangeFilters);
+
                     addParam(arrivalDateFilter.params);
                     addFilter(arrivalDateFilter.filters);
 

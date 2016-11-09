@@ -2,6 +2,7 @@ angular.module('sntRover').service('RVDepositBalanceSrv', ['$q', 'BaseWebSrvV2',
 	this.getDepositBalanceData = function (data) {
 		var deferred = $q.defer();
 		var url = 'staff/reservations/'+data.reservationId+'/deposit_and_balance.json';
+
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -13,6 +14,7 @@ angular.module('sntRover').service('RVDepositBalanceSrv', ['$q', 'BaseWebSrvV2',
 	this.getRevenueDetails = function (data) {
 		var deferred = $q.defer();
 		var url = 'api/posting_accounts/'+data.posting_account_id+'/deposit_and_balance';
+
 		BaseWebSrvV2.getJSON(url).then(function (data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -55,6 +57,7 @@ angular.module('sntRover').service('RVDepositBalanceSrv', ['$q', 'BaseWebSrvV2',
 				//the timeout set for the hotel
 				if (timeStampInSeconds >= $rootScope.emvTimeout) {
 					var errors = ["Request timed out. Unable to process the transaction"];
+
 					deferred.reject(errors);
 				} else {
 					rvBaseWebSrvV2.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {

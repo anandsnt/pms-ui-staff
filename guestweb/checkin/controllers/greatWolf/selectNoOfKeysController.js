@@ -7,10 +7,12 @@
 			var params = {
 				'reservation_id': $rootScope.reservationID
 			};
+
 			checkinKeysService.fetchNoOfKeysData(params).then(function(keyData) {
 
 				$scope.isLoading = false;
 				var screenCMSDetails = {};
+
 				screenCMSDetails.title = keyData.key_prompt_title.length > 0 ? keyData.key_prompt_title : "No of keys?";
 				screenCMSDetails.description = keyData.key_prompt_text.length > 0 ? keyData.key_prompt_text : "How many keys would you like? At Great Wolf, your key is a band that your wear on your wrist or ankle.";
 				screenCMSDetails.errorMessage = keyData.key_prompt_save_error.length > 0 ? keyData.key_prompt_save_error : "Something went wrong. Sorry for the Inconvenience, Please click on skip to continue.";
@@ -40,6 +42,7 @@
 				'no_of_keys': $scope.noOfKeys,
 				'reservation_id': $rootScope.reservationID
 			};
+
 			checkinKeysService.saveNoKeys(params).then(function(keyData) {
 				$scope.isLoading = false;
 				$scope.goToNextPage();

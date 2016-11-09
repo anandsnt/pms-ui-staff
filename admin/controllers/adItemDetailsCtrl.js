@@ -12,6 +12,7 @@ admin.controller('ADItemDetailsCtrl', ['$scope', 'ADItemSrv', '$state', '$stateP
 
 	var itemId = $stateParams.itemid;
 	//if itemid is null, means it is for add item form
+
 	if(typeof itemId === 'undefined' || itemId.trim() === '') {
 		$scope.mod = 'add';
 	}
@@ -25,6 +26,7 @@ admin.controller('ADItemDetailsCtrl', ['$scope', 'ADItemSrv', '$state', '$stateP
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = errorMessage ;
 	};
+
 	if($scope.mod === 'edit') {
 		$scope.invokeApi(ADItemSrv.getItemDetails, {'item_id': itemId}, fetchSuccessOfItemDetails, fetchFailedOfItemDetails);
 	}
@@ -39,6 +41,7 @@ admin.controller('ADItemDetailsCtrl', ['$scope', 'ADItemSrv', '$state', '$stateP
 
 	$scope.saveItemDetails = function()	{
 		var postData = {};
+
 		if($scope.mod === 'edit') {
 			postData.value = $scope.itemDetails.item_id;
 		}
@@ -50,6 +53,7 @@ admin.controller('ADItemDetailsCtrl', ['$scope', 'ADItemSrv', '$state', '$stateP
 		var fetchSuccessOfSaveItemDetails = function() {
 			$scope.goBack();
 		};
+
 		$scope.invokeApi(ADItemSrv.saveItemDetails, postData, fetchSuccessOfSaveItemDetails);
 	};
 

@@ -19,6 +19,7 @@ var setUpList = function() {
 
    //remove the selected item from drop down
   var selectedIds = [];
+
   $scope.upsellData.room_types.forEach(function(item, index) {
     if((typeof item.max_early_checkins !=="undefined") && item.max_early_checkins !== null) {
        selectedIds.push(item.id);
@@ -34,6 +35,7 @@ var setUpList = function() {
   });
 
   var block_codes = [];
+
   $scope.block_codes.forEach(function(block, index) {
       $scope.upsellData.excluded_block_codes.forEach(function(excludedblock, index) {
         if(block.id === excludedblock) {
@@ -85,6 +87,7 @@ $scope.clickExcludeRoomType = function() {
 $scope.deleteRoomType = function(value, name) {
 
   var data = { "value": value, "name": name };
+
   $scope.upsellData.room_type_list.push(data);
 
   angular.forEach($scope.upsellData.room_types, function(item, index) {
@@ -148,6 +151,7 @@ $scope.fetchUpsellDetails = function() {
        $scope.setEarlyCheckinTimeForRates();
        $scope.startWatching();
    };
+
    $scope.invokeApi(adUpsellEarlyCheckinService.fetch, {}, fetchUpsellDetailsSuccessCallback);
 };
 
@@ -156,6 +160,7 @@ $scope.fetchAddons = function() {
        $scope.addons = $scope.getAddonsWithNameValues(data.results);
        $scope.fetchRates();
    };
+
    $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true, "ignore_inventory": true}, fetchSuccessOfAddons);
 };
 
@@ -164,6 +169,7 @@ $scope.fetchRates = function() {
        $scope.$emit('hideLoader');
        $scope.rates = $scope.getRatesWithNameValues(data.results);
    };
+
    $scope.invokeApi(ADRatesSrv.fetchRates, {}, fetchSuccessOfRates);
 };
 
@@ -184,6 +190,7 @@ $scope.getRatesWithNameValues = function(rates) {
 $scope.setUpUpsellWindowData = function () {
         $scope.upsellWindows = [];
         var upsellWindow;
+
         $scope.setUpDefaultUpsellLevels();
          angular.forEach($scope.upsellData.early_checkin_levels, function(item, index) {
          upsellWindow = {};
@@ -229,6 +236,7 @@ $scope.isRateAvailable = function(index) {
 
 $scope.setUpDefaultUpsellLevels = function () {
          var upsellCountArray ;
+
          if($scope.upsellData.early_checkin_levels.length >= 3) {
            return;
          }else if($scope.upsellData.early_checkin_levels.length === 0) {
@@ -239,6 +247,7 @@ $scope.setUpDefaultUpsellLevels = function () {
            upsellCountArray = [1];
          }
          var defaultWindow;
+
           angular.forEach(upsellCountArray, function(item, index) {
           defaultWindow = {};
           defaultWindow.start_time = "";
@@ -262,6 +271,7 @@ $scope.setEarlyCheckinTimeForRates = function() {
 $scope.setUpUpsellWindowDataToSave = function () {
         $scope.upsellData.early_checkin_levels = [];
         var upsellWindow;
+
          angular.forEach($scope.upsellWindows, function(item, index) {
              if(item.hours !== "" && item.hours !== null) {
                  upsellWindow = {};
@@ -280,6 +290,7 @@ $scope.validateUpsellWindowTime = function() {
   var hrs1 = ($scope.upsellWindows[0].meridiem.localeCompare('PM') !== -1)? 12 + (parseInt($scope.upsellWindows[0].hours) % 12) : (parseInt($scope.upsellWindows[0].hours) === 12)? 0 : parseInt($scope.upsellWindows[0].hours);
   var hrs2 = ($scope.upsellWindows[1].meridiem.localeCompare('PM') !== -1)? 12 + (parseInt($scope.upsellWindows[1].hours) % 12) : (parseInt($scope.upsellWindows[1].hours) === 12)? 0 : parseInt($scope.upsellWindows[1].hours);
   var hrs3 = ($scope.upsellWindows[2].meridiem.localeCompare('PM') !== -1)? 12 + (parseInt($scope.upsellWindows[2].hours) % 12) : (parseInt($scope.upsellWindows[2].hours) === 12)? 0 : parseInt($scope.upsellWindows[2].hours);
+
   time_window1.setHours(hrs1);
   time_window2.setHours(hrs2);
   time_window3.setHours(hrs3);
@@ -342,6 +353,7 @@ $scope.saveClick = function() {
    	};
 
     var dataToSave = dclone($scope.upsellData, ['room_type_list']);
+
     dataToSave.excluded_block_codes = [];
     angular.forEach($scope.excludedBlockCodes, function(excludedBlockCode, index) {
       dataToSave.excluded_block_codes.push(excludedBlockCode.id);
@@ -359,6 +371,7 @@ $scope.clickAddRoomType = function() {
     return;
   }
   var rate_item;
+
 	angular.forEach($scope.rates, function(item, index) {
 		if(parseInt(item.id) === parseInt($scope.upsell_rate.selected_rate_id)) {
       rate_item = {};
@@ -382,6 +395,7 @@ $scope.setRateFlag = function() {
 
 $scope.getSelectedRateIndexForID = function(rateID) {
   var rateIndex = -1;
+
   angular.forEach($scope.upsellData.early_checkin_rates, function(item, index) {
     if(item.id === rateID) {
       rateIndex =  index;
@@ -394,6 +408,7 @@ $scope.getSelectedRateIndexForID = function(rateID) {
  */
 $scope.deleteRate = function(value, name) {
 	var indexForRate = $scope.getSelectedRateIndexForID(value);
+
   if(indexForRate !== -1) {
      $scope.upsellData.early_checkin_rates.splice(indexForRate, 1);
   }

@@ -10,6 +10,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 		self.fetch = function() {
 			var deferred = $q.defer();
 			var url = '/api/promotions';
+
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -21,6 +22,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 		self.getActiveRates = function() {
 			var deferred = $q.defer();
 			var url = '/api/rates?is_active=true';
+
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -48,10 +50,12 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 				return true;
 			}
 			var valid = false;
+
 			_.each(rate.date_ranges, function(dateRange) {
 				if (!valid) {
 					var rateBegin = dateRange.begin_date,
 						rateEnd = dateRange.end_date;
+
 					if (!!promoFrom && !!promoTo) { //in case promo has a date range
 						valid = new TZIDate(promoFrom) <= new TZIDate(rateEnd) &&
 							new TZIDate(promoTo) >= new TZIDate(rateBegin);
@@ -70,6 +74,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 		self.togglePromotions = function(status) {
 			var deferred = $q.defer();
 			var url = '/api/promotions/use_promotions';
+
 			ADBaseWebSrvV2.postJSON(url, status).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -81,6 +86,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 		self.save = function(promo) {
 			var deferred = $q.defer();
 			var url = '/api/promotions';
+
 			ADBaseWebSrvV2.postJSON(url, promo).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -92,6 +98,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 		self.update = function(promo) {
 			var deferred = $q.defer();
 			var url = '/api/promotions/' + promo.id;
+
 			ADBaseWebSrvV2.putJSON(url, promo).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -103,6 +110,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 		self.delete = function(promo) {
 			var deferred = $q.defer();
 			var url = '/api/promotions/' + promo.id;
+
 			ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -114,6 +122,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 		self.fetchRatePromos = function(id) {
 			var deferred = $q.defer();
 			var url = '/api/rates/' + id + '/promotions';
+
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				ratePromos = {};
 				ratePromos.promotion_rates = data.promotion_rates;
@@ -126,6 +135,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 
 		self.appendPromotions = function(deferred) {
 			var url = '/api/promotions';
+
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				ratePromos.promotions = data.promotions;
 				deferred.resolve(ratePromos);
@@ -138,6 +148,7 @@ admin.service('ADPromotionsSrv', ['$q', 'ADBaseWebSrvV2',
 		self.updateRatePromos = function(params) {
 			var deferred = $q.defer();
 			var url = '/api/rates/' + params.id + '/set_promotions';
+
 			ADBaseWebSrvV2.putJSON(url, params.promos).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {

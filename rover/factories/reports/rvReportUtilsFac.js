@@ -1038,6 +1038,7 @@ angular.module('reportsModule')
                                 name: 'hasURLsList',
                                 process: function(filter, selectedItems) {
                                     var hasUrl = _.find(selectedItems, { value: 'URL' });
+
                                     filter.updateData(!hasUrl);
                                 }
                             }
@@ -1132,6 +1133,7 @@ angular.module('reportsModule')
                         }
                         return rateTypeObject;
                     });
+
                 return rateTypeListToReturn;
             };
 
@@ -1261,6 +1263,7 @@ angular.module('reportsModule')
                             },
                             updateData: function() {
                                 var enabled = [];
+
                                 _.each (this.originalData, function (od) {
                                     if ( ! od.disabled ) {
                                         enabled.push(od);
@@ -1283,6 +1286,7 @@ angular.module('reportsModule')
 
                 var flattenAddons = function(addons) {
                     var data = [];
+
                     _.each (addons, function (addon) {
                         if ( ! addon.disabled ) {
                             _.each(addon.list_of_addons, function(la) {
@@ -1674,6 +1678,7 @@ angular.module('reportsModule')
                 // making sort by room type default
                 if ( report['title'] === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ) {
                     var roomType = _.find(report['sortByOptions'], { 'value': 'ROOM_TYPE' });
+
                     if ( !! roomType ) {
                         roomType['sortDir'] = true;
                         report['chosenSortBy'] = roomType['value'];
@@ -1683,6 +1688,7 @@ angular.module('reportsModule')
                 // making sort by Revenue [desc] default
                 if ( report['title'] === reportNames['COMPANY_TA_TOP_PRODUCERS'] ) {
                     var revenue = _.find(report['sortByOptions'], { 'value': 'REVENUE' });
+
                     if ( !! revenue ) {
                         revenue['sortDir'] = false;
                         report['chosenSortBy'] = revenue['value'];
@@ -1692,6 +1698,7 @@ angular.module('reportsModule')
                 // making sort by Room Number [asc] default
                 if ( report['title'] === reportNames['CREDIT_CHECK_REPORT'] ) {
                     var roomNo = _.find(report['sortByOptions'], { 'value': 'ROOM_NO' });
+
                     if ( !! roomNo ) {
                         roomNo['sortDir'] = true;
                         report['chosenSortBy'] = roomNo['value'];

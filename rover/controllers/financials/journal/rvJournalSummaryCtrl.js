@@ -87,6 +87,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
         var params = {
             "date": $scope.data.summaryDate
         };
+
 		$scope.invokeApi(RVJournalSrv.fetchSummaryData, params, successCallBackFetchSummaryData);
     };
 
@@ -131,6 +132,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
                 "per_page": $scope.perPage,
                 "type": balance_type
             };
+
             $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, params, successCallBackFetchBalanceDetails);
         }
         else{
@@ -153,6 +155,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
     //To load API data for pagination
     var loadAPIData = function( balance_type, pageNo ) {
         var item        = getSummaryItemByBalanceType( balance_type );
+
         item.page_no    = pageNo;
         fetchBalanceDetails( balance_type, true );
     };

@@ -28,6 +28,7 @@ angular.module('sntRover').controller('rvDailyProdByDemographicsCtrl',
       completedRendering: completedRendering,
       completedUpdating: completedUpdating
     };
+
     startedRendering();
     ReactDOM.render(
 	    React.createElement(DailyProductionByDemographics, props),

@@ -29,6 +29,7 @@ sntRover.directive('appFilereader', function($q) {
                     var deferred = $q.defer();
 
                     var reader = new FileReader();
+
                     reader.onload = function(e) {
                         deferred.resolve(e.target.result);
                     };

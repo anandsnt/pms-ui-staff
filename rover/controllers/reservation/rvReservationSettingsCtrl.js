@@ -4,6 +4,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
 
         var resizableMinWidth = 30;
         var resizableMaxWidth = 260;
+
         $scope.reservationSettingsWidth = resizableMinWidth;
         $scope.isHourly = ($stateParams.reservation === 'HOURLY') ? true : false;
         /**
@@ -113,10 +114,12 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
         $scope.setDepartureDate = function() {
 
             var dateOffset = $scope.reservationData.numNights;
+
             if ($scope.reservationData.numNights === null || $scope.reservationData.numNights === '') {
                 dateOffset = 1;
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
+
             newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
             $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');
@@ -124,8 +127,10 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
 
         $scope.setNumberOfNights = function() {
             var arrivalDate = tzIndependentDate($scope.reservationData.arrivalDate);
+
             arrivalDay = arrivalDate.getDate();
             var departureDate = tzIndependentDate($scope.reservationData.departureDate);
+
             departureDay = departureDate.getDate();
             var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 

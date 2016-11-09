@@ -24,6 +24,7 @@ admin.controller('ADNotificatinsListCtrl',
 				var orderedData = params.sorting() ?
 					$filter('orderBy')($scope.data.results, params.orderBy()) :
 					$scope.data.results;
+
 				$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 			}
 		});
@@ -39,6 +40,7 @@ admin.controller('ADNotificatinsListCtrl',
         var expires_at = new Date(expires_at);
         var timeDiff = Math.abs(expires_at.getTime() - activates_at.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
         return (diffDays-1);
     };
 
@@ -50,6 +52,7 @@ admin.controller('ADNotificatinsListCtrl',
 			$scope.errorMessage = err;		
 			$scope.$emit('hideLoader');
 		};
+
 		params = {
 			id: id
 		};

@@ -22,6 +22,7 @@
       var data = {
         'reservation_id': $rootScope.reservationID
       };
+
       $scope.isFetching = true;
 
       var updateGoogleAnalyticsRoomUpgradeFetchFailed = function() {
@@ -32,6 +33,7 @@
           eventLabel: 'Room Upgrade Fetch Failed'
         });
       };
+
       checkinRoomUpgradeOptionsService.fetch(data).then(function(response) {
 
         $scope.isFetching = false;
@@ -82,6 +84,7 @@
             eventLabel: 'Room Upgrade failed'
           });
         };
+
         checkinRoomUpgradeService.post(data).then(function(response) {
 
           $scope.isFetching = false;

@@ -26,6 +26,7 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.defaultDashboard = -1;
 	$scope.dashboardOptions = [];
 	var lastDropedTime = '';
+
 	$scope.assignedRoles = [];
 	$scope.rolesWithDashboards = [];
 	$scope.errorMessage = "";
@@ -34,9 +35,11 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.getMyDashboards = function() {
 
 		var rolesData = $scope.assignedRoles;
+
 		$scope.dashboardOptions = [];
 		for (var i = 0; i < rolesData.length; i++) {
 			var rolePresent = false;
+
 			for(var j = 0; j < $scope.dashboardOptions.length; j++) {
 				if(rolesData[i].dashboard_id === $scope.dashboardOptions[j].dashboard_id) {
 					rolePresent = true;
@@ -44,6 +47,7 @@ admin.controller('ADUserDetailsCtrl',
 			}
 			if(!rolePresent) {
 				var dashboard = {};
+
 				dashboard.dashboard_id = rolesData[i].dashboard_id;
 				dashboard.dashboard_name = rolesData[i].dashboard_name;
 				$scope.dashboardOptions.push(dashboard);
@@ -60,6 +64,7 @@ admin.controller('ADUserDetailsCtrl',
 		    * To set mod of operation - add/edit
 		    */
 			var id = $stateParams.id;
+
 			if(id === "") {
 				$scope.mod = "add";
 				$scope.userDetailsAdd();
@@ -94,6 +99,7 @@ admin.controller('ADUserDetailsCtrl',
 
 
 		var lastSelectedItem =$scope.selectedAssignedRole;
+
 		if(lastSelectedItem === index) {
 			$scope.selectedAssignedRole =-1;
 		}
@@ -103,6 +109,7 @@ admin.controller('ADUserDetailsCtrl',
 		else if(typeof lastDropedTime === 'object') { //means date
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
+
 			if(diff <= 100) {
 				$event.preventDefault();
 			}
@@ -119,6 +126,7 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.selectUnAssignedRole = function($event, index) {
 
 		var lastSelectedItem =$scope.selectedUnassignedRole;
+
 		if(lastSelectedItem === index) {
 			$scope.selectedUnassignedRole =-1;
 		}
@@ -128,6 +136,7 @@ admin.controller('ADUserDetailsCtrl',
 		else if(typeof lastDropedTime === 'object') { //means date
 			var currentTime = new Date();
 			var diff = currentTime - lastDropedTime;
+
 			if(diff <= 100) {
 				$event.preventDefault();
 			}
@@ -142,12 +151,15 @@ admin.controller('ADUserDetailsCtrl',
     */
 	$scope.leftToRight = function() {
 		var index = $scope.selectedAssignedRole;
+
 		if(index === -1) {
 			return;
 		}
 		var newElement = $scope.assignedRoles[index];
+
 		$scope.unAssignedRoles.push(newElement);
 		var newElement = $scope.unAssignedRoles[index];
+
 		$scope.assignedRoles.splice(index, 1);
 		$scope.selectedAssignedRole = -1;
 	};
@@ -156,10 +168,12 @@ admin.controller('ADUserDetailsCtrl',
     */
 	$scope.rightToleft = function() {
 		var index = $scope.selectedUnassignedRole;
+
 		if(index === -1) {
 			return;
 		}
 		var newElement = $scope.unAssignedRoles[index];
+
 		$scope.assignedRoles.push(newElement);
 		$scope.unAssignedRoles.splice(index, 1);
 		$scope.selectedUnassignedRole = -1;
@@ -171,12 +185,14 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.saveUserDetails = function() {
 		var params = $scope.data;
 		var unwantedKeys = [];
+
 		if($scope.image.indexOf("data:")!== -1) {
 			unwantedKeys = ["departments", "roles"];
 		} else {
 			unwantedKeys = ["departments", "roles", "user_photo"];
 		}
 		var userRoles = [];
+
 		for(var j = 0; j < $scope.assignedRoles.length; j++) {
 	 		if($scope.assignedRoles[j].value !== "") {
 	 			userRoles.push($scope.assignedRoles[j].value);
@@ -187,6 +203,7 @@ admin.controller('ADUserDetailsCtrl',
 		$scope.data.user_roles = userRoles;
 		var data = dclone($scope.data, unwantedKeys);
 		// Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
+
 		if($scope.image.indexOf("data:")!== -1) {
 			data.user_photo = $scope.image;
 		}
@@ -239,6 +256,7 @@ admin.controller('ADUserDetailsCtrl',
 				setFocusOnPasswordField();
 			}
 		};
+
 		$scope.invokeApi(ADUserSrv.getUserDetails, {'id': id}, successCallbackRender);
 	};
 
@@ -271,6 +289,7 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.assignedRoles = [];
 			$scope.image = "/assets/images/preview_image.png";
 		};
+
 	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '', successCallbackRender);
 	};
 

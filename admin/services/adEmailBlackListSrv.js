@@ -23,6 +23,7 @@ admin.service('ADEmailBlackListSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 
 		var deferred = $q.defer();
 		var url = '/api/hotels/save_blacklisted_emails.json';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -37,6 +38,7 @@ admin.service('ADEmailBlackListSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 
 		var deferred = $q.defer();
 		var url = '/api/hotels/'+id+'/delete_email.json';
+
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

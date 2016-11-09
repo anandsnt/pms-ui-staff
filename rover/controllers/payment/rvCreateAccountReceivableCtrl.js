@@ -9,6 +9,7 @@ sntRover.controller('RVCreateAccountReceivableCtrl', ['$rootScope', '$scope', '$
 			"id": $scope.account_id,
 			"ar_number": $scope.ar_number
 		};
+
 		$scope.invokeApi(RVCompanyCardSrv.saveARDetails, data, $scope.successCreate, $scope.failureCreate);
 	};
 

@@ -47,6 +47,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
         var afterGuestCheckinCallback = function(response) {
             //if email is valid and is not blacklisted
             var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid();
+
             console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams)
             var stateParams = {
                 'guest_id': $stateParams.guest_id,
@@ -82,12 +83,14 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 params: checkinParams,
                 successCallBack: afterGuestCheckinCallback
             };
+
             $scope.callAPI(zsCheckinSrv.checkInGuest, options);
         };
         /**
          * [submitSignature description]
          * @return {[type]} [description]
          */
+
         $scope.submitSignature = function() {
             /*
              * this method will check the guest in after swiping a card

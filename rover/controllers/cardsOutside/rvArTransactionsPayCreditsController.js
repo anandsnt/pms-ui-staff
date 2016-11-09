@@ -3,16 +3,19 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
 
     $scope.feeData = {};
     var zeroAmount = parseFloat("0.00");
+
     $scope.saveData = {'paymentType': ''};
     $scope.billNumber = 1;
     $scope.renderData = {};
     $scope.renderData.defaultPaymentAmount = $scope.arTransactionDetails.amount_owing;
     var bill_id = $scope.arTransactionDetails.company_or_ta_bill_id;
     //Added for CICO-26730
+
     $scope.cardsList = [];
     var isSixPayment = false;
     var tokenDetails = {};
     var cardDetails = {};
+
     $scope.addmode = ($scope.cardsList.length > 0) ? false : true;
     /*
      * if no payment type is selected disable payment button
@@ -162,6 +165,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         var cardNumberEndingWith = "";
         var cardExpiry = "";
         var swipedData = angular.copy($scope.swipedCardDataToSave);
+
         if (!isEmptyObject(swipedData)) {
             cardType = swipedData.cardType.toLowerCase();
             cardNumberEndingWith = swipedData.cardNumber.slice(-4);
@@ -266,6 +270,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
 
         $scope.swipedCardDataToSave = swipedCardDataToSave;
         var data = swipedCardDataToSave;
+
         data.payment_credit_type = swipedCardDataToSave.cardType;
         data.credit_card = swipedCardDataToSave.cardType;
         data.card_expiry = "20" + swipedCardDataToSave.cardExpiryYear + "-" + swipedCardDataToSave.cardExpiryMonth + "-01";

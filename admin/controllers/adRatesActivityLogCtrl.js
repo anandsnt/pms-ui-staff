@@ -17,6 +17,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
                 $scope.activityLogData = response;
                 $scope.$emit('hideLoader');
             };
+
             $scope.invokeApi(ADRateActivityLogSrv.fetchRateLog, {'id': rateId}, callback);
         };
         $scope.toggleActivityLogFilterON = false;
@@ -121,6 +122,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
                 page: $scope.start,
                 per_page: 50
         };
+
         if($scope.isUpdateReportFilter) {
             $scope.fromDate = $('#activity-range-from').val();
             $scope.toDate = $('#activity-range-to').val();
@@ -215,6 +217,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
     var initializeAutoCompletion = function() {
         //forming auto complte source object
         var activeUserAutoCompleteObj = [];
+
         _.each($scope.activeUserList, function(user) {
             activeUserAutoCompleteObj.push({
                 label: user.email,
@@ -230,6 +233,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
             select: function(event, ui) {
                 $scope.user_id = ui.item.value;
                 var uiValue = split(this.value);
+
                 uiValue.pop();
                 uiValue.push(ui.item.label);
                 uiValue.push("");
@@ -256,6 +260,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
                 return false;
             }
         };
+
         $scope.listUserAutoCompleteOptions = angular.extend({
             position: {
                 my: 'left bottom',
@@ -272,6 +277,7 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
         }, userAutoCompleteCommon);
 
     };
+
             initializeAutoCompletion();
         };
         $scope.init();

@@ -55,6 +55,7 @@ sntRover.controller('rvBorrowRoomTypeCtrl', [
             failureCallBack: failureCallbackselectUpgrade
 
         };
+
         $scope.callAPI(apiToCall, options);
 
     };

@@ -3,6 +3,7 @@
 var DailyProductionByDemographics = React.createClass({
   toggleRevenue: function() {
     var curHeadr 			= this.state.header;
+
     curHeadr.showRevenue 	= !curHeadr.showRevenue;
     if (!curHeadr.showRevenue) {
       curHeadr.colspan = 2;
@@ -20,6 +21,7 @@ var DailyProductionByDemographics = React.createClass({
 
   toggleAvailability: function() {
     var curHeadr 			= this.state.header;
+
     curHeadr.showAvailable 	= !curHeadr.showAvailable;
     if (!curHeadr.showAvailable) {
       curHeadr.colspan = 3;
@@ -39,6 +41,7 @@ var DailyProductionByDemographics = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     //only data will change from parent, we will reset ui fiter selection once we have new data
     var newState 	= {};
+
     newState.data 	= nextProps.data;
     newState.header = this.getInitialState().header;
     this.props.startedRendering();
@@ -63,6 +66,7 @@ var DailyProductionByDemographics = React.createClass({
       toggleRevenue: this.toggleRevenue,
       toggleAvailability: this.toggleAvailability
     };
+
     return state;
   },
 
@@ -85,6 +89,7 @@ var DailyProductionByDemographics = React.createClass({
     this.props.completedUpdating();
     var leftSc 	= this.state.scroll.left,
     rightSc	= this.state.scroll.right;
+
     leftSc.scrollTo(0, 0);
     rightSc.scrollTo(0, 0);
   },

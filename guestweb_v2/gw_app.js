@@ -16,6 +16,7 @@ The initial condtions to determine the status of reseravations are extracted fro
 
 
 var sntGuestWeb = angular.module('sntGuestWeb', ['ui.router', 'ui.bootstrap', 'pickaDate', 'ngSanitize']);
+
 sntGuestWeb.controller('RootController', ['$scope', '$rootScope', '$state', '$controller', function($scope, $rootScope, $state, $controller) {
 
     $controller('BaseController', {
@@ -51,6 +52,7 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         var reservationAndhotelDetails = zestwebData;
         //There will be a keyword for each screen which has to be mapped with screen id
         // this is fetched and saved in service for future usage
+
         GwWebSrv.setScreenList(screenMappings);
         //save the data for future usage
         GwWebSrv.setzestwebData(zestwebData);

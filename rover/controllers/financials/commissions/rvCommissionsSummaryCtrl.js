@@ -11,10 +11,12 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
     /**
      * Setting up scroller with refresh options..
      */
+
     $scope.setScroller('commissionOverViewScroll', {});
     var refreshArOverviewScroll = function() {
         setTimeout(function() {$scope.refreshScroller('commissionOverViewScroll');}, 500);
     };
+
     refreshArOverviewScroll();
 
     /*
@@ -37,8 +39,10 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
             'sort_by': $scope.filterData.sort_by.value,
             'min_commission_amount': $scope.filterData.minAmount
         };
+
         $scope.invokeApi(RVCommissionsSrv.fetchCommissions, params, successCallBack );
     };
+
     $scope.searchAccounts = function() {
         initPaginationParams();
         fetchCommissionsData();
@@ -78,6 +82,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         $scope.filterData.page= 1,
         $scope.filterData.perPage= 50
     };
+
     $scope.loadNextPage = function() {
         $scope.filterData.page++;
         fetchCommissionsData();
@@ -119,6 +124,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         initSearchParams();
         fetchCommissionsData();
     };
+
     init();
 
 }]);

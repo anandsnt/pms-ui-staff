@@ -20,6 +20,7 @@ var UnassignedRoomPanel = React.createClass({
             fraction;
 
         var arrivalTimeFix, departureTimeFix;
+
         if ( ! arrivalTime || ! departureTime ) {
             arrivalTimeFix = "00:00";
             departureTimeFix = "04:00";
@@ -80,6 +81,7 @@ var UnassignedRoomPanel = React.createClass({
     __onListSelect: function(index) {
 
         var item = this.props.unassignedRoomList.data[index];
+
         this.setState({
             selectedIndex: index.toString(),
             dragInProgress: false
@@ -122,6 +124,7 @@ var UnassignedRoomPanel = React.createClass({
 
     componentDidUpdate: function() {
         var iscroll = this.props.iscroll;
+
         iscroll.unassignedList.refresh();
     },
 
@@ -129,6 +132,7 @@ var UnassignedRoomPanel = React.createClass({
         var self = this;
 
         var iscroll = this.props.iscroll;
+
         iscroll.unassignedList = new IScroll('#unassigned-list', {
             scrollbars: 'custom',
             scrollX: false,
@@ -185,6 +189,7 @@ var UnassignedRoomPanel = React.createClass({
         };
 
         var unassignedList;
+
         if ( unassignedRoomListProp ) {
             unassignedList = unassignedRoomListProp.data.map(function(room, i) {
                 var occupancyBlock = {
@@ -192,6 +197,7 @@ var UnassignedRoomPanel = React.createClass({
                     id: 'ob-' + i,
                     className: 'occupancy-block unassigned-list-item'
                 };
+
                 occupancyBlock[self.clickEvent] = self.__onListSelect.bind(self, i);
 
                 return (

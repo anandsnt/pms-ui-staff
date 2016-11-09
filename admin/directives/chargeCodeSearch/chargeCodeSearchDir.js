@@ -38,6 +38,7 @@ admin.directive("chargeCodeSearch", function() {
                 var params = {
                     query: $scope.chargeCodeName
                 };
+
                 ADChargeCodesSrv.searchChargeCode(params).then(successCallBackForChargeCodeSearch);
             };
 

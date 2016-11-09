@@ -37,6 +37,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             //skipped the page, then ignore going to error screen
             //*used for develop and release environment where we are testing other screens
             var debuggingCardPmt = $scope.debuggingCardPayment(true); //pass true if the button is being called to continue
+
             console.info('debuggingCardPmt: ', debuggingCardPmt)
             if (!debuggingCardPmt) {
                 return;
@@ -102,6 +103,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
                 };
                 //check if this page was invoked through pickupkey flow
+
                 if (!!$stateParams.pickup_key_mode) {
                     stateParams.pickup_key_mode = 'manual';
                 }
@@ -142,6 +144,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 'payment_type': "CC",
                 'payment_type_id': $stateParams.payment_type_id
             };
+
             console.info('paying deposit params: ', params);
             if ($scope.inDemoMode() || debugging) {
                 setTimeout(function() {
@@ -225,6 +228,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 'guest_email_blacklisted': $stateParams.guest_email_blacklisted
 
             };
+
             console.warn('params: ', params)
             $state.go('zest_station.checkInSignature', params);
         };
@@ -257,6 +261,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         var saveSwipedCardMLI = function(response) {
             var token;
             //save the payment to guest card/reservation
+
             if (response.evt === null && response.data) {
                 //ingenico/infinea
                 data = response.data;
@@ -267,6 +272,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             };
             var swipeOperationObj = new SwipeOperation();
             var postData = swipeOperationObj.createSWipedDataToSave(data);
+
             postData.reservation_id = $stateParams.reservation_id;
             console.log('swipe card mli: $scope.inDemoMode() && atCardSwipeScreen(), ', $scope.inDemoMode(), atCardSwipeScreen());
             if ($scope.inDemoMode() && atCardSwipeScreen()) {
@@ -349,6 +355,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             //open socket if not in open state
 
             var socketReady = $scope.socketOperator.returnWebSocketObject().readyState === 1;
+
             !socketReady ? $scope.$emit('CONNECT_WEBSOCKET') : listenForSwipe();
 
         };
@@ -401,6 +408,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         var reader = $scope.zestStationData.ccReader,
             writer = $scope.zestStationData.keyWriter;
+
         console.info(':: reader :: ', reader, ', :: writer :: ', writer);
 
 
@@ -422,6 +430,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
              */
             var needToAuthorizeAtCheckin = $stateParams.authorize_cc_at_checkin,
                 authCCAmount = $stateParams.pre_auth_amount_for_zest_station;
+
             console.log(' :: fetchRemainingAuthForCheckinAfterDeposit ::', needToAuthorizeAtCheckin);
             console.log(' :: last auth amount :: ', authCCAmount);
             getCCAuthAfterDeposit(needToAuthorizeAtCheckin, authCCAmount, true);
@@ -436,6 +445,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             } else {
 
                 var amount, needToAuthorizeAtCheckin;
+
                 if ($scope.inDemoMode()) {
                     console.log('demo mode :: auth amount hardcoded to 35');
                     amount = 35.00;
@@ -520,6 +530,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.capturingAuth = true;
 
             var data = {};
+
             if (amount > 0) {
                 data.amount = amount;
             } else {
@@ -653,6 +664,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 setCCAuthSettings();
             }
             var sixPay = isSixpay();
+
             console.log('sixPay: ' + sixPay);
             //check if a Sixpay hotel or MLI
             //then depending on the swipe configuration, initialize the device

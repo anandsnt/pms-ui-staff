@@ -87,6 +87,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			var dataToSend = {
 				"id": $scope.reservationDetails.travelAgent.id
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
 		};
 
@@ -118,6 +119,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 				}
 				fetchARNotes();
 			};
+
 			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);
 
 		};
@@ -271,11 +273,13 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		 */
 		var saveContactInformation = function(data) {
 			var dataUpdated = false;
+
 			if (!angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
 			}
 			if (typeof data !== 'undefined' && (dataUpdated || $scope.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
+
 				for (key in dataToSend) {
 					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
 						//in add case's first api call, presentContactInfo will be empty object
@@ -310,6 +314,7 @@ angular.module('sntRover').controller('travelAgentResults', ['$scope', '$timeout
 			click: true,
 			preventDefault: false
 		};
+
 		$scope.setScroller('travelAgentResultScroll', scrollerOptionsForGraph);
 
 		$scope.$on("refreshTravelAgentScroll", function() {

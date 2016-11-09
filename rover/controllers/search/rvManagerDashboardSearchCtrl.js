@@ -6,6 +6,7 @@ sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$rootScope
 	*/
 
 	var that = this;
+
   	BaseCtrl.call( this, $scope );
 
 
@@ -17,6 +18,7 @@ sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$rootScope
         mouseWheel: false,
         shrinkScrollbars: 'clip'
     };
+
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
     //Clear the from date and to date options from search box.

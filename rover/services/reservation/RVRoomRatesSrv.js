@@ -6,12 +6,15 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
         // A. Private Methods
         var getInitialRoomTypeWithUpSell = function(params) {
             var deferred = $q.defer();
+
             service.fetchRoomTypeADRs(params, true).then(function(response) {
                 if (response.results.length > 0) {
                     var levelOfBestRoom = RVReservationBaseSearchSrv.getRoomTypeLevel(response.results[0].id);
+
                     if (levelOfBestRoom > 0 && levelOfBestRoom < 3) {
                         var baseResults = response;
                         // Get the best room from the next level; If not found; stick to the original set of two
+
                         service.fetchRoomTypeADRs(params, false, levelOfBestRoom + 1).then(function(response) {
                             if (response.results > 0) {
                                 baseResults.results[2] = response.results[1];
@@ -68,6 +71,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
         service.fetchRoomTypeADRs = function(params, isInitial, level) {
             var deferred = $q.defer(),
                 url = "/api/availability/room_type_adrs";
+
             if (isInitial) {
                 params.per_page = 2;
                 params.page = 1;
@@ -103,6 +107,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             var deferred = $q.defer(),
                 url = "/api/availability/rate_adrs";
             //CICO-27146
+
             params.exclude_pseudo = true;
             params.exclude_suite = true;
 

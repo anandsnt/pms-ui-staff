@@ -153,12 +153,14 @@ angular.module('sntRover').service('rvGroupSrv', ['$q', 'rvBaseWebSrvV2',
         this.getGuestClassForArrival = function(group) {
             //"cancel" if cancelled, "check-in" if not cancelled
             var classes = isCancelledGroup(group) ? 'cancel' : 'check-in';
+
             return classes;
         };
 
 		this.getGuestClassForDeparture = function(group) {
             //"cancel" if cancelled, 'check-out' if not cancelled
             var classes = isCancelledGroup(group) ? 'cancel' : 'check-out';
+
             return classes;
         };
 

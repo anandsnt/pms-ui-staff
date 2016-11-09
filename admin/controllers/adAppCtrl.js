@@ -17,6 +17,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		BaseCtrl.call(this, $scope);
 		var title ="Showing Settings";
+
 		$scope.setTitle(title);
 		$scope.menuOpen = false;
 		$scope.hotelListOpen = '';
@@ -31,11 +32,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		/*
 	     * To close drawer on click inside pages
 	     */
+
 	    $scope.closeDrawer = function(event) {
 	    	 $scope.menuOpen = false;
 	    };
 		//scroller options
 		var scrollerOptions = {click: true, scrollbars: true};
+
 		$scope.setScroller('tabs_menu', scrollerOptions);
 
 		$scope.bookMarks = [];
@@ -386,6 +389,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 
 			var copiedBookMarkIds = [];
+
 			copyBookmarkIds(copiedBookMarkIds);
 
 			if ($scope.bookMarks.length <= $scope.bookmarkIdList.length) {
@@ -396,6 +400,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						var data = {
 							id: $scope.bookmarkIdList[i]
 						};
+
 						$scope.invokeApi(ADAppSrv.removeBookMarkItem, data, successCallbackOfRemovingBookMark);
 					}
 				}
@@ -416,6 +421,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			};
 
 			var copiedBookMarkIds = [];
+
 			copyBookmarkIds(copiedBookMarkIds);
 
 			if ($scope.bookMarks.length > $scope.bookmarkIdList.length) {
@@ -427,6 +433,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						var data = {
 							id: $scope.bookMarks[i].id
 						};
+
 						$scope.invokeApi(ADAppSrv.bookMarkItem, data, successCallbackOfBookMark);
 					}
 				}
@@ -471,8 +478,10 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		 */
 		$scope.clickedMenuItem = function($event, stateToGo) {
 			var currentTime = new Date();
+
 			if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
 				var diff = currentTime - lastDropedTime;
+
 				if (diff <= 400) {
 					$event.preventDefault();
 					$event.stopImmediatePropagation();
@@ -659,6 +668,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 	      $scope.setScroller(MENU_SCROLLER, scrollerOptions);
 	    };
+
 	    setupScrolls();
 	    var refreshScroll = function(name, reset) {
 	      $scope.refreshScroller(name);
@@ -667,6 +677,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 	          $scope.myScroll[name].scrollTo(0, 0, 100);
 	      }
 	    };
+
 	    $scope.refreshMenuScroll = function(reset) {
 	      refreshScroll(MENU_SCROLLER, reset);
 	    };

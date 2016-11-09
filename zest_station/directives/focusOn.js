@@ -17,6 +17,7 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                 documentClick = true;
             });
             var elToFocus = '';
+
             if (attrs.focusOn) {
                 elToFocus = attrs.focusOn;
                 if ($(elToFocus) && $(elToFocus)[0]) {

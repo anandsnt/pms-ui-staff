@@ -12,6 +12,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         };
         $scope.getSubtask = function(task) {
             var subtask = [];
+
             subtask = _.filter(task, function(item) {
                         return item.is_default == true;
                     });
@@ -28,6 +29,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     });
 
                     var defaultTask = null;
+
                     if(!currentSelection && !$scope.is_edit) {
                         defaultTask = _.find(workType.tasks, {
                             is_default: true
@@ -69,6 +71,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
         $scope.isPromotional = function() {
             var ispromo = false, classification = '';
+
             if ($scope.rateTypesDetails) {
                 angular.forEach($scope.rateTypesDetails.rate_types, function(rate_type) {
                     if ($scope.rateData.rate_type.id === rate_type.id) {
@@ -127,6 +130,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
              */
             angular.forEach($scope.rateTypesDetails.depositPolicies, function(depositPolicy) {
                 var symbol = (depositPolicy.amount_type === "amount") ? '$' : '%';
+
                 if (symbol === '%') {
                     depositPolicy.displayData = depositPolicy.name + "   " + "(" + depositPolicy.amount + symbol + ")";
                 } else {
@@ -135,6 +139,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             });
             angular.forEach($scope.rateTypesDetails.cancelationPenalties, function(cancelationPenalty) {
                 var symbol = (cancelationPenalty.amount_type === "amount") ? '$' : '%';
+
                 if(cancelationPenalty.amount_type === "amount") {
                 	symbol = "$";
                 } else if(cancelationPenalty.amount_type === "day") {
@@ -176,6 +181,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 }
 
                 var commissionData = dclone($scope.rateData.commission_details, ["charge_codes"]);
+
                 commissionData.selected_commission_charge_code_ids = selectedChargeCodes;
             }
             return commissionData;
@@ -185,9 +191,11 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
          */
         var setUpAddOnData = function() {
             var addOnsArray = [];
+
             angular.forEach($scope.rateData.addOns, function(addOns) {
                 if (addOns.isSelected) {
                     var data = {};
+
                     data.is_inclusive_in_rate = addOns.is_inclusive_in_rate;
                     data.addon_id = addOns.id;
                     addOnsArray.push(data);
@@ -200,6 +208,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             var amount = parseInt($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
             var addOns = setUpAddOnData();
             var commissions = setupCommissionData();
+
             angular.forEach($scope.rateData.tasks, function(rateTasks) {
                 if (rateTasks.id !== undefined) {
                     rateTasks.task_id = rateTasks.id
@@ -269,6 +278,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     'updatedData': data,
                     'rateId': $scope.rateData.id
                 };
+
                 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate, updatedData, saveSuccessCallback, saveFailureCallback);
             }
         };
@@ -304,12 +314,14 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 $scope.$emit('hideLoader');
 
             };
+
             if ($scope.rateData.end_date) {
                 if ($scope.rateData.id) {
                     var data = {
                         "id": $scope.rateData.id,
                         "end_date": $scope.rateData.end_date
                     };
+
                     $scope.invokeApi(ADRatesAddDetailsSrv.validateEndDate, data, validateEndDateSuccessCallback, validateEndDateFailureCallback);
                 } else {
                     $scope.startSave();
@@ -364,6 +376,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             var selectedObj = _.find( $scope.rateTypesDetails.charge_codes, function(obj) {
                                     return obj.id === $scope.rateData.charge_code_id;
                                 });
+
             $scope.rateData.tax_inclusive_or_exclusive = selectedObj.tax_inclusive_or_exclusive;
         };
 

@@ -6,6 +6,7 @@ sntGuestWeb.controller('gwExternalCheckInTurnedOffController', ['$scope', 'GwWeb
 
 		var init = function() {
 			var screenIdentifier = "EXTERNAL_CHECKIN_OFF";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.zestCheckinNoServiceMsg = GwWebSrv.zestwebData.zestCheckinNoServiceMsg;
 		}();

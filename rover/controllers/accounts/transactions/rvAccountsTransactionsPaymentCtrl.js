@@ -11,6 +11,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
         var tokenDetails = {};
         var cardDetails = {};
         var zeroAmount = parseFloat("0.00");
+
         $scope.feeData = {};
 
         /**
@@ -30,6 +31,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
         var hasPermissionToRefundPayment = function() {
             return rvPermissionSrv.getPermissionValue('POST_REFUND');
         };
+
         $scope.$on('isGiftCardPmt', function(v) {
             $scope.isGiftCardPmt = v;
         });
@@ -63,6 +65,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             $scope.hasPermissionToMakePayment = hasPermissionToMakePayment();
             $scope.hasPermissionToRefundPayment = hasPermissionToRefundPayment();
         };
+
         init();
 
 
@@ -97,6 +100,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
 
             var defaultAmount = $scope.billsArray[$scope.currentActiveBill].balance_amount ?
                 $scope.billsArray[$scope.currentActiveBill].balance_amount : zeroAmount;
+
             $scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
             $scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
             if ($scope.renderData.defaultPaymentAmount < 0) {
@@ -111,6 +115,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
         /*
          * Action - On bill selection
          */
+
         $scope.billNumberChanged = function() {
             $scope.currentActiveBill = parseInt($scope.renderData.billNumberSelected) - parseInt(1);
             renderDefaultValues();
@@ -130,6 +135,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
                 onPaymnentFetchFailure = function(errorMessage) {
                     $scope.errorMessage = errorMessage;
                 };
+
             $scope.callAPI(RVPaymentSrv.renderPaymentScreen, {
                 successCallBack: onPaymnentFetchSuccess,
                 failureCallBack: onPaymnentFetchFailure,
@@ -149,6 +155,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             var cardNumberEndingWith = "";
             var cardExpiry = "";
             var swipedData = angular.copy($scope.swipedCardDataToSave);
+
             if (!isEmptyObject(swipedData)) {
                 cardType = swipedData.cardType.toLowerCase();
                 cardNumberEndingWith = swipedData.cardNumber.slice(-4);
@@ -273,6 +280,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
 
             $scope.swipedCardDataToSave = swipedCardDataToSave;
             var data = swipedCardDataToSave;
+
             data.payment_credit_type = swipedCardDataToSave.cardType;
             data.credit_card = swipedCardDataToSave.cardType;
             data.card_expiry = "20" + swipedCardDataToSave.cardExpiryYear + "-" + swipedCardDataToSave.cardExpiryMonth + "-01";
@@ -340,6 +348,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
 
             $scope.errorMessage = "";
             var params = setUpPaymentParams(arType);
+
             if ($rootScope.paymentGateway === "sixpayments" && !$scope.isManual && $scope.saveData.paymentType === "CC") {
                 params.data_to_pass.is_emv_request = true;
                 $scope.shouldShowWaiting = true;
@@ -370,6 +379,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
                 "is_auto_assign_ar_numbers": $scope.ArDetails.is_auto_assign_ar_numbers,
                 "paymentDetails": paymentDetails
             };
+
             $scope.$emit('arAccountWillBeCreated', data);
         };
 
@@ -424,6 +434,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             var params = {
                 account_id: $scope.accountConfigData.summary.posting_account_id
             };
+
             $scope.callAPI(rvAccountTransactionsSrv.checkForArAccount, {
                 successCallBack: successArCheck,
                 params: params

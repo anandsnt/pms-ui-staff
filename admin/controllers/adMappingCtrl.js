@@ -46,6 +46,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         //for preventing drag & drop operations turning into click
         var lastDropedTime = '';
+
         $scope.onDragStop = function () {
             $scope.isDragging = false;
             //also we are taking the lastDropedTime to preventing click after drag stop operation
@@ -87,8 +88,10 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         $scope.clickedMenuItem = function ($event, stateToGo) {
             var currentTime = new Date();
+
             if (lastDropedTime !== '' && typeof lastDropedTime === 'object') {
                 var diff = currentTime - lastDropedTime;
+
                 if (diff <= 400) {
                     $event.preventDefault();
                     $event.stopImmediatePropagation();
@@ -116,15 +119,18 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             this.lastInterface = data;
             this.lastInterface.hotelId = $scope.hotel_id;
         };
+
         $scope.availableMappingTypes = [];
         var fetchExternalMappingItemsSuccess = function (data) {
             var item;
+
             for (var i in data.interfaces) {
                 item = data.interfaces[i];
                 $scope.extMappingSubComponents.push(item);
             }
             $scope.$emit('hideLoader');
         };
+
         $scope.siteminder_setup = {};
         $scope.siteminder_setup.mapping_type_list = [];
 
@@ -159,6 +165,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         $scope.fetchInterfaceMappingsSuccess = function (data) {
             var mapType, mappingTypeName, mappingTypeId, sntVal, extVal, mv, value, dataObj, mTypeName, mappingTypeRefObject, mappingTypeDesc;
+
             $scope.mappingInterface = {};
             $scope.mappingInterface = data;
 
@@ -251,6 +258,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         $scope.fetchInterfaceMappings = function () {
             var lastInterface = getLastInterface();
+
             $scope.clickedInterfaceName = lastInterface.description;
             $scope.invokeApi(ADInterfaceMappingSrv.fetchInterfaceMappingsList, {
                 'hotel_id': lastInterface.hotelId,
@@ -282,6 +290,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             };
 
             var lastInterface = getLastInterface();
+
             $scope.clickedInterfaceName = lastInterface.name;
             var editData = {
                 'hotel_id': $scope.hotel_id,
@@ -289,6 +298,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
                 'interface_name': lastInterface.name,
                 'mapping_type_id': mappingId
             };
+
             $scope.invokeApi(ADInterfaceMappingSrv.fetchEditMapping, editData, editInterfaceMappingSuccessCallback);
         };
         /*
@@ -339,6 +349,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
             available_mapping_types = $scope.editData.mapping_types;
             available_snt_values = $scope.mappingInterface.mappingTypeRefs[mapping_type];
             var valid_mapping_type = false, valid_snt_value = false, valid_external_value = false;
+
             if (external_value !== '' && external_value !== " " && typeof external_value === typeof 'string') {
                 valid_external_value = true;
             }
@@ -364,6 +375,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
         $scope.clickedSave = function () {
             var lastInterface = getLastInterface();
+
             $scope.clickedInterfaceName = lastInterface.name;
 
             var snt_value = $scope.editData.snt_value,
@@ -429,6 +441,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
         $scope.clickedDelete = function (mappingId) {
 
             var lastInterface = getLastInterface();
+
             $scope.clickedInterfaceName = lastInterface.name;
             var del_mapping_data = {
                 'hotel_id': lastInterface.hotelId,

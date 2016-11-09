@@ -204,6 +204,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 		this.cancelAllotment = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/allotments/' + params.allotment_id + '/cancel';
+
 			rvBaseWebSrvV2.postJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
@@ -420,6 +421,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 		this.updateRoomingListItem = function(data) {
 			var deferred = $q.defer(),
 				url = '/api/allotments/' + data.id + '/update_reservation';
+
 			rvBaseWebSrvV2.putJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -432,6 +434,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 		this.removeRoomingListItem = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/allotment_reservations/' + data.id + '/cancel';
+
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -444,6 +447,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 		this.releaseRooms = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/allotments/' + data.allotmentId + '/release_now';
+
 			rvBaseWebSrvV2.getJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -461,6 +465,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 		this.getRates = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/allotments/rates';
+
 			rvBaseWebSrvV2.getJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -473,6 +478,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 		this.toggleHideRate = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/allotments/' + params.allotment_id + '/hide_rates';
+
 			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -484,6 +490,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 		this.updateRate = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/allotments/' + params.allotment_id + '/change_rate';
+
 			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -495,6 +502,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 		this.copyDefaultBillingInfo = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/default_account_routings/copy_default_billing_info_to_allotments';
+
 			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -506,6 +514,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 		this.copyContactToHeld = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/allotments/copy_contract';
+
 			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {

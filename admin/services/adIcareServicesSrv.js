@@ -14,8 +14,10 @@ function($http, $q, ADBaseWebSrvV2) {
 			/* Formatting charge code data for UI implementation.
 			 * ad-dropdown directive expects value,name pair.
 			 */
+
 			angular.forEach(data.charge_codes, function(item, index) {
 	       		var obj = { "value": item.id, "name": item.description };
+
 	       		cargeCodes.push(obj);
        		});
 			data.charge_codes = [];

@@ -5,6 +5,7 @@ var checkoutNowService = function($q, $rootScope, $http) {
 	var completeCheckout = function(url, data) {
 
 		var deferred = $q.defer();
+
 		$http.post(url, data).success(function(response) {
 			deferred.resolve(response);
 		}).error(function() {

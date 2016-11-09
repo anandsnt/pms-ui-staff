@@ -33,6 +33,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		};
 
 		var listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
+
 		$scope.setTitle(listTitle);
 		$scope.heading = listTitle;
 		$scope.$emit( "updateRoverLeftMenu", "reports" );
@@ -69,6 +70,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			    $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo(0, 0, 100);
 			}
 		};
+
 		$scope.scrollToLast = function() {
 			setTimeout(function() {
 				if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
@@ -79,6 +81,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		/**/
 		$scope.viewCols = [1, 2, 3, 4];
 		var _currentViewCol = $scope.viewCols[0];
+
 		$scope.getViewColClass = function() {
 			return 'cols-' + _currentViewCol;
 		};
@@ -96,6 +99,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.reportViews = ['ALL_REPORT', 'SCHEDULED_REPORT', 'SCHEDULED_A_REPORT'];
 		var _selectedReportView = $scope.reportViews[0];
 		/**/
+
 		$scope.isReportView = function(name) {
 			return name === _selectedReportView;
 		};
@@ -356,6 +360,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.fromDateOptionsTillYesterday = angular.extend({
 			maxDate: function() {
 				var currentDate = new tzIndependentDate($rootScope.businessDate);
+
 				currentDate.setDate(currentDate.getDate() - 1);
 				return $filter('date')(currentDate, $rootScope.dateFormat);
 			}(),
@@ -366,6 +371,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.untilDateOptionsTillYesterday = angular.extend({
 			maxDate: function() {
 				var currentDate = new tzIndependentDate($rootScope.businessDate);
+
 				currentDate.setDate(currentDate.getDate() - 1);
 				return $filter('date')(currentDate, $rootScope.dateFormat);
 			}(),
@@ -427,6 +433,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.untilDateOptionsNoLimit = angular.extend({}, datePickerCommon);
 
 		var dbObj = reportUtils.processDate().businessDate;
+
 		$scope.dateChanged = function (item, dateName) {
 
 			// keep track of the report that has been
@@ -716,6 +723,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         		}
         	});
         	var selectedRateCodes = _.where(item.hasRateCodeFilter.data, {selected: true});
+
         	if(selectedRateCodes.length === 0 ) {
         		item.hasRateCodeFilter.title = item.hasRateCodeFilter.defaultTitle;
         	}
@@ -770,6 +778,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				$scope.myScroll && $scope.myScroll['report-filter-sidebar-scroll'] && $scope.myScroll['report-filter-sidebar-scroll'].refresh();
 			}, 200);
         };
+
         $scope.rateChanged = function(item) {
         	formTitleAndToggleSelectAllForRateDropDown(item);
         	refreshScroller();
@@ -795,6 +804,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         	var listedRateTypes 		= item.hasRateTypeFilter.data,
         		selectedRateTypes 		= _.where(listedRateTypes, {selected: true}),
         		selectedRateTypesIds 	= _.pluck(selectedRateTypes, "rate_type_id");
+
         	return _.filter(item.hasRateFilter.data, function(rate) {
         		return ( selectedRateTypesIds.indexOf(rate.rate_type_id) > -1 );
         	});
@@ -805,6 +815,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         var getRatesListToShow = function(item) {
         	var listedRates 		= item.hasRateCodeFilter.data,
         		selectedRates 		= _.where(listedRates, {selected: true});
+
         	return selectedRates;
         };
 
@@ -858,6 +869,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 		$scope.fauxSelectChange = function (reportItem, fauxDS, allTapped) {
 			var selectedItems;
+
 			if ( allTapped ) {
                 if ( fauxDS.selectAll ) {
                     fauxDS.title = fauxDS.allTitle || 'All Selected';
@@ -968,6 +980,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         $scope.getGroupName = function (groupId) {
         	var groupName;
+
         	angular.forEach ($scope.addonGroups, function (key) {
         		if (key.id == groupId) {
         			groupName = key.name;
@@ -1194,6 +1207,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 // For the daily production rates; we are to send an array with group or allotment ids
                 if(reportNames['DAILY_PRODUCTION_RATE'] === report.title) {
                     var selectedCustomRates = _.pluck(_.where(getRateListToShow(report), {selected: true, id: null}), "group_id");
+
                     if ( selectedCustomRates.length > 0 ) {
                         params[key] = _.without(params[key], null); //remove null entries in the rate_ids array (null entries would be there if custom rates were selected)
                         params['custom_rate_group_ids'] = selectedCustomRates;
@@ -1217,12 +1231,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			if (!!report.hasRateCodeFilter) {
 				if(report.hasRateCodeFilter.options.singleSelect) {
 					var selectedRateCode = _.findWhere(report.hasRateCodeFilter.data, { selected: true });
+
 					if(selectedRateCode) {
 						params[reportParams['RATE_ID']] = selectedRateCode.id;
 					}
 				} else {
 					key = reportParams['RATE_IDS'];
 					var selectedRates = getRatesListToShow(report);
+
 					if(selectedRates.length > 0) {
 						params[key] = [];
 						_.each(selectedRates, function(rate) {
@@ -1341,6 +1357,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				var _chosenSortBy = _.find(report.sortByOptions, function(item) {
 					return item && item.value === report.chosenSortBy;
 				});
+
 				if ( !! _chosenSortBy && 'boolean' === typeof _chosenSortBy.sortDir ) {
 					key         = reportParams['SORT_DIR'];
 					params[key] = _chosenSortBy.sortDir;
@@ -1952,6 +1969,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		 */
 		$scope.shouldShowExportButton = function(report) {
 			var chosenReport = report || reportsSrv.getChoosenReport();
+
 			return !_.isUndefined(chosenReport) && !_.isEmpty(chosenReport) && chosenReport.display_export_button;
 		};
 
@@ -1975,6 +1993,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 		$scope.getExportPOSTUrl = function(report) {
 			var chosenReport = report || reportsSrv.getChoosenReport();
 			var exportUrl = "";
+
 			if ( _.isEmpty(chosenReport) ) { //I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
 				return exportUrl;
 			};
@@ -2137,6 +2156,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			},
 			select: function(event, ui) {
 				var uiValue = split(this.value);
+
 				uiValue.pop();
 				uiValue.push(ui.item.label);
 				uiValue.push("");
@@ -2249,6 +2269,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			},
 			select: function(event, ui) {
 				var uiValue = split(this.value);
+
 				uiValue.pop();
 				uiValue.push(ui.item.label);
 				uiValue.push("");
@@ -2319,6 +2340,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 				return false;
 			}
 		};
+
 		$scope.compTaAutoCompleteOnList = angular.extend({
 			position: {
 				my: 'left top',
@@ -2345,6 +2367,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 					.then(function(data) {
 						var list = [];
 						var entry = {};
+
 						$.map(data, function(each) {
 							entry = {
 								label: each.name,

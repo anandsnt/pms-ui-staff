@@ -28,6 +28,7 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
 			$scope.setCategories();
 			$scope.setItems();
 		};
+
 	   $scope.invokeApi(ADContentManagementSrv.fetchGridViewList, {}, successCallbackGridFetch);
    };
    /* Function to split the fetch components to sections, categories and items
@@ -328,6 +329,7 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
 	$scope.trimComponent = function(component) {
 
 		var trimmedComponent = component.substring(0, 20);
+
 		return component.length > 20? trimmedComponent + "..." : trimmedComponent;
 
 	}
@@ -338,6 +340,7 @@ admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADCont
    		if($scope.searchText == '')
    			return true;
    		var searchRegExp = new RegExp($scope.searchText.toLowerCase());
+
    		if(value.component_type === 'PAGE')
    			return searchRegExp.test(value.name.toLowerCase()) || searchRegExp.test($scope.getFormattedTime(value.last_updated))  || searchRegExp.test(value.page_template.toLowerCase()) || searchRegExp.test(value.screen_id.toLowerCase());
    		else

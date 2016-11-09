@@ -16,6 +16,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			$scope.disablePostChargeButton = false;
 
 			var scrollerOptions = { preventDefault: false };
+
   			$scope.setScroller ('items_list', scrollerOptions);
   			$scope.setScroller ('items_summary', scrollerOptions);
   			var isFromAccounts = ( typeof $scope.account_id !=="undefined" && $scope.account_id !=="" )? true : false;
@@ -48,6 +49,7 @@ sntRover.controller('RVPostChargeControllerV2',
 					$scope.fetchedData.charge_groups = data.results;
 		            $scope.$emit('hideLoader');
 				};
+
 				$scope.invokeApi( RVPostChargeSrvV2.fetchChargeGroups, {}, successCallBackFetchChargeGroups );
 		    };
 
@@ -93,6 +95,7 @@ sntRover.controller('RVPostChargeControllerV2',
 		            $scope.$emit('hideLoader');
 		            $scope.refreshScroller('items_list');
 				};
+
 				$scope.invokeApi( RVPostChargeSrvV2.searchChargeItems, params, successCallBackFetchChargeCodes );
 		    };
 
@@ -487,6 +490,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
 				/****    CICO-6094    **/
 				var needToCreateNewBill = false;
+
 				if($scope.billNumber > $scope.fetchedData.bill_numbers.length) {
 					needToCreateNewBill = true;
 				}
@@ -526,6 +530,7 @@ sntRover.controller('RVPostChargeControllerV2',
 					$scope.closeDialog();
 				};
 				// CICO-21768 - Forcefully posting to Bill#1 while Credit Limit has exceeded.
+
 				$scope.applyToBillOne = function() {
 					data.bill_no = "1";
 					data.post_to_bill_one = true;
@@ -537,6 +542,7 @@ sntRover.controller('RVPostChargeControllerV2',
 					$scope.closeDialog();
 					$scope.$emit('UPDATE_TRANSACTION_DATA', data);
 				};
+
 				if(!isFromAccounts) {
 					if(!!$scope.restrict_post && $scope.hasPermissionToAllowPostWithNoCredit()) {
 						data.post_anyway = true;
@@ -560,6 +566,7 @@ sntRover.controller('RVPostChargeControllerV2',
 						"bill_number": $scope.billNumber
 					};
 					//accounts or reservation bill screen check
+
 					isFromAccounts ? (billData.account_id = $scope.account_id):(billData.reservation_id = $scope.reservation_id);
 
 					if(isFromAccounts) {
@@ -572,6 +579,7 @@ sntRover.controller('RVPostChargeControllerV2',
 							$scope.invokeApi(rvAccountTransactionsSrv.postCharges, updateParam, accountsPostcallback, failureCallback);
 
 						};
+
 						$scope.invokeApi(rvAccountTransactionsSrv.createAnotherBill, billData, createBillSuccessCallback, failureCallback);
 					}
 					else{
@@ -585,6 +593,7 @@ sntRover.controller('RVPostChargeControllerV2',
 							// Update Review status array.
 							if(!$scope.isOutsidePostCharge) {
 								var data = {};
+
 								data.reviewStatus = false;
 								data.billNumber = $scope.billNumber;
 								data.billIndex = $scope.reservationBillData.bills.length;
@@ -592,6 +601,7 @@ sntRover.controller('RVPostChargeControllerV2',
 								$scope.reviewStatusArray.push(data);
 							}
 						};
+
 						$scope.invokeApi(RVBillCardSrv.createAnotherBill, billData, createBillSuccessCallback, failureCallback);
 					}
 				}
@@ -631,6 +641,7 @@ sntRover.controller('RVPostChargeControllerV2',
 
   			$scope.showItemSummaryList = function() {
   				var size = _.size($scope.selectedChargeItemHash);
+
   				if( size > 0 ) {
   					return true;
   				}

@@ -74,6 +74,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         var ifMandatoryValuesEntered = function() {
             var summary = $scope.allotmentConfigData.summary;
+
             return !!summary.allotment_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to;
         }
 
@@ -84,6 +85,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         var fetchSuccessOfSummaryData = function(data) {
             var summaryData = $scope.allotmentConfigData.summary; // ref for summary
+
             summaryData = _.extend(summaryData, data.allotmentSummary);
 
             if (!$scope.isInAddMode()) {
@@ -184,6 +186,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
             // we will restrict tab swithing if we are in add mode
             var tryingFromSummaryToOther = isInSummaryTab && tab !== 'SUMMARY';
+
             if ($scope.isInAddMode() && tryingFromSummaryToOther) {
                 $scope.errorMessage = ['Sorry, Please save the entered information and try to switch the tab'];
                 return;
@@ -224,6 +227,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
             var params = {
                 "account_id": $scope.accountConfigData.summary.posting_account_id
             };
+
             $scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, {
                 successCallBack: onTransactionFetchSuccess,
                 params: params
@@ -302,6 +306,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                             summary: $scope.allotmentConfigData.summary
                         }
                     };
+
                     $scope.callAPI(rvAllotmentConfigurationSrv.saveAllotmentSummary, options);
                 } else {
                     $scope.errorMessage = ["Allotment's name, from date, to date and hold status are mandatory"];
@@ -347,6 +352,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                     refreshSummaryDataAfterUpdate = true;
                 }
                 var summaryData = _.extend({}, $scope.allotmentConfigData.summary);
+
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
@@ -414,6 +420,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         $scope.onCompanyCardChange = function() {
             var summaryData = $scope.allotmentConfigData.summary;
+
             if (summaryData.company && summaryData.company.name === "") {
                 summaryData.company = null;
             }
@@ -445,6 +452,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                         .then(function(data) {
                             var list = [];
                             var entry = {};
+
                             $.map(data, function(each) {
                                 entry = {
                                     label: each.account_name,
@@ -485,6 +493,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                         .then(function(data) {
                             var list = [];
                             var entry = {};
+
                             $.map(data, function(each) {
                                 entry = {
                                     label: each.account_name,
@@ -524,6 +533,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          */
         $scope.computeAddonsCount = function() {
             var count = 0;
+
             angular.forEach($scope.allotmentConfigData.selectedAddons, function(addon) {
                 count += parseInt(addon.addon_count);
             });

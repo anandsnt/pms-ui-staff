@@ -112,12 +112,14 @@ if(!$scope.addmode) {
       "failureCallBack": failedLinkage,
       "arguments": args
     };
+
     $scope.$emit('showLoader');
     try{
       sntapp.iBeaconLinker.linkiBeacon(options);
     }
     catch(er) {
       var error = {};
+
       error.RVError = er;
       failedLinkage(error);
     };
@@ -141,6 +143,7 @@ if(!$scope.addmode) {
         $scope.errorMessage = data;
       };
       //unset title and description in case beacon is not promotion else unset message
+
       if($scope.data.type !=='PROMOTION') {
           $scope.data.title = "";
           $scope.data.description = "";
@@ -149,8 +152,10 @@ if(!$scope.addmode) {
           $scope.data.message = "";
       };
       var BeaconId = $scope.data.proximity_id+"-"+$scope.data.major_id+"-"+$scope.data.minor_id;
+
       if($scope.addmode) {
         var unwantedKeys = ["major_id", "minor_id", "proximity_id"];
+
         updateData= dclone($scope.data, unwantedKeys);
         updateData.uuid = BeaconId;
         $scope.invokeApi(adiBeaconSettingsSrv.addBeaconDetails, updateData, updateBeaconSuccess, updateBeaconFailure);
@@ -158,6 +163,7 @@ if(!$scope.addmode) {
       else{
         updateData.id = $stateParams.action;
         var unwantedKeys = ["picture", "majorid", "minorid"];
+
         updateData.data= dclone($scope.data, unwantedKeys);
         updateData.data.uuid = BeaconId;
         // Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
@@ -183,6 +189,7 @@ if(!$scope.addmode) {
         $scope.errorMessage = data;
     };
     var data = {};
+
     data.id = $scope.beaconId;
     data.is_linked = $scope.isBeaconLinked;
     $scope.invokeApi(adiBeaconSettingsSrv.setLink, data, linkBeaconSuccess, linkBeaconFailure);

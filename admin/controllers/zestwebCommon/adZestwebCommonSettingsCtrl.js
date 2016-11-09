@@ -25,6 +25,7 @@ admin.controller('ADZestwebCommonSettingsCtrl', ['$scope', '$state', 'zestWebCom
 		};
 
 		var apiParams = angular.copy($scope.zestCommonSettings);
+
 		apiParams.zest_web_footer_settings.footers[0] = angular.copy($scope.footer1);
 		apiParams.zest_web_footer_settings.footers[1] = angular.copy($scope.footer2);
 		apiParams.zest_web_footer_settings.footers[2] = angular.copy($scope.footer3);
@@ -33,6 +34,7 @@ admin.controller('ADZestwebCommonSettingsCtrl', ['$scope', '$state', 'zestWebCom
 			params: apiParams,
 			successCallBack: saveSettingsCallback
 		};
+
 		$scope.callAPI(ADzestwebCommonSettingsSrv.saveSettings, options);
 	};
 

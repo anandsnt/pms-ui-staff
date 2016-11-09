@@ -9,6 +9,7 @@ sntGuestWeb.controller('GwCheckoutFinalController', ['$scope', '$state', '$contr
 		});
 		var init = function() {
 			var screenIdentifier = "CHECKOUT_FINAL";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 		}();
 
@@ -21,6 +22,7 @@ sntGuestWeb.controller('GwCheckoutFinalController', ['$scope', '$state', '$contr
 			},
 			successCallBack: onSuccess
 		};
+
 		$scope.callAPI(GwCheckoutSrv.completeCheckout, options);
 	}
 ]);

@@ -169,6 +169,7 @@ angular.module('sntRover').controller('RVGroupCardCtrl', ['$scope', '$rootScope'
 		$scope.formatDateForUI = function(date_) {
 			var type_ = typeof date_,
 				returnString = '';
+
 			switch (type_) {
 				//if date string passed
 				case 'string':
@@ -190,11 +191,13 @@ angular.module('sntRover').controller('RVGroupCardCtrl', ['$scope', '$rootScope'
 		 */
 		var saveContactInformation = function(data) {
 			var dataUpdated = false;
+
 			if (!angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
 			}
 			if (typeof data !== 'undefined' && (dataUpdated || $scope.viewState.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
+
 				for (key in dataToSend) {
 					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
 						//in add case's first api call, presentContactInfo will be empty object
@@ -228,6 +231,7 @@ angular.module('sntRover').controller('groupResults', ['$scope', '$timeout',
 			click: true,
 			preventDefault: false
 		};
+
 		$scope.setScroller('groupResultsScroll', scrollerOptionsForGraph);
 
 		$scope.$on("refreshGroupsListScroller", function() {

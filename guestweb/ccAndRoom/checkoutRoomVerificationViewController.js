@@ -35,6 +35,7 @@
 
 		var url = '/guest_web/verify_room.json';
 		var data = {'reservation_id': $rootScope.reservationID, "room_number": $scope.roomNumber};
+
 		$scope.isFetching = true;
 		checkoutRoomVerificationService.verifyRoom(url, data).then(function(response) {
 

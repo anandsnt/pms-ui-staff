@@ -6,6 +6,7 @@ admin.service('ADSegmentsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http,
 	this.fetch = function() {
 		var deferred = $q.defer();
 		var url = '/api/segments';
+
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -20,6 +21,7 @@ admin.service('ADSegmentsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http,
 	this.toggleUsedOrigins = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/booking_origins/use_origins';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -79,6 +81,7 @@ admin.service('ADSegmentsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http,
 	this.toggleSegmentsUse = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/segments/use_segments';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

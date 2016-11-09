@@ -42,6 +42,7 @@ admin.controller('ADRatesAddonsCtrl', [
 					$scope.isConnectedToPMS = true;
 				}
 			};
+
 			$scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccessOfHotelSettings);
 		};
 		$scope.checkPMSConnection();
@@ -57,6 +58,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 		$scope.fetchTableData = function($defer, params) {
 			var getParams = $scope.calculateGetParams(params);
+
 			$scope.currentClickedAddon = -1;
 
 			var fetchSuccessOfItemList = function(data) {
@@ -76,6 +78,7 @@ admin.controller('ADRatesAddonsCtrl', [
 	            $scope.$emit('hideLoader');
 	            $scope.fetchOtherApis();
 			};
+
 			$scope.invokeApi(ADRatesAddonsSrv.fetch, getParams, fetchSuccessOfItemList);
 		};
 
@@ -105,6 +108,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			}
 			else{
 				var selectedChargeGrpId = $scope.singleAddon.charge_group_id;
+
 				$scope.chargeCodesForChargeGrp =[];
 		   		angular.forEach($scope.chargeCodes, function(chargeCode, key) {
 		        angular.forEach(chargeCode.associcated_charge_groups, function(associatedChargeGrp, key) {
@@ -131,6 +135,7 @@ admin.controller('ADRatesAddonsCtrl', [
 					$scope.$emit('hideLoader');
 				};
 			};
+
 			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeGroups, {}, cgCallback, '', 'NONE');
 
 
@@ -140,6 +145,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				manipulateChargeCodeForChargeGroups();
 				$scope.$emit('hideLoader');
 			};
+
 			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback, '', 'NONE');
 
 			// fetch amount types
@@ -147,6 +153,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.amountTypes = data;
 				$scope.$emit('hideLoader');
 			};
+
 			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'amount_type' }, atCallback, '', 'NONE');
 
 			// fetch post types
@@ -161,6 +168,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				
 				$scope.$emit('hideLoader');
 			};
+
 			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'post_type' }, ptCallback, '', 'NONE');
 
 			// fetch the current business date
@@ -170,6 +178,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.businessDate = data.business_date;
 				$scope.$emit('hideLoader');
 			};
+
 			$scope.invokeApi(ADRatesAddonsSrv.fetchBusinessDate, {}, bdCallback, '', 'NONE');
 		};
 
@@ -410,10 +419,12 @@ admin.controller('ADRatesAddonsCtrl', [
 		// on delete addon
 		$scope.deleteAddon = function() {
 			var item = this.item;
+
 			$scope.currentClickedAddon = -1;
 
 			var callback = function() {
 				var withoutThis = _.without( $scope.data, item );
+
 				$scope.data = withoutThis;
 
 				$scope.$emit('hideLoader');
@@ -494,6 +505,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			        $scope.successMessage = "";
 			    }, 1000);
 			};
+
 			$scope.invokeApi(ADRatesAddonsSrv.importPackages, {}, fetchSuccessOfPackageList);
 		};
 

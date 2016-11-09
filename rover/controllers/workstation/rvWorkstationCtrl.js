@@ -15,6 +15,7 @@ sntRover.controller('RVWorkstationController', [
         $scope.$emit('hideLoader');
         $scope.key_encoders = data.results;
       };
+
       $scope.invokeApi(RVWorkstationSrv.fetchEncoders, {}, onEncodersListFetchSuccess);
 
     };
@@ -23,6 +24,7 @@ sntRover.controller('RVWorkstationController', [
         $scope.$emit('hideLoader');
         $scope.emv_terminals = data.results;
       };
+
       $scope.invokeApi(RVWorkstationSrv.fetchEmvTerminals, {}, onEmvTerminalListFetchSuccess);
 
     };
@@ -38,6 +40,7 @@ sntRover.controller('RVWorkstationController', [
         };
 
         var params = {};
+
         params.rover_device_id = $scope.getDeviceId();
         $scope.invokeApi(RVWorkstationSrv.setWorkstation, params, onSetWorkstationSuccess);
 
@@ -48,6 +51,7 @@ sntRover.controller('RVWorkstationController', [
       };
 
       var requestData = {};
+
       requestData.name = $scope.mapping.name;
       requestData.identifier = $scope.mapping.station_identifier;
       requestData.rover_device_id = $scope.getDeviceId();

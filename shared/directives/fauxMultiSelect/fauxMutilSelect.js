@@ -64,6 +64,7 @@ angular.module('fauxMultiSelectModule', [])
             });
 
             var TAP_EV = 'ontouchstart' in $window ? 'touchstart' : 'mousedown';
+
             element.on(TAP_EV, function(e) {
                 e.stopPropagation();
             });

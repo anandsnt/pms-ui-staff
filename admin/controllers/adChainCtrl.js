@@ -16,6 +16,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
 			$scope.$emit('hideLoader');
 			$scope.chainsList = data.chain_list;
 		};
+
 		$scope.invokeApi(adChainsSrv.fetch, {}, fetchChainsSuccessCallback);
 	};
 	$scope.fetchHotelChains();
@@ -43,6 +44,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
 			$scope.fileName = ($scope.editData.ca_certificate_exists === "true")  ? 'Certificate Attached' :'Choose file ...';
 			$scope.apns_file = ( $scope.editData.apns_certificate_exists === "true") ? 'Certificate Attached' :'Choose file ...';
 		};
+
 		$scope.invokeApi(adChainsSrv.edit, editID, editChainSuccessCallback);
 	};
   /*
@@ -70,6 +72,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
  	$scope.addNewChain = function () {
 
  		var lovNames = [];
+
  		angular.forEach($scope.editData.lov, function(item, index) {
  			if (item.name === "") {
  				$scope.editData.lov.splice(index, 1);
@@ -79,6 +82,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
  			}
  		});
  		var oldLov = $scope.editData.lov;
+
  		$scope.editData.lov = lovNames;
  		var addChainSuccessCallback = function(data) {
  			$scope.$emit('hideLoader');
@@ -98,6 +102,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
  				$scope.editData.lov = [{'value': '', 'name': ''}];
  			}
  		};
+
  		$scope.invokeApi(adChainsSrv.post, $scope.editData, addChainSuccessCallback, addChainFailureCallback);
 
  	};
@@ -139,6 +144,7 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
  			$scope.fetchHotelChains();
  			$scope.isEditmode = false;
  		};
+
  		$scope.invokeApi(adChainsSrv.update, updateData, updateChainSuccessCallback, updateChainFailureCallback);
  	};
         

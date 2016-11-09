@@ -38,6 +38,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
             },
             successCallBack: successCallBackOfSaveAfasSetup
         };
+
         $scope.callAPI(ADM3SetupSrv.saveConfig, options);
     };
 
@@ -99,6 +100,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
      */
     $scope.selectChosen = function() {
         var chosenAvailableReportValues = [];
+
         _.each($scope.chosenAvailableReports, function(reportIndex) {
             chosenAvailableReportValues.push($scope.m3Accounting.available_reports[reportIndex]);
         });
@@ -113,6 +115,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
      */
     $scope.unSelectChosen = function() {
         var chosenSelectedReportValues = [];
+
         _.each($scope.chosenSelectedReports, function(reportIndex) {
             chosenSelectedReportValues.push($scope.m3Accounting.selected_reports[reportIndex]);
         });

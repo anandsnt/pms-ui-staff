@@ -9,12 +9,14 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 		});
 		var init = function() {
 			var screenIdentifier = "ROOM_UPGRADES";
+
 			$scope.isUpgradesFetching = true; //to hide contents till api fetches options
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 		}();
 		/**
 		 * Room Upgrades fetch actions starts here
 		 */
+
 		$scope.returnUpgradeRoomImage = function(room_type_image) {
 			console.log((room_type_image.length > 0) ? room_type_image : 'room-image.png');
 			return (room_type_image.length > 0) ? room_type_image : 'room-image.png';
@@ -35,6 +37,7 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 			successCallBack: onUpgradeFetchSuccess,
 			failureCallBack: onUpgradeFetchFailure
 		};
+
 		$scope.callAPI(GwCheckinSrv.fetchRoomUpgradesDetails, options);
 
 		/**
@@ -59,6 +62,7 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 				successCallBack: onUpgradeSuccess,
 				failureCallBack: onUpgradeFailure
 			};
+
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 				GwWebSrv.zestwebData.roomUpgraded  = true;
 				$state.go('checkinReservationDetails');

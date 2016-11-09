@@ -23,12 +23,14 @@ and some folder dedicated to MGM, which has some text changes specifically asked
 */
 var sntGuestWebTemplates = angular.module('sntGuestWebTemplates', []);
 var sntGuestWeb = angular.module('sntGuestWeb', ['ui.router', 'ui.bootstrap', 'pickadate', 'oc.lazyLoad']);
+
 sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $scope) {
   $state.go('guestwebRoot', {mode: 'checkout'});
 }]);
 sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '$state', '$timeout', 'reservationAndhotelData',
  function($rootScope, $scope, $location, $state, $timeout, reservationAndhotelData) {
   var that = this;
+
   loadAssets('/assets/favicon.png', 'icon', 'image/png');
   loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
   loadAssets('/assets/apple-touch-startup-image-768x1004.png', 'apple-touch-startup-image', '', '(device-width: 768px) and (orientation: portrait)');
@@ -142,6 +144,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
   }
   else if($rootScope.hasOwnProperty('isPasswordResetView')) {
     var path = $rootScope.isPasswordResetView === 'true'? '/resetPassword' : '/emailVerification';
+
     $location.path(path);
     $location.replace();
   }else{
@@ -167,6 +170,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 var loadAssets = function(filename, rel, type, media) {
     var fileref = document.createElement("link");
+
     fileref.setAttribute("rel", rel);
     fileref.setAttribute("href", filename);
     if(type !== '') {
@@ -210,6 +214,7 @@ $scope.continueButtonClicked = function() {
 
   var url = '/guest_web/verify_room.json';
   var data = {'reservation_id': $rootScope.reservationID, "room_number": $scope.roomNumber};
+
   $scope.isFetching = true;
 // checkoutRoomVerificationService.verifyRoom(url,data).then(function(response) {
 
@@ -374,6 +379,7 @@ var response = {
   },
   "errors": []
 };
+
 $scope.billData = response.data.bill_details;
 $scope.roomNo = response.data.room_number;
 $scope.isFetching = false;
@@ -452,6 +458,7 @@ This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> z
         $rootScope.accessToken        = response.guest_web_token;
 
       };
+
       setReservartionDetails({"guest_web_token": "4c46f2fb42241caf08a3f9675abb11c3", "reservation_id": 1333742, "user_name": "d, dfsdff"
         , "checkout_date": "06/10/2015", "checkout_time": "11:00 PM", "user_city": "", "user_state": "", "room_no": "195"
         , "is_late_checkout_available": false, "email_address": "resheil@qburst.com", "is_cc_attached": true})
@@ -623,6 +630,7 @@ New checkout time is set and an option to continue the checkout process is prese
       $scope.years = [];
       var startYear = new Date().getFullYear();
       var endYear   = parseInt(startYear) +100;
+
       for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
         $scope.years.push(year);
       };
@@ -743,6 +751,7 @@ The reservation details will be the  in the API response of the verification API
 
     $scope.pageValid = true;
     var dateToSend = '';
+
     if($rootScope.isCheckedin) {
       $state.go('checkinSuccess');
     }
@@ -773,6 +782,7 @@ $rootScope.netWorkError  = false;
 //next button clicked actions
 $scope.nextButtonClicked = function() {
   var data = {'departure_date': dateToSend, 'credit_card': $scope.cardDigits, 'reservation_id': $rootScope.reservationID};
+
   $scope.isPosting     = true;
 
 //call service
@@ -962,10 +972,12 @@ This displays the available rooms for upgrading.
 $scope.isFetching     = false;
 $rootScope.netWorkError  = false;
 var data = {'reservation_id': $rootScope.reservationID};
+
 $scope.slides = [];
 
 var slide = {"upgrade_room_type_name": "room1", "upsell_amount": 33, "upsell_amount_id": 22, "upgrade_room_description": "<h1>ssss</h1>bvccbebebfbebfbefbebfbfbe"};
 var slide1 = {"upgrade_room_type_name": "room2", "upsell_amount": 33, "upsell_amount_id": 22, "upgrade_room_description": "<h1>ssss</h1>bvccbebebfbebfbefbebfbfbe"};
+
 $scope.slides.push(slide);
 $scope.slides.push(slide1);
 
@@ -975,6 +987,7 @@ $scope.upgradeClicked = function(upgradeID, roomNumber) {
 
   $scope.isFetching          = true;
   var data = {'reservation_id': $rootScope.reservationID, 'upsell_amount_id': upgradeID, 'room_no': roomNumber};
+
   checkinRoomUpgradeService.post(data).then(function(response) {
 
     $scope.isFetching     = false;
@@ -1107,12 +1120,14 @@ $scope.errorOpts = {
 $scope.checkinTime = (typeof $stateParams.time !=="undefined") ? $stateParams.time :"";
 
 };
+
 init();
 
 $scope.postStayDetails = function() {
   $scope.isLoading = true;
 //change format to 24 hours
 var hour = parseInt($scope.stayDetails.hour);
+
 if ($scope.stayDetails.primeTime === 'PM' && hour < 12) {
   hour = hour+ 12;
 }
@@ -1229,8 +1244,10 @@ The early checkin purcahse is done here on entering to this page itself.
       $scope.checkinTime = $stateParams.time;
       $scope.earlyCheckinCharge = $stateParams.charge;
       var offerId= $stateParams.id;
+
       $scope.isPosting = true;
       var dataTosend = {'reservation_id': $rootScope.reservationID, 'early_checkin_offer_id': offerId};
+
       $scope.isPosting = false;
       $scope.nextButtonClicked =  function() {
         $state.go('preCheckinStatus');
@@ -1318,6 +1335,7 @@ var getDataToSave = function() {
   var data        = {};
   var unwanted_keys     = ["month", "year", "day"];
   var newObject       = JSON.parse(JSON.stringify($scope.guestDetails));
+
   for(var i=0; i < unwanted_keys.length; i++) {
     delete newObject[unwanted_keys[i]];
   };
@@ -1362,6 +1380,7 @@ var dependencies = [
 '$scope', '$rootScope', '$state', 'guestDetailsService', '$modal',
 guestDetailsController
 ];
+
 sntGuestWeb.controller('guestDetailsController', dependencies);
 })();
 /*
@@ -1380,6 +1399,7 @@ $scope.responseData  = [];
 $scope.reservationData = checkinDetailsService.getResponseData();
 var url = '/guest_web/checkin.json';
 var data = {'reservation_id': $rootScope.reservationID};
+
 $rootScope.isCheckedin = true;
 $scope.responseData =response.data;
 $scope.responseData.delivery_message  = "Please conatct front desk";
@@ -1388,6 +1408,7 @@ var dependencies = [
 '$scope', '$rootScope', '$http', '$location', 'checkinDetailsService', 'checkinKeysService', '$state',
 checkInKeysController
 ];
+
 sntGuestWeb.controller('checkInKeysController', dependencies);
 })();
 
@@ -1409,6 +1430,7 @@ Precheckin final Ctrl where the pre checkin API is called
   'preCheckinSrv', '$state',
   preCheckinStatusController
   ];
+
   sntGuestWeb.controller('preCheckinStatusController', dependencies);
 })();
 
@@ -1460,6 +1482,7 @@ Precheckin final Ctrl where the pre checkin API is called
       var data        = {};
       var unwanted_keys     = ["month", "year", "day"];
       var newObject       = JSON.parse(JSON.stringify($scope.guestDetails));
+
             for(var i=0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
             };
@@ -1512,6 +1535,7 @@ Precheckin final Ctrl where the pre checkin API is called
       var d = parseInt(comp[1], 10);
       var y = parseInt(comp[2], 10);
       var date = new Date(y, m-1, d);
+
       if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
          return true
       } else {
@@ -1535,6 +1559,7 @@ Precheckin final Ctrl where the pre checkin API is called
         var birthDate = new Date(birthDateString);
         var age = today.getFullYear() - birthDate.getFullYear();
         var m = today.getMonth() - birthDate.getMonth();
+
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
@@ -1608,6 +1633,7 @@ sntGuestWeb.controller('birthDateDetailsController', dependencies);
    
     function validateEmail(email) {
       var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
       return re.test(email);
     };
 

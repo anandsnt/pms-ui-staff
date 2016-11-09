@@ -10,6 +10,7 @@ sntGuestWeb.controller('gwAutoCheckinController', ['$scope', '$controller', 'GwW
 		
 		var init = function() {
 			var screenIdentifier = "AUTO_CHECKIN_FINAL";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.isLoading = true;
 		}();
@@ -26,6 +27,7 @@ sntGuestWeb.controller('gwAutoCheckinController', ['$scope', '$controller', 'GwW
 			},
 			successCallBack: completeAutoCheckinSuccess,
 		};
+
 		$scope.callAPI(GwCheckinSrv.completeAutoCheckin, options);
 	}
 ]);

@@ -57,6 +57,7 @@ function ADBaseTableCtrl($scope, ngTableParams) {
     $scope.calculateGetParams = function(tableParams) {
 
         var getParams = {};
+
         getParams.per_page = $scope.displyCount;
         getParams.page = tableParams.page();
         if($scope.filterType !== null && typeof $scope.filterType !== "undefined") {
@@ -66,6 +67,7 @@ function ADBaseTableCtrl($scope, ngTableParams) {
         var sortData = tableParams.sorting();
 
         var sortField = Object.keys(sortData)[0];
+
         getParams.sort_field = sortField;
         getParams.sort_dir = sortData[sortField] === "desc"? false :true;
 

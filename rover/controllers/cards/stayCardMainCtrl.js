@@ -5,6 +5,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
 		var that = this;
+
 		if ($scope.guestCardData.cardHeaderImage === undefined || $scope.guestCardData.cardHeaderImage === "") {
 			$scope.guestCardData.cardHeaderImage = '/assets/images/avatar-trans.png';
 		}
@@ -73,6 +74,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					'guestId': null,
 					'vip': data.vip
 				};
+
 				$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
 				$scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
 				$scope.guestCardData.contactInfo.vip = contactInfoData.vip;
@@ -84,6 +86,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					"user_id": contactInfoData.userId,
 					"guest_id": null
 				};
+
 				$scope.searchData.guestCard.guestFirstName = "";
 				$scope.searchData.guestCard.guestLastName = "";
 				$scope.searchData.guestCard.guestCity = "";
@@ -105,6 +108,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 						"works_at", "birthday"
 					];
 					var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
+
 					return declonedData;
 				};
 
@@ -113,6 +117,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				 */
 				var declonedData = $scope.decloneUnwantedKeysFromContactInfo();
 				var currentGuestCardHeaderData = declonedData;
+
 				$scope.$broadcast("resetGuestTab");
 				// CICO-16013 - fixing multiple API calls on staycard loading
 
@@ -127,6 +132,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				var param = {
 					'id': guestData.id || $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id
 				};
+
 				$scope.invokeApi(RVReservationCardSrv.getGuestDetails, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
 			}
 		};
@@ -208,6 +214,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.$emit('hideLoader');
 				var roomData = $scope.reservationData.rooms[0]; // Accessing from staycard -> ONLY one room/reservation!
 				// Reset addons package
+
 				roomData.addons = [];
 				angular.forEach(response.existing_packages, function(addon) {
 					roomData.addons.push({
@@ -232,6 +239,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		$scope.initGroupCard = function(groupId) {
 			var promises = [];
 			//we are not using our normal API calling since we have multiple API calls needed
+
 			$scope.$emit('showLoader');
 
 			$scope.groupConfigData = {
@@ -242,6 +250,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			var paramsForGroupDetails = {
 				groupId: groupId
 			};
+
 			promises.push(rvGroupConfigurationSrv
 				.getGroupSummary(paramsForGroupDetails)
 				.then(successCallbackOfGroupDetailsFetch)
@@ -251,6 +260,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			var paramsForHoldListFetch = {
 				is_group: true
 			};
+
 			promises.push(rvGroupConfigurationSrv
 				.getHoldStatusList(paramsForHoldListFetch)
 				.then(successCallBackOfGroupHoldListFetch)
@@ -303,10 +313,12 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			};
 			//	companycard defaults to search mode
 			// 	Hence, do API call only if a company card ID is returned
+
 			if ($scope.reservationDetails.companyCard.id !== '' && $scope.reservationDetails.companyCard.id !== null) {
 				var param = {
 					'id': $scope.reservationDetails.companyCard.id
 				};
+
 				$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, companyCardFound);
 			}
 		};
@@ -325,10 +337,12 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			};
 			//	TAcard defaults to search mode
 			// 	Hence, do API call only if a company card ID is returned
+
 			if ($scope.reservationDetails.travelAgent.id !== '' && $scope.reservationDetails.travelAgent.id !== null) {
 				var param = {
 					'id': $scope.reservationDetails.travelAgent.id
 				};
+
 				$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, successCallbackOfInitialFetch);
 			}
 		};
@@ -485,6 +499,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 						var data = {
 							errorMessages: error.errorMessage
 						};
+
 						ngDialog.open({
 							template: '/assets/partials/cards/popups/detachCardsAPIErrorPopup.html',
 							className: 'ngdialog-theme-default stay-card-alerts',
@@ -514,12 +529,14 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			var callRemoveCardsAPIforAllReservations = function(reservationData, card, cardId) {
 				var promises = [];
 				// Loop through the reservation ids and call the cancel API for each of them
+
 				_.each(reservationData.reservationIds, function(reservationId) {
 					var params = {
 						'reservation': reservationId,
 						'cardType': card,
 						'cardId': cardId
 					};
+
 					promises.push(RVCompanyCardSrv.removeCard(params)
 						.then(onRemoveEachCardSuccessCallBack));
 				});
@@ -532,6 +549,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					'cardType': card,
 					'cardId': cardId
 				};
+
 				$scope.invokeApi(RVCompanyCardSrv.removeCard,
 					params,
 					onRemoveCardSuccessCallBack,
@@ -543,6 +561,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					totalCardsAttached = _.filter($scope.reservationDetails, function(card) {
 						return !!card.id;
 					}).length;
+
 				removedCard = card;
 				//Cannot Remove the last card... Tell user not to select another card
 				if (totalCardsAttached > 1 && card !== "") {
@@ -605,6 +624,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			};
 
 			var params = {};
+
 			params.account_id = $scope.contractRoutingType === 'TRAVEL_AGENT' ? $scope.reservationData.travelAgent.id : $scope.reservationData.company.id;
 			params.reservation_ids = [];
 			params.reservation_ids.push($scope.reservationData.reservationId);
@@ -677,6 +697,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			};
 
 			var params = {};
+
 			params.reservation_id = $scope.reservationData.reservationId;
 
 			if (card === 'travel_agent') {
@@ -742,6 +763,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 			if (future && $scope.reservationData && $scope.reservationData.reservationIds && $scope.reservationData.reservationIds.length > 1) {
 				var promises = []; // Use this array to push the promises returned for every call
+
 				$scope.$emit('showLoader');
 				// Loop through the reservation ids and call the cancel API for each of them
 				_.each($scope.reservationData.reservationIds, function(reservationId) {
@@ -887,6 +909,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					"user_id": userId,
 					"guest_id": guestId
 				};
+
 				$scope.$emit('GUESTPAYMENTDATA', paymentData);
 				$scope.$emit('SHOWGUESTLIKES');
 			};
@@ -938,6 +961,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 		$scope.populateDatafromDiary = function(roomsArray, tData, saveReservation) {
 			var roomTypes = [];
+
 			this.rooms = [];
 
 			angular.forEach(tData.rooms, function(value) {
@@ -953,6 +977,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				var roomsOfType = _.filter(tData.rooms, function(room) {
 					return parseInt(room.roomTypeId, 10) === parseInt(tab.roomTypeId, 10)
 				});
+
 				tab.roomCount = roomsOfType.length;
 				$scope.reservationData.rooms = $scope.reservationData.rooms.concat(roomsOfType);
 			});
@@ -983,6 +1008,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			}
 
 			var departureTimeSplit = tData.departure_time.split(":");
+
 			$scope.reservationData.checkoutTime.hh = departureTimeSplit[0];
 			$scope.reservationData.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
 
@@ -1046,10 +1072,12 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			this.totalStayCost = 0;
 			var rateIdSet = [];
 			var self = this;
+
 			angular.forEach($scope.reservationData.rooms, function(room) {
 				var refData = _.findWhere(tData.rooms, {
 					roomNumber: room.roomNumber
 				});
+
 				room.stayDates = {};
 				rateIdSet.push(refData.rateId);
 				room.numAdults = refData.numAdults;
@@ -1141,6 +1169,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					}
 				};
 				var roomAmount = parseFloat(room.roomAmount).toFixed(2);
+
 				$scope.invokeApi(RVReservationSummarySrv.getRateDetails, {
 					id: room.rateId
 				}, success);

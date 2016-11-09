@@ -99,6 +99,7 @@ sntZestStation.controller('zsHomeCtrl', [
 				}
 				
 			};
+
 			$scope.activityTimer = setInterval(incrementHomeScreenTimer, 1000);
 		};
 
@@ -134,6 +135,7 @@ sntZestStation.controller('zsHomeCtrl', [
 			$scope.$emit('HOME_ACTIVITY');
 			var languageConfig = zsGeneralSrv.languageValueMappingsForUI[language.name],
 				langShortCode = languageConfig.code;
+
 			$translate.use(langShortCode);
 			$scope.selectedLanguage = language;
 		};
@@ -161,6 +163,7 @@ sntZestStation.controller('zsHomeCtrl', [
 				}),
 				nullList = combinedList[0],
 				listHavingValues = combinedList[1];
+
 			$scope.languages = _.sortBy(listHavingValues, 'position').concat(nullList);
 
 			$scope.languages = $scope.languages.map(function(language) {
@@ -178,12 +181,14 @@ sntZestStation.controller('zsHomeCtrl', [
 				var activeLanguage = _.findWhere($scope.languages, {
 					code: $translate.use()
 				});
+
 				$scope.selectedLanguage = activeLanguage;
 			}
 
 			$scope.resetHomeScreenTimer();
 			if ($scope.zestStationData.workstationStatus === 'out-of-order') {
 				var params = {};
+
 				params.reason = $scope.zestStationData.workstationOooReason;
 				params.status = 'out-of-order';
 				$scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, params);

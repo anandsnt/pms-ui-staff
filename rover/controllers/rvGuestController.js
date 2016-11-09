@@ -31,6 +31,7 @@ angular.module('sntRover').controller('guestCardController', [
 			if (!$scope.reservationData.isSameCard || !$scope.otherData.reservationCreated) {
 				// open search list card if any of the search fields are entered on main screen
 				var searchData = $scope.reservationData;
+
 				if ($scope.searchData.guestCard.guestFirstName !== '' || $scope.searchData.guestCard.guestLastName !== '' ||
 					searchData.company.id !== null || searchData.travelAgent.id !== null || !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
 					// based on search values from base screen
@@ -209,6 +210,7 @@ angular.module('sntRover').controller('guestCardController', [
 		 */
 		$scope.shouldDisableCompanyCardDetachButton = function() {
 			var isGroupReservation = !!$scope.reservationDetails.group.id;
+
 			return (isGroupReservation);
 		};
 
@@ -217,6 +219,7 @@ angular.module('sntRover').controller('guestCardController', [
 		 */
 		$scope.shouldDisableTACardDetachButton = function() {
 			var isGroupReservation = !!$scope.reservationDetails.group.id;
+
 			return (isGroupReservation);
 		};
 
@@ -274,6 +277,7 @@ angular.module('sntRover').controller('guestCardController', [
 				"works_at", "birthday", "avatar"
 			];
 			var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
+
 			return declonedData;
 		};
 
@@ -282,6 +286,7 @@ angular.module('sntRover').controller('guestCardController', [
 		 */
 		var declonedData = $scope.decloneUnwantedKeysFromContactInfo();
 		var currentGuestCardHeaderData = declonedData;
+
 		$scope.current = 'guest-contact';
 
 		/**
@@ -329,6 +334,7 @@ angular.module('sntRover').controller('guestCardController', [
 
 		$scope.updateContactInfo = function() {
 			var that = this;
+
 			that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 			var saveUserInfoSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -346,6 +352,7 @@ angular.module('sntRover').controller('guestCardController', [
 					'data': currentGuestCardHeaderData,
 					'userId': $scope.guestCardData.contactInfo.user_id
 				};
+
 				if (typeof data.userId !== 'undefined') {
 					$scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback);
 				}
@@ -363,6 +370,7 @@ angular.module('sntRover').controller('guestCardController', [
 		function getParentWithSelector($event, selector) {
 			var obj = $event.target,
 				matched = false;
+
 			return selector.contains(obj);
 		};
 
@@ -370,6 +378,7 @@ angular.module('sntRover').controller('guestCardController', [
 			$rootScope.$emit('clearErroMessages');
 			$scope.$broadcast('clearNotifications');
 			var element = $event.target;
+
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
 			//if the main menu is open close the same
@@ -387,6 +396,7 @@ angular.module('sntRover').controller('guestCardController', [
 					}
 				}
 				var currentHeight = $scope.guestCardHeight;
+
 				if (currentHeight === resizableMinHeight || currentHeight === resizableMaxHeight) {
 					// open a closed card
 					if (!$scope.guestCardVisible) {
@@ -441,6 +451,7 @@ angular.module('sntRover').controller('guestCardController', [
 			// based on from (guest-card, company-card || travel-agent-card)
 			// evaluate UICards return className(s) as string
 			var cls = '';
+
 			if (from !== $scope.UICards[0]) {
 				cls = "change-card " + subCls[$scope.UICards.indexOf(from)];
 			} else {
@@ -452,6 +463,7 @@ angular.module('sntRover').controller('guestCardController', [
 		$scope.UICardContentCls = function(from) {
 			// evaluate UICards return card conten className(s) as string
 			var cls = '';
+
 			if (from !== $scope.UICards[0]) {
 				cls = "hidden";
 			} else {
@@ -463,6 +475,7 @@ angular.module('sntRover').controller('guestCardController', [
 		$scope.cardCls = function() {
 			// evaluate
 			var cls = $scope.UICards[0]; //  current active card
+
 			if (cls === 'group-card') {
 				if (!!$scope.reservationData.allotment.id) {
 					cls = 'allotment-card';
@@ -491,6 +504,7 @@ angular.module('sntRover').controller('guestCardController', [
 			//  swap UICards array for guest-card, company-card & travel-agent-card
 			var newCardIndex = $scope.UICards.indexOf(from);
 			var currentCard = $scope.UICards[0];
+
 			$scope.UICards[0] = from;
 			$scope.UICards[newCardIndex] = currentCard;
 			if ($scope.UICards[0] === 'company-card' || $scope.UICards[0] === 'travel-agent-card') {
@@ -686,6 +700,7 @@ angular.module('sntRover').controller('guestCardController', [
 					cardType: "company",
 					cardId: $scope.reservationDetails.companyCard.id
 				}
+
 				showDetachCardsAPIWarningPopup(dataForPopup);
 			}
 		};
@@ -708,6 +723,7 @@ angular.module('sntRover').controller('guestCardController', [
 					cardType: "travel_agent",
 					cardId: $scope.reservationDetails.travelAgent.id
 				}
+
 				showDetachCardsAPIWarningPopup(dataForPopup);
 			}
 		};
@@ -723,6 +739,7 @@ angular.module('sntRover').controller('guestCardController', [
 					cardType: "guest",
 					cardId: $scope.reservationDetails.guestCard.id
 				}
+
 				ngDialog.open({
 					template: '/assets/partials/cards/alerts/detachCard.html',
 					className: 'ngdialog-theme-default stay-card-alerts',
@@ -767,6 +784,7 @@ angular.module('sntRover').controller('guestCardController', [
 				if (data.results.length > 0) {
 					angular.forEach(data.results, function(item) {
 						var guestData = {};
+
 						guestData.id = item.id;
 						guestData.firstName = item.first_name;
 						guestData.lastName = item.last_name;
@@ -790,6 +808,7 @@ angular.module('sntRover').controller('guestCardController', [
 				}
 				$scope.$broadcast('guestSearchInitiated');
 			};
+
 			if ($scope.searchData.guestCard.guestFirstName !== '' || $scope.searchData.guestCard.guestLastName !== '' || $scope.searchData.guestCard.guestCity !== '' || $scope.searchData.guestCard.guestLoyaltyNumber !== '' || $scope.searchData.guestCard.email !== '') {
 				var paramDict = {
 					'first_name': $scope.searchData.guestCard.guestFirstName,
@@ -798,6 +817,7 @@ angular.module('sntRover').controller('guestCardController', [
 					'membership_no': $scope.searchData.guestCard.guestLoyaltyNumber,
 					'email': $scope.searchData.guestCard.email
 				};
+
 				if (shouldSearch()) {
 					$scope.invokeApi(RVReservationAllCardsSrv.fetchGuests, paramDict, successCallBackFetchGuest);
 				}
@@ -883,6 +903,7 @@ angular.module('sntRover').controller('guestCardController', [
 					angular.forEach(data.accounts, function(item) {
 						if (item.account_type === 'COMPANY') {
 							var companyData = {};
+
 							companyData.id = item.id;
 							companyData.account_name = item.account_name;
 
@@ -934,6 +955,7 @@ angular.module('sntRover').controller('guestCardController', [
 				}
 				$scope.$broadcast('companySearchInitiated');
 			};
+
 			if ($scope.searchData.companyCard.companyName !== '' || $scope.searchData.companyCard.companyCity !== '' || $scope.searchData.companyCard.companyCorpId !== '') {
 				var paramDict = {
 					'name': $scope.searchData.companyCard.companyName,
@@ -942,6 +964,7 @@ angular.module('sntRover').controller('guestCardController', [
 					'from_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
 					'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
 				};
+
 				$scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
 			} else {
 				$scope.companySearchIntiated = false;
@@ -960,6 +983,7 @@ angular.module('sntRover').controller('guestCardController', [
 					angular.forEach(data.accounts, function(item) {
 						if (item.account_type === 'TRAVELAGENT') {
 							var travelAgentData = {};
+
 							travelAgentData.id = item.id;
 							travelAgentData.account_name = item.account_name;
 							/*Account address*/
@@ -1009,6 +1033,7 @@ angular.module('sntRover').controller('guestCardController', [
 				}
 				$scope.$broadcast('travelAgentSearchInitiated');
 			};
+
 			if ($scope.searchData.travelAgentCard.travelAgentName !== '' || $scope.searchData.travelAgentCard.travelAgentCity !== '' || $scope.searchData.travelAgentCard.travelAgentIATA !== '') {
 				var paramDict = {
 					'name': $scope.searchData.travelAgentCard.travelAgentName,
@@ -1017,6 +1042,7 @@ angular.module('sntRover').controller('guestCardController', [
 					'from_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
 					'to_date': ($scope.viewState.identifier === "CREATION" || $scope.viewState.identifier === "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
 				};
+
 				$scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
 			} else {
 				$scope.searchedtravelAgents = [];
@@ -1034,6 +1060,7 @@ angular.module('sntRover').controller('guestCardController', [
 
 			if (!$scope.isHourly) {
 				var templateUrl = '/assets/partials/cards/alerts/futureReservationsAccounts.html';
+
 				if (cardType === 'guest') {
 					templateUrl = '/assets/partials/cards/alerts/futureReservationsGuest.html';
 				}
@@ -1604,6 +1631,7 @@ angular.module('sntRover').controller('guestCardController', [
 			});
 		};
 		// To keep existing rate and proceed.
+
 		$scope.selectCard = function(cardData, chooseCardRate) {
 			if (cardData.account_type === 'COMPANY') {
 				$scope.selectCompany(cardData, chooseCardRate);
@@ -1771,6 +1799,7 @@ angular.module('sntRover').controller('guestCardController', [
 				"guest_id": ""
 			};
 			// Retain Search Keys
+
 			$scope.guestCardData.contactInfo.first_name = $scope.searchData.guestCard.guestFirstName;
 			$scope.guestCardData.contactInfo.last_name = $scope.searchData.guestCard.guestLastName;
 			$scope.guestCardData.contactInfo.email = $scope.searchData.guestCard.email;

@@ -48,6 +48,7 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
 			$scope.sntProducts = data;
 			
 		};
+
 		$scope.invokeApi(ADContentManagementSrv.fetchSntProducts, {}, fetchSntProductsSuccessCallback);
 	};
 
@@ -59,6 +60,7 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
 			$scope.data = data;
 			$scope.initialIcon = $scope.data.icon;
 		};
+
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id, fetchSectionSuccessCallback);
 	};
 
@@ -77,10 +79,12 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
 			$scope.goBack();
 		};
 		var unwantedKeys = ["image"];
+
 		if($scope.initialIcon === $scope.data.icon) {
 			unwantedKeys = ["icon", "image"];
 		}
 		var data = dclone($scope.data, unwantedKeys);
+
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, data, saveSectionSuccessCallback);
 	};
 
@@ -100,6 +104,7 @@ admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'n
 			});
 			$scope.componentIdToDelete = id;
 		};
+
 		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id': id}, successCallbackFetchDeleteDetails);
 
 	};

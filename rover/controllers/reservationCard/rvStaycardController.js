@@ -7,6 +7,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 		// So we have the following throtel to easy the pain by display:none; staycard while browser updates the UI
 		// Show after a delay which is slightly greater that @uiViewDuration + @uiViewDelay (/assets/stylesheets/less/common/01-D_mixins-animations.less)
 		var delay = 700;
+
 		$scope.staycardReady = false;
 		$timeout(function() { $scope.staycardReady = true; }, delay);
 
@@ -73,6 +74,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                                 reservation_no: reservation_no,
                                 fullname: fullname
                             };
+
                                 $rootScope.viaSharerName = fullname;
                                 $rootScope.$broadcast('LOAD_SHARED_RESERVATION', data);
                         }, 200);

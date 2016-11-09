@@ -7,6 +7,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
      */
 
     var that = this;
+
     BaseCtrl.call(this, $scope);
     $scope.shouldShowLateCheckout = true;
     $scope.shouldShowQueuedRooms = true;
@@ -98,6 +99,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     $scope.setScroller('result_showing_area', scrollerOptions);
     var totalNgIncludeRequested = 0;
     //click function on search area, mainly for closing the drawer
+
     $scope.clickedOnSearchArea = function($event) {
       $scope.$emit("closeDrawer");
     };

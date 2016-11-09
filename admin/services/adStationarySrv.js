@@ -22,6 +22,7 @@ admin.service('ADStationarySrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 	this.saveStationary = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/stationary/save?locale=' + data.locale;
+
         delete data["locale"];
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {

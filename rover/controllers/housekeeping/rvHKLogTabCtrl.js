@@ -121,6 +121,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 
 	    $scope.isNextButtonDisabled = function() {
 	        var isDisabled = false;
+
 	        if ($scope.end >= $scope.totalResults) {
 	            isDisabled = true;
 	        }
@@ -129,6 +130,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 
 	    $scope.isPrevButtonDisabled = function() {
 	        var isDisabled = false;
+
 	        if ($scope.page === 1) {
 	            isDisabled = true;
 	        }
@@ -140,6 +142,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 
 
 	    var unSubscrbeOpenLog = $scope.$on('OPEN_LOG', $scope.updateLog);
+
 	    $scope.$on('$destroy', unSubscrbeOpenLog);
 	}
 

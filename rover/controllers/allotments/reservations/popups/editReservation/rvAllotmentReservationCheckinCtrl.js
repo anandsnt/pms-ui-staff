@@ -37,6 +37,7 @@ sntRover.controller('rvAllotmentReservationCheckinCtrl', [
           successCallBack: completeCheckinSuccessCallback,
           failureCallBack: completeCheckinFailureCallback
         };
+
         $scope.callAPI(rvAllotmentReservationsListSrv.performMassCheckin, options);
       };
     }]);

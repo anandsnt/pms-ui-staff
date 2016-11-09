@@ -3,6 +3,7 @@ sntRover.controller('RVEndOfDayController', ['$scope', 'ngDialog', '$rootScope',
     BaseCtrl.call(this, $scope);
     var init =function() {    	
     };
+
     $scope.hasPermissionToRunEOD = function() {
 		return (rvPermissionSrv.getPermissionValue("OVERRIDE_BUSINESS_DATE_CHANGE"));
 	};

@@ -21,6 +21,7 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
 
                 _.each($scope.availabilityData, function(dailyStat) {
                     var dayAvailabilityToDisplay;
+
                     if ($scope.ngDialogData.activeView === 'HOUSE') {
                         dayAvailabilityToDisplay = dailyStat.house.availability
                     } else {
@@ -38,6 +39,7 @@ sntRover.controller('overbookingAlertCtrl', ['$scope',
                         })(),
                         className: (function() {
                             var classes = "";
+
                             if (dailyStat.date === arrivalDateString) {
                                 classes += 'check-in ';
                             } else if (dailyStat.date === departureDateString) {

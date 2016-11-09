@@ -31,6 +31,7 @@ sntRover.controller('RVPaymentGuestCtrl', ['$rootScope', '$scope', '$state', 'RV
 				};
 				var paymentData = $scope.paymentData;
 				// NOTE : As of now only guest cards can be added as payment types and associated with a guest card
+
 				paymentData.paymentTypes = [creditCardPaymentTypeObj];
 				$scope.openPaymentDialogModal(passData, paymentData);
 			}
@@ -50,6 +51,7 @@ sntRover.controller('RVPaymentGuestCtrl', ['$rootScope', '$scope', '$state', 'RV
 	          });
   	 };
   	 var scrollerOptions = {preventDefault: false};
+
   	$scope.setScroller('paymentList', scrollerOptions);
   	$scope.$on("$viewContentLoaded", function() {
 		$scope.refreshScroller('paymentList');

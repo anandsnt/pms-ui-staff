@@ -6,6 +6,7 @@ admin.service('ADHoldStatusSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 	this.fetch = function() {
 		var deferred = $q.defer();
 		var url = '/api/group_hold_statuses';
+
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -21,6 +22,7 @@ admin.service('ADHoldStatusSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 	this.saveHoldStatus = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/group_hold_statuses';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -36,6 +38,7 @@ admin.service('ADHoldStatusSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 	this.updateHoldStatus = function(data) {
 		var deferred = $q.defer();
 		var url = ' /api/group_hold_statuses/'+data.id;
+
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -51,6 +54,7 @@ admin.service('ADHoldStatusSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 	this.deleteHoldStatus = function(id) {
 		var deferred = $q.defer();
 		var url ='/api/group_hold_statuses/'+id;
+
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

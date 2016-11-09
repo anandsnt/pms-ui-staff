@@ -40,6 +40,7 @@ angular.module('groupModule', [])
                             'per_page': rvGroupSrv.DEFAULT_PER_PAGE,
                             'page': rvGroupSrv.DEFAULT_PAGE
                         }
+
                         return rvGroupSrv.getGroupList(params);
                     }
                 ]
@@ -73,12 +74,14 @@ angular.module('groupModule', [])
                     var params = {
                         groupId: $stateParams.id
                     };
+
                     return rvGroupConfigurationSrv.getGroupSummary (params);
                 },
                 holdStatusList: function (rvGroupConfigurationSrv, groupAssets) {
                     var params = {
                         is_group: true
                     }
+
                     return rvGroupConfigurationSrv.getHoldStatusList (params);
                 }
             }

@@ -3,6 +3,7 @@ sntRover.controller('rvDashboardRoomsWidgetController', ['$scope', 'RVSearchSrv'
 	* controller class for dashbaord's rooms area
 	*/
 	var that = this;
+
   	BaseCtrl.call(this, $scope);
 
     this.clickedType = '';

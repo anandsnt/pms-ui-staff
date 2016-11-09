@@ -12,6 +12,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
             $scope.data.filterData.departments = data.departments;
             $scope.$emit('hideLoader');
         };
+
         $scope.invokeApi(RVJournalSrv.fetchDepartments, {}, successCallBackFetchDepartment);
     };
 
@@ -37,6 +38,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
             "employee_ids": $scope.data.selectedEmployeeList,
             "department_ids": $scope.data.selectedDepartmentList
         };
+
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
     };
 
@@ -90,6 +92,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
                 "employee_ids": $scope.data.selectedEmployeeList,
                 "department_ids": $scope.data.selectedDepartmentList
             };
+
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
         }
         else{
@@ -137,6 +140,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
                 "page_no": chargeCodeItem.page_no,
                 "per_page": $scope.data.filterData.perPage
             };
+
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByTransactions, postData, successCallBackFetchRevenueDataTransactions);
         }
         else {
@@ -156,6 +160,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     $scope.checkHasArrowFirstLevel = function(index) {
         var hasArrow = false;
         var item = $scope.data.revenueData.charge_groups[index].charge_codes;
+
         if((typeof item !== 'undefined') && (item.length >0)) {
             hasArrow = true;
         }
@@ -166,6 +171,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     $scope.checkHasArrowSecondLevel = function(index1, index2) {
         var hasArrow = false;
         var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions;
+
         if((typeof item !== 'undefined') && (item.length >0)) {
             hasArrow = true;
         }
@@ -184,6 +190,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     // Logic for pagination starts here ..
     $scope.loadNextSet = function(index1, index2) {
         var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
+
         item.page_no ++;
         item.nextAction = true;
         item.prevAction = false;
@@ -193,6 +200,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     $scope.loadPrevSet = function(index1, index2) {
 
         var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
+
         item.page_no --;
         item.nextAction = false;
         item.prevAction = true;

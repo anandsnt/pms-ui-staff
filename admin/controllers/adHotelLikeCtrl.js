@@ -25,6 +25,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
      $scope.$emit('hideLoader');
      $scope.likeList = data;
    };
+
    $scope.invokeApi(ADHotelLikesSrv.fetch, {}, fetchHotelLikesSuccessCallback);
  };
 
@@ -57,8 +58,10 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 	    $scope.fetchHotelLikes();
 
 	  };
+
 	  $scope.likeList.likes[index].is_active = ($scope.likeList.likes[index].is_active ==='true') ? 'false':'true';
 	  var data = {'id': $scope.likeList.likes[index].id, 'set_active': $scope.likeList.likes[index].is_active};
+
 	  $scope.invokeApi(ADHotelLikesSrv.toggleSwitch, data, toggleSwitchLikesSuccessCallback);
 	};
 
@@ -106,6 +109,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
       $scope.likeData.news_papers.splice(index, 1);
      };
     var editID = id;
+
     $scope.invokeApi(ADHotelLikesSrv.deleteChecbox, editID, checkBoxDeleteCallback);
 
 
@@ -152,6 +156,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 
       $scope.likeData.newfeature = "";
     };
+
     $scope.invokeApi(ADHotelLikesSrv.edit, editID, editLikeSuccessCallback);
   }
 };
@@ -328,6 +333,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
           $scope.fetchHotelLikes();
 
         };
+
         $scope.invokeApi(ADHotelLikesSrv.addNewFeature, $scope.likeData, newLikesSuccessCallback);
       }
       else{
@@ -338,6 +344,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
         $scope.fetchHotelLikes();
 
       };
+
       $scope.invokeApi(ADHotelLikesSrv.update, $scope.likeData, updateLikesSuccessCallback);
     }
 
@@ -356,6 +363,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
       }
 
       var data = {'custom_likes': $scope.likeData.news_papers, 'id': $scope.likeData.id};
+
       delete $scope.likeData.newfeature;
 
       var saveCustomLikesSuccessCallback = function(data) {
@@ -363,6 +371,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
         $scope.fetchHotelLikes();
 
       };
+
       $scope.invokeApi(ADHotelLikesSrv.customLikeSave, data, saveCustomLikesSuccessCallback);
 
     };

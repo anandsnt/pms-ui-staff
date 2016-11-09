@@ -9,6 +9,7 @@ var DailyProductionLeftSide = React.createClass({
       useTransition: true,
       interactiveScrollbars: true
     });
+
     setTimeout(function() {
       scroll.refresh();
     }, 150);
@@ -16,6 +17,7 @@ var DailyProductionLeftSide = React.createClass({
 
   componentDidUpdate: function() {
     var scroll = this.props.scroll.left;
+
     setTimeout(function() {
       scroll.refresh();
     }, 150);

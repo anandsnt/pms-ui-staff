@@ -19,6 +19,7 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
         $scope.data = data;
 
   };
+
   $scope.emailDatas =[];
   $scope.invokeApi(adAnalyticSetupSrv.fetchSetup, {}, fetchAnalyticSetupSuccessCallback);
 

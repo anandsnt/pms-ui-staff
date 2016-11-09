@@ -28,6 +28,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
     this.fetchAvailPayments = function(data) {
 		var deferred = $q.defer();
 		var url = '/staff/payments/addNewPayment.json';
+
 		RVBaseWebSrv.getJSON(url, data).then(function(data) {
 			    deferred.resolve(data);
 			}, function(data) {
@@ -38,6 +39,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 	this.savePaymentDetails = function(data) {
 		var deferred = $q.defer();
 		var url = 'staff/reservation/save_payment';
+
 		RVBaseWebSrv.postJSON(url, data).then(function(data) {
 			    deferred.resolve(data);
 			}, function(data) {
@@ -48,6 +50,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 	this.saveGuestPaymentDetails = function(data) {
 		var deferred = $q.defer();
 		var url = 'staff/payments/save_new_payment';
+
 		RVBaseWebSrv.postJSON(url, data).then(function(data) {
 			    deferred.resolve(data);
 			}, function(data) {
@@ -59,6 +62,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 		var deferred = $q.defer();
 
 		var url = '/staff/payments/setCreditAsPrimary';
+
 		RVBaseWebSrv.postJSON(url, data).then(function(data) {
 			    deferred.resolve(data);
 			}, function(data) {
@@ -69,6 +73,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 	this.deletePayment = function(data) {
 		var deferred = $q.defer();
 		var url = '/staff/payments/deleteCreditCard';
+
 		RVBaseWebSrv.postJSON(url, data).then(function(data) {
 			    deferred.resolve(data);
 			}, function(data) {
@@ -79,6 +84,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 	this.getPaymentList = function(reservationId) {
 		var deferred = $q.defer();
 		var url = '/staff/staycards/get_credit_cards.json?reservation_id='+reservationId;
+
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 			    deferred.resolve(data);
 			}, function(data) {
@@ -90,6 +96,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 		var deferred = $q.defer();
 
 		var url = '/staff/reservation/link_payment';
+
 		RVBaseWebSrv.postJSON(url, data).then(function(data) {
 			    deferred.resolve(data);
 			}, function(data) {
@@ -115,6 +122,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 			//the timeout set for the hotel
 			if(timeStampInSeconds >= $rootScope.emvTimeout) {
 				var errors = ["Request timed out. Unable to process the transaction"];
+
 				deferred.reject(errors);
 			}
 			else{
@@ -169,6 +177,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 	this.makePaymentOnDepositBalance = function(dataToApiToDoPayment) {
 		var deferred = $q.defer();
 		var url = 'staff/reservation/post_payment';
+
 		RVBaseWebSrv.postJSON(url, dataToApiToDoPayment).then(function(data) {
 			    deferred.resolve(data);
 			}, function(data) {
@@ -191,6 +200,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 			//the timeout set for the hotel
 			if(timeStampInSeconds >= $rootScope.emvTimeout) {
 				var errors = ["Request timed out. Unable to process the transaction"];
+
 				deferred.reject(errors);
 			}
 			else{

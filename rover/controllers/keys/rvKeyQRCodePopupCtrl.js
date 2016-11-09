@@ -3,6 +3,7 @@ sntRover.controller('RVKeyQRCodePopupController', [ '$rootScope', '$scope', '$st
 	// Set up data for view
 	var setupData = function() {
 		var reservationStatus = "";
+
 		if($scope.fromView === "checkin") {
 			reservationStatus = $scope.reservationBillData.reservation_status;
 		} else {
@@ -25,6 +26,7 @@ sntRover.controller('RVKeyQRCodePopupController', [ '$rootScope', '$scope', '$st
 			$scope.data.colorCodeClassForClose = 'red';
 		}
 	};
+
 	setupData();
 
 	// To handle close button click

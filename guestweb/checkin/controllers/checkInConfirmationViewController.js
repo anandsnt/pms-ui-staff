@@ -11,6 +11,7 @@
 
 		$scope.pageValid = false;
 		var dateToSend = '';
+
 		if ($rootScope.isCheckedin) {
 			$state.go('checkinSuccess');
 		} else {
@@ -58,6 +59,7 @@
 					'reservation_id': $rootScope.reservationID,
 					'bypass_verification': true
 				};
+
 				checkinConfirmationService.verifyCheckinReservation(data).then(function(response) {
 					if (response.status === 'failure') {
 						$rootScope.netWorkError = true;
@@ -81,6 +83,7 @@
 					'credit_card': $scope.cardDigits,
 					'reservation_id': $rootScope.reservationID
 				};
+
 				$scope.isPosting = true;
 
 				//call service
@@ -105,6 +108,7 @@
 
 			function loseFocus() {
 				var inputs = document.getElementsByTagName('input');
+
 				for (var i = 0; i < inputs.length; ++i) {
 					inputs[i].blur();
 				}

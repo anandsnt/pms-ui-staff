@@ -42,6 +42,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var correctHours = function(value) {
                 $scope.reservationData.resHours = value;
             };
+
             if (!isInteger($scope.reservationData.resHours) || $scope.reservationData.resHours && $scope.reservationData.resHours < $rootScope.minimumHourlyReservationPeriod) {
                 $timeout(correctHours.bind(null, $rootScope.minimumHourlyReservationPeriod), 100);
             };
@@ -52,9 +53,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var checkoutAmPm = $scope.reservationData.checkoutTime.ampm;
             var selectedHours = parseInt($scope.reservationData.resHours);
             //if selected hours is greater than a day
+
             if ((checkinHour + selectedHours) > 24) {
                 var extraHours = (checkinHour + selectedHours) % 24;
                 //if extra hours is greater than half a day
+
                 if (extraHours >= 12) {
                     $scope.reservationData.checkoutTime.hh = (extraHours === 12 || extraHours === 0) ? 12 : extraHours - 12;
                     $scope.reservationData.checkoutTime.ampm = (checkinAmPm === "AM") ? "PM" : "AM";
@@ -67,6 +70,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             //if selected hours is greater than half a day
             else if ((checkinHour + selectedHours) >= 12) {
                 var extraHours = (checkinHour + selectedHours) % 12;
+
                 $scope.reservationData.checkoutTime.hh = (extraHours === 0) ? 12 : extraHours;
                 $scope.reservationData.checkoutTime.ampm = ($scope.reservationData.checkinTime.ampm === "AM") ? "PM" : "AM";
             } else {
@@ -194,6 +198,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
          *   The number of '$parent' used is based on how deep this state is wrt 'rover.reservation' state
          */
         var rvReservationMainCtrl = $scope.$parent.$parent;
+
         rvReservationMainCtrl.callFromChildCtrl(baseData);
 
 
@@ -288,6 +293,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.setDepartureDate = function() {
             $scope.errorMessage = [];
             var dateOffset = $scope.reservationData.numNights;
+
             if (!isInteger(dateOffset) || $scope.reservationData.numNights === null || $scope.reservationData.numNights === '') {
                 dateOffset = 1;
                 $scope.reservationData.numNights = '';
@@ -298,6 +304,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.errorMessage = ["Maximum number of nights of " + RESV_LIMIT + " exceeded"]
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
+
             newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
             $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');
@@ -306,8 +313,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         $scope.setNumberOfNights = function() {
             var arrivalDate = tzIndependentDate($scope.reservationData.arrivalDate);
+
             arrivalDay = arrivalDate.getDate();
             var departureDate = tzIndependentDate($scope.reservationData.departureDate);
+
             departureDay = departureDate.getDate();
             var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 
@@ -457,6 +466,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.alertOverbooking = function(close) {
             var tabIndex = 0,
                 timer = 0;
+
             if (close) {
                 $scope.closeDialog();
                 timer = 1000
@@ -464,6 +474,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $timeout(function() {
                 for (; tabIndex < $scope.reservationData.tabs.length; tabIndex++) {
                     var tab = $scope.reservationData.tabs[tabIndex];
+
                     if ((!tab.overbookingStatus.room || !tab.overbookingStatus.house) && !tab.overbookingStatus.alerted) {
                         tab.overbookingStatus.alerted = true;
                         ngDialog.open({
@@ -496,6 +507,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     roomtypesAvailable = _($scope.reservationData.tabs.length).times(function(n) {
                         return true
                     });
+
                 _.each(availability, function(dailyStat) {
                     houseAvailable = houseAvailable && (dailyStat.house.availability > 0);
                     _.each($scope.reservationData.tabs, function(tab, tabIndex) {
@@ -723,6 +735,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var dateObj = tzIndependentDate(fromDate),
                 dateString = $filter('date')(dateObj, 'yyyy-MM-dd'),
                 dateParts = dateString.match(/(\d+)/g);
+
             return new Date(dateParts[0], parseInt(dateParts[1]) - 1, parseInt(dateParts[2], 10) + RESV_LIMIT);
         };
 
@@ -796,6 +809,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         var codeACSourceHandler = function(request, response) {
             var codeResults = [],
                 lastSearchText = '';
+
             if (request.term.length === 0) {
                 codeResults = [];
                 lastSearchText = "";
@@ -959,6 +973,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 currentRoomCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
                 roomType = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10) || "",
                 i;
+
             $scope.reservationData.tabs[tabIndex].roomTypeId = roomType;
             for (i = 0; i < tabIndex; i++) {
                 index += parseInt($scope.reservationData.tabs[i].roomCount, 10);
@@ -977,6 +992,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     roomTypeId: currentRoomTypeId
                 }))),
                 i;
+
             for (i = firstIndex; i <= lastIndex; i++) {
                 // Ensure that the adults and children dont go to zero at the same time
                 if (type == 'numChildren' && $scope.reservationData.tabs[tabIndex]['numChildren'] == 0 && $scope.reservationData.tabs[tabIndex]['numAdults'] == 0) {
@@ -992,6 +1008,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         $scope.isRoomTypeSelected = function(tabIndex, roomTypeId) {
             var chosen = false;
+
             _.each($scope.reservationData.tabs, function(tabData, index) {
                 if (parseInt(tabData.roomTypeId, 10) === roomTypeId && tabIndex != index) {
                     chosen = true;

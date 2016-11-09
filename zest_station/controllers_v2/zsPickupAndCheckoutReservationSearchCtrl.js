@@ -60,6 +60,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 			$scope.focusInputField("last-name");
 			//debugWithReservation();//debugging, comment out before deploying
 		};
+
 		init();
 
 		$scope.alreadyCheckedOutActions = function() {
@@ -101,6 +102,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 				successCallBack: goToCheckinFlow,
 				failureCallBack: generalFailureActions
 			};
+
 			$scope.callAPI(zsGeneralSrv.fetchCheckinReservationDetails, options);
 		};
 
@@ -114,6 +116,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 						'room_no': $scope.reservationParams.room_no,
 						"first_name": data.first_name
 					};
+
 					$state.go('zest_station.pickUpKeyDispense', stateParams);
 				} else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY' && !data.is_checked_in) {
 					if (data.guest_arriving_today) {
@@ -137,6 +140,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 							"days_of_stay": data.days_of_stay,
 							"hours_of_stay": data.hours_of_stay
 						};
+
 						$state.go('zest_station.checkoutReservationBill', stateParams);
 					} else {
 						generalFailureActions();
@@ -149,6 +153,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 				"last_name": $scope.reservationParams.last_name,
 				"room_no": $scope.reservationParams.room_no + ''.replace(/\-/g, '') //adding '' to for non-str values
 			};
+
 			if ($stateParams.mode === 'PICKUP_KEY') {
 				params.is_checked_in = true;
 			}
@@ -158,10 +163,12 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 				successCallBack: checkoutVerificationSuccess,
 				failureCallBack: generalFailureActions
 			};
+
 			$scope.callAPI(zsCheckoutSrv.findReservation, options);
 		};
 
 		var roomNumberEntered = false;
+
 		$scope.lastNameEntered = function() {
 			//if room is already entered, no need to enter again
 			if (roomNumberEntered) {

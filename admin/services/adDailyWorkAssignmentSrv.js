@@ -240,9 +240,11 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
 
         var roomTypesList = [];
+
         this.fetchRoomTypes = function(params) {
             var deferred = $q.defer(), url;
             // hide suite as per CICO-24369
+
             if(params) {
                 url = 'api/room_types.json?exclude_suite='+ params.exclude_suite;
             } else {
@@ -269,6 +271,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         var resHkStatusList = [];
+
         this.fetchResHkStatues = function() {
             var deferred = $q.defer(),
                 url = '/api/reservation_hk_statuses';
@@ -289,6 +292,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         var foStatusList = [];
+
         this.fetchFoStatues = function() {
             var deferred = $q.defer(),
                 url = '/api/front_office_statuses';
@@ -309,6 +313,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         var HkStatusList = [];
+
         this.fetchHkStatues = function() {
             var deferred = $q.defer(),
                 url = '/api/tasks/hk_applicable_statuses'; // CICO-8620 Need to get only valid statuses here
@@ -374,6 +379,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
         this.postTaskListItem = function(params) {
             var deferred = $q.defer(),
                 url = 'api/tasks/';
+
                 params = _.omit(params, 'is_default');
 
 

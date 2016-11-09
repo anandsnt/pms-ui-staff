@@ -53,6 +53,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	$scope.isShowFees = function() {
 		var isShowFees = false;
 		var feesData = $scope.feeData;
+
 		if(typeof feesData === 'undefined' || typeof feesData.feesInfo === 'undefined' || feesData.feesInfo === null) {
 			isShowFees = false;
 		}
@@ -227,6 +228,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	*/
 	$scope.renderDefaultValues = function() {
 		var ccExist = false;
+
 		if($scope.renderData.paymentTypes.length > 0) {
 			if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)) {
 				$scope.defaultPaymentTypeOfBill = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase();
@@ -256,6 +258,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 
 		var currentBillTotalFees = $scope.billsArray[$scope.currentActiveBill].total_fees;
 		var defaultAmount = zeroAmount;
+
 		if(currentBillTotalFees.length <= 0 ) {
 			defaultAmount = zeroAmount;
 		}
@@ -327,6 +330,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	* Param - index - index of button start from 1.
 	* return - String classname.
 	*/
+
 	$scope.classForPaymentSplitButton = function(index) {
 		if(index === 1 && $scope.splitePaymentDetail["completedSplitPayments"]===0) {
 			return "checked";
@@ -383,6 +387,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 				"payment_type": "CC",
 				"payment_type_id": 1
 			};
+
 			$scope.cardsList.push(dataToGuestList);
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		}
@@ -415,6 +420,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	/*
 	* Clears paymentErrorMessage
 	*/
+
 	$scope.clearPaymentErrorMessage = function() {
 		$scope.paymentErrorMessage = '';
 	};
@@ -423,6 +429,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 
 		$scope.swipedCardDataToSave = swipedCardDataToSave;
 		var data 			= swipedCardDataToSave;
+
 		data.reservation_id =	$scope.reservationData.reservationId;
 
 		data.payment_credit_type = swipedCardDataToSave.cardType;
@@ -499,6 +506,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	var matchCardObjectSchema = function() {
 		_.each($scope.reservationBillData.bills, function(billData) {
 			var cardDetails = billData.credit_card_details;
+
 			billData.selectedCC = {
 				card_code: cardDetails.card_code,
 				ending_with: cardDetails.card_number,

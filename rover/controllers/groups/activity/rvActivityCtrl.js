@@ -78,6 +78,7 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 		 */
 		$scope.isPrevButtonDisabled = function() {
 			var isDisabled = false;
+
 	        if ($scope.page === 1) {
 	            isDisabled = true;
 	        }
@@ -90,6 +91,7 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 		 */
 		$scope.isNextButtonDisabled = function() {
 			var isDisabled = false;
+
 	        if ($scope.end >= $scope.count) {
 	            isDisabled = true;
 	        }
@@ -171,6 +173,7 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 	            page: $scope.prevAction?$scope.page - 1:($scope.nextAction?$scope.page + 1:$scope.page),
 	            per_page: $scope.perPage
 	        	};
+
 	        params['sort_order'] = $scope.sort_order;
 	        params['sort_field'] = $scope.sort_field;
 	        $scope.$emit("updateLogdata", params);

@@ -33,6 +33,7 @@ admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSe
 
 	$scope.save = function() {
 		var postingData = {};
+
 		postingData.is_guest_reviews_on = $scope.data.is_guest_reviews_on;
 		postingData.number_of_reviews = $scope.data.number_of_reviews;
 		postingData.rating_limit = $scope.data.rating_limit;

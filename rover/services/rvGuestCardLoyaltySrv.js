@@ -11,6 +11,7 @@ angular.module('sntRover').service('RVGuestCardLoyaltySrv', ['$q', 'RVBaseWebSrv
  		
 		this.fetchUserMemberships = function() {
 			var url =  	'/staff/user_memberships.json?user_id='+ user_id;
+
 			RVBaseWebSrv.getJSON(url).then(function(data) {
 				that.loyalties.userMemberships =  data;
 				deferred.resolve(that.loyalties);
@@ -23,6 +24,7 @@ angular.module('sntRover').service('RVGuestCardLoyaltySrv', ['$q', 'RVBaseWebSrv
 
 		this.fetchHotelLoyalties = function(param) {
 			var url =  '/staff/user_memberships/get_available_hlps.json';
+
 			RVBaseWebSrv.getJSON(url).then(function(data) {
 				hlps                            =  data;
 				that.loyalties.hotelLoyaltyData =  data;
@@ -35,6 +37,7 @@ angular.module('sntRover').service('RVGuestCardLoyaltySrv', ['$q', 'RVBaseWebSrv
 
 	    if(isEmpty(hlps) || isEmpty(ffps)) {
 	    	var url =  '/staff/user_memberships/get_available_ffps.json';
+
 			RVBaseWebSrv.getJSON(url).then(function(data) {
 				ffps                                =  data;
 				that.loyalties.freaquentLoyaltyData =  data;
@@ -54,6 +57,7 @@ angular.module('sntRover').service('RVGuestCardLoyaltySrv', ['$q', 'RVBaseWebSrv
 	this.createLoyalties = function(params) {
 		var deferred = $q.defer();
 		var url =  '/staff/user_memberships';
+
 		RVBaseWebSrv.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -65,6 +69,7 @@ angular.module('sntRover').service('RVGuestCardLoyaltySrv', ['$q', 'RVBaseWebSrv
 	this.deleteLoyalty = function(id) {
 		var deferred = $q.defer();
 		var url =  '/staff/user_memberships/'+ id + '.json';
+
 		RVBaseWebSrv.deleteJSON(url, "").then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {

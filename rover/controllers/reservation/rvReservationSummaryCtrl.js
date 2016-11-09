@@ -69,6 +69,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         $scope.feeData = {};
         var zeroAmount = parseFloat("0.00");
+
         $scope.successPaymentList = function(data) {
             $scope.$emit("hideLoader");
             $scope.cardsList = data;
@@ -93,6 +94,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         $scope.isShowFees = function() {
             var isShowFees = false;
             var feesData = $scope.feeData;
+
             if (typeof feesData === 'undefined' || typeof feesData.feesInfo === 'undefined' || feesData.feesInfo === null) {
                 isShowFees = false;
             } else if ((feesData.defaultAmount >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount) {
@@ -126,6 +128,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
                     if (amountSymbol === "percent") {
                         var calculatedFee = parseFloat(totalAmount * (feePercent / 100));
+
                         $scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
                         $scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
                     } else {
@@ -149,6 +152,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 parseFloat($scope.reservationData.depositAmount) : zeroAmount;
 
             var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
+
             $scope.feeData.minFees = minFees;
             $scope.feeData.defaultAmount = defaultAmount;
 
@@ -158,6 +162,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
                     var amountSymbol = feesInfo.amount_symbol;
                     var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+
                     $scope.feeData.actualFees = feesAmount;
 
                     if (amountSymbol === "percent") {
@@ -185,6 +190,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment ?
                 getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase() :
                 getCreditCardType($scope.newPaymentInfo.cardDetails.cardType).toLowerCase();
+
             return cardType;
         };
 
@@ -192,6 +198,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             var cardNumber = $scope.newPaymentInfo.tokenDetails.isSixPayment ?
                 $scope.newPaymentInfo.tokenDetails.token_no.substr($scope.newPaymentInfo.tokenDetails.token_no.length - 4) :
                 $scope.newPaymentInfo.cardDetails.cardNumber.slice(-4);
+
             return cardNumber;
         };
 
@@ -199,6 +206,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             var expiryMonth = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) : $scope.newPaymentInfo.cardDetails.expiryMonth;
             var expiryYear = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) : $scope.newPaymentInfo.cardDetails.expiryYear;
             var expiryDate = expiryMonth + " / " + expiryYear;
+
             return expiryDate;
         };
 
@@ -206,6 +214,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             var expiryMonth = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) : $scope.newPaymentInfo.cardDetails.expiryMonth;
             var expiryYear = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) : $scope.newPaymentInfo.cardDetails.expiryYear;
             var expiryDate = "20" + expiryYear + "-" + expiryMonth + "-" + "01";
+
             return expiryDate;
         };
 
@@ -270,6 +279,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             };
 
             var data = {};
+
             data.reservation_id = $scope.reservationData.reservationId;
             data.token = (!$scope.newPaymentInfo.tokenDetails.isSixPayment) ?
                 $scope.newPaymentInfo.tokenDetails.session :
@@ -311,6 +321,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                         //data.expiry_date //unused at this time
                         $scope.$emit('hideLoader');
                     };
+
                     $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {
                         'card_number': $scope.newPaymentInfo.cardDetails.cardNumber
                     }, fetchGiftCardBalanceSuccess);
@@ -364,6 +375,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         $scope.checkReferencetextAvailable = function() {
             var referenceTextAvailable = false;
+
             angular.forEach(paymentMethodsCopy, function(paymentMethod, key) {
                 if ($scope.reservationData.paymentType.type.value === "CC" && paymentMethod.value === "CC") {
                     angular.forEach(paymentMethod.credit_card_list, function(value, key) {
@@ -500,6 +512,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         $scope.submitReservationButtonClass = function(isSubmitButtonEnabled) {
             var buttonClass = "grey";
+
             if (isSubmitButtonEnabled) {
                 buttonClass = "green";
             }
@@ -548,6 +561,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         $scope.isContinueDisabled = function() {
             var depositPaid = false;
+
             if ($scope.depositData.isDepositRequired && $scope.reservationData.isValidDeposit) {
                 depositPaid = $scope.depositData.attempted ? true : false;
             } else {
@@ -557,6 +571,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             var isPaymentTypeNotSelected = ((typeof $scope.reservationData.paymentType.type.value === "undefined") || $scope.reservationData.paymentType.type.value.length === 0);
             //CICO-30786 - check the payment type selection only if deposit not paid
             var isContinueDisabled = idPresent || !depositPaid ;
+
             if (!depositPaid) {
                isContinueDisabled =  isContinueDisabled || isPaymentTypeNotSelected;
             }
@@ -571,6 +586,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.setupFeeData();
                 // CICO-15107 --
                 var aptSegment = ""; //Variable to store the suitable segment ID
+
                 angular.forEach($scope.otherData.segments, function(segment) {
                     if ($scope.reservationData.stayDays.length - 1 <= segment.los) {
                         if (!aptSegment) {
@@ -614,16 +630,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                  */
                 if ($rootScope.previousState.name !== 'rover.reservation.staycard.mainCard.addons' || $stateParams.mode === "EDIT_HOURLY") {
                     var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
+
                     temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
                     if (temporaryReservationDataFromDiaryScreen) {
                         var getRoomsSuccess = function(data) {
                             var roomsArray = {};
+
                             angular.forEach(data.rooms, function(value, key) {
                                 var roomKey = value.id;
+
                                 roomsArray[roomKey] = value;
                             });
                             if ($stateParams.mode === "EDIT_HOURLY") {
                                 var room = temporaryReservationDataFromDiaryScreen.rooms[0];
+
                                 if (!!room.payment.payment_method_used) {
                                     $scope.reservationData.paymentType.type.description = room.payment.payment_method_description;
                                     $scope.reservationData.paymentType.type.value = room.payment.payment_method_used;
@@ -665,6 +685,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                             }
 
                         };
+
                         $scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
                     }
                 } else {
@@ -687,6 +708,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 if (!$scope.reservationData.depositData) {
                     $scope.depositData = {};
                     var arrivalRate = $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id;
+
                     $scope.depositData.isDepositRequired = !!$scope.reservationData.ratesMeta[arrivalRate].deposit_policy.id;
                     $scope.depositData.description = $scope.reservationData.ratesMeta[arrivalRate].deposit_policy.description;
                     $scope.depositData.depositSuccess = !$scope.depositData.isDepositRequired;
@@ -742,6 +764,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         // CICO-14193
         var fetchPaymentMethods = function() {
             var data = paymentMethods;
+
             $scope.reservationData.paymentMethods = angular.copy(data);
 
             // CICO-14193
@@ -751,6 +774,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             var payments = _.where(data, {
                 value: reservationDataPaymentTypeValue
             });
+
             if (payments.length > 0) {
                 $scope.reservationData.paymentType.type = payments[0];
             }
@@ -788,6 +812,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 return;
             }
             var postData = $scope.computeReservationDataforUpdate(true, true);
+
             postData.payment_type = {};
             angular.forEach($scope.reservationData.paymentMethods, function(value, key) {
                 if (value.value === $scope.reservationData.paymentType.type.value) {
@@ -840,6 +865,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         var savePayment = function(callback, addToGuestCard) {
             var promises = [];
+
             $scope.$emit('showLoader');
 
             var updateSuccess = function(data) {
@@ -883,6 +909,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                     $q.all(promises).then(updateSuccess, updateFailure);
                 }
             }
+
             check();
         };
 
@@ -948,6 +975,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.$emit('hideLoader');
                 var showRoomNotAvailableDialog = false;
                 var error = '';
+
                 angular.forEach(data, function(value, key) {
                     if (value === "Room not available for the selected number of hours. Please choose another room") {
                         showRoomNotAvailableDialog = true;
@@ -1053,6 +1081,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                     isrefresh: false,
                     justCreatedRes: true
                 };
+
                 $state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
             } else {
                 $scope.initReservationData();
@@ -1082,6 +1111,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         $scope.cardNumberInput = function(n, e) {
             if ($scope.isGiftCard) {
                 var len = n.length;
+
                 $scope.num = n;
                 if (len >= 8 && len <= 22) {
                     //then go check the balance of the card
@@ -1106,6 +1136,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                     //data.expiry_date //unused at this time
                     $scope.$emit('hideLoader');
                 };
+
                 $scope.invokeApi(RVReservationCardSrv.checkGiftCardBalance, {
                     'card_number': $scope.num
                 }, fetchGiftCardBalanceSuccess);
@@ -1218,6 +1249,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         $scope.clickedCallIn = function() {
             var typeIndex = '';
+
             $scope.isOnsiteActive = false;
             $scope.isIframeVisible = true;
             $scope.isSixPaymentGatewayVisible = true;
@@ -1305,6 +1337,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         $scope.updateAdditionalDetails = function(reservationId, index, goToConfirmationScreen) {
             var promises = [];
+
             $scope.$emit('showLoader');
 
             var updateSuccess = function(data) {
@@ -1394,6 +1427,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         var validateDemographicsData = function(demographicsData) {
             var isValid = true;
             // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
+
             if ($scope.otherData.reservationTypeIsForced && $scope.otherData.reservationTypes.length > 0) {
                 isValid = demographicsData.reservationType !== "";
             }
@@ -1415,6 +1449,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         $scope.isDemographicsFormValid = function(assertValidation) {
             var isValid = true,
                 demographicsData;
+
             if (assertValidation) {
                 if ($scope.otherData.reservationTypeIsForced || $scope.otherData.marketIsForced || $scope.otherData.sourceIsForced || $scope.otherData.originIsForced) {
                     _.each($scope.reservationData.rooms, function(room) {
@@ -1443,6 +1478,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.$emit('hideLoader');
                 swipedCardData.token = tokenValue;
                 var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+
                 $scope.reservationData.paymentType.type.value = "CC";
                 // $scope.showCCPage = true;
                 // $scope.addmode = true;
@@ -1464,6 +1500,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.$broadcast("RENDER_SWIPED_DATA", swipedCardDataToRender);
 
             };
+
             $scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
         });
         var successSwipePayment = function(data, successParams) {
@@ -1476,8 +1513,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.renderData.cardExpiry = successParams.cardExpiryMonth + "/" + successParams.cardExpiryYear;
             $scope.isNewCardAdded = true;
         };
+
         $scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave) {
             var data = swipedCardDataToSave;
+
             data.reservation_id = $scope.reservationData.reservationId;
             data.payment_credit_type = swipedCardDataToSave.cardType;
             data.credit_card = swipedCardDataToSave.cardType;
@@ -1489,6 +1528,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 successCallBack: successSwipePayment,
                 successCallBackParameters: swipedCardDataToSave
             };
+
             $scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
         });
         //To fix the issue CICO-11440
@@ -1501,6 +1541,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 "lname": ($scope.reservationData.guest.lastName !== undefined) ? $scope.reservationData.guest.lastName : $scope.guestCardData.contactInfo.last_name
             };
             //CICO-11413 - Since card name is taken from pass data.
+
             $scope.passData.details.firstName = $scope.reservationData.guest.firstName;
             $scope.passData.details.lastName = $scope.reservationData.guest.lastName;
             $scope.$broadcast("refreshIframe", guestData);
@@ -1528,6 +1569,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         $scope.saveAccompanyingGuests = function(room, roomIndex) {
             $scope.errorMessage = "";
             var validGuests = [];
+
             _.each(room.accompanying_guest_details, function(guest) {
                 if (!guest.first_name && !guest.last_name) {
                     guest.first_name = null;

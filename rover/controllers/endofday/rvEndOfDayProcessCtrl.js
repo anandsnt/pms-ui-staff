@@ -23,6 +23,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
     */
     var setDisplayDateValues = function() {        
         var values = $scope.selectedDate.split("-");
+
         $scope.year = values[0];
         $scope.month = getMonthName(parseInt(values[1]-1));
         $scope.day = values[2];
@@ -39,6 +40,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
     /*
     * Function to restart a failed process.
     */
+
     $scope.restartFailedProcess = function(process) {
         var data = {           
             id: process.id
@@ -49,6 +51,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
         var restartProcessFail = function(data) {
             $rootScope.$broadcast('hideLoader');
         };
+
         $scope.invokeApi(RVEndOfDayModalSrv.restartFailedProcess, data, restartProcessSuccess, restartProcessFail);
     };
     /*
@@ -56,6 +59,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
     */
     var setDefaultSelectedDate = function() {       
         var previousDate = tzIndependentDate($rootScope.businessDate);
+
         previousDate.setDate(previousDate.getDate() - 1)              
         $scope.selectedDate = $filter('date')(previousDate, "dd-MM-yyyy").split("-").reverse().join("-");        
     };
@@ -111,8 +115,10 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$root
         var fetchEodLogFailure = function() {
             $rootScope.$broadcast('hideLoader');
         };
+
         $scope.invokeApi(RVEndOfDayModalSrv.fetchLog, data, fetchEodLogSuccess, fetchEodLogFailure);
     };
+
     $scope.isLastEodRunWithin18Hr = function() {
         return ($scope.lastEodRunInMinutes == null)?false:true;
     };

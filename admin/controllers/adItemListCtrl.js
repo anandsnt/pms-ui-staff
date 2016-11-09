@@ -26,6 +26,7 @@ admin.controller('ADItemListCtrl', ['$scope', 'ADItemSrv', 'ngTableParams', '$fi
 		            var orderedData = params.sorting() ?
 		                                $filter('orderBy')($scope.data.items, params.orderBy()) :
 		                                $scope.data.items;
+
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
 		    });
@@ -70,10 +71,12 @@ admin.controller('ADItemListCtrl', ['$scope', 'ADItemSrv', 'ngTableParams', '$fi
 		            var orderedData = params.sorting() ?
 		                                $filter('orderBy')($scope.data.items, params.orderBy()) :
 		                                $scope.data.items;
+
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
 		    });
 		};
+
 		$scope.invokeApi(ADItemSrv.deleteItem, {'item_id': id}, successCallBack);
 	};
 }]);

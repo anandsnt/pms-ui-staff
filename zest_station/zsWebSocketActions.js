@@ -37,6 +37,7 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
     this.startPrint = function(data) {
         var printBillJson = { "Command": "cmd_print_bill", "Data": data};
         var jsonstring = JSON.stringify(printBillJson);
+
         that.ws.send(jsonstring);
     };
 
@@ -57,6 +58,7 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
         // Triggers when there is a message from websocket server.
         that.ws.onmessage = function(evt) {
             var response = evt.data;
+
             if (response) {
                 response = JSON.parse(response);
                 actionSuccesCallback(response);

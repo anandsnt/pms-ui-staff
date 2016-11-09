@@ -13,6 +13,7 @@ var MLIOperation = function() {
 		var callback = function(response) {
 			(response.status ==="ok") ? updateSessionSuccessCallback(response) : updateSessionFailureCallback(response);
 	    };
+
 		HostedForm.updateSession(sessionDetails, callback);
 	};
 

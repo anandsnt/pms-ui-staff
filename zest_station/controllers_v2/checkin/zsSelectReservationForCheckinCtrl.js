@@ -25,11 +25,13 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             $scope.$emit('showLoader');
 
             var selectedReservation = [];
+
             selectedReservation.push(reservation);
             zsCheckinSrv.setSelectedCheckInReservation(selectedReservation);
             var primaryGuest = _.find(selectedReservation[0].guest_details, function(guest_detail) {
                 return guest_detail.is_primary === true;
             });
+
             if ($scope.zestStationData.check_in_collect_nationality) {
                 $state.go('zest_station.collectNationality', {
                     'guestId': primaryGuest.id,
@@ -47,6 +49,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             $scope.currentPage = 1;
             $scope.totalPages = Math.ceil($scope.reservations.length / $scope.itemPerPage);
         };
+
         $scope.moveToNextPage = function() {
             if ($scope.currentPage === $scope.totalPages) {
                 return;
@@ -89,6 +92,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             listReservations();
             $scope.$emit('hideLoader');
         };
+
         init();
     }
 ]);

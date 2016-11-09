@@ -61,12 +61,14 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 		service.exportCSV = function(params) {
 			var deferred = $q.defer();
+
 			$http({
 				method: 'POST', 
 				url: params.url, 
 				data: params.payload
 			}).success(function(data, status, headers, config) {
                  var hiddenAnchor = angular.element('<a/>');
+
 			     hiddenAnchor.attr({
 			         href: 'data:attachment/csv;charset=utf-8,' + encodeURI(data),
 			         target: '_blank',
@@ -94,6 +96,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			var shallWeResolve = function() {
 				var payloadCount = _.keys( payload ).length;
+
 				if ( payloadCount === 3 ) {
 
 					// save it to $vault
@@ -159,6 +162,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 
 			var shallWeResolve = function() {
 				var payloadCount = _.keys( payload ).length;
+
 				if ( payloadCount === 4 ) {
 					deferred.resolve( payload );
 				}

@@ -37,6 +37,7 @@
 
     // ensure the specified React component is accessible, and fail fast if it's not
     var reactComponent;
+
     try {
       reactComponent = $injector.get(name);
     } catch(e) { }
@@ -64,6 +65,7 @@
     var wrapped = function() {
       var args = arguments;
       var phase = scope.$root.$$phase;
+
         if (phase === "$apply" || phase === "$digest") {
           return fn.apply(null, args);
         } else {
@@ -72,6 +74,7 @@
           });
         }
     };
+
     wrapped.wrappedInApply = true;
     return wrapped;
   }
@@ -83,6 +86,7 @@
       // wrap functions in a function that ensures they are scope.$applied
       // ensures that when function is called from a React component
       // the Angular digest cycle is run
+
       prev[key] = angular.isFunction(value) ? applied(value, scope) : value;
       return prev;
     }, {});
@@ -137,6 +141,7 @@
         var renderMyComponent = function() {
           var scopeProps = scope.$eval(attrs.props ? attrs.props : {scope: scope});
           var props = applyFunctions(scopeProps, scope);
+
           if(!props) {
           	props = _.extend({}, {scope: scope});
           }
@@ -178,6 +183,7 @@
           // for each of the properties, get their scope value and set it to scope.props
           var renderMyComponent = function() {
             var props = {};
+
             propNames.forEach(function(propName) {
               props[propName] = scope.$eval(attrs[propName]);
             });
@@ -206,6 +212,7 @@
           });
         }
       };
+
       return angular.extend(directive, conf);
     };
   };

@@ -3,6 +3,7 @@ sntRover.directive('clickTouch', function($timeout, $parse) {
         restrict: 'AE',
         link: function(scope, element, attrs, opt) {
             var eventShallPass = scope.$eval( attrs.eventShallPass );
+
             console.log( eventShallPass );
 
             element.bind('touchstart click', function(event) {

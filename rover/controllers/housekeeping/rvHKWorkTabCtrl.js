@@ -25,6 +25,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 
 		// keep ref to room details in local scope
 		var $_updateRoomDetails = $scope.$parent.updateRoomDetails;
+
 		$scope.roomDetails = $scope.$parent.roomDetails;
 
 		$scope.taskDetails = $scope.roomDetails.task_details;

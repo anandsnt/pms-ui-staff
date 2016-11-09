@@ -81,6 +81,7 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope', '$rootScope'
         var params = {
             "date": $scope.data.summaryDate
         };
+
         $scope.invokeApi(RVJournalSrv.fetchSummaryData, params, successCallBackFetchSummaryData);
     };
 
@@ -111,6 +112,7 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope', '$rootScope'
                 "per_page": 2000, // Giving this value to fetch all the records without making any changes in API
                 "type": balance_type
             };
+
         $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, params, successCallBackFetchBalanceDetails);
 
     };

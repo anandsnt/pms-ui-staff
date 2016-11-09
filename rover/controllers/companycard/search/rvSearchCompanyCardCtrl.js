@@ -24,6 +24,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 	        deceleration: 0.0001,
 	        shrinkScrollbars: 'clip'
 	    };
+
 	  	$scope.setScroller('company_card_scroll', scrollerOptions);
 
 
@@ -38,10 +39,12 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 
 		$scope.escapeNull = function(value, replaceWith) {
 			var newValue = "";
+
 			if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
 				newValue = replaceWith;
 			}
 			var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
+
 			return valueToReturn;
 		};
 
@@ -56,6 +59,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				displayFilteredResults();
 			}
 			var queryText = $scope.textInQueryBox;
+
 			$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 		};
 
@@ -82,6 +86,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				var visibleElementsCount = 0;
 				//searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 				//if it is zero, then we will request for webservice
+
 				for (var i = 0; i < $scope.results.length; i++) {
 					value = $scope.results[i];
 					if (($scope.escapeNull(value.account_first_name).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
@@ -98,6 +103,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 					var dataDict = {
 						'query': $scope.textInQueryBox.trim()
 					};
+
 					$scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, successCallBackofInitialFetch);
 				}
 				// we have changed data, so we are refreshing the scrollerbar

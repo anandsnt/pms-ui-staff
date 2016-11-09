@@ -158,6 +158,7 @@ sntRover.controller('rvBillingInfoCardsMainCtrl', ['$scope', '$rootScope', '$fil
         };
 
         var data = {};
+
         data.id  = $scope.contactInformation.id;
         $scope.invokeApi(RVBillinginfoSrv.deleteDefaultRouting, data, successCallback, errorCallback);
     };

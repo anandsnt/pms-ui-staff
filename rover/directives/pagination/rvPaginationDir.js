@@ -11,6 +11,7 @@ sntRover.directive('rvPagination', function() {
             startCount: 1,
             endCount: 1
         }; 
+
         if (!($scope.pageOptions.api)) {
             console.error("rvPagination error : pageOptions should contain an API reference");
         }

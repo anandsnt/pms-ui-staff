@@ -9,6 +9,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
 		var that = this;
+
 		$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
 		$scope.setTitle($scope.heading);
 		//scroller options
@@ -67,6 +68,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			toDate.setDate(13);
 
 			var params = {};
+
 			params.from_date = $filter('date')(fromDate, $rootScope.dateFormatForAPI);
 			//The maximum number of results we expect - 31+31+6+13
 			params.per_page = 81;
@@ -95,6 +97,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 			var dateArray = new Array();
 			var currentDate = startDate;
+
 			while (currentDate <= stopDate) {
 				dateArray.push($filter('date')(currentDate, $rootScope.dateFormatForAPI));
 				currentDate = currentDate.addDays(1);
@@ -107,6 +110,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		$scope.updateDataModel = function() {
 			var availabilityDetails = dclone($scope.availabilityDetails);
 			//Update the arrival_date and departure_dates
+
 			$scope.reservationData.arrivalDate = $filter('date')($scope.checkinDateInCalender, $rootScope.dateFormatForAPI);
 			$scope.reservationData.departureDate = $filter('date')($scope.checkoutDateInCalender, $rootScope.dateFormatForAPI);
 
@@ -116,6 +120,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			//Update the room type details
 			$scope.reservationData.rooms[0].roomTypeId = $scope.finalRoomType;
 			var roomTypeName = "";
+
 			for (var i in availabilityDetails.room_types) {
 				if (availabilityDetails.room_types[i].id === $scope.finalRoomType) {
 					roomTypeName = availabilityDetails.room_types[i].name;
@@ -128,6 +133,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			var stayDates = {};
 
 			var date;
+
 			for (var i in $scope.dates) {
 				date = $scope.dates[i];
 
@@ -144,8 +150,10 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				//We need to get the lowest rate for that room type from the availability details
 				//Even if we are in BAR calendar. we have to select a room type to make the reservation
 				var rateIdForTheDate = availabilityDetails.results[date][$scope.finalRoomType].rate_id;
+
 				stayDates[date].rate.id = rateIdForTheDate;
 				var rateName = "";
+
 				for (var j in availabilityDetails.rates) {
 					if (availabilityDetails.rates[j].id === rateIdForTheDate) {
 						rateName = availabilityDetails.rates[j].name;
@@ -197,6 +205,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			var isOverBooking = false;
 			var date;
 			//Check for each stayday, whether it is overbooking
+
 			for (var i in $scope.dates) {
 				date = $scope.dates[i];
 				dateDetails = $scope.availabilityDetails.results[date];
@@ -319,6 +328,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			//If no room type is selected for the room type calendar,
 			//then no need to display the rate
 			var rate = {};
+
 			rate.name = '';
 			rate.value = '';
 			if ($scope.roomTypeForCalendar === "" && $scope.calendarType === "ROOM_TYPE") {
@@ -341,6 +351,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		var getRoomTypeForBAR = function(availabilityDetails) {
 			var roomTypeId = availabilityDetails.room_rates.room_type_id;
 			var roomTypeName = "";
+
 			angular.forEach($scope.availabilityDetails.room_types, function(roomType, i) {
 				if (roomType.id === roomTypeId) {
 					roomTypeName = roomType.description;
@@ -359,6 +370,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 			var availabilityKey;
 			var dateAvailability;
+
 			if ($scope.calendarType === "BEST_AVAILABLE") {
 				availabilityKey = 'BAR';
 			} else {
@@ -504,6 +516,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		var getNumOfStayNights = function() {
 			//setting nights based on calender checking/checkout days
 			var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
+
 			return Math.ceil(timeDiff / (1000 * 3600 * 24));
 		};
 
@@ -535,6 +548,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		*/
 		$scope.isRoomTypeChangeAllowed = function() {
 			var ret = true;
+
 			if ($scope.reservationData.status === "CHECKEDIN" ||
 				$scope.reservationData.status === "CHECKING_OUT") {
 				ret = false;
@@ -557,6 +571,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		*/
 		$scope.isPrevButtonDisabled = function() {
 			var disabled = false;
+
 			if (parseInt(tzIndependentDate($rootScope.businessDate).getMonth()) === parseInt($scope.leftCalendarOptions.month)) {
 				disabled = true;
 			}
@@ -599,6 +614,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			};
 			//When we move the month forward, the last date visible would be
 			//The 13th of next month. We should fetch the availability upto that date
+
 			nextMonthLastVisibleDate = new Date($scope.rightCalendarOptions.year, $scope.rightCalendarOptions.month);
 			nextMonthLastVisibleDate.setMonth(nextMonthLastVisibleDate.getMonth() + 2);
 			nextMonthLastVisibleDate.setDate(13);
@@ -609,6 +625,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 			var params = {};
 			var fromDate = fetchedEndDate.setDate(fetchedEndDate.getDate() + 1);
+
 			params.from_date = $filter('date')(fromDate, $rootScope.dateFormatForAPI);
 			//Number of items to be fetched - 31+13
 			params.per_page = 44;
@@ -659,10 +676,12 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			}
 			//Fetch the availability details if not already fetched
 			var params = {};
+
 			params.from_date = $filter('date')(prevMonthLastVisibleDate, $rootScope.dateFormatForAPI);
 			//The max possible count - 31 + 6
 			params.per_page = 37;
 			var toDate = fetchedStartDate.setDate(fetchedStartDate.getDate() - 1);
+
 			params.to_date = $filter('date')(toDate, $rootScope.dateFormatForAPI);
 			params.status = 'FETCH_ADDITIONAL';
 			if($scope.reservationData.travelAgent.id !== "") {

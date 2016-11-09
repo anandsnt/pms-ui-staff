@@ -69,6 +69,7 @@ function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams,
 			$rootScope.isFFPActive = $scope.use_ffp;
 			$scope.$emit('hideLoader');
 		};
+
 		$scope.invokeApi(ADFrequentFlyerProgramSrv.switchMainToggle, data, successCallbackActivateMainInactivate);
 
 

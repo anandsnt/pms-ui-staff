@@ -2,6 +2,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter) {
 	BaseCtrl.call(this, $scope);
 	var that = this;
+
 	this.setStatusAndMessage = function(message, status) {
 		$scope.statusMessage = message;
 		$scope.status = status;
@@ -53,6 +54,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
     		$scope.data.late_checkout_time = $scope.reservationData.reservation_card.late_checkout_time;
     	}
 		var statusMessage = $filter('translate')('KEY_CONNECTED_STATUS');
+
     	that.setStatusAndMessage(statusMessage, 'success');
     	// To check reservation status and select corresponding texts and classes.
     	if(reservationStatus === 'CHECKING_IN' ) {
@@ -136,6 +138,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		//will display the device not connected screen
 		$scope.$emit('hideLoader');
 		var secondsAfterCalled = 0;
+
 		that.noOfErrorMethodCalled++;
 		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;
 		setTimeout(function() {
@@ -171,6 +174,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			'successCallBack': showPrintKeyOptions,
 			'failureCallBack': showDeviceNotConnected
 		};
+
 		if(sntapp.cardSwipeDebug) {
 			sntapp.cardReader.checkDeviceConnectedDebug(callBack);
 		}
@@ -197,6 +201,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		}
 		// 'printKeyStatus' is the dictionary used to monitor the printing & writing key status
 		var elementToPut = {};
+
 		that.printKeyStatus = [];
 		for(var i = 1; i <= $scope.numberOfKeysSelected; i++) {
 			elementToPut = {};
@@ -245,6 +250,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		//It lets you to start the digestion cycle explicitly
 		$scope.$apply();
 		var message = $filter('translate')('KEY_UNABLE_TO_READ_STATUS') + errorObject['RVErrorDesc'];
+
 		that.showKeyPrintFailure(message);
 	};
 	/*
@@ -262,6 +268,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		}
 	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": true};
 	    // for initial case the key we are requesting is not additional
+
 	    if(!that.isAdditional) {
 	    	that.isAdditional = true;
 	    	var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": false};
@@ -300,6 +307,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = errorMessage;
 		var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
+
 		that.showKeyPrintFailure(message);
 
 	};
@@ -309,6 +317,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	*/
 	that.printKeys = function() {
 		var index = -1;
+
 		for(var i = 0; i < that.printKeyStatus.length; i++) {
 			if(that.printKeyStatus[i].printed === false) {
 				index = i + 1;
@@ -337,6 +346,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	*/
 	this.writeKey = function(keyWriteData, index) {
 		var keyData = [];
+
 		keyData.push(JSON.stringify(keyWriteData));
 		$scope.$emit('showLoader');
 		that.setStatusAndMessage($filter('translate')('KEY_WRITING_PROGRESS_STATUS'), 'pending');
@@ -351,6 +361,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
     			if(that.isSmartbandCreateWithKeyWrite === "true" && that.lastSuccessfulCardIDReaded !== '') {
     				var data = {};
     				//since there is not UI for adding first name & last name, we are setting as Blank, please see the comments of the story CICO-9315
+
     				data.first_name = '';
     				data.last_name  = '';
     				//setting as OPEN ROOM charge
@@ -380,6 +391,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 				}
 				else {
 					var message = $filter('translate')('KEY_CREATION_FAILED_STATUS') + ': '  + errorObject['RVErrorDesc'];
+
 					that.showKeyPrintFailure(message);
 				}
 				$scope.$apply();
@@ -387,6 +399,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			},
 			arguments: keyData
 		};
+
 		if(sntapp.cardSwipeDebug) {
 			sntapp.cardReader.writeKeyDataDebug(options);
 		}
@@ -404,6 +417,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		var index = dataParams.index;
 		var args = [];
 		var bandType = '00000002';
+
 		if(data.is_fixed) {
 			bandType = '00000001';
 		}
@@ -439,12 +453,14 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 				}
 				else {
 					var message = $filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE') + ': '  + errorObject['RVErrorDesc'];
+
 					that.showKeyPrintFailure(message);
 				}
 				return;
 			},
 			arguments: args
 		};
+
 		if(sntapp.cardSwipeDebug) {
 			sntapp.cardReader.setBandTypeDebug(options);
 		}
@@ -458,12 +474,14 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	*/
 	this.addNewSmartbandWithKey = function(data, index) {
 		var is_fixed = data.is_fixed;
+
 		that.setStatusAndMessage($filter('translate')('ADDING_BAND'), 'pending');
 		//success call back of smartband's api call for creation
 		var successCallbackOfAddNewSmartband_ = function(data) {
 			that.setStatusAndMessage($filter('translate')('BAND_ADDED'), 'success');
 			$scope.$emit('showLoader');
 			var params = {};
+
 			params.index = index;
 			params.is_fixed = is_fixed;
 			params.account_number = data.account_number;
@@ -483,10 +501,12 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			}
 			else {
 				var message = $filter('translate')('KEY_CREATED_BAND_ADDING_FAILED') + ': ' + errorMessage;
+
 				that.showKeyPrintFailure(message);
 			}
 		};
 		var reservationId = '';
+
 		if($scope.viewFromBillScreen) {
 			reservationId = $scope.reservationBillData.reservation_id;
 		} else {

@@ -11,6 +11,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
         that.fetchCashiers = function () {
             var url = "/api/cashier_periods",
             	data = {'date': $rootScope.businessDate};
+
             BaseWebSrvV2.getJSON(url, data).then(function (data) {
                 that.filterData.cashiers = data.cashiers;
                 that.filterData.selectedCashier = data.current_user_id;
@@ -25,6 +26,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
         // fetch employees deatils
         var deferred = $q.defer(),
         	url = "/api/users/active.json?journal=true";
+
         BaseWebSrvV2.getJSON(url).then(function (data) {
             that.filterData.employees = data;
             angular.forEach(that.filterData.employees, function(item, index) {
@@ -47,6 +49,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
     that.fetchDepartments = function () {
     	var deferred = $q.defer(),
         	url = "/admin/departments.json";
+
         RVBaseWebSrv.getJSON(url).then(function (data) {
             angular.forEach(data.departments, function(item, index) {
 	       		item.checked = false;
@@ -67,6 +70,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
     that.fetchSummaryData = function (params) {
     	var deferred = $q.defer(),
         	url = "api/financial_transactions/daily_balance_details?date="+params.date;
+
         BaseWebSrvV2.getJSON(url).then(function (data) {
             deferred.resolve(data);
         }, function (data) {
@@ -82,6 +86,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
     that.fetchBalanceDetails = function (params) {
     	var deferred = $q.defer(),
         	url = "api/financial_transactions/daily_balance_details";
+
         BaseWebSrvV2.postJSON(url, params).then(function (data) {
             deferred.resolve(data);
         }, function (data) {
@@ -211,6 +216,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
 	this.fetchCashierDetails = function(data) {
 		var deferred = $q.defer(),
 			url ='/api/cashier_periods/history';
+
 		BaseWebSrvV2.postJSON(url, data).then(function(data) {
 			   	deferred.resolve(data);
 			}, function(data) {
@@ -222,6 +228,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
 	this.reOpenCashier = function(updateData) {
 		var deferred = $q.defer(),
 			url ='/api/cashier_periods/'+updateData.id+'/reopen';
+
 		BaseWebSrvV2.postJSON(url).then(function(data) {
 			   	deferred.resolve(data);
 			}, function(data) {
@@ -233,6 +240,7 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
 	this.closeCashier = function(updateData) {
 		var deferred = $q.defer(),
 			url ='/api/cashier_periods/'+updateData.id+'/close';
+
 		BaseWebSrvV2.postJSON(url, updateData.data).then(function(data) {
 			   	deferred.resolve(data);
 			}, function(data) {

@@ -6,6 +6,7 @@ admin.service('adIdeasSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
          * GET IDEAS Setup
          * @return {Promise}
          */
+
         service.getIdeaSetup = function() {
             var deferred = $q.defer(),
                 url = '/api/hotel_settings/ideas';

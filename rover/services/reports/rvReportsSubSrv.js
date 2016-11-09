@@ -43,6 +43,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 				//the timeout set for the hotel
 				if (timeStampInSeconds >= 300) {
 					var errors = ["Request timed out. Unable to process report !!"];
+
 					deferred.reject(errors);
 				} else {
 					rvBaseWebSrvV2.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {

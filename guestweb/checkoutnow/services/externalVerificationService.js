@@ -6,6 +6,7 @@ var externalVerificationService = function($q, $http, $rootScope) {
 
 		var deferred = $q.defer();
 		var url = '/guest_web/authenticate_checkout_guest';
+
 		$http.post(url, data).success(function(response) {
 			deferred.resolve(response);
 		}).error(function() {

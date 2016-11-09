@@ -43,6 +43,7 @@
 	$scope.reservationData = checkinDetailsService.getResponseData();
 	var url = '/guest_web/checkin.json';
 	var data = {'reservation_id': $rootScope.reservationID};
+
 	checkinKeysService.checkin(url, data).then(function(response) {
 		if(response.status === "failure") {
 			$rootScope.netWorkError  = true;

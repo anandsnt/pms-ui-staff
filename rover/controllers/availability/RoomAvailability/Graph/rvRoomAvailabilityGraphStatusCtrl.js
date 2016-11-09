@@ -11,11 +11,13 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 
 
 		var isAlreadyRemoved = false;
+
   		$scope.hideMeBeforeFetching = false;
 
   		$scope.graphWidth = '1000';
 		//we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
 		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
+
   		$scope.setScroller ('graph-scroller', scrollerOptionsForGraph);
 
 
@@ -46,8 +48,10 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 			*/
 			var navListNode = $("#graph-showing-area #nav-listing");
 			var LabelElements = navListNode.find("ul li");
+
         	navListNode.css({"left": plottedChart.plotLeft, "width": plottedChart.plotSizeX});
         	var labelWidthToSet = 0;
+
         	$scope.graphWidth = getMaxSeriesLengthData() * 75;
         	if(getMaxSeriesLengthData() !== 0) {
         		labelWidthToSet = (100/getMaxSeriesLengthData());
@@ -61,6 +65,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 		};
 		var getMaxSeriesLengthData = function() {
 			var max = 0;
+
 			for(var i = 0; i < plottedChart.series.length; i++) {
 				if(plottedChart.series[i].visible) {
 					max = max < plottedChart.series[i].data.length ? plottedChart.series[i].data.length  : max;
@@ -217,6 +222,7 @@ angular.module('sntRover').controller('rvRoomAvailabilityGraphStatusController',
 
 			// Apply the theme
 			var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
+
 			$scope.availabilityGraphCongif = {
 				options: {
 					chart: {

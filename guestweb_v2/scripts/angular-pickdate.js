@@ -105,6 +105,7 @@
               today             = dateFilter(new Date(), 'yyyy-MM-dd');
 
             var nextMonthInitialDate = new Date(initialDate);
+
             nextMonthInitialDate.setMonth(currentMonth);
 
             scope.allowPrevMonth = !minDate || initialDate > minDate;

@@ -21,6 +21,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 			var maxValue = Math.max.apply(null, numbers);
 
 			var breakingPoint = 10;
+
 			if (maxValue > 100 && maxValue <= 200) {
 				breakingPoint = 20;
 			}
@@ -68,6 +69,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 		$scope.sort = function(market, values) {
 			var status = $scope.reportStatus;
 			//Market Source Name Sort
+
 			if (!values) {
 				if (!!market) {
 					status.sort.market.name = true;
@@ -163,6 +165,7 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 
 		$scope.getPercentage = function (dividend, divisor, percentage) {
 			var ret = dividend / divisor * percentage;
+
 			return Math.min(ret, 100) + '%';
 		};
 
@@ -181,10 +184,12 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 				if ( ! _.isEmpty($scope.results.source) ) {
 					$scope.sources = _.keys($scope.results.source);
 					var sourcesValues = _.values($scope.results.source);
+
 					$scope.sourcesValuesTotal = sourcesValues.reduce(function(a, b) {
 						return a + b;
 					});
 					var sourcesValuesPercentage = [];
+
 					_.each(sourcesValues, function(sourceValue) {
 						sourcesValuesPercentage.push(sourceValue / $scope.sourcesValuesTotal);
 					});
@@ -193,10 +198,12 @@ sntRover.controller('rvMarketSourceReportCtrl', [
 				if ( ! _.isEmpty($scope.results.market)  ) {
 					$scope.markets = _.keys($scope.results.market);
 					var marketsValues = _.values($scope.results.market);
+
 					$scope.marketsValuesTotal = marketsValues.reduce(function(a, b) {
 						return a + b;
 					});
 					var marketsValuesPercentage = [];
+
 					_.each(marketsValues, function(marketValue) {
 						marketsValuesPercentage.push(marketValue / $scope.marketsValuesTotal);
 					});

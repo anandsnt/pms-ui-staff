@@ -20,6 +20,7 @@ angular.module('sntRover').controller('rvItemInventoryGridStatusController', [
 
 		//we need horizonat scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
 		var scrollerOptions = {scrollX: true, preventDefault: false};
+
   		$scope.setScroller ('room_availability_scroller', scrollerOptions);
 
 		$scope.$on('$includeContentLoaded', function(event) {

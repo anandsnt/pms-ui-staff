@@ -4,6 +4,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 
 		self.getDatesModel = function(fromDate, toDate) {
 			var dates = {};
+
 			for (var d = [], ms = new tzIndependentDate(fromDate) * 1, last = new tzIndependentDate(toDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
 				var currentDate = new tzIndependentDate(ms),
 					formattedCurrentDate = dateFilter(currentDate, 'yyyy-MM-dd');
@@ -22,6 +23,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			var tabs = [],
 				limit = count || 1,
 				i;
+
 			for (i = 0; i < limit; i++) {
 				tabs.push({
 					roomTypeId: roomTypes && roomTypes[i] || '',
@@ -38,6 +40,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			var rooms = [],
 				limit = count || 1,
 				i;
+
 			for (i = 0; i < limit; i++) {
 				rooms.push({
 					numAdults: 1,
@@ -262,6 +265,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			var timeParts = timeString.trim().split(" ");
 			//flooring to nearest 15th as the select element's options are in 15s
 			var hourMinutes = timeParts[0].split(":");
+
 			hourMinutes[1] = (15 * Math.round(hourMinutes[1] / 15) % 60).toString();
 			return {
 				hh: hourMinutes[0].length === 1 ? "0" + hourMinutes[0] : hourMinutes[0],
@@ -294,6 +298,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 		self.sortRatesAsc = function(a, b) {
 			var averageA = parseFloat(a.adr);
 			var averageB = parseFloat(b.adr);
+
 			if (averageA < averageB) {
 				return -1;
 			}
@@ -387,6 +392,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 				similarRates = _.filter(stayDates, function(stayDateInfo, date) {
 					return date !== departureDate && stayDateInfo.rate.id === arrivalRate;
 				});
+
 			return (similarRates.length < numNights);
 		};
 
@@ -447,6 +453,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			reservationData.totalStayCost = stayCard.total_rate;
 			// ---------------------------Room Details------------------------------------------------//
 			var roomDetails = reservationData.rooms[0]; //Only a single room is possible as this is coming from stay-card
+
 			roomDetails.rateId = [];
 			roomDetails.demographics = angular.copy(reservationData.demographics);
 
@@ -494,6 +501,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			if (parseInt(reservationData.numNights) > 0) {
 				var departure = reservationData.departureDate,
 					arrival = reservationData.arrivalDate;
+
 				reservationData.stayDays.push({
 					date: departure,
 					dayOfWeek: dateFilter(new tzIndependentDate(reservationData.departureDate), 'EEE'),
@@ -507,6 +515,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 				reservationData.paymentType.type.value = stayCard.payment_method_used;
 				if (reservationData.paymentType.type.value === "CC") { // I dont have any idea on what the following section of code does... Originally commit d1021861 --> https://github.com/StayNTouch/pms/commit/d1021861
 					var paymentDetails = stayCard.payment_details;
+
 					renderData.creditCardType = paymentDetails.card_type_image.replace(".png", "").toLowerCase();
 					renderData.endingWith = paymentDetails.card_number;
 					renderData.cardExpiry = paymentDetails.card_expiry;
@@ -533,6 +542,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 			var arrivalDateDetails = _.findWhere(stayCard.stay_dates, {
 				date: reservationData.arrivalDate
 			});
+
 			roomDetails.numAdults = arrivalDateDetails.adults;
 			roomDetails.numChildren = arrivalDateDetails.children;
 			roomDetails.numInfants = arrivalDateDetails.infants;
@@ -567,6 +577,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 
 			//---------------------- Tab Data -------------------------------------------------------------------------//
 			var activeTab = reservationData.tabs[0];
+
 			_.extend(activeTab, {
 				roomTypeId: roomDetails.roomTypeId,
 				numAdults: roomDetails.numAdults,

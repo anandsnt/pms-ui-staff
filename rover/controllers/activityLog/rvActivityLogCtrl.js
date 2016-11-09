@@ -127,6 +127,7 @@ sntRover.controller('RVActivityLogCtrl', [
                 page: $scope.page,
                 per_page: $scope.perPage
         };
+
         if($scope.isUpdateReportFilter) {
             params['from_date'] = $filter('date')($scope.fromDate, 'yyyy-MM-dd');
             params['to_date'] =$filter('date')($scope.toDate, 'yyyy-MM-dd');
@@ -229,6 +230,7 @@ sntRover.controller('RVActivityLogCtrl', [
 
     $scope.isNextButtonDisabled = function() {
         var isDisabled = false;
+
         if ($scope.end >= $scope.totalResults) {
             isDisabled = true;
         }
@@ -237,6 +239,7 @@ sntRover.controller('RVActivityLogCtrl', [
 
     $scope.isPrevButtonDisabled = function() {
         var isDisabled = false;
+
         if ($scope.page === 1) {
             isDisabled = true;
         }
@@ -256,6 +259,7 @@ sntRover.controller('RVActivityLogCtrl', [
     var initializeAutoCompletion = function() {
         //forming auto complte source object
         var activeUserAutoCompleteObj = [];
+
         _.each($scope.activeUserList, function(user) {
             activeUserAutoCompleteObj.push({
                 label: user.email,
@@ -271,6 +275,7 @@ sntRover.controller('RVActivityLogCtrl', [
             select: function(event, ui) {
                 $scope.user_id = ui.item.value;
                 var uiValue = split(this.value);
+
                 uiValue.pop();
                 uiValue.push(ui.item.label);
                 uiValue.push("");
@@ -297,6 +302,7 @@ sntRover.controller('RVActivityLogCtrl', [
                 return false;
             }
         };
+
         $scope.listUserAutoCompleteOptions = angular.extend({
             position: {
                 my: 'left bottom',
@@ -322,6 +328,7 @@ sntRover.controller('RVActivityLogCtrl', [
     var refreshScroller = function() {
         $scope.refreshScroller ('report-update');
     };
+
     $scope.clearToDate = function()
     {
         $scope.toDate ="";
@@ -340,6 +347,7 @@ sntRover.controller('RVActivityLogCtrl', [
 	$scope.init = function() {
         var reservationDetails = $scope.$parent.reservation.reservation_card;
         //setting the header caption
+
 		$scope.$emit('HeaderChanged', $filter('translate')('ACTIVITY_LOG_TITLE'));
 
         $scope.errorMessage = '';
@@ -386,6 +394,7 @@ sntRover.controller('RVActivityLogCtrl', [
 
         //setting title
         var title = $filter('translate')('ACTIVITY_LOG_TITLE');
+
         $scope.setTitle(title);
 
         //left side filter scrollbar

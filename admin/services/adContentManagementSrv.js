@@ -58,6 +58,7 @@ admin.service('ADContentManagementSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseW
 
 		var deferred = $q.defer();
 		var url = 'api/cms_components/save';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -76,6 +77,7 @@ admin.service('ADContentManagementSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseW
 
 		var deferred = $q.defer();
 		var url = 'api/cms_components/assign_sequence';
+
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -93,6 +95,7 @@ admin.service('ADContentManagementSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseW
 
 		var deferred = $q.defer();
 		var url = 'api/cms_components/' + data.id;
+
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -110,6 +113,7 @@ admin.service('ADContentManagementSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseW
 
 		var deferred = $q.defer();
 		var url = '';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

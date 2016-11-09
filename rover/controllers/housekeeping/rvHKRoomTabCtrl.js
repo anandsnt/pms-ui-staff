@@ -69,6 +69,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
 		var intervalForTimeSelector = 15,
 			mode = 12;
+
 		$scope.timeSelectorList = util.getListForTimeSelector (intervalForTimeSelector, mode);
 
 		//for fixing the issue of 24 hour long OOO thing
@@ -162,6 +163,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			var item = _.find($scope.allServiceStatus, function(item) {
 				return item.id === $scope.updateService.room_service_status_id;
 			});
+
 			$scope.ooOsTitle = item.description;
 
 			// check if user just set it to in service
@@ -577,6 +579,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			var item = _.find($scope.allServiceStatus, function(item) {
 				return item.id === $scope.updateService.room_service_status_id;
 			});
+
 			$scope.ooOsTitle = item.description;
 
 			if ($scope.updateService.room_service_status_id > 1) {
@@ -590,9 +593,11 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 				 * TODO : If the neigbouring dates have the same status id reason and comment put them in the date range
 				 */
 				var oneDay = 86400000; // number of milliseconds in a day
+
 				while (dateHash[$filter('date')(tzIndependentDate($scope.updateService.from_date).getTime() - oneDay, 'yyyy-MM-dd')]) {
 					var prevDate = $filter('date')(tzIndependentDate($scope.updateService.from_date).getTime() - oneDay, 'yyyy-MM-dd');
 					var prevDateStatus = dateHash[prevDate];
+
 					if (prevDateStatus.id === $scope.updateService.room_service_status_id &&
 						prevDateStatus.reason_id === $scope.updateService.reason_id &&
 						prevDateStatus.comments === $scope.updateService.comment) {
@@ -605,6 +610,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 				while (dateHash[$filter('date')(tzIndependentDate($scope.updateService.to_date).getTime() + oneDay, 'yyyy-MM-dd')]) {
 					var nextDate = $filter('date')(tzIndependentDate($scope.updateService.to_date).getTime() + oneDay, 'yyyy-MM-dd');
 					var nextDateStatus = dateHash[nextDate];
+
 					if (nextDateStatus.id === $scope.updateService.room_service_status_id &&
 						nextDateStatus.reason_id === $scope.updateService.reason_id &&
 						nextDateStatus.comments === $scope.updateService.comment) {

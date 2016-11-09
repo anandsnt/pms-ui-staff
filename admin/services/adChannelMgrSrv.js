@@ -55,6 +55,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             var deferred = $q.defer();
 
             var url = "/api/channel_managers.json";
+
             ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -67,6 +68,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             var deferred = $q.defer();
 
             var url = "/api/channel_managers/"+data.id;
+
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -79,6 +81,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             var deferred = $q.defer();
 
             var url = "/api/channel_rates_"+data.id+".json";
+
             ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -91,6 +94,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             var deferred = $q.defer();
 
             var url = "/api/rates.json";
+
             ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -106,6 +110,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             var deferred = $q.defer();
 
                 var url = '/api/rates/'+data.id;
+
             ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {

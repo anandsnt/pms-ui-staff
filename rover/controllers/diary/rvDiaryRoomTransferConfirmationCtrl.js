@@ -64,6 +64,7 @@ sntRover.controller('RVDiaryRoomTransferConfirmationCtrl', [
 
 		$scope.moveWithoutRateChange = function() {
 			var isMoveWithoutRateChange = true;
+
 			$scope.saveReservation ($scope.roomXfer.next.occupancy, $scope.roomXfer.next.room, isMoveWithoutRateChange);
 			resetTheDataForReservationMoveFromOneDateToAnother ();
 			$scope.closeDialog();

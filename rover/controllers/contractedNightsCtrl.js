@@ -22,6 +22,7 @@ sntRover.controller('contractedNightsCtrl', ['$scope', 'dateFilter', 'ngDialog',
 				"actual_occupancy": 0,
 				"month": month_array[month]
 		};
+
 		new_occupancy.push(obj);
 		my_point +=1;
 	}

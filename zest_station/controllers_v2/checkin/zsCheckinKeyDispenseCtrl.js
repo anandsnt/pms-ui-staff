@@ -54,6 +54,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			'room_no': $stateParams.room_no,
 			'first_name': $stateParams.first_name
 		};
+
 		$scope.first_name = $stateParams.first_name;
 		$scope.room = $stateParams.room_no;
 		console.info('room number is: ', $scope.room);
@@ -189,6 +190,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 				}
 			}
 		};
+
 		$scope.$on('printLocalKeyCordovaFailed', function(evt, response) {
 			console.warn('error: ', response);
 			onGeneralFailureCase();
@@ -287,6 +289,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			}
 
 		};
+
 		$scope.onReadyToPrintKey = function(keyNo) {
 			if ($scope.readyForUserToPressMakeKey) {
 				$scope.readyForUserToPressMakeKey = false;
@@ -327,6 +330,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
 			console.warn('goToNextScreen: ', stateParams);
 			//check if a registration card delivery option is present (from Admin>Station>Check-in), if none are checked, go directly to final screen
 			var registration_card = $scope.zestStationData.registration_card;
+
 			if (!registration_card.email && !registration_card.print && !registration_card.auto_print) {
 				$state.go('zest_station.zsCheckinFinal');
 			} else {

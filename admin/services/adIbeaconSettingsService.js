@@ -7,6 +7,7 @@ admin.service('adiBeaconSettingsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
 this.fetchBeaconList = function(data) {
 	var deferred = $q.defer();
 	var url = '/api/beacons';
+
 	ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
 		deferred.resolve(data);
 	}, function(data) {
@@ -23,6 +24,7 @@ this.toggleBeacon = function(data) {
 	var deferred = $q.defer();
 	var url = '/api/beacons/'+data.id+'/activate';
 	var toggleData ={"status": data.status};
+
 	ADBaseWebSrvV2.postJSON(url, toggleData).then(function(data) {
 		deferred.resolve(data);
 	}, function(data) {
@@ -38,6 +40,7 @@ this.toggleBeacon = function(data) {
 this.deleteBeacon = function(data) {
 	var deferred = $q.defer();
 	var url = '/api/beacons/'+data.id;
+
 	ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		deferred.resolve(data);
 	}, function(data) {
@@ -53,6 +56,7 @@ this.deleteBeacon = function(data) {
 this.fetchBeaconTypes = function() {
 	var deferred = $q.defer();
 	var url = '/api/beacons/types';
+
 	ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		deferred.resolve(data);
 	}, function(data) {
@@ -68,6 +72,7 @@ this.fetchBeaconTypes = function() {
 this.fetchBeaconTriggerTypes= function() {
 	var deferred = $q.defer();
 	var url = '/api/beacons/ranges';
+
 	ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		deferred.resolve(data);
 	}, function(data) {
@@ -82,6 +87,7 @@ this.fetchBeaconTriggerTypes= function() {
 this.fetchBeaconDeafultDetails  = function() {
 	var deferred = $q.defer();
 	var url='/api/beacons/uuid_values';
+
 	ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		deferred.resolve(data);
 	}, function(data) {
@@ -97,6 +103,7 @@ this.fetchBeaconDeafultDetails  = function() {
 this.fetchBeaconDetails = function(data) {
 	var deferred = $q.defer();
 	var url='/api/beacons/'+data.id;
+
 	ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		deferred.resolve(data);
 	}, function(data) {
@@ -113,6 +120,7 @@ this.fetchBeaconDetails = function(data) {
 this.fetchBeaconDetails = function(data) {
 	var deferred = $q.defer();
 	var url='/api/beacons/'+data.id;
+
 	ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		deferred.resolve(data);
 	}, function(data) {
@@ -128,6 +136,7 @@ this.fetchBeaconDetails = function(data) {
 this.updateBeaconDetails = function(data) {
 	var deferred = $q.defer();
 	var url = '/api/beacons/'+data.id;
+
 	ADBaseWebSrvV2.putJSON(url, data.data).then(function(data) {
 		deferred.resolve(data);
 	}, function(data) {
@@ -143,6 +152,7 @@ this.updateBeaconDetails = function(data) {
 this.addBeaconDetails = function(data) {
 	var deferred = $q.defer();
 	var url = '/api/beacons';
+
 	ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		deferred.resolve(data);
 	}, function(data) {
@@ -157,6 +167,7 @@ this.addBeaconDetails = function(data) {
 this.setLink = function(data) {
 	var deferred = $q.defer();
 	var url = 'api/beacons/link.json';
+
 	ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		deferred.resolve(data);
 	}, function(data) {

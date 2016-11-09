@@ -20,6 +20,7 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
         };
 
         var data =  {"user_id": $scope.data.filterData.selectedCashier, "date": $scope.data.cashierDate, "report_type_id": $scope.data.reportType};
+
         $scope.invokeApi(RVJournalSrv.fetchCashierDetails, data, fetchDetailsSuccessCallback);
     };
 
@@ -71,9 +72,11 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
             $scope.data.filterData.cashierStatus = 'CLOSED';
         };
         var updateData = {};
+
         updateData.id = $scope.selectedHistoryId;
         var closing_balance_cash  = ($scope.details.opening_balance_cash + $scope.details.total_cash_received) - $scope.details.cash_submitted;
         var closing_balance_check = ($scope.details.opening_balance_check + $scope.details.total_check_received) - $scope.details.check_submitted;
+
         updateData.data ={"cash_submitted": $scope.details.cash_submitted, "check_submitted": $scope.details.check_submitted, "closing_balance_cash": closing_balance_cash, "closing_balance_check": closing_balance_check};
         $scope.invokeApi(RVJournalSrv.closeCashier, updateData, closeShiftSuccesCallback);
 
@@ -92,6 +95,7 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
             $scope.data.filterData.cashierStatus = 'OPEN';
         };
         var updateData = {};
+
         updateData.id = $scope.selectedHistoryId;
         $scope.invokeApi(RVJournalSrv.reOpenCashier, updateData, reOpenSuccesCallback);
 

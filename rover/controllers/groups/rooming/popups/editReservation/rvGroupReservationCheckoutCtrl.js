@@ -35,6 +35,7 @@ angular.module('sntRover').controller('rvGroupReservationCheckoutCtrl', [
             successCallBack: completeCheckoutSuccessCallback,
             failureCallBack: completeCheckoutFailureCallback
         };
+
         $scope.callAPI(RVBillCardSrv.completeCheckout, options);
     };
 

@@ -127,6 +127,7 @@ var DiaryContent = React.createClass({
 			rowNumber = rowNumber > 0 ? rowNumber : 0;
 
 			var scrollYPos = rowNumber * rowHeight;
+
 			state.iscroll.timeline.scrollTo(-scrollToPos, -scrollYPos, 0, 0);
 			state.iscroll.grid.scrollTo(-scrollToPos, -scrollYPos, 0, 0);
 			state.iscroll.rooms.scrollTo(0, -scrollYPos, 0, 0);
@@ -152,6 +153,7 @@ var DiaryContent = React.createClass({
 
         setTimeout(function() {
         	var scrollToPos = (self.state.display.x_origin - self.state.display.x_n - 7200000) * self.state.display.px_per_ms;
+
         	if(scrollToPos < 0) {
         		scrollToPos = 0;
         	}

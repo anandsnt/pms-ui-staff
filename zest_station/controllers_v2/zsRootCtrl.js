@@ -201,6 +201,7 @@ sntZestStation.controller('zsRootCtrl', [
 				successCallBack: onSuccess,
 				failureCallBack: onFailure
 			};
+
 			$scope.callAPI(zsGeneralSrv.fetchHotelSettings, options);
 		};
 		var configureSwipeSettings = function() {
@@ -214,6 +215,7 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.zestStationData.keyWriter = 'local';
 
 			var key_method = $scope.zestStationData.kiosk_key_creation_method;
+
 			if (key_method === 'ingenico_infinea_key') {
 				$scope.zestStationData.keyWriter = 'local';
 			} else if (key_method === 'remote_encoding') {
@@ -223,6 +225,7 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 
 			var ccReader = $scope.zestStationData.kiosk_cc_entry_method;
+
 			if (ccReader === 'six_pay') {
 				$scope.zestStationData.ccReader = 'six_pay';
 			} else if (ccReader === 'ingenico_infinea') {
@@ -311,6 +314,7 @@ sntZestStation.controller('zsRootCtrl', [
 				successCallBack: onSuccess,
 				failureCallBack: onFail
 			};
+
 			$scope.callAPI(zsGeneralSrv.fetchWorkStations, options);
 		};
 
@@ -339,12 +343,14 @@ sntZestStation.controller('zsRootCtrl', [
 				return;
 			}
 			var frameBody = $("#booking_iframe").contents().find("body");
+
 			frameBody.focus(function() {
 				console.log('iframe focus')
 			});
 		};
 		$scope.hideKeyboardIfUp = function() {
 			var focused = $('#' + $scope.lastKeyboardId);
+
 			if ($(focused)) {
 				if ($(focused).getkeyboard()) {
 					if ($(focused).getkeyboard().isOpen) {
@@ -376,6 +382,7 @@ sntZestStation.controller('zsRootCtrl', [
 				var isTouchDevice = 'ontouchstart' in window,
 					agentString = window.navigator.userAgent;
 				var themeUsesKeyboard = false;
+
 				if ($scope.theme === 'yotel' || !$scope.theme) {
 					themeUsesKeyboard = true;
 				}
@@ -383,6 +390,7 @@ sntZestStation.controller('zsRootCtrl', [
 					(agentString.toLowerCase().indexOf('window') !== -1) &&
 					isTouchDevice &&
 					$scope.inChromeApp && themeUsesKeyboard;
+
 				if (shouldShowKeyboard) {
 					if (id) {
 						new initScreenKeyboardListener('station', id, true, $scope.resetTime);//on change event fire reset time
@@ -406,6 +414,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 		$scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
 			var iconBasePath = (!useCommonIcons ? iconsPath : commonIconsPath);
+
 			$scope.activeScreenIcon = 'bed';
 			if ( $scope.zestStationData.key_create_file_uploaded.indexOf('/logo.png') !== -1 ) {
 				$scope.zestStationData.key_create_file_uploaded = '';	
@@ -474,6 +483,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 **/
 		$scope.$on('updateIconPath', function(evt, theme) {
 			var commonIconsPath = '/assets/zest_station/css/icons/default';
+
 			if (theme === 'yotel') {
 				$scope.$emit('DONT_USE_NAV_ICONS');
 				$scope.theme = theme;
@@ -507,6 +517,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 ********************************************************************************/
 		var setAUpIdleTimer = function() {
 			var userInActivityTimeInSeconds = 0;
+
 			$scope.zestStationData.timeOut = false;
 
 			$scope.resetTime = function() {
@@ -517,6 +528,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 			function increment() {
 				var currentState = $state.current.name;
+
 				checkForEventsIfAtHomeScreen(currentState);
 				//the user inactivity actions need not be done when user in 
 				//home screen or in admin screen or in OOS screen
@@ -592,6 +604,7 @@ sntZestStation.controller('zsRootCtrl', [
 				}	
 			}
 		}
+
 		$scope.$on('HOME_ACTIVITY', function() {//need to move the above function to Home Controller after S69
 			homeInActivityTimeInSeconds = 0;
 		});
@@ -621,6 +634,7 @@ sntZestStation.controller('zsRootCtrl', [
 				failureCallBack: onFail,
 				'loader': 'none'
 			};
+
 			$scope.callAPI(zsGeneralSrv.refreshWorkStationInitialized, options);
 		}
 	 	var homeInActivityTimeInSeconds = 0;
@@ -678,6 +692,7 @@ sntZestStation.controller('zsRootCtrl', [
 			var cmd = response.Command,
 				msg = response.Message;
 			// to delete after QA pass
+
 			console.info("Websocket:-> uid=" + response.UID + "--" + "Websocket:-> response code:" + response.ResponseCode);
 			console.info("Websocket: msg ->" + msg + "--" + "Websocket: Command ->" + cmd);
 
@@ -729,6 +744,7 @@ sntZestStation.controller('zsRootCtrl', [
 					$scope.$broadcast('WS_PRINT_SUCCESS');
 				} else {
 					var errorData = {'error_message': printerErrorMapping[response.ResponseCode]};
+
 					$scope.$broadcast('WS_PRINT_FAILED', errorData);
 				}
 			}
@@ -742,6 +758,7 @@ sntZestStation.controller('zsRootCtrl', [
 			console.info("Websocket:-> socket connected");
 			$scope.$broadcast('SOCKET_CONNECTED');
 		};
+
 		$scope.$on('CONNECT_WEBSOCKET', function() {
 			$scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
 		});
@@ -772,6 +789,7 @@ sntZestStation.controller('zsRootCtrl', [
 				//do nothing now
 			}
 		};
+
 		$scope.chromeApp = new chromeApp(onChromeAppResponse, zestStationSettings.chrome_app_id);
 		/********************************************************************************
 		 *  Chrome App Communication code  
@@ -804,6 +822,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 		var getSavedWorkStationObj = function(stored_station_id) {
 			var station;
+
 			if ($scope.zestStationData.workstations && $scope.zestStationData.workstations.length > 0) {
 				station = _.find($scope.zestStationData.workstations, function(station) {
 					return station.station_identifier === stored_station_id;
@@ -831,6 +850,7 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 			//find workstation with the local storage data or from last fetched
 			var station;
+
 			if (id) {
 				station = getWorkStationSetting(id);
 			} else {
@@ -864,6 +884,7 @@ sntZestStation.controller('zsRootCtrl', [
 			storedWorkStation = '',
 			station;
 			var recently_refreshed;
+
 			try{
 	 			recently_refreshed = storage.getItem(refreshedKey);
 	 			if (recently_refreshed == 'true') {
@@ -886,6 +907,7 @@ sntZestStation.controller('zsRootCtrl', [
 
 			//find workstation with the local storage data
 			var station = getLocalWorkStation();
+
 			if (station === null) {
 				$scope.zestStationData.set_workstation_id = "";
 				$scope.zestStationData.key_encoder_id = "";
@@ -909,10 +931,12 @@ sntZestStation.controller('zsRootCtrl', [
 				$rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
 				$scope.zestStationData.key_encoder_id = $scope.getStationIdFromName(station.name).key_encoder_id;
 				var previousWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
+
 				$scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
 				var newWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
 				//if app is invoked from ipad, chrome app etc
 				//don't go to OOS even if workstation status is oos
+
 				if (!($scope.zestStationData.isAdminFirstLogin && ($scope.inChromeApp || $scope.isIpad)) && $scope.zestStationData.workstationStatus === 'out-of-order') {
 					if ($state.current.name !== 'zest_station.admin') {
 						$state.go('zest_station.outOfService');
@@ -973,12 +997,14 @@ sntZestStation.controller('zsRootCtrl', [
 				failureCallBack: onFail,
 				'loader': 'none'
 			};
+
 			$scope.callAPI(zsGeneralSrv.fetchWorkStations, options);
 		};
 		/**
 		 *   When workstation is in OOS fetch status continously 
 		 *   to check if status has changed
 		 */
+
 		$scope.$on('FETCH_LATEST_WORK_STATIONS', function() {
 			getAdminWorkStations();
 		});
@@ -1031,6 +1057,7 @@ sntZestStation.controller('zsRootCtrl', [
 						'id': $scope.zestStationData.set_workstation_id
 					}
 				};
+
 				if ($state.current.name !== 'zest_station.admin') {
 					$state.go('zest_station.outOfService');
 				} else {
@@ -1046,6 +1073,7 @@ sntZestStation.controller('zsRootCtrl', [
 						'id': $scope.zestStationData.set_workstation_id
 					}
 				};
+
 				$scope.callAPI(zsGeneralSrv.updateWorkStationOos, options);
 				//update local storage
 				try {
@@ -1068,6 +1096,7 @@ sntZestStation.controller('zsRootCtrl', [
 		 ********************************************************************************/
 		var maximizeScreen = function() {
 			var chromeAppId = $scope.zestStationData.chrome_app_id; // chrome app id 
+
 			console.info("chrome app id [ " + chromeAppId + ' ]');
 			//maximize the chrome app in the starting
 			(chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, "zest-station-login"): "";
@@ -1140,6 +1169,7 @@ sntZestStation.controller('zsRootCtrl', [
 			}
 
 			var el = window.document;
+
 			el.addEventListener("touchstart", optimizeTouch, false);
 			el.addEventListener("touchend", optimizeTouch, false);
 			el.addEventListener("touchcancel", optimizeTouch, false);

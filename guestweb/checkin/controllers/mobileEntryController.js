@@ -50,6 +50,7 @@
 
     function ValidateNo() {
         var val = $scope.guestDetails.mobile
+
         if (/^[0-9]{1,15}$/.test(val)) {
             return true;
         } else {

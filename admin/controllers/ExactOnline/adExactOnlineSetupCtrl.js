@@ -50,6 +50,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
                 },
                 successCallBack: successCallBackOfExactOnlineSetup
             };
+
             $scope.callAPI(adExactOnlineSetupSrv.saveExactOnLineConfiguration, options);
         };
 
@@ -64,6 +65,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
                     $scope.successMessage = 'Exact Online Export Started!';
                 }
             };
+
             $scope.callAPI(adExactOnlineSetupSrv.runExactOnlineExport, options);
         };
 
@@ -84,6 +86,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
                     _.findWhere($scope.data.menus, {
                         menu_id: 9, // 9 is ID returned by API for the Interfaces Menu
                     }));
+
                 $scope.$emit("changedSelectedMenu", interfacesMenuIndex);
             }
 

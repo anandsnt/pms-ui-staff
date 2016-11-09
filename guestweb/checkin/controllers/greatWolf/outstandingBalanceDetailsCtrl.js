@@ -45,6 +45,7 @@
 				"payment_type_id": $scope.paymentMethodDetails.payment_details.id
 			};
 			//submit payment
+
 			guestDetailsService.submitPayment(params).then(function(response) {
 				$scope.isLoading = false;
 				$scope.paymentSuccess = true;
@@ -70,6 +71,7 @@
 					$scope.cardPresent = true;
 					var cardNumberLength = $scope.cardNumber.length;
 					//set data to be displayed
+
 					$scope.paymentMethodDetails.payment_details = {
 						"card_type_image": "images/" + response.data.credit_card_type.toLowerCase() + ".png",
 						"card_number": $scope.cardNumber.toString().substring(cardNumberLength - 4, cardNumberLength),
@@ -92,6 +94,7 @@
 				'card_name': $scope.cardName
 			};
 			//call API
+
 			$scope.isLoading = true;
 			ccVerificationService.verifyCC(data).then(function(response) {
 				$scope.isLoading = false;
@@ -128,6 +131,7 @@
 					$scope.$apply();
 				};
 				//check if user has entered all data
+
 				if (($scope.cardNumber.length === 0) || ($scope.ccv.length === 0) ||
 					(!$scope.monthSelected) ||(!$scope.yearSelected)) 
 				{
@@ -155,6 +159,7 @@
 					};
 				}
 			};
+
 			fetchMLISessionId();
 		};
 		$scope.cancelCardEntry = function() {
@@ -173,6 +178,7 @@
 			$scope.years = [];
 			var startYear = new Date().getFullYear();
 			var endYear = parseInt(startYear) + 100;
+
 			for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
 				$scope.years.push(year);
 			};

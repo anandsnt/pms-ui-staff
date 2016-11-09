@@ -18,6 +18,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 				},
 				successCallBack: fetchLanguageList
 			};
+
 			$scope.callAPI(adZestStationLanguageConfigSrv.saveLanguageList, options);
 		};
 
@@ -37,6 +38,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			var combinedList = _.partition(data.languages, { position: null }),
 				nullList = combinedList[0],
 				listHavingValues= combinedList[1];
+
 			$scope.languageList = _.sortBy(listHavingValues, 'position').concat(nullList);
 		}
 
@@ -47,6 +49,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			var options = {
 				successCallBack: onFetchLanguageList
 			};
+
 			$scope.callAPI(adZestStationLanguageConfigSrv.fetchLanguageList, options);
 		};
 

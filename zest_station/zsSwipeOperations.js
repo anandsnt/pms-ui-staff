@@ -4,6 +4,7 @@ var SwipeOperation = function() {
 	 * Function to create the token - Swipe.
 	 * @param {obj} swipedCardData - initial swiped data to create token
 	 */
+
 	this.createDataToTokenize = function(swipedCardData) {
 		if (typeof swipedCardData === typeof 'str') {
 			swipedCardData = JSON.parse(swipedCardData);
@@ -15,6 +16,7 @@ var SwipeOperation = function() {
 		//alert(JSON.stringify(swipedCardData));
 
 		var ksn = swipedCardData.RVCardReadTrack2KSN;
+
 		if (swipedCardData.RVCardReadETBKSN !== "" && typeof swipedCardData.RVCardReadETBKSN !== "undefined") {
 			ksn = swipedCardData.RVCardReadETBKSN;
 		}
@@ -79,6 +81,7 @@ var SwipeOperation = function() {
 		};
 
 		var ksn = swipedCardData.RVCardReadTrack2KSN;
+
 		if (swipedCardData.RVCardReadETBKSN !== "" && typeof swipedCardData.RVCardReadETBKSN !== "undefined") {
 			ksn = swipedCardData.RVCardReadETBKSN;
 		}

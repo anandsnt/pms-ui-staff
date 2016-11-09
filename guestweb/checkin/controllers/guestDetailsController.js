@@ -72,6 +72,7 @@
 		$scope.isLoading = true;
 		if($rootScope.enforceCountrySort) {
 			var data = {'reservation_id': $rootScope.reservationID}
+
 			guestDetailsService.fetchSortedCountryList(data).then(function(response) {
 				$scope.sortedCountries = response.sorted;
 				$scope.unSortedCountries = response.unsorted;
@@ -104,6 +105,7 @@
 			var data 				= {};
 			var unwanted_keys 		= ["month", "year", "day"];
 			var newObject 			= JSON.parse(JSON.stringify($scope.guestDetails));
+
             for(var i=0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
             };
@@ -136,6 +138,7 @@
 			if($scope.guestDetails.country  && $scope.guestDetails.street && $scope.guestDetails.city  && $scope.guestDetails.state && $scope.guestDetails.postal_code ) {
 				$scope.isLoading 		= true;
 				var dataToSave 			= getDataToSave();
+
 				guestDetailsService.postGuestDetails(dataToSave).then(function(response) {
 					$scope.isLoading 	= false;
 					$rootScope.isGuestAddressVerified =  true;

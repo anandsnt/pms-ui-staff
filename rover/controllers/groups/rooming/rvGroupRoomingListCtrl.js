@@ -132,6 +132,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 room_type_id: parseInt($scope.selectedRoomType)
             });
             //we are hiding the occupancy if selected room type is undefined
+
             if (typeof selectedRoomType === "undefined") {
                 return false;
             }
@@ -179,6 +180,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         $scope.formatDateForUI = function(date_) {
             var type_ = typeof date_,
                 returnString = '';
+
             switch (type_) {
                 //if date string passed
                 case 'string':
@@ -201,6 +203,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          */
         $scope.getReservationClass = function(reservationStatus) {
             var class_ = '';
+
             switch (reservationStatus.toUpperCase()) {
                 case "RESERVED":
                     class_ = 'arrival';
@@ -356,6 +359,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             var options = {
                 params: params
             };
+
             $scope.callAPI(rvGroupRoomingListSrv.attachBillingInfoToReservations, options);
         };
 
@@ -387,6 +391,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 params: params,
                 successCallBack: successCallBackOfcheckDefaultChargeRoutings
             };
+
             $scope.callAPI(rvGroupRoomingListSrv.checkDefaultChargeRoutings, options);
         };
 
@@ -434,6 +439,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 params: params,
                 successCallBack: successCallBackOfAddReservations
             };
+
             $scope.callAPI(rvGroupRoomingListSrv.addReservations, options);
 
         };
@@ -465,6 +471,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 params: params,
                 successCallBack: successCallBackOfFetchRoomingDetails
             };
+
             $scope.callAPI(rvGroupRoomingListSrv.getRoomTypesConfiguredAgainstGroup, options);
         };
 
@@ -573,9 +580,11 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          */
         $scope.loadPrevSet = function() {
             var isAtEnd = ($scope.end === $scope.totalResultCount);
+
             if (isAtEnd) {
                 //last diff will be diff from our normal diff
                 var lastDiff = ($scope.totalResultCount % $scope.perPage);
+
                 if (lastDiff === 0) {
                     lastDiff = $scope.perPage;
                 }
@@ -643,6 +652,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
             if (isReservaionInSelectedReservation) {
                 var index = _.indexOf(_.pluck($scope.selected_reservations, "id"), reservation.id);
+
                 $scope.selected_reservations.splice(index, 1);
             } else {
 
@@ -666,6 +676,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             var isReservaionInSelectedReservation = _.findWhere($scope.selected_reservations, {
                 id: (reservation.id)
             });
+
             return (typeof isReservaionInSelectedReservation !== "undefined");
         };
 
@@ -725,6 +736,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         $scope.getSortClass = function(sort_field) {
             var classes = '';
             //if we are trying from the same tab, we have to switch between Asc/Desc
+
             if ($scope.sort_field === sort_field) {
                 classes = ($scope.sort_dir === 'ASC') ? 'sorting-asc' : 'sorting-desc';
             }
@@ -791,6 +803,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             _.each($scope.selected_reservations, function(eachData, resIndex) {
 
                 var reservationIndex = _.findIndex(data.results, {"id": eachData.id})
+
                 if(reservationIndex != -1) {
                     $scope.selected_reservations[resIndex] = $scope.reservations[reservationIndex];
                 }
@@ -839,6 +852,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 params: params,
                 successCallBack: successCallBackOfFetchReservations
             };
+
             $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
         };
         
@@ -980,6 +994,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 deceleration: 0.0001,
                 shrinkScrollbars: 'clip'
             };
+
             $scope.setScroller('rooming_list', scrollerOptions);
         };
 
@@ -1171,6 +1186,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                     successCallBack: successCallBackOfAutoRoomAssignQualifiedReservations,
                     failureCallBack: failureCallBackOfAutoRoomAssignQualifiedReservations
                 };
+
                 $scope.callAPI(rvGroupRoomingListSrv.performAutoRoomAssignment, options);
             }, 800);
         };
@@ -1288,6 +1304,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                     successCallBack: successCallBackOfCheckInQualifiedReservations,
                     failureCallBack: failureCallBackOfCheckInQualifiedReservations
                 };
+
                 $scope.callAPI(rvGroupRoomingListSrv.performMassCheckin, options);
             }, 800);
         };
@@ -1372,6 +1389,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                     successCallBack: successCallBackOfCheckoutQualifiedReservations,
                     failureCallBack: failureCallBackOfCheckoutQualifiedReservations
                 };
+
                 $scope.callAPI(rvGroupRoomingListSrv.performMassCheckout, options);
             }, 800);
         };
@@ -1477,6 +1495,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
             var promises = [];
             //we are not using our normal API calling since we have multiple API calls needed
+
             $scope.$emit('showLoader');
 
             //rooming details fetch
@@ -1494,6 +1513,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
             //reservation list fetch
             var paramsForReservationFetch = formFetchReservationsParams();
+
             promises.push(rvGroupRoomingListSrv
                 .fetchReservations(paramsForReservationFetch)
                 .then(successCallBackOfFetchReservations)
@@ -1598,6 +1618,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             var callNeccessaryApiForReservationDetailsShowing = function(reservation) {
                 var promises = [];
                 //we are not using our normal API calling since we have multiple API calls needed
+
                 $scope.$emit('showLoader');
 
                 //rooming details fetch
@@ -1606,6 +1627,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                     num_of_rooms_to_fetch: 5,
                     room_type_id: reservation.room_type_id
                 };
+
                 promises.push(rvGroupRoomingListSrv
                     .getFreeAvailableRooms(paramsForListOfFreeRooms)
                     .then(successCallBackOfListOfFreeRoomsAvailable)
@@ -1756,6 +1778,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 params: params,
                 successCallBack: successCallBackOfFetchAllReservationsForPrint
             };
+
             $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
         };
         /**
@@ -1800,6 +1823,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 "group_id": $scope.groupConfigData.summary.group_id,
                 "is_include_rate": !$scope.groupConfigData.summary.hide_rates
             };
+
             $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, {
                 successCallBack: mailSent,
                 failureCallBack: mailFailed,
@@ -1901,12 +1925,14 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         /**
          * Function to toggle show rate checkbox value
          */
+
         $scope.clickedShowRate = function() {
 
             var params = {
                 'group_id': $scope.groupConfigData.summary.group_id,
                 'hide_rates': !$scope.groupConfigData.summary.hide_rates
             };
+
             $scope.callAPI(rvGroupConfigurationSrv.toggleHideRate, {
                 successCallBack: sucessCallbackToggleHideRate,
                 failureCallBack: failureCallbackToggleHideRate,
@@ -1935,6 +1961,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          */
         var setActiveLeftSideMenu = function () {
             var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
+
             $scope.$emit("updateRoverLeftMenu", activeMenu);
         };
 

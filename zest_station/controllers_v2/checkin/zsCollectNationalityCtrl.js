@@ -74,6 +74,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 			//autocomplete plugin overwrites the <select>tags and appends an <input> with autocomplete trigger
 			//need to update the css based on the new dom elements, ie. the border in the input needs to be updated
 			//  when there are autocomplete elements on-screen
+
 			$scope.showingAutoCompleteArea = (val > 0 && !$scope.selectedCountry.id);
 			if (val < 1) {
 				$scope.selectedCountry.id = "";	
@@ -97,6 +98,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 		 */
 		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
 			var reservations = zsCheckinSrv.getCheckInReservations();
+
 			$state.go('zest_station.checkInReservationSearch');
 			//check if this page was invoked through pickupkey flow
 			if (!!$stateParams.pickup_key_mode) {
@@ -134,6 +136,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 				},
 				successCallBack: successCallBack
 			}
+
 			$scope.callAPI(zsCheckinSrv.saveNationality, options);
 		};
 	}

@@ -8,12 +8,14 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 	$scope.results.reservations = [];
 
   	var scrollerOptions = {click: true, preventDefault: false};
+
     $scope.setScroller('cards_search_scroller', scrollerOptions);
     $scope.setScroller('res_search_scroller', scrollerOptions);
     $scope.refreshScroller('cards_search_scroller');
     $scope.refreshScroller('res_search_scroller');
 
     var scrollerOptions = { preventDefault: false};
+
     $scope.setScroller('entities', scrollerOptions);
 
     setTimeout(function() {
@@ -47,6 +49,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 	    	($scope.isReservationActive)?displayFilteredResultsReservations():displayFilteredResultsCards();
 	   	}
 	   	var queryText = $scope.textInQueryBox;
+
 	   	$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
   	};
   	/**
@@ -70,6 +73,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
   	*/
   	var displayFilteredResultsCards = function() {
 	    var dataDict = {'query': $scope.textInQueryBox.trim()};
+
 	    $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);	      
   	};
 
@@ -78,6 +82,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 	*/
 	$scope.excludeActivereservationFromsSearch = function() {
 		var filteredResults = [];
+
 	  	for(var i = 0; i < $scope.results.reservations.length; i++) {
             //CICO-26728 Added the future reservations as well in the search results
 	  		if(($scope.results.reservations[i].id !== $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status === 'CHECKING_IN' || $scope.results.reservations[i].reservation_status === 'CHECKEDIN' || $scope.results.reservations[i].reservation_status === 'CHECKING_OUT' || $scope.results.reservations[i].reservation_status === 'RESERVED')) {
@@ -122,6 +127,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 
 	var fetchSearchResults = function() {
 		var dataDict = {'query': $scope.textInQueryBox.trim()};
+
 		if($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && $scope.textInQueryBox.length < 3) {
 			dataDict.room_search = true;
 		}

@@ -46,6 +46,7 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                     assigned_to: ref.department? parseInt(ref.department, 10) : "",
                     due_at: dateFilter(ref.dueDate, $rootScope.dateFormatForAPI) + "T" + ref.dueTime + ":00"
                 };
+
             if(!!ref.reservation && !!ref.reservation.id) {
                 payLoad.reservation_id = ref.reservation.id;
             } else if(!!ref.group && !!ref.group.id) {

@@ -64,6 +64,7 @@
           $scope.years = [];
           var startYear = new Date().getFullYear();
           var endYear   = parseInt(startYear) +100;
+
           for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
             $scope.years.push(year);
           };
@@ -133,6 +134,7 @@
     $scope.goToNextStep = function() {
         var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01";
         var data = {'reservation_id': $rootScope.reservationID, 'token': MLISessionId, 'card_expiry': cardExpiryDate, 'payment_type': "CC"};
+
         ccVerificationService.verifyCC(data).then(function(response) {
         $scope.isFetching = false;
         if(response.status ==="success") {

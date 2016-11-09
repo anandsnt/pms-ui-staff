@@ -35,6 +35,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			setTimeout(function() {
 				if (sntapp.cordovaLoaded) {
 					var printer = (sntZestStation.selectedPrinter);
+
 					cordova.exec(
 						onPrintSuccess(), //print complete, should go to final screen
 						onPrintError(), //if print error, inform guest there was an error
@@ -72,6 +73,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 					$scope.currentOwsMessage = $scope.owsMessages[0].message;
 					var selectedOwsMessageIndex = 0;
 					//on reaching last message, we need to show exit button
+
 					$scope.isLastOwsMsg = $scope.owsMessages.length === 1 ? true : false;
 					//set page number
 					var setPageNumber = function() {
@@ -103,6 +105,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 								"reservation_id": $scope.selectedReservation.id
 							}
 						};
+
 						$scope.callAPI(zsCheckinSrv.sendOWSMsgAsMail, options);
 					};
 
@@ -124,6 +127,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 					},
 					successCallBack: onOwsMsgFetchSuccess
 				};
+
 				$scope.callAPI(zsCheckinSrv.fetchOwsMessage, options);
 
 			}();

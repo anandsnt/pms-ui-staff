@@ -100,6 +100,7 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 		this.removeReservation = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/group_reservations/' + data.id + '/cancel';
+
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -171,6 +172,7 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 	this.toggleHideRate = function( params ) {
 		var deferred = $q.defer(),
 			url = 'api/allotments/'+params.id+'/hide_rates';
+
 			rvBaseWebSrvV2.postJSON(url, _.without(params, 'id')).then(function(data) {
 			   	 deferred.resolve(data);
 			}, function(data) {
@@ -182,6 +184,7 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 	this.fetchRegistrationCardPrintData = function(params) {
 		var deferred = $q.defer();
 		var url = '/api/allotments/' + params.id + '/batch_print_registration_cards';
+
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {

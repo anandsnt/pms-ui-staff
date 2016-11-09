@@ -104,6 +104,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                     'guestId': $scope.selectedReservation.guest_details[0].id,
                     'first_name': $scope.selectedReservation.guest_details[0].first_name
                 };
+
                 if (!!$stateParams.pickup_key_mode) {
                     collectNationalityParams.pickup_key_mode = 'manual';
                 }
@@ -138,11 +139,13 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             //when all the data are loaded
             $scope.isReservationDetailsFetched = false;
         };
+
         init();
 
         $scope.addRemove = function() {
             setSelectedReservation();
             var stateParams = {};
+
             if (!!$stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
@@ -159,6 +162,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 'room_no': $scope.selectedReservation.reservation_details.room_no,
                 'first_name': $scope.selectedReservation.guest_details[0].first_name
             }
+
             $state.go('zest_station.checkInSignature', stateParams);
         };
 
@@ -227,6 +231,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             //for now, using toggle switch - if free_eci_for_vips is enabled, and guest is VIP, then they get free ECI :)
             if (data.guest_arriving_today && (data.offer_eci_bypass || (data.free_eci_for_vips && data.is_vip))) {
                 var freeForVip = '';
+
                 if (data.free_eci_for_vips && data.is_vip) {
                     freeForVip = ' [ for vip guest ]';
                 };
@@ -267,6 +272,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             var params = {
                 'early_checkin_data': ''
             };
+
             if (response) {
                 //from early checkin controller, will parse back into an object to use data
                 params.early_checkin_data = JSON.stringify(response);
@@ -295,6 +301,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin
             };
             //check if this page was invoked through pickupkey flow
+
             if (!!$stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
@@ -309,6 +316,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         var assignRoomToReseravtion = function() {
             var reservation_id = $scope.selectedReservation.id;
+
             console.info('::assigning room to reservation::', reservation_id);
 
 
@@ -336,6 +344,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             console.info(': fetchedEarlyCheckinSettingsCallback :', response);
             var earlyCheckinWasPurchasedAtStation = $stateParams.earlyCheckinPurchased;
             var shouldGoThroughECI = shouldGoToEarlyCheckInFlow(response);
+
             console.info('earlyCheckinWasPurchasedAtStation: ', earlyCheckinWasPurchasedAtStation);
             console.info('shouldGoThroughECI: ', shouldGoThroughECI);
             if (!earlyCheckinWasPurchasedAtStation && // if they purchased it through zest station a minute ago...dont re-prompt the user
@@ -349,6 +358,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             console.info(arguments);
             if (am_pm === 'PM') {
                 var hour = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+
                 return hour[t];
             } else {
                 return t;
@@ -390,6 +400,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             //console.info('departure time for this reservation: ', depart, ' - [ ',departHour,departMin, depart_am_pm,' ]');
 
             var tA = new Date(); //, tD = new Date();
+
             tA.setHours(arrivalHour);
             tA.setMinutes(arrivalMin);
             console.log(tA)
@@ -425,6 +436,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var continueRouting = function(settings) {
             console.info(': continueRouting :', settings);
             var goToEarlyCheckin = fetchedEarlyCheckinSettingsCallback(settings);
+
             console.info('*goToEarlyCheckin: ', goToEarlyCheckin);
 
 
@@ -478,6 +490,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         $scope.onNextFromDetails = function() {
             var roomAssigned = roomIsAssigned(),
                 roomReady = roomIsReady();
+
             console.log('$scope.selectedReservation: ', $scope.selectedReservation);
             console.log($scope.selectedReservation.reservation_details.reservation_id);
             console.info('roomAssigned: ', roomAssigned, ', roomReady: ', roomReady);

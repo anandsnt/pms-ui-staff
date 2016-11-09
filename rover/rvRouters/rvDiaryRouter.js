@@ -17,6 +17,7 @@ angular
             },
             payload: function($rootScope, rvDiarySrv, $stateParams, $vault, baseSearchData, propertyTime, diaryAssets) {
                 var start_date = propertyTime.hotel_time.date;
+
                 if($stateParams.checkin_date) {
                     start_date = $stateParams.checkin_date;
                 }
@@ -40,12 +41,14 @@ angular
             },
             roomsList: function(RVNightlyDiarySrv, $rootScope, diaryAssets) {
                 var params = {};
+
                 params.page = 1;
                 params.per_page = 50;
                 return RVNightlyDiarySrv.fetchRoomsList(params);
             },
             datesList: function(RVNightlyDiarySrv, $rootScope, diaryAssets, $stateParams) {
                 var params = {};
+
                 if(!!$stateParams.start_date) {
                     params.start_date = $stateParams.start_date;
                 }

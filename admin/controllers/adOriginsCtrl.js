@@ -78,6 +78,7 @@ admin.controller('ADOriginsCtrl', ['$scope', 'ADOriginsSrv', '$anchorScroll', '$
 				$scope.data.name = "";
 				$scope.data.booking_origins.push(data);
 			};
+
 			$scope.invokeApi(ADOriginsSrv.save, {
 				'name': $scope.data.name
 			}, postSuccess);
@@ -96,6 +97,7 @@ admin.controller('ADOriginsCtrl', ['$scope', 'ADOriginsSrv', '$anchorScroll', '$
 				},
 				data = index === undefined ? $scope.state.editStore :
 				$scope.data.booking_origins[index];
+
 			$scope.invokeApi(ADOriginsSrv.update, data, postSuccess);
 		};
 
@@ -113,6 +115,7 @@ admin.controller('ADOriginsCtrl', ['$scope', 'ADOriginsSrv', '$anchorScroll', '$
 					}
 				});
 			};
+
 			$scope.invokeApi(ADOriginsSrv.deleteItem, {
 				'value': id
 			}, successDeletionCallback);

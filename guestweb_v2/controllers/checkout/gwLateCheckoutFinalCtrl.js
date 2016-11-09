@@ -17,6 +17,7 @@ sntGuestWeb.controller('gwLateCheckoutFinalController', ['$scope', '$rootScope',
 
 		var init = function() {
 			var screenIdentifier = "LATE_CHECKOUT_FINAL";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			// replace the string @<what-ever> with corresponding scope variable
 			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@checkout-time", $scope.lateCheckOut.time + $scope.lateCheckOut.ap);

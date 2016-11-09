@@ -12,12 +12,14 @@ sntGuestWeb.service('GWBaseWebSrv', ['$http', '$q', '$window', function($http, $
 	this.callWebService = function(httpMethod, url, params) {
 
 		var deferred = $q.defer();
+
 		if(typeof params === "undefined") {
 			params = "";
 		}
 
 		//Sample params {params:{fname: "fname", lname: "lname"}}
 		var httpDict = {};
+
  		httpDict.url = url;
  		httpDict.method = httpMethod;
  		if(httpMethod === 'GET' || httpMethod === 'DELETE') {

@@ -29,6 +29,7 @@ admin.controller('adZestAddonSetupCtrl', ['$scope', 'adZestAddonSetupSrv', '$sta
         $scope.addonSetup = data;
         startWatching();
   };
+
   $scope.invokeApi(adZestAddonSetupSrv.fetchSetup, {}, fetchAddonSetupSuccessCallback);
 
   };

@@ -42,6 +42,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         $scope.isAllSetsSaved = function() {
             if ($scope.data.sets) {
                 var isSaved = true;
+
                 if ($scope.data.sets[$scope.data.sets.length - 1].id === null) {
                     isSaved = false;
                 }
@@ -60,6 +61,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 return false;
             }
             var newSet = {};
+
             newSet.id = null;
             newSet.name = 'Set ' + ($scope.data.sets.length + 1);
 
@@ -126,6 +128,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             //Crate the room rates array based on the available room_types
             for (var i in $scope.rateData.room_types) {
                 var roomType = {};
+
                 roomType.id = $scope.rateData.room_types[i].id;
                 roomType.name = $scope.rateData.room_types[i].name;
                 roomType.child = '';
@@ -158,11 +161,13 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
                         var hourTwelved = function(hour) {
                             var hourCorrected = (hour < 12 ? hour : hour % 12);
+
                             return hourCorrected === 0 ? 12 : hourCorrected;
                         };
 
                         if (!!value.day_checkout_cutoff_time) {
                             var checkoutTime = value.day_checkout_cutoff_time.split(":");
+
                             value.checkout = {
                                 hh: hourTwelved(parseInt(checkoutTime[0])),
                                 mm: checkoutTime[1],
@@ -174,6 +179,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
                         if (!!value.night_start_time) {
                             var duskTime = value.night_start_time.split(":");
+
                             value.dusk = {
                                 hh: hourTwelved(parseInt(duskTime[0])),
                                 mm: duskTime[1],
@@ -185,6 +191,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
                         if (!!value.night_end_time) {
                             var dawnTime = value.night_end_time.split(":");
+
                             value.dawn = {
                                 hh: hourTwelved(parseInt(dawnTime[0])),
                                 mm: dawnTime[1],
@@ -196,6 +203,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
                         if (!!value.night_checkout_cut_off_time) {
                             var nightCheckoutTime = value.night_checkout_cut_off_time.split(":");
+
                             value.night_checkout = {
                                 hh: hourTwelved(parseInt(nightCheckoutTime[0])),
                                 mm: nightCheckoutTime[1],
@@ -218,6 +226,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                                 "child": "",
                                 "hourly": {}
                             };
+
                             room_rates.push(data);
                         });
                         value.room_rates = room_rates;
@@ -257,6 +266,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             var roomAddDetails = {};
             var roomRate = {};
             //Iterate through room types
+
             for (var i in $scope.rateData.room_types) {
 
                 //Iterate through sets
@@ -405,6 +415,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             }
 
             var unwantedKeys = ["room_types", "checkout", "dawn", "dusk"];
+
                 setData = dclone($scope.data.sets[index], unwantedKeys);
 
             if ($scope.rateData.is_hourly_rate) {
@@ -467,6 +478,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 $scope.data.sets.splice($scope.deleteSetIndex, 1);
                 ngDialog.close();
             };
+
             $scope.invokeApi(ADRatesConfigureSrv.deleteSet, $scope.deleteSetId, deleteSetSuccessCallback);
         };
 
@@ -536,6 +548,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             if ($scope.is_edit) {
                 if($scope.rateData.based_on && $scope.rateData.based_on.is_copied && date_range_end_date && ($scope.businessDate || $scope.hotel_business_date)) {
                     var businessDate = $scope.hotel_business_date;
+
                     if(!businessDate) {
                       businessDate = $scope.businessDate;
                     }
@@ -615,12 +628,14 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 // TODO : Calculate the dusk time!
                 if (!!selectedSet.checkout.hh & !!selectedSet.checkout.mm && !!selectedSet.day_min_hours) {
                     var checkout = selectedSet.checkout.am === 'AM' ? parseInt(selectedSet.checkout.hh) : (parseInt(selectedSet.checkout.hh) + 12) % 24;
+
                     dusk = parseInt(checkout) - parseInt(selectedSet.day_min_hours);
                     // (inclusive)
                     dusk++;
                 }
 
                 var nightHours = [];
+
                 for (var i = 0; i < 24; i++) {
                     if (dawn < dusk) {
                         // the range crosses midnight, do the comparisons independently

@@ -89,6 +89,7 @@
 			$scope.isShowFees = function() {
 				var isShowFees = false;
 				var feesData = $scope.feeData;
+
 				if (typeof feesData === 'undefined' || typeof feesData.feesInfo === 'undefined' || feesData.feesInfo === null) {
 					isShowFees = false;
 				} else if ((feesData.defaultAmount >= feesData.minFees) && $scope.isStandAlone && feesData.feesInfo.amount) {
@@ -121,6 +122,7 @@
 					if ($scope.isShowFees()) {
 						if (amountSymbol === "percent") {
 							var calculatedFee = parseFloat(totalAmount * (feePercent / 100));
+
 							$scope.feeData.calculatedFee = parseFloat(calculatedFee).toFixed(2);
 							$scope.feeData.totalOfValueAndFee = parseFloat(calculatedFee + totalAmount).toFixed(2);
 						} else {
@@ -139,6 +141,7 @@
 					parseFloat($scope.ngDialogData.penalty) : zeroAmount;
 
 				var minFees = feesInfo.minimum_amount_for_fees ? parseFloat(feesInfo.minimum_amount_for_fees) : zeroAmount;
+
 				$scope.feeData.minFees = minFees;
 				$scope.feeData.defaultAmount = defaultAmount;
 
@@ -147,6 +150,7 @@
 
 						var amountSymbol = feesInfo.amount_symbol;
 						var feesAmount = feesInfo.amount ? parseFloat(feesInfo.amount) : zeroAmount;
+
 						$scope.feeData.actualFees = feesAmount;
 
 						if (amountSymbol === "percent") {
@@ -179,6 +183,7 @@
 				var cardType = $scope.newPaymentInfo.tokenDetails.isSixPayment ?
 					getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase() :
 					getCreditCardType($scope.newPaymentInfo.cardDetails.cardType).toLowerCase();
+
 				return cardType;
 			};
 
@@ -186,6 +191,7 @@
 				var cardNumber = $scope.newPaymentInfo.tokenDetails.isSixPayment ?
 					$scope.newPaymentInfo.tokenDetails.token_no.substr($scope.newPaymentInfo.tokenDetails.token_no.length - 4) :
 					$scope.newPaymentInfo.cardDetails.cardNumber.slice(-4);
+
 				return cardNumber;
 			};
 
@@ -193,12 +199,14 @@
 				var expiryMonth = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(2, 4) : $scope.newPaymentInfo.cardDetails.expiryMonth;
 				var expiryYear = $scope.newPaymentInfo.tokenDetails.isSixPayment ? $scope.newPaymentInfo.tokenDetails.expiry.substring(0, 2) : $scope.newPaymentInfo.cardDetails.expiryYear;
 				var expiryDate = expiryMonth + " / " + expiryYear;
+
 				return expiryDate;
 			};
 
 			var retrieveName = function() {
 				var cardName = $scope.newPaymentInfo.tokenDetails.isSixPayment ?
 					'' : $scope.newPaymentInfo.cardDetails.userName;
+
 				return cardName;
 			};
 
@@ -227,6 +235,7 @@
 					reservation_id: $scope.passData.reservationId,
 					token: cardToken
 				};
+
 				paymentData.card_code = $scope.newPaymentInfo.tokenDetails.isSixPayment ?
 					getSixCreditCardType($scope.newPaymentInfo.tokenDetails.card_type).toLowerCase() :
 					$scope.newPaymentInfo.cardDetails.cardType;
@@ -283,8 +292,10 @@
 					};
 				// CICO-15808
 				// In case of multiple reservations - all reservations need to be cancelled
+
 				if ($scope.reservationData && $scope.reservationData.reservationIds && $scope.reservationData.reservationIds.length > 1) {
 					var promises = []; // Use this array to push the promises returned for every call
+
 					$scope.$emit('showLoader');
 					// Loop through the reservation ids and call the cancel API for each of them
 					_.each($scope.reservationData.reservationIds, function(reservationId) {
@@ -295,6 +306,7 @@
 							application: "ROVER",
 							is_with_penalty: isWithoutPenalty
 						};
+
 						if ($scope.ngDialogData.isDisplayReference) {
 							cancellationParameters.reference_text = $scope.referanceText;
 						}
@@ -309,6 +321,7 @@
 						application: "ROVER",
 						is_with_penalty: isWithoutPenalty
 					};
+
 					if ($scope.ngDialogData.isDisplayReference) {
 						cancellationParameters.reference_text = $scope.referanceText;
 					};
@@ -332,6 +345,7 @@
 						"payment_type": "CC",
 						"payment_type_id": 1
 					};
+
 					$scope.cardsList.push(dataToGuestList);
 					$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 				}
@@ -358,6 +372,7 @@
 					},
 					"reservation_id": $scope.passData.reservationId
 				};
+
 				if ($scope.isShowFees()) {
 					if ($scope.feeData.calculatedFee) {
 						dataToSrv.postData.fees_amount = $scope.feeData.calculatedFee;
@@ -394,6 +409,7 @@
 
 			$scope.applyPenalty = function() {
 				var reservationId = $scope.passData.reservationId;
+
 				$scope.ngDialogData.applyPenalty = true;
 				$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);
 
@@ -455,8 +471,10 @@
 				$scope.cancellationData.card_type = successParams.cardType.toLowerCase();
 				$scope.showCCPage = false;
 			};
+
 			$scope.$on("SWIPED_DATA_TO_SAVE", function(e, swipedCardDataToSave) {
 				var data = swipedCardDataToSave;
+
 				data.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 				data.payment_credit_type = swipedCardDataToSave.cardType;
 				data.credit_card = swipedCardDataToSave.cardType;
@@ -469,6 +487,7 @@
 					successCallBack: successSwipePayment,
 					successCallBackParameters: swipedCardDataToSave
 				};
+
 				$scope.callAPI(RVPaymentSrv.savePaymentDetails, options);
 			});
 			$scope.closeReservationCancelModal = function() {
@@ -485,6 +504,7 @@
 			//Checking whether email is attached with guest card or not
 			$scope.isEmailAttached = function() {
 				var isEmailAttachedFlag = false;
+
 				if ($scope.guestCardData.contactInfo.email !== null && $scope.guestCardData.contactInfo.email !== "") {
 					isEmailAttachedFlag = true;
 				}
@@ -511,12 +531,14 @@
 					"postData": postData,
 					"reservationId": $scope.passData.reservationId
 				};
+
 				$scope.invokeApi(RVReservationCardSrv.sendConfirmationEmail, data, succesfullCallbackForEmailCancellation, failureCallbackForEmailCancellation);
 			};
 
 			// add the print orientation after printing
 			var addPrintOrientation = function() {
 				var orientation = 'portrait';
+
 				$('head').append("<style id='print-orientation'>@page { size: " + orientation + "; }</style>");
 			};
 			// remove the print orientation after printing
@@ -553,6 +575,7 @@
 				var failureCallbackPrint = function(error) {
 					$scope.DailogeState.failureMessage = error[0];
 				};
+
 				$scope.callAPI(RVReservationSummarySrv.fetchResservationCancellationPrintData, {
 					successCallBack: succesfullCallback,
 					failureCallBack: failureCallbackPrint,

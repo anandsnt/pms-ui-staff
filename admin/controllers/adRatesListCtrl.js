@@ -23,6 +23,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 				$scope.isConnectedToPMS = true;
 			}
 		};
+
 		$scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccessOfHotelSettings);
 	};
 	$scope.checkPMSConnection();
@@ -44,6 +45,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 		    }, 500);
 
 		};
+
 		$scope.invokeApi(ADRatesSrv.fetchRates, getParams, fetchSuccessOfItemList);
 	};
 
@@ -80,6 +82,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 		        $scope.successMessage = "";
 		    }, 1000);
 		};
+
 		$scope.invokeApi(ADRatesSrv.importRates, {}, fetchSuccessOfItemList);
 	};
 
@@ -106,6 +109,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 			$scope.popoverRates = {};
 			$scope.currentHoverElement = index;
 			var params = {};
+
 			params[fetchKey] = id;
 			$scope.invokeApi(ADRatesSrv.fetchRates, params, rateFetchSuccess, '', 'NONE');
 		}
@@ -132,6 +136,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 			$scope.popoverRates = {};
 			$scope.currentHoverElement = index;
 			var params = {};
+
 			params[fetchKey] = id;
 			$scope.invokeApi(ADRatesSrv.fetchDateRanges, params, dateFetchSuccess, '', 'NONE');
 		}
@@ -193,6 +198,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
     		$scope.data[parseInt($scope.currentClickedElement)].description = $scope.rateDetailsForNonStandalone.description;
     		$scope.currentClickedElement = -1;
     	};
+
    		$scope.invokeApi(ADRatesSrv.updateRateForNonStandalone, $scope.rateDetailsForNonStandalone, successCallbackSave);
     };
    /*
@@ -219,6 +225,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 			$scope.$emit('hideLoader');
 			$scope.errorMessage =  data;
 		};
+
 		$scope.invokeApi(ADRatesSrv.deleteRate, selectedId, rateDeleteSuccess, rateDeleteFailure);
 
 
@@ -265,6 +272,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 		 		$scope.$emit('hideLoader');
 		 	};
 		 	var data = {"id": rateId };
+
 	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data, successCallbackRender);
 		//If standalone PMS, then the rate configurator wizard should be appeared.
 		}else{

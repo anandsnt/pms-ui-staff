@@ -63,6 +63,7 @@ admin.service('ADItemSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 		var id = data.item_id;
 		var url = "/admin/items/" + id + "/edit_item.json";
 		var deferred = $q.defer();
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {
@@ -77,6 +78,7 @@ admin.service('ADItemSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 	this.addItemDetails = function() {
 		var url = "/admin/items/new_item.json";
 		var deferred = $q.defer();
+
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {
@@ -92,6 +94,7 @@ admin.service('ADItemSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 	this.saveItemDetails = function(itemDetails) {
 		var url = "/admin/items/save_item";
 		var deferred = $q.defer();
+
 		ADBaseWebSrv.postJSON(url, itemDetails).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {

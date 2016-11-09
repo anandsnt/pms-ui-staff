@@ -6,6 +6,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController', ['$scope', '$state',
 	*/
 
 	var that = this;
+
   	BaseCtrl.call(this, $scope);
 
 
@@ -14,6 +15,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController', ['$scope', '$state',
         click: true,
         preventDefault: false
     };
+
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
 

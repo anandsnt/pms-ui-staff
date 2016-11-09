@@ -38,6 +38,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                 $result.addClass("autocomplete-result");
                                 if (item.address !== '') {
                                     var address = $("<span></span>").html(item.address);
+
                                     address.addClass("location");
                                     $result.append(address);
                                 }
@@ -52,6 +53,7 @@ sntRover.directive('autoComplete', ['highlightFilter',
                                 $result.addClass("autocomplete-result");
                                 if (item.address !== '') {
                                     var address = $("<span></span>").html(item.address);
+
                                     address.addClass("location");
                                     $result.append(address);
                                 }
@@ -92,9 +94,11 @@ sntRover.directive('autoComplete', ['highlightFilter',
 
                 var isEmail = function(email) {
                     var regex = /\S+@\S+\.\S+/;
+
                     return regex.test(email);
                 };
                 var inst;
+
                 if ( scope.insertEmail ) {
                     $(el).on('keypress', function(e) {
                         inst = $(el).autocomplete("instance");

@@ -13,6 +13,7 @@ angular.module('sntRover').controller('MixedRestrictionsCtrl', ['$q', '$scope', 
         */
         $scope.updateRestrictionBtnClicked = function(id) {
             var currentSelected = $scope.data.restrictionTypes[id];
+
             currentSelected.isRestrictionEnabled = true;
             currentSelected.hasChanged = true;
             currentSelected.isMixed = false;
@@ -31,6 +32,7 @@ angular.module('sntRover').controller('MixedRestrictionsCtrl', ['$q', '$scope', 
         */
         $scope.removeRestrictionBtnClicked = function(id) {
             var currentSelected = $scope.data.restrictionTypes[id];
+
             currentSelected.isRestrictionEnabled = false;
             currentSelected.hasChanged = true;
             currentSelected.isMixed = false;

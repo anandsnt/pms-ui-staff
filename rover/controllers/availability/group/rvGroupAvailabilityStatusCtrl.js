@@ -32,12 +32,14 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 		var setScroller = function() {
 			//we need horizontal scroller so adding option 'scrollX', also need to get the click event on toggling button on available room
 			var scrollerOptions = {scrollX: true, preventDefault: false};
+
   			$scope.setScroller ('groupscroller', scrollerOptions);
 		};
 		/**
 		* Function to send notification for close availiblity slider
 		* Param  - Group id
 		*/		
+
 		$scope.gotoGroupScreen = function(GroupId) {
 			$scope.selectedGroupId = GroupId;
 			$scope.$emit("CLOSE_AVAILIBILTY_SLIDER");
@@ -47,6 +49,7 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 		*/
 		$scope.$on('CLOSED_AVAILIBILTY_SLIDER', function(event) {
 			var GroupId = $scope.selectedGroupId;
+
 			$timeout(function() {
 				$state.go('rover.groups.config', 
 				{
@@ -90,6 +93,7 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 		*/
 		$scope.getGroupName = function(id) {
 			var group = _.findWhere($scope.data.holdStatus, {id: id});
+
 			return group && group.name;
 		};
 
@@ -111,6 +115,7 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 		*/
 		 var isTakenFromInventory = function(id) {
 		 	var group = _.findWhere($scope.data.holdStatus, {id: id});
+
 		 	return group && group.is_take_from_inventory;
 		};
 		/*
@@ -118,12 +123,14 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 		* param - index of clicked row
 		* return Null
 		*/
+
 		$scope.toggleButtonClicked = function(index) {
 			if(_.contains($scope.idsOfDropDownOpenedGroups, $scope.data.groupDetails[index].id)) {
 				var temp =_.filter($scope.idsOfDropDownOpenedGroups, 
 					function(num) { 
 						return num !== $scope.data.groupDetails[index].id; 
 					});
+
 				$scope.idsOfDropDownOpenedGroups = temp;
 			}else{
 				$scope.idsOfDropDownOpenedGroups.push($scope.data.groupDetails[index].id);
@@ -157,6 +164,7 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 					$scope.closeDialog();
 					$scope.errorMessage = errorMessage;
 				};
+
 			$scope.callAPI(rvGroupConfigurationSrv.releaseRooms, {
 				successCallBack: onReleaseRoomsSuccess,
 				failureCallBack: onReleaseRoomsFailure,
@@ -188,6 +196,7 @@ angular.module('sntRover').controller('rvGroupAvailabilityStatusController', [
 				$scope.$emit("hideLoader");
 			};
 		};
+
 		init();
 	}
 ]);

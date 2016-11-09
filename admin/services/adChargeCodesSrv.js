@@ -6,6 +6,7 @@ admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 	this.fetch = function(params) {
 		var deferred = $q.defer();
 		var url = '/admin/charge_codes/list.json';
+
 		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -90,6 +91,7 @@ admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 	this.searchChargeCode = function(params) {
 		var deferred = $q.defer();
 		var url = '/api/charge_codes/search';
+
 		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

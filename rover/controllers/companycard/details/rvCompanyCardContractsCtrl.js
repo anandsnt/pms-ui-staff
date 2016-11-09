@@ -22,6 +22,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.autoCompleteState = {};
 		var contractInfo = {};
 		var ratesList = [];
+
 		$scope.isDeleteAllowed = false;
 
 		/* Items related to ScrollBars
@@ -136,6 +137,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.isDeleteAllowed = data.is_delete_allowed;
 
 			var selectedRate = _.findWhere(ratesList, {id: data.contracted_rate_selected});
+
 			$scope.contractData.contractedRate = selectedRate? selectedRate.name : "";
 			/*
 			 *Nights pop up should be triggered only after contract details are saved
@@ -217,6 +219,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			var graphData = [];
 			var contracted = [];
 			var actual = [];
+
 			$scope.categories = [];
 			angular.forEach(data, function(item) {
 				itemDate = item.month + " " + item.year;
@@ -228,6 +231,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			});
 			if ($scope.categories.length > 0 && $scope.categories.length < 12) {
 				var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 				while ($scope.categories.length < 12) {
 					var monthComponents = $($scope.categories).last()[0].split(" ");
 					var lastMonth = monthComponents[0];
@@ -235,6 +239,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					var lastMonthIdx = $.inArray(lastMonth, months);
 					var thisMonth = months[(lastMonthIdx + 1) % 12];
 					var thisYear = lastMonthIdx === 11 ? parseInt(lastYear) + 1 : lastYear;
+
 					$scope.categories.push(thisMonth + " " + thisYear);
 				}
 			}
@@ -269,6 +274,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.addData.rates = ratesList;
 			$scope.errorMessage = "";
 		};
+
 		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
 
 
@@ -457,6 +463,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 			$scope.addData.rate_value = 0;
 			var myDate = new Date($rootScope.businessDate);
+
 			myDate.setDate(myDate.getDate() + 1);
 			$scope.addData.end_date = dateFilter(myDate, 'yyyy-MM-dd');
 			$scope.addData.is_fixed_rate = false;
@@ -480,6 +487,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.AddNewContract = function() {
 
 			var dataToPost = {};
+
 			dataToPost = dclone($scope.addData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
 
 			var saveContractSuccessCallback = function(data) {
@@ -526,6 +534,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			 */
 			var dataToUpdate = JSON.parse(JSON.stringify($scope.contractData));
 			var dataUpdated = false;
+
 			if (angular.equals(dataToUpdate, contractInfo)) {
 				dataUpdated = true;
 			} else {
@@ -533,6 +542,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			}
 			if (!dataUpdated) {
 				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
+
 				if ($stateParams.id === "add") {
 					var account_id = $scope.contactInformation.id;
 				} else {
@@ -555,6 +565,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			//Setup data for Rename mode
 			$scope.contractList.isRenameMode = true;
 			var renameId = $scope.contractList.contractSelected;
+
 			$scope.contractNameToRename = "";
 			for(var index = 0; index < $scope.contractList.current_contracts.length; index++) {
 				if(renameId == $scope.contractList.current_contracts[index].id) {
@@ -614,8 +625,10 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.contractList.history_contracts = [];
 				$scope.fetchContracts();
 			};
+
 			if(existingContractName !== $scope.contractList.contractNameToChange) {
 				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
+
 				if ($stateParams.id === "add") {
 					var account_id = $scope.contactInformation.id;
 				} else {
@@ -697,6 +710,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
                     }, function(data) {
                     	$scope.$emit('hideLoader');
                     	var processedResults = [];
+
                     	_.each(data.contract_rates, function(result) {
                     		processedResults.push({
                     			label: result.name,

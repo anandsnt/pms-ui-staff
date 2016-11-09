@@ -16,6 +16,7 @@ var BasePaymentCtrl = function($scope) {
 		$scope.errorMessage    = "";
 
 	};
+
 	init();
 
 	/**

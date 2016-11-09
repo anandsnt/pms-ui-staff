@@ -28,6 +28,7 @@ admin.controller('ADEmvTerminalCtrl', ['$scope', '$rootScope', 'ADEmvTerminalsSr
 		            var orderedData = params.sorting() ?
 		                                $filter('orderBy')($scope.data.results, params.orderBy()) :
 		                                $scope.data.results;
+
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
 		    });
@@ -55,6 +56,7 @@ admin.controller('ADEmvTerminalCtrl', ['$scope', '$rootScope', 'ADEmvTerminalsSr
 			});
 			$scope.itemListTerminals.reload();
 		};
+
 		$scope.invokeApi(ADEmvTerminalsSrv.deleteItem, {'item_id': id}, successCallBack);
 	};
 

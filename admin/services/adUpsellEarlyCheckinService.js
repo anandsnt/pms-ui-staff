@@ -12,8 +12,10 @@ admin.service('adUpsellEarlyCheckinService', ['$http', '$q', 'ADBaseWebSrvV2', f
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			 var room_types_list = [];
 			 var list = dclone(data.room_types, []);
+
 			    angular.forEach(data.room_types, function (item, index) {
 			      var obj = {};
+
 			      obj.value = item.id;
 			      obj.name = item.name;
 			      room_types_list.push(obj);

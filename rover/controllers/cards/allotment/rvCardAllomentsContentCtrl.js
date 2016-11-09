@@ -40,6 +40,7 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
     $scope.getGuestClassForArrival = function(allotment) {
         //"cancel" if cancelled, "check-in" if not cancelled
         var classes = isCancelledAllotment(allotment) ? 'cancel' : 'check-in';
+
         return classes;
     };
 
@@ -70,6 +71,7 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
     $scope.getGuestClassForDeparture = function(allotment) {
         //"cancel" if cancelled, 'check-out' if not cancelled
         var classes = isCancelledAllotment(allotment) ? 'cancel' : 'check-out';
+
         return classes;
     };
         
@@ -81,6 +83,7 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
     $scope.formatDateForUI = function(date_) {
         var type_ = typeof date_,
             returnString = '';
+
         switch (type_) {
             //if date string passed
             case 'string':
@@ -118,6 +121,7 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
             deceleration: 0.0001,
             shrinkScrollbars: 'clip'
         };
+
         $scope.setScroller('result_showing_area', scrollerOptions);
     };
 
@@ -174,6 +178,7 @@ angular.module('sntRover').controller('rvCardAllomentsContentCtrl', ['$scope', '
                 params: params,
                 successCallBack: onAllotmentSearchSuccess
             };
+
             $scope.callAPI(rvGroupSrv.searchGroupCard, options);
         } 
 

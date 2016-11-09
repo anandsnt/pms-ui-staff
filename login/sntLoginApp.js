@@ -1,5 +1,6 @@
 var GlobalApp = function() {
     var that = this;
+
     this.browser = "other";
     this.cordovaLoaded = false;
     this.loginUpdate = null;
@@ -49,6 +50,7 @@ var GlobalApp = function() {
         // $("body").append('<script type="text/javascript">'+ script +'</script>');
         ;
         var script_node = document.createElement('script');
+
         script_node.innerHTML = script;
 
         document.getElementById("login-page").appendChild(script_node);

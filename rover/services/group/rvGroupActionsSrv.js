@@ -123,10 +123,12 @@ angular.module('sntRover').service('rvGroupActionsSrv', ['$q', 'BaseWebSrvV2', f
 
         BaseWebSrvV2.getJSON(url, dataToSend).then(function (data) {
             var results = data.data.results;
+
             if (dataToSend.query) {
                 var first, last, room;
                 var str = dataToSend.query.toLowerCase();
                 var visible = 0;
+
                 for (var i in data.data.results) {
                     data.data.results[i].is_row_visible = false;
                     if (data.data.results[i].firstname) {

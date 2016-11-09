@@ -4,6 +4,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', 
 	/** Code for PRINT BOX drawer common Resize Handler starts here .. **/
 	var resizableMinHeight = 0;
 	var resizableMaxHeight = 90;
+
 	$scope.eventTimestamp = '';
 	$scope.data.printBoxHeight = resizableMinHeight;
 
@@ -19,16 +20,19 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', 
     }
   };
 	// Drawer resize options.
+
 	$scope.resizableOptions = {
 		minHeight: resizableMinHeight,
 		maxHeight: resizableMaxHeight,
 		handles: 's',
 		resize: function(event, ui) {
 			var height = $(this).height();
+
       heightChecker(height);
 		},
 		stop: function(event, ui) {
       var height = $(this).height();
+
 			preventClicking = true;
 			$scope.eventTimestamp = event.timeStamp;
       heightChecker(height);

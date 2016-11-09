@@ -37,6 +37,7 @@ admin.controller('ADServiceProviderDetailsCtrl', [
                 $scope.data = data;
                 $scope.$emit('hideLoader');
             };
+
             $scope.invokeApi(ADServiceProviderSrv.getServiceProviderDetails, {'id': $stateParams.id}, fetchSuccess);
         }
 

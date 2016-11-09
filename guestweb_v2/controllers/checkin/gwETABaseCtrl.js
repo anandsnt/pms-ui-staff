@@ -17,6 +17,7 @@ sntGuestWeb.controller('gwETABaseController', ['$scope', '$state', '$controller'
 
 			if ($scope.arrivalTime.length === 0) {
 				var popupOptions = angular.copy($scope.errorOpts);
+
 				popupOptions.resolve = {
 					message: function() {
 						return "Please select a valid time."
@@ -40,12 +41,14 @@ sntGuestWeb.controller('gwETABaseController', ['$scope', '$state', '$controller'
 							'charge': response.early_checkin_charge,
 							'id': response.early_checkin_offer_id
 						};
+
 						$state.go('earlyCheckinOptions', stateParams);
 					} else if (response.early_checkin_on && !response.early_checkin_available && !response.bypass_early_checkin) {
 						var stateParams = {
 							'time': response.checkin_time,
 							'isearlycheckin': true
 						}
+
 						$state.go('laterArrival', stateParams);
 					} else {
 						$state.go('autoCheckinFinal');
@@ -56,6 +59,7 @@ sntGuestWeb.controller('gwETABaseController', ['$scope', '$state', '$controller'
 					params: params,
 					successCallBack: updateReservationDetailsSuccess,
 				};
+
 				$scope.callAPI(GwCheckinSrv.updateReservationDetails, options);
 			}
 		};

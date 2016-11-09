@@ -7,6 +7,7 @@ var dclone = function(object, unwanted_keys) {
     return object;
   } else {
     var newObject = JSON.parse(JSON.stringify(object));
+
     for (var i = 0; i < unwanted_keys.length; i++) {
       delete newObject[unwanted_keys[i]];
     }
@@ -39,6 +40,7 @@ var getJqDateFormat = function(dateFormat) {
 };
 var loseFocus = function() {
   var inputs = document.getElementsByTagName('input');
+
   for (var i = 0; i < inputs.length; ++i) {
     inputs[i].blur();
   }
@@ -63,6 +65,7 @@ var extractScreenDetails = function(identifier, screen_mappings, cms_data) {
     "description": ""
   };
   // refer GwScreenMappingSrv for screen_mappings
+
   selected_screen_details = _.find(screen_mappings, function(mapping) {
     return mapping.value === identifier;
   });
@@ -87,6 +90,7 @@ var returnYears = function() {
   var years = [];
   var startYear = new Date().getFullYear();
   var endYear = parseInt(startYear) + 100;
+
   for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
     years.push(year);
   };
@@ -97,6 +101,7 @@ var returnYearsInReverseOrder = function() {
   var years = [];
   var startYear = new Date().getFullYear();
   var endYear = parseInt(startYear) - 150;
+
   for (year = startYear; year >= parseInt(endYear); year--) {
      years.push(year);
   };
@@ -106,6 +111,7 @@ var returnYearsInReverseOrder = function() {
 var returnSelectedMonth = function(month_to_check) {
   var months = returnMonthsArray();
   var selectedMonth = {};
+
   selectedMonth = _.find(months, function(month) {
     return month.value === month_to_check;
   });
@@ -177,6 +183,7 @@ var getFormattedTime = function(timeToFormat) {
   var timeHour = parseInt(timeToFormat.slice(0, 2));
   var timeMinute = timeToFormat.slice(3, 5);
   var primeTime = timeToFormat.slice(-2).toLowerCase();
+
   if (primeTime === 'pm' && timeHour < 12) {
     timeHour = timeHour + 12;
   } else if (primeTime === 'am' && timeHour === 12) {
@@ -194,6 +201,7 @@ var getIndexOfSelectedTime = function(time) {
   var primeTime = time.slice(-2).toLowerCase();
   //set the minute to next available level, ie 00,15,30,45
   var timeLimit = "00";
+
   if (timeMinute === "00" || timeMinute < 15) {
     timeMinute = "15";
   } else if (timeMinute >= 15 && timeMinute < 30) {
@@ -210,6 +218,7 @@ var getIndexOfSelectedTime = function(time) {
     primeTime = (primeTime === "pm") ? "am" : "pm";
   };
   //if hour is 12, need to switch primetimes
+
   (timeHour === 12 && timeMinute === "00") ? switchAMPM(): "";
   timeLimit = timeHour + ":" + timeMinute + " " + primeTime;
   //find the index of the hoteltime inside the list we have
@@ -217,6 +226,7 @@ var getIndexOfSelectedTime = function(time) {
   var index = _.findIndex(timeList, function(time) {
     return time === timeLimit;
   });
+
   return index;
 };
 
@@ -229,6 +239,7 @@ var checkIfDateIsValid = function(month, day, year) {
   var d = parseInt(comp[1], 10);
   var y = parseInt(comp[2], 10);
   var date = new Date(y, m-1, d);
+
   if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
      return true
   } else {

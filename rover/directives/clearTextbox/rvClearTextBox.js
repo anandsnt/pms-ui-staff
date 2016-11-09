@@ -24,6 +24,7 @@ sntRover.directive('rvClearTextBox', [function() {
 				element.val('');
 			}
 		});
+
 		scope.$on('$destroy', watcherFn);
     };
 

@@ -2,6 +2,7 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 
 
 	var that = this;
+
 	this.usersArray = {};
     this.departmentsArray = [];
    /**
@@ -13,6 +14,7 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 
 		var deferred = $q.defer();
 		var url = '/admin/users.json';
+
 		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 
 
@@ -67,6 +69,7 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 		var deferred = $q.defer();
 		var url = '/admin/users/'+data.user_id;
 		var updateData = data;
+
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 			that.updateUserDataOnUpdate(updateData.user_id, "full_name", updateData.first_name+" "+updateData.last_name);
 			that.updateUserDataOnUpdate(updateData.user_id, "email", updateData.email);
@@ -124,6 +127,7 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 	 */
 	this.getDepartmentName = function(departmentId) {
 		var deptName = "";
+
 		angular.forEach(that.departmentsArray, function(value, key) {
 	     	if(value.value === departmentId) {
 	     		deptName = value.name;
@@ -177,6 +181,7 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 		var deferred = $q.defer();
 		var url = '/admin/users/'+data.id;
 		var itemToRemove = data.index;
+
 		delete data["index"];
 
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {

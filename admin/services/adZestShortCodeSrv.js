@@ -4,6 +4,7 @@ admin.service('ADZestShortCodeSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSr
         this.fetch = function (params) {
             var deferred = $q.defer();
             var url = '/admin/sms_campaigns.json';
+
             ADBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {

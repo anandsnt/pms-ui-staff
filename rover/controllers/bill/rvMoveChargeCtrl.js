@@ -24,6 +24,7 @@ sntRover.controller('RVMoveChargeCtrl',
 		var createBillOptions = function() {
 			//Bills are collected from reservationBillData or transactionsDetails		
 			var data = $scope.reservationBillData ||$scope.transactionsDetails;			
+
 			_.each(data.bills, function(result, index) {
 				if(index !== $scope.currentActiveBill) {
 					$scope.billOptions.push(result);
@@ -59,6 +60,7 @@ sntRover.controller('RVMoveChargeCtrl',
 
 		$scope.getGuestStatusIcon = function(reservationStatus, isLateCheckoutOn, isPrecheckin) {
 			var viewStatus = "";
+
 			if (isLateCheckoutOn && "CHECKING_OUT" === reservationStatus) {
 				viewStatus = "late-check-out";
 				return viewStatus;
@@ -214,6 +216,7 @@ sntRover.controller('RVMoveChargeCtrl',
                 $scope.errorMessage = data;
                 $scope.$emit('hideLoader');
             };
+
 			$scope.invokeApi(RVMoveChargeSrv.moveChargesToTargetEntity, params, chargesMovedSuccess, failureCallback );
 		};
 		initiate();

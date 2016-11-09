@@ -22,6 +22,7 @@ admin.controller('ADToolsCtrl',
             $scope.currentClickedElement = -1;
             $scope.isAddMode = false;
         };
+
         $scope.invokeApi(ADToolsSrv.fetch, {}, successCallbackFetch);
     };
     //To list tools
@@ -41,6 +42,7 @@ admin.controller('ADToolsCtrl',
             $scope.$emit('hideLoader');
         };
         var data = {"id": id };
+
         $scope.invokeApi(ADToolsSrv.getToolsDetails, data, successCallbackRender);
     };
    /*
@@ -79,6 +81,7 @@ admin.controller('ADToolsCtrl',
             $scope.listTools();
 
         };
+
         if($scope.isAddMode) {
             $scope.invokeApi(ADToolsSrv.saveTools, $scope.toolsData, successCallbackSave);
         } else {
@@ -99,6 +102,7 @@ admin.controller('ADToolsCtrl',
         var successCallbackUpdateInventory = function(data) {
             $scope.$emit('hideLoader');
         };
+
         inventory.is_auto_sync = !inventory.is_auto_sync;
         $scope.invokeApi(ADToolsSrv.updateTool, inventory, successCallbackUpdateInventory);
     };

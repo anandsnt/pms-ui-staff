@@ -5,8 +5,10 @@ var SwipeOperation = function() {
 	 * Function to create the token - Swipe.
 	 * @param {obj} swipedCardData - initial swiped data to create token
 	 */
+
 	this.createDataToTokenize = function(swipedCardData) {
 			var ksn = swipedCardData.RVCardReadTrack2KSN;
+
       		if(swipedCardData.RVCardReadETBKSN !== "" && typeof swipedCardData.RVCardReadETBKSN !== "undefined") {
 				ksn = swipedCardData.RVCardReadETBKSN;
 			}
@@ -62,6 +64,7 @@ var SwipeOperation = function() {
 			"expiryYear": swipedCardData.cardExpiryYear,
 			"cardNumber": swipedCardData.cardNumber
 		};
+
 		return swipedCardDataToSave;
 	};
 

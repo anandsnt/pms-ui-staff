@@ -10,6 +10,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     */
     var getBillSettingsInfoRequestParams = function() {
         var params = {};
+
         if($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
             params.id = $scope.reservationBillData.reservation_id;
             params.is_type = "Reservation";
@@ -21,6 +22,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                 params.is_type = "Account";
 
                 var card = $scope.groupConfigData.summary;
+
                 if(!!card.company.name && !!card.travel_agent.name && card.company.name !== '' && card.travel_agent.name !== '') {
                     // Both cards are attached.
                 }
@@ -44,6 +46,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                 params.is_type = "Account";
 
                 var card = $scope.accountConfigData.summary;
+
                 if(!!card.company.name && !!card.travel_agent.name && card.company.name !== '' && card.travel_agent.name !== '') {
                     // Both cards are attached.
                 }
@@ -78,6 +81,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             $scope.$emit('hideLoader');
             $scope.data = response.data;
         };
+
         $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo, params, onBillSettingsInfoFetchSuccess);
     };
 
@@ -109,6 +113,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     */
     $scope.printBill = function() {
         var printRequest = getPrintEmailRequestParams();
+
         printRequest.bill_layout = $scope.data.default_bill_settings;
         $scope.clickedPrint(printRequest);
     };
@@ -118,6 +123,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     */
     $scope.emailBill = function() {
         var emailRequest = getPrintEmailRequestParams();
+
         emailRequest.bill_layout = $scope.data.default_bill_settings;
         emailRequest.to_address = $scope.data.to_address;
         $scope.clickedEmail(emailRequest);
@@ -131,6 +137,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         fetchBillSettingsInfo();
     };
     // Toggle on COMPANY/TA-CARD invoice generation tab.
+
     $scope.changeCompanyCardInvoiceToggle = function() {
         $scope.isCompanyCardInvoice = !$scope.isCompanyCardInvoice;
     };

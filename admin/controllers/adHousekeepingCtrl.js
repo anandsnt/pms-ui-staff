@@ -8,6 +8,7 @@ admin.controller('adHousekeepingCtrl', ['$state', '$scope', '$rootScope', 'ADHot
 		$scope.$emit('hideLoader');
 		$scope.watchInspectedStatus();
 	};
+
 	$scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccess);
         $scope.isStandAlone = $rootScope.isStandAlone;
 	/*
@@ -21,6 +22,7 @@ admin.controller('adHousekeepingCtrl', ['$state', '$scope', '$rootScope', 'ADHot
 			});
 		};
 		var dict = {};
+
 		dict.housekeeping = $scope.data;
                 dict.advanced_queue_flow_enabled = $scope.advanced_queue_flow_enabled;
 

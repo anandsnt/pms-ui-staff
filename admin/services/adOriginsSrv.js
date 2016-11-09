@@ -6,6 +6,7 @@ admin.service('ADOriginsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 	this.fetch = function() {
 		var deferred = $q.defer();
 		var url = '/api/booking_origins.json';
+
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -19,6 +20,7 @@ admin.service('ADOriginsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 	this.toggleUsedOrigins = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/booking_origins/use_origins';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

@@ -10,6 +10,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl', ['$scope', '$rootScope', '$filter'
     * MLI session set up
     */
 	var MLISessionId = "";
+
 	try {
 			HostedForm.setMerchant($rootScope.MLImerchantId);
 		}
@@ -30,6 +31,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl', ['$scope', '$rootScope', '$filter'
 	* setting the scroll options for the add payment view
 	*/
 	var scrollerOptions = { preventDefault: false};
+
   	$scope.setScroller('newpaymentview', scrollerOptions);
 
   	$scope.$on('showaddpayment', function(event) {
@@ -59,6 +61,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl', ['$scope', '$rootScope', '$filter'
                 $scope.$emit('displayErrorMessage', errorMessage);
             };
             var paymentParams = {"direct_bill": true};
+
             $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, successCallback, errorCallback);
     };
     $scope.fetchAvailablePaymentTypes();
@@ -72,6 +75,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl', ['$scope', '$rootScope', '$filter'
      			return;
      		}
 			 var sessionDetails = {};
+
 			 sessionDetails.cardNumber = $scope.saveData.card_number;
 			 sessionDetails.cardSecurityCode = $scope.saveData.cvv;
 			 sessionDetails.cardExpiryMonth = $scope.saveData.card_expiry_month;

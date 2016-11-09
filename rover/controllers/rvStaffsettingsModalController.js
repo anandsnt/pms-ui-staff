@@ -16,6 +16,7 @@ $scope.fetchData = function() {
     var fetchUserInfoFailureCallback = function(data) {
         $scope.$emit('hideLoader');
     };
+
     $scope.invokeApi(RVSettingsSrv.fetchUserInfo, {}, fetchUserInfoSuccessCallback, fetchUserInfoFailureCallback);
 
 };
@@ -54,6 +55,7 @@ $scope.updateSettings = function() {
 		 $scope.errorMessage=data;
 	    $scope.$emit('hideLoader');
 	};
+
 	$scope.invokeApi(RVSettingsSrv.updateUserInfo, {'new_password': $scope.newPassword}, updateUserInfoSuccessCallback, updateUserInfoFailureCallback);
 	};
 

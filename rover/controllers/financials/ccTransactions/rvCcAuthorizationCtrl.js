@@ -17,6 +17,7 @@ sntRover.controller('RVccAuthorizationController', ['$scope', '$filter', '$state
     	var options = {
     		successCallBack: fetchAuthDataSuccess
         };
+
         $scope.callAPI(RVccTransactionsSrv.fetchAuthData, options);
 
 	};

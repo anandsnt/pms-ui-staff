@@ -44,6 +44,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		var reportDetailsFilterScrollRefresh = $scope.$on(reportMsgs['REPORT_DETAILS_FILTER_SCROLL_REFRESH'], function() {
 			$scope.refreshSidebarScroll();
 		});
+
 		$scope.$on( '$destroy', reportDetailsFilterScrollRefresh );
 
 
@@ -62,6 +63,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.currencySymbol = $rootScope.currencySymbol;
         var setTotalsForReport = function(totals) {
                 var totalsForReport = [], v;
+
                 _.each(totals, function(item) {
                     if (item.label.indexOf('Conversion')!==-1) {
                         if (typeof item.value == typeof 'str' && item.value.indexOf('%')!=-1) {
@@ -570,6 +572,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				'checkRateAdjust': checkGeneralOptions.show_rate_adjustments_only,
 				'chosenSortBy': $scope.chosenReport.chosenSortBy
 			};
+
 			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions, $scope.$parent.resultsTotalRow) );
 			// if there are any results
 			$scope.hasNoResults = _.isEmpty( $scope.$parent.results );
@@ -970,6 +973,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 		// when user press submit from pre-print modal, continue our calls to '$_fetchFullReport'
 		// READ MORE: rvReportsMainCtrl:L#:61-75
 		var prePrintDone = $rootScope.$on( reportMsgs['REPORT_PRE_PRINT_DONE'], $_fetchFullReport );
+
 		$scope.$on( '$destroy', prePrintDone );
 
 		function $_fetchFullReport () {
@@ -1103,16 +1107,19 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$scope.hasSort = function(index) {
 			var s = $scope.chosenReport.sortByOptions || [];
+
 			return !! s[index];
 		}
 
 		$scope.isAsc = function(index) {
 			var s = $scope.chosenReport.sortByOptions || [];
+
 			return !! s[index] && s[index]['sortDir'] === true;
 		};
 
 		$scope.isDesc = function(index) {
 			var s = $scope.chosenReport.sortByOptions || [];
+
 			return !! s[index] && s[index]['sortDir'] === false;
 		};
 
@@ -1124,6 +1131,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 	     */
 	    $scope.getReservationClass = function (reservationStatus) {
 	        var class_ = '';
+
 	        switch (reservationStatus.toUpperCase()) {
 	            case "RESERVED":
 	                class_ = 'arrival';

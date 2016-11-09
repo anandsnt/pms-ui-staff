@@ -78,6 +78,7 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
             var orderedData = params.sorting() ?
               $filter('orderBy')($scope.deviceList, params.orderBy()) :
               $scope.deviceList;
+
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
           }
         });
@@ -115,6 +116,7 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
 
   $scope.getDisplayTime = function(date) {
     var dateObj = new Date(date)
+
     return dateObj.toLocaleString();
   }
 
@@ -139,9 +141,11 @@ admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$sta
     $scope.hours = [];
     for(var i = 1; i < 25; i++) {
       var hour = {'name': i, 'value': i};
+
       $scope.hours.push(hour);
     } 
   };
+
   setHoursList();
 
   }]);

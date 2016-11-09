@@ -52,6 +52,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 */
 		var whetherSummaryDataChanged = function () {
 			var currentSummaryData = $scope.accountConfigData.summary;
+
 			for (key in summaryMemento) {
 				if (!angular.equals(currentSummaryData[key], summaryMemento[key])) {
 					return false;
@@ -129,6 +130,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		 * @return undefined
 		 */
 		var demographicsMemento = {};
+
 		$scope.openDemographicsPopup = function() {
 			$scope.errorMessage = "";
 			var showDemographicsPopup = function() {
@@ -223,6 +225,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				onRemoveAccountNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 				};
+
 			event.stopPropagation();
 			$scope.callAPI(rvAccountsConfigurationSrv.removeAccountNote, {
 				successCallBack: onRemoveAccountNoteSuccess,
@@ -247,6 +250,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				var onUpdateAccountNoteSuccess = function(data) {
 					$scope.accountSummaryData.editingNote.description = $scope.accountSummaryData.newNote;
 					var noteArrayIndex = _.findIndex($scope.accountConfigData.summary.notes, {note_id: data.note_id});
+
 					$scope.accountConfigData.summary.notes[noteArrayIndex] = $scope.accountSummaryData.editingNote;
 					$scope.refreshScroller("rvAccountSummaryScroller");
 					$scope.cancelEditModeAccountNote();
@@ -254,6 +258,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				onUpdateAccountNoteFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
 				};
+
 				$scope.callAPI(rvAccountsConfigurationSrv.updateAccountNote, {
 					successCallBack: onUpdateAccountNoteSuccess,
 					failureCallBack: onUpdateAccountNoteFailure,
@@ -373,12 +378,14 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				}
 			});
 		};
+
 		$scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, successCallBackOfFetchPayment);
 		// Show DEPOSIT/BALANCE popup
 		$scope.openDepositBalanceModal = function() {
 			var dataToSrv = {
 				"posting_account_id": $scope.accountConfigData.summary.posting_account_id
 			};
+
 			$scope.invokeApi(RVDepositBalanceSrv.getRevenueDetails, dataToSrv, $scope.successCallBackFetchDepositBalance);
 		};
 
@@ -411,9 +418,11 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		var processSwipedData = function(swipedCardData) {
 			var swipeOperationObj = new SwipeOperation();
 			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+
 			$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
 		};
 		// Catching Swipe here
+
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 			var swipeOperationObj = new SwipeOperation();
 			var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
@@ -422,6 +431,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 				swipedCardData.token = tokenValue;
 				processSwipedData(swipedCardData);
 			};
+
 			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback );
 		});
 

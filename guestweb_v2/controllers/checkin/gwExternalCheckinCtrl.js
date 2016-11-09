@@ -12,6 +12,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 
 		var init = function() {
 			var screenIdentifier = "EXTERNAL_CHECKIN";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.lastname = "";
 			$scope.confirmationNumber = "";
@@ -74,6 +75,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				params: params,
 				successCallBack: onSuccess,
 			};
+
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 				onSuccess({"guest_web_token": "4120081e61c6e6abe51258a738ea94d1"});//dummy token
 			}
@@ -92,6 +94,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 
 				var reservations = [];
 				//filter out reservations with 'RESERVED' status
+
 				angular.forEach(response.results, function(value, key) {
 					if (value.reservation_status === 'RESERVED') {
 						reservations.push(value);
@@ -105,6 +108,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				} else {
 					var reservation_data = reservations[0];
 					//if reservation status is CANCELED -> No matches
+
 					if (reservation_data.reservation_status === 'CANCELED') {
 						noMatchAction();
 					}
@@ -140,6 +144,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				"hotel_identifier": zestwebData.hotelIdentifier
 			};
 			//check if all fields are filled
+
 			$scope.lastname.length > 0 ? (params.last_name = $scope.lastname) : '';
 			$scope.confirmationNumber.length > 0 ? (params.alt_confirmation_number = $scope.confirmationNumber) : '';
 			(typeof $scope.departureDate !== "undefined" && $scope.departureDate.length > 0) ? (params.departure_date = dateToSend) : '';
@@ -149,6 +154,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				successCallBack: onSuccess,
 				failureCallBack: onFailure
 			};
+
 			if($scope.lastname.length > 0 && 
 			  ($scope.confirmationNumber.length > 0 || (typeof $scope.departureDate !== "undefined" && $scope.departureDate.length >0))) {
 				//if last name and either of confirmation number or departure date is provided
@@ -161,6 +167,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				else{
 					// show popup
 					var popupOptions = angular.copy($scope.errorOpts);
+
 					popupOptions.resolve = {
 						message: function() {
 							return "Please provide all the required information"

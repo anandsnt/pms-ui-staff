@@ -48,6 +48,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 			});
 
 			var wanted_keys = ["room_type_id", "room_type_name", "best_available_rate_amount", "rate_id", "best_available_rate_id", "update_existing_reservations_rate"];
+
 			$scope.roomTypes = util.getListOfKeyValuesFromAnArray($scope.selectedRoomTypeAndRates, wanted_keys);
 
 			//adding currency symbol to best available rate
@@ -85,6 +86,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 			var roomType = _.findWhere($scope.roomTypes, {
 				"room_type_id": parseInt(row.room_type_id)
 			});
+
 			if (roomType) {
 				row.best_available_rate_amount = roomType.best_available_rate_amount;
 				row.best_available_rate_id = roomType.best_available_rate_id;
@@ -93,6 +95,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 					var selectedRateDetails = _.findWhere($scope.allotmentConfigData.roomblock.selected_room_types_and_rates, {
 						room_type_id: roomType.room_type_id
 					});
+
 					row.single_rate = selectedRateDetails.single_rate;
 					row.double_rate = selectedRateDetails.double_rate;
 					row.extra_adult_rate = selectedRateDetails.extra_adult_rate;
@@ -137,6 +140,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 		 */
 		var scrollToEnd = function() {
 			var scroller = $scope.$parent.myScroll['room_type_scroller'];
+
 			$timeout(function() {
 				scroller.scrollTo(scroller.maxScrollX, scroller.maxScrollY, 500);
 			}, 300);
@@ -181,6 +185,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 			});
 			//since selectedRoomTypeAndRates containst some unwanted keys
 			var wanted_keys = ["room_type_id", "single_rate", "double_rate", "extra_adult_rate", "rate_id", "best_available_rate_id", "update_existing_reservations_rate"];
+
 			selectedRoomTypeAndRates = util.getListOfKeyValuesFromAnArray(selectedRoomTypeAndRates, wanted_keys);
 
 			var params = {
@@ -208,6 +213,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 					successCallBack: successCallBackOfSaveNewRoomTypesAndRates,
 					failureCallBack: failureCallBackOfSaveNewRoomTypesAndRates
 				};
+
 				$scope.callAPI(rvAllotmentConfigurationSrv.updateSelectedRoomTypesAndRates, options);
 			}
 		};
@@ -244,6 +250,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 			//list of selecetd room types' ids
 			var selectedIdList = _.pluck($scope.selectedRoomTypeAndRates, "room_type_id");
 			//Converting to integer
+
 			selectedIdList = _.map(selectedIdList, function(element) {
 				return parseInt(element);
 			});

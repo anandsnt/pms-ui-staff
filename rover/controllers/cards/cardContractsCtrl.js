@@ -21,6 +21,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 		$scope.autoCompleteState = {};
 		var contractInfo = {};
 		var ratesList = [];
+
 		$scope.isDeleteAllowed = false;
 
 		if (typeof $scope.reservationDetails === 'undefined') {
@@ -139,6 +140,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			$scope.isDeleteAllowed = data.is_delete_allowed;
 
 			var selectedRate = _.findWhere(ratesList, {id: data.contracted_rate_selected});
+
 			$scope.contractData.contractedRate = selectedRate? selectedRate.name : "";
 
 			if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
@@ -202,6 +204,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			var graphData = [];
 			var contracted = [];
 			var actual = [];
+
 			$scope.categories = [];
 			angular.forEach(data, function(item) {
 				itemDate = item.month + " " + item.year;
@@ -213,6 +216,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			});
 			if ($scope.categories.length > 0 && $scope.categories.length < 12) {
 				var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 				while ($scope.categories.length < 12) {
 					var monthComponents = $($scope.categories).last()[0].split(" ");
 					var lastMonth = monthComponents[0];
@@ -220,6 +224,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 					var lastMonthIdx = $.inArray(lastMonth, months);
 					var thisMonth = months[(lastMonthIdx + 1) % 12];
 					var thisYear = lastMonthIdx === 11 ? parseInt(lastYear) + 1 : lastYear;
+
 					$scope.categories.push(thisMonth + " " + thisYear);
 				}
 			}
@@ -456,6 +461,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			$scope.addData.selected_type = "amount";
 			$scope.addData.rate_value = 0;
 			var myDate = new Date($rootScope.businessDate);
+
 			myDate.setDate(myDate.getDate() + 1);
 			$scope.addData.end_date = dateFilter(myDate, 'yyyy-MM-dd');
 			$scope.addData.is_fixed_rate = false;
@@ -522,6 +528,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			 */
 			var dataToUpdate = JSON.parse(JSON.stringify($scope.contractData));
 			var dataUpdated = false;
+
 			if (angular.equals(dataToUpdate, contractInfo)) {
 				dataUpdated = true;
 			} else {
@@ -529,6 +536,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			}
 			if (!dataUpdated) {
 				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
+
 				if ($stateParams.id === "add") {
 					var account_id = $scope.contactInformation.id;
 				} else {
@@ -553,6 +561,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			//Setup data for Rename mode
 			$scope.contractList.isRenameMode = true;
 			var renameId = $scope.contractList.contractSelected;
+
 			$scope.contractNameToRename = "";
 			for(var index = 0; index < $scope.contractList.current_contracts.length; index++) {
 				if(renameId == $scope.contractList.current_contracts[index].id) {
@@ -611,8 +620,10 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 				$scope.contractList.history_contracts = [];
 				$scope.fetchContracts();
 			};
+
 			if(existingContractName !== $scope.contractList.contractNameToChange) {
 				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
+
 				if ($stateParams.id === "add") {
 					var account_id = $scope.contactInformation.id;
 				} else {
@@ -694,6 +705,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
                     }, function(data) {
                     	$scope.$emit('hideLoader');
                     	var processedResults = [];
+
                     	_.each(data.contract_rates, function(result) {
                     		processedResults.push({
                     			label: result.name,

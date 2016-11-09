@@ -19,6 +19,7 @@ admin.controller('ADCampaignsListCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADCa
         	params.total(data.total_count);
             $defer.resolve($scope.data);
 		};
+
 		$scope.invokeApi(ADCampaignSrv.fetchCampaigns, getParams, fetchSuccessOfItemList);
 	};
 
@@ -57,6 +58,7 @@ admin.controller('ADCampaignsListCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADCa
 			$scope.reloadTable();
 		};
 		var params = {"id": id};
+
 		$scope.invokeApi(ADCampaignSrv.deleteCampaign, params, deleteSuccess);
 	};
 
@@ -65,6 +67,7 @@ admin.controller('ADCampaignsListCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADCa
 			return "";
 		}
 		var timeDict = tConvert(time);
+
 		return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
 	};
 

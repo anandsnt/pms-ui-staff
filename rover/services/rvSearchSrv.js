@@ -1,6 +1,7 @@
 angular.module('sntRover').service('RVSearchSrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$vault', function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault) {
 
 	var self = this;
+
 	self.searchPerPage = 50;
 	self.page = 1;
 	self.to_date = "";
@@ -157,6 +158,7 @@ angular.module('sntRover').service('RVSearchSrv', ['$q', 'RVBaseWebSrv', 'rvBase
 	this.searchByCC = function(swipeData) {
 		var deferred = $q.defer();
 		var url = '/staff/payments/search_by_cc';
+
 		RVBaseWebSrv.postJSON(url, swipeData).then(function(data) {
 			for(var i = 0; i < data.length; i++) {
 					data[i].is_row_visible = true;
@@ -170,8 +172,10 @@ angular.module('sntRover').service('RVSearchSrv', ['$q', 'RVBaseWebSrv', 'rvBase
 	};
 	this.fetchReservationsToPostCharge = function(dataToSrv) {
 		var deferred = $q.defer();
+
 		if(dataToSrv.refreshApi) {
 			var url = 'api/reservations/search_reservation';
+
 			rvBaseWebSrvV2.postJSON(url, dataToSrv.postData).then(function(data) {
 				deferred.resolve(data);
 				self.reservationsList = data;

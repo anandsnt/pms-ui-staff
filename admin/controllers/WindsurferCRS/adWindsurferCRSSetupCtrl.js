@@ -24,6 +24,7 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
                 if ($scope.windsurferSetup.full_refresh) {
                     timer = $interval(function() {
                         var refreshDateObj = new Date($scope.windsurferSetup.full_refresh);
+
                         $scope.lastRefreshedTimeMark = timeSince(refreshDateObj.valueOf());
                     }, 1000);
                 }
@@ -67,6 +68,7 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
                                 $scope.datepicker.to = $scope.datepicker.from;
                             }
                             var currFromDate = new tzIndependentDate($scope.datepicker.from);
+
                             $scope.datepicker.settings.to.maxDate = new Date(currFromDate.setDate(currFromDate.getDate() + MAX_REFRESH_SPAN_DAYS));
                         }
                     },
@@ -144,6 +146,7 @@ admin.controller('adWindsurferCRSSetupCtrl', ['$scope', '$rootScope', 'windsurfe
                 params: _.omit(params, ["default_payment_id", "default_origin", "default_rate"]),
                 successCallBack: successCallBackOfWindsurferCRSSetup
             };
+
             $scope.callAPI(adWindsurferCRSSetupSrv.saveWindsurferCRSConfiguration, options);
         };
 

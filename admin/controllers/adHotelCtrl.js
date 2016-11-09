@@ -29,6 +29,7 @@ admin.controller('ADHotelListCtrl', ['$scope', '$rootScope', '$state', '$statePa
 				var orderedData = params.sorting() ?
 					$filter('orderBy')($scope.data.hotels, params.orderBy()) :
 					$scope.data.hotels;
+
 				$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 			}
 		});
@@ -37,11 +38,13 @@ admin.controller('ADHotelListCtrl', ['$scope', '$rootScope', '$state', '$statePa
 	var FetchHotelDetails = function() {
 		$scope.invokeApi(ADHotelListSrv.fetch, {}, fetchSuccess);
 	};
+
 	$scope.searchHotels = function() {
 		populateHighlightWordArray($scope.searchTerm);
 		var options = {
 				'query': $scope.searchTerm
 		};
+
 		$scope.invokeApi(ADHotelListSrv.fetch, options, fetchSuccess);
 	};
 
@@ -52,6 +55,7 @@ admin.controller('ADHotelListCtrl', ['$scope', '$rootScope', '$state', '$statePa
 	$scope.toggleClicked = function(hotel) {
 		var confirmForReservationImport = true;
       	// show confirm if it is going turn on stage
+
       	if(hotel.is_res_import_on === 'false') {
           	confirmForReservationImport = confirm("Do NOT switch ON, until hotel mapping and setup is completed!, Do you want to proceed?");
       	}
@@ -60,11 +64,13 @@ admin.controller('ADHotelListCtrl', ['$scope', '$rootScope', '$state', '$statePa
       	if(confirmForReservationImport) {
 	      	var isResImportOn = hotel.is_res_import_on === 'true' ? false : true;
 	      	var data = {'hotel_id': hotel.id,  'is_res_import_on': isResImportOn };
+
 	      	selectedHotel = hotel;
 	      	var postSuccess = function() {
 	      		selectedHotel.is_res_import_on = (selectedHotel.is_res_import_on === 'true') ? 'false' : 'true';
 				$scope.$emit('hideLoader');
 			};
+
 			$scope.invokeApi(ADHotelListSrv.postReservationImportToggle, data, postSuccess);
 		}
 	};
@@ -78,6 +84,7 @@ admin.controller('ADHotelListCtrl', ['$scope', '$rootScope', '$state', '$statePa
 		$scope.searchWords = [];
 		FetchHotelDetails();
 	};
+
 	initMe();
 
 

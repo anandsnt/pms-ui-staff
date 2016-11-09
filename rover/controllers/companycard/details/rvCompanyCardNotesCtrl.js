@@ -12,6 +12,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     */
     var scrollToTop = function() {
         var scroller = $scope.getScroller('companycard_notes_scroller');
+
         $timeout(function() {
             scroller.scrollTo(0, 0, 300);
         }, 0);
@@ -42,6 +43,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
             params: params,
             successCallBack: successCallBackOfFetchNotes
         };
+
         $scope.callAPI(rvCompanyCardNotesSrv.fetchNotes, options);
     };
 
@@ -53,6 +55,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     var successCallBackOfDeleteNote = function(data, successCallBackParameters) {
         //we are going to stripe the note from the list
         var indexToDelete = successCallBackParameters.index;
+
         $scope.notes.splice(indexToDelete, 1);
         $scope.refreshScroller('companycard_notes_scroller');
         $scope.contactInformation.account_notes_count = $scope.notes.length;
@@ -92,6 +95,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
                 index: deletingIndex
             }
         };
+
         $scope.callAPI(rvCompanyCardNotesSrv.deleteNote, options);
     };
 
@@ -109,6 +113,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
             'date': data.date,
             'id': data.id
         };
+
         $scope.notes.unshift(0);
         $scope.notes[0] = noteToAdd;
 
@@ -138,6 +143,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
             params: params,
             successCallBack: successCallBackOfCreateNote
         };
+
         $scope.callAPI(rvCompanyCardNotesSrv.createNote, options);
     };
 
@@ -148,9 +154,11 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     */
     var successCallBackOfFetchUpdateActiveNote = function(data) {
         var indexOfNote = _.findIndex($scope.notes, {id: $scope.editingNote.id}) + 1;
+
         $scope.cancelEditMode();
         fetchNotes();
         var scroller = $scope.getScroller('companycard_notes_scroller');
+
         $timeout(function() {
             scroller.scrollToElement('.notes.wrapper li:nth-child('+indexOfNote+')', 300);
         }, 0);
@@ -178,6 +186,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
           params: params,
           successCallBack: successCallBackOfFetchUpdateActiveNote
         };
+
         $scope.callAPI(rvCompanyCardNotesSrv.updateNote, options);
     };
 
@@ -207,6 +216,7 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     $scope.formatDateForUI = function(date_) {
         var type_ = typeof date_,
             returnString = '';
+
         switch (type_) {
           //if date string passed
           case 'string':

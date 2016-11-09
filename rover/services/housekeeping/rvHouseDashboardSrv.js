@@ -7,6 +7,7 @@ angular.module('sntRover').service('RVHkDashboardSrv', [
 		this.fetch = function() {
 			var deferred = $q.defer();
 			var url = '/house/dashboard.json';
+
 			RVBaseWebSrv.getJSON(url).then(function(response) {
 				deferred.resolve(response);
 			},

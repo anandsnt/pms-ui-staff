@@ -71,6 +71,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          */
         var ifMandatoryValuesEntered = function() {
             var summary = $scope.groupConfigData.summary;
+
             return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
         }
 
@@ -91,6 +92,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         var formatDateForAPI = function(date_) {
             var type_ = typeof date_,
                 returnString = '';
+
             switch (type_) {
                 //if date string passed
                 case 'string':
@@ -113,6 +115,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         $scope.formatDateForUI = function(date_) {
             var type_ = typeof date_,
                 returnString = '';
+
             switch (type_) {
                 //if date string passed
                 case 'string':
@@ -534,6 +537,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     successCallBack: successCallBackOfChangeDatesAPI, //null case will be handled from baseCtrl
                     failureCallBack: failureCallBackOfChangeDatesAPI //null case will be handled from baseCtrl
                 };
+
                 $scope.callAPI(rvGroupConfigurationSrv.changeDates, options);
             };
 
@@ -660,6 +664,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     successCallBack: successCallBackOfMoveDatesAPI,
                     failureCallBack: failureCallBackOfMoveDatesAPI
                 };
+
                 $scope.callAPI(rvGroupConfigurationSrv.completeMoveGroup, options);
             };
 
@@ -766,6 +771,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          */
         var fetchSuccessOfSummaryData = function(data) {
             var summaryData = $scope.groupConfigData.summary; // ref for group summary
+
             summaryData = _.extend(summaryData, data.groupSummary);
             if (!summaryData.release_date) {
                 summaryData.release_date = summaryData.block_from;
@@ -874,6 +880,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
             // we will restrict tab swithing if we are in add mode
             var tryingFromSummaryToOther = isInSummaryTab && tab !== 'SUMMARY';
+
             if ($scope.isInAddMode() && tryingFromSummaryToOther) {
                 $scope.errorMessage = ['Sorry, Please save the entered information and try to switch the tab'];
                 return;
@@ -913,6 +920,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var params = {
                 "account_id": $scope.accountConfigData.summary.posting_account_id
             }
+
             $scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, {
                 successCallBack: onTransactionFetchSuccess,
                 params: params
@@ -1015,6 +1023,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var data = {
                 errorMessages: errors.errorMessage
             };
+
             $timeout(function() {
                 ngDialog.open({
                     template: '/assets/partials/groups/summary/popups/detachCardsAPIErrorPopup.html',
@@ -1066,6 +1075,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     };
 
                 var summaryData = _.extend({}, $scope.groupConfigData.summary);
+
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
@@ -1122,6 +1132,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var dataForPopup = {
                 cardType: card
             }
+
             ngDialog.open({
                 template: '/assets/partials/groups/summary/popups/detachCardWarningPopup.html',
                 scope: $scope,
@@ -1151,6 +1162,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         .then(function(data) {
                             var list = [];
                             var entry = {}
+
                             $.map(data, function(each) {
                                 entry = {
                                     label: each.account_name,
@@ -1193,6 +1205,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         .then(function(data) {
                             var list = [];
                             var entry = {}
+
                             $.map(data, function(each) {
                                 entry = {
                                     label: each.account_name,
@@ -1234,6 +1247,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          */
         $scope.computeAddonsCount = function() {
             var count = 0;
+
             angular.forEach($scope.groupConfigData.selectedAddons, function(addon) {
                 count += parseInt(addon.addon_count);
             })
@@ -1354,6 +1368,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          */
         var setActiveLeftSideMenu = function () {
             var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup": "menuManageGroup";
+
             $scope.$emit("updateRoverLeftMenu", activeMenu);
         };
 

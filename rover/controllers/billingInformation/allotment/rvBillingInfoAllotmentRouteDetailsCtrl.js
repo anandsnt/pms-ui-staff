@@ -42,6 +42,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         var expiryDate = $scope.cardData.tokenDetails.isSixPayment?
                     $scope.cardData.tokenDetails.expiry.substring(2, 4)+" / "+$scope.cardData.tokenDetails.expiry.substring(0, 2):
                     $scope.cardData.cardDetails.expiryMonth+" / "+$scope.cardData.cardDetails.expiryYear
+
                     ;
         return expiryDate;
     };
@@ -51,6 +52,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         var cardNumber = $scope.cardData.tokenDetails.isSixPayment?
                 $scope.cardData.tokenDetails.token_no.substr($scope.cardData.tokenDetails.token_no.length - 4):
                 $scope.cardData.cardDetails.cardNumber.slice(-4);
+
         return cardNumber;
     };
 
@@ -93,6 +95,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
                 controller: '',
                 scope: $scope
             });
+
             return;
         }
 
@@ -197,6 +200,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
      */
     $scope.fetchDefaultAccountRouting = function() {
         var params = {};
+
         params.id = $scope.allotmentId;
         params.entity_type = "ALLOTMENT";
         $scope.invokeApi(RVBillinginfoSrv.fetchDefaultAccountRouting, params, fetchDefaultAccountRoutingsuccessCallback);
@@ -323,6 +327,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         };
 
         var params =  angular.copy($scope.selectedEntity);
+
         params.entity_type  = "ALLOTMENT";
         params.allotment_id = $scope.allotmentId;
         $scope.invokeApi(RVBillinginfoSrv.saveAllotmentDefaultAccountRouting, params, defaultRoutingSaveSuccess);
@@ -336,6 +341,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         var cardName = (!$scope.cardData.tokenDetails.isSixPayment)?
                             $scope.cardData.cardDetails.userName:
                             ($scope.passData.details.firstName+" "+$scope.passData.details.lastName);
+
         return cardName;
     };
 
@@ -343,6 +349,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         var expiryMonth = $scope.cardData.tokenDetails.isSixPayment ? $scope.cardData.tokenDetails.expiry.substring(2, 4) :$scope.cardData.cardDetails.expiryMonth;
         var expiryYear  = $scope.cardData.tokenDetails.isSixPayment ? $scope.cardData.tokenDetails.expiry.substring(0, 2) :$scope.cardData.cardDetails.expiryYear;
         var expiryDate  = (expiryMonth && expiryYear )? ("20"+expiryYear+"-"+expiryMonth+"-01"):"";
+
         return expiryDate;
     };
 
@@ -389,6 +396,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
             if($rootScope.paymentGateway === "sixpayments" && !$scope.paymentFlags.sixIsManual) {
 
                 var data = {};
+
                 data.allotment_id = $scope.allotmentId;
                 data.add_to_guest_card = false;
                 data.bill_number = $scope.getSelectedBillNumber();
@@ -437,6 +445,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
             var data = {
                     "payment_type": $scope.saveData.payment_type
             };
+
             data.allotment_id = $scope.allotmentId;
             data.bill_number = $scope.getSelectedBillNumber();
             $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
@@ -463,6 +472,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
      */
     var setCreditCardDetails = function() {
         var entity = $scope.selectedEntity;
+
         if (entity.credit_card_details !== null &&
             entity.credit_card_details !== undefined &&
             entity.credit_card_details.hasOwnProperty('payment_type_description')) {
@@ -500,12 +510,14 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
      */
     var initializeScrollers = function() {
         var scrollerOptions = { preventDefault: false};
+
         $scope.setScroller('paymentList', scrollerOptions);
         $scope.setScroller('billingGroups', scrollerOptions);
         $scope.setScroller('chargeCodes', scrollerOptions);
         $scope.setScroller('routeDetails', scrollerOptions);
 
         var scrollerOptionsForSearch = {click: true};
+
         $scope.setScroller('chargeCodesList', scrollerOptionsForSearch);
 
         $scope.chargeCodesListDivHgt = 250;
@@ -567,6 +579,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootS
         // fetch default routing if entity not set
         if (!$scope.selectedEntity.entity_type) {
             var params = {};
+
             params.id = $scope.allotmentId;
             params.entity_type = "ALLOTMENT";
             promises.push(RVBillinginfoSrv

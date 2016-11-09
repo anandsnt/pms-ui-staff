@@ -26,6 +26,7 @@ admin.controller('adRoomListCtrl', ['$scope', 'ADRoomSrv', 'ngTableParams', '$fi
             $defer.resolve($scope.data);
 
 		};
+
 		$scope.invokeApi(ADRoomSrv.fetchRoomList, getParams, fetchSuccessOfItemList);
 	};
 
@@ -49,6 +50,7 @@ admin.controller('adRoomListCtrl', ['$scope', 'ADRoomSrv', 'ngTableParams', '$fi
 			$scope.data.splice(index, 1);
 			$scope.tableParams.page(1);
 		};
+
 	$scope.invokeApi(ADRoomSrv.deleteRoom, {'room_id': room_id}, successCallBack);
 	};
 	$scope.loadTable();

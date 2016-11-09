@@ -36,6 +36,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 };
                 
                 var params =  {'id': rate_id};
+
                 $scope.invokeApi(ADChannelMgrSrv.getRoomTypesByRate, params, onFetchSuccess);
 
             } else {
@@ -46,6 +47,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                     //go thru excluded list and push out to included, the ones that match in the IDs from initial get
                     
                     var rateInfo;
+
                     for (var r in $scope.data) {
                         if ($scope.data[r].rate.id === $scope.selectedRate.id) {
                             rateInfo = $scope.data[r];
@@ -84,6 +86,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 };
                 
                 var params =  {'id': rate_id};
+
                 $scope.invokeApi(ADChannelMgrSrv.getRoomTypesByRate, params, onFetchSuccess);
                 
                 
@@ -129,6 +132,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
             }
             $scope.rateData = $scope.available_rates;
             var item, exItem;
+
             for (var i in $scope.data) {
                 item = $scope.data[i];
                 if (rate.rate.id === item.rate.id) {
@@ -190,6 +194,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 $scope.$emit('hideLoader');
                 
             };
+
             $scope.invokeApi(ADChannelMgrSrv.deleteRateOnChannel, data, fetchSuccess, fetchFailure);
                 
         };
@@ -205,6 +210,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 $scope.errorMessage = data;
                 $scope.$emit('hideLoader');
             };
+
             $scope.invokeApi(ADChannelMgrSrv.fetchManagerDetails, $scope.selectedInterface, fetchSuccess, fetchFailure);
         };
         
@@ -248,6 +254,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = data;
             };
+
             $scope.invokeApi(ADChannelMgrSrv.updateRate, params, toggleSuccess, toggleFailure);
         };
         $scope.updateRate = function () {
@@ -276,6 +283,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = data;
             };
+
             $scope.invokeApi(ADChannelMgrSrv.updateRate, params, toggleSuccess, toggleFailure);
         };
         
@@ -306,6 +314,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
             }
           //take the selected room type from selectedIncludedRoomType  
             var includedRoomTypeSelected = $scope.includedRoomTypeSelected;
+
             for (var i in $scope.includedRoomTypes) {
                 if (includedRoomTypeSelected.id === $scope.includedRoomTypes[i].id) {
                     delete $scope.includedRoomTypes[i];
@@ -326,6 +335,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
             }
           //take the selected room type from selectedIncludedRoomType  
             var excludedRoomTypeSelected = $scope.excludedRoomTypeSelected;
+
             for (var i in $scope.excludedRoomTypes) {
                 if (excludedRoomTypeSelected.id === $scope.excludedRoomTypes[i].id) {
                     $scope.includedRoomTypes.push(excludedRoomTypeSelected);
@@ -400,6 +410,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
         $scope.dragItem;
         $scope.startDragItem = function(e, o, lastDragItem, n) {
             var from;
+
             if (n === 1) {
                 from = 'included';
             } else if (n === 2) {
@@ -432,6 +443,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
         $scope.dropEvent = function(e, o, to) {
             if (to === $scope.toexcluded) {
                 var there = false;
+
                 for (var x in $scope.excludedRoomTypes) {
                     if (typeof $scope.excludedRoomTypes[x] !== typeof undefined) {
                         if ($scope.excludedRoomTypes[x].id === $scope.dragItem.id) {
@@ -444,6 +456,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 }
                 //verify removed from included...
                 var newInc = [];
+
                 for (var i in $scope.includedRoomTypes) {
                     if (typeof $scope.includedRoomTypes[i] !== typeof undefined) {
                         if ($scope.includedRoomTypes[i].id !== $scope.dragItem.id) {
@@ -454,6 +467,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 $scope.includedRoomTypes = newInc;
              } else if (to === $scope.toincluded) {
                 var there = false;
+
                 for (var a in $scope.includedRoomTypes) {
                     if (typeof $scope.includedRoomTypes[a] !== typeof undefined) {
                         if ($scope.includedRoomTypes[a].id === $scope.dragItem.id) {
@@ -467,6 +481,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 
                 //verify removed from included...
                 var newEx = [];
+
                 for (var c in $scope.excludedRoomTypes) {
                     if (typeof $scope.excludedRoomTypes[c] !== typeof undefined) {
                         if ($scope.excludedRoomTypes[c].id !== $scope.dragItem.id) {
@@ -562,6 +577,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
         
         $scope.getIds = function(lst) {
             var ids = [];
+
             for (var i in lst) {
                 ids.push(lst[i].id);
             }

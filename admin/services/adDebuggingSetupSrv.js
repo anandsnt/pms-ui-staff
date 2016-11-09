@@ -3,6 +3,7 @@ admin.service('adDebuggingSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 	this.fetchDevices = function() {
 		var deferred = $q.defer();
 		var url = '/api/notifications/notification_device_list?application=ROVER';
+
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
@@ -13,6 +14,7 @@ admin.service('adDebuggingSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 	this.saveSetup = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/notifications/set_loggging_status';
+
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {

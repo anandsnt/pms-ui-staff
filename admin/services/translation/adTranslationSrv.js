@@ -6,6 +6,7 @@ admin.service('ADTranslationSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($ht
     this.getGuestLanguages = function() {
         var deferred = $q.defer();
         var url = '/admin/locales';
+
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
@@ -21,6 +22,7 @@ admin.service('ADTranslationSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($ht
     this.getMenuOptionDetails = function() {
         var deferred = $q.defer();
         var url = '/admin/translations/menu_details';
+
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
@@ -37,6 +39,7 @@ admin.service('ADTranslationSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($ht
     this.getLabelTranslationForLocale = function(request) {
         var deferred = $q.defer();
         var url = ' /admin/translations';
+
         ADBaseWebSrvV2.getJSON(url, request).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
@@ -53,6 +56,7 @@ admin.service('ADTranslationSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($ht
     this.saveLabelTranslationForLocale = function(request) {
         var deferred = $q.defer();
         var url = '/admin/translations';
+
         ADBaseWebSrvV2.postJSON(url, request).then(function(data) {
             deferred.resolve(data);
         }, function(data) {

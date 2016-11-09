@@ -44,11 +44,13 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 
 		$scope.proceedWithDepositRefund = function() {
 			var	with_deposit_refund = true;
+
 			cancelReservation(with_deposit_refund);
 		};
 
 		$scope.proceedWithOutDepositRefund = function() {
 			var	with_deposit_refund = false;
+
 			cancelReservation(with_deposit_refund);
 		};
 

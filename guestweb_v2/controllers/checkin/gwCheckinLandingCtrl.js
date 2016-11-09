@@ -10,6 +10,7 @@ sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$
 
 		var init = function() {
 			var screenIdentifier = "CHECKIN_LANDING";
+
 			$scope.isPrecheckinOnly = GwWebSrv.zestwebData.isPrecheckinOnly;
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.isAutoCheckinOn = GwWebSrv.zestwebData.isAutoCheckinOn;
@@ -43,6 +44,7 @@ sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$
 			};
 			var verificationFailed = function(response) {
 				var popupOptions = angular.copy($scope.errorOpts);
+
 				popupOptions.resolve = {
 					message: function() {
 						return "<b>We could not find your reservation</b>. Please check for typos, or call <hotelPhone>."
@@ -60,6 +62,7 @@ sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$
 				successCallBack: verificationSuccess,
 				failureCallBack: verificationFailed
 			};
+
 			$scope.callAPI(GwCheckinSrv.verifyCheckinUser, options);
 		};
 

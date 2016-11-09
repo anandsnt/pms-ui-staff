@@ -47,6 +47,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			var stateParams = {
 				key_success: $stateParams.key_success
 			};
+
 			if (printopted) {
 				stateParams.print_opted = 'true';
 				stateParams.print_status = actionStatus;
@@ -81,12 +82,14 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				var printopted = true;
 				var emailopted = false;
 				var actionStatus = 'failed';
+
 				nextPageActions(printopted, emailopted, actionStatus);
 			};
 			var printSuccessActions = function() {
 				var printopted = true;
 				var emailopted = false;
 				var actionStatus = 'success';
+
 				nextPageActions(printopted, emailopted, actionStatus);
 			};
 
@@ -128,6 +131,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 					successCallBack: fetchSatrTacDataSuccess,
 					failureCallBack: startTacDataFailedActions
 				};
+
 				$scope.callAPI(zsCheckinSrv.fetchStarTacPrinterData, options);
 			};
 
@@ -144,6 +148,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 
 						if (sntapp.cordovaLoaded) {
 							var printer = (sntZestStation.selectedPrinter);
+
 							cordova.exec(function(success) {
 								printSuccessActions();
 							}, function(error) {
@@ -181,6 +186,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 
 			var fetchPrintViewCompleted = function(data) {
 				var d = new Date();
+
 				$scope.currentDateTime = d.getTime();
 				$scope.$emit('hideLoader');
 				// print section - if its from device call cordova.
@@ -199,6 +205,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				successCallBack: fetchPrintViewCompleted,
 				failureCallBack: printFailedActions
 			};
+
 			$scope.callAPI(zsCheckinSrv.fetchRegistrationCardPrintData, options);
 		};
 		/**
@@ -219,12 +226,14 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				var printopted = false;
 				var emailopted = true;
 				var actionStatus = 'failed';
+
 				nextPageActions(printopted, emailopted, actionStatus);
 			};
 			var registrationCardSent = function(response) {
 				var printopted = false;
 				var emailopted = true;
 				var actionStatus = 'success';
+
 				nextPageActions(printopted, emailopted, actionStatus);
 			};
 
@@ -241,6 +250,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				successCallBack: registrationCardSent,
 				failureCallBack: registrationCardSendingFailed
 			};
+
 			$scope.callAPI(zsCheckinSrv.sendRegistrationByEmail, options);
 		};
 
@@ -268,6 +278,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 			 */
 			var updateGuestEmailFailed = function() {
 				var stateParams = {};
+
 				if ($scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2 !== '') {
 					stateParams.message = $scope.zestStationData.zest_station_message_texts.speak_to_crew_mod_message2;
 				} else {
@@ -284,14 +295,17 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 				successCallBack: updateComplete,
 				failureCallBack: updateGuestEmailFailed
 			}
+
 			$scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
 		};
 		/**
 		 * [goToNext description]
 		 *  save email
 		 */
+
 		$scope.goToNext = function() {
 			var isValidEmail = $scope.email.length > 0 ? zsUtilitySrv.isValidEmail($scope.email) : false;
+
 			if (isValidEmail) {
 				updateGuestEmail();
 			} else {

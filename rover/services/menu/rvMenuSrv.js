@@ -18,6 +18,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			'FRONT_DESK': 'rover.dashboard.frontoffice',
 			'MANAGER': 'rover.dashboard.manager'
 		};
+
 		return statesForDashbaord[dashboard];
     };
 
@@ -63,6 +64,7 @@ angular.module('sntRover').service('rvMenuSrv',
 	*/
     var isFloorMaintananceStaff= function() {
     	var userDetails = RVDashboardSrv.getUserDetails();
+
     	return (userDetails.user_role === "Floor & Maintenance Staff");
     };
 
@@ -427,6 +429,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        	}
 				]
 		    }];
+
 		return processMenuList (menu);
 	};
 
@@ -518,6 +521,7 @@ angular.module('sntRover').service('rvMenuSrv',
 	this.hasSettingsPermission = function(menuIndex) {
 		
 		var returnValue = true;
+
 		switch (menuIndex) {
 			case 'diaryReservation':
 				returnValue = isHourlyRateOn();

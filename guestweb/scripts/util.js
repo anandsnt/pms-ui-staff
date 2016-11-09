@@ -9,6 +9,7 @@ var dclone = function(object, unwanted_keys) {
   		return object;
   	} else {
   			var newObject = JSON.parse(JSON.stringify(object));
+
 		  	for(var i=0; i < unwanted_keys.length; i++) {
 		  		delete newObject[unwanted_keys[i]];
 		  	}
@@ -58,6 +59,7 @@ var extractScreenDetails = function(identifier, cms_screen_details) {
     "title": "",
     "description": ""
   };
+
   screen_details = _.find(cms_screen_details.screen_messages, function(cms_item) {
     return cms_item.screen_id === identifier;
   });
@@ -79,6 +81,7 @@ var creditCardTypes = {
 function getCreditCardType(cardBrand) {
     var card = (typeof cardBrand  ==="undefined") ? "":cardBrand.toUpperCase();
     var cardArray = ['AX', 'DC', 'DS', 'JCB', 'MC', 'VA'];
+
     return (cardArray.indexOf(card) != -1 ) ? card : (typeof creditCardTypes[card]!='undefined') ? creditCardTypes[card] : 'credit-card';
 }
 
@@ -125,6 +128,7 @@ var returnMonthsArray = function() {
 var applyStyle = function(styleString) {
   //set zestweb footer color based on admin settings
     var css = document.createElement("style");
+
     css.type = "text/css";
     css.innerHTML = styleString;
     document.body.appendChild(css);
@@ -134,6 +138,7 @@ var applyFooterStyle = function(footer_color) {
     var styleString = "#zest-footer a{  color :"+ footer_color + " !important;}";
     //body and HTML tags were given auto height in some themes(almost 40 themes),
     //so in order to override all these, we needed to add this line of code here
+
     styleString = styleString + " body,html{ height : 100% !important;} ";
     applyStyle(styleString);
 };
@@ -141,6 +146,7 @@ var applyFooterStyle = function(footer_color) {
 var returnFooterStyleClass = function(footerCount) {
   var footerClass = "";
   // based upon number of footer items, set a class for styling
+
   if (footerCount === 3) {
     footerClass = "triple-footer";
   } else if (footerCount === 2) {

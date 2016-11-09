@@ -41,6 +41,7 @@
 					callBackToAutoComplete: callBackToAutoComplete
 				}
 	        };
+
 	        $scope.callAPI(rvCompanyCardSrv.fetchRates, options);
 		};
 

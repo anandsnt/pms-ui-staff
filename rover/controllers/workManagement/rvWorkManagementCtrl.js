@@ -142,9 +142,11 @@ angular.module('sntRover').controller('RVWorkManagementCtrl', ['$rootScope', '$s
 
 
 				var cib, cia, cob, coa, roomTime, filterBeforeTime, filterAfterTime;
+
 				if ( filterHasTime() ) {
 					_.each(allUnassigned, function(room) {
 						var refData = allRooms[room.room_index];
+
 						if ( roomHasTime(refData) ) {
 							cib = filter.checkin.before;
 							cia = filter.checkin.after;

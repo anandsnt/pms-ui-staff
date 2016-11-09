@@ -29,6 +29,7 @@ sntRover.controller('rvSetWakeupcallController', ['$scope', '$filter', 'RVSaveWa
 
 	$scope.saveWakeupCall = function() {
 		var params = {};
+
 		params.wake_up_time = $scope.getTimeString();
 		params.day = ($scope.todaySelected)? "Today":"Tomorrow";
 		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
@@ -55,6 +56,7 @@ sntRover.controller('rvSetWakeupcallController', ['$scope', '$filter', 'RVSaveWa
 
 	$scope.deleteWakeupCall = function() {
 		var params = {};
+
 		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 		var successCallbackDeleteWakeupcall = function() {
 			delete $scope.wakeupData.wake_up_time;
@@ -66,6 +68,7 @@ sntRover.controller('rvSetWakeupcallController', ['$scope', '$filter', 'RVSaveWa
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorMessage;
 		};
+
 		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params, successCallbackDeleteWakeupcall, errorCallbackDeleteWakeupcall);
 
 	};

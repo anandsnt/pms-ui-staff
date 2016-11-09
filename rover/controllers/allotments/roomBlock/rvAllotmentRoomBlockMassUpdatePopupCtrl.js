@@ -30,6 +30,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 		 */
 		var isDateInsideLimit = function(date) {
 			var day = new tzIndependentDate(date);
+
 			return (day <= $scope.massUpdateEndDate);
 		};
 
@@ -87,6 +88,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 					isContractUpdate = $scope.ngDialogData.isContract || false;
 
 				var data = _.omit(roomTypeData, ['dates']);
+
 				data = _.extend(data, roomTypeData.dates[0]);
 				data[occupancy] = value;
 
@@ -120,6 +122,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 			if(error.hasOwnProperty ('httpStatus')) {
 				if (error.httpStatus === 470) {
 					var message = $scope.checkOverBooking(error);
+
 					if (!message) {
 						// overbooking condition does not exist
 						$scope.saveMassUpdate(true, false, lastCalledMassUpdateConfig);
@@ -165,6 +168,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 				successCallBack: successCallBackOfSaveMassUpdate,
 				failureCallBack: failureCallBackOfSaveMassUpdate
 			};
+
 			$scope.callAPI(rvAllotmentConfigurationSrv.saveMassUpdate, options);
 			lastCalledMassUpdateConfig = config;
 			overbookingOccurs = false;
@@ -185,6 +189,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 				numberOfMonths: 1
 			};
 			var maxDate = new tzIndependentDate(summaryData.block_to);
+
 			maxDate.setDate(maxDate.getDate()-1);
 			$scope.massUpdateEndDate = new tzIndependentDate(maxDate);
 
@@ -202,6 +207,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 			$scope.showSaveButton = true;
 			$scope.overBookingMessage = '';
 		};
+
 		init();
 	}
 ]);

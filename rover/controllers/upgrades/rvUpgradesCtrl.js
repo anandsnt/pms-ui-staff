@@ -33,6 +33,7 @@ angular.module('sntRover').controller('RVUpgradesController',
                 $scope.initAdvQueCheck = function() {
                     var adv = $rootScope.advanced_queue_flow_enabled;
                     var viaQueue = $scope.$parent.reservation.check_in_via_queue;
+
                     $scope.buttonText.noThanks = 'No Thanks, proceed with Check In';
 
                     if (adv && viaQueue) {
@@ -68,6 +69,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 		*/
 		$scope.isUpsellAvailable = function() {
 			var showUpgrade = false;
+
 			if($scope.upgradesList.length > 0 && !$scope.reservationData.reservation_card.is_suite && (($scope.reservationData.reservation_card.is_upsell_available === 'true') && ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' || $scope.reservationData.reservation_card.reservation_status === 'CHECKING_IN'))) {
 				showUpgrade = true;
 			}
@@ -99,6 +101,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 				//changes as per CICO-33405 - implemented same as in RVUpgradesCtrl - room assignment screen - CICO-29824
 				_.each(data.upsell_mapping, function(roomType) {
 					var roomsInRoomType  = _.where(roomsList.rooms, {"room_type_id": roomType.upgrade_room_type_id_int});
+
 						roomToUpgrade	 = _.filter(roomsInRoomType, isRoomReadyToAssign)[0];
 
 					if(roomToUpgrade) {
@@ -125,6 +128,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 				$scope.$parent.errorMessage = error;
 			};
 			var params = {};
+
 			params.reservation_id = $stateParams.reservation_id;
 			$scope.invokeApi(RVUpgradesSrv.getAllUpgrades, params, successCallbackgetAllUpgrades, errorCallbackgetAllUpgrades);
 
@@ -132,6 +136,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 		//check if roomupgrade is available
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
         var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
+
 		isUpgradeAvaiable ? $scope.getAllUpgrades() :"";
 		/**
 		 * function to check occupancy for the reservation
@@ -145,6 +150,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 	            });
 			} else {
 				var showOccupancyMessage = false;
+
 				if ($scope.upgradesList[index].room_max_occupancy !== "" && $scope.reservation_occupancy !== null) {
 					if (parseInt($scope.upgradesList[index].room_max_occupancy) < $scope.reservation_occupancy) {
 						showOccupancyMessage = true;
@@ -292,6 +298,7 @@ angular.module('sntRover').controller('RVUpgradesController',
                 failureCallBack: failureCallBackSelectUpgrade,
                 successCallBackParameters: { selectedListItem: selectedListItem}
             };
+
             $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 		};
 
@@ -334,6 +341,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 			var roomReadyStatus = $scope.reservationData.reservation_card.room_ready_status;
 			var foStatus = $scope.reservationData.reservation_card.fo_status;
 			var checkinInspectedOnly = $scope.reservationData.reservation_card.checkin_inspected_only;
+
 			return getMappedRoomStatusColor(reservationStatus, roomReadyStatus, foStatus, checkinInspectedOnly);
 		};
 		/**
@@ -386,6 +394,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 		*/
 		$scope.getRoomStatusClass = function(room) {
 			var statusClass = "ready";
+
 			if(room.is_oos === "true") {
 				return "room-grey";
 			}

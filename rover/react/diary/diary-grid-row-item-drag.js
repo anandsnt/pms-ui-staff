@@ -12,6 +12,7 @@ var GridRowItemDrag = React.createClass({
 	isInProperDraggingCycle: false,
 	__onMouseDown: function(e) {
 		var page_offset, el, props = this.props, state = this.state, display = props.display;
+
 		this.isInProperDraggingCycle =  true;
 		e.stopPropagation();
 		e.preventDefault();
@@ -118,6 +119,7 @@ var GridRowItemDrag = React.createClass({
 				if ( reachingRightEdge ) {
 					//based on where the reservation is going to plot, we have to calculate scroll position to scroll
 					var distanceMouseMoved = ( mouseMovingColNumber - state.currentClickedCol ) * display.px_per_int;
+
 					xScPos = (xScPos - distanceMouseMoved);
 
 					if( xScPos < scroller.maxScrollX ) {
@@ -133,6 +135,7 @@ var GridRowItemDrag = React.createClass({
 				if ( reachingLeftEdge ) {
 					//based on where the reservation is going to plot, we have to calculate scroll position to scroll
 					var distanceMouseMoved = ( mouseMovingColNumber - state.currentClickedCol ) * display.px_per_int;
+
 					xScPos = (xScPos - distanceMouseMoved);
 
 					if( xScPos > 0) {
@@ -144,6 +147,7 @@ var GridRowItemDrag = React.createClass({
 			//TOP
 			if ( mouseMovingRowNumber -  this.startingRowNumber < 0 ) {
 				var reachingTopEdge = (parseFloat(e.pageY) - 3 * adj_height ) <= props.viewport.element().offset().top;
+
 				if ( Math.abs( mouseMovingColNumber - this.mouseClickedColOnStarting ) < 3 ) {
 					mouseMovingColNumber = this.mouseClickedColOnStarting;
 				}
@@ -151,6 +155,7 @@ var GridRowItemDrag = React.createClass({
 				if ( reachingTopEdge ) {
 					//based on where the reservation is going to plot, we have to calculate scroll position to scroll
 					var distanceMouseMoved = ( parseFloat(mouseMovingRowNumber) - parseFloat(this.startingRowNumber) ) * parseFloat(adj_height);
+
 					yScPos = (parseFloat(yScPos) - parseFloat(distanceMouseMoved));
 
 					if(yScPos > 0) {
@@ -162,6 +167,7 @@ var GridRowItemDrag = React.createClass({
 			//BOTTOM
 			else if ( mouseMovingRowNumber -  this.startingRowNumber > 0 ) {
 				var reachingBottomEdge = (parseFloat(e.pageY) + 3 * adj_height ) >= window.innerHeight;
+
 				if ( Math.abs( mouseMovingColNumber - this.mouseClickedColOnStarting ) < 3 ) {
 					mouseMovingColNumber = this.mouseClickedColOnStarting;
 				}
@@ -169,6 +175,7 @@ var GridRowItemDrag = React.createClass({
 				if ( reachingBottomEdge ) {
 					//based on where the reservation is going to plot, we have to calculate scroll position to scroll
 					var distanceMouseMoved = ( parseFloat(mouseMovingRowNumber) - parseFloat(this.startingRowNumber) ) * parseFloat(adj_height);
+
 					yScPos = ( parseFloat(yScPos) - parseFloat(distanceMouseMoved) );
 
 					if( yScPos < scroller.maxScrollY ) {
@@ -254,6 +261,7 @@ var GridRowItemDrag = React.createClass({
 					selected: !state.selected
 				}, function() {
 					var data = (_.has(state, 'selected') ? props.data : props.currentDragItem);
+
 					props.iscroll.grid.enable();
 					props.iscroll.timeline.enable();
 					props.angular_evt.onSelect(props.row_data, data, !data.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content

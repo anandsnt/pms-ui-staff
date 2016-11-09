@@ -40,6 +40,7 @@ angular.module('allotmentModule', [])
                             'per_page': rvAllotmentSrv.DEFAULT_PER_PAGE,
                             'page': rvAllotmentSrv.DEFAULT_PAGE
                         };
+
                         return rvAllotmentSrv.getAllotmentList(params);
                     }
                 ]
@@ -72,12 +73,14 @@ angular.module('allotmentModule', [])
                     var params = {
                         allotmentId: $stateParams.id
                     };
+
                     return rvAllotmentConfigurationSrv.getAllotmentSummary (params);
                 },
                 holdStatusList: function (rvAllotmentConfigurationSrv, allotmentAssets, loadPaymentModule) {
                     var params = {
                         is_group: false
                     }
+
                     return rvAllotmentConfigurationSrv.getHoldStatusList (params);
                 }
             }

@@ -13,6 +13,7 @@ admin.controller('ADContentManagementTreeViewCtrl', ['$scope', '$state', 'ADCont
 			$scope.setExpandStatus($scope.contentList);
 
 		};
+
 	   $scope.invokeApi(ADContentManagementSrv.fetchTreeViewList, {}, successCallbackTreeFetch);
    };
    /* Function to set the expansion status as false for all the components

@@ -37,6 +37,7 @@ admin.directive('adDropdownName', function($timeout) {
 
             $scope.getLabel = function(row) {
                 var label = "";
+
                 _.each($scope.labelProperties, function(key, idx) {
                     if (idx === 0) {
                         label += row[key];

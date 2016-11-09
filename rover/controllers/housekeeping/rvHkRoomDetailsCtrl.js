@@ -38,6 +38,7 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 
 		// stop bounce effect only on the room-details
 		var roomDetailsEl = document.getElementById('#room-details');
+
 		angular.element(roomDetailsEl)
 			.bind('ontouchmove', function(e) {
 				e.stopPropagation();
@@ -97,6 +98,7 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 		var getGuestStatusMapped = function(reservationStatus, isLateCheckout) {
 			var viewStatus = "";
 			//If the guest is opted for late checkout
+
 			if (isLateCheckout === "true") {
 				return "late-check-out";
 			}
@@ -151,6 +153,7 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 				var status = _.find($scope.roomDetails.hk_status_list, function(status) {
 					return status.value === value;
 				});
+
 				RVHkRoomStatusSrv.setWorkStatus($scope.roomDetails.id, status);
 			}
 

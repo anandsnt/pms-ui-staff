@@ -105,6 +105,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			'CANCELLED': 'cancel',
 			'NOSHOW': 'no-show'
 		}
+
 		$scope.getStatusClass = function(status) {
 			return resClassNames[status] || '';
 		};
@@ -249,6 +250,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 				};
 				
 				var i, j;
+
 				for (i = 0, j = addonGroups.length; i < j; i++) {
 					var addonGrpObj = addonGroups[i];
 
@@ -267,6 +269,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 						};
 
 						var k, l;
+
 						for (k = 0, l = addons.length; k < l; k++) {
 							var addonObj = addons[k];
 

@@ -10,6 +10,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 		});
 		var init = function() {
 			var screenIdentifier = "GUEST_DETAILS_UPDATE";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.years = returnYearsInReverseOrder();
 			$scope.months = returnMonthsArray();
@@ -44,6 +45,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 				},
 				successCallBack: guestDetailsFetchSuccess
 			};
+
 			$scope.callAPI(GwCheckinSrv.getGuestDetails, options);
 		};
 
@@ -55,6 +57,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 		var options = {
 			successCallBack: fetchCountryListSuccess
 		};
+
 		$scope.callAPI(GwCheckinSrv.fetchCountryList, options);
 
 		// watch if the day selected is valid, eg:- Feb 30 is invalid
@@ -71,6 +74,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 			var data = {};
 			var unwanted_keys = ["month", "year", "day", "country_id", "street1"];
 			var newObject = JSON.parse(JSON.stringify($scope.guestDetails));
+
 			for (var i = 0; i < unwanted_keys.length; i++) {
 				delete newObject[unwanted_keys[i]];
 			};
@@ -99,6 +103,7 @@ sntGuestWeb.controller('gwUpdateGuestDetailsController', ['$scope', '$state', '$
 				},
 				successCallBack: postGuestDetailsSuccess
 			};
+
 			$scope.callAPI(GwCheckinSrv.postGuestDetails, options);
 		};
 

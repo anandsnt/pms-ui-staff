@@ -34,6 +34,7 @@ var DailyProductionByDemographicsTableRows = React.createClass({
         return React.DOM.td({className: className}, colText);
       }));
     });
+
     return React.DOM.tbody({}, rows);
   }
 });

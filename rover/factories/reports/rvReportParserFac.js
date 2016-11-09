@@ -154,6 +154,7 @@ sntRover.factory('RVReportParserFac', [
 
             var getRemarksAry = function(remark) {
                 var ary = remark.split('<br />');
+
                 return _.reject(ary, function(i) { return i === '' || i === ' ' });
             };
 
@@ -398,36 +399,43 @@ sntRover.factory('RVReportParserFac', [
 
             var checkGuest = function(item) {
                 var check = !!options['checkGuest'] && !!item['accompanying_names'] && !!item['accompanying_names'].length;
+
                 return check;
             };
 
             var checkCompTrvlGrp = function(item) {
                 var check = !!item['company_name'] || !!item['travel_agent_name'] || !!item['group_name'];
+
                 return check;
             };
 
             var checkAddOns = function(item) {
                 var check = (!!item['add_ons'] && !!item['add_ons'].length) || !!item['addon_details'];
+
                 return check;
             };
 
             var checkNote = function(item) {
                 var check = !!options['checkNote'] && !!item['notes'] && !!item['notes'].length;
+
                 return check;
             };
 
             var checkAction = function(item) {
                 var check = !!options['checkAction'] && !!item['actions'] && !!item['actions'].length;
+
                 return check;
             };
 
             var checkCancel = function(item) {
                 var check = !!options['checkCancel'] && excludeReports( [reportNames['ARRIVAL'], reportNames['IN_HOUSE_GUEST']] );
+
                 return check ? !!item['cancel_reason'] : false;
             };
 
             var checkRateAdjust = function(item) {
                 var check = !!options['checkRateAdjust'] && !!item['rate_adjustment_reasons'] && !!item['rate_adjustment_reasons'].length;
+
                 return check;
             };
 

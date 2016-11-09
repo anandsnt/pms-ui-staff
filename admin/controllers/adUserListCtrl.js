@@ -15,6 +15,7 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
     */
 	$scope.fetchTableData = function($defer, params) {
 		var getParams = $scope.calculateGetParams(params);
+
 		getParams.isAdminSnt = $scope.isAdminSnt;
 		var successCallbackFetch = function(data) {
 			$scope.$emit('hideLoader');
@@ -26,6 +27,7 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
         	params.total(data.total_count);
             $defer.resolve($scope.data);
 		};
+
 		$scope.invokeApi(ADUserSrv.fetch, getParams, successCallbackFetch);
 	};
 
@@ -61,6 +63,7 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
 			$scope.data[index].is_active = (currentStatus === "true" ? "false" : "true");
 			$scope.$emit('hideLoader');
 		};
+
 		$scope.invokeApi(ADUserSrv.activateInactivate, data, successCallbackActivateInactivate);
 	};
    /**
@@ -78,6 +81,7 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
 			//To refresh the user list
 			$scope.listUsers();
 		};
+
 		$scope.invokeApi(ADUserSrv.deleteUser, data, successDelete );
 	};
 

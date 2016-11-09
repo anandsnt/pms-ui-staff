@@ -17,6 +17,7 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
     _.each($scope.selected_reservations, function(eachData) {
             eachData.isOpenAccompanyingGuest = false;
             var cnt = 0;
+
             angular.forEach(eachData.accompanying_guests_details, function(value, key) {
               if((value.first_name !== "" && value.first_name !== null) || (value.last_name !== "" && value.last_name !== null) ) {
                   cnt = cnt + 1;
@@ -24,6 +25,7 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
         });
         eachData.accompanyingLength = cnt;
         var occupancyName = "";
+
         if(eachData.occupancy ===1) {
             occupancyName = "Single";
         } else if(eachData.occupancy === 2) {
@@ -42,12 +44,14 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
             $scope.refreshScroller('guest-data-scroll');
         }, 1500);
     };
+
     refreshScroll();
     /*
      * Toggle action of accompanying guest
      */
     $scope.toggleAccompanyingGuest = function(index) {
         var target = event.target;
+
         if(target.type === "text")
             return false;
         _.each($scope.selected_reservations, function(eachData, resIndex) {
@@ -68,6 +72,7 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
     /*
      * To update all selected reservations guest data
      */
+
     $scope.updateCompleteGuestData = function() {
 
         var unWantedKeysToRemove = ['confirm_no', 'reservation_status', 'arrival_date',
@@ -77,10 +82,12 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
                                     'fostatus', 'roomstatus', 'checkin_inspected_only', 'room_ready_status',
                                     'isOpenAccompanyingGuest', 'accompanyingLength', 'occupancyName'];
         var guestData = [];
+
         _.each($scope.selected_reservations, function(eachData, resIndex) {
             guestData.push(dclone(eachData, unWantedKeysToRemove));
         });
         var data = {};
+
         data.guest_data = guestData;
         $scope.errorMessage = "";
         var options = {
@@ -88,6 +95,7 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
             successCallBack: successCallBackOfUpdateGuestData,
             failureCallBack: failureCallBackOfUpdateGuestData
         };
+
         $scope.callAPI(rvGroupRoomingListSrv.updateGuestData, options);
 
     };
@@ -105,6 +113,7 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
     $scope.isDataEditable = function(reservation) {
         var rStatus = reservation.reservation_status;
         var isDisabled = false;
+
         if(rStatus === "CANCELED") {
             isDisabled = true;
         }

@@ -52,6 +52,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		var afterGuestCheckinCallback = function(response) {
 			//if email is valid and is not blacklisted
 			var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid();
+
 			console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams)
 			var stateParams = {
 				'guest_id': $stateParams.guest_id,
@@ -87,6 +88,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				params: checkinParams,
 				successCallBack: afterGuestCheckinCallback
 			};
+
 			$scope.callAPI(zsCheckinSrv.checkInGuest, options);
 		};
 
@@ -110,6 +112,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 			};
 			//check if this page was invoked through pickupkey flow
+
 			if (!!$stateParams.pickup_key_mode) {
 				stateparams.pickup_key_mode = 'manual';
 			}
@@ -148,6 +151,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
 			};
 			//check if this page was invoked through pickupkey flow
+
 			if (!!$stateParams.pickup_key_mode) {
 				stateParams.pickup_key_mode = 'manual';
 			}
@@ -180,6 +184,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			};
 			var onSuccess = function(response) {
 				var byPassCC = (checkIfCCToBeBypassed(response)) ? true : false;
+
 				nextPageActions(byPassCC);
 			};
 			//states are not to store varaiable, use service
@@ -189,10 +194,12 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 				},
 				successCallBack: onSuccess
 			};
+
 			if ($scope.zestStationData.bypass_cc_for_prepaid_reservation) {
 				$scope.callAPI(zsCheckinSrv.fetchReservationBalanceDetails, options);
 			} else {
 				var byPassCC = false;
+
 				nextPageActions(byPassCC);
 			};
 
@@ -201,6 +208,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 		 * [agreeTerms description]
 		 *  on clicking agree, we will check if CC need to be skipped
 		 */
+
 		$scope.agreeTerms = function() {
 			checkIfNeedToSkipCC();
 		};
@@ -214,6 +222,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 			var refreshScroller = function() {
 				$scope.refreshScroller('terms');
 			};
+
 			$timeout(function() {
 				refreshScroller();
 			}, 600);

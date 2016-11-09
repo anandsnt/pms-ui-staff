@@ -42,6 +42,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 			$scope.campaignData.screen_types = data.screen_types;
 			$scope.$emit('hideLoader');
 		};
+
 		$scope.invokeApi(ADCampaignSrv.fetchCampaignConfig, {}, fetchSuccessOfCampaignData);
 
 	};
@@ -72,6 +73,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		$scope.campaignData.end_date_for_display = data.recurrence_end_date;
 
 		var deliveryTime = tConvert(data.time_to_send);
+
 		if(!isEmptyObject(deliveryTime)) {
 			$scope.campaignData.delivery_hour = deliveryTime.hh;
 			$scope.campaignData.delivery_min = deliveryTime.mm;
@@ -92,12 +94,14 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		};
 
 		var params = {'id': id};
+
 		$scope.invokeApi(ADCampaignSrv.fetchCampaignData, params, fetchSuccessOfCampaignData);
 
 	};
 
 	var computeCampaignSaveData = function() {
 		var campaign = {};
+
 		campaign.name = $scope.campaignData.name;
 		if($scope.campaignData.audience_type) {
 		campaign.audience_type = $scope.campaignData.audience_type;
@@ -148,6 +152,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 			$scope.gobackToCampaignListing();
 		};
 		var data = {"id": id};
+
 		$scope.invokeApi(ADCampaignSrv.startCampaign, data, campaignStartSuccess);
 	};
 
@@ -190,6 +195,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 			return "";
 		}
 		var timeDict = tConvert(time);
+
 		return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
 	};
 
@@ -201,6 +207,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 
 		};
 		var params = {"id": $scope.campaignData.id};
+
 		$scope.invokeApi(ADCampaignSrv.deleteCampaign, params, deleteSuccess);
 	};
 

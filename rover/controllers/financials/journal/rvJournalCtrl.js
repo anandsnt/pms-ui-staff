@@ -53,6 +53,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
             });
         };
     };
+
     retrieveCashierName();
 
     // Show calendar popup.
@@ -104,6 +105,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     // Checking whether all department checkboxes are unchecked or not
     var isAllDepartmentsUnchecked = function() {
         var flag = true;
+
         angular.forEach($scope.data.filterData.departments, function(item, index) {
             if(item.checked) {
                 flag = false;
@@ -138,6 +140,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     // Checking whether all employees checkboxes are unchecked or not
     var isAllEmployeesUnchecked = function() {
         var flag = true;
+
         angular.forEach($scope.data.filterData.employees, function(item, index) {
             if(item.checked) {
                 flag = false;
@@ -184,6 +187,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     var setupDeptAndEmpList = function() {
         var filterTitle = "";
         // To get the list of departments id selected.
+
         $scope.data.selectedDepartmentList = [];
         $scope.data.selectedDepartmentName = [];
         angular.forEach($scope.data.filterData.departments, function(item, index) {
@@ -259,6 +263,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         // b) All employee fields should default to ALL users
         // c) All date fields should default to yesterday's date
         var yesterday = tzIndependentDate($rootScope.businessDate);
+
         yesterday.setDate(yesterday.getDate()-1);
         $scope.data.fromDate = $filter('date')(yesterday, 'yyyy-MM-dd');
         $scope.data.toDate   = $filter('date')(yesterday, 'yyyy-MM-dd');
@@ -274,6 +279,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     var callCashierFilterService = function() {
         $scope.$broadcast('refreshDetails');
     };
+
     $scope.$on('cashierDateChanged', function() {
     	//call filter service
     	callCashierFilterService();
@@ -321,6 +327,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
 
     $scope.getTimeString = function(date, time) {
         var date = $filter('date')(date, $rootScope.dateFormat);
+
         return date + ', ' + time;
     };
 

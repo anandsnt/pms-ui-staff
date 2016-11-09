@@ -27,13 +27,16 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
             var commentContainer = angular.element(document.querySelector(".neighbours-comment-container"))[0];
             var comments = commentContainer.children;
             var height = 75 * comments.length ;
+
             height = height < 200 && height > 0 ? height + 20: height;
             _.each(comments, function(comment) {
                 
                 if(comment.clientHeight > 70)
                     height += comment.clientHeight - 70;
             });
-            var wrapperHeight;conversationWrapper.clientHeight;
+            var wrapperHeight;
+
+conversationWrapper.clientHeight;
             if(height < 300) {
                 wrapperHeight = height;
                 commentScroll.style.height = ""+height+"px";
@@ -81,6 +84,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
 
         $scope.fetchComments = function() {
             var options = {};
+
             options.params = $scope.commentParams;
             $scope.$emit("SL_ERROR", "");
             options.onSuccess = function(data) {
@@ -109,6 +113,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         $scope.addComment = function() {
             $scope.$emit("SL_ERROR", "");
             var options = {};
+
             options.params = {
                 "comment": {
                 "comment_title": "",
@@ -138,6 +143,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
         $scope.delete = function() {
             $scope.$emit("SL_ERROR", "");
             var options = {};
+
             options.params = {'comment_id': deleteIndex};
             options.onSuccess = function() {
                 $scope.parentPost.comment_count --;

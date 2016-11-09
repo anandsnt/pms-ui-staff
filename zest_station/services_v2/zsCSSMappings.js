@@ -11,6 +11,7 @@ sntZestStation.service('zsCSSMappings', ['$q', 'zsBaseWebSrv',
       var deferred = $q.defer();
       //if you are updating the url, make sure that same in rover's gulp task
       var url = '/assets/asset_list/____generatedThemeMappings/____generatedZestStation/css/____generatedZestStationCSSThemeMappings.json';
+
       zsBaseWebSrv.getJSON(url).then(function(data) {
         mappingList = data;
         deferred.resolve(data);

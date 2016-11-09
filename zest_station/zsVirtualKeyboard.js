@@ -11,10 +11,12 @@
 
 this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
   var that = this;
+
   this.bound = false;
   //open virtual keyboard
   $.keyboard.language.love = $.extend($.keyboard.language.en);
   var focused, isCountrySelector = (id === 'country-selector');
+
   if (isCountrySelector) {
      focused = $('input')[0];  
      elementObj = $(focused)[0];
@@ -25,6 +27,7 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
   
 
   var defaultLayout, shift, zestStationNonPasswordField, zestStationNumDaysField, zestStationNationalityField;
+
   isPasswordField = function(i) {
     return (i && i.indexOf('pass') !== -1);
   };
@@ -69,6 +72,7 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
   var applyKeyboardInput = function() {
     if (from === 'login') { //fixes an issue where data values are not set from virtual keyboard
       var el = $(elementObj[0]);
+
       if ( angular.element(el).scope() ) {
         angular.element(el).scope().data[id] = $(elementObj[0]).val();
       }
@@ -281,6 +285,7 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
     beforeClose: function(e, keyboard, el, accepted) {
       if (isCountrySelector && ('ontouchstart' in window)) {//only for touchscreen devices
         var beforeCloseVal = $(elementObj).val();
+
         setTimeout(function() {
           $(elementObj).autocomplete('search', beforeCloseVal);
         }, 0);
@@ -317,6 +322,7 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
     $('.ui-keyboard').addClass('bottom-align-keyboard');
   }
   var focused, isCountrySelector = (id === 'country-selector');
+
   if (isCountrySelector) {
      focused = $('input')[0];  
      elementObj = $(focused);

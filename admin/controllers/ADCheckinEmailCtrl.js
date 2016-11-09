@@ -29,6 +29,7 @@ admin.controller('ADCheckinEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$stat
     $scope.emailTitle = 'Guests Checking In';
     $scope.saveButtonTitle = 'SEND WEB CHECKIN INVITES';
     var getParams = $scope.calculateGetParams(params);
+
     getParams.id = 'checkin';
     var fetchEmailListSuccessCallback = function(data) {
         $scope.isLoading = false;
@@ -47,6 +48,7 @@ admin.controller('ADCheckinEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$stat
         $defer.resolve($scope.data);
         $scope.isAllOptionsSelected();
   };
+
   $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, getParams, fetchEmailListSuccessCallback);
   };
 
@@ -73,6 +75,7 @@ $scope.loadTable = function() {
   */
   $scope.isAllOptionsSelected = function() {
     var selectedCount = false;
+
     $scope.disableSave = true;
     if($scope.emailDatas.length ===0) {
       return false;
@@ -134,6 +137,7 @@ $scope.loadTable = function() {
         $scope.$emit('hideLoader');
         $scope.successMessage = data.message;
     };
+
     $scope.invokeApi(adCheckinCheckoutSrv.sendMail, {'id': 'checkin', 'data': emailSendingData}, sendMailClikedSuccessCallback);
 
   };

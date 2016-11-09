@@ -15,6 +15,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
 
 	var itemId = $stateParams.itemid;
 	//if itemid is null, means it is for add item form
+
 	if(typeof itemId === 'undefined' || itemId.trim() === '') {
 		$scope.mod = 'add';
 	}
@@ -28,6 +29,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = errorMessage ;
 	};
+
 	if($scope.mod === 'edit') {
 		$scope.invokeApi(ADEmvTerminalsSrv.getItemDetails, {'item_id': itemId}, fetchSuccessOfItemDetails, fetchFailedOfItemDetails);
 	}
@@ -38,6 +40,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
 
 	$scope.saveItemDetails = function()	{
 		var postData = {};
+
 		if($scope.mod === 'edit') {
 			postData.id = $scope.itemDetails.id;
 		}

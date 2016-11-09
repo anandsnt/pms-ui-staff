@@ -16,6 +16,7 @@ admin.controller('ADBrandCtrl', ['$scope', '$rootScope', 'adBrandsSrv', function
 			$scope.$emit('hideLoader');
 			$scope.data = data.brands;
 		};
+
 		$scope.invokeApi(adBrandsSrv.fetch, {}, fetchBrandsSuccessCallback);
 	};
 	$scope.fetchHotelBrands();
@@ -38,6 +39,7 @@ admin.controller('ADBrandCtrl', ['$scope', '$rootScope', 'adBrandsSrv', function
 			$scope.formTitle = $scope.brandDetails.name;//To show brand name in title
 			$scope.isEditmode = true;
 		};
+
 		$scope.invokeApi(adBrandsSrv.editRender, editID, editBrandsSuccessCallback);
 	};
    /*
@@ -59,6 +61,7 @@ admin.controller('ADBrandCtrl', ['$scope', '$rootScope', 'adBrandsSrv', function
 			$scope.$emit('hideLoader');
 			$scope.brandDetails   = data;
 		};
+
 		$scope.invokeApi(adBrandsSrv.addRender, {}, addBrandsSuccessCallback);
 	};
    /*
@@ -84,6 +87,7 @@ admin.controller('ADBrandCtrl', ['$scope', '$rootScope', 'adBrandsSrv', function
 		//chains list not required on update/save data
 		var	unwantedKeys = ["chains"];
 		var data = dclone($scope.brandDetails, unwantedKeys);
+
 		if($scope.isAddmode) {
 			$scope.invokeApi(adBrandsSrv.post, data, successSave);
 		} else {

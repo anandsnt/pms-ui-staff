@@ -8,6 +8,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 		});
 		var init = function() {
 			var screenIdentifier = "CC_ADDITION";
+
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.checkoutmessage = $stateParams.message;
 			$scope.isFromCheckoutNow = ($stateParams.isFromCheckoutNow === "true") ? true : false;
@@ -26,6 +27,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 		//setup options for error popup
 		var cardErrorPopupOpts = angular.copy($scope.errorOpts);
 		var emptyFeildsErrorPopup = angular.copy($scope.errorOpts);
+
 		cardErrorPopupOpts.resolve = {
 			message: function() {
 				return "There is a problem with your credit card."
@@ -37,6 +39,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 			}
 		};
 		var ccvOpts = angular.copy($scope.errorOpts);
+
 		ccvOpts.templateUrl = '/assets/partials/ccVerificationNumberModal.html',
 			ccvOpts.resolve = {
 				message: function() {
@@ -95,6 +98,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 						$modal.open(cardErrorPopupOpts);
 					};
 				};
+
 				if (($scope.cardNumber.length === 0) || ($scope.ccv.length === 0) || (!$scope.monthSelected) || (!$scope.yearSelected)) {
 					$modal.open(emptyFeildsErrorPopup); // details modal popup
 				} else {
@@ -109,6 +113,7 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 					};
 				}
 			};
+
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 				navigateToNextPage();
 			} else {

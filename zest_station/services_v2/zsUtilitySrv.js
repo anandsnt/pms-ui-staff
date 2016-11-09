@@ -15,18 +15,22 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
             var a = amount.split('.', 2)
             var d = a[1];
             var i = parseInt(a[0]);
+
             if (isNaN(i)) {
                 return '';
             }
             var minus = '';
+
             if (i < 0) {
                 minus = '-';
             }
             i = Math.abs(i);
             var n = new String(i);
             var a = [];
+
             while (n.length > 3) {
                 var nn = n.substr(n.length - 3);
+
                 a.unshift(nn);
                 n = n.substr(0, n.length - 3);
             }
@@ -52,6 +56,7 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
         this.getFloat = function(n) {
             //to check/remove any commas in a string..
             var num = n + '';
+
             num = num.replace(/,/gi, "");
             return this.CommaFormatted(parseFloat(num).toFixed(2) + ''); //return with comma back in
         };
@@ -62,6 +67,7 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
             var monthNames = ["January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"
             ];
+
             for (var i in monthNames) {
                 if (monthNames[i].toLowerCase() == mo.toLowerCase() || monthNames[i].toLowerCase().indexOf(mo.toLowerCase()) != -1) { //exact or not
                     return i;
@@ -72,6 +78,7 @@ sntZestStation.service('zsUtilitySrv', ['$http', '$q', 'zsBaseWebSrv',
             var monthNames = ["January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"
             ];
+
             for (var i = 0; i < monthNames.length; i++) {
                 if (i === parseInt(mo)) {
                     return monthNames[i];

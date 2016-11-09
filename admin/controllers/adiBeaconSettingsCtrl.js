@@ -37,6 +37,7 @@ admin.controller('ADiBeaconSettingsCtrl', ['$scope', '$state', 'ngTableParams', 
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
 		};
+
 		$scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconList, getParams, fetchSuccessOfItemList, fetchFailedOfItemList);
 	};
 

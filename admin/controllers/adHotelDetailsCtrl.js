@@ -82,6 +82,7 @@ admin.controller('ADHotelDetailsCtrl', [
 
 				setDropdownDefaults();
 			};
+
 			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id': $stateParams.id}, fetchSuccess);
 		}
 
@@ -112,6 +113,7 @@ admin.controller('ADHotelDetailsCtrl', [
 
 			setDropdownDefaults();
 		};
+
 		$scope.invokeApi(ADHotelDetailsSrv.hotelAdminfetchEditData, {}, fetchSuccess);
 	}
 
@@ -155,6 +157,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			"mli_chain_code": $scope.data.mli_chain_code,
 			"mli_hotel_code": $scope.data.mli_hotel_code
 		};
+
 		if ($scope.mli.certificate != "") {
 			postData.mli_pem_certificate = $scope.mli.certificate;
 		}
@@ -174,6 +177,7 @@ admin.controller('ADHotelDetailsCtrl', [
 		if($scope.isAdminSnt) {
 			var unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "signature_display", "hotel_logo", "languages", "hotel_template_logo"];
 			var data = dclone($scope.data, unwantedKeys);
+
 			if ($scope.mli.certificate != "") {
 				data.mli_certificate = $scope.mli.certificate;
 			}
@@ -206,6 +210,7 @@ admin.controller('ADHotelDetailsCtrl', [
 
 
 			var data = dclone($scope.data, unwantedKeys);
+
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
 			if($scope.hotelLogoPrefetched === data.hotel_logo) {
 				data.hotel_logo = "";
@@ -223,6 +228,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				 	}
 	       		});
 			};
+
 			$scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, postSuccess);
 		}
 	};
@@ -353,6 +359,7 @@ admin.controller('ADHotelDetailsCtrl', [
 
     var getSelectedInterfaceTypes = function(data) {
     	var selectedIds = [];
+
     	for (var i = 0; i < data.interface_types.length; i++) {
     		if(data.interface_types[i].is_checked === 'true') {
     			selectedIds.push(data.interface_types[i].id);

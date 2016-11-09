@@ -6,6 +6,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
 
             var url = "/api/campaigns";
+
             ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -18,6 +19,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.fetchCampaignData = function (data) {
             var deferred = $q.defer();
             var url = "/api/campaigns/" + data.id;
+
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -29,6 +31,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.saveCampaign = function (data) {
             var deferred = $q.defer();
             var url = "/api/campaigns";
+
             ADBaseWebSrvV2.postJSON(url, data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -41,6 +44,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.updateCampaign = function (data) {
             var deferred = $q.defer();
             var url = "/api/campaigns/" + data.id;
+
             ADBaseWebSrvV2.putJSON(url, data).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -52,6 +56,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         this.startCampaign = function(data) {
 			var deferred = $q.defer();
 			var url = "api/campaigns/start_campaign/";
+
 			ADBaseWebSrvV2.postJSON(url, data).then(function (data) {
 			    deferred.resolve(data);
 			}, function (data) {
@@ -65,6 +70,7 @@ admin.service('ADCampaignSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
         	var deferred = $q.defer();
         	var url = "/api/campaigns/"+ params.id;
+
         	ADBaseWebSrvV2.deleteJSON(url).then(function (data) {
         	    deferred.resolve(data);
         	}, function (data) {

@@ -64,6 +64,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				$timeout(isScrollReady, 1000);
 			};
 		};
+
 		isScrollReady();
 
 		var destroyScrolls = function() {
@@ -242,6 +243,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 
 				$scope.headerTop.push($filter('date')(ms, $rootScope.shortMonthAndDate));
 				var currentHeaders = headers;
+
 				if (isPastDay && $scope.uiFilter.showRevenue) {
 					// Remove FORECAST header and push ACTUAL
 					currentHeaders = _.without(currentHeaders, 'FORECAST').concat(['ACTUAL']);
@@ -277,6 +279,7 @@ sntRover.controller('RVDailyProdRateReportCtrl', [
 				var rates = _.filter(results.rates, {
 					rate_type_id: rateTypeData.rate_type_id,
 				});
+
 				_.each(rates, function(rate) {
 					$scope.yAxisLabels.push({
 						name: rate.rate_name,

@@ -14,6 +14,7 @@ admin.controller('ADDepartmentListCtrl', ['$scope', '$state', 'ADDepartmentSrv',
 			$scope.currentClickedElement = -1;
 			$scope.isAddMode = false;
 		};
+
 		$scope.invokeApi(ADDepartmentSrv.fetch, {}, successCallbackFetch);
 	};
 	//To list departments
@@ -32,6 +33,7 @@ admin.controller('ADDepartmentListCtrl', ['$scope', '$state', 'ADDepartmentSrv',
 	 		$scope.$emit('hideLoader');
 	 	};
 	 	var data = {"id": id };
+
 	 	$scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data, successCallbackRender);
 	};
    /*
@@ -74,6 +76,7 @@ admin.controller('ADDepartmentListCtrl', ['$scope', '$state', 'ADDepartmentSrv',
 	    	}
     		$scope.currentClickedElement = -1;
     	};
+
     	if($scope.isAddMode) {
     		$scope.invokeApi(ADDepartmentSrv.saveDepartment, $scope.departmentData, successCallbackSave);
     	} else {
@@ -97,6 +100,7 @@ admin.controller('ADDepartmentListCtrl', ['$scope', '$state', 'ADDepartmentSrv',
 	 		$scope.data.departments.splice(index, 1);
 	 		$scope.currentClickedElement = -1;
 	 	};
+
 		$scope.invokeApi(ADDepartmentSrv.deleteDepartment, id, successCallbackDelete);
 	};
 }]);

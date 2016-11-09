@@ -78,6 +78,7 @@ angular.module('sntRover').controller('guestResults', ['$scope', '$timeout',
 
 		BaseCtrl.call(this, $scope);
 		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
+
   		$scope.setScroller ('guestResultScroll', scrollerOptionsForGraph);
 
 		$scope.$on("refreshGuestScroll", function() {

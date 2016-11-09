@@ -12,6 +12,7 @@ admin.controller('ADMarketsCtrl', ['$scope', 'ADMarketsSrv', '$anchorScroll', '$
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 	};
+
 	$scope.invokeApi(ADMarketsSrv.fetch, {}, fetchSuccessCallback);
 	/*
     * To handle nable/disable of use markets
@@ -67,6 +68,7 @@ admin.controller('ADMarketsCtrl', ['$scope', 'ADMarketsSrv', '$anchorScroll', '$
 			$scope.data.name = "";
 			$scope.data.markets.push(data);
 		};
+
   		$scope.invokeApi(ADMarketsSrv.save, { 'name': $scope.data.name }, postSuccess);
 	};
 	/*
@@ -77,6 +79,7 @@ admin.controller('ADMarketsCtrl', ['$scope', 'ADMarketsSrv', '$anchorScroll', '$
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
+
 		if(index === undefined) {
 			var data = $scope.data.markets[$scope.currentClickedElement];
 		}
@@ -99,6 +102,7 @@ admin.controller('ADMarketsCtrl', ['$scope', 'ADMarketsSrv', '$anchorScroll', '$
 	 			}
  			});
 		};
+
 		$scope.invokeApi(ADMarketsSrv.deleteItem, {'value': id }, successDeletionCallback);
 	};
 

@@ -28,6 +28,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 			var Params = {
 				id: $scope.roomDetails.reservation_id
 			};
+
 			$scope.invokeApi(RVHkRoomDetailsSrv.postCheckOutReservation, Params, successCheckout, failureCheckout);
 		};
 
@@ -78,6 +79,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 			};
 
 			var hkStatusId;
+
 			if ( !! $scope.flag.roomStatusReady ) {
 				if( 'true' === $scope.roomDetails.checkin_inspected_only ) {
 					hkStatusId = 2;
@@ -128,6 +130,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 
 		var init = function() {
 			var currentStatus = $scope.roomDetails.current_room_reservation_status;
+
 			switch(currentStatus) {
 				case 'ARRIVED':
 				case 'STAYOVER':
@@ -147,6 +150,7 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 					break;
 			}
 		};
+
 		init();
 
 	}

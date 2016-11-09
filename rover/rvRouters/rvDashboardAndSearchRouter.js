@@ -10,6 +10,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 searchResultdata: function(RVSearchSrv, $stateParams, mappingList) {
                     var oldType = "";
                     var dataDict = {};
+
                     oldType = $stateParams.type;
 
                     if( oldType !== null && oldType!== '' && oldType !=="RESET") {
@@ -34,6 +35,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                         return RVSearchSrv.fetch({}, $stateParams.useCache);
                     } else {
                         var results = [];
+
                         return results;
                     }
                 }
@@ -73,6 +75,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                         'show_upsell': true,
                         'show_rate_of_day': false
                     };
+
                     return RVDashboardSrv.fetchStatisticData(requestParams);
                 }
             }

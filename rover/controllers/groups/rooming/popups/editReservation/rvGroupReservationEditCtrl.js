@@ -49,6 +49,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     $scope.shouldDisableChangeRoom = function(reservation) {
         var rStatus = reservation.reservation_status,
             validResStatuses = ["RESERVED", "CHECKING_IN"];
+
         return !(fieldsEnabled['room'] && _.contains(validResStatuses, rStatus));
     };
 
@@ -60,6 +61,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     $scope.shouldDisableFromDateChange = function(reservation) {
         var rStatus = reservation.reservation_status,
             validResStatuses = ["RESERVED", "CHECKING_IN"];
+
         return !(fieldsEnabled['date'] && _.contains(validResStatuses, rStatus));
     };
 
@@ -71,6 +73,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     $scope.shouldDisableToDateChange = function(reservation) {
         var rStatus = reservation.reservation_status,
             validResStatuses = ["RESERVED", "CHECKING_IN", "CHECKEDIN", "CHECKING_OUT"];
+
         return !(fieldsEnabled['date'] && _.contains(validResStatuses, rStatus));
     };
 
@@ -161,6 +164,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             room_type_id: parseInt($scope.ngDialogData.room_type_id)
         });
         //we are hiding the occupancy if selected room type is undefined
+
         if (typeof selectedRoomType === "undefined") {
             return false;
         }
@@ -235,6 +239,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
               params: reservation,
               successCallBack: onUpdateReservationSuccess
             };
+
             $scope.callAPI(rvGroupConfigurationSrv.updateRoomingListItem, options);
 
     };
@@ -434,6 +439,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
 
     var computeReservationStatusFlags = function(reservation) {
         var rStatus = reservation.reservation_status;
+
         return {
             isCheckedOut: rStatus === "CHECKEDOUT",
             isUneditable: rStatus === "CANCELED",
@@ -501,6 +507,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
     * Initialization of pop
     * @return {[type]} [description]
     */
+
     (function initilizeMe() {
         //variable initilizations
         initializeVariables();

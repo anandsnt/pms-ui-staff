@@ -199,6 +199,7 @@ sntRover
 
 		removeReservation = function(room, reservation) {
 			var idx = reservationIndex(room, reservation);
+
 			if(idx > -1) {
 				return room.occupancy.splice(idx, 1);
 			}

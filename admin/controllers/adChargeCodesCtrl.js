@@ -31,6 +31,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 	        	params.total(data.total_count);
 	            $defer.resolve($scope.data);
 			};
+
 			$scope.invokeApi(ADChargeCodesSrv.fetch, getParams, fetchSuccessOfItemList);
 		};
 
@@ -151,6 +152,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 						"value": item1.value,
 						"name": item1.name
 					};
+
 					obj.is_checked = 'false';
 					angular.forEach($scope.prefetchData.linked_charge_codes, function(item2, index2) {
 						if (item2.charge_code_id === item1.value) {
@@ -160,6 +162,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					$scope.prefetchData.link_with.push(obj);
 				});
 			};
+
 			$scope.invokeApi(ADChargeCodesSrv.fetchEditData, data, editSuccessCallback);
 		};
 		/*
@@ -194,6 +197,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var data = {
 				'value': value
 			};
+
 			$scope.invokeApi(ADChargeCodesSrv.deleteItem, data, deleteSuccessCallback);
 		};
 		/*
@@ -204,6 +208,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.$emit('hideLoader');
 				if ($scope.isEdit) {
                                     var p = parseInt($scope.currentClickedElement);
+
                                     if ($scope.orderedData) {
                                     if ($scope.orderedData[p]) {
 					$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code = data.charge_code;
@@ -230,6 +235,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			};
 			// To create Charge code Link with list frm scope.
 			var selected_link_with = [];
+
 			angular.forEach($scope.prefetchData.link_with, function(item, index) {
 				if (item.is_checked === 'true') {
 					selected_link_with.push(item.value);
@@ -298,6 +304,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				}, 1000);
 				$scope.fetchChargeCodes();
 			};
+
 			$scope.invokeApi(ADChargeCodesSrv.importData, {}, importSuccessCallback);
 		};
 		/*
@@ -333,8 +340,10 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				 */
 				var name = "ChargeCodeplusTax 1";
 				var idList = [$scope.prefetchData.linked_charge_codes[0].charge_code_id];
+
 				for (var i = 2; i <= taxCount; i++) {
 					var name = name + " & " + i;
+
 					idList.push($scope.prefetchData.linked_charge_codes[i - 1].charge_code_id);
 				}
 				var obj = {
@@ -342,6 +351,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					"name": name,
 					"charge_code_id_list": idList
 				};
+
 				calculation_rule_list.push(obj);
 			}
 
@@ -373,6 +383,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To handle click on tax list to show inline edit screen.
 		 */
 		var tempEditData = [];
+
 		$scope.editSelectedTax = function(index) {
 			$scope.isEditTax = true;
 			$scope.isAddTax = false;

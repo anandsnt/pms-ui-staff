@@ -5,6 +5,7 @@ angular.module('sntRover').filter('makeRange', function() {
 		//in some cases we need 0 or combination of 0 to the front
 		var appendingString = "";
 		var minLengthWanted = 0;
+
 		switch (input.length) {
 			case 1:
 				lowBound = 0;
@@ -30,6 +31,7 @@ angular.module('sntRover').filter('makeRange', function() {
 		}
 		var result = [];
 		var number = "";
+
 		for (var i = lowBound; i <= highBound; i += step) {
 			number = getLengthChangedNumber(minLengthWanted, i);
 			result.push(number);
@@ -45,10 +47,12 @@ function getLengthChangedNumber(lengthWanted, number) {
     }
     var numberOfZerosToAppend = lengthWanted - number.length;
     //if numberOfZerosToAppend is zero or less, nothing to do
+
     if(numberOfZerosToAppend <= 0) {
         return number;
     }
     var zeros = "";
+
     for(var i = 1; i <= numberOfZerosToAppend; i++) {
         zeros += "0";
     }

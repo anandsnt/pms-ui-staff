@@ -19,6 +19,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 				},
 				successCallBack: saveSettingsCallback
 			};
+
 			$scope.callAPI(ADzestWebGlobalSettingsSrv.saveZestwebGlobalSettings, options);
 		};
 		//on scolling hide all the color pickers
@@ -49,6 +50,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		var openLargeScreenPreview = function() {
 			setUpPopUpDataAndOpen('adZestWebLargeScreenPreview.html', 'ipad-preview', false);
 		};
+
 		$scope.previewClicked = function() {
 			$scope.globalSettings.is_large_screen_preview_on? openLargeScreenPreview():openSmallScreenPreview();
 		};
@@ -60,6 +62,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 			return (_.isUndefined(str) || _.isNull(str) || str.length === 0);
 		};
 		//image place holder texts
+
 		$scope.stripAndDisplay = function(str) {
 			return  isEmptyString(str) ? "select image.." : "..." + str.substring((str.length - 15), str.length);
 		};

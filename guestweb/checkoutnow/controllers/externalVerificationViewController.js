@@ -15,10 +15,12 @@
 
 	$scope.calendarView = false;
 	var dateToSend 		= "";
+
 	$scope.date 		= dateFilter(new Date(), 'yyyy-MM-dd');
 	$scope.selectedDate = ($filter('date')($scope.date, $rootScope.dateFormat));
 	function loseFocus() {
 		var inputs = document.getElementsByTagName('input');
+
 		for (var i = 0; i < inputs.length; ++i) {
 		  inputs[i].blur();
 		}

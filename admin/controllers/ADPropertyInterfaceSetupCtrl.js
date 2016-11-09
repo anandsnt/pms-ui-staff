@@ -33,6 +33,7 @@ admin.controller('ADPropertyInterfaceSetupCtrl', ['$scope', '$controller', 'ADHo
 			$scope.interfaceList[index].active = nextStatus;
 			$scope.$emit('hideLoader');
 		};
+
                 if (nextStatus) {
                     $scope.invokeApi(ADHotelPropertyInterfaceSrv.activate, data, successCallbackActivateInactivate);
                 } else {

@@ -5,6 +5,7 @@ sntRover.controller('rvAllRoutesCtrl', ['$scope', '$rootScope', '$filter', 'RVBi
 
 
     var scrollerOptions = { preventDefault: false};
+
     $scope.setScroller('routes', scrollerOptions);
 
     setTimeout(function() {
@@ -51,6 +52,7 @@ sntRover.controller('rvAllRoutesCtrl', ['$scope', '$rootScope', '$filter', 'RVBi
             };
 
             var data = {};
+
             data.id = $scope.reservationData.reservation_id;
             data.from_bill = $scope.routes[index].from_bill;
             data.to_bill = $scope.routes[index].to_bill;

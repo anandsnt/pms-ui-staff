@@ -21,6 +21,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		var setThemeByName = function(theme) {
 			$('body').css('display', 'none');
 			var link, logo;
+
 			$scope.$emit('updateIconPath', theme);
 			zsHotelDetailsSrv.data.theme = theme.toLowerCase();
 			setTimeout(function() {
@@ -54,6 +55,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 			if (theme !== null) {
 				var url = $scope.cssMappings[theme.toLowerCase()];
 				var fileref = document.createElement("link");
+
 				fileref.setAttribute("rel", "stylesheet");
 				fileref.setAttribute("type", "text/css");
 				fileref.setAttribute("href", url);

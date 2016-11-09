@@ -5,6 +5,7 @@ angular.module('sntRover').service('RVCompanyCardSearchSrv', ['$q', 'rvBaseWebSr
 	this.fetch = function(data) {
 		var deferred = $q.defer();
 		var url =  '/api/accounts';
+
 		rvBaseWebSrvV2.getJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {

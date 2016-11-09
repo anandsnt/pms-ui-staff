@@ -26,6 +26,7 @@ admin.controller('ADCheckoutEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$sta
     $scope.saveButtonTitle = 'SEND CHECKOUT EMAIL';
   	$scope.selectAllOption = false;
     var getParams = $scope.calculateGetParams(params);
+
     getParams.id = 'checkout';
 
     var fetchEmailListSuccessCallback = function(data) {
@@ -51,6 +52,7 @@ admin.controller('ADCheckoutEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$sta
         $scope.isAllOptionsSelected();
 
     };
+
     $scope.emailDatas =[];
     $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, getParams, fetchEmailListSuccessCallback);
 
@@ -77,6 +79,7 @@ admin.controller('ADCheckoutEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$sta
   */
   $scope.isAllOptionsSelected = function() {
     var selectedCount = false;
+
     $scope.disableSave = true;
     if($scope.emailDatas.length ===0) {
       return false;
@@ -128,6 +131,7 @@ admin.controller('ADCheckoutEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$sta
 
   $scope.sendMailClicked = function() {
   	var reservations = [];
+
   	angular.forEach($scope.emailDatas, function(item, index) {
        if(item.is_selected) {
          reservations.push(item.reservation_id);
@@ -138,6 +142,7 @@ admin.controller('ADCheckoutEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$sta
         $scope.$emit('hideLoader');
         $scope.successMessage = data.message;
     };
+
     $scope.invokeApi(adCheckinCheckoutSrv.sendMail, {'id': 'checkout', 'data': emailSendingData}, sendMailClikedSuccessCallback);
 
   };

@@ -20,6 +20,7 @@ admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 		this.fetchRoomClasses = function () {
 	        var deferred = $q.defer(),
 	        url = '/admin/room_classes';
+
 	        ADBaseWebSrvV2.getJSON(url).then(function (data) {
 	            deferred.resolve(data);
 	            }, function (data) {
@@ -34,6 +35,7 @@ admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
     	this.fetchRoomTypesAvailableForSuite = function () {
 	        var deferred = $q.defer(),
 	        url = '/admin/room_types/available_for_suite';
+
 	        ADBaseWebSrvV2.getJSON(url).then(function (data) {
 	            deferred.resolve(data);
 	            }, function (data) {
@@ -68,6 +70,7 @@ admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 
 			var deferred = $q.defer();
 			var url = '/admin/room_types/' + data.room_type_id;
+
 			ADBaseWebSrv.putJSON(url, data).then(function(data) {
 				deferred.resolve(data);
 				ADDailyWorkAssignmentSrv.resetRoomTypesList();
@@ -79,6 +82,7 @@ admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 		this.deleteRoomTypes = function(data) {
 			var deferred = $q.defer();
 			var url = '/admin/room_types/' + data.roomtype_id;
+
 			ADBaseWebSrv.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);
 			}, function(errorMessage) {
@@ -112,6 +116,7 @@ admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 
 			var deferred = $q.defer();
 			var url = '/admin/room_types/';
+
 			ADBaseWebSrv.postJSON(url, data).then(function(data) {
 				deferred.resolve(data);
 				ADDailyWorkAssignmentSrv.resetRoomTypesList();

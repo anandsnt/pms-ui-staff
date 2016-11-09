@@ -191,6 +191,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.cancelGroup = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/groups/'+params.group_id+'/cancel';
+
 			rvBaseWebSrvV2.postJSON(url, params).then(
 				function(data) {
 					deferred.resolve(data);
@@ -439,6 +440,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.updateGroupNote = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/notes/' + data.id;
+
 			rvBaseWebSrvV2.putJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -464,6 +466,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.updateRoomingListItem = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/group_reservations/' + data.id;
+
 			rvBaseWebSrvV2.putJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -476,6 +479,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.removeRoomingListItem = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/group_reservations/' + data.id + '/cancel';
+
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -488,6 +492,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.releaseRooms = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/groups/' + data.groupId + '/release_now';
+
 			rvBaseWebSrvV2.getJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -505,6 +510,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.getRates = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/groups/rates';
+
 			rvBaseWebSrvV2.getJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -517,6 +523,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.toggleHideRate = function( params ) {
 			var deferred = $q.defer(),
 				url = 'api/groups/'+params.group_id+'/hide_rates';
+
 				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				   	 deferred.resolve(data);
 				}, function(data) {
@@ -528,6 +535,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		this.updateRate = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/groups/'+params.group_id+'/change_rate';
+
 				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				   	 deferred.resolve(data);
 				}, function(data) {

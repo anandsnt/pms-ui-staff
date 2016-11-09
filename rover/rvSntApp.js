@@ -1,5 +1,6 @@
 var GlobalApp = function() {
     var that = this;
+
     this.browser = "other";
     this.cordovaLoaded = false;
     this.cardReader = null;

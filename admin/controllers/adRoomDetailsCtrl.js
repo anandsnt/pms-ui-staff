@@ -11,6 +11,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 	BaseCtrl.call(this, $scope);
 
 	var roomId = $stateParams.roomId;
+
 	$scope.isSuite = false;
 	$scope.availableComponentRooms = [];
 	$scope.availableComponentRoomsArray = [];
@@ -61,6 +62,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 
 				var isNewTypeSuite = _.findWhere($scope.data.room_types, {"value": value}).is_suite,
 					isOldTypeSuite = _.findWhere($scope.data.room_types, {"value": $scope.selectedRoomTypeId}).is_suite
+
 				if (isNewTypeSuite && isOldTypeSuite) {
 
 					$scope.isSuite = true;
@@ -70,6 +72,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 				}
 				else if(isNewTypeSuite || isOldTypeSuite) {
 					var message = [];
+
 					if (isNewTypeSuite) {
 						message = ["Regular room type cannot be changed to suite room type"];
 					}
@@ -162,6 +165,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 		if ($scope.editMode) {
 			angular.forEach($scope.data.suite_rooms, function(suiteRoomItem) {
 				var roomData =_.findWhere($scope.data.room_types, {value: suiteRoomItem.room_type_id});
+
 				suiteRoomItem.room_type_name = roomData.name;
 			});
 		}
@@ -280,6 +284,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 	$scope.updateRoomDetails = function() {
 
 		var postData = {};
+
 		postData.room_id = $scope.data.room_id;
 		postData.room_number = $scope.data.room_number;
 		postData.room_type_id = $scope.data.room_type_id;
@@ -304,6 +309,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 
 		// to get seletect likes
 		var k, l, m, n, each, options;
+
 		for ( k = 0, l = $scope.likeCopy.length; k < l; k++ ) {
 			each    = $scope.likeCopy[k];
 			options = each['options'];
@@ -356,6 +362,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 				$scope.data.suite_rooms.push({'room_number': selectedItem, 'room_type_id': roomTypeId, "room_type_name": roomTypeName});
 
 				var selectedRoomTypeIndex = _.findIndex($scope.availableComponentRooms, {id: roomTypeId});
+
 				$scope.availableComponentRooms[selectedRoomTypeIndex].rooms.splice(_.findIndex($scope.availableComponentRooms[selectedRoomTypeIndex].rooms, {'room_no': selectedItem}), 1)
 		     	$scope.availableComponentRooms[selectedRoomTypeIndex].selected_room_number = "";
 			}

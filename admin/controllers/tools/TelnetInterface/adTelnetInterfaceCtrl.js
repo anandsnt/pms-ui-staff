@@ -28,6 +28,7 @@ admin.controller('adTelnetInterfaceCtrl', ['$scope', 'adTelnetInterfaceSrv', fun
             onSuccess: onTelnetConnectivitySuccess,
             failureCallBack: onTelnetConnectivityFailure
         };
+
         $scope.callAPI(adTelnetInterfaceSrv.testTelnetConnectivity, options);
     };
 

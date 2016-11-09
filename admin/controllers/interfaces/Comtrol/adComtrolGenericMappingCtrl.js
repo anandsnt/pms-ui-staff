@@ -67,6 +67,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                 successCallBack: function(response) {
                     if (is_default) {
                         var similar_types = _.where($scope.mappings, {external_type: external_type});
+
                         _.each(similar_types, function(obj) {
                             obj.is_default = false
                         });
@@ -107,6 +108,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
              */
             if (!mapping.is_default) {
                 var similar_types = _.where($scope.mappings, {external_type: mapping.external_type});
+
                 _.each(similar_types, function(obj) {
                     obj.is_default = false
                 });
@@ -140,6 +142,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                 params: mapping,
                 successCallBack: function() {
                     var similar_types;
+
                     if (mapping.is_default) {
                         similar_types = _.where($scope.mappings, {external_type: mapping.external_type});
 

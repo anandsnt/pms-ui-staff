@@ -9,6 +9,7 @@ angular.module('sntRover').service('RVCCAuthorizationSrv', ['$http', '$q', 'RVBa
 		this.fetchCreditCardAuthInfo = function(param) {
 			var deferred = $q.defer();
 			var url = '/staff/reservation/'+param.reservation_id+'/credit_card_auth_info';
+
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -25,6 +26,7 @@ angular.module('sntRover').service('RVCCAuthorizationSrv', ['$http', '$q', 'RVBa
 		this.manualAuthorization = function(param) {
 			var deferred = $q.defer();
 			var url = '/api/cc/authorize';
+
 			rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -42,6 +44,7 @@ angular.module('sntRover').service('RVCCAuthorizationSrv', ['$http', '$q', 'RVBa
 		this.releaseAuthorization = function(param) {
 			var deferred = $q.defer();
 			var url = '/api/cc/reverse';
+
 			rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
