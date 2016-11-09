@@ -217,19 +217,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.singleRule = data;
                 $scope.singleRule.allow_deposit_edit = (data.allow_deposit_edit !=="" &&  data.allow_deposit_edit)? true : false;
                 $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
-                // need to split HH:MM into individual keys
-                var hhmm, hh, mm, ampm;
-                if ( $scope.singleRule.advance_time ) {
-                    var hhmm = dateFilter( $scope.singleRule.advance_time, 'hh:mm a' );
-                    hh = hhmm.split(':')[0];
-                    mm = hhmm.split(':')[1].split(' ')[0];
-                    ampm = hhmm.split(':')[1].split(' ')[1];
-                    // convert string to number
-                    hh *= 1;
-                    $scope.singleRule.advance_hour = hh;
-                    $scope.singleRule.advance_min = mm;
-                    $scope.singleRule.advance_primetime = ampm;
-                };
+
                 $scope.showCancelForm = true;
                 $scope.showDepositForm = false;
                 $scope.rulesTitle = 'Edit';
@@ -298,20 +286,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             var from = from,
                 saveCallback,
                 updateCallback;
-            // need to combine individuals HH:MM:ap to single hours entry
-            // and remove the individuals before posting
-            if ( $scope.singleRule.advance_hour || $scope.singleRule.advance_min ) {
-                $scope.singleRule.advance_time = getTimeFormated($scope.singleRule.advance_hour,
-                                                                $scope.singleRule.advance_min,
-                                                                $scope.singleRule.advance_primetime);
-                // remove these before sending
-                var withoutEach = _.omit($scope.singleRule, 'advance_hour');
-                withoutEach = _.omit(withoutEach, 'advance_min');
-                withoutEach = _.omit(withoutEach, 'advance_primetime');
-
-                $scope.singleRule = withoutEach;
-            };
-
+                console.log($scope.singleRule);
             // if we are in update (or edit) mode
             if ( $scope.updateRule ) {
                 updateCallback = function(data) {
