@@ -167,13 +167,13 @@ admin.controller('ADHotelLoyaltyCtrl', ['$scope', '$state', 'ADHotelLoyaltySrv',
 	};
 
 	$scope.getEditStatusForLevel = function(index) {
-		return $scope.hotelLoyaltyData.levels [index].editProgress;
+		return $scope.hotelLoyaltyData.levels[index].editProgress;
 	};
 	/*
     * To handle focus event on hotel loyalty levels
     */
 	$scope.onFocus = function(index) {
-		$scope.hotelLoyaltyData.levels [index].editProgress = true;
+		$scope.hotelLoyaltyData.levels[index].editProgress = true;
 		if ((index === $scope.hotelLoyaltyData.levels.length - 1) || ($scope.hotelLoyaltyData.levels.length === 1)) {
 			$scope.newOptionAvailable = true;
 			// exclude first two fields
@@ -214,7 +214,7 @@ admin.controller('ADHotelLoyaltyCtrl', ['$scope', '$state', 'ADHotelLoyaltySrv',
 				}
 			});
 		} else {
-			$scope.hotelLoyaltyData.levels [index].editProgress = false;
+			$scope.hotelLoyaltyData.levels[index].editProgress = false;
 		}
 	};
 }]);

@@ -357,14 +357,14 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         _.each(value, function(eachRoom) {
                             if (eachRoom.room_id === room.id) {
                                 // start time                     
-                                hour = eachRoom.from_time.split(":") [0];
-                                min = eachRoom.from_time.split(":") [1];
+                                hour = eachRoom.from_time.split(":")[0];
+                                min = eachRoom.from_time.split(":")[1];
                                 startTime = new tzIndependentDate(key);
                                 startTime.setHours (hour, min, 0);
                                 
                                 // end time
-                                hour = eachRoom.to_time.split(":") [0];
-                                min = eachRoom.to_time.split(":") [1];
+                                hour = eachRoom.to_time.split(":")[0];
+                                min = eachRoom.to_time.split(":")[1];
                                 endTime = new tzIndependentDate(key);
                                 endTime.setHours (hour, min, 0);
 
@@ -834,7 +834,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                                     for (var i = 0; i < len; i++) {
                                        for (var k = 0; k < id_difference.length; k++) {
-                                            if (Availability.store.data[i] && _.has(Availability.store.data[i], "id") &&  Availability.store.data[i].id === id_difference [k]) {
+                                            if (Availability.store.data[i] && _.has(Availability.store.data[i], "id") &&  Availability.store.data[i].id === id_difference[k]) {
                                                 Availability.store.data.splice(i);
                                                 delete Availability.store.group.values.id[id_difference[k]];
                                                 len--;
