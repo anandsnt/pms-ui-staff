@@ -45,7 +45,8 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 				"room_no": $scope.assignedRoom.room_number,
 				"upsell_amount": $scope.roomCharge,
-				"forcefully_assign_room": wanted_to_forcefully_assign
+				"forcefully_assign_room": wanted_to_forcefully_assign,
+				"is_preassigned" : $scope.assignedRoom.is_preassigned
 			},
             successCallBack : $scope.successCallbackUpgrade,
             failureCallBack : $scope.failureCallbackUpgrade
@@ -158,7 +159,8 @@ sntRover.controller('rvApplyRoomChargeCtrl',[
             params : {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 				"room_no": $scope.assignedRoom.room_number,
-				"forcefully_assign_room" : wanted_to_forcefully_assign
+				"forcefully_assign_room" : wanted_to_forcefully_assign,
+				"is_preassigned" : $scope.assignedRoom.is_preassigned
 			},
             successCallBack : $scope.successCallbackUpgrade,
             failureCallBack : $scope.failureCallbackUpgrade

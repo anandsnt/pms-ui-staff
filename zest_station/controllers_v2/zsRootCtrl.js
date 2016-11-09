@@ -293,8 +293,6 @@ sntZestStation.controller('zsRootCtrl', [
 		var getWorkStation = function() {
 			var onSuccess = function(response) {
 				$scope.zestStationData.workstations = response.work_stations;
-				//setWorkStation();// to do
-				//refreshSettings();// to do
 			};
 			var onFail = function(response) {
 				console.warn('fetching workstation list failed:', response);
@@ -533,10 +531,12 @@ sntZestStation.controller('zsRootCtrl', [
 				userInActivityTimeInSeconds = 0;
 				$scope.zestStationData.timeOut = false;
 			};
-			$scope.setTimerDebuggerOptions = function(timeUntilRefreshCheck, timeUntilLanguageResetCheck, userInActivityTimeInHomeScreenInSeconds){
-				$scope.timeUntilRefreshCheck = timeUntilRefreshCheck;
-				$scope.timeUntilLanguageResetCheck = timeUntilLanguageResetCheck;
-				$scope.userInActivityTimeInHomeScreenInSeconds = userInActivityTimeInHomeScreenInSeconds;
+			$scope.setTimerDebuggerOptions = function(timeUntilRefreshCheck, timeUntilLanguageResetCheck, userInActivityTimeInHomeScreenInSeconds, refreshStationTimer){
+				$scope.zestStationData.timeUntilRefreshCheck = timeUntilRefreshCheck;
+				$scope.zestStationData.timeUntilLanguageResetCheck = timeUntilLanguageResetCheck;
+				$scope.zestStationData.userInActivityTimeInHomeScreenInSeconds = userInActivityTimeInHomeScreenInSeconds;
+				$scope.zestStationData.refreshStationTimer = refreshStationTimer;
+
 				$scope.runDigestCycle();
 			};
 
@@ -545,7 +545,8 @@ sntZestStation.controller('zsRootCtrl', [
 					idlePopupTime = $scope.zestStationData.idle_timer.prompt,
 					idleToHomeTime = $scope.zestStationData.idle_timer.max,
 					idleTimerEnabled = $scope.zestStationData.idle_timer.enabled,
-					getWorkstationsAtTime = 120;//refresh workstation data every 120seconds
+					getWorkstationsAtTime = 120,//refresh workstation data every 120seconds
+					timeUntilRefreshCheck = 30;//check if workstation requires refresh, default every 30s
 
 				/**
 				 * [CheckForWorkStationStatusContinously description]
@@ -566,19 +567,24 @@ sntZestStation.controller('zsRootCtrl', [
 					if (zestSntApp.backToHomeTimer > 0){
 						idleToHomeTime = zestSntApp.backToHomeTimer;
 					}
-					$scope.idleToHomeTime = idleToHomeTime;
-					$scope.idlePopupTime = idlePopupTime;
-					$scope.userInActivityTimeInSeconds = userInActivityTimeInSeconds;
-					$scope.getWorkstationsAtTime = getWorkstationsAtTime;
-					$scope.workstationTimer = workstationTimer;
+					$scope.zestStationData.idleToHomeTime = idleToHomeTime;
+					$scope.zestStationData.idlePopupTime = idlePopupTime;
+					$scope.zestStationData.userInActivityTimeInSeconds = userInActivityTimeInSeconds;
+					$scope.zestStationData.getWorkstationsAtTime = getWorkstationsAtTime;
+					if (zestSntApp.timeDebugger){
+						$scope.zestStationData.workstationTimer = workstationTimer;
+					}
 					$scope.runDigestCycle();
 				} else {
 					getWorkstationsAtTime = 120;
 					$scope.zestStationData.timeDebugger = 'false';
-					//$scope.runDigestCycle();
 				}
 				if (workstationTimer >= getWorkstationsAtTime){
 					getAdminWorkStations();//fetch workstations with latest status details
+					if (currentState === 'zest_station.outOfService'){
+						//when out of service, keep checking for updates to the workstation, but not as often (120s here vs 30s @ home screen)
+						$scope.checkIfWorkstationRefreshRequested();
+					}
 					workstationTimer = 0;
 				}
 				//the user inactivity actions need not be done when user in 
@@ -621,6 +627,76 @@ sntZestStation.controller('zsRootCtrl', [
 
 
 		/********************************************************************************
+		 *  User activity timer at home screen should trigger a refresh check periodically - 
+		 *   -- fire events when kiosk is in-service and not in-use by guest.
+		 *
+		 *  Events include
+		 *   *Refresh-workstation --> Triggered from Hotel Admin - interfaces - workstation > toggle (Refresh Station)
+		 ********************************************************************************/
+		$scope.checkIfWorkstationRefreshRequested = function(){
+			console.info('checkIfWorkstationRefreshRequested');
+				//Workstation trigger for Refresh Station is set to TRUE, --Refresh Station at next (idle) opportunity--
+				var station = $scope.getWorkStationSetting($rootScope.workstation_id);
+				//send back to workstation that kiosk is being/has been refreshed 
+				// --assumption is that two Zest Stations will be sharing a workstation, currently S69, that is not a logical setup
+				if (station.refresh_station){
+					station.refresh_station = false;//only trigger once
+					//update the workstation to reflect the refresh has taken place
+					//call API to set workstation "station_refresh" to false, and note "last_refreshed"
+					refreshInProgress(station);
+					//-- CICO-35215 -just refreshes the browser, user should not have to re-login 
+					//
+					//--  this should refresh all settings and bring zest station up to the latest version
+					//--  does not apply to refreshing the ChromeApp / iOS app versions... only the Zest Station content
+				};
+		}
+
+		var refreshInProgress = function(station){
+			console.log('Calling API to Reset (refresh_station) Flag for: ',station.name, ' - ',station.id);
+			var onSuccess = function(response) {
+				console.info('Successful Refresh of Station Triggered, turning off (Workstation) Trigger ');
+				initRefreshStation();
+			};
+			var onFail = function(response) {
+				console.warn('Manual Refresh Failed: ',response);
+			};
+			var options = {
+				params: {
+					'out_of_order_msg': station.out_of_order_msg,
+					'emv_terminal_id': station.emv_terminal_id,
+					'default_key_encoder_id': station.key_encoder_id,
+					'refresh_station': false,
+					'is_out_of_order': station.is_out_of_order,
+					'identifier': station.station_identifier,
+					'name': station.name,
+					'rover_device_id':station.rover_device_id,
+					'id': station.id
+				},
+				successCallBack: onSuccess,
+				failureCallBack: onFail,
+				'loader': 'none'
+			};
+			$scope.callAPI(zsGeneralSrv.refreshWorkStationInitialized, options);
+		}
+	 	var initRefreshStation = function(){
+	 		console.warn(':: Refreshing Station ::');
+	 		try{
+	 			storage.setItem(refreshedKey, 'true');
+	 		} catch(err){
+	 			console.log(err);
+	 		}
+	 		location.reload(true);
+	 	};
+		/**
+		 * [CheckForWorkStationStatusContinously description]
+		 *  Check if admin has set back the status of the
+		 *  selected workstation to in order
+		 */
+		var CheckForWorkStationStatusContinously = function() {
+			$scope.$emit('FETCH_LATEST_WORK_STATIONS');
+			$timeout(CheckForWorkStationStatusContinously, 120000);
+		};
+		/********************************************************************************
 		 *  User activity timer
 		 *  ends here
 		 ********************************************************************************/
@@ -641,6 +717,16 @@ sntZestStation.controller('zsRootCtrl', [
 		 *   Websocket actions related to keycard lookup
 		 *  starts here
 		 ********************************************************************************/
+		
+		var printerErrorMapping = {
+			23: 'PRINTER_ERROR_PRINTER_IS_OFFLINE',
+			24:	'PRINTER_ERROR_PAPER_ROLL_IS_NEAR_EMPTY',
+			25:	'PRINTER_ERROR_PRINTER_OUT_OF_ORDER',
+			26:	'PRINTER_ERROR_PRINTER_ERROR',
+			27:	'PRINTER_ERROR_UNABLE_TO_GET_PRINTER_STATUS',
+			28:	'PRINTER_ERROR_UNABLE_TO_WRITE_TO_PRINTER_PORT',
+			29:	'PRINTER_ERROR_PRINT_ERROR'
+		};
 
 		var socketActions = function(response) {
 			var cmd = response.Command,
@@ -679,7 +765,7 @@ sntZestStation.controller('zsRootCtrl', [
 				} else {
 					//capture failed
 					$state.go('zest_station.speakToStaff');
-				};
+				}
 			} else if (response.Command === 'cmd_dispense_key_card') {
 				if (response.ResponseCode === 0) {
 					$scope.$broadcast('DISPENSE_SUCCESS', {
@@ -690,9 +776,18 @@ sntZestStation.controller('zsRootCtrl', [
 					$scope.$broadcast('DISPENSE_CARD_EMPTY');
 				} else {
 					$scope.$broadcast('DISPENSE_FAILED');
-				};
+				}
+			} else if( response.Command === 'cmd_print_bill'){
+
+				if (response.ResponseCode === 0 ) {
+					$scope.$broadcast('WS_PRINT_SUCCESS');
+				} else {
+					var errorData = {'error_message':printerErrorMapping[response.ResponseCode]};
+					$scope.$broadcast('WS_PRINT_FAILED',errorData);
+				}
 			}
 		};
+
 		var socketOpenedFailed = function() {
 			console.info("Websocket:-> socket connection failed");
 			$scope.$broadcast('SOCKET_FAILED');
@@ -864,6 +959,7 @@ sntZestStation.controller('zsRootCtrl', [
 					'selected': station
 				};
 				// set work station id and status
+				$scope.zestStationData.workstationName = station.name;
 				$scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
 				$rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
 				$scope.zestStationData.key_encoder_id = $scope.getStationIdFromName(station.name).key_encoder_id;
@@ -975,7 +1071,6 @@ sntZestStation.controller('zsRootCtrl', [
 
 			//update workstation status with oos reason
 			if ($scope.zestStationData.workstationStatus === 'out-of-order') {
-				console.info('placing station out of order');
 				var options = {
 					params: {
 						'oo_status': true,
@@ -991,7 +1086,6 @@ sntZestStation.controller('zsRootCtrl', [
 				$scope.callAPI(zsGeneralSrv.updateWorkStationOos, options);
 			} else {
 				//Make work stataion back to in order
-				console.info('putting station back in order');
 				var options = {
 					params: {
 						'oo_status': false,
@@ -1002,10 +1096,8 @@ sntZestStation.controller('zsRootCtrl', [
 				//update local storage
 				try {
 					//set workstation status in localstorage
-					console.info('set oos status :--->' + 'in-order');
 					storage.setItem(oosStorageKey, 'in-order');
 					//set workstation oos reason in localstorage
-					console.log('set works station :--->' + '');
 					storage.setItem(oosReasonKey, '');
 				} catch (err) {
 					console.warn(err);

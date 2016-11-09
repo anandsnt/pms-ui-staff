@@ -180,7 +180,6 @@ var GlobalZestStationApp = function() {
     }
     this.debugTheme = function(theme){
         //thats right, quick-switching of themes...
-        console.warn('attempting to set to hotel theme: "',theme,'"');
         angular.element('#header').scope().$parent.quickSetHotelTheme(theme);
     };
     this.virtualKeyBoardEnabled = false;

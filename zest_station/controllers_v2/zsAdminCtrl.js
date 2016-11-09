@@ -208,7 +208,9 @@ sntZestStation.controller('zsAdminCtrl', [
             //save workstation printer 
             //save workstation to browser
             var successCallBack = function(response) {
-                getTheSelectedWorkStation().printer = $scope.savedSettings.printer;
+                var selectedWorkstation = getTheSelectedWorkStation();
+                selectedWorkstation.printer = $scope.savedSettings.printer;
+                $scope.zestStationData.workstationName = selectedWorkstation.name;
                 setStationVariables();
                 restartTimers();
                 $scope.zestStationData.set_workstation_id = station.id;

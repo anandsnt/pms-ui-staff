@@ -133,7 +133,7 @@
                     <strong class="large_txt">{{printRegCardData.room_number}}</strong>
                 <br><br><br>
                     <span ng-hide="zestStationData.isHourlyRateOn">{{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}}</span>
-                    <span ng-show="zestStationData.isHourlyRateOn">{{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}} @ {{printRegCardData.arrival_time}}</span>
+                    <span ng-show="zestStationData.isHourlyRateOn">{{'REGISTRATION_READY_PRINT_DEPART_DATE' | translate}} {{departDate | date:'dd-MMM yyyy'}} @ {{printRegCardData.departure_time}}</span>
                 <br>    
                    <!--  {{'REGISTRATION_READY_PRINT_STD_CHECKOUT' | translate}} {{zestStationData.check_out_time.hour}}:{{zestStationData.check_out_time.minute}} {{zestStationData.check_out_time.primetime|lowercase}} -->
                 </span>
