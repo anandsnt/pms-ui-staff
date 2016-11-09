@@ -125,6 +125,9 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		$rootScope.conductSurvey =  !!reservationAndhotelData.survey_question_prompt_on ? true : false;
 		$rootScope.skipBalanceconductSurvey = false;
+		//we will be showing the departure date as a verification option in external URL landing based
+		//on admin settings
+		$rootScope.showDepartureDateForExtUrl = (reservationAndhotelData.checkin_auth_actions === 'conf_num_and_depart_date');
 
 		//Footer Settings
 		$rootScope.footerSettings = reservationAndhotelData.zest_web_footer_settings;
