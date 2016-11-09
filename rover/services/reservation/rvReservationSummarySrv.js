@@ -177,7 +177,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                 url += 'reservation_ids[]=' + id + '&';
             });
             _.each(data.emails, function(mail) {
-                url += 'emails[]=' + mail + '&';
+                url += 'emails[]=' + encodeURIComponent(mail) + '&';
             });
 
             delete data['reservation_ids'];
