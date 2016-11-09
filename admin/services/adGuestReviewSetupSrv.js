@@ -1,4 +1,4 @@
-admin.service('ADGuestReviewSetupSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
+admin.service('ADGuestReviewSetupSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 
    /*
 	* service class for Guest Review setup
@@ -14,7 +14,7 @@ admin.service('ADGuestReviewSetupSrv',['$q', 'ADBaseWebSrv', function($q, ADBase
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -30,7 +30,7 @@ admin.service('ADGuestReviewSetupSrv',['$q', 'ADBaseWebSrv', function($q, ADBase
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;

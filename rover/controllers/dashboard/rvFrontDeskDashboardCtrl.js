@@ -1,4 +1,4 @@
-sntRover.controller('RVfrontDeskDashboardController',['$scope', '$rootScope', 'statistics', function($scope, $rootScope, statistics) {
+sntRover.controller('RVfrontDeskDashboardController', ['$scope', '$rootScope', 'statistics', function($scope, $rootScope, statistics) {
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;

@@ -11,7 +11,7 @@ sntGuestWeb.config(function($httpProvider) {
 });
 
 
-angular.module('sntGuestWeb').service('GWBaseWebSrv2',['$http', '$q', '$window', function($http, $q, $window) {
+angular.module('sntGuestWeb').service('GWBaseWebSrv2', ['$http', '$q', '$window', function($http, $q, $window) {
 
     /**
     *   A http requester method for calling webservice

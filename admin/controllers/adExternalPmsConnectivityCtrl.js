@@ -1,4 +1,4 @@
-admin.controller('ADExternalPmsConnectivityCtrl',['$scope','$rootScope','$state','ADExternalPmsConnectivitySrv',  function($scope,$rootScope,$state,ADExternalPmsConnectivitySrv) {
+admin.controller('ADExternalPmsConnectivityCtrl', ['$scope', '$rootScope', '$state', 'ADExternalPmsConnectivitySrv',  function($scope, $rootScope, $state, ADExternalPmsConnectivitySrv) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -18,7 +18,7 @@ admin.controller('ADExternalPmsConnectivityCtrl',['$scope','$rootScope','$state'
     * Render external connectivity screen
     */
 	$scope.renderExternalPmsConnectivity = function() {
-		$scope.invokeApi(ADExternalPmsConnectivitySrv.getExternalPmsConnectivityDetails, {} , $scope.successCallbackRender);
+		$scope.invokeApi(ADExternalPmsConnectivitySrv.getExternalPmsConnectivityDetails, {}, $scope.successCallbackRender);
 	};
 	//To render screen
 	$scope.renderExternalPmsConnectivity();
@@ -41,7 +41,7 @@ admin.controller('ADExternalPmsConnectivityCtrl',['$scope','$rootScope','$state'
     * Function to test connectivity details
     */
     $scope.testConnectivity = function() {
-   		$scope.invokeApi(ADExternalPmsConnectivitySrv.testConnectivity, $scope.externalPmsConnectivityData , $scope.successCallbackConnectionTest, $scope.failureCallbackConnectionTest);
+   		$scope.invokeApi(ADExternalPmsConnectivitySrv.testConnectivity, $scope.externalPmsConnectivityData, $scope.successCallbackConnectionTest, $scope.failureCallbackConnectionTest);
     };
 
     $scope.successCallbackSave = function() {
@@ -55,7 +55,7 @@ admin.controller('ADExternalPmsConnectivityCtrl',['$scope','$rootScope','$state'
     $scope.saveConnectivity = function() {
     	$scope.successMessage = "";
       $scope.errorMessage = "";
-    	$scope.invokeApi(ADExternalPmsConnectivitySrv.saveConnectivity, $scope.externalPmsConnectivityData , $scope.successCallbackSave);
+    	$scope.invokeApi(ADExternalPmsConnectivitySrv.saveConnectivity, $scope.externalPmsConnectivityData, $scope.successCallbackSave);
     };
 
 }]);

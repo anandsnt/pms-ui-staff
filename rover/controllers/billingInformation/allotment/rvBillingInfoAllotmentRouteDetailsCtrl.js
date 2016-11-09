@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'rvPermissionSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', '$q', function($scope, $rootScope,$filter, RVBillinginfoSrv, rvPermissionSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv, $q) {
+sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'rvPermissionSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', 'RVPaymentSrv', '$q', function($scope, $rootScope, $filter, RVBillinginfoSrv, rvPermissionSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv, RVPaymentSrv, $q) {
     BaseCtrl.call(this, $scope);
 
     /**
@@ -211,7 +211,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
 
     var fetchAllBillingGroupsFailureCallback = function(errorMessage) {
         $scope.$parent.$emit('hideLoader');
-        $scope.$emit('displayErrorMessage',errorMessage);
+        $scope.$emit('displayErrorMessage', errorMessage);
     };
 
     /**
@@ -230,7 +230,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
 
     var fetchAllChargeCodesFailureCallBack = function(errorMessage) {
         $scope.$parent.$emit('hideLoader');
-        $scope.$emit('displayErrorMessage',errorMessage);
+        $scope.$emit('displayErrorMessage', errorMessage);
     };
 
     /**
@@ -271,7 +271,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
         if(entity.attached_charge_codes.length === 0 &&
             entity.attached_billing_groups.length === 0) {
 
-            $scope.$emit('displayErrorMessage',[$filter('translate')('ERROR_CHARGES_EMPTY')]);
+            $scope.$emit('displayErrorMessage', [$filter('translate')('ERROR_CHARGES_EMPTY')]);
             return;
         }
 
@@ -313,7 +313,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
 
         var errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
-            $scope.$emit('displayErrorMessage',errorMessage);
+            $scope.$emit('displayErrorMessage', errorMessage);
         };
 
         var defaultRoutingSaveSuccess = function () {
@@ -357,7 +357,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
         };
         $scope.errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
-            $scope.$emit('displayErrorMessage',errorMessage);
+            $scope.$emit('displayErrorMessage', errorMessage);
         };
 
         $scope.savePaymentToReservationOrAccount('allotment');
@@ -371,7 +371,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
 
         var errorCallback = function(errorMessage) {
             $scope.$parent.$emit('hideLoader');
-            $scope.$emit('displayErrorMessage',errorMessage);
+            $scope.$emit('displayErrorMessage', errorMessage);
         };
 
         var successSixSwipe = function(response) {
@@ -397,7 +397,7 @@ sntRover.controller('rvBillingInfoAllotmentRouteDetailsCtrl',['$scope','$rootSco
                 RVPaymentSrv.chipAndPinGetToken(data).then(function(response) {
                     $scope.$emit('UPDATE_SHOULD_SHOW_WAITING', false);
                     successSixSwipe(response);
-                },function(error) {
+                }, function(error) {
                     $scope.errorMessage = error;
                     $scope.$emit('UPDATE_SHOULD_SHOW_WAITING', false);
 

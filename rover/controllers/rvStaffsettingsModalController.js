@@ -1,4 +1,4 @@
-sntRover.controller('RVStaffsettingsModalController', ['$scope','ngDialog','RVSettingsSrv', function($scope,ngDialog,RVSettingsSrv) {
+sntRover.controller('RVStaffsettingsModalController', ['$scope', 'ngDialog', 'RVSettingsSrv', function($scope, ngDialog, RVSettingsSrv) {
 
 BaseCtrl.call(this, $scope);
 $scope.newPassword = '';
@@ -16,7 +16,7 @@ $scope.fetchData = function() {
     var fetchUserInfoFailureCallback = function(data) {
         $scope.$emit('hideLoader');
     };
-    $scope.invokeApi(RVSettingsSrv.fetchUserInfo,{},fetchUserInfoSuccessCallback,fetchUserInfoFailureCallback);
+    $scope.invokeApi(RVSettingsSrv.fetchUserInfo, {}, fetchUserInfoSuccessCallback, fetchUserInfoFailureCallback);
 
 };
 
@@ -54,7 +54,7 @@ $scope.updateSettings = function() {
 		 $scope.errorMessage=data;
 	    $scope.$emit('hideLoader');
 	};
-	$scope.invokeApi(RVSettingsSrv.updateUserInfo,{'new_password' :$scope.newPassword},updateUserInfoSuccessCallback,updateUserInfoFailureCallback);
+	$scope.invokeApi(RVSettingsSrv.updateUserInfo, {'new_password' :$scope.newPassword}, updateUserInfoSuccessCallback, updateUserInfoFailureCallback);
 	};
 
 }]);

@@ -1,4 +1,4 @@
-admin.service('ADNotificationsListSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('ADNotificationsListSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 
 	/**
     *   A getter method to return the hotel list
@@ -10,7 +10,7 @@ admin.service('ADNotificationsListSrv',['$http', '$q', 'ADBaseWebSrvV2', functio
 		//var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -21,7 +21,7 @@ admin.service('ADNotificationsListSrv',['$http', '$q', 'ADBaseWebSrvV2', functio
 		//var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -32,7 +32,7 @@ admin.service('ADNotificationsListSrv',['$http', '$q', 'ADBaseWebSrvV2', functio
 		var url = '/api/staff_notifications/'+data.id;
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {			
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -43,7 +43,7 @@ admin.service('ADNotificationsListSrv',['$http', '$q', 'ADBaseWebSrvV2', functio
 		var url = '/api/staff_notifications';
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -53,7 +53,7 @@ admin.service('ADNotificationsListSrv',['$http', '$q', 'ADBaseWebSrvV2', functio
 		var url = '/api/staff_notifications/'+ data.id;
 		ADBaseWebSrvV2.putJSON(url, data.params).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

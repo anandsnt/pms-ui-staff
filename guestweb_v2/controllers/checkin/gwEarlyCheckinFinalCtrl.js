@@ -11,7 +11,7 @@ sntGuestWeb.controller('gwEarlyCheckinFinalController', ['$scope', '$state', '$s
 			var screenIdentifier = "EARLY_CHECKIN_FINAL";
 			$scope.earlyCheckinCharge = $stateParams.charge;
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
-			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description,"@early-checkin-charge", $scope.earlyCheckinCharge);
+			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@early-checkin-charge", $scope.earlyCheckinCharge);
 		}();
 
 		$scope.nextButtonClicked = function() {

@@ -229,7 +229,7 @@ var cordova = {
         }
     },
     fireWindowEvent: function(type, data) {
-        var evt = createEvent(type,data);
+        var evt = createEvent(type, data);
         if (typeof windowEventHandlers[type] != 'undefined') {
             setTimeout(function() {
                 windowEventHandlers[type].fire(evt);
@@ -400,7 +400,7 @@ base64.fromArrayBuffer = function(arrayBuffer) {
 };
 
 base64.toArrayBuffer = function(str) {
-    var decodedStr = typeof atob != 'undefined' ? atob(str) : new Buffer(str,'base64').toString('binary');
+    var decodedStr = typeof atob != 'undefined' ? atob(str) : new Buffer(str, 'base64').toString('binary');
     var arrayBuffer = new ArrayBuffer(decodedStr.length);
     var array = new Uint8Array(arrayBuffer);
     for (var i=0, len=decodedStr.length; i < len; i++) {
@@ -1129,7 +1129,7 @@ var CommandProxyMap = {};
 module.exports = {
 
     // example: cordova.commandProxy.add("Accelerometer",{getCurrentAcceleration: function(successCallback, errorCallback, options) {...},...);
-    add:function(id,proxyObj) {
+    add:function(id, proxyObj) {
         console.log("adding proxy for " + id);
         CommandProxyMap[id] = proxyObj;
         return proxyObj;
@@ -1143,7 +1143,7 @@ module.exports = {
         return proxy;
     },
 
-    get:function(service,action) {
+    get:function(service, action) {
         return ( CommandProxyMap[service] ? CommandProxyMap[service][action] : null );
     }
 };
@@ -1192,7 +1192,7 @@ function replaceNavigator(origNavigator) {
             }
             else {
                 (function(k) {
-                    utils.defineGetterSetter(newNavigator,key,function() {
+                    utils.defineGetterSetter(newNavigator, key, function() {
                         return origNavigator[k];
                     });
                 })(key);
@@ -1320,7 +1320,7 @@ function replaceNavigator(origNavigator) {
             }
             else {
                 (function(k) {
-                    utils.defineGetterSetter(newNavigator,key,function() {
+                    utils.defineGetterSetter(newNavigator, key, function() {
                         return origNavigator[k];
                     });
                 })(key);

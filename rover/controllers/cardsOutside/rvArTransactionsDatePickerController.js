@@ -1,4 +1,4 @@
-sntRover.controller('RVArTransactionsDatePickerController',['$scope','$rootScope','ngDialog','dateFilter',function($scope,$rootScope,ngDialog,dateFilter) {
+sntRover.controller('RVArTransactionsDatePickerController', ['$scope', '$rootScope', 'ngDialog', 'dateFilter', function($scope, $rootScope, ngDialog, dateFilter) {
 
     if($scope.clickedOn === 'FROM') {
         $scope.date = $scope.filterData.fromDate ? tzIndependentDate($scope.filterData.fromDate) : tzIndependentDate($rootScope.businessDate);

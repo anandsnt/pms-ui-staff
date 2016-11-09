@@ -4,7 +4,7 @@
 	update the guest birthday details here.
 */
 (function() {
-	var birthDateDetailsController = function($scope,$rootScope,$state,guestDetailsService,$modal) {
+	var birthDateDetailsController = function($scope, $rootScope, $state, guestDetailsService, $modal) {
 
 	$scope.pageValid = false;
 
@@ -29,18 +29,18 @@
 		};
 
 		$scope.months = [
-							{"id":1,"name":"JAN"},
-							{"id":2,"name":"FEB"},
-							{"id":3,"name":"MAR"},
-							{"id":4,"name":"APR"},
-							{"id":5,"name":"MAY"},
-							{"id":6,"name":"JUN"},
-							{"id":7,"name":"JUL"},
-							{"id":8,"name":"AUG"},
-							{"id":9,"name":"SEP"},
-							{"id":10,"name":"OCT"},
-							{"id":11,"name":"NOV"},
-							{"id":12,"name":"DEC"}
+							{"id":1, "name":"JAN"},
+							{"id":2, "name":"FEB"},
+							{"id":3, "name":"MAR"},
+							{"id":4, "name":"APR"},
+							{"id":5, "name":"MAY"},
+							{"id":6, "name":"JUN"},
+							{"id":7, "name":"JUL"},
+							{"id":8, "name":"AUG"},
+							{"id":9, "name":"SEP"},
+							{"id":10, "name":"OCT"},
+							{"id":11, "name":"NOV"},
+							{"id":12, "name":"DEC"}
 						];
 			
 		for(day=1;day<=31;day++) {
@@ -54,7 +54,7 @@
 	
 		var getDataToSave = function() {
 			var data 				= {};
-			var unwanted_keys 		= ["month","year","day"];
+			var unwanted_keys 		= ["month", "year", "day"];
 			var newObject 			= JSON.parse(JSON.stringify($scope.guestDetails));
             for(var i=0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
@@ -107,7 +107,7 @@
 			var m = parseInt(comp[0], 10);
 			var d = parseInt(comp[1], 10);
 			var y = parseInt(comp[2], 10);
-			var date = new Date(y,m-1,d);
+			var date = new Date(y, m-1, d);
 			if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
 			   return true
 			} else {
@@ -149,7 +149,7 @@
 					$scope.isLoading 	= false;
 					$rootScope.isBirthdayVerified =  true;
 					goToNextStep();
-				},function() {
+				}, function() {
 					$rootScope.netWorkError = true;
 					$scope.isLoading = false;
 				});
@@ -178,7 +178,7 @@
 };
 
 var dependencies = [
-'$scope','$rootScope','$state','guestDetailsService','$modal',
+'$scope', '$rootScope', '$state', 'guestDetailsService', '$modal',
 birthDateDetailsController
 ];
 

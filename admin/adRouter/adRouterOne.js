@@ -129,7 +129,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 					return adZestCheckinCheckoutSrv.fetchDirectSetup();
 				},
 				diretUrls : function(adZestCheckinCheckoutSrv) {
-					var data = {"application":"URL","guest_web_url_type":"CHECKIN"};
+					var data = {"application":"URL", "guest_web_url_type":"CHECKIN"};
 					return adZestCheckinCheckoutSrv.fetchDirectUrlList(data);
 				}
 			}

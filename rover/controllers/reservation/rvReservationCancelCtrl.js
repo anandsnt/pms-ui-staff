@@ -1,5 +1,5 @@
-	sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter', '$q','RVReservationSummarySrv','$window',
-		function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter, $q,RVReservationSummarySrv,$window) {
+	sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter', '$q', 'RVReservationSummarySrv', '$window',
+		function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter, $q, RVReservationSummarySrv, $window) {
 
 			BaseCtrl.call(this, $scope);
 			$scope.errorMessage = '';

@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVSettingsSrv',['$q', 'RVBaseWebSrv', function( $q, RVBaseWebSrv) {
+angular.module('sntRover').service('RVSettingsSrv', ['$q', 'RVBaseWebSrv', function( $q, RVBaseWebSrv) {
 
  /*
     * To fetch user details
@@ -10,7 +10,7 @@ this.fetchUserInfo = function() {
 
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -24,9 +24,9 @@ this.updateUserInfo = function(data) {
 		var deferred = $q.defer();
 		var url =  'admin/user/change_password';
 
-		RVBaseWebSrv.postJSON(url,data).then(function(data) {
+		RVBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

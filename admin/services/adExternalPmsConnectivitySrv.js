@@ -1,4 +1,4 @@
-admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
+admin.service('ADExternalPmsConnectivitySrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
    /**
     * To fetch the details of external connection
     * @return {object} external connectivity details
@@ -10,7 +10,7 @@ admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv', fun
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -27,7 +27,7 @@ admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv', fun
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			if(typeof data === 'string') {
 				data = [data];
 			}
@@ -46,7 +46,7 @@ admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv', fun
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

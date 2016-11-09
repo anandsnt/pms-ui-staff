@@ -11,7 +11,7 @@ admin.config(function($httpProvider) {
 });
 
 
-admin.service('ADBaseWebSrv',['$http', '$q', '$window', function($http, $q, $window) {
+admin.service('ADBaseWebSrv', ['$http', '$q', '$window', function($http, $q, $window) {
 
     /**
     *   A http requester method for calling webservice

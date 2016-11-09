@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','$timeout','rvPermissionSrv',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse, $timeout, rvPermissionSrv) {
+sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 'RVJournalSrv', 'journalResponse', '$timeout', 'rvPermissionSrv', function($scope, $filter, $stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse, $timeout, rvPermissionSrv) {
 
 	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
@@ -46,7 +46,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     var retrieveCashierName = function() {
         if($scope.data.filterData.selectedCashier !== "") {
-            angular.forEach($scope.data.filterData.cashiers,function(item, index) {
+            angular.forEach($scope.data.filterData.cashiers, function(item, index) {
                 if(item.id === $scope.data.filterData.selectedCashier) {
                    $scope.data.selectedCashier = item.name;
                 }
@@ -83,7 +83,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     // Filter by Logged in user id.
     var filterByLoggedInUser = function() {
-        angular.forEach($scope.data.filterData.employees,function(item, index) {
+        angular.forEach($scope.data.filterData.employees, function(item, index) {
             if(item.id === $scope.data.filterData.loggedInUserId ) {
                 item.checked = true;
                 $scope.data.filterData.isSelectButtonActive = true;
@@ -104,7 +104,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     // Checking whether all department checkboxes are unchecked or not
     var isAllDepartmentsUnchecked = function() {
         var flag = true;
-        angular.forEach($scope.data.filterData.departments,function(item, index) {
+        angular.forEach($scope.data.filterData.departments, function(item, index) {
             if(item.checked) {
                 flag = false;
             }
@@ -123,14 +123,14 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     // Unchecking all checkboxes on Departments.
     var clearAllDeptSelection = function(index) {
-        angular.forEach($scope.data.filterData.departments,function(item, index) {
+        angular.forEach($scope.data.filterData.departments, function(item, index) {
             item.checked = false;
         });
     };
 
     // Unchecking all checkboxes on Employees.
     var clearAllEmployeeSelection = function(index) {
-        angular.forEach($scope.data.filterData.employees,function(item, index) {
+        angular.forEach($scope.data.filterData.employees, function(item, index) {
             item.checked = false;
         });
     };
@@ -138,7 +138,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     // Checking whether all employees checkboxes are unchecked or not
     var isAllEmployeesUnchecked = function() {
         var flag = true;
-        angular.forEach($scope.data.filterData.employees,function(item, index) {
+        angular.forEach($scope.data.filterData.employees, function(item, index) {
             if(item.checked) {
                 flag = false;
             }
@@ -186,7 +186,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         // To get the list of departments id selected.
         $scope.data.selectedDepartmentList = [];
         $scope.data.selectedDepartmentName = [];
-        angular.forEach($scope.data.filterData.departments,function(item, index) {
+        angular.forEach($scope.data.filterData.departments, function(item, index) {
             if(item.checked) {
                 $scope.data.selectedDepartmentList.push(item.id);
                 $scope.data.selectedDepartmentName.push(item.name);
@@ -197,7 +197,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         // To get the list of employee id selected.
         $scope.data.selectedEmployeeList = [];
         $scope.data.selectedEmployeesName = [];
-        angular.forEach($scope.data.filterData.employees,function(item, index) {
+        angular.forEach($scope.data.filterData.employees, function(item, index) {
             if(item.checked) {
                 $scope.data.selectedEmployeeList.push(item.id);
                 $scope.data.selectedEmployeesName.push(item.name);
@@ -248,7 +248,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         // b) All employee fields should default to logged in user
         $timeout(function() {
             filterByLoggedInUser();
-        },2000);
+        }, 2000);
     }
     else{
         // 2. Go to Financials -> Journal.
@@ -274,7 +274,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     var callCashierFilterService = function() {
         $scope.$broadcast('refreshDetails');
     };
-    $scope.$on('cashierDateChanged',function() {
+    $scope.$on('cashierDateChanged', function() {
     	//call filter service
     	callCashierFilterService();
     });

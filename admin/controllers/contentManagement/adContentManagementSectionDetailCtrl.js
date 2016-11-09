@@ -1,4 +1,4 @@
-admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ngDialog', '$stateParams', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location',
+admin.controller('ADContentManagementSectionDetailCtrl', ['$scope', '$state', 'ngDialog', '$stateParams', 'ADContentManagementSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout',  '$location',
  function($scope, $state, ngDialog, $stateParams, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
 	$scope.errorMessage = '';
@@ -48,7 +48,7 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 			$scope.sntProducts = data;
 			
 		};
-		$scope.invokeApi(ADContentManagementSrv.fetchSntProducts, {} , fetchSntProductsSuccessCallback);
+		$scope.invokeApi(ADContentManagementSrv.fetchSntProducts, {}, fetchSntProductsSuccessCallback);
 	};
 
     /*Function to fetch the section details
@@ -59,7 +59,7 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 			$scope.data = data;
 			$scope.initialIcon = $scope.data.icon;
 		};
-		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchSectionSuccessCallback);
+		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id, fetchSectionSuccessCallback);
 	};
 
 	$scope.fetchSntProducts();
@@ -81,7 +81,7 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 			unwantedKeys = ["icon", "image"];
 		}
 		var data = dclone($scope.data, unwantedKeys);
-		$scope.invokeApi(ADContentManagementSrv.saveComponent, data , saveSectionSuccessCallback);
+		$scope.invokeApi(ADContentManagementSrv.saveComponent, data, saveSectionSuccessCallback);
 	};
 
 	/* delete component starts here*/
@@ -100,7 +100,7 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 			});
 			$scope.componentIdToDelete = id;
 		};
-		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
+		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id}, successCallbackFetchDeleteDetails);
 
 	};
 	/* Listener to know that the current category is deleted.

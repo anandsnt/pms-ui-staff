@@ -177,7 +177,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             $scope.downloadPromptFileName = lang+'.json';
             var link = document.getElementById('download-link-popup');//ie. en-download-link
             link.href = 'staff/locales/download/'+lang+'.json';
-         },500);
+         }, 500);
          ngDialog.open({
             template: '/assets/partials/zestStation/adZestStationLanguageFile.html',
             className: 'ngdialog-theme-default single-calendar-modal',

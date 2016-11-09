@@ -1,4 +1,4 @@
-sntGuestWeb.controller('resetPasswordController', ['$rootScope','$location','$state','$scope', 'resetPasswordService', '$modal', function($rootScope,$location,$state,$scope, resetPasswordService, $modal) {
+sntGuestWeb.controller('resetPasswordController', ['$rootScope', '$location', '$state', '$scope', 'resetPasswordService', '$modal', function($rootScope, $location, $state, $scope, resetPasswordService, $modal) {
 
 
 	$scope.pageValid = true;
@@ -35,7 +35,7 @@ sntGuestWeb.controller('resetPasswordController', ['$rootScope','$location','$st
 
 		           $scope.isPasswordReset = true;
 	           }
-               },function() {
+               }, function() {
                	   $scope.isPosting = false;
                	   $scope.isPasswordReset = false;
 	               $scope.errorMessage = "The password reset is unsuccessful. Please contact the front Desk";

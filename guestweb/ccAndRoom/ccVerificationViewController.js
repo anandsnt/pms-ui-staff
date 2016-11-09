@@ -1,5 +1,5 @@
 (function() {
-	var ccVerificationViewController = function($scope,$rootScope,$state,$stateParams,$modal,ccVerificationService) {
+	var ccVerificationViewController = function($scope, $rootScope, $state, $stateParams, $modal, ccVerificationService) {
 
 
   $scope.pageValid = false;
@@ -129,7 +129,7 @@
 
     $scope.goToNextStep = function() {
         var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01";
-        var data = {'reservation_id':$rootScope.reservationID,'token':MLISessionId,'card_expiry':cardExpiryDate,'payment_type':"CC"};
+        var data = {'reservation_id':$rootScope.reservationID, 'token':MLISessionId, 'card_expiry':cardExpiryDate, 'payment_type':"CC"};
         ccVerificationService.verifyCC(data).then(function(response) {
         $scope.isFetching = false;
         if(response.status ==="success") {
@@ -140,14 +140,14 @@
               $state.go('checkOutStatus');
             }else{
                $rootScope.ccPaymentSuccessForCheckoutLater = true;
-               $state.go('checkOutLaterSuccess',{id:$scope.fee});
+               $state.go('checkOutLaterSuccess', {id:$scope.fee});
             }
         }
         else{
          $scope.netWorkError = true;
         };
 
-      },function() {
+      }, function() {
         $scope.netWorkError = true;
         $scope.isFetching = false;
       });
@@ -217,7 +217,7 @@
 
 
 var dependencies = [
-'$scope','$rootScope','$state','$stateParams','$modal','ccVerificationService',
+'$scope', '$rootScope', '$state', '$stateParams', '$modal', 'ccVerificationService',
 ccVerificationViewController
 ];
 
@@ -226,7 +226,7 @@ sntGuestWeb.controller('ccVerificationViewController', dependencies);
 
 // controller for the modal
 
-  var ccVerificationModalCtrl = function ($scope, $modalInstance,$state,errorMessage) {
+  var ccVerificationModalCtrl = function ($scope, $modalInstance, $state, errorMessage) {
 
     $scope.errorMessage = errorMessage;
     $scope.closeDialog = function () {

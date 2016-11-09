@@ -3,7 +3,7 @@
 */
 
 (function() {
-	var mobileOptionsController = function($scope,$state,$rootScope) {
+	var mobileOptionsController = function($scope, $state, $rootScope) {
 	
 	 $scope.skip =  function() {
       $rootScope.userMobileSkipped = true;
@@ -16,7 +16,7 @@
 };
 
 var dependencies = [
-'$scope','$state','$rootScope',
+'$scope', '$state', '$rootScope',
 mobileOptionsController
 ];
 

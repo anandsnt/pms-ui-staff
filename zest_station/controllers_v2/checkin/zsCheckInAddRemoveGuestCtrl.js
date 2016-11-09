@@ -64,7 +64,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 } else {
                     $timeout(function() {
                         $scope.focusInputField('add-guest-name');
-                    },300);
+                    }, 300);
                 }
             } else {
                 $scope.guest.lastName = $scope.guest.Name;
@@ -79,7 +79,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 } else {
                     $timeout(function() {
                         $scope.focusInputField('add-guest-name');
-                    },300);
+                    }, 300);
 
                 }
             };

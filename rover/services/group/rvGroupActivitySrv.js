@@ -10,7 +10,7 @@ angular.module('sntRover').service('rvGroupActivitySrv', [
 			var url = '/ui/show?format=json&json_input=activityLog/activity_log.json';
 
 
-			rvBaseWebSrvV2.getJSON(url,params)
+			rvBaseWebSrvV2.getJSON(url, params)
 			.then(function(data) {
 				this.cacheReportList = data;
 				deferred.resolve(this.cacheReportList);
@@ -25,7 +25,7 @@ angular.module('sntRover').service('rvGroupActivitySrv', [
 			var url = '/ui/show?format=json&json_input=activityLog/activity_log1.json';
 
 
-			rvBaseWebSrvV2.getJSON(url,params)
+			rvBaseWebSrvV2.getJSON(url, params)
 			.then(function(data) {
 				this.cacheReportList = data;
 				deferred.resolve(this.cacheReportList);

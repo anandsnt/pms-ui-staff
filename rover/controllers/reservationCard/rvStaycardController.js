@@ -74,8 +74,8 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                                 fullname: fullname
                             };
                                 $rootScope.viaSharerName = fullname;
-                                $rootScope.$broadcast('LOAD_SHARED_RESERVATION',data);
-                        },200);
+                                $rootScope.$broadcast('LOAD_SHARED_RESERVATION', data);
+                        }, 200);
 
 
                     }

@@ -1,4 +1,4 @@
-admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stateParams', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 'ADRatesAddonsSrv',
+admin.controller('ADContentManagementItemDetailCtrl', ['$scope', '$state', '$stateParams', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout',  '$location', 'ADRatesAddonsSrv',
  function($scope, $state, $stateParams, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location, ADRatesAddonsSrv) {
 
 	$scope.errorMessage = '';
@@ -77,7 +77,7 @@ $scope.fetchAddons = function() {
 };
 
     $scope.getAddonsWithNameValues = function(addons) {
-        angular.forEach(addons,function(item, index) {
+        angular.forEach(addons, function(item, index) {
        		item.value = item.id;
 
   	  });
@@ -96,7 +96,7 @@ $scope.fetchSpaces = function() {
 $scope.getDurationsWithNameValues = function(items) {
 	var list = [];
 	var obj;
-    angular.forEach(items,function(item, index) {
+    angular.forEach(items, function(item, index) {
         obj = {};
        	obj.value = item;
        	obj.name = item;
@@ -109,7 +109,7 @@ $scope.getDurationsWithNameValues = function(items) {
 $scope.getListWithNameValues = function(items) {
 	var list = [];
 	var obj;
-    angular.forEach(items,function(item, index) {
+    angular.forEach(items, function(item, index) {
         obj = {};
        	obj.value = item;
        	obj.name = item;
@@ -121,20 +121,20 @@ $scope.getListWithNameValues = function(items) {
 $scope.getDurationsNames = function (items) {
 	var duration = [];
 	var name;
-	angular.forEach(items,function(item,index) {
+	angular.forEach(items, function(item, index) {
 		duration.push(item.name);
 	});
 		return duration;
 };
 
-$scope.setSpaceDurations = function(val,index) {
+$scope.setSpaceDurations = function(val, index) {
 	var duration = $scope.space_durations[index];
 	var flag = $scope.data.durations.indexOf(duration.value);
 	if(flag === -1) {
 		$scope.data.durations.push(duration.value);
 	}
 	else{
-		$scope.data.durations.splice(flag,1);
+		$scope.data.durations.splice(flag, 1);
 	}
 }
 
@@ -149,7 +149,7 @@ $scope.itemTypeSelected = function() {
 
 $scope.getSelectedAddonDescription = function() {
 	var description = "";
-     angular.forEach($scope.addons,function(item, index) {
+     angular.forEach($scope.addons, function(item, index) {
        if(item.value === $scope.data.addon_id) {
        	description = item.description;
        }
@@ -159,7 +159,7 @@ $scope.getSelectedAddonDescription = function() {
 
 $scope.getSelectedAddonPrice = function() {
 	var price = "";
-	angular.forEach($scope.addons,function(item, index) {
+	angular.forEach($scope.addons, function(item, index) {
        if(item.value === $scope.data.addon_id) {
        	price = item.amount;
        }
@@ -187,7 +187,7 @@ $scope.getSelectedAddonPrice = function() {
 			}
 			$scope.data.durations = $scope.getDurationsNames($scope.data.durations);
 		};
-		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchItemSuccessCallback);
+		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id, fetchItemSuccessCallback);
 	};
 	/*Checkin if the screen is loaded for a new item or,
 	 * for existing item.
@@ -233,7 +233,7 @@ $scope.getSelectedAddonPrice = function() {
 			unwantedKeys.push('image');
 		}
 		var data = dclone($scope.data, unwantedKeys);
-		$scope.invokeApi(ADContentManagementSrv.saveComponent, data , saveItemSuccessCallback);
+		$scope.invokeApi(ADContentManagementSrv.saveComponent, data, saveItemSuccessCallback);
 	};
 
 	/* delete component starts here*/
@@ -252,7 +252,7 @@ $scope.getSelectedAddonPrice = function() {
 			});
 			$scope.componentIdToDelete = id;
 		};
-		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
+		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id}, successCallbackFetchDeleteDetails);
 
 	};
 	/* Function to remove the category from selected list*/

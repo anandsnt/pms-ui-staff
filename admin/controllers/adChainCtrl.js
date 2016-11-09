@@ -1,4 +1,4 @@
-admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', function($scope, $rootScope,adChainsSrv) {
+admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', function($scope, $rootScope, adChainsSrv) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.chainsList = [];
@@ -16,7 +16,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			$scope.$emit('hideLoader');
 			$scope.chainsList = data.chain_list;
 		};
-		$scope.invokeApi(adChainsSrv.fetch, {},fetchChainsSuccessCallback);
+		$scope.invokeApi(adChainsSrv.fetch, {}, fetchChainsSuccessCallback);
 	};
 	$scope.fetchHotelChains();
 	$scope.currentClickedElement = -1;
@@ -26,7 +26,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
    * @param {int} index index of selected chain
    * @paran {string} id - chain id
    */
-	$scope.editSelected = function(index,id)	{
+	$scope.editSelected = function(index, id)	{
 		$scope.isAddmode = false;
 		$scope.errorMessage ="";
 		$scope.currentClickedElement = index;
@@ -37,13 +37,13 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			$scope.editData   = data;
 			$scope.formTitle = 'Edit'+' '+$scope.editData.name;
 			if($scope.editData.lov.length === 0) {
-				$scope.editData.lov.push({'value':'','name':''});
+				$scope.editData.lov.push({'value':'', 'name':''});
 			}
 			$scope.isEditmode = true;
 			$scope.fileName = ($scope.editData.ca_certificate_exists === "true")  ? 'Certificate Attached' :'Choose file ...';
 			$scope.apns_file = ( $scope.editData.apns_certificate_exists === "true") ? 'Certificate Attached' :'Choose file ...';
 		};
-		$scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback);
+		$scope.invokeApi(adChainsSrv.edit, editID, editChainSuccessCallback);
 	};
   /*
    * To render add screen
@@ -51,7 +51,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	$scope.addNew = function() {
 		$scope.editData   = {};
 		$scope.errorMessage ="";
-		$scope.editData.lov  = [{'value':'','name':''}];
+		$scope.editData.lov  = [{'value':'', 'name':''}];
 		$scope.formTitle = 'Add';
 		$scope.isAddmode = true;
 		$scope.isEditmode = false;
@@ -95,7 +95,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			}
  			//if the length is zero, we are reverting to initial one
  			else{
- 				$scope.editData.lov = [{'value':'','name':''}];
+ 				$scope.editData.lov = [{'value':'', 'name':''}];
  			}
  		};
  		$scope.invokeApi(adChainsSrv.post, $scope.editData, addChainSuccessCallback, addChainFailureCallback);
@@ -106,7 +106,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
     * @param {string} id - chain id
     */
  	$scope.updateChain = function(id) {
- 		angular.forEach($scope.editData.lov,function(item, index) {
+ 		angular.forEach($scope.editData.lov, function(item, index) {
  			if (item.name === "") {
  				$scope.editData.lov.splice(index, 1);
  			}
@@ -115,7 +115,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			}
  		});
 
- 		var updateData = {'id' : id ,'updateData' :$scope.editData };
+ 		var updateData = {'id' : id, 'updateData' :$scope.editData };
 
 
 
@@ -129,7 +129,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			};
 
 			if($scope.editData.lov.length === 0) {
-				$scope.editData.lov = [{'value':'','name':''}];
+				$scope.editData.lov = [{'value':'', 'name':''}];
 			}
 
  		};
@@ -180,14 +180,14 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			$scope.newOptionAvailable = true;
 			// exclude first two fields
 			if($scope.editData.lov.length > 2) {
-				angular.forEach($scope.editData.lov,function(item, index) {
+				angular.forEach($scope.editData.lov, function(item, index) {
 					if (item.name === "" && index < $scope.editData.lov.length-1 ) {
 						$scope.newOptionAvailable = false;
 					}
 				});
 			}
 			if($scope.newOptionAvailable) {
-				$scope.editData.lov.push({'value':'','name':''});
+				$scope.editData.lov.push({'value':'', 'name':''});
 			}
 		}
 	};
@@ -210,7 +210,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			if($scope.editData.lov[index].name === "") {
 				$scope.editData.lov.splice(index, 1);
 			}
-			angular.forEach($scope.editData.lov,function(item, i) {
+			angular.forEach($scope.editData.lov, function(item, i) {
 				if (item.name === "" && i !== $scope.editData.lov.length-1) {
 					$scope.editData.lov.splice(i, 1);
 				}

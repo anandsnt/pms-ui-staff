@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2','$rootScope',
-	function($q, rvBaseWebSrvV2,$rootScope) {
+angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWebSrvV2', '$rootScope',
+	function($q, rvBaseWebSrvV2, $rootScope) {
 
 		var self = this;
 
@@ -9,7 +9,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
-					angular.forEach(data.bills,function(bill, index2) {
+					angular.forEach(data.bills, function(bill, index2) {
 		            	bill.page_no = 1;
 		            	bill.start = 1;
 		            	bill.end = 1;
@@ -83,7 +83,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = 'api/financial_transactions/'+trasactionId;
 			rvBaseWebSrvV2.putJSON(url, updatedDate).then(function(data) {
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 
@@ -103,7 +103,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = 'api/financial_transactions/'+ params.id +'/save_custom_description';
 			rvBaseWebSrvV2.postJSON(url, params.postData ).then(function(data) {
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 			return deferred.promise;
@@ -124,7 +124,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = 'api/financial_transactions/'+trasactionId;
 			rvBaseWebSrvV2.putJSON(url, deleteData.data).then(function(data) {
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 
@@ -143,7 +143,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = 'api/financial_transactions/'+trasactionId;
 			rvBaseWebSrvV2.putJSON(url, splitData.data).then(function(data) {
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 			return deferred.promise;
@@ -161,7 +161,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 			var url = '/api/bills/'+data.bill_id+'/add_payment_method';
 			rvBaseWebSrvV2.postJSON(url, data.data_to_pass).then(function(data) {
 				    deferred.resolve(data);
-				},function(data) {
+				}, function(data) {
 				    deferred.reject(data);
 				});
 			return deferred.promise;
@@ -224,7 +224,7 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 				};
 			};
 
-			rvBaseWebSrvV2.postJSONWithSpecialStatusHandling(url,postData.data_to_pass).then(function(data) {
+			rvBaseWebSrvV2.postJSONWithSpecialStatusHandling(url, postData.data_to_pass).then(function(data) {
 				//if connect to emv terminal is neeeded
 				// need to poll oftently to avoid
 				// timeout issues

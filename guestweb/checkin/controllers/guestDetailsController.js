@@ -4,7 +4,7 @@
 	update the guest details here.
 */
 (function() {
-	var guestDetailsController = function($scope,$rootScope,$state,guestDetailsService,$modal) {
+	var guestDetailsController = function($scope, $rootScope, $state, guestDetailsService, $modal) {
 
 	$scope.pageValid = false;
 
@@ -62,7 +62,7 @@
 				$scope.guestDetails.day   	 = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)): "";
 				$scope.guestDetails.month 	 = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(5, 7)) : "";
 				$scope.guestDetails.year  	 = ($scope.guestDetails.birthday !== null)?  parseInt($scope.guestDetails.birthday.substring(0, 4)): "";
-			},function() {
+			}, function() {
 				$rootScope.netWorkError   = true;
 				$scope.isLoading          = false;
 			});
@@ -77,7 +77,7 @@
 				$scope.unSortedCountries = response.unsorted;
 				$scope.isLoading = false;
 				fetchGuestDetails();
-			},function() {
+			}, function() {
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
 			});
@@ -87,7 +87,7 @@
 				$scope.countries = response;
 				$scope.isLoading = false;
 				fetchGuestDetails();
-			},function() {
+			}, function() {
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
 			});
@@ -102,7 +102,7 @@
 	
 		var getDataToSave = function() {
 			var data 				= {};
-			var unwanted_keys 		= ["month","year","day"];
+			var unwanted_keys 		= ["month", "year", "day"];
 			var newObject 			= JSON.parse(JSON.stringify($scope.guestDetails));
             for(var i=0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
@@ -150,7 +150,7 @@
 						    $state.go('checkinKeys');
 						  }
 					}
-				},function() {
+				}, function() {
 					$rootScope.netWorkError = true;
 					$scope.isLoading = false;
 				});
@@ -163,7 +163,7 @@
 };
 
 var dependencies = [
-'$scope','$rootScope','$state','guestDetailsService','$modal',
+'$scope', '$rootScope', '$state', 'guestDetailsService', '$modal',
 guestDetailsController
 ];
 

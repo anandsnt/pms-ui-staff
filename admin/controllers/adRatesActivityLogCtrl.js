@@ -1,4 +1,4 @@
-admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$stateParams', 'ADRateActivityLogSrv', 'ngTableParams', '$filter',
+admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADRateActivityLogSrv', 'ngTableParams', '$filter',
     function($scope, $rootScope, $state, $stateParams, ADRateActivityLogSrv, ngTableParams, $filter) {
 	BaseCtrl.call(this, $scope);
 
@@ -17,7 +17,7 @@ admin.controller('ADRatesActivityLogCtrl',['$scope', '$rootScope', '$state','$st
                 $scope.activityLogData = response;
                 $scope.$emit('hideLoader');
             };
-            $scope.invokeApi(ADRateActivityLogSrv.fetchRateLog, {'id':rateId},callback);
+            $scope.invokeApi(ADRateActivityLogSrv.fetchRateLog, {'id':rateId}, callback);
         };
         $scope.toggleActivityLogFilterON = false;
         $scope.toggleActivityLogFilter = function() {

@@ -1,4 +1,4 @@
-admin.controller('ADContentManagementCtrl',['$scope', '$state', '$rootScope', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location',
+admin.controller('ADContentManagementCtrl', ['$scope', '$state', '$rootScope', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout',  '$location',
  function($scope, $state, $rootScope, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
 	$scope.errorMessage = '';
@@ -46,7 +46,7 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', '$rootScope', 'n
 			});
 			$scope.componentIdToDelete = id;
 		};
-		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
+		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id}, successCallbackFetchDeleteDetails);
 
 	};
 
@@ -54,14 +54,14 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', '$rootScope', 'n
     */
    $scope.saveAvailabilityStatus = function(id, status) {
       var successCallbackAvailabilityStatus = function(data) {
-        $rootScope.$broadcast('statusUpdated',{'id':id, 'status':status});
+        $rootScope.$broadcast('statusUpdated', {'id':id, 'status':status});
         $scope.$emit('hideLoader');
       };
       var data = {};
       data.status = status;
       data.id = id;
 
-      $scope.invokeApi(ADContentManagementSrv.saveComponent, data , successCallbackAvailabilityStatus);
+      $scope.invokeApi(ADContentManagementSrv.saveComponent, data, successCallbackAvailabilityStatus);
    };
 
 	$scope.getFormattedTime = function(time) {

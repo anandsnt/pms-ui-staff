@@ -5,7 +5,7 @@ admin.controller('ADUserDetailsCtrl',
 	'ADUserSrv',
 	'$rootScope',
 	'ADUserRolesSrv',
-	'$timeout' ,
+	'$timeout',
 	'$window',
 	function($scope, $state, $stateParams, ADUserSrv, $rootScope, ADUserRolesSrv, $timeout, $window) {
 
@@ -197,10 +197,10 @@ admin.controller('ADUserDetailsCtrl',
 		};
 
 		if($scope.mod === "add") {
-			$scope.invokeApi(ADUserSrv.saveUserDetails, data , successCallback);
+			$scope.invokeApi(ADUserSrv.saveUserDetails, data, successCallback);
 		} else {
 			data.user_id = params.user_id;
-			$scope.invokeApi(ADUserSrv.updateUserDetails, data , successCallback);
+			$scope.invokeApi(ADUserSrv.updateUserDetails, data, successCallback);
 		}
 	};
 	/**
@@ -239,7 +239,7 @@ admin.controller('ADUserDetailsCtrl',
 				setFocusOnPasswordField();
 			}
 		};
-		$scope.invokeApi(ADUserSrv.getUserDetails, {'id':id} , successCallbackRender);
+		$scope.invokeApi(ADUserSrv.getUserDetails, {'id':id}, successCallbackRender);
 	};
 
 	var setFocusOnPasswordField = function() {
@@ -271,7 +271,7 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.assignedRoles = [];
 			$scope.image = "/assets/images/preview_image.png";
 		};
-	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);
+	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '', successCallbackRender);
 	};
 
 	/**

@@ -1,5 +1,5 @@
-admin.controller('ADFrequentFlyerProgramCtrl', ['$scope', '$state', '$stateParams', 'ADFrequentFlyerProgramSrv','ngTableParams','$filter', '$rootScope',
-function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams, $filter,$rootScope) {
+admin.controller('ADFrequentFlyerProgramCtrl', ['$scope', '$state', '$stateParams', 'ADFrequentFlyerProgramSrv', 'ngTableParams', '$filter', '$rootScope',
+function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams, $filter, $rootScope) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.fetchFFP = function() {
@@ -69,7 +69,7 @@ function($scope, $state, $stateParams, ADFrequentFlyerProgramSrv, ngTableParams,
 			$rootScope.isFFPActive = $scope.use_ffp;
 			$scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(ADFrequentFlyerProgramSrv.switchMainToggle, data , successCallbackActivateMainInactivate);
+		$scope.invokeApi(ADFrequentFlyerProgramSrv.switchMainToggle, data, successCallbackActivateMainInactivate);
 
 
 	};

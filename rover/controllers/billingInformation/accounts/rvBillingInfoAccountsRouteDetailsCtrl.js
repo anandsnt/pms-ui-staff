@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog) {
+sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog) {
 	BaseCtrl.call(this, $scope);
 
     $scope.isInAddRoutesMode = false;
@@ -50,7 +50,7 @@ sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl',['$scope','$rootScop
      */
     var isRoutingForPostingAccountExist = function() {
         var routeToPostingAccountExist = false;
-        var routesList = dclone($scope.routes,[]);
+        var routesList = dclone($scope.routes, []);
         for(var i = 0; i < routesList.length; i++) {
             if(routesList[i].entity_type === "GROUP" || routesList[i].entity_type === "HOUSE" || routesList[i].entity_type === "ALLOTMENT" ) {
                 routeToPostingAccountExist = true;
@@ -88,7 +88,7 @@ sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl',['$scope','$rootScop
     /**
     * function to handle entity selection from the 'All Routes' screen and the 'select entity' screen
     */
-	$scope.selectEntity = function(index,type) {
+	$scope.selectEntity = function(index, type) {
 
         if ($scope.billingEntity !== "ALLOTMENT_DEFAULT_BILLING") {
             if ($scope.routes && $scope.routes[index] && $scope.routes[index].from_date) {
@@ -217,7 +217,7 @@ sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl',['$scope','$rootScop
 
     /*function to select the attached entity
     */
-    $scope.selectAttachedEntity = function(index,type) {
+    $scope.selectAttachedEntity = function(index, type) {
 
             $scope.errorMessage = "";
             $scope.isEntitySelected = true;
@@ -468,7 +468,7 @@ sntRover.controller('rvBillingInfoAccountsRouteDetailsCtrl',['$scope','$rootScop
         };
         var errorCallback = function(errorMessage) {
             $scope.$emit('hideLoader');
-            $scope.$emit('displayErrorMessage',errorMessage);
+            $scope.$emit('displayErrorMessage', errorMessage);
         };
 
         var data = {};

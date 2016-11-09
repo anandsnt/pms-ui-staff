@@ -10,7 +10,7 @@ angular.module('sntRover').service('RVActivityLogSrv', [
 
 			var url = '/api/reservation_actions/'+ params;
 
-			rvBaseWebSrvV2.getJSON(url,{per_page:50,page:1})
+			rvBaseWebSrvV2.getJSON(url, {per_page:50, page:1})
 			.then(function(data) {
 				this.cacheReportList = data;
 				deferred.resolve(this.cacheReportList);

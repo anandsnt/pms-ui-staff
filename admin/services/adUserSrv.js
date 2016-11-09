@@ -1,4 +1,4 @@
-admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBaseWebSrv', function( $http, $q, ADBaseWebSrv,ADBaseWebSrvV2, ADBaseWebSrv) {
+admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'ADBaseWebSrv', function( $http, $q, ADBaseWebSrv, ADBaseWebSrvV2, ADBaseWebSrv) {
 
 
 	var that = this;
@@ -13,12 +13,12 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 
 		var deferred = $q.defer();
 		var url = '/admin/users.json';
-		ADBaseWebSrvV2.getJSON(url ,params).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 
 
 				that.saveUserArray(data);
 			    deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 		return deferred.promise;
@@ -35,7 +35,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -52,7 +52,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -73,7 +73,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 			that.updateUserDataOnUpdate(updateData.user_id, "department", that.getDepartmentName(updateData.user_department));
 			that.updateUserDataOnUpdate(updateData.user_id, "is_active", updateData.is_activated);
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -100,7 +100,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 			newDataToArray.id = data.user_id;
 			that.addToUsersArray(newDataToArray);
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -161,7 +161,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -182,7 +182,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
 			that.usersArray.users.splice(itemToRemove, 1);
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -200,7 +200,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -217,7 +217,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

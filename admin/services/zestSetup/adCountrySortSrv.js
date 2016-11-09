@@ -1,5 +1,5 @@
 
-admin.service('ADCountrySortSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
+admin.service('ADCountrySortSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
    /**
     * To fetch the country list
     * */
@@ -10,7 +10,7 @@ admin.service('ADCountrySortSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -22,9 +22,9 @@ admin.service('ADCountrySortSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2
 
 		var deferred = $q.defer();
 		var url =  'api/countries/assign_sequence.json';
-		ADBaseWebSrv.postJSON(url,params).then(function(data) {
+		ADBaseWebSrv.postJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -40,7 +40,7 @@ admin.service('ADCountrySortSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2
 
 		ADBaseWebSrv.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

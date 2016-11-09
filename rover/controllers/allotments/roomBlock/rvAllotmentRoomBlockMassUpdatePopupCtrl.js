@@ -151,7 +151,7 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 					"end_date", "is_contract_save", 'bulk_updated_for', "room_type_id", "room_type_name",
             		"release_days", "single", "single_contract", "double", "double_contract",
             		"old_total", "old_double", "old_double_contract", "old_release_days", "old_single", "old_single_contract",
-            		"quadruple", "quadruple_contract","triple", "triple_contract","old_quadruple", "old_quadruple_contract","old_triple", "old_triple_contract"]);
+            		"quadruple", "quadruple_contract", "triple", "triple_contract", "old_quadruple", "old_quadruple_contract", "old_triple", "old_triple_contract"]);
 
 			var params = _.extend(config, {
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,

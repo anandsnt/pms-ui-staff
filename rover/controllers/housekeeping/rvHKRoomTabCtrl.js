@@ -231,7 +231,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
 				// only "put" in service if original status was not inService
 				if ($_originalStatusId !== $scope.updateService.room_service_status_id) {
-					$scope.invokeApi(RVHkRoomDetailsSrv.putRoomInService, _params, _successCallback,_errorCallback);
+					$scope.invokeApi(RVHkRoomDetailsSrv.putRoomInService, _params, _successCallback, _errorCallback);
 				}
 			};
 

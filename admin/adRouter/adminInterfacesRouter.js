@@ -102,7 +102,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     }
   });
 
-  $stateProvider.state('admin.ideasSetup',{
+  $stateProvider.state('admin.ideasSetup', {
     templateUrl: '/assets/partials/interfaces/ideas/adIdeasSetup.html',
     controller: 'adIdeasSetupCtrl',
     url : '/ideas/setup',
@@ -267,8 +267,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     templateUrl: '/assets/partials/Givex/adGivexSetup.html',
     controller: 'adExternalInterfaceCtrl',
     //interface_id: 4,
-    interface_id: 'GIVEX',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'Givex',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    interface_id: 'GIVEX', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'Givex', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
     url : '/siteminderSetup'
   });
 
@@ -276,8 +276,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     templateUrl: '/assets/partials/SynxisSetup/adSynxisSetup.html',
     controller: 'adExternalInterfaceCtrl',
     //interface_id: 3,
-    interface_id: 'SYNXIS',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'Synxis',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    interface_id: 'SYNXIS', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'Synxis', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
     url : '/synxisSetup'
   });
 
@@ -285,8 +285,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     templateUrl: '/assets/partials/ZDirectSetup/adZDirectSetup.html',
     controller: 'adExternalInterfaceCtrl',
     //interface_id: 4,
-    interface_id: 'ZDIRECT',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'ZDirect',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    interface_id: 'ZDIRECT', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'ZDirect', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
     url : '/zDirectSetup'
   });
 
@@ -294,8 +294,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider, $url
     templateUrl: '/assets/partials/travelTripperSetup/adtravelTripperSetup.html',
     controller: 'adExternalInterfaceCtrl',
     //interface_id: 4,
-    interface_id: 'TRAVELTRIPPER',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
-    simple_name: 'TravelTripper',//Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    interface_id: 'TRAVELTRIPPER', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
+    simple_name: 'TravelTripper', //Shahul: I dont what is this exactly, can we do it by passing as statparam or other kind of approaches?
     url : '/travelTripperSetup'
   });
 

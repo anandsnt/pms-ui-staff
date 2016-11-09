@@ -1,6 +1,6 @@
 
 (function() {
-	var checkOutConfirmationController = function($scope,$rootScope,$state) {
+	var checkOutConfirmationController = function($scope, $rootScope, $state) {
 
 
 	$scope.pageValid = false;
@@ -28,7 +28,7 @@
 };
 
 var dependencies = [
-'$scope','$rootScope','$state',
+'$scope', '$rootScope', '$state',
 checkOutConfirmationController
 ];
 

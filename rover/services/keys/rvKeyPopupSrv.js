@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($q, RVBaseWebSrv, rvBaseWebSrvV2) {
+angular.module('sntRover').service('RVKeyPopupSrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($q, RVBaseWebSrv, rvBaseWebSrvV2) {
 	/*
 	 * Service function to get data for Email popup
 	 */
@@ -9,7 +9,7 @@ angular.module('sntRover').service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', 'rvBas
 
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -25,7 +25,7 @@ angular.module('sntRover').service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', 'rvBas
 
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -44,7 +44,7 @@ angular.module('sntRover').service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', 'rvBas
 
 		RVBaseWebSrv.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -67,7 +67,7 @@ angular.module('sntRover').service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', 'rvBas
 
 		rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -79,7 +79,7 @@ angular.module('sntRover').service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', 'rvBas
 		var url =  "/api/key_encoders/active";
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

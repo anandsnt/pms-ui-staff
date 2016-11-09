@@ -1,8 +1,8 @@
 /**
  *	Verify room
  */
-sntGuestWeb.controller('GwRoomVerificationController', ['$scope', '$state', '$controller','$modal', 'GwWebSrv', 'GwCheckoutSrv',
-	function($scope, $state, $controller,$modal, GwWebSrv, GwCheckoutSrv) {
+sntGuestWeb.controller('GwRoomVerificationController', ['$scope', '$state', '$controller', '$modal', 'GwWebSrv', 'GwCheckoutSrv',
+	function($scope, $state, $controller, $modal, GwWebSrv, GwCheckoutSrv) {
 
 		$controller('BaseController', {
 			$scope: $scope

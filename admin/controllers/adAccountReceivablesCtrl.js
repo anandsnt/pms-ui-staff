@@ -1,4 +1,4 @@
-admin.controller('ADAccountReceivablesCtrl',['$scope', '$state', 'ADHotelSettingsSrv', function($scope, $state, ADHotelSettingsSrv) {
+admin.controller('ADAccountReceivablesCtrl', ['$scope', '$state', 'ADHotelSettingsSrv', function($scope, $state, ADHotelSettingsSrv) {
 
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);

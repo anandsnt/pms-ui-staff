@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoAddPaymentCtrl',['$scope','$rootScope','$filter', 'ngDialog', 'RVPaymentSrv', function($scope, $rootScope,$filter, ngDialog, RVPaymentSrv) {
+sntRover.controller('rvBillingInfoAddPaymentCtrl', ['$scope', '$rootScope', '$filter', 'ngDialog', 'RVPaymentSrv', function($scope, $rootScope, $filter, ngDialog, RVPaymentSrv) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.cardsList = [];
@@ -56,10 +56,10 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl',['$scope','$rootScope','$filte
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.$emit('displayErrorMessage',errorMessage);
+                $scope.$emit('displayErrorMessage', errorMessage);
             };
             var paymentParams = {"direct_bill":true};
-            $scope.invokeApi(RVPaymentSrv.renderPaymentScreen,paymentParams, successCallback, errorCallback);
+            $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, successCallback, errorCallback);
     };
     $scope.fetchAvailablePaymentTypes();
 
@@ -86,7 +86,7 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl',['$scope','$rootScope','$filte
 			 		$scope.savePayment();// call save payment details WS
 			 	}
 			 	else{
-			 		$scope.$emit('displayErrorMessage',["There is a problem with your credit card"]);
+			 		$scope.$emit('displayErrorMessage', ["There is a problem with your credit card"]);
 			 	}
 			 	$scope.$apply();
 			 };
@@ -96,7 +96,7 @@ sntRover.controller('rvBillingInfoAddPaymentCtrl',['$scope','$rootScope','$filte
 			    $scope.$emit("showLoader");
 			}
 			catch(err) {
-			   $scope.$emit('displayErrorMessage',["There was a problem connecting to the payment gateway."]);
+			   $scope.$emit('displayErrorMessage', ["There was a problem connecting to the payment gateway."]);
 			};
 
 		};

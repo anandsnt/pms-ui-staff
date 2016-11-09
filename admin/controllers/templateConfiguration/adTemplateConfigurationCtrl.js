@@ -1,4 +1,4 @@
-admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelListSrv', 'ADHotelConfigurationSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout', '$location',
+admin.controller('ADTemplateConfigurationCtrl', ['$scope', '$state', 'ADHotelListSrv', 'ADHotelConfigurationSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout', '$location',
   function($scope, $state, ADHotelListSrv, ADHotelConfigurationSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
 	$scope.errorMessage = '';
@@ -51,7 +51,7 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 			}
 
 		};
-		$scope.invokeApi(ADHotelConfigurationSrv.editHotelConfiguration,postData,editHotelConfigurationSuccessCallback);
+		$scope.invokeApi(ADHotelConfigurationSrv.editHotelConfiguration, postData, editHotelConfigurationSuccessCallback);
 	};
 
 	$scope.updateTemplateConfiguration = function() {
@@ -76,7 +76,7 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 		};
 
 
-		$scope.invokeApi(ADHotelConfigurationSrv.updateHotelConfiguration,postData,updateHotelConfigurationSuccessCallback);
+		$scope.invokeApi(ADHotelConfigurationSrv.updateHotelConfiguration, postData, updateHotelConfigurationSuccessCallback);
 	};
 
 	$scope.cancelClicked = function() {
@@ -97,7 +97,7 @@ admin.controller('ADTemplateConfigurationCtrl',['$scope', '$state', 'ADHotelList
 			$scope.$emit('hideLoader');
 			$scope.hotelConfig.email_templates = data.email_templates;
 		};
-		$scope.invokeApi(ADHotelConfigurationSrv.getTemplateThemes ,data, displayThemeCallback);
+		$scope.invokeApi(ADHotelConfigurationSrv.getTemplateThemes, data, displayThemeCallback);
 	};
 
 }]);

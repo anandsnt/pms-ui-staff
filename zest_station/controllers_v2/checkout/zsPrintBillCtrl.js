@@ -51,11 +51,11 @@ sntZestStation.controller('zsPrintBillCtrl', [
             $scope.$on('SOCKET_FAILED', function() {
                 printFailedActions();
             });
-            $scope.$on('WS_PRINT_SUCCESS',function() {
+            $scope.$on('WS_PRINT_SUCCESS', function() {
                 var printopted = 'true';
                 nextPageActions(printopted);
             });
-             $scope.$on('WS_PRINT_FAILED',function(event,data) {
+             $scope.$on('WS_PRINT_FAILED', function(event, data) {
                 printFailedActions(data.error_message);
             });
             $scope.$on('SOCKET_CONNECTED', function() {

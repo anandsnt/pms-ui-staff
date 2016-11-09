@@ -1,4 +1,4 @@
-admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADDepartmentSrv, $location, $anchorScroll, $timeout) {
+admin.controller('ADDepartmentListCtrl', ['$scope', '$state', 'ADDepartmentSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADDepartmentSrv, $location, $anchorScroll, $timeout) {
 
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -14,7 +14,7 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv', 
 			$scope.currentClickedElement = -1;
 			$scope.isAddMode = false;
 		};
-		$scope.invokeApi(ADDepartmentSrv.fetch, {} , successCallbackFetch);
+		$scope.invokeApi(ADDepartmentSrv.fetch, {}, successCallbackFetch);
 	};
 	//To list departments
 	$scope.listDepartments();
@@ -32,7 +32,7 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv', 
 	 		$scope.$emit('hideLoader');
 	 	};
 	 	var data = {"id":id };
-	 	$scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data , successCallbackRender);
+	 	$scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data, successCallbackRender);
 	};
    /*
     * Render add department screen
@@ -75,9 +75,9 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv', 
     		$scope.currentClickedElement = -1;
     	};
     	if($scope.isAddMode) {
-    		$scope.invokeApi(ADDepartmentSrv.saveDepartment, $scope.departmentData , successCallbackSave);
+    		$scope.invokeApi(ADDepartmentSrv.saveDepartment, $scope.departmentData, successCallbackSave);
     	} else {
-    		$scope.invokeApi(ADDepartmentSrv.updateDepartment, $scope.departmentData , successCallbackSave);
+    		$scope.invokeApi(ADDepartmentSrv.updateDepartment, $scope.departmentData, successCallbackSave);
     	}
     };
    /*
@@ -97,7 +97,7 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv', 
 	 		$scope.data.departments.splice(index, 1);
 	 		$scope.currentClickedElement = -1;
 	 	};
-		$scope.invokeApi(ADDepartmentSrv.deleteDepartment, id , successCallbackDelete);
+		$scope.invokeApi(ADDepartmentSrv.deleteDepartment, id, successCallbackDelete);
 	};
 }]);
 

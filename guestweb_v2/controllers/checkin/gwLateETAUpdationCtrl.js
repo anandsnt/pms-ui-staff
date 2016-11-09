@@ -1,7 +1,7 @@
 /**
  * Checkin - ETA updation ctrl
  */
-sntGuestWeb.controller('gwLateETAUpdationController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckinSrv', '$rootScope', '$modal','$stateParams',
+sntGuestWeb.controller('gwLateETAUpdationController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckinSrv', '$rootScope', '$modal', '$stateParams',
 	function($scope, $state, $controller, GwWebSrv, GwCheckinSrv, $rootScope, $modal, $stateParams) {
 
 		$controller('gwETABaseController', {
@@ -14,8 +14,8 @@ sntGuestWeb.controller('gwLateETAUpdationController', ['$scope', '$state', '$con
 			$scope.timings = returnTimeArray(); //utils function
 			$scope.checkinTime = $stateParams.time;
 			$scope.earlyCheckinRestrictLimit = GwWebSrv.zestwebData.earlyCheckinRestrictTime;
-			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description,"@checkin-time", $scope.checkinTime);
-			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description,"@early-checkin-limit", $scope.earlyCheckinRestrictLimit);
+			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@checkin-time", $scope.checkinTime);
+			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@early-checkin-limit", $scope.earlyCheckinRestrictLimit);
 			$scope.arrivalTime = "";
 		}();
 

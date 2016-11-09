@@ -1,4 +1,4 @@
-admin.controller('ADRoomKeyDeliveryCtrl',['$state', '$scope','$rootScope','ADRoomKeyDeliverySrv', function($state, $scope,$rootScope, ADRoomKeyDeliverySrv) {
+admin.controller('ADRoomKeyDeliveryCtrl', ['$state', '$scope', '$rootScope', 'ADRoomKeyDeliverySrv', function($state, $scope, $rootScope, ADRoomKeyDeliverySrv) {
 
 	BaseCtrl.call(this, $scope);
 

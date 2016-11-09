@@ -1,7 +1,7 @@
 /**
  * Checkin -terms & conditions ctrl
  */
-sntGuestWeb.controller('gwExternalCheckInTurnedOffController', ['$scope','GwWebSrv',
+sntGuestWeb.controller('gwExternalCheckInTurnedOffController', ['$scope', 'GwWebSrv',
 	function($scope, GwWebSrv) {
 
 		var init = function() {

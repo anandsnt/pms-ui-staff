@@ -1,5 +1,5 @@
 
-sntRover.controller('RVRoomFiltersController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', function($scope, $state, $stateParams, RVRoomAssignmentSrv) {
+sntRover.controller('RVRoomFiltersController', ['$scope', '$state', '$stateParams', 'RVRoomAssignmentSrv', function($scope, $state, $stateParams, RVRoomAssignmentSrv) {
 
 	BaseCtrl.call(this, $scope);
 

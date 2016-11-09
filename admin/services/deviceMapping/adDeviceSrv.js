@@ -1,4 +1,4 @@
-admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('ADDeviceSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
    /**
     * To fetch the list of device mapping
     * @return {object} mapping list json
@@ -10,7 +10,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 
 		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -26,7 +26,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -43,7 +43,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -60,7 +60,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -76,7 +76,7 @@ admin.service('ADDeviceSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q
 
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

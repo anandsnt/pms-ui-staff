@@ -1,4 +1,4 @@
-admin.service('ADTranslationSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('ADTranslationSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
    /**
     * Get the list of available guest languages
     * @return {array} of guest languages
@@ -8,7 +8,7 @@ admin.service('ADTranslationSrv',['$http', '$q', 'ADBaseWebSrvV2', function($htt
         var url = '/admin/locales';
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -23,7 +23,7 @@ admin.service('ADTranslationSrv',['$http', '$q', 'ADBaseWebSrvV2', function($htt
         var url = '/admin/translations/menu_details';
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -39,7 +39,7 @@ admin.service('ADTranslationSrv',['$http', '$q', 'ADBaseWebSrvV2', function($htt
         var url = ' /admin/translations';
         ADBaseWebSrvV2.getJSON(url, request).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -55,7 +55,7 @@ admin.service('ADTranslationSrv',['$http', '$q', 'ADBaseWebSrvV2', function($htt
         var url = '/admin/translations';
         ADBaseWebSrvV2.postJSON(url, request).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;

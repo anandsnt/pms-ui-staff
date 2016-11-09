@@ -1,4 +1,4 @@
-sntRover.service('RVWorkstationSrv',['$q','rvBaseWebSrvV2', function($q, RVBaseWebSrvV2) {
+sntRover.service('RVWorkstationSrv', ['$q', 'rvBaseWebSrvV2', function($q, RVBaseWebSrvV2) {
 
 	//Service to check whether a workstation with given device id is already set or not
 	this.setWorkstation = function(param) {
@@ -6,7 +6,7 @@ sntRover.service('RVWorkstationSrv',['$q','rvBaseWebSrvV2', function($q, RVBaseW
 		var url =  '/api/workstations/set_workstation';
 		RVBaseWebSrvV2.postJSON(url, param).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -19,7 +19,7 @@ sntRover.service('RVWorkstationSrv',['$q','rvBaseWebSrvV2', function($q, RVBaseW
 
 		RVBaseWebSrvV2.postJSON(url, param).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -33,7 +33,7 @@ sntRover.service('RVWorkstationSrv',['$q','rvBaseWebSrvV2', function($q, RVBaseW
 
 		RVBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;

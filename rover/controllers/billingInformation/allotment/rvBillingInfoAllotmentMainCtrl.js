@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog) {
+sntRover.controller('rvBillingInfoAllotmentMainCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.$on('UPDATE_SHOULD_SHOW_WAITING', function(e, value) {
@@ -115,7 +115,7 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$fi
      */
     $scope.isRoutingForPostingAccountExist = function() {
         var routeToPostingAccountExist = false;
-        var routesList = dclone($scope.routes,[]);
+        var routesList = dclone($scope.routes, []);
 
         for (var i = 0; i < routesList.length; i++) {
             if (routesList[i].entity_type === "GROUP" || 
@@ -163,7 +163,7 @@ sntRover.controller('rvBillingInfoAllotmentMainCtrl',['$scope','$rootScope','$fi
         };
         var errorCallback = function(errorMessage) {
             $scope.$emit('hideLoader');
-            $scope.$emit('displayErrorMessage',errorMessage);
+            $scope.$emit('displayErrorMessage', errorMessage);
         };
 
         var data = {};

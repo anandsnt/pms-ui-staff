@@ -1,5 +1,5 @@
 sntRover.controller('rvBillCardPopupCtrl',
-	['$scope','$rootScope','$filter','RVBillCardSrv', 'ngDialog', '$timeout', function($scope, $rootScope,$filter, RVBillCardSrv, ngDialog, $timeout) {
+	['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'ngDialog', '$timeout', function($scope, $rootScope, $filter, RVBillCardSrv, ngDialog, $timeout) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.newAmount = '';
@@ -44,7 +44,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 			refreshListWithData(data);
 
 		};
-		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback,failureCallBack);
+		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback, failureCallBack);
 	};
 
 	$scope.showSpiltValues = function() {
@@ -59,7 +59,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	/*
 	* API call split transaction
 	*/
-	$scope.splitCharge = function(qty,isAmountType) {
+	$scope.splitCharge = function(qty, isAmountType) {
 
 		var split_type = isAmountType ? $rootScope.currencySymbol:'%';
 		var splitData = {
@@ -74,7 +74,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 			hideLoaderAndClosePopup();
 			refreshListWithData(data);
 		};
-		$scope.invokeApi(RVBillCardSrv.transactionSplit, splitData, transactionSplitSuccessCallback,failureCallBack);
+		$scope.invokeApi(RVBillCardSrv.transactionSplit, splitData, transactionSplitSuccessCallback, failureCallBack);
 	};
 
 	var transactionEditSuccessCallback = function(data) {
@@ -126,7 +126,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	$scope.chargecodeData.chargeCodeSearchText = "";
 	$scope.selectedChargeCode = { description: '' };
 	var scrollerOptionsForSearch = {click: true, preventDefault: false};
-	$scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
+	$scope.setScroller('chargeCodesList', scrollerOptionsForSearch);
 
 	$scope.selectChargeCode = function(id) {
 		 for(var i = 0; i < $scope.availableChargeCodes.length; i++) {

@@ -1,4 +1,4 @@
-admin.service('ADAppSrv',['ADBaseWebSrv','ADBaseWebSrvV2', function(ADBaseWebSrv, ADBaseWebSrvV2) {
+admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', function(ADBaseWebSrv, ADBaseWebSrvV2) {
 
 	this.fetch = function() {
 		var url = '/admin/settings/menu_items.json';
@@ -31,7 +31,7 @@ admin.service('ADAppSrv',['ADBaseWebSrv','ADBaseWebSrvV2', function(ADBaseWebSrv
 		var url = '/api/business_dates/active';
 		return ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				return (data.business_date);
-			},function(errorMessage) {
+			}, function(errorMessage) {
 				return (errorMessage);
 			});
 	};
@@ -43,7 +43,7 @@ admin.service('ADAppSrv',['ADBaseWebSrv','ADBaseWebSrvV2', function(ADBaseWebSrv
 		return ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			that.hotelDetails = data;
 			return (that.hotelDetails);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			return (errorMessage);
 		});
 	};

@@ -21,20 +21,20 @@ The new set of HTMLs can be found under the folder common_templates. inside that
 and some folder dedicated to MGM, which has some text changes specifically asked by client.
 
 */
-var sntGuestWebTemplates = angular.module('sntGuestWebTemplates',[]);
-var sntGuestWeb = angular.module('sntGuestWeb',['ui.router','ui.bootstrap','pickadate', 'oc.lazyLoad']);
+var sntGuestWebTemplates = angular.module('sntGuestWebTemplates', []);
+var sntGuestWeb = angular.module('sntGuestWeb', ['ui.router', 'ui.bootstrap', 'pickadate', 'oc.lazyLoad']);
 sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $scope) {
   $state.go('guestwebRoot', {mode: 'checkout'});
 }]);
-sntGuestWeb.controller('homeController', ['$rootScope','$scope','$location','$state','$timeout', 'reservationAndhotelData',
- function($rootScope,$scope,$location,$state,$timeout, reservationAndhotelData) {
+sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '$state', '$timeout', 'reservationAndhotelData',
+ function($rootScope, $scope, $location, $state, $timeout, reservationAndhotelData) {
   var that = this;
   loadAssets('/assets/favicon.png', 'icon', 'image/png');
   loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
-  loadAssets('/assets/apple-touch-startup-image-768x1004.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait)');
-  loadAssets('/assets/apple-touch-startup-image-1024x748.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape)');
-  loadAssets('/assets/apple-touch-startup-image-1536x2008.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)');
-  loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-startup-image', '' ,'(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)');
+  loadAssets('/assets/apple-touch-startup-image-768x1004.png', 'apple-touch-startup-image', '', '(device-width: 768px) and (orientation: portrait)');
+  loadAssets('/assets/apple-touch-startup-image-1024x748.png', 'apple-touch-startup-image', '', '(device-width: 768px) and (orientation: landscape)');
+  loadAssets('/assets/apple-touch-startup-image-1536x2008.png', 'apple-touch-startup-image', '', '(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)');
+  loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-startup-image', '', '(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)');
 
   //store basic details as rootscope variables
 
@@ -194,7 +194,7 @@ var loadAssets = function(filename, rel, type, media) {
 
 
 (function() {
-  var checkoutRoomVerificationViewController = function($scope,$rootScope,$state,$modal,checkoutRoomVerificationService,$timeout) {
+  var checkoutRoomVerificationViewController = function($scope, $rootScope, $state, $modal, checkoutRoomVerificationService, $timeout) {
 
     $rootScope.isRoomVerified =  false;
     $scope.roomNumber = "";
@@ -209,7 +209,7 @@ $scope.opts = {
 $scope.continueButtonClicked = function() {
 
   var url = '/guest_web/verify_room.json';
-  var data = {'reservation_id':$rootScope.reservationID,"room_number":$scope.roomNumber};
+  var data = {'reservation_id':$rootScope.reservationID, "room_number":$scope.roomNumber};
   $scope.isFetching = true;
 // checkoutRoomVerificationService.verifyRoom(url,data).then(function(response) {
 
@@ -230,7 +230,7 @@ $scope.continueButtonClicked = function() {
 };
 
 var dependencies = [
-'$scope','$rootScope','$state','$modal','checkoutRoomVerificationService','$timeout',
+'$scope', '$rootScope', '$state', '$modal', 'checkoutRoomVerificationService', '$timeout',
 checkoutRoomVerificationViewController
 ];
 
@@ -260,7 +260,7 @@ var roomVerificationErrorModalCtrl = function ($scope, $modalInstance) {
 
 
 (function() {
-  var checkOutConfirmationController = function($scope,$rootScope,$state) {
+  var checkOutConfirmationController = function($scope, $rootScope, $state) {
 
     $scope.checkoutTimessage = $rootScope.checkoutTimessage ? $rootScope.checkoutTimessage:"Check-out time is ";
     $scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check-out is not available.' :'' ;
@@ -268,7 +268,7 @@ var roomVerificationErrorModalCtrl = function ($scope, $modalInstance) {
   };
 
   var dependencies = [
-  '$scope','$rootScope','$state',
+  '$scope', '$rootScope', '$state',
   checkOutConfirmationController
   ];
 
@@ -279,7 +279,7 @@ var roomVerificationErrorModalCtrl = function ($scope, $modalInstance) {
 
 
 
-sntGuestWeb.controller('checkOutLandingController', ['$rootScope','$location','$state','$scope', function($rootScope,$location,$state,$scope) {
+sntGuestWeb.controller('checkOutLandingController', ['$rootScope', '$location', '$state', '$scope', function($rootScope, $location, $state, $scope) {
 
 }]);
 
@@ -298,7 +298,7 @@ Balance Ctrl where the reservation balance is shown
 */
 
 (function() {
-  var checkOutBalanceController = function($scope, BillService,$rootScope,$state) {
+  var checkOutBalanceController = function($scope, BillService, $rootScope, $state) {
 
 // showBill flag and its reference in $rootScope
 $scope.showBill = false;
@@ -388,14 +388,14 @@ $scope.gotToNextStep = function() {
     $state.go('checkOutStatus');
   }
   else{
-    $state.go('ccVerification',{'fee':$scope.billData.balance,'message':"Check-out fee",'isFromCheckoutNow':true});
+    $state.go('ccVerification', {'fee':$scope.billData.balance, 'message':"Check-out fee", 'isFromCheckoutNow':true});
   }
 };
 };
 
 var dependencies = [
 '$scope',
-'BillService','$rootScope','$state',
+'BillService', '$rootScope', '$state',
 checkOutBalanceController
 ];
 
@@ -406,7 +406,7 @@ sntGuestWeb.controller('checkOutBalanceController', dependencies);
 
 
 (function() {
-  var checkOutStatusController = function($scope, checkoutNowService,$rootScope,$state) {
+  var checkOutStatusController = function($scope, checkoutNowService, $rootScope, $state) {
 
 
 
@@ -420,7 +420,7 @@ sntGuestWeb.controller('checkOutBalanceController', dependencies);
 
 var dependencies = [
 '$scope',
-'checkoutNowService','$rootScope','$state',
+'checkoutNowService', '$rootScope', '$state',
 checkOutStatusController
 ];
 
@@ -433,7 +433,7 @@ The landing page when the guestweb is accessed without the link from the email.
 This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> zest -> Checkout
 */
 (function() {
-  var externalVerificationViewController = function($scope,$rootScope,$state,$modal,$timeout) {
+  var externalVerificationViewController = function($scope, $rootScope, $state, $modal, $timeout) {
 
     $scope.submit = function() {
 
@@ -452,9 +452,9 @@ This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> z
         $rootScope.accessToken        = response.guest_web_token;
 
       };
-      setReservartionDetails({"guest_web_token":"4c46f2fb42241caf08a3f9675abb11c3","reservation_id":1333742,"user_name":"d, dfsdff"
-        ,"checkout_date":"06/10/2015","checkout_time":"11:00 PM","user_city":"","user_state":"","room_no":"195"
-        ,"is_late_checkout_available":false,"email_address":"resheil@qburst.com","is_cc_attached":true})
+      setReservartionDetails({"guest_web_token":"4c46f2fb42241caf08a3f9675abb11c3", "reservation_id":1333742, "user_name":"d, dfsdff"
+        , "checkout_date":"06/10/2015", "checkout_time":"11:00 PM", "user_city":"", "user_state":"", "room_no":"195"
+        , "is_late_checkout_available":false, "email_address":"resheil@qburst.com", "is_cc_attached":true})
       $rootScope.isRoomVerified =  true;
       $scope.isLoading = true;
       $timeout(function() {
@@ -473,7 +473,7 @@ This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> z
   };
 
   var dependencies = [
-  '$scope','$rootScope','$state','$modal','$timeout',
+  '$scope', '$rootScope', '$state', '$modal', '$timeout',
   externalVerificationViewController
   ];
 
@@ -490,7 +490,7 @@ sntGuestWeb.controller('verificationErrorController', ['$scope', function($scope
 
 // controller for the modal
 
-var verificationModalCtrl = function ($scope, $modalInstance,$state) {
+var verificationModalCtrl = function ($scope, $modalInstance, $state) {
 
   $scope.closeDialog = function () {
     $modalInstance.dismiss('cancel');
@@ -504,19 +504,19 @@ Late checkout option Ctrl where user can opt a later checkout time
 */
 
 (function() {
-  var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location,$state) {
+  var checkOutLaterController = function($scope, LateCheckOutChargesService, $rootScope, $location, $state) {
 
-    $scope.charges = [{"time":"12","ap":"PM","amount":"56","class":"checkouttime1"},{"time":"12","ap":"PM","amount":"56","class":"checkouttime2"},{"time":"12","ap":"PM","amount":"56","class":"checkouttime3"}];
+    $scope.charges = [{"time":"12", "ap":"PM", "amount":"56", "class":"checkouttime1"}, {"time":"12", "ap":"PM", "amount":"56", "class":"checkouttime2"}, {"time":"12", "ap":"PM", "amount":"56", "class":"checkouttime3"}];
     if($scope.charges.length > 0) {
       $scope.optionsAvailable = true;
     }
 // If CC is not attached to the reservation we need to add CC to proceed to opt an late checkouttime.
-$scope.gotToNextStep = function(fee,chargeId) {
+$scope.gotToNextStep = function(fee, chargeId) {
   if(!$rootScope.isCCOnFile && !$rootScope.isSixpayments) {
-    $state.go('ccVerification',{'fee':fee,'message':"Late check-out fee",'isFromCheckoutNow':false});
+    $state.go('ccVerification', {'fee':fee, 'message':"Late check-out fee", 'isFromCheckoutNow':false});
   }
   else{
-    $state.go('checkOutLaterSuccess',{id:chargeId});
+    $state.go('checkOutLaterSuccess', {id:chargeId});
   }
 
 };
@@ -524,7 +524,7 @@ $scope.gotToNextStep = function(fee,chargeId) {
 
 var dependencies = [
 '$scope',
-'LateCheckOutChargesService','$rootScope','$location','$state',
+'LateCheckOutChargesService', '$rootScope', '$location', '$state',
 checkOutLaterController
 ];
 
@@ -562,7 +562,7 @@ New checkout time is set and an option to continue the checkout process is prese
 
 
 (function() {
-  var ccVerificationViewController = function($scope,$rootScope,$state,$stateParams,$modal,ccVerificationService) {
+  var ccVerificationViewController = function($scope, $rootScope, $state, $stateParams, $modal, ccVerificationService) {
 
 
     $scope.pageValid = true;
@@ -690,7 +690,7 @@ $scope.goToNextStep = function() {
     $state.go('checkOutStatus');
   }else{
     $rootScope.ccPaymentSuccessForCheckoutLater = true;
-    $state.go('checkOutLaterSuccess',{id:$scope.fee});
+    $state.go('checkOutLaterSuccess', {id:$scope.fee});
   }
 
 };
@@ -707,7 +707,7 @@ $scope.savePaymentDetails = function() {
 
 
 var dependencies = [
-'$scope','$rootScope','$state','$stateParams','$modal','ccVerificationService',
+'$scope', '$rootScope', '$state', '$stateParams', '$modal', 'ccVerificationService',
 ccVerificationViewController
 ];
 
@@ -716,7 +716,7 @@ sntGuestWeb.controller('ccVerificationViewController', dependencies);
 
 // controller for the modal
 
-var ccVerificationModalCtrl = function ($scope, $modalInstance,$state,errorMessage) {
+var ccVerificationModalCtrl = function ($scope, $modalInstance, $state, errorMessage) {
 
   $scope.errorMessage = errorMessage;
   $scope.closeDialog = function () {
@@ -738,7 +738,7 @@ The reservation details will be the  in the API response of the verification API
 */
 
 (function() {
-  var checkInConfirmationViewController = function($scope,$modal,$rootScope,$state, dateFilter, $filter, checkinConfirmationService,checkinDetailsService) {
+  var checkInConfirmationViewController = function($scope, $modal, $rootScope, $state, dateFilter, $filter, checkinConfirmationService, checkinDetailsService) {
 
 
     $scope.pageValid = true;
@@ -772,7 +772,7 @@ $rootScope.netWorkError  = false;
 
 //next button clicked actions
 $scope.nextButtonClicked = function() {
-  var data = {'departure_date':dateToSend,'credit_card':$scope.cardDigits,'reservation_id':$rootScope.reservationID};
+  var data = {'departure_date':dateToSend, 'credit_card':$scope.cardDigits, 'reservation_id':$rootScope.reservationID};
   $scope.isPosting     = true;
 
 //call service
@@ -826,15 +826,15 @@ $scope.dateChoosen = function() {
   $scope.selectedDate = ($filter('date')($scope.date, $rootScope.dateFormat));
   $rootScope.departureDate = $scope.selectedDate;
 
-  dateToSend = dclone($scope.date,[]);
-  dateToSend = ($filter('date')(dateToSend,'MM-dd-yyyy'));
+  dateToSend = dclone($scope.date, []);
+  dateToSend = ($filter('date')(dateToSend, 'MM-dd-yyyy'));
   $scope.closeCalender();
 };
 }
 };
 
 var dependencies = [
-'$scope','$modal','$rootScope','$state', 'dateFilter', '$filter', 'checkinConfirmationService','checkinDetailsService',
+'$scope', '$modal', '$rootScope', '$state', 'dateFilter', '$filter', 'checkinConfirmationService', 'checkinDetailsService',
 checkInConfirmationViewController
 ];
 
@@ -845,7 +845,7 @@ Checkin reservation details Ctrl
 Reservation details are shown in this page.
 */
 (function() {
-  var checkInReservationDetails = function($scope,$rootScope,$location,checkinDetailsService,$state,$modal) {
+  var checkInReservationDetails = function($scope, $rootScope, $location, checkinDetailsService, $state, $modal) {
 
     $scope.pageValid = true;
 
@@ -920,7 +920,7 @@ $modal.open($scope.opts); // error modal popup
 };
 
 var dependencies = [
-'$scope','$rootScope','$location','checkinDetailsService','$state','$modal',
+'$scope', '$rootScope', '$location', 'checkinDetailsService', '$state', '$modal',
 checkInReservationDetails
 ];
 
@@ -944,7 +944,7 @@ Checkin Room Upgrade Ctrl
 This displays the available rooms for upgrading.
 */
 (function() {
-  var checkinUpgradeRoomController = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService,checkinDetailsService,$state) {
+  var checkinUpgradeRoomController = function($scope, $location, $rootScope, checkinRoomUpgradeOptionsService, checkinRoomUpgradeService, checkinDetailsService, $state) {
 
     $scope.pageValid = true;
 
@@ -964,17 +964,17 @@ $rootScope.netWorkError  = false;
 var data = {'reservation_id':$rootScope.reservationID};
 $scope.slides = [];
 
-var slide = {"upgrade_room_type_name":"room1","upsell_amount":33,"upsell_amount_id":22,"upgrade_room_description":"<h1>ssss</h1>bvccbebebfbebfbefbebfbfbe"};
-var slide1 = {"upgrade_room_type_name":"room2","upsell_amount":33,"upsell_amount_id":22,"upgrade_room_description":"<h1>ssss</h1>bvccbebebfbebfbefbebfbfbe"};
+var slide = {"upgrade_room_type_name":"room1", "upsell_amount":33, "upsell_amount_id":22, "upgrade_room_description":"<h1>ssss</h1>bvccbebebfbebfbefbebfbfbe"};
+var slide1 = {"upgrade_room_type_name":"room2", "upsell_amount":33, "upsell_amount_id":22, "upgrade_room_description":"<h1>ssss</h1>bvccbebebfbebfbefbebfbfbe"};
 $scope.slides.push(slide);
 $scope.slides.push(slide1);
 
 // upgrade button clicked
 
-$scope.upgradeClicked = function(upgradeID,roomNumber) {
+$scope.upgradeClicked = function(upgradeID, roomNumber) {
 
   $scope.isFetching          = true;
-  var data = {'reservation_id':$rootScope.reservationID,'upsell_amount_id':upgradeID,'room_no':roomNumber};
+  var data = {'reservation_id':$rootScope.reservationID, 'upsell_amount_id':upgradeID, 'room_no':roomNumber};
   checkinRoomUpgradeService.post(data).then(function(response) {
 
     $scope.isFetching     = false;
@@ -990,7 +990,7 @@ $scope.upgradeClicked = function(upgradeID,roomNumber) {
       $state.go('checkinReservationDetails');
     }
 
-  },function() {
+  }, function() {
     $rootScope.netWorkError = true;
     $scope.isFetching = false;
   });
@@ -1011,7 +1011,7 @@ $scope.noThanksClicked = function() {
 };
 
 var dependencies = [
-'$scope','$location','$rootScope','checkinRoomUpgradeOptionsService','checkinRoomUpgradeService','checkinDetailsService','$state',
+'$scope', '$location', '$rootScope', 'checkinRoomUpgradeOptionsService', 'checkinRoomUpgradeService', 'checkinDetailsService', '$state',
 checkinUpgradeRoomController
 ];
 
@@ -1058,13 +1058,13 @@ The user can change the estimated time of arrival from here and optionally add c
 
 (function() {
 
-  var checkinArrivalDetailsController = function($scope, preCheckinSrv,$rootScope,$state,$modal,$stateParams) {
+  var checkinArrivalDetailsController = function($scope, preCheckinSrv, $rootScope, $state, $modal, $stateParams) {
 
     var init = function() {
 
-      $scope.hours = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-      $scope.minutes = ["00","15","30","45"];
-      $scope.primeTimes = ["AM","PM"];
+      $scope.hours = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+      $scope.minutes = ["00", "15", "30", "45"];
+      $scope.primeTimes = ["AM", "PM"];
 
       if(typeof $rootScope.earlyCheckinRestrictHour !=="undefined") {
         $scope.earlyCheckinRestrictLimit = $rootScope.earlyCheckinRestrictHourForDisplay+":"+$rootScope.earlyCheckinRestrictMinute+" "+$rootScope.earlyCheckinRestrictPrimetime;
@@ -1072,10 +1072,10 @@ The user can change the estimated time of arrival from here and optionally add c
 if($rootScope.earlyCheckinRestrictPrimetime === "PM") {
   $scope.primeTimes = $scope.primeTimes.slice(1);
   if( $rootScope.earlyCheckinRestrictHour !=="12") {
-    angular.forEach( $scope.hours, function(hour,index) {
+    angular.forEach( $scope.hours, function(hour, index) {
       if(hour === $rootScope.earlyCheckinRestrictHour) {
         $scope.hours =  $scope.hours.slice(index);
-        $scope.hours.splice($scope.hours.length-1,1);
+        $scope.hours.splice($scope.hours.length-1, 1);
       };
     });
   }
@@ -1142,10 +1142,10 @@ response.id = 66;
   $rootScope.earlyCheckinRestrictPrimetime = response.early_checkin_restrict_primetime;
 
   if(response.early_checkin_available && typeof response.early_checkin_offer_id !== "undefined" && !response.bypass_early_checkin) {
-    $state.go('earlyCheckinOptions',{'time':response.checkin_time,'charge':response.early_checkin_charge,'id':response.early_checkin_offer_id});
+    $state.go('earlyCheckinOptions', {'time':response.checkin_time, 'charge':response.early_checkin_charge, 'id':response.early_checkin_offer_id});
   }
   else if(response.early_checkin_on && !response.early_checkin_available && !response.bypass_early_checkin) {
-    $state.go('laterArrival',{'time':response.checkin_time,'isearlycheckin':true});
+    $state.go('laterArrival', {'time':response.checkin_time, 'isearlycheckin':true});
   }
   else{
     $state.go('preCheckinStatus');
@@ -1155,7 +1155,7 @@ response.id = 66;
 
 var dependencies = [
 '$scope',
-'preCheckinSrv','$rootScope','$state','$modal','$stateParams',
+'preCheckinSrv', '$rootScope', '$state', '$modal', '$stateParams',
 checkinArrivalDetailsController
 ];
 
@@ -1168,7 +1168,7 @@ There are two options 1) purcahase an early checkin 2) change the arrival time t
 */
 
 (function() {
-  var earlyCheckinOptionsController = function($scope,$rootScope,$state,$stateParams) {
+  var earlyCheckinOptionsController = function($scope, $rootScope, $state, $stateParams) {
 
     $scope.pageValid = true;
 
@@ -1189,17 +1189,17 @@ There are two options 1) purcahase an early checkin 2) change the arrival time t
       var offerId = $stateParams.id;
 
       $scope.nextButtonClicked = function() {
-        $state.go('earlyCheckinFinal',{'time':$scope.checkinTime,'charge': $stateParams.charge,'id':offerId});
+        $state.go('earlyCheckinFinal', {'time':$scope.checkinTime, 'charge': $stateParams.charge, 'id':offerId});
       };
 
       $scope.changeArrivalTime = function() {
-        $state.go('laterArrival',{'time':$scope.checkinTime,'isearlycheckin':true});
+        $state.go('laterArrival', {'time':$scope.checkinTime, 'isearlycheckin':true});
       };
     }
   };
 
   var dependencies = [
-  '$scope','$rootScope','$state','$stateParams',
+  '$scope', '$rootScope', '$state', '$stateParams',
   earlyCheckinOptionsController
   ];
 
@@ -1211,7 +1211,7 @@ Early Checkin final Ctrl
 The early checkin purcahse is done here on entering to this page itself.
 */
 (function() {
-  var earlyCheckinFinalController = function($scope,$rootScope,$state,$stateParams,earlyCheckinService) {
+  var earlyCheckinFinalController = function($scope, $rootScope, $state, $stateParams, earlyCheckinService) {
 
 
     $scope.pageValid = true;
@@ -1230,7 +1230,7 @@ The early checkin purcahse is done here on entering to this page itself.
       $scope.earlyCheckinCharge = $stateParams.charge;
       var offerId= $stateParams.id;
       $scope.isPosting = true;
-      var dataTosend = {'reservation_id':$rootScope.reservationID,'early_checkin_offer_id':offerId};
+      var dataTosend = {'reservation_id':$rootScope.reservationID, 'early_checkin_offer_id':offerId};
       $scope.isPosting = false;
       $scope.nextButtonClicked =  function() {
         $state.go('preCheckinStatus');
@@ -1239,7 +1239,7 @@ The early checkin purcahse is done here on entering to this page itself.
   };
 
   var dependencies = [
-  '$scope','$rootScope','$state','$stateParams','earlyCheckinService',
+  '$scope', '$rootScope', '$state', '$stateParams', 'earlyCheckinService',
   earlyCheckinFinalController
   ];
 
@@ -1253,7 +1253,7 @@ If the admin settings for this is turned on , this screen will be shown and user
 update the guest details here.
 */
 (function() {
-  var guestDetailsController = function($scope,$rootScope,$state,guestDetailsService,$modal) {
+  var guestDetailsController = function($scope, $rootScope, $state, guestDetailsService, $modal) {
 
     $scope.pageValid = true;
 
@@ -1308,7 +1308,7 @@ $scope.isLoading = true;
 guestDetailsService.fetchCountryList().then(function(response) {
   $scope.countries = response;
   $scope.isLoading = false;
-},function() {
+}, function() {
   $rootScope.netWorkError = true;
   $scope.isLoading = false;
 });
@@ -1316,7 +1316,7 @@ guestDetailsService.fetchCountryList().then(function(response) {
 
 var getDataToSave = function() {
   var data        = {};
-  var unwanted_keys     = ["month","year","day"];
+  var unwanted_keys     = ["month", "year", "day"];
   var newObject       = JSON.parse(JSON.stringify($scope.guestDetails));
   for(var i=0; i < unwanted_keys.length; i++) {
     delete newObject[unwanted_keys[i]];
@@ -1359,7 +1359,7 @@ $scope.postGuestDetails = function() {
 }
 };
 var dependencies = [
-'$scope','$rootScope','$state','guestDetailsService','$modal',
+'$scope', '$rootScope', '$state', 'guestDetailsService', '$modal',
 guestDetailsController
 ];
 sntGuestWeb.controller('guestDetailsController', dependencies);
@@ -1371,7 +1371,7 @@ It will have two types of responses. Some hotels may have QR code facility, so t
 display the QR code ,else the text enterd in room key delivery in the admin setting will be shown as text.
 */
 (function() {
-  var checkInKeysController = function($scope,$rootScope,$http,$location,checkinDetailsService,checkinKeysService,$state) {
+  var checkInKeysController = function($scope, $rootScope, $http, $location, checkinDetailsService, checkinKeysService, $state) {
 
 //set up flags related to webservice
 $scope.isPosting     = false;
@@ -1385,7 +1385,7 @@ $scope.responseData =response.data;
 $scope.responseData.delivery_message  = "Please conatct front desk";
 };
 var dependencies = [
-'$scope','$rootScope','$http','$location','checkinDetailsService','checkinKeysService','$state',
+'$scope', '$rootScope', '$http', '$location', 'checkinDetailsService', 'checkinKeysService', '$state',
 checkInKeysController
 ];
 sntGuestWeb.controller('checkInKeysController', dependencies);
@@ -1395,7 +1395,7 @@ sntGuestWeb.controller('checkInKeysController', dependencies);
 Precheckin final Ctrl where the pre checkin API is called
 */
 (function() {
-  var preCheckinStatusController = function($scope, preCheckinSrv,$state) {
+  var preCheckinStatusController = function($scope, preCheckinSrv, $state) {
     $scope.isLoading = false;
     $scope.responseData ={};
     $scope.responseData.confirmation_message = "Please go to front desk.hevhce vhe ce chj ec e cece cee ewewheew ee jk je ekjnnencne";
@@ -1406,7 +1406,7 @@ Precheckin final Ctrl where the pre checkin API is called
 
   var dependencies = [
   '$scope',
-  'preCheckinSrv','$state',
+  'preCheckinSrv', '$state',
   preCheckinStatusController
   ];
   sntGuestWeb.controller('preCheckinStatusController', dependencies);
@@ -1421,7 +1421,7 @@ Precheckin final Ctrl where the pre checkin API is called
   update the guest birthday details here.
 */
 (function() {
-  var birthDateDetailsController = function($scope,$rootScope,$state,guestDetailsService,$modal) {
+  var birthDateDetailsController = function($scope, $rootScope, $state, guestDetailsService, $modal) {
 
 
     $scope.years      = [];
@@ -1433,18 +1433,18 @@ Precheckin final Ctrl where the pre checkin API is called
     };
 
     $scope.months = [
-              {"id":1,"name":"JAN"},
-              {"id":2,"name":"FEB"},
-              {"id":3,"name":"MAR"},
-              {"id":4,"name":"APR"},
-              {"id":5,"name":"MAY"},
-              {"id":6,"name":"JUN"},
-              {"id":7,"name":"JUL"},
-              {"id":8,"name":"AUG"},
-              {"id":9,"name":"SEP"},
-              {"id":10,"name":"OCT"},
-              {"id":11,"name":"NOV"},
-              {"id":12,"name":"DEC"}
+              {"id":1, "name":"JAN"},
+              {"id":2, "name":"FEB"},
+              {"id":3, "name":"MAR"},
+              {"id":4, "name":"APR"},
+              {"id":5, "name":"MAY"},
+              {"id":6, "name":"JUN"},
+              {"id":7, "name":"JUL"},
+              {"id":8, "name":"AUG"},
+              {"id":9, "name":"SEP"},
+              {"id":10, "name":"OCT"},
+              {"id":11, "name":"NOV"},
+              {"id":12, "name":"DEC"}
             ];
       
     for(day=1;day<=31;day++) {
@@ -1458,7 +1458,7 @@ Precheckin final Ctrl where the pre checkin API is called
   
     var getDataToSave = function() {
       var data        = {};
-      var unwanted_keys     = ["month","year","day"];
+      var unwanted_keys     = ["month", "year", "day"];
       var newObject       = JSON.parse(JSON.stringify($scope.guestDetails));
             for(var i=0; i < unwanted_keys.length; i++) {
                 delete newObject[unwanted_keys[i]];
@@ -1511,7 +1511,7 @@ Precheckin final Ctrl where the pre checkin API is called
       var m = parseInt(comp[0], 10);
       var d = parseInt(comp[1], 10);
       var y = parseInt(comp[2], 10);
-      var date = new Date(y,m-1,d);
+      var date = new Date(y, m-1, d);
       if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
          return true
       } else {
@@ -1563,7 +1563,7 @@ Precheckin final Ctrl where the pre checkin API is called
 };
 
 var dependencies = [
-'$scope','$rootScope','$state','guestDetailsService','$modal',
+'$scope', '$rootScope', '$state', 'guestDetailsService', '$modal',
 birthDateDetailsController
 ];
 
@@ -1575,7 +1575,7 @@ sntGuestWeb.controller('birthDateDetailsController', dependencies);
 */
 
 (function() {
-  var emailEntryController = function($scope,$modal,checkinConfirmationService) {
+  var emailEntryController = function($scope, $modal, checkinConfirmationService) {
     
     var errorOpts = {
       backdrop: true,
@@ -1620,7 +1620,7 @@ sntGuestWeb.controller('birthDateDetailsController', dependencies);
         checkinConfirmationService.updateEmail({"email":$scope.guestDetails.email}).then(function(response) {
           $scope.isLoading = false;
           $scope.emailUpdated = true;
-        },function() {
+        }, function() {
           //$scope.netWorkError = true;
           $scope.isLoading = false;
             $modal.open(emailErrorOpts);
@@ -1631,7 +1631,7 @@ sntGuestWeb.controller('birthDateDetailsController', dependencies);
 };
 
 var dependencies = [
-'$scope','$modal','checkinConfirmationService',
+'$scope', '$modal', 'checkinConfirmationService',
 emailEntryController
 ];
 

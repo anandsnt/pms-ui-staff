@@ -3,7 +3,7 @@ angular.module('sntRover').controller('itemInventoryMainController', [
 	'rvAvailabilitySrv',
 	'$rootScope',
 	'ngDialog',
-	'$filter' ,
+	'$filter',
 	'$timeout',
 	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout) {
 

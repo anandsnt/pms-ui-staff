@@ -43,7 +43,7 @@ admin.service('ADzestwebCommonSettingsSrv', ['$q', 'ADBaseWebSrvV2', function($q
 		var deferred = $q.defer();
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;

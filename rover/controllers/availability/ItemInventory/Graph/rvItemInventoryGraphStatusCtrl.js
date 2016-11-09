@@ -139,7 +139,7 @@ angular.module('sntRover').controller('rvItemInventoryGraphStatusController', [
 			Highcharts.theme = {
 				colors: colors,
 				chart: {
-					backgroundColor: 'white'  ,
+					backgroundColor: 'white',
 					borderColor: '#FFFF',
 					borderWidth: 2,
 					plotBackgroundColor: '#F7F7F7',

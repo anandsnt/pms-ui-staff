@@ -181,7 +181,7 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 					return (isInRoomTypeSelectedMode() && rate.id !== $scope.stateVariables.selectedRate && $scope.stateVariables.selectedRate != "");
 				}),
 				availableRoomRates = _.pluck (availabileRates, "room_rates"),
-				firstAvailableRoomRate = _.reject(availableRoomRates[0],function(room_rate) {
+				firstAvailableRoomRate = _.reject(availableRoomRates[0], function(room_rate) {
 					return !isRoomRateFiltered(room_rate, dailyData);
 				}),
 				minAvailableRoomRate = 	availableRoomRates[0],		

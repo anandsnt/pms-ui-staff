@@ -1,4 +1,4 @@
-sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope', '$state', function($scope, $rootScope, $state) {
+sntRover.controller('RVhouseKeepingDashboardController', ['$scope', '$rootScope', '$state', function($scope, $rootScope, $state) {
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;

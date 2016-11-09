@@ -3,7 +3,7 @@
 */
 
 (function() {
-	var mobileEntryController = function($scope,$modal,guestDetailsService,$state,$rootScope) {
+	var mobileEntryController = function($scope, $modal, guestDetailsService, $state, $rootScope) {
 		
 
 
@@ -35,7 +35,7 @@
     $scope.country_code  = "";
 
     $scope.countryChanged = function() {
-      $scope.dial = _.find($scope.countryDetails,function(countryDetails) { return countryDetails.countrycode === $scope.country_code}).dial;
+      $scope.dial = _.find($scope.countryDetails, function(countryDetails) { return countryDetails.countrycode === $scope.country_code}).dial;
     };
 
 
@@ -43,7 +43,7 @@
     guestDetailsService.fetchCountryCode().then(function(response) {
       $scope.countryDetails = response;
       $scope.isLoading = false;
-    },function() {
+    }, function() {
       $scope.netWorkError = true;
       $scope.isLoading = false;
     });
@@ -65,7 +65,7 @@
           $scope.isLoading = false;
           $scope.mobileUpdated = true;
           $rootScope.userMobile = $scope.guestDetails.mobile;
-        },function() {
+        }, function() {
           $scope.isLoading = false;
           $modal.open(mobileNumberSaveFailedAlert);
         });
@@ -82,7 +82,7 @@
 };
 
 var dependencies = [
-'$scope','$modal','guestDetailsService','$state','$rootScope',
+'$scope', '$modal', 'guestDetailsService', '$state', '$rootScope',
 mobileEntryController
 ];
 

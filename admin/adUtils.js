@@ -95,10 +95,10 @@ function isEmpty(obj) {
 
 var DateFormatInfoMappings = {
 
-    'MM-DD-YYYY': ['MM-dd-yyyy','mm-dd-yy'],
-    'MM/DD/YYYY': ['MM/dd/yyyy','mm/dd/yy'],
-    'DD-MM-YYYY': ['dd-MM-yyyy','dd-mm-yy'],
-    'DD/MM/YYYY': ['dd/MM/yyyy','dd/mm/yy']
+    'MM-DD-YYYY': ['MM-dd-yyyy', 'mm-dd-yy'],
+    'MM/DD/YYYY': ['MM/dd/yyyy', 'mm/dd/yy'],
+    'DD-MM-YYYY': ['dd-MM-yyyy', 'dd-mm-yy'],
+    'DD/MM/YYYY': ['dd/MM/yyyy', 'dd/mm/yy']
 
 };
 

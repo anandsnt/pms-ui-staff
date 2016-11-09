@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVValidateCheckinSrv',['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2) {
+angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2) {
 
 	this.saveGuestEmailPhone = function(data) {
 		var deferred = $q.defer();
@@ -11,7 +11,7 @@ angular.module('sntRover').service('RVValidateCheckinSrv',['$http', '$q', 'RVBas
 		};
 		rvBaseWebSrvV2.putJSON(url, dataToPost).then(function(data) {
 			    deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 		return deferred.promise;
@@ -23,7 +23,7 @@ angular.module('sntRover').service('RVValidateCheckinSrv',['$http', '$q', 'RVBas
 		var url = "staff/reservations/" + data.reservation_id + "/get_key_setup_popup.json";
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 			    deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 		return deferred.promise;

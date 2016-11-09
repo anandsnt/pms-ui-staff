@@ -1,5 +1,5 @@
 angular.module('sntRover').service('rvMenuSrv',
-	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv','$rootScope',
+	['rvPermissionSrv', 'RVDashboardSrv', 'RVHotelDetailsSrv', '$rootScope',
 	function(rvPermissionSrv, RVDashboardSrv, RVHotelDetailsSrv, $rootScope ) {
 
 
@@ -183,7 +183,7 @@ angular.module('sntRover').service('rvMenuSrv',
 	                action: "rover.endOfDay.starteod",
 	                actionPopup: false,
 	                menuIndex: "endOfDay"
-            	},{
+            	}, {
 	                title: "MENU_SOCIAL_LOBBY",
 	                action: "rover.socialLobby",
 	                hidden: !isNeighboursEnabled(),
@@ -296,7 +296,7 @@ angular.module('sntRover').service('rvMenuSrv',
                 menuIndex: "actionManager",
                 iconClass: "icon-actions",
                 submenu: []
-            },{
+            }, {
 		        title: "MENU_REPORTS",
 		        action: "rover.reports",
 		        menuIndex: "reports",

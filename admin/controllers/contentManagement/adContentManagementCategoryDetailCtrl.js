@@ -1,4 +1,4 @@
-admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'ngDialog', '$stateParams', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location',
+admin.controller('ADContentManagementCategoryDetailCtrl', ['$scope', '$state', 'ngDialog', '$stateParams', 'ADContentManagementSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout',  '$location',
  function($scope, $state, ngDialog, $stateParams, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
 	$scope.errorMessage = '';
@@ -25,7 +25,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
 			$scope.data = data;
 			$scope.initialIcon = $scope.data.icon;
 		};
-		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchCategorySuccessCallback);
+		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id, fetchCategorySuccessCallback);
 	};
 	/*Checkin if the screen is loaded for a new category or,
 	 * for existing category.
@@ -68,7 +68,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
 			unwantedKeys = ["icon", "image"];
 		}
 		var data = dclone($scope.data, unwantedKeys);
-		$scope.invokeApi(ADContentManagementSrv.saveComponent, data , saveCategorySuccessCallback);
+		$scope.invokeApi(ADContentManagementSrv.saveComponent, data, saveCategorySuccessCallback);
 	};
 
 	/* delete component starts here*/
@@ -87,7 +87,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
 			});
 			$scope.componentIdToDelete = id;
 		};
-		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
+		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id}, successCallbackFetchDeleteDetails);
 
 	};
 	/* Function to remove the category from selected list*/

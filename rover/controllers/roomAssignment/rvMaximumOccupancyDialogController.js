@@ -1,4 +1,4 @@
-sntRover.controller('rvMaximumOccupancyDialogController',['$scope','$rootScope','$filter', 'ngDialog', function($scope, $rootScope,$filter, ngDialog) {
+sntRover.controller('rvMaximumOccupancyDialogController', ['$scope', '$rootScope', '$filter', 'ngDialog', function($scope, $rootScope, $filter, ngDialog) {
 	BaseCtrl.call(this, $scope);
 
 

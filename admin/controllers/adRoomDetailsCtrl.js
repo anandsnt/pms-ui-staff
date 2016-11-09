@@ -1,4 +1,4 @@
-admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoomSrv', '$state', '$stateParams',
+admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRoomSrv', '$state', '$stateParams',
 				function($timeout, $scope, $rootScope, ADRoomSrv, $state, $stateParams) {
 	/*
 	* Controller class for Room Details
@@ -39,7 +39,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 		var fetchSuccessOfComponentRooms = function(data) {
 			$scope.$emit('hideLoader');
 			// console.log(data.rooms)
-			angular.forEach(data,function(item) {
+			angular.forEach(data, function(item) {
 				var roomData =_.findWhere($scope.data.room_types, {value: item.id});
 
 				item.room_type_name = roomData.name;
@@ -59,8 +59,8 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 		if( $scope.isStandAlone && !$rootScope.isHourlyRatesEnabled ) {
 			if ($scope.editMode) {
 
-				var isNewTypeSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite,
-					isOldTypeSuite = _.findWhere($scope.data.room_types,{"value": $scope.selectedRoomTypeId}).is_suite
+				var isNewTypeSuite = _.findWhere($scope.data.room_types, {"value": value}).is_suite,
+					isOldTypeSuite = _.findWhere($scope.data.room_types, {"value": $scope.selectedRoomTypeId}).is_suite
 				if (isNewTypeSuite && isOldTypeSuite) {
 
 					$scope.isSuite = true;
@@ -90,7 +90,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 			else{
 
 				$scope.data.suite_rooms = [];
-				$scope.isSuite = _.findWhere($scope.data.room_types,{"value": value}).is_suite;
+				$scope.isSuite = _.findWhere($scope.data.room_types, {"value": value}).is_suite;
 
 				if($scope.isSuite) {
 					$scope.invokeApi(ADRoomSrv.getComponentRoomTypes, {'suite_room_type_id': value}, fetchSuccessOfComponentRooms, fetchFailedOfComponentRooms);
@@ -106,7 +106,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
         if($scope.data.suite_rooms[index].name === "") {
           $scope.data.suite_rooms.splice(index, 1);
         }
-        angular.forEach($scope.data.suite_rooms,function(item, i) {
+        angular.forEach($scope.data.suite_rooms, function(item, i) {
           if (item.room_number === "") {
            $scope.data.suite_rooms.splice(i, 1);
          }
@@ -160,7 +160,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 		oldRoomTypeId = $scope.selectedRoomTypeId;
 		$scope.roomTypeChanged(data.room_type_id);
 		if ($scope.editMode) {
-			angular.forEach($scope.data.suite_rooms,function(suiteRoomItem) {
+			angular.forEach($scope.data.suite_rooms, function(suiteRoomItem) {
 				var roomData =_.findWhere($scope.data.room_types, {value: suiteRoomItem.room_type_id});
 				suiteRoomItem.room_type_name = roomData.name;
 			});
@@ -292,8 +292,8 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 		postData.is_exclude_from_manual_checkin = $scope.data.is_exclude_from_manual_checkin;
 		postData.is_exclude_from_auto_checkin = $scope.data.is_exclude_from_auto_checkin;
 		postData.is_exclude_from_housekeeping = $scope.data.is_exclude_from_housekeeping;
-		postData.suite_room_numbers = _.pluck($scope.data.suite_rooms,"room_number");
-		postData.is_suite_or_pseudo = $scope.isSuite || _.findWhere($scope.data.room_types,{"value": postData.room_type_id}).is_pseudo;
+		postData.suite_room_numbers = _.pluck($scope.data.suite_rooms, "room_number");
+		postData.is_suite_or_pseudo = $scope.isSuite || _.findWhere($scope.data.room_types, {"value": postData.room_type_id}).is_pseudo;
 
 		// to get selected features
 		for(var i = 0; i < $scope.data.room_features.length; i++) {
@@ -327,10 +327,10 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope','$rootScope','ADRoom
 		}
 
 		if($scope.editMode) {
-		    $scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails,$scope.failureCallBackOfUpdateRoomDetails);
+		    $scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails, $scope.failureCallBackOfUpdateRoomDetails);
 		}
 		else {
-			$scope.invokeApi(ADRoomSrv.createRoom, {'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails,$scope.failureCallBackOfUpdateRoomDetails);
+			$scope.invokeApi(ADRoomSrv.createRoom, {'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails, $scope.failureCallBackOfUpdateRoomDetails);
 		}
 	};
 

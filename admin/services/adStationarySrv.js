@@ -1,4 +1,4 @@
-admin.service('ADStationarySrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('ADStationarySrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 
 	/**
     * To fetch the details of stationary details.
@@ -10,7 +10,7 @@ admin.service('ADStationarySrv',['$http', '$q', 'ADBaseWebSrvV2', function($http
 
 		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -26,7 +26,7 @@ admin.service('ADStationarySrv',['$http', '$q', 'ADBaseWebSrvV2', function($http
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

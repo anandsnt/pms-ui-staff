@@ -374,7 +374,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
         this.postTaskListItem = function(params) {
             var deferred = $q.defer(),
                 url = 'api/tasks/';
-                params = _.omit(params,'is_default');
+                params = _.omit(params, 'is_default');
 
 
             ADBaseWebSrvV2.postJSON(url, params)
@@ -395,7 +395,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
         this.putTaskListItem = function(params) {
             var deferred = $q.defer(),
                 url = 'api/tasks/' + params.id,
-                params = _.omit(params, 'id','is_default');
+                params = _.omit(params, 'id', 'is_default');
 
             ADBaseWebSrvV2.putJSON(url, params)
                 .then(function(data) {

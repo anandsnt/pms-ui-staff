@@ -1,4 +1,4 @@
-admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$stateParams', 'ADServiceProviderSrv', 'ngTableParams','$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADServiceProviderSrv, ngTableParams, $filter) {
+admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$stateParams', 'ADServiceProviderSrv', 'ngTableParams', '$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADServiceProviderSrv, ngTableParams, $filter) {
 	BaseCtrl.call(this, $scope);
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
@@ -63,7 +63,7 @@ admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'
 			$scope.data[index].is_active = (currentStatus === "true" ? "false" : "true");
 			$scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(ADServiceProviderSrv.activateInactivate, data , successCallbackActivateInactivate);
+		$scope.invokeApi(ADServiceProviderSrv.activateInactivate, data, successCallbackActivateInactivate);
 	};
    /**
     * To delete user
@@ -75,7 +75,7 @@ admin.controller('ADServiceProviderUserListCtrl',['$scope','$rootScope', '$q' ,'
 			"id": userId
 		};
 		var successDelete = function() {
-			$scope.data.splice(index,1);
+			$scope.data.splice(index, 1);
 			$scope.$emit('hideLoader');			
 		};
 		$scope.invokeApi(ADServiceProviderSrv.deleteUser, data, successDelete );

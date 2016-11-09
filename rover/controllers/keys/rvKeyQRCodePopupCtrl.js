@@ -1,4 +1,4 @@
-sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope', '$state','ngDialog','RVKeyPopupSrv','$filter', function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter) {
+sntRover.controller('RVKeyQRCodePopupController', [ '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter) {
 	BaseCtrl.call(this, $scope);
 	// Set up data for view
 	var setupData = function() {

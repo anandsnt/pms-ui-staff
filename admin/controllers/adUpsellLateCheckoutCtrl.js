@@ -1,4 +1,4 @@
-admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adUpsellLatecheckoutService','ADChargeCodesSrv',  function($scope,$rootScope,$state,adUpsellLatecheckoutService, ADChargeCodesSrv) {
+admin.controller('ADUpsellLateCheckoutCtrl', ['$scope', '$rootScope', '$state', 'adUpsellLatecheckoutService', 'ADChargeCodesSrv',  function($scope, $rootScope, $state, adUpsellLatecheckoutService, ADChargeCodesSrv) {
 
     BaseCtrl.call(this, $scope);
     $scope.$emit("changedSelectedMenu", 2);
@@ -8,15 +8,15 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
 var setUpList = function() {
    //remove the selected item from drop down
   var selectedIds = [];
-  angular.forEach($scope.upsellData.room_types,function(item, index) {
+  angular.forEach($scope.upsellData.room_types, function(item, index) {
     if(item.max_late_checkouts !== '') {
        selectedIds.push(item.id);
     }
   });
-  angular.forEach(selectedIds,function(id, index1) {
-  angular.forEach($scope.upsellData.room_types_list,function(room_types_list, index) {
+  angular.forEach(selectedIds, function(id, index1) {
+  angular.forEach($scope.upsellData.room_types_list, function(room_types_list, index) {
         if(room_types_list.value === id) {
-           $scope.upsellData.room_types_list.splice(index,1);
+           $scope.upsellData.room_types_list.splice(index, 1);
         }
     });
   });
@@ -36,12 +36,12 @@ $scope.fetchUpsellDetails = function() {
        $scope.startWatching();
 
    };
-   $scope.invokeApi(adUpsellLatecheckoutService.fetch, {},fetchUpsellDetailsSuccessCallback);
+   $scope.invokeApi(adUpsellLatecheckoutService.fetch, {}, fetchUpsellDetailsSuccessCallback);
 };
 
 $scope.fetchUpsellDetails();
-$scope.hours = ["HH","01","02","03","04","05","06","07","08","09","10","11","12"];
-$scope.minutes = ["00","15","30","45"];
+$scope.hours = ["HH", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+$scope.minutes = ["00", "15", "30", "45"];
 /**
 * To handle switch actions
 *
@@ -91,13 +91,13 @@ $scope.setUpLateCheckoutArray = function() {
 $scope.startWatching = function() {
     $scope.$watch('upsellData', function(newValue, oldValue) {
         if(!$scope.upsellData.extended_checkout_charge_0) {
-            $scope.upsellData.extended_checkout_charge_0 = { 'time':'HH','charge':''};
+            $scope.upsellData.extended_checkout_charge_0 = { 'time':'HH', 'charge':''};
         }
         if(!$scope.upsellData.extended_checkout_charge_1) {
-            $scope.upsellData.extended_checkout_charge_1 = { 'time':'HH','charge':''};
+            $scope.upsellData.extended_checkout_charge_1 = { 'time':'HH', 'charge':''};
         }
         if(!$scope.upsellData.extended_checkout_charge_2) {
-           $scope.upsellData.extended_checkout_charge_2 = { 'time':'HH','charge':''};
+           $scope.upsellData.extended_checkout_charge_2 = { 'time':'HH', 'charge':''};
         }
        $scope.startWatchingCheckoutcharge0();
        $scope.startWatchingCheckoutcharge1();
@@ -115,12 +115,12 @@ $scope.$watch('upsellData.extended_checkout_charge_0', function(newValue, oldVal
        if($scope.upsellData.extended_checkout_charge_2) {
           $scope.upsellData.extended_checkout_charge_2.charge = "";
           $scope.upsellData.extended_checkout_charge_2.time = "HH";
-          $scope.chekoutchargesArray.splice(2,1);
+          $scope.chekoutchargesArray.splice(2, 1);
       }
       if($scope.upsellData.extended_checkout_charge_1) {
           $scope.upsellData.extended_checkout_charge_1.charge = "";
           $scope.upsellData.extended_checkout_charge_1.time = "HH";
-          $scope.chekoutchargesArray.splice(1,1);
+          $scope.chekoutchargesArray.splice(1, 1);
       }
       $scope.disableThirdOption = true;
       $scope.disableSecondOption = true;
@@ -142,7 +142,7 @@ $scope.$watch('upsellData.extended_checkout_charge_1', function(newValue, oldVal
        if($scope.upsellData.extended_checkout_charge_2) {
           $scope.upsellData.extended_checkout_charge_2.charge = "";
           $scope.upsellData.extended_checkout_charge_2.time = "HH";
-          $scope.chekoutchargesArray.splice(2,1);
+          $scope.chekoutchargesArray.splice(2, 1);
       }
       $scope.disableThirdOption = true;
   }
@@ -183,15 +183,15 @@ $scope.saveClick = function() {
 	updateData.deleted_room_types = [];
 	updateData.deleted_room_types = $scope.upsellData.deleted_room_types;
 	//Creating room type array with available max_late_checkouts data
-	angular.forEach($scope.upsellData.room_types,function(item, index) {
+	angular.forEach($scope.upsellData.room_types, function(item, index) {
 		if(item.max_late_checkouts !== '') {
-			 var obj = { "id": item.id.toString() , "max_late_checkouts": item.max_late_checkouts.toString() };
+			 var obj = { "id": item.id.toString(), "max_late_checkouts": item.max_late_checkouts.toString() };
 			 updateData.room_types.push(obj);
 		}
 	});
    	var upsellLateCheckoutSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
-      angular.forEach($scope.chekoutchargesArray,function(value, key) {
+      angular.forEach($scope.chekoutchargesArray, function(value, key) {
       var timeValue = value.time;
 			value.time = timeValue.replace(" PM", "");// To make the UI updated after success
 
@@ -202,20 +202,20 @@ $scope.saveClick = function() {
    	var upsellLateCheckoutFailureCallback =  function(errorMessage) {
       $scope.$emit('hideLoader');
       $scope.errorMessage = errorMessage;
-      angular.forEach($scope.chekoutchargesArray,function(value, key) {
+      angular.forEach($scope.chekoutchargesArray, function(value, key) {
       var timeValue = value.time;
 			value.time = timeValue.replace(" PM", "");// To make the UI updated after success
 
 		});
 
    	};
-   	$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,upsellLateCheckoutSuccessCallback, upsellLateCheckoutFailureCallback);
+   	$scope.invokeApi(adUpsellLatecheckoutService.update, updateData, upsellLateCheckoutSuccessCallback, upsellLateCheckoutFailureCallback);
 
 };
 
 $scope.clickAddRoomType = function() {
 	//While addig a room type, making its max_late_checkouts defaults to 0.
-	angular.forEach($scope.upsellData.room_types,function(item, index) {
+	angular.forEach($scope.upsellData.room_types, function(item, index) {
 		if (item.id === parseInt($scope.upsellData.selected_room_type)) {
       // CICO-32613: Do not reset existing value.
       if (!item.max_late_checkouts) {
@@ -224,9 +224,9 @@ $scope.clickAddRoomType = function() {
 		}
   });
     //Removing the selected room type from dropdown of room type list.
-    angular.forEach($scope.upsellData.room_types_list,function(item, index) {
+    angular.forEach($scope.upsellData.room_types_list, function(item, index) {
 		if(item.value === $scope.upsellData.selected_room_type) {
-			 $scope.upsellData.room_types_list.splice(index,1);
+			 $scope.upsellData.room_types_list.splice(index, 1);
 		}
     });
     isRoomTypesSelected();
@@ -238,7 +238,7 @@ $scope.clickAddRoomType = function() {
  */
 var isRoomTypesSelected = function() {
 	$scope.upsellData.isRoomTypesSelectedFlag = false;
-	angular.forEach($scope.upsellData.room_types,function(item, index) {
+	angular.forEach($scope.upsellData.room_types, function(item, index) {
 		if(item.max_late_checkouts !== '') {
       $scope.upsellData.isRoomTypesSelectedFlag = true;
     }
@@ -247,11 +247,11 @@ var isRoomTypesSelected = function() {
 /*
  * Method to delete the room type.
  */
-$scope.deleteRoomType = function(value,name) {
+$scope.deleteRoomType = function(value, name) {
 
-	var data = { "value": value , "name": name };
+	var data = { "value": value, "name": name };
 	$scope.upsellData.room_types_list.push(data);
-	angular.forEach($scope.upsellData.room_types,function(item, index) {
+	angular.forEach($scope.upsellData.room_types, function(item, index) {
 		if(item.id === value) {
 			item.max_late_checkouts = '';
 		}

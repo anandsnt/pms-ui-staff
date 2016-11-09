@@ -1,4 +1,4 @@
-angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', 'RVContactInfoSrv','RVGuestCardLoyaltySrv',
+angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', 'RVContactInfoSrv', 'RVGuestCardLoyaltySrv',
 	function($scope, RVCompanyCardSrv, $timeout, RVContactInfoSrv) {
 		$scope.searchMode = true;
 		$scope.guestCardData.selectedLoyaltyLevel = "";
@@ -30,7 +30,7 @@ angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCa
 				$scope.$emit('hideLoader');
 			}, 1000);
 		});
-                $scope.$on('detect-hlps-ffp-active-status',function(evt,data) {
+                $scope.$on('detect-hlps-ffp-active-status', function(evt, data) {
                     if (data.userMemberships.use_hlp || data.userMemberships.use_ffp) {
                     $scope.loyaltyTabEnabled = true;
                    } else {
@@ -41,7 +41,7 @@ angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCa
 		$scope.$on("loyaltyLevelAvailable", function($event, level) {
 			$scope.guestCardData.selectedLoyaltyLevel = level;
 		});
-                $scope.loyaltiesStatus = {'ffp':false,'hlps':false};
+                $scope.loyaltiesStatus = {'ffp':false, 'hlps':false};
                 $scope.$setLoyaltyStatus = function(data, type) {
                     $scope.loyaltiesStatus[type] = data.active;
                     if ($scope.loyaltiesStatus.ffp || $scope.loyaltiesStatus.hlps) {
@@ -66,8 +66,8 @@ angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCa
                             $scope.$emit('hideLoader');
                     };
 
-                    $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesHlps,{} , loyaltyFetchsuccessCallbackhlps);
-                    $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesFfp,{} , loyaltyFetchsuccessCallbackffp);
+                    $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesHlps, {}, loyaltyFetchsuccessCallbackhlps);
+                    $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesFfp, {}, loyaltyFetchsuccessCallbackffp);
                  };
 
 	}

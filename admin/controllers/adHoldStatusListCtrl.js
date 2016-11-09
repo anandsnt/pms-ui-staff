@@ -1,4 +1,4 @@
-admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADHoldStatusSrv, $location, $anchorScroll, $timeout) {
+admin.controller('ADHoldStatusListCtrl', ['$scope', '$state', 'ADHoldStatusSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADHoldStatusSrv, $location, $anchorScroll, $timeout) {
 
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -14,7 +14,7 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
 			$scope.currentClickedElement = -1;
 			$scope.isAddMode = false;
 		};
-		$scope.invokeApi(ADHoldStatusSrv.fetch, {} , successCallbackFetch);
+		$scope.invokeApi(ADHoldStatusSrv.fetch, {}, successCallbackFetch);
 	};
 	//To list Hold status
 	$scope.listHoldStatus();
@@ -82,9 +82,9 @@ admin.controller('ADHoldStatusListCtrl',['$scope', '$state', 'ADHoldStatusSrv', 
     		$scope.currentClickedElement = -1;
     	};
     	if($scope.isAddMode) {
-    		$scope.invokeApi(ADHoldStatusSrv.saveHoldStatus, $scope.holdstatusData , successCallbackSave);
+    		$scope.invokeApi(ADHoldStatusSrv.saveHoldStatus, $scope.holdstatusData, successCallbackSave);
     	} else {
-    		$scope.invokeApi(ADHoldStatusSrv.updateHoldStatus, $scope.holdstatusData , successCallbackSave);
+    		$scope.invokeApi(ADHoldStatusSrv.updateHoldStatus, $scope.holdstatusData, successCallbackSave);
     	}
     };
    /*

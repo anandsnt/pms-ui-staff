@@ -1,4 +1,4 @@
-sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state', 'ngDialog', 'RVValidateCheckinSrv',  function($rootScope, $scope, $state, ngDialog, RVValidateCheckinSrv) {
+sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state', 'ngDialog', 'RVValidateCheckinSrv',  function($rootScope, $scope, $state, ngDialog, RVValidateCheckinSrv) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.showEmail = ($scope.guestCardData.contactInfo.email === '' || $scope.guestCardData.contactInfo.email === null) ? true : false;
@@ -33,21 +33,21 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
         if (!$rootScope.reservationQueueWatch) {//alternative to $destroy, this is an init-once method
             $rootScope.reservationQueueWatch = 1;
 
-            $rootScope.$on('putGuestInQueue',function() {
+            $rootScope.$on('putGuestInQueue', function() {
                 $scope.putGuestInQueue = true;
                 $rootScope.putGuestInQueue = true;
 
                 $scope.checkGuestInFromQueue = false;
                 $rootScope.checkGuestInFromQueue = false;
             });
-            $rootScope.$on('checkGuestInFromQueue',function() {
+            $rootScope.$on('checkGuestInFromQueue', function() {
                 $scope.checkGuestInFromQueue = true;
                 $rootScope.checkGuestInFromQueue = true;
 
                 $scope.putGuestInQueue = false;
                 $rootScope.putGuestInQueue = false;
             });
-            $rootScope.$on('normalCheckInNotQueued',function() {
+            $rootScope.$on('normalCheckInNotQueued', function() {
                 $scope.checkGuestInFromQueue = false;
                 $rootScope.checkGuestInFromQueue = false;
 
@@ -143,7 +143,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
             if ($scope.putGuestInQueue) {
                 setTimeout(function() {
                   $rootScope.$emit('putGuestInQueue');
-              },1000);
+              }, 1000);
             }
         };
 	$scope.goToNextView = function() {

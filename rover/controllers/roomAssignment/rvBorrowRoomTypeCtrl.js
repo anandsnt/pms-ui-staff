@@ -1,4 +1,4 @@
-sntRover.controller('rvBorrowRoomTypeCtrl',[
+sntRover.controller('rvBorrowRoomTypeCtrl', [
     '$scope',
     'RVUpgradesSrv',
     'ngDialog',

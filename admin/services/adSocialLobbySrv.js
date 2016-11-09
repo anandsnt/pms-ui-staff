@@ -1,4 +1,4 @@
-admin.service('ADSocialLobbySrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
+admin.service('ADSocialLobbySrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 
    /*
 	* service class for Socail Lobby
@@ -14,7 +14,7 @@ admin.service('ADSocialLobbySrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSr
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -30,7 +30,7 @@ admin.service('ADSocialLobbySrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSr
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;

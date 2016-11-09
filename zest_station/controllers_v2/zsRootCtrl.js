@@ -414,7 +414,7 @@ sntZestStation.controller('zsRootCtrl', [
 			$scope.icons = {
 				url: {
 					active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
-					booknow: iconBasePath + '/calendar.svg',//TODO, need generic icon for default (css update needed)
+					booknow: iconBasePath + '/calendar.svg', //TODO, need generic icon for default (css update needed)
 
 					checkin: iconBasePath + '/checkin.svg',
 					checkout: iconBasePath + '/checkout.svg',
@@ -592,18 +592,18 @@ sntZestStation.controller('zsRootCtrl', [
 				}	
 			}
 		}
-		$scope.$on('HOME_ACTIVITY',function() {//need to move the above function to Home Controller after S69
+		$scope.$on('HOME_ACTIVITY', function() {//need to move the above function to Home Controller after S69
 			homeInActivityTimeInSeconds = 0;
 		});
 
 		var refreshInProgress = function(station) {
-			console.log('Calling API to Reset (refresh_station) Flag for: ',station.name, ' - ',station.id);
+			console.log('Calling API to Reset (refresh_station) Flag for: ', station.name, ' - ', station.id);
 			var onSuccess = function(response) {
 				console.info('Successful Refresh of Station Triggered, turning off (Workstation) Trigger ');
 				initRefreshStation();
 			};
 			var onFail = function(response) {
-				console.warn('Manual Refresh Failed: ',response);
+				console.warn('Manual Refresh Failed: ', response);
 			};
 			var options = {
 				params: {
@@ -729,7 +729,7 @@ sntZestStation.controller('zsRootCtrl', [
 					$scope.$broadcast('WS_PRINT_SUCCESS');
 				} else {
 					var errorData = {'error_message':printerErrorMapping[response.ResponseCode]};
-					$scope.$broadcast('WS_PRINT_FAILED',errorData);
+					$scope.$broadcast('WS_PRINT_FAILED', errorData);
 				}
 			}
 		};
@@ -794,7 +794,7 @@ sntZestStation.controller('zsRootCtrl', [
 		$scope.navToHome = function() {
 			$timeout(function() {
 				$state.go('zest_station.home');
-			},250);//use delay so user doesnt immediately click check-in/out icons on touchscreen devices
+			}, 250);//use delay so user doesnt immediately click check-in/out icons on touchscreen devices
 		};
 		/********************************************************************************
 		 *  Work station code  

@@ -87,7 +87,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	$scope.clickContinueButton = function() {
 		document.activeElement.blur();
         setTimeout(function() {
-      	   window.scrollTo(0,0);
+      	   window.scrollTo(0, 0);
         }, 700);
 		var blankKeys = "";
 		that.lastSuccessfulIDReaded = '';
@@ -200,7 +200,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	$scope.clickContinueEdit = function(isFixed) {
 	    document.activeElement.blur();
         setTimeout(function() {
-      	   window.scrollTo(0,0);
+      	   window.scrollTo(0, 0);
         }, 700);
 		if(isFixed) {
 

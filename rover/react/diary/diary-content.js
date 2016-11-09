@@ -19,7 +19,7 @@ var DiaryContent = React.createClass({
             this.setState({
 				viewport: viewport,
 				display: display
-			},function() {
+			}, function() {
             });
 		}
 		//reffreshing the timeline scroller and calling the onscroll fn so that others will get corrected
@@ -63,7 +63,7 @@ var DiaryContent = React.createClass({
 			display 		= props.display,
 			rowHeight 		= display.row_height + display.row_height_margin,
 			viewport 		= state.viewport.element(),
-			curPos 			= e.pageY - state.iscroll.grid.y - viewport.offset().top,// e.pageY - viewport.offset().top - state.iscroll.grid.y    viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
+			curPos 			= e.pageY - state.iscroll.grid.y - viewport.offset().top, // e.pageY - viewport.offset().top - state.iscroll.grid.y    viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
 			rowNumber 		= Math.floor(curPos / rowHeight),
 			rowNumber       = (rowNumber < 0) ? 0 : rowNumber,
 			rowNumber       = (rowNumber > (display.total_rows - 1)) ? (display.total_rows - 1) : rowNumber,

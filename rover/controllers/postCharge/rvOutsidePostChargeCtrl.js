@@ -4,7 +4,7 @@ sntRover.controller('RVOutsidePostChargeController',
 		'$scope',
 		'RVPostChargeSrvV2',
 		'RVSearchSrv',
-		'$timeout','ngDialog', '$stateParams',
+		'$timeout', 'ngDialog', '$stateParams',
 		'rvPermissionSrv',
 		function($rootScope, $scope, RVPostChargeSrvV2, RVSearchSrv, $timeout, ngDialog, $stateParams, rvPermissionSrv ) {
 

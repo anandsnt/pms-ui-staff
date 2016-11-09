@@ -332,7 +332,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                                         $scope.anyRoomHasClosedRestriction = true;
                                     }
                                     // CICO-21942 Set days count of restrictionsIndependentOfDays to be null
-                                    if(_.indexOf(RateMngrCalendarSrv.restrictionsIndependentOfDays, parseInt(_restriction,10)) > -1) {
+                                    if(_.indexOf(RateMngrCalendarSrv.restrictionsIndependentOfDays, parseInt(_restriction, 10)) > -1) {
                                         _row[_date].restrictions[a].days = null;
                                     }
                                 }
@@ -344,7 +344,7 @@ angular.module('sntRover').controller('RateCalendarCtrl', [
                                         $scope.anyRoomHasClosedRestriction = true;
                                     }
                                     // CICO-21942 Set days count of restrictionsIndependentOfDays to be null
-                                    if(_.indexOf(RateMngrCalendarSrv.restrictionsIndependentOfDays, parseInt(_restriction,10)) > -1) {
+                                    if(_.indexOf(RateMngrCalendarSrv.restrictionsIndependentOfDays, parseInt(_restriction, 10)) > -1) {
                                         _row[_date][a].days = null;
                                     }
                                 }

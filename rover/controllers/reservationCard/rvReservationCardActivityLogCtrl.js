@@ -1,6 +1,6 @@
 sntRover.controller('rvReservationCardActivityLogCtrl',
-    ['$scope', '$filter','$stateParams', '$rootScope', '$state', '$timeout',
-    function($scope, $filter,$stateParams, $rootScope , $state, $timeout) {
+    ['$scope', '$filter', '$stateParams', '$rootScope', '$state', '$timeout',
+    function($scope, $filter, $stateParams, $rootScope, $state, $timeout) {
        $scope.activityLog = "";
 
        var init = function() {
@@ -22,7 +22,7 @@ sntRover.controller('rvReservationCardActivityLogCtrl',
         };
 
         $scope.showDetails = function() {
-            $state.go('rover.reservation.staycard.activitylog',{
+            $state.go('rover.reservation.staycard.activitylog', {
                 id: $stateParams.id
             });
         };

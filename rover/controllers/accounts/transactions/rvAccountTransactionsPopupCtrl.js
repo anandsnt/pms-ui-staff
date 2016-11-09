@@ -1,5 +1,5 @@
 sntRover.controller('RVAccountTransactionsPopupCtrl',
-	['$scope','$rootScope','$filter','rvAccountTransactionsSrv', 'ngDialog', '$timeout', function($scope, $rootScope,$filter, rvAccountTransactionsSrv, ngDialog, $timeout) {
+	['$scope', '$rootScope', '$filter', 'rvAccountTransactionsSrv', 'ngDialog', '$timeout', function($scope, $rootScope, $filter, rvAccountTransactionsSrv, ngDialog, $timeout) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -65,7 +65,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	 * API call split transaction
 	 */
 
-	$scope.splitCharge = function(qty,isAmountType) {
+	$scope.splitCharge = function(qty, isAmountType) {
 
 		$scope.$emit('showLoader');
 		var split_type = isAmountType ? $rootScope.currencySymbol:'%';
@@ -89,7 +89,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
    /*
 	 * API call edit transaction
 	 */
-	$scope.editCharge = function(newAmount,chargeCode,adjustmentReason) {
+	$scope.editCharge = function(newAmount, chargeCode, adjustmentReason) {
 		$scope.$emit('showLoader');
 		var editData =
 		{
@@ -138,7 +138,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 	$scope.chargecodeData = {};
 	$scope.chargecodeData.chargeCodeSearchText = "";
 	var scrollerOptionsForSearch = {click: true, preventDefault: false};
-	$scope.setScroller('chargeCodesList',scrollerOptionsForSearch);
+	$scope.setScroller('chargeCodesList', scrollerOptionsForSearch);
 
 	$scope.selectChargeCode = function(id) {
 		 for(var i = 0; i < $scope.availableChargeCodes.length; i++) {

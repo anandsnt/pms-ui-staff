@@ -1,4 +1,4 @@
-admin.controller('ADZestCheckinEmailCtrl',['$scope', '$state', 'adZestCheckinCheckoutSrv','$filter',function($scope, $state, adZestCheckinCheckoutSrv,$filter) {
+admin.controller('ADZestCheckinEmailCtrl', ['$scope', '$state', 'adZestCheckinCheckoutSrv', '$filter', function($scope, $state, adZestCheckinCheckoutSrv, $filter) {
     $scope.errorMessage = '';
     $scope.successMessage = '';
     $scope.isLoading = true;
@@ -7,7 +7,7 @@ admin.controller('ADZestCheckinEmailCtrl',['$scope', '$state', 'adZestCheckinChe
     ADBaseTableCtrl.call(this, $scope);
 
     $scope.init = function() {
-        console.info('$state: ',$state);
+        console.info('$state: ', $state);
         $scope.showEmailSetupView = false;
         $scope.showDirectSetupView = false;
         $scope.showView = false;
@@ -38,7 +38,7 @@ admin.controller('ADZestCheckinEmailCtrl',['$scope', '$state', 'adZestCheckinChe
     
     $scope.data = {};
     $scope.setData = function(data) {
-        console.log('set, ',data);
+        console.log('set, ', data);
         $scope.data = data.data;
         
     };
@@ -75,7 +75,7 @@ admin.controller('ADZestCheckinEmailCtrl',['$scope', '$state', 'adZestCheckinChe
              "name":"Email URL",
              "url_suffix": $scope.data.zest_email_setup.checkin_static_uri
         }
-        $scope.invokeApi(adZestCheckinCheckoutSrv.saveNewDirectURL, data,saveNewDirectURLSuccess);
+        $scope.invokeApi(adZestCheckinCheckoutSrv.saveNewDirectURL, data, saveNewDirectURLSuccess);
     };
     $scope.saveEmailSetup = function() {
             var onSuccess = function(data) {

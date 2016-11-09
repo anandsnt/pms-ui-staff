@@ -1,4 +1,4 @@
-admin.service('ADOriginsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('ADOriginsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 
 	/**
     *   A getter method to return the origins list
@@ -8,7 +8,7 @@ admin.service('ADOriginsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		var url = '/api/booking_origins.json';
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -19,9 +19,9 @@ admin.service('ADOriginsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 	this.toggleUsedOrigins = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/booking_origins/use_origins';
-		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -35,9 +35,9 @@ admin.service('ADOriginsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		var deferred = $q.defer();
 		var url = '/api/booking_origins';
 
-		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -51,9 +51,9 @@ admin.service('ADOriginsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		var deferred = $q.defer();
 		var url = '/api/booking_origins/'+data.value;
 
-		ADBaseWebSrvV2.putJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -69,7 +69,7 @@ admin.service('ADOriginsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

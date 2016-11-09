@@ -1,9 +1,9 @@
-sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$filter','RVLoyaltyProgramSrv', 'ngDialog', function($scope, $rootScope,$filter, RVLoyaltyProgramSrv, ngDialog) {
+sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$filter', 'RVLoyaltyProgramSrv', 'ngDialog', function($scope, $rootScope, $filter, RVLoyaltyProgramSrv, ngDialog) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.availableFFPS = [];
 	$scope.availableHLPS = [];
-	$scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"},{name:"Hotel Loyalty Program", code:"HLP"}];
+	$scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"}, {name:"Hotel Loyalty Program", code:"HLP"}];
 	$scope.selectedLoyaltyProgram = "";
 	$scope.selectedLoyaltyType = "";
 	$scope.selectedLevel = "";
@@ -35,7 +35,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 			$scope.errorMessage = errorMessage;
 		};
 
-		$scope.invokeApi(RVLoyaltyProgramSrv.addLoyaltyProgram, params , successCallbackaddLoyaltyProgram, errorCallbackaddLoyaltyProgram);
+		$scope.invokeApi(RVLoyaltyProgramSrv.addLoyaltyProgram, params, successCallbackaddLoyaltyProgram, errorCallbackaddLoyaltyProgram);
 	};
 
     $scope.setupLoyaltyPrograms = function () {
@@ -47,7 +47,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
             } else if (use_ffp === false && use_hlp === true) {
                 $scope.loyaltyPrograms = [{name:"Hotel Loyalty Program", code:"HLP"}];
             } else if (use_ffp === true && use_hlp === true) {
-                $scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"},{name:"Hotel Loyalty Program", code:"HLP"}];
+                $scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"}, {name:"Hotel Loyalty Program", code:"HLP"}];
             } else if (use_ffp === false && use_hlp === false) {
                 $scope.loyaltyPrograms = [];
             }
@@ -67,7 +67,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
         };
-        $scope.invokeApi(RVLoyaltyProgramSrv.getAvailableFFPS, "" , successCallbackGetFFPS, errorCallbackGetFFPS);
+        $scope.invokeApi(RVLoyaltyProgramSrv.getAvailableFFPS, "", successCallbackGetFFPS, errorCallbackGetFFPS);
 	};
 
 	$scope.getHLPS = function () {
@@ -80,7 +80,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
         };
-        $scope.invokeApi(RVLoyaltyProgramSrv.getAvailableHLPS, "" , successCallbackGetHLPS, errorCallbackGetHLPS);
+        $scope.invokeApi(RVLoyaltyProgramSrv.getAvailableHLPS, "", successCallbackGetHLPS, errorCallbackGetHLPS);
 	};
 
 	$scope.setAvailableFFPS = function (FFPArray) {

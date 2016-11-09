@@ -240,7 +240,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
             setTimeout(function() {
                 var el = $('[name=default-rate]');
                 $(el).val(value);
-            },950);
+            }, 950);
         };
     };
     
@@ -282,7 +282,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
                 setTimeout(function() {
                     var payment = $('[name=default-payment]');
                     $(payment).val(value);
-                },50);//takes a moment for angularjs to catch up with the list population, possibly longer if list grows too big
+                }, 50);//takes a moment for angularjs to catch up with the list population, possibly longer if list grows too big
             };
         };
         var setOrigin = function() {
@@ -291,7 +291,7 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
                 setTimeout(function() {
                     var payment = $('[name=default-origin]');
                     $(payment).val(value);
-                },50);
+                }, 50);
             };
         };
     }

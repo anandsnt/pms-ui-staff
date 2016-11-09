@@ -1,4 +1,4 @@
-admin.controller('ADHotelAnnouncementSettingsCtrl', ['$scope','$rootScope', '$state', 'ADHotelAnnouncementSrv', function($scope, $rootScope,$state, ADHotelAnnouncementSrv) {
+admin.controller('ADHotelAnnouncementSettingsCtrl', ['$scope', '$rootScope', '$state', 'ADHotelAnnouncementSrv', function($scope, $rootScope, $state, ADHotelAnnouncementSrv) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.errorMessage = '';

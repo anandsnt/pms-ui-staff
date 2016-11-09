@@ -41,7 +41,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
 
             setTimeout(function() {
                         $scope.$emit('hideLoader');
-            },200);
+            }, 200);
             }
 
         };
@@ -207,8 +207,8 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 d.to = to;
                 d.from = from;
                 d.via = via;
-                $scope.$emit('setReadyButton',d);
-                $scope.$emit('applyAllActivity',d);
+                $scope.$emit('setReadyButton', d);
+                $scope.$emit('applyAllActivity', d);
             });
             $scope.$watch("data.double_extra_amnt", function(to, from, evt) {
 
@@ -217,8 +217,8 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 d.to = to;
                 d.from = from;
                 d.via = via;
-                $scope.$emit('setReadyButton',d);
-                $scope.$emit('applyAllActivity',d);
+                $scope.$emit('setReadyButton', d);
+                $scope.$emit('applyAllActivity', d);
             });
             $scope.$watch("data.extra_adult_extra_amnt", function(to, from, evt) {
 
@@ -227,8 +227,8 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 d.to = to;
                 d.from = from;
                 d.via = via;
-                $scope.$emit('setReadyButton',d);
-                $scope.$emit('applyAllActivity',d);
+                $scope.$emit('setReadyButton', d);
+                $scope.$emit('applyAllActivity', d);
             });
             $scope.$watch("data.child_extra_amnt", function(to, from, evt) {
 
@@ -237,8 +237,8 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 d.to = to;
                 d.from = from;
                 d.via = via;
-                $scope.$emit('setReadyButton',d);
-                $scope.$emit('applyAllActivity',d);
+                $scope.$emit('setReadyButton', d);
+                $scope.$emit('applyAllActivity', d);
             });
 
             $scope.$on('apply-all-price-adjust', function (evt, data) {
@@ -574,7 +574,7 @@ angular.module('sntRover').controller('UpdatePriceAndRestrictionsCtrl', ['$q', '
                 $scope.daysOptions.applyToRestrictions = true;
             }
 
-            _.each(datesSelected,function(selectedDate, i) {
+            _.each(datesSelected, function(selectedDate, i) {
                 /**
                  * for dates other than the selected column, the changes need to be propagated only if the 'applyToPrice'
                  * and 'applyToRestrictions' are set

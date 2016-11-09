@@ -34,7 +34,7 @@ admin.controller('ADDateRangeModalCtrl', ['$scope',
         $scope.toDate = $scope.data.end_date;
       };
 
-      $scope.fromDateOptions = _.extend(datePickerDefaults,{
+      $scope.fromDateOptions = _.extend(datePickerDefaults, {
         onSelect: function() {
           if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
             $scope.toDate = $scope.fromDate;
@@ -42,7 +42,7 @@ admin.controller('ADDateRangeModalCtrl', ['$scope',
         }
       });
 
-      $scope.toDateOptions = _.extend(datePickerDefaults,{
+      $scope.toDateOptions = _.extend(datePickerDefaults, {
         onSelect: function() {
           if (tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
             $scope.fromDate = $scope.toDate;

@@ -185,7 +185,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 		// To handle printConfirmationReservation button click
 		$scope.printConfirmationReservation = function() {
-			$scope.callAPI(RVReservationSummarySrv.fetchResservationConfirmationPrintData,{
+			$scope.callAPI(RVReservationSummarySrv.fetchResservationConfirmationPrintData, {
                 successCallBack: sucessCallbackPrint,
                 failureCallBack: failureCallbackPrint,
                 params: { 'reservation_id': $scope.reservationData.reservationId }
@@ -363,7 +363,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			$scope.otherData.reservationCreated = true;
 			$scope.reservationData.rateDetails = [];
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
-                        $rootScope.$broadcast('reload-loyalty-section-data',{});
+                        $rootScope.$broadcast('reload-loyalty-section-data', {});
 		};
 
 		/**

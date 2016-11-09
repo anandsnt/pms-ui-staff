@@ -341,7 +341,7 @@ admin.controller('ADFloorDetailsCtrl',
     	//appending the room ids in list
     	params.room_ids = _.pluck($scope.assignedRooms, 'id');
 
-    	$scope.invokeApi(ADFloorSetupSrv.updateFloor, params , successCallbackSave);
+    	$scope.invokeApi(ADFloorSetupSrv.updateFloor, params, successCallbackSave);
     };
 
 
@@ -372,7 +372,7 @@ admin.controller('ADFloorDetailsCtrl',
         $scope.selectedUnassignedRooms = [];
 
         //pagination updates
-        _.extend($scope.paginationState,{
+        _.extend($scope.paginationState, {
             totalRecords : data.total_count,
             firstIndex :  minIndex,
             lastIndex : _.min([maxIndex, data.total_count]),

@@ -19,8 +19,8 @@ sntGuestWeb.controller('gwLateCheckoutFinalController', ['$scope', '$rootScope',
 			var screenIdentifier = "LATE_CHECKOUT_FINAL";
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			// replace the string @<what-ever> with corresponding scope variable
-			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description,"@checkout-time", $scope.lateCheckOut.time + $scope.lateCheckOut.ap);
-			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description,"@amount", $rootScope.currencySymbol + $scope.lateCheckOut.amount.toString());
+			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@checkout-time", $scope.lateCheckOut.time + $scope.lateCheckOut.ap);
+			$scope.screenCMSDetails.description = replaceStringWithScopeVariable($scope.screenCMSDetails.description, "@amount", $rootScope.currencySymbol + $scope.lateCheckOut.amount.toString());
 			
 			$scope.oldCheckoutTime = angular.copy(GwWebSrv.zestwebData.checkoutTime);
 			GwWebSrv.zestwebData.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap;

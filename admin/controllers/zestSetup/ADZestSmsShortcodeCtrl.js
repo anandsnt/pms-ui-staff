@@ -1,4 +1,4 @@
-admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeSrv','adZestCheckinCheckoutSrv','$filter',function($scope, $state, ADZestShortCodeSrv,adZestCheckinCheckoutSrv,$filter) {
+admin.controller('ADZestSmsShortcodeCtrl', ['$scope', '$state', 'ADZestShortCodeSrv', 'adZestCheckinCheckoutSrv', '$filter', function($scope, $state, ADZestShortCodeSrv, adZestCheckinCheckoutSrv, $filter) {
     $scope.errorMessage = '';
     $scope.successMessage = '';
     $scope.isLoading = true;
@@ -37,7 +37,7 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
         
         var params = angular.copy($scope.editData);
         params.sms_double_opt_in = (params.sms_double_opt_in === 'true') ? true : false;
-        console.info('saving',params);
+        console.info('saving', params);
         //params.id = $scope.editData.hotel_id;
         var options = {
             params 			: params,
@@ -59,11 +59,11 @@ admin.controller('ADZestSmsShortcodeCtrl',['$scope', '$state', 'ADZestShortCodeS
     
     $scope.fetch = function() {
         var callback = function(response) {
-            console.info('fetch: ',response)
+            console.info('fetch: ', response)
             if (response.status === 'success') {
                 $scope.editData = response.data;
                 $scope.editData.sms_double_opt_in = (!!$scope.editData.sms_double_opt_in && $scope.editData.sms_double_opt_in) ? 'true' : 'false';
-                console.info('$scope.editData: ',$scope.editData)
+                console.info('$scope.editData: ', $scope.editData)
             }
         };
         var options = {

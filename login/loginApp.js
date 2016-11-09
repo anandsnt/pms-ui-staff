@@ -1,4 +1,4 @@
-var login = angular.module('login',['ui.router', 'documentTouchMovePrevent', 'ngSanitize', 'ng-iscroll']);
+var login = angular.module('login', ['ui.router', 'documentTouchMovePrevent', 'ngSanitize', 'ng-iscroll']);
 
 /*
  * Set page Titles
@@ -23,7 +23,7 @@ login.controller('loginRootCtrl', ['$scope', function($scope) {
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login
  */
-login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv) {
+login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv) {
 	 $scope.data = {};
 
 	 if(localStorage.email) {
@@ -161,7 +161,7 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 /*
  * Reset Password Controller - First time login of snt admin
  */
-login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams) {
+login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams) {
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 
@@ -208,7 +208,7 @@ login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$state
 /*
  * Activate User Controller - Activate user when clicks on activation link in mail
  */
-login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams) {
+login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams) {
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 	 $scope.data.user  = $stateParams.user;
@@ -289,7 +289,7 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 
 }]);
 
-login.controller('stationLoginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv) {
+login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv) {
         $scope.data = {};
 
         if(localStorage.email) {
@@ -320,7 +320,7 @@ login.controller('stationLoginCtrl',['$scope', 'loginSrv', '$window', '$state', 
                         $scope.hasLoader = true;
                         //we need to show the animation before redirecting to the url, so introducing a timeout there
                         setTimeout(function() {
-                            console.log('data.redirect_url: ',data.redirect_url);
+                            console.log('data.redirect_url: ', data.redirect_url);
                                 $window.location.href = data.redirect_url;
                         }, 300);
 	 	}

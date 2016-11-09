@@ -590,7 +590,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         }
                         var start_date = time.toStartDate();
                         var end_date = time.x_p;
-                        end_date.setHours(0,0,0);
+                        end_date.setHours(0, 0, 0);
                         $q.all([Maintenance.read(),
                                 RoomType.read(),
                                 InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
@@ -880,7 +880,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var url = '/api/hourly_availability/room';
                     rvBaseWebSrvV2.getJSON(url, params).then(function(resultFromAPI) {
                         deferred.resolve(resultFromAPI);
-                    },function(error) {
+                    }, function(error) {
                         deferred.reject(error);
                     });
                     return deferred.promise;
@@ -970,7 +970,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var url = '/api/hourly_availability/room_move';
                     rvBaseWebSrvV2.getJSON(url, params).then(function(resultFromAPI) {
                         deferred.resolve(resultFromAPI);
-                    },function(error) {
+                    }, function(error) {
                         deferred.reject(error);
                     });
                     return deferred.promise;
@@ -1081,7 +1081,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                         deferred.resolve(data.reservations);
-                    },function(error) {
+                    }, function(error) {
                         deferred.reject(error);
                     });
                     return deferred.promise;
@@ -1092,7 +1092,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                         deferred.resolve(data.reservations.length);
-                    },function(error) {
+                    }, function(error) {
                         deferred.reject(error);
                     });
                     return deferred.promise;
@@ -1103,7 +1103,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     var url = 'api/reservations/' + params.id + '/unassign_room/';
                     rvBaseWebSrvV2.postJSON(url).then(function(data) {
                         deferred.resolve(data.reservations);
-                    },function(error) {
+                    }, function(error) {
                         deferred.reject(error);
                     });
                     return deferred.promise;

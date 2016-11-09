@@ -1,4 +1,4 @@
-sntRover.controller('RVDeleteSetAsPrimaryCtrl',['$rootScope', '$scope', '$state', 'RVPaymentSrv','ngDialog', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog) {
+sntRover.controller('RVDeleteSetAsPrimaryCtrl', ['$rootScope', '$scope', '$state', 'RVPaymentSrv', 'ngDialog', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog) {
 	BaseCtrl.call(this, $scope);
 	$scope.successSetAsPrimary = function() {
 		angular.forEach($scope.paymentData.data, function(value, key) {

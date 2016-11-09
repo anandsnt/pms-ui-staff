@@ -1,4 +1,4 @@
-admin.service('ADRoomClassesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('ADRoomClassesSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
    /**
     * To fetch the list of users
     * @return {object} users list json
@@ -25,7 +25,7 @@ admin.service('ADRoomClassesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($htt
 		var url = 'admin/room_classes';
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -57,7 +57,7 @@ admin.service('ADRoomClassesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($htt
 		var url = ' /admin/room_classes/'+data.id;
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -72,7 +72,7 @@ admin.service('ADRoomClassesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($htt
 		var url ='admin/room_classes/'+id;
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

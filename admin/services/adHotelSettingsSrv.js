@@ -25,9 +25,9 @@ function($http, $q, ADBaseWebSrvV2) {
 		var deferred = $q.defer();
 		var url = '/api/hotel_settings/change_settings';
 
-		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

@@ -1,6 +1,6 @@
 
-sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$window',
-                  function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $window) {
+sntRover.controller('RVdashboardController', ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata', '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$window',
+                  function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata, $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $window) {
 
     //setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
@@ -27,7 +27,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
 
         //update left nav bar
-        $scope.$emit("updateRoverLeftMenu","dashboard");
+        $scope.$emit("updateRoverLeftMenu", "dashboard");
         $scope.$emit("closeDrawer");
         var scrollerOptions = {click: true, preventDefault: false};
         $scope.setScroller('dashboard_scroller', scrollerOptions);
@@ -205,7 +205,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    var invokeSetWorkstationApi = function() {
     var requestData = {};
     requestData.rover_device_id = $scope.getDeviceId();
-    $scope.invokeApi(RVWorkstationSrv.setWorkstation,requestData,onSetWorkstationSuccess,onSetWorkstationFailure);
+    $scope.invokeApi(RVWorkstationSrv.setWorkstation, requestData, onSetWorkstationSuccess, onSetWorkstationFailure);
 
    };
 
@@ -233,7 +233,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 
         var params = {};
         params.rover_device_id = $scope.getDeviceId();
-        $scope.invokeApi(RVWorkstationSrv.setWorkstation,params,onSetWorkstationSuccess, onSetWorkstationFailure);
+        $scope.invokeApi(RVWorkstationSrv.setWorkstation, params, onSetWorkstationSuccess, onSetWorkstationFailure);
 
      };
 
@@ -241,7 +241,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
      requestData.rover_device_id =  $scope.getDeviceId();
      requestData.auto_generate_workstation = true;
 
-     $scope.invokeApi(RVWorkstationSrv.createWorkstation,requestData,onSaveWorkstationSuccess);
+     $scope.invokeApi(RVWorkstationSrv.createWorkstation, requestData, onSaveWorkstationSuccess);
 
    };
 

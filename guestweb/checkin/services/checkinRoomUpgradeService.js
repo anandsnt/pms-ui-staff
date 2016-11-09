@@ -1,5 +1,5 @@
 	(function() {
-		var checkinRoomUpgradeService = function($q,$http,$rootScope) {
+		var checkinRoomUpgradeService = function($q, $http, $rootScope) {
 
 			var responseData = {};
 
@@ -10,7 +10,7 @@
 		var url = '/guest_web/upgrade_room.json';
 		data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
 		data.url_suffix = (typeof $rootScope.urlSuffix !=="undefined") ? $rootScope.urlSuffix : "";
-		$http.post(url,data).success(function(response) {
+		$http.post(url, data).success(function(response) {
 			this.responseData = response;
 			deferred.resolve(this.responseData);
 		}.bind(this))
@@ -27,7 +27,7 @@
 };
 
 var dependencies = [
-'$q','$http','$rootScope',
+'$q', '$http', '$rootScope',
 checkinRoomUpgradeService
 ];
 

@@ -1,8 +1,8 @@
 /**
  * Checkin -Auto checkin Controller
  */
-sntGuestWeb.controller('gwAutoCheckinController', ['$scope','$controller', 'GwWebSrv', 'GwCheckinSrv','$rootScope',
-	function($scope, $controller, GwWebSrv,GwCheckinSrv,$rootScope) {
+sntGuestWeb.controller('gwAutoCheckinController', ['$scope', '$controller', 'GwWebSrv', 'GwCheckinSrv', '$rootScope',
+	function($scope, $controller, GwWebSrv, GwCheckinSrv, $rootScope) {
 
 		$controller('BaseController', {
 			$scope: $scope

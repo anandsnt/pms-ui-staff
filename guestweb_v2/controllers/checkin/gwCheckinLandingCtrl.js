@@ -30,7 +30,7 @@ sntGuestWeb.controller('gwCheckinLandingCtrlController', ['$scope', '$state', '$
 		$scope.dateChoosen = function() {
 			$scope.departureDate = ($filter('date')($scope.date, GwWebSrv.zestwebData.dateFormat));
 			dateToSend = dclone($scope.date, []);
-			dateToSend = ($filter('date')(dateToSend,'MM-dd-yyyy'));
+			dateToSend = ($filter('date')(dateToSend, 'MM-dd-yyyy'));
 			$scope.closeCalender();
 		};
 

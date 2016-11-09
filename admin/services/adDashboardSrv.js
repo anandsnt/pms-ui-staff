@@ -1,4 +1,4 @@
-admin.service('ADDashboardSrv',['$http', '$q', function($http, $q) {
+admin.service('ADDashboardSrv', ['$http', '$q', function($http, $q) {
 
 	var _this = this;
 

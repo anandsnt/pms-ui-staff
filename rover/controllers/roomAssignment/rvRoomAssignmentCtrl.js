@@ -1,5 +1,5 @@
 
-sntRover.controller('RVroomAssignmentController',[
+sntRover.controller('RVroomAssignmentController', [
 	'$scope',
 	'$rootScope',
 	'$state',
@@ -540,7 +540,7 @@ sntRover.controller('RVroomAssignmentController',[
         if (!$rootScope.reservationRoomWatch) {//alternative to $destroy, this is an init-once method
             $rootScope.reservationRoomWatch = 1;
 
-            $rootScope.$on('putGuestInQueue',function() {
+            $rootScope.$on('putGuestInQueue', function() {
                 $scope.goToStayCardFromAddToQueue = true;
                 $rootScope.goToStayCardFromAddToQueue = true;
 
@@ -607,7 +607,7 @@ sntRover.controller('RVroomAssignmentController',[
 	* function to go back to reservation details
 	*/
 	$scope.backToStayCard = function() {
-		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num ,isrefresh: false, isOnlineRoomMove: isOnlineRoomMove, isKeySystemAvailable: isKeySystemAvailable});
+		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num, isrefresh: false, isOnlineRoomMove: isOnlineRoomMove, isKeySystemAvailable: isKeySystemAvailable});
 	};
 	/**
 	* function to show and hide the filters view

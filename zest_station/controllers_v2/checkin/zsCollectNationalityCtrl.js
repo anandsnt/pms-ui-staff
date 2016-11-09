@@ -59,8 +59,8 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 					$timeout(function() {
 						$scope.showOnScreenKeyboard('country-selector');
 						$scope.focusInputField('country-selector');
-					},0);
-				},0);
+					}, 0);
+				}, 0);
 			}
 
 		};

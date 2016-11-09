@@ -1,10 +1,10 @@
 (function() {
-	var preCheckinStayDetailsController = function($scope, preCheckinSrv,$rootScope,$state,$modal) {
+	var preCheckinStayDetailsController = function($scope, preCheckinSrv, $rootScope, $state, $modal) {
 
 	var init = function() {
 
-       $scope.hours = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-       $scope.minutes = ["00","15","30","45"];
+       $scope.hours = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+       $scope.minutes = ["00", "15", "30", "45"];
 
 	   $scope.errorOpts = {
 	      backdrop: true,
@@ -44,7 +44,7 @@
 
 		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {
 					$state.go('preCheckinStatus');
-				},function() {
+				}, function() {
 					$scope.netWorkError = true;
 					$scope.isLoading = false;
 			});
@@ -54,7 +54,7 @@
 
 var dependencies = [
 '$scope',
-'preCheckinSrv','$rootScope','$state','$modal',
+'preCheckinSrv', '$rootScope', '$state', '$modal',
 preCheckinStayDetailsController
 ];
 

@@ -60,7 +60,7 @@ admin.service('ADRatesAddonsSrv', [
 			ADBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
-				},function(errorMessage) {
+				}, function(errorMessage) {
 					deferred.reject(errorMessage);
 				});
 

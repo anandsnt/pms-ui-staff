@@ -15,7 +15,7 @@ sntRover.controller('RVReservationPackageController',
 	var successCallBack = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.packageData = data;
-		angular.forEach($scope.packageData.existing_packages,function(item, index) {
+		angular.forEach($scope.packageData.existing_packages, function(item, index) {
            item.totalAmount = (item.addon_count)*(item.amount);
   		});
 	};
@@ -75,7 +75,7 @@ sntRover.controller('RVReservationPackageController',
 	};
 
 	//Get addon count
-        $scope.getAddonCount = function(amountType, postType,postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
+        $scope.getAddonCount = function(amountType, postType, postingRythm, numAdults, numChildren, numNights, chargeFullWeeksOnly, quantity) {
             if(!postingRythm) {
                 if(postType ==='WEEK') {
                     postingRythm = 7;

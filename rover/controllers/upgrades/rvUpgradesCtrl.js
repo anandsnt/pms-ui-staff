@@ -203,7 +203,7 @@ angular.module('sntRover').controller('RVUpgradesController',
 			var selectedListItem 	= successCallBackParams.selectedListItem,
 				resrvCardData 		= $scope.reservationData.reservation_card;
 
-			_.extend( $scope.reservationData.reservation_card ,
+			_.extend( $scope.reservationData.reservation_card,
 			{
 				room_number: 			selectedListItem.upgrade_room_number,
 				room_type_description: 	selectedListItem.upgrade_room_type_name,
@@ -354,7 +354,7 @@ angular.module('sntRover').controller('RVUpgradesController',
                 if (!$rootScope.reservationUpgradeWatch) {//alternative to $destroy, this is an init-once method
                     $rootScope.reservationUpgradeWatch = 1;
 
-                    $rootScope.$on('putGuestInQueue',function() {
+                    $rootScope.$on('putGuestInQueue', function() {
                         if ($rootScope.advanced_queue_flow_enabled) {
                             $scope.putGuestInQueue = true;
                         } else {

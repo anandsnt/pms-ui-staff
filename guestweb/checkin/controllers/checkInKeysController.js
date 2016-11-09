@@ -5,7 +5,7 @@
 	display the QR code ,else the text enterd in room key delivery in the admin setting will be shown as text.
 */
 (function() {
-	var checkInKeysController = function($scope,$rootScope,$http,$location,checkinDetailsService,checkinKeysService,$state) {
+	var checkInKeysController = function($scope, $rootScope, $http, $location, checkinDetailsService, checkinKeysService, $state) {
 
 	$scope.pageValid = false;
 	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" :$rootScope.userEmail;
@@ -25,7 +25,7 @@
 	}
 	//CICO-34045 we should allow the user to enter their email address if it is not on the database
 	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && originsNeedEmailEntering.indexOf($rootScope.application) > -1) {
-		$state.go('emailAddition',{'isFrom':'checkinNow'});// if user has not attached an email
+		$state.go('emailAddition', {'isFrom':'checkinNow'});// if user has not attached an email
 	}
 	else if($rootScope.isCheckedin) {
 		$state.go('checkinSuccess');
@@ -43,7 +43,7 @@
 	$scope.reservationData = checkinDetailsService.getResponseData();
 	var url = '/guest_web/checkin.json';
 	var data = {'reservation_id':$rootScope.reservationID};
-	checkinKeysService.checkin(url,data).then(function(response) {
+	checkinKeysService.checkin(url, data).then(function(response) {
 		if(response.status === "failure") {
 			$rootScope.netWorkError  = true;
 		}
@@ -53,7 +53,7 @@
 		}
 		$scope.isPosting = false;
 
-	},function() {
+	}, function() {
 		$scope.isPosting = false;
 		$rootScope.netWorkError  = true;     
 	});
@@ -63,7 +63,7 @@
 };
 
 var dependencies = [
-'$scope','$rootScope','$http','$location','checkinDetailsService','checkinKeysService','$state',
+'$scope', '$rootScope', '$http', '$location', 'checkinDetailsService', 'checkinKeysService', '$state',
 checkInKeysController
 ];
 

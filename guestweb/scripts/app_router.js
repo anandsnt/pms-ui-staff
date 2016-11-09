@@ -52,7 +52,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 }
 
 
-                return sntGuestWebSrv.fetchHotelDetailsFromUrl(apiUrl,hotel_identifier);
+                return sntGuestWebSrv.fetchHotelDetailsFromUrl(apiUrl, hotel_identifier);
 
             }],
             jsThemeList: ['sntGuestWebSrv', function(sntGuestWebSrv) {

@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', 'RVBillingInfoUtilSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog, RVBillingInfoUtilSrv) {
+sntRover.controller('rvBillingInfoCardsMainCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', 'RVBillingInfoUtilSrv', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog, RVBillingInfoUtilSrv) {
 
     BaseCtrl.call(this, $scope);
 
@@ -154,7 +154,7 @@ sntRover.controller('rvBillingInfoCardsMainCtrl',['$scope','$rootScope','$filter
 
         var errorCallback = function(errorMessage) {
             $scope.$emit('hideLoader');
-            $scope.$emit('displayErrorMessage',errorMessage);
+            $scope.$emit('displayErrorMessage', errorMessage);
         };
 
         var data = {};

@@ -97,8 +97,8 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 roomTypes : function(RVHkRoomStatusSrv, mappingList) {
                     return RVHkRoomStatusSrv.fetchRoomTypes();
                 }
-            } ,
-             onEnter: function (ngDialog,$stateParams, mappingList, dashBoarddata, jsMappings) {
+            },
+             onEnter: function (ngDialog, $stateParams, mappingList, dashBoarddata, jsMappings) {
 
                if($stateParams.type === 'changeBussinessDate') {
                     jsMappings.fetchAssets(['endofday']).then(function() {

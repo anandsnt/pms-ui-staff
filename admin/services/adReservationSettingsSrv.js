@@ -1,4 +1,4 @@
-admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv', function($q, ADBaseWebSrvV2, ADBaseWebSrv) {
+admin.service('ADReservationSettingsSrv', ['$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv', function($q, ADBaseWebSrvV2, ADBaseWebSrv) {
 
 
    /**
@@ -11,7 +11,7 @@ admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv'
 		var url = '/api/hotel_settings/show_hotel_reservation_settings';
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -25,9 +25,9 @@ admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv'
 
 		var deferred = $q.defer();
 		var url = '/api/hotel_settings/save_hotel_reservation_settings';
-		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -42,7 +42,7 @@ admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv'
         var url = '/api/hotel_settings/can_disable_suite ';
         ADBaseWebSrv.getJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;

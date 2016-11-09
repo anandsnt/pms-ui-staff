@@ -22,7 +22,7 @@ admin.controller('ADToolsCtrl',
             $scope.currentClickedElement = -1;
             $scope.isAddMode = false;
         };
-        $scope.invokeApi(ADToolsSrv.fetch, {} , successCallbackFetch);
+        $scope.invokeApi(ADToolsSrv.fetch, {}, successCallbackFetch);
     };
     //To list tools
     $scope.listTools();
@@ -41,7 +41,7 @@ admin.controller('ADToolsCtrl',
             $scope.$emit('hideLoader');
         };
         var data = {"id":id };
-        $scope.invokeApi(ADToolsSrv.getToolsDetails, data , successCallbackRender);
+        $scope.invokeApi(ADToolsSrv.getToolsDetails, data, successCallbackRender);
     };
    /*
     * Render add screen
@@ -80,9 +80,9 @@ admin.controller('ADToolsCtrl',
 
         };
         if($scope.isAddMode) {
-            $scope.invokeApi(ADToolsSrv.saveTools, $scope.toolsData , successCallbackSave);
+            $scope.invokeApi(ADToolsSrv.saveTools, $scope.toolsData, successCallbackSave);
         } else {
-            $scope.invokeApi(ADToolsSrv.updateTool, $scope.toolsData , successCallbackSave);
+            $scope.invokeApi(ADToolsSrv.updateTool, $scope.toolsData, successCallbackSave);
         }
     };
    /*
@@ -100,7 +100,7 @@ admin.controller('ADToolsCtrl',
             $scope.$emit('hideLoader');
         };
         inventory.is_auto_sync = !inventory.is_auto_sync;
-        $scope.invokeApi(ADToolsSrv.updateTool, inventory , successCallbackUpdateInventory);
+        $scope.invokeApi(ADToolsSrv.updateTool, inventory, successCallbackUpdateInventory);
     };
 }]);
 

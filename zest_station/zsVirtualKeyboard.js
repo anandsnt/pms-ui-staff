@@ -283,7 +283,7 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
         var beforeCloseVal = $(elementObj).val();
         setTimeout(function() {
           $(elementObj).autocomplete('search', beforeCloseVal);
-        },0);
+        }, 0);
       }
       applyKeyboardInput();
     },

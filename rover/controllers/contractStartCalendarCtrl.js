@@ -1,5 +1,5 @@
 
-sntRover.controller('contractStartCalendarCtrl',['$rootScope','$scope','dateFilter','ngDialog',function($rootScope,$scope,dateFilter,ngDialog) {
+sntRover.controller('contractStartCalendarCtrl', ['$rootScope', '$scope', 'dateFilter', 'ngDialog', function($rootScope, $scope, dateFilter, ngDialog) {
 	$scope.setUpData = function() {
 	    $scope.isDateSelected = false;
 	    if($scope.contractList.isAddMode) {

@@ -1,4 +1,4 @@
-admin.controller('ADServiceProviderUserDetailsCtrl',['$scope','$rootScope', '$q' ,'$state','$stateParams', 'ADServiceProviderSrv', 'ngTableParams','$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADServiceProviderSrv, ngTableParams, $filter) {
+admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$q', '$state', '$stateParams', 'ADServiceProviderSrv', 'ngTableParams', '$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADServiceProviderSrv, ngTableParams, $filter) {
 	BaseCtrl.call(this, $scope);	
 
 	var init = function() {
@@ -23,7 +23,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl',['$scope','$rootScope', '$q'
 			if(data.status === "failure") {
 				$scope.errorMessage = data.errors;
 			};
-			$scope.userDetails = Object.assign($scope.userDetails,data);
+			$scope.userDetails = Object.assign($scope.userDetails, data);
 			$scope.userDetails.previewImage = $scope.userDetails.user_photo;
 			delete $scope.userDetails.user_photo;			
 			$scope.$emit('hideLoader');
@@ -79,7 +79,7 @@ admin.controller('ADServiceProviderUserDetailsCtrl',['$scope','$rootScope', '$q'
 			if(data.status ==="failure") {
 				$scope.errorMessage = data.errors;
 			}else{				
-				$state.go('admin.serviceproviderusers', {'id':$scope.userDetails.service_provider_id,'name':$scope.serviceProviderName});
+				$state.go('admin.serviceproviderusers', {'id':$scope.userDetails.service_provider_id, 'name':$scope.serviceProviderName});
 			};			
 			$scope.$emit('hideLoader');
 		};

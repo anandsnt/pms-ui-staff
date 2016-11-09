@@ -1,4 +1,4 @@
-sntRover.controller('RVEarlyCheckoutCtrl',['$rootScope', '$scope', 'ngDialog',  function($rootScope, $scope, ngDialog) {
+sntRover.controller('RVEarlyCheckoutCtrl', ['$rootScope', '$scope', 'ngDialog',  function($rootScope, $scope, ngDialog) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.okButtonClicked = function() {

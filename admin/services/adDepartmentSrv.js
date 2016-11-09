@@ -1,4 +1,4 @@
-admin.service('ADDepartmentSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
+admin.service('ADDepartmentSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
    /**
     * To fetch the list of users
     * @return {object} users list json
@@ -10,7 +10,7 @@ admin.service('ADDepartmentSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -26,7 +26,7 @@ admin.service('ADDepartmentSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -43,7 +43,7 @@ admin.service('ADDepartmentSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -60,7 +60,7 @@ admin.service('ADDepartmentSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -76,7 +76,7 @@ admin.service('ADDepartmentSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 
 		ADBaseWebSrv.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

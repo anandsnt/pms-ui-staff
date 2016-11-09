@@ -1,4 +1,4 @@
-admin.controller('ADEmvTerminalDetailsCtrl', ['$scope','$rootScope','ADEmvTerminalsSrv', '$state','$stateParams','$timeout', function($scope, $rootScope, ADEmvTerminalsSrv, $state, $stateParams, $timeout) {
+admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerminalsSrv', '$state', '$stateParams', '$timeout', function($scope, $rootScope, ADEmvTerminalsSrv, $state, $stateParams, $timeout) {
 	/*
 	* Controller class for Room List
 	*/

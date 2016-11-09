@@ -1,4 +1,4 @@
-admin.controller('adEndDatePickerController',['$scope','ngDialog','$rootScope','$filter','$rootScope',function($scope,ngDialog,$rootScope,$filter,$rootScope) {
+admin.controller('adEndDatePickerController', ['$scope', 'ngDialog', '$rootScope', '$filter', '$rootScope', function($scope, ngDialog, $rootScope, $filter, $rootScope) {
 
 //if no date is selected .Make bussiness date as default CICO-8703
 if(!$scope.rateData.end_date) {

@@ -16,7 +16,7 @@ function($scope, $rootScope, $state,  $stateParams, ADICareServicesSrv) {
     * Render icare service screen
     */
 	$scope.renderIcareServices = function() {
-		$scope.invokeApi(ADICareServicesSrv.getIcareServices, {} , $scope.successCallbackRender);
+		$scope.invokeApi(ADICareServicesSrv.getIcareServices, {}, $scope.successCallbackRender);
 	};
 	//To render screen
 	$scope.renderIcareServices();
@@ -37,7 +37,7 @@ function($scope, $rootScope, $state,  $stateParams, ADICareServicesSrv) {
     	var unwantedKeys = ["charge_codes"];
         var newData = dclone($scope.icare, unwantedKeys);
     	var data = { "icare" : newData };
-    	$scope.invokeApi(ADICareServicesSrv.saveIcareServices, data , successCallbackSave, failureCallbackSave);
+    	$scope.invokeApi(ADICareServicesSrv.saveIcareServices, data, successCallbackSave, failureCallbackSave);
 
     };
 

@@ -1,4 +1,4 @@
-admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state','$filter','$stateParams',function($scope,adZestAddonSetupSrv,$state,$filter,$stateParams) {
+admin.controller('adZestAddonSetupCtrl', ['$scope', 'adZestAddonSetupSrv', '$state', '$filter', '$stateParams', function($scope, adZestAddonSetupSrv, $state, $filter, $stateParams) {
 
  /*
   * To retrieve previous state
@@ -29,7 +29,7 @@ admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state'
         $scope.addonSetup = data;
         startWatching();
   };
-  $scope.invokeApi(adZestAddonSetupSrv.fetchSetup, {},fetchAddonSetupSuccessCallback);
+  $scope.invokeApi(adZestAddonSetupSrv.fetchSetup, {}, fetchAddonSetupSuccessCallback);
 
   };
   $scope.fetchAddonSetup();
@@ -43,7 +43,7 @@ admin.controller('adZestAddonSetupCtrl',['$scope','adZestAddonSetupSrv','$state'
 
   };
 
-  $scope.invokeApi(adZestAddonSetupSrv.saveSetup, $scope.addonSetup,saveAddonSetupSuccessCallback);
+  $scope.invokeApi(adZestAddonSetupSrv.saveSetup, $scope.addonSetup, saveAddonSetupSuccessCallback);
 
   };
 

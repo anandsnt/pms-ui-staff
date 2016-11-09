@@ -1,4 +1,4 @@
-admin.service('ADzestWebGlobalSettingsSrv',['$q', 'ADBaseWebSrvV2', function($q, ADBaseWebSrvV2) {
+admin.service('ADzestWebGlobalSettingsSrv', ['$q', 'ADBaseWebSrvV2', function($q, ADBaseWebSrvV2) {
 
    /*
 	* service class for zest web global settings
@@ -14,7 +14,7 @@ admin.service('ADzestWebGlobalSettingsSrv',['$q', 'ADBaseWebSrvV2', function($q,
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -30,7 +30,7 @@ admin.service('ADzestWebGlobalSettingsSrv',['$q', 'ADBaseWebSrvV2', function($q,
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;

@@ -1,6 +1,6 @@
 sntRover.controller('rvReservationCardHKController',
-    ['$scope', '$filter','$stateParams', '$rootScope', '$state', '$timeout', 'rvReservationHouseKeepingSrv',
-    function($scope, $filter,$stateParams, $rootScope , $state, $timeout, rvReservationHouseKeepingSrv) {
+    ['$scope', '$filter', '$stateParams', '$rootScope', '$state', '$timeout', 'rvReservationHouseKeepingSrv',
+    function($scope, $filter, $stateParams, $rootScope, $state, $timeout, rvReservationHouseKeepingSrv) {
 
         BaseCtrl.call(this, $scope);
 

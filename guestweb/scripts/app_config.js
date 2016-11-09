@@ -1,6 +1,6 @@
 // to be deleted
 
-sntGuestWeb.factory('authInterceptor', function ($rootScope, $q,$location) {
+sntGuestWeb.factory('authInterceptor', function ($rootScope, $q, $location) {
 	return {
 		request: function (config) {
 			config.headers = config.headers || {};

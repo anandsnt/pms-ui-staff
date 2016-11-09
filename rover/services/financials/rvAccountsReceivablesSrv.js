@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVAccountsReceivablesSrv',['$http', '$q', 'BaseWebSrvV2', function($http, $q, BaseWebSrvV2) {
+angular.module('sntRover').service('RVAccountsReceivablesSrv', ['$http', '$q', 'BaseWebSrvV2', function($http, $q, BaseWebSrvV2) {
 
     var that = this;
     /*
@@ -10,7 +10,7 @@ angular.module('sntRover').service('RVAccountsReceivablesSrv',['$http', '$q', 'B
     	var deferred = $q.defer();
     	var url = "/api/accounts/ar_overview";
 
-        BaseWebSrvV2.getJSON(url,params).then(function (data) {
+        BaseWebSrvV2.getJSON(url, params).then(function (data) {
 			deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);

@@ -12,7 +12,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         };
         $scope.getSubtask = function(task) {
             var subtask = [];
-            subtask = _.filter(task,function(item) {
+            subtask = _.filter(task, function(item) {
                         return item.is_default == true;
                     });
           return subtask;
@@ -29,7 +29,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
                     var defaultTask = null;
                     if(!currentSelection && !$scope.is_edit) {
-                        defaultTask = _.find(workType.tasks,{
+                        defaultTask = _.find(workType.tasks, {
                             is_default : true
                         });
                     }
@@ -168,14 +168,14 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     selectedChargeCodes = [];
 
                 if( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ) {
-                    angular.forEach( chargeCodes ,function( item, index) {
+                    angular.forEach( chargeCodes, function( item, index) {
                         if( item.is_checked ) {
                             selectedChargeCodes.push(item.id);
                         }
                     });
                 }
 
-                var commissionData = dclone($scope.rateData.commission_details,["charge_codes"]);
+                var commissionData = dclone($scope.rateData.commission_details, ["charge_codes"]);
                 commissionData.selected_commission_charge_code_ids = selectedChargeCodes;
             }
             return commissionData;

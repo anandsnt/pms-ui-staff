@@ -35,7 +35,7 @@ var GlobalApp = function() {
                     that.fetchFailedOfCordovaPlugins();
                 }
             };
-            xhr.open("GET",url,true);
+            xhr.open("GET", url, true);
 
             xhr.send(); //TODO: Loading indicator
 

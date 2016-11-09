@@ -1,4 +1,4 @@
-sntRover.controller('RVValidateEmailCtrl',['$scope', '$state', 'ngDialog', 'RVContactInfoSrv',  function( $scope, $state, ngDialog, RVContactInfoSrv) {
+sntRover.controller('RVValidateEmailCtrl', ['$scope', '$state', 'ngDialog', 'RVContactInfoSrv',  function( $scope, $state, ngDialog, RVContactInfoSrv) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.saveData = {};

@@ -1,5 +1,5 @@
 (function() {
-	var guestDetailsService = function($q,$http,$rootScope) {
+	var guestDetailsService = function($q, $http, $rootScope) {
 
 	var responseData = {};
 
@@ -7,7 +7,7 @@
 		var deferred = $q.defer();
 		var url = '/guest_web/guest_details/'+$rootScope.reservationID+'.json';
 		data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
-		$http.put(url,data).success(function(response) {
+		$http.put(url, data).success(function(response) {
 			this.responseData = response;
 			deferred.resolve(this.responseData);
 		}.bind(this))
@@ -46,7 +46,7 @@
 	var fetchSortedCountryList = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/countries/sorted_list.json';
-		$http.get(url,{params: data}).success(function(response) {
+		$http.get(url, {params: data}).success(function(response) {
 			if(response.status === "success") {
 				deferred.resolve(response.data);
 			}
@@ -64,7 +64,7 @@
 	var postGuestBirthDate = function(data) {
 		var deferred = $q.defer();
 		var url = ' /api/guest_details/'+$rootScope.primaryGuestId+'.json';
-		$http.put(url,data).success(function(response) {
+		$http.put(url, data).success(function(response) {
 			deferred.resolve(response);
 		}.bind(this))
 		.error(function() {
@@ -90,7 +90,7 @@
 		var deferred = $q.defer();
 		var url = '/guest_web/home/fetch_hotel_time.json';
 		parameters = {'reservation_id':$rootScope.reservationID};
-		$http.get(url,{
+		$http.get(url, {
 			params: parameters
 		}).success(function(response) {
 			deferred.resolve(response);
@@ -117,7 +117,7 @@
 	var submitPayment = function(data) {
 		var deferred = $q.defer();
 		var url = '/guest_web/reservations/'+$rootScope.reservationID+'/submit_payment';
-		$http.post(url,data).success(function(response) {
+		$http.post(url, data).success(function(response) {
 			this.responseData = response;
 			deferred.resolve(this.responseData);
 		}.bind(this))
@@ -144,7 +144,7 @@
 	var submitSurvey = function(data) {
 		var deferred = $q.defer();
 		var url = '/guest_web/zest_web_questions/'+$rootScope.reservationID+'.json';
-		$http.put(url,data).success(function(response) {
+		$http.put(url, data).success(function(response) {
 			this.responseData = response;
 			deferred.resolve(this.responseData);
 		}.bind(this))
@@ -172,7 +172,7 @@
 };
 
 var dependencies = [
-'$q','$http','$rootScope',
+'$q', '$http', '$rootScope',
 guestDetailsService
 ];
 

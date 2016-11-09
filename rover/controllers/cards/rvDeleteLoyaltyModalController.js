@@ -1,4 +1,4 @@
-sntRover.controller('rvDeleteLoyaltyModalController',['$scope','$rootScope','$filter','RVGuestCardLoyaltySrv', 'ngDialog', function($scope, $rootScope,$filter, RVGuestCardLoyaltySrv, ngDialog) {
+sntRover.controller('rvDeleteLoyaltyModalController', ['$scope', '$rootScope', '$filter', 'RVGuestCardLoyaltySrv', 'ngDialog', function($scope, $rootScope, $filter, RVGuestCardLoyaltySrv, ngDialog) {
 	BaseCtrl.call(this, $scope);
 
 
@@ -21,7 +21,7 @@ sntRover.controller('rvDeleteLoyaltyModalController',['$scope','$rootScope','$fi
 				$scope.dimissLoaderAndDialog();
 				$scope.$emit('loyaltyDeletionError', error);
 			};
-			$scope.invokeApi(RVGuestCardLoyaltySrv.deleteLoyalty,$scope.loaytyID , successCallbackDeleteLoyalty, errorCallbackDeleteLoyalty);
+			$scope.invokeApi(RVGuestCardLoyaltySrv.deleteLoyalty, $scope.loaytyID, successCallbackDeleteLoyalty, errorCallbackDeleteLoyalty);
 	};
 
 	$scope.validate = function() {

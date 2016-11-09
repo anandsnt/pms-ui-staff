@@ -336,7 +336,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
 
         this.refreshWorkStationInitialized = function(params) {
-            console.log('::refreshWorkStationInitialized:: ',params)
+            console.log('::refreshWorkStationInitialized:: ', params)
             var deferred = $q.defer(),
                 url = '/api/workstations/' + params.id;
 

@@ -348,7 +348,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				$timeout(function() {
 					$scope.mode = 'LAST_NAME_ENTRY';
 					$scope.focusInputField('last-name');
-				},100);
+				}, 100);
 				
 			} else {
 				$scope.mode = 'LAST_NAME_ENTRY';

@@ -1,4 +1,4 @@
-admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state','ngTableParams','$filter','$stateParams','$timeout',function($scope,adCheckinCheckoutSrv,$state,ngTableParams,$filter,$stateParams, $timeout) {
+admin.controller('ADCheckinEmailCtrl', ['$scope', 'adCheckinCheckoutSrv', '$state', 'ngTableParams', '$filter', '$stateParams', '$timeout', function($scope, adCheckinCheckoutSrv, $state, ngTableParams, $filter, $stateParams, $timeout) {
 
  /*
   * To retrieve previous state
@@ -15,7 +15,7 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
       $scope.emailDatas = {};
       $timeout(function() {
           $scope.loadTable();
-      },20);
+      }, 20);
   };
 
   $scope.init();
@@ -77,7 +77,7 @@ $scope.loadTable = function() {
     if($scope.emailDatas.length ===0) {
       return false;
     }
-     angular.forEach($scope.emailDatas,function(item, index) {
+     angular.forEach($scope.emailDatas, function(item, index) {
            if(item.is_selected === true) {
              selectedCount++;
              $scope.disableSave = false;
@@ -94,8 +94,8 @@ $scope.loadTable = function() {
   * To watch if all options are selcted
   *
   */
-  $scope.$watch("selectAllOption", function(o,n) {
-   angular.forEach($scope.emailDatas,function(item, index) {
+  $scope.$watch("selectAllOption", function(o, n) {
+   angular.forEach($scope.emailDatas, function(item, index) {
            item.is_selected = $scope.selectAllOption;
   });
   });
@@ -111,7 +111,7 @@ $scope.loadTable = function() {
 
    var selectedStatus =  $scope.isAllOptionsSelected() ? false : true;
 
-      angular.forEach($scope.emailDatas,function(item, index) {
+      angular.forEach($scope.emailDatas, function(item, index) {
         item.is_selected =selectedStatus;
       });
 
@@ -124,7 +124,7 @@ $scope.loadTable = function() {
 
   $scope.sendMailClicked = function() {
   	reservations = [];
-  	angular.forEach($scope.emailDatas,function(item, index) {
+  	angular.forEach($scope.emailDatas, function(item, index) {
        if(item.is_selected) {
          reservations.push(item.reservation_id);
        }
@@ -134,7 +134,7 @@ $scope.loadTable = function() {
         $scope.$emit('hideLoader');
         $scope.successMessage = data.message;
     };
-    $scope.invokeApi(adCheckinCheckoutSrv.sendMail,{'id': 'checkin' ,'data': emailSendingData},sendMailClikedSuccessCallback);
+    $scope.invokeApi(adCheckinCheckoutSrv.sendMail, {'id': 'checkin', 'data': emailSendingData}, sendMailClikedSuccessCallback);
 
   };
 

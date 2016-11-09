@@ -1,4 +1,4 @@
-admin.controller('ADItemDetailsCtrl', ['$scope','ADItemSrv', '$state','$stateParams', function($scope, ADItemSrv, $state, $stateParams) {
+admin.controller('ADItemDetailsCtrl', ['$scope', 'ADItemSrv', '$state', '$stateParams', function($scope, ADItemSrv, $state, $stateParams) {
 	/*
 	* Controller class for Room List
 	*/

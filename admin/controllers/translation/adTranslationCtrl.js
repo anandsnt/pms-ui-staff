@@ -1,4 +1,4 @@
-admin.controller('ADTranslationCtrl',['$scope','$rootScope','$state','ADTranslationSrv','ngTableParams','$filter','availableLanguages','menuDetails', function($scope, $rootScope,$state,ADTranslationSrv, ngTableParams, $filter, availableLanguages, menuDetails) {
+admin.controller('ADTranslationCtrl', ['$scope', '$rootScope', '$state', 'ADTranslationSrv', 'ngTableParams', '$filter', 'availableLanguages', 'menuDetails', function($scope, $rootScope, $state, ADTranslationSrv, ngTableParams, $filter, availableLanguages, menuDetails) {
 
     BaseCtrl.call(this, $scope);
 

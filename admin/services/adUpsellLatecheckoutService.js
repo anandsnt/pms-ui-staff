@@ -1,4 +1,4 @@
-admin.service('adUpsellLatecheckoutService',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
+admin.service('adUpsellLatecheckoutService', ['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
    /*
     * To fetch late checkout upsell details
     * @return {object}late checkout upsell details
@@ -11,15 +11,15 @@ admin.service('adUpsellLatecheckoutService',['$http', '$q', 'ADBaseWebSrv', func
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			data.room_types_list = [];
-			var list = dclone(data.room_types,[]);
-			angular.forEach(data.room_types,function(item, index) {
+			var list = dclone(data.room_types, []);
+			angular.forEach(data.room_types, function(item, index) {
 				var obj = {};
 	       		obj.value = item.id;
 	       		obj.name  = item.name;
 	       		data.room_types_list.push(obj);
        		});
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -35,9 +35,9 @@ admin.service('adUpsellLatecheckoutService',['$http', '$q', 'ADBaseWebSrv', func
 		var deferred = $q.defer();
 		var url = '/admin/hotel/update_late_checkout_setup';
 
-		ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
+		ADBaseWebSrv.postJSON(url, updateData).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

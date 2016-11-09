@@ -485,7 +485,7 @@ sntRover.controller('reservationActionsController', [
                             setTimeout(function() {
                                 //then prompt for keys
                                 $rootScope.$broadcast('clickedIconKeyFromQueue');//signals rvReservationRoomStatusCtrl to init the keys popup
-                            },500);
+                            }, 500);
                         }
 		};
 

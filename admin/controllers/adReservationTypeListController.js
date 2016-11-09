@@ -10,7 +10,7 @@ function($scope, $rootScope, ADReservationTypesSrv) {
 			$scope.$emit('hideLoader');
 			$scope.data = data.reservation_types;
 		};
-	   $scope.invokeApi(ADReservationTypesSrv.fetch, {} , successCallbackReservationTypes);
+	   $scope.invokeApi(ADReservationTypesSrv.fetch, {}, successCallbackReservationTypes);
 	};
 	$scope.listReservationTypes();
 	$scope.saveReservationType = function(index) {

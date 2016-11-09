@@ -1,4 +1,4 @@
-admin.controller('ADEmvTerminalCtrl', ['$scope','$rootScope', 'ADEmvTerminalsSrv', 'ngTableParams', '$filter','$timeout', function($scope, $rootScope, ADEmvTerminalsSrv, ngTableParams, $filter, $timeout) {
+admin.controller('ADEmvTerminalCtrl', ['$scope', '$rootScope', 'ADEmvTerminalsSrv', 'ngTableParams', '$filter', '$timeout', function($scope, $rootScope, ADEmvTerminalsSrv, ngTableParams, $filter, $timeout) {
    /*
 	* Controller class for Room List
 	*/

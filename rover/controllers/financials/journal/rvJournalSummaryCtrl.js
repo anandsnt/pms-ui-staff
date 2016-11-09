@@ -1,14 +1,14 @@
-sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
+sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJournalSrv', '$timeout', function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
     $scope.perPage = 50;
 
-    $scope.setScroller('summary_content',{});
+    $scope.setScroller('summary_content', {});
     var refreshSummaryScroller = function () {
         setTimeout(function() {$scope.refreshScroller('summary_content');}, 500);
     };
 
-    $rootScope.$on('REFRESHSUMMARYCONTENT',function () {
+    $rootScope.$on('REFRESHSUMMARYCONTENT', function () {
         refreshSummaryScroller();
     });
 
@@ -17,7 +17,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
     });
 
     // CICO-28060 : Update dates for summary upon changing from-date from Revenue or Payments 
-    $rootScope.$on('REFRESH_SUMMARY_DATA',function( event, date ) {
+    $rootScope.$on('REFRESH_SUMMARY_DATA', function( event, date ) {
         $scope.data.summaryDate = date;
         initSummaryData();
     });
@@ -75,9 +75,9 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
             $scope.data.summaryData = responce.data;
 
             // Initializing objetcs for DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE sections.
-            $scope.data.summaryData.deposit_balance = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
-            $scope.data.summaryData.guest_balance   = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
-            $scope.data.summaryData.ar_balance      = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
+            $scope.data.summaryData.deposit_balance = { 'active' : false, 'page_no' : 1, 'start' : 1, 'end' : 1, 'nextAction' : false, 'prevAction' : false };
+            $scope.data.summaryData.guest_balance   = { 'active' : false, 'page_no' : 1, 'start' : 1, 'end' : 1, 'nextAction' : false, 'prevAction' : false };
+            $scope.data.summaryData.ar_balance      = { 'active' : false, 'page_no' : 1, 'start' : 1, 'end' : 1, 'nextAction' : false, 'prevAction' : false };
 
             $scope.errorMessage = "";
             refreshSummaryScroller();
@@ -91,7 +91,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
     };
 
     // To handle date updation on summary tab
-    $rootScope.$on('summaryDateChanged',function() {
+    $rootScope.$on('summaryDateChanged', function() {
         initSummaryData();
         // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
         $rootScope.$broadcast('REFRESH_REVENUE_PAYMENT_DATA', {"date":$scope.data.summaryDate, "origin" :"SUMMARY_DATE_CHANGED"});
@@ -101,7 +101,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope','$rootScope', 'RVJou
         @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
         @return {object}
      */
-    var fetchBalanceDetails = function( balance_type , isFromPagination ) {
+    var fetchBalanceDetails = function( balance_type, isFromPagination ) {
 
         var summaryItem = getSummaryItemByBalanceType( balance_type );
 

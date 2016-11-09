@@ -1808,7 +1808,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', [
 
 				//Go through the existingReservationAddons and retain those of which arent having the new rate
 				//in their excluded list. Leave the rest
-				_.each(existingReservationAddons,function(addon) {
+				_.each(existingReservationAddons, function(addon) {
 					if(!addon.allow_rate_exclusion || (addon.allow_rate_exclusion && _.indexOf(addon.excluded_rate_ids, currentRate) < 0)) {
 						firstRoom.addons.push(addon);
 					}else{

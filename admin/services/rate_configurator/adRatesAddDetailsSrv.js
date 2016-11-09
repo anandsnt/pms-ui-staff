@@ -199,7 +199,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
         this.validateEndDate = function (params) {
             var deferred = $q.defer();
             var url = "/api/rates/validate_end_date";
-            ADBaseWebSrvV2.postJSON(url,params).then(function (data) {
+            ADBaseWebSrvV2.postJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);

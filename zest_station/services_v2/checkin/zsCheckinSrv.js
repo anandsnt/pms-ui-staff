@@ -2,8 +2,8 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2','$rootScope',
-    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2,$rootScope) {
+sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$rootScope',
+    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $rootScope) {
 
         var that = this;
         this.checkInReservations = [];
@@ -86,7 +86,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             };
            
 
-            zsBaseWebSrv.postJSONWithSpecialStatusHandling(url,postData).then(function(data) {
+            zsBaseWebSrv.postJSONWithSpecialStatusHandling(url, postData).then(function(data) {
                 //if connect to emv terminal is neeeded
                 // need to poll oftently to avoid
                 // timeout issues

@@ -83,7 +83,7 @@ sntRover.controller('rvBillingInfoReservationMainCtrl', ['$scope', '$rootScope',
      */
     $scope.isRoutingForPostingAccountExist = function() {
         var routeToPostingAccountExist = false;
-        var routesList = dclone($scope.routes,[]);
+        var routesList = dclone($scope.routes, []);
 
         for (var i = 0; i < routesList.length; i++) {
             if (routesList[i].entity_type === "GROUP" || 

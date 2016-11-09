@@ -1,4 +1,4 @@
-sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootScope','$filter','RVEndOfDayModalSrv','$state','$timeout', function($scope,ngDialog,$rootScope,$filter,RVEndOfDayModalSrv, $state, $timeout) {
+sntRover.controller('RVEndOfDayProcessController', ['$scope', 'ngDialog', '$rootScope', '$filter', 'RVEndOfDayModalSrv', '$state', '$timeout', function($scope, ngDialog, $rootScope, $filter, RVEndOfDayModalSrv, $state, $timeout) {
 
     BaseCtrl.call(this, $scope);
     var calenderMaxDate;
@@ -49,7 +49,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         var restartProcessFail = function(data) {
             $rootScope.$broadcast('hideLoader');
         };
-        $scope.invokeApi(RVEndOfDayModalSrv.restartFailedProcess,data,restartProcessSuccess,restartProcessFail);
+        $scope.invokeApi(RVEndOfDayModalSrv.restartFailedProcess, data, restartProcessSuccess, restartProcessFail);
     };
     /*
     * Set Selected date as previous date of Bussines date.
@@ -102,7 +102,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
             $rootScope.$broadcast('hideLoader');
             $timeout(function() {
                 refreshScroller();           
-            },1000);
+            }, 1000);
             //Eod status update handles here
             if(!$rootScope.isEodRunning&&$scope.checkEodStatus) {
                 $state.go('rover.dashboard.manager');
@@ -111,7 +111,7 @@ sntRover.controller('RVEndOfDayProcessController', ['$scope','ngDialog','$rootSc
         var fetchEodLogFailure = function() {
             $rootScope.$broadcast('hideLoader');
         };
-        $scope.invokeApi(RVEndOfDayModalSrv.fetchLog,data,fetchEodLogSuccess,fetchEodLogFailure);
+        $scope.invokeApi(RVEndOfDayModalSrv.fetchLog, data, fetchEodLogSuccess, fetchEodLogFailure);
     };
     $scope.isLastEodRunWithin18Hr = function() {
         return ($scope.lastEodRunInMinutes == null)?false:true;

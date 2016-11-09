@@ -1,8 +1,8 @@
 (function() {
-var checkoutNowService = function($q,$rootScope,$http) {
+var checkoutNowService = function($q, $rootScope, $http) {
 	var response = {};
 
-	var completeCheckout = function(url,data) {
+	var completeCheckout = function(url, data) {
 
 		var deferred = $q.defer();
 		$http.post(url, data).success(function(response) {
@@ -22,7 +22,7 @@ var checkoutNowService = function($q,$rootScope,$http) {
 };
 
 var dependencies = [
-'$q','$rootScope','$http',
+'$q', '$rootScope', '$http',
 checkoutNowService
 ];
 

@@ -23,7 +23,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var param = {};
 			$scope.is_show_task_management_in_hk_menu = $scope.is_show_task_management_in_hk_menu ? false : true;
 			param.is_show_task_management_in_hk_menu = $scope.is_show_task_management_in_hk_menu;
-			$scope.invokeApi(ADDailyWorkAssignmentSrv.setTaskManagementShowInHK,param,callback);
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.setTaskManagementShowInHK, param, callback);
 
 		};
 
@@ -56,9 +56,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.is_show_task_management_in_hk_menu = data.is_show_task_management_in_hk_menu;
 				$scope.$emit('hideLoader');
 				$scope.workType = data.results;
-				angular.forEach($scope.workType,function(item, index) {
+				angular.forEach($scope.workType, function(item, index) {
 		            if(item.is_default === true) {
-		            	angular.forEach(item.tasks,function(taskItem, taskIndex) {
+		            	angular.forEach(item.tasks, function(taskItem, taskIndex) {
 		            		$scope.defaultData.defaultTask = taskItem.id;
 		            	});
 		            }
@@ -187,7 +187,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			this.item.default_task_id = $scope.defaultData.defaultTask;
 			var workTypeId = this.item.id
 			$scope.eachWorkType = this.item;
-			angular.forEach($scope.taskList,function(itemTask, index) {
+			angular.forEach($scope.taskList, function(itemTask, index) {
 				if(itemTask.work_type_id === workTypeId) {
 					itemTask.is_show_on_stay_card = isShowOnStayCard;
 				}
@@ -339,7 +339,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var resHkCallback = function(data) {
 				$scope.$emit('hideLoader');
 
-				angular.forEach(data,function(item, index) {
+				angular.forEach(data, function(item, index) {
 		           item.is_disabled = false;// Added for CICO-12563
 		        });
 		        $scope.resHkStatusList = data;
@@ -738,7 +738,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				}
 				$scope.$apply();
 
-			},100)
+			}, 100)
 
 		};
 		$scope.anySelected = function(bool) {
@@ -773,14 +773,14 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.toggleActiveInactiveTask = function() {
 			var params = {};
 			this.item.is_active = !this.item.is_active;
-			angular.copy(this.item , params);
+			angular.copy(this.item, params);
 			params.completion_time = $rootScope.businessDate + ' ' + this.item.completion_time;
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params);
 		};
 
 		$scope.clickedDefaultTaskChekbox = function (task) {
 
-			angular.forEach($scope.taskList,function(item, index) {
+			angular.forEach($scope.taskList, function(item, index) {
 				if(item.work_type_id === task.work_type_id) {
 					if(item.id === task.id) {
 						item.is_default = !item.is_default;
@@ -816,7 +816,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			//$scope.resHkStatusList
 			var selectedWorkType = "";
-			angular.forEach($scope.workType,function(item, index) {
+			angular.forEach($scope.workType, function(item, index) {
 	            if(item.value === "DEPARTURE_CLEAN" && item.id === $scope.eachTaskList.work_type_id) {
 	            	selectedWorkType = "DEPARTURE_CLEAN";
 	            } else if(item.value === "STAYOVER_CLEAN" && item.id === $scope.eachTaskList.work_type_id) {
@@ -831,7 +831,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			var reservation_statuses_ids_array = [];
 			if(selectedWorkType === "DEPARTURE_CLEAN") {
-				angular.forEach($scope.resHkStatusList,function(item, index) {
+				angular.forEach($scope.resHkStatusList, function(item, index) {
 		            if(item.value === "DUEOUT" || item.value === "DEPARTED") {
 		            	item.is_disabled = false;
 		            	reservation_statuses_ids_array.push(item.id);
@@ -841,7 +841,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		        });
 			} else if(selectedWorkType === "STAYOVER_CLEAN" || selectedWorkType === "LINEN_CHANGE") {
-				angular.forEach($scope.resHkStatusList,function(item, index) {
+				angular.forEach($scope.resHkStatusList, function(item, index) {
 		            if(item.value === "STAYOVER") {
 		            	item.is_disabled = false;
 		            	reservation_statuses_ids_array.push(item.id);
@@ -851,7 +851,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		        });
 			} else if(selectedWorkType === "TURNDOWN") {
-				angular.forEach($scope.resHkStatusList,function(item, index) {
+				angular.forEach($scope.resHkStatusList, function(item, index) {
 		            if(item.value === "STAYOVER" || item.value === "ARRIVALS" || item.value === "ARRIVED") {
 		            	item.is_disabled = false;
 		            	reservation_statuses_ids_array.push(item.id);
@@ -861,7 +861,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		        });
 			} else {
-				angular.forEach($scope.resHkStatusList,function(item, index) {
+				angular.forEach($scope.resHkStatusList, function(item, index) {
 		            item.is_disabled = false;
 		        });
 			}

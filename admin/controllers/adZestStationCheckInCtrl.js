@@ -1,4 +1,4 @@
-admin.controller('ADZestStationCheckInCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADZestStationSrv', '$filter',  function($scope, $state,$rootScope, $stateParams, ADZestStationSrv, $filter) {
+admin.controller('ADZestStationCheckInCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter',  function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter) {
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 10);
 

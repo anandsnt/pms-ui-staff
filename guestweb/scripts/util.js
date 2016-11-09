@@ -20,10 +20,10 @@ var dclone = function(object, unwanted_keys) {
 
 var DateFormatInfoMappings = {
 
-    'MM-DD-YYYY': ['MM-dd-yyyy','mm-dd-yy'],
-    'MM/DD/YYYY': ['MM/dd/yyyy','mm/dd/yy'],
-    'DD-MM-YYYY': ['dd-MM-yyyy','dd-mm-yy'],
-    'DD/MM/YYYY': ['dd/MM/yyyy','dd/mm/yy']
+    'MM-DD-YYYY': ['MM-dd-yyyy', 'mm-dd-yy'],
+    'MM/DD/YYYY': ['MM/dd/yyyy', 'mm/dd/yy'],
+    'DD-MM-YYYY': ['dd-MM-yyyy', 'dd-mm-yy'],
+    'DD/MM/YYYY': ['dd/MM/yyyy', 'dd/mm/yy']
 
 };
 
@@ -52,7 +52,7 @@ var returnEmptyScreenDetails = function() {
   };
 }
 
-var extractScreenDetails = function(identifier,cms_screen_details) {
+var extractScreenDetails = function(identifier, cms_screen_details) {
   var screen_id = returnEmptyScreenDetails();
   var screen_details = {
     "title": "",
@@ -78,7 +78,7 @@ var creditCardTypes = {
 
 function getCreditCardType(cardBrand) {
     var card = (typeof cardBrand  ==="undefined") ? "":cardBrand.toUpperCase();
-    var cardArray = ['AX','DC','DS','JCB','MC','VA'];
+    var cardArray = ['AX', 'DC', 'DS', 'JCB', 'MC', 'VA'];
     return (cardArray.indexOf(card) != -1 ) ? card : (typeof creditCardTypes[card]!='undefined') ? creditCardTypes[card] : 'credit-card';
 }
 

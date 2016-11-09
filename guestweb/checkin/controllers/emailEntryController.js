@@ -3,7 +3,7 @@
 */
 
 (function() {
-	var emailEntryController = function($scope,$modal,guestDetailsService,$state,$rootScope,$stateParams) {
+	var emailEntryController = function($scope, $modal, guestDetailsService, $state, $rootScope, $stateParams) {
 		
     var errorOpts = {
       backdrop: true,
@@ -51,7 +51,7 @@
           $scope.emailUpdated = true;
           $rootScope.userEmail = $scope.guestDetails.email;
           $rootScope.userEmailEntered = true;
-        },function() {
+        }, function() {
           $scope.isLoading = false;
           $modal.open(emailErrorOpts);
         });
@@ -67,7 +67,7 @@
 };
 
 var dependencies = [
-'$scope','$modal','guestDetailsService','$state','$rootScope','$stateParams',
+'$scope', '$modal', 'guestDetailsService', '$state', '$rootScope', '$stateParams',
 emailEntryController
 ];
 

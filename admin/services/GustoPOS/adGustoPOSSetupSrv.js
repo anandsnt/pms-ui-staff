@@ -11,7 +11,7 @@ admin.service('adGustoPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data.gusto);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -27,7 +27,7 @@ admin.service('adGustoPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

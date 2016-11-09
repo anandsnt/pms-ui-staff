@@ -5,7 +5,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 							'$stateParams',
 							'$state',
 							'ngDialog',
-							function($rootScope, $scope,ADUserRolePermissionSrv, $stateParams, $state, ngDialog) {
+							function($rootScope, $scope, ADUserRolePermissionSrv, $stateParams, $state, ngDialog) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.title = "Permission";
@@ -73,7 +73,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
     	$scope.initiatePermissionforSelectedUserRole();
     };
 
-    $scope.$watch("assignedPermissions.length", function(oldValue,newValue) {
+    $scope.$watch("assignedPermissions.length", function(oldValue, newValue) {
     		if(oldValue<newValue) {
     			$scope.removedElement = $scope.calculateArrayDifferance($scope.previuosAssignedPermissions, $scope.assignedPermissions);
     			$scope.previuosAssignedPermissions = $scope.calculateArrayDifferance($scope.previuosAssignedPermissions, $scope.removedElement);
@@ -94,7 +94,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 				postData.permissions.length =0;
 				postData.role_id = $scope.selectedUserRole.value;
 				postData.permissions.push($scope.removedElement[0].value);
-				$scope.invokeApi(ADUserRolePermissionSrv.removeUserRolePermission,postData , successCallback, failureCallback);
+				$scope.invokeApi(ADUserRolePermissionSrv.removeUserRolePermission, postData, successCallback, failureCallback);
 				}
     		}else
     		{
@@ -116,7 +116,7 @@ admin.controller('ADUserRolePermissionsCtrl', [
 				postData.permissions.length =0;
 				postData.role_id = $scope.selectedUserRole.value;
 				postData.permissions.push($scope.addedElement[0].value);
-				$scope.invokeApi(ADUserRolePermissionSrv.addedUserRolePermission,postData , successCallback, failureCallback);
+				$scope.invokeApi(ADUserRolePermissionSrv.addedUserRolePermission, postData, successCallback, failureCallback);
 				}
     		}
 

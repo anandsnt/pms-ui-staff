@@ -3,8 +3,8 @@
 	The landing page when the guestweb is accessed without the link from the email.
 	This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> zest -> Checkout
 */
-sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$state', '$controller', 'GwCheckoutSrv', 'GwWebSrv', '$filter','$modal',
-	function($scope, $state, $controller, GwCheckoutSrv, GwWebSrv, $filter,$modal) {
+sntGuestWeb.controller('GwExternalCheckoutVerificationController', ['$scope', '$state', '$controller', 'GwCheckoutSrv', 'GwWebSrv', '$filter', '$modal',
+	function($scope, $state, $controller, GwCheckoutSrv, GwWebSrv, $filter, $modal) {
 
 		$controller('BaseController', {
 			$scope: $scope

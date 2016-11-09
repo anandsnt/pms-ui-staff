@@ -1,8 +1,8 @@
 (function() {
-var checkoutRoomVerificationService = function($q,$rootScope,$http) {
+var checkoutRoomVerificationService = function($q, $rootScope, $http) {
 	var response = {};
 
-	var verifyRoom = function(url,data) {
+	var verifyRoom = function(url, data) {
 
 		var deferred = $q.defer();
 		$http.post(url, data).success(function(response) {
@@ -22,7 +22,7 @@ var checkoutRoomVerificationService = function($q,$rootScope,$http) {
 };
 
 var dependencies = [
-'$q','$rootScope','$http',
+'$q', '$rootScope', '$http',
 checkoutRoomVerificationService
 ];
 

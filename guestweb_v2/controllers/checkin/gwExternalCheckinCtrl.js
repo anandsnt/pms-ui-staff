@@ -3,8 +3,8 @@
 	The landing page when the guestweb is accessed without the link from the email.
 	This is accessed using URL set in admin settings admin -> zest -> email/SMS/ direct URLs
 */
-sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$state', '$controller', 'GwCheckinSrv', 'GwWebSrv', '$filter', '$rootScope','$modal',
-	function($scope, $state, $controller, GwCheckinSrv, GwWebSrv, $filter, $rootScope,$modal) {
+sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$state', '$controller', 'GwCheckinSrv', 'GwWebSrv', '$filter', '$rootScope', '$modal',
+	function($scope, $state, $controller, GwCheckinSrv, GwWebSrv, $filter, $rootScope, $modal) {
 
 		$controller('BaseController', {
 			$scope: $scope

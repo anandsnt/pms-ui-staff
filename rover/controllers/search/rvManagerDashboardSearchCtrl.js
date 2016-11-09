@@ -1,4 +1,4 @@
-sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope', '$state', '$stateParams', '$filter', '$vault',  function($scope, $rootScope, $state, $stateParams, $filter, $vault) {
+sntRover.controller('rvManagerDashboardSearchController', ['$scope', '$rootScope', '$state', '$stateParams', '$filter', '$vault',  function($scope, $rootScope, $state, $stateParams, $filter, $vault) {
 
 	/*
 	* Controller class for dashboard search,

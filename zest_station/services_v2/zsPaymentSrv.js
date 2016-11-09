@@ -2,8 +2,8 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv','$rootScope',
-    function($http, $q, zsBaseWebSrv,$rootScope) {
+sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootScope',
+    function($http, $q, zsBaseWebSrv, $rootScope) {
         //service provider for common utilities
         var that = this;
 
@@ -110,7 +110,7 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv','$rootScop
                 };
             };
 
-            zsBaseWebSrv.postJSONWithSpecialStatusHandling(url,postData).then(function(data) {
+            zsBaseWebSrv.postJSONWithSpecialStatusHandling(url, postData).then(function(data) {
                 //if connect to emv terminal is neeeded
                 // need to poll oftently to avoid
                 // timeout issues
@@ -198,7 +198,7 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv','$rootScop
             };
            
 
-            zsBaseWebSrv.postJSONWithSpecialStatusHandling(url,postData).then(function(data) {
+            zsBaseWebSrv.postJSONWithSpecialStatusHandling(url, postData).then(function(data) {
                 //if connect to emv terminal is neeeded
                 // need to poll oftently to avoid
                 // timeout issues

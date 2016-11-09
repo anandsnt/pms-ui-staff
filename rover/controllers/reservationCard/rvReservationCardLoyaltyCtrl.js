@@ -67,7 +67,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             // doing null check as when, no guest card attached the hotelLoyaltyProgram variable has null
             if (hotelLoyaltyProgram !== null && $rootScope.isHLPActive) {
                 for (var i = 0; i < hotelLoyaltyProgram.length; i++) {
-                    if (parseInt(id,10) === parseInt(hotelLoyaltyProgram[i].id,10)) {
+                    if (parseInt(id, 10) === parseInt(hotelLoyaltyProgram[i].id, 10)) {
                         flag = true;
                         $scope.selectedLoyalty = hotelLoyaltyProgram[i];
                         $scope.selectedLoyaltyID = hotelLoyaltyProgram[i].id;
@@ -82,7 +82,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             }
             if (freequentFlyerprogram !== null && $rootScope.isFFPActive) {
                 for (var i = 0; i < freequentFlyerprogram.length; i++) {
-                    if (parseInt(id,10) === parseInt(freequentFlyerprogram[i].id,10)) {
+                    if (parseInt(id, 10) === parseInt(freequentFlyerprogram[i].id, 10)) {
                         flag = true;
                         $scope.selectedLoyalty = freequentFlyerprogram[i];
                         $scope.selectedLoyaltyID = freequentFlyerprogram[i].id;
@@ -107,7 +107,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
         $scope.loadLoyaltyPrograms = function() {
             if ($scope.$parent.$parent.refreshingReservation) {
                 $rootScope.goToReservationCalled = true;
-                $rootScope.$broadcast('reload-loyalty-section-data',{'reload':true});
+                $rootScope.$broadcast('reload-loyalty-section-data', {'reload':true});
             }
         };
         $scope.callSelectLoyaltyAPI = function(id) {
@@ -128,7 +128,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             $scope.invokeApi(RVLoyaltyProgramSrv.selectLoyalty, params, successCallback, errorCallback);
         };
 
-        $scope.$on('detect-hlps-ffp-active-status',function(evt,data) {
+        $scope.$on('detect-hlps-ffp-active-status', function(evt, data) {
            if (data.userMemberships.use_hlp) {
                $scope.loyaltyProgramsActive(true);
                $scope.$parent.reservationData.use_hlp = true;

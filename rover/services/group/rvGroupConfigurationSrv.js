@@ -519,7 +519,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 				url = 'api/groups/'+params.group_id+'/hide_rates';
 				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				   	 deferred.resolve(data);
-				},function(data) {
+				}, function(data) {
 				    deferred.reject(data);
 				});
 			return deferred.promise;
@@ -530,7 +530,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 				url = 'api/groups/'+params.group_id+'/change_rate';
 				rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				   	 deferred.resolve(data);
-				},function(data) {
+				}, function(data) {
 				    deferred.reject(data);
 				});
 			return deferred.promise;	

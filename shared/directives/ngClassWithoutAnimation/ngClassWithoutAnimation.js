@@ -58,7 +58,7 @@ angular
             var newClasses = arrayClasses(newVal || []);
             if (!oldVal) {
               addClasses(newClasses);
-            } else if (!_.isEqual(newVal,oldVal)) {
+            } else if (!_.isEqual(newVal, oldVal)) {
               var oldClasses = arrayClasses(oldVal);
               updateClasses(oldClasses, newClasses);
             }

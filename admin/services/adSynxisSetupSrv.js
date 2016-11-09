@@ -1,11 +1,11 @@
-admin.service('adSynxisSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
+admin.service('adSynxisSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
 
 	this.testSetup = function(data) {
 		var deferred = $q.defer();
 		var url = 'admin/test_ota_connection/'+data.interface;
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -23,7 +23,7 @@ admin.service('adSynxisSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2
 		var url = 'admin/ota_full_refresh/'+data.interface_id+start_date+end_date;
 		ADBaseWebSrvV2.postJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -34,7 +34,7 @@ admin.service('adSynxisSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2
                 var url = 'admin/save_ota_connection_config.json?interface='+data.interface;//update for ZDirect-specific
                 ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

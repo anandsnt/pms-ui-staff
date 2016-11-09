@@ -1,12 +1,12 @@
-sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngDialog', 'RVKeyPopupSrv', '$filter',
-		function($rootScope, $scope,$state, ngDialog, RVKeyPopupSrv, $filter) {
+sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter',
+		function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter) {
 	BaseCtrl.call(this, $scope);
 	var that = this;
 	this.setStatusAndMessage = function(message, status) {
 		$scope.statusMessage = message;
 		$scope.status = status;
 	};
-        $rootScope.$on('MAKE_KEY_TYPE',function(evt, data) {
+        $rootScope.$on('MAKE_KEY_TYPE', function(evt, data) {
             $scope.keyType = data.type;
         });
 	$scope.init = function() {

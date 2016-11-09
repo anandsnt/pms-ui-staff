@@ -130,18 +130,18 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
 
 
         //---------------- do an isDirty check and launch isValid checks
-        $scope.$watch('editData.snt_value',function(to, fm, evt) {
+        $scope.$watch('editData.snt_value', function(to, fm, evt) {
            $scope.hasValidSelection();
 
         });
-        $scope.$watch('editData.external_value',function(to, fm, evt) {
+        $scope.$watch('editData.external_value', function(to, fm, evt) {
            $scope.hasValidSelection();
 
         });
 
         //----------------
 
-        $scope.$watch('editData.mapping_type_value',function(to, fm, evt) {
+        $scope.$watch('editData.mapping_type_value', function(to, fm, evt) {
             if (to) {
                 $scope.editData.sntValues = $scope.mappingInterface.mappingTypeRefs[to];
                 // In case external values list has been obtained for this mapping type refer to the list

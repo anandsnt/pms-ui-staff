@@ -1,4 +1,4 @@
-sntGuestWeb.service('GWBaseWebSrv',['$http', '$q', '$window', function($http, $q, $window) {
+sntGuestWeb.service('GWBaseWebSrv', ['$http', '$q', '$window', function($http, $q, $window) {
 
     /**
     *   A http requester method for calling webservice

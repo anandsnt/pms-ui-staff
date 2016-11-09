@@ -1,5 +1,5 @@
 angular.module('sntRover').service('RVSocilaLobbySrv',
-    ['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv',
+    ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv',
     function($http, $q, BaseWebSrvV2, RVBaseWebSrv) {
 
         this.fetchPosts = function(params) {
@@ -8,7 +8,7 @@ angular.module('sntRover').service('RVSocilaLobbySrv',
             BaseWebSrvV2.getJSON(url, params).then(function(data) {
 
                  deferred.resolve(data);
-            },function(data) {
+            }, function(data) {
                 deferred.reject(data);
             });
 
@@ -21,7 +21,7 @@ angular.module('sntRover').service('RVSocilaLobbySrv',
             BaseWebSrvV2.getJSON(url, params).then(function(data) {
 
                  deferred.resolve(data);
-            },function(data) {
+            }, function(data) {
                 deferred.reject(data);
             });
 
@@ -33,7 +33,7 @@ angular.module('sntRover').service('RVSocilaLobbySrv',
             BaseWebSrvV2.postJSON(url, data).then(function(data) {
 
                  deferred.resolve(data);
-            },function(data) {
+            }, function(data) {
                 deferred.reject(data);
             });
 
@@ -46,7 +46,7 @@ angular.module('sntRover').service('RVSocilaLobbySrv',
             BaseWebSrvV2.postJSON(url, data).then(function(data) {
 
                  deferred.resolve(data);
-            },function(data) {
+            }, function(data) {
                 deferred.reject(data);
             });
 
@@ -59,7 +59,7 @@ angular.module('sntRover').service('RVSocilaLobbySrv',
             BaseWebSrvV2.deleteJSON(url).then(function(data) {
 
                  deferred.resolve(data);
-            },function(data) {
+            }, function(data) {
                 deferred.reject(data);
             });
 
@@ -72,7 +72,7 @@ angular.module('sntRover').service('RVSocilaLobbySrv',
             BaseWebSrvV2.deleteJSON(url).then(function(data) {
 
                  deferred.resolve(data);
-            },function(data) {
+            }, function(data) {
                 deferred.reject(data);
             });
 

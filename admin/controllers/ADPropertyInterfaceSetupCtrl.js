@@ -34,9 +34,9 @@ admin.controller('ADPropertyInterfaceSetupCtrl', ['$scope', '$controller', 'ADHo
 			$scope.$emit('hideLoader');
 		};
                 if (nextStatus) {
-                    $scope.invokeApi(ADHotelPropertyInterfaceSrv.activate, data , successCallbackActivateInactivate);
+                    $scope.invokeApi(ADHotelPropertyInterfaceSrv.activate, data, successCallbackActivateInactivate);
                 } else {
-                    $scope.invokeApi(ADHotelPropertyInterfaceSrv.deActivate, data , successCallbackActivateInactivate);
+                    $scope.invokeApi(ADHotelPropertyInterfaceSrv.deActivate, data, successCallbackActivateInactivate);
                 }
 	};
 

@@ -1,5 +1,5 @@
 angular.module('sntRover').service('RVBillingInfoUtilSrv',
-    ['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv',
+    ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv',
     function($http, $q, BaseWebSrvV2, RVBaseWebSrv) {
 
     var guestStatusMappings = {
@@ -7,7 +7,7 @@ angular.module('sntRover').service('RVBillingInfoUtilSrv',
         'CHECKING_IN'    : ['check-in'],
         'CHECKEDIN'      : ['inhouse'],
         'CHECKEDOUT'     : ['departed'],
-        'CHECKING_OUT'   : ['check-out','late-check-out'],
+        'CHECKING_OUT'   : ['check-out', 'late-check-out'],
         'CANCELED'       : ['cancel'],
         'NOSHOW'         : ['no-show'],
         'NOSHOW_CURRENT' : ['no-show']

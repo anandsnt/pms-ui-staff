@@ -7,7 +7,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 
 		var init = function() {
 
-			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG",true);
+			$scope.$emit("UPDATE_STAY_CARD_DEPOSIT_FLAG", true);
 			//adding a flag to be set after some timeout to remove flickering action in iPad
 			$scope.pageloadingOver = false;
 			$timeout(function() {
@@ -64,9 +64,9 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			$scope.errorOccured = false;
 		};
 
-		$scope.$on('SET_SCROLL_FOR_EXISTING_CARDS',function() {
+		$scope.$on('SET_SCROLL_FOR_EXISTING_CARDS', function() {
 			console.log("set_scroll");
-			$scope.setScroller('cardsList',{'click':true, 'tap':true});
+			$scope.setScroller('cardsList', {'click':true, 'tap':true});
 		});
 
 		//Listen to swipe events
@@ -85,11 +85,11 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 			console.log($scope.errorMessage);
 		};		
 
-		$scope.$on('CLOSE_DIALOG',function() {
+		$scope.$on('CLOSE_DIALOG', function() {
 			closeDepositPopup();
 		});
 		//user selected pay later option
-		$scope.$on('PAY_LATER',function() {
+		$scope.$on('PAY_LATER', function() {
 			if($scope.depositDetails.isFromCheckin) {
 				$scope.$emit("PROCEED_CHECKIN");
 			}
@@ -100,7 +100,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		});
 
 		//payment success
-		$scope.$on('PAYMENT_SUCCESS',function(event,data) {
+		$scope.$on('PAYMENT_SUCCESS', function(event, data) {
 			$scope.depositPaidSuccesFully = true;
 			$scope.depositAmount =  data.amountPaid;
 			$scope.feePaid = data.feePaid;
@@ -142,7 +142,7 @@ sntRover.controller('rvReservationPendingDepositController', ['$rootScope', '$sc
 		});
 
 		//payment failed
-		$scope.$on('PAYMENT_FAILED',function(event,data) {
+		$scope.$on('PAYMENT_FAILED', function(event, data) {
 			$timeout(function() {
 				$scope.errorOccured = true;
 				//provide some delay to deal with clearErrorMessage function

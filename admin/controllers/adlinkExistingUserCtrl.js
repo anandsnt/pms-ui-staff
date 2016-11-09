@@ -1,4 +1,4 @@
-admin.controller('ADLinkExistingUserCtrl',['$scope', '$state','$stateParams', 'ADUserSrv',  function($scope, $state, $stateParams, ADUserSrv) {
+admin.controller('ADLinkExistingUserCtrl', ['$scope', '$state', '$stateParams', 'ADUserSrv',  function($scope, $state, $stateParams, ADUserSrv) {
 	BaseCtrl.call(this, $scope);
 	$scope.data = {};
 	$scope.hotelId = $stateParams.id;
@@ -14,7 +14,7 @@ admin.controller('ADLinkExistingUserCtrl',['$scope', '$state','$stateParams', 'A
 			$scope.$emit('hideLoader');
 			$state.go('admin.users', { id: $stateParams.id });
 		};
-		$scope.invokeApi(ADUserSrv.linkExistingUser, data , successCallback);
+		$scope.invokeApi(ADUserSrv.linkExistingUser, data, successCallback);
 	};
 
 }]);

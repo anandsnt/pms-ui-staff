@@ -1,4 +1,4 @@
-angular.module('sntRover').service('UpdatePriceAndRestrictionsSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2) {
+angular.module('sntRover').service('UpdatePriceAndRestrictionsSrv', ['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2) {
 
 
 

@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault', function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault) {
+angular.module('sntRover').service('RVSearchSrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$vault', function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault) {
 
 	var self = this;
 	self.searchPerPage = 50;
@@ -33,7 +33,7 @@ angular.module('sntRover').service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWe
 				self.searchTypeStatus = dataToSend.status;
 				self.totalSearchResults = data.total_count;
 				deferred.resolve(self.data);
-			},function(data) {
+			}, function(data) {
 				deferred.reject(data);
 			});
 		}

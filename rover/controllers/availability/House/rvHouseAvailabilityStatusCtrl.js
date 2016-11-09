@@ -29,7 +29,7 @@ angular.module('sntRover').controller('RVHouseAvailabilityStatusCtrl', [
 					//CICO-10617 The refresh scroller is not working in this case... On first check found that the scope is different.
 					// Applying a quick resolution now... Will have to debug and apply fix later
 					$scope.$parent.myScroll['house-status-grid'].refresh();
-				},300);
+				}, 300);
 
 			};
 			var businessDate = tzIndependentDate($rootScope.businessDate);

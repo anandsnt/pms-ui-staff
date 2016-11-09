@@ -1,4 +1,4 @@
-sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$timeout','$window',function($scope,$rootScope,$timeout,$window) {
+sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', '$timeout', '$window', function($scope, $rootScope, $timeout, $window) {
 	BaseCtrl.call(this, $scope);
 
 	/** Code for PRINT BOX drawer common Resize Handler starts here .. **/
@@ -72,7 +72,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope','$rootScope','$
 		$scope.data.isDrawerOpened = false;
 	};
 
-	$scope.$on("CLOSEPRINTBOX",function() {
+	$scope.$on("CLOSEPRINTBOX", function() {
 		$scope.closeDrawer();
 	});
 

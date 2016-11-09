@@ -1,4 +1,4 @@
-admin.service('ADChargeGroupsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
+admin.service('ADChargeGroupsSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
 
 	/**
     *   A getter method to return the charge group list
@@ -9,7 +9,7 @@ admin.service('ADChargeGroupsSrv',['$http', '$q', 'ADBaseWebSrv', function($http
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -23,9 +23,9 @@ admin.service('ADChargeGroupsSrv',['$http', '$q', 'ADBaseWebSrv', function($http
 		var deferred = $q.defer();
 		var url = '/admin/charge_groups';
 
-		ADBaseWebSrv.postJSON(url,data).then(function(data) {
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -39,9 +39,9 @@ admin.service('ADChargeGroupsSrv',['$http', '$q', 'ADBaseWebSrv', function($http
 		var deferred = $q.defer();
 		var url = '/admin/charge_groups/'+data.value;
 
-		ADBaseWebSrv.putJSON(url,data).then(function(data) {
+		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -55,9 +55,9 @@ admin.service('ADChargeGroupsSrv',['$http', '$q', 'ADBaseWebSrv', function($http
 		var deferred = $q.defer();
 		var url = '/admin/charge_groups/'+data.value;
 
-		ADBaseWebSrv.deleteJSON(url,data).then(function(data) {
+		ADBaseWebSrv.deleteJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

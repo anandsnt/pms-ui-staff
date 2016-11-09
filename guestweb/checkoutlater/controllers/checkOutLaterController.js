@@ -3,7 +3,7 @@
 */
 
 (function() {
-	var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location,$state) {
+	var checkOutLaterController = function($scope, LateCheckOutChargesService, $rootScope, $location, $state) {
 	$scope.pageValid = false;
 	// Check if user is trying to access this page when he/she don't have access for this page
 	if($rootScope.isCheckedin) {
@@ -32,12 +32,12 @@
 		$scope.isFetching = true;
 
 		// If CC is not attached to the reservation we need to add CC to proceed to opt an late checkouttime.
-		$scope.gotToNextStep = function(fee,chargeId) {
+		$scope.gotToNextStep = function(fee, chargeId) {
 			if(!$rootScope.isCCOnFile && !$rootScope.isSixpayments) {
-				$state.go('ccVerification',{'fee':fee,'message':"Late check-out fee",'isFromCheckoutNow':false});
+				$state.go('ccVerification', {'fee':fee, 'message':"Late check-out fee", 'isFromCheckoutNow':false});
 			}
 			else{
-				$state.go('checkOutLaterSuccess',{id:chargeId});
+				$state.go('checkOutLaterSuccess', {id:chargeId});
 			}
 
 		};
@@ -50,7 +50,7 @@
 			if($scope.charges.length > 0) {
 				$scope.optionsAvailable = true;
 			}
-		},function() {
+		}, function() {
 			$scope.netWorkError = true;
 			$scope.isFetching = false;
 		});
@@ -59,7 +59,7 @@
 
 var dependencies = [
 '$scope',
-'LateCheckOutChargesService','$rootScope','$location','$state',
+'LateCheckOutChargesService', '$rootScope', '$location', '$state',
 checkOutLaterController
 ];
 

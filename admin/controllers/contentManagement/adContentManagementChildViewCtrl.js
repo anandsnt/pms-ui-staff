@@ -1,4 +1,4 @@
-admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location',
+admin.controller('ADContentManagementChildViewCtrl', ['$scope', '$state', 'ADContentManagementSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout',  '$location',
  function($scope, $state, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
 	$scope.errorMessage = '';
@@ -29,7 +29,7 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
     data.parent_id = $scope.parent_id;
     data.position = position +1;
     data.previous_position = prevPosition +1;
-    $scope.invokeApi(ADContentManagementSrv.saveComponentOrder, data , successCallbackSavePosition);
+    $scope.invokeApi(ADContentManagementSrv.saveComponentOrder, data, successCallbackSavePosition);
 
   };
 

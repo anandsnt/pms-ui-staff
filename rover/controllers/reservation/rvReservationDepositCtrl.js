@@ -1,8 +1,8 @@
 sntRover.controller('RVReservationDepositController',
 	['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout',
-	'RVReservationCardSrv', '$state', '$filter','ngDialog', 'rvPermissionSrv',
+	'RVReservationCardSrv', '$state', '$filter', 'ngDialog', 'rvPermissionSrv',
 	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout,
-		RVReservationCardSrv, $state, $filter,ngDialog, rvPermissionSrv) {
+		RVReservationCardSrv, $state, $filter, ngDialog, rvPermissionSrv) {
 
 		BaseCtrl.call(this, $scope);
 		//adding a flag to be set after some timeout to remove flickering action in iPad
@@ -94,7 +94,7 @@ sntRover.controller('RVReservationDepositController',
       		 !$scope.hasPermissionToMakePayment());
       	};
 
-		$scope.setScroller('cardsList',{'click':true, 'tap':true});
+		$scope.setScroller('cardsList', {'click':true, 'tap':true});
 		var refreshCardsList = function() {
 			$timeout(function() {
 				$scope.refreshScroller('cardsList');
@@ -412,7 +412,7 @@ sntRover.controller('RVReservationDepositController',
 	var reservationId = $stateParams.id;
 	$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);
 
-	var successPayment = function(data,cardAddedBySixPaySWipe) {
+	var successPayment = function(data, cardAddedBySixPaySWipe) {
 		$scope.$emit('hideLoader');
 		$scope.successMessage = "Deposit paid";
 		$scope.authorizedCode = data.authorization_code;
@@ -524,7 +524,7 @@ sntRover.controller('RVReservationDepositController',
 	  /*
 	* Action - On click submit payment button
 	*/
-       $rootScope.$on('GIFTCARD_DETAILS',function(e, n) {
+       $rootScope.$on('GIFTCARD_DETAILS', function(e, n) {
            $scope.cardData.cardNumber = n;
        });
 	$scope.submitPayment = function() {
@@ -582,15 +582,15 @@ sntRover.controller('RVReservationDepositController',
 					//the card will be added to reservation if existing payment methid is cash
 					//and six pay is succes by passing reservation_id
 					$scope.newCardAdded = true;
-					successPayment(response,cardAddedBySixPaySWipe);
-				},function(error) {
+					successPayment(response, cardAddedBySixPaySWipe);
+				}, function(error) {
 
 					$scope.shouldShowWaiting = false;
 					paymentFailed(error);
 				});
 
 			} else {
-				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment,paymentFailed);
+				$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, successPayment, paymentFailed);
 			}
 
 		};
@@ -685,7 +685,7 @@ sntRover.controller('RVReservationDepositController',
 		$scope.newCardAdded = false;
 	};
 
-	$scope.$on("TOKEN_CREATED", function(e,data) {
+	$scope.$on("TOKEN_CREATED", function(e, data) {
 		$scope.newPaymentInfo = data;
 		$scope.showCCPage = false;
 		$scope.swippedCard = false;
@@ -693,7 +693,7 @@ sntRover.controller('RVReservationDepositController',
 		savePayment();
 	});
 
-	$scope.$on("MLI_ERROR", function(e,data) {
+	$scope.$on("MLI_ERROR", function(e, data) {
 		$scope.errorMessage = data;
 		setTimeout(function() {
 			$scope.errorMessage ="";
@@ -701,13 +701,13 @@ sntRover.controller('RVReservationDepositController',
 		}, 4000);
 	});
 
-	$scope.$on('cancelCardSelection',function(e,data) {
+	$scope.$on('cancelCardSelection', function(e, data) {
 		$scope.swippedCard = false;
 		$scope.showCCPage = false;
 		$scope.depositData.paymentType  = "";
 		$scope.isManual = false;
 	});
-	$scope.$on('cardSelected',function(e,data) {
+	$scope.$on('cardSelected', function(e, data) {
 		setCreditCardFromList(data.index);
 	});
 

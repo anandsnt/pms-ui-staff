@@ -3,7 +3,7 @@
 */
 
 (function() {
-	var checkOutBalanceController = function($scope, BillService,$rootScope,$state) {
+	var checkOutBalanceController = function($scope, BillService, $rootScope, $state) {
 
 	$scope.pageValid = false;
 	
@@ -40,7 +40,7 @@
 			if($scope.billData) {
 				$scope.optionsAvailable = true;
 			}
-		},function() {
+		}, function() {
 			$scope.netWorkError = true;
 			$scope.isFetching = false;
 		});
@@ -51,7 +51,7 @@
 				$state.go('checkOutStatus');
 			}
 			else{
-				$state.go('ccVerification',{'fee':$scope.billData.balance,'message':"Check-out fee",'isFromCheckoutNow':true});
+				$state.go('ccVerification', {'fee':$scope.billData.balance, 'message':"Check-out fee", 'isFromCheckoutNow':true});
 			}
 		};
 	}
@@ -59,7 +59,7 @@
 
 var dependencies = [
 '$scope',
-'BillService','$rootScope','$state',
+'BillService', '$rootScope', '$state',
 checkOutBalanceController
 ];
 

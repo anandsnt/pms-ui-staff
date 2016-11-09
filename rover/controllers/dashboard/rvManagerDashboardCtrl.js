@@ -169,7 +169,7 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
     requestParams.show_adr = false;
   }
   if($scope.isStatisticsOpened) {
-    $scope.invokeApi(RVDashboardSrv.fetchStatisticData,requestParams,onStatisticsFetchSuccess,onStatisticsFetchFailure);
+    $scope.invokeApi(RVDashboardSrv.fetchStatisticData, requestParams, onStatisticsFetchSuccess, onStatisticsFetchFailure);
   } else {
     $timeout(function() {
       $scope.refreshScroller('dashboard_scroller');

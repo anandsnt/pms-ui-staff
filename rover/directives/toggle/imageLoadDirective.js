@@ -5,7 +5,7 @@ sntRover.directive('imageLoad', function () {
     	},
         link: function(scope, element, attrs) {
 
-            element.bind("load" , function(e) {
+            element.bind("load", function(e) {
             		try{
             			scope.imageLoaded();
             		}

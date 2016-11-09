@@ -1,5 +1,5 @@
 
-var sntRover = angular.module('sntRover',[
+var sntRover = angular.module('sntRover', [
 		'ui.router',
 		'ui.utils',
 		'ng-iscroll',

@@ -82,7 +82,7 @@ sntZestStation.controller('zsHomeCtrl', [
 				}
 				//when user activity is not recorded for more than 120 secs
 				//translating to default lanaguage
-				console.log('userInActivityTimeInHomeScreenInSeconds',userInActivityTimeInHomeScreenInSeconds,$state.current.name)
+				console.log('userInActivityTimeInHomeScreenInSeconds', userInActivityTimeInHomeScreenInSeconds, $state.current.name)
 				if ($state.current.name !== 'zest_station.home') {
 					userInActivityTimeInHomeScreenInSeconds = 0;
 					clearInterval($scope.activityTimer);

@@ -1,4 +1,4 @@
-sntRover.controller('RVccPaymentsController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVccTransactionsSrv','$timeout',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVccTransactionsSrv, $timeout) {
+sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 'RVccTransactionsSrv', '$timeout', function($scope, $filter, $stateParams, ngDialog, $rootScope, RVccTransactionsSrv, $timeout) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -22,12 +22,12 @@ sntRover.controller('RVccPaymentsController', ['$scope','$filter','$stateParams'
 	initPaymentData();
 
 	// Handle change transaction date
-    $rootScope.$on('transactionDateChanged',function() {
+    $rootScope.$on('transactionDateChanged', function() {
         initPaymentData();
     });
 
     // Handle error message from parent
-    $scope.$on('showErrorMessage',function(event,data) {
+    $scope.$on('showErrorMessage', function(event, data) {
         $scope.errorMessage = data;
     });
 

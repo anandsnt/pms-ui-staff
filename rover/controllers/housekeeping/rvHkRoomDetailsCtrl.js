@@ -134,7 +134,7 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 		$scope.showLogTab  = function() {
 			$scope.openTab = "Log";
 			$scope.$broadcast('OPEN_LOG');
-			$state.go('rover.housekeeping.roomDetails.log',{
+			$state.go('rover.housekeeping.roomDetails.log', {
                 id: $scope.roomDetails.id
             });
 		};

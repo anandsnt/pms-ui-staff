@@ -1,4 +1,4 @@
-admin.service('ADHotelAnnouncementSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
+admin.service('ADHotelAnnouncementSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 
    /*
 	* service class for hotel announcement settings
@@ -14,7 +14,7 @@ admin.service('ADHotelAnnouncementSrv',['$q', 'ADBaseWebSrv', function($q, ADBas
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -30,7 +30,7 @@ admin.service('ADHotelAnnouncementSrv',['$q', 'ADBaseWebSrv', function($q, ADBas
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;

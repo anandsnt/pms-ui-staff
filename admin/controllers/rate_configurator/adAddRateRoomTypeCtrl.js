@@ -1,5 +1,5 @@
-admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$rootScope',
-    function($scope,ADRatesAddRoomTypeSrv, $rootScope) {
+admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$rootScope',
+    function($scope, ADRatesAddRoomTypeSrv, $rootScope) {
 
 
 
@@ -25,7 +25,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
             $scope.$emit('hideLoader');
         };
 
-        $scope.invokeApi(ADRatesAddRoomTypeSrv.fetchRoomTypes, {},fetchRoomTypesSuccessCallback);
+        $scope.invokeApi(ADRatesAddRoomTypeSrv.fetchRoomTypes, {}, fetchRoomTypesSuccessCallback);
 
     };
 
@@ -207,7 +207,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
         if($scope.selectedUnAssignedRoomIndex !== -1) {
             var temp = $scope.nonAssignedroomTypes[$scope.selectedUnAssignedRoomIndex];
             $scope.assignedRoomTypes.push(temp);
-            $scope.nonAssignedroomTypes.splice($scope.selectedUnAssignedRoomIndex,1);
+            $scope.nonAssignedroomTypes.splice($scope.selectedUnAssignedRoomIndex, 1);
             $scope.selectedUnAssignedRoomIndex =-1;
         }
     };
@@ -219,7 +219,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
         if($scope.selectedAssignedRoomIndex !== -1) {
             var temp = $scope.assignedRoomTypes[$scope.selectedAssignedRoomIndex];
             $scope.nonAssignedroomTypes.push(temp);
-            $scope.assignedRoomTypes.splice($scope.selectedAssignedRoomIndex,1);
+            $scope.assignedRoomTypes.splice($scope.selectedAssignedRoomIndex, 1);
             $scope.selectedAssignedRoomIndex =-1;
          }
     };

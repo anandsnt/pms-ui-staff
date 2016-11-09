@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', function($http, $q, BaseWebSrvV2, RVBaseWebSrv) {
+angular.module('sntRover').service('RVBillinginfoSrv', ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', function($http, $q, BaseWebSrvV2, RVBaseWebSrv) {
 
 	this.fetchRoutes = function(reservationId) {
 		var deferred = $q.defer();
@@ -6,7 +6,7 @@ angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSr
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 
@@ -19,7 +19,7 @@ angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSr
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 
@@ -39,7 +39,7 @@ angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSr
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 
@@ -60,7 +60,7 @@ angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSr
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 
@@ -73,7 +73,7 @@ angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSr
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 
@@ -87,7 +87,7 @@ angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSr
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 
@@ -105,7 +105,7 @@ angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSr
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 
 		   	 deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 
@@ -118,7 +118,7 @@ angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSr
 			BaseWebSrvV2.postJSON(url, data).then(function(data) {
 
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 
@@ -130,7 +130,7 @@ angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSr
 		var url = 'api/default_account_routings/save';
 			BaseWebSrvV2.postJSON(url, data).then(function(data) {
 		   	 	deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 
@@ -142,7 +142,7 @@ angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSr
 		var url = 'api/default_account_routings/save_allotment_default_billing_info';
 			BaseWebSrvV2.postJSON(url, data).then(function(data) {
 		   	 	deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 
@@ -155,7 +155,7 @@ angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSr
 			BaseWebSrvV2.postJSON(url, data).then(function(data) {
 
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 
@@ -171,7 +171,7 @@ angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSr
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 
@@ -183,7 +183,7 @@ angular.module('sntRover').service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSr
 		var url = 'api/default_account_routings/'+data.id;
 			BaseWebSrvV2.deleteJSON(url).then(function(data) {
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 

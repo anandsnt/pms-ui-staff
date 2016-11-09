@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVHKOWSTestSrv',['$http', '$q', '$window', function($http, $q, $window) {
+angular.module('sntRover').service('RVHKOWSTestSrv', ['$http', '$q', '$window', function($http, $q, $window) {
 
 	this.checkOWSConnection = function(id) {
 		var deferred = $q.defer();

@@ -1,5 +1,5 @@
 
-sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
+sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/noOptionAvailable");
 
@@ -151,7 +151,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/common_templates/partials/checkin/gwExternalCheckin.html',
 		controller: 'externalCheckinVerificationViewController',
 		title: 'External Check in verification'
-	}).state('guestCheckinTurnedOff',{
+	}).state('guestCheckinTurnedOff', {
 	 	url: '/guestCheckinTurnedOff',
 	 	templateUrl: '/assets/common_templates/partials/checkin/gwExternalCheckInTurnedOff.html',
 	 	title: 'Check-in'
@@ -185,7 +185,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 	});
 
 
-	$stateProvider.state('selectNoOfkeys',{
+	$stateProvider.state('selectNoOfkeys', {
 		url:'/selectNoOfkeys',
 		templateUrl: '/assets/common_templates/partials/greatWolf/gwNoOfKeysEntry.html',
 		controller: 'selectNoOfkeysController',
@@ -195,7 +195,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/common_templates/partials/greatWolf/gwbalancePaymentCCCollection.html',
 		controller: 'outstandingBalanceDetailsController',
 		title: 'Check-in'
-	}).state('conductSurvey',{
+	}).state('conductSurvey', {
 		url:'/conductSurvey',
 		templateUrl: '/assets/common_templates/partials/greatWolf/gwCollectSurveyResponse.html',
 		controller: 'guestwebSurveyController',

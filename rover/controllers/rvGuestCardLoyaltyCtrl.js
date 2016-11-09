@@ -1,9 +1,9 @@
-angular.module('sntRover').controller('RVGuestCardLoyaltyController',['$scope','$rootScope','RVGuestCardLoyaltySrv','ngDialog',function($scope,$rootScope,RVGuestCardLoyaltySrv,ngDialog) {
+angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope', '$rootScope', 'RVGuestCardLoyaltySrv', 'ngDialog', function($scope, $rootScope, RVGuestCardLoyaltySrv, ngDialog) {
 	BaseCtrl.call(this, $scope);
 	$scope.init = function() {
 		var loyaltyFetchsuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
-                        $rootScope.$broadcast('detect-hlps-ffp-active-status',data);
+                        $rootScope.$broadcast('detect-hlps-ffp-active-status', data);
 			$scope.loyaltyData = data;
 			$scope.checkForHotelLoyaltyLevel();
 			setTimeout(function() {
@@ -18,11 +18,11 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController',['$scope','
 		};
 
 		var data = {'userID':$scope.$parent.guestCardData.userId};
-		$scope.invokeApi(RVGuestCardLoyaltySrv.fetchLoyalties,data , loyaltyFetchsuccessCallback, loyaltyFetchErrorCallback, 'NONE');
+		$scope.invokeApi(RVGuestCardLoyaltySrv.fetchLoyalties, data, loyaltyFetchsuccessCallback, loyaltyFetchErrorCallback, 'NONE');
 	};
         $scope.reloadOnSet = false;
         if ($scope.reloadOnSet) {
-            $rootScope.$on('reload-loyalty-section-data',function(evt,data) {
+            $rootScope.$on('reload-loyalty-section-data', function(evt, data) {
                 $scope.init();//reload loyalty when switching through staycards
             });
             $scope.reloadOnSet = true;
@@ -42,7 +42,7 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController',['$scope','
 * To check for the loyalty levels in hotel loyalty section for the guest
 * and notify the guestcard header to display the same
 */
-$rootScope.$on('reload-loyalty-section-data',function(evt,data) {
+$rootScope.$on('reload-loyalty-section-data', function(evt, data) {
     if (data) {
         if (data.reload) {
             if ($rootScope.goToReservationCalled) {
@@ -65,7 +65,7 @@ $scope.checkForHotelLoyaltyLevel = function() {
 };
 
 
-$scope.$on('clearNotifications',function() {
+$scope.$on('clearNotifications', function() {
 	$scope.errorMessage ="";
 	$scope.successMessage ="";
 });
@@ -107,7 +107,7 @@ $scope.showDeleteModal =  function(id, index, loyaltyProgram) {
 };
 
 
-$scope.$on("loyaltyProgramAdded",function(e, data, source) {
+$scope.$on("loyaltyProgramAdded", function(e, data, source) {
 
 	if(typeof $scope.loyaltyData === 'undefined') {
 		return;
@@ -133,12 +133,12 @@ $scope.loyaltyProgramDeleted = function(id, index, loyaltyProgram) {
 	}
 };
 
-$scope.$on("loyaltyDeletionError",function(e,error) {
-	$scope.$parent.myScroll['loyaltyList'].scrollTo(0,0);
+$scope.$on("loyaltyDeletionError", function(e, error) {
+	$scope.$parent.myScroll['loyaltyList'].scrollTo(0, 0);
 	$scope.errorMessage = error;
 });
 
-        $scope.$on('detect-hlps-ffp-active-status',function(evt,data) {
+        $scope.$on('detect-hlps-ffp-active-status', function(evt, data) {
            if (data.userMemberships.use_hlp) {
                $scope.loyaltyProgramsActive(true);
                $scope.$parent.guestCardData.use_hlp = true;

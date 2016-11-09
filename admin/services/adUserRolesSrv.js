@@ -1,4 +1,4 @@
-admin.service('ADUserRolesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('ADUserRolesSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 
 
 	this.userRolesData  = {};
@@ -18,7 +18,7 @@ admin.service('ADUserRolesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
 				that.userRolesData.userRoles = data.user_roles;
 			    deferred.resolve(that.userRolesData);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 			return deferred.promise;
@@ -29,7 +29,7 @@ admin.service('ADUserRolesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		   that.userRolesData.dashboards = data;
 		   fetchUserRolesData();
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -45,7 +45,7 @@ admin.service('ADUserRolesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -64,7 +64,7 @@ admin.service('ADUserRolesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
 
 		ADBaseWebSrvV2.putJSON(url, updateData).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

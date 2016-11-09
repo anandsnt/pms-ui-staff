@@ -1,4 +1,4 @@
-sntRover.controller('RVAddNewHotelLoyaltyController',['$scope', '$rootScope','RVGuestCardLoyaltySrv','ngDialog', function($scope, $rootScope,RVGuestCardLoyaltySrv,ngDialog) {
+sntRover.controller('RVAddNewHotelLoyaltyController', ['$scope', '$rootScope', 'RVGuestCardLoyaltySrv', 'ngDialog', function($scope, $rootScope, RVGuestCardLoyaltySrv, ngDialog) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.userMembershipTypes = $scope.loyaltyData.hotelLoyaltyData;
@@ -12,7 +12,7 @@ sntRover.controller('RVAddNewHotelLoyaltyController',['$scope', '$rootScope','RV
 
 	 $scope.memberShipTypeChanged = function() {
 
-	 	angular.forEach($scope.userMembershipTypes,function(userMembershipType, index) {
+	 	angular.forEach($scope.userMembershipTypes, function(userMembershipType, index) {
 
     		if($scope.userMembershipType === userMembershipType.hl_value) {
      			$scope.userMembershipLevels = userMembershipType.levels;
@@ -54,7 +54,7 @@ sntRover.controller('RVAddNewHotelLoyaltyController',['$scope', '$rootScope','RV
 					'user_membership': user_membership,
 					 'reservation_id':$scope.reservationData.reservationId
 					};
-		$scope.invokeApi(RVGuestCardLoyaltySrv.createLoyalties,data , loyaltyPostsuccessCallback, loyaltyPostErrorCallback);
+		$scope.invokeApi(RVGuestCardLoyaltySrv.createLoyalties, data, loyaltyPostsuccessCallback, loyaltyPostErrorCallback);
 	};
 
 	$scope.cancel = function() {

@@ -10,7 +10,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             var deferred = $q.defer();
             var url = "/api/rates/enable_disable";
 
-            ADBaseWebSrvV2.putJSON(url,params).then(function (data) {
+            ADBaseWebSrvV2.putJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);
@@ -168,9 +168,9 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
                 
                 if( typeof chargeCodes !== 'undefined' && chargeCodes.length >0 ) {
                     
-                    angular.forEach( chargeCodes ,function( item, index) {
+                    angular.forEach( chargeCodes, function( item, index) {
                         if( typeof selectedChargeCodes !== 'undefined' && selectedChargeCodes.length >0 ) {
-                            angular.forEach( selectedChargeCodes ,function( id, index) {
+                            angular.forEach( selectedChargeCodes, function( id, index) {
                                 if(id === item.id) {
                                     item.is_checked = true;
                                 }

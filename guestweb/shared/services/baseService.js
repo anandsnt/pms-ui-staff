@@ -1,12 +1,12 @@
 (function() {
-	var baseWebService = function($http, $q,$rootScope) {
+	var baseWebService = function($http, $q, $rootScope) {
 		var details = {};
 
-		var fetch = function(url,parameters) {
+		var fetch = function(url, parameters) {
 			var deferred = $q.defer();
 
 
-			$http.get(url,{
+			$http.get(url, {
     		params: parameters
 			}).success(function(response) {
 					this.details = response;
@@ -19,7 +19,7 @@
 
 			return deferred.promise;
 		};
-		var post = function(url,parameters) {
+		var post = function(url, parameters) {
 
 
 			var deferred = $q.defer();
@@ -46,7 +46,7 @@
 
 	var dependencies = [
 		'$http',
-		'$q','$rootScope',
+		'$q', '$rootScope',
 		baseWebService
 	];
 

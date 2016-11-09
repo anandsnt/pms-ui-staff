@@ -3,7 +3,7 @@
 	Reservation details are shown in this page.
 */
 (function() {
-	var checkInReservationDetails = function($scope,$rootScope,$location,checkinDetailsService,$state,$modal) {
+	var checkInReservationDetails = function($scope, $rootScope, $location, checkinDetailsService, $state, $modal) {
 
 	$scope.pageValid = false;
 
@@ -91,7 +91,7 @@
 };
 
 var dependencies = [
-'$scope','$rootScope','$location','checkinDetailsService','$state','$modal',
+'$scope', '$rootScope', '$location', 'checkinDetailsService', '$state', '$modal',
 checkInReservationDetails
 ];
 

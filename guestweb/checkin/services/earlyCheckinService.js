@@ -1,5 +1,5 @@
 (function() {
-	var earlyCheckinService = function($q,$http) {
+	var earlyCheckinService = function($q, $http) {
 
 	var responseData = {};
 
@@ -27,7 +27,7 @@
 };
 
 var dependencies = [
-'$q','$http',
+'$q', '$http',
 earlyCheckinService
 ];
 

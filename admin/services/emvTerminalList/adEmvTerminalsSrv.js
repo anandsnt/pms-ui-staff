@@ -1,4 +1,4 @@
-admin.service('ADEmvTerminalsSrv',['$q', 'ADBaseWebSrv','ADBaseWebSrvV2', function($q, ADBaseWebSrv, ADBaseWebSrvV2) {
+admin.service('ADEmvTerminalsSrv', ['$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($q, ADBaseWebSrv, ADBaseWebSrvV2) {
 
    /*
 	* service class for emv terminal related operations
@@ -14,7 +14,7 @@ admin.service('ADEmvTerminalsSrv',['$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -32,7 +32,7 @@ admin.service('ADEmvTerminalsSrv',['$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -48,7 +48,7 @@ admin.service('ADEmvTerminalsSrv',['$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 		var deferred = $q.defer();
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -62,7 +62,7 @@ admin.service('ADEmvTerminalsSrv',['$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 		var deferred = $q.defer();
 		ADBaseWebSrvV2.postJSON(url, itemDetails).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -76,7 +76,7 @@ admin.service('ADEmvTerminalsSrv',['$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 		var deferred = $q.defer();
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;

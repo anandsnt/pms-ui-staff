@@ -347,7 +347,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		 * @return undefined
 		 */
 		$scope.gotoEditAccountConfiguration = function(accountID) {
-			$state.go('rover.accounts.config',{
+			$state.go('rover.accounts.config', {
 				id: accountID,
 				activeTab: 'ACCOUNT',
         isFromCards: true

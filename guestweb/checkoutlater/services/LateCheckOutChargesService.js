@@ -6,7 +6,7 @@
 		var deferred = $q.defer();
 		var url = '/guest_web/get_late_checkout_charges.json',
 		parameters = {'reservation_id':$rootScope.reservationID};
-		$http.get(url,{
+		$http.get(url, {
 			params: parameters
 		}).success(function(response) {
 			this.charges = response;
@@ -18,7 +18,7 @@
 		return deferred.promise;
 	};
 
-	var postNewCheckoutOption = function(url,data) {
+	var postNewCheckoutOption = function(url, data) {
 
 		var deferred = $q.defer();
 		$http.post(url, data).success(function(response) {

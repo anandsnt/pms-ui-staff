@@ -1,4 +1,4 @@
-admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorScroll', '$timeout', '$location',
+admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorScroll', '$timeout', '$location',
 	function($scope, ADChargeGroupsSrv, $anchorScroll, $timeout, $location) {
 
 	BaseCtrl.call(this, $scope);
@@ -12,7 +12,7 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorSc
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 	};
-	$scope.invokeApi(ADChargeGroupsSrv.fetch, {},fetchSuccessCallback);
+	$scope.invokeApi(ADChargeGroupsSrv.fetch, {}, fetchSuccessCallback);
 
     /*
     * To render edit screen
@@ -86,7 +86,7 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', '$anchorSc
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			// delete data from scope
-			angular.forEach($scope.data.charge_groups,function(item, index) {
+			angular.forEach($scope.data.charge_groups, function(item, index) {
 	 			if (item.value === id) {
 	 				$scope.data.charge_groups.splice(index, 1);
 	 			}

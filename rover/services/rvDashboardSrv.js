@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function( $q, RVBaseWebSrv, rvBaseWebSrvV2) {
+angular.module('sntRover').service('RVDashboardSrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function( $q, RVBaseWebSrv, rvBaseWebSrvV2) {
 
 
     var that = this;
@@ -19,7 +19,7 @@ angular.module('sntRover').service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBa
 		userDetails = data;
 
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -31,7 +31,7 @@ angular.module('sntRover').service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBa
 		var url = '/api/dashboards';
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -43,7 +43,7 @@ angular.module('sntRover').service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBa
 		var url = '/api/staff_notifications/user';
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -55,7 +55,7 @@ angular.module('sntRover').service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBa
 		var url = '/api/staff_notifications/'+id+'/user';
 		rvBaseWebSrvV2.putJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -81,7 +81,7 @@ angular.module('sntRover').service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBa
 		var url = '/api/hotel_settings.json';
 		RVBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -93,7 +93,7 @@ angular.module('sntRover').service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBa
 		var url = '/api/dashboards/statistics';
 		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;

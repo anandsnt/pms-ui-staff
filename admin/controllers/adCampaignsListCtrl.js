@@ -1,4 +1,4 @@
-admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCampaignSrv', 'ngTableParams','$filter','$timeout', '$location', '$anchorScroll',
+admin.controller('ADCampaignsListCtrl', ['$scope', '$state', 'ADRatesSrv', 'ADCampaignSrv', 'ngTableParams', '$filter', '$timeout', '$location', '$anchorScroll',
 	function($scope, $state, ADRatesSrv, ADCampaignSrv, ngTableParams, $filter, $timeout, $location, $anchorScroll) {
 
 	$scope.errorMessage = '';
@@ -38,7 +38,7 @@ admin.controller('ADCampaignsListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADCam
 		);
 	};
 
-	$scope.editCampaign = function(id , index) {
+	$scope.editCampaign = function(id, index) {
 		$state.go('admin.addCampaign', {'id' : id, 'type': 'EDIT'});
 	};
 

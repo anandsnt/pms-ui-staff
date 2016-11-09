@@ -105,7 +105,7 @@ angular.module('sntRover').service('jsMappings', ['$q', 'rvBaseWebSrvV2', '$ocLa
              console.log('Error on loading Payment Module', err);
           })
 
-        },function(err) {
+        }, function(err) {
           console.log('Error on loading Payment Module', err);
 
         });

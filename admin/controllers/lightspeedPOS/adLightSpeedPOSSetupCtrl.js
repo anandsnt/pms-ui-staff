@@ -40,7 +40,7 @@ admin.controller('adLightSpeedPOSSetupCtrl', ['$scope', 'lightSpeedSetupValues',
 	 */
 	$scope.saveLightSpeedPOSSetup = function() {
 		var params 	= {
-			lightspeed: _.omit( dclone($scope.lightspeed), 'charge_code_name' , 'payment_charge_code_name')
+			lightspeed: _.omit( dclone($scope.lightspeed), 'charge_code_name', 'payment_charge_code_name')
 		};
 
 		if (!$scope.lightspeed.enabled) {

@@ -1,4 +1,4 @@
-sntZestStation.service('zsLoginSrv',['$http', '$q', function($http, $q) {
+sntZestStation.service('zsLoginSrv', ['$http', '$q', function($http, $q) {
 	this.login = function(data, successCallback, failureCallBack) {
 		var deferred = $q.defer();
 

@@ -34,10 +34,10 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                         $(elToFocus).focus();
                         $timeout(function() {
                             $(elToFocus).click();
-                        },200);
+                        }, 200);
 
                         scopeFn();
-                    },0);
+                    }, 0);
                 }
             }
             //we are setting delay to 2sec. if it is undefined

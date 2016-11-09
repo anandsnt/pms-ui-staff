@@ -1,4 +1,4 @@
-sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RVBillCardSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillCardSrv, ngDialog) {
+sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'ngDialog', function($scope, $rootScope, $filter, RVBillCardSrv, ngDialog) {
 
     BaseCtrl.call(this, $scope);
     $scope.isCompanyCardInvoice = true;
@@ -78,7 +78,7 @@ sntRover.controller('rvBillFormatPopupCtrl',['$scope','$rootScope','$filter','RV
             $scope.$emit('hideLoader');
             $scope.data = response.data;
         };
-        $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo,params,onBillSettingsInfoFetchSuccess);
+        $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo, params, onBillSettingsInfoFetchSuccess);
     };
 
     /*

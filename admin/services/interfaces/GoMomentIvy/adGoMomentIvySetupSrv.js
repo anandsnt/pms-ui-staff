@@ -10,7 +10,7 @@ admin.service('adGoMomentIvySetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -26,7 +26,7 @@ admin.service('adGoMomentIvySetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

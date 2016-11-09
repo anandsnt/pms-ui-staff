@@ -1,4 +1,4 @@
-admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
+admin.service('ADRoomSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
    /*
 	* service class for room related operations
 	*/
@@ -15,7 +15,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 		var url = '/admin/hotel_rooms.json';
 		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 
@@ -32,7 +32,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			that.saveRoomTypesArray(data);
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -48,14 +48,14 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms/';
 
-		ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
+		ADBaseWebSrv.postJSON(url, updateData).then(function(data) {
 			var dataToAdd = {
 				"room_number": updateData.room_number,
                 "room_type": that.getRoomTypeName(updateData.room_type_id),
                 "room_id" : data.room_id
 			};
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -80,7 +80,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			that.saveRoomTypesArray(data);
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -100,10 +100,10 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms/'+id;
 
-		ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
+		ADBaseWebSrv.putJSON(url, updateData).then(function(data) {
 			that.updateRoomDataOnUpdate(id, "room_type", that.getRoomTypeName(updateData.room_type_id));
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -146,9 +146,9 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms';
 
-		ADBaseWebSrv.postJSON(url,data).then(function(data) {
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -158,7 +158,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 		var url = '/admin/hotel_rooms/' + data.room_id;
 		ADBaseWebSrv.deleteJSON(url).then(function(data) {
 		deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 		deferred.reject(errorMessage);
 		});
 	return deferred.promise;
@@ -168,7 +168,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 		var url = 'admin/room_types/'+data.suite_room_type_id+'/component_room_types';
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 

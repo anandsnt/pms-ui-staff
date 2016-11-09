@@ -1,4 +1,4 @@
-admin.controller('ADSocialLobbySettingsCtrl', ['$scope','$rootScope', '$state', 'ADSocialLobbySrv', function($scope, $rootScope,$state, ADSocialLobbySrv) {
+admin.controller('ADSocialLobbySettingsCtrl', ['$scope', '$rootScope', '$state', 'ADSocialLobbySrv', function($scope, $rootScope, $state, ADSocialLobbySrv) {
 
    	/*
 	* controller class for social lobby settings

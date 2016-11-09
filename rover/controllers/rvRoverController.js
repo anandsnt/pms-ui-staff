@@ -55,7 +55,7 @@ sntRover.controller('roverController',
           if($scope.hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id) {
              $scope.currentHotelData.name = hotel.hotel_name;
              $scope.currentHotelData.id   = hotel.hotel_id;
-             $scope.hotelDetails.userHotelsData.hotel_list.splice(index,1);
+             $scope.hotelDetails.userHotelsData.hotel_list.splice(index, 1);
           };
     });
 
@@ -351,7 +351,7 @@ sntRover.controller('roverController',
         $scope.toggleDrawerMenu();
       }
     };
-    $scope.$on("updateSettingsSubMenu", function(e,item) {
+    $scope.$on("updateSettingsSubMenu", function(e, item) {
       $rootScope.updateSettingsSubMenu(item);
     });
 
@@ -374,10 +374,10 @@ sntRover.controller('roverController',
       $scope.hasLoader = false;
     });
 
-    $scope.$on("SHOW_SIX_PAY_LOADER",function() {
+    $scope.$on("SHOW_SIX_PAY_LOADER", function() {
       $scope.showSixPayLoader = true;
     });
-    $scope.$on("HIDE_SIX_PAY_LOADER",function() {
+    $scope.$on("HIDE_SIX_PAY_LOADER", function() {
       $scope.showSixPayLoader = false;
     });
     /**

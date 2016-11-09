@@ -2,7 +2,7 @@
 	Precheckin final Ctrl where the pre checkin API is called
 */
 (function() {
-	var preCheckinStatusController = function($scope, preCheckinSrv,$rootScope,$state) {
+	var preCheckinStatusController = function($scope, preCheckinSrv, $rootScope, $state) {
 	// if prompt for cc is turned on
 	// we will always ask for CC addition in case of MLI
 
@@ -35,7 +35,7 @@
 	}
 	//collect email
 	else if($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application ==="SMS" || $rootScope.application ==="EMAIL" || $rootScope.application ==="URL")) {
-		$state.go('emailAddition',{'isFrom':'checkinLater'});// if user has not attached an email
+		$state.go('emailAddition', {'isFrom':'checkinLater'});// if user has not attached an email
 	}
 	//collect deposit
 	else if($rootScope.enforceDeposit && !$rootScope.skipDeposit) {
@@ -60,7 +60,7 @@
 					$rootScope.preckinCompleted =  true;
 					$rootScope.responseData = {"confirmation_message":$scope.responseData.confirmation_message};
 				};
-			},function() {
+			}, function() {
 				$scope.netWorkError = true;
 				$scope.isLoading = false;
 			});
@@ -78,7 +78,7 @@
 
 var dependencies = [
 '$scope',
-'preCheckinSrv','$rootScope','$state',
+'preCheckinSrv', '$rootScope', '$state',
 preCheckinStatusController
 ];
 

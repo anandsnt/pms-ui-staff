@@ -1,8 +1,8 @@
-sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVPaymentSrv','ngDialog','RVReservationCardSrv', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog, RVReservationCardSrv) {
+sntRover.controller('RVPaymentGuestCtrl', ['$rootScope', '$scope', '$state', 'RVPaymentSrv', 'ngDialog', 'RVReservationCardSrv', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog, RVReservationCardSrv) {
 	BaseCtrl.call(this, $scope);
 
 
-	$scope.$on('clearNotifications',function() {
+	$scope.$on('clearNotifications', function() {
     	$scope.errorMessage ="";
     	$scope.successMessage ="";
     });

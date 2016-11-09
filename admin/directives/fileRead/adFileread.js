@@ -5,7 +5,7 @@ admin.directive('appFilereader', function($q) {
     return {
         restrict: 'A'
         , require: '?ngModel'
-        ,scope: {
+        , scope: {
             fileNameKey:'@fileNameKey',
             emitData: '@emitData'
         }

@@ -1,4 +1,4 @@
-admin.controller('ADDashboardCtrl',['$scope', '$state', '$stateParams', '$rootScope', function($scope, $state, $stateParams,$rootScope) {
+admin.controller('ADDashboardCtrl', ['$scope', '$state', '$stateParams', '$rootScope', function($scope, $state, $stateParams, $rootScope) {
 	$scope.$emit("changedSelectedMenu", $stateParams.menu);
 	if(typeof $scope.data !== 'undefined') {
 		$scope.selectedMenu = $scope.data.menus[$stateParams.menu];

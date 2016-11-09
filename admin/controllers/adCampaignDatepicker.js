@@ -1,4 +1,4 @@
-admin.controller('ADcampaignDatepicker',['$scope','ngDialog','$rootScope','$filter',function($scope,ngDialog,$rootScope,$filter) {
+admin.controller('ADcampaignDatepicker', ['$scope', 'ngDialog', '$rootScope', '$filter', function($scope, ngDialog, $rootScope, $filter) {
 
 //if no date is selected .Make bussiness date as default CICO-8703
 

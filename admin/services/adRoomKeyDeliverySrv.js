@@ -1,4 +1,4 @@
-admin.service('ADRoomKeyDeliverySrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
+admin.service('ADRoomKeyDeliverySrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
 	/*
     * Service function to fetch the room key delivery data
     * @return {object} room key delivery data
@@ -22,9 +22,9 @@ admin.service('ADRoomKeyDeliverySrv',['$http', '$q', 'ADBaseWebSrv', function($h
 		var deferred = $q.defer();
 		var url = '/admin/update_room_key_delivery_settings';
 
-		ADBaseWebSrv.postJSON(url,data).then(function(data) {
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

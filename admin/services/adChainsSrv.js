@@ -1,4 +1,4 @@
-admin.service('adChainsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
+admin.service('adChainsSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
    /*
     * To fetch chains list
     * @return {object} chains list
@@ -9,7 +9,7 @@ admin.service('adChainsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -26,7 +26,7 @@ admin.service('adChainsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -42,9 +42,9 @@ admin.service('adChainsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
 		var deferred = $q.defer();
 		var url = '/admin/hotel_chains/'+id;
 
-		ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
+		ADBaseWebSrv.putJSON(url, updateData).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -58,9 +58,9 @@ admin.service('adChainsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
 		var deferred = $q.defer();
 		var url = '/admin/hotel_chains';
 
-		ADBaseWebSrv.postJSON(url,data).then(function(data) {
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

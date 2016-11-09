@@ -1,4 +1,4 @@
-sntRover.controller('signaturePanelController',['$scope', function($scope) {
+sntRover.controller('signaturePanelController', ['$scope', function($scope) {
 
 
 }]);

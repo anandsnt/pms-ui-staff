@@ -1,4 +1,4 @@
-sntRover.controller('rvApplyRoomChargeCtrl',[
+sntRover.controller('rvApplyRoomChargeCtrl', [
 	'$scope',
 	'$rootScope',
 	'$state',

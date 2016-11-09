@@ -1,4 +1,4 @@
-admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$state','beaconTypes','triggerTypes','beaconNeighbours','adiBeaconSettingsSrv','defaultBeaconDetails','beaconDetails',function($scope,$stateParams,$rootScope,$state,beaconTypes,triggerTypes,beaconNeighbours,adiBeaconSettingsSrv,defaultBeaconDetails,beaconDetails) {
+admin.controller('ADiBeaconDetailsCtrl', ['$scope', '$stateParams', '$rootScope', '$state', 'beaconTypes', 'triggerTypes', 'beaconNeighbours', 'adiBeaconSettingsSrv', 'defaultBeaconDetails', 'beaconDetails', function($scope, $stateParams, $rootScope, $state, beaconTypes, triggerTypes, beaconNeighbours, adiBeaconSettingsSrv, defaultBeaconDetails, beaconDetails) {
 
   $scope.init = function() {
     BaseCtrl.call(this, $scope);
@@ -31,7 +31,7 @@ if(!$scope.addmode) {
   $scope.data = beaconDetails;
    angular.forEach($scope.beaconNeighbours, function(beaconNeighbour, index) {
                 if (beaconNeighbour.beacon_id ===$scope.beaconId) {
-                  $scope.beaconNeighbours.splice(index,1);
+                  $scope.beaconNeighbours.splice(index, 1);
                 }
   });
  }
@@ -150,14 +150,14 @@ if(!$scope.addmode) {
       };
       var BeaconId = $scope.data.proximity_id+"-"+$scope.data.major_id+"-"+$scope.data.minor_id;
       if($scope.addmode) {
-        var unwantedKeys = ["major_id","minor_id","proximity_id"];
+        var unwantedKeys = ["major_id", "minor_id", "proximity_id"];
         updateData= dclone($scope.data, unwantedKeys);
         updateData.uuid = BeaconId;
-        $scope.invokeApi(adiBeaconSettingsSrv.addBeaconDetails,updateData,updateBeaconSuccess,updateBeaconFailure);
+        $scope.invokeApi(adiBeaconSettingsSrv.addBeaconDetails, updateData, updateBeaconSuccess, updateBeaconFailure);
       }
       else{
         updateData.id = $stateParams.action;
-        var unwantedKeys = ["picture","majorid","minorid"];
+        var unwantedKeys = ["picture", "majorid", "minorid"];
         updateData.data= dclone($scope.data, unwantedKeys);
         updateData.data.uuid = BeaconId;
         // Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
@@ -165,7 +165,7 @@ if(!$scope.addmode) {
           updateData.data.picture = $scope.data.picture;
         }
 
-        $scope.invokeApi(adiBeaconSettingsSrv.updateBeaconDetails,updateData,updateBeaconSuccess,updateBeaconFailure);
+        $scope.invokeApi(adiBeaconSettingsSrv.updateBeaconDetails, updateData, updateBeaconSuccess, updateBeaconFailure);
       }
   };
 
@@ -185,7 +185,7 @@ if(!$scope.addmode) {
     var data = {};
     data.id = $scope.beaconId;
     data.is_linked = $scope.isBeaconLinked;
-    $scope.invokeApi(adiBeaconSettingsSrv.setLink,data,linkBeaconSuccess,linkBeaconFailure);
+    $scope.invokeApi(adiBeaconSettingsSrv.setLink, data, linkBeaconSuccess, linkBeaconFailure);
   };
 
 }]);

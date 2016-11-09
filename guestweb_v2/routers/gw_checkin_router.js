@@ -49,7 +49,7 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 	data: {
 	 		title: 'Check-in'
 	 	}
-	 }).state('externalCheckInTurnedOff',{
+	 }).state('externalCheckInTurnedOff', {
 	 	url: '/externalCheckInTurnedOff',
 	 	templateUrl: '/assets/partials/checkin/gwExternalCheckInTurnedOff.html',
 	 	controller : 'gwExternalCheckInTurnedOffController',

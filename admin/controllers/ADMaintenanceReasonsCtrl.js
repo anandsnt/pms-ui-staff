@@ -1,4 +1,4 @@
-admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv', '$anchorScroll', '$timeout',  '$location',
+admin.controller('ADMaintenanceReasonsCtrl', ['$scope', 'ADMaintenanceReasonsSrv', '$anchorScroll', '$timeout',  '$location',
  function($scope, ADMaintenanceReasonsSrv, $anchorScroll, $timeout, $location) {
 
 	BaseCtrl.call(this, $scope);
@@ -13,7 +13,7 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 	};
-	$scope.invokeApi(ADMaintenanceReasonsSrv.fetch, {},fetchSuccessCallback);
+	$scope.invokeApi(ADMaintenanceReasonsSrv.fetch, {}, fetchSuccessCallback);
 
     /*
     * To render edit screen
@@ -96,7 +96,7 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			// delete data from scope
-			angular.forEach($scope.data.maintenance_reasons,function(item, index) {
+			angular.forEach($scope.data.maintenance_reasons, function(item, index) {
 	 			if (item.value === id) {
 	 				$scope.data.maintenance_reasons.splice(index, 1);
 	 			}

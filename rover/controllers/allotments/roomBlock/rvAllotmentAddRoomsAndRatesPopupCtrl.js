@@ -200,7 +200,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 				ngDialog.close();
 				$timeout(function(argument) {
 					$scope.confirmUpdateRatesWithPickedReservations($scope.selectedRoomTypeAndRates);
-				},700)
+				}, 700)
 			}
 			else {
 				var options = {

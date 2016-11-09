@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVUpgradesSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv) {
+angular.module('sntRover').service('RVUpgradesSrv', ['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv) {
 
 
 	this.getAllUpgrades = function(param) {
@@ -7,7 +7,7 @@ angular.module('sntRover').service('RVUpgradesSrv',['$q', 'RVBaseWebSrv', functi
 
 		RVBaseWebSrv.getJSON(url, param).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 			return deferred.promise;
@@ -17,7 +17,7 @@ angular.module('sntRover').service('RVUpgradesSrv',['$q', 'RVBaseWebSrv', functi
 		var url =  '/staff/reservations/upgrade_room.json';
 		RVBaseWebSrv.postJSON(url, param).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 			return deferred.promise;

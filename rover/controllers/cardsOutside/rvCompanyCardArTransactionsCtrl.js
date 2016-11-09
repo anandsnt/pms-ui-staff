@@ -1,5 +1,5 @@
 
-sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,'RVCompanyCardSrv', '$timeout','$stateParams', 'ngDialog', '$state', '$vault', '$window', 'RVReservationCardSrv', '$filter',
+sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', '$stateParams', 'ngDialog', '$state', '$vault', '$window', 'RVReservationCardSrv', '$filter',
 	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window, RVReservationCardSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
@@ -134,7 +134,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 		};
 
 		// In the case of new card, handle the generated id upon saving the card.
-		$scope.$on("IDGENERATED", function(event,data) {
+		$scope.$on("IDGENERATED", function(event, data) {
 			$scope.filterData.id = data.id;
 			fetchData();
 		});
@@ -183,13 +183,13 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 	    };
 
 	    // To handle from date change
-	    $scope.$on('fromDateChanged',function() {
+	    $scope.$on('fromDateChanged', function() {
 	    	initPaginationParams();
 	        fetchData();
 	    });
 
 		// To handle to date change
-	    $scope.$on('toDateChanged',function() {
+	    $scope.$on('toDateChanged', function() {
 	    	initPaginationParams();
 	        fetchData();
 	    });
@@ -326,11 +326,11 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 
 	        if($scope.arTransactionDetails.ar_transactions[index].paid) {
 	        	// To pay API call
-	        	$scope.invokeApi(RVCompanyCardSrv.payForReservation, params, transactionSuccess ,failure);
+	        	$scope.invokeApi(RVCompanyCardSrv.payForReservation, params, transactionSuccess, failure);
 	    	}
 	    	else{
 	    		// To Open Api call
-	    		$scope.invokeApi(RVCompanyCardSrv.openForReservation, params, transactionSuccess ,failure);
+	    		$scope.invokeApi(RVCompanyCardSrv.openForReservation, params, transactionSuccess, failure);
 	    	}
 	    };
 
@@ -355,7 +355,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 						isFromCards: true
 					});
 				} else if (associatedType === 'PostingAccount') {
-					$state.go('rover.accounts.config',{
+					$state.go('rover.accounts.config', {
 						id: associatedId,
 						activeTab: 'ACCOUNT',
 						isFromArTransactions: true
@@ -564,7 +564,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 				$("#invoiceDiv.invoice").addClass('no-print');
 				$("#regDiv.registration-card").addClass('no-print');
 				// inoder to set class 'print-statement' on rvCompanyCardDetails.html
-				$scope.$emit("PRINT_AR_STATEMENT",true);
+				$scope.$emit("PRINT_AR_STATEMENT", true);
 			    // add the orientation
 			    addPrintOrientation();
 
@@ -592,7 +592,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope' ,
 					$("#invoiceDiv.invoice").removeClass('no-print');
 					$("#regDiv.registration-card").removeClass('no-print');
 					// inoder to re-set/remove class 'print-statement' on rvCompanyCardDetails.html
-					$scope.$emit("PRINT_AR_STATEMENT",false);
+					$scope.$emit("PRINT_AR_STATEMENT", false);
 					// remove the orientation after similar delay
 			    	removePrintOrientation();
 			    }, 1000);

@@ -200,7 +200,7 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 				$scope.closeDialog();
 				$timeout(function(argument) {
 					$scope.confirmUpdateRatesWithPickedReservations($scope.selectedRoomTypeAndRates);
-				},700)
+				}, 700)
 			}
 			else {
 				var options = {

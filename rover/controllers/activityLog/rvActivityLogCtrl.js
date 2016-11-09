@@ -1,4 +1,4 @@
-sntRover.controller('RVActivityLogCtrl',[
+sntRover.controller('RVActivityLogCtrl', [
 	'$scope',
 	'$rootScope',
 	'$filter',

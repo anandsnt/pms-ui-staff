@@ -1,4 +1,4 @@
-angular.module('sntRover').controller('RVHKOWSErrorCtrl', ['$scope', 'RVHKOWSTestSrv', '$rootScope', 'ngDialog',function($scope, RVHKOWSTestSrv, $rootScope, ngDialog) {
+angular.module('sntRover').controller('RVHKOWSErrorCtrl', ['$scope', 'RVHKOWSTestSrv', '$rootScope', 'ngDialog', function($scope, RVHKOWSTestSrv, $rootScope, ngDialog) {
 
 	/**
 	* Call API to test the OWS connection

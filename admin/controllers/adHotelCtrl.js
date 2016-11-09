@@ -1,4 +1,4 @@
-admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADHotelListSrv','ngTableParams', '$filter', function($scope, $state,$rootScope, $stateParams, ADHotelListSrv, ngTableParams, $filter) {
+admin.controller('ADHotelListCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADHotelListSrv', 'ngTableParams', '$filter', function($scope, $state, $rootScope, $stateParams, ADHotelListSrv, ngTableParams, $filter) {
 	BaseCtrl.call(this, $scope);
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 	$scope.$emit("changedSelectedMenu", 0);

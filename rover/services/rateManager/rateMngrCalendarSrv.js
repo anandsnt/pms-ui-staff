@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2) {
+angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2) {
 	var that = this;
 	that.allRestrictionTypes = [];
 
@@ -22,7 +22,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', 
 					}
 				}
 				deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 				deferred.reject(data);
 			});
 		}
@@ -58,7 +58,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', 
             var deferred = $q.defer();
                     BaseWebSrvV2.postJSON(url, data).then(function(data) {
                             deferred.resolve(data);
-                    },function(data) {
+                    }, function(data) {
                             deferred.reject(data);
                     });
             return deferred.promise;
@@ -82,7 +82,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', 
             that.fetchingRooms = fetchingRooms;
             return fetchingRooms;
     };
-    this.getUrlEnd = function(url,params) {
+    this.getUrlEnd = function(url, params) {
         var dateString = url + '?from_date=' + params.from_date
                                                 + '&to_date=' + params.to_date
                                                 + '&per_page=' + params.per_page +
@@ -120,7 +120,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', 
 	};
 
     this.getDailyRates = function(params, url, deferred, rejectDeferred) {
-		var urlString = that.getUrlEnd(url,params);
+		var urlString = that.getUrlEnd(url, params);
 
 		BaseWebSrvV2.getJSON(urlString).then(function(data) {
             var fetchingRooms = that.isFetchingRooms(params);
@@ -176,7 +176,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', 
 				deferred.resolve(calendarData);
 			}
 
-		},rejectDeferred);
+		}, rejectDeferred);
 
 	};
 
@@ -225,7 +225,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', 
 			calendarData.is_child = (data.can_modify !== undefined && !data.modify) || data.is_child;
 			calendarData.parentRateName = data.parent_rate_name;
 			deferred.resolve(calendarData);
-		},rejectDeferred);
+		}, rejectDeferred);
 
 	};
 
@@ -234,7 +234,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', 
 		var deferred = $q.defer();
 		BaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -274,7 +274,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', 
                     'description': "Has Restrictions",
                     'editable': false,
                     'hideOnHourly': false,
-                    'isOnRate': true,//hide when on adding/removing restrictions screen
+                    'isOnRate': true, //hide when on adding/removing restrictions screen
                     'icon': "R",
                     'days': "R",
                     'id': totalRestrictions,
@@ -292,7 +292,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', 
 		   	datesList.push(item.date);
 		   	
 		   	// CICO-21942 Set days count of restrictionsIndependentOfDays to be null
-		   	_.each(item.rate_restrictions,function(rate) {
+		   	_.each(item.rate_restrictions, function(rate) {
 		   		if(_.indexOf(that.restrictionsIndependentOfDays, parseInt(rate.restriction_type_id, 10)) > -1) {
 		   			rate.days = null;
 		   		}
@@ -325,7 +325,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', 
 		   		}
 		   		var rr = {};
 		   		// CICO-21942 Set days count of restrictionsIndependentOfDays to be null
-			   	_.each(rate.restrictions,function(rate) {
+			   	_.each(rate.restrictions, function(rate) {
 			   		if(_.indexOf(that.restrictionsIndependentOfDays, parseInt(rate.restriction_type_id, 10)) > -1) {
 			   			rate.days = null;
 			   		}
@@ -375,7 +375,7 @@ angular.module('sntRover').service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', 
                     'background_class': "bg-drk",
                     'description': "Has Restrictions",
                     'editable': false,
-                    'isOnRate': true,//hide when on adding/removing restrictions screen
+                    'isOnRate': true, //hide when on adding/removing restrictions screen
                     'hideOnHourly': false,
                     'icon': "R",
                     'days': "R",

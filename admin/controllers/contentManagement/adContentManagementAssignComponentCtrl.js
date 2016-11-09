@@ -1,4 +1,4 @@
-admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location',
+admin.controller('ADContentManagementAssignComponentCtrl', ['$scope', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout',  '$location',
  function($scope, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
 	$scope.errorMessage = '';
@@ -19,7 +19,7 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
 			$scope.setUpLists();
       $scope.isDataFetched = true;
 		};
-	   $scope.invokeApi(ADContentManagementSrv.fetchGridViewList, {} , successCallComponentFetch);
+	   $scope.invokeApi(ADContentManagementSrv.fetchGridViewList, {}, successCallComponentFetch);
    };
    /*Function to split the fetched components to categories and sections,
     *to provide the option to assign parent

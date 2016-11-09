@@ -1,4 +1,4 @@
-admin.service('ADToolsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('ADToolsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
    /**
     * To fetch the list of hold status
     * @return {object} hold statuses json
@@ -8,7 +8,7 @@ admin.service('ADToolsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q,
         var url = '/admin/auto_sync_inventories';
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -19,7 +19,7 @@ admin.service('ADToolsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q,
         var url = '/admin/auto_sync_inventories';
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -30,7 +30,7 @@ admin.service('ADToolsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q,
         var url = '/admin/auto_sync_inventories/'+data.id;
         ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -42,7 +42,7 @@ admin.service('ADToolsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q,
         var url = '/admin/auto_sync_inventories/'+data.id;
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;

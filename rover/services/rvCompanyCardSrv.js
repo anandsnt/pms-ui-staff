@@ -251,7 +251,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		this.saveARNote = function(data) {
 			var deferred = $q.defer();
 			var url = '/api/accounts/save_ar_note';
-			rvBaseWebSrvV2.postJSON(url,data).then(function(data) {
+			rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
@@ -262,7 +262,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		this.saveARDetails = function(data) {
 			var deferred = $q.defer();
 			var url = 'api/accounts/save_ar_details';
-			rvBaseWebSrvV2.postJSON(url,data).then(function(data) {
+			rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
@@ -275,7 +275,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		this.deleteARNote = function(data) {
 			var deferred = $q.defer();
 			var url = '/api/accounts/delete_ar_note';
-			rvBaseWebSrvV2.postJSON(url,data).then(function(data) {
+			rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
@@ -303,7 +303,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
 				// CICO-28089 - View detailed transactions - setting active flag
 				if(!!data.ar_transactions && data.ar_transactions.length > 0 ) {
-					angular.forEach(data.ar_transactions,function(item, index) {
+					angular.forEach(data.ar_transactions, function(item, index) {
 			       		if(item.transaction_type === 'DEBIT') {
 			       			item.active = false;
 			       		}
@@ -320,7 +320,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		this.addCreditAmount = function(params) {
 			var deferred = $q.defer();
 			var url = "api/accounts/"+params.id+"/ar_transactions";
-			rvBaseWebSrvV2.postJSON(url,params).then(function(data) {
+			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
@@ -366,7 +366,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                     var url =  '/staff/user_memberships/get_available_hlps.json';
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                             deferred.resolve(data);
-                    },function(data) {
+                    }, function(data) {
                             deferred.reject(data);
                     });
                     return deferred.promise;
@@ -376,7 +376,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                     var url =  '/staff/user_memberships/get_available_ffps.json';
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                             deferred.resolve(data);
-                    },function(data) {
+                    }, function(data) {
                             deferred.reject(data);
                     });
                     return deferred.promise;
@@ -435,7 +435,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			var url = '/api/ar_transactions/print';
 			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 		   	 	deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 			return deferred.promise;
@@ -447,7 +447,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			var url = '/api/ar_transactions/email';
 			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 		   	 	deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 			return deferred.promise;
@@ -459,7 +459,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			var url = '/api/ar_transactions/get_email?id='+params.id;
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 		   	 	deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 			return deferred.promise;

@@ -1,4 +1,4 @@
-admin.controller('ADRoomClassListCtrl',['$scope', '$state', 'ADRoomClassesSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADRoomClassesSrv, $location, $anchorScroll, $timeout) {
+admin.controller('ADRoomClassListCtrl', ['$scope', '$state', 'ADRoomClassesSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADRoomClassesSrv, $location, $anchorScroll, $timeout) {
 
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -15,7 +15,7 @@ admin.controller('ADRoomClassListCtrl',['$scope', '$state', 'ADRoomClassesSrv', 
 			$scope.currentClickedElement = -1;
 			$scope.isAddMode = false;
 		};
-		$scope.invokeApi(ADRoomClassesSrv.fetch, {} , successCallbackFetch);
+		$scope.invokeApi(ADRoomClassesSrv.fetch, {}, successCallbackFetch);
 	};
 	//To list room class
 	$scope.listRoomClass();
@@ -33,7 +33,7 @@ admin.controller('ADRoomClassListCtrl',['$scope', '$state', 'ADRoomClassesSrv', 
 	 		$scope.$emit('hideLoader');
 	 	};
 	 	var data = {"id":id };
-	 	$scope.invokeApi(ADRoomClassesSrv.fetchDetailsOfRoomClass, data , successCallbackRender);
+	 	$scope.invokeApi(ADRoomClassesSrv.fetchDetailsOfRoomClass, data, successCallbackRender);
 	};
    /*
     * Render add room class screen
@@ -77,9 +77,9 @@ admin.controller('ADRoomClassListCtrl',['$scope', '$state', 'ADRoomClassesSrv', 
     		$scope.currentClickedElement = -1;
     	};
     	if($scope.isAddMode) {
-    		$scope.invokeApi(ADRoomClassesSrv.saveClassRoom, $scope.roomClassData , successCallbackSave);
+    		$scope.invokeApi(ADRoomClassesSrv.saveClassRoom, $scope.roomClassData, successCallbackSave);
     	} else {
-    		$scope.invokeApi(ADRoomClassesSrv.updateClassRoom, $scope.roomClassData , successCallbackSave);
+    		$scope.invokeApi(ADRoomClassesSrv.updateClassRoom, $scope.roomClassData, successCallbackSave);
     	}
     };
    /*
@@ -99,7 +99,7 @@ admin.controller('ADRoomClassListCtrl',['$scope', '$state', 'ADRoomClassesSrv', 
 	 		$scope.roomClasses.splice(index, 1);
 	 		$scope.currentClickedElement = -1;
 	 	};
-		$scope.invokeApi(ADRoomClassesSrv.deleteClassRoom, id , successCallbackDelete);
+		$scope.invokeApi(ADRoomClassesSrv.deleteClassRoom, id, successCallbackDelete);
 	};
 }]);
 

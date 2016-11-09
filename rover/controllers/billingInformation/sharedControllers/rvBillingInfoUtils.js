@@ -4,7 +4,7 @@ var guestStatusMappings = {
     'CHECKING_IN'    : ['check-in'],
     'CHECKEDIN'      : ['inhouse'],
     'CHECKEDOUT'     : ['departed'],
-    'CHECKING_OUT'   : ['check-out','late-check-out'],
+    'CHECKING_OUT'   : ['check-out', 'late-check-out'],
     'CANCELED'       : ['cancel'],
     'NOSHOW'         : ['no-show'],
     'NOSHOW_CURRENT' : ['no-show']

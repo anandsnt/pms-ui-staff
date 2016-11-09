@@ -63,7 +63,7 @@ sntRover.controller('RVSocialLobbyCommentsCrl', [
                 }
                 
 
-            },1000);
+            }, 1000);
             
         };
 

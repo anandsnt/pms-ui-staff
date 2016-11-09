@@ -1,5 +1,5 @@
 
-sntRover.controller('RVReservationNotesPopupCtrl',['$scope','$rootScope', function($scope,$rootScope) {
+sntRover.controller('RVReservationNotesPopupCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
 
 
 	BaseCtrl.call(this, $scope);

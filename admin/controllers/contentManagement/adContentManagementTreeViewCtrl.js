@@ -1,4 +1,4 @@
-admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location',
+admin.controller('ADContentManagementTreeViewCtrl', ['$scope', '$state', 'ADContentManagementSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout',  '$location',
  function($scope, $state, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
 	$scope.errorMessage = '';
@@ -13,7 +13,7 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
 			$scope.setExpandStatus($scope.contentList);
 
 		};
-	   $scope.invokeApi(ADContentManagementSrv.fetchTreeViewList, {} , successCallbackTreeFetch);
+	   $scope.invokeApi(ADContentManagementSrv.fetchTreeViewList, {}, successCallbackTreeFetch);
    };
    /* Function to set the expansion status as false for all the components
     */

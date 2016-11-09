@@ -70,18 +70,18 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
         
         'ageingDaysList':
         [
-            {   'value' : ''    ,   'name'  : ''    },
-            {   'value' : '30'  ,   'name'  : '30'  },
-            {   'value' : '60'  ,   'name'  : '60'  },
-            {   'value' : '90'  ,   'name'  : '90'  },
-            {   'value' : '120' ,   'name'  : '120' }
+            {   'value' : '',   'name'  : ''    },
+            {   'value' : '30',   'name'  : '30'  },
+            {   'value' : '60',   'name'  : '60'  },
+            {   'value' : '90',   'name'  : '90'  },
+            {   'value' : '120',   'name'  : '120' }
         ],
         'sortList'      :
         [
-            {   'value' : 'NAME_ASC'    ,   'name':  'NAME ASC'   },
-            {   'value' : 'NAME_DESC'   ,   'name':  'NAME DESC'  },
-            {   'value' : 'AMOUNT_ASC'  ,   'name':  'AMOUNT ASC' },
-            {   'value' : 'AMOUNT_DESC' ,   'name':  'AMOUNT DESC'}
+            {   'value' : 'NAME_ASC',   'name':  'NAME ASC'   },
+            {   'value' : 'NAME_DESC',   'name':  'NAME DESC'  },
+            {   'value' : 'AMOUNT_ASC',   'name':  'AMOUNT ASC' },
+            {   'value' : 'AMOUNT_DESC',   'name':  'AMOUNT DESC'}
         ]
     };
 

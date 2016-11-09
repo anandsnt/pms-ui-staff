@@ -1,8 +1,8 @@
-sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope', 'RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
+sntRover.controller('RVJournalSummaryDetailsController', ['$scope', '$rootScope', 'RVJournalSrv', '$timeout', function($scope, $rootScope, RVJournalSrv, $timeout) {
     BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
 
-    $scope.setScroller('summary_content',{});
+    $scope.setScroller('summary_content', {});
 
     var refreshSummaryScroller = function () {
         setTimeout(function() {$scope.refreshScroller('summary_content');}, 500);
@@ -61,9 +61,9 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
             $scope.details.summaryData = responce.data;
 
             // Initializing objetcs for DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE sections.
-            $scope.details.summaryData.deposit_balance = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
-            $scope.details.summaryData.guest_balance   = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
-            $scope.details.summaryData.ar_balance      = { 'active' : false ,'page_no' : 1,'start' : 1,'end' : 1,'nextAction' : false,'prevAction' : false };
+            $scope.details.summaryData.deposit_balance = { 'active' : false, 'page_no' : 1, 'start' : 1, 'end' : 1, 'nextAction' : false, 'prevAction' : false };
+            $scope.details.summaryData.guest_balance   = { 'active' : false, 'page_no' : 1, 'start' : 1, 'end' : 1, 'nextAction' : false, 'prevAction' : false };
+            $scope.details.summaryData.ar_balance      = { 'active' : false, 'page_no' : 1, 'start' : 1, 'end' : 1, 'nextAction' : false, 'prevAction' : false };
 
             $scope.errorMessage = "";
 
@@ -88,7 +88,7 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope','$rootScope',
         @param  {string} will be { DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE }
         @return {object}
      */
-    var fetchBalanceDetails = function( balance_type , callback) {
+    var fetchBalanceDetails = function( balance_type, callback) {
 
         var summaryItem = getSummaryItemByBalanceType( balance_type );
 

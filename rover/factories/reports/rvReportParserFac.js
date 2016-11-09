@@ -358,11 +358,11 @@ sntRover.factory('RVReportParserFac', [
                         e = _.findWhere(e, { 'name': rowData.displayLabel }); 
                     }
                     rowData.valueList = rowData.valueList.concat([
-                       { key: 'res_count' , value: e.total_reservations_count },
-                       { key: 'available' , value: e.available_rooms_count },
-                       { key: 'future_revenue' , value: e.future_revenue },
-                       { key: 'adr' , value: e.adr },
-                       { key: 'rate_revenue' , value: e.rate_revenue }
+                       { key: 'res_count', value: e.total_reservations_count },
+                       { key: 'available', value: e.available_rooms_count },
+                       { key: 'future_revenue', value: e.future_revenue },
+                       { key: 'adr', value: e.adr },
+                       { key: 'rate_revenue', value: e.rate_revenue }
                     ]);
                 });
             });

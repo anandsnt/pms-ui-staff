@@ -21,7 +21,7 @@ angular.module('sntRover').service('rvPermissionSrv',
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			roverPermissions = data.permissions;
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

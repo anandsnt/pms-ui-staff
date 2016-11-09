@@ -1,5 +1,5 @@
-admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','adiBeaconSettingsSrv','$rootScope',
-	function($scope, $state, ngTableParams,adiBeaconSettingsSrv,$rootScope) {
+admin.controller('ADiBeaconSettingsCtrl', ['$scope', '$state', 'ngTableParams', 'adiBeaconSettingsSrv', '$rootScope',
+	function($scope, $state, ngTableParams, adiBeaconSettingsSrv, $rootScope) {
 	$scope.$emit('hideLoader');
 	$scope.init = function() {
 		$scope.errorMessage = "";
@@ -37,7 +37,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
 		};
-		$scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconList, getParams, fetchSuccessOfItemList,fetchFailedOfItemList);
+		$scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconList, getParams, fetchSuccessOfItemList, fetchFailedOfItemList);
 	};
 
 	$scope.loadTable = function() {
@@ -56,7 +56,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 
 	$scope.loadTable();
 
-	$scope.toggleActive = function(id,status) {
+	$scope.toggleActive = function(id, status) {
 
 		var toggleBeaconSuccess = function() {
 			$scope.$emit('hideLoader');
@@ -70,9 +70,9 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
 		};
-		var toggleData = {"id":id,"status":!status};
+		var toggleData = {"id":id, "status":!status};
 
-		$scope.invokeApi(adiBeaconSettingsSrv.toggleBeacon, toggleData, toggleBeaconSuccess,toggleBeaconFailed);
+		$scope.invokeApi(adiBeaconSettingsSrv.toggleBeacon, toggleData, toggleBeaconSuccess, toggleBeaconFailed);
 
 	};
 
@@ -87,7 +87,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 			$scope.errorMessage = data;
 		};
 
-		$scope.invokeApi(adiBeaconSettingsSrv.deleteBeacon, {"id":id}, deleteBeaconSuccess,deleteBeaconFailed);
+		$scope.invokeApi(adiBeaconSettingsSrv.deleteBeacon, {"id":id}, deleteBeaconSuccess, deleteBeaconFailed);
 	};
 
 

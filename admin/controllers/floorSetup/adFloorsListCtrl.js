@@ -106,10 +106,10 @@ admin.controller('ADFloorsListCtrl',
             $scope.data.floors.splice(pos, 1);
             $scope.tableParams.reload();
         };
-        $scope.invokeApi(ADFloorSetupSrv.deleteFloor, data , successCallbackSave);
+        $scope.invokeApi(ADFloorSetupSrv.deleteFloor, data, successCallbackSave);
     };
 
-    $scope.$on("ASSIGNMENT_CHANGED",function() {
+    $scope.$on("ASSIGNMENT_CHANGED", function() {
          $scope.listFloorTypes();
     });
 

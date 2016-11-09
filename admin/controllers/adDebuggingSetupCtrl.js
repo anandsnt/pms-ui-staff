@@ -1,4 +1,4 @@
-admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state','$filter','$stateParams', 'ngTableParams',function($scope,adDebuggingSetupSrv,$state,$filter,$stateParams, ngTableParams) {
+admin.controller('adDebuggingSetupCtrl', ['$scope', 'adDebuggingSetupSrv', '$state', '$filter', '$stateParams', 'ngTableParams', function($scope, adDebuggingSetupSrv, $state, $filter, $stateParams, ngTableParams) {
 
  /*
   * To retrieve previous state
@@ -84,7 +84,7 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
         $scope.tableParams.reload();
   };
   
-  $scope.invokeApi(adDebuggingSetupSrv.fetchDevices, {},fetchDeviceDebugSetupSuccessCallback);
+  $scope.invokeApi(adDebuggingSetupSrv.fetchDevices, {}, fetchDeviceDebugSetupSuccessCallback);
 
   };
   $scope.fetchDeviceDebugSetup();
@@ -101,7 +101,7 @@ admin.controller('adDebuggingSetupCtrl',['$scope','adDebuggingSetupSrv','$state'
   var unwantedKeys = ["app_version", "device_type", "logging_start_time", "logging_end_time"];
   var saveData = dclone($scope.selectedDevice, unwantedKeys);
 
-  $scope.invokeApi(adDebuggingSetupSrv.saveSetup, saveData,saveDebugSetupSuccessCallback);
+  $scope.invokeApi(adDebuggingSetupSrv.saveSetup, saveData, saveDebugSetupSuccessCallback);
 
   };
 

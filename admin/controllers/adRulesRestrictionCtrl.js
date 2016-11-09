@@ -131,7 +131,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.depositRuleslList = data.results;
                 $scope.$emit('hideLoader');
             };
-            $scope.invokeApi(ADRulesRestrictionSrv.fetchDepositeRules, {},callback);
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchDepositeRules, {}, callback);
         };
 
         $scope.showPolicyArrow = function() {
@@ -341,7 +341,7 @@ admin.controller('ADRulesRestrictionCtrl', [
         };
 
          $scope.deleteSchedule = function(index) {
-            $scope.singleRule.schedules.splice(index , 1);
+            $scope.singleRule.schedules.splice(index, 1);
             if($scope.singleRule.schedules.length!==0) {
                 if($scope.selectedScheduleIndex === $scope.singleRule.schedules.length) {
                     $scope.selectedSchedule = $scope.singleRule.schedules[$scope.singleRule.schedules.length-1];

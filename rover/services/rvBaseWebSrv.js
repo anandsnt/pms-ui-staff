@@ -11,7 +11,7 @@ sntRover.config(function($httpProvider) {
 });
 
 
-angular.module('sntRover').service('RVBaseWebSrv',['$http', '$q', '$window', '$rootScope', function($http, $q, $window, $rootScope) {
+angular.module('sntRover').service('RVBaseWebSrv', ['$http', '$q', '$window', '$rootScope', function($http, $q, $window, $rootScope) {
 
     /**
     *   A http requester method for calling webservice

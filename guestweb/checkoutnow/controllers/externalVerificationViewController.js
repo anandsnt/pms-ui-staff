@@ -4,7 +4,7 @@
 	This is accessed using URL set in admin settings WEB CHECK OUT URL in admin -> zest -> Checkout
 */
 (function() {
-	var externalVerificationViewController = function($scope, externalVerificationService,$rootScope,$state,dateFilter,$filter,$modal) {
+	var externalVerificationViewController = function($scope, externalVerificationService, $rootScope, $state, dateFilter, $filter, $modal) {
     
 	$scope.stayDetails 	= 	{
 								"room_number":"",
@@ -33,8 +33,8 @@
 	};
 	$scope.dateChoosen = function() {
 		$scope.stayDetails.arrival_date = ($filter('date')($scope.date, $rootScope.dateFormat));
-		dateToSend = dclone($scope.date,[]);
-		dateToSend = ($filter('date')(dateToSend,'yyyy-MM-dd'));
+		dateToSend = dclone($scope.date, []);
+		dateToSend = ($filter('date')(dateToSend, 'yyyy-MM-dd'));
 		$scope.closeCalender();
 	};
 
@@ -87,7 +87,7 @@
 				$state.go('checkOutConfirmation');
 			}
 
-		},function() {
+		}, function() {
 			$scope.isLoading = false;
 			$modal.open($scope.errorOpts); // error modal popup
 		});
@@ -96,7 +96,7 @@
 
 var dependencies = [
 '$scope',
-'externalVerificationService','$rootScope','$state','dateFilter','$filter','$modal',
+'externalVerificationService', '$rootScope', '$state', 'dateFilter', '$filter', '$modal',
 externalVerificationViewController
 ];
 
@@ -113,7 +113,7 @@ sntGuestWeb.controller('verificationErrorController', ['$scope', function($scope
 
 // controller for the modal
 
-  var verificationModalCtrl = function ($scope, $modalInstance,$state) {
+  var verificationModalCtrl = function ($scope, $modalInstance, $state) {
 
     $scope.closeDialog = function () {
       $modalInstance.dismiss('cancel');

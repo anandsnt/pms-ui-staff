@@ -1,5 +1,5 @@
 sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$rootScope', 'RVDepositBalanceSrv', 'RVPaymentSrv', '$stateParams', '$filter', '$timeout', 'rvPermissionSrv', 'RVReservationCardSrv',
-	function($scope, ngDialog, $rootScope, RVDepositBalanceSrv, RVPaymentSrv , $stateParams, $filter, $timeout, rvPermissionSrv, RVReservationCardSrv) {
+	function($scope, ngDialog, $rootScope, RVDepositBalanceSrv, RVPaymentSrv, $stateParams, $filter, $timeout, rvPermissionSrv, RVReservationCardSrv) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -57,7 +57,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	$scope.isAddToGuestCardVisible = false;
 	$scope.isSwipedCardSave = false;
 	$scope.isManual = false;
-	$scope.setScroller('cardsList',{'click':true, 'tap':true});
+	$scope.setScroller('cardsList', {'click':true, 'tap':true});
 	$scope.setScroller('deopositdue');
 
 	var refreshScroll = function () {
@@ -111,7 +111,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
     $scope.giftCardAmountAvailable = false;
     $scope.giftCardAvailableBalance = 0;
 
-    $scope.$on('giftCardAvailableBalance',function(e, giftCardData) {
+    $scope.$on('giftCardAvailableBalance', function(e, giftCardData) {
        $scope.giftCardAvailableBalance = giftCardData.amount;
     });
 
@@ -202,7 +202,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
       	$scope.invokeApi(RVPaymentSrv.savePaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
 	});
 
-	$scope.$on("MLI_ERROR", function (e,data) {
+	$scope.$on("MLI_ERROR", function (e, data) {
 		$scope.errorMessage = data;
 	});
 
@@ -271,12 +271,12 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	 * setting payment id
 	 */
     $scope.giftCardAvailableBalance = '';
-    $scope.$on('giftCardAvailableBalance',function (e, giftCardData) {
+    $scope.$on('giftCardAvailableBalance', function (e, giftCardData) {
         $scope.giftCardAvailableBalance = giftCardData.amount;
         $scope.giftCardAmountAvailable = true;
     });
 
-    $rootScope.$on('validatedGiftCardPmt',function (n, valid) {
+    $rootScope.$on('validatedGiftCardPmt', function (n, valid) {
         if (valid) {
            $scope.validPayment = true;
        } else {
@@ -302,7 +302,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
         } else {
             $scope.validPayment = true;
         }
-        $rootScope.$broadcast('validatedGiftCardPmt',$scope.validPayment);
+        $rootScope.$broadcast('validatedGiftCardPmt', $scope.validPayment);
     };
 
 	$scope.successSavePayment = function (data) {
@@ -370,7 +370,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 	/*
 	 * Card selected from centralized controler
 	 */
-	$scope.$on('cardSelected',function (e, data) {
+	$scope.$on('cardSelected', function (e, data) {
 		$scope.shouldCardAvailable 				 = true;
 		$scope.setCreditCardFromList(data.index);
 	});
@@ -385,7 +385,7 @@ sntRover.controller('RVDepositBalanceAccountsCtrl', ['$scope', 'ngDialog', '$roo
 		refreshScroll();
 	};
 
-	$scope.$on('cancelCardSelection',function (e,data) {
+	$scope.$on('cancelCardSelection', function (e, data) {
 		$scope.shouldShowMakePaymentScreen       = true;
 		$scope.addmode                 			 = false;
 		$scope.depositBalanceMakePaymentData.payment_type = "";

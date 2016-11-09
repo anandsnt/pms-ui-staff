@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', function( $q, RVBaseWebSrvV2) {
+angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2', function( $q, RVBaseWebSrvV2) {
 
    	var that = this;
    	this.hotelDetails = {};
@@ -11,7 +11,7 @@ angular.module('sntRover').service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', 
 				userHotelsData: data
 			});
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -26,7 +26,7 @@ angular.module('sntRover').service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', 
 			});
 			business_date = data.business_date;
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -39,7 +39,7 @@ angular.module('sntRover').service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', 
 			data.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
 			_.extend(that.hotelDetails, data);
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -68,7 +68,7 @@ angular.module('sntRover').service('RVHotelDetailsSrv',['$q', 'rvBaseWebSrvV2', 
 		var data = {"hotel_id": hotel_id};
 		RVBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;

@@ -1,4 +1,4 @@
-admin.service('ADLanguagesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('ADLanguagesSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 
    /**
     * To fetch the list of languages
@@ -9,7 +9,7 @@ admin.service('ADLanguagesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
 		var url = '/api/guest_languages';
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -24,7 +24,7 @@ admin.service('ADLanguagesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
 		var url = '/api/guest_languages';
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.resolve(data);
 		});
 		return deferred.promise;
@@ -39,7 +39,7 @@ admin.service('ADLanguagesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
 		var url = '/api/guest_languages';
 		ADBaseWebSrvV2.postJSON(url, language).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.resolve(data);
 		});
 		return deferred.promise;

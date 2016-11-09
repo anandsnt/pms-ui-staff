@@ -30,7 +30,7 @@ sntRover.controller('RVbillCardController',
 			$window, $timeout,
 			chargeCodeData, $sce,
 
-			RVKeyPopupSrv,RVPaymentSrv,
+			RVKeyPopupSrv, RVPaymentSrv,
 			RVSearchSrv, rvPermissionSrv, jsMappings, $q, RVReservationStateService) {
 
 
@@ -163,7 +163,7 @@ sntRover.controller('RVbillCardController',
 		else{
 			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
 			if(chargeCodes.length>0) {
-				_.each(chargeCodes, function(chargeCode,index) {
+				_.each(chargeCodes, function(chargeCode, index) {
 				  if(!chargeCode.isSelected) {
 				  	isAnyOneChargeCodeIsExcluded = true;
 				  }
@@ -205,7 +205,7 @@ sntRover.controller('RVbillCardController',
 
 
 		if(chargeCodes.length>0) {
-			_.each(chargeCodes, function(chargeCode,index) {
+			_.each(chargeCodes, function(chargeCode, index) {
 				if(chargeCode.isSelected) {
 					$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
 				}
@@ -405,7 +405,7 @@ sntRover.controller('RVbillCardController',
 	$scope.reviewStatusArray = [];
 	$scope.caculateExpenseAmountForPackageAddon=function(expense_details, returnAmount) {
 		var inclLength=0;
-		angular.forEach(expense_details,function(elem) {
+		angular.forEach(expense_details, function(elem) {
 		if(elem.is_inclusive===true)
 		{
 			inclLength++;
@@ -529,7 +529,7 @@ sntRover.controller('RVbillCardController',
 		$scope.reservationBillData.roomChargeEnabled = !$scope.reservationBillData.roomChargeEnabled;
 	};
 
-    $scope.$on('REFRESH_BILLCARD_VIEW',function() {
+    $scope.$on('REFRESH_BILLCARD_VIEW', function() {
         $scope.refreshBillView();
         setTimeout(function() {
 			$scope.isRefreshOnBackToStaycard = true;
@@ -542,7 +542,7 @@ sntRover.controller('RVbillCardController',
 
 			$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, fetchBillDataSuccessCallback);
             $scope.$apply();
-        },1000);
+        }, 1000);
     });
 
         $scope.refreshBillView = function() {
@@ -755,7 +755,7 @@ sntRover.controller('RVbillCardController',
              if (!$rootScope.isStandAlone) {//CICO-19009 adding gift card support, used to validate gift card is enabled
                  if (!$scope.fetchPmtList) {
                     $scope.fetchPmtList = true;
-                    $scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {} , $scope.cardsListSuccess);
+                    $scope.invokeApi(RVPaymentSrv.fetchAvailPayments, {}, $scope.cardsListSuccess);
                  }
              }
 
@@ -819,7 +819,7 @@ sntRover.controller('RVbillCardController',
 	 		"reservationId": $scope.reservationBillData.reservation_id,
 	 		"fromView": $scope.fromViewToPaymentPopup,
 	 		"fromBill" : billNumber,
-	 		"is_swiped": false ,
+	 		"is_swiped": false,
 	 		"details":{
 	 			"firstName":$scope.guestCardData.contactInfo.first_name,
 	 			"lastName":$scope.guestCardData.contactInfo.last_name
@@ -928,7 +928,7 @@ sntRover.controller('RVbillCardController',
 	 	}
 
 	 	// changes for CICO-13763
-	 	var reservationData = { "reservation_id":$scope.reservationData.reservationId ,"is_checkout":$scope.reservationBillData.isCheckout};
+	 	var reservationData = { "reservation_id":$scope.reservationData.reservationId, "is_checkout":$scope.reservationBillData.isCheckout};
 
 		var paymentParams = $scope.reservationBillData.isCheckout ? reservationData : {};
 
@@ -957,7 +957,7 @@ sntRover.controller('RVbillCardController',
 	 	$scope.isRefreshOnBackToStaycard = true; //CICO-17739 Refresh view when returning from staycard after altering the payment method.
 	 	$scope.addNewPaymentModal();
 	 };
-	 $rootScope.$on('OPENPAYMENTMODEL',function() {
+	 $rootScope.$on('OPENPAYMENTMODEL', function() {
 	 	$scope.clickedAddUpdateCCButton();
 	 });
 	 /*
@@ -1182,7 +1182,7 @@ sntRover.controller('RVbillCardController',
 
 	$scope.caculateExpenseAmountForPackageAddon=function(expense_details, returnAmount) {
 		var inclLength=0;
-		angular.forEach(expense_details,function(elem) {
+		angular.forEach(expense_details, function(elem) {
 		if(elem.is_inclusive===true)
 		{
 			inclLength++;
@@ -1301,7 +1301,7 @@ sntRover.controller('RVbillCardController',
 				});
 			};
 
-			$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback);
+			$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData, { "reservationId": reservationId }, successCallback);
 		}
 
 		//Display the key encoder popup
@@ -1310,7 +1310,7 @@ sntRover.controller('RVbillCardController',
 			// when checking in we are creating a new key, popup controller expects this flag.
 			if ($scope.reservationData && $scope.reservationData.status && $scope.reservationData.status === 'CHECKING_IN') {
 				$scope.keyType = 'New';
-    			$rootScope.$broadcast('MAKE_KEY_TYPE',{type:'New'});
+    			$rootScope.$broadcast('MAKE_KEY_TYPE', {type:'New'});
 			}
 
 			if($scope.reservationBillData.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0) {
@@ -1360,7 +1360,7 @@ sntRover.controller('RVbillCardController',
         if (!$rootScope.reservationBillWatch) {//alternative to $destroy, this is an init-once method
             $rootScope.reservationBillWatch = 1;
 
-            $rootScope.$on('goToStayCardFromAddToQueue',function() {
+            $rootScope.$on('goToStayCardFromAddToQueue', function() {
                  $scope.goToStayCardFromAddToQueue();
 
             });
@@ -1415,7 +1415,7 @@ sntRover.controller('RVbillCardController',
                         setTimeout(function() {
                             //then prompt for keys
                             $rootScope.$broadcast('clickedIconKeyFromQueue');//signals rvReservationRoomStatusCtrl to init the keys popup
-                        },1250);
+                        }, 1250);
                         $scope.goToStayCardFromAddToQueue();
                     }
             };
@@ -1426,7 +1426,7 @@ sntRover.controller('RVbillCardController',
 
 
 	// Handle checkin process with Autherization..
-	var performCCAuthAndCheckinProcess = function(data,isCheckinWithoutAuth, queueRoom) {
+	var performCCAuthAndCheckinProcess = function(data, isCheckinWithoutAuth, queueRoom) {
             /*
              * put in Queue should not attempt to auth CC during normal workflow in Overlay,
              * in Standalone, $scope.putInQueue should always be false; (until we start supporting standalone put in queue)
@@ -1497,13 +1497,13 @@ sntRover.controller('RVbillCardController',
 		$scope.clickedIncidentalsOnly = function() {
 			// @params : data , isCheckinWithoutAuth: false
 			data.is_cc_authorize_for_incidentals = true;
-			performCCAuthAndCheckinProcess(data,false);
+			performCCAuthAndCheckinProcess(data, false);
 			ngDialog.close();
 		};
 
  		$scope.clickedFullAuth = function() {
  			// @params : data , isCheckinWithoutAuth: false
-			performCCAuthAndCheckinProcess(data,false);
+			performCCAuthAndCheckinProcess(data, false);
 			ngDialog.close();
 	    };
 
@@ -1512,7 +1512,7 @@ sntRover.controller('RVbillCardController',
 			// Proceeding checkin without authorization..
 			// @params : data , isCheckinWithoutAuth :true
 			$scope.reservationBillData.is_cc_authorize_at_checkin_enabled = false;
-			performCCAuthAndCheckinProcess(data,true);
+			performCCAuthAndCheckinProcess(data, true);
 			ngDialog.close();
 	    };
 
@@ -1708,17 +1708,17 @@ sntRover.controller('RVbillCardController',
 
 	 		    if(typeof isCheckinWithoutPreAuthPopup !== 'undefined' && isCheckinWithoutPreAuthPopup) {
 	 		    	// Directly performing checkin process without pre-auth popup.
-	 		    	performCCAuthAndCheckinProcess(data,true,queueRoom);
+	 		    	performCCAuthAndCheckinProcess(data, true, queueRoom);
 	 		    }
 	 		    else if(!$scope.message_incoming_from_room && !$scope.message_out_going_to_room && !$scope.message_out_going_to_comp_tra) {
-	 		    	performCCAuthAndCheckinProcess(data,false,queueRoom);
+	 		    	performCCAuthAndCheckinProcess(data, false, queueRoom);
 	 		    }
 	 		    else if($scope.reservationBillData.is_cc_authorize_at_checkin_enabled && $scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "CC") {
                                 // CICO-17266 PMS: Rover - CC Auth should consider Billing Information.
                                 showPreAuthPopupWithBillingInfo(data);
                             }
                             else{
-                                performCCAuthAndCheckinProcess(data,true,queueRoom);
+                                performCCAuthAndCheckinProcess(data, true, queueRoom);
                             }
 			}
         };
@@ -2135,7 +2135,7 @@ sntRover.controller('RVbillCardController',
    /*
 	 * open popup for edit/split/remove transaction
 	 */
-	$scope.openActionsPopup = function(id,desc,amount,type,credits) {
+	$scope.openActionsPopup = function(id, desc, amount, type, credits) {
 
 		$scope.errorMessage = "";
 		//hide edit and remove options in case type is  payment
@@ -2400,7 +2400,7 @@ sntRover.controller('RVbillCardController',
 	};
 
 
-	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event,data) {
+	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 	 	var billCount = $scope.reservationBillData.bills.length;
 		$scope.isRefreshOnBackToStaycard = true;
@@ -2452,7 +2452,7 @@ sntRover.controller('RVbillCardController',
 
 
 		};
-		$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
+		$scope.invokeApi(RVBillCardSrv.createAnotherBill, billData, createBillSuccessCallback);
 	};
 
 
@@ -2542,7 +2542,7 @@ sntRover.controller('RVbillCardController',
 			};
 
 			var data ={"reservation_id" : $scope.reservationBillData.reservation_id};
-			$scope.invokeApi(RVBillCardSrv.completeReverseCheckout,data,reverseCheckoutsuccess);
+			$scope.invokeApi(RVBillCardSrv.completeReverseCheckout, data, reverseCheckoutsuccess);
 
 	};
 
@@ -2572,7 +2572,7 @@ sntRover.controller('RVbillCardController',
 	};
 
 
-	$scope.$on('PAYMENT_MAP_ERROR',function(event,data) {
+	$scope.$on('PAYMENT_MAP_ERROR', function(event, data) {
         $scope.errorMessage = data;
     });
 

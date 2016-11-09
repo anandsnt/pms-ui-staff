@@ -10,7 +10,7 @@ angular.module('sntRover').service('rvAllotmentAccountActivitySrv', [
 
 			var url ='/api/group_actions/'	+ params.id;
 			params = _.omit(params, 'id');
-			rvBaseWebSrvV2.getJSON(url,params)
+			rvBaseWebSrvV2.getJSON(url, params)
 			.then(function(data) {
 				this.cacheReportList = data;
 				deferred.resolve(this.cacheReportList);

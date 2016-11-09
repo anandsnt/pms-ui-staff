@@ -173,7 +173,7 @@ angular.module('sntRover').service('rvAllotmentReservationsListSrv', ['$q', 'rvB
 			url = 'api/allotments/'+params.id+'/hide_rates';
 			rvBaseWebSrvV2.postJSON(url, _.without(params, 'id')).then(function(data) {
 			   	 deferred.resolve(data);
-			},function(data) {
+			}, function(data) {
 			    deferred.reject(data);
 			});
 		return deferred.promise;

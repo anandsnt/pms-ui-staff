@@ -1,11 +1,11 @@
-angular.module('sntRover').service('RVRoomAssignmentSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($q, RVBaseWebSrv, rvBaseWebSrvV2) {
+angular.module('sntRover').service('RVRoomAssignmentSrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($q, RVBaseWebSrv, rvBaseWebSrvV2) {
 
 	this.getRooms = function(param) {
 		var deferred = $q.defer();
 		var url =  '/staff/rooms/get_rooms';
 		RVBaseWebSrv.postJSON(url, param).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -16,7 +16,7 @@ angular.module('sntRover').service('RVRoomAssignmentSrv',['$q', 'RVBaseWebSrv', 
 		var url =  '/staff/preferences/room_assignment.json';
 		RVBaseWebSrv.getJSON(url, param).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -27,7 +27,7 @@ angular.module('sntRover').service('RVRoomAssignmentSrv',['$q', 'RVBaseWebSrv', 
 		var url =  '/staff/reservation/modify_reservation';
 		RVBaseWebSrv.postJSON(url, param).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -40,7 +40,7 @@ angular.module('sntRover').service('RVRoomAssignmentSrv',['$q', 'RVBaseWebSrv', 
 		var url =  'api/reservations/' + reservationId + '/unassign_room';
 		rvBaseWebSrvV2.postJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -51,7 +51,7 @@ angular.module('sntRover').service('RVRoomAssignmentSrv',['$q', 'RVBaseWebSrv', 
 		var url =  '/staff/reservation/room_inhouse_move';
 		rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

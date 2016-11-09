@@ -1,4 +1,4 @@
-admin.controller('ADDoorLockInterfaceCtrl',['$scope', '$rootScope','ADDoorlockInterfaceSrv', function($scope, $rootScope,ADDoorlockInterfaceSrv) {
+admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlockInterfaceSrv', function($scope, $rootScope, ADDoorlockInterfaceSrv) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -27,8 +27,8 @@ admin.controller('ADDoorLockInterfaceCtrl',['$scope', '$rootScope','ADDoorlockIn
                 return;
             }
             $scope.watchingList = true;
-            $scope.$watch('data.selected_quick_key_system',function(to, from) {
-                console.log('selected_quick_key_system: ',arguments);
+            $scope.$watch('data.selected_quick_key_system', function(to, from) {
+                console.log('selected_quick_key_system: ', arguments);
                 if ($scope.dirtyQuickList) {
                     if (to === 'Saflok - ATLAS') {
                         setToSaflokAtlas();
@@ -120,16 +120,16 @@ admin.controller('ADDoorLockInterfaceCtrl',['$scope', '$rootScope','ADDoorlockIn
 			$scope.data = data;
                         if (!inProd()) {
                             $scope.data.quick_key_systems = [
-                                {value:'Saflok - 6000',name:'Saflok - 6000'}, 
-                                {value: 'Saflok - ATLAS',name: 'Saflok - ATLAS'}, 
-                                {value: 'Salto - HAMS',name: 'Salto - HAMS'}, 
-                                {value: 'Salto - Space',name: 'Salto - Space'}
+                                {value:'Saflok - 6000', name:'Saflok - 6000'}, 
+                                {value: 'Saflok - ATLAS', name: 'Saflok - ATLAS'}, 
+                                {value: 'Salto - HAMS', name: 'Salto - HAMS'}, 
+                                {value: 'Salto - Space', name: 'Salto - Space'}
                                // {value:'VingCard', name: 'VingCard'}
                             ];
                         }
 			setInitialExcludedList();
 		};
-		$scope.invokeApi(ADDoorlockInterfaceSrv.fetch, {},fetchSuccessCallback);
+		$scope.invokeApi(ADDoorlockInterfaceSrv.fetch, {}, fetchSuccessCallback);
 	};
 
 	$scope.clickedSave = function() {

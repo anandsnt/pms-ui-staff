@@ -51,7 +51,7 @@ sntRover.controller('RVSocialLobbyCrl', [
                 };
                 
 
-            },1000);
+            }, 1000);
             
         }
 

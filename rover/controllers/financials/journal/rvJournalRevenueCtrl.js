@@ -1,8 +1,8 @@
-sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
+sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJournalSrv', '$timeout', function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
 
-	$scope.setScroller('revenue_content',{});
+	$scope.setScroller('revenue_content', {});
     var refreshRevenueScroller = function() {
         $timeout(function() {$scope.refreshScroller('revenue_content');}, 500);
     };
@@ -34,7 +34,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         var postData = {
             "from_date":$scope.data.fromDate,
             "to_date":$scope.data.toDate,
-            "employee_ids" : $scope.data.selectedEmployeeList ,
+            "employee_ids" : $scope.data.selectedEmployeeList,
             "department_ids" : $scope.data.selectedDepartmentList
         };
 		$scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeGroups, postData, successCallBackFetchRevenueData);
@@ -44,21 +44,21 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 
     fetchDepartments();
 
-    $rootScope.$on('REFRESHREVENUECONTENT',function() {
+    $rootScope.$on('REFRESHREVENUECONTENT', function() {
         refreshRevenueScroller();
     });
 
-    $rootScope.$on('fromDateChanged',function() {
+    $rootScope.$on('fromDateChanged', function() {
         initRevenueData("");
         $rootScope.$broadcast('REFRESH_SUMMARY_DATA', $scope.data.fromDate);
     });
 
-    $rootScope.$on('toDateChanged',function() {
+    $rootScope.$on('toDateChanged', function() {
         initRevenueData("");
     });
     
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
-    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA',function( event, data ) {
+    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA', function( event, data ) {
         $scope.data.fromDate = data.date;
         $scope.data.toDate   = data.date;
         initRevenueData(data.origin);
@@ -87,7 +87,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
                 "from_date":$scope.data.fromDate,
                 "to_date":$scope.data.toDate,
                 "charge_group_id": toggleItem.id,
-                "employee_ids" : $scope.data.selectedEmployeeList ,
+                "employee_ids" : $scope.data.selectedEmployeeList,
                 "department_ids" : $scope.data.selectedDepartmentList
             };
             $scope.invokeApi(RVJournalSrv.fetchRevenueDataByChargeCodes, postData, successCallBackFetchRevenueDataChargeCodes);
@@ -129,10 +129,10 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         // Call api only while expanding the tab or on pagination Next/Prev button actions ..
         if(!chargeCodeItem.active || isFromPagination) {
             var postData = {
-                "from_date":$scope.data.fromDate ,
-                "to_date":$scope.data.toDate ,
-                "charge_code_id":chargeCodeItem.id ,
-                "employee_ids" : $scope.data.selectedEmployeeList ,
+                "from_date":$scope.data.fromDate,
+                "to_date":$scope.data.toDate,
+                "charge_code_id":chargeCodeItem.id,
+                "employee_ids" : $scope.data.selectedEmployeeList,
                 "department_ids" : $scope.data.selectedDepartmentList,
                 "page_no" :  chargeCodeItem.page_no,
                 "per_page": $scope.data.filterData.perPage
@@ -187,7 +187,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         item.page_no ++;
         item.nextAction = true;
         item.prevAction = false;
-        loadTransactionDeatils(item , true);
+        loadTransactionDeatils(item, true);
     };
 
     $scope.loadPrevSet = function(index1, index2) {

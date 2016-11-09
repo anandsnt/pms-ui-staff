@@ -1,4 +1,4 @@
-admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$stateParams', 'ADUserSrv', 'ngTableParams','$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADUserSrv, ngTableParams, $filter) {
+admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$stateParams', 'ADUserSrv', 'ngTableParams', '$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADUserSrv, ngTableParams, $filter) {
 	BaseCtrl.call(this, $scope);
 	$scope.hotelId = $stateParams.id;
 	$scope.isAdminSnt = false;
@@ -61,7 +61,7 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
 			$scope.data[index].is_active = (currentStatus === "true" ? "false" : "true");
 			$scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(ADUserSrv.activateInactivate, data , successCallbackActivateInactivate);
+		$scope.invokeApi(ADUserSrv.activateInactivate, data, successCallbackActivateInactivate);
 	};
    /**
     * To delete user

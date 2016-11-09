@@ -1,4 +1,4 @@
-admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout', '$location',
+admin.controller('ADBillingGroupCtrl', ['$scope', '$state', 'ADBillingGroupSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout', '$location',
   function($scope, $state, ADBillingGroupSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -11,7 +11,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 			$scope.billingGroupList = data.results;
 			$scope.currentClickedElement = -1;
 		};
-	   $scope.invokeApi(ADBillingGroupSrv.fetch, {} , successCallbackFetch);
+	   $scope.invokeApi(ADBillingGroupSrv.fetch, {}, successCallbackFetch);
 	};
 	// To list billing groups
 	$scope.listBillingGroups();
@@ -27,7 +27,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 				$scope.billingGroupData.available_charge_codes = data.available_charge_codes;
 				$scope.billingGroupData.title = $scope.billingGroupData.name;
 				$scope.currentClickedElement = index;
-				$scope.billingGroupData.available_charge_codes.forEach(function(charge,index) {
+				$scope.billingGroupData.available_charge_codes.forEach(function(charge, index) {
 					if($scope.billingGroupData.selected_charge_codes.indexOf(charge.id) !== -1) {
 						$scope.billingGroupData.available_charge_codes[index].isChecked =true;
 					}
@@ -37,7 +37,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 			$scope.billingGroupData = data.results;
 	   		$scope.invokeApi(ADBillingGroupSrv.getChargeCodes, {}, successCallbackFetchChargeCodes);
 		};
-	   $scope.invokeApi(ADBillingGroupSrv.getBillingGroupDetails, id , successCallbackFetchbillingGroupDetails);
+	   $scope.invokeApi(ADBillingGroupSrv.getBillingGroupDetails, id, successCallbackFetchbillingGroupDetails);
 	};
    /*
     * To get the template of edit screen

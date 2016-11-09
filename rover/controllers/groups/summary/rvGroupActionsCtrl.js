@@ -113,7 +113,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                             }
                         }
                     }
-                },250);
+                }, 250);
             } else {
                 $scope.startEditDescription();
             }
@@ -190,7 +190,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             var aDay = $scope.getDateFromDate(dateStr), aDayString = ' ';
             if (aDay) {
                 aDay = aDay.toLowerCase();
-                aDayString = aDay.substring(0,1).toUpperCase()+aDay.substring(1,3)+' ';
+                aDayString = aDay.substring(0, 1).toUpperCase()+aDay.substring(1, 3)+' ';
             }
             //make sure timestring include '0' if < 10, ie. 09, 08, etc instead of 9, 8...
             if (timeStr !== ' ') {
@@ -257,7 +257,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                         $scope.refreshing = false;
                         $scope.$emit('hideLoader');
                         $scope.$apply();
-                    },500);
+                    }, 500);
                 }
 
                 $scope.$emit('hideLoader');
@@ -334,7 +334,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
         };
         $scope.departmentSelected = false;
-        $scope.$watch('newAction.department',function(now, was) {
+        $scope.$watch('newAction.department', function(now, was) {
             if (!now || now === null) {
                 $scope.departmentSelected = false;
             } else if (now.value === '') {
@@ -417,8 +417,8 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             $scope.newAction.date_due = $filter('date')( $scope.newAction.dueDateObj, $rootScope.dateFormat);
             if (!$scope.newAction.time_due) {
                 $scope.newAction.time_due = $filter('date')($scope.hotel_time, "HH:mm");
-                $scope.newAction.time_due = rvUtilSrv.roundToNextQuarter(parseInt($filter('date')($scope.hotel_time, "HH"),10),
-                    parseInt($filter('date')($scope.hotel_time, "mm"),10));
+                $scope.newAction.time_due = rvUtilSrv.roundToNextQuarter(parseInt($filter('date')($scope.hotel_time, "HH"), 10),
+                    parseInt($filter('date')($scope.hotel_time, "mm"), 10));
             }
         };
 
@@ -517,13 +517,13 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             var spl = dateStr.split(delim);
             day = spl[1]; month = spl[0]; year = spl[2];
 
-            return {day:day,month:month,year:year};
+            return {day:day, month:month, year:year};
         };
         $scope.showSelectCalendar = function() {
             //to ensure same day due to utc hour, set utc hour to 0100
             //if newAction = set start date to today, otherwise set it to the selectedAction due date
             var fmObj = tzIndependentDate($scope.selectedAction.due_at_str);
-            $scope.actionsSelectedDate = $filter('date')(fmObj,"yyyy-MM-dd");
+            $scope.actionsSelectedDate = $filter('date')(fmObj, "yyyy-MM-dd");
             $scope.usingCalendar = true;
             $scope.dateSelection = 'select';
             $scope.selectCalendarShow = true;
@@ -593,7 +593,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             } else {
                 setTimeout(function() {
                     $scope.$emit('hideLoader');
-                },1200);
+                }, 1200);
                 return false;
 
             }
@@ -917,7 +917,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                     $scope.selectAction($scope.actions[0]);
                 }
                 $scope.$apply();
-            },100);
+            }, 100);
 
         };
 
@@ -959,7 +959,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 if ($scope.actions[index]) {
                     $scope.selectAction($scope.actions[index]);//first action selected by default
                 }
-            },100);
+            }, 100);
         };
         var getFormattedDate = function(d, via) {
             var fullDate, day, month, year;
@@ -1051,7 +1051,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
         var formatTime = function(timeInMs, via) {
             var dt = new Date(timeInMs);
-            var hours, minutes,seconds;
+            var hours, minutes, seconds;
             if (via === 'created_at_time') {
                 hours = dt.getHours();
                 minutes = dt.getMinutes();
@@ -1075,7 +1075,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
         };
         var getFormattedTime = function (fourDigitTime) {
-            var hours24 = parseInt(fourDigitTime.substring(0,2));
+            var hours24 = parseInt(fourDigitTime.substring(0, 2));
             var hours = ((hours24 + 11) % 12) + 1;
             var amPm = hours24 > 11 ? ' PM' : ' AM';
             var minutes = fourDigitTime.substring(2);
@@ -1089,7 +1089,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         };
         $scope.populateTimeFieldValue = function() {
             var getFormattedTime = function (fourDigitTime) {
-                var hours24 = parseInt(fourDigitTime.substring(0,2));
+                var hours24 = parseInt(fourDigitTime.substring(0, 2));
                 var hours = ((hours24 + 11) % 12) + 1;
                 var amPm = hours24 > 11 ? ' PM' : ' AM';
                 var minutes = fourDigitTime.substring(2);
@@ -1107,30 +1107,30 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             }
         };
         $scope.timeFieldValue = [];
-        $scope.timeFieldValues = ['0000','0015','0030','0045','0100',
-            '0115','0130','0145','0200',
-            '0215','0230','0245','0300',
-            '0315','0330','0345','0400',
-            '0415','0430','0445','0500',
-            '0515','0530','0545','0600',
-            '0615','0630','0645','0700',
-            '0715','0730','0745','0800',
-            '0815','0830','0845','0900',
-            '0915','0930','0945','1000',
-            '1015','1030','1045','1100',
-            '1115','1130','1145','1200',
-            '1215','1230','1245','1300',
-            '1315','1330','1345','1400',
-            '1415','1430','1445','1500',
-            '1515','1530','1545','1600',
-            '1615','1630','1645','1700',
-            '1715','1730','1745','1800',
-            '1815','1830','1845','1900',
-            '1915','1930','1945','2000',
-            '2015','2030','2045','2100',
-            '2115','2130','2145','2200',
-            '2215','2230','2245','2300',
-            '2315','2330','2345'
+        $scope.timeFieldValues = ['0000', '0015', '0030', '0045', '0100',
+            '0115', '0130', '0145', '0200',
+            '0215', '0230', '0245', '0300',
+            '0315', '0330', '0345', '0400',
+            '0415', '0430', '0445', '0500',
+            '0515', '0530', '0545', '0600',
+            '0615', '0630', '0645', '0700',
+            '0715', '0730', '0745', '0800',
+            '0815', '0830', '0845', '0900',
+            '0915', '0930', '0945', '1000',
+            '1015', '1030', '1045', '1100',
+            '1115', '1130', '1145', '1200',
+            '1215', '1230', '1245', '1300',
+            '1315', '1330', '1345', '1400',
+            '1415', '1430', '1445', '1500',
+            '1515', '1530', '1545', '1600',
+            '1615', '1630', '1645', '1700',
+            '1715', '1730', '1745', '1800',
+            '1815', '1830', '1845', '1900',
+            '1915', '1930', '1945', '2000',
+            '2015', '2030', '2045', '2100',
+            '2115', '2130', '2145', '2200',
+            '2215', '2230', '2245', '2300',
+            '2315', '2330', '2345'
         ];
 
         $scope.clearAssignSection = function() {

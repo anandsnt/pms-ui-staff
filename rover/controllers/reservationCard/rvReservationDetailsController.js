@@ -471,7 +471,7 @@ sntRover.controller('reservationDetailsController',
 		 * Handle swipe action in reservationdetails card
 		 */
 
-                 $scope.$on('UPDATE_DEPOSIT_BALANCE_FLAG',function(evt, val) {
+                 $scope.$on('UPDATE_DEPOSIT_BALANCE_FLAG', function(evt, val) {
                      $scope.isDepositBalanceScreenOpened = val;
                  });
 
@@ -1304,19 +1304,19 @@ sntRover.controller('reservationDetailsController',
     // CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
 
     //>>wakeup call check after guest prefs are fetched
-        $scope.$on('wakeup_call_ON',function(evt, data) {
+        $scope.$on('wakeup_call_ON', function(evt, data) {
             if (data) {
                 $scope.activeWakeUp = data.active;
             }
         });
 
             $scope.updateGiftCardNumber = function(n) {
-                $rootScope.$broadcast('GIFTCARD_DETAILS',n);
+                $rootScope.$broadcast('GIFTCARD_DETAILS', n);
             };
 
             $scope.giftCardAmountAvailable = false;
             $scope.giftCardAvailableBalance = 0;
-            $scope.$on('giftCardAvailableBalance',function(e, giftCardData) {
+            $scope.$on('giftCardAvailableBalance', function(e, giftCardData) {
                $scope.giftCardAvailableBalance = giftCardData.amount;
             });
             $scope.timer = null;
@@ -1343,7 +1343,7 @@ sntRover.controller('reservationDetailsController',
                    var fetchGiftCardBalanceSuccess = function(giftCardData) {
                        $scope.giftCardAvailableBalance = giftCardData.amount;
                        $scope.giftCardAmountAvailable = true;
-                       $scope.$emit('giftCardAvailableBalance',giftCardData);
+                       $scope.$emit('giftCardAvailableBalance', giftCardData);
                        //data.expiry_date //unused at this time
                        $scope.$emit('hideLoader');
                    };
@@ -1353,7 +1353,7 @@ sntRover.controller('reservationDetailsController',
               // }
             };
 
-     var unbindChildContentModListener = $scope.$on('CHILD_CONTENT_MOD',function(event, timer) {
+     var unbindChildContentModListener = $scope.$on('CHILD_CONTENT_MOD', function(event, timer) {
      	event.stopPropagation();
      	$scope.refreshReservationDetailsScroller(timer || 0);
      });

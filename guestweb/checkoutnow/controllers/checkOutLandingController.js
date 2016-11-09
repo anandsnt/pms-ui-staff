@@ -1,4 +1,4 @@
-sntGuestWeb.controller('checkOutLandingController', ['$rootScope','$location','$state','$scope', function($rootScope,$location,$state,$scope) {
+sntGuestWeb.controller('checkOutLandingController', ['$rootScope', '$location', '$state', '$scope', function($rootScope, $location, $state, $scope) {
 
 
 	$scope.pageValid = false;

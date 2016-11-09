@@ -1,4 +1,4 @@
-admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$timeout', '$location',
+admin.controller('ADSourcesCtrl', ['$scope', 'ADSourcesSrv', '$anchorScroll', '$timeout', '$location',
 	function($scope, ADSourcesSrv, $anchorScroll, $timeout, $location) {
 
 	BaseCtrl.call(this, $scope);
@@ -12,7 +12,7 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 	};
-	$scope.invokeApi(ADSourcesSrv.fetch, {},fetchSuccessCallback);
+	$scope.invokeApi(ADSourcesSrv.fetch, {}, fetchSuccessCallback);
 	/*
     * To handle enable/disable of use sources
     */
@@ -93,7 +93,7 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$t
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			// delete data from scope
-			angular.forEach($scope.data.sources,function(item, index) {
+			angular.forEach($scope.data.sources, function(item, index) {
 	 			if (item.value === id) {
 	 				$scope.data.sources.splice(index, 1);
 	 			}

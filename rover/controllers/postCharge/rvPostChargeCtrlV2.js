@@ -3,7 +3,7 @@ sntRover.controller('RVPostChargeControllerV2',
 		'$rootScope',
 		'$scope',
 		'RVSearchSrv',
-		'$timeout', 'RVBillCardSrv','ngDialog', 'rvPermissionSrv','rvAccountTransactionsSrv', 'RVPostChargeSrvV2',
+		'$timeout', 'RVBillCardSrv', 'ngDialog', 'rvPermissionSrv', 'rvAccountTransactionsSrv', 'RVPostChargeSrvV2',
 		function($rootScope, $scope, RVSearchSrv,
 			$timeout, RVBillCardSrv, ngDialog, rvPermissionSrv, rvAccountTransactionsSrv, RVPostChargeSrvV2 ) {
 
@@ -535,7 +535,7 @@ sntRover.controller('RVPostChargeControllerV2',
 				var accountsPostcallback = function() {
 					$scope.$emit( 'hideLoader' );
 					$scope.closeDialog();
-					$scope.$emit('UPDATE_TRANSACTION_DATA',data);
+					$scope.$emit('UPDATE_TRANSACTION_DATA', data);
 				};
 				if(!isFromAccounts) {
 					if(!!$scope.restrict_post && $scope.hasPermissionToAllowPostWithNoCredit()) {
@@ -592,7 +592,7 @@ sntRover.controller('RVPostChargeControllerV2',
 								$scope.reviewStatusArray.push(data);
 							}
 						};
-						$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback, failureCallback);
+						$scope.invokeApi(RVBillCardSrv.createAnotherBill, billData, createBillSuccessCallback, failureCallback);
 					}
 				}
 			};

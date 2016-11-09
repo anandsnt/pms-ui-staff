@@ -17,7 +17,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 *   A post method to activate/inactivate hotel payments
 	 *   @param {String} index value for the credit card list.
 	 */
-	$scope.toggleClickedPayment = function(index,isFromCCGroup) {
+	$scope.toggleClickedPayment = function(index, isFromCCGroup) {
 		if(isFromCCGroup) {
 			var item = $scope.data.credit_card_types[index];
 		}
@@ -96,9 +96,9 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	};
 
 	$scope.activeCCTab = function() {
-		angular.forEach($scope.data.payments,function(item, index) {
+		angular.forEach($scope.data.payments, function(item, index) {
 			if(item.value === "CC" && item.is_active === "false") {
-				$scope.toggleClickedPayment(index,false);
+				$scope.toggleClickedPayment(index, false);
 			}
 		});
 	};
@@ -167,11 +167,11 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 		}
 		// If we edit system defined credit card type - call api to update credit card.
 		if( $scope.currentClickedElementCC !== -1 && dataToSend.is_system_defined ) {
-			$scope.invokeApi(ADPaymentMethodsSrv.saveCreditCardMethod, dataToSend , successCallbackSaveCC);
+			$scope.invokeApi(ADPaymentMethodsSrv.saveCreditCardMethod, dataToSend, successCallbackSaveCC);
 		}
 		// Else we call api to update payment types.
 		else{
-			$scope.invokeApi(ADPaymentMethodsSrv.savePaymentMethod, dataToSend , successCallbackSavePaymentMethod);
+			$scope.invokeApi(ADPaymentMethodsSrv.savePaymentMethod, dataToSend, successCallbackSavePaymentMethod);
 		}
 	};
 
@@ -182,14 +182,14 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	$scope.editPaymentMethod = function(index) {
 
 			$scope.currentClickedElement = index;
-			$scope.editData = dclone($scope.data.payments[index],["is_active"]);
+			$scope.editData = dclone($scope.data.payments[index], ["is_active"]);
 			$scope.editData.isEditCC = false;
 
 	};
 
 	$scope.editPaymentMethodCC = function(index) {
 		$scope.currentClickedElementCC = index;
-		$scope.editData = dclone($scope.data.credit_card_types[index],["is_active"]);
+		$scope.editData = dclone($scope.data.credit_card_types[index], ["is_active"]);
 		$scope.editData.isEditCC = true;
 	};
 	/*
@@ -229,7 +229,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 			$scope.currentClickedElementCC = -1;
 			}
 		};
-		$scope.invokeApi(ADPaymentMethodsSrv.deletePaymentMethod, id , successCallbackDelete);
+		$scope.invokeApi(ADPaymentMethodsSrv.deletePaymentMethod, id, successCallbackDelete);
 	};
 
 

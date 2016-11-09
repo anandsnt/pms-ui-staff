@@ -1,4 +1,4 @@
-sntRover.controller('RVShowRoomNotAvailableCtrl',['$rootScope', '$scope', 'ngDialog', '$state', '$vault',
+sntRover.controller('RVShowRoomNotAvailableCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', '$vault',
   function($rootScope, $scope, ngDialog, $state, $vault) {
 	BaseCtrl.call(this, $scope);
 

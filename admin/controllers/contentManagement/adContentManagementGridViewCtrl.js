@@ -1,5 +1,5 @@
-admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 'ngDialog',
- function($scope, $state, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location,ngDialog) {
+admin.controller('ADContentManagementGridviewCtrl', ['$scope', '$state', 'ADContentManagementSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout',  '$location', 'ngDialog',
+ function($scope, $state, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location, ngDialog) {
 
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -28,7 +28,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 			$scope.setCategories();
 			$scope.setItems();
 		};
-	   $scope.invokeApi(ADContentManagementSrv.fetchGridViewList, {} , successCallbackGridFetch);
+	   $scope.invokeApi(ADContentManagementSrv.fetchGridViewList, {}, successCallbackGridFetch);
    };
    /* Function to split the fetch components to sections, categories and items
     */
@@ -231,7 +231,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 
 		angular.forEach($scope.sections, function(section, index) {
 			if (section.id === data.id) {
-				$scope.sections.splice(index,1);
+				$scope.sections.splice(index, 1);
 			}
 		});
 		$scope.sectionParams.reload();
@@ -240,7 +240,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 
 		angular.forEach($scope.categories, function(category, index) {
 			if (category.id === data.id) {
-				$scope.categories.splice(index,1);
+				$scope.categories.splice(index, 1);
 			}
 		});
 		$scope.categoryParams.reload();
@@ -248,26 +248,26 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 
 		angular.forEach($scope.items, function(item, index) {
 			if (item.id === data.id) {
-				$scope.items.splice(index,1);
+				$scope.items.splice(index, 1);
 			}
 		});
 		$scope.itemParams.reload();
 
 		angular.forEach($scope.data, function(component, index) {
 			if (component.id === data.id) {
-				$scope.data.splice(index,1);
+				$scope.data.splice(index, 1);
 			}
 		});
 
 		angular.forEach($scope.category_options, function(component, index) {
 			if (component.id === data.id) {
-				$scope.category_options.splice(index,1);
+				$scope.category_options.splice(index, 1);
 			}
 		});
 
 		angular.forEach($scope.section_options, function(component, index) {
 			if (component.id === data.id) {
-				$scope.section_options.splice(index,1);
+				$scope.section_options.splice(index, 1);
 			}
 		});
 	});

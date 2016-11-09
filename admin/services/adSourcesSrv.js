@@ -1,4 +1,4 @@
-admin.service('ADSourcesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('ADSourcesSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 
 	/**
     *   A getter method to return the sources list
@@ -8,7 +8,7 @@ admin.service('ADSourcesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		var url = '/api/sources.json';
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -19,9 +19,9 @@ admin.service('ADSourcesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 	this.toggleUsedSources = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/sources/use_sources';
-		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -35,9 +35,9 @@ admin.service('ADSourcesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		var deferred = $q.defer();
 		var url = '/api/sources';
 
-		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -51,9 +51,9 @@ admin.service('ADSourcesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		var deferred = $q.defer();
 		var url = '/api/sources/'+data.value;
 
-		ADBaseWebSrvV2.putJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -69,7 +69,7 @@ admin.service('ADSourcesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

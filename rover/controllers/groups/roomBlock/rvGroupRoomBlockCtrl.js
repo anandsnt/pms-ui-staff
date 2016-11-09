@@ -1462,9 +1462,9 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		$scope.saveMassUpdate = function(forceOverbook, config) {
 			forceOverbook = forceOverbook || false;
 			config = config || {};
-			config = _.pick(config, ["group_id", "overbook_chosen", "forcefully_overbook_and_assign_rooms","start_date","end_date",
+			config = _.pick(config, ["group_id", "overbook_chosen", "forcefully_overbook_and_assign_rooms", "start_date", "end_date",
 				'bulk_updated_for', "room_type_id", "room_type_name",
-				"single", "double","quadruple","triple", "old_total"]);
+				"single", "double", "quadruple", "triple", "old_total"]);
 
 			var params = _.extend(config, {
 				group_id: $scope.groupConfigData.summary.group_id,

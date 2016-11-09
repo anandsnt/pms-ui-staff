@@ -43,7 +43,7 @@ sntRover
                 x_n: new Date(x_left),
                 x_p: new Date(x_right),
                 toShijuBugStartDate: function(start) {
-                    return new Date(new Date(x_left).setHours(start,0,0));
+                    return new Date(new Date(x_left).setHours(start, 0, 0));
                 },
                 toShijuBugEndDate: function(end) {
                     return new Date(new Date(x_right).setHours(end, 0, 0));

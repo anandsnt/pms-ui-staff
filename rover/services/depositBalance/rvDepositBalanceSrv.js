@@ -1,10 +1,10 @@
-angular.module('sntRover').service('RVDepositBalanceSrv',['$q', 'BaseWebSrvV2','rvBaseWebSrvV2','$rootScope', function($q, BaseWebSrvV2,rvBaseWebSrvV2,$rootScope) {
+angular.module('sntRover').service('RVDepositBalanceSrv', ['$q', 'BaseWebSrvV2', 'rvBaseWebSrvV2', '$rootScope', function($q, BaseWebSrvV2, rvBaseWebSrvV2, $rootScope) {
 	this.getDepositBalanceData = function (data) {
 		var deferred = $q.defer();
 		var url = 'staff/reservations/'+data.reservationId+'/deposit_and_balance.json';
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -15,7 +15,7 @@ angular.module('sntRover').service('RVDepositBalanceSrv',['$q', 'BaseWebSrvV2','
 		var url = 'api/posting_accounts/'+data.posting_account_id+'/deposit_and_balance';
 		BaseWebSrvV2.getJSON(url).then(function (data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -80,7 +80,7 @@ angular.module('sntRover').service('RVDepositBalanceSrv',['$q', 'BaseWebSrvV2','
 				};
 			};
 
-			rvBaseWebSrvV2.postJSONWithSpecialStatusHandling(url,postData.postData).then(function(data) {
+			rvBaseWebSrvV2.postJSONWithSpecialStatusHandling(url, postData.postData).then(function(data) {
 				//if connect to emv terminal is neeeded
 				// need to poll oftently to avoid
 				// timeout issues

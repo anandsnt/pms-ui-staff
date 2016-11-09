@@ -11,7 +11,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             var url = "/api/channel_managers/"+id+"/activate";
             
 
-            ADBaseWebSrvV2.putJSON(url,params).then(function (data) {
+            ADBaseWebSrvV2.putJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);
@@ -31,7 +31,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             var url = "/api/channel_managers/"+interface_id+"/channel_manager_rates/"+channel_rate_id;
             
 
-            ADBaseWebSrvV2.putJSON(url,postData).then(function (data) {
+            ADBaseWebSrvV2.putJSON(url, postData).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);

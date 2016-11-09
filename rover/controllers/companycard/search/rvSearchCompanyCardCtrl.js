@@ -30,7 +30,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		var refreshScroller = function() {
 			$timeout(function() {
 				$scope.refreshScroller('company_card_scroll');
-			},300);
+			}, 300);
 		};
 
 		//function that converts a null value to a desired string.

@@ -22,7 +22,7 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 	        $scope.setScroller('report_content');
 
 		};
-		$scope.$on('PopulateLogData',function(e,data) {
+		$scope.$on('PopulateLogData', function(e, data) {
 			$scope.count = data.total_count;
 			$scope.activityLogData = data.results;
 			$scope.dataLength = $scope.activityLogData.length;
@@ -173,7 +173,7 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 	        	};
 	        params['sort_order'] = $scope.sort_order;
 	        params['sort_field'] = $scope.sort_field;
-	        $scope.$emit("updateLogdata",params);
+	        $scope.$emit("updateLogdata", params);
     	};
 
 		/**

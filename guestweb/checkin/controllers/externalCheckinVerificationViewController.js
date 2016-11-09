@@ -78,7 +78,7 @@
 				//navigate to next page
 				$state.go('checkinReservationDetails');
 				
-			},function() {
+			}, function() {
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
 			});
@@ -146,7 +146,7 @@
 						}
 						//if reservation is early checkin
 						else if(response.results[0].is_too_early) {
-							$state.go('guestCheckinEarly',{"date":response.results[0].available_date_after});
+							$state.go('guestCheckinEarly', {"date":response.results[0].available_date_after});
 						}
 						else{
 							//retrieve token for guest
@@ -157,7 +157,7 @@
 							getToken(response);
 						};
 					};
-				},function() {
+				}, function() {
 						$rootScope.netWorkError = true;
 						$scope.isLoading = false;
 					});
@@ -200,15 +200,15 @@
 			$scope.selectedDate = ($filter('date')($scope.date, $rootScope.dateFormat));
 			$rootScope.departureDate = $scope.selectedDate;
 
-			dateToSend = dclone($scope.date,[]);
-			dateToSend = ($filter('date')(dateToSend,'yyyy-MM-dd'));
+			dateToSend = dclone($scope.date, []);
+			dateToSend = ($filter('date')(dateToSend, 'yyyy-MM-dd'));
 			$scope.closeCalender();
 		};
 	}
 };
 
 var dependencies = [
-'$scope','$modal','$rootScope','$state', 'dateFilter', '$filter', 'checkinConfirmationService','checkinDetailsService',
+'$scope', '$modal', '$rootScope', '$state', 'dateFilter', '$filter', 'checkinConfirmationService', 'checkinDetailsService',
 externalCheckinVerificationViewController
 ];
 
@@ -216,7 +216,7 @@ sntGuestWeb.controller('externalCheckinVerificationViewController', dependencies
 })();
 
 
-sntGuestWeb.controller('earlyToCheckinCtrl', ['$scope','$stateParams',
- function($scope,$stateParams) {
+sntGuestWeb.controller('earlyToCheckinCtrl', ['$scope', '$stateParams',
+ function($scope, $stateParams) {
  	$scope.checkinAvailableDateAfter = $stateParams.date;
  }]);

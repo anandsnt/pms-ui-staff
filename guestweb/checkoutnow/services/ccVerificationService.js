@@ -1,5 +1,5 @@
 (function() {
-var ccVerificationService = function($q,$http,$rootScope) {
+var ccVerificationService = function($q, $http, $rootScope) {
 	var response = {};
 
 	var verifyCC = function(data) {
@@ -25,7 +25,7 @@ var ccVerificationService = function($q,$http,$rootScope) {
 };
 
 var dependencies = [
-'$q','$http','$rootScope',
+'$q', '$http', '$rootScope',
 ccVerificationService
 ];
 

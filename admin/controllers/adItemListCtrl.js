@@ -1,4 +1,4 @@
-admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$filter', function($scope, ADItemSrv, ngTableParams, $filter) {
+admin.controller('ADItemListCtrl', ['$scope', 'ADItemSrv', 'ngTableParams', '$filter', function($scope, ADItemSrv, ngTableParams, $filter) {
    /*
 	* Controller class for Room List
 	*/

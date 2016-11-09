@@ -1,5 +1,5 @@
-sntRover.controller('rvRoomTransferConfirmationCtrl',['$scope','$rootScope','$filter', 'ngDialog', '$timeout',
-	function($scope, $rootScope,$filter, ngDialog , $timeout) {
+sntRover.controller('rvRoomTransferConfirmationCtrl', ['$scope', '$rootScope', '$filter', 'ngDialog', '$timeout',
+	function($scope, $rootScope, $filter, ngDialog, $timeout) {
 
 	BaseCtrl.call(this, $scope);
 

@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
+sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJournalSrv', '$timeout', function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
 
@@ -7,7 +7,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         setTimeout(function() {$scope.refreshScroller('payment_content');}, 500);
     };
 
-    $rootScope.$on('REFRESHPAYMENTCONTENT',function() {
+    $rootScope.$on('REFRESHPAYMENTCONTENT', function() {
         refreshPaymentScroll();
     });
 
@@ -28,7 +28,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         var postData = {
             "from_date":$scope.data.fromDate,
             "to_date":$scope.data.toDate,
-            "employee_ids" : $scope.data.selectedEmployeeList ,
+            "employee_ids" : $scope.data.selectedEmployeeList,
             "department_ids" : $scope.data.selectedDepartmentList,
             "type" : ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
         };
@@ -37,17 +37,17 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
 	initPaymentData("");
 
-    $rootScope.$on('fromDateChanged',function() {
+    $rootScope.$on('fromDateChanged', function() {
         initPaymentData("");
         $rootScope.$broadcast('REFRESH_SUMMARY_DATA', $scope.data.fromDate);
     });
 
-    $rootScope.$on('toDateChanged',function() {
+    $rootScope.$on('toDateChanged', function() {
         initPaymentData("");
     });
 
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
-    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA',function( event, data ) {
+    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA', function( event, data ) {
         $scope.data.fromDate = data.date;
         $scope.data.toDate   = data.date;
         initPaymentData(data.origin);
@@ -85,10 +85,10 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         // Call api only while expanding the tab or on pagination Next/Prev button actions ..
         if(!chargeCodeItem.active || isFromPagination) {
             var postData = {
-                "from_date":$scope.data.fromDate ,
-                "to_date":$scope.data.toDate ,
-                "charge_code_id":chargeCodeItem.charge_code_id ,
-                "employee_ids" : $scope.data.selectedEmployeeList ,
+                "from_date":$scope.data.fromDate,
+                "to_date":$scope.data.toDate,
+                "charge_code_id":chargeCodeItem.charge_code_id,
+                "employee_ids" : $scope.data.selectedEmployeeList,
                 "department_ids" : $scope.data.selectedDepartmentList,
                 "page_no" :  chargeCodeItem.page_no,
                 "per_page": $scope.data.filterData.perPage,
@@ -107,7 +107,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         var toggleItem = $scope.data.paymentData.payment_types[index1];
 
         if(toggleItem.payment_type !== "Credit Card") {
-            loadTransactionDeatils(toggleItem , false);
+            loadTransactionDeatils(toggleItem, false);
         }
         else{
             // For Credit cards , level-2 data already exist , so just do expand/collapse only ..
@@ -120,7 +120,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
         var toggleItem = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
 
-        loadTransactionDeatils(toggleItem , false);
+        loadTransactionDeatils(toggleItem, false);
     };
 
     /* To hide/show arrow button for Level1 */
@@ -167,7 +167,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         item.page_no ++;
         item.nextAction = true;
         item.prevAction = false;
-        loadTransactionDeatils(item , true);
+        loadTransactionDeatils(item, true);
     };
 
     $scope.loadPrevSet = function(index1, index2) {

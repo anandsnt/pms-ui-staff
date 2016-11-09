@@ -14,7 +14,7 @@ function($http, $q, ADBaseWebSrvV2) {
 			/* Formatting charge code data for UI implementation.
 			 * ad-dropdown directive expects value,name pair.
 			 */
-			angular.forEach(data.charge_codes,function(item, index) {
+			angular.forEach(data.charge_codes, function(item, index) {
 	       		var obj = { "value": item.id, "name": item.description };
 	       		cargeCodes.push(obj);
        		});
@@ -22,7 +22,7 @@ function($http, $q, ADBaseWebSrvV2) {
 			data.charge_codes = cargeCodes;
 		    deferred.resolve(data);
 
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -38,7 +38,7 @@ function($http, $q, ADBaseWebSrvV2) {
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

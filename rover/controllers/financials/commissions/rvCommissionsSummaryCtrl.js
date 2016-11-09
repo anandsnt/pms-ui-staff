@@ -1,4 +1,4 @@
-sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '$stateParams', '$filter', 'RVCommissionsSrv','$timeout','$window','$state', function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv,$timeout, $window, $state) {
+sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '$stateParams', '$filter', 'RVCommissionsSrv', '$timeout', '$window', '$state', function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv, $timeout, $window, $state) {
 
     BaseCtrl.call(this, $scope);
 
@@ -102,7 +102,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
     };
     $scope.navigateToTA =function(account) {
         if(account.is_commission_on) {
-            $state.go('rover.companycarddetails',{id: account.id, type: 'TRAVELAGENT',origin:'COMMISION_SUMMARY'});
+            $state.go('rover.companycarddetails', {id: account.id, type: 'TRAVELAGENT', origin:'COMMISION_SUMMARY'});
         };
     };
     $scope.isPrevButtonDisabled = function() {

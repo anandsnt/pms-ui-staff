@@ -1,4 +1,4 @@
-login.service('resetSrv',['$http', '$q', function($http, $q) {
+login.service('resetSrv', ['$http', '$q', function($http, $q) {
    /*
     * Reset Password
     * @param object of data

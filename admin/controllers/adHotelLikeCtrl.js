@@ -58,8 +58,8 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 
 	  };
 	  $scope.likeList.likes[index].is_active = ($scope.likeList.likes[index].is_active ==='true') ? 'false':'true';
-	  var data = {'id' : $scope.likeList.likes[index].id,'set_active' : $scope.likeList.likes[index].is_active};
-	  $scope.invokeApi(ADHotelLikesSrv.toggleSwitch,data, toggleSwitchLikesSuccessCallback);
+	  var data = {'id' : $scope.likeList.likes[index].id, 'set_active' : $scope.likeList.likes[index].is_active};
+	  $scope.invokeApi(ADHotelLikesSrv.toggleSwitch, data, toggleSwitchLikesSuccessCallback);
 	};
 
 	 /*
@@ -99,14 +99,14 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
    */
 
 
-   $scope.checkBoxDeleteClicked = function(index,id) {
+   $scope.checkBoxDeleteClicked = function(index, id) {
 
     var checkBoxDeleteCallback = function(data) {
       $scope.$emit('hideLoader');
-      $scope.likeData.news_papers.splice(index,1);
+      $scope.likeData.news_papers.splice(index, 1);
      };
     var editID = id;
-    $scope.invokeApi(ADHotelLikesSrv.deleteChecbox,editID,checkBoxDeleteCallback);
+    $scope.invokeApi(ADHotelLikesSrv.deleteChecbox, editID, checkBoxDeleteCallback);
 
 
   };
@@ -115,7 +115,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
    * @param {int} index index of selected chain
    * @paran {string} id - chain id
    */
-   $scope.editSelected = function(index,id,rowName,isSystemDefined)    {
+   $scope.editSelected = function(index, id, rowName, isSystemDefined)    {
 
 
     $scope.currentClickedElement = index;
@@ -152,7 +152,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 
       $scope.likeData.newfeature = "";
     };
-    $scope.invokeApi(ADHotelLikesSrv.edit,editID,editLikeSuccessCallback);
+    $scope.invokeApi(ADHotelLikesSrv.edit, editID, editLikeSuccessCallback);
   }
 };
     /*
@@ -167,7 +167,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 	      *add a input box for adding new option
 	      */
 	      if($scope.likeData.newfeature.length !==0) {
-	        $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature,'is_checked':'true'});
+	        $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature, 'is_checked':'true'});
 	        $scope.likeData.newfeature ="";
 	      }
 	    }
@@ -192,7 +192,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 
       if($scope.likeData.newfeature.length !==0) {
 
-        $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature,'is_checked':'true'});
+        $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature, 'is_checked':'true'});
         $scope.likeData.newfeature ="";
       }
     }
@@ -206,7 +206,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
  /*
    * To watch type for add/edit form
    */
-   $scope.$watch('likeData.type',function() {
+   $scope.$watch('likeData.type', function() {
 
     if($scope.likeData.type === "textbox") {
      $scope.showTextBox = true;
@@ -221,7 +221,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
      $scope.showCheckbox = false;
 
     if($scope.likeData.options.length === 0) {
-      $scope.likeData.options =[{'name':''},{'name':''}];
+      $scope.likeData.options =[{'name':''}, {'name':''}];
     }
     else if($scope.likeData.options.length === 1) {
       $scope.likeData.options.push({'name':''});
@@ -256,7 +256,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
         $scope.newOptionAvailable = true;
             // exclude first two fields
             if($scope.likeData.options.length > 2) {
-              angular.forEach($scope.likeData.options,function(item, index) {
+              angular.forEach($scope.likeData.options, function(item, index) {
                 if (item.name === "" && index < $scope.likeData.options.length-1 ) {
                   $scope.newOptionAvailable = false;
                 }
@@ -286,7 +286,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
         if($scope.likeData.options[index].name === "") {
           $scope.likeData.options.splice(index, 1);
         }
-        angular.forEach($scope.likeData.options,function(item, i) {
+        angular.forEach($scope.likeData.options, function(item, i) {
           if (item.name === "" && i !== $scope.likeData.options.length-1) {
            $scope.likeData.options.splice(i, 1);
          }
@@ -310,7 +310,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 
     $scope.addSaveCliked   = function() {
 
-      angular.forEach($scope.likeData.options,function(item, index) {
+      angular.forEach($scope.likeData.options, function(item, index) {
         if (item.name === "") {
          $scope.likeData.options.splice(index, 1);
        }
@@ -351,11 +351,11 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
 
       if($scope.likeData.newfeature.length !==0) {
 
-        $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature,'is_checked':'true'});
+        $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature, 'is_checked':'true'});
         $scope.likeData.newfeature ="";
       }
 
-      var data = {'custom_likes' : $scope.likeData.news_papers,'id':$scope.likeData.id};
+      var data = {'custom_likes' : $scope.likeData.news_papers, 'id':$scope.likeData.id};
       delete $scope.likeData.newfeature;
 
       var saveCustomLikesSuccessCallback = function(data) {

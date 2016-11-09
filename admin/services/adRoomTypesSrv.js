@@ -1,5 +1,5 @@
-admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADDailyWorkAssignmentSrv',
-	function($http, $q, ADBaseWebSrv,ADBaseWebSrvV2, ADDailyWorkAssignmentSrv) {
+admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'ADDailyWorkAssignmentSrv',
+	function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2, ADDailyWorkAssignmentSrv) {
 		/**
 		 * To fetch the list of room types
 		 * @return {object} room types list json
@@ -81,7 +81,7 @@ admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2',
 			var url = '/admin/room_types/' + data.roomtype_id;
 			ADBaseWebSrv.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);
-			},function(errorMessage) {
+			}, function(errorMessage) {
 			deferred.reject(errorMessage);
 			});
 		return deferred.promise;

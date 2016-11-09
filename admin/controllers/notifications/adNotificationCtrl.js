@@ -1,4 +1,4 @@
-admin.controller('ADNotificationCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADNotificationsListSrv','ngTableParams', '$filter', 'ngDialog', function($scope, $rootScope,$state, $stateParams, ADNotificationsListSrv, ngTableParams, $filter, ngDialog) {
+admin.controller('ADNotificationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADNotificationsListSrv', 'ngTableParams', '$filter', 'ngDialog', function($scope, $rootScope, $state, $stateParams, ADNotificationsListSrv, ngTableParams, $filter, ngDialog) {
     BaseCtrl.call(this, $scope);    
 
     $scope.dateOptions = {
@@ -38,7 +38,7 @@ admin.controller('ADNotificationCtrl',['$scope','$rootScope', '$state','$statePa
         var fetchSuccess = function(data) {
             $scope.notification.message = data.message;
             $scope.notification.activates_at = $filter('date')(tzIndependentDate(data.activates_at), 'yyyy-MM-dd');
-            $scope.notification.duration = getDuration(data.activates_at,$filter('date')(tzIndependentDate(data.expires_at), 'yyyy-MM-dd'));
+            $scope.notification.duration = getDuration(data.activates_at, $filter('date')(tzIndependentDate(data.expires_at), 'yyyy-MM-dd'));
             $scope.notification.pms_type = data.pms_type;
             $scope.notification.action_source = data.action_source;
             $scope.$emit('hideLoader');

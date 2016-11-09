@@ -1,5 +1,5 @@
 
-sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
+sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/noOptionAvailable");
 
@@ -151,7 +151,7 @@ sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvid
 		templateUrl: '/assets/common_templates/partials/checkin/gwExternalCheckin.html',
 		controller: 'externalCheckinVerificationViewController',
 		title: 'External Check in verification'
-	}).state('guestCheckinTurnedOff',{
+	}).state('guestCheckinTurnedOff', {
 	 	url: '/guestCheckinTurnedOff',
 	 	templateUrl: '/assets/common_templates/partials/checkin/gwExternalCheckInTurnedOff.html',
 	 	title: 'Check-in'

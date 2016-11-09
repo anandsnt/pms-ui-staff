@@ -1,4 +1,4 @@
-sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog','RVCompanyCardSearchSrv','RVSearchSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv) {
+sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', 'RVCompanyCardSearchSrv', 'RVSearchSrv', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv) {
 	
 	BaseCtrl.call(this, $scope);
 
@@ -22,7 +22,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
 
 	    setTimeout(function() {
 	        $scope.refreshScroller('entities');
-	    },500);
+	    }, 500);
 	};
 
     /**
@@ -370,7 +370,7 @@ sntRover.controller('rvSearchAndAttachEntityCtrl',['$scope','$rootScope','$filte
      * @param {Number} type of entity
      * @return {undefined}
      */
-    $scope.selectAttachedEntity = function(index,type) {
+    $scope.selectAttachedEntity = function(index, type) {
     	$scope.setDefaultRoutingDates();
         $scope.setRoutingDateOptions();
         $scope.billingInfoFlags.isEntitySelected = true;

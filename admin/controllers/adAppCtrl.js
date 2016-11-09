@@ -1,5 +1,5 @@
-admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate','$timeout', 'adminDashboardConfigData',
-	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,$timeout,  adminDashboardConfigData) {
+admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate', '$timeout', 'adminDashboardConfigData',
+	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate, $timeout,  adminDashboardConfigData) {
 
 		//hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
@@ -115,12 +115,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						action: "staff#/staff/diary/",
 						standAlone: true,
 						hidden: !$rootScope.isHourlyRatesEnabled
-					},{
+					}, {
 						title: "MENU_ROOM_DIARY",
 						action: "staff#/staff/nightlyDiary/?start_date="+ $rootScope.businessDate,
 						standAlone: true,
 						hidden: ($rootScope.isHourlyRatesEnabled || !$rootScope.isPmsDevEnv)
-					},{
+					}, {
 						title: "MENU_POST_CHARGES",
 						action: "staff#/staff/dashboard/postCharge"
 					}, {
@@ -131,10 +131,10 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		            	action: "staff#/staff/accounts/search",
 		            	menuIndex: "accounts"
 		            	//hidden: $rootScope.isHourlyRatesEnabled
-		       	 	},{
+		       	 	}, {
 						title: "MENU_END_OF_DAY",
 						action: "staff#/staff/endofDay/starteod"
-					},{
+					}, {
 		                title: "MENU_SOCIAL_LOBBY",
 		                hidden: !isNeighboursEnabled,
 		                action: "staff#/staff/socialLobby"
@@ -163,7 +163,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			            action: "staff#/staff/allotments/search",
 			            menuIndex: "menuManageAllotment"
 			        }]
-		    	},{
+		    	}, {
 					title: "MENU_CONVERSATIONS",
 					hidden: true,
 					action: "",
@@ -238,7 +238,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
                         menuIndex: "actionManager",
                         submenu: []
 
-                    },{
+                    }, {
 					title: "MENU_REPORTS",
 					action: "staff#/staff/reports",
 					menuIndex: "reports",
@@ -277,7 +277,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						action: "staff#/staff/housekeeping/roomStatus?businessDate=" + $rootScope.businessDate,
 						menuIndex: "roomStatus"
 					}]
-				},{
+				}, {
 					title: "MENU_REPORTS",
 					action: "staff#/staff/reports",
 					menuIndex: "reports",
@@ -563,7 +563,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		/*
 		 * Function to change hotel name on updation in hotel details page
 		 */
-		$scope.$on('hotelNameChanged',function(e,data) {
+		$scope.$on('hotelNameChanged', function(e, data) {
 			$scope.data.current_hotel = data.new_name;
 		});
 

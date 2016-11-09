@@ -55,7 +55,7 @@ sntRover.controller('RVReportDetailsCtrl', [
         * inorder to refresh after list rendering
         */
         $scope.$on("NG_REPEAT_COMPLETED_RENDERING", function(event) {
-            $timeout(refreshScroll,1000);
+            $timeout(refreshScroll, 1000);
         });
 
 		$scope.parsedApiFor = undefined;

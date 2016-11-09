@@ -1,4 +1,4 @@
-sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv', '$state', function($scope, RVSearchSrv, $state) {
+sntRover.controller('rvDashboardGuestWidgetController', ['$scope', 'RVSearchSrv', '$state', function($scope, RVSearchSrv, $state) {
 	/**
 	* controller class for dashbaord's guest's area
 	*/
@@ -20,7 +20,7 @@ sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv',
         if(!$scope.disableReservations) {
             //as we dont have a status called Mobile checkin, we still need to pass as PRE_CHECKIN
             //along with that we will pass is mobile checkin variable. This will be null if not send
-            var stateParams = {'type': type, 'from_page': 'DASHBOARD','isMobileCheckin':isMobileCheckin};
+            var stateParams = {'type': type, 'from_page': 'DASHBOARD', 'isMobileCheckin':isMobileCheckin};
             $state.go('rover.search', stateParams);
         }
         else {

@@ -1,4 +1,4 @@
-admin.controller('ADServiceProviderListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADServiceProviderSrv','ngTableParams', '$filter',  function($scope, $state,$rootScope, $stateParams, ADServiceProviderSrv, ngTableParams, $filter) {
+admin.controller('ADServiceProviderListCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADServiceProviderSrv', 'ngTableParams', '$filter',  function($scope, $state, $rootScope, $stateParams, ADServiceProviderSrv, ngTableParams, $filter) {
     BaseCtrl.call(this, $scope);
 
     var fetchServiceProviderList = function() {

@@ -8,7 +8,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
     'rvPermissionSrv',
     'rvUtilSrv',
     '$window',
-function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout, rvPermissionSrv,util,$window ) {
+function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout, rvPermissionSrv, util, $window ) {
     BaseCtrl.call(this, $scope);
 
     //Get the request parameters for the commission filtering
@@ -142,12 +142,12 @@ function($scope, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout,
     };
 
     // To handle from date change
-    $scope.$on('fromDateChanged',function() {
+    $scope.$on('fromDateChanged', function() {
        $scope.onFilterChange();
     });
 
     // To handle to date change
-    $scope.$on('toDateChanged',function() {
+    $scope.$on('toDateChanged', function() {
         $scope.onFilterChange();
     });
 

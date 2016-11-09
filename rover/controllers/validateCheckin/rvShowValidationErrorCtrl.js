@@ -1,4 +1,4 @@
-sntRover.controller('RVShowValidationErrorCtrl',['$rootScope', '$scope', 'ngDialog','RVBillCardSrv',  function($rootScope, $scope, ngDialog, RVBillCardSrv) {
+sntRover.controller('RVShowValidationErrorCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVBillCardSrv',  function($rootScope, $scope, ngDialog, RVBillCardSrv) {
 	BaseCtrl.call(this, $scope);
 
 	var init = function() {

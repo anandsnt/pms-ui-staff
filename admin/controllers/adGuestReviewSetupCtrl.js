@@ -1,4 +1,4 @@
-admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSetupSrv','$rootScope', function($scope, $state, ADGuestReviewSetupSrv,$rootScope) {
+admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSetupSrv', '$rootScope', function($scope, $state, ADGuestReviewSetupSrv, $rootScope) {
 
 	/*
 	* controller class for guest review setup

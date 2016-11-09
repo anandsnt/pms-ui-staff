@@ -48,7 +48,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		// set title in header
 		$scope.setTitle(_title);
 		$scope.heading = _title;
-		$scope.$emit( 'updateRoverLeftMenu' , 'roomStatus' );
+		$scope.$emit( 'updateRoverLeftMenu', 'roomStatus' );
 		$scope.totalRoomsSelectedForUpdate = 0;
 		// set the scroller
 		$scope.setScroller('room-status-filter');
@@ -407,7 +407,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			} else {
 				if ( _.has($scope.multiRoomAction.indexes, _key) ) {
 					// remove from array
-					var indexToRemove = _.indexOf($scope.multiRoomAction.rooms,$scope.rooms[i].id);
+					var indexToRemove = _.indexOf($scope.multiRoomAction.rooms, $scope.rooms[i].id);
 					$scope.multiRoomAction.rooms.splice(indexToRemove, 1);
 
 					// remove keyMirror
@@ -728,7 +728,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			};
 
 			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room) { return room.is_add_to_update});
-			params.room_id = _.pluck(roomsToAdd,'id');
+			params.room_id = _.pluck(roomsToAdd, 'id');
 			//as per CICO-32168 comments
 			if(params.room_id.length > 0) {
 				$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, params, successCallBack);

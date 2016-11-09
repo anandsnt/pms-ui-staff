@@ -88,7 +88,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var billTabsData = $scope.transactionsDetails.bills;
 			var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 			if(!!chargeCodes && chargeCodes.length>0) {
-				_.each(chargeCodes, function(chargeCode,index) {
+				_.each(chargeCodes, function(chargeCode, index) {
 				  if(!chargeCode.isSelected) {
 				  	isAnyOneChargeCodeIsExcluded = true;
 				  }
@@ -131,7 +131,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 
 				if(chargeCodes.length>0) {
-					_.each(chargeCodes, function(chargeCode,index) {
+					_.each(chargeCodes, function(chargeCode, index) {
 						if(chargeCode.isSelected) {
 							$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
 						}
@@ -330,7 +330,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
         // Show a loading message until promises are not resolved
         $scope.$emit('showLoader');
 
-        jsMappings.fetchAssets(['postcharge','directives'])
+        jsMappings.fetchAssets(['postcharge', 'directives'])
         .then(function() {
         	$scope.$emit('hideLoader');
 
@@ -746,12 +746,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			});
 		};
 
-		$rootScope.$on('arAccountCreated',function() {
+		$rootScope.$on('arAccountCreated', function() {
 			 $scope.diretBillpaymentData.data_to_pass.is_new_ar_account = true;
 			 proceedPayment();
 		});
 		//setUp data from the payament modal for future usage
-		$scope.$on('arAccountWillBeCreated',function(e,arg) {
+		$scope.$on('arAccountWillBeCreated', function(e, arg) {
 			    $scope.account_id = arg.account_id;
 			    $scope.is_auto_assign_ar_numbers = arg.is_auto_assign_ar_numbers;
 			    $scope.diretBillpaymentData = arg.paymentDetails;

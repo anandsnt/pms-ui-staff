@@ -1,4 +1,4 @@
-sntRover.controller('RVAccountReceivableMessagePopupCtrl',['$rootScope', '$scope', '$state','ngDialog', 'RVCompanyCardSrv', function($rootScope, $scope, $state, ngDialog, RVCompanyCardSrv) {
+sntRover.controller('RVAccountReceivableMessagePopupCtrl', ['$rootScope', '$scope', '$state', 'ngDialog', 'RVCompanyCardSrv', function($rootScope, $scope, $state, ngDialog, RVCompanyCardSrv) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.isCreateNewARAccountMode = false;

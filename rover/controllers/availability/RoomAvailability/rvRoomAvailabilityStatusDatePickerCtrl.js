@@ -1,4 +1,4 @@
-angular.module('sntRover').controller('rvRoomAvailabilityDatePickerController',['$scope', '$rootScope', 'ngDialog','$filter', function($scope, $rootScope, ngDialog,$filter) {
+angular.module('sntRover').controller('rvRoomAvailabilityDatePickerController', ['$scope', '$rootScope', 'ngDialog', '$filter', function($scope, $rootScope, ngDialog, $filter) {
 
 	var selectedDateOnLoading = $scope.data.selectedDate;
 

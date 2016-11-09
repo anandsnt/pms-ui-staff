@@ -1190,12 +1190,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 			// rate
 			if (!!report.hasRateFilter) {
 				key = reportParams['RATE_IDS'];
-				params[key] = _.pluck(_.where(getRateListToShow(report),{selected: true}), "id");
+				params[key] = _.pluck(_.where(getRateListToShow(report), {selected: true}), "id");
                 // For the daily production rates; we are to send an array with group or allotment ids
                 if(reportNames['DAILY_PRODUCTION_RATE'] === report.title) {
-                    var selectedCustomRates = _.pluck(_.where(getRateListToShow(report),{selected: true, id: null}), "group_id");
+                    var selectedCustomRates = _.pluck(_.where(getRateListToShow(report), {selected: true, id: null}), "group_id");
                     if ( selectedCustomRates.length > 0 ) {
-                        params[key] = _.without(params[key],null); //remove null entries in the rate_ids array (null entries would be there if custom rates were selected)
+                        params[key] = _.without(params[key], null); //remove null entries in the rate_ids array (null entries would be there if custom rates were selected)
                         params['custom_rate_group_ids'] = selectedCustomRates;
                     }
                 }
@@ -1210,13 +1210,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			// for restriction list
 			if (!!report.hasRestrictionListFilter) {
-				params[reportParams['RESTRICTION_IDS']] = _.pluck(_.where(report.hasRestrictionListFilter.data,{ selected: true }), "id");
+				params[reportParams['RESTRICTION_IDS']] = _.pluck(_.where(report.hasRestrictionListFilter.data, { selected: true }), "id");
 			};
 
 			// for rate code
 			if (!!report.hasRateCodeFilter) {
 				if(report.hasRateCodeFilter.options.singleSelect) {
-					var selectedRateCode = _.findWhere(report.hasRateCodeFilter.data,{ selected: true });
+					var selectedRateCode = _.findWhere(report.hasRateCodeFilter.data, { selected: true });
 					if(selectedRateCode) {
 						params[reportParams['RATE_ID']] = selectedRateCode.id;
 					}
@@ -1245,7 +1245,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
 			// for room type filter
 			if (!!report.hasRoomTypeFilter) {
-				params[reportParams['ROOM_TYPE_IDS']] = _.pluck(_.where(report.hasRoomTypeFilter.data,{ selected: true }), "id");
+				params[reportParams['ROOM_TYPE_IDS']] = _.pluck(_.where(report.hasRoomTypeFilter.data, { selected: true }), "id");
 			};
 
 			// rate

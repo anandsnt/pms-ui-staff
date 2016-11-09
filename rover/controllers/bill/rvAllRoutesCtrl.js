@@ -1,4 +1,4 @@
-sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog) {
+sntRover.controller('rvAllRoutesCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog) {
 	BaseCtrl.call(this, $scope);
 	$scope.isInitialPage = true;
 
@@ -47,7 +47,7 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.$emit('displayErrorMessage',errorMessage);
+                $scope.$emit('displayErrorMessage', errorMessage);
             };
 
             var data = {};

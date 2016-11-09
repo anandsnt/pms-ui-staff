@@ -636,7 +636,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$vault.set('searchQuery', '');
 		};
 
-                $rootScope.$on('LOAD_SHARED_RESERVATION',function(evtObj, data) {
+                $rootScope.$on('LOAD_SHARED_RESERVATION', function(evtObj, data) {
                     var reservationID = data.reservation_no, confirmationID = data.confirmation_no;
                     $scope.goToSharerReservationDetails(evtObj, reservationID, confirmationID);
                 });
@@ -662,7 +662,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		/**
 		 * function to execute on clicking on each result
 		 */
-		$scope.goToReservationDetails = function($event,reservationID, confirmationID) {
+		$scope.goToReservationDetails = function($event, reservationID, confirmationID) {
 
 			$event.preventDefault();
 			$event.stopImmediatePropagation();

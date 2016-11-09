@@ -1,4 +1,4 @@
-admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomTypesSrv', 'ngTableParams','$filter','$anchorScroll', '$timeout', '$location', function($scope, $rootScope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
+admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTypesSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout', '$location', function($scope, $rootScope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
 
 	var init = function() {
@@ -46,7 +46,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 		        }
 		    });
 		};
-		$scope.invokeApi(ADRoomTypesSrv.fetch, {} , successCallbackFetch);
+		$scope.invokeApi(ADRoomTypesSrv.fetch, {}, successCallbackFetch);
 	};
 	 /*
     * To fetch list of room classes
@@ -55,7 +55,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 		var successCallbackFetch = function(data) {
 			$scope.roomClasses = data;
 		};
-		$scope.invokeApi(ADRoomTypesSrv.fetchRoomClasses, {} , successCallbackFetch);
+		$scope.invokeApi(ADRoomTypesSrv.fetchRoomClasses, {}, successCallbackFetch);
 	};
 
 
@@ -148,16 +148,16 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
     		$scope.$emit('hideLoader');
     		$scope.isAddMode = false;
     		$scope.is_image_deleted = false;
-    		$scope.data.room_types.push({'name':$scope.roomTypeData.room_type_name,'code':$scope.roomTypeData.room_type_code,'id':data.id});
+    		$scope.data.room_types.push({'name':$scope.roomTypeData.room_type_name, 'code':$scope.roomTypeData.room_type_code, 'id':data.id});
     		$scope.tableParams.reload();
     	};
 
 
     	if($scope.isAddMode) {
-    		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data , addSuccessCallbackSave);
+    		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data, addSuccessCallbackSave);
     	}
       	else {
-    	    $scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , editSuccessCallbackSave);
+    	    $scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data, editSuccessCallbackSave);
     	}
     };
    /*Handle click
@@ -203,7 +203,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
 	 	};
 
 
-		$scope.invokeApi(ADRoomTypesSrv.importFromPms, '' , successCallbackImport);
+		$scope.invokeApi(ADRoomTypesSrv.importFromPms, '', successCallbackImport);
 	};
 
     $scope.fetchAvailableRoomTypesForSuite = function(index, id) {
@@ -220,7 +220,7 @@ admin.controller('ADRoomTypesCtrl',['$scope','$rootScope', '$state', 'ADRoomType
             }
 
         };
-        $scope.invokeApi(ADRoomTypesSrv.fetchRoomTypesAvailableForSuite, '' , successCallbackGetAvailableRoomTypesForSuite);
+        $scope.invokeApi(ADRoomTypesSrv.fetchRoomTypesAvailableForSuite, '', successCallbackGetAvailableRoomTypesForSuite);
     };
 
   /*

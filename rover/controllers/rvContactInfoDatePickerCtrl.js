@@ -1,4 +1,4 @@
-sntRover.controller('RVContactInfoDatePickerController',['$scope','$rootScope','ngDialog','dateFilter',function($scope,$rootScope,ngDialog,dateFilter) {
+sntRover.controller('RVContactInfoDatePickerController', ['$scope', '$rootScope', 'ngDialog', 'dateFilter', function($scope, $rootScope, ngDialog, dateFilter) {
 
 $scope.setUpData = function() {
    $scope.dateOptions = {

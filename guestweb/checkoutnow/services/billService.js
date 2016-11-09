@@ -1,5 +1,5 @@
 (function() {
-var BillService = function($q,baseWebService,$rootScope,$http) {
+var BillService = function($q, baseWebService, $rootScope, $http) {
 	var bills = {};
 	var billDisplayDetails = {};
 
@@ -8,7 +8,7 @@ var BillService = function($q,baseWebService,$rootScope,$http) {
 		var deferred = $q.defer();
 		var url = '/guest_web/home/bill_details.json',
 		parameters = {'reservation_id':$rootScope.reservationID};
-		$http.get(url,{
+		$http.get(url, {
 			params: parameters
 		}).success(function(response) {
 			this.bills = response;
@@ -28,7 +28,7 @@ var BillService = function($q,baseWebService,$rootScope,$http) {
 };
 
 var dependencies = [
-'$q','baseWebService','$rootScope','$http',
+'$q', 'baseWebService', '$rootScope', '$http',
 BillService
 ];
 

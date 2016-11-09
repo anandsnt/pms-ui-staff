@@ -1,4 +1,4 @@
-admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', '$anchorScroll', '$timeout', '$location',
+admin.controller('ADMarketsCtrl', ['$scope', 'ADMarketsSrv', '$anchorScroll', '$timeout', '$location',
 	function($scope, ADMarketsSrv, $anchorScroll, $timeout, $location) {
 
 	BaseCtrl.call(this, $scope);
@@ -12,7 +12,7 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', '$anchorScroll', '$t
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 	};
-	$scope.invokeApi(ADMarketsSrv.fetch, {},fetchSuccessCallback);
+	$scope.invokeApi(ADMarketsSrv.fetch, {}, fetchSuccessCallback);
 	/*
     * To handle nable/disable of use markets
     */
@@ -93,7 +93,7 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', '$anchorScroll', '$t
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			// delete data from scope
-			angular.forEach($scope.data.markets,function(item, index) {
+			angular.forEach($scope.data.markets, function(item, index) {
 	 			if (item.value === id) {
 	 				$scope.data.markets.splice(index, 1);
 	 			}

@@ -1,12 +1,12 @@
 (function() {
-		var resetPasswordService = function($q,$http,$rootScope) {
+		var resetPasswordService = function($q, $http, $rootScope) {
 
 			var responseData = {};
 
 			var resetPassword = function(data) {
 				var deferred = $q.defer();
 				var url = '/guest/users/update_password.json';
-				$http.post(url,data).success(function(response) {
+				$http.post(url, data).success(function(response) {
 					this.responseData = response;
 					deferred.resolve(this.responseData);
 				}.bind(this))
@@ -23,7 +23,7 @@
 		};
 
 		var dependencies = [
-		'$q','$http','$rootScope',
+		'$q', '$http', '$rootScope',
 		resetPasswordService
 		];
 

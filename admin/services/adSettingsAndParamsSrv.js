@@ -1,4 +1,4 @@
-admin.service('settingsAndParamsSrv',['$http', '$q', 'ADBaseWebSrvV2','ADBaseWebSrv', function($http, $q, ADBaseWebSrvV2,ADBaseWebSrv) {
+admin.service('settingsAndParamsSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrvV2, ADBaseWebSrv) {
 
  	/*
     * To fetch settings and params
@@ -10,7 +10,7 @@ admin.service('settingsAndParamsSrv',['$http', '$q', 'ADBaseWebSrvV2','ADBaseWeb
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -23,9 +23,9 @@ admin.service('settingsAndParamsSrv',['$http', '$q', 'ADBaseWebSrvV2','ADBaseWeb
 	this.saveSettingsAndParamsSrv = function(data) {
 		var deferred = $q.defer();
 		var url = "/api/hotel_settings/change_settings";
-		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -40,7 +40,7 @@ admin.service('settingsAndParamsSrv',['$http', '$q', 'ADBaseWebSrvV2','ADBaseWeb
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;

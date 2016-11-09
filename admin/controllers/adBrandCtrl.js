@@ -1,4 +1,4 @@
-admin.controller('ADBrandCtrl',['$scope', '$rootScope','adBrandsSrv', function($scope, $rootScope,adBrandsSrv) {
+admin.controller('ADBrandCtrl', ['$scope', '$rootScope', 'adBrandsSrv', function($scope, $rootScope, adBrandsSrv) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.data = [];
@@ -16,7 +16,7 @@ admin.controller('ADBrandCtrl',['$scope', '$rootScope','adBrandsSrv', function($
 			$scope.$emit('hideLoader');
 			$scope.data = data.brands;
 		};
-		$scope.invokeApi(adBrandsSrv.fetch, {},fetchBrandsSuccessCallback);
+		$scope.invokeApi(adBrandsSrv.fetch, {}, fetchBrandsSuccessCallback);
 	};
 	$scope.fetchHotelBrands();
 	$scope.currentClickedElement = -1;
@@ -26,7 +26,7 @@ admin.controller('ADBrandCtrl',['$scope', '$rootScope','adBrandsSrv', function($
     * @param {index} index of the clicked brand
     * @param {id} id of the brand
     */
-	$scope.editBrand = function(index,id)	{
+	$scope.editBrand = function(index, id)	{
 		$scope.isAddmode = false;
 		$scope.errorMessage ="";
 		$scope.currentClickedElement = index;
@@ -38,7 +38,7 @@ admin.controller('ADBrandCtrl',['$scope', '$rootScope','adBrandsSrv', function($
 			$scope.formTitle = $scope.brandDetails.name;//To show brand name in title
 			$scope.isEditmode = true;
 		};
-		$scope.invokeApi(adBrandsSrv.editRender,editID,editBrandsSuccessCallback);
+		$scope.invokeApi(adBrandsSrv.editRender, editID, editBrandsSuccessCallback);
 	};
    /*
     * To get brand details form - used for both add and edit
@@ -59,7 +59,7 @@ admin.controller('ADBrandCtrl',['$scope', '$rootScope','adBrandsSrv', function($
 			$scope.$emit('hideLoader');
 			$scope.brandDetails   = data;
 		};
-		$scope.invokeApi(adBrandsSrv.addRender,{},addBrandsSuccessCallback);
+		$scope.invokeApi(adBrandsSrv.addRender, {}, addBrandsSuccessCallback);
 	};
    /*
     * To handle cancel button click
@@ -85,9 +85,9 @@ admin.controller('ADBrandCtrl',['$scope', '$rootScope','adBrandsSrv', function($
 		var	unwantedKeys = ["chains"];
 		var data = dclone($scope.brandDetails, unwantedKeys);
 		if($scope.isAddmode) {
-			$scope.invokeApi(adBrandsSrv.post,data, successSave);
+			$scope.invokeApi(adBrandsSrv.post, data, successSave);
 		} else {
-			$scope.invokeApi(adBrandsSrv.update,data, successSave);
+			$scope.invokeApi(adBrandsSrv.update, data, successSave);
 		}
 	};
 }]);

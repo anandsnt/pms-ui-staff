@@ -263,7 +263,7 @@ function BaseCtrl($scope) {
     if (sessionDetails.cardNumber.length > 0) {
       try {
         $scope.$emit('showLoader');
-        sntapp.MLIOperator.fetchMLISessionDetails(sessionDetails,success,failure);
+        sntapp.MLIOperator.fetchMLISessionDetails(sessionDetails, success, failure);
       }
       catch (err) {
         $scope.$emit('hideLoader');

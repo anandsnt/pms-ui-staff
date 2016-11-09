@@ -120,7 +120,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		var groupDetails =[];
 		var groupDetail = [];
 
-		_.each(datafromApi.results,function(element,index,lis) {
+		_.each(datafromApi.results, function(element, index, lis) {
 			var temp = [];
 			//Extracting date detail
 			var dateToCheck = tzIndependentDate(element.date);
@@ -132,7 +132,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			groupTotalPickedUps.push(element.group_total_pickups);
 			holdstatus.push(element.hold_status);
 			//Forms array(temp) of details of groups date wise
-			_.each(element.group_availability,function(ele, ind, list) {
+			_.each(element.group_availability, function(ele, ind, list) {
 				var detail ={
 					"id":ele.group_id,
 					"Name":ele.name,
@@ -150,7 +150,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			var groupdetail ={
 				"name":element.name,
 				"id":element.group_id,
-				"holdStatusName":getGroupName(element.hold_status_id,datafromApi.hold_status),
+				"holdStatusName":getGroupName(element.hold_status_id, datafromApi.hold_status),
 				"details":_.zip.apply(null, groupDetail)[index]
 			};
 			groupDetails.push(groupdetail);
@@ -196,7 +196,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			//storing response temporarily in that.data, will change in occupancy call
 			that.data.gridDataForGroupAvailability = formGridDataForGroupAvailability(resultFromAPI);
 			deferred.resolve(that.data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -221,7 +221,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		var isHourlyRateOn 		= RVHotelDetailsSrv.hotelDetails.is_hourly_rate_on;
 
-		_.each(roomAvailabilityData.results,function(item) {
+		_.each(roomAvailabilityData.results, function(item) {
 
 			//Extracting date detail
 			var dateToCheck = tzIndependentDate(item.date);
@@ -289,7 +289,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		var adultsCount,
 			childrenCount;
 
-		_.each(roomAvailabilityAdditionalData.results,function(item) {
+		_.each(roomAvailabilityAdditionalData.results, function(item) {
 			//Extracts roomtype details
 			roomtypeDetails.push(item.detailed_room_types);
 
@@ -313,7 +313,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			//var roomTypeName;
 			var roomTypeData = {};
 
-			_.map(roomAvailabilityAdditionalData.room_types,function(roomType) {
+			_.map(roomAvailabilityAdditionalData.room_types, function(roomType) {
 				if(roomType.id === item.id) {
 					roomTypeData.name = roomType.name;
 					roomTypeData.is_suite = roomType.is_suite;
@@ -352,7 +352,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 				//storing response temporarily in that.data, will change in occupancy call
 				that.data.gridDataForAllotmentAvailability = formGridDataForAllotmentAvailability(resultFromAPI);
 				deferred.resolve(that.data);
-			},function(data) {
+			}, function(data) {
 				deferred.reject(data);
 			});
 		return deferred.promise;
@@ -383,7 +383,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		var groupDetails =[];
 		var groupDetail = [];
 
-		_.each(datafromApi.results,function(element,index,lis) {
+		_.each(datafromApi.results, function(element, index, lis) {
 			var temp = [];
 
 			//Extracting date detail
@@ -399,7 +399,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			holdstatus.push(element.hold_status);
 
 			//Forms array(temp) of details of groups date wise
-			_.each(element.availability,function(ele, ind, list) {
+			_.each(element.availability, function(ele, ind, list) {
 				var detail ={
 					"id":ele.id,
 					"Name":ele.name,
@@ -457,7 +457,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			that.data.gridData ={};
 			that.data.gridData = formGridData(resultFromAPI);
 			deferred.resolve(resultFromAPI);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -546,7 +546,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice)
 			.then(function(responseFromAPI) {
 				deferred.resolve(responseFromAPI);
-			},function(data) {
+			}, function(data) {
 				deferred.reject(data);
 			});
 
@@ -561,7 +561,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -575,7 +575,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data.results);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -600,7 +600,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
         $q.all(promises).then(function() {
         	// Merge sold and availability count with the houseStatistics object
-        	_.each(houseAvailability,function(availability,idx) {_.extend(houseStatistics[idx],availability.house)});
+        	_.each(houseAvailability, function(availability, idx) {_.extend(houseStatistics[idx], availability.house)});
         	// Resolve after parsing to a bindable object
             deferred.resolve(that.restructureHouseDataForUI(houseStatistics, roomCount, businessDate));
         }, function(errorMessage) {
@@ -785,7 +785,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
                 "dates": getDateRange(firstDate, secondDate)
             };
 			deferred.resolve(that.data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -796,7 +796,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
             var deferred = $q.defer(),
                 url = '/api/availability/room_types';
 
-            rvBaseWebSrvV2.getJSON(url,dateRange).then(function(response) {
+            rvBaseWebSrvV2.getJSON(url, dateRange).then(function(response) {
                 var roomTypeNames = [];
 
                 if(!that.data.gridData.additionalData) {
@@ -806,25 +806,25 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
                 if(response.results.length > 0) {
                     // Inorder to get the room type names in the order of display fetch the first result set
                     var firstDayRoomDetails = response.results[0].room_types,
-                        idsInOrder = _.pluck(firstDayRoomDetails,'id');
+                        idsInOrder = _.pluck(firstDayRoomDetails, 'id');
 
-                    _.each(idsInOrder,function(roomTypeId) {
+                    _.each(idsInOrder, function(roomTypeId) {
                     	var roomTypeData = {};
-                    	roomTypeData.name = _.find(that.data.gridData.roomTypes,{
+                    	roomTypeData.name = _.find(that.data.gridData.roomTypes, {
                             id:roomTypeId
                         }).name;
-                        roomTypeData.is_suite = _.find(that.data.gridData.roomTypes,{
+                        roomTypeData.is_suite = _.find(that.data.gridData.roomTypes, {
                             id:roomTypeId
                         }).is_suite;
                         roomTypeNames.push(roomTypeData)
                     });
                 }
-                _.extend(that.data.gridData.additionalData,{
+                _.extend(that.data.gridData.additionalData, {
                     'roomTypeWiseDetails': _.zip.apply(null, _.pluck(response.results, 'room_types')),
                     'roomTypeNames': roomTypeNames
                 });
                 deferred.resolve(true);
-            },function(data) {
+            }, function(data) {
                 deferred.reject(data);
             });
             return deferred.promise;
@@ -834,24 +834,24 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
             var deferred = $q.defer(),
                 url = '/api/daily_occupancies/guest_counts';
 
-            rvBaseWebSrvV2.getJSON(url,dateRange).then(function(response) {
+            rvBaseWebSrvV2.getJSON(url, dateRange).then(function(response) {
                 var adultsChildrenCounts = [];
 
                 if(!that.data.gridData.additionalData) {
                     that.data.gridData.additionalData = {};
                 }
-                _.each(response.results,function(occupancy) {
+                _.each(response.results, function(occupancy) {
                     adultsChildrenCounts.push({
                         'bothCount': occupancy.adults + '/' + occupancy.children,
                     });
                 });
 
-                _.extend(that.data.gridData.additionalData,{
+                _.extend(that.data.gridData.additionalData, {
                     'adultsChildrenCounts': adultsChildrenCounts
                 });
 
                 deferred.resolve(true);
-            },function(data) {
+            }, function(data) {
                 deferred.reject(data);
             });
             return deferred.promise;

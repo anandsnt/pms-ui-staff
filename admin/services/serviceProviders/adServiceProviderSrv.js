@@ -1,4 +1,4 @@
-admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('ADServiceProviderSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 
     /**
     *   Service to return the service provider list
@@ -9,7 +9,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -24,9 +24,9 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
         var deferred = $q.defer();
         var url = '/admin/users.json';
         //var url = 'ui/show?json_input=serviceprovider/userslist.json&format=json';
-        ADBaseWebSrvV2.getJSON(url ,params).then(function(data) {
+        ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
-            },function(data) {
+            }, function(data) {
                 deferred.reject(data);
             });
         return deferred.promise;
@@ -41,7 +41,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
         var url = '/admin/users/toggle_activation';
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -58,7 +58,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
 
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -73,7 +73,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
         var url = '/admin/users';
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -87,7 +87,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
         var url = '/admin/users/'+ request.id+'/edit.json';
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -102,7 +102,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
         var url = '/admin/users/'+ data.user_id;
         ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -117,7 +117,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -134,7 +134,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
 
         ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -150,7 +150,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -166,7 +166,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
 
         ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -181,7 +181,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
         var url = '/admin/users/'+data.id;
            ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {           
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -197,7 +197,7 @@ admin.service('ADServiceProviderSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
         var url = '/admin/user/send_invitation';
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;

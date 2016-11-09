@@ -1,4 +1,4 @@
-admin.service('ADHotelListSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
+admin.service('ADHotelListSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
 
 	/**
     *   A getter method to return the hotel list
@@ -6,9 +6,9 @@ admin.service('ADHotelListSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 	this.fetch = function(params) {
 		var deferred = $q.defer();
 		var url = '/admin/hotels.json';
-		ADBaseWebSrv.getJSON(url,params).then(function(data) {
+		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;
@@ -24,7 +24,7 @@ admin.service('ADHotelListSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 		    deferred.reject(data);
 		});
 		return deferred.promise;

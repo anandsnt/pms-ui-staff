@@ -1,4 +1,4 @@
-admin.service('adUpsellEarlyCheckinService',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+admin.service('adUpsellEarlyCheckinService', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
    /*
     * To fetch late checkout upsell details
     * @return {object}late checkout upsell details
@@ -20,7 +20,7 @@ admin.service('adUpsellEarlyCheckinService',['$http', '$q', 'ADBaseWebSrvV2', fu
 			});
 			data.room_type_list = room_types_list;
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
@@ -36,9 +36,9 @@ admin.service('adUpsellEarlyCheckinService',['$http', '$q', 'ADBaseWebSrvV2', fu
 		var deferred = $q.defer();
 		var url = '/api/early_checkin_setups/save_setup.json';
 
-		ADBaseWebSrvV2.postJSON(url,updateData).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, updateData).then(function(data) {
 			deferred.resolve(data);
-		},function(data) {
+		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;

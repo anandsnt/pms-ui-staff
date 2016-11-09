@@ -1,12 +1,12 @@
 	(function() {
-		var checkinNowService = function($q,$http,$rootScope) {
+		var checkinNowService = function($q, $http, $rootScope) {
 
 			var responseData = {};
 
 			var assignRoom = function(data) {
 				var deferred = $q.defer();
 				var url = ' /staff/reservation/modify_reservation.json';
-				$http.post(url,data).success(function(response) {
+				$http.post(url, data).success(function(response) {
 					deferred.resolve(response);
 				}.bind(this))
 				.error(function() {
@@ -30,7 +30,7 @@
 			var fetchEarlyCheckinData =  function(data) {
 				var deferred = $q.defer();
 				var url = '/guest_web/reservations/'+data.reservation_id+'.json';
-				$http.get(url,{params: data}).success(function(response) {
+				$http.get(url, {params: data}).success(function(response) {
 					deferred.resolve(response);
 				}.bind(this))
 				.error(function() {
@@ -50,7 +50,7 @@
 		};
 
 		var dependencies = [
-		'$q','$http','$rootScope',
+		'$q', '$http', '$rootScope',
 		checkinNowService
 		];
 

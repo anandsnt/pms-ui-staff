@@ -1,8 +1,8 @@
 /**
  * Checkin - ETA updation ctrl
  */
-sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckinSrv', '$rootScope','$modal',
-	function($scope, $state, $controller, GwWebSrv, GwCheckinSrv, $rootScope,$modal) {
+sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckinSrv', '$rootScope', '$modal',
+	function($scope, $state, $controller, GwWebSrv, GwCheckinSrv, $rootScope, $modal) {
 
 		$controller('gwETABaseController', {
 			$scope: $scope

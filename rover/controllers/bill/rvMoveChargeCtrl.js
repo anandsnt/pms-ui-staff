@@ -1,6 +1,6 @@
 sntRover.controller('RVMoveChargeCtrl',
-	['$scope','$timeout','RVMoveChargeSrv',
-	function($scope,$timeout,RVMoveChargeSrv) {
+	['$scope', '$timeout', 'RVMoveChargeSrv',
+	function($scope, $timeout, RVMoveChargeSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -24,7 +24,7 @@ sntRover.controller('RVMoveChargeCtrl',
 		var createBillOptions = function() {
 			//Bills are collected from reservationBillData or transactionsDetails		
 			var data = $scope.reservationBillData ||$scope.transactionsDetails;			
-			_.each(data.bills, function(result,index) {
+			_.each(data.bills, function(result, index) {
 				if(index !== $scope.currentActiveBill) {
 					$scope.billOptions.push(result);
 				}
@@ -124,14 +124,14 @@ sntRover.controller('RVMoveChargeCtrl',
 			var fetchSucces = function(data) {
 				$scope.$emit("hideLoader");
 				$scope.searchResults = data.results;
-    			_.each($scope.searchResults, function(result,index) {
+    			_.each($scope.searchResults, function(result, index) {
     				result.entity_id = index;
     				(result.type === 'RESERVATION') ? result.displaytext = result.last_name+', '+result.first_name : '';
     			});
     			refreshSearchList();
 			};
 
-			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search":$scope.textQuery,"number_search":$scope.numberQuery,"bill_id":$scope.moveChargeData.fromBillId}, fetchSucces);
+			$scope.invokeApi(RVMoveChargeSrv.fetchSearchedItems, {"text_search":$scope.textQuery, "number_search":$scope.numberQuery, "bill_id":$scope.moveChargeData.fromBillId}, fetchSucces);
 		};
 
 		/**

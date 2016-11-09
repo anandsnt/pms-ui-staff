@@ -10,7 +10,7 @@ admin.service('adTravelClickCRSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', func
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -26,7 +26,7 @@ admin.service('adTravelClickCRSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', func
 
         ADBaseWebSrvV2.putJSON(url, params).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;
@@ -43,7 +43,7 @@ admin.service('adTravelClickCRSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', func
 
         ADBaseWebSrvV2.putJSON(url, params).then(function(data) {
             deferred.resolve(data);
-        },function(data) {
+        }, function(data) {
             deferred.reject(data);
         });
         return deferred.promise;

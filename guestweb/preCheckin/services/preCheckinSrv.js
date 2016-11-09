@@ -1,5 +1,5 @@
 (function() {
-var preCheckinSrv = function($q,baseWebService,$rootScope,$http) {
+var preCheckinSrv = function($q, baseWebService, $rootScope, $http) {
 
 
 	var reservationId = $rootScope.reservationID;
@@ -20,7 +20,7 @@ var preCheckinSrv = function($q,baseWebService,$rootScope,$http) {
 	var postStayDetails = function(data) {
 		var deferred = $q.defer();
 		var url = '/api/reservations/'+reservationId+'/update_stay_details';
-		$http.post(url,data).success(function(response) {
+		$http.post(url, data).success(function(response) {
 			deferred.resolve(response);
 		}.bind(this))
 		.error(function() {
@@ -35,7 +35,7 @@ var preCheckinSrv = function($q,baseWebService,$rootScope,$http) {
 		var data = {};
 		data.application = (typeof $rootScope.application !=="undefined") ? $rootScope.application : "";
 		data.url_suffix = (typeof $rootScope.urlSuffix !=="undefined") ? $rootScope.urlSuffix : "";
-		$http.post(url,data).success(function(response) {
+		$http.post(url, data).success(function(response) {
 			deferred.resolve(response);
 		}.bind(this))
 		.error(function() {
@@ -52,7 +52,7 @@ var preCheckinSrv = function($q,baseWebService,$rootScope,$http) {
 };
 
 var dependencies = [
-'$q','baseWebService','$rootScope','$http',
+'$q', 'baseWebService', '$rootScope', '$http',
 preCheckinSrv
 ];
 

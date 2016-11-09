@@ -12,7 +12,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             url = '/api/nightly_diary/room_list';
         BaseWebSrvV2.getJSON(url, data).then(function(response) {
             deferred.resolve(response);
-        },function(error) {
+        }, function(error) {
             deferred.reject(error);
         });
         return deferred.promise;
@@ -28,7 +28,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
         var deferred = $q.defer(), dateArray = [];
         var url = '/api/nightly_diary/date_list';
         BaseWebSrvV2.getJSON(url, data).then(function(response) {
-            angular.forEach(response.dates,function(item) {
+            angular.forEach(response.dates, function(item) {
                 var dateObj = tzIndependentDate(item);
                 var isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6) ? true : false;
                 var itemObj = {
@@ -38,7 +38,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
                 dateArray.push(itemObj);
             });
             deferred.resolve(dateArray);
-        },function(error) {
+        }, function(error) {
             deferred.reject(error);
         });
         return deferred.promise;

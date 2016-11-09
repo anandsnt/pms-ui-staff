@@ -625,7 +625,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		});
 
 
-		$stateProvider.state('admin.zestWebCommon',{
+		$stateProvider.state('admin.zestWebCommon', {
 			templateUrl: '/assets/partials/zestwebCommonSettings/adZestwebCommonSettings.html',
 			controller : 'ADZestwebCommonSettingsCtrl',
 			url: '/zestWebCommonSettings',

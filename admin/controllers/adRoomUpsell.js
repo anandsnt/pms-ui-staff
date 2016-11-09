@@ -238,7 +238,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
               var err = ['Unable to Save'];
               $scope.errorMessage = err;
         };
-        $scope.invokeApi(adRoomUpsellService.update, data, updateRoomUpsellSuccessCallback,updateRoomUpsellFailCallback);
+        $scope.invokeApi(adRoomUpsellService.update, data, updateRoomUpsellSuccessCallback, updateRoomUpsellFailCallback);
     };
 
   }]);

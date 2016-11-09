@@ -28,13 +28,13 @@ sntGuestWeb.service('GwScreenMappingSrv', ['$q', function($q) {
 	}, {
 		"value": "ROOM_VERIFICATION",
 		"id": "ZS-8"
-	},{
+	}, {
 		"value": "CC_ADDITION",
 		"id" : "ZS-9"
-	},{
+	}, {
 		"value": "EXTERNAL_CHECKIN",
 		"id" : "ZS-10"
-	},{
+	}, {
 		"value": "RESERVATION_DETAILS",
 		"id" : "ZS-11"
 	},
@@ -49,34 +49,34 @@ sntGuestWeb.service('GwScreenMappingSrv', ['$q', function($q) {
 	{
 		"value": "TERMS_AND_CONDITIONS",
 		"id": "zs-14"
-	},{
+	}, {
 		"value" : "AUTO_CHECKIN_FINAL",
 		"id" : "zs-15"
-	},{
+	}, {
 		"value":"CHECKIN_LANDING",
 		"id" : "zs-16"
-	},{
+	}, {
 		"value": "EXTERNAL_CHECKIN_OFF",
 		"id"  : "zs-17"
-	},{
+	}, {
 		"value" : "EARLY_CHECKIN_OPTIONS",
 		"id" : "zs-18"
-	},{
+	}, {
 		"value" : "EARLY_CHECKIN_FINAL",
 		"id"	: "zs-19"
-	},{
+	}, {
 		"value" : "ETA_LATE_UPDATION",
 		"id"	: "zs-20"
-	},{
+	}, {
 		"value" : "GUEST_DETAILS_UPDATE",
 		"id"    : "zs-21"
-	},{
+	}, {
 		"value" : "ALREADY_CHECKED_IN",
 		"id"    : "zs-22"
-	},{
+	}, {
 		"value" : "ALREADY_CHECKED_OUT",
 		"id"    : "zs-23"
-	},{
+	}, {
 		"value" : "CHECKIN_FINAL",
 		"id"	: "zs-24"
 	}];

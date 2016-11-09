@@ -77,7 +77,7 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
             if (params) {
                 params['application'] = 'KIOSK';
             }
-            console.info('params: ',params);
+            console.info('params: ', params);
             var deferred = $q.defer(),
                 url = '/guest_web/home/checkout_guest.json';
             zsBaseWebSrv2.postJSON(url, params).then(function(data) {

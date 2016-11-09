@@ -1,4 +1,4 @@
-admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
+admin.service('ADItemSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 
    /*
 	* service class for item related operations
@@ -14,7 +14,7 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -32,7 +32,7 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -49,7 +49,7 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 
 		ADBaseWebSrv.postJSON(url, postData).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -65,7 +65,7 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 		var deferred = $q.defer();
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -79,7 +79,7 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 		var deferred = $q.defer();
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
@@ -94,7 +94,7 @@ admin.service('ADItemSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
 		var deferred = $q.defer();
 		ADBaseWebSrv.postJSON(url, itemDetails).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;

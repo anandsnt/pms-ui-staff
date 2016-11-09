@@ -1,5 +1,5 @@
 (function() {
-	var checkoutRoomVerificationViewController = function($scope,$rootScope,$state,$modal,checkoutRoomVerificationService,$timeout) {
+	var checkoutRoomVerificationViewController = function($scope, $rootScope, $state, $modal, checkoutRoomVerificationService, $timeout) {
 
 	$scope.pageValid = false;
 	$rootScope.isRoomVerified =  false;
@@ -34,9 +34,9 @@
 		$scope.continueButtonClicked = function() {
 
 		var url = '/guest_web/verify_room.json';
-		var data = {'reservation_id':$rootScope.reservationID,"room_number":$scope.roomNumber};
+		var data = {'reservation_id':$rootScope.reservationID, "room_number":$scope.roomNumber};
 		$scope.isFetching = true;
-		checkoutRoomVerificationService.verifyRoom(url,data).then(function(response) {
+		checkoutRoomVerificationService.verifyRoom(url, data).then(function(response) {
 
 			   $timeout(function() {
 
@@ -54,7 +54,7 @@
 					}
 			    }, 2000);
 
-		},function() {
+		}, function() {
 			 $scope.isFetching = false;
 			 $scope.netWorkError = true;
 
@@ -66,7 +66,7 @@
 };
 
 var dependencies = [
-'$scope','$rootScope','$state','$modal','checkoutRoomVerificationService','$timeout',
+'$scope', '$rootScope', '$state', '$modal', 'checkoutRoomVerificationService', '$timeout',
 checkoutRoomVerificationViewController
 ];
 

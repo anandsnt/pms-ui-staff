@@ -1,4 +1,4 @@
-admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state','roomTypes', function($scope,$rootScope,adCheckoutSrv,$state,roomTypes) {
+admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$state', 'roomTypes', function($scope, $rootScope, adCheckoutSrv, $state, roomTypes) {
 
 	$scope.errorMessage = '';
 
@@ -12,9 +12,9 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 
     $scope.init = function() {
     	$scope.checkoutData = {};
-      	$scope.hours = ["HH","01","02","03","04","05","06","07","08","09","10","11","12"];
-        $scope.minutes = ["MM","00","15","30","45"];
-        $scope.primeTimes = ["AM","PM"];
+      	$scope.hours = ["HH", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+        $scope.minutes = ["MM", "00", "15", "30", "45"];
+        $scope.primeTimes = ["AM", "PM"];
         $scope.isLoading = true;
         $scope.roomTypes = roomTypes.room_types;
         $scope.excludedRoomTypes = [];
@@ -37,13 +37,13 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     //remove exclude room type
     $scope.deleteRoomType = function(id) {
       //remove from final array
-      angular.forEach($scope.excludedRoomTypes,function(item, index) {
+      angular.forEach($scope.excludedRoomTypes, function(item, index) {
         if(item.id === id) {
-          $scope.excludedRoomTypes.splice(index,1);
+          $scope.excludedRoomTypes.splice(index, 1);
         }
       });
       //untick from list
-       angular.forEach($scope.roomTypes,function(item, index) {
+       angular.forEach($scope.roomTypes, function(item, index) {
         if(item.id === id) {
           item.ticked = false;
         }
@@ -106,8 +106,8 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
             $scope.is_send_zest_checkout_alert_flag = ($scope.checkoutData.is_send_zest_checkout_alert === 'true') ? true:false;
 			$scope.require_cc_for_checkout_email_flag = ($scope.checkoutData.require_cc_for_checkout_email === 'true') ? true:false;
 			$scope.include_cash_reservationsy_flag = ($scope.checkoutData.include_cash_reservations === 'true') ? true:false;
-		    angular.forEach($scope.roomTypes,function(roomType, index) {
-                angular.forEach($scope.checkoutData.excluded_room_types,function(excludedRoomType, index) {
+		    angular.forEach($scope.roomTypes, function(roomType, index) {
+                angular.forEach($scope.checkoutData.excluded_room_types, function(excludedRoomType, index) {
                 if(parseInt(roomType.id) === parseInt(excludedRoomType)) {
                     $scope.excludedRoomTypes.push(roomType);
                     roomType.ticked = true;// for the multi-select implementation
@@ -116,7 +116,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
         });
             setWatchers();
         };
-		$scope.invokeApi(adCheckoutSrv.fetch, {},fetchCheckoutDetailsSuccessCallback,fetchCheckoutDetailsFailureCallback);
+		$scope.invokeApi(adCheckoutSrv.fetch, {}, fetchCheckoutDetailsSuccessCallback, fetchCheckoutDetailsFailureCallback);
 	};
 
 	$scope.fetchCheckoutDetails();
@@ -156,7 +156,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 			$scope.checkoutData.include_cash_reservations = ($scope.include_cash_reservationsy_flag) ?'true':'false';
 			$scope.validateAlertTimings();
             var excluded_room_types = [];
-            angular.forEach($scope.excludedRoomTypes,function(excludedRoomType, index) {
+            angular.forEach($scope.excludedRoomTypes, function(excludedRoomType, index) {
                 excluded_room_types.push(excludedRoomType.id);
             });
             var uploadData = {
@@ -185,7 +185,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     	var saveCheckoutDetailsSuccessCallback = function(data) {
     		$scope.$emit('hideLoader');
     	};
-    	$scope.invokeApi(adCheckoutSrv.save, uploadData,saveCheckoutDetailsSuccessCallback);
+    	$scope.invokeApi(adCheckoutSrv.save, uploadData, saveCheckoutDetailsSuccessCallback);
     };
 
     var setWatchers = function() {

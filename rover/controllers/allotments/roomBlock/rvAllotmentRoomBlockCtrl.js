@@ -93,8 +93,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		var isContractHeld = function() {
 			var contractIsHeld = true;
 
-			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings,function(roomData) {
-				_.each(roomData.dates,function(config) {
+			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, function(roomData) {
+				_.each(roomData.dates, function(config) {
 					contractIsHeld = contractIsHeld && config.single === config.single_contract &&
 						config.double === config.double_contract &&
 						  config.triple === config.triple_contract &&

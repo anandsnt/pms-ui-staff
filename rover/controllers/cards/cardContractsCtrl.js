@@ -4,7 +4,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 		$scope.highchartsNG = {};
 		$scope.contractList = {};
 		$scope.contractData = {};
-		$scope.rateValueTypes = [ { value:"%",name:"percent" },{ value: $rootScope.currencySymbol, name:"amount" } ];
+		$scope.rateValueTypes = [ { value:"%", name:"percent" }, { value: $rootScope.currencySymbol, name:"amount" } ];
 		$scope.addData = {};
 		$scope.contractList.contractSelected = "";
 		$scope.contractList.current_contracts = [];
@@ -694,7 +694,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
                     }, function(data) {
                     	$scope.$emit('hideLoader');
                     	var processedResults = [];
-                    	_.each(data.contract_rates,function(result) {
+                    	_.each(data.contract_rates, function(result) {
                     		processedResults.push({
                     			label: result.name,
 	                            value: result.name,

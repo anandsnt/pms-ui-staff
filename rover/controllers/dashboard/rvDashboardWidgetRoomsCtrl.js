@@ -1,4 +1,4 @@
-sntRover.controller('rvDashboardRoomsWidgetController',['$scope', 'RVSearchSrv', '$state', function($scope, RVSearchSrv, $state) {
+sntRover.controller('rvDashboardRoomsWidgetController', ['$scope', 'RVSearchSrv', '$state', function($scope, RVSearchSrv, $state) {
 	/**
 	* controller class for dashbaord's rooms area
 	*/

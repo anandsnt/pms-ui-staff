@@ -1,4 +1,4 @@
-admin.controller('ADSMSConfigurationCtrl',['$scope', '$state', 'ADHotelListSrv', 'ADHotelConfigurationSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout', '$location',
+admin.controller('ADSMSConfigurationCtrl', ['$scope', '$state', 'ADHotelListSrv', 'ADHotelConfigurationSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout', '$location',
   function($scope, $state, ADHotelListSrv, ADHotelConfigurationSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
 	$scope.errorMessage = '';

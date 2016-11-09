@@ -1,5 +1,5 @@
 admin.controller('ADNotificatinsListCtrl',
-	['$scope','$rootScope', '$state','$stateParams', 'ADNotificationsListSrv','ngTableParams', '$filter', 
+	['$scope', '$rootScope', '$state', '$stateParams', 'ADNotificationsListSrv', 'ngTableParams', '$filter', 
 	function($scope,  $rootScope, $state, $stateParams, ADNotificationsListSrv, ngTableParams, $filter) {
 	BaseCtrl.call(this, $scope);
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
@@ -42,7 +42,7 @@ admin.controller('ADNotificatinsListCtrl',
         return (diffDays-1);
     };
 
-	$scope.deleteNotification = function(index,id) {		
+	$scope.deleteNotification = function(index, id) {		
 		var deleteSuccess = function(data) {
 			FetchNotificationsList();
 		};

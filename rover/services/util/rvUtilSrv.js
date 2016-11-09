@@ -253,7 +253,7 @@ angular.module('sntRover').service('rvUtilSrv', [function() {
          * @param minutes INTEGER
          * @returns {string}
          */
-        this.roundToNextQuarter = function(hours,minutes) {
+        this.roundToNextQuarter = function(hours, minutes) {
                 var roundedHours =  (minutes > 45 ? ++hours % 24 : hours).toString(),
                     roundedMins = ((((minutes + 14) / 15 | 0) * 15) % 60).toString();
 

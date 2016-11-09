@@ -1,4 +1,4 @@
-admin.service('adCheckinCheckoutSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
+admin.service('adCheckinCheckoutSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
 /*
 * To retrive  email list
 *
@@ -14,9 +14,9 @@ this.fetchEmailList = function(data) {
 	else if(data.id === 'checkout') {
 		url = '/admin/get_due_out_guests.json';
 	}
-	ADBaseWebSrv.getJSON(url,data).then(function(data) {
+	ADBaseWebSrv.getJSON(url, data).then(function(data) {
 		deferred.resolve(data);
-	},function(data) {
+	}, function(data) {
 		deferred.reject(data);
 	});
 	return deferred.promise;
@@ -39,9 +39,9 @@ this.sendMail = function(emailData) {
 	}
 	var data = emailData.data;
 
-	ADBaseWebSrv.postJSON(url,data).then(function(data) {
+	ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		deferred.resolve(data);
-	},function(data) {
+	}, function(data) {
 		deferred.reject(data);
 	});
 	return deferred.promise;

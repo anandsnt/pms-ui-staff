@@ -1,4 +1,4 @@
-admin.service('ADUserRolePermissionSrv',['$q', 'ADBaseWebSrvV2',
+admin.service('ADUserRolePermissionSrv', ['$q', 'ADBaseWebSrvV2',
 	function($q, ADBaseWebSrvV2) {
    /*
 	* service class for Permission related operations
@@ -14,7 +14,7 @@ admin.service('ADUserRolePermissionSrv',['$q', 'ADBaseWebSrvV2',
 		var url = '/admin/roles_permissions';
 		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 
@@ -25,7 +25,7 @@ admin.service('ADUserRolePermissionSrv',['$q', 'ADBaseWebSrvV2',
 		var url = '/admin/roles_permissions/add_permission';
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 
@@ -36,7 +36,7 @@ admin.service('ADUserRolePermissionSrv',['$q', 'ADBaseWebSrvV2',
 		var url = '/admin/roles_permissions/remove_permission';
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
-		},function(errorMessage) {
+		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
 

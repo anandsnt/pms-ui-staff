@@ -1,4 +1,4 @@
-admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'ngDialog', '$timeout', '$state', '$stateParams', function($scope, $rootScope,ADCampaignSrv, ngDialog, $timeout,$state, $stateParams) {
+admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 'ngDialog', '$timeout', '$state', '$stateParams', function($scope, $rootScope, ADCampaignSrv, ngDialog, $timeout, $state, $stateParams) {
 
 	BaseCtrl.call(this, $scope);
 
@@ -227,7 +227,7 @@ admin.controller('ADAddCampaignCtrl',['$scope', '$rootScope','ADCampaignSrv', 'n
 	init();
 
 	$scope.isScreenSwitchDisabled = function() {
-          var delivery_types = ['EXTERNAL_CHECKIN', 'EXTERNAL_CHECKOUT', 'PRE_CHECKIN','ROOM_READY', 'ON_CHECKIN'];
+          var delivery_types = ['EXTERNAL_CHECKIN', 'EXTERNAL_CHECKOUT', 'PRE_CHECKIN', 'ROOM_READY', 'ON_CHECKIN'];
 
           if(delivery_types.indexOf($scope.campaignData.audience_type) > -1
           	&& delivery_types.indexOf($scope.campaignData.delivery_details) > -1 &&

@@ -1,4 +1,4 @@
-admin.controller('adRatesEndDateValidationPopupController',['$scope','ngDialog',function($scope,ngDialog) {
+admin.controller('adRatesEndDateValidationPopupController', ['$scope', 'ngDialog', function($scope, ngDialog) {
 
 $scope.proceedSave = function() {
 	ngDialog.close();

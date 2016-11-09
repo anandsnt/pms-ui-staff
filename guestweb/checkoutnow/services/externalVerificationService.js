@@ -1,5 +1,5 @@
 (function() {
-var externalVerificationService = function($q,$http,$rootScope) {
+var externalVerificationService = function($q, $http, $rootScope) {
 	var response = {};
 
 	var verifyUser = function(data) {
@@ -22,7 +22,7 @@ var externalVerificationService = function($q,$http,$rootScope) {
 };
 
 var dependencies = [
-'$q','$http','$rootScope',
+'$q', '$http', '$rootScope',
 externalVerificationService
 ];
 

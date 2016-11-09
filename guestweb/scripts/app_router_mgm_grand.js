@@ -1,5 +1,5 @@
 
-sntGuestWeb.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
+sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 	
 	$stateProvider.state('checkOutStatus', {
         url: '/checkOutStatus',

@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout','$window','RVJournalSrv',function($scope,$rootScope,$timeout,$window,RVJournalSrv) {
+sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeout', '$window', 'RVJournalSrv', function($scope, $rootScope, $timeout, $window, RVJournalSrv) {
 	BaseCtrl.call(this, $scope);
 
 	/** Code for PRINT BOX drawer common Resize Handler starts here .. **/
@@ -74,7 +74,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		$scope.data.isDrawerOpened = false;
 	};
 
-	$scope.$on("CLOSEPRINTBOX",function() {
+	$scope.$on("CLOSEPRINTBOX", function() {
 		$scope.closeDrawer();
 	});
 
@@ -103,7 +103,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		var postData = {
             "from_date":$scope.data.fromDate,
             "to_date":$scope.data.toDate,
-            "employee_ids" : $scope.data.selectedEmployeeList ,
+            "employee_ids" : $scope.data.selectedEmployeeList,
             "department_ids" : $scope.data.selectedDepartmentList,
             "charge_group_id": $scope.data.selectedChargeGroup
         };
@@ -179,7 +179,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		var postData = {
             "from_date":$scope.data.fromDate,
             "to_date":$scope.data.toDate,
-            "employee_ids" : $scope.data.selectedEmployeeList ,
+            "employee_ids" : $scope.data.selectedEmployeeList,
             "department_ids" : $scope.data.selectedDepartmentList
         };
 
@@ -192,7 +192,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		else{
 			postData.charge_code_id = $scope.data.selectedPaymentType;
 		}
-		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData , successCallBackFetchPaymentData);
+		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
 
 		var uiValue = _.find($scope.data.activePaymentTypes, function(each) {
 			return each.charge_code_id === parseInt($scope.data.selectedPaymentType);
@@ -205,7 +205,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 	/** PRINT Functionality **/
 
-	$scope.$on("PRINTSUMMARY",function() {
+	$scope.$on("PRINTSUMMARY", function() {
 		printJournal();
 	});
 

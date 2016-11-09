@@ -1,4 +1,4 @@
-admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout', '$location',
+admin.controller('ADEmailBlackListCtrl', ['$scope', '$state', 'ADEmailBlackListSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout', '$location',
   function($scope, $state, ADEmailBlackListSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
 	$scope.errorMessage = '';
@@ -83,7 +83,7 @@ admin.controller('ADEmailBlackListCtrl',['$scope', '$state', 'ADEmailBlackListSr
 
 
 		};
-	   $scope.invokeApi(ADEmailBlackListSrv.fetch, {} , successCallbackFetch);
+	   $scope.invokeApi(ADEmailBlackListSrv.fetch, {}, successCallbackFetch);
 	};
 	// To list blacklisted emails
 	$scope.listEmailBlackList();

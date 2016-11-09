@@ -3,7 +3,7 @@ angular.module('sntRover').controller('allotmentAvailabilityMainController', [
 	'rvAvailabilitySrv',
 	'$rootScope',
 	'ngDialog',
-	'$filter' ,
+	'$filter',
 	'$timeout',
 	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout) {
 

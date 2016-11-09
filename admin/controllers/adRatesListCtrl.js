@@ -1,4 +1,4 @@
-admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams','$filter','$timeout', '$stateParams',
+admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams',
 	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams) {
 
 	$scope.errorMessage = '';
@@ -193,7 +193,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSr
     		$scope.data[parseInt($scope.currentClickedElement)].description = $scope.rateDetailsForNonStandalone.description;
     		$scope.currentClickedElement = -1;
     	};
-   		$scope.invokeApi(ADRatesSrv.updateRateForNonStandalone, $scope.rateDetailsForNonStandalone , successCallbackSave);
+   		$scope.invokeApi(ADRatesSrv.updateRateForNonStandalone, $scope.rateDetailsForNonStandalone, successCallbackSave);
     };
    /*
     * To handle click event
@@ -219,7 +219,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSr
 			$scope.$emit('hideLoader');
 			$scope.errorMessage =  data;
 		};
-		$scope.invokeApi(ADRatesSrv.deleteRate, selectedId, rateDeleteSuccess,rateDeleteFailure);
+		$scope.invokeApi(ADRatesSrv.deleteRate, selectedId, rateDeleteSuccess, rateDeleteFailure);
 
 
 	};
@@ -228,7 +228,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSr
 	* @param {int} index of the selected rate type
 	*
 	*/
-	$scope.toggleActive = function(selectedId,checkedStatus,activationAllowed) {
+	$scope.toggleActive = function(selectedId, checkedStatus, activationAllowed) {
 		var params = {'id': selectedId, is_active: !checkedStatus };
 		var rateToggleSuccess = function() {
 		$scope.$emit('hideLoader');
@@ -244,7 +244,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSr
 			$scope.errorMessage =  data;
 		};
 
-		$scope.invokeApi(ADRatesSrv.toggleRateActivate, params, rateToggleSuccess,rateToggleFailure);
+		$scope.invokeApi(ADRatesSrv.toggleRateActivate, params, rateToggleSuccess, rateToggleFailure);
 
 	};
 
@@ -265,7 +265,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$rootScope', '$state', 'ADRatesSr
 		 		$scope.$emit('hideLoader');
 		 	};
 		 	var data = {"id": rateId };
-	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data , successCallbackRender);
+	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data, successCallbackRender);
 		//If standalone PMS, then the rate configurator wizard should be appeared.
 		}else{
 			$scope.showLoader();
